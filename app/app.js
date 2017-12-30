@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {
+  ApolloProvider,
+  ApolloClient,
+  createNetworkInterface,
+} from 'react-apollo';
 
-class HelloMessage extends React.Component {
-  render() {
-    return <div>Hello {this.props.name}</div>;
-  }
-}
+import App from './containers/App';
 
 const mountNode = document.getElementById('app');
-ReactDOM.render(<HelloMessage name="Mayushi" />, mountNode);
+ReactDOM.render(<App />, mountNode);
