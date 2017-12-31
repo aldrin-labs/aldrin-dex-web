@@ -10,16 +10,6 @@
     "stage-0"
   ],
   "env": {
-    "development": {
-      "plugins": [
-        "transform-es2015-modules-commonjs"
-      ]
-    },
-    "test": {
-      "plugins": [
-        "transform-es2015-modules-commonjs"
-      ]
-    },
     "production": {
       "plugins": [
         "transform-react-remove-prop-types"
