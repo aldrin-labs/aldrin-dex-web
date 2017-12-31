@@ -1,25 +1,24 @@
 import React from 'react'
-import { Switch, Route, } from 'react-router-dom'
-import { injectGlobal, ThemeProvider } from 'styled-components'
+import { Switch, Route } from 'react-router-dom'
+import styled, { ThemeProvider } from 'styled-components'
 
-import { HomePage, SamplePage, NotFoundPage } from '../../components/'
+// import { HomePage, SamplePage, NotFoundPage } from '../../components/'
+
+const AppContainer = styled.div`
+  font-size: 20px;
+`
 
 import theme from '../../components/themes/default'
 
-injectGlobal`
-  body {
-    margin: 0;
-  }
-`
-
 const App = () => (
   <ThemeProvider theme={theme}>
-    <Switch>
-      <Route path="/" component={HomePage} exact />
-      <Route path="/sample-page" component={SamplePage} />
-      <Route component={NotFoundPage} />
-    </Switch>
+    <AppContainer>Hello!</AppContainer>
   </ThemeProvider>
 )
-
 export default App
+
+// <Switch>
+// <Route path="/" component={HomePage} exact />
+// <Route path="/sample-page" component={SamplePage} />
+// <Route component={NotFoundPage} />
+// </Switch>
