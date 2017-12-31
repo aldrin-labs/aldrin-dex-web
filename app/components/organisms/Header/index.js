@@ -1,31 +1,26 @@
-import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import React from 'react'
+import styled from 'styled-components'
 
-import A from './A';
-import Img from './Img';
-import NavBar from './NavBar';
-import HeaderLink from './HeaderLink';
-import Banner from './banner.jpg';
-import messages from './messages';
+import { IconLink, Block } from '../../../components'
 
-class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
-  render() {
-    return (
-      <div>
-        <A href="https://twitter.com/mxstbr">
-          <Img src={Banner} alt="react-boilerplate - Logo" />
-        </A>
-        <NavBar>
-          <HeaderLink to="/">
-            <FormattedMessage {...messages.home} />
-          </HeaderLink>
-          <HeaderLink to="/features">
-            <FormattedMessage {...messages.features} />
-          </HeaderLink>
-        </NavBar>
-      </div>
-    );
+const Wrapper = styled(Block)`
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  & > :not(:first-child) {
+    margin-left: 1rem;
   }
-}
+`
 
-export default Header;
+const StyledIconLink = styled(IconLink)`
+  display: inline-block;
+  transform-origin: center;
+`
+
+const Header = props => (
+  <Wrapper opaque reverse {...props}>
+    <StyledIconLink to="/" icon="arc" height={100} />
+  </Wrapper>
+)
+
+export default Header
