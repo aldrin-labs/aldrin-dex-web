@@ -1,25 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Switch, Route } from 'react-router-dom';
+import React from 'react'
+import { Switch, Route, } from 'react-router-dom'
+import { injectGlobal, ThemeProvider } from 'styled-components'
 
-import H1 from '../../components/H1';
+import { HomePage, SamplePage, NotFoundPage } from '../../components/'
 
-const AppWrapper = styled.div`
-  max-width: calc(768px + 16px * 2);
-  margin: 0 auto;
-  display: flex;
-  min-height: 100%;
-  padding: 0 16px;
-  flex-direction: column;
-`;
+import theme from '../../components/themes/default'
 
-const App = props => {
-  const { classes } = props;
-  return (
-    <AppWrapper>
-      <H1>123</H1>
-    </AppWrapper>
-  );
-};
+injectGlobal`
+  body {
+    margin: 0;
+  }
+`
 
-export default App;
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <Switch>
+      <Route path="/" component={HomePage} exact />
+      <Route path="/sample-page" component={SamplePage} />
+      <Route component={NotFoundPage} />
+    </Switch>
+  </ThemeProvider>
+)
+
+export default App

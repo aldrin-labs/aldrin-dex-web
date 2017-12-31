@@ -10,10 +10,11 @@
   "plugins": ["prettier", "react", "jsx-a11y"],
   "rules": {
     "prettier/prettier": "error",
-    "quotes": "off"
+    "quotes": "off",
+    "semi": "off",
   },
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 7,
     "sourceType": "module",
     "ecmaFeatures": {
       "jsx": true
