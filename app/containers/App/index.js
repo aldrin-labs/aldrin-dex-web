@@ -1,7 +1,6 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
-import Typography from 'material-ui/Typography'
 
 import { HomePage } from '../../components'
 import theme from '../../components/themes/default'
@@ -10,10 +9,8 @@ const AppContainer = styled.div`
   font-size: 20px;
 `
 
-const Title = styled(Typography)`
-  && {
-    color: red;
-  }
+const Title = styled.h1`
+  color: red;
 `
 
 const App = () => (
