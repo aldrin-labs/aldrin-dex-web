@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
 
 import { HomePage } from '../../components'
@@ -13,17 +13,31 @@ const Title = styled.h1`
   color: red;
 `
 
+const SamplePage = () => (
+  <div>
+    <Title>Hello! Root page</Title>
+    <Link to={'/sample-page'}>To sample page!</Link>
+  </div>
+)
+
+const AnotherSamplePage = () => (
+  <div>
+    <Title>Eeeee boiii</Title>
+    <Link to={'/'}>To root page!</Link>
+  </div>
+)
+
 const App = () => (
   <ThemeProvider theme={theme}>
-    <AppContainer>
-      <Title type="title">Application</Title>
-    </AppContainer>
+    <Router>
+      <AppContainer>
+        <Switch>
+          <Route path="/" component={SamplePage} exact />
+          <Route path="/sample-page" component={AnotherSamplePage} />
+          {/* <Route component={NotFoundPage} /> */}
+        </Switch>
+      </AppContainer>
+    </Router>
   </ThemeProvider>
 )
 export default App
-
-// <Switch>
-// <Route path="/" component={HomePage} exact />
-// <Route path="/sample-page" component={SamplePage} />
-// <Route component={NotFoundPage} />
-// </Switch>
