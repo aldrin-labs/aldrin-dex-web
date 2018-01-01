@@ -21,10 +21,10 @@
     ],
     "coverageThreshold": {
       "global": {
-        "statements": 98,
-        "branches": 91,
-        "functions": 98,
-        "lines": 98
+        "statements": 90,
+        "branches": 90,
+        "functions": 90,
+        "lines": 90
       }
     },
     "moduleDirectories": [
@@ -34,23 +34,25 @@
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
+    "koa": "^2.4.1",
     "material-ui": "^1.0.0-beta.25",
     "polished": "^1.9.0",
+    "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
     "react-dom": "^16.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "styled-components": "^2.4.0"
+    "styled-components": "^2.4.0",
+    "styled-theme": "^0.3.3",
+    "styled-tools": "^0.2.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.36",
-    "@babel/preset-env": "^7.0.0-beta.36",
     "babel-eslint": "^8.1.2",
-    "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
-    "babel-plugin-transform-es3-property-literals": "^6.22.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.12",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "enzyme": "^3.3.0",

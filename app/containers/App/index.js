@@ -1,25 +1,29 @@
-import React from 'react';
-import styled from 'styled-components';
-import { Switch, Route } from 'react-router-dom';
+import React from 'react'
+import { Switch, Route } from 'react-router-dom'
+import styled, { ThemeProvider } from 'styled-components'
 
-import H1 from '../../components/H1';
+import { HomePage } from '../../components'
+import theme from '../../components/themes/default'
 
-const AppWrapper = styled.div`
-  max-width: calc(768px + 16px * 2);
-  margin: 0 auto;
-  display: flex;
-  min-height: 100%;
-  padding: 0 16px;
-  flex-direction: column;
-`;
+const AppContainer = styled.div`
+  font-size: 20px;
+`
 
-const App = props => {
-  const { classes } = props;
-  return (
-    <AppWrapper>
-      <H1>123</H1>
-    </AppWrapper>
-  );
-};
+const Title = styled.h1`
+  color: red;
+`
 
-export default App;
+const App = () => (
+  <ThemeProvider theme={theme}>
+    <AppContainer>
+      <Title type="title">Application</Title>
+    </AppContainer>
+  </ThemeProvider>
+)
+export default App
+
+// <Switch>
+// <Route path="/" component={HomePage} exact />
+// <Route path="/sample-page" component={SamplePage} />
+// <Route component={NotFoundPage} />
+// </Switch>
