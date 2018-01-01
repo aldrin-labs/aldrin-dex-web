@@ -10,3 +10,7 @@ import App from './containers/App'
 
 const mountNode = document.getElementById('app')
 ReactDOM.render(<App />, mountNode)
+
+if (module.hot) {
+  module.hot.accept()
+}

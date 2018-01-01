@@ -26,7 +26,7 @@ const Wrapper = styled.span`
 `
 
 const Icon = ({ icon, ...props }) => {
-  const svg = require(`./icons/react.svg`)
+  const svg = require('svg-inline-loader?classPrefix!./icons/react.svg')
   return <Wrapper {...props} dangerouslySetInnerHTML={{ __html: svg }} />
 }
 
