@@ -12,7 +12,7 @@ const config = {
 
   entry: [
     'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8080',
+    'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
     './index.js',
   ],
@@ -28,7 +28,9 @@ const config = {
   devServer: {
     hot: true,
     contentBase: resolve(__dirname, 'build'),
+    historyApiFallback: true,
     publicPath: '/',
+    port: 3000,
   },
 
   module: {
@@ -120,9 +122,15 @@ const config = {
     //     },
     //   },
     // }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.EnvironmentPlugin(Object.keys(process.env)),
+    new webpack.optimize.CommonsChunkPlugin({
+      children: true,
+      async: true,
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     // new CopyWebpackPlugin([{ from: 'vendors', to: 'vendors' }]),
-    new OpenBrowserPlugin({ url: 'http://localhost:8080' }),
+    new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
     new webpack.HotModuleReplacementPlugin(),
   ],
 }
