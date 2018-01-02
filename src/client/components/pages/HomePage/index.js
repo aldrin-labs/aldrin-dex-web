@@ -4,9 +4,9 @@ import PageTemplate from 'components/templates/PageTemplate'
 import Header from 'components/organisms/Header'
 import Footer from 'components/organisms/Footer'
 
-const HomePage = () => (
+const HomePage = ({ children }) => (
   <PageTemplate header={<Header />} footer={<Footer />}>
-    <div>LOL</div>
+    {children}
   </PageTemplate>
 )
 

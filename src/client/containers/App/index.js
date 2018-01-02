@@ -3,10 +3,11 @@ import styled, { ThemeProvider } from 'styled-components'
 import { Link } from 'react-router-dom'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
-import theme from '../../components/themes/default'
+import { font } from 'styled-theme'
+import HomePage from 'components/pages/HomePage'
 
 const Title = styled.h1`
-  color: red;
+  font-family: ${font('text')};
 `
 
 const MY_QUERY = gql`
@@ -19,8 +20,9 @@ const MY_QUERY = gql`
 
 const SamplePage = () => (
   <div>
-    <Title>Hello! Root page</Title>
-    <Link to="/chart">To sample page!</Link>
+    <HomePage>
+      <Title>Test</Title>
+    </HomePage>
   </div>
 )
 

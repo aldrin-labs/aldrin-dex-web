@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { palette } from 'styled-theme'
 import { ifProp } from 'styled-tools'
-import { AccessAlarm, ThreeDRotation } from 'material-ui-icons'
+import { BusinessCenter } from 'material-ui-icons'
 
 const fontSize = ({ width, height }) => {
   const size = width || height
@@ -29,7 +29,7 @@ const Wrapper = styled.span`
 const Icon = ({ icon, size, ...props }) => {
   return (
     <Wrapper {...props}>
-      <AccessAlarm />
+      <BusinessCenter />
     </Wrapper>
   )
 }
