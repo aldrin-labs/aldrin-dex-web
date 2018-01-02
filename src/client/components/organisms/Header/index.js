@@ -1,25 +1,36 @@
 import React from 'react'
 import styled from 'styled-components'
+import { size } from 'styled-theme'
 
-import { IconLink, Block } from '../../../components'
+import IconLink from '../../molecules/IconLink'
+import PrimaryNavigation from '../../molecules/PrimaryNavigation'
+import Block from '../../atoms/Block'
 
 const Wrapper = styled(Block)`
   display: flex;
-  align-items: center;
+  justify-content: center;
   padding: 1rem;
-  & > :not(:first-child) {
+  @media screen and (max-width: 640px) {
+    padding: 0.5rem;
+  }
+`
+
+const InnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: ${size('maxWidth')};
+  > :not(:first-child) {
     margin-left: 1rem;
   }
 `
 
-const StyledIconLink = styled(IconLink)`
-  display: inline-block;
-  transform-origin: center;
-`
-
 const Header = props => (
   <Wrapper opaque reverse {...props}>
-    <StyledIconLink to="/" icon="arc" height={100} />
+    <InnerWrapper>
+      <IconLink to="/" icon="arc" height={100} />
+      <PrimaryNavigation reverse />
+    </InnerWrapper>
   </Wrapper>
 )
 

@@ -19,11 +19,11 @@ const client = new ApolloClient({
 
 const render = () => {
   ReactDOM.render(
-    <ApolloProvider client={client}>
-      <AppContainer>
+    <AppContainer>
+      <ApolloProvider client={client}>
         <HashRouter>{renderRoutes(routes)}</HashRouter>
-      </AppContainer>
-    </ApolloProvider>,
+      </ApolloProvider>
+    </AppContainer>,
     document.getElementById('app'),
   )
 }

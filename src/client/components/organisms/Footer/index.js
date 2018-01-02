@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { palette } from 'styled-theme'
 
-import { Link, Paragraph } from '../../../components'
+import { Paragraph, Link, Icon } from './'
 
 const Wrapper = styled.div`
   background-color: ${palette('grayscale', 1, true)};
@@ -18,7 +18,8 @@ const Credits = styled(Paragraph)`
 const Footer = props => (
   <Wrapper {...props}>
     <Credits>
-      Made with Love by <Link href="https://github.com/kultism">Kultism</Link>
+      Made with <Icon icon="heart" /> by{' '}
+      <Link href="https://localhost:3000">CC.ai</Link>
     </Credits>
   </Wrapper>
 )

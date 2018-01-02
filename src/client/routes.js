@@ -1,5 +1,8 @@
 import App from './containers/App'
 import TestComp from './containers/TestComp'
+// import Login from './containers/Login'
+import Chart from './containers/Chart'
+import NotFound from './components/pages/NotFound'
 
 const routes = [
   {
@@ -8,9 +11,18 @@ const routes = [
     component: App,
   },
   {
-    path: '/sample-page',
+    path: '/chart',
     exact: true,
-    component: TestComp,
+    component: Chart,
+  },
+  // {
+  //   path: '/login',
+  //   exact: true,
+  //   component: Login,
+  // },
+  {
+    path: '*',
+    component: NotFound,
   },
 ]
 

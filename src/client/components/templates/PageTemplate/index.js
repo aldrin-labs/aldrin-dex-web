@@ -21,10 +21,6 @@ const Header = styled.header`
   z-index: 999;
 `
 
-const Hero = styled.section``
-
-const Sponsor = styled.section``
-
 const Content = styled.section`
   width: 100%;
   box-sizing: border-box;
@@ -36,18 +32,9 @@ const Footer = styled.footer`
   margin-top: auto;
 `
 
-const PageTemplate = ({
-  header,
-  hero,
-  sponsor,
-  children,
-  footer,
-  ...props
-}) => (
+const PageTemplate = ({ header, children, footer, ...props }) => (
   <Wrapper {...props}>
     <Header>{header}</Header>
-    {hero && <Hero>{hero}</Hero>}
-    {sponsor && <Sponsor>{sponsor}</Sponsor>}
     <Content>{children}</Content>
     <Footer>{footer}</Footer>
   </Wrapper>
@@ -55,8 +42,6 @@ const PageTemplate = ({
 
 PageTemplate.propTypes = {
   header: PropTypes.node.isRequired,
-  hero: PropTypes.node,
-  sponsor: PropTypes.node,
   footer: PropTypes.node.isRequired,
   children: PropTypes.any.isRequired,
 }

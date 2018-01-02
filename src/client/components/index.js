@@ -2,6 +2,8 @@ export { default as Icon } from './atoms/Icon'
 export { default as Link } from './atoms/Link'
 export { default as Block } from './atoms/Block'
 export { default as Paragraph } from './atoms/Paragraph'
+export { default as Heading } from './atoms/Heading'
+export { default as H1 } from './atoms/H1'
 
 // molecules
 export { default as Blockquote } from './molecules/Blockquote'

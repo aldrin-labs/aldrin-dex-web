@@ -11,7 +11,7 @@ const srcPath = resolve(__dirname, 'src')
 const distPath = resolve(__dirname, 'dist')
 
 const config = {
-  devtool: 'cheap-module-eval-source-map',
+  devtool: 'cheap-module-source-map',
   context: srcPath,
 
   entry: [
