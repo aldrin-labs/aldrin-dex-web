@@ -12,7 +12,7 @@
     "react",
     "stage-0"
   ],
-  "plugins": ["react-hot-loader/babel", "dynamic-import-webpack", "recharts"],
+  "plugins": ["react-hot-loader/babel", "dynamic-import-webpack", "recharts", "graphql-tag"],
   "env": {
     "production": {
       "plugins": ["transform-react-remove-prop-types"]
