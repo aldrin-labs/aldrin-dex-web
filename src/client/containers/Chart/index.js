@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from 'material-ui/styles'
 //import query from './TestComp.graphql'
 
-import Header from '../../components/organisms/Header'
+import Header from 'components/organisms/Header'
 
 const styles = theme => ({
   root: theme.typography.button,

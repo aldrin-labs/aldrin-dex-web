@@ -140,6 +140,11 @@ const config = {
     new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
     new webpack.HotModuleReplacementPlugin(),
   ],
+  resolve: {
+    alias: {
+      components: resolve(__dirname, './src/client/components'),
+    },
+  },
 }
 
 export default config

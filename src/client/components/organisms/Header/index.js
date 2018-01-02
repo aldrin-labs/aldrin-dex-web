@@ -2,9 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { size } from 'styled-theme'
 
-import IconLink from '../../molecules/IconLink'
-import PrimaryNavigation from '../../molecules/PrimaryNavigation'
-import Block from '../../atoms/Block'
+import IconLink from 'components/molecules/IconLink'
+import PrimaryNavigation from 'components/molecules/PrimaryNavigation'
+import Block from 'components/atoms/Block'
 
 const Wrapper = styled(Block)`
   display: flex;

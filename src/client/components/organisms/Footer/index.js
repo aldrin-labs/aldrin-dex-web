@@ -2,7 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import { palette } from 'styled-theme'
 
-import { Paragraph, Link, Icon } from './'
+import Icon from 'components/atoms/Icon'
+import Link from 'components/atoms/Link'
+import Paragraph from 'components/atoms/Paragraph'
 
 const Wrapper = styled.div`
   background-color: ${palette('grayscale', 1, true)};
