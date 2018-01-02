@@ -29,6 +29,11 @@ const PrimaryNavigation = props => (
       </Link>
     </li>
     <li>
+      <Link to="/login" activeClassName="active">
+        Login
+      </Link>
+    </li>
+    <li>
       <Link to="/chart" activeClassName="active">
         Chart
       </Link>

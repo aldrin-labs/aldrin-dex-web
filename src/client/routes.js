@@ -1,6 +1,6 @@
 import App from './containers/App'
 import TestComp from './containers/TestComp'
-// import Login from './containers/Login'
+import Login from './containers/Login'
 import Chart from './containers/Chart'
 import NotFound from './components/pages/NotFound'
 
@@ -15,11 +15,11 @@ const routes = [
     exact: true,
     component: Chart,
   },
-  // {
-  //   path: '/login',
-  //   exact: true,
-  //   component: Login,
-  // },
+  {
+    path: '/login',
+    exact: true,
+    component: Login,
+  },
   {
     path: '*',
     component: NotFound,
