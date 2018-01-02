@@ -7,14 +7,18 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
 import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
 
+const srcPath = resolve(__dirname, 'src')
+const distPath = resolve(__dirname, 'dist')
+
 const config = {
   devtool: 'cheap-module-eval-source-map',
+  context: srcPath,
 
   entry: [
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './index.js',
+    './client/index.js',
   ],
 
   output: {
@@ -22,8 +26,6 @@ const config = {
     path: resolve(__dirname, 'dist'),
     publicPath: '',
   },
-
-  context: resolve(__dirname, 'app'),
 
   devServer: {
     hot: true,
