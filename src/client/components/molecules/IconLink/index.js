@@ -28,11 +28,20 @@ const Text = styled.span`
   }
 `
 
-const IconLink = ({ height, icon, right, responsive, children, ...props }) => {
+const IconLink = ({
+  height,
+  icon,
+  size,
+  right,
+  responsive,
+  children,
+  ...props
+}) => {
   const iconElement = (
     <StyledIcon
       height={height}
       icon={icon}
+      size={size}
       hasText={!!children}
       right={right}
       responsive={responsive}
@@ -52,6 +61,7 @@ const IconLink = ({ height, icon, right, responsive, children, ...props }) => {
 IconLink.propTypes = {
   icon: PropTypes.string.isRequired,
   height: PropTypes.number,
+  size: PropTypes.string,
   palette: PropTypes.string,
   reverse: PropTypes.bool,
   responsive: PropTypes.bool,

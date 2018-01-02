@@ -28,7 +28,7 @@ const InnerWrapper = styled.div`
 const Header = props => (
   <Wrapper opaque reverse {...props}>
     <InnerWrapper>
-      <IconLink to="/" icon="arc" height={100} />
+      <IconLink to="/" icon="ei-eye" height={100} />
       <PrimaryNavigation reverse />
     </InnerWrapper>
   </Wrapper>

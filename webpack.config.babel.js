@@ -142,6 +142,7 @@ const config = {
   ],
   resolve: {
     alias: {
+      src: 'src',
       components: resolve(__dirname, './src/client/components'),
     },
   },

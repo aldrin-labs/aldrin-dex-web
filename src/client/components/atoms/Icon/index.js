@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { palette } from 'styled-theme'
 import { ifProp } from 'styled-tools'
+import { AccessAlarm, ThreeDRotation } from 'material-ui-icons'
 
 const fontSize = ({ width, height }) => {
   const size = width || height
@@ -25,13 +26,17 @@ const Wrapper = styled.span`
   }
 `
 
-const Icon = ({ icon, ...props }) => {
-  const svg = require('svg-inline-loader?classPrefix!./icons/react.svg')
-  return <Wrapper {...props} dangerouslySetInnerHTML={{ __html: svg }} />
+const Icon = ({ icon, size, ...props }) => {
+  return (
+    <Wrapper {...props}>
+      <AccessAlarm />
+    </Wrapper>
+  )
 }
 
 Icon.propTypes = {
   icon: PropTypes.string.isRequired,
+  size: PropTypes.string.isRequired,
   width: PropTypes.number,
   height: PropTypes.number,
   palette: PropTypes.string,
