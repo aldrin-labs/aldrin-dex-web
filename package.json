@@ -9,7 +9,7 @@
     "build": "webpack",
     "clean": "rimraf dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "test": "jest --coverage",
+    "test": "jest",
     "test:watch": "jest --watchAll"
   },
   "jest": {
