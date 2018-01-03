@@ -19,8 +19,11 @@
     "prettier/prettier": "error",
     "quotes": "off",
     "semi": [2, "never"],
-    "react/jsx-filename-extension": [2, {"extensions": [".js", ".jsx"]}],
-    "comma-dangle": [2, "always-multiline"]
+    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx"] }],
+    "comma-dangle": [2, "always-multiline"],
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": 0
   },
   "parserOptions": {
     "ecmaVersion": 7,

@@ -1,19 +1,21 @@
 {
   "presets": [
-    ["env", {
+    [
+      "env",
+      {
         "targets": {
           "browsers": ["last 2 versions", "safari >= 7"]
         },
         "useBuiltIns": "entry"
-    }],
+      }
+    ],
     "react",
     "stage-0"
   ],
+  "plugins": ["react-hot-loader/babel", "dynamic-import-webpack", "recharts", "graphql-tag", "transform-export-default", "styled-components"],
   "env": {
     "production": {
-      "plugins": [
-        "transform-react-remove-prop-types"
-      ]
+      "plugins": ["transform-react-remove-prop-types"]
     }
   }
 }
