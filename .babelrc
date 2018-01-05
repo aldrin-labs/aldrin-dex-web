@@ -10,12 +10,35 @@
       }
     ],
     "react",
-    "stage-0"
+    "stage-0",
+    "jest"
   ],
-  "plugins": ["react-hot-loader/babel", "dynamic-import-webpack", "recharts", "graphql-tag", "transform-export-default", "styled-components"],
+  "plugins": [
+    "react-hot-loader/babel",
+    "dynamic-import-webpack",
+    "recharts",
+    "graphql-tag",
+    "transform-export-default",
+    "styled-components"
+  ],
   "env": {
     "production": {
       "plugins": ["transform-react-remove-prop-types"]
+    },
+    "test": {
+      "presets": [
+        [
+          "env",
+          {
+            "modules": "commonjs",
+            "useBuiltIns": "usage",
+            "debug": false
+          }
+        ],
+        "stage-0",
+        "react",
+        "jest"
+      ]
     }
   }
 }
