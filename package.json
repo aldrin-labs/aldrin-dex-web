@@ -6,6 +6,7 @@
   "author": "Bogdan Volyk <dekultism@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "deploy": "webpack",
     "build": "webpack",
     "clean": "rimraf dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server",
