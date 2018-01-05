@@ -1,16 +1,56 @@
 import webpack from 'webpack'
 import { resolve } from 'path'
-import CopyWebpackPlugin from 'copy-webpack-plugin'
 import OpenBrowserPlugin from 'open-browser-webpack-plugin'
 
-import HtmlWebpackPlugin from 'html-webpack-plugin'
-import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
-import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
+// TODO: Add to build
+// import HtmlWebpackPlugin from 'html-webpack-plugin'
+// import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
+// import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin'
+// import CopyWebpackPlugin from 'copy-webpack-plugin'
 
 const srcPath = resolve(__dirname, 'src')
 const distPath = resolve(__dirname, 'dist')
 
-const config = {
+const serverConfig = {
+  context: srcPath,
+  target: 'node',
+  entry: ['babel-polyfill', './server/index.js'],
+  output: {
+    filename: 'server.js',
+    path: resolve(__dirname, 'dist'),
+    publicPath: '',
+    libraryTarget: 'commonjs2',
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        loaders: ['babel-loader'],
+        exclude: /node_modules/,
+      },
+    ],
+  },
+
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.EnvironmentPlugin(Object.keys(process.env)),
+    new webpack.optimize.CommonsChunkPlugin({
+      children: true,
+      async: true,
+    }),
+    new webpack.optimize.ModuleConcatenationPlugin(),
+  ],
+  resolve: {
+    alias: {
+      src: 'src',
+      components: resolve(__dirname, './src/client/components'),
+      containers: resolve(__dirname, './src/client/containers'),
+    },
+  },
+}
+
+const clientConfig = {
   devtool: 'cheap-module-source-map',
   context: srcPath,
 
@@ -18,7 +58,7 @@ const config = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
-    './client/index.js',
+    './client/client.js',
   ],
 
   output: {
@@ -30,13 +70,14 @@ const config = {
   devServer: {
     hot: true,
     contentBase: resolve(__dirname, 'build'),
-    historyApiFallback: true,
+    // historyApiFallback: true,
     publicPath: '/',
     port: 3000,
   },
 
   module: {
     rules: [
+      // TODO: Add hook
       // {
       //   enforce: 'pre',
       //   test: /\.js$/,
@@ -120,6 +161,7 @@ const config = {
   },
 
   plugins: [
+    // TODO: Add hook
     // new webpack.LoaderOptionsPlugin({
     //   test: /\.js$/,
     //   options: {
@@ -136,7 +178,6 @@ const config = {
       async: true,
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    // new CopyWebpackPlugin([{ from: 'vendors', to: 'vendors' }]),
     new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
     new webpack.HotModuleReplacementPlugin(),
   ],
@@ -144,8 +185,9 @@ const config = {
     alias: {
       src: 'src',
       components: resolve(__dirname, './src/client/components'),
+      containers: resolve(__dirname, './src/client/containers'),
     },
   },
 }
 
-export default config
+module.exports = [clientConfig, serverConfig]
