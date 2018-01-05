@@ -35,6 +35,7 @@ variables:
   POSTGRES_DB: $CI_ENVIRONMENT_SLUG
 
 stages:
+  - bundle
   - build
   - test
   - review
@@ -43,6 +44,17 @@ stages:
   - production
   - performance
   - cleanup
+
+bundle:
+  stage: bundle
+  image: node:latest
+  script:
+    - yarn
+    - yarn build
+  artifacts:
+    paths:
+    - ./dist
+
 
 build:
   stage: build
