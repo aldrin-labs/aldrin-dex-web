@@ -2,9 +2,9 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: "web-spa"
+  name: {{ .Chart.Name }}
   labels:
-    app: "web-spa"
+    app: {{ .Chart.Name }}
     chart: "{{ .Chart.Name }}-{{ .Chart.Version| replace "+" "_" }}"
   annotations:
     kubernetes.io/tls-acme: "true"
