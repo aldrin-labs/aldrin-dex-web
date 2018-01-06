@@ -4,6 +4,7 @@ import { withStyles } from 'material-ui/styles'
 import { TextField, Button } from 'material-ui'
 import styled from 'styled-components'
 import Done from 'material-ui-icons/Done'
+// import LoginForm from './Login'
 // import query from './TestComp.graphql'
 
 import HomePage from 'components/pages/HomePage'
@@ -15,19 +16,24 @@ const ColumnWrapper = styled.div`
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    alignSelf: 'center',
+    alignItems: 'center',
   },
   container: {
     display: 'flex',
+    alignSelf: 'center',
     flexWrap: 'wrap',
+    marginTop: '20%',
+    marginLeft: '40%',
   },
   textField: {
+    marginTop: '20px',
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200,
+    width: 250,
   },
   menu: {
-    width: 200,
+    width: 250,
   },
   button: {
     margin: theme.spacing.unit,
@@ -42,7 +48,7 @@ const styles = theme => ({
 
 class TextFields extends React.Component {
   state = {
-    name: 'Cat in the Hat',
+    name: '',
   }
 
   handleChange = name => event => {
@@ -55,35 +61,37 @@ class TextFields extends React.Component {
     const { classes } = this.props
 
     return (
-      <form className={classes.container} noValidate autoComplete="off">
-        <ColumnWrapper>
-          <TextField
-            id="name"
-            label="Name"
-            className={classes.textField}
-            value={this.state.name}
-            onChange={this.handleChange('name')}
-            margin="normal"
-          />
-          <TextField
-            id="password"
-            label="Password"
-            className={classes.textField}
-            type="password"
-            autoComplete="current-password"
-            margin="normal"
-          />
-          <Button
-            type="submit"
-            className={classes.button}
-            raised
-            color="primary"
-          >
-            Done
-            <Done className={classes.rightIcon} />
-          </Button>
-        </ColumnWrapper>
-      </form>
+      <div className={classes.place}>
+        <form className={classes.container} noValidate autoComplete="off">
+          <ColumnWrapper>
+            <TextField
+              id="email"
+              label="E-Mail"
+              className={classes.textField}
+              value={this.state.mail}
+              onChange={this.handleChange('email')}
+              margin="normal"
+            />
+            <TextField
+              id="password"
+              label="Password"
+              className={classes.textField}
+              type="password"
+              autoComplete="current-password"
+              margin="normal"
+            />
+            <Button
+              type="submit"
+              className={classes.button}
+              raised
+              color="primary"
+            >
+              Login
+              <Done className={classes.rightIcon} />
+            </Button>
+          </ColumnWrapper>
+        </form>
+      </div>
     )
   }
 }
@@ -92,6 +100,7 @@ const Login = ({ classes }) => (
   <div>
     <HomePage>
       <TextFields classes={classes} />
+      {/* <LoginForm></LoginForm> */}
     </HomePage>
   </div>
 )

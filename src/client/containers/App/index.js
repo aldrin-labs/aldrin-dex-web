@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { font } from 'styled-theme'
 import HomePage from 'components/pages/HomePage'
+import CoinMarketCap from 'containers/CoinMarketCap'
 
 const Title = styled.h1`
   font-family: ${font('text')};
@@ -28,5 +29,5 @@ const SamplePage = () => (
 
 const SamplePageWithData = graphql(MY_QUERY)(props => <SamplePage />)
 
-const App = () => <SamplePage />
+const App = () => <CoinMarketCap />
 export default App

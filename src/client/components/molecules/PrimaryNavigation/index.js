@@ -38,16 +38,16 @@ const PrimaryNavigation = props => (
         Chart
       </Link>
     </li>
-    <li>
-      <Link to="/coinmarketcap" activeClassName="active">
-        Coin Market
-      </Link>
-    </li>
-    <li>
-      <Link to="/about" activeClassName="active">
-        About
-      </Link>
-    </li>
+    {/*<li>*/}
+      {/*<Link to="/coinmarketcap" activeClassName="active">*/}
+        {/*Coin Market*/}
+      {/*</Link>*/}
+    {/*</li>*/}
+    {/*<li>*/}
+      {/*<Link to="/about" activeClassName="active">*/}
+        {/*About*/}
+      {/*</Link>*/}
+    {/*</li>*/}
   </Nav>
 )
 
