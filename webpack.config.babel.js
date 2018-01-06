@@ -58,6 +58,7 @@ const clientConfig = {
     'react-hot-loader/patch',
     'webpack-dev-server/client?http://localhost:3000',
     'webpack/hot/only-dev-server',
+    'babel-polyfill',
     './client/client.js',
   ],
 
@@ -70,7 +71,7 @@ const clientConfig = {
   devServer: {
     hot: true,
     contentBase: resolve(__dirname, 'build'),
-    // historyApiFallback: true,
+    historyApiFallback: true,
     publicPath: '/',
     port: 3000,
   },
@@ -178,7 +179,7 @@ const clientConfig = {
       async: true,
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
+    // new OpenBrowserPlugin({ url: 'http://localhost:3000' }),
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
@@ -189,5 +190,5 @@ const clientConfig = {
     },
   },
 }
-
-module.exports = [clientConfig, serverConfig]
+// serverConfig
+module.exports = [clientConfig]

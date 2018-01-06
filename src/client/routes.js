@@ -3,6 +3,7 @@ import TestComp from './containers/TestComp'
 import Login from './containers/Login'
 import Chart from './containers/Chart'
 import NotFound from './components/pages/NotFound'
+import CoinMarketCap from './containers/CoinMarketCap'
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     path: '/login',
     exact: true,
     component: Login,
+  },
+  {
+    path: '/coinmarketcap',
+    exact: true,
+    component: CoinMarketCap,
   },
   {
     path: '*',

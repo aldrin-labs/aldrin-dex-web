@@ -12,4 +12,4 @@ ReactDOM.render(
   document.getElementById('app'),
 )
 
-export default Client
+// export default Client

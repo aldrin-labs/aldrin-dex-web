@@ -1,4 +1,5 @@
 import React from 'react'
+const fs = require('fs')
 import ReactDOMServer from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { renderRoutes } from 'react-router-config'
@@ -17,23 +18,10 @@ const ServerContainer = request => (
 const fastify = require('fastify')()
 
 fastify.get('*', async (request, reply) => {
-  reply.header('Content-Type', 'text/html')
-  reply.type('text/html')
-  const ssr = `
-  <!DOCTYPE html>
-  <head>
-    <title>Universal Reacl</title>
-    <script src="/bundle.js" defer></script>
-  </head>
-  <body>
-
-  <div id="app">${ReactDOMServer.renderToString(
-    <ServerContainer request={request} />,
-  )}</div>
-  </body>
-</html>`
-
-  reply.send(ssr)
+  const stream = fs.createReadStream('./index.html')
+  // reply.header('Content-Type', 'text/html')
+  reply.type('text/html').send(stream)
+  // reply.send('index.html')
 })
 
 fastify.listen(3000, err => {
