@@ -7,5 +7,5 @@ Enzyme.configure({ adapter: new Adapter() })
 global.shallow = shallow
 global.render = render
 global.mount = mount
-global.__CLIENT = true
-global.__SERVER = false
+// global.__CLIENT = true
+// global.__SERVER = false

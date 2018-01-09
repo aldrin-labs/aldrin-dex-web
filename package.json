@@ -11,33 +11,20 @@
     "clean": "rimraf dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "test:watch": "jest --watchAll"
   },
   "jest": {
-    "setupFiles": [
-      "./test/jestsetup.js"
-    ],
+    "setupFiles": ["./test/jestsetup.js"],
     "transform": {
       "\\.(gql|graphql)$": "jest-transform-graphql",
-      ".*": "babel-jest"
+      "^.+\\.jsx$": "babel-jest",
+      "^.+\\.js$": "babel-jest"
     },
     "collectCoverageFrom": [
-      "app/**/*.{js,jsx}",
-      "!app/**/*.test.{js,jsx}",
-      "!app/app.js"
+    "**/src/**"
     ],
-    "coverageThreshold": {
-      "global": {
-        "statements": 90,
-        "branches": 90,
-        "functions": 90,
-        "lines": 90
-      }
-    },
-    "moduleDirectories": [
-      "node_modules",
-      "app"
-    ],
+    "moduleDirectories": ["node_modules", "app"],
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
