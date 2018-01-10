@@ -10,12 +10,9 @@
     "build": "webpack",
     "clean": "rimraf dist",
     "start": "cross-env NODE_ENV=development webpack-dev-server",
-<<<<<<< HEAD
     "start:watch": "NODE_ENV=development webpack -w",
     "start:backend": "NODE_ENV=backend node ./src/server/index.js",
     "start:ssr": "NODE_ENV=development webpack -w & NODE_ENV=development node ./dist/server.js",
-=======
->>>>>>> c3e9753d46a93ea074ec69820865c665f913ae76
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watchAll"
