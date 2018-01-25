@@ -1,30 +1,16 @@
-import React from 'react'
-const fs = require('fs')
-import ReactDOMServer from 'react-dom/server'
-import { StaticRouter } from 'react-router-dom'
-import { renderRoutes } from 'react-router-config'
-
-import ClientContainer from '../client/index'
-import routes from '../client/routes'
-
-const ServerContainer = request => (
-  <ClientContainer>
-    <StaticRouter location={request.url} context={{}}>
-      {renderRoutes(routes)}
-    </StaticRouter>
-  </ClientContainer>
-)
-
 const fastify = require('fastify')()
-
-fastify.get('*', async (request, reply) => {
-  const stream = fs.createReadStream('./index.html')
-  // reply.header('Content-Type', 'text/html')
-  reply.type('text/html').send(stream)
-  // reply.send('index.html')
+const path = require('path')
+// Declare a route
+fastify.register(require('fastify-static'), {
+  root: path.join(__dirname, 'dist'),
 })
 
-fastify.listen(3000, err => {
+fastify.get('/', function (req, reply) {
+  reply.sendFile('index.html') // serving path.join(__dirname, 'public', 'myHtml.html') directly
+})
+
+// Run the server!
+fastify.listen(3000, function (err) {
   if (err) throw err
-  console.log(`server listening on ${fastify.server.address().port}`)
+  fastify.log.info(`server listening on ${fastify.server.address().port}`)
 })
