@@ -1,5 +1,5 @@
 const commonPaths = require('./common-paths')
-
+const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -10,6 +10,13 @@ const config = {
   output: {
     path: commonPaths.outputPath,
     publicPath: '/',
+  },
+  resolve: {
+    extensions: ['.js'],
+    alias: {
+      components: path.resolve(__dirname, '../src/components'),
+      containers: path.resolve(__dirname, '../src/containers'),
+    },
   },
   module: {
     rules: [

@@ -1,7 +1,7 @@
-import React from 'react';
-import Reboot from 'material-ui/Reboot';
+import React from 'react'
+import Reboot from 'material-ui/Reboot'
 import { compose } from 'recompose'
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
 import Home from '../Home'
 
 const theme = createMuiTheme({
@@ -19,23 +19,19 @@ const theme = createMuiTheme({
       contrastText: '#000',
     },
   },
-});
+})
 
 if (process.browser) {
-  window.theme = theme;
+  window.theme = theme
 }
 
-const App = () => {
-  return (
-    <main>
+const App = () => (
+  <main>
     <MuiThemeProvider theme={theme}>
       <Reboot />
       <Home />
-      </MuiThemeProvider>
-    </main>
-  );
-};
+    </MuiThemeProvider>
+  </main>
+)
 
-export default compose(
-)(App)
-
+export default compose()(App)
