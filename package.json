@@ -13,7 +13,11 @@
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "flow start": "flow start",
+    "flow stop": "flow stop",
+    "flow status": "flow status",
+    "flow coverage": "flow coverage"
   },
   "jest": {
     "setupFiles": [
