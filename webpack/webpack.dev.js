@@ -1,31 +1,30 @@
-const commonPaths = require('./common-paths');
+const commonPaths = require('./common-paths')
 
-const webpack = require('webpack');
+const webpack = require('webpack')
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3000
 
 const config = {
   entry: {
-    app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.js`]
+    app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.js`],
   },
   output: {
-    filename: 'bundle.[hash].js'
+    filename: 'bundle.[hash].js',
   },
   devtool: 'inline-source-map',
-  module: {
-  },
+  module: {},
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
   devServer: {
     host: 'localhost',
-    port: port,
+    port,
     historyApiFallback: true,
     hot: true,
-    open: true
-  }
-};
+    open: true,
+  },
+}
 
-module.exports = config;
+module.exports = config

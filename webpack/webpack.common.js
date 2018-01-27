@@ -1,7 +1,7 @@
-const commonPaths = require('./common-paths');
+const commonPaths = require('./common-paths')
 
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
   entry: {
@@ -9,16 +9,21 @@ const config = {
   },
   output: {
     path: commonPaths.outputPath,
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
       {
         test: /\.(js)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
-      }
-    ]
+        use: ['babel-loader'],
+      },
+      {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader',
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -29,7 +34,7 @@ const config = {
     //   name: ['vendor'],
     //   minChunks: Infinity
     // })
-  ]
-};
+  ],
+}
 
-module.exports = config;
+module.exports = config
