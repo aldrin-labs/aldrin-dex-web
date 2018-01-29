@@ -4,8 +4,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { API_URL } from './config'
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: API_URL }),
+  link: new HttpLink({ uri: 'https://q80vw8qjp.lp.gql.zone/graphql' }),
   cache: new InMemoryCache(),
 })
+client
+  .query({
+    query: gql`
+      {
+        hello
+      }
+    `,
+  })
+  .then(console.log)
 
 export default client
