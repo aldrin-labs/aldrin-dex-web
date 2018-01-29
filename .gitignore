@@ -60,3 +60,4 @@ typings/
 # deploy
 .cache
 dist/static
+.vscode

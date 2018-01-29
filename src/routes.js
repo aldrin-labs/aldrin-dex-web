@@ -10,7 +10,6 @@ import NotFound from '../NotFound'
 // } from 'pages/Blog'
 // import App from './app'
 
-
 export default [
   {
     component: App,

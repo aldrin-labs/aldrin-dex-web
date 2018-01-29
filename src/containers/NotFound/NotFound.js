@@ -1,12 +1,23 @@
-import React from 'react';
-// import { Icon, Header } from 'semantic-ui-react';
+import React from 'react'
+import styled from 'styled-components'
+import NavBar from 'components/NavBar'
+import Typography from 'material-ui/Typography'
 
-const NotFound = () => {
-  return (
-    <div>
-      <strong>Page not found!</strong>
-    </div>
-  );
-};
+const NotFoundText = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 800px;
+`
 
-export default NotFound;
+const NotFound = () => (
+  <div>
+    <NavBar />
+    <NotFoundText>
+      <Typography type="display3">🚧 Under construction 🚧</Typography>
+    </NotFoundText>
+  </div>
+)
+
+export default NotFound

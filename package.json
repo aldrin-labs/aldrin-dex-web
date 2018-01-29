@@ -58,7 +58,7 @@
     "react-router-dom": "^4.2.2",
     "recompose": "^0.26.0",
     "semantic-ui-react": "^0.77.2",
-    "styled-components": "^3.0.2"
+    "styled-components": "^3.1.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.38",
@@ -80,9 +80,9 @@
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-prettier": "^2.5.0",
-    "eslint-plugin-react": "^7.6.0",
+    "eslint-plugin-react": "^7.6.1",
     "flow-bin": "^0.64.0",
-    "graphql-cli": "^2.12.4",
+    "graphql-cli": "^2.13.0",
     "html-webpack-plugin": "^2.30.1",
     "prettier": "^1.10.2",
     "react-hot-loader": "^4.0.0-beta.18",
