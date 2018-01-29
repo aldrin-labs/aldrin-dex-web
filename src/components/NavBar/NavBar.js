@@ -27,7 +27,7 @@ const NavBar = () => (
         <STypography type="title" color="inherit">
           Cryptocurrencies AI
         </STypography>
-        <NavButton link="/coinmarketcap" title="Coin Market Cap" />
+        <NavButton link="/" title="Coin Market Cap" />
         <NavButton link="/profile" title="Profile" />
         <NavButton link="/portfolio" title="Portfolio" />
         <NavButton link="/screener" title="Screener" />
