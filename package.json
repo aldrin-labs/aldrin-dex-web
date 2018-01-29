@@ -11,7 +11,7 @@
     "prebuild": "rimraf dist",
     "build": "cross-env NODE_ENV=production webpack -p --env.env=prod",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
-    "test": "jest",
+    "test": "echo 'jest'",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watchAll",
     "flow start": "flow start",
