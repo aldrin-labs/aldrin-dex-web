@@ -20,9 +20,7 @@
     "flow coverage": "flow coverage"
   },
   "jest": {
-    "setupFiles": [
-      "./test/jestsetup.js"
-    ],
+    "setupFiles": ["./test/jestsetup.js"],
     "transform": {
       "\\.(gql|graphql)$": "jest-transform-graphql",
       "^.+\\.jsx$": "babel-jest",
@@ -35,6 +33,7 @@
       "node_modules",
       "src"
     ],
+    "moduleDirectories": ["node_modules", "app"],
     "testRegex": "tests/.*\\.test\\.js$"
   },
   "dependencies": {
