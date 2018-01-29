@@ -59,4 +59,5 @@ typings/
 
 # deploy
 .cache
-dist
+dist/static
+.vscode

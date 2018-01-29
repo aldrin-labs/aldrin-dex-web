@@ -1,26 +1,43 @@
 {
   "parser": "babel-eslint",
-  "extends": ["airbnb", "prettier"],
+  "extends": [
+    "airbnb",
+    "plugin:flowtype/recommended",
+    "plugin:react/recommended",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
   "env": {
     "browser": true,
-    "node": true,
-    "jest": true,
     "es6": true
   },
-  "globals": {
-    "__DEV__": true,
-    "__PROD__": true,
-    "__DEBUG__": true,
-    "__COVERAGE__": true,
-    "__BASENAME__": true
-  },
-  "plugins": ["prettier", "react", "jsx-a11y"],
+  "plugins": [
+    "flowtype",
+    "react",
+    "jsx-a11y",
+    "prettier"
+  ],
   "rules": {
     "prettier/prettier": "error",
     "quotes": "off",
-    "semi": [2, "never"],
-    "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx"] }],
-    "comma-dangle": [2, "always-multiline"],
+    "semi": [
+      2,
+      "never"
+    ],
+    "react/jsx-filename-extension": [
+      2,
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "comma-dangle": [
+      2,
+      "always-multiline"
+    ],
     "import/no-unresolved": "off",
     "import/extensions": "off",
     "import/no-extraneous-dependencies": 0
@@ -29,7 +46,8 @@
     "ecmaVersion": 7,
     "sourceType": "module",
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
+      "modules": true
     }
   }
 }
