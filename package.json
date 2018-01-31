@@ -71,6 +71,7 @@
     "@babel/preset-react": "^7.0.0-beta.39",
     "@babel/preset-stage-1": "^7.0.0-beta.39",
     "@babel/preset-typescript": "^7.0.0-beta.39",
+    "@types/ramda": "^0.25.16",
     "@types/react": "^16.0.35",
     "@types/react-dom": "^16.0.3",
     "@types/react-router-dom": "^4.2.3",

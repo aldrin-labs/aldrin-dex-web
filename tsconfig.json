@@ -4,20 +4,19 @@
     "outDir": "./dist/",
     "target": "esnext",
     "sourceMap": true,
-    "noImplicitAny": true,
+    "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
-    "strictNullChecks": true,
-    "module": "es6",
+    "module": "esnext",
     "moduleResolution": "node",
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
     "lib": ["es2017", "dom"],
     "paths": {
-      "components": ["./src/components"],
-      "containers": ["./src/containers"]
+      "@components/*": ["src/components/*"],
+      "@containers/*": ["src/containers/*"]
     },
     "plugins": [
       {

@@ -4,9 +4,10 @@ import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import client from './apolloClient'
-import App from './containers/App'
-import NotFound from './containers/NotFound'
+import { App } from '@containers/App'
+import { NotFound } from '@containers/NotFound'
+
+import { client } from './apolloClient'
 
 // import { renderRoutes } from 'react-router-config'
 

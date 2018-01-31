@@ -23,8 +23,8 @@
       "extensions": [".js", ".jsx", ".ts", ".tsx"],
       "root": ["./src"],
       "alias": {
-        "components": "./src/components",
-        "containers": "./src/containers"
+        "@components": "./src/components",
+        "@containers": "./src/containers"
       }
     }]]
 }
