@@ -11,17 +11,17 @@ const config = {
     path: commonPaths.outputPath,
     publicPath: '/',
   },
-  resolve: {
-    extensions: ['.js'],
-    alias: {
-      components: path.resolve(__dirname, '../src/components'),
-      containers: path.resolve(__dirname, '../src/containers'),
-    },
-  },
+  // resolve: {
+  //   extensions: ['.js'],
+  //   alias: {
+  //     components: path.resolve(__dirname, '../src/components'),
+  //     containers: path.resolve(__dirname, '../src/containers'),
+  //   },
+  // },
   module: {
     rules: [
       {
-        test: /\.(js)$/,
+        test: /\.[jt]sx?/,
         exclude: /node_modules/,
         use: ['babel-loader'],
       },

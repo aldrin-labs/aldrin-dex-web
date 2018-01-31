@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist/",
-    "target": "es6",
+    "target": "esnext",
     "sourceMap": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
@@ -14,7 +14,7 @@
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
-    "lib": ["es6", "es7", "dom"],
+    "lib": ["es2017", "dom"],
     "paths": {
       "components": ["./src/components"],
       "containers": ["./src/containers"]

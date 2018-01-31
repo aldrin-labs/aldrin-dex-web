@@ -2,11 +2,8 @@
   "extends": [
     "tslint-config-standard",
     "tslint-react",
-    "tslint-config-prettier"
+    "tslint-config-prettier",
+    "tslint:latest"
   ],
-  "rules": {
-    "no-unused-variable": [true, {"ignore-pattern": "^_"}],
-    "jsx-no-multiline-js": false,
-    "quotemark": [true, "single", "jsx-single"]
-  }
+  "rulesDirectory": ["tslint-plugin-prettier"]
 }
