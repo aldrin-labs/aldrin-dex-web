@@ -1,14 +1,14 @@
 import React from 'react'
+import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
-import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import { ApolloProvider } from 'react-apollo'
-// import { renderRoutes } from 'react-router-config'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
+import client from './apolloClient'
 import App from './containers/App'
 import NotFound from './containers/NotFound'
 
-import client from './apolloClient'
+// import { renderRoutes } from 'react-router-config'
 
 const render = () =>
   ReactDOM.render(
