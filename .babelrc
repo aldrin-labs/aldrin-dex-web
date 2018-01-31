@@ -18,5 +18,13 @@
     "polyfill": false,
     "regenerator": true,
     "moduleName": "@babel/runtime"
-  }]]
+  }],
+  ["module-resolver", {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"],
+      "root": ["./src"],
+      "alias": {
+        "components": "./components",
+        "containers": "./containers"
+      }
+    }]]
 }
