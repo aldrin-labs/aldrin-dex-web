@@ -10,6 +10,7 @@
     "quotemark": [true, "single", "jsx-double"],
     "no-implicit-dependencies": false,
     "no-trailing-whitespace": [true, "ignore-template-strings"],
+    "no-submodule-imports": [true, "material-ui"],
     "import-name": false,
     "arrow-parens": false,
     "ter-arrow-parens": false,
@@ -17,7 +18,6 @@
     "member-access": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
-    "no-shadowed-variable": false,
     "semicolon": false
   }
 }

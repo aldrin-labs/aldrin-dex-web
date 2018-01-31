@@ -1,6 +1,6 @@
+import Button from 'material-ui/Button'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Button from 'material-ui/Button'
 import styled from 'styled-components'
 
 const NavLink = styled(Link)`
