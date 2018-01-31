@@ -18,7 +18,12 @@
     "paths": {
       "components": ["./src/components"],
       "containers": ["./src/containers"]
-    }
+    },
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
+    ]
   },
   "include": ["src", "typings"]
 }

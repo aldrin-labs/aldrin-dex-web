@@ -1,9 +1,9 @@
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
-import Typography from 'material-ui/Typography'
-import React from 'react'
+import * as AppBar from 'material-ui/AppBar'
+import * as Toolbar from 'material-ui/Toolbar'
+import * as Typography from 'material-ui/Typography'
+import * as React from 'react'
 import { compose } from 'recompose'
-import styled from 'styled-components'
+import * as styled from 'styled-components'
 
 import NavButton from './NavButton'
 
@@ -16,7 +16,7 @@ const STypography = styled(Typography)`
 `
 
 // TODO: Add another icon
-const NavBar = () => (
+const NavBar: React.SFC<{}> = () => (
   <Nav>
     <AppBar position="static">
       <Toolbar>
