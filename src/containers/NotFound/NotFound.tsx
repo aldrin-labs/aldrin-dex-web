@@ -1,7 +1,8 @@
+import { NavBar } from '@components/NavBar'
+
+import Typography from 'material-ui/Typography'
 import React from 'react'
 import styled from 'styled-components'
-import NavBar from 'components/NavBar'
-import Typography from 'material-ui/Typography'
 
 const NotFoundText = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ const NotFoundText = styled.div`
   height: 800px;
 `
 
-const NotFound = () => (
+export const NotFound = () => (
   <div>
     <NavBar />
     <NotFoundText>
@@ -19,5 +20,3 @@ const NotFound = () => (
     </NotFoundText>
   </div>
 )
-
-export default NotFound

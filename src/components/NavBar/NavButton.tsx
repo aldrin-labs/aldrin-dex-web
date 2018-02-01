@@ -1,6 +1,6 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
 import Button from 'material-ui/Button'
+import React, { SFC } from 'react';
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const NavLink = styled(Link)`
@@ -19,10 +19,13 @@ const NavLink = styled(Link)`
   }
 `
 
-const NavButton = ({ link, title }) => (
+interface INavButton {
+  link: string,
+  title: string
+ }
+
+export const NavButton: SFC<INavButton> = ({ link, title }) => (
   <Button color="inherit">
     <NavLink to={link}>{title}</NavLink>
   </Button>
 )
-
-export default NavButton

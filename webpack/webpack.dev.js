@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000
 
 const config = {
   entry: {
-    app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.js`],
+    app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.tsx`],
   },
   output: {
     filename: 'bundle.[hash].js',

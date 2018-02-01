@@ -14,32 +14,35 @@
     "test": "echo 'jest'",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watchAll",
-    "flow start": "flow start",
-    "flow stop": "flow stop",
-    "flow status": "flow status",
-    "flow coverage": "flow coverage"
+    "typecheck": "tsc",
+    "lint:css": "stylelint './src/**/*.tsx'"
   },
   "jest": {
-    "setupFiles": ["./test/jestsetup.js"],
-    "transform": {
-      "\\.(gql|graphql)$": "jest-transform-graphql",
-      "^.+\\.jsx$": "babel-jest",
-      "^.+\\.js$": "babel-jest"
-    },
-    "collectCoverageFrom": [
-      "**/src/**"
+    "setupFiles": [
+      "./jest.setup.js"
     ],
     "moduleDirectories": [
-      "node_modules",
-      "src"
+      "./node_modules",
+      "./src"
     ],
-    "moduleDirectories": ["node_modules", "app"],
-    "testRegex": "tests/.*\\.test\\.js$"
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "typescript-babel-jest",
+      "\\.(gql|graphql)$": "jest-transform-graphql"
+    }
+  },
+  "resolutions": {
+    "babel-core": "^7.0.0-bridge.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.0.0-beta.38",
+    "@babel/runtime": "^7.0.0-beta.39",
     "apollo-cache-inmemory": "^1.1.5",
-    "apollo-client": "^2.2.0",
+    "apollo-client": "^2.2.1",
     "apollo-link-context": "^1.0.3",
     "apollo-link-http": "^1.3.2",
     "formik": "^0.10.5",
@@ -47,6 +50,7 @@
     "graphql-tag": "^2.6.1",
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.17",
+    "polished": "^1.9.0",
     "ramda": "^0.25.0",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
@@ -57,36 +61,50 @@
     "react-router-dom": "^4.2.2",
     "recompose": "^0.26.0",
     "semantic-ui-react": "^0.77.2",
-    "styled-components": "^3.1.2"
+    "styled-components": "^3.1.4"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0-beta.38",
-    "@babel/core": "^7.0.0-beta.38",
-    "@babel/plugin-transform-runtime": "^7.0.0-beta.38",
-    "@babel/preset-env": "^7.0.0-beta.38",
-    "@babel/preset-react": "^7.0.0-beta.38",
-    "@babel/preset-stage-1": "^7.0.0-beta.38",
+    "@babel/cli": "^7.0.0-beta.39",
+    "@babel/core": "^7.0.0-beta.39",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.39",
+    "@babel/preset-env": "^7.0.0-beta.39",
+    "@babel/preset-react": "^7.0.0-beta.39",
+    "@babel/preset-stage-1": "^7.0.0-beta.39",
+    "@babel/preset-typescript": "^7.0.0-beta.39",
+    "@types/ramda": "^0.25.16",
+    "@types/react": "^16.0.35",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-router-dom": "^4.2.3",
+    "@types/recompose": "^0.24.4",
     "babel-eslint": "^8.2.1",
     "babel-loader": "8.0.0-beta.0",
     "babel-plugin-graphql-tag": "^1.3.1",
+    "babel-plugin-module-resolver": "^3.0.0",
     "babel-plugin-styled-components": "^1.5.0",
     "chalk": "^2.3.0",
     "cross-env": "^5.1.3",
-    "eslint": "^4.16.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-config-prettier": "^2.9.0",
-    "eslint-plugin-flowtype": "^2.42.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-prettier": "^2.5.0",
-    "eslint-plugin-react": "^7.6.1",
-    "flow-bin": "^0.64.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "graphql-cli": "^2.13.0",
     "html-webpack-plugin": "^2.30.1",
+    "jest": "^22.1.4",
+    "jest-styled-components": "^4.10.0",
     "prettier": "^1.10.2",
     "react-hot-loader": "^4.0.0-beta.18",
     "rimraf": "^2.6.2",
-    "uglifyjs-webpack-plugin": "^1.1.6",
+    "stylelint": "^8.4.0",
+    "stylelint-config-standard": "^18.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-processor-styled-components": "^1.2.2",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.6.0",
+    "tslint-config-standard": "^7.0.0",
+    "tslint-plugin-prettier": "^1.3.0",
+    "tslint-react": "^3.4.0",
+    "typescript": "^2.8.0-dev.20180131",
+    "typescript-babel-jest": "^1.0.5",
+    "typescript-styled-plugin": "^0.4.0",
+    "uglifyjs-webpack-plugin": "^1.1.8",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.2",
     "webpack-dev-server": "^2.11.1",

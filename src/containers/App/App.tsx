@@ -1,8 +1,8 @@
-import React from 'react'
 import Reboot from 'material-ui/Reboot'
-import { compose } from 'recompose'
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles'
-import Home from '../Home'
+import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
+import React from 'react'
+
+import { Home } from '@containers/Home'
 
 const theme = createMuiTheme({
   palette: {
@@ -25,7 +25,7 @@ if (process.browser) {
   window.theme = theme
 }
 
-const App = () => (
+export const App = () => (
   <main>
     <MuiThemeProvider theme={theme}>
       <Reboot />
@@ -33,5 +33,3 @@ const App = () => (
     </MuiThemeProvider>
   </main>
 )
-
-export default compose()(App)

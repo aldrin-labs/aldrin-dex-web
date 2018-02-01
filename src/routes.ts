@@ -1,5 +1,7 @@
 import Home from '../Home'
 // import Counter from '../Login'
+
+// TODO: defiac routes example
 import App from './App'
 import NotFound from '../NotFound'
 // import {

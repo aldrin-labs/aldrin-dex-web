@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import CoinsList from './CoinsList'
+import { CoinsList } from './CoinsList'
 
-export default class CoinMarketCap extends Component {
+export class CoinMarketCap extends Component {
   state = {
     loading: false,
     loaded: false,

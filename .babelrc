@@ -6,7 +6,8 @@
       }
     }],
     "@babel/stage-1",
-    "@babel/react"
+    "@babel/react",
+    "@babel/typescript"
   ],
   "plugins": [
     "react-hot-loader/babel",
@@ -17,5 +18,13 @@
     "polyfill": false,
     "regenerator": true,
     "moduleName": "@babel/runtime"
-  }]]
+  }],
+  ["module-resolver", {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"],
+      "root": ["./src"],
+      "alias": {
+        "@components": "./src/components",
+        "@containers": "./src/containers"
+      }
+    }]]
 }

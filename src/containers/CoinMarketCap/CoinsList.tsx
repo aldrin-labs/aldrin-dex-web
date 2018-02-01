@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
+import React, { SFC } from 'react'
 import styled from 'styled-components'
 
 const SPaper = styled(Paper)`
@@ -14,7 +14,9 @@ const STable = styled(Table)`
   max-width: 1100px;
   margin: 0 auto;
 `
-const CoinsList = props => {
+
+// TODO: types for coinmarketcap data
+export const CoinsList: SFC<{}> = props => {
   const { data } = props
   return (
     <SPaper>
@@ -45,5 +47,3 @@ const CoinsList = props => {
     </SPaper>
   )
 }
-
-export default CoinsList

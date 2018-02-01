@@ -12,16 +12,12 @@ const config = {
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.js'],
-    alias: {
-      components: path.resolve(__dirname, '../src/components'),
-      containers: path.resolve(__dirname, '../src/containers'),
-    },
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   module: {
     rules: [
       {
-        test: /\.(js)$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: ['babel-loader'],
       },

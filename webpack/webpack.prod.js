@@ -5,7 +5,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const config = {
   entry: {
-    app: [`${commonPaths.appEntry}/index.js`],
+    app: [`${commonPaths.appEntry}/index.tsx`],
   },
   output: {
     filename: 'static/[name].[hash].js',
