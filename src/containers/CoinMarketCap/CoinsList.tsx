@@ -14,7 +14,14 @@ const STable = styled(Table)`
   max-width: 1100px;
   margin: 0 auto;
 `
+/*
 
+    price_usd
+    price_btc
+    market_cap_usd
+    available_supply
+    total_supply
+*/
 // TODO: types for coinmarketcap data
 export const CoinsList: SFC<{}> = props => {
   const { data } = props
@@ -27,8 +34,8 @@ export const CoinsList: SFC<{}> = props => {
             <TableCell numeric>Name</TableCell>
             <TableCell numeric>Market Cap</TableCell>
             <TableCell numeric>Price</TableCell>
-            <TableCell numeric>Volume 24h</TableCell>
             <TableCell numeric>Change 24h</TableCell>
+            <TableCell numeric>Total Supply</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -38,8 +45,8 @@ export const CoinsList: SFC<{}> = props => {
               <TableCell numeric>{n.name}</TableCell>
               <TableCell numeric>{n.market_cap_usd}</TableCell>
               <TableCell numeric>{n.price_usd}</TableCell>
-              <TableCell numeric>{n['24h_volume_usd']}</TableCell>
               <TableCell numeric>{n.percent_change_24h}</TableCell>
+              <TableCell numeric>{n.total_supply}</TableCell>
             </TableRow>
           ))}
         </TableBody>
