@@ -5,13 +5,13 @@ import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-import { API_URL } from './config.ts'
+import { API_URL } from './config'
 
 const httpLink = new HttpLink({ uri: API_URL });
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:5000/graphql`,
+  uri: `ws://api.igorlimansky.me/graphql`,
   options: {
     reconnect: true
   }
