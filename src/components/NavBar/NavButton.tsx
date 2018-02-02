@@ -1,5 +1,5 @@
 import Button from 'material-ui/Button'
-import React, { SFC } from 'react';
+import React, { SFC } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -14,6 +14,7 @@ const NavLink = styled(Link)`
   &:hover {
     border-color: rgba(175, 47, 47, 0.1);
   }
+
   &.selected {
     border-color: rgba(175, 47, 47, 0.2);
   }
@@ -22,7 +23,7 @@ const NavLink = styled(Link)`
 interface INavButton {
   link: string,
   title: string
- }
+}
 
 export const NavButton: SFC<INavButton> = ({ link, title }) => (
   <Button color="inherit">

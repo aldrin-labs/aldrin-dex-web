@@ -9,8 +9,6 @@ import { NotFound } from '@containers/NotFound'
 
 import { client } from './apolloClient'
 
-// import { renderRoutes } from 'react-router-config'
-
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
