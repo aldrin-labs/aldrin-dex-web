@@ -1,13 +1,13 @@
 import React, { Fragment, SFC } from 'react'
 
 import { NavBar } from '@components/NavBar'
-import { PortfolioTable } from './PortfolioTable'
-import { SelectAccount } from './SelectAccount'
+// import { PortfolioTable } from './PortfolioTable'
+// import { SelectAccount } from './SelectAccount'
 
-export const Profile = () => (
+export const Portfolio = () => (
   <Fragment>
     <NavBar />
-    <PortfolioTable />
-    <SelectAccount />
+    {/* <PortfolioTable /> */}
+    {/* <SelectAccount /> */}
   </Fragment>
 )

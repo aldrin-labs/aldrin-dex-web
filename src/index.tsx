@@ -5,7 +5,9 @@ import { hot } from 'react-hot-loader'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import { App } from '@containers/App'
+import { Login } from '@containers/Login'
 import { NotFound } from '@containers/NotFound'
+import { Portfolio } from '@containers/Portfolio'
 import { Profile } from '@containers/Profile'
 
 import { client } from './apolloClient'
@@ -17,6 +19,8 @@ const render = () =>
         <Switch>
           <Route exact path="/" component={App} />
           <Route path="/profile" component={Profile} />
+          <Route path="/portfolio" component={Portfolio} />
+          <Route path="/login" component={Login} />
           <Route path="*" component={NotFound} />
         </Switch>
       </BrowserRouter>
