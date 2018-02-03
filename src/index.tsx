@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import { App } from '@containers/App'
 import { NotFound } from '@containers/NotFound'
+import { Profile } from '@containers/Profile'
 
 import { client } from './apolloClient'
 
@@ -15,6 +16,7 @@ const render = () =>
       <BrowserRouter>
         <Switch>
           <Route exact path="/" component={App} />
+          <Route path="/profile" component={Profile} />
           <Route path="*" component={NotFound} />
         </Switch>
       </BrowserRouter>

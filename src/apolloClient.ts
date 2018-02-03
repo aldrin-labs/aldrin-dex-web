@@ -8,12 +8,3 @@ export const client = new ApolloClient({
   link: new HttpLink({ uri: API_URL }),
   cache: new InMemoryCache(),
 })
-client
-  .query({
-    query: gql`
-      {
-        hello
-      }
-    `,
-  })
-  .then(console.log)
