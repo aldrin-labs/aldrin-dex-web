@@ -1,4 +1,4 @@
-import React, { SFC, Fragment } from 'react'
+import React, { Fragment, SFC } from 'react'
 
 import { NavBar } from '@components/NavBar'
 import { ProfileTable } from './ProfileTable'

@@ -48,7 +48,7 @@ const TableToolbar = props => {
         {numSelected > 0 ? (
           <Typography type="subheading">{numSelected} selected</Typography>
         ) : (
-          <Typography type="title">Nutrition</Typography>
+          <Typography type="title">Accounts</Typography>
         )}
       </div>
       <div className={classes.spacer} />
