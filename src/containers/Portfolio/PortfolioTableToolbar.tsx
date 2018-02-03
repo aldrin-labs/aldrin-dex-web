@@ -48,7 +48,7 @@ const TableToolbar = props => {
         {numSelected > 0 ? (
           <Typography type="subheading">{numSelected} selected</Typography>
         ) : (
-          <Typography type="title">Accounts</Typography>
+          <Typography type="title">My Balances</Typography>
         )}
       </div>
       <div className={classes.spacer} />
@@ -71,4 +71,4 @@ const TableToolbar = props => {
   )
 }
 
-export const ProfileTableToolbar = withStyles(toolbarStyles)(TableToolbar)
+export const PortfolioTableToolbar = withStyles(toolbarStyles)(TableToolbar)

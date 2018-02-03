@@ -5,14 +5,16 @@ import { TableCell, TableHead, TableRow, TableSortLabel } from 'material-ui/Tabl
 import Tooltip from 'material-ui/Tooltip'
 
 const columnData = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Account nickname' },
-  { id: 'accountType', numeric: true, disablePadding: false, label: 'Account Type' },
-  { id: 'exchange', numeric: true, disablePadding: false, label: 'Exchange' },
-  { id: 'key', numeric: true, disablePadding: false, label: 'Key' },
-  { id: 'info', numeric: true, disablePadding: false, label: 'Info' }
+  { id: 'currency', numeric: false, disablePadding: true, label: 'Currency' },
+  { id: 'name', numeric: true, disablePadding: false, label: 'Name' },
+  { id: 'available', numeric: true, disablePadding: false, label: 'Available' },
+  { id: 'held', numeric: true, disablePadding: false, label: 'Held' },
+  { id: 'total', numeric: true, disablePadding: false, label: 'Total' },
+  { id: 'exchangeRate', numeric: true, disablePadding: false, label: 'Exchange Rate' },
+  { id: 'BTCValue', numeric: true, disablePadding: false, label: 'BTC Value' }
 ]
 
-export class ProfileTableHead extends Component {
+export class PortfolioTableHead extends Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property)
   }
