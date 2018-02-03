@@ -7,6 +7,8 @@ import { withClientState } 'apollo-link-state'
 
 import { API_URL } from './config.ts'
 
+import { defaults, resolvers } from './resolvers/login';
+
 const cache = new InMemoryCache()
 const httpLink = new HttpLink({ uri: API_URL })
 const stateLink = withClientState({ resolvers, cache, defaults })
