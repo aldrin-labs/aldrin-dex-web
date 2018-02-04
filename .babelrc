@@ -1,21 +1,30 @@
 {
-  "presets": ["env",
-    "react",
-    "es2015",
-    "stage-0"
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "browsers": ["last 2 versions"]
+      }
+    }],
+    "@babel/stage-1",
+    "@babel/react",
+    "@babel/typescript"
   ],
   "plugins": [
-    "transform-es3-member-expression-literals",
-    "transform-es3-property-literals"
-  ],
-  "ignore": "node_modules"
+    "react-hot-loader/babel",
+    "styled-components",
+    "graphql-tag",
+    ["@babel/plugin-transform-runtime", {
+    "helpers": false,
+    "polyfill": false,
+    "regenerator": true,
+    "moduleName": "@babel/runtime"
+  }],
+  ["module-resolver", {
+      "extensions": [".js", ".jsx", ".ts", ".tsx"],
+      "root": ["./src"],
+      "alias": {
+        "@components": "./src/components",
+        "@containers": "./src/containers"
+      }
+    }]]
 }
-
-// [
-//   "@babel/preset-env",
-//   {
-//     "targets": {
-//       "browsers": ["last 2 versions", "safari >= 7"]
-//     }
-//   }
-// ],
