@@ -37,23 +37,28 @@ class CoinMarketCap extends Component {
         .subscribeToMore({
           document: gql `
           subscription{
-            listenMarket(marketSymbols: ["BTC"]){
-              id
-              rank
-              symbol
-              name
-              price_usd
-              market_cap_usd
-              total_supply
-              percent_change_24h
-            }
-        }
+            listenMarket(base: "USD"){
+            pair
+            pairId
+            price
+          }
+        } 
         `, variables: null,
-
           // this is where the magic happens.
-          updateQuery: (previousState, {subscriptionData}) => ({
-              markets: subscriptionData.data.listenMarket
-            })
+          updateQuery: (previousState, {subscriptionData}) => {
+            const newState = this.props.data.markets.map(x => ({...x}));
+            for (var i = 0; i< this.props.data.markets.length; ++ i){
+              if (newState[i].symbol === subscriptionData.data.listenMarket.pair.split('_')[0]){
+                console.log(newState[i].price_usd + ' === ' + subscriptionData.data.listenMarket.price);
+                newState[i].price_usd = subscriptionData.data.listenMarket.price;
+                console.log('update');
+                console.log(newState[i]);
+              }
+            }
+            const state = {markets: {}};
+            state.markets = newState;
+            return state;
+          }
           ,
           onError: (err) => console.error(err)
         })
