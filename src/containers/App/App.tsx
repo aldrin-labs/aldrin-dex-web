@@ -1,6 +1,7 @@
+import React from 'react'
+
 import Reboot from 'material-ui/Reboot'
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
-import React from 'react'
 
 import { Home } from '@containers/Home'
 

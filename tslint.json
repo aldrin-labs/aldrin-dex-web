@@ -2,8 +2,9 @@
   "extends": [
     "tslint-config-standard",
     "tslint-react",
-    "tslint-config-prettier",
-    "tslint:latest"
+    "tslint:latest",
+    "tslint-immutable",
+    "tslint-config-prettier"
   ],
   "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {

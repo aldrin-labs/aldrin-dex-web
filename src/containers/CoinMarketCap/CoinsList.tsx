@@ -1,7 +1,8 @@
-import Paper from 'material-ui/Paper'
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
 import React, { SFC } from 'react'
 import styled from 'styled-components'
+
+import Paper from 'material-ui/Paper'
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
 
 const SPaper = styled(Paper)`
   width: 100%;
