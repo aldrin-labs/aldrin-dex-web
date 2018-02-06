@@ -9,6 +9,7 @@ import { Login } from '@containers/Login'
 import { NotFound } from '@containers/NotFound'
 import { Portfolio } from '@containers/Portfolio'
 import { Profile } from '@containers/Profile'
+import { Chart } from '@components/Chart'
 
 import { client } from './apolloClient'
 
@@ -21,6 +22,7 @@ const render = () =>
           <Route path="/profile" component={Profile} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/login" component={Login} />
+          <Route path="/chart" component={Chart} />
           <Route path="*" component={NotFound} />
         </Switch>
       </BrowserRouter>
