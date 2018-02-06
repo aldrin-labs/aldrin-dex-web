@@ -16,7 +16,8 @@
     "lib": ["es2017", "dom"],
     "paths": {
       "@components/*": ["src/components/*"],
-      "@containers/*": ["src/containers/*"]
+      "@containers/*": ["src/containers/*"],
+      "@utils/*": ["src/utils/*"]
     },
     "plugins": [
       {

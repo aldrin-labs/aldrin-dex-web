@@ -24,7 +24,8 @@
       "root": ["./src"],
       "alias": {
         "@components": "./src/components",
-        "@containers": "./src/containers"
+        "@containers": "./src/containers",
+        "@utils": "./src/utils"
       }
     }]]
 }
