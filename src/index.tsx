@@ -16,7 +16,7 @@ import { Portfolio } from '@containers/Portfolio'
 import { Profile } from '@containers/Profile'
 import { Chart } from '@components/Chart'
 
-import { client } from './apolloClient'
+import { client } from '@utils/apolloClient'
 
 const render = () =>
   ReactDOM.render(
