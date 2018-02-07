@@ -29,7 +29,7 @@ export const NavBar: SFC<{}> = () => (
         <NavButton link="/profile" title="Profile" />
         <NavButton link="/portfolio" title="Portfolio" />
         <NavButton link="/screener" title="Screener" />
-        <NavButton link="/charts" title="Charts" />
+        <NavButton link="/chart" title="Chart" />
         <NavButton link="/login" title="Login" />
       </Toolbar>
     </AppBar>
