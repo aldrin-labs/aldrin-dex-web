@@ -1,9 +1,9 @@
-import { combineReducers } from 'redux-immutable'
-// import { combineReducers } from 'redux'
-// import routing from '@utils/immutableReducer'
+import { combineReducers } from 'redux'
+import { routerReducer as router } from 'react-router-redux'
 
 import screener from '@containers/Screener/reducer'
 
 export default combineReducers({
-  screener
+  screener,
+  router,
 })

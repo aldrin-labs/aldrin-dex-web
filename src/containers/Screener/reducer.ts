@@ -1,9 +1,8 @@
-import { fromJS } from 'immutable'
 import { createReducer } from 'redux-act'
 
 import { add, inc } from './actions'
 
-const initialState = fromJS({ count : 0 })
+const initialState = { count : 0 }
 
 export default createReducer({
   [inc]: state => state.count + 1,
