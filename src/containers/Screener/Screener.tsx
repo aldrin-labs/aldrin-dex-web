@@ -1,12 +1,16 @@
-import React, { PureComponent, ReactNode } from 'react'
-import styled from 'styled-components'
 import { NavBar } from '@components/NavBar'
-import { compose } from 'recompose'
-import { connect } from 'react-redux'
 
+import React, { PureComponent, ReactNode } from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
+import styled from 'styled-components'
+
+import Selector from './Selector'
+import UserForm from './UserForm'
 export const ScreenerBase = () => (
   <div>
     <NavBar/>
+    <Selector />
   </div>
 )
 
