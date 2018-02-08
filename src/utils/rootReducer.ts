@@ -1,5 +1,7 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux-immutable'
 
-const initialState = {}
+import * as ScreenerReducer from '@containers/Screener/reducer'
 
-
+export default combineReducers({
+  screener: ScreenerReducer
+})
