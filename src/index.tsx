@@ -1,3 +1,13 @@
+import { Chart } from '@components/Chart'
+import { App } from '@containers/App'
+import { Login } from '@containers/Login'
+import { NotFound } from '@containers/NotFound'
+import { Portfolio } from '@containers/Portfolio'
+import { Profile } from '@containers/Profile'
+import { Screener } from '@containers/Screener'
+import { client } from '@utils/apolloClient'
+import store from '@utils/configureStore'
+
 import createHistory from 'history/createBrowserHistory'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
@@ -8,21 +18,10 @@ import { Route, Router, Switch } from 'react-router'
 
 const history = createHistory()
 
-import { client } from '@utils/apolloClient'
-import store from '@utils/configureStore'
-
-import { Chart } from '@components/Chart'
-import { App } from '@containers/App'
-import { Login } from '@containers/Login'
-import { NotFound } from '@containers/NotFound'
-import { Portfolio } from '@containers/Portfolio'
-import { Profile } from '@containers/Profile'
-import { Screener } from '@containers/Screener'
-
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
-    <Provider store={store}>
+      <Provider store={store}>
       <Router history={history}>
         <Switch>
           <Route exact path="/" component={App} />
