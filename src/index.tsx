@@ -1,13 +1,15 @@
+import createHistory from 'history/createBrowserHistory'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
 import { Provider } from 'react-redux'
-import { Route } from 'react-router'
+import { Route, Router, Switch } from 'react-router'
+
+const history = createHistory()
 
 import { client } from '@utils/apolloClient'
-import configureStore from '@utils/configureStore'
-import createReducer from '@utils/rootReducer'
+import store from '@utils/configureStore'
 
 import { Chart } from '@components/Chart'
 import { App } from '@containers/App'
@@ -21,7 +23,7 @@ const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
     <Provider store={store}>
-      <BrowserRouter>
+      <Router history={history}>
         <Switch>
           <Route exact path="/" component={App} />
           <Route path="/profile" component={Profile} />
@@ -31,7 +33,7 @@ const render = () =>
           <Route path="/screener" component={Screener} />
           <Route path="*" component={NotFound} />
         </Switch>
-      </BrowserRouter>
+      </Router>
       </Provider>
     </ApolloProvider>,
     document.getElementById('root'),
