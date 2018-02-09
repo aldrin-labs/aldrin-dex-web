@@ -10,6 +10,6 @@ const ChartContainer = styled.div`
 export const Chart = () => (
     <ChartContainer>
         <NavBar />
-        <iframe src={'http://localhost:3001'} height={'100%'} width={'100%'}/>
+        <iframe src={'http://chart.igorlimansky.me'} height={'100%'} width={'100%'}/>
     </ChartContainer>
 )
