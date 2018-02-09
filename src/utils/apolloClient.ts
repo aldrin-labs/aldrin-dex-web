@@ -1,18 +1,14 @@
-import { split } from 'apollo-link';
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { withClientState } from 'apollo-link-state'
 import ApolloClient from 'apollo-client'
-import { ApolloLink } from 'apollo-link'
+import { ApolloLink, split } from 'apollo-link';
 import { HttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
 import { API_URL } from './config'
-import { defaults, resolvers } from './resolvers/login'
 
 const cache = new InMemoryCache()
 const httpLink = new HttpLink({ uri: API_URL });
-const stateLink = withClientState({ resolvers, cache, defaults })
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
@@ -36,6 +32,6 @@ const link = split(
 
 
 export const client = new ApolloClient({
-  link: ApolloLink.from([stateLink, link]),
+  link: ApolloLink.from([link]),
   cache,
 })
