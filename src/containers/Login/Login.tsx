@@ -1,11 +1,13 @@
 import { withFormik } from 'formik'
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, PropTypes } from 'react'
 import styled from 'styled-components'
 
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
 
 import { NavBar } from '@components/NavBar'
+
+import Auth0Lock from 'auth0-lock'
 
 const SWrapper = styled.div`
   display: flex;
@@ -29,14 +31,24 @@ const SButton = styled(Button)`
 `
 
 export class Login extends Component {
-  state = {
-    email: '',
+
+  constructor (props) {
+    super(props)
+
+    this._lock = new Auth0Lock("0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm", "ccai.auth0.com")
   }
 
-  handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
+
+  componentDidMount() {
+    this._lock.on('authenticated', (authResult) => {
+      console.log(authResult)
+      window.localStorage.setItem('auth0IdToken', authResult.idToken)
+      this.props.history.push(`/signup`)
     })
+  }
+
+  _showLogin = () => {
+    this._lock.show()
   }
 
   render() {
@@ -44,25 +56,15 @@ export class Login extends Component {
       <Fragment>
         <NavBar />
         <SWrapper>
-          <SLogin noValidate autoComplete="off">
-            <STextField
-              id="name"
-              label="Name"
-              value={this.state.name}
-              onChange={this.handleChange('name')}
-              margin="normal"
-            />
-            <STextField
-              id="password"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              margin="normal"
-            />
-            <SButton raised color="primary">
-              Login
-            </SButton>
-          </SLogin>
+
+      <div>
+        <span
+          onClick={this._showLogin}
+          className='dib pa3 white bg-blue dim pointer'
+        >
+          Log in with Auth0
+        </span>
+      </div>
         </SWrapper>
       </Fragment>
     )
