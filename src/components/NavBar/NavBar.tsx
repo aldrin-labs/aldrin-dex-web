@@ -6,6 +6,8 @@ import styled from 'styled-components'
 
 import { NavButton } from './NavButton'
 
+import { Link } from 'react-router-dom'
+
 const Nav = styled.div`
   width: '100%';
 `
@@ -25,12 +27,13 @@ export const NavBar: SFC<{}> = () => (
         <STypography type="title" color="inherit">
           Cryptocurrencies AI
         </STypography>
-        <NavButton link="/" title="Coin Market Cap" />
+        {/* <NavButton link="/" title="Coin Market Cap" />
         <NavButton link="/profile" title="Profile" />
         <NavButton link="/portfolio" title="Portfolio" />
         <NavButton link="/screener" title="Screener" />
         <NavButton link="/chart" title="Chart" />
-        <NavButton link="/login" title="Login" />
+        <NavButton link="/login" title="Login" /> */}
+        <STypography><Link to="/profile">Profile</Link></STypography>
       </Toolbar>
     </AppBar>
   </Nav>

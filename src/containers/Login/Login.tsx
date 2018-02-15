@@ -34,32 +34,22 @@ const SButton = styled(Button)`
   margin-top: 30px;
 `
 
-class Login extends Component {
+export class Login extends Component {
   constructor (props) {
     super(props)
-    console.log('login')
-    const auth0Options = {
-      auth: {
-        responseType: 'token id_token',
-        redirectUri: 'localhost:3000/login',
-        scope: 'openid',
-        audience: 'localhost:5080'
-      },
-      autoclose: true,
-      oidcConformant: true,
-    };
-    this._lock = new Auth0Lock("0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm", "ccai.auth0.com", auth0Options)
+
+    this._lock = new Auth0Lock("0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm", "ccai.auth0.com")
   }
 
-  createUser(profile) {
-    console.log(window.localStorage.getItem('token'));
+  createUser() {
+    console.log(window.localStorage.getItem('auth0IdToken'));
     const variables = {
-      idToken: window.localStorage.getItem('token'),
-      emailAddress: profile.email,
-      name: profile.nickname,
-      emailSubscription: true, // ;)
+      idToken: window.localStorage.getItem('auth0IdToken'),
+      emailAddress: this.state.emailAddress,
+      name: this.state.name,
+      emailSubscription: this.state.emailSubscription,
     }
-    console.log(variables);
+
     this.props.createUser({ variables })
       .then((response) => {
           console.log(response);
@@ -72,16 +62,10 @@ class Login extends Component {
 
   componentDidMount() {
     this._lock.on('authenticated', (authResult) => {
-      this._lock.getUserInfo(authResult.accessToken, (error, profile) => {
-        if (error) {
-          console.log(error)
-          // Handle error
-          return;
-        }
-        console.log(profile);
-        localStorage.setItem('token', authResult.idToken)
-        this.createUser(profile)
-      })
+      console.log(authResult)
+      window.localStorage.setItem('auth0IdToken', authResult.idToken)
+      this.createUser();
+      // this.props.history.push(`/profile`)
     })
   }
 
@@ -90,16 +74,15 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props.data);
-    // if (this.props.data.loading) {
-    //   return (<div>Loading</div>)
-    // }
+    if (this.props.data.loading) {
+      return (<div>Loading</div>)
+    }
 
-    // // redirect if user is logged in
-    // if (this.props.data.user) {
-    //   console.warn('already logged in')
-    //   this.props.router.replace('/')
-    // }
+    // redirect if user is logged in
+    if (this.props.data.user) {
+      console.warn('already logged in')
+      this.props.router.replace('/')
+    }
     return (
       <Fragment>
         <NavBar />
@@ -125,9 +108,11 @@ const userQuery = gql`
 const createUser = gql`
   mutation ($idToken: String!, $name: String!, $emailAddress: String!, $emailSubscription: Boolean!){
     createUser(idToken: $idToken, name: $name, emailAddress: $emailAddress, emailSubscription: $emailSubscription) {
-      _id
+      id
     }
   }
 `
 
-export default graphql(createUser, {name: 'createUser'})(Login)
+export default graphql(createUser, {name: 'createUser'})(
+  graphql(userQuery, { options: { forceFetch: true }})(withRouter(Login))
+)

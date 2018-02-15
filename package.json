@@ -53,7 +53,7 @@
     "graphql": "^0.12.3",
     "graphql-tag": "^2.6.1",
     "history": "^4.7.2",
-    "material-ui": "^1.0.0-beta.30",
+    "material-ui": "^1.0.0-beta.33",
     "material-ui-icons": "^1.0.0-beta.17",
     "normalizr": "^3.2.4",
     "polished": "^1.9.2",
