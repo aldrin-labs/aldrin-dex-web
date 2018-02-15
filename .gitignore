@@ -62,3 +62,5 @@ typings/
 dist/static
 .vscode
 dist/bundle*
+.idea
+TODO
