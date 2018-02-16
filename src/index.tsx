@@ -1,5 +1,5 @@
-import { Chart } from '@containers/Chart'
 import { App } from '@containers/App'
+import { Chart } from '@containers/Chart'
 import { Home } from '@containers/Home'
 import Login from '@containers/Login'
 import { NotFound } from '@containers/NotFound'
