@@ -24,16 +24,16 @@ export const NavBar: SFC<{}> = () => (
         {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton> */}
-        <STypography type="title" color="inherit">
+        {/* <STypography type="title" color="inherit">
           Cryptocurrencies AI
-        </STypography>
-        {/* <NavButton link="/" title="Coin Market Cap" />
-        <NavButton link="/profile" title="Profile" />
+        </STypography> */}
+        <NavButton link="/login" title="Coin Market Cap" />
+        {/* <NavButton link="/profile" title="Profile" />
         <NavButton link="/portfolio" title="Portfolio" />
         <NavButton link="/screener" title="Screener" />
         <NavButton link="/chart" title="Chart" />
         <NavButton link="/login" title="Login" /> */}
-        <STypography><Link to="/profile">Profile</Link></STypography>
+        {/* <STypography><Link to="/profile">Profile</Link></STypography> */}
       </Toolbar>
     </AppBar>
   </Nav>

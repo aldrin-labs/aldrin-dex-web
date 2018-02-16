@@ -2,7 +2,6 @@ import Typography from 'material-ui/Typography'
 import React from 'react'
 import styled from 'styled-components'
 
-
 const STitleContainer = styled.div`
   display: flex;
   align-items: center;

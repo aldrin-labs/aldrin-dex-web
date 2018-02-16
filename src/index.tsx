@@ -18,27 +18,30 @@ import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
+import Button from 'material-ui/Button'
+
 const history = createHistory()
 
 const render = () =>
   ReactDOM.render(
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-      <ConnectedRouter history={history}>
-        <Switch>
-          <Route exact path="/" component={App} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/portfolio" component={Portfolio} />
-          <Route path="/login" component={Login} />
-          <Route path="/chart" component={Chart} />
-          <Route path="/screener" component={Screener} />
-          <Route path="*" component={NotFound} />
-        </Switch>
-      </ConnectedRouter>
-      </PersistGate>
-      </Provider>
-    </ApolloProvider>,
+    // <ApolloProvider client={client}>
+    //   <Provider store={store}>
+    //   <PersistGate loading={null} persistor={persistor}>
+    //   <ConnectedRouter history={history}>
+    //     <Switch>
+    //       <Route exact path="/" component={App} />
+    //       <Route path="/profile" component={Profile} />
+    //       <Route path="/portfolio" component={Portfolio} />
+    //       <Route path="/login" component={Login} />
+    //       <Route path="/chart" component={Chart} />
+    //       <Route path="/screener" component={Screener} />
+    //       <Route path="*" component={NotFound} />
+    //     </Switch>
+    //   </ConnectedRouter>
+    //   </PersistGate>
+    //   </Provider>
+    // </ApolloProvider>
+    <Button>123</Button>,
     document.getElementById('root'),
   )
 
