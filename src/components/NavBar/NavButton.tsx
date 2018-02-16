@@ -6,7 +6,7 @@ import styled from 'styled-components'
 const NavLink = styled(Link)`
   color: inherit;
   margin: 3px;
-  padding: 3px 7px;
+  padding: 0px;
   text-decoration: none;
   border: 1px solid transparent;
   border-radius: 3px;
@@ -22,7 +22,7 @@ interface INavButton {
 }
 
 export const NavButton: SFC<INavButton> = ({ link, title }) => (
-  <Button>
-    <NavLink to={link}>{title}</NavLink>
-  </Button>
+  <NavLink to={link}>
+    <Button>{title}</Button>
+  </NavLink>
 )
