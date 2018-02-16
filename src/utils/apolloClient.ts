@@ -9,7 +9,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import { API_URL } from './config'
 
 const cache = new InMemoryCache()
-const httpLink = new HttpLink({ uri: API_URL });
+const httpLink = new HttpLink({ uri: `http://${API_URL}/graphql` });
 
 
 const authLink = setContext((_, { headers }) => {
@@ -26,7 +26,7 @@ const authLink = setContext((_, { headers }) => {
 
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
-  uri: `ws://localhost:5080/graphql`,
+  uri: `ws://${API_URL}/graphql`,
   options: {
     reconnect: true
   }
