@@ -18,7 +18,7 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
-        API_ENDPOINT: 'api.igorlimansky.me'
+        API_ENDPOINT: JSON.stringify('api.igorlimansky.me')
       },
     }),
     new UglifyJsPlugin({
