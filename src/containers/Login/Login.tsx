@@ -7,8 +7,6 @@ import TextField from 'material-ui/TextField'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import { NavBar } from '@components/NavBar'
-
 import { withRouter } from 'react-router'
 
 import Auth0Lock from 'auth0-lock'
@@ -85,7 +83,6 @@ export class Login extends Component {
     }
     return (
       <Fragment>
-        <NavBar />
         <SWrapper>
 
       <div>
