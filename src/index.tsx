@@ -24,24 +24,23 @@ const history = createHistory()
 
 const render = () =>
   ReactDOM.render(
-    // <ApolloProvider client={client}>
-    //   <Provider store={store}>
-    //   <PersistGate loading={null} persistor={persistor}>
-    //   <ConnectedRouter history={history}>
-    //     <Switch>
-    //       <Route exact path="/" component={App} />
-    //       <Route path="/profile" component={Profile} />
-    //       <Route path="/portfolio" component={Portfolio} />
-    //       <Route path="/login" component={Login} />
-    //       <Route path="/chart" component={Chart} />
-    //       <Route path="/screener" component={Screener} />
-    //       <Route path="*" component={NotFound} />
-    //     </Switch>
-    //   </ConnectedRouter>
-    //   </PersistGate>
-    //   </Provider>
-    // </ApolloProvider>
-    <Button>123</Button>,
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+      <ConnectedRouter history={history}>
+        <Switch>
+          <Route exact path="/" component={App} />
+          <Route path="/profile" component={Profile} />
+          <Route path="/portfolio" component={Portfolio} />
+          <Route path="/login" component={Login} />
+          <Route path="/chart" component={Chart} />
+          <Route path="/screener" component={Screener} />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </ConnectedRouter>
+      </PersistGate>
+      </Provider>
+    </ApolloProvider>,
     document.getElementById('root'),
   )
 

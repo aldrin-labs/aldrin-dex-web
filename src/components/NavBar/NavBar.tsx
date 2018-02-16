@@ -12,29 +12,29 @@ const Nav = styled.div`
   width: '100%';
 `
 
-const STypography = styled(Typography)`
-  flex: 1;
+const SNav = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 `
 
 // TODO: Add another icon
 export const NavBar: SFC<{}> = () => (
   <Nav>
     <AppBar position="static">
-      <Toolbar>
+    <SNav>
+    <Toolbar>
         {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
           <MenuIcon />
         </IconButton> */}
-        {/* <STypography type="title" color="inherit">
-          Cryptocurrencies AI
-        </STypography> */}
-        <NavButton link="/login" title="Coin Market Cap" />
-        {/* <NavButton link="/profile" title="Profile" />
+        <NavButton link="/" title="Home" />
+        <NavButton link="/profile" title="Profile" />
         <NavButton link="/portfolio" title="Portfolio" />
         <NavButton link="/screener" title="Screener" />
         <NavButton link="/chart" title="Chart" />
-        <NavButton link="/login" title="Login" /> */}
-        {/* <STypography><Link to="/profile">Profile</Link></STypography> */}
       </Toolbar>
+      <Toolbar><NavButton link="/login" title="Login" /></Toolbar>
+    </SNav>
     </AppBar>
   </Nav>
 )
