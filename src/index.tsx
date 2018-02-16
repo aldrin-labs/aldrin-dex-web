@@ -1,6 +1,6 @@
 import { Chart } from '@components/Chart'
 import { App } from '@containers/App'
-import { Login } from '@containers/Login'
+import Login from '@containers/Login'
 import { NotFound } from '@containers/NotFound'
 import { Portfolio } from '@containers/Portfolio'
 import { Profile } from '@containers/Profile'
