@@ -4,6 +4,7 @@ import Reboot from 'material-ui/Reboot'
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
 
 import { Home } from '@containers/Home'
+import { NavBar } from '@components/NavBar'
 
 // TODO: 2 themes
 
@@ -28,11 +29,10 @@ if (process.browser) {
   window.theme = theme
 }
 
-export const App = () => (
-  <main>
+export const App = ({ children }: any) => (
     <MuiThemeProvider theme={theme}>
       <Reboot />
-      <Home />
+      <NavBar />
+      {children}
     </MuiThemeProvider>
-  </main>
 )

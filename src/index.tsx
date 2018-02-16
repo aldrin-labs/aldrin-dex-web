@@ -1,5 +1,6 @@
-import { Chart } from '@components/Chart'
+import { Chart } from '@containers/Chart'
 import { App } from '@containers/App'
+import { Home } from '@containers/Home'
 import Login from '@containers/Login'
 import { NotFound } from '@containers/NotFound'
 import { Portfolio } from '@containers/Portfolio'
@@ -28,8 +29,9 @@ const render = () =>
       <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
       <ConnectedRouter history={history}>
+      <App>
         <Switch>
-          <Route exact path="/" component={App} />
+          <Route exact path="/" component={Home} />
           <Route path="/profile" component={Profile} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/login" component={Login} />
@@ -37,6 +39,7 @@ const render = () =>
           <Route path="/screener" component={Screener} />
           <Route path="*" component={NotFound} />
         </Switch>
+        </App>
       </ConnectedRouter>
       </PersistGate>
       </Provider>
