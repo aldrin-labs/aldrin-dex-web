@@ -11,20 +11,18 @@ const NavLink = styled(Link)`
   border: 1px solid transparent;
   border-radius: 3px;
 
-  &:hover {
-    border-color: rgba(175, 47, 47, 0.1);
-  }
-
   &.selected {
-    border-color: rgba(175, 47, 47, 0.2);
+    border-color: rgba(66, 66, 66, 0.2);
   }
 `
 
 interface INavButton {
-  link: string,
+  link: string
   title: string
 }
 
 export const NavButton: SFC<INavButton> = ({ link, title }) => (
-    <Button>{title}</Button>
+  <Button>
+    <NavLink to={link}>{title}</NavLink>
+  </Button>
 )
