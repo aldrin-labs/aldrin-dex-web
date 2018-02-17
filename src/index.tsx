@@ -19,7 +19,7 @@ import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import Button from 'material-ui/Button'
+import CoinMarketCap from '@containers/CoinMarketCap'
 
 const history = createHistory()
 
@@ -32,6 +32,7 @@ const render = () =>
       <App>
         <Switch>
           <Route exact path="/" component={Home} />
+          <Route path="/coinmarketcap" component={CoinMarketCap} />
           <Route path="/profile" component={Profile} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/login" component={Login} />
