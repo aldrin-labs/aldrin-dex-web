@@ -3,6 +3,7 @@ export interface ICoinsTableCell {
 }
 
 export interface ICoinsTableList {
-  tableRows: ICoinsTableCell[]
+  [key:string]: string,
+  tableRows: string
 }
 

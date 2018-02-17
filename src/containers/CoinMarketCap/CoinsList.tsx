@@ -29,7 +29,7 @@ export const CoinsList: SFC<{}> = props => {
   return (
     <SPaper>
       <STable>
-        <TableHead>
+        {/* <TableHead>
           <TableRow>
             <TableCell numeric>Rank</TableCell>
             <TableCell numeric>Name</TableCell>
@@ -38,7 +38,7 @@ export const CoinsList: SFC<{}> = props => {
             <TableCell numeric>Change 24h</TableCell>
             <TableCell numeric>Total Supply</TableCell>
           </TableRow>
-        </TableHead>
+        </TableHead> */}
         <TableBody>
           {data.map(n => (
             <TableRow key={n.id}>

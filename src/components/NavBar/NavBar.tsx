@@ -11,6 +11,8 @@ const Nav = styled.div`
 
 const SNav = styled.nav`
   display: flex;
+  width: 60%;
+  margin: 0 auto;
   justify-content: space-between;
   flex-direction: row;
 `

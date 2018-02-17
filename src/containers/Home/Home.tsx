@@ -1,10 +1,10 @@
 import React from 'react'
-import CoinMarketCap from '@containers/CoinMarketCap'
+import CoinsList from '@components/CoinsList'
 import Title from '@components/Title'
 
 export const Home = () => (
   <div>
     <Title>Cryptocurrencies AI</Title>
-    {/* <CoinMarketCap /> */}
+    <CoinsList></CoinsList>
   </div>
 )
