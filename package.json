@@ -55,6 +55,7 @@
     "history": "^4.7.2",
     "material-ui": "^1.0.0-beta.33",
     "material-ui-icons": "^1.0.0-beta.17",
+    "nanoid": "^1.0.2",
     "normalizr": "^3.2.4",
     "polished": "^1.9.2",
     "ramda": "^0.25.0",
