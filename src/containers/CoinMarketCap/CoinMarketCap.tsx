@@ -1,8 +1,8 @@
+import gql from 'graphql-tag'
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 
-import { CoinsList } from './CoinsList'
+import CoinsList from '@components/CoinsList'
 
 const getCoinMarketCapQuery = gql`
 {
@@ -42,7 +42,7 @@ class CoinMarketCap extends Component {
             pairId
             price
           }
-        } 
+        }
         `, variables: null,
           // this is where the magic happens.
           updateQuery: (previousState, {subscriptionData}) => {

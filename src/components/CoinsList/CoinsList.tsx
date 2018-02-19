@@ -24,6 +24,19 @@ const Test = styled.span`
   font-weight: 500;
 `
 
+const tableRows = [
+  '#',
+  'Name',
+  'Price (USD)',
+  'Chg (24h)',
+  'Chg (7d)',
+  'Price (BTC)',
+  'Market Cap',
+  'Total Supply',
+  'Volume (24h)'
+]
+
+
 // TODO: fix types
 export const CoinsListHead = ({ tableRows }: T.ICoinsTableList[]) => (
   <TableHead>
@@ -37,34 +50,30 @@ export const CoinsListHead = ({ tableRows }: T.ICoinsTableList[]) => (
   </TableHead>
 )
 
-const tableRows = [
-  '#',
-  'Name',
-  'Price (USD)',
-  'Chg (24h)',
-  'Chg (7d)',
-  'Price (BTC)',
-  'Market Cap',
-  'Circulating Supply',
-  'Volume (24h)'
-]
+export const CoinsListBody = ({ tableData }: any) => (
+  <TableBody>
+    {tableData.map((coin: any) => (
+      <TableRow key={nanoid()}>
+        <TableCell>{coin.rank}</TableCell>
+        <TableCell numeric>{coin.name}</TableCell>
+        <TableCell numeric>{coin.price_usd}</TableCell>
+        <TableCell numeric>{coin.percent_change_24}</TableCell>
+        <TableCell numeric>{coin.percent_change_7d}</TableCell>
+        <TableCell numeric>{coin.price_btc}</TableCell>
+        <TableCell numeric>{coin.market_cap_usd}</TableCell>
+        <TableCell numeric>{coin.total_supply}</TableCell>
+        <TableCell numeric>{coin['24h_volume_usd']}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+)
+
 
 export const CoinsList = () => (
   <CoinsListPaper>
     <CoinsListTable>
       <CoinsListHead tableRows={tableRows} />
-      <TableBody>
-          {/* {data.map(n => (
-            <TableRow key={n.id}>
-              <TableCell>{n.rank}</TableCell>
-              <TableCell numeric>{n.name}</TableCell>
-              <TableCell numeric>{n.market_cap_usd}</TableCell>
-              <TableCell numeric>{n.price_usd}</TableCell>
-              <TableCell numeric>{n.percent_change_24h}</TableCell>
-              <TableCell numeric>{n.total_supply}</TableCell>
-            </TableRow>
-          ))} */}
-        </TableBody>
+      {/* <CoinsListBody /> */}
     </CoinsListTable>
   </CoinsListPaper>
 )
