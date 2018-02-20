@@ -10,10 +10,8 @@ const SWrapper = styled.div`
 `
 
 export const Portfolio = () => (
-  <Fragment>
     <SWrapper>
     <SelectAccount />
     <PortfolioTable />
   </SWrapper>
-  </Fragment>
 )
