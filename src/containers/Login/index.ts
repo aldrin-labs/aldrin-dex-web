@@ -1,1 +1,1 @@
-export { Login as default } from './Login'
+export { LoginQuery } from './Login'

@@ -130,4 +130,4 @@ const createUser = gql`
   }
 `
 
-export default graphql(createUser, {name: 'createUser'})(Login)
+export const LoginQuery = graphql(createUser, {name: 'createUser'})(Login)
