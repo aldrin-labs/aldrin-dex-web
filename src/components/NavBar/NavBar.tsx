@@ -4,7 +4,6 @@ import React, { SFC } from 'react'
 import styled from 'styled-components'
 
 import { NavButton } from './NavButton'
-import { Login } from '@containers/Login'
 
 const Nav = styled.div`
   width: '100%';
@@ -34,7 +33,7 @@ export const NavBar: SFC<{}> = () => (
         <NavButton link="/screener" title="Screener" />
         <NavButton link="/chart" title="Chart" />
       </Toolbar>
-      <Toolbar><Login /></Toolbar>
+      <Toolbar><NavButton link="/login" title="Login" /></Toolbar>
     </SNav>
     </AppBar>
   </Nav>
