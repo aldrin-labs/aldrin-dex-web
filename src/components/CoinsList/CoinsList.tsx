@@ -1,6 +1,7 @@
 import nanoid from 'nanoid'
 import React from 'react'
 import styled from 'styled-components'
+import { FormattedMessage } from 'react-intl';
 
 import Paper from 'material-ui/Paper'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
