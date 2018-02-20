@@ -1,7 +1,7 @@
 import nanoid from 'nanoid'
 import React from 'react'
-import styled from 'styled-components'
-import { FormattedMessage } from 'react-intl';
+import { FormattedNumber } from 'react-intl'
+import styled, { css } from 'styled-components'
 
 import Paper from 'material-ui/Paper'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
@@ -17,9 +17,20 @@ const CoinsListPaper = styled(Paper)`
 
 const CellTypography = styled.span`
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: #000;
   line-height: 20px;
+`
+
+const CurrencyGrow = styled.span`
+  ${props =>
+    props.grow
+      ? css`
+          color: #00cc81;
+        `
+      : css`
+          color: #ff0047;
+        `};
 `
 
 const CoinsListTable = styled(Table)`
@@ -59,16 +70,22 @@ export const CoinsListBody = ({ tableData }: any) => (
           <CellTypography>{coin.name}</CellTypography>
         </TableCell>
         <TableCell padding={'none'}>
-          <CellTypography>${coin.price_usd.toFixed(2)}</CellTypography>
+          <CellTypography>
+            $<FormattedNumber value={coin.price_usd.toFixed(2)} />
+          </CellTypography>
         </TableCell>
         <TableCell padding={'none'}>
-          <CellTypography>{coin.percent_change_24h}</CellTypography>
+          <CellTypography>
+            <CurrencyGrow grow={!coin.percent_change_24h.toString().includes('-')}>{coin.percent_change_24h}%</CurrencyGrow>
+          </CellTypography>
         </TableCell>
         <TableCell padding={'none'}>
-          <CellTypography>${coin.market_cap_usd}</CellTypography>
+          <CellTypography>
+            $<FormattedNumber value={coin.market_cap_usd} />
+          </CellTypography>
         </TableCell>
         <TableCell padding={'none'}>
-          <CellTypography>{coin.total_supply}</CellTypography>
+          <CellTypography>$<FormattedNumber value={coin.total_supply} /></CellTypography>
         </TableCell>
       </TableRow>
     ))}

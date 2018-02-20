@@ -14,11 +14,11 @@ import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
+import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-import { IntlProvider } from 'react-intl'
 
 import CoinMarketCap from '@containers/CoinMarketCap'
 
