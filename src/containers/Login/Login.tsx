@@ -9,8 +9,6 @@ import gql from 'graphql-tag'
 
 import { NavBar } from '@components/NavBar'
 
-import { withRouter } from 'react-router'
-
 import Auth0Lock from 'auth0-lock'
 
 const SWrapper = styled.div`
@@ -37,7 +35,6 @@ const SButton = styled(Button)`
 class Login extends Component {
   constructor (props) {
     super(props)
-    console.log('login')
     const auth0Options = {
       auth: {
         responseType: 'token id_token',
@@ -90,7 +87,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props.data);
     // if (this.props.data.loading) {
     //   return (<div>Loading</div>)
     // }
