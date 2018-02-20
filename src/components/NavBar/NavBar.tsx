@@ -4,6 +4,7 @@ import React, { SFC } from 'react'
 import styled from 'styled-components'
 
 import { NavButton } from './NavButton'
+import Login from '@containers/Login'
 
 const Nav = styled.div`
   width: '100%';

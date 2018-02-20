@@ -1,3 +1,1 @@
-import i from './Login'
-
-export default i
+export { Login as default } from './Login'

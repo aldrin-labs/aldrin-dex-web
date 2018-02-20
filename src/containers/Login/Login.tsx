@@ -33,14 +33,14 @@ const SButton = styled(Button)`
 `
 
 export class Login extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
-    this._lock = new Auth0Lock("0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm", "ccai.auth0.com")
+    this._lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com')
   }
 
   createUser() {
-    console.log(window.localStorage.getItem('auth0IdToken'));
+    console.log(window.localStorage.getItem('auth0IdToken'))
     const variables = {
       idToken: window.localStorage.getItem('auth0IdToken'),
       emailAddress: this.state.emailAddress,
@@ -48,21 +48,23 @@ export class Login extends Component {
       emailSubscription: this.state.emailSubscription,
     }
 
-    this.props.createUser({ variables })
-      .then((response) => {
-          console.log(response);
-          this.props.router.replace('/')
-      }).catch((e) => {
+    this.props
+      .createUser({ variables })
+      .then(response => {
+        console.log(response)
+        this.props.router.replace('/')
+      })
+      .catch(e => {
         console.error(e)
         this.props.router.replace('/')
       })
   }
 
   componentDidMount() {
-    this._lock.on('authenticated', (authResult) => {
+    this._lock.on('authenticated', authResult => {
       console.log(authResult)
       window.localStorage.setItem('auth0IdToken', authResult.idToken)
-      this.createUser();
+      this.createUser()
       // this.props.history.push(`/profile`)
     })
   }
@@ -72,8 +74,9 @@ export class Login extends Component {
   }
 
   render() {
+    console.log(11111, this.props)
     if (this.props.data.loading) {
-      return (<div>Loading</div>)
+      return <div>Loading</div>
     }
 
     // redirect if user is logged in
@@ -82,14 +85,11 @@ export class Login extends Component {
       this.props.router.replace('/')
     }
     return (
-      <Fragment>
         <SWrapper>
-
-      <div>
-          <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={this._showLogin}>Log in</button>
-      </div>
+            <Button onClick={this._showLogin}>
+              Log in
+            </Button>
         </SWrapper>
-      </Fragment>
     )
   }
 }
@@ -103,13 +103,13 @@ const userQuery = gql`
 `
 
 const createUser = gql`
-  mutation ($idToken: String!, $name: String!, $emailAddress: String!, $emailSubscription: Boolean!){
+  mutation($idToken: String!, $name: String!, $emailAddress: String!, $emailSubscription: Boolean!) {
     createUser(idToken: $idToken, name: $name, emailAddress: $emailAddress, emailSubscription: $emailSubscription) {
       id
     }
   }
 `
 
-export default graphql(createUser, {name: 'createUser'})(
-  graphql(userQuery, { options: { forceFetch: true }})(withRouter(Login))
+export default graphql(createUser, { name: 'createUser' })(
+  graphql(userQuery, { options: { forceFetch: true } })(withRouter(Login)),
 )
