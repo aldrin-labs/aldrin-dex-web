@@ -18,20 +18,6 @@ const SWrapper = styled.div`
   justify-content: center;
 `
 
-const SLogin = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  margin-top: 20%;
-`
-const STextField = styled(TextField)`
-  width: 300px;
-`
-
-const SButton = styled(Button)`
-  margin-top: 30px;
-`
-
 class Login extends Component {
   constructor (props) {
     super(props)
@@ -97,15 +83,9 @@ class Login extends Component {
     //   this.props.router.replace('/')
     // }
     return (
-      <Fragment>
-        <NavBar />
         <SWrapper>
-
-      <div>
-          <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={this._showLogin}>Log in</button>
-      </div>
+          <Button onClick={this._showLogin}>Log in</Button>
         </SWrapper>
-      </Fragment>
     )
   }
 }
