@@ -32,7 +32,7 @@ const render = () =>
       <App>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route path="/coinmarketcap" component={CoinMarketCap} />
+          <Route path="/market" component={CoinMarketCap} />
           <Route path="/profile" component={Profile} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/login" component={Login} />

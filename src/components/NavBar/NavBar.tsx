@@ -27,6 +27,7 @@ export const NavBar: SFC<{}> = () => (
           <MenuIcon />
         </IconButton> */}
         <NavButton link="/" title="Home" />
+        <NavButton link="/market" title="Coin Market" />
         <NavButton link="/profile" title="Profile" />
         <NavButton link="/portfolio" title="Portfolio" />
         <NavButton link="/screener" title="Screener" />
