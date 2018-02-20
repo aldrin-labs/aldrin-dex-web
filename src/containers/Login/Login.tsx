@@ -21,6 +21,10 @@ const SWrapper = styled.div`
 class Login extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      login: false,
+      user: null
+    }
     const auth0Options = {
       auth: {
         responseType: 'token id_token',
@@ -61,7 +65,11 @@ class Login extends Component {
           // Handle error
           return;
         }
-        console.log(profile);
+        this.setState(prevState => ({
+          profile,
+          login: !prevState.login
+        }))
+        console.log(1111, this.state)
         localStorage.setItem('token', authResult.idToken)
         this.createUser(profile)
       })
@@ -82,9 +90,11 @@ class Login extends Component {
     //   console.warn('already logged in')
     //   this.props.router.replace('/')
     // }
+    const { login, profile } = this.state
     return (
         <SWrapper>
-          <Button onClick={this._showLogin}>Log in</Button>
+          {!login && <Button onClick={this._showLogin}>Log in</Button>}
+          {login && <Button>{profile.name}</Button>}
         </SWrapper>
     )
   }
