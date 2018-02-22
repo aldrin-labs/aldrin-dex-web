@@ -19,55 +19,57 @@ const SWrapper = styled.div`
 `
 
 class Login extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       login: false,
-      user: null
+      user: null,
     }
     const auth0Options = {
       auth: {
         responseType: 'token id_token',
         redirectUri: 'localhost:3000/login',
         scope: 'openid',
-        audience: 'localhost:5080'
+        audience: 'localhost:5080',
       },
       autoclose: true,
       oidcConformant: true,
-    };
-    this._lock = new Auth0Lock("0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm", "ccai.auth0.com", auth0Options)
+    }
+    this._lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
   }
 
   createUser(profile) {
-    console.log(window.localStorage.getItem('token'));
+    console.log(window.localStorage.getItem('token'))
     const variables = {
       idToken: window.localStorage.getItem('token'),
       emailAddress: profile.email,
       name: profile.nickname,
       emailSubscription: true, // ;)
     }
-    console.log(variables);
-    this.props.createUser({ variables })
-      .then((response) => {
-          console.log(response);
-          this.props.router.replace('/')
-      }).catch((e) => {
+    console.log(variables)
+    this.props
+      .createUser({ variables })
+      .then(response => {
+        console.log(response)
+        this.props.router.replace('/')
+      })
+      .catch(e => {
         console.error(e)
         this.props.router.replace('/')
       })
   }
 
   componentDidMount() {
-    this._lock.on('authenticated', (authResult) => {
+    this._lock.on('authenticated', authResult => {
       this._lock.getUserInfo(authResult.accessToken, (error, profile) => {
         if (error) {
           console.log(error)
           // Handle error
-          return;
+          return
         }
         this.setState(prevState => ({
           profile,
-          login: !prevState.login
+          login: !prevState.login,
         }))
         console.log(1111, this.state)
         localStorage.setItem('token', authResult.idToken)
@@ -92,10 +94,10 @@ class Login extends Component {
     // }
     const { login, profile } = this.state
     return (
-        <SWrapper>
-          {!login && <Button onClick={this._showLogin}>Log in</Button>}
-          {login && <Button>{profile.name}</Button>}
-        </SWrapper>
+      <SWrapper>
+        {!login && <Button onClick={this._showLogin}>Log in</Button>}
+        {login && <Button>{profile.name}</Button>}
+      </SWrapper>
     )
   }
 }
@@ -109,11 +111,21 @@ const userQuery = gql`
 `
 
 const createUser = gql`
-  mutation ($idToken: String!, $name: String!, $emailAddress: String!, $emailSubscription: Boolean!){
-    createUser(idToken: $idToken, name: $name, emailAddress: $emailAddress, emailSubscription: $emailSubscription) {
+  mutation(
+    $idToken: String!
+    $name: String!
+    $emailAddress: String!
+    $emailSubscription: Boolean!
+  ) {
+    createUser(
+      idToken: $idToken
+      name: $name
+      emailAddress: $emailAddress
+      emailSubscription: $emailSubscription
+    ) {
       _id
     }
   }
 `
 
-export const LoginQuery = graphql(createUser, {name: 'createUser'})(Login)
+export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)

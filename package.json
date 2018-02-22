@@ -61,6 +61,7 @@
     "normalizr": "^3.2.4",
     "polished": "^1.9.2",
     "ramda": "^0.25.0",
+    "re-reselect": "^1.0.1",
     "react": "^16.2.0",
     "react-apollo": "^2.1.0-beta.2",
     "react-dom": "^16.2.0",

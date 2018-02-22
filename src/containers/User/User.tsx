@@ -8,27 +8,22 @@ import { Loading } from '@components/Loading'
 import { withErrorFallback } from '@hoc'
 
 import * as actions from './actions'
+import * as selectors from './selectors'
 console.log(actions.addTodo.getType())
 
 const UserComp = props => {
   console.log(111, props)
   return (
     <div>
-      Hello <button onClick={Yoba}>{this.props.nnn}</button>
+      Hello <button onClick={Yoba}>Test</button>
       <Loading />
     </div>
   )
 }
 
-function Yoba() {
-  throw new Error('I crashed!');
-}
-
-function mapStateToProps(state) {
-  return {
-    check: state.user.check,
-  }
-}
+const mapStateToProps = (state: any) => ({
+  check: selectors.checker(state)
+})
 
 function mapDispatchToProps(dispatch) {
   return {
