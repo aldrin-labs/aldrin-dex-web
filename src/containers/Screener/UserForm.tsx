@@ -11,27 +11,26 @@ export const MarketCap = [
 ]
 
 export default class UserForm extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  render () {
+  render() {
     const options = [
-      { label: "One", value: 1 },
-      { label: "Two", value: 2 },
-      { label: "Three", value: 3, disabled: true }
+      { label: 'One', value: 1 },
+      { label: 'Two', value: 2 },
+      { label: 'Three', value: 3, disabled: true },
       // And so on...
     ]
 
     return (
       <VirtualizedSelect
         options={options}
-        onChange={(selectValue) => this.setState({ selectValue })}
+        onChange={selectValue => this.setState({ selectValue })}
         value={this.state.selectValue}
       />
     )
   }
 }
-

@@ -1,12 +1,3 @@
-// import { App } from '@containers/App'
-// import { Chart } from '@containers/Chart'
-// import { Home } from '@containers/Home'
-// import Login from '@containers/Login'
-// import { NotFound } from '@containers/NotFound'
-// import { Portfolio } from '@containers/Portfolio'
-// import { Profile } from '@containers/Profile'
-// import { Screener } from '@containers/Screener'
-
 import {
   App,
   Chart,
@@ -61,7 +52,7 @@ const render = () =>
         </Provider>
       </IntlProvider>
     </ApolloProvider>,
-    document.getElementById('root'),
+    document.getElementById('root')
   )
 
 render(hot(module)(App))
