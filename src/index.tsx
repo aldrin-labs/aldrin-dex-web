@@ -1,11 +1,25 @@
-import { App } from '@containers/App'
-import { Chart } from '@containers/Chart'
-import { Home } from '@containers/Home'
-import Login from '@containers/Login'
-import { NotFound } from '@containers/NotFound'
-import { Portfolio } from '@containers/Portfolio'
-import { Profile } from '@containers/Profile'
-import { Screener } from '@containers/Screener'
+// import { App } from '@containers/App'
+// import { Chart } from '@containers/Chart'
+// import { Home } from '@containers/Home'
+// import Login from '@containers/Login'
+// import { NotFound } from '@containers/NotFound'
+// import { Portfolio } from '@containers/Portfolio'
+// import { Profile } from '@containers/Profile'
+// import { Screener } from '@containers/Screener'
+
+import {
+  App,
+  Chart,
+  CoinMarketCap,
+  Home,
+  LoginQuery,
+  NotFound,
+  Portfolio,
+  Profile,
+  Screener,
+  User,
+} from './containers'
+
 import { client } from '@utils/apolloClient'
 import { persistor, store } from '@utils/configureStore'
 
@@ -19,8 +33,6 @@ import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-
-import CoinMarketCap from '@containers/CoinMarketCap'
 
 const history = createHistory()
 
@@ -37,9 +49,10 @@ const render = () =>
                   <Route path="/market" component={CoinMarketCap} />
                   <Route path="/profile" component={Profile} />
                   <Route path="/portfolio" component={Portfolio} />
-                  <Route path="/login" component={Login} />
+                  <Route path="/login" component={LoginQuery} />
                   <Route path="/chart" component={Chart} />
                   <Route path="/screener" component={Screener} />
+                  <Route path="/user" component={User} />
                   <Route path="*" component={NotFound} />
                 </Switch>
               </App>

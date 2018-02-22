@@ -1,4 +1,1 @@
-import { LoginQuery } from './Login'
-
-console.log(LoginQuery);
-export const Login = LoginQuery;
+export { LoginQuery } from './Login'
