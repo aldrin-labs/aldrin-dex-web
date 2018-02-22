@@ -1,4 +1,10 @@
 import React from 'react'
+import Typography from 'material-ui/Typography'
 import styled from 'styled-components'
 
-export const ErrorFallback = (props) => <div>{console.log(66666, props)}Error</div>
+const Error = styled(Typography)`
+  font-size: 30px !important;
+  font-weight: 500;
+`
+
+export const ErrorFallback = () => <Error color="error">Error</Error>

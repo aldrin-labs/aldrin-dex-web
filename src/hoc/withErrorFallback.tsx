@@ -14,9 +14,11 @@ import { ErrorFallback } from '@components/ErrorFallback'
 export const withErrorFallback = compose(
   setDisplayName('ErrorBoundry'),
   withState('hasError', 'setHasError', false),
+  withState('errorInfo', 'setErrorInfo', ''),
   lifecycle({
     componentDidCatch(error: any, errorInfo: any) {
       this.props.setHasError(true)
+      this.props.setErrorInfo(errorInfo)
       console.log(error, errorInfo)
     }
   }),

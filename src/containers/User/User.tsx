@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 import { Loading } from '@components/Loading'
 
@@ -13,10 +14,14 @@ const UserComp = props => {
   console.log(111, props)
   return (
     <div>
-      Hello <button onClick={props.addTodo}>Checing </button>
+      Hello <button onClick={Yoba}>{this.props.nnn}</button>
       <Loading />
     </div>
   )
+}
+
+function Yoba() {
+  throw new Error('I crashed!');
 }
 
 function mapStateToProps(state) {
@@ -31,4 +36,9 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export const User = connect(mapStateToProps, mapDispatchToProps)(UserComp)
+// export const User = connect(mapStateToProps, mapDispatchToProps)(UserComp)
+
+export const User = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withErrorFallback
+)(UserComp)
