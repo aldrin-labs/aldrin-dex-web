@@ -1,0 +1,1 @@
+export { withErrorFallback } from './withErrorFallback'

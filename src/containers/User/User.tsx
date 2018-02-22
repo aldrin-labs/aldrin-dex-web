@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 
 import { Loading } from '@components/Loading'
 
+import { withErrorFallback } from '@hoc'
+
 import * as actions from './actions'
 console.log(actions.addTodo.getType())
 
