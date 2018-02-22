@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 
-import CoinsList from '@components/CoinsList'
+import { CoinsList } from '@components/CoinsList'
 
 const getCoinMarketCapQuery = gql`
 {

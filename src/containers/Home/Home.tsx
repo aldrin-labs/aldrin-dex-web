@@ -1,4 +1,4 @@
-import Title from '@components/Title'
+import { Title } from '@components/Title'
 import { CoinMarketCap } from '@containers/CoinMarketCap'
 import React from 'react'
 

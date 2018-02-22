@@ -16,9 +16,8 @@ const STypography = styled(Typography)`
 
 export const Title = ({ children }: any) => (
   <STitleContainer>
-    <STypography
-      align="center"
-      gutterBottom
-    >{children}</STypography>
+    <STypography align="center" gutterBottom>
+      {children}
+    </STypography>
   </STitleContainer>
 )

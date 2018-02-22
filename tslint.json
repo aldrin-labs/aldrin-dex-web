@@ -21,7 +21,6 @@
     "semicolon": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
-    "no-magic-numbers": true,
     "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
     "promise-function-async": true,
     "await-promise": true,

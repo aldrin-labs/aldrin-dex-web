@@ -5,8 +5,8 @@ import styled, { css } from 'styled-components'
 
 import Paper from 'material-ui/Paper'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
-import Typography from 'material-ui/Typography'
 
+// TODO: add types
 import * as T from './types'
 
 const CoinsListPaper = styled(Paper)`
