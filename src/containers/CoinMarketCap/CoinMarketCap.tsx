@@ -6,16 +6,27 @@ import { CoinsList } from '@components/CoinsList'
 
 const getCoinMarketCapQuery = gql`
 {
-	markets {
-	  id
-    rank
-    symbol
-    name
-    price_usd
-    market_cap_usd
-    total_supply
-    percent_change_24h
-	}
+	assetPagination(page: 0, perPage: 400) {
+    pageInfo {
+      pageCount
+      hasNextPage
+      currentPage
+      hasPreviousPage
+      perPage
+    }
+    count
+    items {
+      _id
+      name
+      symbol
+      nameTrue
+      priceUSD
+      maxSupply
+      totalSupply
+      availableSupply
+      priceUSD
+    }
+  }
 }
 `
 
@@ -24,7 +35,7 @@ class CoinMarketCap extends Component {
   componentWillReceiveProps(newProps) {
     if (!newProps.data.loading) {
       if (this.subscription) {
-        if (newProps.data.markets !== this.props.data.markets) {
+        if (newProps.data.assetPagination.items !== this.props.data.assetPagination.items) {
           // if the feed has changed, we need to unsubscribe before resubscribing
           this.subscription()
         } else {
@@ -46,8 +57,8 @@ class CoinMarketCap extends Component {
         `, variables: null,
           // this is where the magic happens.
           updateQuery: (previousState, {subscriptionData}) => {
-            const newState = this.props.data.markets.map(x => ({...x}));
-            for (var i = 0; i< this.props.data.markets.length; ++ i){
+            const newState = this.props.data.assetPagination.items.map(x => ({...x}));
+            for (var i = 0; i< this.props.data.assetPagination.items.length; ++ i){
               if (newState[i].symbol === subscriptionData.data.listenMarket.pair.split('_')[0]){
                 console.log(newState[i].price_usd + ' === ' + subscriptionData.data.listenMarket.price);
                 newState[i].price_usd = subscriptionData.data.listenMarket.price;
@@ -55,8 +66,8 @@ class CoinMarketCap extends Component {
                 console.log(newState[i]);
               }
             }
-            const state = {markets: {}};
-            state.markets = newState;
+            const state = {items: {}};
+            state.items = newState;
             return state;
           }
           ,
@@ -73,7 +84,7 @@ class CoinMarketCap extends Component {
         this.props.data.loading ?
           <div />
         :
-        <CoinsList data={this.props.data.markets} />
+        <CoinsList data={this.props.data.assetPagination.items} />
       }
     </div>
   }

@@ -59,7 +59,9 @@ export const CoinsListHead = ({ tableRows }: T.ICoinsTableList[]) => (
   </TableHead>
 )
 
-export const CoinsListBody = ({ tableData }: any) => (
+export const CoinsListBody = ({ tableData }: any) => {
+  console.log(tableData);
+  return (
   <TableBody>
     {tableData.map((coin: any) => (
       <TableRow key={nanoid()}>
@@ -71,26 +73,31 @@ export const CoinsListBody = ({ tableData }: any) => (
         </TableCell>
         <TableCell padding={'none'}>
           <CellTypography>
-            $<FormattedNumber value={coin.price_usd.toFixed(2)} />
+            $<FormattedNumber value={parseFloat(coin.priceUSD).toFixed(2)} />
           </CellTypography>
         </TableCell>
-        <TableCell padding={'none'}>
+        {/* <TableCell padding={'none'}>
           <CellTypography>
             <CurrencyGrow grow={!coin.percent_change_24h.toString().includes('-')}>{coin.percent_change_24h}%</CurrencyGrow>
           </CellTypography>
-        </TableCell>
+        </TableCell> */}
         <TableCell padding={'none'}>
           <CellTypography>
-            $<FormattedNumber value={coin.market_cap_usd} />
+            $<FormattedNumber value={0} />
           </CellTypography>
         </TableCell>
         <TableCell padding={'none'}>
-          <CellTypography>$<FormattedNumber value={coin.total_supply} /></CellTypography>
+          <CellTypography>
+            $<FormattedNumber value={0} />
+          </CellTypography>
+        </TableCell>
+        <TableCell padding={'none'}>
+          <CellTypography>$<FormattedNumber value={coin.totalSupply} /></CellTypography>
         </TableCell>
       </TableRow>
     ))}
   </TableBody>
-)
+)}
 
 export const CoinsList = ({ data }: any) => (
   <CoinsListPaper>
