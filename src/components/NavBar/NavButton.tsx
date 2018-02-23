@@ -6,27 +6,23 @@ import styled from 'styled-components'
 const NavLink = styled(Link)`
   color: inherit;
   margin: 3px;
-  padding: 3px 7px;
+  padding: 0px;
   text-decoration: none;
   border: 1px solid transparent;
   border-radius: 3px;
 
-  &:hover {
-    border-color: rgba(175, 47, 47, 0.1);
-  }
-
   &.selected {
-    border-color: rgba(175, 47, 47, 0.2);
+    border-color: rgba(66, 66, 66, 0.2);
   }
 `
 
 interface INavButton {
-  link: string,
+  link: string
   title: string
 }
 
 export const NavButton: SFC<INavButton> = ({ link, title }) => (
-  <Button color="inherit">
-    <NavLink to={link}>{title}</NavLink>
-  </Button>
+  <NavLink to={link}>
+    <Button>{title}</Button>
+  </NavLink>
 )

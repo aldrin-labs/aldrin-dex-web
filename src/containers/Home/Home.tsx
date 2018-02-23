@@ -1,10 +1,10 @@
+import { Title } from '@components/Title'
+import { CoinMarketCap } from '@containers/CoinMarketCap'
 import React from 'react'
-import { NavBar } from '@components/NavBar'
-import CoinMarketCap from '@containers/CoinMarketCap'
 
 export const Home = () => (
   <div>
-    <NavBar />
+    <Title>Cryptocurrencies AI</Title>
     <CoinMarketCap />
   </div>
 )

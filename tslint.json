@@ -2,7 +2,6 @@
   "extends": [
     "tslint-config-standard",
     "tslint-react",
-    "tslint:latest",
     "tslint-immutable",
     "tslint-config-prettier"
   ],
@@ -12,14 +11,19 @@
     "no-implicit-dependencies": false,
     "no-trailing-whitespace": [true, "ignore-template-strings"],
     "no-submodule-imports": false,
-    "import-name": false,
-    "arrow-parens": false,
+    "import-name": true,
+    "arrow-parens": true,
     "ter-arrow-parens": false,
     "jsx-boolean-value": false,
     "member-access": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
     "semicolon": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "ordered-imports": false,
+    "only-arrow-functions": [true, "allow-declarations", "allow-named-functions"],
+    "promise-function-async": true,
+    "await-promise": true,
+    "curly": true
   }
 }

@@ -24,34 +24,34 @@ const STable = styled(Table)`
     total_supply
 */
 // TODO: types for coinmarketcap data
-export const CoinsList: SFC<{}> = props => {
-  const { data } = props
-  return (
-    <SPaper>
-      <STable>
-        <TableHead>
-          <TableRow>
-            <TableCell numeric>Rank</TableCell>
-            <TableCell numeric>Name</TableCell>
-            <TableCell numeric>Market Cap</TableCell>
-            <TableCell numeric>Price</TableCell>
-            <TableCell numeric>Change 24h</TableCell>
-            <TableCell numeric>Total Supply</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map(n => (
-            <TableRow key={n.id}>
-              <TableCell>{n.rank}</TableCell>
-              <TableCell numeric>{n.name}</TableCell>
-              <TableCell numeric>{n.market_cap_usd}</TableCell>
-              <TableCell numeric>{n.price_usd}</TableCell>
-              <TableCell numeric>{n.percent_change_24h}</TableCell>
-              <TableCell numeric>{n.total_supply}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </STable>
-    </SPaper>
-  )
-}
+// export const CoinsList: SFC<{}> = props => {
+//   const { data } = props
+//   return (
+//     <SPaper>
+//       <STable>
+//         {/* <TableHead>
+//           <TableRow>
+//             <TableCell numeric>Rank</TableCell>
+//             <TableCell numeric>Name</TableCell>
+//             <TableCell numeric>Market Cap</TableCell>
+//             <TableCell numeric>Price</TableCell>
+//             <TableCell numeric>Change 24h</TableCell>
+//             <TableCell numeric>Total Supply</TableCell>
+//           </TableRow>
+//         </TableHead> */}
+//         <TableBody>
+//           {data.map(n => (
+//             <TableRow key={n.id}>
+//               <TableCell>{n.rank}</TableCell>
+//               <TableCell numeric>{n.name}</TableCell>
+//               <TableCell numeric>{n.market_cap_usd}</TableCell>
+//               <TableCell numeric>{n.price_usd}</TableCell>
+//               <TableCell numeric>{n.percent_change_24h}</TableCell>
+//               <TableCell numeric>{n.total_supply}</TableCell>
+//             </TableRow>
+//           ))}
+//         </TableBody>
+//       </STable>
+//     </SPaper>
+//   )
+// }

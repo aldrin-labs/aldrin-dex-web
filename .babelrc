@@ -25,7 +25,8 @@
       "alias": {
         "@components": "./src/components",
         "@containers": "./src/containers",
-        "@utils": "./src/utils"
+        "@utils": "./src/utils",
+        "@hoc": "./src/hoc"
       }
     }]]
 }

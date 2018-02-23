@@ -1,0 +1,1 @@
+export { CoinsList } from './CoinsList'

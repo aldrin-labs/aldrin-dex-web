@@ -1,3 +1,1 @@
-import i from './CoinMarketCap'
-
-export default i
+export { default as CoinMarketCap } from './CoinMarketCap'

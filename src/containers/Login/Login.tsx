@@ -9,8 +9,6 @@ import gql from 'graphql-tag'
 
 import { NavBar } from '@components/NavBar'
 
-import { withRouter } from 'react-router'
-
 import Auth0Lock from 'auth0-lock'
 
 const SWrapper = styled.div`
@@ -20,65 +18,60 @@ const SWrapper = styled.div`
   justify-content: center;
 `
 
-const SLogin = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  margin-top: 20%;
-`
-const STextField = styled(TextField)`
-  width: 300px;
-`
-
-const SButton = styled(Button)`
-  margin-top: 30px;
-`
-
 class Login extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    console.log('login')
+    this.state = {
+      login: false,
+      user: null,
+    }
     const auth0Options = {
       auth: {
         responseType: 'token id_token',
         redirectUri: 'localhost:3000/login',
         scope: 'openid',
-        audience: 'localhost:5080'
+        audience: 'localhost:5080',
       },
       autoclose: true,
       oidcConformant: true,
-    };
-    this._lock = new Auth0Lock("0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm", "ccai.auth0.com", auth0Options)
+    }
+    this._lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
   }
 
   createUser(profile) {
-    console.log(window.localStorage.getItem('token'));
+    console.log(window.localStorage.getItem('token'))
     const variables = {
       idToken: window.localStorage.getItem('token'),
       emailAddress: profile.email,
       name: profile.nickname,
       emailSubscription: true, // ;)
     }
-    console.log(variables);
-    this.props.createUser({ variables })
-      .then((response) => {
-          console.log(response);
-          this.props.router.replace('/')
-      }).catch((e) => {
+    console.log(variables)
+    this.props
+      .createUser({ variables })
+      .then(response => {
+        console.log(response)
+        this.props.router.replace('/')
+      })
+      .catch(e => {
         console.error(e)
         this.props.router.replace('/')
       })
   }
 
   componentDidMount() {
-    this._lock.on('authenticated', (authResult) => {
+    this._lock.on('authenticated', authResult => {
       this._lock.getUserInfo(authResult.accessToken, (error, profile) => {
         if (error) {
           console.log(error)
           // Handle error
-          return;
+          return
         }
-        console.log(profile);
+        this.setState(prevState => ({
+          profile,
+          login: !prevState.login,
+        }))
+        console.log(1111, this.state)
         localStorage.setItem('token', authResult.idToken)
         this.createUser(profile)
       })
@@ -90,7 +83,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.props.data);
     // if (this.props.data.loading) {
     //   return (<div>Loading</div>)
     // }
@@ -100,16 +92,12 @@ class Login extends Component {
     //   console.warn('already logged in')
     //   this.props.router.replace('/')
     // }
+    const { login, profile } = this.state
     return (
-      <Fragment>
-        <NavBar />
-        <SWrapper>
-
-      <div>
-          <button className='pa3 bg-black-10 bn dim ttu pointer' onClick={this._showLogin}>Log in</button>
-      </div>
-        </SWrapper>
-      </Fragment>
+      <SWrapper>
+        {!login && <Button onClick={this._showLogin}>Log in</Button>}
+        {login && <Button>{profile.name}</Button>}
+      </SWrapper>
     )
   }
 }
@@ -123,11 +111,21 @@ const userQuery = gql`
 `
 
 const createUser = gql`
-  mutation ($idToken: String!, $name: String!, $emailAddress: String!, $emailSubscription: Boolean!){
-    createUser(idToken: $idToken, name: $name, emailAddress: $emailAddress, emailSubscription: $emailSubscription) {
+  mutation(
+    $idToken: String!
+    $name: String!
+    $emailAddress: String!
+    $emailSubscription: Boolean!
+  ) {
+    createUser(
+      idToken: $idToken
+      name: $name
+      emailAddress: $emailAddress
+      emailSubscription: $emailSubscription
+    ) {
       _id
     }
   }
 `
 
-export default graphql(createUser, {name: 'createUser'})(Login)
+export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)
