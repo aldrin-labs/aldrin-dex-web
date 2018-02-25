@@ -9,13 +9,9 @@ const initialState = {
 
 export default createReducer(
   {
-    [actions.addTodo]: (state, payload) => {
+    [actions.addExchangeKey]: (state, payload) => {
       console.log(555, state, payload)
       return { ...state, check: 5 }
-    },
-    [actions.logTodo]: (state, payload) => {
-      console.log(8888, state, payload)
-      return { ...state, check: 'finish ' }
     },
   },
   initialState
