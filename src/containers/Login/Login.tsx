@@ -146,7 +146,7 @@ class Login extends Component {
               <SLink to="/portfolio">
                 <MenuItem onClick={this.handleClose}>Portfolio</MenuItem>
               </SLink>
-              <MenuItem onClick={this.handleClose}>My account</MenuItem>
+              <SLink to="/settings"><MenuItem onClick={this.handleClose}>Settings</MenuItem></SLink>
               <MenuItem onClick={this.handleLogout}>Log out</MenuItem>
             </Menu>
             <Button onClick={this.handleMenu}>{user.name}</Button>

@@ -1,5 +1,6 @@
 import React, { Component, SFC } from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 
 import Checkbox from 'material-ui/Checkbox'
 import Paper from 'material-ui/Paper'

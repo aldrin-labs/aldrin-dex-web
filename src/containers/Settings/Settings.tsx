@@ -33,7 +33,7 @@ function mapDispatchToProps(dispatch) {
 
 // export const User = connect(mapStateToProps, mapDispatchToProps)(UserComp)
 
-export const User = compose(
+export const Settings = compose(
   connect(mapStateToProps, mapDispatchToProps),
   withErrorFallback
 )(UserComp)

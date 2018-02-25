@@ -8,7 +8,7 @@ import {
   Portfolio,
   Profile,
   Screener,
-  User,
+  Settings,
   AssetInfo,
 } from './containers'
 
@@ -45,7 +45,7 @@ const render = () =>
                   <Route path="/login" component={LoginQuery} />
                   <Route path="/chart" component={Chart} />
                   <Route path="/screener" component={Screener} />
-                  <Route path="/user" component={User} />
+                  <Route path="/settings" component={Settings} />
                   <Route path="*" component={NotFound} />
                 </Switch>
               </App>
