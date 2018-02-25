@@ -5,10 +5,12 @@ import { routerReducer as router } from 'react-router-redux'
 import screener from '@containers/Screener/reducer'
 import user from '@containers/User/reducer'
 import login from '@containers/Login/reducer'
+import portfolio from '@containers/Portfolio/reducer'
 
 export default combineReducers({
   screener,
   router,
   user,
   login,
+  portfolio,
 })

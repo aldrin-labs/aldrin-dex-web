@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
@@ -15,7 +16,17 @@ import { NavBar } from '@components/NavBar'
 import * as actions from './actions'
 
 import Auth0Lock from 'auth0-lock'
-import { withErrorFallback } from '@hoc';
+import { withErrorFallback } from '@hoc'
+
+const SLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+  border-radius: 0px;
+
+  &:hover {
+    color: palevioletred;
+  }
+`
 
 const SWrapper = styled.div`
   display: flex;
@@ -116,24 +127,31 @@ class Login extends Component {
     return (
       <SWrapper>
         {!loginStatus && <Button onClick={this._showLogin}>Log in</Button>}
-        {loginStatus && <div><Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Portfolio</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                  <MenuItem onClick={this.handleLogout}>Log out</MenuItem>
-                </Menu><Button onClick={this.handleMenu}>{user.name}</Button></div>}
+        {loginStatus && (
+          <div>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={this.handleClose}
+            >
+              <SLink to="/portfolio">
+                <MenuItem onClick={this.handleClose}>Portfolio</MenuItem>
+              </SLink>
+              <MenuItem onClick={this.handleClose}>My account</MenuItem>
+              <MenuItem onClick={this.handleLogout}>Log out</MenuItem>
+            </Menu>
+            <Button onClick={this.handleMenu}>{user.name}</Button>
+          </div>
+        )}
       </SWrapper>
     )
   }
@@ -167,12 +185,12 @@ const createUser = gql`
 
 const mapStateToProps = (state: any) => ({
   user: state.login.user,
-  loginStatus: state.login.loginStatus
+  loginStatus: state.login.loginStatus,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  storeLogin: (profile) => dispatch(actions.storeLogin(profile)),
-  storeLogout: () => dispatch(actions.storeLogout())
+  storeLogin: profile => dispatch(actions.storeLogin(profile)),
+  storeLogout: () => dispatch(actions.storeLogout()),
 })
 
 export const LoginQuery = compose(
