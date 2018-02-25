@@ -1,3 +1,4 @@
-import { createActionAsync } from 'redux-act-async'
+import { createAction } from 'redux-act'
 
-export const login = createActionAsync('LOGIN')
+export const storeLogin = createAction('STORE_LOGIN')
+export const storeLogout = createAction('STORE_LOGOUT')

@@ -72,6 +72,7 @@ class Login extends Component {
           profile,
           login: !prevState.login,
         }))
+
         console.log(1111, this.state)
         localStorage.setItem('token', authResult.idToken)
         this.createUser(profile)
