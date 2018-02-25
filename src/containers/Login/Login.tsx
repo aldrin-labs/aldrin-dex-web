@@ -1,6 +1,7 @@
-import { withFormik } from 'formik'
-import React, { Component, Fragment, PropTypes } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
@@ -39,22 +40,22 @@ class Login extends Component {
   }
 
   createUser(profile) {
-    console.log(window.localStorage.getItem('token'))
+    // console.log(9999, window.localStorage.getItem('token'))
     const variables = {
       idToken: window.localStorage.getItem('token'),
       emailAddress: profile.email,
       name: profile.nickname,
       emailSubscription: true, // ;)
     }
-    console.log(variables)
+    // console.log(variables)
     this.props
       .createUser({ variables })
       .then(response => {
-        console.log(response)
+        // console.log(response)
         this.props.router.replace('/')
       })
       .catch(e => {
-        console.error(e)
+        // console.error(e)
         this.props.router.replace('/')
       })
   }
