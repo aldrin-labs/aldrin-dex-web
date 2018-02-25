@@ -17,9 +17,10 @@ const SCoinLink = styled(Link)`
   }
 `
 
-export const CoinLink = ({ name, children }: any) => (
-  <SCoinLink to={name}>
-    {children}
+export const CoinLink = (props) => (
+  <SCoinLink to={props.name}>
+  {console.log(2222, props)}
+    {props.children}
   </SCoinLink>
 )
 

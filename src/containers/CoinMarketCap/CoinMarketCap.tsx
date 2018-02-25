@@ -76,7 +76,7 @@ class CoinMarketCap extends Component {
   }
 
   render() {
-    console.log(this.props.data)
+    console.log(55555, this.props.data)
     return (
       <div>
         {this.props.data.loading ? (
