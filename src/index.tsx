@@ -9,6 +9,7 @@ import {
   Profile,
   Screener,
   User,
+  AssetInfo,
 } from './containers'
 
 import { client } from '@utils/apolloClient'
@@ -38,6 +39,7 @@ const render = () =>
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route path="/market" component={CoinMarketCap} />
+                  <Route path="/asset/:name" component={AssetInfo} />
                   <Route path="/profile" component={Profile} />
                   <Route path="/portfolio" component={Portfolio} />
                   <Route path="/login" component={LoginQuery} />

@@ -9,6 +9,8 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Ta
 // TODO: add types
 import * as T from './types'
 
+import { CoinLink } from './CoinLink'
+
 const CoinsListPaper = styled(Paper)`
   width: 100%;
   margin-top: 5px;
