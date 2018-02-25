@@ -10,7 +10,10 @@ import gql from 'graphql-tag'
 
 import { NavBar } from '@components/NavBar'
 
+import * as actions from './actions'
+
 import Auth0Lock from 'auth0-lock'
+import { withErrorFallback } from '@hoc';
 
 const SWrapper = styled.div`
   display: flex;
@@ -72,8 +75,8 @@ class Login extends Component {
           profile,
           login: !prevState.login,
         }))
-
-        console.log(1111, this.state)
+        this.props.storeLogin(profile)
+        console.log(1111, this.state, this.props)
         localStorage.setItem('token', authResult.idToken)
         this.createUser(profile)
       })
@@ -130,4 +133,19 @@ const createUser = gql`
   }
 `
 
-export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)
+const mapStateToProps = (state: any) => ({
+  user: state.login.user
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  storeLogin: (profile) => dispatch(actions.storeLogin(profile)),
+  storeLogout: () => dispatch(actions.storeLogout())
+})
+
+export const LoginQuery = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  graphql(createUser, { name: 'createUser' }),
+  withErrorFallback
+)(Login)
+
+// export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)
