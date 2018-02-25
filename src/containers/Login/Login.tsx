@@ -71,10 +71,10 @@ class Login extends Component {
           // Handle error
           return
         }
-        this.setState(prevState => ({
-          profile,
-          login: !prevState.login,
-        }))
+        // this.setState(prevState => ({
+        //   profile,
+        //   login: !prevState.login,
+        // }))
         this.props.storeLogin(profile)
         console.log(1111, this.state, this.props)
         localStorage.setItem('token', authResult.idToken)
@@ -97,11 +97,11 @@ class Login extends Component {
     //   console.warn('already logged in')
     //   this.props.router.replace('/')
     // }
-    const { login, profile } = this.state
+    const { loginStatus, user } = this.props
     return (
       <SWrapper>
-        {!login && <Button onClick={this._showLogin}>Log in</Button>}
-        {login && <Button>{profile.name}</Button>}
+        {!loginStatus && <Button onClick={this._showLogin}>Log in</Button>}
+        {loginStatus && <Button>{user.name}</Button>}
       </SWrapper>
     )
   }
@@ -134,7 +134,8 @@ const createUser = gql`
 `
 
 const mapStateToProps = (state: any) => ({
-  user: state.login.user
+  user: state.login.user,
+  loginStatus: state.login.loginStatus
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
