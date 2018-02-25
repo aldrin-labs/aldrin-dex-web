@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
+import Menu, { MenuItem } from 'material-ui/Menu'
+
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
@@ -26,8 +28,7 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      login: false,
-      user: null,
+      anchorEl: null,
     }
     const auth0Options = {
       auth: {
@@ -40,6 +41,18 @@ class Login extends Component {
       oidcConformant: true,
     }
     this._lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
+  }
+
+  handleMenu = (event: any) => {
+    this.setState({ anchorEl: event.currentTarget })
+  }
+
+  handleClose = () => {
+    this.setState({ anchorEl: null })
+  }
+
+  handleLogout = () => {
+    this.props.storeLogout()
   }
 
   createUser(profile) {
@@ -98,10 +111,29 @@ class Login extends Component {
     //   this.props.router.replace('/')
     // }
     const { loginStatus, user } = this.props
+    const { anchorEl } = this.state
+    const open = Boolean(anchorEl)
     return (
       <SWrapper>
         {!loginStatus && <Button onClick={this._showLogin}>Log in</Button>}
-        {loginStatus && <Button>{user.name}</Button>}
+        {loginStatus && <div><Menu
+                  id="menu-appbar"
+                  anchorEl={anchorEl}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={open}
+                  onClose={this.handleClose}
+                >
+                  <MenuItem onClick={this.handleClose}>Portfolio</MenuItem>
+                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                  <MenuItem onClick={this.handleLogout}>Log out</MenuItem>
+                </Menu><Button onClick={this.handleMenu}>{user.name}</Button></div>}
       </SWrapper>
     )
   }
