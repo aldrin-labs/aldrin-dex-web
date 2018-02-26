@@ -7,6 +7,7 @@ import { applyMiddleware, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { createEpicMiddleware } from 'redux-observable'
 import { persistReducer, persistStore } from 'redux-persist'
+import hardSet from 'redux-persist/lib/stateReconciler/hardSet'
 import storage from 'redux-persist/lib/storage'
 
 const history = createHistory()
@@ -20,6 +21,8 @@ const middlewares = [epicsMiddleware, routesMiddleware]
 const persistConfig = {
   key: 'root',
   storage,
+  stateReconciler: hardSet,
+  whitelist: ['login']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

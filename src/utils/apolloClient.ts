@@ -47,4 +47,5 @@ export const client = new ApolloClient({
   link: ApolloLink.from([authLink, link]),
   cache,
   connectToDevTools: true,
+  queryDeduplication: true,
 })

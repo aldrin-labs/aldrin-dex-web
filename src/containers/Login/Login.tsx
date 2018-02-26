@@ -1,15 +1,32 @@
-import { withFormik } from 'formik'
-import React, { Component, Fragment, PropTypes } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
+import Menu, { MenuItem } from 'material-ui/Menu'
+
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import { NavBar } from '@components/NavBar'
 
+import * as actions from './actions'
+
 import Auth0Lock from 'auth0-lock'
+import { withErrorFallback } from '@hoc'
+
+const SLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+  border-radius: 0px;
+
+  &:hover {
+    color: palevioletred;
+  }
+`
 
 const SWrapper = styled.div`
   display: flex;
@@ -22,8 +39,7 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      login: false,
-      user: null,
+      anchorEl: null,
     }
     const auth0Options = {
       auth: {
@@ -38,23 +54,35 @@ class Login extends Component {
     this._lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
   }
 
+  handleMenu = (event: any) => {
+    this.setState({ anchorEl: event.currentTarget })
+  }
+
+  handleClose = () => {
+    this.setState({ anchorEl: null })
+  }
+
+  handleLogout = () => {
+    this.props.storeLogout()
+  }
+
   createUser(profile) {
-    console.log(window.localStorage.getItem('token'))
+    // console.log(9999, window.localStorage.getItem('token'))
     const variables = {
       idToken: window.localStorage.getItem('token'),
       emailAddress: profile.email,
       name: profile.nickname,
       emailSubscription: true, // ;)
     }
-    console.log(variables)
+    // console.log(variables)
     this.props
       .createUser({ variables })
       .then(response => {
-        console.log(response)
+        // console.log(response)
         this.props.router.replace('/')
       })
       .catch(e => {
-        console.error(e)
+        // console.error(e)
         this.props.router.replace('/')
       })
   }
@@ -67,11 +95,12 @@ class Login extends Component {
           // Handle error
           return
         }
-        this.setState(prevState => ({
-          profile,
-          login: !prevState.login,
-        }))
-        console.log(1111, this.state)
+        // this.setState(prevState => ({
+        //   profile,
+        //   login: !prevState.login,
+        // }))
+        this.props.storeLogin(profile)
+        console.log(1111, this.state, this.props)
         localStorage.setItem('token', authResult.idToken)
         this.createUser(profile)
       })
@@ -92,11 +121,37 @@ class Login extends Component {
     //   console.warn('already logged in')
     //   this.props.router.replace('/')
     // }
-    const { login, profile } = this.state
+    const { loginStatus, user } = this.props
+    const { anchorEl } = this.state
+    const open = Boolean(anchorEl)
     return (
       <SWrapper>
-        {!login && <Button onClick={this._showLogin}>Log in</Button>}
-        {login && <Button>{profile.name}</Button>}
+        {!loginStatus && <Button onClick={this._showLogin}>Log in</Button>}
+        {loginStatus && (
+          <div>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={this.handleClose}
+            >
+              <SLink to="/portfolio">
+                <MenuItem onClick={this.handleClose}>Portfolio</MenuItem>
+              </SLink>
+              <SLink to="/settings"><MenuItem onClick={this.handleClose}>Settings</MenuItem></SLink>
+              <MenuItem onClick={this.handleLogout}>Log out</MenuItem>
+            </Menu>
+            <Button onClick={this.handleMenu}>{user.name}</Button>
+          </div>
+        )}
       </SWrapper>
     )
   }
@@ -128,4 +183,20 @@ const createUser = gql`
   }
 `
 
-export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)
+const mapStateToProps = (state: any) => ({
+  user: state.login.user,
+  loginStatus: state.login.loginStatus,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  storeLogin: profile => dispatch(actions.storeLogin(profile)),
+  storeLogout: () => dispatch(actions.storeLogout()),
+})
+
+export const LoginQuery = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  graphql(createUser, { name: 'createUser' }),
+  withErrorFallback
+)(Login)
+
+// export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)

@@ -9,6 +9,8 @@ import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Ta
 // TODO: add types
 import * as T from './types'
 
+import { CoinLink } from './CoinLink'
+
 const CoinsListPaper = styled(Paper)`
   width: 100%;
   margin-top: 5px;
@@ -60,44 +62,48 @@ export const CoinsListHead = ({ tableRows }: T.ICoinsTableList[]) => (
 )
 
 export const CoinsListBody = ({ tableData }: any) => {
-  console.log(tableData);
   return (
-  <TableBody>
-    {tableData.map((coin: any) => (
-      <TableRow key={nanoid()}>
-        <TableCell padding={'none'}>
-          <CellTypography>{coin.rank}</CellTypography>
-        </TableCell>
-        <TableCell padding={'none'}>
-          <CellTypography>{coin.name}</CellTypography>
-        </TableCell>
-        <TableCell padding={'none'}>
-          <CellTypography>
-            $<FormattedNumber value={parseFloat(coin.priceUSD).toFixed(2)} />
-          </CellTypography>
-        </TableCell>
-        {/* <TableCell padding={'none'}>
+    <TableBody>
+      {tableData.map((coin: any) => (
+        <TableRow key={coin._id}>
+          <TableCell padding={'none'}>
+            <CellTypography>{coin.rank}</CellTypography>
+          </TableCell>
+          <TableCell padding={'none'}>
+            <CellTypography>
+              <CoinLink assetId={coin._id} name={coin.name} />
+            </CellTypography>
+          </TableCell>
+          <TableCell padding={'none'}>
+            <CellTypography>
+              $<FormattedNumber value={parseFloat(coin.priceUSD).toFixed(2)} />
+            </CellTypography>
+          </TableCell>
+          {/* <TableCell padding={'none'}>
           <CellTypography>
             <CurrencyGrow grow={!coin.percent_change_24h.toString().includes('-')}>{coin.percent_change_24h}%</CurrencyGrow>
           </CellTypography>
         </TableCell> */}
-        <TableCell padding={'none'}>
-          <CellTypography>
-            $<FormattedNumber value={0} />
-          </CellTypography>
-        </TableCell>
-        <TableCell padding={'none'}>
-          <CellTypography>
-            $<FormattedNumber value={0} />
-          </CellTypography>
-        </TableCell>
-        <TableCell padding={'none'}>
-          <CellTypography>$<FormattedNumber value={coin.totalSupply} /></CellTypography>
-        </TableCell>
-      </TableRow>
-    ))}
-  </TableBody>
-)}
+          <TableCell padding={'none'}>
+            <CellTypography>
+              $<FormattedNumber value={0} />
+            </CellTypography>
+          </TableCell>
+          <TableCell padding={'none'}>
+            <CellTypography>
+              $<FormattedNumber value={0} />
+            </CellTypography>
+          </TableCell>
+          <TableCell padding={'none'}>
+            <CellTypography>
+              $<FormattedNumber value={coin.totalSupply} />
+            </CellTypography>
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  )
+}
 
 export const CoinsList = ({ data }: any) => (
   <CoinsListPaper>
