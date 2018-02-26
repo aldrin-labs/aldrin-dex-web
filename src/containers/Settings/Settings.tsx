@@ -19,6 +19,7 @@ const InnerForm = (
   props
 ) => (
   <form onSubmit={handleSubmit}>
+  Exchange
     <input
       type="text"
       name="exchange"
@@ -27,8 +28,11 @@ const InnerForm = (
       value={values.exchange}
     />
     {touched.exchange && errors.exchange && <div>{errors.exchange}</div>}
-    <input type="text" name="key" onChange={handleChange} onBlur={handleBlur} value={values.key} />
-    {touched.key && errors.key && <div>{errors.key}</div>}
+    Token
+    <input type="text" name="token" onChange={handleChange} onBlur={handleBlur} value={values.token} />
+    {touched.token && errors.token && <div>{errors.token}</div>}
+    Name
+    <input type="text" name="name" onChange={handleChange} onBlur={handleBlur} value={values.name} />
     <button type="submit" disabled={isSubmitting}>
       Add key
     </button>
@@ -36,32 +40,35 @@ const InnerForm = (
 )
 
 const addExchangeKey = gql`
-  mutation addExchangeKey($exchange: String!, $key: String!) {
-    addExchangeKey(exchange: $exchange, key: $key)
+  mutation addExchangeKey($exchange: String, $token: String, $name: String) {
+    addExchangeKey(exchange: $exchange, token: $token, name: $name) {
+      name
+    }
   }
 `
 
 const MyForm = withFormik({
   mapPropsToValues: props => ({
     exchange: '',
-    key: '',
+    token: '',
+    name: '',
   }),
 
   validationSchema: Yup.object().shape({
     exchange: Yup.string().required('Enter exchange'),
-    key: Yup.string().required('Enter key'),
+    token: Yup.string().required('Enter token'),
   }),
 
   handleSubmit: (
-    { exchange, key },
-    { props, setSubmitting, setErrors /* setValues, setStatus, and other goodies */ }
+    { name, token, exchange },
+    { props, setSubmitting, setErrors }
   ) => {
-    console.log(exchange, key, props.mutate)
+    console.log(name, token, exchange, props.mutate)
     props.mutate({
-      variables: { exchange, key },
+      variables: { name, token, exchange, date: Date.now() },
     })
-    .then(({ data }) => {
-      console.log(data)
+    .then((res) => {
+      console.log(res)
     })
     .catch((error) => {
       console.log(error)
