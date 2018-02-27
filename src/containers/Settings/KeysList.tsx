@@ -5,8 +5,7 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { propType } from 'graphql-anywhere'
 
-import { Loading } from '@components/Loading'
-import { withErrorFallback } from '@hoc'
+import { withErrorFallback, LoaderHOC } from '@hoc'
 
 const getKeys = gql`
   query getKeys {
@@ -32,12 +31,6 @@ const getKeys = gql`
   }
 `
 
-const renderWhileLoading = (component, propName = 'data') =>
-  branch(props => props[propName] && props[propName].loading, renderComponent(component))
-
-const renderForError = (component, propName = 'data') =>
-  branch(props => props[propName] && props[propName].error, renderComponent(component))
-
 const Error = props => (
   <span>
     Something went wrong try to <button onClick={props.refetch}>refetch</button>
@@ -47,11 +40,11 @@ const Error = props => (
 const setRefetchProp = (propName = 'data') =>
   withProps(props => ({ refetch: props[propName] && props[propName].data }))
 
-const Keys = props => <div>{console.log(props)}</div>
+const Keys = props => <div>{console.log(prosps)}</div>
 
 export const KeysList = compose(
   graphql(getKeys, { name: 'keysList' }),
-  renderWhileLoading(Loading, 'keysList'),
+  LoaderHOC(null, 'keysList'),
   setRefetchProp('keysList'),
-  renderForError(Error, 'keysList')
+  withErrorFallback
 )(Keys)
