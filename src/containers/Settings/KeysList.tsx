@@ -31,20 +31,10 @@ const getKeys = gql`
   }
 `
 
-const Error = props => (
-  <span>
-    Something went wrong try to <button onClick={props.refetch}>refetch</button>
-  </span>
-)
-
-const setRefetchProp = (propName = 'data') =>
-  withProps(props => ({ refetch: props[propName] && props[propName].data }))
-
-const Keys = props => <div>{console.log(prosps)}</div>
+const Keys = props => <div>{console.log(111, dasprops)}</div>
 
 export const KeysList = compose(
   graphql(getKeys, { name: 'keysList' }),
   LoaderHOC(null, 'keysList'),
-  setRefetchProp('keysList'),
-  withErrorFallback
+  withErrorFallback,
 )(Keys)
