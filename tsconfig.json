@@ -23,6 +23,10 @@
     "plugins": [
       {
         "name": "typescript-styled-plugin"
+      },
+      {
+        "name": "ts-graphql-plugin",
+        "tag": "gql"
       }
     ]
   },
