@@ -18,6 +18,9 @@ import * as actions from './actions'
 import Auth0Lock from 'auth0-lock'
 import { withErrorFallback } from '@hoc'
 
+// TODO: HERE
+import { gqlCreateUser, gqlUserQuery } from './api'
+
 const SLink = styled(Link)`
   color: inherit;
   text-decoration: none;
@@ -157,32 +160,6 @@ class Login extends Component {
   }
 }
 
-const userQuery = gql`
-  query {
-    user {
-      id
-    }
-  }
-`
-
-const createUser = gql`
-  mutation(
-    $idToken: String!
-    $name: String!
-    $emailAddress: String!
-    $emailSubscription: Boolean!
-  ) {
-    createUser(
-      idToken: $idToken
-      name: $name
-      emailAddress: $emailAddress
-      emailSubscription: $emailSubscription
-    ) {
-      _id
-    }
-  }
-`
-
 const mapStateToProps = (state: any) => ({
   user: state.login.user,
   loginStatus: state.login.loginStatus,
@@ -195,8 +172,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export const LoginQuery = compose(
   connect(mapStateToProps, mapDispatchToProps),
-  graphql(createUser, { name: 'createUser' }),
+  graphql(gqlCreateUser, { name: 'createUser' }),
   withErrorFallback
 )(Login)
 
-// export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)
