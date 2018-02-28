@@ -20,7 +20,7 @@ const CoinsListPaper = styled(Paper)`
 const CellTypography = styled.span`
   font-size: 14px;
   font-weight: 500;
-  color: #000;
+  color: #fff;
   line-height: 20px;
 `
 

@@ -18,10 +18,9 @@ const SNav = styled.nav`
   flex-direction: row;
 `
 
-// TODO: Add another icon
 export const NavBar: SFC<{}> = () => (
   <Nav>
-    <AppBar position="static">
+    <AppBar color="inherit" position="static">
     <SNav>
     <Toolbar>
         <NavButton link="/" title="Home" />
