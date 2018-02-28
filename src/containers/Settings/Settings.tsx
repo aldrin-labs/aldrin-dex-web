@@ -5,20 +5,26 @@ import { compose } from 'recompose'
 import Typography from 'material-ui/Typography'
 
 import { Loading } from '@components/Loading'
-import { withErrorFallback } from '@hoc'
+import { withErrorFallback } from '@hoc/index'
+import { AddExchangeKey } from '@components/AddExchangeKey'
 
 import { KeysList } from './KeysList'
 import * as actions from './actions'
 import * as selectors from './selectors'
 
-const SettingsWrapper = (props: any) => {
+const SettingsWrapper = styled.div`
+  display: flex;
+`
+
+const SettingsContainer = (props: any) => {
   return (
-    <div>
+    <SettingsWrapper>
+      <AddExchangeKey />
       <KeysList />
-    </div>
+    </SettingsWrapper>
   )
 }
 
 export const Settings = compose(withErrorFallback)(
-  SettingsWrapper
+  SettingsContainer
 )

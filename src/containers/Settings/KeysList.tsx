@@ -5,36 +5,14 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import { propType } from 'graphql-anywhere'
 
-import { withErrorFallback, LoaderHOC } from '@hoc'
+import { withErrorFallback, LoaderHOC } from '@hoc/index'
 
-const getKeys = gql`
-  query getKeys {
-    getProfile {
-      username
-      imageUrl
-      email
-      emailSubscription
-      portfolioId
-      keys {
-        name
-        date
-        credentials {
-          public
-          secret
-        }
-        exchange {
-          name
-          symbol
-        }
-      }
-    }
-  }
-`
+import { getProfile } from './api'
 
-const Keys = props => <div>{console.log(111, dasprops)}</div>
+const Keys = (props: any) => <div>{console.log(111, dasprops)}</div>
 
 export const KeysList = compose(
-  graphql(getKeys, { name: 'keysList' }),
+  graphql(getProfile, { name: 'profile' }),
   LoaderHOC(null, 'keysList'),
   withErrorFallback,
 )(Keys)
