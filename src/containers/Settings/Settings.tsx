@@ -14,6 +14,7 @@ import * as selectors from './selectors'
 
 const SettingsWrapper = styled.div`
   display: flex;
+  margin: 10px;
 `
 
 const SettingsContainer = (props: any) => {

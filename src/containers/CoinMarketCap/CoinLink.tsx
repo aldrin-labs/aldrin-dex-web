@@ -7,11 +7,9 @@ const SCoinLink = styled(Link)`
   margin: 3px;
   padding: 0px;
   text-decoration: none;
-
   &.selected {
     border-color: rgba(66, 66, 66, 0.2);
   }
-
   &:hover {
     color: palevioletred;
   }
