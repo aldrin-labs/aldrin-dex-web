@@ -1,30 +1,18 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Auth0Lock from 'auth0-lock'
 import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 
 import Button from 'material-ui/Button'
-import TextField from 'material-ui/TextField'
-import Menu, { MenuItem } from 'material-ui/Menu'
 
 import { withErrorFallback } from '@hoc/index'
 
 import * as actions from './actions'
 import { gqlCreateUser } from './api'
-
-const SLink = styled(Link)`
-  color: inherit;
-  text-decoration: none;
-  border-radius: 0px;
-
-  &:hover {
-    color: palevioletred;
-  }
-`
+import { LoginMenu } from './LoginMenu'
 
 const SWrapper = styled.div`
   display: flex;
@@ -108,31 +96,14 @@ class Login extends Component {
       <SWrapper>
         {!loginStatus && <Button onClick={this.showLogin}>Log in</Button>}
         {loginStatus && (
-          <div>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={this.handleClose}
-            >
-              <SLink to="/portfolio">
-                <MenuItem onClick={this.handleClose}>Portfolio</MenuItem>
-              </SLink>
-              <SLink to="/settings">
-                <MenuItem onClick={this.handleClose}>Settings</MenuItem>
-              </SLink>
-              <MenuItem onClick={this.handleLogout}>Log out</MenuItem>
-            </Menu>
-            <Button onClick={this.handleMenu}>{user.name}</Button>
-          </div>
+          <LoginMenu
+            anchorEl={anchorEl}
+            open={open}
+            handleClose={this.handleClose}
+            handleMenu={this.handleMenu}
+            handleLogout={this.handleLogout}
+            userName={user.name}
+          />
         )}
       </SWrapper>
     )
