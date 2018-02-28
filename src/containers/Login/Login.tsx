@@ -21,7 +21,7 @@ const SWrapper = styled.div`
   justify-content: center;
 `
 
-class Login extends Component {
+class LoginQuery extends Component {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -120,8 +120,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   storeLogout: () => dispatch(actions.storeLogout()),
 })
 
-export const LoginQuery = compose(
+export const Login = compose(
   connect(mapStateToProps, mapDispatchToProps),
   graphql(gqlCreateUser, { name: 'createUser' }),
   withErrorFallback
-)(Login)
+)(LoginQuery)

@@ -4,7 +4,7 @@ import React, { SFC } from 'react'
 import styled from 'styled-components'
 
 import { NavButton } from './NavButton'
-import { LoginQuery } from '@containers/Login'
+import { Login } from '@containers/Login'
 
 const Nav = styled.div`
   width: '100%';
@@ -24,9 +24,6 @@ export const NavBar: SFC<{}> = () => (
     <AppBar position="static">
     <SNav>
     <Toolbar>
-        {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-          <MenuIcon />
-        </IconButton> */}
         <NavButton link="/" title="Home" />
         <NavButton link="/market" title="Coin Market" />
         <NavButton link="/profile" title="Profile" />
@@ -34,7 +31,7 @@ export const NavBar: SFC<{}> = () => (
         <NavButton link="/screener" title="Screener" />
         <NavButton link="/chart" title="Chart" />
       </Toolbar>
-      <Toolbar><LoginQuery /></Toolbar>
+      <Toolbar><Login /></Toolbar>
     </SNav>
     </AppBar>
   </Nav>

@@ -12,6 +12,7 @@ import { NavBar } from '@components/NavBar'
 
 const theme = createMuiTheme({
   palette: {
+    type: 'dark',
     primary: {
       light: '#FAFAFA',
       main: '#FAFAFA',
@@ -31,19 +32,10 @@ if (process.browser) {
   window.theme = theme
 }
 
-const Yoba = (props) => <div>{console.log(props)}</div>
-
-const YobaX = compose(
-  connect(state => ({
-    test: console.log(12345, state)
-  }))
-)(Yoba)
-
 export const App = ({ children }: any) => (
     <MuiThemeProvider theme={theme}>
       <Reboot />
       <NavBar />
-      <YobaX />
       {children}
     </MuiThemeProvider>
 )
