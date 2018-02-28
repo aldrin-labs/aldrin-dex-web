@@ -12,7 +12,6 @@ export const gqlAddExchangeKey = gql`
       name
       apiKey
       secret
-      exchange
       date
     }
   }

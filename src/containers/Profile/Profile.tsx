@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import { ProfileTable } from './ProfileTable'
 import { ProfileKeys } from './ProfileKeys'
+import { AddExchangeKey } from '@components/AddExchangeKey'
 
 const SWrapper = styled.div`
   display: flex;
@@ -11,7 +12,8 @@ const SWrapper = styled.div`
 
 export const Profile = () => (
   <SWrapper>
-    <ProfileKeys />
-    <ProfileTable />
+    {/* <ProfileKeys /> */}
+    {/* <ProfileTable /> */}
+    <AddExchangeKey />
   </SWrapper>
 )
