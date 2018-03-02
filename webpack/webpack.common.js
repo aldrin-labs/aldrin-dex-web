@@ -29,6 +29,7 @@ const config = {
     ],
   },
   plugins: [
+    new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: `public/index.html`,
       // favicon: `public/favicon.ico`

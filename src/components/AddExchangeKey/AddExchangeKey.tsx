@@ -94,7 +94,7 @@ const AddExchangeKeyForm = ({
   handleReset,
   setFieldValue,
   setFieldTouched,
-  isSubmitting
+  isSubmitting,
 }: any) => (
   <SPaper>
     <Typography variant="title">Add new key</Typography>

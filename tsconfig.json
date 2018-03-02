@@ -8,12 +8,17 @@
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
     "module": "esnext",
     "moduleResolution": "node",
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
     "lib": ["es2017", "dom"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ],
     "paths": {
       "@components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
