@@ -3,11 +3,12 @@ import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
 import Typography from 'material-ui/Typography'
-import { withStyles } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 const SAppBar = styled(AppBar)`
 `
@@ -17,12 +18,17 @@ const SWrapper = styled.div`
   max-width: 360px;
 `
 
+const SelectTitle = styled(Typography)`
+  letter-spacing: 0.5px;
+  font-size: 20px !important;
+`
+
 class AccountSelector extends React.Component {
   state = {
     checked: [0],
   }
 
-  handleToggle = value => () => {
+  handleToggle = (value: any) => () => {
     const { checked } = this.state
     const currentIndex = checked.indexOf(value)
     const newChecked = [...checked]
@@ -44,9 +50,9 @@ class AccountSelector extends React.Component {
       <SWrapper>
         <SAppBar position="static" color="primary">
           <Toolbar>
-            <Typography type="title" color="inherit">
+            <SelectTitle variant="title" color="inherit">
               Accounts & Wallets
-            </Typography>
+            </SelectTitle>
           </Toolbar>
         </SAppBar>
         <List>

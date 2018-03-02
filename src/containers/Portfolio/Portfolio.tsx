@@ -4,14 +4,13 @@ import styled from 'styled-components'
 import { PortfolioTable } from './PortfolioTable'
 import { SelectAccount } from './SelectAccount'
 
-const SWrapper = styled.div`
+const PortfolioContainer = styled.div`
   display: flex;
-  margin-top: 5px;
 `
 
 export const Portfolio = () => (
-    <SWrapper>
+    <PortfolioContainer>
     <SelectAccount />
     <PortfolioTable />
-  </SWrapper>
+  </PortfolioContainer>
 )

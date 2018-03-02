@@ -17,7 +17,7 @@ function createData(name, currency, available, held, total, exchangeRate, BTCVal
 }
 const SPaper = styled(Paper)`
   width: 100%;
-  margin-top: 3px;
+  margin: 24px;
 `
 
 const STableWrapper = styled.div`
