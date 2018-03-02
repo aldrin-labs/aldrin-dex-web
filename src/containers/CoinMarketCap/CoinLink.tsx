@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { SFC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+
+import * as T from './types'
 
 const SCoinLink = styled(Link)`
   color: inherit;
@@ -15,9 +17,6 @@ const SCoinLink = styled(Link)`
   }
 `
 
-export const CoinLink = (props) => (
-  <SCoinLink to={props.name}>
-    {props.children}
-  </SCoinLink>
+export const CoinLink: SFC<T.CoinLink> = ({ name, children }) => (
+  <SCoinLink to={name}>{children}</SCoinLink>
 )
-

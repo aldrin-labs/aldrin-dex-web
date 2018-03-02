@@ -76,6 +76,7 @@ export const CoinsListBody = ({ tableData }: any) => {
           </TableCell>
           <TableCell padding={'none'}>
             <CellTypography>
+              {console.log(coin)}
               $<FormattedNumber value={parseFloat(coin.priceUSD).toFixed(2)} />
             </CellTypography>
           </TableCell>
