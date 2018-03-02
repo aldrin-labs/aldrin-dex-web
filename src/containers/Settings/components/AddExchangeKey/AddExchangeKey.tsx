@@ -9,8 +9,12 @@ import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
+import Select from 'material-ui/Select'
+import { MenuItem } from 'material-ui/Menu'
+import { FormControl, FormHelperText } from 'material-ui/Form'
+import { InputLabel } from 'material-ui/Input'
 
-import { gqlAddExchangeKey } from './api'
+import * as API from './api'
 
 const FormContainer = styled.form`
   display: flex;
@@ -158,6 +162,6 @@ const AddExchangeKeyForm = ({
   </SPaper>
 )
 
-export const AddExchangeKey = compose(graphql(gqlAddExchangeKey), formikEnhancer)(
+export const AddExchangeKey = compose(graphql(API.addExchangeKey), formikEnhancer)(
   AddExchangeKeyForm
 )

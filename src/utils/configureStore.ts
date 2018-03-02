@@ -22,7 +22,7 @@ const persistConfig = {
   key: 'root',
   storage,
   stateReconciler: hardSet,
-  whitelist: ['login']
+  whitelist: ['login', 'portfolio']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

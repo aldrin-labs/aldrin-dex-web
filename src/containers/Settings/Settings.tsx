@@ -1,30 +1,31 @@
 import React from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
+import { graphql } from 'react-apollo'
 
 import Typography from 'material-ui/Typography'
 
-import { Loading, AddExchangeKey } from '@common'
+import { Loading } from '@common'
 import { withErrorFallback } from '@hoc'
 
-import { KeysList } from './components'
+import { KeysList, AddExchangeKey } from './components'
 import * as actions from './actions'
 import * as selectors from './selectors'
+import * as API from './api'
 
 const SettingsWrapper = styled.div`
   display: flex;
   margin: 10px;
 `
 
-const SettingsContainer = (props: any) => {
+const SettingsContainer = ({ profile }: any) => {
   return (
     <SettingsWrapper>
-      <AddExchangeKey />
+      <AddExchangeKey  />
       <KeysList />
     </SettingsWrapper>
   )
 }
 
-export const Settings = compose(withErrorFallback)(
-  SettingsContainer
-)
+export const Settings = compose(
+ withErrorFallback)(SettingsContainer)

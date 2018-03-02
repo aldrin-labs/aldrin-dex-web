@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const gqlAddExchangeKey = gql`
+export const addExchangeKey = gql`
   mutation addExchangeKey(
     $name: String
     $apiKey: String

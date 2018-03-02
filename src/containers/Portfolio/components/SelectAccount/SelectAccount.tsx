@@ -9,8 +9,10 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+import { graphql } from 'react-apollo'
 
 import * as actions from '../../actions'
+import * as API from './api'
 
 const SAppBar = styled(AppBar)`
 `
@@ -26,9 +28,6 @@ const SelectTitle = styled(Typography)`
 `
 
 class AccountSelector extends React.Component {
-  // state = {
-  //   checked: [0],
-  // }
 
   handleToggle = (value: any) => () => {
     const { selectedAccounts } = this.props
@@ -40,7 +39,7 @@ class AccountSelector extends React.Component {
     } else {
       newChecked.splice(currentIndex, 1)
     }
-    console.log(newChecked)
+    console.log(this.props.keys.getProfile)
     this.props.selectAccount(newChecked)
   }
 
@@ -48,7 +47,6 @@ class AccountSelector extends React.Component {
 
     return (
       <SWrapper>
-        {console.log(this.props)}
         <SAppBar position="static" color="primary">
           <Toolbar>
             <SelectTitle variant="title" color="inherit">
@@ -57,15 +55,15 @@ class AccountSelector extends React.Component {
           </Toolbar>
         </SAppBar>
         <List>
-          {[0, 1, 2, 3].map(value => (
+          {[0, 1, 2, 3, 4].map((value) => (
             <ListItem key={value} dense button onClick={this.handleToggle(value)}>
               <Checkbox checked={this.props.selectedAccounts.indexOf(value) !== -1} tabIndex={-1} disableRipple />
               <ListItemText primary={`Account ${value + 1}`} />
-              <ListItemSecondaryAction>
+              {/* <ListItemSecondaryAction>
                 <IconButton aria-label="Comments">
                   <Autorenew />
                 </IconButton>
-              </ListItemSecondaryAction>
+              </ListItemSecondaryAction> */}
             </ListItem>
           ))}
         </List>
@@ -86,5 +84,6 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 
 export const SelectAccount = compose(
+  graphql(API.getKeys, { name: 'keys' }),
   connect(mapStateToProps, mapDispatchToProps)
 )(AccountSelector)
