@@ -20,7 +20,7 @@ import LastPageIcon from 'material-ui-icons/LastPage'
 
 import { withErrorFallback, LoaderHOC } from '@hoc/index'
 
-import { getProfile } from './api'
+import { getProfile } from '../../api'
 
 const Keys = (props: any) => <div>{console.log(111, props)}</div>
 

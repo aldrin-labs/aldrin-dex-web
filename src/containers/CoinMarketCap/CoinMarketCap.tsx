@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 
-import { CoinsList } from '@components/CoinsList'
+import { CoinsList } from '@common'
 import * as API from './api'
 
 class CoinMarketCap extends Component {

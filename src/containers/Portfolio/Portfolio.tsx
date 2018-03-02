@@ -1,4 +1,4 @@
-import React, { Fragment, SFC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 import { PortfolioTable, SelectAccount } from './components'

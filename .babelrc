@@ -26,7 +26,8 @@
         "@components": "./src/components",
         "@containers": "./src/containers",
         "@utils": "./src/utils",
-        "@hoc": "./src/hoc"
+        "@hoc": "./src/hoc",
+        "@common": "./src/common"
       }
     }]]
 }
