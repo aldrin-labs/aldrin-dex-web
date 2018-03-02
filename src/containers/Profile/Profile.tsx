@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { ProfileTable } from './ProfileTable'
 import { ProfileKeys } from './ProfileKeys'
-import { AddExchangeKey } from '@components/AddExchangeKey'
+import { AddExchangeKey } from '@common'
 
 const SWrapper = styled.div`
   display: flex;

@@ -12,7 +12,7 @@ import { withErrorFallback } from '@hoc/index'
 
 import * as actions from './actions'
 import { gqlCreateUser } from './api'
-import { LoginMenu } from './LoginMenu'
+import { LoginMenu } from './components'
 
 const SWrapper = styled.div`
   display: flex;

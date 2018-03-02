@@ -2,13 +2,17 @@ import React, { Component, SFC } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-
 import Checkbox from 'material-ui/Checkbox'
 import Paper from 'material-ui/Paper'
-import Table, { TableBody, TableCell, TableFooter, TablePagination, TableRow } from 'material-ui/Table'
+import Table, {
+  TableBody,
+  TableCell,
+  TableFooter,
+  TablePagination,
+  TableRow,
+} from 'material-ui/Table'
 
-import { PortfolioTableHead } from './PortfolioTableHead'
-import { PortfolioTableToolbar } from './PortfolioTableToolbar'
+import { PortfolioTableHead, PortfolioTableToolbar } from '../'
 
 let counter = 0
 function createData(name, currency, available, held, total, exchangeRate, BTCValue) {
@@ -81,7 +85,10 @@ export class PortfolioTable extends Component {
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1))
     } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1))
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      )
     }
 
     this.setState({ selected: newSelected })

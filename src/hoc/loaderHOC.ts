@@ -1,6 +1,6 @@
 import { branch, renderComponent } from 'recompose'
 
-import { Loading } from '@components/Loading'
+import { Loading } from '@common/Loading'
 
 export const LoaderHOC = (component: any, propName = 'data') =>
   branch(
