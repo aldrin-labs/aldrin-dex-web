@@ -5,6 +5,8 @@ import { ProfileTable } from './ProfileTable'
 import { ProfileKeys } from './ProfileKeys'
 import { AddExchangeKey } from '@common'
 
+import { Test } from './Test'
+
 const SWrapper = styled.div`
   display: flex;
   margin-top: 5px;
@@ -14,6 +16,7 @@ export const Profile = () => (
   <SWrapper>
     {/* <ProfileKeys /> */}
     {/* <ProfileTable /> */}
-    <AddExchangeKey />
+    {/* <AddExchangeKey /> */}
+    <Test />
   </SWrapper>
 )

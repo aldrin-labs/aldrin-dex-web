@@ -28,6 +28,14 @@ const STextField = styled(TextField)`
   align-self: center;
 `
 
+const SExchangeSelect = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 30px 5px 5px 5px;
+  align-self: center;
+`
+
 const SPaper = styled(Paper)`
   display: flex;
   width: 300px;
@@ -69,16 +77,14 @@ const formikEnhancer = withFormik({
     secret: '',
     exchange: '',
   }),
-  handleSubmit: async (values, { props: { mutate }, setSubmitting }) => {
+  handleSubmit: async (values, { props: { addExchangeKey }, setSubmitting}) => {
     const variables = {
       ...values,
       date: Date.now(),
     }
-
-    console.log(111)
-
+      {console.log(99999, addExchangeKey)}
     try {
-      await mutate({ variables })
+      await addExchangeKey({ variables })
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
@@ -99,6 +105,7 @@ const AddExchangeKeyForm = ({
   setFieldValue,
   setFieldTouched,
   isSubmitting,
+  getExchangesList
 }: any) => (
   <SPaper>
     <Typography variant="title">Add new key</Typography>
@@ -142,7 +149,7 @@ const AddExchangeKeyForm = ({
         margin="normal"
         helperText={touched.secret && errors.secret && <FormError>{errors.secret}</FormError>}
       />
-      <STextField
+      {/* <STextField
         error={touched.exchange && !!errors.exchange}
         id="exchange"
         name="exchange"
@@ -154,7 +161,30 @@ const AddExchangeKeyForm = ({
         type="text"
         margin="normal"
         helperText={touched.exchange && errors.exchange && <FormError>{errors.exchange}</FormError>}
-      />
+      /> */}
+      <SExchangeSelect>
+        <InputLabel htmlFor="exchange">Exchange</InputLabel>
+        <Select
+          value={values.exchange}
+          onChange={handleChange}
+          inputProps={{
+            name: 'exchange',
+            id: 'exchange',
+          }}
+        >
+          {console.log(2222, values)}
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          {console.log(getExchangesList)}
+          {!getExchangesList.loading &&
+            getExchangesList.exchangePagination.items.map(({ _id, name }) => (
+              <MenuItem key={_id} value={name}>
+                {name}
+              </MenuItem>
+            ))}
+        </Select>
+      </SExchangeSelect>
       <Button type="submit" disabled={!dirty || isSubmitting}>
         Add key
       </Button>
@@ -162,6 +192,8 @@ const AddExchangeKeyForm = ({
   </SPaper>
 )
 
-export const AddExchangeKey = compose(graphql(API.addExchangeKey), formikEnhancer)(
-  AddExchangeKeyForm
-)
+export const AddExchangeKey = compose(
+  graphql(API.addExchangeKey, { name: 'addExchangeKey' }),
+  graphql(API.getExchangesList, { name: 'getExchangesList' }),
+  formikEnhancer
+)(AddExchangeKeyForm)
