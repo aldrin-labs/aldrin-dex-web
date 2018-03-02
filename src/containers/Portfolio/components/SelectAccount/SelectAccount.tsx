@@ -10,6 +10,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
+import * as actions from '../../actions'
+
 const SAppBar = styled(AppBar)`
 `
 
@@ -24,30 +26,29 @@ const SelectTitle = styled(Typography)`
 `
 
 class AccountSelector extends React.Component {
-  state = {
-    checked: [0],
-  }
+  // state = {
+  //   checked: [0],
+  // }
 
   handleToggle = (value: any) => () => {
-    const { checked } = this.state
-    const currentIndex = checked.indexOf(value)
-    const newChecked = [...checked]
+    const { selectedAccounts } = this.props
+    const currentIndex = selectedAccounts.indexOf(value)
+    const newChecked = [...selectedAccounts]
 
     if (currentIndex === -1) {
       newChecked.push(value)
     } else {
       newChecked.splice(currentIndex, 1)
     }
-
-    this.setState({
-      checked: newChecked,
-    })
+    console.log(newChecked)
+    this.props.selectAccount(newChecked)
   }
 
   render() {
 
     return (
       <SWrapper>
+        {console.log(this.props)}
         <SAppBar position="static" color="primary">
           <Toolbar>
             <SelectTitle variant="title" color="inherit">
@@ -58,7 +59,7 @@ class AccountSelector extends React.Component {
         <List>
           {[0, 1, 2, 3].map(value => (
             <ListItem key={value} dense button onClick={this.handleToggle(value)}>
-              <Checkbox checked={this.state.checked.indexOf(value) !== -1} tabIndex={-1} disableRipple />
+              <Checkbox checked={this.props.selectedAccounts.indexOf(value) !== -1} tabIndex={-1} disableRipple />
               <ListItemText primary={`Account ${value + 1}`} />
               <ListItemSecondaryAction>
                 <IconButton aria-label="Comments">
@@ -73,5 +74,17 @@ class AccountSelector extends React.Component {
   }
 }
 
+const mapStateToProps = (state) => ({
+  portfolio: state.portfolio,
+  selectedAccounts: state.portfolio.selectedAccounts
+})
+
+
+const mapDispatchToProps = (dispatch: any) => ({
+  selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts))
+})
+
+
 export const SelectAccount = compose(
+  connect(mapStateToProps, mapDispatchToProps)
 )(AccountSelector)
