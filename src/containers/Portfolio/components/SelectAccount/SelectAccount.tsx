@@ -73,4 +73,5 @@ class AccountSelector extends React.Component {
   }
 }
 
-export const SelectAccount = AccountSelector
+export const SelectAccount = compose(
+)(AccountSelector)

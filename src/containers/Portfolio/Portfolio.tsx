@@ -1,8 +1,7 @@
 import React, { Fragment, SFC } from 'react'
 import styled from 'styled-components'
 
-import { PortfolioTable } from './PortfolioTable'
-import { SelectAccount } from './SelectAccount'
+import { PortfolioTable, SelectAccount } from './components'
 
 const PortfolioContainer = styled.div`
   display: flex;
