@@ -5,6 +5,7 @@ export const getKeys = gql`
     getProfile {
       portfolioId
       keys {
+        _id
         name
         apiKey
         secret

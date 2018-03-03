@@ -10,12 +10,12 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
+import * as R from 'ramda'
 
 import * as actions from '../../actions'
 import * as API from './api'
 
-const SAppBar = styled(AppBar)`
-`
+const SAppBar = styled(AppBar)``
 
 const SWrapper = styled.div`
   width: 100%;
@@ -28,7 +28,13 @@ const SelectTitle = styled(Typography)`
 `
 
 class AccountSelector extends React.Component {
+  state = {
+    allKeysSelected: false,
+  }
 
+  componentDidMount() {
+    // if(R.equals(this.props.keys.getProfile.keys.map))
+  }
   handleToggle = (value: any) => () => {
     const { selectedAccounts } = this.props
     const currentIndex = selectedAccounts.indexOf(value)
@@ -39,12 +45,24 @@ class AccountSelector extends React.Component {
     } else {
       newChecked.splice(currentIndex, 1)
     }
-    console.log(this.props.keys.getProfile)
     this.props.selectAccount(newChecked)
+    this.props.onLoad(123)
+  }
+
+  handleToggleAll = () => {
+    const allKeys = this.props.keys.getProfile.keys.map(key => key._id)
+    this.setState((prevState, props) => {
+      return { allKeysSelected: !prevState.allKeysSelected };
+    });
+    this.props.selectAllKeys(allKeys)
   }
 
   render() {
-
+    console.log(this.props)
+    if (this.props.keys.loading) {
+      return <Typography variant="title">Loading</Typography>
+    }
+    const { keys } = this.props.keys.getProfile
     return (
       <SWrapper>
         <SAppBar position="static" color="primary">
@@ -55,10 +73,21 @@ class AccountSelector extends React.Component {
           </Toolbar>
         </SAppBar>
         <List>
-          {[0, 1, 2, 3, 4].map((value) => (
-            <ListItem key={value} dense button onClick={this.handleToggle(value)}>
-              <Checkbox checked={this.props.selectedAccounts.indexOf(value) !== -1} tabIndex={-1} disableRipple />
-              <ListItemText primary={`Account ${value + 1}`} />
+          {keys.length === 0 && <Typography variant="title">No keys</Typography>}
+          {keys.length > 0 && (
+            <ListItem dense button onClick={this.handleToggleAll}>
+              <Checkbox checked={this.state.allKeysSelected} disableRipple />
+              <ListItemText primary="Select all" />
+            </ListItem>
+          )}
+          {keys.map(key => (
+            <ListItem key={key._id} dense button onClick={this.handleToggle(key._id)}>
+              <Checkbox
+                checked={this.props.selectedAccounts.indexOf(key._id) !== -1}
+                tabIndex={-1}
+                disableRipple
+              />
+              <ListItemText primary={key.name} />
               {/* <ListItemSecondaryAction>
                 <IconButton aria-label="Comments">
                   <Autorenew />
@@ -72,16 +101,16 @@ class AccountSelector extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: any) => ({
   portfolio: state.portfolio,
-  selectedAccounts: state.portfolio.selectedAccounts
+  selectedAccounts: state.portfolio.selectedAccounts,
 })
-
 
 const mapDispatchToProps = (dispatch: any) => ({
-  selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts))
+  selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts)),
+  onLoad: data => dispatch(actions.onLoad(data)),
+  selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys))
 })
-
 
 export const SelectAccount = compose(
   graphql(API.getKeys, { name: 'keys' }),
