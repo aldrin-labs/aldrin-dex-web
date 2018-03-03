@@ -15,9 +15,19 @@ import Table, {
 import { PortfolioTableHead, PortfolioTableToolbar } from '../'
 
 let counter = 0
-function createData(name, currency, available, held, total, exchangeRate, BTCValue) {
+function createData(data) {
+  const {
+    exchange,
+    name,
+    symbol,
+    availableSupply,
+    totalSupply,
+    maxSupply,
+    priceUSD,
+    percentChangeDay,
+  } = data
   counter += 1
-  return { id: counter, name, currency, available, held, total, exchangeRate, BTCValue }
+  return { id: counter, ...data }
 }
 const SPaper = styled(Paper)`
   width: 100%;
@@ -32,6 +42,21 @@ const STable = styled(Table)`
   min-width: 800px;
 `
 
+const SamplePortfolio = {
+  exchange: 'Gemini',
+  name: 'Ethereum',
+  symbol: 'ETH',
+  availableSupply: '90000',
+  totalSupply: '9000000000',
+  maxSupply: '19999999999999',
+  priceUSD: '9000',
+  percentChangeDay: '400',
+}
+
+const SamplePortfolio2 = {
+
+}
+
 export class PortfolioTable extends Component {
   constructor(props, context) {
     super(props, context)
@@ -41,8 +66,8 @@ export class PortfolioTable extends Component {
       orderBy: 'name',
       selected: [],
       data: [
-        createData('Bitcoin', 'BTC', 9000, 0, 111, 0.333, 0.555),
-        createData('Ethereum', 'Eth', 90010, 0, 1111, 0.3233, 0.5355),
+        createData('Gemini', 'Bitcoin', 'BTC', 9000, 0, 111, 0.333, 0.555),
+        createData('Gemini', 'Ethereum', 'Eth', 90010, 0, 1111, 0.3233, 0.5355),
       ].sort((a, b) => (a.name < b.name ? -1 : 1)),
       page: 0,
       rowsPerPage: 10,

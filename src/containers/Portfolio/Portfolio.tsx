@@ -9,7 +9,7 @@ const PortfolioContainer = styled.div`
 
 export const Portfolio = () => (
     <PortfolioContainer>
-    <SelectAccount />
+    {/* <SelectAccount /> */}
     <PortfolioTable />
   </PortfolioContainer>
 )
