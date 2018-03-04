@@ -22,7 +22,7 @@ const SettingsContainer = ({ profile }: any) => {
   return (
     <SettingsWrapper>
       <AddExchangeKey />
-      <KeysList />
+      {/* <KeysList /> */}
     </SettingsWrapper>
   )
 }

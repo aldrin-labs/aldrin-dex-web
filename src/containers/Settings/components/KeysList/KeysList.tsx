@@ -35,6 +35,12 @@ const columnData = [
   { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
 ]
 
+const columnData1 = [
+  { id: 'name', numeric: false, disablePadding: true, label: 'Gemini' },
+  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
+  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
+]
+
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
@@ -149,6 +155,10 @@ const styles = theme => ({
   },
 });
 
+const SPaper = styled(Paper)`
+  margin: 24px;
+`
+
 class KeysListTable extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -238,7 +248,7 @@ class KeysListTable extends React.Component {
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
-      <Paper>
+      <SPaper>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div>
           <Table>
@@ -300,7 +310,7 @@ class KeysListTable extends React.Component {
             </TableFooter>
           </Table>
         </div>
-      </Paper>
+      </SPaper>
     );
   }
 }

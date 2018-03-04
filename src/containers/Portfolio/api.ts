@@ -17,8 +17,6 @@ export const getPortfolio = gql`
         }
       }
       portfolio {
-        nameTrue
-        nameFalse
         totalShares
         BTCProfitLoss
         USDProfitLoss
@@ -28,34 +26,33 @@ export const getPortfolio = gql`
         currentBTC
         currentTwentyFourHours
         assets {
-        value
-        realizedProfit
-        possibleProfit
-        asset {
-          name
-          symbol
-          totalSupply
-          maxSupply
-          nameTrue
-          nameFalse
+          _id
+          value
+          realizedProfit
+          possibleProfit
+          asset {
+            name
+            symbol
+            totalSupply
+            maxSupply
+            priceUSD
+            percentChangeDay
+          }
+          exchange {
+            name
+            symbol
+          }
+          key {
+            name
+          }
+          totalShares
+          BTCProfitLoss
+          USDProfitLoss
+          twentyFourHourChange
           priceUSD
-          percentChangeDay
+          currentBTC
+          currentUSD
         }
-        exchange {
-          name
-          symbol
-        }
-        key {
-          name
-        }
-        totalShares
-        BTCProfitLoss
-        USDProfitLoss
-        twentyFourHourChange
-        priceUSD
-        currentBTC
-        currentUSD
-      }
       }
     }
   }

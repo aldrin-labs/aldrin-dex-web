@@ -44,14 +44,10 @@ const SPaper = styled(Paper)`
   justify-content: center;
   padding: 15px;
   max-height: 425px;
+  margin: 24px 0px 0px 12px;
 `
 
 const FormError = ({ children }: any) => <Typography color="error">{children}</Typography>
-
-/*
-  TODO:
-    add selector for exchange
-*/
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({

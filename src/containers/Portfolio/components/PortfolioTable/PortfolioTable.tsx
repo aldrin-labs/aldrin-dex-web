@@ -27,8 +27,74 @@ function createData(data) {
     percentChangeDay,
   } = data
   counter += 1
-  return { id: counter, ...data }
+  return { _id: counter, ...data }
 }
+
+const sampleData = [{
+  _id: 1,
+  exchange: {
+    name: 'Gemini'
+  },
+  asset: {
+    name: 'Etherium',
+    symbol: 'ETH',
+    priceUSD: '781',
+  },
+  currentBTC: '11000',
+  currentUSD: '781',
+  twentyFourHourChange: '10%',
+  BTCProfitLoss: '-10%',
+  USDProfitLoss: '-17%',
+},
+{
+  _id: 2,
+  exchange: {
+    name: 'Binance'
+  },
+  asset: {
+    name: 'Etherium',
+    symbol: 'ETH',
+    priceUSD: '781',
+  },
+  currentBTC: '11000',
+  currentUSD: '781',
+  twentyFourHourChange: '10%',
+  BTCProfitLoss: '-10%',
+  USDProfitLoss: '-17%',
+},
+{
+  _id: 3,
+  exchange: {
+    name: 'Gdax'
+  },
+  asset: {
+    name: 'Etherium',
+    symbol: 'ETH',
+    priceUSD: '781',
+  },
+  currentBTC: '11000',
+  currentUSD: '781',
+  twentyFourHourChange: '10%',
+  BTCProfitLoss: '-10%',
+  USDProfitLoss: '-17%',
+},
+{
+  _id: 4,
+  exchange: {
+    name: 'BitCOOOOONEEEECT'
+  },
+  asset: {
+    name: 'Etherium',
+    symbol: 'ETH',
+    priceUSD: '781',
+  },
+  currentBTC: '11000',
+  currentUSD: '781',
+  twentyFourHourChange: '10%',
+  BTCProfitLoss: '-10%',
+  USDProfitLoss: '-17%',
+}]
+
 const SPaper = styled(Paper)`
   width: 100%;
   margin: 24px;
@@ -92,19 +158,19 @@ export class PortfolioTable extends Component {
 
   handleSelectAllClick = (event, checked) => {
     if (checked) {
-      this.setState({ selected: this.state.data.map(n => n.id) })
+      this.setState({ selected: this.state.data.map(n => n._id) })
       return
     }
     this.setState({ selected: [] })
   }
 
-  handleClick = (event, id) => {
+  handleClick = (event, _id) => {
     const { selected } = this.state
-    const selectedIndex = selected.indexOf(id)
+    const selectedIndex = selected.indexOf(_id)
     let newSelected = []
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id)
+      newSelected = newSelected.concat(selected, _id)
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1))
     } else if (selectedIndex === selected.length - 1) {
@@ -127,12 +193,17 @@ export class PortfolioTable extends Component {
     this.setState({ rowsPerPage: event.target.value })
   }
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1
+  isSelected = _id => this.state.selected.indexOf(_id) !== -1
 
   render() {
+    if (this.props.data.loading) {
+      return <div>Loading</div>
+    }
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
     console.log(112233, this.props)
+    const assets = this.props.data.getProfile.portfolio && this.props.data.getProfile.portfolio.assets || sampleData
+    // const assets = sampleData;
     return (
       <SPaper>
         <PortfolioTableToolbar numSelected={selected.length} />
@@ -144,31 +215,33 @@ export class PortfolioTable extends Component {
               orderBy={orderBy}
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
-              rowCount={data.length}
+              rowCount={assets.length}
             />
             <TableBody>
-              {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-                const isSelected = this.isSelected(n.id)
+              {assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+                const isSelected = this.isSelected(n._id)
                 return (
                   <TableRow
                     hover
-                    onClick={event => this.handleClick(event, n.id)}
+                    onClick={event => this.handleClick(event, n._id)}
                     role="checkbox"
                     aria-checked={isSelected}
                     tabIndex={-1}
-                    key={n.id}
+                    key={n._id}
                     selected={isSelected}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox checked={isSelected} />
                     </TableCell>
-                    <TableCell padding="none">{n.name}</TableCell>
-                    <TableCell numeric>{n.currency}</TableCell>
-                    <TableCell numeric>{n.available}</TableCell>
-                    <TableCell numeric>{n.held}</TableCell>
-                    <TableCell numeric>{n.total}</TableCell>
-                    <TableCell numeric>{n.exchangeRate}</TableCell>
-                    <TableCell numeric>{n.BTCValue}</TableCell>
+                    <TableCell padding="none">{n.exchange.name}</TableCell>
+                    <TableCell numeric>{n.asset.name}</TableCell>
+                    <TableCell numeric>{n.asset.symbol}</TableCell>
+                    <TableCell numeric>{n.asset.priceUSD}</TableCell>
+                    <TableCell numeric>{n.currentBTC}</TableCell>
+                    <TableCell numeric>{n.currentUSD}</TableCell>
+                    <TableCell numeric>{n.twentyFourHourChange}</TableCell>
+                    <TableCell numeric>{n.BTCProfitLoss}</TableCell>
+                    <TableCell numeric>{n.USDProfitLoss}</TableCell>
                   </TableRow>
                 )
               })}
