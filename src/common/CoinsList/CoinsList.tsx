@@ -20,7 +20,7 @@ const CoinsListPaper = styled(Paper)`
 const CellTypography = styled.span`
   font-size: 14px;
   font-weight: 500;
-  color: #000;
+  color: #fff;
   line-height: 20px;
 `
 
@@ -76,6 +76,7 @@ export const CoinsListBody = ({ tableData }: any) => {
           </TableCell>
           <TableCell padding={'none'}>
             <CellTypography>
+              {console.log(coin)}
               $<FormattedNumber value={parseFloat(coin.priceUSD).toFixed(2)} />
             </CellTypography>
           </TableCell>

@@ -3,17 +3,16 @@ import {
   Chart,
   CoinMarketCap,
   Home,
-  LoginQuery,
-  NotFound,
   Portfolio,
   Profile,
   Screener,
   Settings,
   AssetInfo,
-} from './containers'
+} from '@containers'
 
 import { client } from '@utils/apolloClient'
 import { persistor, store } from '@utils/configureStore'
+import { NotFound } from '@common/NotFound'
 
 import createHistory from 'history/createBrowserHistory'
 import React from 'react'
@@ -38,14 +37,13 @@ const render = () =>
               <App>
                 <Switch>
                   <Route exact path="/" component={Home} />
-                  <Route path="/market" component={CoinMarketCap} />
+                  <Route exact path="/market" component={CoinMarketCap} />
                   <Route path="/asset/:name" component={AssetInfo} />
-                  <Route path="/profile" component={Profile} />
-                  <Route path="/portfolio" component={Portfolio} />
-                  <Route path="/login" component={LoginQuery} />
-                  <Route path="/chart" component={Chart} />
-                  <Route path="/screener" component={Screener} />
-                  <Route path="/settings" component={Settings} />
+                  <Route exact path="/profile" component={Profile} />
+                  <Route exact path="/portfolio" component={Portfolio} />
+                  <Route exact path="/chart" component={Chart} />
+                  <Route exact path="/screener" component={Screener} />
+                  <Route exact path="/settings" component={Settings} />
                   <Route path="*" component={NotFound} />
                 </Switch>
               </App>

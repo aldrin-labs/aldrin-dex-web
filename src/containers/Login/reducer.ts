@@ -10,11 +10,9 @@ const initialState = {
 export default createReducer(
   {
     [actions.storeLogin]: (state, payload) => {
-      console.log(555555555, state, payload)
       return { ...state, user: { ...payload }, loginStatus: true }
     },
     [actions.storeLogout]: (state, payload) => {
-      console.log(6666666, state, payload)
       return { ...state, user: null, loginStatus: false }
     },
   },

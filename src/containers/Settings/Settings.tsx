@@ -1,34 +1,31 @@
 import React from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { withFormik } from 'formik'
+import { graphql } from 'react-apollo'
 
-import { Loading } from '@components/Loading'
+import Typography from 'material-ui/Typography'
 
+import { Loading } from '@common'
 import { withErrorFallback } from '@hoc'
 
+import { KeysList, AddExchangeKey } from './components'
 import * as actions from './actions'
 import * as selectors from './selectors'
+import * as API from './api'
 
-const UserComp = (props: any) => {
+const SettingsWrapper = styled.div`
+  display: flex;
+  margin: 10px;
+`
+
+const SettingsContainer = ({ profile }: any) => {
   return (
-    <div>
-      Hello <button onClick={() => console.log(props)}>Test</button>
-      {/* <Loading /> */}
-    </div>
+    <SettingsWrapper>
+      <AddExchangeKey  />
+      <KeysList />
+    </SettingsWrapper>
   )
 }
 
-const mapStateToProps = (state: any) => ({
-  check: selectors.checker(state)
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  addExchangeKey: () => dispatch(actions.addExchangeKey())
-})
-
 export const Settings = compose(
-  connect(mapStateToProps, mapDispatchToProps),
-  withErrorFallback
-)(UserComp)
+ withErrorFallback)(SettingsContainer)

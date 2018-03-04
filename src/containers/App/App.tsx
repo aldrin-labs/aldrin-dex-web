@@ -6,12 +6,13 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
 import { Home } from '@containers/Home'
-import { NavBar } from '@components/NavBar'
+import { NavBar } from '@common'
 
 // TODO: 2 themes
 
 const theme = createMuiTheme({
   palette: {
+    type: 'dark',
     primary: {
       light: '#FAFAFA',
       main: '#FAFAFA',
@@ -20,8 +21,8 @@ const theme = createMuiTheme({
     },
     secondary: {
       light: '#ff7961',
-      main: '#f44336',
-      dark: '#ba000d',
+      main: '#4ed8da',
+      dark: '#4ed8da',
       contrastText: '#000',
     },
   },
@@ -31,19 +32,10 @@ if (process.browser) {
   window.theme = theme
 }
 
-const Yoba = (props) => <div>{console.log(props)}</div>
-
-const YobaX = compose(
-  connect(state => ({
-    test: console.log(12345, state)
-  }))
-)(Yoba)
-
 export const App = ({ children }: any) => (
     <MuiThemeProvider theme={theme}>
       <Reboot />
       <NavBar />
-      <YobaX />
       {children}
     </MuiThemeProvider>
 )

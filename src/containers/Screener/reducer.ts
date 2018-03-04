@@ -1,10 +1,9 @@
 import { createReducer } from 'redux-act'
 
-import { PING, PONG } from './actions'
+import * as actions from './actions'
 
-const initialState = { isPinging: null }
+const initialState = { test: false }
 
 export default createReducer({
-  [PING]: state => ({ isPinging: true }),
-  [PONG]: state => ({ isPinging: false }),
+  [actions.test]: state => ({ test: true }),
 }, initialState)

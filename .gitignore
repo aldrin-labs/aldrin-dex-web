@@ -64,3 +64,5 @@ dist/static
 dist/bundle*
 .idea
 TODO
+.DS_STORE
+DS_STORE

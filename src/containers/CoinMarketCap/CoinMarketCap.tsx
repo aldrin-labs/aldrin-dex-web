@@ -2,36 +2,11 @@ import gql from 'graphql-tag'
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 
-import { CoinsList } from '@components/CoinsList'
-
-const getCoinMarketCapQuery = gql`
-  {
-    assetPagination(page: 0, perPage: 400) {
-      pageInfo {
-        pageCount
-        hasNextPage
-        currentPage
-        hasPreviousPage
-        perPage
-      }
-      count
-      items {
-        _id
-        name
-        symbol
-        nameTrue
-        priceUSD
-        maxSupply
-        totalSupply
-        availableSupply
-        priceUSD
-      }
-    }
-  }
-`
+import { CoinsList } from '@common'
+import * as API from './api'
 
 class CoinMarketCap extends Component {
-  componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps: any) {
     if (!newProps.data.loading) {
       if (this.subscription) {
         if (newProps.data.assetPagination.items !== this.props.data.assetPagination.items) {
@@ -76,7 +51,7 @@ class CoinMarketCap extends Component {
   }
 
   render() {
-    console.log(55555, this.props.data)
+    // console.log(55555, this.props.data)
     return (
       <div>
         {this.props.data.loading ? (
@@ -89,4 +64,4 @@ class CoinMarketCap extends Component {
   }
 }
 
-export default graphql(getCoinMarketCapQuery, { options: { forceFetch: true } })(CoinMarketCap)
+export default graphql(API.getCoinMarketCapQuery, { options: { forceFetch: true } })(CoinMarketCap)

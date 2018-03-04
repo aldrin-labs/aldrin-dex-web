@@ -5,8 +5,9 @@ import { TableCell, TableHead, TableRow, TableSortLabel } from 'material-ui/Tabl
 import Tooltip from 'material-ui/Tooltip'
 
 const columnData = [
-  { id: 'currency', numeric: false, disablePadding: true, label: 'Currency' },
+  { id: 'exchange', numeric: false, disablePadding: true, label: 'Exchange' },
   { id: 'name', numeric: true, disablePadding: false, label: 'Name' },
+  { id: 'currency', numeric: true, disablePadding: false, label: 'Currency' },
   { id: 'available', numeric: true, disablePadding: false, label: 'Available' },
   { id: 'held', numeric: true, disablePadding: false, label: 'Held' },
   { id: 'total', numeric: true, disablePadding: false, label: 'Total' },

@@ -1,13 +1,9 @@
 import { ActionsObservable, combineEpics, Epic } from 'redux-observable'
 import 'rxjs'
 
-import { PING, PONG } from './actions'
+import { test, testNext } from './actions'
 
-const pingEpic = (action$: any) =>
-  action$.ofType(PING)
+export const testEpic = (action$: any) =>
+  action$.ofType(testNext)
     .delay(1000) // Asynchronously wait 1000ms then continue
-    .mapTo({ type: PONG });
-
-export default combineEpics(
-  pingEpic
-)
+    .mapTo({ type: test });

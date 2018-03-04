@@ -1,17 +1,15 @@
-import React, { Fragment, SFC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-import { PortfolioTable } from './PortfolioTable'
-import { SelectAccount } from './SelectAccount'
+import { PortfolioTable, SelectAccount } from './components'
 
-const SWrapper = styled.div`
+const PortfolioContainer = styled.div`
   display: flex;
-  margin-top: 5px;
 `
 
 export const Portfolio = () => (
-    <SWrapper>
-    <SelectAccount />
+    <PortfolioContainer>
+    {/* <SelectAccount /> */}
     <PortfolioTable />
-  </SWrapper>
+  </PortfolioContainer>
 )

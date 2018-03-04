@@ -1,1 +1,1 @@
-export { LoginQuery } from './Login'
+export { Login } from './Login'

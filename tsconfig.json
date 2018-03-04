@@ -8,21 +8,31 @@
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
-    "module": "esnext",
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
     "moduleResolution": "node",
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
     "lib": ["es2017", "dom"],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ],
     "paths": {
       "@components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
-      "@hoc/*": ["src/hoc/*"]
+      "@hoc/*": ["src/hoc/*"],
+      "@common/*": ["src/common/*"]
     },
     "plugins": [
       {
         "name": "typescript-styled-plugin"
+      },
+      {
+        "name": "ts-graphql-plugin",
+        "tag": "gql"
       }
     ]
   },

@@ -3,30 +3,16 @@ import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Auth0Lock from 'auth0-lock'
+import { graphql } from 'react-apollo'
 
 import Button from 'material-ui/Button'
-import TextField from 'material-ui/TextField'
-import Menu, { MenuItem } from 'material-ui/Menu'
 
-import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
-
-import { NavBar } from '@components/NavBar'
+import { withErrorFallback } from '@hoc/index'
 
 import * as actions from './actions'
-
-import Auth0Lock from 'auth0-lock'
-import { withErrorFallback } from '@hoc'
-
-const SLink = styled(Link)`
-  color: inherit;
-  text-decoration: none;
-  border-radius: 0px;
-
-  &:hover {
-    color: palevioletred;
-  }
-`
+import { gqlCreateUser } from './api'
+import { LoginMenu } from './components'
 
 const SWrapper = styled.div`
   display: flex;
@@ -35,8 +21,8 @@ const SWrapper = styled.div`
   justify-content: center;
 `
 
-class Login extends Component {
-  constructor(props) {
+class LoginQuery extends Component {
+  constructor(props: any) {
     super(props)
     this.state = {
       anchorEl: null,
@@ -51,7 +37,7 @@ class Login extends Component {
       autoclose: true,
       oidcConformant: true,
     }
-    this._lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
+    this.lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
   }
 
   handleMenu = (event: any) => {
@@ -64,124 +50,65 @@ class Login extends Component {
 
   handleLogout = () => {
     this.props.storeLogout()
+    window.localStorage.removeItem('token')
   }
 
-  createUser(profile) {
-    // console.log(9999, window.localStorage.getItem('token'))
+  createUserReq = async (profile: any) => {
+    const { createUser }: any = this.props
+
     const variables = {
       idToken: window.localStorage.getItem('token'),
       emailAddress: profile.email,
       name: profile.nickname,
-      emailSubscription: true, // ;)
+      emailSubscription: true,
     }
-    // console.log(variables)
-    this.props
-      .createUser({ variables })
-      .then(response => {
-        // console.log(response)
-        this.props.router.replace('/')
-      })
-      .catch(e => {
-        // console.error(e)
-        this.props.router.replace('/')
-      })
+
+    try {
+      await createUser({ variables })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   componentDidMount() {
-    this._lock.on('authenticated', authResult => {
-      this._lock.getUserInfo(authResult.accessToken, (error, profile) => {
+    this.lock.on('authenticated', (authResult: any) => {
+      this.lock.getUserInfo(authResult.accessToken, (error: any, profile: any) => {
         if (error) {
           console.log(error)
-          // Handle error
-          return
+          return null
         }
-        // this.setState(prevState => ({
-        //   profile,
-        //   login: !prevState.login,
-        // }))
         this.props.storeLogin(profile)
-        console.log(1111, this.state, this.props)
         localStorage.setItem('token', authResult.idToken)
-        this.createUser(profile)
+        this.createUserReq(profile)
       })
     })
   }
 
-  _showLogin = () => {
-    this._lock.show()
+  showLogin = () => {
+    this.lock.show()
   }
 
   render() {
-    // if (this.props.data.loading) {
-    //   return (<div>Loading</div>)
-    // }
-
-    // // redirect if user is logged in
-    // if (this.props.data.user) {
-    //   console.warn('already logged in')
-    //   this.props.router.replace('/')
-    // }
-    const { loginStatus, user } = this.props
-    const { anchorEl } = this.state
+    const { loginStatus, user }: any = this.props
+    const { anchorEl }: any = this.state
     const open = Boolean(anchorEl)
     return (
       <SWrapper>
-        {!loginStatus && <Button onClick={this._showLogin}>Log in</Button>}
+        {!loginStatus && <Button onClick={this.showLogin}>Log in</Button>}
         {loginStatus && (
-          <div>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={this.handleClose}
-            >
-              <SLink to="/portfolio">
-                <MenuItem onClick={this.handleClose}>Portfolio</MenuItem>
-              </SLink>
-              <SLink to="/settings"><MenuItem onClick={this.handleClose}>Settings</MenuItem></SLink>
-              <MenuItem onClick={this.handleLogout}>Log out</MenuItem>
-            </Menu>
-            <Button onClick={this.handleMenu}>{user.name}</Button>
-          </div>
+          <LoginMenu
+            anchorEl={anchorEl}
+            open={open}
+            handleClose={this.handleClose}
+            handleMenu={this.handleMenu}
+            handleLogout={this.handleLogout}
+            userName={user.name}
+          />
         )}
       </SWrapper>
     )
   }
 }
-
-const userQuery = gql`
-  query {
-    user {
-      id
-    }
-  }
-`
-
-const createUser = gql`
-  mutation(
-    $idToken: String!
-    $name: String!
-    $emailAddress: String!
-    $emailSubscription: Boolean!
-  ) {
-    createUser(
-      idToken: $idToken
-      name: $name
-      emailAddress: $emailAddress
-      emailSubscription: $emailSubscription
-    ) {
-      _id
-    }
-  }
-`
 
 const mapStateToProps = (state: any) => ({
   user: state.login.user,
@@ -189,14 +116,12 @@ const mapStateToProps = (state: any) => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  storeLogin: profile => dispatch(actions.storeLogin(profile)),
+  storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
   storeLogout: () => dispatch(actions.storeLogout()),
 })
 
-export const LoginQuery = compose(
+export const Login = compose(
   connect(mapStateToProps, mapDispatchToProps),
-  graphql(createUser, { name: 'createUser' }),
+  graphql(gqlCreateUser, { name: 'createUser' }),
   withErrorFallback
-)(Login)
-
-// export const LoginQuery = graphql(createUser, { name: 'createUser' })(Login)
+)(LoginQuery)

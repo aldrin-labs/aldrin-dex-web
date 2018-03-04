@@ -1,7 +1,13 @@
 import { Observable } from 'rxjs/Observable'
 import * as actions from './actions'
 
-export const storeLogin = (action$): any => {
-  return action$.ofType(actions.storeLogin.getType())
-      .mapTo(({ payload }: any) => ({ type: actions.storeLogin.getType(), payload }))
+function storeLogin(profile: any) {
+  return {
+    type: actions.storeLogin,
+    payload: profile
+  }
 }
+
+export const lalka = (action$: any) =>
+  action$.ofType(actions.onLogin)
+    .map(storeLogin)
