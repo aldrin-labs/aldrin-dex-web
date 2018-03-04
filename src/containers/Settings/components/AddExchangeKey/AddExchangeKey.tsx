@@ -43,6 +43,7 @@ const SPaper = styled(Paper)`
   align-items: center;
   justify-content: center;
   padding: 15px;
+  max-height: 425px;
 `
 
 const FormError = ({ children }: any) => <Typography color="error">{children}</Typography>
@@ -82,7 +83,6 @@ const formikEnhancer = withFormik({
       ...values,
       date: Date.now(),
     }
-      {console.log(99999, addExchangeKey)}
     try {
       await addExchangeKey({ variables })
       setSubmitting(false)
