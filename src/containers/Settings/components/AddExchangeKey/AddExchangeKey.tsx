@@ -43,14 +43,11 @@ const SPaper = styled(Paper)`
   align-items: center;
   justify-content: center;
   padding: 15px;
+  max-height: 425px;
+  margin: 24px 0px 0px 12px;
 `
 
 const FormError = ({ children }: any) => <Typography color="error">{children}</Typography>
-
-/*
-  TODO:
-    add selector for exchange
-*/
 
 const formikEnhancer = withFormik({
   validationSchema: Yup.object().shape({
@@ -82,7 +79,6 @@ const formikEnhancer = withFormik({
       ...values,
       date: Date.now(),
     }
-      {console.log(99999, addExchangeKey)}
     try {
       await addExchangeKey({ variables })
       setSubmitting(false)

@@ -6,13 +6,14 @@ import Tooltip from 'material-ui/Tooltip'
 
 const columnData = [
   { id: 'exchange', numeric: false, disablePadding: true, label: 'Exchange' },
-  { id: 'name', numeric: true, disablePadding: false, label: 'Name' },
-  { id: 'currency', numeric: true, disablePadding: false, label: 'Currency' },
-  { id: 'available', numeric: true, disablePadding: false, label: 'Available' },
-  { id: 'held', numeric: true, disablePadding: false, label: 'Held' },
-  { id: 'total', numeric: true, disablePadding: false, label: 'Total' },
-  { id: 'exchangeRate', numeric: true, disablePadding: false, label: 'Exchange Rate' },
-  { id: 'BTCValue', numeric: true, disablePadding: false, label: 'BTC Value' }
+  { id: 'asset', numeric: true, disablePadding: false, label: 'Coin' },
+  { id: 'symbol', numeric: true, disablePadding: false, label: 'Symbol' },
+  { id: 'assetPriceUSD', numeric: true, disablePadding: false, label: 'Price USD' },
+  { id: 'currentBTC', numeric: true, disablePadding: false, label: 'Current BTC' },
+  { id: 'currentUSD', numeric: true, disablePadding: false, label: 'Current USD' },
+  { id: 'twentyFourHourChange', numeric: true, disablePadding: false, label: '24h' },
+  { id: 'BTCProfitLoss', numeric: true, disablePadding: false, label: 'BTC Profit Loss' },
+  { id: 'USDProfitLoss', numeric: true, disablePadding: false, label: 'USD Profit Loss' }
 ]
 
 export class PortfolioTableHead extends Component {

@@ -21,8 +21,8 @@ const SettingsWrapper = styled.div`
 const SettingsContainer = ({ profile }: any) => {
   return (
     <SettingsWrapper>
-      <AddExchangeKey  />
-      <KeysList />
+      <AddExchangeKey />
+      {/* <KeysList /> */}
     </SettingsWrapper>
   )
 }
