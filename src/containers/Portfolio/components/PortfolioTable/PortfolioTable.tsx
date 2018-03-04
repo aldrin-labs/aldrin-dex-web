@@ -132,7 +132,7 @@ export class PortfolioTable extends Component {
   render() {
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-
+    console.log(112233, this.props)
     return (
       <SPaper>
         <PortfolioTableToolbar numSelected={selected.length} />
