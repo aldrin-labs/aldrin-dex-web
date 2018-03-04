@@ -234,14 +234,14 @@ export class PortfolioTable extends Component {
                       <Checkbox checked={isSelected} />
                     </TableCell>
                     <TableCell padding="none">{n.exchange.name}</TableCell>
-                    <TableCell numeric>{n.asset.name}</TableCell>
-                    <TableCell numeric>{n.asset.symbol}</TableCell>
-                    <TableCell numeric>{n.asset.priceUSD}</TableCell>
-                    <TableCell numeric>{n.currentBTC}</TableCell>
-                    <TableCell numeric>{n.currentUSD}</TableCell>
-                    <TableCell numeric>{n.twentyFourHourChange}</TableCell>
-                    <TableCell numeric>{n.BTCProfitLoss}</TableCell>
-                    <TableCell numeric>{n.USDProfitLoss}</TableCell>
+                    <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.asset.symbol || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.asset.priceUSD || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.currentBTC || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.currentUSD || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.twentyFourHourChange || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.BTCProfitLoss || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.USDProfitLoss || 'Empty'}</TableCell>
                   </TableRow>
                 )
               })}
