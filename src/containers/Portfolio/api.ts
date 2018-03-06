@@ -18,11 +18,13 @@ export const getPortfolio = gql`
       }
       portfolio {
         assetIds
+        processing
         assets {
           _id
           value
           realizedProfit
-          possibleProfit
+          unrealizedProfit
+          totalProfit
           asset {
             name
             symbol

@@ -239,7 +239,7 @@ export class PortfolioTable extends Component {
                     <TableCell numeric>{n.asset.priceUSD || 'Empty'}</TableCell>
                     <TableCell numeric>{n.value || 'Empty'}</TableCell>
                     <TableCell numeric>{n.realizedProfit || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.possibleProfit || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.totalProfit || 'Empty'}</TableCell>
                   </TableRow>
                 )
               })}
