@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const addExchangeKey = gql`
+export const addExchangeKeyMutation = gql`
   mutation addExchangeKey(
     $name: String
     $apiKey: String
@@ -23,7 +23,7 @@ export const addExchangeKey = gql`
   }
 `
 
-export const getExchangesList = gql`
+export const getExchangesListQuery = gql`
   query getExchangesList(
     $page: Int,
     $perPage: Int

@@ -189,7 +189,7 @@ const AddExchangeKeyForm = ({
 )
 
 export const AddExchangeKey = compose(
-  graphql(API.addExchangeKey, { name: 'addExchangeKey' }),
-  graphql(API.getExchangesList, { name: 'getExchangesList' }),
+  graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
+  graphql(API.getExchangesListQuery, { name: 'getExchangesList' }),
   formikEnhancer
 )(AddExchangeKeyForm)

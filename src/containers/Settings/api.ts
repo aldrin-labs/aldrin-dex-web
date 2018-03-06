@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const getProfile = gql`
+export const getProfileQuery = gql`
   query getProfile {
     getProfile {
       username

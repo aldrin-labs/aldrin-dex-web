@@ -317,12 +317,12 @@ class KeysListTable extends React.Component {
 
 import { withErrorFallback, LoaderHOC } from '@hoc/index'
 
-import { getProfile } from '../../api'
+import { getProfileQuery } from '../../api'
 
 const Keys = (props: any) => <div>{console.log(111, props)}</div>
 
 export const KeysList = compose(
-  graphql(getProfile, { name: 'profile' }),
+  graphql(getProfileQuery, { name: 'profile' }),
   LoaderHOC(null, 'keysList'),
   withErrorFallback
 )(KeysListTable)

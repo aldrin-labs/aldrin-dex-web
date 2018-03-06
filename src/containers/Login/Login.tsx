@@ -11,7 +11,7 @@ import Button from 'material-ui/Button'
 import { withErrorFallback } from '@hoc/index'
 
 import * as actions from './actions'
-import { gqlCreateUser } from './api'
+import * as API from './api'
 import { LoginMenu } from './components'
 
 const SWrapper = styled.div`
@@ -122,6 +122,6 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export const Login = compose(
   connect(mapStateToProps, mapDispatchToProps),
-  graphql(gqlCreateUser, { name: 'createUser' }),
+  graphql(API.createUserMutation, { name: 'createUser' }),
   withErrorFallback
 )(LoginQuery)

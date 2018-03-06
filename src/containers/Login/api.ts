@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-export const gqlCreateUser = gql`
+export const createUserMutation = gql`
   mutation CreateUser(
     $idToken: String!
     $name: String!
@@ -18,7 +18,7 @@ export const gqlCreateUser = gql`
   }
 `
 
-export const gqlUserQuery = gql`
+export const userQuery = gql`
   query UserQuery {
     user {
       id

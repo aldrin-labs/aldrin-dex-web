@@ -1,11 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
-import { graphql } from 'react-apollo'
 
-import Typography from 'material-ui/Typography'
-
-import { Loading } from '@common'
 import { withErrorFallback } from '@hoc'
 
 import { KeysList, AddExchangeKey } from './components'
