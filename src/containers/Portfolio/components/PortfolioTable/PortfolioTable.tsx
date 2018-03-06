@@ -30,70 +30,72 @@ function createData(data) {
   return { _id: counter, ...data }
 }
 
-const sampleData = [{
-  _id: 1,
-  exchange: {
-    name: 'Gemini'
+const sampleData = [
+  {
+    _id: 1,
+    exchange: {
+      name: 'Gemini',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
   },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
+  {
+    _id: 2,
+    exchange: {
+      name: 'Binance',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
   },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-},
-{
-  _id: 2,
-  exchange: {
-    name: 'Binance'
+  {
+    _id: 3,
+    exchange: {
+      name: 'Gdax',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
   },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
+  {
+    _id: 4,
+    exchange: {
+      name: 'BitCOOOOONEEEECT',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
   },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-},
-{
-  _id: 3,
-  exchange: {
-    name: 'Gdax'
-  },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
-  },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-},
-{
-  _id: 4,
-  exchange: {
-    name: 'BitCOOOOONEEEECT'
-  },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
-  },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-}]
+]
 
 const SPaper = styled(Paper)`
   width: 100%;
@@ -119,9 +121,7 @@ const SamplePortfolio = {
   percentChangeDay: '400',
 }
 
-const SamplePortfolio2 = {
-
-}
+const SamplePortfolio2 = {}
 
 export class PortfolioTable extends Component {
   constructor(props, context) {
@@ -202,7 +202,12 @@ export class PortfolioTable extends Component {
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
     console.log(112233, this.props)
-    const assets = this.props.data.getProfile.portfolio && this.props.data.getProfile.portfolio.assets || sampleData
+    const assets =
+      (this.props.data &&
+        this.props.getProfile &&
+        this.props.data.getProfile.portfolio &&
+        this.props.data.getProfile.portfolio.assets) ||
+      sampleData
     // const assets = sampleData;
     return (
       <SPaper>
