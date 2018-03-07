@@ -21,12 +21,14 @@ const drawerWidth = '240px'
 
 const Root = styled.div`
   flex-grow: 1;
+  height: 430px;
+  position: relative;
+  display: flex;
 `
 
 const DrawerPaper = styled(Drawer)`
-  position: relative;
   width: -${drawerWidth};
-
+  position: relative;
   ${props =>
     props.open &&
     css`

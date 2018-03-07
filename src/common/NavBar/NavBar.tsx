@@ -6,8 +6,12 @@ import styled from 'styled-components'
 import { NavButton } from './NavButton'
 import { Login } from '@containers/Login'
 
+
+// TODO: fix z-index for drawer
 const Nav = styled.div`
-  width: '100%';
+  width: 100%;
+  z-index: 1300;
+  position: relative;
 `
 
 const SNav = styled.nav`

@@ -6,6 +6,7 @@ import screener from '@containers/Screener/reducer'
 import settings from '@containers/Settings/reducer'
 import login from '@containers/Login/reducer'
 import portfolio from '@containers/Portfolio/reducer'
+import ui from '@containers/App/reducer'
 
 export default combineReducers({
   screener,
@@ -13,4 +14,5 @@ export default combineReducers({
   settings,
   login,
   portfolio,
+  ui,
 })
