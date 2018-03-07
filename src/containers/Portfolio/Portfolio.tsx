@@ -15,7 +15,7 @@ const GQLPortfolioTable = compose(graphql(API.getPortfolio))(PortfolioTable)
 
 export const Portfolio = () => (
     <PortfolioContainer>
-      {/* <NewSA /> */}
+      <NewSA />
     {/* <SelectAccount /> */}
     <GQLPortfolioTable />
   </PortfolioContainer>

@@ -12,6 +12,8 @@ import MenuIcon from 'material-ui-icons/Menu'
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
 import ChevronRightIcon from 'material-ui-icons/ChevronRight'
 
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 import styled, { css } from 'styled-components'
 import { transitions } from 'polished'
 
@@ -21,55 +23,25 @@ const Root = styled.div`
   flex-grow: 1;
 `
 
-const AppFrame = styled.div`
-  height: 430;
-  z-index: 1;
-  overflow: hidden;
+const DrawerPaper = styled(Drawer)`
   position: relative;
-  display: flex;
-  width: 100%;
-`
-
-const AppbarContainer = styled(AppBar)`
-  position: absolute;
-  ${transitions('margin 0.2s ease-out', 'width 0.2s ease-out')} ${props =>
-    props.open &&
-    css`
-      width: calc(100% - ${drawerWidth});
-      ${transitions('margin 0.2s ease-out', 'width 0.2s ease-out')}
-      margin-left: ${drawerWidth};
-    `};
-`
-
-const Content = styled.div`
-  flex-grow: 1;
-  padding: 8px;
-  ${transitions('margin 0.2s ease-in')};
-  margin-left: -${drawerWidth};
+  width: -${drawerWidth};
 
   ${props =>
     props.open &&
     css`
-      ${transitions('margin 0.2s ease-out')};
-      margin-left: 0px;
-    `};
+    ${transitions('width 0.2s ease-out')}
+    width: ${drawerWidth};
+  `};
 `
 
-const DrawerPaper = styled(Drawer)`
-  position: relative;
-  width: ${drawerWidth};
+const InnerPaper = styled.div`
+  width: 240px;
 `
 
-const DrawerHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 0 8px;
-`
-
-class PersistentDrawer extends React.Component {
+class WalletsDrawer extends React.Component {
   state = {
-    open: false
+    open: false,
   }
 
   handleDrawerOpen = () => {
@@ -81,13 +53,31 @@ class PersistentDrawer extends React.Component {
   }
 
   render() {
-    const {open} = this.state
+    const { open } = this.state
     return (
       <Root>
-      Test
+        <DrawerPaper
+          variant="persistent"
+          anchor="left"
+          open={true}
+          PaperProps={{
+            component: InnerPaper,
+          }}
+        >
+          123
+        </DrawerPaper>
       </Root>
     )
   }
 }
 
-export default PersistentDrawer
+// const mapStateToProps = (state) => ({
+//   ui: state.ui
+// })
+
+// const mapDispatchToProps = (dispatch) => ({
+//   toggleDrawer: () => dispatch(actions.toggleDrawer)
+// })
+
+export default compose()(WalletsDrawer)
+// connect(mapStateToProps, mapDispatchToProps),
