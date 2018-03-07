@@ -40,16 +40,23 @@ class LoginQuery extends Component {
     this.lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
   }
 
+  componentWillMount() {
+    this.checkToken()
+  }
+
+  removeToken = () => {
+    localStorage.removeItem('token')
+  }
+
   getToken = () => {
     return localStorage.getItem('token')
   }
 
   checkToken = () => {
-    if (localStorage.getItem('token')) {
-      console.log('TOKEN')
+    if (this.getToken()) {
       return true
     }
-
+    this.props.storeLogout()
     return false
   }
 
@@ -83,7 +90,6 @@ class LoginQuery extends Component {
     try {
       await createUser({ variables })
     } catch (error) {
-      console.log(error)
     }
   }
 
@@ -91,7 +97,6 @@ class LoginQuery extends Component {
     this.lock.on('authenticated', (authResult: any) => {
       this.lock.getUserInfo(authResult.accessToken, (error: any, profile: any) => {
         if (error) {
-          console.log(error)
           return null
         }
         this.props.storeLogin(profile)

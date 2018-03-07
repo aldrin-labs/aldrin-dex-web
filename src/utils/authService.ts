@@ -1,14 +1,17 @@
 export default class AuthService {
   checkToken = () => {
     const token = this.getToken()
-    return !!token && !this.isTokenExpired(token)
+    return !!token
   }
 
   isTokenExpired = (token) => {
-    try {
+  }
 
-    } catch (error) {
+  getToken = () => {
+    return localStorage.getItem('token')
+  }
 
-    }
+  logout = () => {
+    localStorage.removeItem('token')
   }
 }
