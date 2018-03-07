@@ -110,19 +110,6 @@ const STable = styled(Table)`
   min-width: 800px;
 `
 
-const SamplePortfolio = {
-  exchange: 'Gemini',
-  name: 'Ethereum',
-  symbol: 'ETH',
-  availableSupply: '90000',
-  totalSupply: '9000000000',
-  maxSupply: '19999999999999',
-  priceUSD: '9000',
-  percentChangeDay: '400',
-}
-
-const SamplePortfolio2 = {}
-
 export class PortfolioTable extends Component {
   constructor(props, context) {
     super(props, context)

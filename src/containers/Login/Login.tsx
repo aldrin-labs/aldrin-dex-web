@@ -40,6 +40,23 @@ class LoginQuery extends Component {
     this.lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
   }
 
+  getToken = () => {
+    return localStorage.getItem('token')
+  }
+
+  checkToken = () => {
+    if (localStorage.getItem('token')) {
+      console.log('TOKEN')
+      return true
+    }
+
+    return false
+  }
+
+  setToken = (token: string) => {
+    return localStorage.setItem('token', token)
+  }
+
   handleMenu = (event: any) => {
     this.setState({ anchorEl: event.currentTarget })
   }
@@ -57,7 +74,7 @@ class LoginQuery extends Component {
     const { createUser }: any = this.props
 
     const variables = {
-      idToken: window.localStorage.getItem('token'),
+      idToken: this.getToken(),
       emailAddress: profile.email,
       name: profile.nickname,
       emailSubscription: true,
@@ -78,7 +95,8 @@ class LoginQuery extends Component {
           return null
         }
         this.props.storeLogin(profile)
-        localStorage.setItem('token', authResult.idToken)
+        // localStorage.setItem('token', authResult.idToken)
+        this.setToken(authResult.idToken)
         this.createUserReq(profile)
       })
     })
