@@ -26,6 +26,13 @@ const config = {
         exclude: /node_modules/,
         loader: 'graphql-tag/loader',
       },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader',
+        options: {
+          limit: 4096, // 4kb
+        },
+      },
     ],
   },
   plugins: [
