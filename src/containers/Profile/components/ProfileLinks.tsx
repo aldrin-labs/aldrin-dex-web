@@ -1,10 +1,13 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { ProfileQueryQuery } from '../profile-annotation'
 
-export default class ProfileLinks extends React.Component {
+interface Props {
+  coin: ProfileQueryQuery['assetById']
+}
+
+export default class ProfileLinks extends React.Component<Props, {}> {
   render() {
-    console.log(this.props.coin)
-
     const rows = [
       {
         icon: require('../../../icons/website.svg'),
@@ -45,7 +48,7 @@ export default class ProfileLinks extends React.Component {
         </CoinLinkHeadingRow>
 
         {rows.map(row => {
-          const { icon, heading, links } = row || {}
+          const { icon = '', heading = '', links = [] } = row || {}
           return (
             <CoinLinkRow>
               <WebIcon
@@ -54,7 +57,7 @@ export default class ProfileLinks extends React.Component {
                 }}
               />
               <RowHeading>{heading}</RowHeading>
-              <RowLinks>{links.map(link => <span>{link}</span>)}</RowLinks>
+              <RowLinks>{links.map(link => <RowLink>{link}</RowLink>)}</RowLinks>
             </CoinLinkRow>
           )
         })}
@@ -133,4 +136,8 @@ const RowLinks = styled.div`
 
   display: flex;
   flex-direction: column;
+`
+
+const RowLink = styled.span`
+  cursor: pointer;
 `
