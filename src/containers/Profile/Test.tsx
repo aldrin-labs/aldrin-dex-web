@@ -3,11 +3,11 @@ import gql from 'graphql-tag'
 import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
 
-const Testing = props => <div>{console.log(2222222, props)}</div>
+const Testing = props => <div>ПРИВЕТ</div>;
 
 const req = gql`
-{
-       exchangePagination {
+  {
+    exchangePagination {
       count
       items {
         name
@@ -21,7 +21,7 @@ const req = gql`
         }
       }
     }
-}
+  }
 `
 
 export const Test = compose(graphql(req))(Testing)

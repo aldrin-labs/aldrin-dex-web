@@ -1,6 +1,6 @@
 export { User } from './User'
 export { Screener } from './Screener'
-export { Profile } from './Profile'
+export { ProfileWrapper } from './Profile'
 export { Portfolio } from './Portfolio'
 export { Login } from './Login'
 export { Home } from './Home'

@@ -22,7 +22,7 @@ const SCoinLink = styled(Link)`
 export const CoinLink: SFC<T.CoinLink> = ({ assetId, name, children }) => (
   <SCoinLink
     to={{
-      pathname: `/asset/${name}`,
+      pathname: `/profile/${assetId}`,
       state: { assetId },
     }}
   >
