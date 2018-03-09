@@ -1,90 +1,25 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import styled from 'styled-components'
+import ProfileHeading from './components/ProfileHeading.tsx'
+import ProfileLinks from './components/ProfileLinks.tsx'
 
 const SWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   margin-top: 5px;
 `
-const ProfileHeading = styled.div`
-  display: flex;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);
-  margin-left: 135px;
-  margin-top: 24px;
-  max-width: 380px;
-`
 
-const ProfileImage = styled.div`
-  min-width: 120px;
-  height: 120px;
-  border-radius: 3px;
-  background-color: #4c5055;
-  margin: 16px;
-`
-
-const CoinProfileWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-const CoinName = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.5px;
-  text-align: left;
-  color: #ffffff;
-  margin: 16px 16px 16px 0;
-`
-
-const CoinShortName = styled.span`
-  color: rgba(255, 255, 255, 0.5);
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.5px;
-  text-align: left;
-  margin-left: 8px;
-`
-
-const CoinDescription = styled.span`
-  font-family: Roboto;
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 0.4px;
-  text-align: left;
-  color: #ffffff;
-  margin: 0 0 16px 0;
-`
-
-class Profile extends Component {
+class Profile extends React.Component {
   render() {
+    const { data = {} } = this.props
+    const { assetById = {} } = data || {};
+
     return (
       <SWrapper>
-        <ProfileHeading>
-          <ProfileImage />
-          <CoinProfileWrapper>
-            <CoinName>
-              Bitcoin<CoinShortName>BTC</CoinShortName>
-            </CoinName>
-            <CoinDescription>
-              Basic info lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt.
-            </CoinDescription>
-          </CoinProfileWrapper>
-        </ProfileHeading>
+        <ProfileHeading coin={assetById} />
+        <ProfileLinks coin={assetById} />
       </SWrapper>
     )
   }
