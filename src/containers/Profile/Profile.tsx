@@ -2,8 +2,9 @@ import * as React from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import styled from 'styled-components'
-import ProfileHeading from './components/ProfileHeading.tsx'
-import ProfileLinks from './components/ProfileLinks.tsx'
+import ProfileHeading from './components/ProfileHeading'
+import ProfileLinks from './components/ProfileLinks'
+import { ProfileQueryQuery } from './profile-annotation'
 
 const SWrapper = styled.div`
   display: flex;
@@ -11,10 +12,12 @@ const SWrapper = styled.div`
   margin-top: 5px;
 `
 
-class Profile extends React.Component {
+interface Props { data: ProfileQueryQuery }
+
+class Profile extends React.Component<Props, {}> {
   render() {
-    const { data = {} } = this.props
-    const { assetById = {} } = data || {};
+    const { data } = this.props
+    const { assetById } = data
 
     return (
       <SWrapper>

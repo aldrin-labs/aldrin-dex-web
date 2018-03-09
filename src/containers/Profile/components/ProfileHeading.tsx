@@ -1,10 +1,13 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { ProfileQueryQuery } from '../profile-annotation'
 
-export default class ProfileHeading extends React.Component {
+interface Props { coin: ProfileQueryQuery['assetById'] }
+
+export default class ProfileHeading extends React.Component<Props, {}> {
   render() {
     const { coin } = this.props;
-    const { name, symbol } = coin || {};
+    const { name = '', symbol = '' } = coin || {};
 
     return (
       <SProfileHeading>
