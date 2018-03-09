@@ -4,7 +4,7 @@ import {
   CoinMarketCap,
   Home,
   Portfolio,
-  Profile,
+  ProfileWrapper,
   Screener,
   Settings,
   AssetInfo,
@@ -39,7 +39,8 @@ const render = () =>
                   <Route exact path="/" component={Home} />
                   <Route exact path="/market" component={CoinMarketCap} />
                   <Route path="/asset/:name" component={AssetInfo} />
-                  <Route exact path="/profile" component={Profile} />
+                  <Route exact path="/profile" component={ProfileWrapper} />
+                  <Route exact path="/profile/:id" component={ProfileWrapper} />
                   <Route exact path="/portfolio" component={Portfolio} />
                   <Route exact path="/chart" component={Chart} />
                   <Route exact path="/screener" component={Screener} />
