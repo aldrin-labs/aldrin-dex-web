@@ -14,22 +14,6 @@ import Table, {
 
 import { PortfolioTableHead, PortfolioTableToolbar } from '../'
 
-let counter = 0
-function createData(data) {
-  const {
-    exchange,
-    name,
-    symbol,
-    availableSupply,
-    totalSupply,
-    maxSupply,
-    priceUSD,
-    percentChangeDay,
-  } = data
-  counter += 1
-  return { _id: counter, ...data }
-}
-
 const sampleData = [
   {
     _id: 1,
@@ -111,21 +95,13 @@ const STable = styled(Table)`
 `
 
 export class PortfolioTable extends Component {
-  constructor(props, context) {
-    super(props, context)
-
-    this.state = {
+    state = {
       order: 'asc',
       orderBy: 'name',
       selected: [],
-      data: [
-        createData('Gemini', 'Bitcoin', 'BTC', 9000, 0, 111, 0.333, 0.555),
-        createData('Gemini', 'Ethereum', 'Eth', 90010, 0, 1111, 0.3233, 0.5355),
-      ].sort((a, b) => (a.name < b.name ? -1 : 1)),
       page: 0,
       rowsPerPage: 10,
     }
-  }
 
   handleRequestSort = (event, property) => {
     const orderBy = property
@@ -188,7 +164,6 @@ export class PortfolioTable extends Component {
     }
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-    console.log(112233, this.props)
     const assets =
       (this.props.data &&
         this.props.getProfile &&
