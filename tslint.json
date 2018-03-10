@@ -11,7 +11,6 @@
     "no-implicit-dependencies": false,
     "no-trailing-whitespace": [true, "ignore-template-strings"],
     "no-submodule-imports": false,
-    "import-name": true,
     "arrow-parens": true,
     "ter-arrow-parens": false,
     "jsx-boolean-value": false,

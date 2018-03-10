@@ -35,7 +35,7 @@ const toolbarStyles = theme => ({
   },
 })
 
-const TableToolbar = props => {
+const TableToolbar = (props) => {
   const { numSelected, classes } = props
 
   return (
@@ -46,9 +46,9 @@ const TableToolbar = props => {
     >
       <div className={classes.title}>
         {numSelected > 0 ? (
-          <Typography type="subheading">{numSelected} selected</Typography>
+          <Typography variant="subheading">{numSelected} selected</Typography>
         ) : (
-          <Typography type="title">My Balances</Typography>
+          <Typography variant="title">My Balances</Typography>
         )}
       </div>
       <div className={classes.spacer} />

@@ -64,7 +64,7 @@ const sampleData = [
     USDProfitLoss: '-17%',
   },
   {
-    _id: 4,
+    _id: 567,
     exchange: {
       name: 'BitCOOOOONEEEECT',
     },
@@ -94,7 +94,7 @@ const STable = styled(Table)`
   min-width: 800px;
 `
 
-export class PortfolioTable extends Component {
+export class PortfolioTable extends Component<any, any> {
     state = {
       order: 'asc',
       orderBy: 'name',
@@ -103,7 +103,7 @@ export class PortfolioTable extends Component {
       rowsPerPage: 10,
     }
 
-  handleRequestSort = (event, property) => {
+  handleRequestSort = (event: any, property: any): void => {
     const orderBy = property
     let order = 'desc'
 
@@ -119,7 +119,7 @@ export class PortfolioTable extends Component {
     this.setState({ data, order, orderBy })
   }
 
-  handleSelectAllClick = (event, checked) => {
+  handleSelectAllClick = (event: any, checked: any): void => {
     if (checked) {
       this.setState({ selected: this.state.data.map(n => n._id) })
       return
@@ -127,10 +127,10 @@ export class PortfolioTable extends Component {
     this.setState({ selected: [] })
   }
 
-  handleClick = (event, _id) => {
+  handleClick = (event: any, _id: string): void => {
     const { selected } = this.state
     const selectedIndex = selected.indexOf(_id)
-    let newSelected = []
+    let newSelected: any[] = []
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, _id)
@@ -148,29 +148,32 @@ export class PortfolioTable extends Component {
     this.setState({ selected: newSelected })
   }
 
-  handleChangePage = (event, page) => {
+  handleChangePage = (event: any, page: number) => {
     this.setState({ page })
   }
 
-  handleChangeRowsPerPage = event => {
+  handleChangeRowsPerPage = (event: any) => {
     this.setState({ rowsPerPage: event.target.value })
   }
 
-  isSelected = _id => this.state.selected.indexOf(_id) !== -1
+  isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
 
-  render() {
+  public render(): JSX.Element {
     if (this.props.data.loading) {
       return <div>Loading</div>
     }
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+
     const assets =
-      (this.props.data &&
-        this.props.getProfile &&
-        this.props.data.getProfile.portfolio &&
-        this.props.data.getProfile.portfolio.assets) ||
-      sampleData
-    // const assets = sampleData;
+    (this.props.data &&
+      this.props.getProfile &&
+      this.props.data.getProfile.portfolio &&
+      this.props.data.getProfile.portfolio.assets) ||
+    sampleData
+
+    console.log(this.props.data)
+
+    const { order, orderBy, selected, rowsPerPage, page } = this.state
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
     return (
       <SPaper>
         <PortfolioTableToolbar numSelected={selected.length} />
@@ -222,7 +225,7 @@ export class PortfolioTable extends Component {
               <TableRow>
                 <TablePagination
                   colSpan={6}
-                  count={data.length}
+                  count={assets.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   backIconButtonProps={{
