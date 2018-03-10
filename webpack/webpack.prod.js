@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const config = {
+  mode: 'production',
   entry: {
     app: [`${commonPaths.appEntry}/index.tsx`],
   },

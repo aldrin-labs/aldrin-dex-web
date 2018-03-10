@@ -1,10 +1,12 @@
 const commonPaths = require('./common-paths')
 
 const webpack = require('webpack')
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin').default
 
 const port = process.env.PORT || 3000
 
 const config = {
+  mode: 'development',
   entry: {
     app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.tsx`],
   },
@@ -14,6 +16,7 @@ const config = {
   devtool: 'inline-source-map',
   module: {},
   plugins: [
+    // new ErrorOverlayPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
