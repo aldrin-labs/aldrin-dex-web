@@ -56,6 +56,7 @@
     "graphql-anywhere": "^4.1.6",
     "graphql-tag": "^2.8.0",
     "history": "^4.7.2",
+    "jwt-decode": "^2.2.0",
     "material-ui": "^1.0.0-beta.36",
     "material-ui-icons": "^1.0.0-beta.36",
     "nanoid": "^1.0.2",

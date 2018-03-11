@@ -1,4 +1,4 @@
-fragment UserInfo on Account {
+fragment UserInfoFragment on Account {
   _id
   username
   imageUrl

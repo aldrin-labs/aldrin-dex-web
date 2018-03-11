@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Auth0Lock from 'auth0-lock'
 import { graphql } from 'react-apollo'
+import jwtDecode from 'jwt-decode'
 
 import Button from 'material-ui/Button'
 
@@ -15,9 +16,9 @@ import * as API from './api'
 import { LoginMenu } from './components'
 
 const SWrapper = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 `
 
@@ -54,10 +55,14 @@ class LoginQuery extends Component {
 
   checkToken = () => {
     if (this.getToken()) {
-      return true
+      const decodedToken = jwtDecode(this.getToken())
+      const currentTime = Date.now() / 1000
+      if (currentTime > decodedToken.exp) {
+        this.props.storeLogout()
+      }
+    } else {
+      this.props.storeLogout()
     }
-    this.props.storeLogout()
-    return false
   }
 
   setToken = (token: string) => {

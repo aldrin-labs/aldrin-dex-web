@@ -1,4 +1,4 @@
-fragment Keys on Key {
+fragment KeysFragment on Key {
   _id
   name
   apiKey

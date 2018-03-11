@@ -1,15 +1,15 @@
-#import "./UserInfo.gql"
-#import "./Keys.gql"
-#import "./Portfolio.gql"
+#import "./UserInfoFragment.gql"
+#import "./KeysFragment.gql"
+#import "./PortfolioFragment.gql"
 
 query getProfileQuery($withKeys: Boolean!, $withPortfolio: Boolean!) {
   getProfile {
-    ...UserInfo
+    ...UserInfoFragment
     keys @include(if: $withKeys) {
-      ...Keys
+      ...KeysFragment
     }
     portfolio @include(if: $withPortfolio) {
-      ...Portfolio
+      ...PortfolioFragment
     }
   }
 }

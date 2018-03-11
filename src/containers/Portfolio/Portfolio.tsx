@@ -5,7 +5,7 @@ import { compose } from 'recompose'
 
 import { PortfolioTable, SelectAccount, NewSA, Drawer } from './components'
 
-import getProfileQuery from '../../graphql/Account/getProfile.gql'
+import getProfileQuery from '../../graphql/Account/getProfileQuery.gql'
 
 import * as API from './api'
 

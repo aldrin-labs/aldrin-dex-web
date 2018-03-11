@@ -1,4 +1,4 @@
-fragment Portfolio on Portfolio {
+fragment PortfolioFragment on Portfolio {
   _id
   name
   processing
