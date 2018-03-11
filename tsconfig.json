@@ -4,6 +4,7 @@
     "outDir": "./dist/",
     "target": "esnext",
     "sourceMap": true,
+    "declaration": true,
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,

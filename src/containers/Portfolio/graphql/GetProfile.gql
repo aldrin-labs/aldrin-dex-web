@@ -1,5 +1,7 @@
-#import "./Profile.graphql"
+#import "./Profile.gql"
 
-query getProfile {
-
+query getProfileQuery {
+  gerProfile {
+    ...Profile
+  }
 }

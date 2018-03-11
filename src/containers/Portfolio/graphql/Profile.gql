@@ -1,0 +1,9 @@
+fragment UserInfo on Account {
+  _id
+  username
+  imageUrl
+  email
+  emailSubscription
+  auth0Token
+  portfolioId
+}
