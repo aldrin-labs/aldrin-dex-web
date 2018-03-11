@@ -1,17 +1,11 @@
 import gql from 'graphql-tag'
 import getProfileQuery from './graphql/GetProfile.gql'
 
-
 export const getPortfolio = gql`
-  query gerPortfolio {
+  query getPortfolio {
     getProfile {
       username
-      portfolioId
-      keyIds
-      keys {
-        name
-        apiKey
-
-      }
+      _id
+    }
   }
 `

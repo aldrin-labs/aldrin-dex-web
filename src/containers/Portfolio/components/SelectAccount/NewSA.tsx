@@ -58,6 +58,8 @@ class WalletsDrawer extends React.Component {
     const { open } = this.state
     return (
       <Root>
+        {console.log(1111, this.props)
+        }
         <DrawerPaper
           variant="persistent"
           anchor="left"

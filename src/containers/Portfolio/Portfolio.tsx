@@ -5,6 +5,8 @@ import { compose } from 'recompose'
 
 import { PortfolioTable, SelectAccount, NewSA, Drawer } from './components'
 
+import getProfileQuery from '../../graphql/Account/getProfile.gql'
+
 import * as API from './api'
 
 const PortfolioContainer = styled.div`
@@ -13,10 +15,22 @@ const PortfolioContainer = styled.div`
 
 const GQLPortfolioTable = compose(graphql(API.getPortfolio))(PortfolioTable)
 
+const Check = compose(
+  graphql(getProfileQuery, {
+    options: {
+      variables: {
+        withKeys: true,
+        withPortfolio: false,
+      },
+    },
+  })
+)(NewSA)
+
 export const Portfolio = () => (
-    <PortfolioContainer>
-      <NewSA />
+  <PortfolioContainer>
+    <Check />
     {/* <SelectAccount /> */}
     <GQLPortfolioTable />
   </PortfolioContainer>
 )
+

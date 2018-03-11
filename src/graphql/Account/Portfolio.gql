@@ -1,0 +1,27 @@
+fragment Portfolio on Portfolio {
+  _id
+  name
+  processing
+  ownerId
+  assetIds
+  tradeIds
+  assets {
+    assetId
+    exchangeId
+    keyId
+    value
+    realizedProfit
+    unrealizedProfit
+    totalProfit
+    asset {
+      name
+      symbol
+    }
+    exchange {
+      name
+    }
+    key {
+      name
+    }
+  }
+}
