@@ -1,7 +1,7 @@
 const commonPaths = require('./common-paths')
 
 const webpack = require('webpack')
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin').default
+const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 const port = process.env.PORT || 3000
 
@@ -16,7 +16,7 @@ const config = {
   devtool: 'source-map',
   module: {},
   plugins: [
-    // new ErrorOverlayPlugin(),
+    new ErrorOverlayPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

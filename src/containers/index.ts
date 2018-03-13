@@ -1,4 +1,4 @@
-export { Settings } from './Settings'
+export { User } from './User'
 export { Screener } from './Screener'
 export { Profile } from './Profile'
 export { Portfolio } from './Portfolio'
