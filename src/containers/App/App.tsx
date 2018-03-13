@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
 import { Home } from '@containers/Home'
-import { NavBar } from '@common'
+import { NavBar } from '@components'
 
 // TODO: 2 themes
 

@@ -1,6 +1,6 @@
 import { branch, renderComponent } from 'recompose'
 
-import { Loading } from '@common/Loading'
+import { Loading } from '@components/Loading'
 
 export const withLoader: any = (component?: any, propName = 'data'): any =>
   branch(

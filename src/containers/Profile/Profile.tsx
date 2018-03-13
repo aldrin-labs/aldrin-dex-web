@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { ProfileTable } from './ProfileTable'
 import { ProfileKeys } from './ProfileKeys'
-import { AddExchangeKey } from '@common'
+import { AddExchangeKey } from '@components'
 
 import { Test } from './Test'
 

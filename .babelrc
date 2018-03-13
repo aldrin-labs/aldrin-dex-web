@@ -27,7 +27,6 @@
         "@containers": "./src/containers",
         "@utils": "./src/utils",
         "@hoc": "./src/hoc",
-        "@common": "./src/common",
         "@graphql": "./src/graphql"
       }
     }]]

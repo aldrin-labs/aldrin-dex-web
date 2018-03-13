@@ -9,7 +9,7 @@ import {
   lifecycle,
 } from 'recompose'
 
-import { ErrorFallback } from '@common/ErrorFallback'
+import { ErrorFallback } from '@components/ErrorFallback'
 
 export const withErrorFallback: any = compose(
   setDisplayName('ErrorBoundry'),

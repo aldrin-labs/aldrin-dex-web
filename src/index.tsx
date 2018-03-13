@@ -7,12 +7,11 @@ import {
   Profile,
   Screener,
   User,
-  AssetInfo,
 } from '@containers'
 
 import { client } from '@utils/apolloClient'
 import { persistor, store } from '@utils/configureStore'
-import { NotFound } from '@common/NotFound'
+import { NotFound } from '@components/NotFound'
 
 import createHistory from 'history/createBrowserHistory'
 import React from 'react'
@@ -38,7 +37,6 @@ const render = () =>
                 <Switch>
                   <Route exact path="/" component={Home} />
                   <Route exact path="/market" component={CoinMarketCap} />
-                  <Route path="/asset/:name" component={AssetInfo} />
                   <Route exact path="/profile" component={Profile} />
                   <Route exact path="/portfolio" component={Portfolio} />
                   <Route exact path="/chart" component={Chart} />
