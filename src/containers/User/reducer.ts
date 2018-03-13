@@ -1,4 +1,3 @@
-import { createReducerAsync } from 'redux-act-async'
 import { createReducer } from 'redux-act'
 
 import * as actions from './actions'
@@ -12,6 +11,10 @@ export default createReducer(
     [actions.addExchangeKey]: (state, payload) => {
       console.log(555, state, payload)
       return { ...state, check: 5 }
+    },
+    [actions.test]: (state, payload) => {
+      console.log(666, state, payload)
+      return { ...state, test: 'eeeee booooiii' }
     },
   },
   initialState

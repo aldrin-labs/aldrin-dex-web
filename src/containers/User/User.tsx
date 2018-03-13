@@ -2,14 +2,14 @@ import React from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 
-import { withErrorFallback } from '@hoc'
+import { withErrorFallback } from '@hoc/withErrorFallback'
 
 import { KeysList, AddExchangeKey } from './components'
 import * as actions from './actions'
 import * as selectors from './selectors'
 import * as API from './api'
 
-const SettingsWrapper = styled.div`
+const UserWrapper = styled.div`
   display: flex;
   margin: 10px;
 `
@@ -23,5 +23,5 @@ const SettingsContainer = ({ profile }: any) => {
   )
 }
 
-export const Settings = compose(
+export const User = compose(
  withErrorFallback)(SettingsContainer)

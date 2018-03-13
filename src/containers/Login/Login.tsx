@@ -95,6 +95,7 @@ class LoginQuery extends Component {
     try {
       await createUser({ variables })
     } catch (error) {
+      console.log(error)
     }
   }
 
@@ -149,7 +150,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 export const Login = compose(
+  withErrorFallback,
   connect(mapStateToProps, mapDispatchToProps),
   graphql(API.createUserMutation, { name: 'createUser' }),
-  withErrorFallback
 )(LoginQuery)

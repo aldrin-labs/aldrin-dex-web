@@ -6,7 +6,7 @@ import {
   Portfolio,
   Profile,
   Screener,
-  Settings,
+  User,
   AssetInfo,
 } from '@containers'
 
@@ -43,7 +43,7 @@ const render = () =>
                   <Route exact path="/portfolio" component={Portfolio} />
                   <Route exact path="/chart" component={Chart} />
                   <Route exact path="/screener" component={Screener} />
-                  <Route exact path="/settings" component={Settings} />
+                  <Route exact path="/user" component={User} />
                   <Route path="*" component={NotFound} />
                 </Switch>
               </App>
