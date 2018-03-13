@@ -2,20 +2,25 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { ProfileQueryQuery } from '../profile-annotation'
 
-interface Props { coin: ProfileQueryQuery['assetById'] }
+interface Props {
+  coin: ProfileQueryQuery['assetById']
+}
 
 export default class ProfileHeading extends React.Component<Props, {}> {
   render() {
-    const { coin } = this.props;
-    const { name = '', symbol = '' } = coin || {};
+    const { coin } = this.props
+    const { name = '', symbol = '' } = coin || {}
 
     return (
       <SProfileHeading>
+        {/*TODO: need real image */}
         <CoinImage />
         <CoinProfileWrapper>
           <CoinName>
-            {name}<CoinShortName>{symbol}</CoinShortName>
+            {name}
+            <CoinShortName>{symbol}</CoinShortName>
           </CoinName>
+          {/*TODO: need real description */}
           <CoinDescription>
             Basic info lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
             tempor incididunt.
@@ -31,8 +36,7 @@ const SProfileHeading = styled.div`
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);
-  margin-left: 135px;
-  margin-top: 24px;
+  margin-top: 19px;
   max-width: 380px;
 `
 

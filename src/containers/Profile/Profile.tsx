@@ -4,15 +4,12 @@ import gql from 'graphql-tag'
 import styled from 'styled-components'
 import ProfileHeading from './components/ProfileHeading'
 import ProfileLinks from './components/ProfileLinks'
+import ProfileChart from './components/ProfileChart'
 import { ProfileQueryQuery } from './profile-annotation'
 
-const SWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 5px;
-`
-
-interface Props { data: ProfileQueryQuery }
+interface Props {
+  data: ProfileQueryQuery
+}
 
 class Profile extends React.Component<Props, {}> {
   render() {
@@ -20,13 +17,81 @@ class Profile extends React.Component<Props, {}> {
     const { assetById } = data
 
     return (
-      <SWrapper>
-        <ProfileHeading coin={assetById} />
-        <ProfileLinks coin={assetById} />
-      </SWrapper>
+      <SProfileWrapper>
+        <SProfile>
+          <SWrapper>
+            <ProfileHeading coin={assetById} />
+            <ProfileLinks coin={assetById} />
+          </SWrapper>
+          <ProfileChart coin={assetById} />
+        </SProfile>
+
+        <Divider>
+          <LeftPath />
+          <DividerText>MUST-READ ARTICLES</DividerText>
+          <RightPath />
+        </Divider>
+
+        <Smile>¯\_(ツ)_/¯</Smile>
+      </SProfileWrapper>
     )
   }
 }
+
+const Smile = styled.div`
+  font-family: PingFangSC;
+  font-size: 103px;
+  text-align: center;
+  color: #ffffff80;
+  margin: 73px auto 0 auto;
+`
+
+const DividerText = styled.span`
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  color: #ffffff;
+`
+
+const Divider = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+`
+
+const LeftPath = styled.hr`
+  width: 35%;
+  height: 1px;
+  border-radius: 1px;
+  background-image: linear-gradient(to right, #ffffff00, #ffffff);
+`
+
+const RightPath = styled.hr`
+  width: 35%;
+  height: 1px;
+  border-radius: 1px;
+  background-image: linear-gradient(to left, #ffffff00, #ffffff);
+`
+
+const SProfileWrapper = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+`
+
+const SWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+`
+
+const SProfile = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  margin: 0 auto;
+`
 
 export const ProfileQuery = gql`
   query ProfileQuery($id: MongoID!) {
