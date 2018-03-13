@@ -12,7 +12,7 @@ import Table, {
   TableRow,
 } from 'material-ui/Table'
 
-import { PortfolioTableHead, PortfolioTableToolbar } from '../'
+import { PortfolioTableHead, PortfolioTableToolbar } from './'
 
 const sampleData = [
   {

@@ -14,7 +14,7 @@ import Dialog, {
 } from 'material-ui/Dialog'
 import Typography from 'material-ui/Typography'
 
-import { deleteExchangeKeyMutation } from '../api'
+import { deleteExchangeKeyMutation } from '../../api'
 
 const DeleteKeyDialogComponent = ({
   handleClickOpen,
@@ -28,10 +28,16 @@ const DeleteKeyDialogComponent = ({
 }) => (
   <div>
     <Button onClick={handleClickOpen}>Delete</Button>
-    <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      aria-labelledby="form-dialog-title"
+    >
       <DialogTitle id="form-dialog-title">Delete key {keyName}?</DialogTitle>
       <DialogContent>
-        <DialogContentText>To delete key please enter it's name:</DialogContentText>
+        <DialogContentText>
+          To delete key please enter it's name:
+        </DialogContentText>
         <TextField
           autoFocus
           margin="dense"

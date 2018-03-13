@@ -6,7 +6,7 @@ import { compose } from 'recompose'
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
 
-import { getKeysQuery } from '../api'
+import { getKeysQuery } from '../../api'
 import { DeleteKeyDialog } from './'
 
 // TODO: hoc loader fix

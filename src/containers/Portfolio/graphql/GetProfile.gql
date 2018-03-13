@@ -1,7 +1,0 @@
-#import "./Profile.gql"
-
-query getProfileQuery {
-  gerProfile {
-    ...Profile
-  }
-}
