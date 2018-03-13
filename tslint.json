@@ -51,7 +51,7 @@
     "triple-equals": true,
     "switch-default": true,
     "cyclomatic-complexity": true,
-    "max-line-length": [true, { "limit": 100, "ignore-pattern": "^import |^export {(.*?)}" }],
+    "max-line-length": [true, { "limit": 80, "ignore-pattern": "^import |^export {(.*?)}" }],
     "no-duplicate-imports": true,
     "trailing-comma": [
       true,

@@ -31,9 +31,7 @@ const DeleteKeyDialogComponent = ({
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
       <DialogTitle id="form-dialog-title">Delete key {keyName}?</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          To delete key please enter it's name:
-        </DialogContentText>
+        <DialogContentText>To delete key please enter it's name:</DialogContentText>
         <TextField
           autoFocus
           margin="dense"
