@@ -8,6 +8,7 @@ interface Props {
 
 export default class ProfileLinks extends React.Component<Props, {}> {
   render() {
+    /*TODO: need real links */
     const rows = [
       {
         icon: require('../../../icons/website.svg'),
@@ -50,14 +51,14 @@ export default class ProfileLinks extends React.Component<Props, {}> {
         {rows.map(row => {
           const { icon = '', heading = '', links = [] } = row || {}
           return (
-            <CoinLinkRow>
+            <CoinLinkRow key={heading}>
               <WebIcon
                 dangerouslySetInnerHTML={{
                   __html: icon,
                 }}
               />
               <RowHeading>{heading}</RowHeading>
-              <RowLinks>{links.map(link => <RowLink>{link}</RowLink>)}</RowLinks>
+              <RowLinks>{links.map(link => <RowLink key={link}>{link}</RowLink>)}</RowLinks>
             </CoinLinkRow>
           )
         })}
@@ -68,7 +69,6 @@ export default class ProfileLinks extends React.Component<Props, {}> {
 
 const SProfileLinks = styled.div`
   width: 380px;
-  margin-left: 135px;
   margin-top: 24px;
   border-radius: 3px;
   background-color: #393e44;
