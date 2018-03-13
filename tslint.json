@@ -14,7 +14,6 @@
     "no-delete": true,
     "no-loop-statement": true,
     "no-method-signature": true,
-    "typedef": [true, "call-signature"],
     "quotemark": [true, "single", "jsx-double"],
     "no-implicit-dependencies": false,
     "no-trailing-whitespace": [true, "ignore-template-strings"],

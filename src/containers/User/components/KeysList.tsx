@@ -5,9 +5,9 @@ import { compose } from 'recompose'
 
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
-import Button from 'material-ui/Button'
 
-import { getKeysQuery, deleteExchangeKeyMutation } from '../api'
+import { getKeysQuery } from '../api'
+import { DeleteKeyDialog } from './'
 
 // TODO: hoc loader fix
 
@@ -17,21 +17,7 @@ const KeysListComponent = props => {
   }
 
   const { keys } = props.data.getProfile
-  const { deleteExchangeKey } = props
-  const deleteSelectedExchangeKey = async (name: string) => {
-    try {
-      const deleted = await deleteExchangeKey({
-        variables: {
-          name,
-        },
-      })
-      console.log('Key deleted:', deleted.data)
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
-  console.log(keys)
   return (
     <KeysListPaper>
       <KeysTable>
@@ -41,6 +27,7 @@ const KeysListComponent = props => {
             <TableCell numeric>Exchange</TableCell>
             <TableCell numeric>Api key</TableCell>
             <TableCell numeric>Date</TableCell>
+            <TableCell numeric>Delete key</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -50,7 +37,9 @@ const KeysListComponent = props => {
               <TableCell numeric>{n.exchange.name}</TableCell>
               <TableCell numeric>{n.apiKey}</TableCell>
               <TableCell numeric>{n.date}</TableCell>
-              <Button onClick={() => deleteSelectedExchangeKey(n.name)}>Test</Button>
+              <TableCell numeric>
+                <DeleteKeyDialog keyName={n.name} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -71,6 +60,5 @@ const KeysTable = styled(Table)`
 `
 
 export const KeysList = compose(
-  graphql(getKeysQuery),
-  graphql(deleteExchangeKeyMutation, { name: 'deleteExchangeKey' })
+  graphql(getKeysQuery)
 )(KeysListComponent)
