@@ -18,6 +18,19 @@ const KeysListComponent = props => {
 
   const { keys } = props.data.getProfile
   const { deleteExchangeKey } = props
+  const deleteSelectedExchangeKey = async (name: string) => {
+    try {
+      const deleted = await deleteExchangeKey({
+        variables: {
+          name,
+        },
+      })
+      console.log('Key deleted:', deleted.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   console.log(keys)
   return (
     <KeysListPaper>
@@ -37,7 +50,7 @@ const KeysListComponent = props => {
               <TableCell numeric>{n.exchange.name}</TableCell>
               <TableCell numeric>{n.apiKey}</TableCell>
               <TableCell numeric>{n.date}</TableCell>
-              <Button onClick={() => deleteExchangeKey(n.name)}>Test</Button>
+              <Button onClick={() => deleteSelectedExchangeKey(n.name)}>Test</Button>
             </TableRow>
           ))}
         </TableBody>
@@ -57,7 +70,7 @@ const KeysTable = styled(Table)`
   min-width: 700;
 `
 
-export const KeysList = compose(withLoader(),
-graphql(getKeysQuery),
-graphql(deleteExchangeKeyMutation, { name: 'deleteExchangeKey' })
+export const KeysList = compose(
+  graphql(getKeysQuery),
+  graphql(deleteExchangeKeyMutation, { name: 'deleteExchangeKey' })
 )(KeysListComponent)
