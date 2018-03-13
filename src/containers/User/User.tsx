@@ -5,23 +5,18 @@ import { compose } from 'recompose'
 import { withErrorFallback } from '@hoc/withErrorFallback'
 
 import { KeysList, AddExchangeKey } from './components'
-import * as actions from './actions'
-import * as selectors from './selectors'
-import * as API from './api'
 
-const UserWrapper = styled.div`
+const UserWrap = styled.div`
   display: flex;
   margin: 10px;
 `
 
-const SettingsContainer = ({ profile }: any) => {
-  return (
-    <SettingsWrapper>
+const UserContainer: any = ({ profile }: any): any =>
+  (
+    <UserWrap>
       <AddExchangeKey />
-      {/* <KeysList /> */}
-    </SettingsWrapper>
+      <KeysList />
+    </UserWrap>
   )
-}
 
-export const User = compose(
- withErrorFallback)(SettingsContainer)
+export const User = compose(withErrorFallback)(UserContainer)

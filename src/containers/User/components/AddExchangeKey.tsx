@@ -11,61 +11,32 @@ import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
 import Select from 'material-ui/Select'
 import { MenuItem } from 'material-ui/Menu'
-import { FormControl, FormHelperText } from 'material-ui/Form'
 import { InputLabel } from 'material-ui/Input'
 
-import * as API from './api'
+import * as API from '../api'
 
-const FormContainer = styled.form`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
-const STextField = styled(TextField)`
-  width: 80%;
-  margin: 5px;
-  align-self: center;
-`
-
-const SExchangeSelect = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 80%;
-  margin: 30px 5px 5px 5px;
-  align-self: center;
-`
-
-const SPaper = styled(Paper)`
-  display: flex;
-  width: 300px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 15px;
-  max-height: 425px;
-  margin: 24px 0px 0px 12px;
-`
+const MIN_CHAR = 3
 
 const FormError = ({ children }: any) => <Typography color="error">{children}</Typography>
 
 const formikEnhancer = withFormik({
-  validationSchema: Yup.object().shape({
+  validationSchema: Yup.object()
+  .shape({
     name: Yup.string()
       .required()
-      .min(3)
+      .min(MIN_CHAR)
       .trim(),
     apiKey: Yup.string()
       .required()
-      .min(3)
+      .min(MIN_CHAR)
       .trim(),
     secret: Yup.string()
       .required()
-      .min(3)
+      .min(MIN_CHAR)
       .trim(),
     exchange: Yup.string()
       .required()
-      .min(3)
+      .min(MIN_CHAR)
       .trim(),
   }),
   mapPropsToValues: (props: any) => ({
@@ -74,7 +45,7 @@ const formikEnhancer = withFormik({
     secret: '',
     exchange: '',
   }),
-  handleSubmit: async (values, { props: { addExchangeKey }, setSubmitting}) => {
+  handleSubmit: async (values, { props: { addExchangeKey }, setSubmitting }) => {
     const variables = {
       ...values,
       date: Date.now(),
@@ -89,7 +60,7 @@ const formikEnhancer = withFormik({
   },
 })
 
-const AddExchangeKeyForm = ({
+const AddExchangeKeyComponent = ({
   values,
   touched,
   dirty,
@@ -101,7 +72,7 @@ const AddExchangeKeyForm = ({
   setFieldValue,
   setFieldTouched,
   isSubmitting,
-  getExchangesList
+  getExchangesList,
 }: any) => (
   <SPaper>
     <Typography variant="title">Add new key</Typography>
@@ -145,19 +116,6 @@ const AddExchangeKeyForm = ({
         margin="normal"
         helperText={touched.secret && errors.secret && <FormError>{errors.secret}</FormError>}
       />
-      {/* <STextField
-        error={touched.exchange && !!errors.exchange}
-        id="exchange"
-        name="exchange"
-        label="Exchange"
-        value={values.exchange}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        placeholder="Enter exchange name here..."
-        type="text"
-        margin="normal"
-        helperText={touched.exchange && errors.exchange && <FormError>{errors.exchange}</FormError>}
-      /> */}
       <SExchangeSelect>
         <InputLabel htmlFor="exchange">Exchange</InputLabel>
         <Select
@@ -188,8 +146,40 @@ const AddExchangeKeyForm = ({
   </SPaper>
 )
 
+const FormContainer = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const STextField = styled(TextField)`
+  align-self: center;
+  margin: 5px;
+  width: 80%;
+`
+
+const SExchangeSelect = styled.div`
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  margin: 30px 5px 5px 5px;
+  width: 80%;
+`
+
+const SPaper = styled(Paper)`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 8px 0px 0px 8px;
+  max-height: 500px;
+  min-height: 500px;
+  padding: 15px;
+  width: 300px;
+`
+
 export const AddExchangeKey = compose(
   graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
   graphql(API.getExchangesListQuery, { name: 'getExchangesList' }),
   formikEnhancer
-)(AddExchangeKeyForm)
+)(AddExchangeKeyComponent)
