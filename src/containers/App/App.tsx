@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Reboot from 'material-ui/Reboot'
+import CssBaseline from 'material-ui/CssBaseline'
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
@@ -34,7 +34,7 @@ if (process.browser) {
 
 export const App = ({ children }: any) => (
     <MuiThemeProvider theme={theme}>
-      <Reboot />
+      <CssBaseline />
       <NavBar />
       {children}
     </MuiThemeProvider>
