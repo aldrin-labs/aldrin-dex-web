@@ -1,9 +1,54 @@
 import gql from 'graphql-tag'
 
-export const getPortfolio = gql`
+export const getKeysQuery = gql`
+  query getKeys {
+    getProfile {
+      portfolioId
+      keys {
+        _id
+        name
+        apiKey
+        secret
+        date
+        exchange {
+          name
+          symbol
+        }
+      }
+    }
+  }
+`
+
+export const getPortfolioQuery = gql`
   query getPortfolio {
     getProfile {
-      username
+      portfolioId
+      portfolio {
+        name
+        processing
+        assetIds
+        assets {
+          _id
+          assetId
+          exchangeId
+          keyId
+          value
+          realizedProfit
+          unrealizedProfit
+          totalProfit
+          asset {
+            name
+            symbol
+          }
+          exchange {
+            name
+          }
+          key {
+            name
+            apiKey
+          }
+        }
+      }
     }
   }
 `

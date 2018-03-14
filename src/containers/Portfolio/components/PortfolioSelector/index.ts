@@ -1,2 +1,2 @@
-export { PortfolioTable } from './PortfolioTable'
+export { PortfolioList } from './PortfolioList'
 export { PortfolioSelector } from './PortfolioSelector'

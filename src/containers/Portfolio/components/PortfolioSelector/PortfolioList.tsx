@@ -13,7 +13,7 @@ import { graphql } from 'react-apollo'
 import * as R from 'ramda'
 
 import * as actions from '../../actions'
-import * as API from './api'
+import * as API from '../../api'
 
 const SAppBar = styled(AppBar)``
 
@@ -27,15 +27,15 @@ const SelectTitle = styled(Typography)`
   font-size: 20px !important;
 `
 
-class AccountSelector extends React.Component {
-  state = {
+class SelectPortfolioComponent extends React.Component {
+  readonly state = {
     allKeysSelected: false,
   }
 
   componentDidMount() {
     // if(R.equals(this.props.keys.getProfile.keys.map))
   }
-  handleToggle = (value: any) => () => {
+  readonly handleToggle = (value: any) => () => {
     const { selectedAccounts } = this.props
     const currentIndex = selectedAccounts.indexOf(value)
     const newChecked = [...selectedAccounts]
@@ -49,7 +49,7 @@ class AccountSelector extends React.Component {
     this.props.onLoad(123)
   }
 
-  handleToggleAll = () => {
+  readonly handleToggleAll = () => {
     const allKeys = this.props.keys.getProfile.keys.map(key => key._id)
     this.setState((prevState, props) => {
       return { allKeysSelected: !prevState.allKeysSelected };
@@ -63,16 +63,18 @@ class AccountSelector extends React.Component {
       return <Typography variant="title">Loading</Typography>
     }
     const { keys } = this.props.keys.getProfile
+
     return (
       <SWrapper>
-        <SAppBar position="static" color="primary">
+        {/* <SAppBar position="static" color="primary">
           <Toolbar>
             <SelectTitle variant="title" color="inherit">
               Accounts & Wallets
             </SelectTitle>
           </Toolbar>
-        </SAppBar>
+        </SAppBar> */}
         <List>
+          <Typography>Check</Typography>
           {keys.length === 0 && <Typography variant="title">No keys</Typography>}
           {keys.length > 0 && (
             <ListItem dense button onClick={this.handleToggleAll}>
@@ -112,7 +114,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys))
 })
 
-export const SelectAccount = compose(
-  graphql(API.getKeys, { name: 'keys' }),
-  connect(mapStateToProps, mapDispatchToProps)
-)(AccountSelector)
+export const PortfolioList = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  graphql(API.getKeysQuery, { name: 'keys' })
+)(SelectPortfolioComponent)

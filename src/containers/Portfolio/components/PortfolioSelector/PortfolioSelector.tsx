@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -17,14 +17,17 @@ import { compose } from 'recompose'
 import styled, { css } from 'styled-components'
 import { transitions } from 'polished'
 
+import { PortfolioList } from './PortfolioList'
+import graphql from 'graphql-anywhere';
+
 const drawerWidth = '240px'
 
-const Root = styled.div`
-  flex-grow: 1;
-  height: 430px;
-  position: relative;
-  display: flex;
-`
+// const Root = styled.div`
+//   display: flex;
+//   flex-grow: 1;
+//   height: 430px;
+//   position: relative;
+// `
 
 const DrawerPaper = styled(Drawer)`
   width: -${drawerWidth};
@@ -38,6 +41,7 @@ const DrawerPaper = styled(Drawer)`
 `
 
 const InnerPaper = styled.div`
+  margin-top: 88px;
   width: 240px;
 `
 
@@ -57,7 +61,7 @@ class WalletsDrawer extends React.Component {
   render() {
     const { open } = this.state
     return (
-      <Root>
+      <Fragment>
         {console.log(1111, this.props)
         }
         <DrawerPaper
@@ -68,9 +72,9 @@ class WalletsDrawer extends React.Component {
             component: InnerPaper,
           }}
         >
-          123
+          <PortfolioList />
         </DrawerPaper>
-      </Root>
+      </Fragment>
     )
   }
 }
@@ -83,5 +87,5 @@ class WalletsDrawer extends React.Component {
 //   toggleDrawer: () => dispatch(actions.toggleDrawer)
 // })
 
-export default compose()(WalletsDrawer)
+export const PortfolioSelector = WalletsDrawer
 // connect(mapStateToProps, mapDispatchToProps),
