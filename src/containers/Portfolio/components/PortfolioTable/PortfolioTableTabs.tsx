@@ -28,18 +28,8 @@ const styles = theme => ({
 });
 
 class TabsWrappedLabel extends React.Component {
-    state = {
-        value: 'balances',
-    };
-
-    // handleChange = (event, value) => {
-    //     this.setState({ value });
-    // };
-
     render() {
         const { classes, currentTab, handleTabSelect } = this.props;
-        const { value } = this.state;
-        console.log(this.props)
         return (
             <div className={classes.root}>
                 <AppBar position="static" className={classes.appbar}>
@@ -48,8 +38,8 @@ class TabsWrappedLabel extends React.Component {
                         <Tab className={classes.tabColor} value="rebalanced" label="Rebalanced" />
                     </Tabs>
                 </AppBar>
-                {value === 'balances' && <TabContainer><Typography variant="title">My Balances</Typography></TabContainer>}
-                {value === 'rebalanced' && <TabContainer><Typography variant="title">Rebalanced</Typography></TabContainer>}
+                {currentTab === 'balances' && <TabContainer><Typography variant="title">My Balances</Typography></TabContainer>}
+                {currentTab === 'rebalanced' && <TabContainer><Typography variant="title">Rebalanced</Typography></TabContainer>}
             </div>
         );
     }

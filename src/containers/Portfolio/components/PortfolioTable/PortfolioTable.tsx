@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 
@@ -96,7 +95,8 @@ class PortfolioTableComponent extends Component<any, any> {
       this.props.data.getProfile.portfolio.assets) ||
     sampleData
 
-    console.log(this.props.data)
+    console.log(777777, this.props.data)
+      console.log(this.state)
 
     const { order, orderBy, selected, rowsPerPage, page, currentTab } = this.state
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
@@ -114,7 +114,8 @@ class PortfolioTableComponent extends Component<any, any> {
               rowCount={assets.length}
             />
             <TableBody>
-              {assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+                {currentTab === 'balances' &&
+              assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
                 const isSelected = this.isSelected(n._id)
                 return (
                   <TableRow
