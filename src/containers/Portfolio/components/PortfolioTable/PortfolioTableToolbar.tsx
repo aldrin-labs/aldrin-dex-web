@@ -10,6 +10,8 @@ import Toolbar from 'material-ui/Toolbar'
 import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
 
+import { PortfolioTableTabs } from './PortfolioTableTabs'
+
 const toolbarStyles = theme => ({
   root: {
     paddingRight: theme.spacing.unit,
@@ -36,7 +38,7 @@ const toolbarStyles = theme => ({
 })
 
 const TableToolbar = (props) => {
-  const { numSelected, classes } = props
+  const { numSelected, classes, currentTab, handleTabSelect } = props
 
   return (
     <Toolbar
@@ -48,7 +50,7 @@ const TableToolbar = (props) => {
         {numSelected > 0 ? (
           <Typography variant="subheading">{numSelected} selected</Typography>
         ) : (
-          <Typography variant="title">My Balances</Typography>
+            <PortfolioTableTabs currentTab={currentTab} handleTabSelect={handleTabSelect} />
         )}
       </div>
       <div className={classes.spacer} />

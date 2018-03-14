@@ -22,6 +22,7 @@ class PortfolioTableComponent extends Component<any, any> {
       selected: [],
       page: 0,
       rowsPerPage: 10,
+        currentTab: 'balances',
     }
 
   readonly handleRequestSort = (event: any, property: any): void => {
@@ -46,6 +47,10 @@ class PortfolioTableComponent extends Component<any, any> {
       return
     }
     this.setState({ selected: [] })
+  }
+
+  readonly handleTabSelect = (event, currentTab) => {
+      this.setState({ currentTab })
   }
 
   readonly handleClick = (event: any, _id: string): void => {
@@ -93,11 +98,11 @@ class PortfolioTableComponent extends Component<any, any> {
 
     console.log(this.props.data)
 
-    const { order, orderBy, selected, rowsPerPage, page } = this.state
+    const { order, orderBy, selected, rowsPerPage, page, currentTab } = this.state
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
     return (
       <SPaper>
-        <PortfolioTableToolbar numSelected={selected.length} />
+        <PortfolioTableToolbar currentTab={currentTab} handleTabSelect={this.handleTabSelect} numSelected={selected.length} />
         <STableWrapper>
           <STable>
             <PortfolioTableHead
