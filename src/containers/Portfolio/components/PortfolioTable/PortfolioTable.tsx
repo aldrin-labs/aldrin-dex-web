@@ -1,146 +1,30 @@
-import React, { Component, SFC } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
-import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+import { compose } from 'recompose'
 
 import Checkbox from 'material-ui/Checkbox'
 import Paper from 'material-ui/Paper'
 import Table, {
   TableBody,
   TableCell,
-  TableFooter,
-  TablePagination,
   TableRow,
 } from 'material-ui/Table'
 
-import { PortfolioTableHead, PortfolioTableToolbar } from '../'
+import { PortfolioTableHead, PortfolioTableToolbar, PortfolioTableFooter } from './'
+import { getPortfolioQuery } from '../../api'
 
-let counter = 0
-function createData(data) {
-  const {
-    exchange,
-    name,
-    symbol,
-    availableSupply,
-    totalSupply,
-    maxSupply,
-    priceUSD,
-    percentChangeDay,
-  } = data
-  counter += 1
-  return { _id: counter, ...data }
-}
-
-const sampleData = [{
-  _id: 1,
-  exchange: {
-    name: 'Gemini'
-  },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
-  },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-},
-{
-  _id: 2,
-  exchange: {
-    name: 'Binance'
-  },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
-  },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-},
-{
-  _id: 3,
-  exchange: {
-    name: 'Gdax'
-  },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
-  },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-},
-{
-  _id: 4,
-  exchange: {
-    name: 'BitCOOOOONEEEECT'
-  },
-  asset: {
-    name: 'Etherium',
-    symbol: 'ETH',
-    priceUSD: '781',
-  },
-  currentBTC: '11000',
-  currentUSD: '781',
-  twentyFourHourChange: '10%',
-  BTCProfitLoss: '-10%',
-  USDProfitLoss: '-17%',
-}]
-
-const SPaper = styled(Paper)`
-  width: 100%;
-  margin: 24px;
-`
-
-const STableWrapper = styled.div`
-  overflow-x: auto;
-`
-
-const STable = styled(Table)`
-  min-width: 800px;
-`
-
-const SamplePortfolio = {
-  exchange: 'Gemini',
-  name: 'Ethereum',
-  symbol: 'ETH',
-  availableSupply: '90000',
-  totalSupply: '9000000000',
-  maxSupply: '19999999999999',
-  priceUSD: '9000',
-  percentChangeDay: '400',
-}
-
-const SamplePortfolio2 = {
-
-}
-
-export class PortfolioTable extends Component {
-  constructor(props, context) {
-    super(props, context)
-
-    this.state = {
+class PortfolioTableComponent extends Component<any, any> {
+    readonly state = {
       order: 'asc',
       orderBy: 'name',
       selected: [],
-      data: [
-        createData('Gemini', 'Bitcoin', 'BTC', 9000, 0, 111, 0.333, 0.555),
-        createData('Gemini', 'Ethereum', 'Eth', 90010, 0, 1111, 0.3233, 0.5355),
-      ].sort((a, b) => (a.name < b.name ? -1 : 1)),
       page: 0,
       rowsPerPage: 10,
+        currentTab: 'balances',
     }
-  }
 
-  handleRequestSort = (event, property) => {
+  readonly handleRequestSort = (event: any, property: any): void => {
     const orderBy = property
     let order = 'desc'
 
@@ -156,7 +40,7 @@ export class PortfolioTable extends Component {
     this.setState({ data, order, orderBy })
   }
 
-  handleSelectAllClick = (event, checked) => {
+  readonly handleSelectAllClick = (event: any, checked: any): void => {
     if (checked) {
       this.setState({ selected: this.state.data.map(n => n._id) })
       return
@@ -164,10 +48,14 @@ export class PortfolioTable extends Component {
     this.setState({ selected: [] })
   }
 
-  handleClick = (event, _id) => {
+  readonly handleTabSelect = (event, currentTab) => {
+      this.setState({ currentTab })
+  }
+
+  readonly handleClick = (event: any, _id: string): void => {
     const { selected } = this.state
     const selectedIndex = selected.indexOf(_id)
-    let newSelected = []
+    let newSelected: any[] = []
 
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, _id)
@@ -185,28 +73,36 @@ export class PortfolioTable extends Component {
     this.setState({ selected: newSelected })
   }
 
-  handleChangePage = (event, page) => {
+  readonly handleChangePage = (event: any, page: number) => {
     this.setState({ page })
   }
 
-  handleChangeRowsPerPage = event => {
+  readonly handleChangeRowsPerPage = (event: any) => {
     this.setState({ rowsPerPage: event.target.value })
   }
 
-  isSelected = _id => this.state.selected.indexOf(_id) !== -1
+  readonly isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
 
-  render() {
+  public render(): JSX.Element {
     if (this.props.data.loading) {
       return <div>Loading</div>
     }
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
-    console.log(112233, this.props)
-    const assets = this.props.data.getProfile.portfolio && this.props.data.getProfile.portfolio.assets || sampleData
-    // const assets = sampleData;
+
+    const assets =
+    (this.props.data &&
+      this.props.getProfile &&
+      this.props.data.getProfile.portfolio &&
+      this.props.data.getProfile.portfolio.assets) ||
+    sampleData
+
+    console.log(777777, this.props.data)
+      console.log(this.state)
+
+    const { order, orderBy, selected, rowsPerPage, page, currentTab } = this.state
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
     return (
       <SPaper>
-        <PortfolioTableToolbar numSelected={selected.length} />
+        <PortfolioTableToolbar currentTab={currentTab} handleTabSelect={this.handleTabSelect} numSelected={selected.length} />
         <STableWrapper>
           <STable>
             <PortfolioTableHead
@@ -218,7 +114,8 @@ export class PortfolioTable extends Component {
               rowCount={assets.length}
             />
             <TableBody>
-              {assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
+                {currentTab === 'balances' &&
+              assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
                 const isSelected = this.isSelected(n._id)
                 return (
                   <TableRow
@@ -249,27 +146,104 @@ export class PortfolioTable extends Component {
                 </TableRow>
               )}
             </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  colSpan={6}
-                  count={data.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  backIconButtonProps={{
-                    'aria-label': 'Previous Page',
-                  }}
-                  nextIconButtonProps={{
-                    'aria-label': 'Next Page',
-                  }}
-                  onChangePage={this.handleChangePage}
-                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                />
-              </TableRow>
-            </TableFooter>
+              <PortfolioTableFooter
+                colSpan={6}
+                count={assets.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
           </STable>
         </STableWrapper>
       </SPaper>
     )
   }
 }
+
+const sampleData = [
+  {
+    _id: 1,
+    exchange: {
+      name: 'Gemini',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
+  },
+  {
+    _id: 2,
+    exchange: {
+      name: 'Binance',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
+  },
+  {
+    _id: 3,
+    exchange: {
+      name: 'Gdax',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
+  },
+  {
+    _id: 567,
+    exchange: {
+      name: 'BitCOOOOONEEEECT',
+    },
+    asset: {
+      name: 'Etherium',
+      symbol: 'ETH',
+      priceUSD: '781',
+    },
+    currentBTC: '11000',
+    currentUSD: '781',
+    twentyFourHourChange: '10%',
+    BTCProfitLoss: '-10%',
+    USDProfitLoss: '-17%',
+  },
+]
+
+const SPaper = styled(Paper)`
+  margin: 24px;
+  width: 100%;
+`
+
+const STableWrapper = styled.div`
+  overflow-x: auto;
+`
+
+const STable = styled(Table)`
+  min-width: 800px;
+`
+
+
+export const PortfolioTable = compose(
+  graphql(getPortfolioQuery)
+)(
+  PortfolioTableComponent
+)

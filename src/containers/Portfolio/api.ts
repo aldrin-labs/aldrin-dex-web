@@ -1,9 +1,8 @@
 import gql from 'graphql-tag'
 
-export const getPortfolio = gql`
-  query gerPortfolio {
+export const getKeysQuery = gql`
+  query getKeys {
     getProfile {
-      username
       portfolioId
       keys {
         _id
@@ -16,11 +15,23 @@ export const getPortfolio = gql`
           symbol
         }
       }
+    }
+  }
+`
+
+export const getPortfolioQuery = gql`
+  query getPortfolio {
+    getProfile {
+      portfolioId
       portfolio {
-        assetIds
+        name
         processing
+        assetIds
         assets {
           _id
+          assetId
+          exchangeId
+          keyId
           value
           realizedProfit
           unrealizedProfit
@@ -28,15 +39,13 @@ export const getPortfolio = gql`
           asset {
             name
             symbol
-            totalSupply
-            maxSupply
           }
           exchange {
             name
-            symbol
           }
           key {
             name
+            apiKey
           }
         }
       }

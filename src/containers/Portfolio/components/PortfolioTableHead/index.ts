@@ -1,1 +1,0 @@
-export { PortfolioTableHead } from './PortfolioTableHead'

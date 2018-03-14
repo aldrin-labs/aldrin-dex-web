@@ -2,20 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
+import { withRouter } from 'react-router'
 
-import { PortfolioTable, SelectAccount } from './components'
-
-import * as API from './api'
+import { PortfolioTable, PortfolioSelector } from './components'
 
 const PortfolioContainer = styled.div`
   display: flex;
 `
 
-const GQLPortfolioTable = compose(graphql(API.getPortfolio))(PortfolioTable)
-
 export const Portfolio = () => (
-    <PortfolioContainer>
-    {/* <SelectAccount /> */}
-    <GQLPortfolioTable />
+  <PortfolioContainer>
+    <PortfolioSelector />
+    <PortfolioTable />
   </PortfolioContainer>
 )

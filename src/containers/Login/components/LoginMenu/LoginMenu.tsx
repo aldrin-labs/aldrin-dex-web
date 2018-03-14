@@ -34,7 +34,7 @@ export const LoginMenu = ({ userName, anchorEl, open, handleClose, handleMenu, h
       <MenuLink to="/portfolio">
         <MenuItem onClick={handleClose}>Portfolio</MenuItem>
       </MenuLink>
-      <MenuLink to="/settings">
+      <MenuLink to="/user">
         <MenuItem onClick={handleClose}>Settings</MenuItem>
       </MenuLink>
       <MenuItem onClick={handleLogout}>Log out</MenuItem>

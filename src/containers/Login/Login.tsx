@@ -5,19 +5,20 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Auth0Lock from 'auth0-lock'
 import { graphql } from 'react-apollo'
+import jwtDecode from 'jwt-decode'
 
 import Button from 'material-ui/Button'
 
 import { withErrorFallback } from '@hoc/index'
 
 import * as actions from './actions'
-import { gqlCreateUser } from './api'
+import * as API from './api'
 import { LoginMenu } from './components'
 
 const SWrapper = styled.div`
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 `
 
@@ -40,6 +41,34 @@ class LoginQuery extends Component {
     this.lock = new Auth0Lock('0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', 'ccai.auth0.com', auth0Options)
   }
 
+  componentWillMount() {
+    this.checkToken()
+  }
+
+  removeToken = () => {
+    localStorage.removeItem('token')
+  }
+
+  getToken = () => {
+    return localStorage.getItem('token')
+  }
+
+  checkToken = () => {
+    if (this.getToken()) {
+      const decodedToken = jwtDecode(this.getToken())
+      const currentTime = Date.now() / 1000
+      if (currentTime > decodedToken.exp) {
+        this.props.storeLogout()
+      }
+    } else {
+      this.props.storeLogout()
+    }
+  }
+
+  setToken = (token: string) => {
+    return localStorage.setItem('token', token)
+  }
+
   handleMenu = (event: any) => {
     this.setState({ anchorEl: event.currentTarget })
   }
@@ -57,7 +86,7 @@ class LoginQuery extends Component {
     const { createUser }: any = this.props
 
     const variables = {
-      idToken: window.localStorage.getItem('token'),
+      idToken: this.getToken(),
       emailAddress: profile.email,
       name: profile.nickname,
       emailSubscription: true,
@@ -74,11 +103,11 @@ class LoginQuery extends Component {
     this.lock.on('authenticated', (authResult: any) => {
       this.lock.getUserInfo(authResult.accessToken, (error: any, profile: any) => {
         if (error) {
-          console.log(error)
           return null
         }
         this.props.storeLogin(profile)
-        localStorage.setItem('token', authResult.idToken)
+        // localStorage.setItem('token', authResult.idToken)
+        this.setToken(authResult.idToken)
         this.createUserReq(profile)
       })
     })
@@ -121,7 +150,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 export const Login = compose(
+  withErrorFallback,
   connect(mapStateToProps, mapDispatchToProps),
-  graphql(gqlCreateUser, { name: 'createUser' }),
-  withErrorFallback
+  graphql(API.createUserMutation, { name: 'createUser' }),
 )(LoginQuery)

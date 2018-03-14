@@ -1,2 +1,3 @@
 export { withErrorFallback } from './withErrorFallback'
-export { LoaderHOC } from './loaderHOC'
+export { withLoader } from './withLoader'
+export { withAuth } from './withAuth'
