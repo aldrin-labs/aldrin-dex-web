@@ -134,11 +134,9 @@ class PortfolioTableComponent extends Component<any, any> {
                     <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
                     <TableCell numeric>{n.asset.symbol || 'Empty'}</TableCell>
                     <TableCell numeric>{n.asset.priceUSD || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.currentBTC || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.currentUSD || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.twentyFourHourChange || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.BTCProfitLoss || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.USDProfitLoss || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.value || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.realizedProfit || 'Empty'}</TableCell>
+                    <TableCell numeric>{n.totalProfit || 'Empty'}</TableCell>
                   </TableRow>
                 )
               })}
