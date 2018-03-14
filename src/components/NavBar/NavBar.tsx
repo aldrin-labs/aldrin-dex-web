@@ -16,7 +16,6 @@ const Nav = styled.div`
 
 const Logo = styled.img`
   margin: 25px 0 25px 32px;
-  width: 100%;
   z-index: 1300;
   position: relative;
 `
