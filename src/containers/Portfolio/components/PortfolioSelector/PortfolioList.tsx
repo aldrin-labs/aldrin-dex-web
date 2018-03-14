@@ -63,6 +63,7 @@ class SelectPortfolioComponent extends React.Component {
       return <Typography variant="title">Loading</Typography>
     }
     const { keys } = this.props.keys.getProfile
+      console.log(333, this.props)
 
     return (
       <SWrapper>
