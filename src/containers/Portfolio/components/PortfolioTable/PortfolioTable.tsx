@@ -6,11 +6,15 @@ import { compose } from 'recompose'
 import Checkbox from 'material-ui/Checkbox'
 import Paper from 'material-ui/Paper'
 import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table'
+import Typography from 'material-ui/Typography'
+
+import { Loading } from '@components'
 
 import {
   PortfolioTableHead,
   PortfolioTableToolbar,
   PortfolioTableFooter,
+  LoginAlert,
 } from './'
 import { getPortfolioQuery } from '../../api'
 
@@ -19,7 +23,7 @@ import { sampleData } from './dataMock'
 
 class PortfolioTableComponent extends Component<any, any> {
    state = {
-    data: [],
+    data: null,
     order: 'asc',
     orderBy: 'name',
     selected: [],
@@ -46,6 +50,10 @@ class PortfolioTableComponent extends Component<any, any> {
 
   addAssetsToState = (assets: any[]) => {
     this.setState({ data: assets })
+  }
+
+  test = () => {
+    this.setState({ yoba: this.props.data.getProfile.portfolio.name })
   }
 
    handleSelectAllClick = (event: any, checked: any): void => {
@@ -94,12 +102,22 @@ class PortfolioTableComponent extends Component<any, any> {
 
   render() {
     if (this.props.data.loading) {
-      return <div>Loading</div>
+      return <Loading margin={'30% auto'} />
     }
 
-    const assets = sampleData.assets
+    if (this.props.data.error) {
+      if (this.props.data.error.message.toLowerCase().includes('jwt')) {
+        return <LoginAlert />
+      } else {
+      return <Typography variant="title" color="error">Error!</Typography>
+    }
+  }
 
-    if (!this.state.data.length && !this.props.data.loading) {
+
+
+    const assets = this.props.data.getProfile.portfolio.assets.length > 0 || sampleData.assets
+
+    if (!this.state.data && !this.props.data.loading) {
       this.addAssetsToState(assets)
     }
 
@@ -119,14 +137,13 @@ class PortfolioTableComponent extends Component<any, any> {
       rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
 
     return (
-      <SPaper>
+      <TableContainer>
         <PortfolioTableToolbar
           currentTab={currentTab}
           handleTabSelect={this.handleTabSelect}
           numSelected={selected.length}
         />
-        <STableWrapper>
-          <STable>
+          <TableWrapper>
             <PortfolioTableHead
               numSelected={selected.length}
               order={order}
@@ -161,7 +178,7 @@ class PortfolioTableComponent extends Component<any, any> {
                           {n.asset.symbol || 'Empty'}
                         </TableCell>
                         <TableCell numeric>
-                          {n.asset.priceUSD || 'Empty'}
+                          {`${n.asset.priceUSD}$` || 'Empty'}
                         </TableCell>
                         <TableCell numeric>{n.value || 'Empty'}</TableCell>
                         <TableCell numeric>
@@ -187,23 +204,18 @@ class PortfolioTableComponent extends Component<any, any> {
               onChangePage={this.handleChangePage}
               onChangeRowsPerPage={this.handleChangeRowsPerPage}
             />
-          </STable>
-        </STableWrapper>
-      </SPaper>
+          </TableWrapper>
+      </TableContainer>
     )
   }
 }
 
-const SPaper = styled(Paper)`
+const TableContainer = styled(Paper)`
   margin: 24px;
   width: 100%;
 `
 
-const STableWrapper = styled.div`
-  overflow-x: auto;
-`
-
-const STable = styled(Table)`
+const TableWrapper = styled(Table)`
   min-width: 800px;
 `
 

@@ -61,6 +61,11 @@ class SelectPortfolioComponent extends React.Component {
     if (this.props.keys.loading) {
       return <Typography variant="title">Loading</Typography>
     }
+
+    if (this.props.keys.error) {
+      return <Typography variant="title" color="error">Error!</Typography>
+    }
+
     const { keys } = this.props.keys.getProfile
       console.log(333, this.props)
 

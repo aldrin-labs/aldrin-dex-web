@@ -32,13 +32,13 @@ const DrawerPaper = styled(Drawer)`
 `
 
 const InnerPaper = styled.div`
-  margin-top: 88px;
+  margin-top: 104px;
   width: 240px;
 `
 
-class WalletsDrawer extends React.Component {
+export class PortfolioSelector extends React.Component {
   state = {
-    open: false,
+    open: true,
   }
 
   handleDrawerOpen = () => {
@@ -58,7 +58,7 @@ class WalletsDrawer extends React.Component {
         <DrawerPaper
           variant="persistent"
           anchor="left"
-          open={true}
+          open={open}
           PaperProps={{
             component: InnerPaper,
           }}
@@ -70,13 +70,3 @@ class WalletsDrawer extends React.Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   ui: state.ui
-// })
-
-// const mapDispatchToProps = (dispatch) => ({
-//   toggleDrawer: () => dispatch(actions.toggleDrawer)
-// })
-
-export const PortfolioSelector = WalletsDrawer
-// connect(mapStateToProps, mapDispatchToProps),
