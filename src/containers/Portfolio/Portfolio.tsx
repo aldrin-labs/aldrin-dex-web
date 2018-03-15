@@ -1,8 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { graphql } from 'react-apollo'
-import { compose } from 'recompose'
-import { withRouter } from 'react-router'
 
 import { PortfolioTable, PortfolioSelector } from './components'
 
