@@ -54,8 +54,7 @@ class WalletsDrawer extends React.Component {
 
     return (
       <Fragment>
-        {console.log(1111, this.props)
-        }
+        {console.log(1111, this.props)}
         <DrawerPaper
           variant="persistent"
           anchor="left"

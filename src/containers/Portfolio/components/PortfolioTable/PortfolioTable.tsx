@@ -44,9 +44,14 @@ class PortfolioTableComponent extends Component<any, any> {
     this.setState({ data, order, orderBy })
   }
 
+  addAssetsToState = (assets: any[]) => {
+    this.setState({ data: assets })
+  }
+
    handleSelectAllClick = (event: any, checked: any): void => {
     if (checked) {
       this.setState({ selected: this.state.data.map((n) => n._id) })
+
       return
     }
     this.setState({ selected: [] })
@@ -87,22 +92,20 @@ class PortfolioTableComponent extends Component<any, any> {
 
    isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
 
-  public render(): JSX.Element {
+  render() {
     if (this.props.data.loading) {
       return <div>Loading</div>
     }
 
-    if (!this.state.data.length) {
-      this.setState({ data: sampleData.assets })
+    const assets = sampleData.assets
+
+    if (!this.state.data.length && !this.props.data.loading) {
+      this.addAssetsToState(assets)
     }
 
-    console.log(777777, this.props.data)
-
+    const { name } = this.props.data.getProfile.portfolio
 
     console.log(this.state)
-
-    const { name } = this.props.data.getProfile.portfolio
-    const assets = this.state.data || sampleData
 
     const {
       order,
@@ -138,6 +141,7 @@ class PortfolioTableComponent extends Component<any, any> {
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((n) => {
                     const isSelected = this.isSelected(n._id)
+
                     return (
                       <TableRow
                         hover

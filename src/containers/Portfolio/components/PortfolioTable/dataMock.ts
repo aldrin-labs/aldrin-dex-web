@@ -26,7 +26,7 @@ export const sampleData: ReadonlyArray<any> = {
         percentChangeDay: '13',
       },
       exchange: {
-        name,
+        name: 'GDX',
       },
     },
     {
@@ -49,7 +49,7 @@ export const sampleData: ReadonlyArray<any> = {
         percentChangeDay: '-47',
       },
       exchange: {
-        name,
+        name: 'Kukan'
       },
     },
   ],
