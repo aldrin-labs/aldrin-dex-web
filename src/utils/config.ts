@@ -1,1 +1,1 @@
-export const API_URL = process.env.API_ENDPOINT || 'localhost:5080'
+export const API_URL = process.env.API_ENDPOINT || 'api.igorlimansky.me'
