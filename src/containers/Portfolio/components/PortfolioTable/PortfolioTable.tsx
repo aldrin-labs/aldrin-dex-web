@@ -32,6 +32,15 @@ class PortfolioTableComponent extends Component<any, any> {
     currentTab: 'balances',
   }
 
+  // Pass assets to state from props so it can be sorted, mutated, etc
+  // also it can be modified to update with subscriptios now
+  componentDidUpdate?(prevProps, prevState) {
+    if (prevProps.data !== this.props.data && !this.state.data && !this.props.data.loading) {
+       // remove length check for real data
+      this.setState({ data: this.props.data.getProfile.portfolio.assets.length > 0 || sampleData.assets })
+    }
+  }
+
    handleRequestSort = (event: any, property: any): void => {
     const orderBy = property
     let order = 'desc'
@@ -50,10 +59,6 @@ class PortfolioTableComponent extends Component<any, any> {
 
   addAssetsToState = (assets: any[]) => {
     this.setState({ data: assets })
-  }
-
-  test = () => {
-    this.setState({ yoba: this.props.data.getProfile.portfolio.name })
   }
 
    handleSelectAllClick = (event: any, checked: any): void => {
@@ -101,7 +106,7 @@ class PortfolioTableComponent extends Component<any, any> {
    isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
 
   render() {
-    if (this.props.data.loading) {
+    if (this.props.data.loading || !this.state.data) {
       return <Loading margin={'30% auto'} />
     }
 
@@ -113,14 +118,7 @@ class PortfolioTableComponent extends Component<any, any> {
     }
   }
 
-
-
-    const assets = this.props.data.getProfile.portfolio.assets.length > 0 || sampleData.assets
-
-    if (!this.state.data && !this.props.data.loading) {
-      this.addAssetsToState(assets)
-    }
-
+    const assets = this.state.data
     const { name } = this.props.data.getProfile.portfolio
 
     console.log(this.state)

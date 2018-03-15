@@ -3,6 +3,7 @@ import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
 import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
 import Typography from 'material-ui/Typography'
+import { withTheme } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import React from 'react'
@@ -27,6 +28,10 @@ const SelectTitle = styled(Typography)`
   font-size: 20px !important;
 `
 
+const SToolbar = styled(Toolbar)`
+  background-color: ${props => props.theme ? props.theme.palette.background.paper : ''}
+`
+
 class SelectPortfolioComponent extends React.Component {
   state = {
     allKeysSelected: false,
@@ -46,7 +51,6 @@ class SelectPortfolioComponent extends React.Component {
       newChecked.splice(currentIndex, 1)
     }
     this.props.selectAccount(newChecked)
-    this.props.onLoad(123)
   }
 
   handleToggleAll = () => {
@@ -75,15 +79,14 @@ class SelectPortfolioComponent extends React.Component {
 
     return (
       <SWrapper>
-        {/* <SAppBar position="static" color="primary">
-          <Toolbar>
-            <SelectTitle variant="title" color="inherit">
+        <AppBar position="static">
+          <SToolbar theme={this.props.theme}>
+            <SelectTitle variant="title">
               Accounts & Wallets
             </SelectTitle>
-          </Toolbar>
-        </SAppBar> */}
+          </SToolbar>
+        </AppBar>
         <List>
-          <Typography>Check</Typography>
           {keys.length === 0 && <Typography variant="title">No keys</Typography>}
           {keys.length > 0 && (
             <ListItem dense button onClick={this.handleToggleAll}>
@@ -99,11 +102,6 @@ class SelectPortfolioComponent extends React.Component {
                 disableRipple
               />
               <ListItemText primary={key.name} />
-              {/* <ListItemSecondaryAction>
-                <IconButton aria-label="Comments">
-                  <Autorenew />
-                </IconButton>
-              </ListItemSecondaryAction> */}
             </ListItem>
           ))}
         </List>
@@ -124,6 +122,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 export const PortfolioList = compose(
+  withTheme(),
   connect(mapStateToProps, mapDispatchToProps),
   graphql(API.getKeysQuery, { name: 'keys' })
 )(SelectPortfolioComponent)
