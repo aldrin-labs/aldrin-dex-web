@@ -3,9 +3,9 @@ import React from 'react'
 import styled from 'styled-components'
 
 const STitleContainer = styled.div`
-  display: flex;
   align-items: center;
   align-self: center;
+  display: flex;
   justify-content: center;
   margin: 80px auto;
 `

@@ -4,6 +4,7 @@
     "outDir": "./dist/",
     "target": "esnext",
     "sourceMap": true,
+    "declaration": true,
     "strict": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
@@ -24,7 +25,7 @@
       "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
       "@hoc/*": ["src/hoc/*"],
-      "@common/*": ["src/common/*"]
+      "@graphql/*": ["src/graphql/*"]
     },
     "plugins": [
       {

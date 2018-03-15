@@ -1,1 +1,0 @@
-export { AssetInfo } from './AssetInfo'
