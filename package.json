@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.41",
+    "@types/react-beautiful-dnd": "^4.0.0",
     "apollo-cache-inmemory": "^1.1.11",
     "apollo-client": "^2.2.7",
     "apollo-link-context": "^1.0.7",
@@ -66,6 +67,7 @@
     "re-reselect": "^1.0.1",
     "react": "^16.2.0",
     "react-apollo": "^2.1.0-beta.3",
+    "react-beautiful-dnd": "^6.0.0",
     "react-dom": "^16.2.0",
     "react-emojione": "^5.0.0",
     "react-intl": "^2.4.0",
