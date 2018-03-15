@@ -28,14 +28,14 @@ const SelectTitle = styled(Typography)`
 `
 
 class SelectPortfolioComponent extends React.Component {
-  readonly state = {
+  state = {
     allKeysSelected: false,
   }
 
   componentDidMount() {
     // if(R.equals(this.props.keys.getProfile.keys.map))
   }
-  readonly handleToggle = (value: any) => () => {
+  handleToggle = (value: any) => () => {
     const { selectedAccounts } = this.props
     const currentIndex = selectedAccounts.indexOf(value)
     const newChecked = [...selectedAccounts]
@@ -49,11 +49,10 @@ class SelectPortfolioComponent extends React.Component {
     this.props.onLoad(123)
   }
 
-  readonly handleToggleAll = () => {
+  handleToggleAll = () => {
     const allKeys = this.props.keys.getProfile.keys.map(key => key._id)
-    this.setState((prevState, props) => {
-      return { allKeysSelected: !prevState.allKeysSelected };
-    });
+    this.setState((prevState, props) =>
+      ({ allKeysSelected: !prevState.allKeysSelected }));
     this.props.selectAllKeys(allKeys)
   }
 

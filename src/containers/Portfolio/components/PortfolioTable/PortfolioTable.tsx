@@ -5,26 +5,30 @@ import { compose } from 'recompose'
 
 import Checkbox from 'material-ui/Checkbox'
 import Paper from 'material-ui/Paper'
-import Table, {
-  TableBody,
-  TableCell,
-  TableRow,
-} from 'material-ui/Table'
+import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table'
 
-import { PortfolioTableHead, PortfolioTableToolbar, PortfolioTableFooter } from './'
+import {
+  PortfolioTableHead,
+  PortfolioTableToolbar,
+  PortfolioTableFooter,
+} from './'
 import { getPortfolioQuery } from '../../api'
 
-class PortfolioTableComponent extends Component<any, any> {
-    readonly state = {
-      order: 'asc',
-      orderBy: 'name',
-      selected: [],
-      page: 0,
-      rowsPerPage: 10,
-        currentTab: 'balances',
-    }
+// Data mock
+import { sampleData } from './dataMock'
 
-  readonly handleRequestSort = (event: any, property: any): void => {
+class PortfolioTableComponent extends Component<any, any> {
+   state = {
+    data: [],
+    order: 'asc',
+    orderBy: 'name',
+    selected: [],
+    page: 0,
+    rowsPerPage: 10,
+    currentTab: 'balances',
+  }
+
+   handleRequestSort = (event: any, property: any): void => {
     const orderBy = property
     let order = 'desc'
 
@@ -40,19 +44,19 @@ class PortfolioTableComponent extends Component<any, any> {
     this.setState({ data, order, orderBy })
   }
 
-  readonly handleSelectAllClick = (event: any, checked: any): void => {
+   handleSelectAllClick = (event: any, checked: any): void => {
     if (checked) {
-      this.setState({ selected: this.state.data.map(n => n._id) })
+      this.setState({ selected: this.state.data.map((n) => n._id) })
       return
     }
     this.setState({ selected: [] })
   }
 
-  readonly handleTabSelect = (event, currentTab) => {
-      this.setState({ currentTab })
+   handleTabSelect = (event, currentTab) => {
+    this.setState({ currentTab })
   }
 
-  readonly handleClick = (event: any, _id: string): void => {
+   handleClick = (event: any, _id: string): void => {
     const { selected } = this.state
     const selectedIndex = selected.indexOf(_id)
     let newSelected: any[] = []
@@ -73,36 +77,51 @@ class PortfolioTableComponent extends Component<any, any> {
     this.setState({ selected: newSelected })
   }
 
-  readonly handleChangePage = (event: any, page: number) => {
+   handleChangePage = (event: any, page: number) => {
     this.setState({ page })
   }
 
-  readonly handleChangeRowsPerPage = (event: any) => {
+   handleChangeRowsPerPage = (event: any) => {
     this.setState({ rowsPerPage: event.target.value })
   }
 
-  readonly isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
+   isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
 
   public render(): JSX.Element {
     if (this.props.data.loading) {
       return <div>Loading</div>
     }
 
-    const assets =
-    (this.props.data &&
-      this.props.getProfile &&
-      this.props.data.getProfile.portfolio &&
-      this.props.data.getProfile.portfolio.assets) ||
-    sampleData
+    if (!this.state.data.length) {
+      this.setState({ data: sampleData.assets })
+    }
 
     console.log(777777, this.props.data)
-      console.log(this.state)
 
-    const { order, orderBy, selected, rowsPerPage, page, currentTab } = this.state
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
+
+    console.log(this.state)
+
+    const { name } = this.props.data.getProfile.portfolio
+    const assets = this.state.data || sampleData
+
+    const {
+      order,
+      orderBy,
+      selected,
+      rowsPerPage,
+      page,
+      currentTab,
+    } = this.state
+    const emptyRows =
+      rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
+
     return (
       <SPaper>
-        <PortfolioTableToolbar currentTab={currentTab} handleTabSelect={this.handleTabSelect} numSelected={selected.length} />
+        <PortfolioTableToolbar
+          currentTab={currentTab}
+          handleTabSelect={this.handleTabSelect}
+          numSelected={selected.length}
+        />
         <STableWrapper>
           <STable>
             <PortfolioTableHead
@@ -114,46 +133,56 @@ class PortfolioTableComponent extends Component<any, any> {
               rowCount={assets.length}
             />
             <TableBody>
-                {currentTab === 'balances' &&
-              assets.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-                const isSelected = this.isSelected(n._id)
-                return (
-                  <TableRow
-                    hover
-                    onClick={event => this.handleClick(event, n._id)}
-                    role="checkbox"
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={n._id}
-                    selected={isSelected}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox checked={isSelected} />
-                    </TableCell>
-                    <TableCell padding="none">{n.exchange.name}</TableCell>
-                    <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.asset.symbol || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.asset.priceUSD || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.value || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.realizedProfit || 'Empty'}</TableCell>
-                    <TableCell numeric>{n.totalProfit || 'Empty'}</TableCell>
-                  </TableRow>
-                )
-              })}
+              {currentTab === 'balances' &&
+                assets
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((n) => {
+                    const isSelected = this.isSelected(n._id)
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => this.handleClick(event, n._id)}
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        tabIndex={-1}
+                        key={n._id}
+                        selected={isSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox checked={isSelected} />
+                        </TableCell>
+                        <TableCell padding="none">{n.exchange.name}</TableCell>
+                        <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
+                        <TableCell numeric>
+                          {n.asset.symbol || 'Empty'}
+                        </TableCell>
+                        <TableCell numeric>
+                          {n.asset.priceUSD || 'Empty'}
+                        </TableCell>
+                        <TableCell numeric>{n.value || 'Empty'}</TableCell>
+                        <TableCell numeric>
+                          {n.realizedProfit || 'Empty'}
+                        </TableCell>
+                        <TableCell numeric>
+                          {n.totalProfit || 'Empty'}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
             </TableBody>
-              <PortfolioTableFooter
-                colSpan={6}
-                count={assets.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={this.handleChangePage}
-                onChangeRowsPerPage={this.handleChangeRowsPerPage}
-              />
+            <PortfolioTableFooter
+              colSpan={6}
+              count={assets.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onChangePage={this.handleChangePage}
+              onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            />
           </STable>
         </STableWrapper>
       </SPaper>
@@ -174,9 +203,6 @@ const STable = styled(Table)`
   min-width: 800px;
 `
 
-
-export const PortfolioTable = compose(
-  graphql(getPortfolioQuery)
-)(
+export const PortfolioTable = compose(graphql(getPortfolioQuery))(
   PortfolioTableComponent
 )

@@ -9,8 +9,6 @@ import TextField from 'material-ui/TextField'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui-icons/Menu'
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
-import ChevronRightIcon from 'material-ui-icons/ChevronRight'
 
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
@@ -21,13 +19,6 @@ import { PortfolioList } from './PortfolioList'
 import graphql from 'graphql-anywhere';
 
 const drawerWidth = '240px'
-
-// const Root = styled.div`
-//   display: flex;
-//   flex-grow: 1;
-//   height: 430px;
-//   position: relative;
-// `
 
 const DrawerPaper = styled(Drawer)`
   width: -${drawerWidth};
@@ -60,6 +51,7 @@ class WalletsDrawer extends React.Component {
 
   render() {
     const { open } = this.state
+
     return (
       <Fragment>
         {console.log(1111, this.props)

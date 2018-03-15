@@ -1,66 +1,56 @@
-export const sampleData: ReadonlyArray<any> = [
-  {
-    _id: 1,
-    exchange: {
-      name: 'Gemini',
+export const sampleData: ReadonlyArray<any> = {
+  _id: 'id1',
+  name: 'GDX pro',
+  processing: false,
+  ownerId: 'own1',
+  assetIds: [1, 2, 3],
+  tradeIds: [4, 5, 6],
+  assets: [
+    {
+      _id: 'ass1',
+      assetId: 'as1',
+      exchangeId: 'ex1',
+      keyId: 'key1',
+      value: 500.5,
+      realizedProfit: 900.1,
+      unrealizedProfit: 100.1,
+      totalProfit: 1000.1,
+      asset: {
+        _id: 'asss1',
+        name: 'Etherium',
+        symbol: 'ETH',
+        avaliableSupply: 100.1,
+        totalSupply: 200.2,
+        maxSupply: 300.3,
+        priceUSD: '900',
+        percentChangeDay: '13',
+      },
+      exchange: {
+        name,
+      },
     },
-    asset: {
-      name: 'Etherium',
-      symbol: 'ETH',
-      priceUSD: '781',
+    {
+      _id: 'ass2',
+      assetId: 'as2',
+      exchangeId: 'ex2',
+      keyId: 'key2',
+      value: 500.5,
+      realizedProfit: 900.1,
+      unrealizedProfit: 100.1,
+      totalProfit: 1000.1,
+      asset: {
+        _id: 'asss2',
+        name: 'Bitcoin',
+        symbol: 'BTC',
+        avaliableSupply: 100.1,
+        totalSupply: 200.2,
+        maxSupply: 300.3,
+        priceUSD: '9000',
+        percentChangeDay: '-47',
+      },
+      exchange: {
+        name,
+      },
     },
-    currentBTC: '11000',
-    currentUSD: '781',
-    twentyFourHourChange: '10%',
-    BTCProfitLoss: '-10%',
-    USDProfitLoss: '-17%',
-  },
-  {
-    _id: 2,
-    exchange: {
-      name: 'Binance',
-    },
-    asset: {
-      name: 'Etherium',
-      symbol: 'ETH',
-      priceUSD: '781',
-    },
-    currentBTC: '11000',
-    currentUSD: '781',
-    twentyFourHourChange: '10%',
-    BTCProfitLoss: '-10%',
-    USDProfitLoss: '-17%',
-  },
-  {
-    _id: 3,
-    exchange: {
-      name: 'Gdax',
-    },
-    asset: {
-      name: 'Etherium',
-      symbol: 'ETH',
-      priceUSD: '781',
-    },
-    currentBTC: '11000',
-    currentUSD: '781',
-    twentyFourHourChange: '10%',
-    BTCProfitLoss: '-10%',
-    USDProfitLoss: '-17%',
-  },
-  {
-    _id: 567,
-    exchange: {
-      name: 'BitCOOOOONEEEECT',
-    },
-    asset: {
-      name: 'Etherium',
-      symbol: 'ETH',
-      priceUSD: '781',
-    },
-    currentBTC: '11000',
-    currentUSD: '781',
-    twentyFourHourChange: '10%',
-    BTCProfitLoss: '-10%',
-    USDProfitLoss: '-17%',
-  }
-]
+  ],
+}
