@@ -12,10 +12,10 @@ import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
 import * as R from 'ramda'
 
+import { Loading } from '@components'
+
 import * as actions from '../../actions'
 import * as API from '../../api'
-
-const SAppBar = styled(AppBar)``
 
 const SWrapper = styled.div`
   width: 100%;
@@ -59,10 +59,14 @@ class SelectPortfolioComponent extends React.Component {
   render() {
     console.log(this.props)
     if (this.props.keys.loading) {
-      return <Typography variant="title">Loading</Typography>
+      return <Loading />
     }
 
     if (this.props.keys.error) {
+      if (this.props.keys.error.message.toLowerCase().includes('jwt')) {
+        return <Loading />
+      }
+
       return <Typography variant="title" color="error">Error!</Typography>
     }
 
