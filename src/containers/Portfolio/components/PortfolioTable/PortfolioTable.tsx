@@ -15,6 +15,7 @@ import {
   PortfolioTableToolbar,
   PortfolioTableFooter,
   LoginAlert,
+  TableChart,
 } from './'
 import { getPortfolioQuery } from '../../api'
 
