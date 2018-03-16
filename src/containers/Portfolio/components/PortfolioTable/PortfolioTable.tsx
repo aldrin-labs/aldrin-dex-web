@@ -22,7 +22,7 @@ import { getPortfolioQuery } from '../../api'
 import { sampleData } from './dataMock'
 
 class PortfolioTableComponent extends Component<any, any> {
-   state = {
+  state = {
     data: null,
     order: 'asc',
     orderBy: 'name',
@@ -35,13 +35,23 @@ class PortfolioTableComponent extends Component<any, any> {
   // Pass assets to state from props so it can be sorted, mutated, etc
   // also it can be modified to update with subscriptios now
   componentDidUpdate?(prevProps, prevState) {
-    if (prevProps.data !== this.props.data && !this.state.data && !this.props.data.loading) {
-       // remove length check for real data
-      this.setState({ data: this.props.data.getProfile.portfolio.assets.length > 0 || sampleData.assets })
+    if (this.props.data && this.props.data.getProfile) {
+      if (
+        prevProps.data !== this.props.data &&
+        !this.state.data &&
+        !this.props.data.loading
+      ) {
+        // remove length check for real data
+        this.setState({
+          data:
+            this.props.data.getProfile.portfolio.assets.length > 0 ||
+            sampleData.assets,
+        })
+      }
     }
   }
 
-   handleRequestSort = (event: any, property: any): void => {
+  handleRequestSort = (event: any, property: any): void => {
     const orderBy = property
     let order = 'desc'
 
@@ -61,7 +71,7 @@ class PortfolioTableComponent extends Component<any, any> {
     this.setState({ data: assets })
   }
 
-   handleSelectAllClick = (event: any, checked: any): void => {
+  handleSelectAllClick = (event: any, checked: any): void => {
     if (checked) {
       this.setState({ selected: this.state.data.map((n) => n._id) })
 
@@ -70,11 +80,11 @@ class PortfolioTableComponent extends Component<any, any> {
     this.setState({ selected: [] })
   }
 
-   handleTabSelect = (event, currentTab) => {
+  handleTabSelect = (event, currentTab) => {
     this.setState({ currentTab })
   }
 
-   handleClick = (event: any, _id: string): void => {
+  handleClick = (event: any, _id: string): void => {
     const { selected } = this.state
     const selectedIndex = selected.indexOf(_id)
     let newSelected: any[] = []
@@ -95,15 +105,15 @@ class PortfolioTableComponent extends Component<any, any> {
     this.setState({ selected: newSelected })
   }
 
-   handleChangePage = (event: any, page: number) => {
+  handleChangePage = (event: any, page: number) => {
     this.setState({ page })
   }
 
-   handleChangeRowsPerPage = (event: any) => {
+  handleChangeRowsPerPage = (event: any) => {
     this.setState({ rowsPerPage: event.target.value })
   }
 
-   isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
+  isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
 
   render() {
     if (this.props.data.loading || !this.state.data) {
@@ -114,9 +124,13 @@ class PortfolioTableComponent extends Component<any, any> {
       if (this.props.data.error.message.toLowerCase().includes('jwt')) {
         return <LoginAlert />
       } else {
-      return <Typography variant="title" color="error">Error!</Typography>
+        return (
+          <Typography variant="title" color="error">
+            Error!
+          </Typography>
+        )
+      }
     }
-  }
 
     const assets = this.state.data
     const { name } = this.props.data.getProfile.portfolio
@@ -141,68 +155,64 @@ class PortfolioTableComponent extends Component<any, any> {
           handleTabSelect={this.handleTabSelect}
           numSelected={selected.length}
         />
-          <TableWrapper>
-            <PortfolioTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={this.handleSelectAllClick}
-              onRequestSort={this.handleRequestSort}
-              rowCount={assets.length}
-            />
-            <TableBody>
-              {currentTab === 'balances' &&
-                assets
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((n) => {
-                    const isSelected = this.isSelected(n._id)
+        <TableWrapper>
+          <PortfolioTableHead
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={this.handleSelectAllClick}
+            onRequestSort={this.handleRequestSort}
+            rowCount={assets.length}
+          />
+          <TableBody>
+            {currentTab === 'balances' &&
+              assets
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((n) => {
+                  const isSelected = this.isSelected(n._id)
 
-                    return (
-                      <TableRow
-                        hover
-                        onClick={(event) => this.handleClick(event, n._id)}
-                        role="checkbox"
-                        aria-checked={isSelected}
-                        tabIndex={-1}
-                        key={n._id}
-                        selected={isSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={isSelected} />
-                        </TableCell>
-                        <TableCell padding="none">{n.exchange.name}</TableCell>
-                        <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
-                        <TableCell numeric>
-                          {n.asset.symbol || 'Empty'}
-                        </TableCell>
-                        <TableCell numeric>
-                          {`${n.asset.priceUSD}$` || 'Empty'}
-                        </TableCell>
-                        <TableCell numeric>{n.value || 'Empty'}</TableCell>
-                        <TableCell numeric>
-                          {n.realizedProfit || 'Empty'}
-                        </TableCell>
-                        <TableCell numeric>
-                          {n.totalProfit || 'Empty'}
-                        </TableCell>
-                      </TableRow>
-                    )
-                  })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-            <PortfolioTableFooter
-              colSpan={6}
-              count={assets.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={this.handleChangePage}
-              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-            />
-          </TableWrapper>
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => this.handleClick(event, n._id)}
+                      role="checkbox"
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n._id}
+                      selected={isSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={isSelected} />
+                      </TableCell>
+                      <TableCell padding="none">{n.exchange.name}</TableCell>
+                      <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
+                      <TableCell numeric>{n.asset.symbol || 'Empty'}</TableCell>
+                      <TableCell numeric>
+                        {`${n.asset.priceUSD}$` || 'Empty'}
+                      </TableCell>
+                      <TableCell numeric>{n.value || 'Empty'}</TableCell>
+                      <TableCell numeric>
+                        {n.realizedProfit || 'Empty'}
+                      </TableCell>
+                      <TableCell numeric>{n.totalProfit || 'Empty'}</TableCell>
+                    </TableRow>
+                  )
+                })}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 49 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <PortfolioTableFooter
+            colSpan={6}
+            count={assets.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+          />
+        </TableWrapper>
       </TableContainer>
     )
   }

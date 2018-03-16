@@ -17,6 +17,7 @@ import { Loading } from '@components'
 
 import * as actions from '../../actions'
 import * as API from '../../api'
+import { LoginAlert } from '../'
 
 const SWrapper = styled.div`
   width: 100%;
@@ -68,7 +69,7 @@ class SelectPortfolioComponent extends React.Component {
 
     if (this.props.keys.error) {
       if (this.props.keys.error.message.toLowerCase().includes('jwt')) {
-        return <Loading />
+        return <LoginAlert />
       }
 
       return <Typography variant="title" color="error">Error!</Typography>
