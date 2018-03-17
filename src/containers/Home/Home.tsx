@@ -1,61 +1,64 @@
 import * as React from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import DragPortal from './DragPortal'
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  DraggableProvidedDraggableProps,
+  DropResult,
+} from 'react-beautiful-dnd'
 
-// fake data generator
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: `item ${k}`,
-  }))
+interface Props {}
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
+interface State {
+  items: any[]
 }
 
-const grid = 8
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-})
-
-const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid,
-  width: 250,
-})
-
-export default class Home extends React.Component {
-  constructor(props) {
+export default class Home extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props)
     this.state = {
-      items: getItems(10),
-      itemsSecond: getItems(10),
+      items: [
+        { id: 'item-0', height: '754px' },
+        { id: 'item-1', height: '460px' },
+        { id: 'item-2', height: '278px' },
+        { id: 'item-3', height: '474px' },
+        { id: 'item-4', height: '474px' },
+      ],
     }
-    this.onDragEnd = this.onDragEnd.bind(this)
   }
 
-  onDragEnd(result) {
-    // dropped outside the list
+  reorder = (list: any[], startIndex: number, endIndex: number) => {
+    const result = Array.from(list)
+    const [removed] = result.splice(startIndex, 1)
+    result.splice(endIndex, 0, removed)
+
+    return result
+  }
+
+  getItemStyle = (
+    isDragging: boolean,
+    draggableProps: DraggableProvidedDraggableProps
+  ) => ({
+    userSelect: 'none',
+    height: '100%',
+    breakInside: 'avoid',
+
+    backgroundColor: isDragging ? 'lightgreen' : 'grey',
+
+    ...draggableProps.style,
+  })
+
+  getListStyle = (isDraggingOver: boolean) => ({
+    columnCount: 2,
+    width: '100%',
+  })
+
+  onDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return
     }
 
-    const items = reorder(
+    const items = this.reorder(
       this.state.items,
       result.source.index,
       result.destination.index
@@ -66,81 +69,36 @@ export default class Home extends React.Component {
     })
   }
 
-  onSecondDragEnd(result) {
-    // dropped outside the list
-    if (!result.destination) {
-      return
-    }
-
-    const itemsSecond = reorder(
-      this.state.itemsSecond,
-      result.source.index,
-      result.destination.index
-    )
-
-    this.setState({
-      itemsSecond,
-    })
-  }
-
-  // Normally you would want to split things out into separate components.
-  // But in this example everything is just done in one place for simplicity
   render() {
     return (
-      <div>
+      <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={this.onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
+                style={this.getListStyle(snapshot.isDraggingOver)}
               >
                 {this.state.items.map((item, index) => (
                   <Draggable key={item.id} draggableId={item.id} index={index}>
                     {(provided, snapshot) => (
-                      <div>
+                      <div
+                        style={{
+                          width: item.width,
+                          height: item.height,
+                          margin: '8px',
+                        }}
+                      >
                         <div
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                          style={getItemStyle(
+                          style={this.getItemStyle(
                             snapshot.isDragging,
-                            provided.draggableProps.style
+                            provided.draggableProps
                           )}
                         >
-                          {item.content}
-                        </div>
-                        {provided.placeholder}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        <DragDropContext onDragEnd={this.onSecondDragEnd}>
-          <Droppable droppableId="droppable1">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
-              >
-                {this.state.itemsSecond.map((item, index) => (
-                  <Draggable key={item.id} draggableId={item.id} index={index}>
-                    {(provided, snapshot) => (
-                      <div>
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          {item.content}
+                          {item.id}
                         </div>
                         {provided.placeholder}
                       </div>
