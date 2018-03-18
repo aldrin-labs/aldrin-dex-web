@@ -1,6 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { ProfileQueryQuery } from '../profile-annotation'
+import website from '../../../icons/website.svg'
+import explorer from '../../../icons/explorer.svg'
+import code from '../../../icons/code.svg'
+import star from '../../../icons/star.svg'
+import tags from '../../../icons/tags.svg'
+import web from '../../../icons/web.svg'
 
 interface Props {
   coin: ProfileQueryQuery['assetById']
@@ -11,27 +17,27 @@ export default class ProfileLinks extends React.Component<Props, {}> {
     /*TODO: need real links */
     const rows = [
       {
-        icon: require('../../../icons/website.svg'),
+        icon: website,
         heading: 'Website',
         links: ['bitcoin.com', 'bitcoin.org'],
       },
       {
-        icon: require('../../../icons/explorer.svg'),
+        icon: explorer,
         heading: 'Explorer',
         links: ['blockchain.info'],
       },
       {
-        icon: require('../../../icons/code.svg'),
+        icon: code,
         heading: 'Source',
         links: ['github.com'],
       },
       {
-        icon: require('../../../icons/star.svg'),
+        icon: star,
         heading: 'Rank',
         links: ['1 by Market cap'],
       },
       {
-        icon: require('../../../icons/tags.svg'),
+        icon: tags,
         heading: 'Tags',
         links: ['Mineable', 'Coin'],
       },
@@ -40,11 +46,7 @@ export default class ProfileLinks extends React.Component<Props, {}> {
     return (
       <SProfileLinks>
         <CoinLinkHeadingRow>
-          <WebIcon
-            dangerouslySetInnerHTML={{
-              __html: require('../../../icons/web.svg'),
-            }}
-          />
+          <WebIcon src={web.replace(/"/gi, '')} />
           <CoinLinkHeading>Useful Links</CoinLinkHeading>
         </CoinLinkHeadingRow>
 
@@ -52,13 +54,11 @@ export default class ProfileLinks extends React.Component<Props, {}> {
           const { icon = '', heading = '', links = [] } = row || {}
           return (
             <CoinLinkRow key={heading}>
-              <WebIcon
-                dangerouslySetInnerHTML={{
-                  __html: icon,
-                }}
-              />
+              <WebIcon src={icon.replace(/"/gi, '')} />
               <RowHeading>{heading}</RowHeading>
-              <RowLinks>{links.map(link => <RowLink key={link}>{link}</RowLink>)}</RowLinks>
+              <RowLinks>
+                {links.map(link => <RowLink key={link}>{link}</RowLink>)}
+              </RowLinks>
             </CoinLinkRow>
           )
         })}
@@ -101,10 +101,9 @@ const CoinLinkHeading = styled.span`
   margin-left: 9px;
 `
 
-const WebIcon = styled.div`
+const WebIcon = styled.img`
   width: 20px;
   height: 20px;
-  object-fit: contain;
 `
 
 const RowHeading = styled.span`

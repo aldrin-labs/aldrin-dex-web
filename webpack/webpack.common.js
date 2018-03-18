@@ -28,7 +28,7 @@ const config = {
       },
       {
         test: /\.svg$/,
-        loader: 'svg-inline-loader',
+        loader: 'svg-url-loader',
         options: {
           limit: 4096, // 4kb
         },
