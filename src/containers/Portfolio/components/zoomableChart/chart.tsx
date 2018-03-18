@@ -60,10 +60,10 @@ export class Chart extends React.Component {
   render() {
     const {series, lastDrawLocation} = this.state;
     return (
-      <div className="example-with-click-me">
+      <div  className="example-with-click-me">
         <div className="legend">
           <DiscreteColorLegend
-            width={180}
+            width={200}
             items={series}/>
         </div>
 
@@ -71,7 +71,7 @@ export class Chart extends React.Component {
           <FlexibleWidthXYPlot
             animation
             xDomain={lastDrawLocation && [lastDrawLocation.left, lastDrawLocation.right]}
-            height={300}>
+            height={185} width={1000}>
 
   
             <VerticalGridLines  style={{stroke: 'gray',strokeWidth: .5}} />
@@ -94,25 +94,26 @@ export class Chart extends React.Component {
 
           </FlexibleWidthXYPlot>
         </div>
-
+        <div style={{display:'flex',height:20}}>    
         <button className="showcase-button" onClick={() => {
           this.setState({lastDrawLocation: null});
         }}>
           Reset Zoom
         </button>
 
-        <div>
-          <h4>
+        <div style={{display:'flex'}}>
+          <span>
             <b>Last Draw Area</b>
-          </h4>
+          </span>
           {lastDrawLocation ? (
-            <ul style={{listStyle: 'none'}}>
-              <li><b>Top:</b> {lastDrawLocation.top}</li>
-              <li><b>Right:</b> {lastDrawLocation.right}</li>
-              <li><b>Bottom:</b> {lastDrawLocation.bottom}</li>
-              <li><b>Left:</b> {lastDrawLocation.left}</li>
-            </ul>
+            <div style={{listStyle: 'none',display:'flex'}}>
+              <span><b>Top:</b> {lastDrawLocation.top}</span>
+              <span><b>Right:</b> {lastDrawLocation.right}</span>
+              <span><b>Bottom:</b> {lastDrawLocation.bottom}</span>
+              <span><b>Left:</b> {lastDrawLocation.left}</span>
+            </div>
           ) : <span>N/A</span>}
+        </div>
         </div>
       </div>
     );

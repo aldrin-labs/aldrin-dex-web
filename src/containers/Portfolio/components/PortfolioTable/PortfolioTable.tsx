@@ -12,7 +12,8 @@ import Table, {
   TableRow,
 } from 'material-ui/Table'
 
-import { PortfolioTableHead, PortfolioTableToolbar } from '../'
+import { PortfolioTableHead, PortfolioTableToolbar,Chart } from '../'
+
 
 let counter = 0
 function createData(data) {
@@ -31,15 +32,17 @@ function createData(data) {
 }
 const SPaper = styled(Paper)`
   width: 100%;
+  flex:5;
   margin: 24px;
 `
 
 const STableWrapper = styled.div`
   overflow-x: auto;
+  height:100%;
 `
 
 const STable = styled(Table)`
-  min-width: 800px;
+  min-width: 100%;
 `
 
 const SamplePortfolio = {
@@ -173,8 +176,26 @@ export class PortfolioTable extends Component {
                 )
               })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
+                <TableRow style={{ height: 2  }}>
+                  <TableCell colSpan={10} >
+                  <div style={{display:'flex',paddingTop:5,justifyContent:'center'}}>
+                    <div style={{display:'flex',width:600}}>
+                    <div style={{flex:1,fontSize:22,color:"rgb(78, 216, 218)",fontWeight:700}}>9713.9</div>
+                    <div style={{flex:1,fontSize:18,color:"#EF5350"}}>9713,9</div>
+                    <div style={{flex:1,fontSize:18,color:"#7CB342"}}>20078,10</div>
+                    <div style={{flex:1,fontSize:18,color:"#7CB342"}}>20078,10</div>
+                    </div>
+                  </div>
+                  <div style={{display:'flex',paddingTop:10,justifyContent:'center'}}>
+                    <div style={{display:'flex',width:600,fontSize:12,color:'grey',fontWeight:700}}>
+                    <div style={{flex:1}}>Current Price USD</div>
+                    <div style={{flex:1}}> Low : 25 March 2017</div>
+                    <div style={{flex:1}}>Heigh : 17 Dec 2017</div>
+                    <div style={{flex:1}}>Change in year : USD</div>
+                    </div>
+                  </div>
+                  <Chart/>
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>

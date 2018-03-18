@@ -18,14 +18,35 @@ import * as API from './api'
 const SAppBar = styled(AppBar)``
 
 const SWrapper = styled.div`
+flex:1;
   width: 100%;
+  display:flex;
+  flex-direction:column;
+  background-color:#424242;
+  min-width: 200px;
   max-width: 360px;
+  text-align:center;
+  padding:20px;
 `
 
 const SelectTitle = styled(Typography)`
   letter-spacing: 0.5px;
   font-size: 20px !important;
+  
+  `
+
+const SelectTitleNew = styled.span`
+  letter-spacing: 0.5px;
+  font-size: 15px !important;
+  color:#fff;
+  margin:20px 0;
+  background-color:transparent;
+  font-weight:700;
+  text-align:center;
+  
 `
+
+
 
 class AccountSelector extends React.Component {
   state = {
@@ -63,15 +84,15 @@ class AccountSelector extends React.Component {
       return <Typography variant="title">Loading</Typography>
     }
     const { keys } = this.props.keys.getProfile
+    //console.log(keys);
     return (
       <SWrapper>
-        <SAppBar position="static" color="primary">
-          <Toolbar>
-            <SelectTitle variant="title" color="inherit">
+          
+            <SelectTitleNew>
               Accounts & Wallets
-            </SelectTitle>
-          </Toolbar>
-        </SAppBar>
+            </SelectTitleNew>
+          
+        <div style={{flex:1}}>
         <List>
           {keys.length === 0 && <Typography variant="title">No keys</Typography>}
           {keys.length > 0 && (
@@ -96,6 +117,10 @@ class AccountSelector extends React.Component {
             </ListItem>
           ))}
         </List>
+        </div>
+        <div>
+          Footer
+        </div>
       </SWrapper>
     )
   }
