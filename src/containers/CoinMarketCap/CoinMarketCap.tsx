@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import { History } from 'history'
 import Button from '../../components/Elements/Button/Button'
+import Calculator from '../../components/Calculator/Calculator'
 import arrowIcon from '../../icons/arrow.svg'
 import { CoinMarketCapQueryQuery } from './annotations'
 
@@ -191,10 +192,22 @@ class CoinMarket extends React.Component<Props, State> {
             <Button title="Next" onClick={this.incrementPage} />
           </Pagination>
         </LeftColumn>
+
+        <RightColumn>
+          <Calculator rates={[{ name: 'BTC/USD', rate: 8377.8 }]} />
+        </RightColumn>
       </Wrapper>
     )
   }
 }
+
+const RightColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 380px;
+  margin-top: 24px;
+  margin-left: 16px;
+`
 
 const LeftColumn = styled.div`
   display: flex;
@@ -269,6 +282,7 @@ const BtnsContainer = styled.div`
 
 const Wrapper = styled.div`
   max-width: 1400px;
+  display: flex;
   margin: 0 auto;
 `
 
@@ -318,9 +332,14 @@ export const CoinMarketCapQuery = gql`
 `
 
 const options = ({ location }) => {
-  const query = new URLSearchParams(location.search)
-  const page = query.get('page')
-  return { variables: { perPage: 100, page } }
+  let page
+  if (!location) {
+    page = 1
+  } else {
+    const query = new URLSearchParams(location.search)
+    page = query.get('page')
+  }
+  return { variables: { perPage: 20, page } }
 }
 
 export const CoinMarketCap = graphql(CoinMarketCapQuery, { options })(
