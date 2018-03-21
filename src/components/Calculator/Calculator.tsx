@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import compareIcon from '../../icons/compare.svg'
+import menuIcon from '../../icons/menu.svg'
 import SvgIcon from '../../components/SvgIcon/SvgIcon'
 import Button from '../../components/Elements/Button/Button'
 
@@ -112,11 +113,18 @@ export default class Calculator extends React.Component<Props, State> {
 
     const options = ['BTC', 'USD', 'ETH', 'XRP']
 
+    const dndStyles = { cursor: '-webkit-grab' }
+
     return (
       <CalculatorWrapper>
         <HeadingWrapper>
-          <SvgIcon src={compareIcon} width={24} height={24} />
-          <Heading>Crypto Calculator</Heading>
+          <div>
+            <SvgIcon src={compareIcon} width={24} height={24} />
+            <Heading>Crypto Calculator</Heading>
+          </div>
+          <span className="dnd" style={dndStyles}>
+            <SvgIcon src={menuIcon} width={24} height={24} />
+          </span>
         </HeadingWrapper>
 
         <ShortcutWrapper>
@@ -252,6 +260,7 @@ const ShortcutWrapper = styled.div`
 const HeadingWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 5px;
 `
 

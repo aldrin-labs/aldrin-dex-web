@@ -33,13 +33,13 @@ class Home extends React.Component<Props, {}> {
     const { items } = assetPagination
 
     const layout = [
-      { i: 'table', x: 0, y: 0, w: 6.5, h: 6 },
+      { i: 'table', x: 0, y: 0, w: 6.5, h: 6, static: true },
       { i: 'calculator', x: 7, y: 0, w: 3.5, h: 2 },
       { i: 'dominance_chart', x: 7, y: 4, w: 3.5, h: 3.5 },
     ]
 
     return (
-      <ReactGridLayout layout={layout} width={1400}>
+      <ReactGridLayout layout={layout} width={1400} draggableHandle=".dnd">
         <Column key="table">
           <CoinMarketTable items={items} />
         </Column>

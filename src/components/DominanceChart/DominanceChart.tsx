@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { RadialChart, Hint } from 'react-vis'
 import SvgIcon from '../../components/SvgIcon/SvgIcon'
 import bubble from '../../icons/bubble.svg'
+import menuIcon from '../../icons/menu.svg'
 import mask from '../../icons/mask.svg'
 
 const chartCoins = [
@@ -35,11 +36,18 @@ export default class DominanceChart extends React.Component<Props, State> {
   render() {
     const { value } = this.state
 
+    const dndStyles = { cursor: '-webkit-grab' }
+
     return (
       <Container>
         <HeadingWrapper>
-          <SvgIcon src={bubble} width={26} height={26} />
-          <Heading>Coin Dominance %</Heading>
+          <div>
+            <SvgIcon src={bubble} width={26} height={26} />
+            <Heading>Coin Dominance %</Heading>
+          </div>
+          <span className="dnd" style={dndStyles}>
+            <SvgIcon src={menuIcon} width={24} height={24} />
+          </span>
         </HeadingWrapper>
 
         <ChartWrapper>
@@ -165,6 +173,7 @@ const Heading = styled.span`
 const HeadingWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 5px;
 `
 
