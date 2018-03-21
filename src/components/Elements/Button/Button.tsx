@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 interface Props {
   onClick?: () => void
+  active?: boolean
   style?: Object
   title: string
   mRight?: boolean
@@ -16,9 +17,11 @@ export default class Button extends React.Component<Props, {}> {
   }
 
   render() {
-    const { style, title, mRight } = this.props
+    const { style, title, mRight, active } = this.props
     let btnStyle = {}
     if (mRight) btnStyle = { ...btnStyle, marginRight: '24px' }
+    if (active)
+      btnStyle = { ...btnStyle, backgroundColor: '#4ed8da', color: '#000000df' }
 
     return (
       <Btn onClick={this.onClick} style={{ ...style, ...btnStyle }}>

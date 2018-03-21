@@ -53,6 +53,8 @@ class CoinMarket extends React.Component<Props, State> {
 
   onChangeSortArg = (index: number, sortArg: string) => {
     const { history, location } = this.props
+    if (!location) return
+
     const query = new URLSearchParams(location.search)
     if (query.has('sort')) {
       query.set('sort', sortArg)
@@ -118,11 +120,7 @@ class CoinMarket extends React.Component<Props, State> {
                 return (
                   <Button
                     onClick={() => this.onChangeKind(i)}
-                    style={
-                      i === activeKind
-                        ? { backgroundColor: '#4ed8da', color: '#000000df' }
-                        : {}
-                    }
+                    active={i === activeKind}
                     key={kindBtn}
                     title={kindBtn}
                     mRight
@@ -194,7 +192,18 @@ class CoinMarket extends React.Component<Props, State> {
         </LeftColumn>
 
         <RightColumn>
-          <Calculator rates={[{ name: 'BTC/USD', rate: 8377.8 }]} />
+          <Calculator
+            rates={[
+              { name: 'BTC/USD', rate: 9103.26 },
+              { name: 'USD/BTC', rate: 0.00011 },
+              { name: 'BTC/ETH', rate: 1 },
+              { name: 'ETH/BTC', rate: 1 },
+              { name: 'ETH/USD', rate: 580.06 },
+              { name: 'USD/ETH', rate: 1 },
+              { name: 'XRP/USD', rate: 0.709714 },
+              { name: 'USD/XRP', rate: 1 },
+            ]}
+          />
         </RightColumn>
       </Wrapper>
     )
