@@ -6,6 +6,7 @@ import { History } from 'history'
 import Button from '../../components/Elements/Button/Button'
 import Calculator from '../../components/Calculator/Calculator'
 import arrowIcon from '../../icons/arrow.svg'
+import DominanceChart from '../../components/DominanceChart/DominanceChart'
 import { CoinMarketCapQueryQuery } from './annotations'
 
 interface Props {
@@ -30,6 +31,17 @@ const headers = [
   'Chg (7d)',
   'Market Cap',
   'Total Supply ',
+]
+
+export const rates = [
+  { name: 'BTC/USD', rate: 9103.26 },
+  { name: 'USD/BTC', rate: 0.00011 },
+  { name: 'BTC/ETH', rate: 1 },
+  { name: 'ETH/BTC', rate: 1 },
+  { name: 'ETH/USD', rate: 580.06 },
+  { name: 'USD/ETH', rate: 1 },
+  { name: 'XRP/USD', rate: 0.709714 },
+  { name: 'USD/XRP', rate: 1 },
 ]
 
 class CoinMarket extends React.Component<Props, State> {
@@ -192,18 +204,9 @@ class CoinMarket extends React.Component<Props, State> {
         </LeftColumn>
 
         <RightColumn>
-          <Calculator
-            rates={[
-              { name: 'BTC/USD', rate: 9103.26 },
-              { name: 'USD/BTC', rate: 0.00011 },
-              { name: 'BTC/ETH', rate: 1 },
-              { name: 'ETH/BTC', rate: 1 },
-              { name: 'ETH/USD', rate: 580.06 },
-              { name: 'USD/ETH', rate: 1 },
-              { name: 'XRP/USD', rate: 0.709714 },
-              { name: 'USD/XRP', rate: 1 },
-            ]}
-          />
+          <Calculator rates={rates} />
+
+          <DominanceChart />
         </RightColumn>
       </Wrapper>
     )

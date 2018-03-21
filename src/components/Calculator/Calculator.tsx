@@ -1,7 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import compareIcon from '../../icons/compare.svg'
-import iconDown from '../../icons/icon-down.svg'
 import SvgIcon from '../../components/SvgIcon/SvgIcon'
 import Button from '../../components/Elements/Button/Button'
 
@@ -143,7 +142,11 @@ export default class Calculator extends React.Component<Props, State> {
               }}
             />
 
-            <RateSelect defaultValue="BTC" onChange={this.onSelectFirstRate}>
+            <RateSelect
+              value={firstRateName}
+              defaultValue={firstRateName}
+              onChange={this.onSelectFirstRate}
+            >
               {options.map(opt => {
                 return (
                   <RateSelectOption key={opt} value={opt}>
@@ -157,7 +160,11 @@ export default class Calculator extends React.Component<Props, State> {
           <ExchangeContainer>
             <Input value={secondValue} disabled />
 
-            <RateSelect defaultValue="USD" onChange={this.onSelectSecondRate}>
+            <RateSelect
+              value={secondRateName}
+              defaultValue={secondRateName}
+              onChange={this.onSelectSecondRate}
+            >
               {options.map(opt => {
                 return (
                   <RateSelectOption key={opt} value={opt}>
