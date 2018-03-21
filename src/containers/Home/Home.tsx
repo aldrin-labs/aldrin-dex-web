@@ -2,6 +2,7 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
+import ReactGridLayout from 'react-grid-layout'
 import CoinMarketTable from '../../components/CoinMarketTable/CoinMarketTable'
 import Calculator from '../../components/Calculator/Calculator'
 import DominanceChart from '../../components/DominanceChart/DominanceChart'
@@ -31,42 +32,33 @@ class Home extends React.Component<Props, {}> {
     if (!assetPagination || !assetPagination.items) return null
     const { items } = assetPagination
 
+    const layout = [
+      { i: 'table', x: 0, y: 0, w: 6.5, h: 6 },
+      { i: 'calculator', x: 7, y: 0, w: 3.5, h: 2 },
+      { i: 'dominance_chart', x: 7, y: 4, w: 3.5, h: 3.5 },
+    ]
+
     return (
-      <div>
-        <Wrapper>
-          <LeftColumn>
-            <CoinMarketTable items={items} />
-          </LeftColumn>
+      <ReactGridLayout layout={layout} width={1400}>
+        <Column key="table">
+          <CoinMarketTable items={items} />
+        </Column>
 
-          <RightColumn>
-            <Calculator rates={rates} />
-
-            <DominanceChart />
-          </RightColumn>
-        </Wrapper>
-      </div>
+        <Column key="calculator">
+          <Calculator rates={rates} />
+        </Column>
+        <Column key="dominance_chart">
+          <DominanceChart />
+        </Column>
+      </ReactGridLayout>
     )
   }
 }
 
-const Wrapper = styled.div`
-  max-width: 1400px;
+const Column = styled.div`
   display: flex;
-  margin: 0 auto;
-`
-
-const RightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 380px;
-  margin-top: 24px;
-  margin-left: 16px;
-`
-
-const LeftColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 775px;
+  justify-content: center;
+  align-items: start;
 `
 
 export const HomeQuery = gql`

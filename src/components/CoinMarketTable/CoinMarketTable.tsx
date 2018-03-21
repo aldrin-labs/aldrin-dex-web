@@ -172,7 +172,6 @@ const MarketWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 775px;
-  margin-top: 24px;
   padding: 16px 24px;
   border-radius: 3px;
   background-color: #393e44;

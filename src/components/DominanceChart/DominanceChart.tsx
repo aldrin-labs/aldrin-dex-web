@@ -171,7 +171,7 @@ const HeadingWrapper = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 380px;
+  width: 380px;
   padding: 16px;
   border-radius: 3px;
   background-color: #393e44;

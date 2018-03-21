@@ -266,7 +266,7 @@ const Heading = styled.span`
 const CalculatorWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 380px;
+  width: 380px;
   padding: 16px;
   border-radius: 3px;
   box-shadow: 0 2px 6px 0 #00000066;
