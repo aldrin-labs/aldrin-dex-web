@@ -5,8 +5,8 @@ import styled from 'styled-components'
 import { History } from 'history'
 import Button from '../../components/Elements/Button/Button'
 import Calculator from '../../components/Calculator/Calculator'
-import arrowIcon from '../../icons/arrow.svg'
 import DominanceChart from '../../components/DominanceChart/DominanceChart'
+import CoinMarketTable from '../../components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from './annotations'
 
 interface Props {
@@ -16,22 +16,8 @@ interface Props {
 }
 
 interface State {
-  activeKind: number
-  activeSortArg?: number
+  activeSortArg: number | null
 }
-
-const kindBtns = ['All coins', 'Coins', 'Tokens']
-
-const headers = [
-  '№',
-  'Name',
-  'Symbol',
-  'Price',
-  'Chg (24h)',
-  'Chg (7d)',
-  'Market Cap',
-  'Total Supply ',
-]
 
 export const rates = [
   { name: 'BTC/USD', rate: 9103.26 },
@@ -46,15 +32,7 @@ export const rates = [
 
 class CoinMarket extends React.Component<Props, State> {
   state: State = {
-    activeKind: 0,
-  }
-
-  onChangeKind = (index: number) => {
-    this.setState({ activeKind: index })
-  }
-
-  formatNumber = (num: number) => {
-    return String(num).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')
+    activeSortArg: null,
   }
 
   redirectToProfile = (_id: string) => {
@@ -116,7 +94,7 @@ class CoinMarket extends React.Component<Props, State> {
   }
 
   render() {
-    const { activeSortArg, activeKind } = this.state
+    const { activeSortArg } = this.state
     const { data } = this.props
     const { assetPagination } = data
     if (!assetPagination || !assetPagination.items) return null
@@ -125,77 +103,14 @@ class CoinMarket extends React.Component<Props, State> {
     return (
       <Wrapper>
         <LeftColumn>
-          <MarketWrapper>
-            <Title>Cryptocurrency Market</Title>
-            <BtnsContainer>
-              {kindBtns.map((kindBtn, i) => {
-                return (
-                  <Button
-                    onClick={() => this.onChangeKind(i)}
-                    active={i === activeKind}
-                    key={kindBtn}
-                    title={kindBtn}
-                    mRight
-                  />
-                )
-              })}
-            </BtnsContainer>
+          <CoinMarketTable
+            onChangeSortArg={this.onChangeSortArg}
+            redirectToProfile={this.redirectToProfile}
+            activeSortArg={activeSortArg}
+            items={items}
+            showFilterBns
+          />
 
-            <Table>
-              <THead>
-                <tr>
-                  {headers.map((header, i) => (
-                    <TH
-                      key={header}
-                      onClick={() => this.onChangeSortArg(i, header)}
-                      style={i === activeSortArg ? {} : { fontWeight: 500 }}
-                    >
-                      {header}
-                      {i === activeSortArg &&
-                        i !== 0 && (
-                          <WebIcon src={arrowIcon.replace(/"/gi, '')} />
-                        )}
-                    </TH>
-                  ))}
-                </tr>
-              </THead>
-              <TBody>
-                {items.map((item, i) => {
-                  if (!item) return null
-                  const {
-                    _id,
-                    name,
-                    symbol,
-                    priceUSD,
-                    percentChangeDay,
-                    maxSupply,
-                    totalSupply,
-                  } = item
-
-                  return (
-                    <TR key={_id} onClick={() => this.redirectToProfile(_id)}>
-                      <TD>{`${i + 1}.`}</TD>
-                      <TD>{name}</TD>
-                      <TD>{symbol}</TD>
-                      <TD>
-                        {priceUSD ? `$${Number(priceUSD).toFixed(2)}` : ''}
-                      </TD>
-                      <TD>{percentChangeDay || ''}</TD>
-                      <TD>{''}</TD>
-                      <TD>
-                        {maxSupply ? `$${this.formatNumber(maxSupply)}` : ''}
-                      </TD>
-                      <TD>
-                        {totalSupply
-                          ? `$${this.formatNumber(totalSupply)}`
-                          : ''}
-                      </TD>
-                    </TR>
-                  )
-                })}
-              </TBody>
-            </Table>
-          </MarketWrapper>
           <Pagination>
             <Button title="Previous" onClick={this.decrementPage} />
             <Button title="View all coins" />
@@ -234,86 +149,10 @@ const Pagination = styled.div`
   margin-top: 16px;
 `
 
-const WebIcon = styled.img`
-  width: 16px;
-  height: 16px;
-  margin-left: 1px;
-  vertical-align: middle;
-`
-
-const TD = styled.td`
-  font-family: Roboto;
-  font-size: 12px;
-  text-align: left;
-  color: #fff;
-`
-
-const TR = styled.tr`
-  width: 100%;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  height: 2.4em;
-  cursor: pointer;
-
-  &:hover ${TD} {
-    color: #4ed8da;
-  }
-`
-
-const TBody = styled.tbody`
-  width: 100%;
-`
-
-const TH = styled.th`
-  font-family: Roboto;
-  font-size: 14px;
-  text-align: left;
-  color: #fff;
-  padding: 6px 0;
-  cursor: pointer;
-`
-
-const THead = styled.thead`
-  width: 100%;
-  border-bottom: 1px solid #fff;
-`
-
-const Table = styled.table`
-  display: table;
-  width: 100%;
-  margin-top: 16px;
-  border-collapse: collapse;
-  margin-bottom: 36px;
-`
-
-const BtnsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 24px;
-`
-
 const Wrapper = styled.div`
   max-width: 1400px;
   display: flex;
   margin: 0 auto;
-`
-
-const MarketWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 775px;
-  margin-top: 24px;
-  padding: 16px 24px;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #00000066;
-`
-
-const Title = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  color: #fff;
 `
 
 export const CoinMarketCapQuery = gql`

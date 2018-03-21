@@ -6,15 +6,15 @@ import bubble from '../../icons/bubble.svg'
 import mask from '../../icons/mask.svg'
 
 const chartCoins = [
-  { angle: 2, label: 'BCash', color: '#f9b057' },
-  { angle: 6, label: 'Bitcoin', color: '#f9a626' },
-  { angle: 2, label: 'NEO', color: '#0eb8e8' },
-  { angle: 4, label: 'Ethereum', color: '#8c8c8c' },
-  { angle: 2, label: 'Litecoin', color: '#a0a1a1' },
-  { angle: 2, label: 'Stellar', color: '#86d301' },
-  { angle: 3, label: 'Ripple', color: '#0099d4' },
-  { angle: 2, label: 'Cardano', color: '#0c1e2c' },
-  { angle: 2, label: 'Others', color: '#b6b8b8' },
+  { angle: 5, label: 'BCash', color: '#f9b057' },
+  { angle: 30, label: 'Bitcoin', color: '#f9a626' },
+  { angle: 5, label: 'NEO', color: '#0eb8e8' },
+  { angle: 5, label: 'Ethereum', color: '#8c8c8c' },
+  { angle: 15, label: 'Litecoin', color: '#a0a1a1' },
+  { angle: 5, label: 'Stellar', color: '#86d301' },
+  { angle: 5, label: 'Ripple', color: '#0099d4' },
+  { angle: 5, label: 'Cardano', color: '#0c1e2c' },
+  { angle: 25, label: 'Others', color: '#b6b8b8' },
 ]
 
 interface HintT {
