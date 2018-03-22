@@ -8,7 +8,12 @@ import Paper from 'material-ui/Paper'
 import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table'
 import Typography from 'material-ui/Typography'
 
+import {Chart} from '../zoomableChart/index';
+import {BrushChart} from '../brushChart/index';
+
 import { Loading } from '@components'
+
+
 
 import {
   PortfolioTableHead,
@@ -201,7 +206,10 @@ class PortfolioTableComponent extends Component<any, any> {
                 })}
             {emptyRows > 0 && (
               <TableRow style={{ height: 49 * emptyRows }}>
-                <TableCell colSpan={6} />
+                <TableCell colSpan={6} >
+                <BrushChart/>
+                <Chart/>
+                </TableCell>
               </TableRow>
             )}
           </TableBody>

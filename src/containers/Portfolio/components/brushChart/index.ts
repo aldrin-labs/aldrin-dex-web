@@ -1,1 +1,1 @@
-export {brushChart} from './brushChart.tsx'
+export {BrushChart} from './brushChart'
