@@ -1,162 +1,227 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { SingleChart } from '../../components/Chart'
+import OnlyCharts from './OnlyCharts'
+import { orders } from './mocks'
 
 interface Props {}
 
 interface State {
-  charts: string[]
-  choosedChart?: string
+  view: 'onlyCharts' | 'default'
+  orders: number[][]
+  currentSort?: {
+    arg: 'ASC' | 'DESC'
+    index: number
+  }
 }
 
-const options = [
-  'BTC/USD',
-  'ETH/USD',
-  'XRP/USD',
-  'BCH/USD',
-  'LTC/USD',
-  'ADA/USD',
-]
+const headers = ['Price', 'ETH', 'BTC', 'Sum(BTC)']
 
 export default class Chart extends React.Component<Props, State> {
   state: State = {
-    charts: ['BTC/USD'],
+    view: 'default',
+    orders,
   }
 
-  addChart = () => {
-    const { charts, choosedChart } = this.state
-    if (!choosedChart || charts.indexOf(choosedChart) >= 0) return
-
-    const newCharts = charts.slice()
-
-    newCharts.push(choosedChart)
-
-    this.setState({ charts: newCharts })
+  onToggleView = (view: 'default' | 'onlyCharts') => {
+    this.setState({ view })
   }
 
-  removeChart = (index: number) => {
-    const { charts } = this.state
+  sortOrders = (index: number) => {
+    const { orders, currentSort } = this.state
 
-    const newCharts = charts.slice()
-    newCharts.splice(index, 1)
+    const newOrders = orders.slice().sort((a, b) => {
+      if (currentSort && currentSort.index === index) {
+        if (currentSort.arg === 'ASC') {
+          this.setState({ currentSort: { index, arg: 'DESC' } })
+          return b[index] - a[index]
+        } else {
+          this.setState({ currentSort: { index, arg: 'ASC' } })
+          return a[index] - b[index]
+        }
+      }
+      this.setState({ currentSort: { index, arg: 'ASC' } })
+      return a[index] - b[index]
+    })
 
-    this.setState({ charts: newCharts })
+    this.setState({ orders: newOrders })
   }
 
-  onSelectChart = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target
+  renderDefaultView = () => {
+    const { orders } = this.state
 
-    this.setState({ choosedChart: value })
+    return (
+      <Container>
+        <SingleChart />
+
+        <Tickers />
+
+        <OrderContainer>
+          <Orders>
+            <thead>
+              <TR>
+                {headers.map((h, i) => {
+                  return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+                })}
+              </TR>
+            </thead>
+            <tbody>
+              {orders.map(order => {
+                return (
+                  <TR>
+                    {order.map(o => {
+                      return <TD>{o}</TD>
+                    })}
+                  </TR>
+                )
+              })}
+            </tbody>
+          </Orders>
+        </OrderContainer>
+
+        <OrderContainer>
+          <Orders>
+            <thead>
+              <TR>
+                {headers.map((h, i) => {
+                  return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+                })}
+              </TR>
+            </thead>
+            <tbody>
+              {orders.map(order => {
+                return (
+                  <TR>
+                    {order.map(o => {
+                      return <TD>{o}</TD>
+                    })}
+                  </TR>
+                )
+              })}
+            </tbody>
+          </Orders>
+        </OrderContainer>
+      </Container>
+    )
+  }
+
+  renderOnlyCharts = () => {
+    return <OnlyCharts />
+  }
+
+  renderToggler = () => {
+    const { view } = this.state
+
+    if (view === 'default')
+      return (
+        <Toggler onClick={() => this.onToggleView('onlyCharts')}>
+          &#9680;
+        </Toggler>
+      )
+    if (view === 'onlyCharts')
+      return (
+        <Toggler onClick={() => this.onToggleView('default')}>&#9681;</Toggler>
+      )
+
+    return null
   }
 
   render() {
-    const { charts } = this.state
+    const { view } = this.state
+
+    const toggler = this.renderToggler()
 
     return (
       <div>
-        <ChartCtrlBlock>
-          <ChartSelect defaultValue="BTC/USD" onChange={this.onSelectChart}>
-            {options.map(opt => {
-              return (
-                <ChartSelectOption key={opt} value={opt}>
-                  {opt}
-                </ChartSelectOption>
-              )
-            })}
-          </ChartSelect>
-
-          <AddChartBtn onClick={this.addChart}>&#10010;</AddChartBtn>
-        </ChartCtrlBlock>
-        <ChartContainer>
-          {charts.map((chart, i) => {
-            return (
-              <Wrapper key={chart}>
-                <ChartInfo>
-                  {chart}
-                  <AddChartBtn onClick={() => this.removeChart(i)}>
-                    &#10008;
-                  </AddChartBtn>
-                </ChartInfo>
-                <iframe src={'http://chart.igorlimansky.me'} height={'100%'} />
-              </Wrapper>
-            )
-          })}
-        </ChartContainer>
+        <TogglerContainer>{toggler}</TogglerContainer>
+        {view === 'default' && this.renderDefaultView()}
+        {view === 'onlyCharts' && this.renderOnlyCharts()}
       </div>
     )
   }
 }
 
-const ChartCtrlBlock = styled.div`
-  margin: 10px auto;
-  background-color: #373c4e;
-  width: 200px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
+const TR = styled.tr`
+  border: 1px solid #fff;
 `
 
-const ChartSelectOption = styled.option`
+const TD = styled.td`
+  text-align: right;
   font-family: Roboto;
   font-size: 16px;
   line-height: 20px;
-  text-align: left;
-  color: #ffffffde;
-  margin-left: 15px;
-  border: none;
-  background-color: #292d31;
-  outline: none;
+  color: #fff;
+  padding: 5px;
+  border: 1px solid #fff;
 `
 
-const ChartSelect = styled.select`
+const TH = styled.th`
+  text-align: left;
   font-family: Roboto;
   font-size: 16px;
   line-height: 20px;
-  text-align: left;
   font-weight: bold;
-  color: #ffffffde;
-  margin-left: 15px;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 10px 5px;
+  cursor: pointer;
+`
+
+const TogglerContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+`
+
+const Toggler = styled.button`
+  font-size: 30px;
   border: none;
   background: transparent;
+  color: #fff;
   outline: none;
+  margin: 0.5% 2%;
+  padding: 5px;
+  cursor: pointer;
 `
 
-const Wrapper = styled.div`
+const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 45%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 50px;
+`
+
+const Tickers = styled.div`
+  display: flex;
+  width: 35%;
   height: 500px;
+  border: 1px solid lightgrey;
   margin: 1%;
 `
 
-const ChartContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-`
-const ChartInfo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  color: #ffffff;
-  background-color: #373c4e;
-  color: #fff;
-  border-top-left-radius: 0.4rem;
-  border-top-right-radius: 0.4rem;
+const OrderContainer = styled.div`
+  width: 45%;
+  height: 300px;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(255, 255, 255);
+  }
 `
 
-const AddChartBtn = styled.button`
-  background: transparent;
-  border: none;
-  padding: 5px;
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  color: #ffffff;
-  cursor: pointer;
+const Orders = styled.table`
+  width: 98%;
+  border: 1px solid lightgrey;
+  margin: 1%;
+  border-collapse: collapse;
 `
