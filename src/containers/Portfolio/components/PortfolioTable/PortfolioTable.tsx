@@ -208,7 +208,7 @@ class PortfolioTableComponent extends Component<any, any> {
               <TableRow style={{ height: 49 * emptyRows }}>
                 <TableCell colSpan={6} >
                 <BrushChart/>
-                <Chart/>
+           
                 </TableCell>
               </TableRow>
             )}
