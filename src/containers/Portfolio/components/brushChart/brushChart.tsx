@@ -1,5 +1,5 @@
 import React from 'react';
-import {VictoryChart,VictoryTooltip,createContainer,VictoryZoomContainer,VictoryVoronoiContainer,VictoryLine,VictoryAxis,VictoryBrushContainer} from 'victory';
+import {VictoryChart,VictoryTheme,VictoryTooltip,createContainer,VictoryZoomContainer,VictoryVoronoiContainer,VictoryLine,VictoryAxis,VictoryBrushContainer} from 'victory';
 
 
 const VictoryZoomVoronoiContainer = createContainer("zoom", "voronoi");
@@ -38,7 +38,7 @@ export class BrushChart extends React.Component {
           >
 
 <VictoryAxis
-  
+
   style={{
     axis: {stroke: "#fff"},
     axisLabel: {fontSize: 20, padding: 30},
@@ -47,6 +47,24 @@ export class BrushChart extends React.Component {
     tickLabels: {fontSize: 15, padding: 5,fill: '#E0F2F1',}
   }}
 />
+<VictoryAxis
+
+        dependentAxis
+        offsetX={905}
+        
+       styles={{
+        axis: {stroke: "#fff",fill:"#fff"},
+        axisLabel: {fontSize: 20, padding: 30,fill:"#fff"},
+        grid: {stroke: (t) => t > 0.5 ? "rgba(255,255,255,.1)" : "grey"},
+        ticks: {stroke: "#fff", size: 5,fill:"#fff"},
+        tickLabels: {
+          fill: "blue",
+          fontFamily: "inherit",
+          fontSize: 16
+        }}}
+/>
+
+
             <VictoryLine
      
           style={{
