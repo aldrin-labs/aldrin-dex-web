@@ -8,20 +8,16 @@ import Paper from 'material-ui/Paper'
 import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table'
 import Typography from 'material-ui/Typography'
 
-import {Chart} from '../zoomableChart/index';
-import {BrushChart} from '../brushChart/index';
-import ProfileChartHead from './portFolioHeadUpdated';
+import { BrushChart } from '../brushChart/index'
+import ProfileChartHead from './portFolioHeadUpdated'
 
 import { Loading } from '@components'
-
-
 
 import {
   PortfolioTableHead,
   PortfolioTableToolbar,
   PortfolioTableFooter,
   LoginAlert,
-  TableChart,
 } from './'
 import { getPortfolioQuery } from '../../api'
 
@@ -41,7 +37,7 @@ class PortfolioTableComponent extends Component<any, any> {
 
   // Pass assets to state from props so it can be sorted, mutated, etc
   // also it can be modified to update with subscriptios now
-  componentDidUpdate?(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.data && this.props.data.getProfile) {
       if (
         prevProps.data !== this.props.data &&
@@ -80,7 +76,7 @@ class PortfolioTableComponent extends Component<any, any> {
 
   handleSelectAllClick = (event: any, checked: any): void => {
     if (checked) {
-      this.setState({ selected: this.state.data.map((n) => n._id) })
+      this.setState({ selected: this.state.data.map(n => n._id) })
 
       return
     }
@@ -140,9 +136,6 @@ class PortfolioTableComponent extends Component<any, any> {
     }
 
     const assets = this.state.data
-    const { name } = this.props.data.getProfile.portfolio
-
-    console.log(this.state)
 
     const {
       order,
@@ -175,13 +168,13 @@ class PortfolioTableComponent extends Component<any, any> {
             {currentTab === 'balances' &&
               assets
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((n) => {
+                .map(n => {
                   const isSelected = this.isSelected(n._id)
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => this.handleClick(event, n._id)}
+                      onClick={event => this.handleClick(event, n._id)}
                       role="checkbox"
                       aria-checked={isSelected}
                       tabIndex={-1}
@@ -207,10 +200,9 @@ class PortfolioTableComponent extends Component<any, any> {
                 })}
             {emptyRows > 0 && (
               <TableRow style={{ height: 30 * emptyRows }}>
-                <TableCell colSpan={8} >
-                <ProfileChartHead/>
-                <BrushChart/>
-           
+                <TableCell colSpan={8}>
+                  <ProfileChartHead />
+                  <BrushChart />
                 </TableCell>
               </TableRow>
             )}

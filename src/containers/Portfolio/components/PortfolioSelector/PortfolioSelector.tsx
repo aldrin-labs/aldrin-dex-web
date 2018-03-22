@@ -1,22 +1,9 @@
 import React, { Fragment } from 'react'
 import Drawer from 'material-ui/Drawer'
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
-import List from 'material-ui/List'
-import { MenuItem } from 'material-ui/Menu'
-import Typography from 'material-ui/Typography'
-import TextField from 'material-ui/TextField'
-import Divider from 'material-ui/Divider'
-import IconButton from 'material-ui/IconButton'
-import MenuIcon from 'material-ui-icons/Menu'
-
-import { connect } from 'react-redux'
-import { compose } from 'recompose'
 import styled, { css } from 'styled-components'
 import { transitions } from 'polished'
 
 import { PortfolioList } from './PortfolioList'
-import graphql from 'graphql-anywhere';
 
 const drawerWidth = '240px'
 
@@ -54,7 +41,6 @@ export class PortfolioSelector extends React.Component {
 
     return (
       <Fragment>
-        {console.log(1111, this.props)}
         <DrawerPaper
           variant="persistent"
           anchor="left"
@@ -69,4 +55,3 @@ export class PortfolioSelector extends React.Component {
     )
   }
 }
-

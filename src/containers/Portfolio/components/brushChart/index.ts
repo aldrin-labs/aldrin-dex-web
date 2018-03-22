@@ -1,1 +1,1 @@
-export {BrushChart} from './brushChart'
+export { BrushChart } from './BrushChart'

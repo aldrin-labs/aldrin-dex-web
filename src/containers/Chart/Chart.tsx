@@ -1,4 +1,4 @@
-import React, { SFC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 const ChartContainer = styled.div`
@@ -7,7 +7,11 @@ const ChartContainer = styled.div`
 `
 
 export const Chart = () => (
-    <ChartContainer>
-        <iframe src={'http://chart.igorlimansky.me'} height={'100%'} width={'100%'}/>
-    </ChartContainer>
+  <ChartContainer>
+    <iframe
+      src={'http://chart.igorlimansky.me'}
+      height={'100%'}
+      width={'100%'}
+    />
+  </ChartContainer>
 )

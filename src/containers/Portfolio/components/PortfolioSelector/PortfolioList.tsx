@@ -1,7 +1,11 @@
 import Autorenew from 'material-ui-icons/Autorenew'
 import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
+import List, {
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+} from 'material-ui/List'
 import Typography from 'material-ui/Typography'
 import { withTheme } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
@@ -30,7 +34,8 @@ const SelectTitle = styled(Typography)`
 `
 
 const SToolbar = styled(Toolbar)`
-  background-color: ${props => props.theme ? props.theme.palette.background.paper : ''}
+  background-color: ${props =>
+    props.theme ? props.theme.palette.background.paper : ''};
 `
 
 class SelectPortfolioComponent extends React.Component {
@@ -56,13 +61,13 @@ class SelectPortfolioComponent extends React.Component {
 
   handleToggleAll = () => {
     const allKeys = this.props.keys.getProfile.keys.map(key => key._id)
-    this.setState((prevState, props) =>
-      ({ allKeysSelected: !prevState.allKeysSelected }));
+    this.setState((prevState, props) => ({
+      allKeysSelected: !prevState.allKeysSelected,
+    }))
     this.props.selectAllKeys(allKeys)
   }
 
   render() {
-    console.log(this.props)
     if (this.props.keys.loading) {
       return <Loading />
     }
@@ -72,23 +77,26 @@ class SelectPortfolioComponent extends React.Component {
         return <LoginAlert />
       }
 
-      return <Typography variant="title" color="error">Error!</Typography>
+      return (
+        <Typography variant="title" color="error">
+          Error!
+        </Typography>
+      )
     }
 
     const { keys } = this.props.keys.getProfile
-      console.log(333, this.props)
 
     return (
       <SWrapper>
         <AppBar position="static">
           <SToolbar theme={this.props.theme}>
-            <SelectTitle variant="title">
-              Accounts & Wallets
-            </SelectTitle>
+            <SelectTitle variant="title">Accounts & Wallets</SelectTitle>
           </SToolbar>
         </AppBar>
         <List>
-          {keys.length === 0 && <Typography variant="title">No keys</Typography>}
+          {keys.length === 0 && (
+            <Typography variant="title">No keys</Typography>
+          )}
           {keys.length > 0 && (
             <ListItem dense button onClick={this.handleToggleAll}>
               <Checkbox checked={this.state.allKeysSelected} disableRipple />
@@ -96,7 +104,12 @@ class SelectPortfolioComponent extends React.Component {
             </ListItem>
           )}
           {keys.map(key => (
-            <ListItem key={key._id} dense button onClick={this.handleToggle(key._id)}>
+            <ListItem
+              key={key._id}
+              dense
+              button
+              onClick={this.handleToggle(key._id)}
+            >
               <Checkbox
                 checked={this.props.selectedAccounts.indexOf(key._id) !== -1}
                 tabIndex={-1}
@@ -119,7 +132,7 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts)),
   onLoad: data => dispatch(actions.onLoad(data)),
-  selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys))
+  selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys)),
 })
 
 export const PortfolioList = compose(
