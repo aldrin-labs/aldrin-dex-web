@@ -24,34 +24,29 @@ export class BrushChart extends React.Component {
   render() {
     return (
       <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
-          <VictoryChart  width={900} height={350} scale={{x: "time"}}
+          <VictoryChart  width={900} height={240} scale={{x: "time"}}
              
             containerComponent={
              
               <VictoryZoomVoronoiContainer labels={(d) => `${d.x}, ${d.y}`} responsive={false}
                 zoomDimension="x"
                 zoomDomain={this.state.zoomDomain}
+               
                 onZoomDomainChange={this.handleZoom.bind(this)}
               /> 
             }
           >
 
-
 <VictoryAxis
-
-style={{tickLabels: { fontSize: 12, fill: '#E0F2F1', fontWeight: 'bold' }}}
-              tickValues={[
-                new Date(1985, 1, 1),
-                new Date(1990, 1, 1),
-                new Date(1995, 1, 1),
-                new Date(2000, 1, 1),
-                new Date(2005, 1, 1),
-                new Date(2010, 1, 1)
-              ]}
-              tickFormat={(x) => new Date(x).getFullYear()}
-            />
-
-
+  
+  style={{
+    axis: {stroke: "#fff"},
+    axisLabel: {fontSize: 20, padding: 30},
+    grid: {stroke: (t) => t > 0.5 ? "rgba(255,255,255,.1)" : "grey"},
+    ticks: {stroke: "#fff", size: 5,},
+    tickLabels: {fontSize: 15, padding: 5,fill: '#E0F2F1',}
+  }}
+/>
             <VictoryLine
      
           style={{
@@ -72,12 +67,13 @@ style={{tickLabels: { fontSize: 12, fill: '#E0F2F1', fontWeight: 'bold' }}}
           </VictoryChart>
 
           <VictoryChart
-            padding={{top: 0, left: 50, right: 50, bottom: 30}}
+            padding={{top: 0, left: 50, right: 50, bottom: 5}}
             width={800} height={90} scale={{x: "time"}}
             containerComponent={
               <VictoryBrushContainer responsive={false}
                 brushDimension="x"
                 brushDomain={this.state.selectedDomain}
+                brushStyle={{fill: "rgb(78, 216, 218)", opacity: 0.35}}
                 onBrushDomainChange={this.handleBrush.bind(this)}
               />
             }

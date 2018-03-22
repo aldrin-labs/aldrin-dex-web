@@ -10,6 +10,7 @@ import Typography from 'material-ui/Typography'
 
 import {Chart} from '../zoomableChart/index';
 import {BrushChart} from '../brushChart/index';
+import ProfileChartHead from './portFolioHeadUpdated';
 
 import { Loading } from '@components'
 
@@ -205,8 +206,9 @@ class PortfolioTableComponent extends Component<any, any> {
                   )
                 })}
             {emptyRows > 0 && (
-              <TableRow style={{ height: 49 * emptyRows }}>
-                <TableCell colSpan={6} >
+              <TableRow style={{ height: 30 * emptyRows }}>
+                <TableCell colSpan={8} >
+                <ProfileChartHead/>
                 <BrushChart/>
            
                 </TableCell>
