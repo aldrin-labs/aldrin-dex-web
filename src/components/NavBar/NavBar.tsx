@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { NavButton } from './NavButton'
 import { Login } from '@containers/Login'
 
-
 // TODO: fix z-index for drawer
 const Nav = styled.div`
   width: 100%;

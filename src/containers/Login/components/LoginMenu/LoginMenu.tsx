@@ -5,17 +5,14 @@ import { Link } from 'react-router-dom'
 import Button from 'material-ui/Button'
 import Menu, { MenuItem } from 'material-ui/Menu'
 
-const MenuLink = styled(Link)`
-  color: inherit;
-  text-decoration: none;
-  border: none;
-
-  &:hover {
-    color: palevioletred;
-  }
-`
-
-export const LoginMenu = ({ userName, anchorEl, open, handleClose, handleMenu, handleLogout }) => (
+export const LoginMenu = ({
+  userName,
+  anchorEl,
+  open,
+  handleClose,
+  handleMenu,
+  handleLogout,
+}) => (
   <Fragment>
     <Menu
       id="menu-appbar"
@@ -42,3 +39,13 @@ export const LoginMenu = ({ userName, anchorEl, open, handleClose, handleMenu, h
     <Button onClick={handleMenu}>{userName}</Button>
   </Fragment>
 )
+
+const MenuLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+  border: none;
+
+  &:hover {
+    color: palevioletred;
+  }
+`

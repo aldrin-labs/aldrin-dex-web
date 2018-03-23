@@ -8,15 +8,11 @@ const columnData = [
   { id: 'exchange', numeric: false, disablePadding: true, label: 'Exchange' },
   { id: 'asset', numeric: true, disablePadding: false, label: 'Coin' },
   { id: 'symbol', numeric: true, disablePadding: false, label: 'Symbol' },
+  { id: 'priceUSD', numeric: true, disablePadding: false, label: 'Price (USD)'},
   { id: 'value', numeric: true, disablePadding: false, label: 'Value' },
   { id: 'realizedProfit', numeric: true, disablePadding: false, label: 'Realized profit' },
   { id: 'possibleProfit', numeric: true, disablePadding: false, label: 'Possible Profit' },
-  // { id: 'assetPriceUSD', numeric: true, disablePadding: false, label: 'Price USD' },
-  // { id: 'currentBTC', numeric: true, disablePadding: false, label: 'Current BTC' },
-  // { id: 'currentUSD', numeric: true, disablePadding: false, label: 'Current USD' },
-  // { id: 'twentyFourHourChange', numeric: true, disablePadding: false, label: '24h' },
-  // { id: 'BTCProfitLoss', numeric: true, disablePadding: false, label: 'BTC Profit Loss' },
-  // { id: 'USDProfitLoss', numeric: true, disablePadding: false, label: 'USD Profit Loss' }
+
 ]
 
 export class PortfolioTableHead extends Component {
@@ -37,8 +33,8 @@ export class PortfolioTableHead extends Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {columnData.map((column) => {
-            return (
+          {columnData.map((column) =>
+            (
               <TableCell
                 key={column.id}
                 numeric={column.numeric}
@@ -55,8 +51,7 @@ export class PortfolioTableHead extends Component {
                   </TableSortLabel>
                 </Tooltip>
               </TableCell>
-            )
-          }, this)}
+            ), this)}
         </TableRow>
       </TableHead>
     )

@@ -17,22 +17,9 @@ function mergeAllKeys({ payload }: any) {
   }
 }
 
-// export const onLoad = (action$: any) =>
-//   action$
-//     .ofType(actions.onLoad.getType())
-//     .switchMap(async test => {
-//       const yoba = await graphql(API.getKeysQuery)
-//       await console.log(yoba)
-//     })
-
 export const selectAllKeys = action$ =>
   action$.ofType(actions.selectAllKeys.getType()).map(mergeAllKeys)
 
 export const selectAccount = (action$: any) =>
   action$.ofType(actions.selectAccount.getType()).map(updateSelectedAccounts)
 
-// export const getPortfolio = (action$): any => {
-//   return action$
-//     .ofType(actions.getPortfolio.getType())
-//     .mapTo(({ payload }) => ({ type: actions.getPortfolio.getType(), payload }))
-// }
