@@ -1,1 +1,1 @@
-export const API_URL = 'api.igorlimansky.me' || 'api.igorlimansky.me'
+export const API_URL = process.env.API_ENDPOINT || 'api.igorlimansky.me'

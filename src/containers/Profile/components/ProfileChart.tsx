@@ -10,7 +10,15 @@ interface State {
   activeChart: number
 }
 
-const chartBtns = ['1 Day', '7 Days', '1 Month', '3 Month', '1 Year', 'YTD', 'ALL PERIOD']
+const chartBtns = [
+  '1 Day',
+  '7 Days',
+  '1 Month',
+  '3 Month',
+  '1 Year',
+  'YTD',
+  'ALL PERIOD',
+]
 
 export default class ProfileChart extends React.Component<Props, State> {
   state = {
@@ -24,7 +32,6 @@ export default class ProfileChart extends React.Component<Props, State> {
   render() {
     const { coin } = this.props
     const { name = '', priceUSD = '' } = coin || {}
-    console.log(coin)
     return (
       <SProfileChart>
         <ProfileChartHeading>{name} Price Chart (1y)</ProfileChartHeading>
