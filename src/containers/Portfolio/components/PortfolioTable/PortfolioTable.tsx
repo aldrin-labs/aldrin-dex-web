@@ -1,235 +1,347 @@
-import React, { Component } from 'react'
+import * as React from 'react'
 import styled from 'styled-components'
-import { graphql } from 'react-apollo'
-import { compose } from 'recompose'
+import SvgIcon from '@components/SvgIcon/SvgIcon'
+import filterListIcon from '../../../../icons/filter-list.svg'
+import selectedIcon from '../../../../icons/selected.svg'
+import { tableData } from './mocks'
+import { RowT } from './types'
 
-import Checkbox from 'material-ui/Checkbox'
-import Paper from 'material-ui/Paper'
-import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table'
-import Typography from 'material-ui/Typography'
+const headings = [
+  'Currency',
+  'Symbol',
+  'Available',
+  'Held',
+  'Total',
+  'Exchange Rate',
+  'USD Value',
+  'BTC Value',
+]
 
-import { BrushChart } from '../brushChart/index'
-import ProfileChartHead from './portFolioHeadUpdated'
+const defaultSelectedSum = {
+  currency: '',
+  symbol: '',
+  available: 0,
+  held: 0,
+  total: 0,
+  exchangeRate: 0,
+  usdValue: 0,
+  btcValue: 0,
+}
 
-import { Loading } from '@components'
+interface TState {
+  selectedBalances: number[] | null
+  selectedSum: RowT
+}
 
-import {
-  PortfolioTableHead,
-  PortfolioTableToolbar,
-  PortfolioTableFooter,
-  LoginAlert,
-} from './'
-import { getPortfolioQuery } from '../../api'
-
-// Data mock
-import { sampleData } from './dataMock'
-
-class PortfolioTableComponent extends Component<any, any> {
-  state = {
-    data: null,
-    order: 'asc',
-    orderBy: 'name',
-    selected: [],
-    page: 0,
-    rowsPerPage: 10,
-    currentTab: 'balances',
+export class PortfolioTable extends React.Component {
+  state: TState = {
+    selectedBalances: null,
+    selectedSum: defaultSelectedSum,
   }
 
-  // Pass assets to state from props so it can be sorted, mutated, etc
-  // also it can be modified to update with subscriptios now
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.data && this.props.data.getProfile) {
-      if (
-        prevProps.data !== this.props.data &&
-        !this.state.data &&
-        !this.props.data.loading
-      ) {
-        // remove length check for real data
-        this.setState({
-          data:
-            this.props.data.getProfile.portfolio.assets.length > 0 ||
-            sampleData.assets,
-        })
-      }
-    }
-  }
-
-  handleRequestSort = (event: any, property: any): void => {
-    const orderBy = property
-    let order = 'desc'
-
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc'
-    }
-
-    const data =
-      order === 'desc'
-        ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-        : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
-    this.setState({ data, order, orderBy })
-  }
-
-  addAssetsToState = (assets: any[]) => {
-    this.setState({ data: assets })
-  }
-
-  handleSelectAllClick = (event: any, checked: any): void => {
-    if (checked) {
-      this.setState({ selected: this.state.data.map(n => n._id) })
-
-      return
-    }
-    this.setState({ selected: [] })
-  }
-
-  handleTabSelect = (event, currentTab) => {
-    this.setState({ currentTab })
-  }
-
-  handleClick = (event: any, _id: string): void => {
-    const { selected } = this.state
-    const selectedIndex = selected.indexOf(_id)
-    let newSelected: any[] = []
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, _id)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      )
-    }
-
-    this.setState({ selected: newSelected })
-  }
-
-  handleChangePage = (event: any, page: number) => {
-    this.setState({ page })
-  }
-
-  handleChangeRowsPerPage = (event: any) => {
-    this.setState({ rowsPerPage: event.target.value })
-  }
-
-  isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
-
-  render() {
-    if (this.props.data.loading || !this.state.data) {
-      return <Loading margin={'30% auto'} />
-    }
-
-    if (this.props.data.error) {
-      if (this.props.data.error.message.toLowerCase().includes('jwt')) {
-        return <LoginAlert />
-      } else {
-        return (
-          <Typography variant="title" color="error">
-            Error!
-          </Typography>
-        )
-      }
-    }
-
-    const assets = this.state.data
-
-    const {
-      order,
-      orderBy,
-      selected,
-      rowsPerPage,
-      page,
-      currentTab,
-    } = this.state
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
+  renderCheckbox = (heading: string, index: number) => {
+    const { selectedBalances } = this.state
+    const isSelected =
+      (selectedBalances && selectedBalances.indexOf(index) >= 0) || false
 
     return (
-      <TableContainer>
-        <PortfolioTableToolbar
-          currentTab={currentTab}
-          handleTabSelect={this.handleTabSelect}
-          numSelected={selected.length}
-        />
-        <TableWrapper>
-          <PortfolioTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={this.handleSelectAllClick}
-            onRequestSort={this.handleRequestSort}
-            rowCount={assets.length}
-          />
-          <TableBody>
-            {currentTab === 'balances' &&
-              assets
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n._id)
+      <React.Fragment>
+        <Checkbox type="checkbox" id={heading} checked={isSelected} />
+        <Label htmlFor={heading} onClick={(e) => e.preventDefault()}>
+          <Span />
+        </Label>
+      </React.Fragment>
+    )
+  }
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n._id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n._id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell padding="none">{n.exchange.name}</TableCell>
-                      <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
-                      <TableCell numeric>{n.asset.symbol || 'Empty'}</TableCell>
-                      <TableCell numeric>
-                        {`${n.asset.priceUSD}$` || 'Empty'}
-                      </TableCell>
-                      <TableCell numeric>{n.value || 'Empty'}</TableCell>
-                      <TableCell numeric>
-                        {n.realizedProfit || 'Empty'}
-                      </TableCell>
-                      <TableCell numeric>{n.totalProfit || 'Empty'}</TableCell>
-                    </TableRow>
-                  )
-                })}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 30 * emptyRows }}>
-                <TableCell colSpan={8}>
-                  <ProfileChartHead />
-                  <BrushChart />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-          <PortfolioTableFooter
-            colSpan={6}
-            count={assets.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
-          />
-        </TableWrapper>
-      </TableContainer>
+  onSelectAll = () => {
+    const { selectedBalances } = this.state
+
+    if (selectedBalances && selectedBalances.length === tableData.length) {
+      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
+    } else {
+      const allRows = tableData.map((ck, i) => i)
+      const allSums = tableData.reduce((acc, el) => {
+        return {
+          currency: 'All',
+          symbol: '-',
+          available: acc.available + el.available,
+          held: acc.held + el.held,
+          total: acc.total + el.total,
+          exhangeRate: 0,
+          usdValue: acc.usdValue + el.usdValue,
+          btcValue: acc.btcValue + el.btcValue,
+        }
+      })
+
+      this.setState({ selectedBalances: allRows, selectedSum: allSums })
+    }
+  }
+
+  setCurrencyAndSymbol = (
+    selectedBalances: number[],
+    currency: string,
+    symbol: string
+  ) => {
+    if (selectedBalances.length === 0) {
+      return {
+        currency: '',
+        symbol: '',
+      }
+    }
+
+    if (selectedBalances.length === 1) {
+      const idx = selectedBalances[0]
+      return {
+        currency: tableData[idx].currency,
+        symbol: tableData[idx].symbol,
+      }
+    }
+
+    if (selectedBalances.length > 1) {
+      return {
+        currency: 'Selected',
+        symbol: '-',
+      }
+    }
+
+    if (selectedBalances.length === tableData.length) {
+      return {
+        currency: 'All',
+        symbol,
+      }
+    }
+
+    return {
+      currency: '',
+      symbol: '',
+    }
+  }
+
+  decrementSelected = (selectedSum: RowT, row: RowT) => {
+    const { available, held, total, usdValue, btcValue } = selectedSum
+    return {
+      currency: row.currency,
+      symbol: row.symbol,
+      available: available - row.available,
+      held: held - row.held,
+      total: total - row.total,
+      exchangeRate: 0,
+      usdValue: usdValue - row.usdValue,
+      btcValue: btcValue - row.btcValue,
+    }
+  }
+
+  incrementSelected = (selectedSum: RowT, row: RowT) => {
+    const { available, held, total, usdValue, btcValue } = selectedSum
+    return {
+      currency: row.currency,
+      symbol: row.symbol,
+      available: row.available + available,
+      held: row.held + held,
+      total: row.total + total,
+      exchangeRate: 0,
+      usdValue: row.usdValue + usdValue,
+      btcValue: row.btcValue + btcValue,
+    }
+  }
+
+  onSelectBalance = (index: number, row: RowT) => {
+    let selectedSum: RowT | null
+    const selectedBalances =
+      (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
+
+    const hasIndex = selectedBalances.indexOf(index)
+    if (hasIndex >= 0) {
+      selectedSum = this.decrementSelected(this.state.selectedSum, row)
+
+      selectedBalances.splice(hasIndex, 1)
+    } else {
+      selectedSum = this.incrementSelected(this.state.selectedSum, row)
+
+      selectedBalances.push(index)
+    }
+
+    const { currency, symbol } = this.setCurrencyAndSymbol(
+      selectedBalances,
+      row.currency,
+      row.symbol
+    )
+
+    selectedSum.currency = currency
+    selectedSum.symbol = symbol
+
+    this.setState({ selectedBalances, selectedSum })
+  }
+
+  render() {
+    const { selectedBalances, selectedSum } = this.state
+    const isSelectAll =
+      (selectedBalances && selectedBalances.length === tableData.length) ||
+      false
+
+    return (
+      <PTWrapper>
+        <PTHeadingBlock>
+          <PTHeading>My Balances</PTHeading>
+          <SvgIcon src={filterListIcon} width={24} height={24} />
+        </PTHeadingBlock>
+
+        <PTable>
+          <PTHead>
+            <PTR>
+              <PTH key="selectAll">
+                <Checkbox
+                  type="checkbox"
+                  id="selectAll"
+                  checked={isSelectAll}
+                  onChange={this.onSelectAll}
+                />
+                <Label htmlFor="selectAll">
+                  <Span />
+                </Label>
+              </PTH>
+              {headings.map((heading) => <PTH key={heading}>{heading}</PTH>)}
+            </PTR>
+          </PTHead>
+
+          <PTBody>
+            {tableData.map((row, i) => {
+              const isSelected =
+                (selectedBalances && selectedBalances.indexOf(i) >= 0) || false
+              const cols = Object.keys(row).map((key) => row[key])
+              cols.unshift(this.renderCheckbox(row['currency'], i))
+
+              return (
+                <PTR
+                  key={row.currency}
+                  isSelected={isSelected}
+                  onClick={() => this.onSelectBalance(i, row)}
+                >
+                  {cols.map((col, idx) => {
+                    return (
+                      <PTD key={`${col}${idx}`} isSelected={isSelected}>
+                        {col}
+                      </PTD>
+                    )
+                  })}
+                </PTR>
+              )
+            })}
+          </PTBody>
+
+          <PTBody style={{ borderBottom: 'none' }}>
+            <PTR>
+              <PTD>
+                <SvgIcon src={selectedIcon} width={24} height={24} />
+              </PTD>
+              {Object.keys(selectedSum).map((key) => (
+                <PTD key={key}>{selectedSum[key]}</PTD>
+              ))}
+            </PTR>
+          </PTBody>
+        </PTable>
+      </PTWrapper>
     )
   }
 }
 
-const TableContainer = styled(Paper)`
-  margin: 24px;
+const Span = styled.span``
+
+const Label = styled.label``
+
+const Checkbox = styled.input`
+  display: none;
+
+  & + ${Label} ${Span} {
+    display: inline-block;
+
+    width: 22px;
+    height: 22px;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    border: 1.5px solid #909294;
+    border-radius: 3px;
+    background-color: transparent;
+  }
+
+  & + ${Label}:hover ${Span} {
+    border-color: #4ed8da;
+  }
+
+  & :checked + ${Label} ${Span} {
+    border-color: #4ed8da;
+    background-color: #4ed8da;
+    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+  }
+`
+
+const PTD = styled.td`
+  color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? '#4ed8da' : '#fff'};
+
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  padding: 20px 32px;
+`
+
+const PTH = styled.th`
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  color: #fff;
+  padding: 19px 32px;
+  font-weight: 500;
+`
+
+const PTBody = styled.tbody`
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+`
+
+const PTR = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? '#2d3136' : '#393e44'};
+`
+
+const PTHead = styled.thead``
+
+const PTable = styled.table`
   width: 100%;
+  border-collapse: collapse;
 `
 
-const TableWrapper = styled(Table)`
-  min-width: 800px;
+const PTHeading = styled.span`
+  font-family: Roboto;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: left;
+  color: #fff;
 `
 
-export const PortfolioTable = compose(graphql(getPortfolioQuery))(
-  PortfolioTableComponent
-)
+const PTWrapper = styled.div`
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  margin: 24px auto;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #00000066;
+`
+
+const PTHeadingBlock = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+`
