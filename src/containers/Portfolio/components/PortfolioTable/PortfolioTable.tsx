@@ -1,20 +1,22 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import ProfileChart from '@containers/Profile/components/ProfileChart'
 import filterListIcon from '../../../../icons/filter-list.svg'
 import selectedIcon from '../../../../icons/selected.svg'
-import { tableData } from './mocks'
-import { RowT } from './types'
+import sortIcon from '../../../../icons/arrow.svg'
+import { tableMocks } from './mocks'
+import { RowT, State, Args } from './types'
 
-const headings = [
-  'Currency',
-  'Symbol',
-  'Available',
-  'Held',
-  'Total',
-  'Exchange Rate',
-  'USD Value',
-  'BTC Value',
+const headings: Array<{ name: string; value: Args }> = [
+  { name: 'Currency', value: 'currency' },
+  { name: 'Symbol', value: 'symbol' },
+  { name: 'Available', value: 'available' },
+  { name: 'Held', value: 'held' },
+  { name: 'Total', value: 'total' },
+  { name: 'Exchange Rate', value: 'exchangeRate' },
+  { name: 'USD Value', value: 'usdValue' },
+  { name: 'BTC Value', value: 'btcValue' },
 ]
 
 const defaultSelectedSum = {
@@ -28,26 +30,24 @@ const defaultSelectedSum = {
   btcValue: 0,
 }
 
-interface TState {
-  selectedBalances: number[] | null
-  selectedSum: RowT
-}
-
 export class PortfolioTable extends React.Component {
-  state: TState = {
+  state: State = {
+    tableData: tableMocks,
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
+    currentSort: null,
+    isShownChart: true,
   }
 
-  renderCheckbox = (heading: string, index: number) => {
+  renderCheckbox = (rowCurrency: string) => {
     const { selectedBalances } = this.state
     const isSelected =
-      (selectedBalances && selectedBalances.indexOf(index) >= 0) || false
+      (selectedBalances && selectedBalances.indexOf(rowCurrency) >= 0) || false
 
     return (
       <React.Fragment>
-        <Checkbox type="checkbox" id={heading} checked={isSelected} />
-        <Label htmlFor={heading} onClick={(e) => e.preventDefault()}>
+        <Checkbox type="checkbox" id={rowCurrency} checked={isSelected} />
+        <Label htmlFor={rowCurrency} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
       </React.Fragment>
@@ -55,12 +55,12 @@ export class PortfolioTable extends React.Component {
   }
 
   onSelectAll = () => {
-    const { selectedBalances } = this.state
+    const { selectedBalances, tableData } = this.state
 
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
-      const allRows = tableData.map((ck, i) => i)
+      const allRows = tableData.map((ck) => ck.currency)
       const allSums = tableData.reduce((acc, el) => {
         return {
           currency: 'All',
@@ -68,7 +68,7 @@ export class PortfolioTable extends React.Component {
           available: acc.available + el.available,
           held: acc.held + el.held,
           total: acc.total + el.total,
-          exhangeRate: 0,
+          exchangeRate: 0,
           usdValue: acc.usdValue + el.usdValue,
           btcValue: acc.btcValue + el.btcValue,
         }
@@ -79,10 +79,12 @@ export class PortfolioTable extends React.Component {
   }
 
   setCurrencyAndSymbol = (
-    selectedBalances: number[],
+    selectedBalances: string[],
     currency: string,
     symbol: string
   ) => {
+    const { tableData } = this.state
+
     if (selectedBalances.length === 0) {
       return {
         currency: '',
@@ -91,17 +93,17 @@ export class PortfolioTable extends React.Component {
     }
 
     if (selectedBalances.length === 1) {
-      const idx = selectedBalances[0]
+      let idx = 0
+
+      tableData.forEach((td, i) => {
+        if (td.currency === selectedBalances[0]) {
+          idx = i
+        }
+      })
+
       return {
         currency: tableData[idx].currency,
         symbol: tableData[idx].symbol,
-      }
-    }
-
-    if (selectedBalances.length > 1) {
-      return {
-        currency: 'Selected',
-        symbol: '-',
       }
     }
 
@@ -109,6 +111,13 @@ export class PortfolioTable extends React.Component {
       return {
         currency: 'All',
         symbol,
+      }
+    }
+
+    if (selectedBalances.length > 1) {
+      return {
+        currency: 'Selected',
+        symbol: '-',
       }
     }
 
@@ -146,12 +155,12 @@ export class PortfolioTable extends React.Component {
     }
   }
 
-  onSelectBalance = (index: number, row: RowT) => {
+  onSelectBalance = (rowCurrency: string, row: RowT) => {
     let selectedSum: RowT | null
     const selectedBalances =
       (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
 
-    const hasIndex = selectedBalances.indexOf(index)
+    const hasIndex = selectedBalances.indexOf(rowCurrency)
     if (hasIndex >= 0) {
       selectedSum = this.decrementSelected(this.state.selectedSum, row)
 
@@ -159,7 +168,7 @@ export class PortfolioTable extends React.Component {
     } else {
       selectedSum = this.incrementSelected(this.state.selectedSum, row)
 
-      selectedBalances.push(index)
+      selectedBalances.push(rowCurrency)
     }
 
     const { currency, symbol } = this.setCurrencyAndSymbol(
@@ -174,8 +183,55 @@ export class PortfolioTable extends React.Component {
     this.setState({ selectedBalances, selectedSum })
   }
 
+  onSortStrings = (a: string, b: string) => {
+    return a.localeCompare(b)
+  }
+
+  onSortTable = (key: Args) => {
+    const { tableData, currentSort } = this.state
+
+    const newData = tableData.slice().sort((a, b) => {
+      if (currentSort && currentSort.key === key) {
+        if (currentSort.arg === 'ASC') {
+          this.setState({ currentSort: { key, arg: 'DESC' } })
+
+          if (key === 'currency' || key === 'symbol') {
+            return this.onSortStrings(b[key], a[key])
+          }
+          return b[key] - a[key]
+        } else {
+          this.setState({ currentSort: { key, arg: 'ASC' } })
+
+          if (key === 'currency' || key === 'symbol') {
+            return this.onSortStrings(a[key], b[key])
+          }
+          return a[key] - b[key]
+        }
+      }
+      this.setState({ currentSort: { key, arg: 'ASC' } })
+
+      if (key === 'currency' || key === 'symbol') {
+        return this.onSortStrings(a[key], b[key])
+      }
+      return a[key] - b[key]
+    })
+
+    this.setState({ tableData: newData })
+  }
+
+  onToggleChart = () => {
+    this.setState({ isShownChart: !this.state.isShownChart })
+  }
+
   render() {
-    const { selectedBalances, selectedSum } = this.state
+    const {
+      selectedBalances,
+      selectedSum,
+      tableData,
+      currentSort,
+      isShownChart,
+    } = this.state
+
     const isSelectAll =
       (selectedBalances && selectedBalances.length === tableData.length) ||
       false
@@ -184,7 +240,9 @@ export class PortfolioTable extends React.Component {
       <PTWrapper>
         <PTHeadingBlock>
           <PTHeading>My Balances</PTHeading>
-          <SvgIcon src={filterListIcon} width={24} height={24} />
+          <ToggleBtn onClick={this.onToggleChart}>
+            <SvgIcon src={filterListIcon} width={24} height={24} />
+          </ToggleBtn>
         </PTHeadingBlock>
 
         <PTable>
@@ -201,23 +259,52 @@ export class PortfolioTable extends React.Component {
                   <Span />
                 </Label>
               </PTH>
-              {headings.map((heading) => <PTH key={heading}>{heading}</PTH>)}
+              {headings.map((heading) => {
+                const isSorted =
+                  currentSort && currentSort.key === heading.value
+                return (
+                  <PTH
+                    key={heading.name}
+                    onClick={() => this.onSortTable(heading.value)}
+                    style={{ paddingRight: isSorted ? null : '20px' }}
+                  >
+                    {heading.name}
+                    {isSorted && (
+                      <SvgIcon
+                        src={sortIcon}
+                        style={{
+                          verticalAlign: 'middle',
+                          marginLeft: '4px',
+                          transform:
+                            currentSort && currentSort.arg === 'ASC'
+                              ? 'rotate(180deg)'
+                              : null,
+                        }}
+                      />
+                    )}
+                  </PTH>
+                )
+              })}
             </PTR>
           </PTHead>
 
           <PTBody>
-            {tableData.map((row, i) => {
+            {tableData.map((row: RowT, i) => {
+              const { currency } = row
               const isSelected =
-                (selectedBalances && selectedBalances.indexOf(i) >= 0) || false
+                (selectedBalances && selectedBalances.indexOf(currency) >= 0) ||
+                false
               const cols = Object.keys(row).map((key) => row[key])
-              cols.unshift(this.renderCheckbox(row['currency'], i))
 
               return (
                 <PTR
-                  key={row.currency}
+                  key={currency}
                   isSelected={isSelected}
-                  onClick={() => this.onSelectBalance(i, row)}
+                  onClick={() => this.onSelectBalance(currency, row)}
                 >
+                  <PTD key="smt" isSelected={isSelected}>
+                    {this.renderCheckbox(currency)}
+                  </PTD>
                   {cols.map((col, idx) => {
                     return (
                       <PTD key={`${col}${idx}`} isSelected={isSelected}>
@@ -241,10 +328,23 @@ export class PortfolioTable extends React.Component {
             </PTR>
           </PTBody>
         </PTable>
+
+        {isShownChart && (
+          <ProfileChart
+            style={{ marginLeft: 0, borderTop: '1px solid #fff' }}
+          />
+        )}
       </PTWrapper>
     )
   }
 }
+
+const ToggleBtn = styled.button`
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+`
 
 const Span = styled.span``
 
@@ -298,8 +398,10 @@ const PTH = styled.th`
   line-height: 24px;
   text-align: left;
   color: #fff;
-  padding: 19px 32px;
+  padding: 19px 0 19px 32px;
   font-weight: 500;
+
+  position: relative;
 `
 
 const PTBody = styled.tbody`
@@ -336,6 +438,7 @@ const PTWrapper = styled.div`
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
+  margin-top: 104px;
 `
 
 const PTHeadingBlock = styled.div`

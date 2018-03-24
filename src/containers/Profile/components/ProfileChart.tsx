@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { ProfileQueryQuery } from '../profile-annotation'
 
 interface Props {
-  coin: ProfileQueryQuery['assetById']
+  coin?: ProfileQueryQuery['assetById']
+  style?: Object
 }
 
 interface State {
@@ -30,10 +31,10 @@ export default class ProfileChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { coin } = this.props
+    const { coin, style } = this.props
     const { name = '', priceUSD = '' } = coin || {}
     return (
-      <SProfileChart>
+      <SProfileChart style={style}>
         <ProfileChartHeading>{name} Price Chart (1y)</ProfileChartHeading>
 
         {/*TODO: need refactoring, need real data */}
