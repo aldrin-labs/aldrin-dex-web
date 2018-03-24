@@ -7,5 +7,11 @@ export interface Props {
 
 export interface State {
   activeChart: number
-  lastDrawLocation: any
+  lastDrawLocation: {
+    top: number
+    left: number
+    right: number
+    bottom: number
+  } | null
+  crosshairValues: ({ x: number; y: number } | null)[]
 }

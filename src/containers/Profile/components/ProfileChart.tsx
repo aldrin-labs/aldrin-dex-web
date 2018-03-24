@@ -1,17 +1,16 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import {
-  XYPlot,
   XAxis,
   YAxis,
   VerticalGridLines,
-  HorizontalGridLines,
-  LineSeries,
   AreaSeries,
   FlexibleWidthXYPlot,
+  Crosshair,
 } from 'react-vis'
 import Highlight from './Highlight'
 import { Props, State } from './annotations'
+import { yearData } from './chartMocks'
 
 function getRandomSeriesData(total: number) {
   const result = []
@@ -83,19 +82,39 @@ const chartBtns = [
 ]
 
 export default class ProfileChart extends React.Component<Props, State> {
-  state = {
+  state: State = {
     activeChart: 4,
     lastDrawLocation: null,
+    crosshairValues: [],
   }
 
   onChangeActiveChart = (index: number) => {
     this.setState({ activeChart: index })
   }
 
+  _onNearestX = (value, { index }) => {
+    console.log(value, index)
+    this.setState({
+      crosshairValues: yearData
+        .map((d) => {
+          if (d.x === index) {
+            return d
+          }
+          return null
+        })
+        .filter(Boolean),
+    })
+  }
+
+  _onMouseLeave = () => {
+    this.setState({ crosshairValues: [] })
+  }
+
   render() {
-    const { lastDrawLocation } = this.state
+    const { lastDrawLocation, crosshairValues } = this.state
     const { coin, style } = this.props
     const { name = '', priceUSD = '' } = coin || {}
+    console.log(crosshairValues)
 
     const axisStyle = {
       ticks: {
@@ -166,11 +185,23 @@ export default class ProfileChart extends React.Component<Props, State> {
 
         {/*TODO: make a chart */}
         <Chart>
-          <FlexibleWidthXYPlot animation width={750} height={195}>
+          <FlexibleWidthXYPlot
+            animation
+            width={750}
+            height={195}
+            onMouseLeave={this._onMouseLeave}
+            xDomain={
+              lastDrawLocation && [
+                lastDrawLocation.left,
+                lastDrawLocation.right,
+              ]
+            }
+          >
             <XAxis
               hideLine
               tickFormat={(v: number) => calculateMonths(v)}
               tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
+              labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
               style={axisStyle}
             />
             <VerticalGridLines
@@ -178,16 +209,34 @@ export default class ProfileChart extends React.Component<Props, State> {
               tickTotal={12}
               tickFormat={(v: number) => calculateMonths(v)}
               tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
+              labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
             />
             <YAxis hideTicks hideLine />
             <AreaSeries
-              data={getRandomSeriesData(72)}
+              onNearestX={this._onNearestX}
+              data={yearData}
               style={{
                 fill: 'rgba(133, 237, 238, 0.35)',
                 stroke: 'rgb(78, 216, 218)',
                 strokeWidth: '3px',
               }}
             />
+
+            <Crosshair values={crosshairValues}>
+              <div
+                style={{
+                  background: '#4c5055',
+                  color: '#4ed8da',
+                  padding: '5px',
+                  fontSize: '14px',
+                }}
+              >
+                <p>
+                  {crosshairValues.map((v) => calculateMonths(v.x)).join(' ')}:{' '}
+                  {crosshairValues.map((v) => v.y.toFixed(2)).join(' ')}
+                </p>
+              </div>
+            </Crosshair>
 
             <Highlight
               onBrushEnd={(area) => {
@@ -202,6 +251,18 @@ export default class ProfileChart extends React.Component<Props, State> {
     )
   }
 }
+
+const ChartTooltip = styled.span`
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 500;
+  text-align: left;
+  color: #fff;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #0006;
+  padding: 8px;
+`
 
 const Chart = styled.div`
   height: 195px;
