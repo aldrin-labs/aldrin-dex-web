@@ -11,7 +11,6 @@ const Nav = styled.div`
   height: 80px;
   align-items: center;
   background-color: #2d3136;
-  position: fixed;
   z-index: 1;
 `
 

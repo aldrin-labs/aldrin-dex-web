@@ -1,14 +1,75 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { ProfileQueryQuery } from '../profile-annotation'
+import {
+  XYPlot,
+  XAxis,
+  YAxis,
+  VerticalGridLines,
+  HorizontalGridLines,
+  LineSeries,
+  AreaSeries,
+  FlexibleWidthXYPlot,
+} from 'react-vis'
+import Highlight from './Highlight'
+import { Props, State } from './annotations'
 
-interface Props {
-  coin?: ProfileQueryQuery['assetById']
-  style?: Object
+function getRandomSeriesData(total: number) {
+  const result = []
+  let lastY = Math.random() * 40 - 20
+  let y
+  const firstY = lastY
+  for (let i = 0; i < total; i++) {
+    y = Math.random() * firstY - firstY / 2 + lastY
+    result.push({
+      x: i,
+      y,
+    })
+    lastY = y
+  }
+  return result
 }
 
-interface State {
-  activeChart: number
+function calculateMonths(v: number) {
+  switch (v) {
+    case 0:
+      return 'Mar'
+
+    case 6:
+      return 'Apr'
+
+    case 12:
+      return 'May'
+
+    case 18:
+      return 'Jun'
+
+    case 24:
+      return 'Jul'
+
+    case 30:
+      return 'Aug'
+
+    case 36:
+      return 'Sep'
+
+    case 42:
+      return 'Oct'
+
+    case 48:
+      return 'Nov'
+
+    case 54:
+      return 'Dec'
+
+    case 60:
+      return 'Jan'
+
+    case 66:
+      return 'Feb'
+
+    default:
+      return 'Month'
+  }
 }
 
 const chartBtns = [
@@ -24,6 +85,7 @@ const chartBtns = [
 export default class ProfileChart extends React.Component<Props, State> {
   state = {
     activeChart: 4,
+    lastDrawLocation: null,
   }
 
   onChangeActiveChart = (index: number) => {
@@ -31,8 +93,20 @@ export default class ProfileChart extends React.Component<Props, State> {
   }
 
   render() {
+    const { lastDrawLocation } = this.state
     const { coin, style } = this.props
     const { name = '', priceUSD = '' } = coin || {}
+
+    const axisStyle = {
+      ticks: {
+        stroke: '#fff',
+        opacity: 0.5,
+        fontFamily: 'Roboto',
+        fontSize: '12px',
+        fontWeight: 100,
+      },
+    }
+
     return (
       <SProfileChart style={style}>
         <ProfileChartHeading>{name} Price Chart (1y)</ProfileChartHeading>
@@ -91,20 +165,47 @@ export default class ProfileChart extends React.Component<Props, State> {
         <Hr />
 
         {/*TODO: make a chart */}
-        <Chart />
+        <Chart>
+          <FlexibleWidthXYPlot animation width={750} height={195}>
+            <XAxis
+              hideLine
+              tickFormat={(v: number) => calculateMonths(v)}
+              tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
+              style={axisStyle}
+            />
+            <VerticalGridLines
+              style={{ stroke: 'rgba(134, 134, 134, 0.5)' }}
+              tickTotal={12}
+              tickFormat={(v: number) => calculateMonths(v)}
+              tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
+            />
+            <YAxis hideTicks hideLine />
+            <AreaSeries
+              data={getRandomSeriesData(72)}
+              style={{
+                fill: 'rgba(133, 237, 238, 0.35)',
+                stroke: 'rgb(78, 216, 218)',
+                strokeWidth: '3px',
+              }}
+            />
+
+            <Highlight
+              onBrushEnd={(area) => {
+                this.setState({
+                  lastDrawLocation: area,
+                })
+              }}
+            />
+          </FlexibleWidthXYPlot>
+        </Chart>
       </SProfileChart>
     )
   }
 }
 
 const Chart = styled.div`
-  width: 741px;
   height: 195px;
-  border-style: solid;
-  border-width: 2px;
-  border-image-source: linear-gradient(to left, #85edee, #4fd8da);
-  border-image-slice: 1;
-  padding: 38px 17px 53px 17px;
+  padding: 38px 17px 53px 0;
   margin: 0 auto;
 `
 

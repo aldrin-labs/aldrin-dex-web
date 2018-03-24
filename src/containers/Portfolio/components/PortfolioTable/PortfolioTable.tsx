@@ -438,7 +438,6 @@ const PTWrapper = styled.div`
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
-  margin-top: 104px;
 `
 
 const PTHeadingBlock = styled.div`
