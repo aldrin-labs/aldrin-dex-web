@@ -238,6 +238,14 @@ export class PortfolioTable extends React.Component {
 
     return (
       <PTWrapper>
+        <TabContainer>
+          <Tab active>My Balances</Tab>
+
+          <Tab disabled>Rebalance</Tab>
+
+          <Tab disabled>Industries</Tab>
+        </TabContainer>
+
         <PTHeadingBlock>
           <PTHeading>My Balances</PTHeading>
           <ToggleBtn onClick={this.onToggleChart}>
@@ -338,6 +346,28 @@ export class PortfolioTable extends React.Component {
     )
   }
 }
+
+const TabContainer = styled.div`
+  display: flex;
+`
+
+const Tab = styled.button`
+  color: ${(props: { active?: boolean }) =>
+    props.active ? '#4ed8da' : '#fff'};
+  border-color: ${(props: { active?: boolean }) =>
+    props.active ? '#4ed8da' : 'transparent'};
+
+  padding: 10px 30px;
+  border-radius: 3px;
+  background-color: #292d31;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  margin: 10px 20px;
+  outline: none;
+`
 
 const ToggleBtn = styled.button`
   background: transparent;
