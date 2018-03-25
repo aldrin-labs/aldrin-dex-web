@@ -78,7 +78,7 @@ export default class Calculator extends React.Component<Props, State> {
     const secondRatePart = currentRate.name.replace(/[a-z]+\//gi, '')
     const rateName = `${value}/${secondRatePart}`
 
-    rates.forEach(propsRate => {
+    rates.forEach((propsRate) => {
       if (propsRate.name === rateName) {
         this.setState({
           currentRate: propsRate,
@@ -96,7 +96,7 @@ export default class Calculator extends React.Component<Props, State> {
     const firstRatePart = currentRate.name.replace(/\/[a-z]+/gi, '')
     const rateName = `${firstRatePart}/${value}`
 
-    rates.forEach(propsRate => {
+    rates.forEach((propsRate) => {
       if (propsRate.name === rateName) {
         this.setState({
           currentRate: propsRate,
@@ -155,7 +155,7 @@ export default class Calculator extends React.Component<Props, State> {
               defaultValue={firstRateName}
               onChange={this.onSelectFirstRate}
             >
-              {options.map(opt => {
+              {options.map((opt) => {
                 return (
                   <RateSelectOption key={opt} value={opt}>
                     {opt}
@@ -173,7 +173,7 @@ export default class Calculator extends React.Component<Props, State> {
               defaultValue={secondRateName}
               onChange={this.onSelectSecondRate}
             >
-              {options.map(opt => {
+              {options.map((opt) => {
                 return (
                   <RateSelectOption key={opt} value={opt}>
                     {opt}
@@ -237,10 +237,10 @@ const Input = styled.input`
 const BtnsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
 
   & > * {
     margin-bottom: 16px;
+    margin-right: 16px;
   }
 `
 
@@ -275,7 +275,7 @@ const Heading = styled.span`
 const CalculatorWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 380px;
+  width: 100%;
   padding: 16px;
   border-radius: 3px;
   box-shadow: 0 2px 6px 0 #00000066;

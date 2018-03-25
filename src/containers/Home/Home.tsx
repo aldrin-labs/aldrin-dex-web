@@ -6,6 +6,7 @@ import ReactGridLayout from 'react-grid-layout'
 import CoinMarketTable from '../../components/CoinMarketTable/CoinMarketTable'
 import Calculator from '../../components/Calculator/Calculator'
 import DominanceChart from '../../components/DominanceChart/DominanceChart'
+import TreeMapChart from '@components/TreeMapChart/TreeMapChart'
 import { CoinMarketCapQueryQuery } from '../CoinMarketCap/annotations'
 
 export const rates = [
@@ -36,10 +37,16 @@ class Home extends React.Component<Props, {}> {
       { i: 'table', x: 0, y: 0, w: 6.5, h: 6, static: true },
       { i: 'calculator', x: 7, y: 0, w: 3.5, h: 2 },
       { i: 'dominance_chart', x: 7, y: 4, w: 3.5, h: 3.5 },
+      { i: 'treeMap', x: 7, y: 8, w: 3.5, h: 3 },
+      //
     ]
 
     return (
-      <ReactGridLayout layout={layout} width={1400} draggableHandle=".dnd">
+      <ReactGridLayout
+        layout={layout}
+        width={window.innerWidth}
+        draggableHandle=".dnd"
+      >
         <Column key="table">
           <CoinMarketTable items={items} />
         </Column>
@@ -49,6 +56,10 @@ class Home extends React.Component<Props, {}> {
         </Column>
         <Column key="dominance_chart">
           <DominanceChart />
+        </Column>
+
+        <Column key="treeMap">
+          <TreeMapChart />
         </Column>
       </ReactGridLayout>
     )
