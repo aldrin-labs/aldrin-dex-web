@@ -66,7 +66,7 @@ export const getExchangesListQuery = gql`
           name
           baseId
           quoteId
-          exchangeId
+          exchangeIds
           price
         }
       }
