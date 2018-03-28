@@ -39,6 +39,7 @@ export const getPortfolioQuery = gql`
           asset {
             name
             symbol
+            priceUSD
           }
           exchange {
             name

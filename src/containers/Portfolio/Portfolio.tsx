@@ -2,6 +2,8 @@ import React from 'react'
 import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
+import { getPortfolioQuery } from './api'
+import { Props } from './interfaces'
 
 import { PortfolioTable, PortfolioSelector } from './components'
 
@@ -17,15 +19,17 @@ const PortfolioContainer = styled.div`
   display: flex;
 `
 
-const PortfolioComponent = (props) => {
-  console.log(props)
+const PortfolioComponent = (props: Props) => {
+  const { data } = props
+  const { getProfile } = data
+
   return (
     <Subscription subscription={PORTFOLIO_UPDATE} variables={{}}>
       {(data) => {
         return (
           <PortfolioContainer>
             <PortfolioSelector />
-            <PortfolioTable />
+            <PortfolioTable data={getProfile} />
           </PortfolioContainer>
         )
       }}
@@ -33,23 +37,4 @@ const PortfolioComponent = (props) => {
   )
 }
 
-const PortfolioQuery = gql`
-  query getProfile {
-    getProfile {
-      username
-      imageUrl
-      email
-      portfolio {
-        name
-        assets {
-          value
-          asset {
-            name
-          }
-        }
-      }
-    }
-  }
-`
-
-export default graphql(PortfolioQuery)(PortfolioComponent)
+export default graphql(getPortfolioQuery)(PortfolioComponent)

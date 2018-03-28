@@ -7,16 +7,20 @@ import selectedIcon from '../../../../icons/selected.svg'
 import sortIcon from '../../../../icons/arrow.svg'
 import { tableMocks } from './mocks'
 import { RowT, State, Args } from './types'
+import { Props } from '../../interfaces'
 
 const headings: Array<{ name: string; value: Args }> = [
-  { name: 'Currency', value: 'currency' },
-  { name: 'Symbol', value: 'symbol' },
-  { name: 'Available', value: 'available' },
-  { name: 'Held', value: 'held' },
-  { name: 'Total', value: 'total' },
-  { name: 'Exchange Rate', value: 'exchangeRate' },
-  { name: 'USD Value', value: 'usdValue' },
-  { name: 'BTC Value', value: 'btcValue' },
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: '% of Portfolio', value: 'available' },
+  { name: 'Price per coin', value: 'held' },
+  { name: 'Quantity', value: 'total' },
+  { name: 'Current USD', value: 'exchangeRate' },
+  { name: 'Current BTC', value: 'usdValue' },
+  { name: '24hr change USD', value: 'btcValue' },
+  { name: '24hr change BTC', value: 'btcValue' },
+  { name: 'USD P&L', value: 'btcValue' },
+  { name: 'BTC P&L', value: 'btcValue' },
 ]
 
 const defaultSelectedSum = {
@@ -30,7 +34,7 @@ const defaultSelectedSum = {
   btcValue: 0,
 }
 
-export class PortfolioTable extends React.Component {
+export class PortfolioTable extends React.Component<Props> {
   state: State = {
     tableData: tableMocks,
     selectedBalances: null,
@@ -231,6 +235,10 @@ export class PortfolioTable extends React.Component {
       currentSort,
       isShownChart,
     } = this.state
+    const { data } = this.props
+    if (!data) return null
+    const { portfolio } = data
+    const { assets } = portfolio
 
     const isSelectAll =
       (selectedBalances && selectedBalances.length === tableData.length) ||
@@ -297,21 +305,40 @@ export class PortfolioTable extends React.Component {
           </PTHead>
 
           <PTBody>
-            {tableData.map((row: RowT, i) => {
-              const { currency } = row
+            {assets.map((row: RowT, i) => {
+              const {
+                asset,
+                value,
+                realizedProfit,
+                unrealizedProfit,
+                totalProfit,
+              } = row
               const isSelected =
-                (selectedBalances && selectedBalances.indexOf(currency) >= 0) ||
+                (selectedBalances && selectedBalances.indexOf(symbol) >= 0) ||
                 false
-              const cols = Object.keys(row).map((key) => row[key])
+
+              const { name, symbol, priceUSD } = asset
+              const cols = []
+              cols.push(
+                name,
+                symbol,
+                value,
+                realizedProfit,
+                unrealizedProfit,
+                totalProfit,
+                priceUSD,
+                priceUSD
+              )
+              console.log(cols)
 
               return (
                 <PTR
-                  key={currency}
+                  key={symbol}
                   isSelected={isSelected}
-                  onClick={() => this.onSelectBalance(currency, row)}
+                  onClick={() => this.onSelectBalance(symbol, row)}
                 >
                   <PTD key="smt" isSelected={isSelected}>
-                    {this.renderCheckbox(currency)}
+                    {this.renderCheckbox(symbol)}
                   </PTD>
                   {cols.map((col, idx) => {
                     return (
@@ -461,7 +488,6 @@ const PTHeading = styled.span`
 `
 
 const PTWrapper = styled.div`
-  width: 1200px;
   display: flex;
   flex-direction: column;
   margin: 24px auto;
