@@ -30,10 +30,11 @@ export default class TreeMapChart extends React.Component {
       getLabel: (x) => x.title,
       width: 350,
       style: {
-        border: 'thin solid #ddd',
+        border: 'thin solid #393e44',
         fontFamily: 'Roboto',
-        fonWeight: 500,
-        color: '#fff',
+        fonWeight: 'bold',
+        color: 'rgba(0, 0, 0, 0.875)',
+        backgroundColor: '#4ed8da',
       },
     }
     return (

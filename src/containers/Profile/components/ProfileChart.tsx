@@ -93,7 +93,6 @@ export default class ProfileChart extends React.Component<Props, State> {
   }
 
   _onNearestX = (value, { index }) => {
-    console.log(value, index)
     this.setState({
       crosshairValues: yearData
         .map((d) => {
@@ -114,7 +113,6 @@ export default class ProfileChart extends React.Component<Props, State> {
     const { lastDrawLocation, crosshairValues } = this.state
     const { coin, style } = this.props
     const { name = '', priceUSD = '' } = coin || {}
-    console.log(crosshairValues)
 
     const axisStyle = {
       ticks: {
