@@ -11,6 +11,30 @@ const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
     portfolioUpdated {
       name
+      processing
+      assetIds
+      assets {
+        _id
+        assetId
+        exchangeId
+        keyId
+        value
+        realizedProfit
+        unrealizedProfit
+        totalProfit
+        asset {
+          name
+          symbol
+          priceUSD
+        }
+        exchange {
+          name
+        }
+        key {
+          name
+          apiKey
+        }
+      }
     }
   }
 `
