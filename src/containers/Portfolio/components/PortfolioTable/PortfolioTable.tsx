@@ -5,53 +5,83 @@ import ProfileChart from '@containers/Profile/components/ProfileChart'
 import filterListIcon from '../../../../icons/filter-list.svg'
 import selectedIcon from '../../../../icons/selected.svg'
 import sortIcon from '../../../../icons/arrow.svg'
-import { tableMocks } from './mocks'
 import { RowT, State, Args } from './types'
-import { Props } from '../../interfaces'
+import { TableProps } from '../../interfaces'
 
 const headings: Array<{ name: string; value: Args }> = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
-  { name: '% of Portfolio', value: 'available' },
-  { name: 'Price per coin', value: 'held' },
-  { name: 'Quantity', value: 'total' },
-  { name: 'Current USD', value: 'exchangeRate' },
-  { name: 'Current BTC', value: 'usdValue' },
-  { name: '24hr change USD', value: 'btcValue' },
-  { name: '24hr change BTC', value: 'btcValue' },
-  { name: 'USD P&L', value: 'btcValue' },
-  { name: 'BTC P&L', value: 'btcValue' },
+  { name: '% of Portfolio', value: 'percentage' },
+  { name: 'Price per coin', value: 'price' },
+  { name: 'Quantity', value: 'quantity' },
+  { name: 'Current USD', value: 'priceUSD' },
+  { name: 'Current BTC', value: 'priceBTC' },
+  { name: '24hr change USD', value: 'usdDaily' },
+  { name: '24hr change BTC', value: 'btcDaily' },
+  { name: 'USD P&L', value: 'usdpl' },
+  { name: 'BTC P&L', value: 'btcpl' },
 ]
 
 const defaultSelectedSum = {
   currency: '',
   symbol: '',
-  available: 0,
-  held: 0,
-  total: 0,
-  exchangeRate: 0,
-  usdValue: 0,
-  btcValue: 0,
+  percentage: 0,
+  price: 0,
+  quantity: 0,
+  priceUSD: 0,
+  priceBTC: 0,
+  usdDaily: 0,
+  btcDaily: 0,
+  usdpl: 0,
+  btcpl: 0,
 }
 
-export class PortfolioTable extends React.Component<Props> {
+export class PortfolioTable extends React.Component<TableProps> {
   state: State = {
-    tableData: tableMocks,
+    tableData: null,
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
     currentSort: null,
     isShownChart: true,
   }
 
-  renderCheckbox = (rowCurrency: string) => {
+  componentWillReceiveProps(nextProps) {
+    const { data } = nextProps
+    if (!data) return
+    const { portfolio } = data
+    const { assets } = portfolio
+    const tableData = assets.map((row) => {
+      const { asset, value } = row
+      const { name, symbol, priceUSD } = asset
+
+      const col = {
+        currency: name || '',
+        symbol,
+        percentage: 0, // make fn
+        price: priceUSD || 0,
+        quantity: value || 0,
+        priceUSD: priceUSD || 0,
+        priceBTC: 0, // add to query
+        usdDaily: 0,
+        btcDaily: 0,
+        usdpl: 0,
+        btcpl: 0,
+      }
+
+      return col
+    })
+    this.setState({ tableData })
+  }
+
+  renderCheckbox = (rowSymbol: string) => {
     const { selectedBalances } = this.state
     const isSelected =
-      (selectedBalances && selectedBalances.indexOf(rowCurrency) >= 0) || false
+      (selectedBalances && selectedBalances.indexOf(rowSymbol) >= 0) || false
 
     return (
       <React.Fragment>
-        <Checkbox type="checkbox" id={rowCurrency} checked={isSelected} />
-        <Label htmlFor={rowCurrency} onClick={(e) => e.preventDefault()}>
+        <Checkbox type="checkbox" id={rowSymbol} checked={isSelected} />
+        <Label htmlFor={rowSymbol} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
       </React.Fragment>
@@ -60,21 +90,25 @@ export class PortfolioTable extends React.Component<Props> {
 
   onSelectAll = () => {
     const { selectedBalances, tableData } = this.state
+    if (!tableData) return
 
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
-      const allRows = tableData.map((ck) => ck.currency)
+      const allRows = tableData.map((ck) => ck.symbol)
       const allSums = tableData.reduce((acc, el) => {
         return {
           currency: 'All',
           symbol: '-',
-          available: acc.available + el.available,
-          held: acc.held + el.held,
-          total: acc.total + el.total,
-          exchangeRate: 0,
-          usdValue: acc.usdValue + el.usdValue,
-          btcValue: acc.btcValue + el.btcValue,
+          percentage: acc.percentage + el.percentage,
+          price: acc.price + el.price,
+          quantity: acc.quantity + el.quantity,
+          priceUSD: acc.priceUSD + el.priceUSD,
+          priceBTC: acc.priceBTC + el.priceBTC,
+          usdDaily: acc.usdDaily + el.usdDaily,
+          btcDaily: acc.btcDaily + el.btcDaily,
+          usdpl: acc.usdpl + el.usdpl,
+          btcpl: acc.btcpl + el.btcpl,
         }
       })
 
@@ -88,6 +122,11 @@ export class PortfolioTable extends React.Component<Props> {
     symbol: string
   ) => {
     const { tableData } = this.state
+    if (!tableData)
+      return {
+        currency: '',
+        symbol: '',
+      }
 
     if (selectedBalances.length === 0) {
       return {
@@ -100,7 +139,7 @@ export class PortfolioTable extends React.Component<Props> {
       let idx = 0
 
       tableData.forEach((td, i) => {
-        if (td.currency === selectedBalances[0]) {
+        if (td.symbol === selectedBalances[0]) {
           idx = i
         }
       })
@@ -132,30 +171,58 @@ export class PortfolioTable extends React.Component<Props> {
   }
 
   decrementSelected = (selectedSum: RowT, row: RowT) => {
-    const { available, held, total, usdValue, btcValue } = selectedSum
+    const {
+      percentage,
+      price,
+      quantity,
+      priceUSD,
+      btcpl,
+      priceBTC,
+      usdDaily,
+      btcDaily,
+      usdpl,
+    } = selectedSum
+
     return {
       currency: row.currency,
       symbol: row.symbol,
-      available: available - row.available,
-      held: held - row.held,
-      total: total - row.total,
-      exchangeRate: 0,
-      usdValue: usdValue - row.usdValue,
-      btcValue: btcValue - row.btcValue,
+      percentage: percentage - row.percentage,
+      price: price - row.price,
+      quantity: quantity - row.quantity,
+      priceUSD: priceUSD - row.priceUSD,
+      priceBTC: priceBTC - row.priceBTC,
+      usdDaily: usdDaily - row.usdDaily,
+      btcDaily: btcDaily - row.btcDaily,
+      usdpl: usdpl - row.usdpl,
+      btcpl: btcpl - row.btcpl,
     }
   }
 
   incrementSelected = (selectedSum: RowT, row: RowT) => {
-    const { available, held, total, usdValue, btcValue } = selectedSum
+    const {
+      percentage,
+      price,
+      quantity,
+      priceUSD,
+      btcpl,
+      priceBTC,
+      usdDaily,
+      btcDaily,
+      usdpl,
+    } = selectedSum
+
     return {
       currency: row.currency,
       symbol: row.symbol,
-      available: row.available + available,
-      held: row.held + held,
-      total: row.total + total,
-      exchangeRate: 0,
-      usdValue: row.usdValue + usdValue,
-      btcValue: row.btcValue + btcValue,
+      percentage: percentage + row.percentage,
+      price: price + row.price,
+      quantity: quantity + row.quantity,
+      priceUSD: priceUSD + row.priceUSD,
+      priceBTC: priceBTC + row.priceBTC,
+      usdDaily: usdDaily + row.usdDaily,
+      btcDaily: btcDaily + row.btcDaily,
+      usdpl: usdpl + row.usdpl,
+      btcpl: btcpl + row.btcpl,
     }
   }
 
@@ -235,10 +302,8 @@ export class PortfolioTable extends React.Component<Props> {
       currentSort,
       isShownChart,
     } = this.state
-    const { data } = this.props
-    if (!data) return null
-    const { portfolio } = data
-    const { assets } = portfolio
+
+    if (!tableData) return null
 
     const isSelectAll =
       (selectedBalances && selectedBalances.length === tableData.length) ||
@@ -305,31 +370,38 @@ export class PortfolioTable extends React.Component<Props> {
           </PTHead>
 
           <PTBody>
-            {assets.map((row: RowT, i) => {
+            {tableData.map((row) => {
               const {
-                asset,
-                value,
-                realizedProfit,
-                unrealizedProfit,
-                totalProfit,
+                currency,
+                symbol,
+                percentage,
+                price,
+                quantity,
+                priceUSD,
+                priceBTC,
+                usdDaily,
+                btcDaily,
+                usdpl,
+                btcpl,
               } = row
+
               const isSelected =
                 (selectedBalances && selectedBalances.indexOf(symbol) >= 0) ||
                 false
 
-              const { name, symbol, priceUSD } = asset
-              const cols = []
-              cols.push(
-                name,
+              const cols = [
+                currency,
                 symbol,
-                value,
-                realizedProfit,
-                unrealizedProfit,
-                totalProfit,
+                percentage,
+                price,
+                quantity,
                 priceUSD,
-                priceUSD
-              )
-              console.log(cols)
+                priceBTC,
+                usdDaily,
+                btcDaily,
+                usdpl,
+                btcpl,
+              ]
 
               return (
                 <PTR

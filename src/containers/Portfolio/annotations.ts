@@ -37,6 +37,7 @@ export interface getPortfolioQuery {
         asset:  {
           name: string | null,
           symbol: string | null,
+          priceUSD: string | null,
         } | null,
         exchange:  {
           name: string | null,

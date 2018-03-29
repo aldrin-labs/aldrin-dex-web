@@ -1,17 +1,20 @@
 export interface RowT {
   currency: string
   symbol: string
-  available: number
-  held: number
-  total: number
-  exchangeRate: number
-  usdValue: number
-  btcValue: number
+  percentage: number
+  price: number
+  quantity: number
+  priceUSD: number
+  priceBTC: number
+  usdDaily: number
+  btcDaily: number
+  usdpl: number
+  btcpl: number
   [key: string]: string | number
 }
 
 export interface State {
-  tableData: RowT[]
+  tableData: RowT[] | null
   selectedBalances: string[] | null
   selectedSum: RowT
   currentSort: { arg: SortArgs; key: Args } | null
@@ -26,10 +29,13 @@ export enum SortArgs {
 export enum Args {
   currency = 'currency',
   symbol = 'symbol',
-  available = 'available',
-  held = 'held',
-  total = 'total',
-  exchangeRate = 'exchangeRate',
-  usdValue = 'usdValue',
-  btcValue = 'btcValue',
+  percentage = 'percentage',
+  price = 'price',
+  quantity = 'quantity',
+  priceUSD = 'priceUSD',
+  priceBTC = 'priceBTC',
+  usdDaily = 'usdDaily',
+  btcDaily = 'btcDaily',
+  usdpl = 'usdpl',
+  btcpl = 'btcpl',
 }
