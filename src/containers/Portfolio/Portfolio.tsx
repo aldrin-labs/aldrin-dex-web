@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import gql from 'graphql-tag'
 import { getPortfolioQuery } from './api'
 import { Props } from './interfaces'
+import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 
-import { PortfolioTable, PortfolioSelector } from './components'
+import { PortfolioTable } from './components'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {

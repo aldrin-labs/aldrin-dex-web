@@ -1,17 +1,28 @@
 import * as React from 'react'
+import { graphql } from 'react-apollo'
 import styled from 'styled-components'
+import { getKeysQuery } from '../../api'
 
 interface Props {}
 
 interface State {
   checkedCheckboxes: number[] | null
+  checkboxes: string[] | null
 }
 
-const checkboxes = ['Account 1', 'Account 2', 'Account 3', 'Account 4']
-
-export class PortfolioSelector extends React.Component<Props, State> {
+class PortfolioSelector extends React.Component<Props, State> {
   state: State = {
     checkedCheckboxes: null,
+    checkboxes: null,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data && nextProps.data.getProfile) {
+      const { keys } = nextProps.data.getProfile
+      const checkboxes = keys.map((key) => key.name)
+
+      this.setState({ checkboxes })
+    }
   }
 
   onToggleCheckbox = (index: number) => {
@@ -28,7 +39,8 @@ export class PortfolioSelector extends React.Component<Props, State> {
   }
 
   onToggleAll = () => {
-    const { checkedCheckboxes } = this.state
+    const { checkedCheckboxes, checkboxes } = this.state
+    if (!checkboxes) return
 
     if (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) {
       this.setState({ checkedCheckboxes: null })
@@ -40,7 +52,9 @@ export class PortfolioSelector extends React.Component<Props, State> {
   }
 
   render() {
-    const { checkedCheckboxes } = this.state
+    const { checkedCheckboxes, checkboxes } = this.state
+
+    if (!checkboxes) return null
 
     const isCheckedAll =
       (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) ||
@@ -174,3 +188,5 @@ const AccountsWalletsHeading = styled.span`
   text-align: center;
   color: #ffffff;
 `
+// getKeysQuery
+export default graphql(getKeysQuery)(PortfolioSelector)
