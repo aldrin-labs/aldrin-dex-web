@@ -6,7 +6,7 @@ import filterListIcon from '../../../../icons/filter-list.svg'
 import selectedIcon from '../../../../icons/selected.svg'
 import sortIcon from '../../../../icons/arrow.svg'
 import { RowT, State, Args } from './types'
-import { TableProps } from '../../interfaces'
+import { TableProps, Portfolio } from '../../interfaces'
 
 const headings: Array<{ name: string; value: Args }> = [
   { name: 'Exchange', value: 'currency' },
@@ -43,44 +43,59 @@ export class PortfolioTable extends React.Component<TableProps> {
     selectedSum: defaultSelectedSum,
     currentSort: null,
     isShownChart: true,
+    activeKeys: null,
   }
 
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-
+      if (!portfolio) return
+      this.setState({ portfolio })
       this.combineTableData(portfolio)
     }
 
     if (nextProps.subscription && nextProps.subscription.data) {
       const { portfolio } = nextProps.subscription.data
 
+      this.setState({ portfolio })
       this.combineTableData(portfolio)
+    }
+
+    if (nextProps.checkboxes) {
+      this.setState({ activeKeys: nextProps.checkboxes }, () =>
+        this.combineTableData(this.state.portfolio)
+      )
     }
   }
 
-  combineTableData = (portfolio: Object) => {
+  combineTableData = (portfolio: Portfolio) => {
+    const { activeKeys } = this.state
     const { assets } = portfolio
-    const tableData = assets.map((row) => {
-      const { asset, value } = row
-      const { name, symbol, priceUSD } = asset
+    if (!assets || !activeKeys) return
 
-      const col = {
-        currency: name || '',
-        symbol,
-        percentage: 0, // make fn
-        price: priceUSD || 0,
-        quantity: value || 0,
-        priceUSD: priceUSD || 0,
-        priceBTC: 0, // add to query
-        usdDaily: 0,
-        btcDaily: 0,
-        usdpl: 0,
-        btcpl: 0,
-      }
+    const tableData = assets
+      .map((row) => {
+        const { asset, value, key } = row || {}
+        if (activeKeys.indexOf(key.name) === -1) return null
+        const { name, symbol, priceUSD } = asset
 
-      return col
-    })
+        const col = {
+          currency: name || '',
+          symbol,
+          percentage: 0, // make fn
+          price: priceUSD || 0,
+          quantity: value || 0,
+          priceUSD: priceUSD || 0,
+          priceBTC: 0, // add to query
+          usdDaily: 0,
+          btcDaily: 0,
+          usdpl: 0,
+          btcpl: 0,
+        }
+
+        return col
+      })
+      .filter(Boolean)
     this.setState({ tableData })
   }
 
@@ -111,15 +126,15 @@ export class PortfolioTable extends React.Component<TableProps> {
         return {
           currency: 'All',
           symbol: '-',
-          percentage: acc.percentage + el.percentage,
-          price: acc.price + el.price,
-          quantity: acc.quantity + el.quantity,
-          priceUSD: acc.priceUSD + el.priceUSD,
-          priceBTC: acc.priceBTC + el.priceBTC,
-          usdDaily: acc.usdDaily + el.usdDaily,
-          btcDaily: acc.btcDaily + el.btcDaily,
-          usdpl: acc.usdpl + el.usdpl,
-          btcpl: acc.btcpl + el.btcpl,
+          percentage: Number(acc.percentage) + Number(el.percentage),
+          price: Number(acc.price) + Number(el.price),
+          quantity: Number(acc.quantity) + Number(el.quantity),
+          priceUSD: Number(acc.priceUSD) + Number(el.priceUSD),
+          priceBTC: Number(acc.priceBTC) + Number(el.priceBTC),
+          usdDaily: Number(acc.usdDaily) + Number(el.usdDaily),
+          btcDaily: Number(acc.btcDaily) + Number(el.btcDaily),
+          usdpl: Number(acc.usdpl) + Number(el.usdpl),
+          btcpl: Number(acc.btcpl) + Number(el.btcpl),
         }
       })
 
@@ -197,15 +212,15 @@ export class PortfolioTable extends React.Component<TableProps> {
     return {
       currency: row.currency,
       symbol: row.symbol,
-      percentage: percentage - row.percentage,
-      price: price - row.price,
-      quantity: quantity - row.quantity,
-      priceUSD: priceUSD - row.priceUSD,
-      priceBTC: priceBTC - row.priceBTC,
-      usdDaily: usdDaily - row.usdDaily,
-      btcDaily: btcDaily - row.btcDaily,
-      usdpl: usdpl - row.usdpl,
-      btcpl: btcpl - row.btcpl,
+      percentage: Number(percentage) - Number(row.percentage),
+      price: Number(price) - Number(row.price),
+      quantity: Number(quantity) - Number(row.quantity),
+      priceUSD: Number(priceUSD) - Number(row.priceUSD),
+      priceBTC: Number(priceBTC) - Number(row.priceBTC),
+      usdDaily: Number(usdDaily) - Number(row.usdDaily),
+      btcDaily: Number(btcDaily) - Number(row.btcDaily),
+      usdpl: Number(usdpl) - Number(row.usdpl),
+      btcpl: Number(btcpl) - Number(row.btcpl),
     }
   }
 
@@ -225,15 +240,15 @@ export class PortfolioTable extends React.Component<TableProps> {
     return {
       currency: row.currency,
       symbol: row.symbol,
-      percentage: percentage + row.percentage,
-      price: price + row.price,
-      quantity: quantity + row.quantity,
-      priceUSD: priceUSD + row.priceUSD,
-      priceBTC: priceBTC + row.priceBTC,
-      usdDaily: usdDaily + row.usdDaily,
-      btcDaily: btcDaily + row.btcDaily,
-      usdpl: usdpl + row.usdpl,
-      btcpl: btcpl + row.btcpl,
+      percentage: Number(percentage) + Number(row.percentage),
+      price: Number(price) + Number(row.price),
+      quantity: Number(quantity) + Number(row.quantity),
+      priceUSD: Number(priceUSD) + Number(row.priceUSD),
+      priceBTC: Number(priceBTC) + Number(row.priceBTC),
+      usdDaily: Number(usdDaily) + Number(row.usdDaily),
+      btcDaily: Number(btcDaily) + Number(row.btcDaily),
+      usdpl: Number(usdpl) + Number(row.usdpl),
+      btcpl: Number(btcpl) + Number(row.btcpl),
     }
   }
 
@@ -340,7 +355,7 @@ export class PortfolioTable extends React.Component<TableProps> {
         <PTable>
           <PTHead>
             <PTR>
-              <PTH key="selectAll">
+              <PTH key="selectAll" style={{ textAlign: 'left' }}>
                 <Checkbox
                   type="checkbox"
                   id="selectAll"
@@ -358,10 +373,10 @@ export class PortfolioTable extends React.Component<TableProps> {
                   <PTH
                     key={heading.name}
                     onClick={() => this.onSortTable(heading.value)}
-                    style={{ paddingRight: isSorted ? null : '20px' }}
+                    // style={{ paddingRight: isSorted ? null : '20px' }}
                   >
                     {heading.name}
-                    {isSorted && (
+                    {/*{isSorted && (
                       <SvgIcon
                         src={sortIcon}
                         style={{
@@ -373,7 +388,7 @@ export class PortfolioTable extends React.Component<TableProps> {
                               : null,
                         }}
                       />
-                    )}
+                    )}*/}
                   </PTH>
                 )
               })}
@@ -403,8 +418,8 @@ export class PortfolioTable extends React.Component<TableProps> {
               const cols = [
                 currency,
                 symbol,
-                percentage,
-                price,
+                `${percentage}%`,
+                `$${price}`,
                 quantity,
                 priceUSD,
                 priceBTC,
@@ -528,17 +543,17 @@ const PTD = styled.td`
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
-  text-align: left;
-  padding: 20px 32px;
+  text-align: right;
+  padding: 20px;
 `
 
 const PTH = styled.th`
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
-  text-align: left;
+  text-align: right;
   color: #fff;
-  padding: 19px 0 19px 32px;
+  padding: 20px;
   font-weight: 500;
 
   position: relative;
@@ -558,7 +573,7 @@ const PTR = styled.tr`
 const PTHead = styled.thead``
 
 const PTable = styled.table`
-  width: 100%;
+  width: 95%;
   border-collapse: collapse;
 `
 

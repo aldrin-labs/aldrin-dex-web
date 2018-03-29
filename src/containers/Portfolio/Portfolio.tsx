@@ -44,22 +44,37 @@ const PortfolioContainer = styled.div`
   display: flex;
 `
 
-const PortfolioComponent = (props: Props) => {
-  const { data } = props
-  const { getProfile } = data
+class PortfolioComponent extends React.Component<Props> {
+  state = {
+    checkboxes: null,
+  }
 
-  return (
-    <Subscription subscription={PORTFOLIO_UPDATE} variables={{}}>
-      {(subscriptionData) => {
-        return (
-          <PortfolioContainer>
-            <PortfolioSelector />
-            <PortfolioTable data={getProfile} subscription={subscriptionData} />
-          </PortfolioContainer>
-        )
-      }}
-    </Subscription>
-  )
+  onChangeActiveKey = (checkboxes: number[]) => {
+    this.setState({ checkboxes })
+  }
+
+  render() {
+    const { checkboxes } = this.state
+    const { data } = this.props
+    const { getProfile } = data
+
+    return (
+      <Subscription subscription={PORTFOLIO_UPDATE} variables={{}}>
+        {(subscriptionData) => {
+          return (
+            <PortfolioContainer>
+              <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
+              <PortfolioTable
+                checkboxes={checkboxes}
+                data={getProfile}
+                subscription={subscriptionData}
+              />
+            </PortfolioContainer>
+          )
+        }}
+      </Subscription>
+    )
+  }
 }
 
 export default graphql(getPortfolioQuery)(PortfolioComponent)

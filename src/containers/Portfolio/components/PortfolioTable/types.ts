@@ -19,6 +19,7 @@ export interface State {
   selectedSum: RowT
   currentSort: { arg: SortArgs; key: Args } | null
   isShownChart: boolean
+  activeKeys: number[] | null
 }
 
 export enum SortArgs {

@@ -3,7 +3,9 @@ import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import { getKeysQuery } from '../../api'
 
-interface Props {}
+interface Props {
+  onChangeActive: Function
+}
 
 interface State {
   checkedCheckboxes: number[] | null
@@ -19,6 +21,7 @@ class PortfolioSelector extends React.Component<Props, State> {
   componentWillReceiveProps(nextProps) {
     if (nextProps.data && nextProps.data.getProfile) {
       const { keys } = nextProps.data.getProfile
+      if (!keys) return
       const checkboxes = keys.map((key) => key.name)
 
       this.setState({ checkboxes })
@@ -26,6 +29,8 @@ class PortfolioSelector extends React.Component<Props, State> {
   }
 
   onToggleCheckbox = (index: number) => {
+    const { onChangeActive } = this.props
+
     const checkedCheckboxes =
       (this.state.checkedCheckboxes && this.state.checkedCheckboxes.slice()) ||
       []
@@ -35,7 +40,18 @@ class PortfolioSelector extends React.Component<Props, State> {
       checkedCheckboxes.splice(hasIndex, 1)
     } else checkedCheckboxes.push(index)
 
-    this.setState({ checkedCheckboxes })
+    this.setState({ checkedCheckboxes }, () => {
+      if (!this.state.checkboxes) return
+      const checkboxes = this.state.checkboxes
+        .map((ck, idx) => {
+          if (checkedCheckboxes.indexOf(idx) >= 0) {
+            return ck
+          }
+          return null
+        })
+        .filter(Boolean)
+      onChangeActive(checkboxes)
+    })
   }
 
   onToggleAll = () => {
@@ -43,11 +59,24 @@ class PortfolioSelector extends React.Component<Props, State> {
     if (!checkboxes) return
 
     if (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) {
-      this.setState({ checkedCheckboxes: null })
+      this.setState({ checkedCheckboxes: null }, () => {
+        this.props.onChangeActive([])
+      })
     } else {
       const allAccounts = checkboxes.map((ck, i) => i)
 
-      this.setState({ checkedCheckboxes: allAccounts })
+      this.setState({ checkedCheckboxes: allAccounts }, () => {
+        if (!this.state.checkboxes) return
+        const checkboxes = this.state.checkboxes
+          .map((ck, idx) => {
+            if (allAccounts.indexOf(idx) >= 0) {
+              return ck
+            }
+            return null
+          })
+          .filter(Boolean)
+        this.props.onChangeActive(checkboxes)
+      })
     }
   }
 
@@ -175,7 +204,8 @@ const AccountsList = styled.ul`
 `
 
 const AccountsWalletsBlock = styled.div`
-  width: 280px;
+  min-width: 280px;
+  min-height: 90vh;
   background-color: #2d3136;
   padding: 16px;
 `
