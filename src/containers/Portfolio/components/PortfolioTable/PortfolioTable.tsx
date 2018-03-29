@@ -45,10 +45,21 @@ export class PortfolioTable extends React.Component<TableProps> {
     isShownChart: true,
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { data } = nextProps
-    if (!data) return
-    const { portfolio } = data
+  componentWillReceiveProps(nextProps: TableProps) {
+    if (nextProps.data) {
+      const { portfolio } = nextProps.data
+
+      this.combineTableData(portfolio)
+    }
+
+    if (nextProps.subscription && nextProps.subscription.data) {
+      const { portfolio } = nextProps.subscription.data
+
+      this.combineTableData(portfolio)
+    }
+  }
+
+  combineTableData = (portfolio: Object) => {
     const { assets } = portfolio
     const tableData = assets.map((row) => {
       const { asset, value } = row

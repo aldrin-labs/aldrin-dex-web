@@ -25,11 +25,11 @@ const PortfolioComponent = (props: Props) => {
 
   return (
     <Subscription subscription={PORTFOLIO_UPDATE} variables={{}}>
-      {(data) => {
+      {(subscriptionData) => {
         return (
           <PortfolioContainer>
             <PortfolioSelector />
-            <PortfolioTable data={getProfile} />
+            <PortfolioTable data={getProfile} subscription={subscriptionData} />
           </PortfolioContainer>
         )
       }}
