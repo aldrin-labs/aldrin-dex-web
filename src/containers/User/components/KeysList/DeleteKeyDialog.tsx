@@ -75,6 +75,7 @@ const formikDialog = withFormik({
     const { keyName, handleClose, deleteExchangeKey } = props.props
     const variables = {
       name: keyNameInput,
+      removeTrades: true
     }
     const checkKeyName = R.equals(keyName, keyNameInput)
 
