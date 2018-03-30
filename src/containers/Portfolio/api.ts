@@ -33,9 +33,12 @@ export const getPortfolioQuery = gql`
           exchangeId
           keyId
           value
-          realizedProfit
-          unrealizedProfit
-          totalProfit
+          usdRealizedProfit
+          usdUnrealizedProfit
+          usdTotalProfit
+          btcRealizedProfit
+          btcUnrealizedProfit
+          btcTotalProfit
           asset {
             name
             symbol
