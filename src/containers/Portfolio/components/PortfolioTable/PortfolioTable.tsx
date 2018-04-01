@@ -44,6 +44,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     currentSort: null,
     isShownChart: true,
     activeKeys: null,
+    portfolio: null,
   }
 
   componentWillReceiveProps(nextProps: TableProps) {
@@ -66,13 +67,28 @@ export class PortfolioTable extends React.Component<TableProps> {
         this.combineTableData(this.state.portfolio)
       )
     }
+
+    if (nextProps.checkboxes && nextProps.checkboxes.length === 0) {
+      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
+    }
   }
 
-  combineTableData = (portfolio: Portfolio) => {
+  roundUSDOff = (num: number): string => {
+    const reg = /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
+    if (String(num).match(reg)) {
+      const [price] = String(num).match(reg)
+      return price
+    } else if (num > 0) {
+      return String(num)
+    } else {
+      return '0'
+    }
+  }
+
+  combineTableData = (portfolio?: Portfolio) => {
     const { activeKeys } = this.state
-    if (!portfolio) return
+    if (!portfolio || !portfolio.assets || !activeKeys) return
     const { assets } = portfolio
-    if (!assets || !activeKeys) return
 
     const allSums = assets.reduce((acc, curr) => {
       return acc + curr.value * curr.asset.priceUSD
@@ -94,8 +110,8 @@ export class PortfolioTable extends React.Component<TableProps> {
           priceBTC: 0, // add to query
           usdDaily: 0,
           btcDaily: 0,
-          usdpl: usdTotalProfit,
-          btcpl: btcTotalProfit,
+          usdpl: usdTotalProfit || 0,
+          btcpl: btcTotalProfit || 0,
         }
 
         return col
@@ -126,6 +142,17 @@ export class PortfolioTable extends React.Component<TableProps> {
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
+      const startAcc = {
+        percentage: 0,
+        price: 0,
+        quantity: 0,
+        priceUSD: 0,
+        priceBTC: 0,
+        usdDaily: 0,
+        btcDaily: 0,
+        usdpl: 0,
+        btcpl: 0,
+      }
       const allRows = tableData.map((ck) => ck.symbol)
       const allSums = tableData.reduce((acc, el) => {
         return {
@@ -141,7 +168,7 @@ export class PortfolioTable extends React.Component<TableProps> {
           usdpl: Number(acc.usdpl) + Number(el.usdpl),
           btcpl: Number(acc.btcpl) + Number(el.btcpl),
         }
-      })
+      }, startAcc)
 
       this.setState({ selectedBalances: allRows, selectedSum: allSums })
     }
@@ -151,7 +178,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     selectedBalances: string[],
     currency: string,
     symbol: string
-  ) => {
+  ): { currency: string; symbol: string } => {
     const { tableData } = this.state
     if (!tableData)
       return {
@@ -201,7 +228,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
   }
 
-  decrementSelected = (selectedSum: RowT, row: RowT) => {
+  decrementSelected = (selectedSum: RowT, row: RowT): RowT => {
     const {
       percentage,
       price,
@@ -229,7 +256,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
   }
 
-  incrementSelected = (selectedSum: RowT, row: RowT) => {
+  incrementSelected = (selectedSum: RowT, row: RowT): RowT => {
     const {
       percentage,
       price,
@@ -285,12 +312,13 @@ export class PortfolioTable extends React.Component<TableProps> {
     this.setState({ selectedBalances, selectedSum })
   }
 
-  onSortStrings = (a: string, b: string) => {
+  onSortStrings = (a: string, b: string): number => {
     return a.localeCompare(b)
   }
 
   onSortTable = (key: Args) => {
     const { tableData, currentSort } = this.state
+    if (!tableData) return
 
     const newData = tableData.slice().sort((a, b) => {
       if (currentSort && currentSort.key === key) {
@@ -330,7 +358,6 @@ export class PortfolioTable extends React.Component<TableProps> {
       selectedBalances,
       selectedSum,
       tableData,
-      currentSort,
       isShownChart,
     } = this.state
 
@@ -372,8 +399,8 @@ export class PortfolioTable extends React.Component<TableProps> {
                 </Label>
               </PTH>
               {headings.map((heading) => {
-                const isSorted =
-                  currentSort && currentSort.key === heading.value
+                // const isSorted =
+                //   currentSort && currentSort.key === heading.value
                 return (
                   <PTH
                     key={heading.name}
@@ -424,9 +451,9 @@ export class PortfolioTable extends React.Component<TableProps> {
                 currency,
                 symbol,
                 `${percentage}%`,
-                `$${price}`,
+                `$${this.roundUSDOff(price)}`,
                 quantity,
-                `$${priceUSD}`,
+                `$${this.roundUSDOff(priceUSD)}`,
                 priceBTC,
                 usdDaily,
                 btcDaily,

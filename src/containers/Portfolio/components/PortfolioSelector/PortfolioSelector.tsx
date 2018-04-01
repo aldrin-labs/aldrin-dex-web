@@ -2,15 +2,7 @@ import * as React from 'react'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import { getKeysQuery } from '../../api'
-
-interface Props {
-  onChangeActive: Function
-}
-
-interface State {
-  checkedCheckboxes: number[] | null
-  checkboxes: string[] | null
-}
+import { Props, State } from './types'
 
 class PortfolioSelector extends React.Component<Props, State> {
   state: State = {
@@ -18,13 +10,21 @@ class PortfolioSelector extends React.Component<Props, State> {
     checkboxes: null,
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data && nextProps.data.getProfile) {
+  componentWillReceiveProps(nextProps: Props) {
+    // called once
+    if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
       const { keys } = nextProps.data.getProfile
       if (!keys) return
-      const checkboxes = keys.map((key) => key.name)
+      const checkboxes = keys.map((key) => key && key.name).filter(Boolean)
+      const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
-      this.setState({ checkboxes })
+      if (checkboxes) {
+        this.setState({ checkboxes, checkedCheckboxes }, () => {
+          const { onChangeActive } = this.props
+
+          onChangeActive(checkboxes)
+        })
+      }
     }
   }
 
@@ -108,6 +108,7 @@ class PortfolioSelector extends React.Component<Props, State> {
 
         <AccountsList>
           {checkboxes.map((checkbox, i) => {
+            if (!checkbox) return null
             const isChecked =
               (checkedCheckboxes && checkedCheckboxes.indexOf(i) >= 0) || false
 
@@ -218,5 +219,5 @@ const AccountsWalletsHeading = styled.span`
   text-align: center;
   color: #ffffff;
 `
-// getKeysQuery
+
 export default graphql(getKeysQuery)(PortfolioSelector)
