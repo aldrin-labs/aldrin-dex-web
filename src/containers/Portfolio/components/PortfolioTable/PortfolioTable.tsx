@@ -82,7 +82,7 @@ export class PortfolioTable extends React.Component<TableProps> {
       .map((row) => {
         const { asset, value, key } = row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
-        const { name, symbol, priceUSD } = asset
+        const { name, symbol, priceUSD, usdTotalProfit, btcTotalProfit } = asset
 
         const col = {
           currency: name || '',
@@ -94,8 +94,8 @@ export class PortfolioTable extends React.Component<TableProps> {
           priceBTC: 0, // add to query
           usdDaily: 0,
           btcDaily: 0,
-          usdpl: 0,
-          btcpl: 0,
+          usdpl: usdTotalProfit,
+          btcpl: btcTotalProfit,
         }
 
         return col
