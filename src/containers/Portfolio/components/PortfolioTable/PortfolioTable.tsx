@@ -415,6 +415,21 @@ export class PortfolioTable extends React.Component<TableProps> {
           )}
         </PTHeadingBlock>
 
+        {tab === 'rebalance' && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+            }}
+          >
+            <SubHeading>Current portfolio</SubHeading>
+            <SubHeading>Rebalanced portfolio</SubHeading>
+          </div>
+        )}
+
+        {tab === 'rebalance' && <PortfolioTableRebalance />}
+
         <PTable>
           {tab === 'main' && (
             <PortfolioTableHead
@@ -426,8 +441,6 @@ export class PortfolioTable extends React.Component<TableProps> {
           )}
 
           {tab === 'industry' && <PortfolioTableIndustries />}
-
-          {tab === 'rebalance' && <PortfolioTableRebalance />}
 
           {tab === 'main' && (
             <PortfolioTableMain
@@ -451,6 +464,13 @@ export class PortfolioTable extends React.Component<TableProps> {
     )
   }
 }
+
+const SubHeading = styled.span`
+  font-family: Roboto;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
+`
 
 const TabContainer = styled.div`
   display: flex;
@@ -503,6 +523,7 @@ const PTWrapper = styled.div`
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
+  min-height: 100vh;
 `
 
 const PTHeadingBlock = styled.div`
