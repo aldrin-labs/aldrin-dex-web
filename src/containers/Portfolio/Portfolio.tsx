@@ -59,7 +59,7 @@ class PortfolioComponent extends React.Component<Props> {
     const { getProfile } = data
 
     return (
-      <Subscription subscription={PORTFOLIO_UPDATE} variables={{}}>
+      <Subscription subscription={PORTFOLIO_UPDATE}>
         {(subscriptionData) => {
           return (
             <PortfolioContainer>

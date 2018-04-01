@@ -1,14 +1,23 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import filterListIcon from '../../../../icons/filter-list.svg'
+import gridLoader from '../../../../icons/grid.svg'
 import { RowT, State, Args } from './types'
 import { TableProps, Portfolio } from '../../interfaces'
 import PortfolioTableMain from './PortfolioTableMain'
 import PortfolioTableSum from './PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
+
+const UPDATE_PORTFOLIO = gql`
+  mutation updatePortfolio {
+    updatePortfolio
+  }
+`
 
 const defaultSelectedSum = {
   currency: '',
@@ -41,6 +50,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
       if (!portfolio) return
+
       this.setState({ portfolio })
       this.combineTableData(portfolio)
     }
@@ -359,6 +369,19 @@ export class PortfolioTable extends React.Component<TableProps> {
         <PTHeadingBlock>
           <PTHeading>My Balances</PTHeading>
           <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
+          <Mutation mutation={UPDATE_PORTFOLIO}>
+            {(updatePortfolio, { data, loading }) => {
+              return (
+                <ToggleBtn onClick={updatePortfolio}>
+                  {loading ? (
+                    <SvgIcon src={gridLoader} width={24} height={24} />
+                  ) : (
+                    'Refresh'
+                  )}
+                </ToggleBtn>
+              )
+            }}
+          </Mutation>
           <ToggleBtn onClick={this.onToggleChart}>
             <SvgIcon src={filterListIcon} width={24} height={24} />
           </ToggleBtn>
