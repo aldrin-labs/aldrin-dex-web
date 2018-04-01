@@ -1,28 +1,59 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 
-const headings: Array<{ name: string; value: Args }> = [
+const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: '% of Portfolio', value: 'percentage' },
   { name: 'Price per coin', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
-  { name: 'Current USD', value: 'priceUSD' },
-  { name: 'Current BTC', value: 'priceBTC' },
-  { name: '24hr change USD', value: 'usdDaily' },
-  { name: '24hr change BTC', value: 'btcDaily' },
-  { name: 'USD P&L', value: 'usdpl' },
-  { name: 'BTC P&L', value: 'btcpl' },
+  { name: 'Current USD', value: 'currentPrice' },
+  { name: '24hr chg USD', value: 'daily' },
+  { name: '24hr chg USD %', value: 'dailyPerc' },
+  { name: 'Realized P&L', value: 'realizedPL' },
+  { name: 'Realized P&L %', value: 'realizedPLPerc' },
+  { name: 'Unrealized P&L', value: 'unrealizedPL' },
+  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
+]
+
+const btcHeadings: Array<{ name: string; value: Args }> = [
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: '% of Portfolio', value: 'percentage' },
+  { name: 'Price per coin', value: 'price' },
+  { name: 'Quantity', value: 'quantity' },
+  { name: 'Current BTC', value: 'currentPrice' },
+  { name: '24hr chg BTC', value: 'daily' },
+  { name: '24hr chg BTC %', value: 'dailyPerc' },
+  { name: 'Realized P&L', value: 'realizedPL' },
+  { name: 'Realized P&L %', value: 'realizedPLPerc' },
+  { name: 'Unrealized P&L', value: 'unrealizedPL' },
+  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
 ]
 
 interface Props {
+  isUSDCurrently: boolean
   isSelectAll: boolean
   onSelectAll: Function
   onSortTable: Function
 }
 
 export default class PortfolioTableHead extends React.Component<Props> {
+  state = {
+    tableHeadings: usdHeadings,
+  }
+
+  componentWillReceiveProps(nextProps: Props) {
+    if (!nextProps.isUSDCurrently) {
+      this.setState({ tableHeadings: btcHeadings })
+    } else if (nextProps.isUSDCurrently) {
+      this.setState({ tableHeadings: usdHeadings })
+    }
+  }
+
   render() {
+    const { tableHeadings } = this.state
     const { isSelectAll, onSelectAll, onSortTable } = this.props
 
     return (
@@ -33,13 +64,13 @@ export default class PortfolioTableHead extends React.Component<Props> {
               type="checkbox"
               id="selectAll"
               checked={isSelectAll}
-              onChange={() => onSelectAll}
+              onChange={onSelectAll}
             />
             <Label htmlFor="selectAll">
               <Span />
             </Label>
           </PTH>
-          {headings.map((heading) => {
+          {tableHeadings.map((heading) => {
             // const isSorted =
             //   currentSort && currentSort.key === heading.value
             return (

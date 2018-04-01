@@ -4,12 +4,13 @@ export interface RowT {
   percentage: number
   price: number
   quantity: number
-  priceUSD: number
-  priceBTC: number
-  usdDaily: number
-  btcDaily: number
-  usdpl: number
-  btcpl: number
+  currentPrice: number
+  daily: number
+  dailyPerc: number
+  realizedPL: number
+  realizedPLPerc: number
+  unrealizedPL: number
+  unrealizedPLPerc: number
   [key: string]: string | number
 }
 
@@ -21,6 +22,7 @@ export interface State {
   isShownChart: boolean
   activeKeys: number[] | null
   portfolio: Portfolio | null
+  isUSDCurrently: boolean
 }
 
 export interface Portfolio {
@@ -62,10 +64,11 @@ export enum Args {
   percentage = 'percentage',
   price = 'price',
   quantity = 'quantity',
-  priceUSD = 'priceUSD',
-  priceBTC = 'priceBTC',
-  usdDaily = 'usdDaily',
-  btcDaily = 'btcDaily',
-  usdpl = 'usdpl',
-  btcpl = 'btcpl',
+  currentPrice = 'currentPrice',
+  daily = 'daily',
+  dailyPerc = 'dailyPerc',
+  realizedPL = 'realizedPL',
+  realizedPLPerc = 'realizedPLPerc',
+  unrealizedPL = 'unrealizedPL',
+  unrealizedPLPerc = 'unrealizedPLPerc',
 }

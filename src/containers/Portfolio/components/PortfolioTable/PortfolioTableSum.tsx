@@ -19,7 +19,7 @@ export default class PortfolioTableSum extends React.Component<Props> {
             <SvgIcon src={selectedIcon} width={24} height={24} />
           </PTD>
           {Object.keys(selectedSum).map((key) => (
-            <PTD key={key}>{selectedSum[key]}</PTD>
+            <PTD key={key}>{selectedSum[key] || ''}</PTD>
           ))}
         </PTR>
       </PTBody>

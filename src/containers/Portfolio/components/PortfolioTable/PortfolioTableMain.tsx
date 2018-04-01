@@ -6,6 +6,7 @@ interface Props {
   tableData: RowT[] | null
   selectedBalances: string[] | null
   onSelectBalance: Function
+  isUSDCurrently: boolean
 }
 
 export default class PortfolioTableMain extends React.Component<Props> {
@@ -37,7 +38,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
   }
 
   render() {
-    const { tableData, selectedBalances } = this.props
+    const { tableData, selectedBalances, isUSDCurrently } = this.props
     if (!tableData) return null
 
     return (
@@ -49,29 +50,33 @@ export default class PortfolioTableMain extends React.Component<Props> {
             percentage,
             price,
             quantity,
-            priceUSD,
-            priceBTC,
-            usdDaily,
-            btcDaily,
-            usdpl,
-            btcpl,
+            currentPrice,
+            daily,
+            dailyPerc,
+            realizedPL,
+            realizedPLPerc,
+            unrealizedPL,
+            unrealizedPLPerc,
           } = row
 
           const isSelected =
             (selectedBalances && selectedBalances.indexOf(symbol) >= 0) || false
 
+          const mainSymbol = isUSDCurrently ? '$' : 'BTC'
+
           const cols = [
             currency,
             symbol,
             `${percentage}%`,
-            `$${this.roundUSDOff(price)}`,
+            `${this.roundUSDOff(price)} ${mainSymbol}`,
             quantity,
-            `$${this.roundUSDOff(priceUSD)}`,
-            priceBTC,
-            usdDaily,
-            btcDaily,
-            usdpl,
-            btcpl,
+            `${this.roundUSDOff(currentPrice)} ${mainSymbol}`,
+            daily,
+            dailyPerc,
+            realizedPL,
+            realizedPLPerc,
+            unrealizedPL,
+            unrealizedPLPerc,
           ]
 
           return (

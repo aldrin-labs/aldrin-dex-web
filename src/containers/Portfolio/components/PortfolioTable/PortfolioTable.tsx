@@ -15,12 +15,13 @@ const defaultSelectedSum = {
   percentage: 0,
   price: 0,
   quantity: 0,
-  priceUSD: 0,
-  priceBTC: 0,
-  usdDaily: 0,
-  btcDaily: 0,
-  usdpl: 0,
-  btcpl: 0,
+  currentPrice: 0,
+  daily: 0,
+  dailyPerc: 0,
+  realizedPL: 0,
+  realizedPLPerc: 0,
+  unrealizedPL: 0,
+  unrealizedPLPerc: 0,
 }
 
 export class PortfolioTable extends React.Component<TableProps> {
@@ -32,6 +33,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     isShownChart: true,
     activeKeys: null,
     portfolio: null,
+    isUSDCurrently: true,
   }
 
   componentWillReceiveProps(nextProps: TableProps) {
@@ -61,7 +63,7 @@ export class PortfolioTable extends React.Component<TableProps> {
   }
 
   combineTableData = (portfolio?: Portfolio) => {
-    const { activeKeys } = this.state
+    const { activeKeys, isUSDCurrently } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) return
     const { assets } = portfolio
 
@@ -73,20 +75,23 @@ export class PortfolioTable extends React.Component<TableProps> {
       .map((row) => {
         const { asset, value, key } = row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
-        const { name, symbol, priceUSD, usdTotalProfit, btcTotalProfit } = asset
+        const { name, symbol, priceUSD, priceBTC } = asset
+
+        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
 
         const col = {
           currency: name || '',
           symbol,
           percentage: 0, // make fn
-          price: priceUSD || 0,
+          price: mainPrice || 0,
           quantity: value || 0,
-          priceUSD: priceUSD * value || 0,
-          priceBTC: 0, // add to query
-          usdDaily: 0,
-          btcDaily: 0,
-          usdpl: usdTotalProfit || 0,
-          btcpl: btcTotalProfit || 0,
+          currentPrice: mainPrice * value || 0,
+          daily: 0, // add to query
+          dailyPerc: 0,
+          realizedPL: 0,
+          realizedPLPerc: 0,
+          unrealizedPL: 0,
+          unrealizedPLPerc: 0,
         }
 
         return col
@@ -106,12 +111,13 @@ export class PortfolioTable extends React.Component<TableProps> {
         percentage: 0,
         price: 0,
         quantity: 0,
-        priceUSD: 0,
-        priceBTC: 0,
-        usdDaily: 0,
-        btcDaily: 0,
-        usdpl: 0,
-        btcpl: 0,
+        currentPrice: 0,
+        daily: 0,
+        dailyPerc: 0,
+        realizedPL: 0,
+        realizedPLPerc: 0,
+        unrealizedPL: 0,
+        unrealizedPLPerc: 0,
       }
       const allRows = tableData.map((ck) => ck.symbol)
       const allSums = tableData.reduce((acc, el) => {
@@ -121,12 +127,15 @@ export class PortfolioTable extends React.Component<TableProps> {
           percentage: Number(acc.percentage) + Number(el.percentage),
           price: Number(acc.price) + Number(el.price),
           quantity: Number(acc.quantity) + Number(el.quantity),
-          priceUSD: Number(acc.priceUSD) + Number(el.priceUSD),
-          priceBTC: Number(acc.priceBTC) + Number(el.priceBTC),
-          usdDaily: Number(acc.usdDaily) + Number(el.usdDaily),
-          btcDaily: Number(acc.btcDaily) + Number(el.btcDaily),
-          usdpl: Number(acc.usdpl) + Number(el.usdpl),
-          btcpl: Number(acc.btcpl) + Number(el.btcpl),
+          currentPrice: Number(acc.currentPrice) + Number(el.currentPrice),
+          daily: Number(acc.daily) + Number(el.daily),
+          dailyPerc: Number(acc.dailyPerc) + Number(el.dailyPerc),
+          realizedPL: Number(acc.realizedPL) + Number(el.realizedPL),
+          realizedPLPerc:
+            Number(acc.realizedPLPerc) + Number(el.realizedPLPerc),
+          unrealizedPL: Number(acc.unrealizedPL) + Number(el.unrealizedPL),
+          unrealizedPLPerc:
+            Number(acc.unrealizedPLPerc) + Number(el.unrealizedPLPerc),
         }
       }, startAcc)
 
@@ -193,12 +202,13 @@ export class PortfolioTable extends React.Component<TableProps> {
       percentage,
       price,
       quantity,
-      priceUSD,
-      btcpl,
-      priceBTC,
-      usdDaily,
-      btcDaily,
-      usdpl,
+      currentPrice,
+      daily,
+      dailyPerc,
+      realizedPL,
+      realizedPLPerc,
+      unrealizedPL,
+      unrealizedPLPerc,
     } = selectedSum
 
     return {
@@ -207,12 +217,13 @@ export class PortfolioTable extends React.Component<TableProps> {
       percentage: Number(percentage) - Number(row.percentage),
       price: Number(price) - Number(row.price),
       quantity: Number(quantity) - Number(row.quantity),
-      priceUSD: Number(priceUSD) - Number(row.priceUSD),
-      priceBTC: Number(priceBTC) - Number(row.priceBTC),
-      usdDaily: Number(usdDaily) - Number(row.usdDaily),
-      btcDaily: Number(btcDaily) - Number(row.btcDaily),
-      usdpl: Number(usdpl) - Number(row.usdpl),
-      btcpl: Number(btcpl) - Number(row.btcpl),
+      currentPrice: Number(currentPrice) - Number(row.currentPrice),
+      daily: Number(daily) - Number(row.daily),
+      dailyPerc: Number(dailyPerc) - Number(row.dailyPerc),
+      realizedPL: Number(realizedPL) - Number(row.realizedPL),
+      realizedPLPerc: Number(realizedPLPerc) - Number(row.realizedPLPerc),
+      unrealizedPL: Number(unrealizedPL) - Number(row.unrealizedPL),
+      unrealizedPLPerc: Number(unrealizedPLPerc) - Number(row.unrealizedPLPerc),
     }
   }
 
@@ -221,12 +232,13 @@ export class PortfolioTable extends React.Component<TableProps> {
       percentage,
       price,
       quantity,
-      priceUSD,
-      btcpl,
-      priceBTC,
-      usdDaily,
-      btcDaily,
-      usdpl,
+      currentPrice,
+      daily,
+      dailyPerc,
+      realizedPL,
+      realizedPLPerc,
+      unrealizedPL,
+      unrealizedPLPerc,
     } = selectedSum
 
     return {
@@ -235,12 +247,13 @@ export class PortfolioTable extends React.Component<TableProps> {
       percentage: Number(percentage) + Number(row.percentage),
       price: Number(price) + Number(row.price),
       quantity: Number(quantity) + Number(row.quantity),
-      priceUSD: Number(priceUSD) + Number(row.priceUSD),
-      priceBTC: Number(priceBTC) + Number(row.priceBTC),
-      usdDaily: Number(usdDaily) + Number(row.usdDaily),
-      btcDaily: Number(btcDaily) + Number(row.btcDaily),
-      usdpl: Number(usdpl) + Number(row.usdpl),
-      btcpl: Number(btcpl) + Number(row.btcpl),
+      currentPrice: Number(currentPrice) + Number(row.currentPrice),
+      daily: Number(daily) + Number(row.daily),
+      dailyPerc: Number(dailyPerc) + Number(row.dailyPerc),
+      realizedPL: Number(realizedPL) + Number(row.realizedPL),
+      realizedPLPerc: Number(realizedPLPerc) + Number(row.realizedPLPerc),
+      unrealizedPL: Number(unrealizedPL) + Number(row.unrealizedPL),
+      unrealizedPLPerc: Number(unrealizedPLPerc) + Number(row.unrealizedPLPerc),
     }
   }
 
@@ -313,12 +326,17 @@ export class PortfolioTable extends React.Component<TableProps> {
     this.setState({ isShownChart: !this.state.isShownChart })
   }
 
+  onToggleUSDBTC = () => {
+    this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
+  }
+
   render() {
     const {
       selectedBalances,
       selectedSum,
       tableData,
       isShownChart,
+      isUSDCurrently,
     } = this.state
 
     if (!tableData) return null
@@ -339,6 +357,7 @@ export class PortfolioTable extends React.Component<TableProps> {
 
         <PTHeadingBlock>
           <PTHeading>My Balances</PTHeading>
+          <ToggleBtn onClick={this.onToggleUSDBTC}>USD | BTC</ToggleBtn>
           <ToggleBtn onClick={this.onToggleChart}>
             <SvgIcon src={filterListIcon} width={24} height={24} />
           </ToggleBtn>
@@ -346,6 +365,7 @@ export class PortfolioTable extends React.Component<TableProps> {
 
         <PTable>
           <PortfolioTableHead
+            isUSDCurrently={isUSDCurrently}
             isSelectAll={isSelectAll}
             onSelectAll={this.onSelectAll}
             onSortTable={this.onSortTable}
@@ -354,6 +374,7 @@ export class PortfolioTable extends React.Component<TableProps> {
           <PortfolioTableMain
             tableData={tableData}
             selectedBalances={selectedBalances}
+            isUSDCurrently={isUSDCurrently}
             onSelectBalance={this.onSelectBalance}
           />
 
@@ -397,6 +418,8 @@ const ToggleBtn = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
+  color: #fff;
+  font-size: 1em;
 `
 
 const PTable = styled.table`
