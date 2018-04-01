@@ -74,6 +74,14 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
   }
 
+  componentWillUpdate(nextProps: Props, nextState: State) {
+    if (nextState.isUSDCurrently !== this.state.isUSDCurrently) {
+      const { data } = this.props
+      const { portfolio } = data
+      this.combineTableData(portfolio)
+    }
+  }
+
   combineTableData = (portfolio?: Portfolio) => {
     const { activeKeys, isUSDCurrently } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) return
