@@ -191,7 +191,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     if (selectedBalances.length === tableData.length) {
       return {
         currency: 'All',
-        symbol,
+        symbol: '-',
       }
     }
 
