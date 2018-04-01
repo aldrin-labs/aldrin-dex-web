@@ -9,11 +9,9 @@ import filterListIcon from '../../../../icons/filter-list.svg'
 import gridLoader from '../../../../icons/grid.svg'
 import { RowT, State, Args } from './types'
 import { TableProps, Portfolio } from '../../interfaces'
-import PortfolioTableMain from './PortfolioTableMain'
-import PortfolioTableSum from './PortfolioTableSum'
-import PortfolioTableHead from './PortfolioTableHead'
 import PortfolioTableIndustries from './PortfolioTableIndustries'
 import PortfolioTableRebalance from './PortfolioTableRebalance'
+import PortfolioTableBalances from './PortfolioTableBalances'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -408,6 +406,7 @@ export class PortfolioTable extends React.Component<TableProps> {
               )
             }}
           </Mutation>
+
           {tab === 'main' && (
             <ToggleBtn onClick={this.onToggleChart}>
               <SvgIcon src={filterListIcon} width={24} height={24} />
@@ -430,29 +429,20 @@ export class PortfolioTable extends React.Component<TableProps> {
 
         {tab === 'rebalance' && <PortfolioTableRebalance />}
 
-        <PTable>
-          {tab === 'main' && (
-            <PortfolioTableHead
-              isUSDCurrently={isUSDCurrently}
-              isSelectAll={isSelectAll}
-              onSelectAll={this.onSelectAll}
-              onSortTable={this.onSortTable}
-            />
-          )}
+        {tab === 'main' && (
+          <PortfolioTableBalances
+            isUSDCurrently={isUSDCurrently}
+            isSelectAll={isSelectAll}
+            selectedSum={selectedSum}
+            onSelectAll={this.onSelectAll}
+            onSortTable={this.onSortTable}
+            tableData={tableData}
+            selectedBalances={selectedBalances}
+            onSelectBalance={this.onSelectBalance}
+          />
+        )}
 
-          {tab === 'industry' && <PortfolioTableIndustries />}
-
-          {tab === 'main' && (
-            <PortfolioTableMain
-              tableData={tableData}
-              selectedBalances={selectedBalances}
-              isUSDCurrently={isUSDCurrently}
-              onSelectBalance={this.onSelectBalance}
-            />
-          )}
-
-          {tab === 'main' && <PortfolioTableSum selectedSum={selectedSum} />}
-        </PTable>
+        {tab === 'industry' && <PortfolioTableIndustries />}
 
         {tab === 'main' &&
           isShownChart && (

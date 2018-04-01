@@ -71,12 +71,12 @@ export default class PortfolioTableIndustries extends React.Component<
       (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
 
     return (
-      <React.Fragment>
+      <PTable>
         <Checkbox type="checkbox" id={idx} checked={isSelected} />
         <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
-      </React.Fragment>
+      </PTable>
     )
   }
 
@@ -174,6 +174,11 @@ export default class PortfolioTableIndustries extends React.Component<
     )
   }
 }
+
+const PTable = styled.table`
+  width: 95%;
+  border-collapse: collapse;
+`
 
 const PTBody = styled.tbody`
   border-top: 1px solid #fff;
