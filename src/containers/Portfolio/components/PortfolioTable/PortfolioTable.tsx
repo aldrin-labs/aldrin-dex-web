@@ -70,8 +70,13 @@ export class PortfolioTable extends React.Component<TableProps> {
 
   combineTableData = (portfolio: Portfolio) => {
     const { activeKeys } = this.state
+    if (!portfolio) return
     const { assets } = portfolio
     if (!assets || !activeKeys) return
+
+    const allSums = assets.reduce((acc, curr) => {
+      return acc + curr.value * curr.asset.priceUSD
+    }, 0)
 
     const tableData = assets
       .map((row) => {
@@ -85,7 +90,7 @@ export class PortfolioTable extends React.Component<TableProps> {
           percentage: 0, // make fn
           price: priceUSD || 0,
           quantity: value || 0,
-          priceUSD: priceUSD || 0,
+          priceUSD: priceUSD * value || 0,
           priceBTC: 0, // add to query
           usdDaily: 0,
           btcDaily: 0,
@@ -421,7 +426,7 @@ export class PortfolioTable extends React.Component<TableProps> {
                 `${percentage}%`,
                 `$${price}`,
                 quantity,
-                priceUSD,
+                `$${priceUSD}`,
                 priceBTC,
                 usdDaily,
                 btcDaily,
