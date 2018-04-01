@@ -12,6 +12,8 @@ import { TableProps, Portfolio } from '../../interfaces'
 import PortfolioTableMain from './PortfolioTableMain'
 import PortfolioTableSum from './PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
+import PortfolioTableIndustries from './PortfolioTableIndustries'
+import PortfolioTableRebalance from './PortfolioTableRebalance'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -44,6 +46,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     activeKeys: null,
     portfolio: null,
     isUSDCurrently: true,
+    tab: 'main',
   }
 
   componentWillReceiveProps(nextProps: TableProps) {
@@ -341,6 +344,10 @@ export class PortfolioTable extends React.Component<TableProps> {
     this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
   }
 
+  onChangeTab = (kind: 'main' | 'industry' | 'rebalance') => {
+    this.setState({ tab: kind })
+  }
+
   render() {
     const {
       selectedBalances,
@@ -348,6 +355,7 @@ export class PortfolioTable extends React.Component<TableProps> {
       tableData,
       isShownChart,
       isUSDCurrently,
+      tab,
     } = this.state
 
     if (!tableData) return null
@@ -359,16 +367,34 @@ export class PortfolioTable extends React.Component<TableProps> {
     return (
       <PTWrapper>
         <TabContainer>
-          <Tab active>My Balances</Tab>
+          <Tab onClick={() => this.onChangeTab('main')} active={tab === 'main'}>
+            My Balances
+          </Tab>
 
-          <Tab disabled>Rebalance</Tab>
+          <Tab
+            onClick={() => this.onChangeTab('rebalance')}
+            active={tab === 'rebalance'}
+          >
+            Rebalance
+          </Tab>
 
-          <Tab disabled>Industries</Tab>
+          <Tab
+            onClick={() => this.onChangeTab('industry')}
+            active={tab === 'industry'}
+          >
+            Industries
+          </Tab>
         </TabContainer>
 
         <PTHeadingBlock>
-          <PTHeading>My Balances</PTHeading>
-          <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
+          {tab === 'main' && <PTHeading>My Balances</PTHeading>}
+          {tab === 'industry' && <PTHeading>Industries</PTHeading>}
+          {tab === 'rebalance' && <PTHeading>Rebalance</PTHeading>}
+
+          {tab === 'main' && (
+            <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
+          )}
+
           <Mutation mutation={UPDATE_PORTFOLIO}>
             {(updatePortfolio, { data, loading }) => {
               return (
@@ -382,34 +408,45 @@ export class PortfolioTable extends React.Component<TableProps> {
               )
             }}
           </Mutation>
-          <ToggleBtn onClick={this.onToggleChart}>
-            <SvgIcon src={filterListIcon} width={24} height={24} />
-          </ToggleBtn>
+          {tab === 'main' && (
+            <ToggleBtn onClick={this.onToggleChart}>
+              <SvgIcon src={filterListIcon} width={24} height={24} />
+            </ToggleBtn>
+          )}
         </PTHeadingBlock>
 
         <PTable>
-          <PortfolioTableHead
-            isUSDCurrently={isUSDCurrently}
-            isSelectAll={isSelectAll}
-            onSelectAll={this.onSelectAll}
-            onSortTable={this.onSortTable}
-          />
+          {tab === 'main' && (
+            <PortfolioTableHead
+              isUSDCurrently={isUSDCurrently}
+              isSelectAll={isSelectAll}
+              onSelectAll={this.onSelectAll}
+              onSortTable={this.onSortTable}
+            />
+          )}
 
-          <PortfolioTableMain
-            tableData={tableData}
-            selectedBalances={selectedBalances}
-            isUSDCurrently={isUSDCurrently}
-            onSelectBalance={this.onSelectBalance}
-          />
+          {tab === 'industry' && <PortfolioTableIndustries />}
 
-          <PortfolioTableSum selectedSum={selectedSum} />
+          {tab === 'rebalance' && <PortfolioTableRebalance />}
+
+          {tab === 'main' && (
+            <PortfolioTableMain
+              tableData={tableData}
+              selectedBalances={selectedBalances}
+              isUSDCurrently={isUSDCurrently}
+              onSelectBalance={this.onSelectBalance}
+            />
+          )}
+
+          {tab === 'main' && <PortfolioTableSum selectedSum={selectedSum} />}
         </PTable>
 
-        {isShownChart && (
-          <ProfileChart
-            style={{ marginLeft: 0, borderTop: '1px solid #fff' }}
-          />
-        )}
+        {tab === 'main' &&
+          isShownChart && (
+            <ProfileChart
+              style={{ marginLeft: 0, borderTop: '1px solid #fff' }}
+            />
+          )}
       </PTWrapper>
     )
   }
@@ -462,7 +499,7 @@ const PTHeading = styled.span`
 const PTWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 24px auto;
+  margin: 24px;
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;

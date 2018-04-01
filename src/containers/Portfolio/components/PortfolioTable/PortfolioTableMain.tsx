@@ -122,7 +122,7 @@ const PTD = styled.td`
   font-size: 16px;
   line-height: 24px;
   text-align: right;
-  padding: 20px;
+  padding: 20px 18px;
 `
 const Span = styled.span``
 

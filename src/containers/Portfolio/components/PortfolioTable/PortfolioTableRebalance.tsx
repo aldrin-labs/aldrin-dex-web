@@ -4,52 +4,38 @@ import styled from 'styled-components'
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
-  { name: 'Industry', value: 'industry' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'Current', value: 'price' },
-  { name: 'Portfolio performance', value: 'portfolioPerf' },
-  { name: 'Industry performance', value: 'industryPerf' },
 ]
 
 const tableData = [
   {
     currency: 'Bitrex',
     symbol: 'ETH',
-    industry: 'Smart contracts',
-    price: 15000,
-    portfolioPerf: 50,
-    industryPerf: 500,
-  },
-  {
-    currency: 'Poloniex',
-    symbol: 'LTC',
-    industry: 'Payment',
-    price: 10000,
-    portfolioPerf: 70,
-    industryPerf: -20,
-  },
-  {
-    currency: 'Bitrex',
-    symbol: 'XRP',
-    industry: 'Payment',
-    price: 5000,
-    portfolioPerf: 50,
-    industryPerf: -20,
+    portfolioPerc: 28.78,
+    price: 12950,
   },
   {
     currency: 'GDAX',
     symbol: 'ETH',
-    industry: 'Smart contracts',
-    price: 15000,
-    portfolioPerf: 25,
-    industryPerf: 500,
+    portfolioPerc: 22.22,
+    price: 10000,
   },
   {
-    currency: 'Bitrex',
-    symbol: 'Zcash',
-    industry: 'Privacy coin',
+    currency: 'Binance',
+    symbol: 'LTC',
+    portfolioPerc: 4.44,
+    price: 2000,
+  },
+  {
+    currency: 'Binance',
+    symbol: 'XRP',
+    portfolioPerc: 5.55,
     price: 5000,
-    portfolioPerf: 10,
-    industryPerf: 500,
+  },
+  {
+    currency: 'Total',
+    price: 29950,
   },
 ]
 
@@ -59,7 +45,7 @@ interface State {
   selectedBalances: number[] | null
 }
 
-export default class PortfolioTableIndustries extends React.Component<
+export default class PortfolioTableRebalance extends React.Component<
   Props,
   State
 > {
@@ -115,25 +101,16 @@ export default class PortfolioTableIndustries extends React.Component<
 
         <PTBody>
           {tableData.map((row, idx) => {
-            const {
-              currency,
-              symbol,
-              industry,
-              price,
-              portfolioPerf,
-              industryPerf,
-            } = row
+            const { currency, symbol, portfolioPerc, price } = row
 
             const isSelected =
               (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
 
             const cols = [
               currency,
-              symbol,
-              industry,
+              symbol || '',
+              portfolioPerc ? `${portfolioPerc}%` : '',
               `${price} $`,
-              `${portfolioPerf}%`,
-              `${industryPerf}%`,
             ]
 
             return (

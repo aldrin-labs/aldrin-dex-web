@@ -23,6 +23,7 @@ export interface State {
   activeKeys: number[] | null
   portfolio: Portfolio | null
   isUSDCurrently: boolean
+  tab: 'main' | 'industry' | 'rebalance'
 }
 
 export interface Portfolio {
