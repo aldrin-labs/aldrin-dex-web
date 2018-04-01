@@ -3,24 +3,11 @@ import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import filterListIcon from '../../../../icons/filter-list.svg'
-import selectedIcon from '../../../../icons/selected.svg'
-import sortIcon from '../../../../icons/arrow.svg'
 import { RowT, State, Args } from './types'
 import { TableProps, Portfolio } from '../../interfaces'
-
-const headings: Array<{ name: string; value: Args }> = [
-  { name: 'Exchange', value: 'currency' },
-  { name: 'Coin', value: 'symbol' },
-  { name: '% of Portfolio', value: 'percentage' },
-  { name: 'Price per coin', value: 'price' },
-  { name: 'Quantity', value: 'quantity' },
-  { name: 'Current USD', value: 'priceUSD' },
-  { name: 'Current BTC', value: 'priceBTC' },
-  { name: '24hr change USD', value: 'usdDaily' },
-  { name: '24hr change BTC', value: 'btcDaily' },
-  { name: 'USD P&L', value: 'usdpl' },
-  { name: 'BTC P&L', value: 'btcpl' },
-]
+import PortfolioTableMain from './PortfolioTableMain'
+import PortfolioTableSum from './PortfolioTableSum'
+import PortfolioTableHead from './PortfolioTableHead'
 
 const defaultSelectedSum = {
   currency: '',
@@ -73,26 +60,14 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
   }
 
-  roundUSDOff = (num: number): string => {
-    const reg = /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-    if (String(num).match(reg)) {
-      const [price] = String(num).match(reg)
-      return price
-    } else if (num > 0) {
-      return String(num)
-    } else {
-      return '0'
-    }
-  }
-
   combineTableData = (portfolio?: Portfolio) => {
     const { activeKeys } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) return
     const { assets } = portfolio
 
-    const allSums = assets.reduce((acc, curr) => {
-      return acc + curr.value * curr.asset.priceUSD
-    }, 0)
+    // const allSums = assets.reduce((acc, curr) => {
+    //   return acc + curr.value * curr.asset.priceUSD
+    // }, 0)
 
     const tableData = assets
       .map((row) => {
@@ -118,21 +93,6 @@ export class PortfolioTable extends React.Component<TableProps> {
       })
       .filter(Boolean)
     this.setState({ tableData })
-  }
-
-  renderCheckbox = (rowSymbol: string) => {
-    const { selectedBalances } = this.state
-    const isSelected =
-      (selectedBalances && selectedBalances.indexOf(rowSymbol) >= 0) || false
-
-    return (
-      <React.Fragment>
-        <Checkbox type="checkbox" id={rowSymbol} checked={isSelected} />
-        <Label htmlFor={rowSymbol} onClick={(e) => e.preventDefault()}>
-          <Span />
-        </Label>
-      </React.Fragment>
-    )
   }
 
   onSelectAll = () => {
@@ -385,113 +345,19 @@ export class PortfolioTable extends React.Component<TableProps> {
         </PTHeadingBlock>
 
         <PTable>
-          <PTHead>
-            <PTR>
-              <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                <Checkbox
-                  type="checkbox"
-                  id="selectAll"
-                  checked={isSelectAll}
-                  onChange={this.onSelectAll}
-                />
-                <Label htmlFor="selectAll">
-                  <Span />
-                </Label>
-              </PTH>
-              {headings.map((heading) => {
-                // const isSorted =
-                //   currentSort && currentSort.key === heading.value
-                return (
-                  <PTH
-                    key={heading.name}
-                    onClick={() => this.onSortTable(heading.value)}
-                    // style={{ paddingRight: isSorted ? null : '20px' }}
-                  >
-                    {heading.name}
-                    {/*{isSorted && (
-                      <SvgIcon
-                        src={sortIcon}
-                        style={{
-                          verticalAlign: 'middle',
-                          marginLeft: '4px',
-                          transform:
-                            currentSort && currentSort.arg === 'ASC'
-                              ? 'rotate(180deg)'
-                              : null,
-                        }}
-                      />
-                    )}*/}
-                  </PTH>
-                )
-              })}
-            </PTR>
-          </PTHead>
+          <PortfolioTableHead
+            isSelectAll={isSelectAll}
+            onSelectAll={this.onSelectAll}
+            onSortTable={this.onSortTable}
+          />
 
-          <PTBody>
-            {tableData.map((row) => {
-              const {
-                currency,
-                symbol,
-                percentage,
-                price,
-                quantity,
-                priceUSD,
-                priceBTC,
-                usdDaily,
-                btcDaily,
-                usdpl,
-                btcpl,
-              } = row
+          <PortfolioTableMain
+            tableData={tableData}
+            selectedBalances={selectedBalances}
+            onSelectBalance={this.onSelectBalance}
+          />
 
-              const isSelected =
-                (selectedBalances && selectedBalances.indexOf(symbol) >= 0) ||
-                false
-
-              const cols = [
-                currency,
-                symbol,
-                `${percentage}%`,
-                `$${this.roundUSDOff(price)}`,
-                quantity,
-                `$${this.roundUSDOff(priceUSD)}`,
-                priceBTC,
-                usdDaily,
-                btcDaily,
-                usdpl,
-                btcpl,
-              ]
-
-              return (
-                <PTR
-                  key={symbol}
-                  isSelected={isSelected}
-                  onClick={() => this.onSelectBalance(symbol, row)}
-                >
-                  <PTD key="smt" isSelected={isSelected}>
-                    {this.renderCheckbox(symbol)}
-                  </PTD>
-                  {cols.map((col, idx) => {
-                    return (
-                      <PTD key={`${col}${idx}`} isSelected={isSelected}>
-                        {col}
-                      </PTD>
-                    )
-                  })}
-                </PTR>
-              )
-            })}
-          </PTBody>
-
-          <PTBody style={{ borderBottom: 'none' }}>
-            <PTR>
-              <PTD>
-                <SvgIcon src={selectedIcon} width={24} height={24} />
-              </PTD>
-              {Object.keys(selectedSum).map((key) => (
-                <PTD key={key}>{selectedSum[key]}</PTD>
-              ))}
-            </PTR>
-          </PTBody>
+          <PortfolioTableSum selectedSum={selectedSum} />
         </PTable>
 
         {isShownChart && (
@@ -532,77 +398,6 @@ const ToggleBtn = styled.button`
   outline: none;
   cursor: pointer;
 `
-
-const Span = styled.span``
-
-const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 22px;
-    height: 22px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  & :checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
-  }
-`
-
-const PTD = styled.td`
-  color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#4ed8da' : '#fff'};
-
-  font-family: Roboto;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: right;
-  padding: 20px;
-`
-
-const PTH = styled.th`
-  font-family: Roboto;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: right;
-  color: #fff;
-  padding: 20px;
-  font-weight: 500;
-
-  position: relative;
-`
-
-const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
-`
-
-const PTR = styled.tr`
-  cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
-`
-
-const PTHead = styled.thead``
 
 const PTable = styled.table`
   width: 95%;

@@ -1,59 +1,127 @@
-import React, { Component, SFC } from 'react'
+import * as React from 'react'
+import styled from 'styled-components'
 
-import Checkbox from 'material-ui/Checkbox'
-import { TableCell, TableHead, TableRow, TableSortLabel } from 'material-ui/Table'
-import Tooltip from 'material-ui/Tooltip'
-
-const columnData = [
-  { id: 'exchange', numeric: false, disablePadding: true, label: 'Exchange' },
-  { id: 'asset', numeric: true, disablePadding: false, label: 'Coin' },
-  { id: 'symbol', numeric: true, disablePadding: false, label: 'Symbol' },
-  { id: 'priceUSD', numeric: true, disablePadding: false, label: 'Price (USD)'},
-  { id: 'value', numeric: true, disablePadding: false, label: 'Value' },
-  { id: 'realizedProfit', numeric: true, disablePadding: false, label: 'Realized profit' },
-  { id: 'possibleProfit', numeric: true, disablePadding: false, label: 'Possible Profit' },
-
+const headings: Array<{ name: string; value: Args }> = [
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: '% of Portfolio', value: 'percentage' },
+  { name: 'Price per coin', value: 'price' },
+  { name: 'Quantity', value: 'quantity' },
+  { name: 'Current USD', value: 'priceUSD' },
+  { name: 'Current BTC', value: 'priceBTC' },
+  { name: '24hr change USD', value: 'usdDaily' },
+  { name: '24hr change BTC', value: 'btcDaily' },
+  { name: 'USD P&L', value: 'usdpl' },
+  { name: 'BTC P&L', value: 'btcpl' },
 ]
 
-export class PortfolioTableHead extends Component {
-  createSortHandler = property => event => {
-    this.props.onRequestSort(event, property)
-  }
+interface Props {
+  isSelectAll: boolean
+  onSelectAll: Function
+  onSortTable: Function
+}
 
+export default class PortfolioTableHead extends React.Component<Props> {
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props
+    const { isSelectAll, onSelectAll, onSortTable } = this.props
 
     return (
-      <TableHead>
-        <TableRow>
-          <TableCell padding="checkbox">
+      <PTHead>
+        <PTR>
+          <PTH key="selectAll" style={{ textAlign: 'left' }}>
             <Checkbox
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={numSelected === rowCount}
-              onChange={onSelectAllClick}
+              type="checkbox"
+              id="selectAll"
+              checked={isSelectAll}
+              onChange={() => onSelectAll}
             />
-          </TableCell>
-          {columnData.map((column) =>
-            (
-              <TableCell
-                key={column.id}
-                numeric={column.numeric}
-                padding={column.disablePadding ? 'none' : 'default'}
-                sortDirection={orderBy === column.id ? order : false}
+            <Label htmlFor="selectAll">
+              <Span />
+            </Label>
+          </PTH>
+          {headings.map((heading) => {
+            // const isSorted =
+            //   currentSort && currentSort.key === heading.value
+            return (
+              <PTH
+                key={heading.name}
+                onClick={() => onSortTable(heading.value)}
+                // style={{ paddingRight: isSorted ? null : '20px' }}
               >
-                <Tooltip title="Sort" placement={column.numeric ? 'bottom-end' : 'bottom-start'} enterDelay={300}>
-                  <TableSortLabel
-                    active={orderBy === column.id}
-                    direction={order}
-                    onClick={this.createSortHandler(column.id)}
-                  >
-                    {column.label}
-                  </TableSortLabel>
-                </Tooltip>
-              </TableCell>
-            ), this)}
-        </TableRow>
-      </TableHead>
+                {heading.name}
+                {/*{isSorted && (
+                  <SvgIcon
+                    src={sortIcon}
+                    style={{
+                      verticalAlign: 'middle',
+                      marginLeft: '4px',
+                      transform:
+                        currentSort && currentSort.arg === 'ASC'
+                          ? 'rotate(180deg)'
+                          : null,
+                    }}
+                  />
+                )}*/}
+              </PTH>
+            )
+          })}
+        </PTR>
+      </PTHead>
     )
   }
 }
+
+const Span = styled.span``
+
+const Label = styled.label``
+
+const Checkbox = styled.input`
+  display: none;
+
+  & + ${Label} ${Span} {
+    display: inline-block;
+
+    width: 22px;
+    height: 22px;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    border: 1.5px solid #909294;
+    border-radius: 3px;
+    background-color: transparent;
+  }
+
+  & + ${Label}:hover ${Span} {
+    border-color: #4ed8da;
+  }
+
+  & :checked + ${Label} ${Span} {
+    border-color: #4ed8da;
+    background-color: #4ed8da;
+    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+  }
+`
+
+const PTH = styled.th`
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: right;
+  color: #fff;
+  padding: 20px;
+  font-weight: 500;
+
+  position: relative;
+`
+
+const PTR = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? '#2d3136' : '#393e44'};
+`
+
+const PTHead = styled.thead``
