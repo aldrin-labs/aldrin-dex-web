@@ -2,10 +2,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
-import { RowT } from './types'
 
 interface Props {
-  selectedSum: RowT
+  selectedSum: Object
 }
 
 export default class PortfolioTableSum extends React.Component<Props> {
@@ -15,9 +14,11 @@ export default class PortfolioTableSum extends React.Component<Props> {
     return (
       <PTBody style={{ borderBottom: 'none' }}>
         <PTR>
-          <PTD>
-            <SvgIcon src={selectedIcon} width={24} height={24} />
-          </PTD>
+          {selectedSum && (
+            <PTD>
+              <SvgIcon src={selectedIcon} width={24} height={24} />
+            </PTD>
+          )}
           {Object.keys(selectedSum).map((key) => (
             <PTD key={key}>{selectedSum[key] || ''}</PTD>
           ))}

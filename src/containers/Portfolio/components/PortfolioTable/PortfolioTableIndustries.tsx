@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import PortfolioTableSum from './PortfolioTableSum'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -53,26 +54,39 @@ const tableData = [
   },
 ]
 
+const defaultSelectedSum = {
+  currency: '',
+  symbol: '',
+  industry: '',
+  price: '',
+  portfolioPerf: '',
+  industryPerf: '',
+}
+
 interface Props {}
 
 interface State {
-  selectedBalances: number[] | null
+  selectedRows: number[] | null
 }
 
 export default class PortfolioTableIndustries extends React.Component<
   Props,
   State
 > {
-  state: State = { selectedBalances: null }
+  state: State = { selectedRows: null, selectedSum: defaultSelectedSum }
 
   renderCheckbox = (idx: number) => {
-    const { selectedBalances } = this.state
-    const isSelected =
-      (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
+    const { selectedRows } = this.state
+    const isSelected = (selectedRows && selectedRows.indexOf(idx) >= 0) || false
 
     return (
       <PTable>
-        <Checkbox type="checkbox" id={idx} checked={isSelected} />
+        <Checkbox
+          type="checkbox"
+          id={idx}
+          defaultChecked={false}
+          checked={isSelected}
+        />
         <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
@@ -81,28 +95,99 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   onSelectBalance = (idx: number) => {
-    const selectedBalances =
-      (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
+    const selectedRows =
+      (this.state.selectedRows && this.state.selectedRows.slice()) || []
 
-    const hasIndex = selectedBalances.indexOf(idx)
+    const hasIndex = selectedRows.indexOf(idx)
     if (hasIndex >= 0) {
-      selectedBalances.splice(hasIndex, 1)
+      selectedRows.splice(hasIndex, 1)
     } else {
-      selectedBalances.push(idx)
+      selectedRows.push(idx)
     }
 
-    this.setState({ selectedBalances })
+    this.setState({ selectedRows }, () => this.calculateSum(selectedRows))
+  }
+
+  calculateSum = (selectedRows: number[] | null) => {
+    if (!selectedRows) {
+      this.setState({ selectedSum: defaultSelectedSum })
+      return
+    }
+
+    const sum = tableData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
+    const reducedSum = sum.reduce(
+      (acc, val) => {
+        return {
+          currency: val.currency,
+          symbol: val.symbol,
+          industry: val.industry,
+          price: acc.price + val.price,
+          portfolioPerf: acc.portfolioPerf + val.portfolioPerf,
+          industryPerf: acc.industryPerf + val.industryPerf,
+        }
+      },
+      {
+        currency: '',
+        symbol: '',
+        industry: '',
+        price: 0,
+        portfolioPerf: 0,
+        industryPerf: 0,
+      }
+    )
+    const validateSum = this.onValidateSum(reducedSum)
+
+    this.setState({ selectedSum: validateSum })
+  }
+
+  onValidateSum = (reducedSum: Object) => {
+    const { selectedRows } = this.state
+    if (!selectedRows) return null
+
+    if (selectedRows.length === tableData.length) {
+      reducedSum.currency = 'All'
+      reducedSum.symbol = '-'
+    } else if (selectedRows.length > 1) {
+      reducedSum.currency = 'Selected'
+      reducedSum.symbol = '-'
+    }
+
+    reducedSum.industry = '-'
+
+    return reducedSum
+  }
+
+  onSelectAll = () => {
+    const rowQuantity = tableData.length
+    let allRows
+    const selectedRows =
+      (this.state.selectedRows && this.state.selectedRows.slice()) || []
+    if (selectedRows.length !== rowQuantity) {
+      allRows = tableData.map((td, i) => i)
+    } else {
+      allRows = null
+    }
+    this.setState({ selectedRows: allRows })
+
+    this.calculateSum(allRows)
   }
 
   render() {
-    const { selectedBalances } = this.state
+    const { selectedRows, selectedSum } = this.state
+    const isSelectAll =
+      (selectedRows && tableData.length === selectedRows.length) || false
 
     return (
-      <React.Fragment>
+      <PTable>
         <PTHead>
           <PTR>
             <PTH key="selectAll" style={{ textAlign: 'left' }}>
-              <Checkbox type="checkbox" id="selectAll" />
+              <Checkbox
+                type="checkbox"
+                id="selectAll"
+                checked={isSelectAll}
+                onChange={this.onSelectAll}
+              />
               <Label htmlFor="selectAll">
                 <Span />
               </Label>
@@ -125,7 +210,7 @@ export default class PortfolioTableIndustries extends React.Component<
             } = row
 
             const isSelected =
-              (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
+              (selectedRows && selectedRows.indexOf(idx) >= 0) || false
 
             const cols = [
               currency,
@@ -170,13 +255,13 @@ export default class PortfolioTableIndustries extends React.Component<
             )
           })}
         </PTBody>
-      </React.Fragment>
+        <PortfolioTableSum selectedSum={selectedSum} />
+      </PTable>
     )
   }
 }
 
 const PTable = styled.table`
-  width: 95%;
   border-collapse: collapse;
 `
 
