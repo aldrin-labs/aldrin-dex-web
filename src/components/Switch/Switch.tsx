@@ -44,18 +44,18 @@ const Slider = styled.span`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ccc;
+  background-color: #7fcac380;
   transition: 0.4s;
   border-radius: 34px;
 
   & :before {
     position: absolute;
     content: '';
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
+    height: 20px;
+    width: 20px;
+    left: -5px;
+    bottom: -3px;
+    background-color: #4ed8da;
     transition: 0.4s;
     border-radius: 50%;
   }
@@ -79,8 +79,8 @@ const Input = styled.input`
 const Label = styled.label`
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 34px;
+  height: 14px;
 
   & ${Input} {
     display: none;

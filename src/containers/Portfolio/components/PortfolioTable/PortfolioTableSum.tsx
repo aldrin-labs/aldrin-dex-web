@@ -36,7 +36,7 @@ const PTD = styled.td`
   font-size: 16px;
   line-height: 24px;
   text-align: right;
-  padding: 20px;
+  padding: 20px 10px;
 `
 
 const PTBody = styled.tbody`

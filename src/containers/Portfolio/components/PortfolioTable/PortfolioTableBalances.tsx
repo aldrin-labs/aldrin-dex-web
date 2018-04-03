@@ -32,13 +32,15 @@ export default class PortfolioTableBalances extends React.Component {
           isUSDCurrently={isUSDCurrently}
           onSelectBalance={onSelectBalance}
         />
-        <PortfolioTableSum selectedSum={selectedSum} />
+        {selectedSum.currency && (
+          <PortfolioTableSum selectedSum={selectedSum} />
+        )}
       </PTable>
     )
   }
 }
 
 const PTable = styled.table`
-  width: 95%;
+  table-layout: fixed;
   border-collapse: collapse;
 `

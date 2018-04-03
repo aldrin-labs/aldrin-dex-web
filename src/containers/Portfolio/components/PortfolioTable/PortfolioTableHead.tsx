@@ -59,7 +59,7 @@ export default class PortfolioTableHead extends React.Component<Props> {
     return (
       <PTHead>
         <PTR>
-          <PTH key="selectAll" style={{ textAlign: 'left' }}>
+          <PTH key="selectAll">
             <Checkbox
               type="checkbox"
               id="selectAll"
@@ -112,8 +112,8 @@ const Checkbox = styled.input`
   & + ${Label} ${Span} {
     display: inline-block;
 
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
 
     cursor: pointer;
     vertical-align: middle;
@@ -133,7 +133,7 @@ const Checkbox = styled.input`
     background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 14px;
+    background-size: 12px;
   }
 `
 
@@ -143,10 +143,11 @@ const PTH = styled.th`
   line-height: 24px;
   text-align: right;
   color: #fff;
-  padding: 20px;
+  padding: 20px 10px;
   font-weight: 500;
 
   position: relative;
+  overflow: hidden;
 `
 
 const PTR = styled.tr`

@@ -372,31 +372,37 @@ export class PortfolioTable extends React.Component<TableProps> {
 
     return (
       <PTWrapper>
-        <TabContainer>
-          <Tab onClick={() => this.onChangeTab('main')} active={tab === 'main'}>
-            My Balances
-          </Tab>
+        <PTHeadingBlock>
+          <TabContainer>
+            <Tab
+              onClick={() => this.onChangeTab('main')}
+              active={tab === 'main'}
+            >
+              My Balances
+            </Tab>
 
-          <Tab
-            onClick={() => this.onChangeTab('rebalance')}
-            active={tab === 'rebalance'}
-          >
-            Rebalance
-          </Tab>
+            <Tab
+              onClick={() => this.onChangeTab('rebalance')}
+              active={tab === 'rebalance'}
+            >
+              Rebalance
+            </Tab>
 
-          <Tab
-            onClick={() => this.onChangeTab('industry')}
-            active={tab === 'industry'}
-          >
-            Industries
-          </Tab>
-        </TabContainer>
+            <Tab
+              onClick={() => this.onChangeTab('industry')}
+              active={tab === 'industry'}
+            >
+              Industries
+            </Tab>
+          </TabContainer>
+          {tab === 'main' && (
+            <ToggleBtn onClick={this.onToggleChart}>
+              <SvgIcon src={filterListIcon} width={24} height={24} />
+            </ToggleBtn>
+          )}
+        </PTHeadingBlock>
 
         <PTHeadingBlock>
-          {tab === 'main' && <PTHeading>My Balances</PTHeading>}
-          {tab === 'industry' && <PTHeading>Industries</PTHeading>}
-          {tab === 'rebalance' && <PTHeading>Rebalance</PTHeading>}
-
           {tab === 'main' && (
             <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
           )}
@@ -414,17 +420,12 @@ export class PortfolioTable extends React.Component<TableProps> {
               )
             }}
           </Mutation>
-
-          {tab === 'main' && (
-            <ToggleBtn onClick={this.onToggleChart}>
-              <SvgIcon src={filterListIcon} width={24} height={24} />
-            </ToggleBtn>
-          )}
         </PTHeadingBlock>
 
         {tab === 'rebalance' && (
           <div
             style={{
+              width: '50%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-around',
@@ -501,11 +502,6 @@ const ToggleBtn = styled.button`
   font-size: 1em;
 `
 
-const PTable = styled.table`
-  width: 95%;
-  border-collapse: collapse;
-`
-
 const PTHeading = styled.span`
   font-family: Roboto;
   font-size: 20px;
@@ -515,13 +511,13 @@ const PTHeading = styled.span`
 `
 
 const PTWrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
-  min-height: 100vh;
 `
 
 const PTHeadingBlock = styled.div`

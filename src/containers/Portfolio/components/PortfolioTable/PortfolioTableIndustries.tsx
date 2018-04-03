@@ -263,6 +263,7 @@ export default class PortfolioTableIndustries extends React.Component<
 
 const PTable = styled.table`
   border-collapse: collapse;
+  width: 60%;
 `
 
 const PTBody = styled.tbody`

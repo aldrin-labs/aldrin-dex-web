@@ -82,6 +82,7 @@ const chartBtns = [
 ]
 
 export default class ProfileChart extends React.Component<Props, State> {
+  _wrapper: HTMLDivElement | undefined
   state: State = {
     activeChart: 4,
     lastDrawLocation: null,
@@ -125,9 +126,7 @@ export default class ProfileChart extends React.Component<Props, State> {
     }
 
     return (
-      <SProfileChart style={style}>
-        <ProfileChartHeading>{name} Price Chart (1y)</ProfileChartHeading>
-
+      <SProfileChart ref={(ref) => (this._wrapper = ref)}>
         {/*TODO: need refactoring, need real data */}
         <SuppliesBlock>
           <SupplyBlock>
@@ -185,7 +184,6 @@ export default class ProfileChart extends React.Component<Props, State> {
         <Chart>
           <FlexibleWidthXYPlot
             animation
-            width={750}
             height={195}
             onMouseLeave={this._onMouseLeave}
             xDomain={
@@ -263,8 +261,8 @@ const ChartTooltip = styled.span`
 `
 
 const Chart = styled.div`
+  width: 100%;
   height: 195px;
-  padding: 38px 17px 53px 0;
   margin: 0 auto;
 `
 
@@ -279,7 +277,7 @@ const Hr = styled.hr`
 const BtnsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 24px;
+  margin: 24px auto 0 auto;
 `
 
 const ChartBtn = styled.button`
@@ -297,17 +295,16 @@ const ChartBtn = styled.button`
 `
 
 const SProfileChart = styled.div`
-  min-width: 775px;
+  width: 100%;
   padding: 0 16px;
-  margin-top: 24px;
   border-radius: 3px;
   background-color: #393e44;
-  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);
   padding-bottom: 48px;
-  margin-left: 16.5px;
+  margin: 0 auto;
 
   display: flex;
   flex-direction: column;
+  border-top: 1px solid #fff;
 `
 const ProfileChartHeading = styled.span`
   font-family: Roboto;
@@ -320,7 +317,7 @@ const ProfileChartHeading = styled.span`
 const SuppliesBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin-top: 16px;
+  margin: 16px auto 0 auto;
 `
 
 const SupplyBlock = styled.div`
