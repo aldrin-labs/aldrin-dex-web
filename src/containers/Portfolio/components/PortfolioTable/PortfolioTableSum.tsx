@@ -15,8 +15,8 @@ export default class PortfolioTableSum extends React.Component<Props> {
       <PTBody style={{ borderBottom: 'none' }}>
         <PTR>
           {selectedSum && (
-            <PTD>
-              <SvgIcon src={selectedIcon} width={24} height={24} />
+            <PTD style={{ textAlign: 'right' }}>
+              <SvgIcon src={selectedIcon} width={18} height={18} />
             </PTD>
           )}
           {Object.keys(selectedSum).map((key) => (
@@ -35,8 +35,8 @@ const PTD = styled.td`
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
   padding: 20px 10px;
+  text-align: left;
 `
 
 const PTBody = styled.tbody`

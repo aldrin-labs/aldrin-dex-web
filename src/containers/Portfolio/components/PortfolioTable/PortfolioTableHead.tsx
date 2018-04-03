@@ -59,7 +59,7 @@ export default class PortfolioTableHead extends React.Component<Props> {
     return (
       <PTHead>
         <PTR>
-          <PTH key="selectAll">
+          <PTH key="selectAll" style={{ textAlign: 'right' }}>
             <Checkbox
               type="checkbox"
               id="selectAll"
@@ -141,10 +141,10 @@ const PTH = styled.th`
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
   color: #fff;
   padding: 20px 10px;
   font-weight: 500;
+  text-align: left;
 
   position: relative;
   overflow: hidden;

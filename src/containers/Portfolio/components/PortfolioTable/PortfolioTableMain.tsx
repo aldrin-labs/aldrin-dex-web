@@ -85,7 +85,11 @@ export default class PortfolioTableMain extends React.Component<Props> {
               isSelected={isSelected}
               onClick={() => this.props.onSelectBalance(symbol, row)}
             >
-              <PTD key="smt" isSelected={isSelected}>
+              <PTD
+                key="smt"
+                isSelected={isSelected}
+                style={{ textAlign: 'right' }}
+              >
                 {this.renderCheckbox(symbol)}
               </PTD>
               {cols.map((col, idx) => {
@@ -121,7 +125,6 @@ const PTD = styled.td`
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
   padding: 20px 10px;
   overflow: hidden;
 `

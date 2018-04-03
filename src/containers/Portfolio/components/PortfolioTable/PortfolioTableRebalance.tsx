@@ -215,8 +215,7 @@ const PTD = styled.td`
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
-  padding: 20px 18px;
+  padding: 20px 10px;
 `
 
 const Span = styled.span``
@@ -229,8 +228,8 @@ const Checkbox = styled.input`
   & + ${Label} ${Span} {
     display: inline-block;
 
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
 
     cursor: pointer;
     vertical-align: middle;
@@ -258,9 +257,9 @@ const PTH = styled.th`
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
-  text-align: right;
   color: #fff;
-  padding: 20px;
+  padding: 20px 10px;
+  text-align: left;
   font-weight: 500;
 
   position: relative;
