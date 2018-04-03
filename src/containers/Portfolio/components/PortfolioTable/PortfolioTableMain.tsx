@@ -72,11 +72,11 @@ export default class PortfolioTableMain extends React.Component<Props> {
             quantity,
             `${this.roundUSDOff(currentPrice)} ${mainSymbol}`,
             daily,
-            dailyPerc,
+            `${dailyPerc}%`,
             realizedPL,
-            realizedPLPerc,
+            `${realizedPLPerc}%`,
             unrealizedPL,
-            unrealizedPLPerc,
+            `${unrealizedPLPerc}%`,
           ]
 
           return (
@@ -112,12 +112,6 @@ const PTBody = styled.tbody`
   border-bottom: 1px solid #fff;
 `
 
-const PTR = styled.tr`
-  cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
-`
-
 const PTD = styled.td`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
@@ -128,6 +122,17 @@ const PTD = styled.td`
   padding: 20px 10px;
   overflow: hidden;
 `
+
+const PTR = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? '#2d3136' : '#393e44'};
+
+  & ${PTD}:nth-child(n+ 3) {
+    text-align: right;
+  }
+`
+
 const Span = styled.span``
 
 const Label = styled.label``

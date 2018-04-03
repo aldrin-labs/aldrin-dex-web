@@ -8,6 +8,11 @@ interface Props {
 }
 
 export default class PortfolioTableSum extends React.Component<Props> {
+  onFloorN = (x: number, n: number) => {
+    var mult = Math.pow(10, n)
+    return Math.floor(x * mult) / mult
+  }
+
   render() {
     const { selectedSum } = this.props
 
@@ -19,9 +24,14 @@ export default class PortfolioTableSum extends React.Component<Props> {
               <SvgIcon src={selectedIcon} width={18} height={18} />
             </PTD>
           )}
-          {Object.keys(selectedSum).map((key) => (
-            <PTD key={key}>{selectedSum[key] || ''}</PTD>
-          ))}
+          {Object.keys(selectedSum).map((key) => {
+            let res = selectedSum[key]
+            if (!Number.isNaN(selectedSum[key])) {
+              res = this.onFloorN(selectedSum[key], 3)
+            }
+            console.log(res)
+            return <PTD key={key}>{res || ''}</PTD>
+          })}
         </PTR>
       </PTBody>
     )
@@ -48,4 +58,8 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
+
+  & ${PTD}:nth-child(n+ 3) {
+    text-align: right;
+  }
 `

@@ -154,6 +154,10 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
+
+  & ${PTH}:nth-child(n+ 3) {
+    text-align: right;
+  }
 `
 
 const PTHead = styled.thead``
