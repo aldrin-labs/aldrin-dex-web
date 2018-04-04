@@ -9,13 +9,13 @@ interface Props {
 
 export default class PortfolioTableSum extends React.Component<Props> {
   onFloorN = (x: number, n: number) => {
+    if (typeof x === 'string') return x
     var mult = Math.pow(10, n)
     return Math.floor(x * mult) / mult
   }
 
   render() {
     const { selectedSum } = this.props
-
     return (
       <PTBody style={{ borderBottom: 'none' }}>
         <PTR>
@@ -29,7 +29,7 @@ export default class PortfolioTableSum extends React.Component<Props> {
             if (!Number.isNaN(selectedSum[key])) {
               res = this.onFloorN(selectedSum[key], 3)
             }
-            console.log(res)
+            console.log('res', res)
             return <PTD key={key}>{res || ''}</PTD>
           })}
         </PTR>

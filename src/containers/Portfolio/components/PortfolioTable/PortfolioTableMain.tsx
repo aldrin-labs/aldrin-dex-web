@@ -10,15 +10,15 @@ interface Props {
 }
 
 export default class PortfolioTableMain extends React.Component<Props> {
-  renderCheckbox = (rowSymbol: string) => {
+  renderCheckbox = (index: number) => {
     const { selectedBalances } = this.props
     const isSelected =
-      (selectedBalances && selectedBalances.indexOf(rowSymbol) >= 0) || false
+      (selectedBalances && selectedBalances.indexOf(index) >= 0) || false
 
     return (
       <React.Fragment>
-        <Checkbox type="checkbox" id={rowSymbol} checked={isSelected} />
-        <Label htmlFor={rowSymbol} onClick={(e) => e.preventDefault()}>
+        <Checkbox type="checkbox" id={index} checked={isSelected} />
+        <Label htmlFor={index} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
       </React.Fragment>
@@ -43,7 +43,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
 
     return (
       <PTBody>
-        {tableData.map((row) => {
+        {tableData.map((row, index) => {
           const {
             currency,
             symbol,
@@ -60,17 +60,21 @@ export default class PortfolioTableMain extends React.Component<Props> {
           } = row
 
           const isSelected =
-            (selectedBalances && selectedBalances.indexOf(symbol) >= 0) || false
+            (selectedBalances && selectedBalances.indexOf(index) >= 0) || false
 
-          const mainSymbol = isUSDCurrently ? '$' : 'BTC'
+          const mainSymbol = isUSDCurrently ? (
+            <Icon className="fa fa-usd" />
+          ) : (
+            <Icon className="fa fa-btc" />
+          )
 
           const cols = [
             currency,
             symbol,
             `${percentage}%`,
-            `${this.roundUSDOff(price)} ${mainSymbol}`,
+            [mainSymbol, `${this.roundUSDOff(price)}`],
             quantity,
-            `${this.roundUSDOff(currentPrice)} ${mainSymbol}`,
+            [mainSymbol, `${this.roundUSDOff(currentPrice)}`],
             daily,
             `${dailyPerc}%`,
             realizedPL,
@@ -81,16 +85,16 @@ export default class PortfolioTableMain extends React.Component<Props> {
 
           return (
             <PTR
-              key={symbol}
+              key={`${currency}${symbol}`}
               isSelected={isSelected}
-              onClick={() => this.props.onSelectBalance(symbol, row)}
+              onClick={() => this.props.onSelectBalance(index)}
             >
               <PTD
                 key="smt"
                 isSelected={isSelected}
                 style={{ textAlign: 'right' }}
               >
-                {this.renderCheckbox(symbol)}
+                {this.renderCheckbox(index)}
               </PTD>
               {cols.map((col, idx) => {
                 return (
@@ -166,4 +170,8 @@ const Checkbox = styled.input`
     background-position: center;
     background-size: 12px;
   }
+`
+
+const Icon = styled.i`
+  padding-right: 5px;
 `

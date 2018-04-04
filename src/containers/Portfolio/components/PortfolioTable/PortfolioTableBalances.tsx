@@ -18,27 +18,31 @@ export default class PortfolioTableBalances extends React.Component {
     } = this.props
 
     return (
-      <PTable>
-        <PortfolioTableHead
-          isUSDCurrently={isUSDCurrently}
-          isSelectAll={isSelectAll}
-          onSelectAll={onSelectAll}
-          onSortTable={onSortTable}
-        />
+      <Wrapper>
+        <PTable>
+          <PortfolioTableHead
+            isUSDCurrently={isUSDCurrently}
+            isSelectAll={isSelectAll}
+            onSelectAll={onSelectAll}
+            onSortTable={onSortTable}
+          />
 
-        <PortfolioTableMain
-          tableData={tableData}
-          selectedBalances={selectedBalances}
-          isUSDCurrently={isUSDCurrently}
-          onSelectBalance={onSelectBalance}
-        />
-        {selectedSum.currency && (
-          <PortfolioTableSum selectedSum={selectedSum} />
-        )}
-      </PTable>
+          <PortfolioTableMain
+            tableData={tableData}
+            selectedBalances={selectedBalances}
+            isUSDCurrently={isUSDCurrently}
+            onSelectBalance={onSelectBalance}
+          />
+          {selectedSum.currency && (
+            <PortfolioTableSum selectedSum={selectedSum} />
+          )}
+        </PTable>
+      </Wrapper>
     )
   }
 }
+
+const Wrapper = styled.div``
 
 const PTable = styled.table`
   table-layout: fixed;

@@ -13,6 +13,8 @@ import PortfolioTableIndustries from './PortfolioTableIndustries'
 import PortfolioTableRebalance from './PortfolioTableRebalance'
 import PortfolioTableBalances from './PortfolioTableBalances'
 
+import { tableData } from './dataMock'
+
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
     updatePortfolio
@@ -40,7 +42,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
     currentSort: null,
-    isShownChart: true,
+    isShownChart: false,
     activeKeys: null,
     portfolio: null,
     isUSDCurrently: true,
@@ -91,7 +93,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     //   return acc + curr.value * curr.asset.priceUSD
     // }, 0)
 
-    const tableData = assets
+    const tableDataD = assets
       .map((row) => {
         const { asset, value, key } = row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
@@ -127,7 +129,44 @@ export class PortfolioTable extends React.Component<TableProps> {
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
-      const startAcc = {
+      const allRows = tableData.map((ck, idx) => idx)
+
+      this.setState({ selectedBalances: allRows }, () =>
+        this.calculateSum(allRows)
+      )
+    }
+  }
+
+  calculateSum = (selectedRows: number[] | null) => {
+    const { tableData } = this.state
+    if (!tableData) return
+
+    if (!selectedRows) {
+      this.setState({ selectedSum: defaultSelectedSum })
+      return
+    }
+
+    const sum = tableData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
+    const reducedSum = sum.reduce(
+      (acc, val) => {
+        return {
+          currency: val.currency,
+          symbol: val.symbol,
+          percentage: acc.percentage + val.percentage,
+          price: acc.price + val.price,
+          quantity: acc.quantity + val.quantity,
+          currentPrice: acc.currentPrice + val.currentPrice,
+          daily: acc.daily + val.daily,
+          dailyPerc: acc.dailyPerc + val.dailyPerc,
+          realizedPL: acc.realizedPL + val.realizedPL,
+          realizedPLPerc: acc.realizedPLPerc + val.realizedPLPerc,
+          unrealizedPL: acc.unrealizedPL + val.unrealizedPL,
+          unrealizedPLPerc: acc.unrealizedPLPerc + val.unrealizedPLPerc,
+        }
+      },
+      {
+        currency: '',
+        symbol: '',
         percentage: 0,
         price: 0,
         quantity: 0,
@@ -139,170 +178,41 @@ export class PortfolioTable extends React.Component<TableProps> {
         unrealizedPL: 0,
         unrealizedPLPerc: 0,
       }
-      const allRows = tableData.map((ck) => ck.symbol)
-      const allSums = tableData.reduce((acc, el) => {
-        return {
-          currency: 'All',
-          symbol: '-',
-          percentage: Number(acc.percentage) + Number(el.percentage),
-          price: Number(acc.price) + Number(el.price),
-          quantity: Number(acc.quantity) + Number(el.quantity),
-          currentPrice: Number(acc.currentPrice) + Number(el.currentPrice),
-          daily: Number(acc.daily) + Number(el.daily),
-          dailyPerc: Number(acc.dailyPerc) + Number(el.dailyPerc),
-          realizedPL: Number(acc.realizedPL) + Number(el.realizedPL),
-          realizedPLPerc:
-            Number(acc.realizedPLPerc) + Number(el.realizedPLPerc),
-          unrealizedPL: Number(acc.unrealizedPL) + Number(el.unrealizedPL),
-          unrealizedPLPerc:
-            Number(acc.unrealizedPLPerc) + Number(el.unrealizedPLPerc),
-        }
-      }, startAcc)
-
-      this.setState({ selectedBalances: allRows, selectedSum: allSums })
-    }
+    )
+    const validateSum = this.onValidateSum(reducedSum)
+    this.setState({ selectedSum: validateSum })
   }
 
-  setCurrencyAndSymbol = (
-    selectedBalances: string[],
-    currency: string,
-    symbol: string
-  ): { currency: string; symbol: string } => {
-    const { tableData } = this.state
-    if (!tableData)
-      return {
-        currency: '',
-        symbol: '',
-      }
-
-    if (selectedBalances.length === 0) {
-      return {
-        currency: '',
-        symbol: '',
-      }
-    }
-
-    if (selectedBalances.length === 1) {
-      let idx = 0
-
-      tableData.forEach((td, i) => {
-        if (td.symbol === selectedBalances[0]) {
-          idx = i
-        }
-      })
-
-      return {
-        currency: tableData[idx].currency,
-        symbol: tableData[idx].symbol,
-      }
-    }
+  onValidateSum = (reducedSum: RowT) => {
+    const { selectedBalances, tableData } = this.state
+    if (!selectedBalances || !tableData) return null
+    const clonedSum = { ...reducedSum }
 
     if (selectedBalances.length === tableData.length) {
-      return {
-        currency: 'All',
-        symbol: '-',
-      }
+      clonedSum.currency = 'All'
+      clonedSum.symbol = '-'
+    } else if (selectedBalances.length > 1) {
+      clonedSum.currency = 'Selected'
+      clonedSum.symbol = '-'
     }
 
-    if (selectedBalances.length > 1) {
-      return {
-        currency: 'Selected',
-        symbol: '-',
-      }
-    }
-
-    return {
-      currency: '',
-      symbol: '',
-    }
+    return clonedSum
   }
 
-  decrementSelected = (selectedSum: RowT, row: RowT): RowT => {
-    const {
-      percentage,
-      price,
-      quantity,
-      currentPrice,
-      daily,
-      dailyPerc,
-      realizedPL,
-      realizedPLPerc,
-      unrealizedPL,
-      unrealizedPLPerc,
-    } = selectedSum
-
-    return {
-      currency: row.currency,
-      symbol: row.symbol,
-      percentage: Number(percentage) - Number(row.percentage),
-      price: Number(price) - Number(row.price),
-      quantity: Number(quantity) - Number(row.quantity),
-      currentPrice: Number(currentPrice) - Number(row.currentPrice),
-      daily: Number(daily) - Number(row.daily),
-      dailyPerc: Number(dailyPerc) - Number(row.dailyPerc),
-      realizedPL: Number(realizedPL) - Number(row.realizedPL),
-      realizedPLPerc: Number(realizedPLPerc) - Number(row.realizedPLPerc),
-      unrealizedPL: Number(unrealizedPL) - Number(row.unrealizedPL),
-      unrealizedPLPerc: Number(unrealizedPLPerc) - Number(row.unrealizedPLPerc),
-    }
-  }
-
-  incrementSelected = (selectedSum: RowT, row: RowT): RowT => {
-    const {
-      percentage,
-      price,
-      quantity,
-      currentPrice,
-      daily,
-      dailyPerc,
-      realizedPL,
-      realizedPLPerc,
-      unrealizedPL,
-      unrealizedPLPerc,
-    } = selectedSum
-
-    return {
-      currency: row.currency,
-      symbol: row.symbol,
-      percentage: Number(percentage) + Number(row.percentage),
-      price: Number(price) + Number(row.price),
-      quantity: Number(quantity) + Number(row.quantity),
-      currentPrice: Number(currentPrice) + Number(row.currentPrice),
-      daily: Number(daily) + Number(row.daily),
-      dailyPerc: Number(dailyPerc) + Number(row.dailyPerc),
-      realizedPL: Number(realizedPL) + Number(row.realizedPL),
-      realizedPLPerc: Number(realizedPLPerc) + Number(row.realizedPLPerc),
-      unrealizedPL: Number(unrealizedPL) + Number(row.unrealizedPL),
-      unrealizedPLPerc: Number(unrealizedPLPerc) + Number(row.unrealizedPLPerc),
-    }
-  }
-
-  onSelectBalance = (rowCurrency: string, row: RowT) => {
-    let selectedSum: RowT | null
+  onSelectBalance = (index: number) => {
     const selectedBalances =
       (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
 
-    const hasIndex = selectedBalances.indexOf(rowCurrency)
+    const hasIndex = selectedBalances.indexOf(index)
     if (hasIndex >= 0) {
-      selectedSum = this.decrementSelected(this.state.selectedSum, row)
-
       selectedBalances.splice(hasIndex, 1)
     } else {
-      selectedSum = this.incrementSelected(this.state.selectedSum, row)
-
-      selectedBalances.push(rowCurrency)
+      selectedBalances.push(index)
     }
 
-    const { currency, symbol } = this.setCurrencyAndSymbol(
-      selectedBalances,
-      row.currency,
-      row.symbol
+    this.setState({ selectedBalances }, () =>
+      this.calculateSum(selectedBalances)
     )
-
-    selectedSum.currency = currency
-    selectedSum.symbol = symbol
-
-    this.setState({ selectedBalances, selectedSum })
   }
 
   onSortStrings = (a: string, b: string): number => {
@@ -378,7 +288,7 @@ export class PortfolioTable extends React.Component<TableProps> {
               onClick={() => this.onChangeTab('main')}
               active={tab === 'main'}
             >
-              My Balances
+              Main
             </Tab>
 
             <Tab
@@ -392,7 +302,7 @@ export class PortfolioTable extends React.Component<TableProps> {
               onClick={() => this.onChangeTab('industry')}
               active={tab === 'industry'}
             >
-              Industries
+              Industry
             </Tab>
           </TabContainer>
           {tab === 'main' && (
@@ -489,7 +399,7 @@ const Tab = styled.button`
   font-weight: 500;
   text-align: center;
   cursor: pointer;
-  margin: 10px 20px;
+  margin: 10px 15px;
   outline: none;
 `
 

@@ -16,7 +16,7 @@ export interface RowT {
 
 export interface State {
   tableData: RowT[] | null
-  selectedBalances: string[] | null
+  selectedBalances: number[] | null
   selectedSum: RowT
   currentSort: { arg: SortArgs; key: Args } | null
   isShownChart: boolean
