@@ -26,7 +26,9 @@ export default class PortfolioTableMain extends React.Component<Props> {
   }
 
   roundUSDOff = (num: number): string => {
-    const reg = /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
+    const reg = this.props.isUSDCurrently
+      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
+      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
     if (String(num).match(reg)) {
       const [price] = String(num).match(reg)
       return price
@@ -71,16 +73,16 @@ export default class PortfolioTableMain extends React.Component<Props> {
           const cols = [
             currency,
             symbol,
-            `${percentage}%`,
+            `${percentage} %`,
             [mainSymbol, `${this.roundUSDOff(price)}`],
             quantity,
             [mainSymbol, `${this.roundUSDOff(currentPrice)}`],
             daily,
-            `${dailyPerc}%`,
+            `${dailyPerc} %`,
             realizedPL,
-            `${realizedPLPerc}%`,
+            `${realizedPLPerc} %`,
             unrealizedPL,
-            `${unrealizedPLPerc}%`,
+            `${unrealizedPLPerc} %`,
           ]
 
           return (
@@ -121,9 +123,9 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
-  padding: 20px 10px;
+  padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
 `
 

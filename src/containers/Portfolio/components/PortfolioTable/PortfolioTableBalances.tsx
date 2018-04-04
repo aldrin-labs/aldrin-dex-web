@@ -44,7 +44,9 @@ export default class PortfolioTableBalances extends React.Component {
   }
 }
 
-const Wrapper = styled.div``
+const Wrapper = styled.div`
+  width: 100%;
+`
 
 const PTable = styled.table`
   table-layout: fixed;

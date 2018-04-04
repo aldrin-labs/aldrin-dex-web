@@ -13,7 +13,7 @@ import PortfolioTableIndustries from './PortfolioTableIndustries'
 import PortfolioTableRebalance from './PortfolioTableRebalance'
 import PortfolioTableBalances from './PortfolioTableBalances'
 
-import { tableData } from './dataMock'
+import { MOCK_DATA } from './dataMock'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -49,20 +49,25 @@ export class PortfolioTable extends React.Component<TableProps> {
     tab: 'main',
   }
 
+  componentDidMount() {
+    this.setState({ portfolio: MOCK_DATA })
+    this.combineTableData(MOCK_DATA)
+  }
+
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
       if (!portfolio) return
 
-      this.setState({ portfolio })
-      this.combineTableData(portfolio)
+      // this.setState({ portfolio })
+      // this.combineTableData(portfolio)
     }
 
     if (nextProps.subscription && nextProps.subscription.data) {
       const { portfolio } = nextProps.subscription.data
 
-      this.setState({ portfolio })
-      this.combineTableData(portfolio)
+      // this.setState({ portfolio })
+      // this.combineTableData(portfolio)
     }
 
     if (nextProps.checkboxes) {
@@ -76,12 +81,19 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
   }
 
-  componentWillUpdate(nextProps: Props, nextState: State) {
-    if (nextState.isUSDCurrently !== this.state.isUSDCurrently) {
-      const { data } = this.props
-      const { portfolio } = data
-      this.combineTableData(portfolio)
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (prevState.isUSDCurrently !== this.state.isUSDCurrently) {
+      this.combineTableData(MOCK_DATA)
     }
+  }
+
+  onFloorN = (x: number, n: number) => {
+    var mult = Math.pow(10, n)
+    return Math.floor(x * mult) / mult
+  }
+
+  calcPercentage = (num: number) => {
+    return this.onFloorN(num, 2)
   }
 
   combineTableData = (portfolio?: Portfolio) => {
@@ -89,37 +101,49 @@ export class PortfolioTable extends React.Component<TableProps> {
     if (!portfolio || !portfolio.assets || !activeKeys) return
     const { assets } = portfolio
 
-    // const allSums = assets.reduce((acc, curr) => {
-    //   return acc + curr.value * curr.asset.priceUSD
-    // }, 0)
+    const allSums = assets.reduce((acc, curr) => {
+      return acc + curr.value * curr.asset.priceUSD
+    }, 0)
 
-    const tableDataD = assets
+    const tableData = assets
       .map((row) => {
-        const { asset, value, key } = row || {}
+        const {
+          asset,
+          value,
+          key,
+          exchange,
+          usdRealizedProfit,
+          usdUnrealizedProfit,
+        } =
+          row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
-        const { name, symbol, priceUSD, priceBTC } = asset
+        const { symbol, priceUSD, priceBTC, percentChangeDay } = asset
+        const { name } = exchange
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
+        console.log('mainPrice', mainPrice)
 
         const col = {
           currency: name || '',
           symbol,
-          percentage: 0, // make fn
+          percentage: this.calcPercentage(priceUSD * value / allSums * 100),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: mainPrice * value || 0,
-          daily: 0, // add to query
-          dailyPerc: 0,
-          realizedPL: 0,
+          daily: this.calcPercentage(priceUSD / 100 * percentChangeDay),
+          dailyPerc: percentChangeDay,
+          realizedPL: usdRealizedProfit,
           realizedPLPerc: 0,
-          unrealizedPL: 0,
+          unrealizedPL: usdUnrealizedProfit,
           unrealizedPLPerc: 0,
         }
 
         return col
       })
       .filter(Boolean)
-    this.setState({ tableData })
+    this.setState({ tableData }, () =>
+      this.calculateSum(this.state.selectedBalances)
+    )
   }
 
   onSelectAll = () => {

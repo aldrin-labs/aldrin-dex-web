@@ -65,7 +65,7 @@ export default class PortfolioTableHead extends React.Component<Props> {
     return (
       <PTHead>
         <PTR>
-          <PTH key="selectAll" style={{ textAlign: 'right' }}>
+          <PTH key="selectAll">
             <Checkbox
               type="checkbox"
               id="selectAll"
@@ -82,13 +82,15 @@ export default class PortfolioTableHead extends React.Component<Props> {
               <PTH
                 key={heading.name}
                 onClick={() => onSortTable(heading.value)}
-                style={{ paddingRight: isSorted ? 0 : '20px' }}
+                style={{ paddingRight: isSorted ? 0 : '16px' }}
               >
                 {heading.name}
 
                 {isSorted && (
                   <SvgIcon
                     src={sortIcon}
+                    width={12}
+                    height={12}
                     style={{
                       verticalAlign: 'middle',
                       marginLeft: '4px',
@@ -145,10 +147,10 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 20px 10px;
+  padding: 1.75px 10px;
   font-weight: 500;
   text-align: left;
 

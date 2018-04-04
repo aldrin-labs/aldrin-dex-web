@@ -29,7 +29,6 @@ export default class PortfolioTableSum extends React.Component<Props> {
             if (!Number.isNaN(selectedSum[key])) {
               res = this.onFloorN(selectedSum[key], 3)
             }
-            console.log('res', res)
             return <PTD key={key}>{res || ''}</PTD>
           })}
         </PTR>
@@ -43,9 +42,9 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
-  padding: 20px 10px;
+  padding: 1.75px 16px 1.75px 10px;
   text-align: left;
 `
 
