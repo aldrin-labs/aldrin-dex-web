@@ -1,6 +1,11 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
+import SvgIcon from '@components/SvgIcon/SvgIcon'
+import {
+  Args,
+  SortArgs,
+} from '@containers/Portfolio/components/PortfolioTable/types'
+import sortIcon from '../../../../icons/arrow.svg'
 
 const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Exchange', value: 'currency' },
@@ -37,6 +42,7 @@ interface Props {
   isSelectAll: boolean
   onSelectAll: Function
   onSortTable: Function
+  currentSort: { arg: SortArgs; key: Args }
 }
 
 export default class PortfolioTableHead extends React.Component<Props> {
@@ -54,7 +60,7 @@ export default class PortfolioTableHead extends React.Component<Props> {
 
   render() {
     const { tableHeadings } = this.state
-    const { isSelectAll, onSelectAll, onSortTable } = this.props
+    const { isSelectAll, onSelectAll, onSortTable, currentSort } = this.props
 
     return (
       <PTHead>
@@ -71,16 +77,16 @@ export default class PortfolioTableHead extends React.Component<Props> {
             </Label>
           </PTH>
           {tableHeadings.map((heading) => {
-            // const isSorted =
-            //   currentSort && currentSort.key === heading.value
+            const isSorted = currentSort && currentSort.key === heading.value
             return (
               <PTH
                 key={heading.name}
                 onClick={() => onSortTable(heading.value)}
-                // style={{ paddingRight: isSorted ? null : '20px' }}
+                style={{ paddingRight: isSorted ? 0 : '20px' }}
               >
                 {heading.name}
-                {/*{isSorted && (
+
+                {isSorted && (
                   <SvgIcon
                     src={sortIcon}
                     style={{
@@ -92,7 +98,7 @@ export default class PortfolioTableHead extends React.Component<Props> {
                           : null,
                     }}
                   />
-                )}*/}
+                )}
               </PTH>
             )
           })}

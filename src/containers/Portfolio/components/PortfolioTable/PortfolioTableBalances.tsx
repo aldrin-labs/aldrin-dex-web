@@ -15,6 +15,7 @@ export default class PortfolioTableBalances extends React.Component {
       tableData,
       selectedBalances,
       onSelectBalance,
+      currentSort,
     } = this.props
 
     return (
@@ -25,6 +26,7 @@ export default class PortfolioTableBalances extends React.Component {
             isSelectAll={isSelectAll}
             onSelectAll={onSelectAll}
             onSortTable={onSortTable}
+            currentSort={currentSort}
           />
 
           <PortfolioTableMain

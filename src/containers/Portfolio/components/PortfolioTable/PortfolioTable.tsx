@@ -272,6 +272,7 @@ export class PortfolioTable extends React.Component<TableProps> {
       isShownChart,
       isUSDCurrently,
       tab,
+      currentSort,
     } = this.state
 
     if (!tableData) return null
@@ -358,6 +359,7 @@ export class PortfolioTable extends React.Component<TableProps> {
             tableData={tableData}
             selectedBalances={selectedBalances}
             onSelectBalance={this.onSelectBalance}
+            currentSort={currentSort}
           />
         )}
 

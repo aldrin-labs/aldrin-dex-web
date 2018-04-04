@@ -135,6 +135,22 @@ const PTR = styled.tr`
   & ${PTD}:nth-child(n+ 3) {
     text-align: right;
   }
+
+  & ${PTD}:nth-of-type(10) {
+    color: #ff687a;
+  }
+
+  & ${PTD}:nth-of-type(11) {
+    color: #ff687a;
+  }
+
+  & ${PTD}:nth-of-type(12) {
+    color: #65c000;
+  }
+
+  & ${PTD}:nth-of-type(13) {
+    color: #65c000;
+  }
 `
 
 const Span = styled.span``
