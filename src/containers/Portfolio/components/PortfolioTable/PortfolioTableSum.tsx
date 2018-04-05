@@ -48,7 +48,7 @@ const PTD = styled.td`
   text-align: left;
 
   position: sticky;
-  top: 0;
+  bottom: 0;
   overflow: hidden;
   background-color: #393e44;
 `
