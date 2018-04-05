@@ -154,8 +154,10 @@ const PTH = styled.th`
   font-weight: 500;
   text-align: left;
 
-  position: relative;
+  position: sticky;
+  top: 0;
   overflow: hidden;
+  background-color: #393e44;
 `
 
 const PTR = styled.tr`

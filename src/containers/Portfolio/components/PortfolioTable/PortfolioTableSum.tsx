@@ -46,6 +46,11 @@ const PTD = styled.td`
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
   text-align: left;
+
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  background-color: #393e44;
 `
 
 const PTBody = styled.tbody`

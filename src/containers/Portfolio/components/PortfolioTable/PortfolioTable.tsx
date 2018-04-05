@@ -215,6 +215,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     if (selectedBalances.length === tableData.length) {
       clonedSum.currency = 'All'
       clonedSum.symbol = '-'
+      clonedSum.percentage = 100
     } else if (selectedBalances.length > 1) {
       clonedSum.currency = 'Selected'
       clonedSum.symbol = '-'
@@ -389,12 +390,12 @@ export class PortfolioTable extends React.Component<TableProps> {
 
         {tab === 'industry' && <PortfolioTableIndustries />}
 
-        {tab === 'main' &&
+        {/*tab === 'main' &&
           isShownChart && (
             <ProfileChart
               style={{ marginLeft: 0, borderTop: '1px solid #fff' }}
             />
-          )}
+          )*/}
       </PTWrapper>
     )
   }

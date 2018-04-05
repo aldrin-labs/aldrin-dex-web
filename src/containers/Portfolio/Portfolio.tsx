@@ -43,6 +43,7 @@ const PORTFOLIO_UPDATE = gql`
 
 const PortfolioContainer = styled.div`
   display: flex;
+  max-height: calc(100vh - 80px);
 `
 
 class PortfolioComponent extends React.Component<Props> {

@@ -28,7 +28,6 @@ export default class PortfolioTableBalances extends React.Component {
             onSortTable={onSortTable}
             currentSort={currentSort}
           />
-
           <PortfolioTableMain
             tableData={tableData}
             selectedBalances={selectedBalances}
@@ -46,6 +45,19 @@ export default class PortfolioTableBalances extends React.Component {
 
 const Wrapper = styled.div`
   width: 100%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
 `
 
 const PTable = styled.table`
