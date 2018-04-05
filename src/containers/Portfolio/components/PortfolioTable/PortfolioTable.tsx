@@ -49,25 +49,33 @@ export class PortfolioTable extends React.Component<TableProps> {
     tab: 'main',
   }
 
-  componentDidMount() {
-    this.setState({ portfolio: MOCK_DATA })
-    this.combineTableData(MOCK_DATA)
-  }
+  // componentDidMount() {
+  //   this.setState({ portfolio: MOCK_DATA })
+  //   this.combineTableData(MOCK_DATA)
+  // }
 
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
       if (!portfolio) return
+      const composeWithMocks = {
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
+      }
 
-      // this.setState({ portfolio })
-      // this.combineTableData(portfolio)
+      this.setState({ portfolio: composeWithMocks })
+      this.combineTableData(composeWithMocks)
     }
 
     if (nextProps.subscription && nextProps.subscription.data) {
       const { portfolio } = nextProps.subscription.data
+      const composeWithMocks = {
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
+      }
 
-      // this.setState({ portfolio })
-      // this.combineTableData(portfolio)
+      this.setState({ portfolio: composeWithMocks })
+      this.combineTableData(composeWithMocks)
     }
 
     if (nextProps.checkboxes) {
@@ -83,7 +91,12 @@ export class PortfolioTable extends React.Component<TableProps> {
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevState.isUSDCurrently !== this.state.isUSDCurrently) {
-      this.combineTableData(MOCK_DATA)
+      const { portfolio } = this.state
+      const composeWithMocks = {
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
+      }
+      this.combineTableData(composeWithMocks)
     }
   }
 
@@ -121,7 +134,6 @@ export class PortfolioTable extends React.Component<TableProps> {
         const { name } = exchange
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        console.log('mainPrice', mainPrice)
 
         const col = {
           currency: name || '',
