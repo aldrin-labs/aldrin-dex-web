@@ -92,11 +92,7 @@ export class PortfolioTable extends React.Component<TableProps> {
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevState.isUSDCurrently !== this.state.isUSDCurrently) {
       const { portfolio } = this.state
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-      }
-      this.combineTableData(composeWithMocks)
+      this.combineTableData(portfolio)
     }
   }
 
@@ -188,16 +184,18 @@ export class PortfolioTable extends React.Component<TableProps> {
         return {
           currency: val.currency,
           symbol: val.symbol,
-          percentage: acc.percentage + val.percentage,
-          price: acc.price + val.price,
-          quantity: acc.quantity + val.quantity,
-          currentPrice: acc.currentPrice + val.currentPrice,
-          daily: acc.daily + val.daily,
-          dailyPerc: acc.dailyPerc + val.dailyPerc,
-          realizedPL: acc.realizedPL + val.realizedPL,
-          realizedPLPerc: acc.realizedPLPerc + val.realizedPLPerc,
-          unrealizedPL: acc.unrealizedPL + val.unrealizedPL,
-          unrealizedPLPerc: acc.unrealizedPLPerc + val.unrealizedPLPerc,
+          percentage: Number(acc.percentage) + Number(val.percentage),
+          price: Number(acc.price) + Number(val.price),
+          quantity: Number(acc.quantity) + Number(val.quantity),
+          currentPrice: Number(acc.currentPrice) + Number(val.currentPrice),
+          daily: Number(acc.daily) + Number(val.daily),
+          dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
+          realizedPL: Number(acc.realizedPL) + Number(val.realizedPL),
+          realizedPLPerc:
+            Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
+          unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
+          unrealizedPLPerc:
+            Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
         }
       },
       {
@@ -402,12 +400,12 @@ export class PortfolioTable extends React.Component<TableProps> {
 
         {tab === 'industry' && <PortfolioTableIndustries />}
 
-        {/*tab === 'main' &&
+        {tab === 'main' &&
           isShownChart && (
             <ProfileChart
               style={{ marginLeft: 0, borderTop: '1px solid #fff' }}
             />
-          )*/}
+          )}
       </PTWrapper>
     )
   }
@@ -467,6 +465,7 @@ const PTWrapper = styled.div`
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
 `
 
 const PTHeadingBlock = styled.div`

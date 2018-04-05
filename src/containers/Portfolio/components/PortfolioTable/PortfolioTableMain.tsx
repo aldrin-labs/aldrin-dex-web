@@ -127,6 +127,7 @@ const PTD = styled.td`
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
+  white-space: nowrap;
 `
 
 const PTR = styled.tr`

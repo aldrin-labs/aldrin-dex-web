@@ -299,7 +299,7 @@ const SProfileChart = styled.div`
   padding: 0 16px;
   border-radius: 3px;
   background-color: #393e44;
-  padding-bottom: 48px;
+  min-height: 40vh;
   margin: 0 auto;
 
   display: flex;
