@@ -44,7 +44,13 @@ export default class PortfolioTableMain extends React.Component<Props> {
     if (!tableData) return null
 
     return (
-      <PTBody>
+      <PTBody
+        style={
+          selectedBalances && selectedBalances.length > 0
+            ? { borderBottom: '1px solid #fff' }
+            : {}
+        }
+      >
         {tableData.map((row, index) => {
           const {
             currency,
@@ -115,7 +121,6 @@ export default class PortfolioTableMain extends React.Component<Props> {
 
 const PTBody = styled.tbody`
   border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`

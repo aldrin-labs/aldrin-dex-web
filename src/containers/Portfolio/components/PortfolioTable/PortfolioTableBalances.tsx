@@ -45,7 +45,8 @@ export default class PortfolioTableBalances extends React.Component {
 
 const Wrapper = styled.div`
   width: 100%;
-  overflow: auto;
+  overflow-y: scroll;
+  background-color: #393e44;
 
   &::-webkit-scrollbar {
     width: 12px;
