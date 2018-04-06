@@ -42,7 +42,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
     currentSort: null,
-    isShownChart: false,
+    isShownChart: true,
     activeKeys: null,
     portfolio: null,
     isUSDCurrently: true,
@@ -328,18 +328,20 @@ export class PortfolioTable extends React.Component<TableProps> {
             </Tab>
 
             <Tab
+              onClick={() => this.onChangeTab('industry')}
+              active={tab === 'industry'}
+            >
+              Industry
+            </Tab>
+
+            <Tab
               onClick={() => this.onChangeTab('rebalance')}
               active={tab === 'rebalance'}
             >
               Rebalance
             </Tab>
 
-            <Tab
-              onClick={() => this.onChangeTab('industry')}
-              active={tab === 'industry'}
-            >
-              Industry
-            </Tab>
+            <Tab disabled>Correlation</Tab>
           </TabContainer>
           {tab === 'main' && (
             <ToggleBtn onClick={this.onToggleChart}>

@@ -4,7 +4,9 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
 
 interface Props {
-  selectedSum: Object
+  selectedSum: {
+    [key: string]: string | number
+  }
 }
 
 export default class PortfolioTableSum extends React.Component<Props> {
@@ -44,7 +46,7 @@ const PTD = styled.td`
   font-family: Roboto;
   font-size: 12px;
   line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 10px 16px 10px 10px;
   text-align: left;
 
   position: sticky;

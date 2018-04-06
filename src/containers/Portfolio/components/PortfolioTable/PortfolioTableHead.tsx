@@ -10,7 +10,7 @@ import sortIcon from '../../../../icons/arrow.svg'
 const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
-  { name: '% of Portfolio', value: 'percentage' },
+  { name: 'Portfolio %', value: 'percentage' },
   { name: 'Price per coin', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
   { name: 'Current USD', value: 'currentPrice' },
@@ -25,7 +25,7 @@ const usdHeadings: Array<{ name: string; value: Args }> = [
 const btcHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
-  { name: '% of Portfolio', value: 'percentage' },
+  { name: 'Portfolio %', value: 'percentage' },
   { name: 'Price per coin', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
   { name: 'Current BTC', value: 'currentPrice' },
@@ -65,7 +65,7 @@ export default class PortfolioTableHead extends React.Component<Props> {
     return (
       <PTHead>
         <PTR>
-          <PTH key="selectAll">
+          <PTH key="selectAll" style={{ textAlign: 'left' }}>
             <Checkbox
               type="checkbox"
               id="selectAll"
@@ -150,9 +150,9 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 1.75px 10px;
+  padding: 10px;
   font-weight: 500;
-  text-align: left;
+  text-align: center;
 
   position: sticky;
   top: 0;
@@ -164,10 +164,6 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
-
-  & ${PTH}:nth-child(n+ 3) {
-    text-align: right;
-  }
 `
 
 const PTHead = styled.thead``
