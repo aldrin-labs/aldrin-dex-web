@@ -49,11 +49,6 @@ export class PortfolioTable extends React.Component<TableProps> {
     tab: 'main',
   }
 
-  // componentDidMount() {
-  //   this.setState({ portfolio: MOCK_DATA })
-  //   this.combineTableData(MOCK_DATA)
-  // }
-
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
@@ -110,23 +105,25 @@ export class PortfolioTable extends React.Component<TableProps> {
     if (!portfolio || !portfolio.assets || !activeKeys) return
     const { assets } = portfolio
 
-    const allSums = assets.reduce((acc, curr) => {
-      return acc + curr.value * curr.asset.priceUSD
+    const allSums = assets.filter(Boolean).reduce((acc, curr) => {
+      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
+      if (!value || !asset || !asset.priceUSD) return null
+      return acc + value * Number(asset.priceUSD)
     }, 0)
 
     const tableData = assets
       .map((row) => {
         const {
-          asset,
-          value,
-          key,
-          exchange,
-          usdRealizedProfit,
-          usdUnrealizedProfit,
+          asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
+          value = 0,
+          key = { name: '' },
+          exchange = '',
+          realizedProfit = 0,
+          unrealizedProfit = 0,
         } =
           row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
-        const { symbol, priceUSD, priceBTC, percentChangeDay } = asset
+        const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
         const { name } = exchange
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
@@ -140,9 +137,9 @@ export class PortfolioTable extends React.Component<TableProps> {
           currentPrice: mainPrice * value || 0,
           daily: this.calcPercentage(priceUSD / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
-          realizedPL: usdRealizedProfit,
+          realizedPL: realizedProfit,
           realizedPLPerc: 0,
-          unrealizedPL: usdUnrealizedProfit,
+          unrealizedPL: unrealizedProfit,
           unrealizedPLPerc: 0,
         }
 
@@ -400,7 +397,9 @@ export class PortfolioTable extends React.Component<TableProps> {
           />
         )}
 
-        {tab === 'industry' && <PortfolioTableIndustries />}
+        {tab === 'industry' && (
+          <PortfolioTableIndustries isUSDCurrently={isUSDCurrently} />
+        )}
 
         {tab === 'main' &&
           isShownChart && (
@@ -449,14 +448,6 @@ const ToggleBtn = styled.button`
   cursor: pointer;
   color: #fff;
   font-size: 1em;
-`
-
-const PTHeading = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  text-align: left;
-  color: #fff;
 `
 
 const PTWrapper = styled.div`
