@@ -12,6 +12,7 @@ import { TableProps, Portfolio } from '../../interfaces'
 import PortfolioTableIndustries from './PortfolioTableIndustries'
 import PortfolioTableRebalance from './PortfolioTableRebalance'
 import PortfolioTableBalances from './PortfolioTableBalances'
+import Correlation from './Correlation/Correlation'
 
 import { MOCK_DATA } from './dataMock'
 
@@ -338,7 +339,12 @@ export class PortfolioTable extends React.Component<TableProps> {
               Rebalance
             </Tab>
 
-            <Tab disabled>Correlation</Tab>
+            <Tab
+              onClick={() => this.onChangeTab('correlation')}
+              active={tab === 'correlation'}
+            >
+              Correlation
+            </Tab>
           </TabContainer>
           {tab === 'main' && (
             <ToggleBtn onClick={this.onToggleChart}>
@@ -400,6 +406,8 @@ export class PortfolioTable extends React.Component<TableProps> {
         {tab === 'industry' && (
           <PortfolioTableIndustries isUSDCurrently={isUSDCurrently} />
         )}
+
+        {tab === 'correlation' && <Correlation />}
 
         {tab === 'main' &&
           isShownChart && (
