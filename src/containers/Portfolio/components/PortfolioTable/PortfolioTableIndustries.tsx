@@ -173,102 +173,134 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   render() {
+    const { isUSDCurrently } = this.props
     const { selectedRows, selectedSum } = this.state
     const isSelectAll =
       (selectedRows && tableData.length === selectedRows.length) || false
 
     return (
-      <PTable>
-        <PTHead>
-          <PTR>
-            <PTH key="selectAll" style={{ textAlign: 'left' }}>
-              <Checkbox
-                type="checkbox"
-                id="selectAll"
-                checked={isSelectAll}
-                onChange={this.onSelectAll}
-              />
-              <Label htmlFor="selectAll">
-                <Span />
-              </Label>
-            </PTH>
-            {tableHeadings.map((heading) => {
-              return <PTH key={heading.name}>{heading.name}</PTH>
-            })}
-          </PTR>
-        </PTHead>
+      <Wrapper>
+        <PTable>
+          <PTHead>
+            <PTR>
+              <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                <Checkbox
+                  type="checkbox"
+                  id="selectAll"
+                  checked={isSelectAll}
+                  onChange={this.onSelectAll}
+                />
+                <Label htmlFor="selectAll">
+                  <Span />
+                </Label>
+              </PTH>
+              {tableHeadings.map((heading) => {
+                return <PTH key={heading.name}>{heading.name}</PTH>
+              })}
+            </PTR>
+          </PTHead>
 
-        <PTBody>
-          {tableData.map((row, idx) => {
-            const {
-              currency,
-              symbol,
-              industry,
-              price,
-              portfolioPerf,
-              industryPerf,
-            } = row
+          <PTBody>
+            {tableData.map((row, idx) => {
+              const {
+                currency,
+                symbol,
+                industry,
+                price,
+                portfolioPerf,
+                industryPerf,
+              } = row
 
-            const isSelected =
-              (selectedRows && selectedRows.indexOf(idx) >= 0) || false
+              const mainSymbol = isUSDCurrently ? (
+                <Icon className="fa fa-usd" />
+              ) : (
+                <Icon className="fa fa-btc" />
+              )
 
-            const cols = [
-              currency,
-              symbol,
-              industry,
-              `${price} $`,
-              `${portfolioPerf}%`,
-              `${industryPerf}%`,
-            ]
+              const isSelected =
+                (selectedRows && selectedRows.indexOf(idx) >= 0) || false
 
-            return (
-              <PTR
-                key={`${currency}${symbol}`}
-                isSelected={isSelected}
-                onClick={() => this.onSelectBalance(idx)}
-              >
-                <PTD key="smt" isSelected={isSelected}>
-                  {this.renderCheckbox(idx)}
-                </PTD>
-                {cols.map((col, idx) => {
-                  if (col.match(/%/g)) {
-                    const color =
-                      Number(col.replace(/%/g, '')) >= 0 ? '#65c000' : '#ff687a'
+              const cols = [
+                currency,
+                symbol,
+                industry,
+                [mainSymbol, `${price}`],
+                `${portfolioPerf}%`,
+                `${industryPerf}%`,
+              ]
 
+              return (
+                <PTR
+                  key={`${currency}${symbol}`}
+                  isSelected={isSelected}
+                  onClick={() => this.onSelectBalance(idx)}
+                >
+                  <PTD key="smt" isSelected={isSelected}>
+                    {this.renderCheckbox(idx)}
+                  </PTD>
+                  {cols.map((col, idx) => {
+                    if (!Array.isArray(col) && col.match(/%/g)) {
+                      const color =
+                        Number(col.replace(/%/g, '')) >= 0
+                          ? '#65c000'
+                          : '#ff687a'
+
+                      return (
+                        <PTD
+                          key={`${col}${idx}`}
+                          style={{ color }}
+                          isSelected={isSelected}
+                        >
+                          {col}
+                        </PTD>
+                      )
+                    }
                     return (
-                      <PTD
-                        key={`${col}${idx}`}
-                        style={{ color }}
-                        isSelected={isSelected}
-                      >
+                      <PTD key={`${col}${idx}`} isSelected={isSelected}>
                         {col}
                       </PTD>
                     )
-                  }
-                  return (
-                    <PTD key={`${col}${idx}`} isSelected={isSelected}>
-                      {col}
-                    </PTD>
-                  )
-                })}
-              </PTR>
-            )
-          })}
-        </PTBody>
-        <PortfolioTableSum selectedSum={selectedSum} />
-      </PTable>
+                  })}
+                </PTR>
+              )
+            })}
+          </PTBody>
+          {selectedSum && <PortfolioTableSum selectedSum={selectedSum} />}
+        </PTable>
+      </Wrapper>
     )
   }
 }
 
+const Icon = styled.i`
+  padding-right: 5px;
+`
+
+const Wrapper = styled.div`
+  width: 100%;
+  overflow-y: scroll;
+  background-color: #393e44;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
+`
+
 const PTable = styled.table`
+  table-layout: fixed;
   border-collapse: collapse;
-  width: 60%;
 `
 
 const PTBody = styled.tbody`
   border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`
@@ -276,9 +308,12 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
-  padding: 20px 10px;
+  padding: 1.75px 16px 1.75px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: right;
 `
 
 const Span = styled.span``
@@ -318,14 +353,17 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 20px 10px;
+  padding: 10px;
   font-weight: 500;
-  text-align: left;
+  text-align: center;
 
-  position: relative;
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  background-color: #393e44;
 `
 
 const PTR = styled.tr`

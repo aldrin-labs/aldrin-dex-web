@@ -4,7 +4,7 @@ import { RowT } from './types'
 
 interface Props {
   tableData: RowT[] | null
-  selectedBalances: string[] | null
+  selectedBalances: number[] | null
   onSelectBalance: Function
   isUSDCurrently: boolean
 }
@@ -25,6 +25,25 @@ export default class PortfolioTableMain extends React.Component<Props> {
     )
   }
 
+  addZerosToEnd = (num: string): string => {
+    const reg = /(?=\.[0-9]+)\.[0-9]+/g
+    const diff = this.props.isUSDCurrently ? 3 : 9
+
+    if (reg.test(num)) {
+      const [str] = num.match(reg) || ['']
+      let tmp = str
+      const len = str.length
+      for (let i = 0; i < diff - len; i++) {
+        tmp += 0
+      }
+      const [head] = num.match(/[0-9]+\./g) || ['']
+      let woPoint = head.slice(0, -1)
+      const result = (woPoint += tmp)
+      return result || ''
+    }
+    return num
+  }
+
   roundUSDOff = (num: number): string => {
     const reg = this.props.isUSDCurrently
       ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
@@ -33,7 +52,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
       const [price] = String(num).match(reg)
       return price
     } else if (num > 0) {
-      return String(num)
+      return this.addZerosToEnd(String(num))
     } else {
       return '0'
     }
@@ -93,7 +112,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
 
           return (
             <PTR
-              key={`${currency}${symbol}`}
+              key={`${currency}${symbol}${quantity}`}
               isSelected={isSelected}
               onClick={() => this.props.onSelectBalance(index)}
             >
