@@ -14,12 +14,12 @@ const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Price per coin', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
   { name: 'Current USD', value: 'currentPrice' },
-  { name: '24hr chg USD', value: 'daily' },
-  { name: '24hr chg USD %', value: 'dailyPerc' },
+//  { name: '24hr chg USD', value: 'daily' },
+//  { name: '24hr chg USD %', value: 'dailyPerc' },
   { name: 'Realized P&L', value: 'realizedPL' },
-  { name: 'Realized P&L %', value: 'realizedPLPerc' },
+//  { name: 'Realized P&L %', value: 'realizedPLPerc' },
   { name: 'Unrealized P&L', value: 'unrealizedPL' },
-  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
+//  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
 ]
 
 const btcHeadings: Array<{ name: string; value: Args }> = [
@@ -29,12 +29,12 @@ const btcHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Price per coin', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
   { name: 'Current BTC', value: 'currentPrice' },
-  { name: '24hr chg BTC', value: 'daily' },
-  { name: '24hr chg BTC %', value: 'dailyPerc' },
+//  { name: '24hr chg BTC', value: 'daily' },
+//  { name: '24hr chg BTC %', value: 'dailyPerc' },
   { name: 'Realized P&L', value: 'realizedPL' },
-  { name: 'Realized P&L %', value: 'realizedPLPerc' },
+//  { name: 'Realized P&L %', value: 'realizedPLPerc' },
   { name: 'Unrealized P&L', value: 'unrealizedPL' },
-  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
+//  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
 ]
 
 interface Props {
