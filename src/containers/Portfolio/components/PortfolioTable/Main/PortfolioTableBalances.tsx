@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import PortfolioTableMain from './PortfolioTableMain'
-import PortfolioTableSum from './PortfolioTableSum'
+import PortfolioTableSum from '../PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
 
 export default class PortfolioTableBalances extends React.Component {

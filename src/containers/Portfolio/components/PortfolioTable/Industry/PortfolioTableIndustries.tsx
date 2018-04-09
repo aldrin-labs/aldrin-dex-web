@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import PortfolioTableSum from './PortfolioTableSum'
+import PortfolioTableSum from '../PortfolioTableSum'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },

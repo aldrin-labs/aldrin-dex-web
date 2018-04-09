@@ -20,8 +20,10 @@ const PORTFOLIO_UPDATE = gql`
         exchangeId
         keyId
         value
-        realizedProfit
-        unrealizedProfit
+        btcRealizedProfit
+        btcUnrealizedProfit
+        usdRealizedProfit
+        usdUnrealizedProfit
         totalProfit
         asset {
           name

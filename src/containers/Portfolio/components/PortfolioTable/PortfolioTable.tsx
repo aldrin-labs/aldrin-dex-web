@@ -9,9 +9,9 @@ import filterListIcon from '../../../../icons/filter-list.svg'
 import gridLoader from '../../../../icons/grid.svg'
 import { RowT, State, Args } from './types'
 import { TableProps, Portfolio } from '../../interfaces'
-import PortfolioTableIndustries from './PortfolioTableIndustries'
-import PortfolioTableRebalance from './PortfolioTableRebalance'
-import PortfolioTableBalances from './PortfolioTableBalances'
+import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
+import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
+import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Correlation from './Correlation/Correlation'
 
 import { MOCK_DATA } from './dataMock'
@@ -119,8 +119,10 @@ export class PortfolioTable extends React.Component<TableProps> {
           value = 0,
           key = { name: '' },
           exchange = '',
-          realizedProfit = 0,
-          unrealizedProfit = 0,
+          usdRealizedProfit = 0,
+          btcRealizedProfit = 0,
+          usdUnrealizedProfit = 0,
+          btcUnrealizedProfit = 0,
         } =
           row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
@@ -128,6 +130,12 @@ export class PortfolioTable extends React.Component<TableProps> {
         const { name } = exchange
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
+        const realizedProfit = isUSDCurrently
+          ? usdRealizedProfit
+          : btcRealizedProfit
+        const unrealizedProfit = isUSDCurrently
+          ? usdUnrealizedProfit
+          : btcUnrealizedProfit
 
         const col = {
           currency: name || '',
