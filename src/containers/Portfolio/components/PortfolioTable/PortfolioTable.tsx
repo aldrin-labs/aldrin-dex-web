@@ -264,19 +264,22 @@ export class PortfolioTable extends React.Component<TableProps> {
     const { tableData, currentSort } = this.state
     if (!tableData) return
 
+    const stringKey =
+      key === 'currency' || key === 'symbol' || key === 'industry'
+
     const newData = tableData.slice().sort((a, b) => {
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
           this.setState({ currentSort: { key, arg: 'DESC' } })
 
-          if (key === 'currency' || key === 'symbol') {
+          if (stringKey) {
             return this.onSortStrings(b[key], a[key])
           }
           return b[key] - a[key]
         } else {
           this.setState({ currentSort: { key, arg: 'ASC' } })
 
-          if (key === 'currency' || key === 'symbol') {
+          if (stringKey) {
             return this.onSortStrings(a[key], b[key])
           }
           return a[key] - b[key]
@@ -284,7 +287,7 @@ export class PortfolioTable extends React.Component<TableProps> {
       }
       this.setState({ currentSort: { key, arg: 'ASC' } })
 
-      if (key === 'currency' || key === 'symbol') {
+      if (stringKey) {
         return this.onSortStrings(a[key], b[key])
       }
       return a[key] - b[key]
@@ -354,17 +357,13 @@ export class PortfolioTable extends React.Component<TableProps> {
               Correlation
             </Tab>
           </TabContainer>
-          {tab === 'main' && (
-            <ToggleBtn onClick={this.onToggleChart}>
-              <SvgIcon src={filterListIcon} width={24} height={24} />
-            </ToggleBtn>
-          )}
+          <ToggleBtn onClick={this.onToggleChart}>
+            <SvgIcon src={filterListIcon} width={24} height={24} />
+          </ToggleBtn>
         </PTHeadingBlock>
 
         <PTHeadingBlock>
-          {tab === 'main' && (
-            <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
-          )}
+          <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
 
           <Mutation mutation={UPDATE_PORTFOLIO}>
             {(updatePortfolio, { data, loading }) => {
@@ -395,8 +394,6 @@ export class PortfolioTable extends React.Component<TableProps> {
           </div>
         )}
 
-        {tab === 'rebalance' && <PortfolioTableRebalance />}
-
         {tab === 'main' && (
           <PortfolioTableBalances
             isUSDCurrently={isUSDCurrently}
@@ -412,8 +409,13 @@ export class PortfolioTable extends React.Component<TableProps> {
         )}
 
         {tab === 'industry' && (
-          <PortfolioTableIndustries isUSDCurrently={isUSDCurrently} />
+          <PortfolioTableIndustries
+            isUSDCurrently={isUSDCurrently}
+            onSortTable={this.onSortTable}
+          />
         )}
+
+        {tab === 'rebalance' && <PortfolioTableRebalance />}
 
         {tab === 'correlation' && <Correlation />}
 

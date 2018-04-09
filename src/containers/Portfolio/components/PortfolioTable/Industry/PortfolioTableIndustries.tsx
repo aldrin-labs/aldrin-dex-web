@@ -1,6 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import sortIcon from '../../../../../icons/arrow.svg'
+import SvgIcon from '@components/SvgIcon/SvgIcon'
 import PortfolioTableSum from '../PortfolioTableSum'
+import { tableData } from './mocks'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -11,69 +14,49 @@ const tableHeadings = [
   { name: 'Industry performance', value: 'industryPerf' },
 ]
 
-const tableData = [
-  {
-    currency: 'Bitrex',
-    symbol: 'ETH',
-    industry: 'Smart contracts',
-    price: 15000,
-    portfolioPerf: 50,
-    industryPerf: 500,
-  },
-  {
-    currency: 'Poloniex',
-    symbol: 'LTC',
-    industry: 'Payment',
-    price: 10000,
-    portfolioPerf: 70,
-    industryPerf: -20,
-  },
-  {
-    currency: 'Bitrex',
-    symbol: 'XRP',
-    industry: 'Payment',
-    price: 5000,
-    portfolioPerf: 50,
-    industryPerf: -20,
-  },
-  {
-    currency: 'GDAX',
-    symbol: 'ETH',
-    industry: 'Smart contracts',
-    price: 15000,
-    portfolioPerf: 25,
-    industryPerf: 500,
-  },
-  {
-    currency: 'Bitrex',
-    symbol: 'Zcash',
-    industry: 'Privacy coin',
-    price: 5000,
-    portfolioPerf: 10,
-    industryPerf: 500,
-  },
-]
-
 const defaultSelectedSum = {
   currency: '',
   symbol: '',
   industry: '',
-  price: '',
-  portfolioPerf: '',
-  industryPerf: '',
+  price: 0,
+  portfolioPerf: 0,
+  industryPerf: 0,
 }
 
-interface Props {}
+interface Obj {
+  currency: string
+  symbol: string
+  industry: string
+  price: number
+  portfolioPerf: number
+  industryPerf: number
+}
+
+interface Props {
+  isUSDCurrently: boolean
+}
 
 interface State {
+  selectedSum: Obj | null
   selectedRows: number[] | null
+  tableData: Obj[]
+  currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }
 
 export default class PortfolioTableIndustries extends React.Component<
   Props,
   State
 > {
-  state: State = { selectedRows: null, selectedSum: defaultSelectedSum }
+  state: State = {
+    tableData,
+    currentSort: null,
+    selectedRows: null,
+    selectedSum: defaultSelectedSum,
+  }
+
+  onSortStrings = (a: string, b: string): number => {
+    return a.localeCompare(b)
+  }
 
   renderCheckbox = (idx: number) => {
     const { selectedRows } = this.state
@@ -94,6 +77,42 @@ export default class PortfolioTableIndustries extends React.Component<
     )
   }
 
+  onSortTable = (key: Args) => {
+    const { tableData, currentSort } = this.state
+    if (!tableData) return
+
+    const stringKey =
+      key === 'currency' || key === 'symbol' || key === 'industry'
+
+    const newData = tableData.slice().sort((a, b) => {
+      if (currentSort && currentSort.key === key) {
+        if (currentSort.arg === 'ASC') {
+          this.setState({ currentSort: { key, arg: 'DESC' } })
+
+          if (stringKey) {
+            return this.onSortStrings(b[key], a[key])
+          }
+          return b[key] - a[key]
+        } else {
+          this.setState({ currentSort: { key, arg: 'ASC' } })
+
+          if (stringKey) {
+            return this.onSortStrings(a[key], b[key])
+          }
+          return a[key] - b[key]
+        }
+      }
+      this.setState({ currentSort: { key, arg: 'ASC' } })
+
+      if (stringKey) {
+        return this.onSortStrings(a[key], b[key])
+      }
+      return a[key] - b[key]
+    })
+
+    this.setState({ tableData: newData })
+  }
+
   onSelectBalance = (idx: number) => {
     const selectedRows =
       (this.state.selectedRows && this.state.selectedRows.slice()) || []
@@ -109,6 +128,7 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   calculateSum = (selectedRows: number[] | null) => {
+    const { tableData } = this.state
     if (!selectedRows) {
       this.setState({ selectedSum: defaultSelectedSum })
       return
@@ -140,8 +160,8 @@ export default class PortfolioTableIndustries extends React.Component<
     this.setState({ selectedSum: validateSum })
   }
 
-  onValidateSum = (reducedSum: Object) => {
-    const { selectedRows } = this.state
+  onValidateSum = (reducedSum: Obj) => {
+    const { selectedRows, tableData } = this.state
     if (!selectedRows) return null
 
     if (selectedRows.length === tableData.length) {
@@ -158,6 +178,7 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   onSelectAll = () => {
+    const { tableData } = this.state
     const rowQuantity = tableData.length
     let allRows
     const selectedRows =
@@ -174,7 +195,7 @@ export default class PortfolioTableIndustries extends React.Component<
 
   render() {
     const { isUSDCurrently } = this.props
-    const { selectedRows, selectedSum } = this.state
+    const { selectedRows, selectedSum, tableData, currentSort } = this.state
     const isSelectAll =
       (selectedRows && tableData.length === selectedRows.length) || false
 
@@ -195,7 +216,34 @@ export default class PortfolioTableIndustries extends React.Component<
                 </Label>
               </PTH>
               {tableHeadings.map((heading) => {
-                return <PTH key={heading.name}>{heading.name}</PTH>
+                const isSorted =
+                  currentSort && currentSort.key === heading.value
+
+                return (
+                  <PTH
+                    key={heading.name}
+                    onClick={() => this.onSortTable(heading.value)}
+                    style={{ paddingRight: isSorted ? 0 : '16px' }}
+                  >
+                    {heading.name}
+
+                    {isSorted && (
+                      <SvgIcon
+                        src={sortIcon}
+                        width={12}
+                        height={12}
+                        style={{
+                          verticalAlign: 'middle',
+                          marginLeft: '4px',
+                          transform:
+                            currentSort && currentSort.arg === 'ASC'
+                              ? 'rotate(180deg)'
+                              : null,
+                        }}
+                      />
+                    )}
+                  </PTH>
+                )
               })}
             </PTR>
           </PTHead>

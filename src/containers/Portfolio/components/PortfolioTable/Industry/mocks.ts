@@ -1,0 +1,42 @@
+export const tableData = [
+  {
+    currency: 'Bitrex',
+    symbol: 'ETH',
+    industry: 'Smart contracts',
+    price: 15000,
+    portfolioPerf: 50,
+    industryPerf: 500,
+  },
+  {
+    currency: 'Poloniex',
+    symbol: 'LTC',
+    industry: 'Payment',
+    price: 10000,
+    portfolioPerf: 70,
+    industryPerf: -20,
+  },
+  {
+    currency: 'Bitrex',
+    symbol: 'XRP',
+    industry: 'Payment',
+    price: 5000,
+    portfolioPerf: 50,
+    industryPerf: -20,
+  },
+  {
+    currency: 'GDAX',
+    symbol: 'ETH',
+    industry: 'Smart contracts',
+    price: 15000,
+    portfolioPerf: 25,
+    industryPerf: 500,
+  },
+  {
+    currency: 'Bitrex',
+    symbol: 'Zcash',
+    industry: 'Privacy coin',
+    price: 5000,
+    portfolioPerf: 10,
+    industryPerf: 500,
+  },
+]

@@ -30,6 +30,7 @@ const PORTFOLIO_UPDATE = gql`
           symbol
           priceUSD
           percentChangeDay
+          industry
         }
         exchange {
           name
