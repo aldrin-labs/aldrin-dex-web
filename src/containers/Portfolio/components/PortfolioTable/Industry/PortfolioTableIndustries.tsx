@@ -160,7 +160,7 @@ export default class PortfolioTableIndustries extends React.Component<
     this.setState({ selectedSum: validateSum })
   }
 
-  onValidateSum = (reducedSum: Obj) => {
+  onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, tableData } = this.state
     if (!selectedRows) return null
 

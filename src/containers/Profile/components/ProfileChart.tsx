@@ -5,28 +5,12 @@ import {
   YAxis,
   VerticalGridLines,
   AreaSeries,
-  FlexibleWidthXYPlot,
+  FlexibleXYPlot,
   Crosshair,
 } from 'react-vis'
 import Highlight from './Highlight'
 import { Props, State } from './annotations'
 import { yearData } from './chartMocks'
-
-function getRandomSeriesData(total: number) {
-  const result = []
-  let lastY = Math.random() * 40 - 20
-  let y
-  const firstY = lastY
-  for (let i = 0; i < total; i++) {
-    y = Math.random() * firstY - firstY / 2 + lastY
-    result.push({
-      x: i,
-      y,
-    })
-    lastY = y
-  }
-  return result
-}
 
 function calculateMonths(v: number) {
   switch (v) {
@@ -182,9 +166,9 @@ export default class ProfileChart extends React.Component<Props, State> {
 
         {/*TODO: make a chart */}
         <Chart>
-          <FlexibleWidthXYPlot
+          <FlexibleXYPlot
             animation
-            height={195}
+            height={150}
             onMouseLeave={this._onMouseLeave}
             xDomain={
               lastDrawLocation && [
@@ -241,29 +225,18 @@ export default class ProfileChart extends React.Component<Props, State> {
                 })
               }}
             />
-          </FlexibleWidthXYPlot>
+          </FlexibleXYPlot>
         </Chart>
       </SProfileChart>
     )
   }
 }
 
-const ChartTooltip = styled.span`
-  font-family: Roboto;
-  font-size: 18px;
-  font-weight: 500;
-  text-align: left;
-  color: #fff;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #0006;
-  padding: 8px;
-`
-
 const Chart = styled.div`
   width: 100%;
-  height: 195px;
-  margin: 0 auto;
+  height: 100%;
+  min-height: 5em;
+  max-height: 10em;
 `
 
 const Hr = styled.hr`
@@ -305,13 +278,6 @@ const SProfileChart = styled.div`
   display: flex;
   flex-direction: column;
   border-top: 1px solid #fff;
-`
-const ProfileChartHeading = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  color: #ffffff;
-  margin-top: 16px;
 `
 
 const SuppliesBlock = styled.div`
