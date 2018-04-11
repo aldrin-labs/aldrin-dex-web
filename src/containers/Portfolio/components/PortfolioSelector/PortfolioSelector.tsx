@@ -103,7 +103,9 @@ class PortfolioSelector extends React.Component<Props, State> {
           <Checkbox
             type="checkbox"
             id="all"
+            defaultChecked={true}
             checked={isCheckedAll}
+            onChange={() => {}}
             onClick={this.onToggleAll}
           />
           <Label htmlFor="all">
@@ -123,7 +125,9 @@ class PortfolioSelector extends React.Component<Props, State> {
                 <Checkbox
                   type="checkbox"
                   id={checkbox}
+                  defaultChecked={true}
                   checked={isChecked}
+                  onChange={() => {}}
                   onClick={() => this.onToggleCheckbox(i)}
                 />
                 <Label htmlFor={checkbox}>

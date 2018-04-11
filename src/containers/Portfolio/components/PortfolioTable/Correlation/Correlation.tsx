@@ -43,7 +43,7 @@ export default class Correlation extends React.Component {
               const rowValue = mocks[row]
 
               return (
-                <Row>
+                <Row key={row}>
                   {rowValue && (
                     <Item style={{ textAlign: 'right', border: 'none' }}>
                       {rowValue.name}

@@ -63,7 +63,7 @@ export default class PortfolioTableIndustries extends React.Component<
     const isSelected = (selectedRows && selectedRows.indexOf(idx) >= 0) || false
 
     return (
-      <PTable>
+      <React.Fragment>
         <Checkbox
           type="checkbox"
           id={idx}
@@ -73,7 +73,7 @@ export default class PortfolioTableIndustries extends React.Component<
         <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
-      </PTable>
+      </React.Fragment>
     )
   }
 
@@ -260,9 +260,9 @@ export default class PortfolioTableIndustries extends React.Component<
               } = row
 
               const mainSymbol = isUSDCurrently ? (
-                <Icon className="fa fa-usd" />
+                <Icon className="fa fa-usd" key={`${idx}usd`} />
               ) : (
-                <Icon className="fa fa-btc" />
+                <Icon className="fa fa-btc" key={`${idx}btc`} />
               )
 
               const isSelected =

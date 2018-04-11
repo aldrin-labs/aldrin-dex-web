@@ -90,9 +90,9 @@ export default class PortfolioTableMain extends React.Component<Props> {
             (selectedBalances && selectedBalances.indexOf(index) >= 0) || false
 
           const mainSymbol = isUSDCurrently ? (
-            <Icon className="fa fa-usd" />
+            <Icon className="fa fa-usd" key={`${index}usd`} />
           ) : (
-            <Icon className="fa fa-btc" />
+            <Icon className="fa fa-btc" key={`${index}btc`} />
           )
 
           const cols = [
@@ -102,12 +102,12 @@ export default class PortfolioTableMain extends React.Component<Props> {
             [mainSymbol, `${this.roundUSDOff(price)}`],
             quantity,
             [mainSymbol, `${this.roundUSDOff(currentPrice)}`],
-//            daily,
-//            `${dailyPerc} %`,
+            //            daily,
+            //            `${dailyPerc} %`,
             realizedPL,
-//            `${realizedPLPerc} %`,
+            //            `${realizedPLPerc} %`,
             unrealizedPL,
-//            `${unrealizedPLPerc} %`,
+            //            `${unrealizedPLPerc} %`,
           ]
 
           return (
@@ -117,7 +117,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
               onClick={() => this.props.onSelectBalance(index)}
             >
               <PTD
-                key="smt"
+                key={`${index}smt`}
                 isSelected={isSelected}
                 style={{ textAlign: 'right' }}
               >
@@ -125,7 +125,10 @@ export default class PortfolioTableMain extends React.Component<Props> {
               </PTD>
               {cols.map((col, idx) => {
                 return (
-                  <PTD key={`${col}${idx}`} isSelected={isSelected}>
+                  <PTD
+                    key={`${currency}${symbol}${quantity}${col}${idx}`}
+                    isSelected={isSelected}
+                  >
                     {col}
                   </PTD>
                 )
