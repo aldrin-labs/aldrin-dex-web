@@ -97,7 +97,7 @@ class PortfolioSelector extends React.Component<Props, State> {
 
     return (
       <AccountsWalletsBlock>
-        <AccountsWalletsHeading>Accounts & Wallets</AccountsWalletsHeading>
+        <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
 
         <SelectAll>
           <Checkbox
@@ -211,7 +211,7 @@ const AccountsList = styled.ul`
 `
 
 const AccountsWalletsBlock = styled.div`
-  min-width: 280px;
+  min-width: 250px;
   min-height: 90vh;
   background-color: #2d3136;
   padding: 16px;

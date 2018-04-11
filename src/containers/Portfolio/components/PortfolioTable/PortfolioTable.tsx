@@ -363,21 +363,25 @@ export class PortfolioTable extends React.Component<TableProps> {
         </PTHeadingBlock>
 
         <PTHeadingBlock>
-          <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
+          {tab !== 'correlation' && (
+            <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
+          )}
 
-          <Mutation mutation={UPDATE_PORTFOLIO}>
-            {(updatePortfolio, { data, loading }) => {
-              return (
-                <ToggleBtn onClick={updatePortfolio}>
-                  {loading ? (
-                    <SvgIcon src={gridLoader} width={24} height={24} />
-                  ) : (
-                    'Refresh'
-                  )}
-                </ToggleBtn>
-              )
-            }}
-          </Mutation>
+          {tab === 'main' && (
+            <Mutation mutation={UPDATE_PORTFOLIO}>
+              {(updatePortfolio, { data, loading }) => {
+                return (
+                  <ToggleBtn onClick={updatePortfolio}>
+                    {loading ? (
+                      <SvgIcon src={gridLoader} width={24} height={24} />
+                    ) : (
+                      'Refresh'
+                    )}
+                  </ToggleBtn>
+                )
+              }}
+            </Mutation>
+          )}
         </PTHeadingBlock>
 
         {tab === 'rebalance' && (

@@ -23,7 +23,16 @@ class Profile extends React.Component<Props, {}> {
             <ProfileHeading coin={assetById} />
             <ProfileLinks coin={assetById} />
           </SWrapper>
-          <ProfileChart coin={assetById} />
+          <ProfileChart
+            coin={assetById}
+            style={{
+              maxWidth: '900px',
+              marginTop: '24px',
+              borderTop: 'none',
+              marginLeft: '24px',
+            }}
+            height={195}
+          />
         </SProfile>
 
         <Divider>
@@ -110,6 +119,8 @@ export const ProfileQuery = gql`
   }
 `
 
-const options = ({ match }) => ({ variables: { id: match ? match.params.id : '' } })
+const options = ({ match }) => ({
+  variables: { id: match ? match.params.id : '' },
+})
 
 export const ProfileWrapper = graphql(ProfileQuery, { options })(Profile)

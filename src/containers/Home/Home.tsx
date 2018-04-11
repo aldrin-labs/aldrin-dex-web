@@ -36,9 +36,9 @@ class Home extends React.Component<Props, {}> {
 
     const layout = [
       { i: 'table', x: 0, y: 0, w: 6.5, h: 6, static: true },
-      { i: 'calculator', x: 7, y: 0, w: 3.5, h: 2 },
-      { i: 'dominance_chart', x: 7, y: 4, w: 3.5, h: 3.5 },
-      { i: 'treeMap', x: 4, y: 7, w: 3.5, h: 3 },
+      { i: 'calculator', x: 7, y: 0, w: 3.5, h: 2.5 },
+      { i: 'dominance_chart', x: 7, y: 4.5, w: 3.5, h: 3.5 },
+      { i: 'treeMap', x: 7, y: 9, w: 3.5, h: 3 },
       { i: 'marketCap', x: 0, y: 7, w: 3.5, h: 3 },
     ]
 

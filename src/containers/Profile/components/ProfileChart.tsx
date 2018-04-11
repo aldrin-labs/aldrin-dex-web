@@ -66,7 +66,6 @@ const chartBtns = [
 ]
 
 export default class ProfileChart extends React.Component<Props, State> {
-  _wrapper: HTMLDivElement | undefined
   state: State = {
     activeChart: 4,
     lastDrawLocation: null,
@@ -110,7 +109,7 @@ export default class ProfileChart extends React.Component<Props, State> {
     }
 
     return (
-      <SProfileChart ref={(ref) => (this._wrapper = ref)}>
+      <SProfileChart style={style}>
         {/*TODO: need refactoring, need real data */}
         <SuppliesBlock>
           <SupplyBlock>
@@ -167,7 +166,7 @@ export default class ProfileChart extends React.Component<Props, State> {
         <Chart>
           <FlexibleXYPlot
             animation
-            height={150}
+            height={this.props.height || 195}
             onMouseLeave={this._onMouseLeave}
             xDomain={
               lastDrawLocation && [
@@ -271,7 +270,7 @@ const SProfileChart = styled.div`
   padding: 0 16px;
   border-radius: 3px;
   background-color: #393e44;
-  min-height: 40vh;
+  min-height: 38vh;
   margin: 0 auto;
 
   display: flex;
