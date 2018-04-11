@@ -396,6 +396,7 @@ export class PortfolioTable extends React.Component<TableProps> {
 
         {tab === 'main' && (
           <PortfolioTableBalances
+            isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
             isSelectAll={isSelectAll}
             selectedSum={selectedSum}
@@ -422,7 +423,11 @@ export class PortfolioTable extends React.Component<TableProps> {
         {tab === 'main' &&
           isShownChart && (
             <ProfileChart
-              style={{ marginLeft: 0, borderTop: '1px solid #fff' }}
+              style={{
+                marginLeft: 0,
+                borderTop: '1px solid #fff',
+                minHeight: '30vh',
+              }}
             />
           )}
       </PTWrapper>

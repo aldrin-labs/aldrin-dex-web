@@ -7,6 +7,7 @@ import PortfolioTableHead from './PortfolioTableHead'
 export default class PortfolioTableBalances extends React.Component {
   render() {
     const {
+      isShownChart,
       isUSDCurrently,
       isSelectAll,
       selectedSum,
@@ -19,7 +20,7 @@ export default class PortfolioTableBalances extends React.Component {
     } = this.props
 
     return (
-      <Wrapper>
+      <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
         <PTable>
           <PortfolioTableHead
             isUSDCurrently={isUSDCurrently}

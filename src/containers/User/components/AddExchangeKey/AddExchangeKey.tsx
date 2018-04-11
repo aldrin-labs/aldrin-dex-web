@@ -58,6 +58,7 @@ const formikEnhancer = withFormik({
     try {
       await addExchangeKey({ variables })
       console.log(variables)
+
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
@@ -140,7 +141,7 @@ const AddExchangeKeyComponent = ({
             id: 'exchange',
           }}
         >
-          {console.log(2222, values)}
+          {console.log(values)}
           <MenuItem value="">
             <em>None</em>
           </MenuItem>

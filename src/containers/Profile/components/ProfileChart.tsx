@@ -164,7 +164,6 @@ export default class ProfileChart extends React.Component<Props, State> {
 
         <Hr />
 
-        {/*TODO: make a chart */}
         <Chart>
           <FlexibleXYPlot
             animation
