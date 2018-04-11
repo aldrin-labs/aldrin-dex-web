@@ -384,20 +384,6 @@ export class PortfolioTable extends React.Component<TableProps> {
           )}
         </PTHeadingBlock>
 
-        {tab === 'rebalance' && (
-          <div
-            style={{
-              width: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-            }}
-          >
-            <SubHeading>Current portfolio</SubHeading>
-            <SubHeading>Rebalanced portfolio</SubHeading>
-          </div>
-        )}
-
         {tab === 'main' && (
           <PortfolioTableBalances
             isShownChart={isShownChart}

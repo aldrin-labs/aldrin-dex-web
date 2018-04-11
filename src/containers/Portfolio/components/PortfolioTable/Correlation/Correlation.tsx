@@ -34,7 +34,7 @@ export default class Correlation extends React.Component {
         <Table>
           <thead>
             <Row>
-              <HeadItem />
+              <HeadItem style={{ width: '5em' }} />
               {mocks.map((el) => <HeadItem key={el.name}>{el.name}</HeadItem>)}
             </Row>
           </thead>
@@ -45,7 +45,9 @@ export default class Correlation extends React.Component {
               return (
                 <Row>
                   {rowValue && (
-                    <Item style={{ textAlign: 'right' }}>{rowValue.name}</Item>
+                    <Item style={{ textAlign: 'right', border: 'none' }}>
+                      {rowValue.name}
+                    </Item>
                   )}
                   {mocks.map((el) => {
                     const value = this.floorN(rowValue.value / el.value, 2)
@@ -77,40 +79,43 @@ export default class Correlation extends React.Component {
 
 const HeadItem = styled.th`
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 0.75em;
   color: #fff;
   font-weight: 500;
   padding: 10px;
   text-align: center;
-  width: 100px;
+  width: 3em;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
 `
 
 const Row = styled.tr``
 
 const Item = styled.td`
   background-color: ${(props: { color?: string }) => {
-    if (props.color === 'green') return 'rgb(101, 192, 0)'
-    if (props.color === 'red') return 'rgb(255, 104, 122)'
-    if (props.color === 'blue') return '#2d3136'
+    if (props.color === 'green') return '#4caf50'
+    if (props.color === 'red') return '#f44336'
+    if (props.color === 'blue') return '#2196f3'
     return 'transparent'
   }};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 0.75em;
   color: #fff;
   font-weight: 500;
   padding: 10px;
   text-align: center;
-  width: 100px;
+  width: 3em;
   overflow: hidden;
   white-space: nowrap;
+  border: 1px solid #fff;
 `
 
 const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
+  width: 800px;
 `
 
 const Wrapper = styled.div`
