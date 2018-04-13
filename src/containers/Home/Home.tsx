@@ -92,12 +92,11 @@ export const HomeQuery = gql`
         _id
         name
         symbol
-        nameTrue
         priceUSD
         maxSupply
         totalSupply
         availableSupply
-        priceUSD
+        priceBTC
         percentChangeDay
       }
     }
