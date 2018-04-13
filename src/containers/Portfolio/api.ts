@@ -40,10 +40,15 @@ export const getPortfolioQuery = gql`
           btcUnrealizedProfit
           btcTotalProfit
           asset {
+            _id
             name
             symbol
             priceUSD
             priceBTC
+            industry {
+              name
+              performance
+            }
           }
           exchange {
             name

@@ -3,7 +3,9 @@ import styled from 'styled-components'
 import sortIcon from '../../../../../icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { tableData } from './mocks'
+import { MOCKS } from './mocks'
+import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
+import { IndProps } from '@containers/Portfolio/interfaces'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -32,26 +34,116 @@ interface Obj {
   industryPerf: number
 }
 
-interface Props {
-  isUSDCurrently: boolean
-}
-
 interface State {
   selectedSum: Obj | null
   selectedRows: number[] | null
-  tableData: Obj[]
+  industryData: Obj[] | null
+  portfolio: Portfolio | null
+  activeKeys: number[] | null
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }
 
 export default class PortfolioTableIndustries extends React.Component<
-  Props,
+  IndProps,
   State
 > {
   state: State = {
-    tableData,
+    activeKeys: null,
+    portfolio: null,
+    industryData: null,
     currentSort: null,
     selectedRows: null,
     selectedSum: defaultSelectedSum,
+  }
+
+  componentDidMount() {
+    const { data } = this.props
+    const { portfolio } = data
+    if (!portfolio || !portfolio.assets) return
+
+    const composeWithMocks = {
+      ...portfolio,
+      assets: portfolio.assets.concat(MOCKS),
+    }
+
+    console.log('componentDidMount composeWithMocks', composeWithMocks)
+
+    this.setState({ portfolio: composeWithMocks }, () =>
+      this.combineIndustryData(composeWithMocks)
+    )
+
+    this.setState({ activeKeys: this.props.checkboxes })
+  }
+
+  componentWillReceiveProps(nextProps: IndProps) {
+    if (nextProps.data) {
+      const { portfolio } = nextProps.data
+      if (!portfolio || !portfolio.assets) return
+
+      const composeWithMocks = {
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCKS),
+      }
+
+      console.log(
+        'componentWillReceiveProps composeWithMocks',
+        composeWithMocks
+      )
+
+      this.setState({ portfolio: composeWithMocks })
+      this.combineIndustryData(composeWithMocks)
+    }
+
+    if (nextProps.checkboxes) {
+      this.setState({ activeKeys: nextProps.checkboxes }, () =>
+        this.combineIndustryData(this.state.portfolio)
+      )
+    }
+
+    if (nextProps.checkboxes && nextProps.checkboxes.length === 0) {
+      this.setState({ selectedRows: null, selectedSum: defaultSelectedSum })
+    }
+
+    if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
+      const { portfolio } = this.state
+      this.combineIndustryData(portfolio)
+    }
+  }
+
+  combineIndustryData = (portfolio?: Portfolio) => {
+    const { isUSDCurrently } = this.props
+    const { activeKeys } = this.state
+    if (!portfolio || !portfolio.assets || !activeKeys) return
+    const { assets } = portfolio
+
+    const industryData = assets
+      .map((row) => {
+        const { asset, key = { name: '' }, exchange } = row || {}
+        if (activeKeys.indexOf(key.name) === -1) return null
+        const { symbol, priceUSD, priceBTC, industry: ind } = asset || {}
+        const { name } = exchange
+        const { name: industryName, performance } = ind || {
+          name: '',
+          performance: 0,
+        }
+
+        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
+
+        const col = {
+          currency: name || '-',
+          symbol,
+          industry: industryName || '-',
+          price: mainPrice || 0,
+          portfolioPerf: 0,
+          industryPerf: performance || 0,
+        }
+
+        return col
+      })
+      .filter(Boolean)
+    this.setState({ industryData }, () =>
+      this.calculateSum(this.state.selectedRows)
+    )
   }
 
   onSortStrings = (a: string, b: string): number => {
@@ -78,13 +170,13 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   onSortTable = (key: Args) => {
-    const { tableData, currentSort } = this.state
-    if (!tableData) return
+    const { industryData, currentSort } = this.state
+    if (!industryData) return
 
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
 
-    const newData = tableData.slice().sort((a, b) => {
+    const newData = industryData.slice().sort((a, b) => {
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
           this.setState({ currentSort: { key, arg: 'DESC' } })
@@ -110,7 +202,7 @@ export default class PortfolioTableIndustries extends React.Component<
       return a[key] - b[key]
     })
 
-    this.setState({ tableData: newData })
+    this.setState({ industryData: newData })
   }
 
   onSelectBalance = (idx: number) => {
@@ -128,13 +220,13 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   calculateSum = (selectedRows: number[] | null) => {
-    const { tableData } = this.state
-    if (!selectedRows) {
+    const { industryData } = this.state
+    if (!selectedRows || !industryData) {
       this.setState({ selectedSum: defaultSelectedSum })
       return
     }
 
-    const sum = tableData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
+    const sum = industryData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
     const reducedSum = sum.reduce(
       (acc, val) => {
         return {
@@ -161,10 +253,10 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
-    const { selectedRows, tableData } = this.state
-    if (!selectedRows) return null
+    const { selectedRows, industryData } = this.state
+    if (!selectedRows || !industryData) return defaultSelectedSum
 
-    if (selectedRows.length === tableData.length) {
+    if (selectedRows.length === industryData.length) {
       reducedSum.currency = 'All'
       reducedSum.symbol = '-'
     } else if (selectedRows.length > 1) {
@@ -178,26 +270,26 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   onSelectAll = () => {
-    const { tableData } = this.state
-    const rowQuantity = tableData.length
-    let allRows
+    const { industryData } = this.state
+    if (!industryData) return
+    const rowQuantity = industryData.length
+    let allRows: number[] | null
     const selectedRows =
       (this.state.selectedRows && this.state.selectedRows.slice()) || []
     if (selectedRows.length !== rowQuantity) {
-      allRows = tableData.map((td, i) => i)
+      allRows = industryData.map((td, i) => i)
     } else {
       allRows = null
     }
-    this.setState({ selectedRows: allRows })
-
-    this.calculateSum(allRows)
+    this.setState({ selectedRows: allRows }, () => this.calculateSum(allRows))
   }
 
   render() {
     const { isUSDCurrently } = this.props
-    const { selectedRows, selectedSum, tableData, currentSort } = this.state
+    const { selectedRows, selectedSum, industryData, currentSort } = this.state
+    if (!industryData) return null
     const isSelectAll =
-      (selectedRows && tableData.length === selectedRows.length) || false
+      (selectedRows && industryData.length === selectedRows.length) || false
 
     return (
       <Wrapper>
@@ -249,7 +341,7 @@ export default class PortfolioTableIndustries extends React.Component<
           </PTHead>
 
           <PTBody>
-            {tableData.map((row, idx) => {
+            {industryData.map((row, idx) => {
               const {
                 currency,
                 symbol,

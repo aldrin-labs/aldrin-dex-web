@@ -16,12 +16,12 @@ class PortfolioSelector extends React.Component<Props, State> {
       const { keys } = nextProps.data.getProfile
       if (!keys) return
       const checkboxes = keys.map((key) => key && key.name).filter(Boolean)
-      if (
-        checkboxes.indexOf('Test1') === -1 &&
-        checkboxes.indexOf('Test2') === -1
-      ) {
-        checkboxes.push('Test1', 'Test2')
-      }
+      // if (
+      //   checkboxes.indexOf('Test1') === -1 &&
+      //   checkboxes.indexOf('Test2') === -1
+      // ) {
+      //   checkboxes.push('Test1', 'Test2')
+      // }
       const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
       if (checkboxes) {

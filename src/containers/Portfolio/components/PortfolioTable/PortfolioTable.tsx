@@ -141,11 +141,11 @@ export class PortfolioTable extends React.Component<TableProps> {
         const col = {
           currency: name || '',
           symbol,
-          percentage: this.calcPercentage(priceUSD * value / allSums * 100),
+          percentage: this.calcPercentage(mainPrice * value / allSums * 100),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: mainPrice * value || 0,
-          daily: this.calcPercentage(priceUSD / 100 * percentChangeDay),
+          daily: this.calcPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
           realizedPL: realizedProfit,
           realizedPLPerc: 0,
@@ -402,6 +402,8 @@ export class PortfolioTable extends React.Component<TableProps> {
 
         {tab === 'industry' && (
           <PortfolioTableIndustries
+            checkboxes={this.props.checkboxes}
+            data={this.props.data}
             isUSDCurrently={isUSDCurrently}
             onSortTable={this.onSortTable}
           />

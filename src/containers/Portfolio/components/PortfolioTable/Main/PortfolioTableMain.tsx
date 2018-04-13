@@ -112,7 +112,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
 
           return (
             <PTR
-              key={`${currency}${symbol}${quantity}`}
+              key={`${currency}${symbol}${quantity}${index}`}
               isSelected={isSelected}
               onClick={() => this.props.onSelectBalance(index)}
             >
