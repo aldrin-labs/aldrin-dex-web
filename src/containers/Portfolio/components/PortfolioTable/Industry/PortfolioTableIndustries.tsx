@@ -233,9 +233,9 @@ export default class PortfolioTableIndustries extends React.Component<
           currency: val.currency,
           symbol: val.symbol,
           industry: val.industry,
-          price: acc.price + val.price,
-          portfolioPerf: acc.portfolioPerf + val.portfolioPerf,
-          industryPerf: acc.industryPerf + val.industryPerf,
+          price: Number(acc.price) + Number(val.price),
+          portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
+          industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
         }
       },
       {
@@ -405,7 +405,9 @@ export default class PortfolioTableIndustries extends React.Component<
               )
             })}
           </PTBody>
-          {selectedSum && <PortfolioTableSum selectedSum={selectedSum} />}
+          {selectedSum.currency && (
+            <PortfolioTableSum selectedSum={selectedSum} />
+          )}
         </PTable>
       </Wrapper>
     )

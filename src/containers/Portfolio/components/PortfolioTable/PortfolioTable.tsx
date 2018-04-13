@@ -7,6 +7,7 @@ import Switch from '@components/Switch/Switch'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import filterListIcon from '../../../../icons/filter-list.svg'
 import gridLoader from '../../../../icons/grid.svg'
+import spinLoader from '../../../../icons/tail-spin.svg'
 import { RowT, State, Args } from './types'
 import { TableProps, Portfolio } from '../../interfaces'
 import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
@@ -320,7 +321,21 @@ export class PortfolioTable extends React.Component<TableProps> {
       currentSort,
     } = this.state
 
-    if (!tableData) return null
+    if (!tableData)
+      return (
+        <LoaderWrapper>
+          <SvgIcon
+            src={spinLoader}
+            width={48}
+            height={48}
+            style={{
+              position: 'absolute',
+              left: 'calc(50% - 48px)',
+              top: 'calc(50% - 48px)',
+            }}
+          />
+        </LoaderWrapper>
+      )
 
     const isSelectAll =
       (selectedBalances && selectedBalances.length === tableData.length) ||
@@ -474,6 +489,14 @@ const PTWrapper = styled.div`
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+`
+
+const LoaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
   position: relative;
 `
 
