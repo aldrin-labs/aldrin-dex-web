@@ -111,7 +111,9 @@ export default class ProfileChart extends React.Component<Props, State> {
     return (
       <SProfileChart style={style}>
         {/*TODO: need refactoring, need real data */}
-        <SuppliesBlock>
+        {
+          this.showSupplies && (
+<SuppliesBlock>
           <SupplyBlock>
             <CurrentRate>{priceUSD || '9 713,19'}</CurrentRate>
             <SupplyDetail>Current rate USD</SupplyDetail>
@@ -142,7 +144,9 @@ export default class ProfileChart extends React.Component<Props, State> {
             <SupplyDetail>Change in year USD</SupplyDetail>
           </SupplyBlock>
         </SuppliesBlock>
-
+          )
+        }
+        
         <BtnsContainer>
           {chartBtns.map((chartBtn, i) => {
             return (

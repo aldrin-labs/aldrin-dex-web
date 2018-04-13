@@ -108,8 +108,9 @@ export class PortfolioTable extends React.Component<TableProps> {
 
     const allSums = assets.filter(Boolean).reduce((acc, curr) => {
       const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD) return null
-      return acc + value * Number(asset.priceUSD)
+      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) return null
+      const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+      return acc + value * Number(price)
     }, 0)
 
     const tableData = assets

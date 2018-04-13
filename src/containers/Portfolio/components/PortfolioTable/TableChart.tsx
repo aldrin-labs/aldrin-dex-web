@@ -6,7 +6,7 @@ interface State {
 
 const chartBtns = ['1 Day', '7 Days', '1 Month', '3 Month', '1 Year', 'YTD', 'ALL PERIOD']
 
-export class TableChart extends React.Component<Props, State> {
+export default class extends React.Component<Props, State> {
   state = {
     activeChart: 4,
   }
@@ -22,7 +22,6 @@ export class TableChart extends React.Component<Props, State> {
 
     return (
       <SProfileChart>
-        <ProfileChartHeading>{name} Price Chart (1y)</ProfileChartHeading>
         <BtnsContainer>
           {chartBtns.map((chartBtn, i) => {
             return (
