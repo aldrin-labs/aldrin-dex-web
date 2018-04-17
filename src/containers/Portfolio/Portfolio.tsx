@@ -10,35 +10,41 @@ import { PortfolioTable } from './components'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
-    portfolioUpdated {
+    portfolioUpdate {
+      _id
       name
       processing
       assetIds
       assets {
-        _id
-        assetId
-        exchangeId
-        keyId
-        value
-        btcRealizedProfit
-        btcUnrealizedProfit
-        usdRealizedProfit
-        usdUnrealizedProfit
-        totalProfit
-        asset {
-          name
-          symbol
-          priceUSD
-          percentChangeDay
-          industry
-        }
-        exchange {
-          name
-        }
-        key {
-          name
-          apiKey
-        }
+          _id
+          assetId
+          exchangeId
+          keyId
+          value
+          usdRealizedProfit
+          usdUnrealizedProfit
+          usdTotalProfit
+          btcRealizedProfit
+          btcUnrealizedProfit
+          btcTotalProfit
+          asset {
+            _id
+            name
+            symbol
+            priceUSD
+            priceBTC
+            industry {
+              name
+              performance
+            }
+          }
+          exchange {
+            name
+          }
+          key {
+            name
+            apiKey
+          }
       }
     }
   }

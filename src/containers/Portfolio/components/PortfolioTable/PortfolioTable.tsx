@@ -65,12 +65,11 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
 
     if (nextProps.subscription && nextProps.subscription.data) {
-      const { portfolio } = nextProps.subscription.data
+      const portfolio = nextProps.subscription.data.portfolioUpdate
       const composeWithMocks = {
         ...portfolio,
         assets: portfolio.assets.concat(MOCK_DATA),
       }
-
       this.setState({ portfolio: composeWithMocks })
       this.combineTableData(composeWithMocks)
     }
@@ -340,7 +339,6 @@ export class PortfolioTable extends React.Component<TableProps> {
     const isSelectAll =
       (selectedBalances && selectedBalances.length === tableData.length) ||
       false
-
     return (
       <PTWrapper>
         <PTHeadingBlock>
@@ -386,9 +384,10 @@ export class PortfolioTable extends React.Component<TableProps> {
           {tab === 'main' && (
             <Mutation mutation={UPDATE_PORTFOLIO}>
               {(updatePortfolio, { data, loading }) => {
+                loading = loading || this.state.portfolio.processing
                 return (
                   <ToggleBtn onClick={updatePortfolio}>
-                    {loading ? (
+                    {(loading) ? (
                       <SvgIcon src={gridLoader} width={24} height={24} />
                     ) : (
                       'Refresh'

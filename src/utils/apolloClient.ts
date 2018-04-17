@@ -23,11 +23,18 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
+const getToken = () => {
+  return localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
+}
+
 // Create a WebSocket link:
 const wsLink = new WebSocketLink({
   uri: `ws://${API_URL}/graphql`,
   options: {
     reconnect: true,
+    connectionParams: {
+      authToken: getToken(),
+  },
   },
 })
 
