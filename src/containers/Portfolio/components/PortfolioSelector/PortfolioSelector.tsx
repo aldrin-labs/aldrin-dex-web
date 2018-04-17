@@ -154,7 +154,7 @@ const AccountName = styled.span`
     props.isChecked ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: 500;
   text-align: left;
   margin-left: 24px;
@@ -199,7 +199,7 @@ const AccountsListItem = styled.li`
   display: flex;
   align-items: center;
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: 500;
   text-align: left;
   color: #4ed8da;
@@ -215,7 +215,7 @@ const AccountsList = styled.ul`
 `
 
 const AccountsWalletsBlock = styled.div`
-  min-width: 250px;
+  min-width: 200px;
   min-height: 90vh;
   background-color: #2d3136;
   padding: 16px;
@@ -223,7 +223,7 @@ const AccountsWalletsBlock = styled.div`
 
 const AccountsWalletsHeading = styled.span`
   font-family: Roboto;
-  font-size: 20px;
+  font-size: 1.25em;
   font-weight: 500;
   letter-spacing: 0.5px;
   text-align: center;
