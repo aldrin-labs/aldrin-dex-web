@@ -84,7 +84,7 @@ export default class DominanceChart extends React.Component<Props, State> {
         </ChartWrapper>
 
         <ChartInfoContainer>
-          {chartCoins.map(coin => {
+          {chartCoins.map((coin) => {
             return (
               <ChartInfoBlock key={coin.label}>
                 <ChartInfoCircle style={{ backgroundColor: coin.color }} />
@@ -180,7 +180,7 @@ const HeadingWrapper = styled.div`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 380px;
+  width: 100%;
   padding: 16px;
   border-radius: 3px;
   background-color: #393e44;

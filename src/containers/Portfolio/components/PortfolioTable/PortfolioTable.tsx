@@ -1,235 +1,508 @@
-import React, { Component } from 'react'
+import * as React from 'react'
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
 import styled from 'styled-components'
-import { graphql } from 'react-apollo'
-import { compose } from 'recompose'
+import SvgIcon from '@components/SvgIcon/SvgIcon'
+import Switch from '@components/Switch/Switch'
+import ProfileChart from '@containers/Profile/components/ProfileChart'
+import filterListIcon from '../../../../icons/filter-list.svg'
+import gridLoader from '../../../../icons/grid.svg'
+import spinLoader from '../../../../icons/tail-spin.svg'
+import { RowT, State, Args } from './types'
+import { TableProps, Portfolio } from '../../interfaces'
+import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
+import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
+import PortfolioTableBalances from './Main/PortfolioTableBalances'
+import Correlation from './Correlation/Correlation'
 
-import Checkbox from 'material-ui/Checkbox'
-import Paper from 'material-ui/Paper'
-import Table, { TableBody, TableCell, TableRow } from 'material-ui/Table'
-import Typography from 'material-ui/Typography'
+import { MOCK_DATA } from './dataMock'
 
-import { BrushChart } from '../brushChart/index'
-import ProfileChartHead from './portFolioHeadUpdated'
+const UPDATE_PORTFOLIO = gql`
+  mutation updatePortfolio {
+    updatePortfolio
+  }
+`
 
-import { Loading } from '@components'
+const defaultSelectedSum = {
+  currency: '',
+  symbol: '',
+  percentage: 0,
+  price: 0,
+  quantity: 0,
+  currentPrice: 0,
+  daily: 0,
+  dailyPerc: 0,
+  realizedPL: 0,
+  realizedPLPerc: 0,
+  unrealizedPL: 0,
+  unrealizedPLPerc: 0,
+}
 
-import {
-  PortfolioTableHead,
-  PortfolioTableToolbar,
-  PortfolioTableFooter,
-  LoginAlert,
-} from './'
-import { getPortfolioQuery } from '../../api'
-
-// Data mock
-import { sampleData } from './dataMock'
-
-class PortfolioTableComponent extends Component<any, any> {
-  state = {
-    data: null,
-    order: 'asc',
-    orderBy: 'name',
-    selected: [],
-    page: 0,
-    rowsPerPage: 10,
-    currentTab: 'balances',
+export class PortfolioTable extends React.Component<TableProps> {
+  state: State = {
+    tableData: null,
+    selectedBalances: null,
+    selectedSum: defaultSelectedSum,
+    currentSort: null,
+    isShownChart: true,
+    activeKeys: null,
+    portfolio: null,
+    isUSDCurrently: true,
+    tab: 'main',
   }
 
-  // Pass assets to state from props so it can be sorted, mutated, etc
-  // also it can be modified to update with subscriptios now
-  componentDidUpdate(prevProps, prevState) {
-    if (this.props.data && this.props.data.getProfile) {
-      if (
-        prevProps.data !== this.props.data &&
-        !this.state.data &&
-        !this.props.data.loading
-      ) {
-        // remove length check for real data
-        this.setState({
-          data:
-            this.props.data.getProfile.portfolio.assets.length > 0 ||
-            sampleData.assets,
-        })
+  componentWillReceiveProps(nextProps: TableProps) {
+    if (nextProps.data) {
+      const { portfolio } = nextProps.data
+      if (!portfolio) return
+      const composeWithMocks = {
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
       }
-    }
-  }
 
-  handleRequestSort = (event: any, property: any): void => {
-    const orderBy = property
-    let order = 'desc'
-
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc'
+      this.setState({ portfolio: composeWithMocks })
+      this.combineTableData(composeWithMocks)
     }
 
-    const data =
-      order === 'desc'
-        ? this.state.data.sort((a, b) => (b[orderBy] < a[orderBy] ? -1 : 1))
-        : this.state.data.sort((a, b) => (a[orderBy] < b[orderBy] ? -1 : 1))
-
-    this.setState({ data, order, orderBy })
-  }
-
-  addAssetsToState = (assets: any[]) => {
-    this.setState({ data: assets })
-  }
-
-  handleSelectAllClick = (event: any, checked: any): void => {
-    if (checked) {
-      this.setState({ selected: this.state.data.map(n => n._id) })
-
-      return
+    if (nextProps.subscription && nextProps.subscription.data) {
+      const portfolio = nextProps.subscription.data.portfolioUpdate
+      const composeWithMocks = {
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
+      }
+      this.setState({ portfolio: composeWithMocks })
+      this.combineTableData(composeWithMocks)
     }
-    this.setState({ selected: [] })
-  }
 
-  handleTabSelect = (event, currentTab) => {
-    this.setState({ currentTab })
-  }
-
-  handleClick = (event: any, _id: string): void => {
-    const { selected } = this.state
-    const selectedIndex = selected.indexOf(_id)
-    let newSelected: any[] = []
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, _id)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+    if (nextProps.checkboxes) {
+      this.setState({ activeKeys: nextProps.checkboxes }, () =>
+        this.combineTableData(this.state.portfolio)
       )
     }
 
-    this.setState({ selected: newSelected })
+    if (nextProps.checkboxes && nextProps.checkboxes.length === 0) {
+      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
+    }
   }
 
-  handleChangePage = (event: any, page: number) => {
-    this.setState({ page })
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    if (prevState.isUSDCurrently !== this.state.isUSDCurrently) {
+      const { portfolio } = this.state
+      this.combineTableData(portfolio)
+    }
   }
 
-  handleChangeRowsPerPage = (event: any) => {
-    this.setState({ rowsPerPage: event.target.value })
+  onFloorN = (x: number, n: number) => {
+    var mult = Math.pow(10, n)
+    return Math.floor(x * mult) / mult
   }
 
-  isSelected = (_id: string) => this.state.selected.indexOf(_id) !== -1
+  calcPercentage = (num: number) => {
+    return this.onFloorN(num, 2)
+  }
+
+  combineTableData = (portfolio?: Portfolio) => {
+    const { activeKeys, isUSDCurrently } = this.state
+    if (!portfolio || !portfolio.assets || !activeKeys) return
+    const { assets } = portfolio
+
+    const allSums = assets.filter(Boolean).reduce((acc, curr) => {
+      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
+      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) return null
+      const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+      return acc + value * Number(price)
+    }, 0)
+
+    const tableData = assets
+      .map((row) => {
+        const {
+          asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
+          value = 0,
+          key = { name: '' },
+          exchange = '',
+          usdRealizedProfit = 0,
+          btcRealizedProfit = 0,
+          usdUnrealizedProfit = 0,
+          btcUnrealizedProfit = 0,
+        } =
+          row || {}
+        if (activeKeys.indexOf(key.name) === -1) return null
+        const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
+        const { name } = exchange
+
+        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
+        const realizedProfit = isUSDCurrently
+          ? usdRealizedProfit
+          : btcRealizedProfit
+        const unrealizedProfit = isUSDCurrently
+          ? usdUnrealizedProfit
+          : btcUnrealizedProfit
+
+        const col = {
+          currency: name || '',
+          symbol,
+          percentage: this.calcPercentage(mainPrice * value / allSums * 100),
+          price: mainPrice || 0,
+          quantity: value || 0,
+          currentPrice: mainPrice * value || 0,
+          daily: this.calcPercentage(mainPrice / 100 * percentChangeDay),
+          dailyPerc: percentChangeDay,
+          realizedPL: realizedProfit,
+          realizedPLPerc: 0,
+          unrealizedPL: unrealizedProfit,
+          unrealizedPLPerc: 0,
+        }
+
+        return col
+      })
+      .filter(Boolean)
+    this.setState({ tableData }, () =>
+      this.calculateSum(this.state.selectedBalances)
+    )
+  }
+
+  onSelectAll = () => {
+    const { selectedBalances, tableData } = this.state
+    if (!tableData) return
+
+    if (selectedBalances && selectedBalances.length === tableData.length) {
+      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
+    } else {
+      const allRows = tableData.map((ck, idx) => idx)
+
+      this.setState({ selectedBalances: allRows }, () =>
+        this.calculateSum(allRows)
+      )
+    }
+  }
+
+  calculateSum = (selectedRows: number[] | null) => {
+    const { tableData } = this.state
+    if (!tableData) return
+
+    if (!selectedRows) {
+      this.setState({ selectedSum: defaultSelectedSum })
+      return
+    }
+
+    const sum = tableData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
+    const reducedSum = sum.reduce(
+      (acc, val) => {
+        return {
+          currency: val.currency,
+          symbol: val.symbol,
+          percentage: Number(acc.percentage) + Number(val.percentage),
+          price: Number(acc.price) + Number(val.price),
+          quantity: Number(acc.quantity) + Number(val.quantity),
+          currentPrice: Number(acc.currentPrice) + Number(val.currentPrice),
+          daily: Number(acc.daily) + Number(val.daily),
+          dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
+          realizedPL: Number(acc.realizedPL) + Number(val.realizedPL),
+          realizedPLPerc:
+            Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
+          unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
+          unrealizedPLPerc:
+            Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
+        }
+      },
+      {
+        currency: '',
+        symbol: '',
+        percentage: 0,
+        price: 0,
+        quantity: 0,
+        currentPrice: 0,
+        daily: 0,
+        dailyPerc: 0,
+        realizedPL: 0,
+        realizedPLPerc: 0,
+        unrealizedPL: 0,
+        unrealizedPLPerc: 0,
+      }
+    )
+    const validateSum = this.onValidateSum(reducedSum)
+    this.setState({ selectedSum: validateSum })
+  }
+
+  onValidateSum = (reducedSum: RowT) => {
+    const { selectedBalances, tableData } = this.state
+    if (!selectedBalances || !tableData) return null
+    const clonedSum = { ...reducedSum }
+
+    if (selectedBalances.length === tableData.length) {
+      clonedSum.currency = 'All'
+      clonedSum.symbol = '-'
+      clonedSum.percentage = 100
+    } else if (selectedBalances.length > 1) {
+      clonedSum.currency = 'Selected'
+      clonedSum.symbol = '-'
+    }
+
+    return clonedSum
+  }
+
+  onSelectBalance = (index: number) => {
+    const selectedBalances =
+      (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
+
+    const hasIndex = selectedBalances.indexOf(index)
+    if (hasIndex >= 0) {
+      selectedBalances.splice(hasIndex, 1)
+    } else {
+      selectedBalances.push(index)
+    }
+
+    this.setState({ selectedBalances }, () =>
+      this.calculateSum(selectedBalances)
+    )
+  }
+
+  onSortStrings = (a: string, b: string): number => {
+    return a.localeCompare(b)
+  }
+
+  onSortTable = (key: Args) => {
+    const { tableData, currentSort } = this.state
+    if (!tableData) return
+
+    const stringKey =
+      key === 'currency' || key === 'symbol' || key === 'industry'
+
+    const newData = tableData.slice().sort((a, b) => {
+      if (currentSort && currentSort.key === key) {
+        if (currentSort.arg === 'ASC') {
+          this.setState({ currentSort: { key, arg: 'DESC' } })
+
+          if (stringKey) {
+            return this.onSortStrings(b[key], a[key])
+          }
+          return b[key] - a[key]
+        } else {
+          this.setState({ currentSort: { key, arg: 'ASC' } })
+
+          if (stringKey) {
+            return this.onSortStrings(a[key], b[key])
+          }
+          return a[key] - b[key]
+        }
+      }
+      this.setState({ currentSort: { key, arg: 'ASC' } })
+
+      if (stringKey) {
+        return this.onSortStrings(a[key], b[key])
+      }
+      return a[key] - b[key]
+    })
+
+    this.setState({ tableData: newData })
+  }
+
+  onToggleChart = () => {
+    this.setState({ isShownChart: !this.state.isShownChart })
+  }
+
+  onToggleUSDBTC = () => {
+    this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
+  }
+
+  onChangeTab = (kind: 'main' | 'industry' | 'rebalance') => {
+    this.setState({ tab: kind })
+  }
 
   render() {
-    if (this.props.data.loading || !this.state.data) {
-      return <Loading margin={'30% auto'} />
-    }
-
-    if (this.props.data.error) {
-      if (this.props.data.error.message.toLowerCase().includes('jwt')) {
-        return <LoginAlert />
-      } else {
-        return (
-          <Typography variant="title" color="error">
-            Error!
-          </Typography>
-        )
-      }
-    }
-
-    const assets = this.state.data
-
     const {
-      order,
-      orderBy,
-      selected,
-      rowsPerPage,
-      page,
-      currentTab,
+      selectedBalances,
+      selectedSum,
+      tableData,
+      isShownChart,
+      isUSDCurrently,
+      tab,
+      currentSort,
     } = this.state
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, assets.length - page * rowsPerPage)
 
+    if (!tableData)
+      return (
+        <LoaderWrapper>
+          <SvgIcon
+            src={spinLoader}
+            width={48}
+            height={48}
+            style={{
+              position: 'absolute',
+              left: 'calc(50% - 48px)',
+              top: 'calc(50% - 48px)',
+            }}
+          />
+        </LoaderWrapper>
+      )
+
+    const isSelectAll =
+      (selectedBalances && selectedBalances.length === tableData.length) ||
+      false
     return (
-      <TableContainer>
-        <PortfolioTableToolbar
-          currentTab={currentTab}
-          handleTabSelect={this.handleTabSelect}
-          numSelected={selected.length}
-        />
-        <TableWrapper>
-          <PortfolioTableHead
-            numSelected={selected.length}
-            order={order}
-            orderBy={orderBy}
-            onSelectAllClick={this.handleSelectAllClick}
-            onRequestSort={this.handleRequestSort}
-            rowCount={assets.length}
-          />
-          <TableBody>
-            {currentTab === 'balances' &&
-              assets
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  const isSelected = this.isSelected(n._id)
+      <PTWrapper>
+        <PTHeadingBlock>
+          <TabContainer>
+            <Tab
+              onClick={() => this.onChangeTab('main')}
+              active={tab === 'main'}
+            >
+              Main
+            </Tab>
 
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n._id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
-                      tabIndex={-1}
-                      key={n._id}
-                      selected={isSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox checked={isSelected} />
-                      </TableCell>
-                      <TableCell padding="none">{n.exchange.name}</TableCell>
-                      <TableCell numeric>{n.asset.name || 'Empty'}</TableCell>
-                      <TableCell numeric>{n.asset.symbol || 'Empty'}</TableCell>
-                      <TableCell numeric>
-                        {`${n.asset.priceUSD}$` || 'Empty'}
-                      </TableCell>
-                      <TableCell numeric>{n.value || 'Empty'}</TableCell>
-                      <TableCell numeric>
-                        {n.realizedProfit || 'Empty'}
-                      </TableCell>
-                      <TableCell numeric>{n.totalProfit || 'Empty'}</TableCell>
-                    </TableRow>
-                  )
-                })}
-            {emptyRows > 0 && (
-              <TableRow style={{ height: 30 * emptyRows }}>
-                <TableCell colSpan={8}>
-                  <ProfileChartHead />
-                  <BrushChart />
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-          <PortfolioTableFooter
-            colSpan={6}
-            count={assets.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onChangePage={this.handleChangePage}
-            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            <Tab
+              onClick={() => this.onChangeTab('industry')}
+              active={tab === 'industry'}
+            >
+              Industry
+            </Tab>
+
+            <Tab
+              onClick={() => this.onChangeTab('rebalance')}
+              active={tab === 'rebalance'}
+            >
+              Rebalance
+            </Tab>
+
+            <Tab
+              onClick={() => this.onChangeTab('correlation')}
+              active={tab === 'correlation'}
+            >
+              Correlation
+            </Tab>
+          </TabContainer>
+          <ToggleBtn onClick={this.onToggleChart}>
+            <SvgIcon src={filterListIcon} width={24} height={24} />
+          </ToggleBtn>
+        </PTHeadingBlock>
+
+        <PTHeadingBlock>
+          {tab !== 'correlation' && (
+            <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
+          )}
+
+          {tab === 'main' && (
+            <Mutation mutation={UPDATE_PORTFOLIO}>
+              {(updatePortfolio, { data, loading }) => {
+                loading = loading || this.state.portfolio.processing
+                return (
+                  <ToggleBtn onClick={updatePortfolio}>
+                    {(loading) ? (
+                      <SvgIcon src={gridLoader} width={24} height={24} />
+                    ) : (
+                      'Refresh'
+                    )}
+                  </ToggleBtn>
+                )
+              }}
+            </Mutation>
+          )}
+        </PTHeadingBlock>
+
+        {tab === 'main' && (
+          <PortfolioTableBalances
+            isShownChart={isShownChart}
+            isUSDCurrently={isUSDCurrently}
+            isSelectAll={isSelectAll}
+            selectedSum={selectedSum}
+            onSelectAll={this.onSelectAll}
+            onSortTable={this.onSortTable}
+            tableData={tableData}
+            selectedBalances={selectedBalances}
+            onSelectBalance={this.onSelectBalance}
+            currentSort={currentSort}
           />
-        </TableWrapper>
-      </TableContainer>
+        )}
+
+        {tab === 'industry' && (
+          <PortfolioTableIndustries
+            checkboxes={this.props.checkboxes}
+            data={this.props.data}
+            isUSDCurrently={isUSDCurrently}
+            onSortTable={this.onSortTable}
+          />
+        )}
+
+        {tab === 'rebalance' && <PortfolioTableRebalance />}
+
+        {tab === 'correlation' && <Correlation />}
+
+        {tab === 'main' &&
+          isShownChart && (
+            <ProfileChart
+              style={{
+                marginLeft: 0,
+                borderTop: '1px solid #fff',
+                minHeight: '30vh',
+              }}
+            />
+          )}
+      </PTWrapper>
     )
   }
 }
 
-const TableContainer = styled(Paper)`
-  margin: 24px;
+const SubHeading = styled.span`
+  font-family: Roboto;
+  font-size: 16px;
+  color: #fff;
+  font-weight: 500;
+`
+
+const TabContainer = styled.div`
+  display: flex;
+`
+
+const Tab = styled.button`
+  color: ${(props: { active?: boolean }) =>
+    props.active ? '#4ed8da' : '#fff'};
+  border-color: ${(props: { active?: boolean }) =>
+    props.active ? '#4ed8da' : 'transparent'};
+
+  padding: 10px 30px;
+  border-radius: 3px;
+  background-color: #292d31;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  margin: 10px 15px;
+  outline: none;
+`
+
+const ToggleBtn = styled.button`
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #fff;
+  font-size: 1em;
+`
+
+const PTWrapper = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
 `
 
-const TableWrapper = styled(Table)`
-  min-width: 800px;
+const LoaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  position: relative;
 `
 
-export const PortfolioTable = compose(graphql(getPortfolioQuery))(
-  PortfolioTableComponent
-)
+const PTHeadingBlock = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+`

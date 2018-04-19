@@ -1,7 +1,1 @@
 export { PortfolioTable } from './PortfolioTable'
-export { PortfolioTableHead } from './PortfolioTableHead'
-export { PortfolioTableToolbar } from './PortfolioTableToolbar'
-export { PortfolioTableFooter } from './PortfolioTableFooter'
-export { PortfolioTableTabs } from './PortfolioTableTabs'
-export { LoginAlert } from './LoginAlert'
-export { TableChart } from './TableChart'

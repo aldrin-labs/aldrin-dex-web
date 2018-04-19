@@ -25,7 +25,7 @@ import { LoginAlert } from '../'
 
 const SWrapper = styled.div`
   width: 100%;
-  max-width: 360px;
+  max-width: 320px;
 `
 
 const SelectTitle = styled(Typography)`
@@ -34,7 +34,7 @@ const SelectTitle = styled(Typography)`
 `
 
 const SToolbar = styled(Toolbar)`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.theme ? props.theme.palette.background.paper : ''};
 `
 
@@ -60,7 +60,7 @@ class SelectPortfolioComponent extends React.Component {
   }
 
   handleToggleAll = () => {
-    const allKeys = this.props.keys.getProfile.keys.map(key => key._id)
+    const allKeys = this.props.keys.getProfile.keys.map((key) => key._id)
     this.setState((prevState, props) => ({
       allKeysSelected: !prevState.allKeysSelected,
     }))
@@ -90,7 +90,7 @@ class SelectPortfolioComponent extends React.Component {
       <SWrapper>
         <AppBar position="static">
           <SToolbar theme={this.props.theme}>
-            <SelectTitle variant="title">Accounts & Wallets</SelectTitle>
+            <SelectTitle variant="title">Api keys</SelectTitle>
           </SToolbar>
         </AppBar>
         <List>
@@ -103,7 +103,7 @@ class SelectPortfolioComponent extends React.Component {
               <ListItemText primary="Select all" />
             </ListItem>
           )}
-          {keys.map(key => (
+          {keys.map((key) => (
             <ListItem
               key={key._id}
               dense
@@ -131,7 +131,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts)),
-  onLoad: data => dispatch(actions.onLoad(data)),
+  onLoad: (data) => dispatch(actions.onLoad(data)),
   selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys)),
 })
 
