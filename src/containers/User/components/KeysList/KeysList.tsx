@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { FormattedDate } from 'react-intl'
 import styled from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
@@ -42,7 +43,9 @@ class KeysListComponent extends React.Component {
                 <KeyTableCell>{key.name}</KeyTableCell>
                 <KeyTableCell numeric>{key.exchange.name}</KeyTableCell>
                 <KeyTableCell numeric>{key.apiKey}</KeyTableCell>
-                <KeyTableCell numeric>{key.date}</KeyTableCell>
+                <KeyTableCell numeric>
+                  {<FormattedDate value={key.date} />}
+                </KeyTableCell>
                 <KeyTableCell numeric>
                   <DeleteKeyDialog keyName={key.name} />
                 </KeyTableCell>
