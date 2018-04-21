@@ -37,14 +37,14 @@ class KeysListComponent extends React.Component {
             </TableRow>
           </TableHead>
           <TableBody>
-            {keys.map((n) => (
-              <TableRow key={n._id}>
-                <TableCell>{n.name}</TableCell>
-                <TableCell numeric>{n.exchange.name}</TableCell>
-                <TableCell numeric>{n.apiKey}</TableCell>
-                <TableCell numeric>{n.date}</TableCell>
+            {keys.map((key) => (
+              <TableRow key={key._id}>
+                <TableCell>{key.name}</TableCell>
+                <TableCell numeric>{key.exchange.name}</TableCell>
+                <TableCell numeric>{key.apiKey}</TableCell>
+                <TableCell numeric>{key.date}</TableCell>
                 <TableCell numeric>
-                  <DeleteKeyDialog keyName={n.name} />
+                  <DeleteKeyDialog keyName={key.name} />
                 </TableCell>
               </TableRow>
             ))}
@@ -63,7 +63,7 @@ const KeysListPaper = styled(Paper)`
 `
 
 const KeysTable = styled(Table)`
-  min-width: 700;
+  table-layout: fixed;
 `
 
 export const KeysList = compose(graphql(getKeysQuery))(KeysListComponent)
