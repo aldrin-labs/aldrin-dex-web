@@ -65,7 +65,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
 
     if (nextProps.subscription && nextProps.subscription.data) {
-      const portfolio = nextProps.subscription.data.portfolioUpdate
+      const portfolio = Object.assign(this.state.portfolio, JSON.parse(nextProps.subscription.data.portfolioUpdate));
       const composeWithMocks = {
         ...portfolio,
         assets: portfolio.assets.concat(MOCK_DATA),
