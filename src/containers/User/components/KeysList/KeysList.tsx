@@ -39,13 +39,13 @@ class KeysListComponent extends React.Component {
           <TableBody>
             {keys.map((key) => (
               <TableRow key={key._id}>
-                <TableCell>{key.name}</TableCell>
-                <TableCell numeric>{key.exchange.name}</TableCell>
-                <TableCell numeric>{key.apiKey}</TableCell>
-                <TableCell numeric>{key.date}</TableCell>
-                <TableCell numeric>
+                <KeyTableCell>{key.name}</KeyTableCell>
+                <KeyTableCell numeric>{key.exchange.name}</KeyTableCell>
+                <KeyTableCell numeric>{key.apiKey}</KeyTableCell>
+                <KeyTableCell numeric>{key.date}</KeyTableCell>
+                <KeyTableCell numeric>
                   <DeleteKeyDialog keyName={key.name} />
-                </TableCell>
+                </KeyTableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -54,6 +54,10 @@ class KeysListComponent extends React.Component {
     )
   }
 }
+
+const KeyTableCell = styled(TableCell)`
+  overflow: auto;
+`
 
 const KeysListPaper = styled(Paper)`
   margin: 8px;
