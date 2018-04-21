@@ -323,7 +323,7 @@ export class PortfolioTable extends React.Component<TableProps> {
 
     if (!this.props.data) return null
 
-    if (this.props.loading) {
+    if (this.props.data && !tableData) {
       return (
         <LoaderWrapper>
           <SvgIcon
