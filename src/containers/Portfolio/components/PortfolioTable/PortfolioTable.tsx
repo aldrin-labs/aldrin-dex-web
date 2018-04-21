@@ -311,16 +311,19 @@ export class PortfolioTable extends React.Component<TableProps> {
 
   render() {
     const {
-      selectedBalances,
-      selectedSum,
+      tab,
       tableData,
+      portfolio,
+      selectedSum,
+      currentSort,
       isShownChart,
       isUSDCurrently,
-      tab,
-      currentSort,
+      selectedBalances,
     } = this.state
 
-    if (!tableData)
+    if (!this.props.data) return null
+
+    if (this.props.loading) {
       return (
         <LoaderWrapper>
           <SvgIcon
@@ -335,9 +338,12 @@ export class PortfolioTable extends React.Component<TableProps> {
           />
         </LoaderWrapper>
       )
+    }
 
     const isSelectAll =
-      (selectedBalances && selectedBalances.length === tableData.length) ||
+      (tableData &&
+        selectedBalances &&
+        selectedBalances.length === tableData.length) ||
       false
     return (
       <PTWrapper>
@@ -384,10 +390,10 @@ export class PortfolioTable extends React.Component<TableProps> {
           {tab === 'main' && (
             <Mutation mutation={UPDATE_PORTFOLIO}>
               {(updatePortfolio, { data, loading }) => {
-                loading = loading || this.state.portfolio.processing
+                const isLoading = loading || (portfolio && portfolio.processing)
                 return (
                   <ToggleBtn onClick={updatePortfolio}>
-                    {(loading) ? (
+                    {isLoading ? (
                       <SvgIcon src={gridLoader} width={24} height={24} />
                     ) : (
                       'Refresh'
