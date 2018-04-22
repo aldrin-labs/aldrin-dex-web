@@ -1,3 +1,12 @@
+export function combineToChart() {
+  return MOCKS.map((dataItem) => {
+    return {
+      angle: dataItem.value,
+      label: dataItem.asset.industry.name,
+    }
+  })
+}
+
 export const MOCKS = [
   {
     _id: '5abbf010cd922f0027555a61',
