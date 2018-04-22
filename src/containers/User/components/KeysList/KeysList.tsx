@@ -59,7 +59,8 @@ class KeysListComponent extends React.Component {
 }
 
 const KeyTableCell = styled(TableCell)`
-  overflow: auto;
+  overflow: hidden;
+  text-align: center;
 `
 
 const KeysListPaper = styled(Paper)`
