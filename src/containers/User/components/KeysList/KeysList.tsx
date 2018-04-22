@@ -61,6 +61,7 @@ class KeysListComponent extends React.Component {
 const KeyTableCell = styled(TableCell)`
   overflow: hidden;
   text-align: center;
+  text-overflow: ellipsis;
 `
 
 const KeysListPaper = styled(Paper)`

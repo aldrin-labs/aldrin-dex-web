@@ -12,7 +12,7 @@ export default class PieChart extends React.Component<Props, State> {
   render() {
     const { value } = this.state
     const { data, width, height, radius, innerRadius } = this.props
-    const hasCustomColors = data.some((a) => a.color)
+    const hasCustomColors = data.some((a) => !!a.color)
 
     return (
       <RadialChart
