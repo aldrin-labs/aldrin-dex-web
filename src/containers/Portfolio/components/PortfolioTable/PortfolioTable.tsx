@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
+import PieChart from '@components/PieChart'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import filterListIcon from '../../../../icons/filter-list.svg'
 import gridLoader from '../../../../icons/grid.svg'
@@ -16,6 +17,7 @@ import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Correlation from './Correlation/Correlation'
 
 import { MOCK_DATA } from './dataMock'
+import { combineToChart } from './Industry/mocks'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -65,7 +67,7 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
 
     if (nextProps.subscription && nextProps.subscription.data) {
-      const portfolio = nextProps.subscription.data.portfolioUpdate
+      const portfolio = Object.assign(this.state.portfolio, JSON.parse(nextProps.subscription.data.portfolioUpdate));
       const composeWithMocks = {
         ...portfolio,
         assets: portfolio.assets.concat(MOCK_DATA),
@@ -443,16 +445,19 @@ export class PortfolioTable extends React.Component<TableProps> {
               }}
             />
           )}
+
+        {tab === 'industry' && (
+          <PieChartContainer>
+            <PieChart data={combineToChart()} />
+          </PieChartContainer>
+        )}
       </PTWrapper>
     )
   }
 }
 
-const SubHeading = styled.span`
-  font-family: Roboto;
-  font-size: 16px;
-  color: #fff;
-  font-weight: 500;
+const PieChartContainer = styled.div`
+  margin: 50px 10px;
 `
 
 const TabContainer = styled.div`
