@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 import { getKeysQuery } from '../../api'
 import { Props, State } from './types'
 
@@ -16,12 +18,13 @@ class PortfolioSelector extends React.Component<Props, State> {
       const { keys } = nextProps.data.getProfile
       if (!keys) return
       const checkboxes = keys.map((key) => key && key.name).filter(Boolean)
-      // if (
-      //   checkboxes.indexOf('Test1') === -1 &&
-      //   checkboxes.indexOf('Test2') === -1
-      // ) {
-      //   checkboxes.push('Test1', 'Test2')
-      // }
+      if (
+        nextProps.isShownMocks &&
+        checkboxes.indexOf('Test1') === -1 &&
+        checkboxes.indexOf('Test2') === -1
+      ) {
+        checkboxes.push('Test1', 'Test2')
+      }
       const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
       if (checkboxes) {
@@ -230,4 +233,8 @@ const AccountsWalletsHeading = styled.span`
   color: #ffffff;
 `
 
-export default graphql(getKeysQuery)(PortfolioSelector)
+const mapStateToProps = (store) => ({ isShownMocks: store.user.isShownMocks })
+
+const storeComponent = connect(mapStateToProps)(PortfolioSelector)
+
+export default compose(graphql(getKeysQuery))(storeComponent)

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { RowT } from './types'
+import { RowT } from '../types'
 
 interface Props {
   tableData: RowT[] | null

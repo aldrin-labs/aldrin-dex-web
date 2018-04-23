@@ -4,49 +4,13 @@ import styled from 'styled-components'
 import gql from 'graphql-tag'
 import { getPortfolioQuery } from './api'
 import { Props } from './interfaces'
+import { Login } from '@containers/Login'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
-
 import { PortfolioTable } from './components'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
-    portfolioUpdate {
-      _id
-      name
-      processing
-      assetIds
-      assets {
-          _id
-          assetId
-          exchangeId
-          keyId
-          value
-          usdRealizedProfit
-          usdUnrealizedProfit
-          usdTotalProfit
-          btcRealizedProfit
-          btcUnrealizedProfit
-          btcTotalProfit
-          asset {
-            _id
-            name
-            symbol
-            priceUSD
-            priceBTC
-            industry {
-              name
-              performance
-            }
-          }
-          exchange {
-            name
-          }
-          key {
-            name
-            apiKey
-          }
-      }
-    }
+    portfolioUpdate
   }
 `
 
@@ -67,15 +31,17 @@ class PortfolioComponent extends React.Component<Props> {
   render() {
     const { checkboxes } = this.state
     const { data } = this.props
-    const { getProfile } = data
+    const { getProfile, loading, error } = data
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
         {(subscriptionData) => {
           return (
             <PortfolioContainer>
+              {error && <Login isShownModal={!!error} />}
               <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
               <PortfolioTable
+                loading={loading}
                 checkboxes={checkboxes}
                 data={getProfile}
                 subscription={subscriptionData}
