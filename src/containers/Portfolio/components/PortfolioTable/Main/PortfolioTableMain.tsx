@@ -157,13 +157,16 @@ const PTD = styled.td`
   white-space: nowrap;
 `
 
+// #3a4e4e;
+
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
 
   &:nth-child(even) {
-    background-color: #3a4e4e;
+    background-color: ${(props: { isSelected?: boolean }) =>
+  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
   & ${PTD}:nth-child(n+ 3) {
     text-align: right;
