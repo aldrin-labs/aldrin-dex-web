@@ -4,18 +4,19 @@ import styled from 'styled-components'
 interface Props {
   onClick: Function
   values: string[]
+  isActive?: boolean
 }
 
 export default class Switch extends React.Component<Props> {
   render() {
-    const { onClick, values } = this.props
+    const { onClick, values, isActive } = this.props
     const [first, second] = values
 
     return (
       <Container>
         <Desc>{first}</Desc>
         <Label>
-          <Input type="checkbox" onClick={onClick} />
+          <Input type="checkbox" onClick={onClick} checked={isActive} />
           <Slider />
         </Label>
         <Desc>{second}</Desc>

@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 import { getKeysQuery } from '../../api'
 import { Props, State } from './types'
 
@@ -16,12 +18,13 @@ class PortfolioSelector extends React.Component<Props, State> {
       const { keys } = nextProps.data.getProfile
       if (!keys) return
       const checkboxes = keys.map((key) => key && key.name).filter(Boolean)
-      // if (
-      //   checkboxes.indexOf('Test1') === -1 &&
-      //   checkboxes.indexOf('Test2') === -1
-      // ) {
-      //   checkboxes.push('Test1', 'Test2')
-      // }
+      if (
+        nextProps.isShownMocks &&
+        checkboxes.indexOf('Test1') === -1 &&
+        checkboxes.indexOf('Test2') === -1
+      ) {
+        checkboxes.push('Test1', 'Test2')
+      }
       const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
       if (checkboxes) {
@@ -154,7 +157,7 @@ const AccountName = styled.span`
     props.isChecked ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: 500;
   text-align: left;
   margin-left: 24px;
@@ -199,7 +202,7 @@ const AccountsListItem = styled.li`
   display: flex;
   align-items: center;
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 1em;
   font-weight: 500;
   text-align: left;
   color: #4ed8da;
@@ -215,7 +218,7 @@ const AccountsList = styled.ul`
 `
 
 const AccountsWalletsBlock = styled.div`
-  min-width: 250px;
+  min-width: 200px;
   min-height: 90vh;
   background-color: #2d3136;
   padding: 16px;
@@ -223,11 +226,15 @@ const AccountsWalletsBlock = styled.div`
 
 const AccountsWalletsHeading = styled.span`
   font-family: Roboto;
-  font-size: 20px;
+  font-size: 1.25em;
   font-weight: 500;
   letter-spacing: 0.5px;
   text-align: center;
   color: #ffffff;
 `
 
-export default graphql(getKeysQuery)(PortfolioSelector)
+const mapStateToProps = (store) => ({ isShownMocks: store.user.isShownMocks })
+
+const storeComponent = connect(mapStateToProps)(PortfolioSelector)
+
+export default compose(graphql(getKeysQuery))(storeComponent)

@@ -66,8 +66,6 @@ export default class PortfolioTableIndustries extends React.Component<
       assets: portfolio.assets.concat(MOCKS),
     }
 
-    console.log('componentDidMount composeWithMocks', composeWithMocks)
-
     this.setState({ portfolio: composeWithMocks }, () =>
       this.combineIndustryData(composeWithMocks)
     )
@@ -84,11 +82,6 @@ export default class PortfolioTableIndustries extends React.Component<
         ...portfolio,
         assets: portfolio.assets.concat(MOCKS),
       }
-
-      console.log(
-        'componentWillReceiveProps composeWithMocks',
-        composeWithMocks
-      )
 
       this.setState({ portfolio: composeWithMocks })
       this.combineIndustryData(composeWithMocks)
@@ -378,29 +371,30 @@ export default class PortfolioTableIndustries extends React.Component<
                   <PTD key="smt" isSelected={isSelected}>
                     {this.renderCheckbox(idx)}
                   </PTD>
-                  {cols.map((col, idx) => {
-                    if (!Array.isArray(col) && col.match(/%/g)) {
-                      const color =
-                        Number(col.replace(/%/g, '')) >= 0
-                          ? '#65c000'
-                          : '#ff687a'
+                  {cols &&
+                    cols.map((col, idx) => {
+                      if (col && !Array.isArray(col) && col.match(/%/g)) {
+                        const color =
+                          Number(col.replace(/%/g, '')) >= 0
+                            ? '#65c000'
+                            : '#ff687a'
 
+                        return (
+                          <PTD
+                            key={`${col}${idx}`}
+                            style={{ color }}
+                            isSelected={isSelected}
+                          >
+                            {col}
+                          </PTD>
+                        )
+                      }
                       return (
-                        <PTD
-                          key={`${col}${idx}`}
-                          style={{ color }}
-                          isSelected={isSelected}
-                        >
+                        <PTD key={`${col}${idx}`} isSelected={isSelected}>
                           {col}
                         </PTD>
                       )
-                    }
-                    return (
-                      <PTD key={`${col}${idx}`} isSelected={isSelected}>
-                        {col}
-                      </PTD>
-                    )
-                  })}
+                    })}
                 </PTR>
               )
             })}

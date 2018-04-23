@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
+import PieChart from '@components/PieChart'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import filterListIcon from '../../../../icons/filter-list.svg'
 import gridLoader from '../../../../icons/grid.svg'
@@ -16,6 +17,7 @@ import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Correlation from './Correlation/Correlation'
 
 import { MOCK_DATA } from './dataMock'
+import { combineToChart } from './Industry/mocks'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -311,16 +313,19 @@ export class PortfolioTable extends React.Component<TableProps> {
 
   render() {
     const {
-      selectedBalances,
-      selectedSum,
+      tab,
       tableData,
+      portfolio,
+      selectedSum,
+      currentSort,
       isShownChart,
       isUSDCurrently,
-      tab,
-      currentSort,
+      selectedBalances,
     } = this.state
 
-    if (!tableData)
+    if (!this.props.data) return null
+
+    if (this.props.data && !tableData) {
       return (
         <LoaderWrapper>
           <SvgIcon
@@ -335,9 +340,12 @@ export class PortfolioTable extends React.Component<TableProps> {
           />
         </LoaderWrapper>
       )
+    }
 
     const isSelectAll =
-      (selectedBalances && selectedBalances.length === tableData.length) ||
+      (tableData &&
+        selectedBalances &&
+        selectedBalances.length === tableData.length) ||
       false
     return (
       <PTWrapper>
@@ -384,10 +392,10 @@ export class PortfolioTable extends React.Component<TableProps> {
           {tab === 'main' && (
             <Mutation mutation={UPDATE_PORTFOLIO}>
               {(updatePortfolio, { data, loading }) => {
-                loading = loading || this.state.portfolio.processing
+                const isLoading = loading || (portfolio && portfolio.processing)
                 return (
                   <ToggleBtn onClick={updatePortfolio}>
-                    {(loading) ? (
+                    {isLoading ? (
                       <SvgIcon src={gridLoader} width={24} height={24} />
                     ) : (
                       'Refresh'
@@ -437,16 +445,19 @@ export class PortfolioTable extends React.Component<TableProps> {
               }}
             />
           )}
+
+        {tab === 'industry' && (
+          <PieChartContainer>
+            <PieChart data={combineToChart()} />
+          </PieChartContainer>
+        )}
       </PTWrapper>
     )
   }
 }
 
-const SubHeading = styled.span`
-  font-family: Roboto;
-  font-size: 16px;
-  color: #fff;
-  font-weight: 500;
+const PieChartContainer = styled.div`
+  margin: 50px 10px;
 `
 
 const TabContainer = styled.div`

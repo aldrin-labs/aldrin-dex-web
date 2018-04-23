@@ -1,10 +1,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { RadialChart, Hint } from 'react-vis'
-import SvgIcon from '../../components/SvgIcon/SvgIcon'
+import PieChart from '@components/PieChart'
+import SvgIcon from '@components/SvgIcon/SvgIcon'
+import mask from '../../icons/mask.svg'
 import bubble from '../../icons/bubble.svg'
 import menuIcon from '../../icons/menu.svg'
-import mask from '../../icons/mask.svg'
 
 const chartCoins = [
   { angle: 5, label: 'BCash', color: '#f9b057' },
@@ -18,24 +18,10 @@ const chartCoins = [
   { angle: 25, label: 'Others', color: '#b6b8b8' },
 ]
 
-interface HintT {
-  label: string
-}
-
 interface Props {}
 
-interface State {
-  value: boolean | HintT
-}
-
-export default class DominanceChart extends React.Component<Props, State> {
-  state: State = {
-    value: false,
-  }
-
+export default class DominanceChart extends React.Component<Props> {
   render() {
-    const { value } = this.state
-
     const dndStyles = { cursor: '-webkit-grab' }
 
     return (
@@ -51,24 +37,7 @@ export default class DominanceChart extends React.Component<Props, State> {
         </HeadingWrapper>
 
         <ChartWrapper>
-          <RadialChart
-            innerRadius={80}
-            radius={128}
-            colorType="literal"
-            data={chartCoins}
-            onValueMouseOver={(v: HintT) => this.setState({ value: v })}
-            onSeriesMouseOut={() => this.setState({ value: false })}
-            width={256}
-            height={256}
-          >
-            {value &&
-              typeof value === 'object' && (
-                <Hint value={value} orientation="topleft">
-                  <ChartTooltip>{value.label}</ChartTooltip>
-                </Hint>
-              )}
-          </RadialChart>
-
+          <PieChart data={chartCoins} innerRadius={80} />
           <SvgIcon
             src={mask}
             width={185}
@@ -99,16 +68,14 @@ export default class DominanceChart extends React.Component<Props, State> {
   }
 }
 
-const ChartTooltip = styled.span`
-  font-family: Roboto;
-  font-size: 18px;
-  font-weight: 500;
-  text-align: left;
-  color: #fff;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #0006;
-  padding: 8px;
+const ChartWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  margin-top: 23px;
 `
 
 const ChartInfoDesc = styled.span`
@@ -150,16 +117,6 @@ const ChartInnerText = styled.span`
   text-align: center;
   color: #ffffff;
   position: absolute;
-`
-
-const ChartWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  position: relative;
-  align-items: center;
-  justify-content: center;
-  margin-top: 23px;
 `
 
 const Heading = styled.span`

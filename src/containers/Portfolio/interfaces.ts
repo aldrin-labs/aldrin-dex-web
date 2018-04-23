@@ -69,6 +69,7 @@ export interface IndProps {
 }
 
 export interface TableProps {
+  loading: boolean
   data: {
     portfolioId: string | null
     portfolio: {
