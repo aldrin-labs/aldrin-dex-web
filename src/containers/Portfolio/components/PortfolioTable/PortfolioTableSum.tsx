@@ -6,14 +6,30 @@ import selectedIcon from '../../../../icons/selected.svg'
 interface Props {
   selectedSum: {
     [key: string]: string | number
-  }
+  },
+  isUSDCurrently: boolean
 }
 
 export default class PortfolioTableSum extends React.Component<Props> {
   onFloorN = (x: number, n: number) => {
-    if (typeof x === 'string') return x
-    var mult = Math.pow(10, n)
-    return Math.floor(x * mult) / mult
+    if (typeof x === 'string') return x;
+    var mult = Math.pow(10, n);
+    let multAfterCalculation = Math.floor(x * mult) / mult;
+
+    const reg = this.props.isUSDCurrently
+      ? /-?[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
+      : /-?[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
+
+    if (multAfterCalculation.toString().match(reg)) {
+      const sum = multAfterCalculation.toString().match(reg);
+      return sum[0];
+    }
+    else if (multAfterCalculation) {
+      return multAfterCalculation;
+    }
+    else {
+      return '0';
+    }
   }
 
   render() {

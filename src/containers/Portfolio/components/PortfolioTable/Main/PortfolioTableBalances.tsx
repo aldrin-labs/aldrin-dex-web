@@ -36,7 +36,10 @@ export default class PortfolioTableBalances extends React.Component {
             onSelectBalance={onSelectBalance}
           />
           {selectedSum.currency && (
-            <PortfolioTableSum selectedSum={selectedSum} />
+            <PortfolioTableSum
+              selectedSum={selectedSum}
+              isUSDCurrently={isUSDCurrently}
+            />
           )}
         </PTable>
       </Wrapper>
