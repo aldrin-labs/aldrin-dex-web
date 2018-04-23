@@ -148,8 +148,8 @@ const PTBody = styled.tbody`
 `
 
 const PTD = styled.td`
-  color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#4ed8da' : '#fff'};
+  color: ${(props: { isSelected?: boolean }) => {
+    return props.isSelected ? '#4ed8da' : '#fff'}};
 
   font-family: Roboto;
   font-size: 12px;
@@ -159,15 +159,26 @@ const PTD = styled.td`
   white-space: nowrap;
 `
 
+// #3a4e4e;
+
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
 
+  &:nth-child(even) {
+    background-color: ${(props: { isSelected?: boolean }) =>
+  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  }
   & ${PTD}:nth-child(n+ 3) {
     text-align: right;
   }
-
+  & ${PTD}:nth-child(8) {
+    color: #50ff50;
+  }
+  & ${PTD}:nth-child(9) {
+    color: #f73f3f;
+  }
   & ${PTD}:nth-of-type(10) {
     color: #ff687a;
   }
