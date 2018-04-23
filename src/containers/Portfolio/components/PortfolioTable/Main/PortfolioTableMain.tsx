@@ -104,9 +104,11 @@ export default class PortfolioTableMain extends React.Component<Props> {
             [mainSymbol, `${this.roundUSDOff(currentPrice)}`],
             //            daily,
             //            `${dailyPerc} %`,
-            realizedPL,
+            [mainSymbol, `${this.roundUSDOff(realizedPL)}`],
+            // realizedPL,
             //            `${realizedPLPerc} %`,
-            unrealizedPL,
+            // unrealizedPL,
+            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`]
             //            `${unrealizedPLPerc} %`,
           ]
 
