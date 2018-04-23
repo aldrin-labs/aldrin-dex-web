@@ -86,12 +86,7 @@ class AddExchangeKeyComponent extends React.Component {
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
-        <FormContainer
-          onSubmit={() => {
-            handleSubmit()
-            this.forceUpdate()
-          }}
-        >
+        <FormContainer onSubmit={handleSubmit}>
           <STextField
             error={touched.name && !!errors.name}
             id="name"
