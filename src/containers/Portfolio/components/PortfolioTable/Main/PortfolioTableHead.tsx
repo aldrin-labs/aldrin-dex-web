@@ -20,6 +20,8 @@ const usdHeadings: Array<{ name: string; value: Args }> = [
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
   { name: 'Unrealized P&L', value: 'unrealizedPL' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
+  { name: 'Total P&L', value: 'total' },
+
 ]
 
 const btcHeadings: Array<{ name: string; value: Args }> = [
@@ -35,6 +37,7 @@ const btcHeadings: Array<{ name: string; value: Args }> = [
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
   { name: 'Unrealized P&L', value: 'unrealizedPL' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
+  { name: 'Total P&L', value: 'total' },
 ]
 
 interface Props {
