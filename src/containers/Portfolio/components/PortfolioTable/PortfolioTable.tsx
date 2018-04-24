@@ -162,10 +162,11 @@ export class PortfolioTable extends React.Component<TableProps> {
           currentPrice: currentPrice || 0,
           daily: this.calcPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
-          realizedPL: realizedProfit + currentPrice + unrealizedProfit,
+          realizedPL: realizedProfit,
           realizedPLPerc: 0,
           unrealizedPL: unrealizedProfit + currentPrice,
           unrealizedPLPerc: 0,
+          totalPL: realizedProfit + currentPrice + unrealizedProfit,
         }
 
         return col
@@ -230,6 +231,7 @@ export class PortfolioTable extends React.Component<TableProps> {
         daily: 0,
         dailyPerc: 0,
         realizedPL: 0,
+        totalPL: 0,
         realizedPLPerc: 0,
         unrealizedPL: 0,
         unrealizedPLPerc: 0,
