@@ -515,5 +515,5 @@ const PTHeadingBlock = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
+  padding: 17px;
 `

@@ -155,26 +155,6 @@ export default class ProfileChart extends React.Component<Props, State> {
           </SuppliesBlock>
         )}
 
-        <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => {
-            return (
-              <ChartBtn
-                onClick={() => this.onChangeActiveChart(i)}
-                style={
-                  i === this.state.activeChart
-                    ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                    : {}
-                }
-                key={chartBtn}
-              >
-                {chartBtn}
-              </ChartBtn>
-            )
-          })}
-        </BtnsContainer>
-
-        <Hr />
-
         <Chart>
           <FlexibleXYPlot
             animation
@@ -238,6 +218,26 @@ export default class ProfileChart extends React.Component<Props, State> {
           </FlexibleXYPlot>
         </Chart>
 
+        <Hr />
+
+        <BtnsContainer>
+          {chartBtns.map((chartBtn, i) => {
+            return (
+              <ChartBtn
+                onClick={() => this.onChangeActiveChart(i)}
+                style={
+                  i === this.state.activeChart
+                    ? { backgroundColor: '#4ed8da', color: '#4c5055' }
+                    : {}
+                }
+                key={chartBtn}
+              >
+                {chartBtn}
+              </ChartBtn>
+            )
+          })}
+        </BtnsContainer>
+
       </SProfileChart>
     )
   }
@@ -248,10 +248,11 @@ const Chart = styled.div`
   height: 100%;
   min-height: 5em;
   max-height: 10em;
+  margin-top: 24px;
 `
 
 const Hr = styled.hr`
-  margin: 16px auto;
+  margin: 45px auto 0 auto;
   width: 95%;
   height: 0.5px;
   border-radius: 1px;
@@ -261,7 +262,7 @@ const Hr = styled.hr`
 const BtnsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 24px auto 0 auto;
+  margin: 24px auto 24px auto;
 `
 
 const ChartBtn = styled.button`
