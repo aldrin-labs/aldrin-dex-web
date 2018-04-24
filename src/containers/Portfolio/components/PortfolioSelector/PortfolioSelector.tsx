@@ -13,6 +13,8 @@ class PortfolioSelector extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    if (!this.props.isShownMocks) return
+
     const checkboxes = ['Test1', 'Test2']
     const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
