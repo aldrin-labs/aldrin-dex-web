@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import { NavButton } from './NavButton'
 import { Login } from '@containers/Login'
 
-
 // TODO: fix z-index for drawer
 const Nav = styled.div`
   width: 100%;
@@ -12,6 +11,7 @@ const Nav = styled.div`
   height: 80px;
   align-items: center;
   background-color: #2d3136;
+  z-index: 1;
 `
 
 const Logo = styled.img`

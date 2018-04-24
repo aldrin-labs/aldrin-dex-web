@@ -1,13 +1,16 @@
-import React, { SFC } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-const ChartContainer = styled.div`
-  height: 93vh;
-  width: 100%;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  height: 500px;
+  margin: 1%;
 `
 
-export const Chart = () => (
-  <ChartContainer>
-    <iframe src={'http://localhost:3001'} height={'100%'} width={'100%'}/>
-  </ChartContainer>
+export const SingleChart = () => (
+  <Wrapper>
+    <iframe src={'http://chart.igorlimansky.me'} height={'100%'} />
+  </Wrapper>
 )

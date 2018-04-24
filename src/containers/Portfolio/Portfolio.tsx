@@ -1,18 +1,57 @@
 import React from 'react'
+import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
-import { graphql } from 'react-apollo'
-import { compose } from 'recompose'
-import { withRouter } from 'react-router'
+import gql from 'graphql-tag'
+import { getPortfolioQuery } from './api'
+import { Props } from './interfaces'
+import { Login } from '@containers/Login'
+import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
+import { PortfolioTable } from './components'
 
-import { PortfolioTable, PortfolioSelector } from './components'
+const PORTFOLIO_UPDATE = gql`
+  subscription onPortfolioUpdated {
+    portfolioUpdate
+  }
+`
 
 const PortfolioContainer = styled.div`
   display: flex;
+  max-height: calc(100vh - 80px);
 `
 
-export const Portfolio = () => (
-  <PortfolioContainer>
-    <PortfolioSelector />
-    <PortfolioTable />
-  </PortfolioContainer>
-)
+class PortfolioComponent extends React.Component<Props> {
+  state = {
+    checkboxes: null,
+  }
+
+  onChangeActiveKey = (checkboxes: number[]) => {
+    this.setState({ checkboxes })
+  }
+
+  render() {
+    const { checkboxes } = this.state
+    const { data } = this.props
+    const { getProfile, loading, error } = data
+
+    return (
+      <Subscription subscription={PORTFOLIO_UPDATE}>
+        {(subscriptionData) => {
+          return (
+            <PortfolioContainer>
+              {error && <Login isShownModal={!!error} />}
+              <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
+              <PortfolioTable
+                loading={loading}
+                checkboxes={checkboxes}
+                data={getProfile}
+                subscription={subscriptionData}
+              />
+            </PortfolioContainer>
+          )
+        }}
+      </Subscription>
+    )
+  }
+}
+
+export default graphql(getPortfolioQuery)(PortfolioComponent)

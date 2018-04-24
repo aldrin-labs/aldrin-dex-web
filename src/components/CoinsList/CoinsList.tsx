@@ -2,14 +2,22 @@ import nanoid from 'nanoid'
 import React from 'react'
 import { FormattedNumber } from 'react-intl'
 import styled, { css } from 'styled-components'
+import Select from 'material-ui/Select'
+import Button from 'material-ui/Button'
+import { withRouter } from 'react-router-dom'
 
 import Paper from 'material-ui/Paper'
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table'
+import Table, {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from 'material-ui/Table'
 
 // TODO: add types
 import * as T from './types'
 
-import { CoinLink } from './CoinLink'
+import { CoinLink, ShowMoreLink } from './CoinLink'
 
 const CoinsListPaper = styled(Paper)`
   width: 100%;
@@ -46,7 +54,16 @@ const Test = styled.span`
   font-weight: 500;
 `
 
-const tableRows = ['#', 'Name', 'Price (USD)', 'Chg (24h)', 'Market Cap', 'Total Supply']
+const tableRows = [
+  '№',
+  'Name',
+  'Symbol',
+  'Price',
+  'Chg (24h)',
+  'Chg (7d)',
+  'Market Cap',
+  'Total Supply',
+]
 
 // TODO: fix types
 export const CoinsListHead = ({ tableRows }: T.ICoinsTableList[]) => (
@@ -62,6 +79,7 @@ export const CoinsListHead = ({ tableRows }: T.ICoinsTableList[]) => (
 )
 
 export const CoinsListBody = ({ tableData }: any) => {
+  console.log(tableData)
   return (
     <TableBody>
       {tableData.map((coin: any) => (
@@ -111,5 +129,6 @@ export const CoinsList = ({ data }: any) => (
       <CoinsListHead tableRows={tableRows} />
       <CoinsListBody tableData={data} />
     </CoinsListTable>
+    <ShowMoreLink name={'show more'} />
   </CoinsListPaper>
 )

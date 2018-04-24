@@ -5,7 +5,9 @@
         "browsers": ["last 2 versions"]
       }
     }],
-    "@babel/stage-1",
+    ["@babel/stage-1", {
+      "decoratorsLegacy": true
+    }],
     "@babel/react",
     "@babel/typescript"
   ],

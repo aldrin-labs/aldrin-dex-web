@@ -25,11 +25,9 @@ export const getKeysQuery = gql`
 `
 
 export const deleteExchangeKeyMutation = gql`
-  mutation deleteExchangeKey($name: String) {
-    deleteExchangeKey(name: $name) {
-      name
-    }
-  }
+  mutation deleteExchangeKey($name: String, $removeTrades: Boolean) {
+    deleteExchangeKey(name: $name, removeTrades: $removeTrades)
+}
 `
 
 export const addExchangeKeyMutation = gql`
@@ -66,7 +64,7 @@ export const getExchangesListQuery = gql`
           name
           baseId
           quoteId
-          exchangeId
+          exchangeIds
           price
         }
       }

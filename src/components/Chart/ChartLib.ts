@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { UDFCompatibleDatafeed } from './datafeed'
 
@@ -102,7 +102,7 @@ export default class TradingViewWrapper extends PureComponent {
     toolbar_bg: '#F1F3F6',
     enable_publishing: false,
     allow_symbol_change: true,
-    datafeed: new UDFCompatibleDatafeed("https://demo_feed.tradingview.com"),
+    datafeed: new UDFCompatibleDatafeed('https://demo_feed.tradingview.com'),
     hideideas: true,
   }
 

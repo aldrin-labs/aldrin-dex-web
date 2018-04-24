@@ -1,8 +1,13 @@
 import Autorenew from 'material-ui-icons/Autorenew'
 import Checkbox from 'material-ui/Checkbox'
 import IconButton from 'material-ui/IconButton'
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
+import List, {
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+} from 'material-ui/List'
 import Typography from 'material-ui/Typography'
+import { withTheme } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import React from 'react'
@@ -12,14 +17,15 @@ import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
 import * as R from 'ramda'
 
+import { Loading } from '@components'
+
 import * as actions from '../../actions'
 import * as API from '../../api'
-
-const SAppBar = styled(AppBar)``
+import { LoginAlert } from '../'
 
 const SWrapper = styled.div`
   width: 100%;
-  max-width: 360px;
+  max-width: 320px;
 `
 
 const SelectTitle = styled(Typography)`
@@ -27,15 +33,20 @@ const SelectTitle = styled(Typography)`
   font-size: 20px !important;
 `
 
+const SToolbar = styled(Toolbar)`
+  background-color: ${(props) =>
+    props.theme ? props.theme.palette.background.paper : ''};
+`
+
 class SelectPortfolioComponent extends React.Component {
-  readonly state = {
+  state = {
     allKeysSelected: false,
   }
 
   componentDidMount() {
     // if(R.equals(this.props.keys.getProfile.keys.map))
   }
-  readonly handleToggle = (value: any) => () => {
+  handleToggle = (value: any) => () => {
     const { selectedAccounts } = this.props
     const currentIndex = selectedAccounts.indexOf(value)
     const newChecked = [...selectedAccounts]
@@ -46,56 +57,65 @@ class SelectPortfolioComponent extends React.Component {
       newChecked.splice(currentIndex, 1)
     }
     this.props.selectAccount(newChecked)
-    this.props.onLoad(123)
   }
 
-  readonly handleToggleAll = () => {
-    const allKeys = this.props.keys.getProfile.keys.map(key => key._id)
-    this.setState((prevState, props) => {
-      return { allKeysSelected: !prevState.allKeysSelected };
-    });
+  handleToggleAll = () => {
+    const allKeys = this.props.keys.getProfile.keys.map((key) => key._id)
+    this.setState((prevState, props) => ({
+      allKeysSelected: !prevState.allKeysSelected,
+    }))
     this.props.selectAllKeys(allKeys)
   }
 
   render() {
-    console.log(this.props)
     if (this.props.keys.loading) {
-      return <Typography variant="title">Loading</Typography>
+      return <Loading />
     }
+
+    if (this.props.keys.error) {
+      if (this.props.keys.error.message.toLowerCase().includes('jwt')) {
+        return <LoginAlert />
+      }
+
+      return (
+        <Typography variant="title" color="error">
+          Error!
+        </Typography>
+      )
+    }
+
     const { keys } = this.props.keys.getProfile
-      console.log(333, this.props)
 
     return (
       <SWrapper>
-        {/* <SAppBar position="static" color="primary">
-          <Toolbar>
-            <SelectTitle variant="title" color="inherit">
-              Accounts & Wallets
-            </SelectTitle>
-          </Toolbar>
-        </SAppBar> */}
+        <AppBar position="static">
+          <SToolbar theme={this.props.theme}>
+            <SelectTitle variant="title">Api keys</SelectTitle>
+          </SToolbar>
+        </AppBar>
         <List>
-          <Typography>Check</Typography>
-          {keys.length === 0 && <Typography variant="title">No keys</Typography>}
+          {keys.length === 0 && (
+            <Typography variant="title">No keys</Typography>
+          )}
           {keys.length > 0 && (
             <ListItem dense button onClick={this.handleToggleAll}>
               <Checkbox checked={this.state.allKeysSelected} disableRipple />
               <ListItemText primary="Select all" />
             </ListItem>
           )}
-          {keys.map(key => (
-            <ListItem key={key._id} dense button onClick={this.handleToggle(key._id)}>
+          {keys.map((key) => (
+            <ListItem
+              key={key._id}
+              dense
+              button
+              onClick={this.handleToggle(key._id)}
+            >
               <Checkbox
                 checked={this.props.selectedAccounts.indexOf(key._id) !== -1}
                 tabIndex={-1}
                 disableRipple
               />
               <ListItemText primary={key.name} />
-              {/* <ListItemSecondaryAction>
-                <IconButton aria-label="Comments">
-                  <Autorenew />
-                </IconButton>
-              </ListItemSecondaryAction> */}
             </ListItem>
           ))}
         </List>
@@ -111,11 +131,12 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts)),
-  onLoad: data => dispatch(actions.onLoad(data)),
-  selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys))
+  onLoad: (data) => dispatch(actions.onLoad(data)),
+  selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys)),
 })
 
 export const PortfolioList = compose(
+  withTheme(),
   connect(mapStateToProps, mapDispatchToProps),
   graphql(API.getKeysQuery, { name: 'keys' })
 )(SelectPortfolioComponent)
