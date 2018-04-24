@@ -152,18 +152,19 @@ export class PortfolioTable extends React.Component<TableProps> {
           ? usdUnrealizedProfit
           : btcUnrealizedProfit
 
+        const currentPrice = mainPrice * value
         const col = {
           currency: name || '',
           symbol,
-          percentage: this.calcPercentage(mainPrice * value / allSums * 100),
+          percentage: this.calcPercentage(currentPrice / allSums * 100),
           price: mainPrice || 0,
           quantity: value || 0,
-          currentPrice: mainPrice * value || 0,
+          currentPrice: currentPrice || 0,
           daily: this.calcPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
-          realizedPL: realizedProfit,
+          realizedPL: realizedProfit + currentPrice + unrealizedProfit,
           realizedPLPerc: 0,
-          unrealizedPL: unrealizedProfit,
+          unrealizedPL: unrealizedProfit + currentPrice,
           unrealizedPLPerc: 0,
         }
 
