@@ -53,6 +53,15 @@ export class PortfolioTable extends React.Component<TableProps> {
     tab: 'main',
   }
 
+  componentDidMount() {
+    const { data } = this.props
+    if (!data) {
+      const portfolio = { assets: MOCK_DATA }
+      this.setState({ portfolio })
+      this.combineTableData(portfolio)
+    }
+  }
+
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
@@ -67,7 +76,10 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
 
     if (nextProps.subscription && nextProps.subscription.data) {
-      const portfolio = Object.assign(this.state.portfolio, JSON.parse(nextProps.subscription.data.portfolioUpdate));
+      const portfolio = Object.assign(
+        this.state.portfolio,
+        JSON.parse(nextProps.subscription.data.portfolioUpdate)
+      )
       const composeWithMocks = {
         ...portfolio,
         assets: portfolio.assets.concat(MOCK_DATA),
@@ -140,18 +152,19 @@ export class PortfolioTable extends React.Component<TableProps> {
           ? usdUnrealizedProfit
           : btcUnrealizedProfit
 
+        const currentPrice = mainPrice * value
         const col = {
           currency: name || '',
           symbol,
-          percentage: this.calcPercentage(mainPrice * value / allSums * 100),
+          percentage: this.calcPercentage(currentPrice / allSums * 100),
           price: mainPrice || 0,
           quantity: value || 0,
-          currentPrice: mainPrice * value || 0,
+          currentPrice: currentPrice || 0,
           daily: this.calcPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
-          realizedPL: realizedProfit,
+          realizedPL: realizedProfit + currentPrice + unrealizedProfit,
           realizedPLPerc: 0,
-          unrealizedPL: unrealizedProfit,
+          unrealizedPL: unrealizedProfit + currentPrice,
           unrealizedPLPerc: 0,
         }
 
@@ -194,17 +207,17 @@ export class PortfolioTable extends React.Component<TableProps> {
           currency: val.currency,
           symbol: val.symbol,
           percentage: Number(acc.percentage) + Number(val.percentage),
-          price: Number(acc.price) + Number(val.price),
-          quantity: Number(acc.quantity) + Number(val.quantity),
+          price: '',
+          quantity: '',
           currentPrice: Number(acc.currentPrice) + Number(val.currentPrice),
-          daily: Number(acc.daily) + Number(val.daily),
-          dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
+          // daily: Number(acc.daily) + Number(val.daily),
+          // dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
           realizedPL: Number(acc.realizedPL) + Number(val.realizedPL),
-          realizedPLPerc:
-            Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
+          // realizedPLPerc:
+          //   Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
           unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
-          unrealizedPLPerc:
-            Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
+          // unrealizedPLPerc:
+          //   Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
         }
       },
       {
@@ -223,13 +236,20 @@ export class PortfolioTable extends React.Component<TableProps> {
       }
     )
     const validateSum = this.onValidateSum(reducedSum)
+    console.log('validateSum: ', validateSum)
     this.setState({ selectedSum: validateSum })
   }
 
   onValidateSum = (reducedSum: RowT) => {
-    const { selectedBalances, tableData } = this.state
+    const { selectedBalances, tableData, isUSDCurrently } = this.state
     if (!selectedBalances || !tableData) return null
     const clonedSum = { ...reducedSum }
+
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" key="usd" />
+    ) : (
+      <Icon className="fa fa-btc" key="btc" />
+    )
 
     if (selectedBalances.length === tableData.length) {
       clonedSum.currency = 'All'
@@ -239,6 +259,9 @@ export class PortfolioTable extends React.Component<TableProps> {
       clonedSum.currency = 'Selected'
       clonedSum.symbol = '-'
     }
+    clonedSum.percentage = `${this.calcPercentage(clonedSum.percentage)}%`
+    clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
+    console.log('clonedSum.currentPrice', clonedSum.currentPrice)
 
     return clonedSum
   }
@@ -323,7 +346,7 @@ export class PortfolioTable extends React.Component<TableProps> {
       selectedBalances,
     } = this.state
 
-    if (!this.props.data) return null
+    // if (!this.props.data) return null
 
     if (this.props.data && !tableData) {
       return (
@@ -516,4 +539,7 @@ const PTHeadingBlock = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 16px;
+`
+const Icon = styled.i`
+  padding-right: 5px;
 `

@@ -6,6 +6,8 @@ import PortfolioTableSum from '../PortfolioTableSum'
 import { MOCKS } from './mocks'
 import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -43,10 +45,7 @@ interface State {
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }
 
-export default class PortfolioTableIndustries extends React.Component<
-  IndProps,
-  State
-> {
+class Industries extends React.Component<IndProps, State> {
   state: State = {
     activeKeys: null,
     portfolio: null,
@@ -57,7 +56,18 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   componentDidMount() {
-    const { data } = this.props
+    const { data, isShownMocks } = this.props
+
+    if (!data && isShownMocks) {
+      this.setState({ portfolio: { assets: MOCKS } }, () =>
+        this.combineIndustryData({ assets: MOCKS })
+      )
+
+      this.setState({ activeKeys: this.props.checkboxes })
+      return
+    } else if (!data) {
+      return
+    }
     const { portfolio } = data
     if (!portfolio || !portfolio.assets) return
 
@@ -280,9 +290,12 @@ export default class PortfolioTableIndustries extends React.Component<
   render() {
     const { isUSDCurrently } = this.props
     const { selectedRows, selectedSum, industryData, currentSort } = this.state
-    if (!industryData) return null
+    // if (!industryData) return null
     const isSelectAll =
-      (selectedRows && industryData.length === selectedRows.length) || false
+      (industryData &&
+        selectedRows &&
+        industryData.length === selectedRows.length) ||
+      false
 
     return (
       <Wrapper>
@@ -334,70 +347,71 @@ export default class PortfolioTableIndustries extends React.Component<
           </PTHead>
 
           <PTBody>
-            {industryData.map((row, idx) => {
-              const {
-                currency,
-                symbol,
-                industry,
-                price,
-                portfolioPerf,
-                industryPerf,
-              } = row
+            {industryData &&
+              industryData.map((row, idx) => {
+                const {
+                  currency,
+                  symbol,
+                  industry,
+                  price,
+                  portfolioPerf,
+                  industryPerf,
+                } = row
 
-              const mainSymbol = isUSDCurrently ? (
-                <Icon className="fa fa-usd" key={`${idx}usd`} />
-              ) : (
-                <Icon className="fa fa-btc" key={`${idx}btc`} />
-              )
+                const mainSymbol = isUSDCurrently ? (
+                  <Icon className="fa fa-usd" key={`${idx}usd`} />
+                ) : (
+                  <Icon className="fa fa-btc" key={`${idx}btc`} />
+                )
 
-              const isSelected =
-                (selectedRows && selectedRows.indexOf(idx) >= 0) || false
+                const isSelected =
+                  (selectedRows && selectedRows.indexOf(idx) >= 0) || false
 
-              const cols = [
-                currency,
-                symbol,
-                industry,
-                [mainSymbol, `${price}`],
-                `${portfolioPerf}%`,
-                `${industryPerf}%`,
-              ]
+                const cols = [
+                  currency,
+                  symbol,
+                  industry,
+                  [mainSymbol, `${price}`],
+                  `${portfolioPerf}%`,
+                  `${industryPerf}%`,
+                ]
 
-              return (
-                <PTR
-                  key={`${currency}${symbol}`}
-                  isSelected={isSelected}
-                  onClick={() => this.onSelectBalance(idx)}
-                >
-                  <PTD key="smt" isSelected={isSelected}>
-                    {this.renderCheckbox(idx)}
-                  </PTD>
-                  {cols &&
-                    cols.map((col, idx) => {
-                      if (col && !Array.isArray(col) && col.match(/%/g)) {
-                        const color =
-                          Number(col.replace(/%/g, '')) >= 0
-                            ? '#65c000'
-                            : '#ff687a'
+                return (
+                  <PTR
+                    key={`${currency}${symbol}`}
+                    isSelected={isSelected}
+                    onClick={() => this.onSelectBalance(idx)}
+                  >
+                    <PTD key="smt" isSelected={isSelected}>
+                      {this.renderCheckbox(idx)}
+                    </PTD>
+                    {cols &&
+                      cols.map((col, idx) => {
+                        if (col && !Array.isArray(col) && col.match(/%/g)) {
+                          const color =
+                            Number(col.replace(/%/g, '')) >= 0
+                              ? '#65c000'
+                              : '#ff687a'
 
+                          return (
+                            <PTD
+                              key={`${col}${idx}`}
+                              style={{ color }}
+                              isSelected={isSelected}
+                            >
+                              {col}
+                            </PTD>
+                          )
+                        }
                         return (
-                          <PTD
-                            key={`${col}${idx}`}
-                            style={{ color }}
-                            isSelected={isSelected}
-                          >
+                          <PTD key={`${col}${idx}`} isSelected={isSelected}>
                             {col}
                           </PTD>
                         )
-                      }
-                      return (
-                        <PTD key={`${col}${idx}`} isSelected={isSelected}>
-                          {col}
-                        </PTD>
-                      )
-                    })}
-                </PTR>
-              )
-            })}
+                      })}
+                  </PTR>
+                )
+              })}
           </PTBody>
           {selectedSum.currency && (
             <PortfolioTableSum selectedSum={selectedSum} />
@@ -509,3 +523,11 @@ const PTR = styled.tr`
 `
 
 const PTHead = styled.thead``
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
+
+const storeComponent = connect(mapStateToProps)(Industries)
+
+export default compose()(storeComponent)
