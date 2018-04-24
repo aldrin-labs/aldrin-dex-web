@@ -6,6 +6,8 @@ import PortfolioTableSum from '../PortfolioTableSum'
 import { MOCKS } from './mocks'
 import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -43,10 +45,7 @@ interface State {
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }
 
-export default class PortfolioTableIndustries extends React.Component<
-  IndProps,
-  State
-> {
+class Industries extends React.Component<IndProps, State> {
   state: State = {
     activeKeys: null,
     portfolio: null,
@@ -57,13 +56,16 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   componentDidMount() {
-    const { data } = this.props
-    if (!data) {
+    const { data, isShownMocks } = this.props
+
+    if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCKS } }, () =>
         this.combineIndustryData({ assets: MOCKS })
       )
 
       this.setState({ activeKeys: this.props.checkboxes })
+      return
+    } else if (!data) {
       return
     }
     const { portfolio } = data
@@ -521,3 +523,11 @@ const PTR = styled.tr`
 `
 
 const PTHead = styled.thead``
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
+
+const storeComponent = connect(mapStateToProps)(Industries)
+
+export default compose()(storeComponent)
