@@ -108,7 +108,8 @@ export default class PortfolioTableMain extends React.Component<Props> {
             // realizedPL,
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
-            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`]
+            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`],
+            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`] /// this WOULD BE TOTAL COLUMN!
             //            `${unrealizedPLPerc} %`,
           ]
 
@@ -180,7 +181,7 @@ const PTR = styled.tr`
     color: #f73f3f;
   }
   & ${PTD}:nth-of-type(10) {
-    color: #ff687a;
+    color: #f73f3f;
   }
 
   & ${PTD}:nth-of-type(11) {
