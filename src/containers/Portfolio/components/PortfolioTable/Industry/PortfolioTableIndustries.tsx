@@ -302,7 +302,7 @@ class Industries extends React.Component<IndProps, State> {
         <PTable>
           <PTHead>
             <PTR>
-              <PTH key="selectAll" style={{ textAlign: 'left' }}>
+              <PTH key="selectAll">
                 <Checkbox
                   type="checkbox"
                   id="selectAll"
@@ -413,9 +413,10 @@ class Industries extends React.Component<IndProps, State> {
                 )
               })}
           </PTBody>
-          {selectedSum.currency && (
-            <PortfolioTableSum selectedSum={selectedSum} />
-          )}
+          {selectedSum &&
+            selectedSum.currency && (
+              <PortfolioTableSum selectedSum={selectedSum} />
+            )}
         </PTable>
       </Wrapper>
     )
@@ -506,14 +507,15 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 10px;
+  padding: 0 10px;
   font-weight: 500;
   text-align: center;
-
+  vertical-align: bottom;
   position: sticky;
   top: 0;
   overflow: hidden;
   background-color: #393e44;
+  width: 50px;
 `
 
 const PTR = styled.tr`
