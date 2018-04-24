@@ -84,6 +84,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
             realizedPLPerc,
             unrealizedPL,
             unrealizedPLPerc,
+            totalPL,
           } = row
 
           const isSelected =
@@ -109,7 +110,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
             [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`],
-            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`] /// this WOULD BE TOTAL COLUMN!
+            [mainSymbol, `${this.roundUSDOff(totalPL)}`] /// this WOULD BE TOTAL COLUMN!
             //            `${unrealizedPLPerc} %`,
           ]
 
