@@ -38,6 +38,7 @@ const defaultSelectedSum = {
   realizedPLPerc: 0,
   unrealizedPL: 0,
   unrealizedPLPerc: 0,
+  totalPL: 0,
 }
 
 export class PortfolioTable extends React.Component<TableProps> {
@@ -217,6 +218,7 @@ export class PortfolioTable extends React.Component<TableProps> {
           // realizedPLPerc:
           //   Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
           unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
+          totalPL: Number(acc.totalPL) + Number(val.totalPL),
           // unrealizedPLPerc:
           //   Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
         }
@@ -235,6 +237,7 @@ export class PortfolioTable extends React.Component<TableProps> {
         realizedPLPerc: 0,
         unrealizedPL: 0,
         unrealizedPLPerc: 0,
+        totalPL: 0,
       }
     )
     const validateSum = this.onValidateSum(reducedSum)
@@ -263,7 +266,6 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
     clonedSum.percentage = `${this.calcPercentage(clonedSum.percentage)}%`
     clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
-    console.log('clonedSum.currentPrice', clonedSum.currentPrice)
 
     return clonedSum
   }

@@ -54,7 +54,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
     } else if (num > 0) {
       return this.addZerosToEnd(String(num))
     } else {
-      return '0'
+      return `${num}`
     }
   }
 
@@ -78,12 +78,12 @@ export default class PortfolioTableMain extends React.Component<Props> {
             price,
             quantity,
             currentPrice,
-            daily,
-            dailyPerc,
+            // daily,
+            // dailyPerc,
             realizedPL,
-            realizedPLPerc,
+            // realizedPLPerc,
             unrealizedPL,
-            unrealizedPLPerc,
+            // unrealizedPLPerc,
             totalPL,
           } = row
 
@@ -110,7 +110,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
             [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`],
-            [mainSymbol, `${this.roundUSDOff(totalPL)}`] /// this WOULD BE TOTAL COLUMN!
+            [mainSymbol, `${this.roundUSDOff(totalPL)}`], /// this WOULD BE TOTAL COLUMN!
             //            `${unrealizedPLPerc} %`,
           ]
 
@@ -128,10 +128,16 @@ export default class PortfolioTableMain extends React.Component<Props> {
                 {this.renderCheckbox(index)}
               </PTD>
               {cols.map((col, idx) => {
+                let colorized = null
+                if (Array.isArray(col) && idx >= 6) {
+                  const [icon, str] = col
+                  colorized = str
+                }
                 return (
                   <PTD
                     key={`${currency}${symbol}${quantity}${col}${idx}`}
                     isSelected={isSelected}
+                    colorized={colorized}
                   >
                     {col}
                   </PTD>
@@ -150,8 +156,20 @@ const PTBody = styled.tbody`
 `
 
 const PTD = styled.td`
-  color: ${(props: { isSelected?: boolean }) => {
-    return props.isSelected ? '#4ed8da' : '#fff'}};
+  color: ${(props: {
+    isSelected?: boolean
+    colorized: string | JSX.Element | null
+  }) => {
+    if (props.colorized) {
+      const num = Number(props.colorized)
+      if (num > 0) {
+        return '#4caf50'
+      } else if (num < 0) {
+        return '#f44336'
+      }
+    }
+    return props.isSelected ? '#4ed8da' : '#fff'
+  }};
 
   font-family: Roboto;
   font-size: 12px;
@@ -170,31 +188,10 @@ const PTR = styled.tr`
 
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
   & ${PTD}:nth-child(n+ 3) {
     text-align: right;
-  }
-  & ${PTD}:nth-child(8) {
-    color: #50ff50;
-  }
-  & ${PTD}:nth-child(9) {
-    color: #f73f3f;
-  }
-  & ${PTD}:nth-of-type(10) {
-    color: #f73f3f;
-  }
-
-  & ${PTD}:nth-of-type(11) {
-    color: #ff687a;
-  }
-
-  & ${PTD}:nth-of-type(12) {
-    color: #65c000;
-  }
-
-  & ${PTD}:nth-of-type(13) {
-    color: #65c000;
   }
 `
 
