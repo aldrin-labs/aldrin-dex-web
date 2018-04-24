@@ -55,15 +55,24 @@ function calculateMonths(v: number) {
   }
 }
 
+// const chartBtns = [
+//   '1 Day',
+//   '7 Days',
+//   '1 Month',
+//   '3 Month',
+//   '1 Year',
+//   'YTD',
+//   'ALL PERIOD',
+// ]
 const chartBtns = [
-  '1 Day',
-  '7 Days',
-  '1 Month',
-  '3 Month',
-  '1 Year',
+  '1D',
+  '7D',
+  '1M',
+  '3M',
+  '1Y',
   'YTD',
-  'ALL PERIOD',
-]
+  'ALL',
+];
 
 export default class ProfileChart extends React.Component<Props, State> {
   showSupplies: JSX.Element
@@ -228,6 +237,7 @@ export default class ProfileChart extends React.Component<Props, State> {
             />
           </FlexibleXYPlot>
         </Chart>
+
       </SProfileChart>
     )
   }
