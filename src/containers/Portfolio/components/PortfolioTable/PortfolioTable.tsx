@@ -519,7 +519,7 @@ const ToggleBtn = styled.button`
 `
 
 const PTWrapper = styled.div`
-  width: 100%;
+  width: 81%;
   display: flex;
   flex-direction: column;
   margin: 24px;
