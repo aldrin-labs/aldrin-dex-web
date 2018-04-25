@@ -152,7 +152,7 @@ review:
     paths: [environment_url.txt]
   only:
     refs:
-      - branches
+      - develop
     kubernetes: active
   except:
     - master
@@ -250,7 +250,7 @@ production:
     url: http://$CI_PROJECT_PATH_SLUG.$AUTO_DEVOPS_DOMAIN
   artifacts:
     paths: [environment_url.txt]
-#  when: manual
+  when: manual
   only:
     refs:
       - master

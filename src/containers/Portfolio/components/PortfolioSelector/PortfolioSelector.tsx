@@ -12,6 +12,21 @@ class PortfolioSelector extends React.Component<Props, State> {
     checkboxes: null,
   }
 
+  componentDidMount() {
+    if (!this.props.isShownMocks) return
+
+    const checkboxes = ['Test1', 'Test2']
+    const checkedCheckboxes = checkboxes.map((ck, i) => i)
+
+    if (checkboxes) {
+      this.setState({ checkboxes, checkedCheckboxes }, () => {
+        const { onChangeActive } = this.props
+
+        onChangeActive(checkboxes)
+      })
+    }
+  }
+
   componentWillReceiveProps(nextProps: Props) {
     // called once
     if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {

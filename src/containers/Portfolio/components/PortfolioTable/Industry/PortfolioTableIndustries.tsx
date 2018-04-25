@@ -7,6 +7,8 @@ import PortfolioTableSum from '../PortfolioTableSum'
 import { MOCKS } from './mocks'
 import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -96,8 +98,18 @@ export default class PortfolioTableIndustries extends React.Component<
   }
 
   componentDidMount() {
-    const { data } = this.props
-    if (!data || !data.portfolio || !data.portfolio.assets) return
+    const { data, isShownMocks } = this.props
+
+    if (!data && isShownMocks) {
+      this.setState({ portfolio: { assets: MOCKS } }, () =>
+        this.combineIndustryData({ assets: MOCKS })
+      )
+
+      this.setState({ activeKeys: this.props.checkboxes })
+      return
+    } else if (!data) {
+      return
+    }
     const { portfolio } = data
 
     const composeWithMocks = {
@@ -564,14 +576,15 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 10px;
+  padding: 0 10px;
   font-weight: 500;
   text-align: center;
-
+  vertical-align: bottom;
   position: sticky;
   top: 0;
   overflow: hidden;
   background-color: #393e44;
+  width: 50px;
 `
 
 const PTR = styled.tr`
@@ -581,3 +594,11 @@ const PTR = styled.tr`
 `
 
 const PTHead = styled.thead``
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
+
+const storeComponent = connect(mapStateToProps)(Industries)
+
+export default compose()(storeComponent)
