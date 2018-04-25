@@ -84,7 +84,7 @@ const TMP_LINE_CHART_MOCKS = [
   ],
 ]
 
-export default class PortfolioTableIndustries extends React.Component<
+class PortfolioTableIndustries extends React.Component<
   IndProps,
   State
 > {
@@ -599,6 +599,6 @@ const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
 })
 
-const storeComponent = connect(mapStateToProps)(Industries)
+const storeComponent = connect(mapStateToProps)(PortfolioTableIndustries)
 
 export default compose()(storeComponent)
