@@ -567,6 +567,10 @@ const PTD = styled.td`
   overflow: hidden;
   white-space: nowrap;
   text-align: right;
+  
+  &:first-child {
+    text-align: left;
+  }
 `
 
 const Span = styled.span``
