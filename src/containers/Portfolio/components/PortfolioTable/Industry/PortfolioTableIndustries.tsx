@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import sortIcon from '../../../../../icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
 import { MOCKS } from './mocks'
 import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
@@ -45,7 +46,48 @@ interface State {
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }
 
-class Industries extends React.Component<IndProps, State> {
+const TMP_LINE_CHART_MOCKS = [
+  [
+    { x: 1, y: 137070, label: 'BTC' },
+    { x: 2, y: 134926, label: 'BTC' },
+    { x: 3, y: 138591, label: 'BTC' },
+    { x: 4, y: 140777, label: 'BTC' },
+    { x: 5, y: 150337, label: 'BTC' },
+    { x: 6, y: 151651, label: 'BTC' },
+  ],
+
+  [
+    { x: 1, y: 50534, label: 'ETH' },
+    { x: 2, y: 49769, label: 'ETH' },
+    { x: 3, y: 51829, label: 'ETH' },
+    { x: 4, y: 56188, label: 'ETH' },
+    { x: 5, y: 60951, label: 'ETH' },
+    { x: 6, y: 59985, label: 'ETH' },
+  ],
+
+  [
+    { x: 1, y: 26012, label: 'XRP' },
+    { x: 2, y: 25705, label: 'XRP' },
+    { x: 3, y: 27857, label: 'XRP' },
+    { x: 4, y: 30952, label: 'XRP' },
+    { x: 5, y: 36189, label: 'XRP' },
+    { x: 6, y: 33912, label: 'XRP' },
+  ],
+
+  [
+    { x: 1, y: 13093, label: 'BCH' },
+    { x: 2, y: 12950, label: 'BCH' },
+    { x: 3, y: 15213, label: 'BCH' },
+    { x: 4, y: 16572, label: 'BCH' },
+    { x: 5, y: 19252, label: 'BCH' },
+    { x: 6, y: 19606, label: 'BCH' },
+  ],
+]
+
+export default class PortfolioTableIndustries extends React.Component<
+  IndProps,
+  State
+> {
   state: State = {
     activeKeys: null,
     portfolio: null,
@@ -69,7 +111,6 @@ class Industries extends React.Component<IndProps, State> {
       return
     }
     const { portfolio } = data
-    if (!portfolio || !portfolio.assets) return
 
     const composeWithMocks = {
       ...portfolio,
@@ -287,10 +328,23 @@ class Industries extends React.Component<IndProps, State> {
     this.setState({ selectedRows: allRows }, () => this.calculateSum(allRows))
   }
 
+  genLineChart = () => {
+    const { selectedRows, industryData } = this.state
+    if (!selectedRows || !industryData) return
+    const data = industryData.filter((o, i) => selectedRows.indexOf(i) >= 0)
+
+    return data.map((item, i) => {
+      return {
+        x: i + 1,
+        y: i * 2,
+        label: `${item.symbol} ${item.industry}`,
+      }
+    })
+  }
+
   render() {
     const { isUSDCurrently } = this.props
     const { selectedRows, selectedSum, industryData, currentSort } = this.state
-    // if (!industryData) return null
     const isSelectAll =
       (industryData &&
         selectedRows &&
@@ -298,137 +352,152 @@ class Industries extends React.Component<IndProps, State> {
       false
 
     return (
-      <Wrapper>
-        <PTable>
-          <PTHead>
-            <PTR>
-              <PTH key="selectAll">
-                <Checkbox
-                  type="checkbox"
-                  id="selectAll"
-                  checked={isSelectAll}
-                  onChange={this.onSelectAll}
-                />
-                <Label htmlFor="selectAll">
-                  <Span />
-                </Label>
-              </PTH>
-              {tableHeadings.map((heading) => {
-                const isSorted =
-                  currentSort && currentSort.key === heading.value
+      <Container>
+        <Wrapper>
+          <PTable>
+            <PTHead>
+              <PTR>
+                <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                  <Checkbox
+                    type="checkbox"
+                    id="selectAll"
+                    checked={isSelectAll}
+                    onChange={this.onSelectAll}
+                  />
+                  <Label htmlFor="selectAll">
+                    <Span />
+                  </Label>
+                </PTH>
+                {tableHeadings.map((heading) => {
+                  const isSorted =
+                    currentSort && currentSort.key === heading.value
 
-                return (
-                  <PTH
-                    key={heading.name}
-                    onClick={() => this.onSortTable(heading.value)}
-                    style={{ paddingRight: isSorted ? 0 : '16px' }}
-                  >
-                    {heading.name}
+                  return (
+                    <PTH
+                      key={heading.name}
+                      onClick={() => this.onSortTable(heading.value)}
+                      style={{ paddingRight: isSorted ? 0 : '16px' }}
+                    >
+                      {heading.name}
 
-                    {isSorted && (
-                      <SvgIcon
-                        src={sortIcon}
-                        width={12}
-                        height={12}
-                        style={{
-                          verticalAlign: 'middle',
-                          marginLeft: '4px',
-                          transform:
-                            currentSort && currentSort.arg === 'ASC'
-                              ? 'rotate(180deg)'
-                              : null,
-                        }}
-                      />
-                    )}
-                  </PTH>
-                )
-              })}
-            </PTR>
-          </PTHead>
+                      {isSorted && (
+                        <SvgIcon
+                          src={sortIcon}
+                          width={12}
+                          height={12}
+                          style={{
+                            verticalAlign: 'middle',
+                            marginLeft: '4px',
+                            transform:
+                              currentSort && currentSort.arg === 'ASC'
+                                ? 'rotate(180deg)'
+                                : null,
+                          }}
+                        />
+                      )}
+                    </PTH>
+                  )
+                })}
+              </PTR>
+            </PTHead>
 
-          <PTBody>
-            {industryData &&
-              industryData.map((row, idx) => {
-                const {
-                  currency,
-                  symbol,
-                  industry,
-                  price,
-                  portfolioPerf,
-                  industryPerf,
-                } = row
+            <PTBody>
+              {industryData &&
+                industryData.map((row, idx) => {
+                  const {
+                    currency,
+                    symbol,
+                    industry,
+                    price,
+                    portfolioPerf,
+                    industryPerf,
+                  } = row
 
-                const mainSymbol = isUSDCurrently ? (
-                  <Icon className="fa fa-usd" key={`${idx}usd`} />
-                ) : (
-                  <Icon className="fa fa-btc" key={`${idx}btc`} />
-                )
+                  const mainSymbol = isUSDCurrently ? (
+                    <Icon className="fa fa-usd" key={`${idx}usd`} />
+                  ) : (
+                    <Icon className="fa fa-btc" key={`${idx}btc`} />
+                  )
 
-                const isSelected =
-                  (selectedRows && selectedRows.indexOf(idx) >= 0) || false
+                  const isSelected =
+                    (selectedRows && selectedRows.indexOf(idx) >= 0) || false
 
-                const cols = [
-                  currency,
-                  symbol,
-                  industry,
-                  [mainSymbol, `${price}`],
-                  `${portfolioPerf}%`,
-                  `${industryPerf}%`,
-                ]
+                  const cols = [
+                    currency,
+                    symbol,
+                    industry,
+                    [mainSymbol, `${price}`],
+                    `${portfolioPerf}%`,
+                    `${industryPerf}%`,
+                  ]
 
-                return (
-                  <PTR
-                    key={`${currency}${symbol}`}
-                    isSelected={isSelected}
-                    onClick={() => this.onSelectBalance(idx)}
-                  >
-                    <PTD key="smt" isSelected={isSelected}>
-                      {this.renderCheckbox(idx)}
-                    </PTD>
-                    {cols &&
-                      cols.map((col, idx) => {
-                        if (col && !Array.isArray(col) && col.match(/%/g)) {
-                          const color =
-                            Number(col.replace(/%/g, '')) >= 0
-                              ? '#65c000'
-                              : '#ff687a'
+                  return (
+                    <PTR
+                      key={`${currency}${symbol}`}
+                      isSelected={isSelected}
+                      onClick={() => this.onSelectBalance(idx)}
+                    >
+                      <PTD key="smt" isSelected={isSelected}>
+                        {this.renderCheckbox(idx)}
+                      </PTD>
+                      {cols &&
+                        cols.map((col, idx) => {
+                          if (col && !Array.isArray(col) && col.match(/%/g)) {
+                            const color =
+                              Number(col.replace(/%/g, '')) >= 0
+                                ? '#65c000'
+                                : '#ff687a'
 
+                            return (
+                              <PTD
+                                key={`${col}${idx}`}
+                                style={{ color }}
+                                isSelected={isSelected}
+                              >
+                                {col}
+                              </PTD>
+                            )
+                          }
                           return (
-                            <PTD
-                              key={`${col}${idx}`}
-                              style={{ color }}
-                              isSelected={isSelected}
-                            >
+                            <PTD key={`${col}${idx}`} isSelected={isSelected}>
                               {col}
                             </PTD>
                           )
-                        }
-                        return (
-                          <PTD key={`${col}${idx}`} isSelected={isSelected}>
-                            {col}
-                          </PTD>
-                        )
-                      })}
-                  </PTR>
-                )
-              })}
-          </PTBody>
-          {selectedSum &&
-            selectedSum.currency && (
-              <PortfolioTableSum selectedSum={selectedSum} />
-            )}
-        </PTable>
-      </Wrapper>
+                        })}
+                    </PTR>
+                  )
+                })}
+            </PTBody>
+            {selectedSum &&
+              selectedSum.currency && (
+                <PortfolioTableSum selectedSum={selectedSum} />
+              )}
+          </PTable>
+        </Wrapper>
+        <LineChartContainer>
+          <LineChart data={TMP_LINE_CHART_MOCKS} />
+        </LineChartContainer>
+      </Container>
     )
   }
 }
+
+const LineChartContainer = styled.div`
+  background-color: #fff;
+  padding: 1em;
+  width: 40%;
+  height: 100%;
+`
+
+const Container = styled.div`
+  display: flex;
+`
 
 const Icon = styled.i`
   padding-right: 5px;
 `
 
 const Wrapper = styled.div`
-  width: 100%;
   overflow-y: scroll;
   background-color: #393e44;
 
