@@ -8,23 +8,17 @@ function optimizeMocks(): { rows: string[]; cols: any[][] } {
   const o = Object.keys(m).map((key) => {
     return { [key]: m[key] }
   })
-  const rows = o
-    .map((a) => {
-      const arr = Object.keys(a)
-      return arr[0].slice(0, -7)
-    })
-    .slice(0, 10)
+  const rows = o.map((a) => {
+    const arr = Object.keys(a)
+    return arr[0].slice(0, -7)
+  })
 
-  const cols = o
-    .map((a) => {
-      return Object.keys(a).map((key) => {
-        const s = a[key]
-        return Object.keys(s)
-          .map((key) => s[key])
-          .slice(0, 10)
-      })
+  const cols = o.map((a) => {
+    return Object.keys(a).map((key) => {
+      const s = a[key]
+      return Object.keys(s).map((key) => s[key])
     })
-    .slice(0, 10)
+  })
   return { rows, cols }
 }
 
@@ -40,7 +34,7 @@ const HeatMapMocks = [
   { pair: 'BTC/LTC', values: [{ v: '0.01' }, { v: '-0.98' }] },
 ]
 
-function getColor(value: string) {
+function getColor(value: string): string {
   const n = Number(value)
   if (n >= 0.9) {
     return '#1B5E20'
@@ -119,46 +113,56 @@ export default class Correlation extends React.Component {
 
     return (
       <Wrapper>
-        <Table>
-          <thead>
-            <Row>
-              <HeadItem style={{ width: '3em' }} />
-              {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
-            </Row>
-          </thead>
-          <tbody>
-            {cols.map((col, i) => {
-              return (
-                <Row key={rows[i]}>
-                  {rows[i] && (
-                    <Item style={{ textAlign: 'right', border: 'none' }}>
-                      {rows[i]}
-                    </Item>
-                  )}
-                  {col.map((el) => {
-                    return el.map((e) => {
-                      const value = this.floorN(Number(e), 2)
-                      console.log(typeof e)
-                      let color
+        <ScrolledWrapper>
+          <Table>
+            <thead>
+              <Row>
+                <HeadItem
+                  style={{
+                    width: '4em',
+                    position: 'sticky',
+                    left: 0,
+                    backgroundColor: '#393e44',
+                  }}
+                />
+                {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
+              </Row>
+            </thead>
+            <tbody>
+              {cols.map((col, i) => {
+                return (
+                  <Row key={rows[i]}>
+                    {rows[i] && (
+                      <Item
+                        style={{
+                          textAlign: 'right',
+                          border: 'none',
+                          position: 'sticky',
+                          left: 0,
+                          backgroundColor: '#393e44',
+                        }}
+                      >
+                        {rows[i]}
+                      </Item>
+                    )}
+                    {col.map((el) => {
+                      return el.map((e) => {
+                        const value = this.floorN(Number(e), 2)
+                        const color = getColor(e)
 
-                      if (value < 0) {
-                        color = 'red'
-                      } else {
-                        color = 'green'
-                      }
-
-                      return (
-                        <Item key={e} color={color}>
-                          {e}
-                        </Item>
-                      )
-                    })
-                  })}
-                </Row>
-              )
-            })}
-          </tbody>
-        </Table>
+                        return (
+                          <Item key={e} color={color}>
+                            {value}
+                          </Item>
+                        )
+                      })
+                    })}
+                  </Row>
+                )
+              })}
+            </tbody>
+          </Table>
+        </ScrolledWrapper>
 
         <HeatMapChart
           data={getHeatMapData(HeatMapMocks)}
@@ -170,26 +174,45 @@ export default class Correlation extends React.Component {
   }
 }
 
+const ScrolledWrapper = styled.div`
+  max-width: 800px;
+  overflow-y: scroll;
+  background-color: #393e44;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
+`
+
 const HeadItem = styled.th`
   font-family: Roboto;
   font-size: 0.75em;
   color: #fff;
   font-weight: 500;
-  padding: 10px;
-  text-align: center;
+  padding: 0.5em;
   width: 50px;
+  text-align: center;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  position: sticky;
+  background-color: #393e44;
+  top: 0;
 `
 
 const Row = styled.tr``
 
 const Item = styled.td`
   background-color: ${(props: { color?: string }) => {
-    if (props.color === 'green') return '#4caf50'
-    if (props.color === 'red') return '#f44336'
-    if (props.color === 'blue') return '#2196f3'
+    if (props.color) return props.color
     return 'transparent'
   }};
 
@@ -197,9 +220,9 @@ const Item = styled.td`
   font-size: 0.75em;
   color: #fff;
   font-weight: 500;
-  padding: 10px;
-  text-align: center;
+  padding: 0.5em;
   width: 50px;
+  text-align: center;
   overflow: hidden;
   white-space: nowrap;
   border: 1px solid #fff;
@@ -208,7 +231,6 @@ const Item = styled.td`
 const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
-  width: 800px;
 `
 
 const Wrapper = styled.div`
