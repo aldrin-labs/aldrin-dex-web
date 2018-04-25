@@ -12,7 +12,7 @@ export const MOCKS = [
     _id: '5abbf010cd922f0027555a61',
     asset: {
       name: 'Bitcoin',
-      priceUSD: 6859.37,
+      priceUSD: 6859.31117,
       priceBTC: 1,
       symbol: 'BTC',
       percentChangeDay: -7.71,
@@ -74,8 +74,8 @@ export const MOCKS = [
     _id: '5abbf010cd922f0027555a62',
     asset: {
       name: 'Ethereum',
-      priceUSD: 380.37,
-      priceBTC: 0.0554801,
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
       symbol: 'ETH',
       percentChangeDay: -7.39,
       industry: {
