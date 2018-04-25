@@ -1,19 +1,34 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import HeatMapChart from '@components/HeatMapChart'
+import CORRELATION_MOCKS from 'utils/corr_matrices_total.json'
 
-const mocks = [
-  { id: 1, name: 'SAP500', value: 21 },
-  { id: 2, name: 'Cons. Disc.', value: 33 },
-  { id: 3, name: 'Cons. Stap.', value: 31 },
-  { id: 4, name: 'Energy', value: 45 },
-  { id: 5, name: 'Financials', value: 10 },
-  { id: 6, name: 'H Care', value: 78 },
-  { id: 3, name: 'Industrials', value: 11 },
-  { id: 4, name: 'Materials', value: 15 },
-  { id: 5, name: 'Technology', value: 29 },
-  { id: 6, name: 'Oil', value: 28 },
-]
+function optimizeMocks(): { rows: string[]; cols: any[][] } {
+  const m = JSON.parse(CORRELATION_MOCKS['2018-04-24'])
+  const o = Object.keys(m).map((key) => {
+    return { [key]: m[key] }
+  })
+  const rows = o
+    .map((a) => {
+      const arr = Object.keys(a)
+      return arr[0].slice(0, -7)
+    })
+    .slice(0, 10)
+
+  const cols = o
+    .map((a) => {
+      return Object.keys(a).map((key) => {
+        const s = a[key]
+        return Object.keys(s)
+          .map((key) => s[key])
+          .slice(0, 10)
+      })
+    })
+    .slice(0, 10)
+  return { rows, cols }
+}
+
+optimizeMocks()
 
 const HeatMapMocks = [
   { pair: 'BTC/ETH', values: [{ v: '0.87' }, { v: '0.54' }] },
@@ -87,8 +102,6 @@ function getHeatMapData(
   return result
 }
 
-console.log('getHeatMapData: ', getHeatMapData(HeatMapMocks))
-
 export default class Correlation extends React.Component {
   initializeArray = (length: number, start: number, step: number): number[] => {
     return Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
@@ -102,7 +115,7 @@ export default class Correlation extends React.Component {
   }
 
   render() {
-    const rows = this.initializeArray(mocks.length - 1, 0, 1)
+    const { cols, rows } = optimizeMocks()
 
     return (
       <Wrapper>
@@ -110,37 +123,36 @@ export default class Correlation extends React.Component {
           <thead>
             <Row>
               <HeadItem style={{ width: '3em' }} />
-              {mocks.map((el) => <HeadItem key={el.name}>{el.name}</HeadItem>)}
+              {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
             </Row>
           </thead>
           <tbody>
-            {rows.map((row) => {
-              const rowValue = mocks[row]
-
+            {cols.map((col, i) => {
               return (
-                <Row key={row}>
-                  {rowValue && (
+                <Row key={rows[i]}>
+                  {rows[i] && (
                     <Item style={{ textAlign: 'right', border: 'none' }}>
-                      {rowValue.name}
+                      {rows[i]}
                     </Item>
                   )}
-                  {mocks.map((el) => {
-                    const value = this.floorN(rowValue.value / el.value, 2)
-                    let color
+                  {col.map((el) => {
+                    return el.map((e) => {
+                      const value = this.floorN(Number(e), 2)
+                      console.log(typeof e)
+                      let color
 
-                    if (value > 1) {
-                      color = 'green'
-                    } else if (value < 1) {
-                      color = 'red'
-                    } else {
-                      color = 'blue'
-                    }
+                      if (value < 0) {
+                        color = 'red'
+                      } else {
+                        color = 'green'
+                      }
 
-                    return (
-                      <Item key={el.name} color={color}>
-                        {value}
-                      </Item>
-                    )
+                      return (
+                        <Item key={e} color={color}>
+                          {e}
+                        </Item>
+                      )
+                    })
                   })}
                 </Row>
               )
@@ -165,7 +177,7 @@ const HeadItem = styled.th`
   font-weight: 500;
   padding: 10px;
   text-align: center;
-  width: 1em;
+  width: 50px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -187,7 +199,7 @@ const Item = styled.td`
   font-weight: 500;
   padding: 10px;
   text-align: center;
-  width: 1em;
+  width: 50px;
   overflow: hidden;
   white-space: nowrap;
   border: 1px solid #fff;
@@ -196,7 +208,7 @@ const Item = styled.td`
 const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
-  width: 500px;
+  width: 800px;
 `
 
 const Wrapper = styled.div`

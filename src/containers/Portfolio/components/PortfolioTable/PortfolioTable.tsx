@@ -473,22 +473,40 @@ export class PortfolioTable extends React.Component<TableProps> {
             />
           )}
 
-        {tab === 'industry' && (
-          <PieChartContainer>
-            <PieChart data={combineToChart()} />
-          </PieChartContainer>
-        )}
+        {tab === 'industry' &&
+          isShownChart && (
+            <PieChartContainer>
+              <PieChartHeadingWrapper>
+                <Heading>Industry Pie Chart</Heading>
+              </PieChartHeadingWrapper>
+              <PieChart data={combineToChart()} />
+            </PieChartContainer>
+          )}
       </PTWrapper>
     )
   }
 }
 
+const PieChartHeadingWrapper = styled.div`
+  width: 200px;
+  text-align: center;
+  padding-bottom: 10px;
+`
+
 const PieChartContainer = styled.div`
-  margin: 50px 10px;
+  margin: 10px;
 `
 
 const TabContainer = styled.div`
   display: flex;
+`
+
+const Heading = styled.span`
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
 `
 
 const Tab = styled.button`
