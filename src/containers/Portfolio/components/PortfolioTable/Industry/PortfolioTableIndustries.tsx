@@ -599,6 +599,6 @@ const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
 })
 
-const storeComponent = connect(mapStateToProps)(Industries)
+const storeComponent = connect(mapStateToProps)(PortfolioTableIndustries)
 
 export default compose()(storeComponent)
