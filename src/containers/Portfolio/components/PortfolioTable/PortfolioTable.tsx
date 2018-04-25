@@ -353,9 +353,6 @@ export class PortfolioTable extends React.Component<TableProps> {
     // if (!this.props.data) return null
 
     if (this.props.data && !tableData) {
-
-      if (this.props.data.processing) {
-
       return (
           <LoaderWrapper>
             <SvgIcon
@@ -370,7 +367,6 @@ export class PortfolioTable extends React.Component<TableProps> {
             />
           </LoaderWrapper>
         )
-      }
     }
 
     const isSelectAll =
