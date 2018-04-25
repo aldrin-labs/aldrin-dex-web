@@ -35,7 +35,7 @@ export default class LineChart extends React.Component {
     const { crosshairValues } = this.state
 
     return (
-      <FlexibleWidthXYPlot height={300} onMouseLeave={this.onMouseLeave}>
+      <FlexibleWidthXYPlot height={250} onMouseLeave={this.onMouseLeave}>
         <HorizontalGridLines />
         <XAxis
           title="X Axis"

@@ -84,10 +84,7 @@ const TMP_LINE_CHART_MOCKS = [
   ],
 ]
 
-class PortfolioTableIndustries extends React.Component<
-  IndProps,
-  State
-> {
+class PortfolioTableIndustries extends React.Component<IndProps, State> {
   state: State = {
     activeKeys: null,
     portfolio: null,
@@ -508,6 +505,7 @@ class PortfolioTableIndustries extends React.Component<
           </PTable>
         </Wrapper>
         <LineChartContainer>
+          <Heading>Industry Line Chart</Heading>
           <LineChart data={TMP_LINE_CHART_MOCKS} />
         </LineChartContainer>
       </Container>
@@ -515,11 +513,19 @@ class PortfolioTableIndustries extends React.Component<
   }
 }
 
+const Heading = styled.span`
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+`
+
 const LineChartContainer = styled.div`
   background-color: #fff;
   padding: 1em;
-  width: 40%;
+  width: 30%;
   height: 100%;
+  text-align: center;
 `
 
 const Container = styled.div`
@@ -630,10 +636,9 @@ const PTR = styled.tr`
     props.isSelected ? '#2d3136' : '#393e44'};
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
-
 
 const PTHead = styled.thead``
 

@@ -17,9 +17,9 @@ export default class PieChart extends React.Component<Props, State> {
     return (
       <RadialChart
         data={data}
-        width={width || 256}
-        height={height || 256}
-        radius={radius || 128}
+        width={width || 200}
+        height={height || 200}
+        radius={radius || 100}
         innerRadius={innerRadius || 0}
         colorType={hasCustomColors ? 'literal' : 'linear'}
         onValueMouseOver={(v: PiePiece) => this.setState({ value: v })}
