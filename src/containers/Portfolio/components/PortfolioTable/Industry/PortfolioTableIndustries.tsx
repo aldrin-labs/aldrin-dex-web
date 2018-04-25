@@ -84,7 +84,7 @@ const TMP_LINE_CHART_MOCKS = [
   ],
 ]
 
-export default class PortfolioTableIndustries extends React.Component<
+class PortfolioTableIndustries extends React.Component<
   IndProps,
   State
 > {
@@ -591,7 +591,12 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
+  &:nth-child(even) {
+    background-color: ${(props: { isSelected?: boolean }) =>
+  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  }
 `
+
 
 const PTHead = styled.thead``
 
