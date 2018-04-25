@@ -154,6 +154,39 @@ class PortfolioTableIndustries extends React.Component<
     }
   }
 
+  roundUSDOff = (num: number): string => {
+    const reg = this.props.isUSDCurrently
+      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
+      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
+    if (String(num).match(reg)) {
+      const [price] = String(num).match(reg)
+      return price
+    } else if (num > 0) {
+      return this.addZerosToEnd(String(num))
+    } else {
+      return `${num}`
+    }
+  }
+
+  addZerosToEnd = (num: string): string => {
+    const reg = /(?=\.[0-9]+)\.[0-9]+/g
+    const diff = this.props.isUSDCurrently ? 3 : 9
+
+    if (reg.test(num)) {
+      const [str] = num.match(reg) || ['']
+      let tmp = str
+      const len = str.length
+      for (let i = 0; i < diff - len; i++) {
+        tmp += 0
+      }
+      const [head] = num.match(/[0-9]+\./g) || ['']
+      let woPoint = head.slice(0, -1)
+      const result = (woPoint += tmp)
+      return result || ''
+    }
+    return num
+  }
+
   combineIndustryData = (portfolio?: Portfolio) => {
     const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
@@ -426,7 +459,7 @@ class PortfolioTableIndustries extends React.Component<
                     currency,
                     symbol,
                     industry,
-                    [mainSymbol, `${price}`],
+                    [mainSymbol, `${this.roundUSDOff(price)}`],
                     `${portfolioPerf}%`,
                     `${industryPerf}%`,
                   ]
@@ -470,7 +503,7 @@ class PortfolioTableIndustries extends React.Component<
             </PTBody>
             {selectedSum &&
               selectedSum.currency && (
-                <PortfolioTableSum selectedSum={selectedSum} />
+                <PortfolioTableSum selectedSum={selectedSum} isUSDCurrently={this.props.isUSDCurrently} />
               )}
           </PTable>
         </Wrapper>
