@@ -354,19 +354,19 @@ export class PortfolioTable extends React.Component<TableProps> {
 
     if (this.props.data && !tableData) {
       return (
-        <LoaderWrapper>
-          <SvgIcon
-            src={spinLoader}
-            width={48}
-            height={48}
-            style={{
-              position: 'absolute',
-              left: 'calc(50% - 48px)',
-              top: 'calc(50% - 48px)',
-            }}
-          />
-        </LoaderWrapper>
-      )
+          <LoaderWrapper>
+            <SvgIcon
+              src={spinLoader}
+              width={48}
+              height={48}
+              style={{
+                position: 'absolute',
+                left: 'calc(50% - 48px)',
+                top: 'calc(50% - 48px)',
+              }}
+            />
+          </LoaderWrapper>
+        )
     }
 
     const isSelectAll =

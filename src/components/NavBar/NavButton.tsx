@@ -15,9 +15,13 @@ const NavLink = styled(Link)`
   text-align: center;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
-
+  transition: color 0.2s ease;
+  
   &.selected {
     border-color: rgba(66, 66, 66, 0.2);
+  }
+  &:hover {
+    color: white;
   }
 `
 
