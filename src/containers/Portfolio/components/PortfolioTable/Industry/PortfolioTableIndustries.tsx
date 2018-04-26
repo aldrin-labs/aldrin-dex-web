@@ -198,10 +198,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
         const { name } = exchange
         const { name: industryName, performance } = ind || {
           name: '',
-          performance: 0,
+          performance: {
+            usd: 0,
+            btc: 0
+          }
         }
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
+        const industryPerformance = isUSDCurrently ? parseFloat(performance.usd).toFixed(2) : parseFloat(performance.btc).toFixed(2)
 
         const col = {
           currency: name || '-',
@@ -209,7 +213,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
           industry: industryName || '-',
           price: mainPrice || 0,
           portfolioPerf: 0,
-          industryPerf: performance || 0,
+          industryPerf: industryPerformance || 0,
         }
 
         return col

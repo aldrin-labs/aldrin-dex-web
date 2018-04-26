@@ -47,7 +47,10 @@ export const getPortfolioQuery = gql`
             priceBTC
             industry {
               name
-              performance
+              performance {
+                usd
+                btc
+              }
             }
           }
           exchange {
