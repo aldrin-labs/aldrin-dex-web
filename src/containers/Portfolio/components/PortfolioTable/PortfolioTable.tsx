@@ -411,28 +411,29 @@ export class PortfolioTable extends React.Component<TableProps> {
           </ToggleBtn>
         </PTHeadingBlock>
 
-        <PTHeadingBlock>
-          {tab !== 'correlation' && (
+        {tab !== 'correlation' && (
+          <PTHeadingBlock>
             <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
-          )}
 
-          {tab === 'main' && (
-            <Mutation mutation={UPDATE_PORTFOLIO}>
-              {(updatePortfolio, { data, loading }) => {
-                const isLoading = loading || (portfolio && portfolio.processing)
-                return (
-                  <ToggleBtn onClick={updatePortfolio}>
-                    {isLoading ? (
-                      <SvgIcon src={gridLoader} width={24} height={24} />
-                    ) : (
-                      'Refresh'
-                    )}
-                  </ToggleBtn>
-                )
-              }}
-            </Mutation>
-          )}
-        </PTHeadingBlock>
+            {tab === 'main' && (
+              <Mutation mutation={UPDATE_PORTFOLIO}>
+                {(updatePortfolio, { data, loading }) => {
+                  const isLoading =
+                    loading || (portfolio && portfolio.processing)
+                  return (
+                    <ToggleBtn onClick={updatePortfolio}>
+                      {isLoading ? (
+                        <SvgIcon src={gridLoader} width={24} height={24} />
+                      ) : (
+                        'Refresh'
+                      )}
+                    </ToggleBtn>
+                  )
+                }}
+              </Mutation>
+            )}
+          </PTHeadingBlock>
+        )}
 
         {tab === 'main' && (
           <PortfolioTableBalances
@@ -545,6 +546,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
+  overflow: overlay;
 `
 
 const LoaderWrapper = styled.div`
