@@ -538,7 +538,7 @@ const ToggleBtn = styled.button`
 `
 
 const PTWrapper = styled.div`
-  width: 81%;
+  width: calc(100% - 240px);
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -546,7 +546,6 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  overflow: overlay;
 `
 
 const LoaderWrapper = styled.div`
