@@ -2,9 +2,8 @@ import {
   App,
   Chart,
   CoinMarketCap,
-  Home,
   Portfolio,
-  ProfileWrapper,
+  Profile,
   Screener,
   User,
 } from '@containers'
@@ -23,8 +22,38 @@ import { Provider } from 'react-redux'
 import { Route, Switch } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import Loadable from 'react-loadable'
+
+import LoadableLoading from '@components/Loading/LoadableLoading'
 
 const history = createHistory()
+
+const HomeRoutes = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "home" */ './containers/Home/routes'),
+  delay: 300,
+  loading: LoadableLoading,
+  modules: ['home'],
+  webpack: () => [require.resolveWeak('./containers/Home/routes')],
+})
+
+const ProfileRoutes = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "profile" */ './containers/Profile/routes'),
+  delay: 300,
+  loading: LoadableLoading,
+  modules: ['profile'],
+  webpack: () => [require.resolveWeak('./containers/Profile/routes')],
+})
+
+const PortfolioRoutes = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "portfolio" */ './containers/Portfolio/routes'),
+  delay: 300,
+  loading: LoadableLoading,
+  modules: ['portfolio'],
+  webpack: () => [require.resolveWeak('./containers/Portfolio/routes')],
+})
 
 const render = () =>
   ReactDOM.render(
@@ -35,11 +64,10 @@ const render = () =>
             <ConnectedRouter history={history}>
               <App>
                 <Switch>
-                  <Route exact path="/" component={Home} />
+                  <Route exact path="/" component={HomeRoutes} />
+                  <Route exact path="/profile" component={ProfileRoutes} />
+                  <Route exact path="/portfolio" component={PortfolioRoutes} />
                   <Route exact path="/market" component={CoinMarketCap} />
-                  <Route exact path="/profile" component={ProfileWrapper} />
-                  <Route exact path="/profile/:id" component={ProfileWrapper} />
-                  <Route exact path="/portfolio" component={Portfolio} />
                   <Route exact path="/chart" component={Chart} />
                   <Route exact path="/screener" component={Screener} />
                   <Route exact path="/user" component={User} />
