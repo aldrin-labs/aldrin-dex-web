@@ -55,8 +55,16 @@ const formikEnhancer = withFormik({
       exchange: values.exchange.toLowerCase(),
       date: Date.now(),
     }
+
     try {
-      await addExchangeKey({ variables })
+      await addExchangeKey({
+        variables,
+        update: (proxy, { data: { addExchangeKey } }) => {
+          const proxyData = proxy.readQuery({ query: API.getKeysQuery })
+          proxyData.getProfile.keys.push(addExchangeKey)
+          proxy.writeQuery({ query: API.getKeysQuery, data: proxyData })
+        },
+      })
       console.log(variables)
 
       setSubmitting(false)
