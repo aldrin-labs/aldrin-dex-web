@@ -1,12 +1,8 @@
 import React from 'react'
-
 import CssBaseline from 'material-ui/CssBaseline'
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
-import { connect } from 'react-redux'
-import { compose } from 'recompose'
-
-import { Home } from '@containers/Home'
 import { NavBar } from '@components'
+import Footer from '@components/Footer'
 
 // TODO: 2 themes
 
@@ -33,9 +29,10 @@ if (process.browser) {
 }
 
 export const App = ({ children }: any) => (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <NavBar />
-      {children}
-    </MuiThemeProvider>
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <NavBar />
+    {children}
+    <Footer />
+  </MuiThemeProvider>
 )
