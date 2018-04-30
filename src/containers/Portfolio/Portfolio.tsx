@@ -38,7 +38,8 @@ class PortfolioComponent extends React.Component<Props> {
         {(subscriptionData) => {
           return (
             <PortfolioContainer>
-              {error && <Login isShownModal={!!error} />}
+              {error &&
+                error.toString().match('jwt expired') && <Login isShownModal />}
               <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
               <PortfolioTable
                 loading={loading}

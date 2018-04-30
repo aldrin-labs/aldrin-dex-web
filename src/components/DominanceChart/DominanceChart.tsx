@@ -37,7 +37,13 @@ export default class DominanceChart extends React.Component<Props> {
         </HeadingWrapper>
 
         <ChartWrapper>
-          <PieChart data={chartCoins} innerRadius={80} />
+          <PieChart
+            data={chartCoins}
+            innerRadius={80}
+            width={256}
+            height={256}
+            radius={128}
+          />
           <SvgIcon
             src={mask}
             width={185}
