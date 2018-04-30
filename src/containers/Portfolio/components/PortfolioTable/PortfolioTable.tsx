@@ -526,6 +526,7 @@ const Tab = styled.button`
   cursor: pointer;
   margin: 10px 15px;
   outline: none;
+  box-sizing: border-box;
 `
 
 const ToggleBtn = styled.button`
@@ -562,6 +563,7 @@ const PTHeadingBlock = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 17px;
+  min-height: 100px;
 `
 const Icon = styled.i`
   padding-right: 5px;
