@@ -276,6 +276,7 @@ const CalculatorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   padding: 16px;
   border-radius: 3px;
   box-shadow: 0 2px 6px 0 #00000066;
