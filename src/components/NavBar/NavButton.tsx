@@ -1,8 +1,8 @@
 import React, { SFC } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-const NavLink = styled(Link)`
+const StyledNavLink = styled(NavLink)`
   width: 120px;
   text-decoration: none;
   font-family: Roboto;
@@ -16,22 +16,30 @@ const NavLink = styled(Link)`
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
   transition: color 0.2s ease;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   
-  &.selected {
-    border-color: rgba(66, 66, 66, 0.2);
-  }
   &:hover {
     color: white;
   }
-`
+  
+  &.selected {
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px solid #4ed8da;
+  }
+`;
 
 interface INavButton {
   link: string
   title: string
 }
 
-export const NavButton: SFC<INavButton> = ({ link, title }) => (
-  <NavLink to={link}>
+
+export const NavButton: SFC<INavButton> = ({ link, title, ...props }) => (
+  <StyledNavLink to={link} activeClassName={'selected'} {...props} >
     {title}
-  </NavLink>
+  </StyledNavLink>
 )
