@@ -178,6 +178,8 @@ const ScrolledWrapper = styled.div`
   max-width: 800px;
   overflow-y: scroll;
   background-color: #393e44;
+  margin-bottom: 50px;
+
 
   &::-webkit-scrollbar {
     width: 12px;
