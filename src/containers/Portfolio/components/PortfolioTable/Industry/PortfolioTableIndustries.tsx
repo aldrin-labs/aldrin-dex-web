@@ -618,10 +618,6 @@ const Checkbox = styled.input`
   }
 `
 
-// style={{ paddingRight: isSorted ? 0 : '16px' }}
-// style={{ paddingRight: isSorted ? 0 : '16px' }}
-
-
 const PTH = styled.th`
   font-family: Roboto;
   font-size: 12px;
