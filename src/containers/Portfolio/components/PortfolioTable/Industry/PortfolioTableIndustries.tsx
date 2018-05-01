@@ -410,7 +410,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
                     <PTH
                       key={heading.name}
                       onClick={() => this.onSortTable(heading.value)}
-                      style={{ paddingRight: isSorted ? 0 : '16px' }}
+                      isSorted={isSorted}
                     >
                       {heading.name}
 
@@ -618,12 +618,21 @@ const Checkbox = styled.input`
   }
 `
 
+// style={{ paddingRight: isSorted ? 0 : '16px' }}
+// style={{ paddingRight: isSorted ? 0 : '16px' }}
+
+
 const PTH = styled.th`
   font-family: Roboto;
   font-size: 12px;
   line-height: 24px;
   color: #fff;
   padding: 0 10px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 10px;
+  padding-right: ${(props: { isSorted?: boolean }) =>
+  props.isSorted ? '0' : '16px'};
   font-weight: 500;
   text-align: center;
   vertical-align: bottom;
@@ -631,7 +640,19 @@ const PTH = styled.th`
   top: 0;
   overflow: hidden;
   background-color: #393e44;
-  width: 50px;
+  width: 60px;
+  
+  &:nth-child(2) {
+  width: 90px;
+  }
+  &:nth-child(6) {
+  width: 98px;
+  padding-right: 0;
+  }
+  &:nth-child(7) {
+  width: 98px;
+  padding-right: 0;
+  }
 `
 
 const PTR = styled.tr`
