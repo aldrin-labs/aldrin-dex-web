@@ -5,7 +5,7 @@ import PortfolioTableSum from '../PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
 import { onValidateSum, onSortStrings, calcPercentage } from '../../../../../utils/PortfolioTableUtils'
 import {MOCK_DATA} from "../dataMock";
-import { RowT, State, Args } from '../types'
+import { State, Args } from '../types'
 import { TableProps, Portfolio } from '../../../interfaces'
 
 const defaultSelectedSum = {
@@ -46,6 +46,8 @@ export default class PortfolioTableBalances extends React.Component {
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
+      console.log(portfolio);
+
       if (!portfolio) return
       const composeWithMocks = {
         ...portfolio,
@@ -276,18 +278,15 @@ export default class PortfolioTableBalances extends React.Component {
   render() {
     const {
       isShownChart,
-      isUSDCurrently,
-      // isSelectAll,
-      // selectedSum,
-      // onSelectAll,
-      // onSortTable,
-      // tableData,
-      // selectedBalances,
-      onSelectBalance,
-      // currentSort,
+      isUSDCurrently
     } = this.props
 
-    const { selectedSum, currentSort, tableData, selectedBalances } = this.state
+    const {
+      selectedSum,
+      currentSort,
+      tableData,
+      selectedBalances
+    } = this.state
 
     const isSelectAll =
       (tableData &&
