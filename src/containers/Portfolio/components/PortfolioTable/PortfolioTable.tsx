@@ -15,7 +15,7 @@ import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
 import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
 import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Correlation from './Correlation/Correlation'
-import { onSortStrings, calcPercentage } from '../../../../utils/PortfolioTableUtils'
+import { onSortStrings, calcPercentage, onValidateSum } from '../../../../utils/PortfolioTableUtils'
 
 import { MOCK_DATA } from './dataMock'
 import { combineToChart } from './Industry/mocks'
@@ -232,34 +232,10 @@ export class PortfolioTable extends React.Component<TableProps> {
         totalPL: 0,
       }
     )
-    const validateSum = this.onValidateSum(reducedSum)
+    const { selectedBalances, isUSDCurrently } = this.state
+    const validateSum = onValidateSum(reducedSum, selectedBalances, tableData, isUSDCurrently )
     console.log('validateSum: ', validateSum)
     this.setState({ selectedSum: validateSum })
-  }
-
-  onValidateSum = (reducedSum: RowT) => {
-    const { selectedBalances, tableData, isUSDCurrently } = this.state
-    if (!selectedBalances || !tableData) return null
-    const clonedSum = { ...reducedSum }
-
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" key="usd" />
-    ) : (
-      <Icon className="fa fa-btc" key="btc" />
-    )
-
-    if (selectedBalances.length === tableData.length) {
-      clonedSum.currency = 'All'
-      clonedSum.symbol = '-'
-      clonedSum.percentage = 100
-    } else if (selectedBalances.length > 1) {
-      clonedSum.currency = 'Selected'
-      clonedSum.symbol = '-'
-    }
-    clonedSum.percentage = `${calcPercentage(clonedSum.percentage)}%`
-    clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
-
-    return clonedSum
   }
 
   onSelectBalance = (index: number) => {
