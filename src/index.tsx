@@ -1,33 +1,57 @@
+import {
+  App,
+  Chart,
+  CoinMarketCap,
+  Home,
+  Portfolio,
+  ProfileWrapper,
+  Screener,
+  User,
+} from '@containers'
+
+import { client } from '@utils/apolloClient'
+import { persistor, store } from '@utils/configureStore'
+import { NotFound } from '@components/NotFound'
+
+import createHistory from 'history/createBrowserHistory'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { IntlProvider } from 'react-intl'
+import { Provider } from 'react-redux'
+import { Route, Switch } from 'react-router'
+import { ConnectedRouter } from 'react-router-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
-import { App } from '@containers/App'
-import { Login } from '@containers/Login'
-import { NotFound } from '@containers/NotFound'
-import { Portfolio } from '@containers/Portfolio'
-import { Profile } from '@containers/Profile'
-import { Chart } from '@components/Chart'
-
-import { client } from './apolloClient'
+const history = createHistory()
 
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/" component={App} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/portfolio" component={Portfolio} />
-          <Route path="/login" component={Login} />
-          <Route path="/chart" component={Chart} />
-          <Route path="*" component={NotFound} />
-        </Switch>
-      </BrowserRouter>
+      <IntlProvider locale="en">
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <ConnectedRouter history={history}>
+              <App>
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  <Route exact path="/market" component={CoinMarketCap} />
+                  <Route exact path="/profile" component={ProfileWrapper} />
+                  <Route exact path="/profile/:id" component={ProfileWrapper} />
+                  <Route exact path="/portfolio" component={Portfolio} />
+                  <Route exact path="/chart" component={Chart} />
+                  <Route exact path="/screener" component={Screener} />
+                  <Route exact path="/user" component={User} />
+                  <Route path="*" component={NotFound} />
+                </Switch>
+              </App>
+            </ConnectedRouter>
+          </PersistGate>
+        </Provider>
+      </IntlProvider>
     </ApolloProvider>,
-    document.getElementById('root'),
+    document.getElementById('root')
   )
 
 render(hot(module)(App))

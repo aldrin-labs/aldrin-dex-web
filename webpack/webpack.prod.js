@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const config = {
+  mode: 'production',
   entry: {
     app: [`${commonPaths.appEntry}/index.tsx`],
   },
@@ -18,6 +19,7 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
+        API_ENDPOINT: JSON.stringify('api.igorlimansky.me')
       },
     }),
     new UglifyJsPlugin({

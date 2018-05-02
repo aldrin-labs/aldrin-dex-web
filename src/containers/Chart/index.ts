@@ -1,1 +1,1 @@
-export * from './Chart'
+export Chart from './Chart'

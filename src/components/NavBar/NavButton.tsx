@@ -1,32 +1,45 @@
-import Button from 'material-ui/Button'
 import React, { SFC } from 'react'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
-const NavLink = styled(Link)`
-  color: inherit;
-  margin: 3px;
-  padding: 3px 7px;
+const StyledNavLink = styled(NavLink)`
+  width: 120px;
   text-decoration: none;
-  border: 1px solid transparent;
-  border-radius: 3px;
-
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: 0.5px;
+  text-align: center;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
+  height: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
   &:hover {
-    border-color: rgba(175, 47, 47, 0.1);
+    color: white;
   }
-
+  
   &.selected {
-    border-color: rgba(175, 47, 47, 0.2);
+    color: white;
+    font-weight: bold;
+    border-bottom: 2px solid #4ed8da;
   }
-`
+`;
 
 interface INavButton {
-  link: string,
+  link: string
   title: string
 }
 
-export const NavButton: SFC<INavButton> = ({ link, title }) => (
-  <Button color="inherit">
-    <NavLink to={link}>{title}</NavLink>
-  </Button>
+
+export const NavButton: SFC<INavButton> = ({ link, title, ...props }) => (
+  <StyledNavLink to={link} activeClassName={'selected'} {...props} >
+    {title}
+  </StyledNavLink>
 )

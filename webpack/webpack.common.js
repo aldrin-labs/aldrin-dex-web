@@ -26,11 +26,19 @@ const config = {
         exclude: /node_modules/,
         loader: 'graphql-tag/loader',
       },
+      {
+        test: /\.svg$/,
+        loader: 'svg-url-loader',
+        options: {
+          limit: 4096, // 4kb
+        },
+      },
     ],
   },
   plugins: [
+    new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
-      template: `public/index.html`,
+      template: 'public/index.html',
       // favicon: `public/favicon.ico`
     }),
     // new webpack.optimize.CommonsChunkPlugin({

@@ -1,21 +1,58 @@
-import React, { Fragment, SFC } from 'react'
+import React from 'react'
+import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
+import gql from 'graphql-tag'
+import { getPortfolioQuery } from './api'
+import { Props } from './interfaces'
+import { Login } from '@containers/Login'
+import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
+import { PortfolioTable } from './components'
 
-import { NavBar } from '@components/NavBar'
-import { PortfolioTable } from './PortfolioTable'
-import { SelectAccount } from './SelectAccount'
-
-const SWrapper = styled.div`
-  display: flex;
-  margin-top: 5px;
+const PORTFOLIO_UPDATE = gql`
+  subscription onPortfolioUpdated {
+    portfolioUpdate
+  }
 `
 
-export const Portfolio = () => (
-  <Fragment>
-    <NavBar />
-    <SWrapper>
-    <SelectAccount />
-    <PortfolioTable />
-  </SWrapper>
-  </Fragment>
-)
+const PortfolioContainer = styled.div`
+  display: flex;
+  max-height: calc(100vh - 80px);
+`
+
+class PortfolioComponent extends React.Component<Props> {
+  state = {
+    checkboxes: null,
+  }
+
+  onChangeActiveKey = (checkboxes: number[]) => {
+    this.setState({ checkboxes })
+  }
+
+  render() {
+    const { checkboxes } = this.state
+    const { data } = this.props
+    const { getProfile, loading, error } = data
+
+    return (
+      <Subscription subscription={PORTFOLIO_UPDATE}>
+        {(subscriptionData) => {
+          return (
+            <PortfolioContainer>
+              {error &&
+                error.toString().match('jwt expired') && <Login isShownModal />}
+              <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
+              <PortfolioTable
+                loading={loading}
+                checkboxes={checkboxes}
+                data={getProfile}
+                subscription={subscriptionData}
+              />
+            </PortfolioContainer>
+          )
+        }}
+      </Subscription>
+    )
+  }
+}
+
+export default graphql(getPortfolioQuery)(PortfolioComponent)

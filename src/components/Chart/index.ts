@@ -1,1 +1,1 @@
-export * from './Chart'
+export { SingleChart } from './Chart'
