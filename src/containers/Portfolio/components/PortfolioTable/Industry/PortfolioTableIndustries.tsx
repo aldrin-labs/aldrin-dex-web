@@ -9,7 +9,7 @@ import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { onSortStrings }  from '../../../../../utils/PortfolioTableUtils'
+import { onSortStrings, addZerosToEnd }  from '../../../../../utils/PortfolioTableUtils'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -160,29 +160,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
       const [price] = String(num).match(reg)
       return price
     } else if (num > 0) {
-      return this.addZerosToEnd(String(num))
+      return addZerosToEnd(String(num), this.props.isUSDCurrently)
     } else {
       return `${num}`
     }
-  }
-
-  addZerosToEnd = (num: string): string => {
-    const reg = /(?=\.[0-9]+)\.[0-9]+/g
-    const diff = this.props.isUSDCurrently ? 3 : 9
-
-    if (reg.test(num)) {
-      const [str] = num.match(reg) || ['']
-      let tmp = str
-      const len = str.length
-      for (let i = 0; i < diff - len; i++) {
-        tmp += 0
-      }
-      const [head] = num.match(/[0-9]+\./g) || ['']
-      let woPoint = head.slice(0, -1)
-      const result = (woPoint += tmp)
-      return result || ''
-    }
-    return num
   }
 
   combineIndustryData = (portfolio?: Portfolio) => {

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { RowT } from '../types'
+import {addZerosToEnd} from '../../../../../utils/PortfolioTableUtils'
 
 interface Props {
   tableData: RowT[] | null
@@ -25,25 +26,6 @@ export default class PortfolioTableMain extends React.Component<Props> {
     )
   }
 
-  addZerosToEnd = (num: string): string => {
-    const reg = /(?=\.[0-9]+)\.[0-9]+/g
-    const diff = this.props.isUSDCurrently ? 3 : 9
-
-    if (reg.test(num)) {
-      const [str] = num.match(reg) || ['']
-      let tmp = str
-      const len = str.length
-      for (let i = 0; i < diff - len; i++) {
-        tmp += 0
-      }
-      const [head] = num.match(/[0-9]+\./g) || ['']
-      let woPoint = head.slice(0, -1)
-      const result = (woPoint += tmp)
-      return result || ''
-    }
-    return num
-  }
-
   roundUSDOff = (num: number): string => {
     const reg = this.props.isUSDCurrently
       ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
@@ -52,7 +34,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
       const [price] = String(num).match(reg)
       return price
     } else if (num > 0) {
-      return this.addZerosToEnd(String(num))
+      return addZerosToEnd(String(num), this.props.isUSDCurrently)
     } else {
       return `${num}`
     }
