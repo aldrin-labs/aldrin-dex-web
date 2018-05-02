@@ -1,26 +1,14 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
-import menuIcon from '../../icons/menu.svg'
 import AreaChart from '@components/AreaChart'
+import Widget from '@components/Widget'
 import { yearData } from '@containers/Profile/components/chartMocks'
 
 export default class MarketCapWidget extends React.Component {
   render() {
-    const dndStyles = { cursor: '-webkit-grab' }
-
     return (
-      <Container>
-        <HeadingWrapper>
-          <div>
-            <Heading>Market Cap</Heading>
-          </div>
-          <span className="dnd" style={dndStyles}>
-            <SvgIcon src={menuIcon} width={24} height={24} />
-          </span>
-        </HeadingWrapper>
-
+      <Widget heading="Market Cap">
         <InfoBlock>
           <InfoItem>
             <InfoItemKey>24h Vol:</InfoItemKey>
@@ -64,7 +52,7 @@ export default class MarketCapWidget extends React.Component {
         <AreaChart data={yearData.slice(0, 20)} />
 
         <Btn to="/chart">Open chart</Btn>
-      </Container>
+      </Widget>
     )
   }
 }
@@ -144,29 +132,4 @@ const InfoItem = styled.div`
 const InfoBlock = styled.div`
   display: flex;
   margin-top: 16px;
-`
-
-const Heading = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  text-align: left;
-  color: #fff;
-`
-
-const HeadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 5px;
-`
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 16px;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #0006;
 `

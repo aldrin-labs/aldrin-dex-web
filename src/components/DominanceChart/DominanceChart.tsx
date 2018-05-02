@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import mask from '../../icons/mask.svg'
-import bubble from '../../icons/bubble.svg'
-import menuIcon from '../../icons/menu.svg'
 
 const chartCoins = [
   { angle: 5, label: 'BCash', color: '#f9b057' },
@@ -18,24 +16,10 @@ const chartCoins = [
   { angle: 25, label: 'Others', color: '#b6b8b8' },
 ]
 
-interface Props {}
-
-export default class DominanceChart extends React.Component<Props> {
+export default class DominanceChart extends React.Component {
   render() {
-    const dndStyles = { cursor: '-webkit-grab' }
-
     return (
-      <Container>
-        <HeadingWrapper>
-          <div>
-            <SvgIcon src={bubble} width={26} height={26} />
-            <Heading>Coin Dominance %</Heading>
-          </div>
-          <span className="dnd" style={dndStyles}>
-            <SvgIcon src={menuIcon} width={24} height={24} />
-          </span>
-        </HeadingWrapper>
-
+      <React.Fragment>
         <ChartWrapper>
           <PieChart
             data={chartCoins}
@@ -69,7 +53,7 @@ export default class DominanceChart extends React.Component<Props> {
             )
           })}
         </ChartInfoContainer>
-      </Container>
+      </React.Fragment>
     )
   }
 }
@@ -123,30 +107,4 @@ const ChartInnerText = styled.span`
   text-align: center;
   color: #ffffff;
   position: absolute;
-`
-
-const Heading = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  text-align: left;
-  color: #fff;
-  margin-left: 8px;
-`
-
-const HeadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 5px;
-`
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 16px;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #0006;
 `

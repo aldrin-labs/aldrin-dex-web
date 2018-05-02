@@ -16,16 +16,14 @@
     "allowJs": false,
     "jsx": "react",
     "lib": ["es2017", "dom"],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./typings"
-    ],
+    "typeRoots": ["./node_modules/@types", "./typings"],
     "paths": {
       "@components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
       "@hoc/*": ["src/hoc/*"],
-      "@graphql/*": ["src/graphql/*"]
+      "@graphql/*": ["src/graphql/*"],
+      "@icons/*": ["src/icons/*"]
     },
     "plugins": [
       {
