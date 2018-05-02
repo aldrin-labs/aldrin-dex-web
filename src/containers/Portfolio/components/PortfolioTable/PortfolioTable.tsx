@@ -333,11 +333,11 @@ export class PortfolioTable extends React.Component<TableProps> {
         )
     }
 
-    const isSelectAll =
-      (tableData &&
-        selectedBalances &&
-        selectedBalances.length === tableData.length) ||
-      false
+    // const isSelectAll =
+    //   (tableData &&
+    //     selectedBalances &&
+    //     selectedBalances.length === tableData.length) ||
+    //   false
     return (
       <PTWrapper>
         <PTHeadingBlock>
@@ -403,7 +403,7 @@ export class PortfolioTable extends React.Component<TableProps> {
           <PortfolioTableBalances
             isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
-            isSelectAll={isSelectAll}
+            // isSelectAll={isSelectAll}
             selectedSum={selectedSum}
             onSelectAll={this.onSelectAll}
             onSortTable={this.onSortTable}
@@ -411,6 +411,9 @@ export class PortfolioTable extends React.Component<TableProps> {
             selectedBalances={selectedBalances}
             onSelectBalance={this.onSelectBalance}
             currentSort={currentSort}
+            data={this.props.data}  // added
+            checkboxes={this.props.checkboxes}  //added
+
           />
         )}
 
