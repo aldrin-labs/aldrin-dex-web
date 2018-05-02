@@ -9,7 +9,7 @@ import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { onSortStrings, addZerosToEnd }  from '../../../../../utils/PortfolioTableUtils'
+import { onSortStrings, roundUSDOff }  from '../../../../../utils/PortfolioTableUtils'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -149,20 +149,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
       const { portfolio } = this.state
       this.combineIndustryData(portfolio)
-    }
-  }
-
-  roundUSDOff = (num: number): string => {
-    const reg = this.props.isUSDCurrently
-      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-    if (String(num).match(reg)) {
-      const [price] = String(num).match(reg)
-      return price
-    } else if (num > 0) {
-      return addZerosToEnd(String(num), this.props.isUSDCurrently)
-    } else {
-      return `${num}`
     }
   }
 
@@ -438,7 +424,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
                     currency,
                     symbol,
                     industry,
-                    [mainSymbol, `${this.roundUSDOff(price)}`],
+                    [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
                     `${portfolioPerf}%`,
                     `${industryPerf}%`,
                   ]

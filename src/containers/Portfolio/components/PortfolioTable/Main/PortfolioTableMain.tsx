@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { RowT } from '../types'
-import {addZerosToEnd} from '../../../../../utils/PortfolioTableUtils'
+import {roundUSDOff} from '../../../../../utils/PortfolioTableUtils'
 
 interface Props {
   tableData: RowT[] | null
@@ -26,19 +26,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
     )
   }
 
-  roundUSDOff = (num: number): string => {
-    const reg = this.props.isUSDCurrently
-      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-    if (String(num).match(reg)) {
-      const [price] = String(num).match(reg)
-      return price
-    } else if (num > 0) {
-      return addZerosToEnd(String(num), this.props.isUSDCurrently)
-    } else {
-      return `${num}`
-    }
-  }
+
 
   render() {
     const { tableData, selectedBalances, isUSDCurrently } = this.props
@@ -82,17 +70,17 @@ export default class PortfolioTableMain extends React.Component<Props> {
             currency,
             symbol,
             `${percentage} %`,
-            [mainSymbol, `${this.roundUSDOff(price)}`],
+            [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
             quantity,
-            [mainSymbol, `${this.roundUSDOff(currentPrice)}`],
+            [mainSymbol, `${roundUSDOff(currentPrice, isUSDCurrently)}`],
             //            daily,
             //            `${dailyPerc} %`,
-            [mainSymbol, `${this.roundUSDOff(realizedPL)}`],
+            [mainSymbol, `${roundUSDOff(realizedPL, isUSDCurrently)}`],
             // realizedPL,
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
-            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`],
-            [mainSymbol, `${this.roundUSDOff(totalPL)}`], /// this WOULD BE TOTAL COLUMN!
+            [mainSymbol, `${roundUSDOff(unrealizedPL, isUSDCurrently)}`],
+            [mainSymbol, `${roundUSDOff(totalPL, isUSDCurrently)}`],
             //            `${unrealizedPLPerc} %`,
           ]
 

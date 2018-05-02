@@ -18,7 +18,7 @@ export const calcPercentage = (num: number) => {
   return onFloorN(num, 2)
 }
 
-export const addZerosToEnd = (num: string, isUSDCurrently: number): string => {
+export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
   const reg = /(?=\.[0-9]+)\.[0-9]+/g
   const diff = isUSDCurrently ? 3 : 9
 
@@ -35,6 +35,20 @@ export const addZerosToEnd = (num: string, isUSDCurrently: number): string => {
     return result || ''
   }
   return num
+}
+
+export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
+  const reg = isUSDCurrently
+    ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
+    : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
+  if (String(num).match(reg)) {
+    const [price] = String(num).match(reg)
+    return price
+  } else if (num > 0) {
+    return addZerosToEnd(String(num), isUSDCurrently)
+  } else {
+    return `${num}`
+  }
 }
 
 const Icon = styled.i`
