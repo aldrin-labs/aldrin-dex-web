@@ -15,6 +15,7 @@ import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
 import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
 import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Correlation from './Correlation/Correlation'
+import { onSortStrings, calcPercentage } from '../../../../utils/PortfolioTableUtils'
 
 import { MOCK_DATA } from './dataMock'
 import { combineToChart } from './Industry/mocks'
@@ -107,15 +108,6 @@ export class PortfolioTable extends React.Component<TableProps> {
     }
   }
 
-  onFloorN = (x: number, n: number) => {
-    var mult = Math.pow(10, n)
-    return Math.floor(x * mult) / mult
-  }
-
-  calcPercentage = (num: number) => {
-    return this.onFloorN(num, 2)
-  }
-
   combineTableData = (portfolio?: Portfolio) => {
     const { activeKeys, isUSDCurrently } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) return
@@ -157,11 +149,11 @@ export class PortfolioTable extends React.Component<TableProps> {
         const col = {
           currency: name || '',
           symbol,
-          percentage: this.calcPercentage(currentPrice / allSums * 100),
+          percentage: calcPercentage(currentPrice / allSums * 100),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: currentPrice || 0,
-          daily: this.calcPercentage(mainPrice / 100 * percentChangeDay),
+          daily: calcPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
           realizedPL: realizedProfit,
           realizedPLPerc: 0,
@@ -264,7 +256,7 @@ export class PortfolioTable extends React.Component<TableProps> {
       clonedSum.currency = 'Selected'
       clonedSum.symbol = '-'
     }
-    clonedSum.percentage = `${this.calcPercentage(clonedSum.percentage)}%`
+    clonedSum.percentage = `${calcPercentage(clonedSum.percentage)}%`
     clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
 
     return clonedSum
@@ -286,10 +278,6 @@ export class PortfolioTable extends React.Component<TableProps> {
     )
   }
 
-  onSortStrings = (a: string, b: string): number => {
-    return a.localeCompare(b)
-  }
-
   onSortTable = (key: Args) => {
     const { tableData, currentSort } = this.state
     if (!tableData) return
@@ -303,14 +291,14 @@ export class PortfolioTable extends React.Component<TableProps> {
           this.setState({ currentSort: { key, arg: 'DESC' } })
 
           if (stringKey) {
-            return this.onSortStrings(b[key], a[key])
+            return onSortStrings(b[key], a[key])
           }
           return b[key] - a[key]
         } else {
           this.setState({ currentSort: { key, arg: 'ASC' } })
 
           if (stringKey) {
-            return this.onSortStrings(a[key], b[key])
+            return onSortStrings(a[key], b[key])
           }
           return a[key] - b[key]
         }
@@ -318,7 +306,7 @@ export class PortfolioTable extends React.Component<TableProps> {
       this.setState({ currentSort: { key, arg: 'ASC' } })
 
       if (stringKey) {
-        return this.onSortStrings(a[key], b[key])
+        return onSortStrings(a[key], b[key])
       }
       return a[key] - b[key]
     })

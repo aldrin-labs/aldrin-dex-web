@@ -9,6 +9,7 @@ import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+import { onSortStrings }  from '../../../../../utils/PortfolioTableUtils'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -224,10 +225,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     )
   }
 
-  onSortStrings = (a: string, b: string): number => {
-    return a.localeCompare(b)
-  }
-
   renderCheckbox = (idx: number) => {
     const { selectedRows } = this.state
     const isSelected = (selectedRows && selectedRows.indexOf(idx) >= 0) || false
@@ -260,14 +257,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
           this.setState({ currentSort: { key, arg: 'DESC' } })
 
           if (stringKey) {
-            return this.onSortStrings(b[key], a[key])
+            return onSortStrings(b[key], a[key])
           }
           return b[key] - a[key]
         } else {
           this.setState({ currentSort: { key, arg: 'ASC' } })
 
           if (stringKey) {
-            return this.onSortStrings(a[key], b[key])
+            return onSortStrings(a[key], b[key])
           }
           return a[key] - b[key]
         }
@@ -275,7 +272,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
       this.setState({ currentSort: { key, arg: 'ASC' } })
 
       if (stringKey) {
-        return this.onSortStrings(a[key], b[key])
+        return onSortStrings(a[key], b[key])
       }
       return a[key] - b[key]
     })
