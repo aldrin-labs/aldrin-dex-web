@@ -280,14 +280,14 @@ export default class PortfolioTableBalances extends React.Component {
       // isSelectAll,
       // selectedSum,
       // onSelectAll,
-      onSortTable,
-      tableData,
-      selectedBalances,
+      // onSortTable,
+      // tableData,
+      // selectedBalances,
       onSelectBalance,
-      currentSort,
+      // currentSort,
     } = this.props
 
-    const {selectedSum} = this.state
+    const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
     const isSelectAll =
       (tableData &&
@@ -303,14 +303,14 @@ export default class PortfolioTableBalances extends React.Component {
             isUSDCurrently={isUSDCurrently}
             isSelectAll={isSelectAll}
             onSelectAll={this.onSelectAll}
-            onSortTable={onSortTable}
+            onSortTable={this.onSortTable}
             currentSort={currentSort}
           />
           <PortfolioTableMain
             tableData={tableData}
             selectedBalances={selectedBalances}
             isUSDCurrently={isUSDCurrently}
-            onSelectBalance={onSelectBalance}
+            onSelectBalance={this.onSelectBalance}
           />
           {selectedSum.currency && (
             <PortfolioTableSum
