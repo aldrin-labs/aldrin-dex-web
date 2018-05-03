@@ -82,7 +82,20 @@ const formikDialog = withFormik({
     if (checkKeyName) {
       try {
         props.setSubmitting(true)
-        await deleteExchangeKey({ variables })
+        await deleteExchangeKey({
+          variables,
+          update: (proxy, { data: { deleteExchangeKey } }) => {
+            let proxyData = proxy.readQuery({ query: getKeysQuery })
+            const keys = proxyData.getProfile.keys.slice()
+            const index = keys.findIndex((v) => v._id === deleteExchangeKey._id)
+            keys.splice(index, 1)
+            proxyData = {
+              ...proxyData,
+              getProfile: { ...proxyData.getProfile, keys },
+            }
+            proxy.writeQuery({ query: getKeysQuery, data: proxyData })
+          },
+        })
         await handleClose()
       } catch (error) {
         console.log(error)

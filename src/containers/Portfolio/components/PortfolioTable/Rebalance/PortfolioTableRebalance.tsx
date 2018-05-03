@@ -46,124 +46,143 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   render() {
+    const { children } = this.props
     const { selectedBalances } = this.state
 
     return (
-      <div style={{ display: 'flex' }}>
-        <Table>
-          <PTHead>
-            <PTR>
-              <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                <Checkbox type="checkbox" id="selectAll" />
-                <Label htmlFor="selectAll">
-                  <Span />
-                </Label>
-              </PTH>
-              {tableHeadings.map((heading) => {
-                return <PTH key={heading.name}>{heading.name}</PTH>
-              })}
-            </PTR>
-          </PTHead>
+      <PTWrapper>
+        {children}
+        <Container>
+          <Table>
+            <PTHead>
+              <PTR>
+                <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                  <Checkbox type="checkbox" id="selectAll" />
+                  <Label htmlFor="selectAll">
+                    <Span />
+                  </Label>
+                </PTH>
+                {tableHeadings.map((heading) => {
+                  return <PTH key={heading.name}>{heading.name}</PTH>
+                })}
+              </PTR>
+            </PTHead>
 
-          <PTBody>
-            {tableData.map((row, idx) => {
-              const { currency, symbol, portfolioPerc, price } = row
+            <PTBody>
+              {tableData.map((row, idx) => {
+                const { currency, symbol, portfolioPerc, price } = row
 
-              const isSelected =
-                (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
-                false
+                const isSelected =
+                  (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
+                  false
 
-              const cols = [
-                currency,
-                symbol || '',
-                portfolioPerc ? `${portfolioPerc}%` : '',
-                `${price} $`,
-              ]
+                const cols = [
+                  currency,
+                  symbol || '',
+                  portfolioPerc ? `${portfolioPerc}%` : '',
+                  `${price} $`,
+                ]
 
-              return (
-                <PTR
-                  key={`${currency}${symbol}`}
-                  isSelected={isSelected}
-                  onClick={() => this.onSelectBalance(idx)}
-                >
-                  <PTD key="smt" isSelected={isSelected}>
-                    {this.renderCheckbox(idx)}
-                  </PTD>
-                  {cols.map((col, idx) => {
-                    if (col.match(/%/g)) {
-                      const color =
-                        Number(col.replace(/%/g, '')) >= 0
-                          ? '#65c000'
-                          : '#ff687a'
+                return (
+                  <PTR
+                    key={`${currency}${symbol}`}
+                    isSelected={isSelected}
+                    onClick={() => this.onSelectBalance(idx)}
+                  >
+                    <PTD key="smt" isSelected={isSelected}>
+                      {this.renderCheckbox(idx)}
+                    </PTD>
+                    {cols.map((col, idx) => {
+                      if (col.match(/%/g)) {
+                        const color =
+                          Number(col.replace(/%/g, '')) >= 0
+                            ? '#65c000'
+                            : '#ff687a'
 
+                        return (
+                          <PTD
+                            key={`${col}${idx}`}
+                            style={{ color }}
+                            isSelected={isSelected}
+                          >
+                            {col}
+                          </PTD>
+                        )
+                      }
                       return (
-                        <PTD
-                          key={`${col}${idx}`}
-                          style={{ color }}
-                          isSelected={isSelected}
-                        >
+                        <PTD key={`${col}${idx}`} isSelected={isSelected}>
                           {col}
                         </PTD>
                       )
-                    }
-                    return (
-                      <PTD key={`${col}${idx}`} isSelected={isSelected}>
-                        {col}
-                      </PTD>
-                    )
-                  })}
-                </PTR>
-              )
-            })}
-          </PTBody>
-        </Table>
-
-        <Table>
-          <PTHead>
-            <PTR>
-              {tableHeadings.map((heading) => {
-                return <PTH key={heading.name}>{heading.name}</PTH>
+                    })}
+                  </PTR>
+                )
               })}
-            </PTR>
-          </PTHead>
+            </PTBody>
+          </Table>
 
-          <PTBody>
-            {tableData.map((row, idx) => {
-              const { currency, symbol, portfolioPerc, price } = row
+          <Table>
+            <PTHead>
+              <PTR>
+                {tableHeadings.map((heading) => {
+                  return <PTH key={heading.name}>{heading.name}</PTH>
+                })}
+              </PTR>
+            </PTHead>
 
-              const cols = [
-                currency,
-                symbol || '',
-                portfolioPerc ? `${portfolioPerc}%` : '',
-                `${price} $`,
-              ]
+            <PTBody>
+              {tableData.map((row, idx) => {
+                const { currency, symbol, portfolioPerc, price } = row
 
-              return (
-                <PTR key={`${currency}${symbol}`}>
-                  {cols.map((col, idx) => {
-                    if (col.match(/%/g)) {
-                      const color =
-                        Number(col.replace(/%/g, '')) >= 0
-                          ? '#65c000'
-                          : '#ff687a'
+                const cols = [
+                  currency,
+                  symbol || '',
+                  portfolioPerc ? `${portfolioPerc}%` : '',
+                  `${price} $`,
+                ]
 
-                      return (
-                        <PTD key={`${col}${idx}`} style={{ color }}>
-                          {col}
-                        </PTD>
-                      )
-                    }
-                    return <PTD key={`${col}${idx}`}>{col}</PTD>
-                  })}
-                </PTR>
-              )
-            })}
-          </PTBody>
-        </Table>
-      </div>
+                return (
+                  <PTR key={`${currency}${symbol}`}>
+                    {cols.map((col, idx) => {
+                      if (col.match(/%/g)) {
+                        const color =
+                          Number(col.replace(/%/g, '')) >= 0
+                            ? '#65c000'
+                            : '#ff687a'
+
+                        return (
+                          <PTD key={`${col}${idx}`} style={{ color }}>
+                            {col}
+                          </PTD>
+                        )
+                      }
+                      return <PTD key={`${col}${idx}`}>{col}</PTD>
+                    })}
+                  </PTR>
+                )
+              })}
+            </PTBody>
+          </Table>
+        </Container>
+      </PTWrapper>
     )
   }
 }
+
+const PTWrapper = styled.div`
+  width: calc(100% - 240px);
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+`
+
+const Container = styled.div`
+  display: flex;
+`
 
 const Table = styled.table`
   border-collapse: collapse;

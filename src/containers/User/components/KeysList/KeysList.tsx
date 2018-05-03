@@ -11,6 +11,7 @@ import Table, {
   TableRow,
 } from 'material-ui/Table'
 import Paper from 'material-ui/Paper'
+import { Loading } from '@components/Loading'
 
 import { getKeysQuery } from '../../api'
 import { DeleteKeyDialog } from './'
@@ -18,39 +19,52 @@ import { DeleteKeyDialog } from './'
 // TODO: hoc loader fix
 
 class KeysListComponent extends React.Component {
+  componentDidMount() {
+    if (this.props.data.getProfile) {
+      this.setState({ keys: this.props.data.getProfile.keys })
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.getProfile) {
+      this.setState({ keys: nextProps.data.getProfile.keys })
+    }
+  }
+
   render() {
     if (this.props.data.loading) {
-      return <div>Loading</div>
+      return <Loading />
     }
 
-    const { keys } = this.props.data.getProfile
+    const { keys } = this.state
 
     return (
       <KeysListPaper>
         <KeysTable>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell numeric>Exchange</TableCell>
-              <TableCell numeric>Api key</TableCell>
-              <TableCell numeric>Date</TableCell>
-              <TableCell numeric>Delete key</TableCell>
+              <KeyTableCell>Name</KeyTableCell>
+              <KeyTableCell numeric>Exchange</KeyTableCell>
+              <KeyTableCell numeric>Api key</KeyTableCell>
+              <KeyTableCell numeric>Date</KeyTableCell>
+              <KeyTableCell numeric>Delete key</KeyTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {keys.map((key) => (
-              <TableRow key={key._id}>
-                <KeyTableCell>{key.name}</KeyTableCell>
-                <KeyTableCell numeric>{key.exchange.name}</KeyTableCell>
-                <KeyTableCell numeric>{key.apiKey}</KeyTableCell>
-                <KeyTableCell numeric>
-                  {<FormattedDate value={key.date} />}
-                </KeyTableCell>
-                <KeyTableCell numeric>
-                  <DeleteKeyDialog keyName={key.name} />
-                </KeyTableCell>
-              </TableRow>
-            ))}
+            {keys &&
+              keys.map((key) => (
+                <TableRow key={key._id}>
+                  <KeyTableCell>{key.name}</KeyTableCell>
+                  <KeyTableCell numeric>{key.exchange.name}</KeyTableCell>
+                  <KeyTableCell numeric>{key.apiKey}</KeyTableCell>
+                  <KeyTableCell numeric>
+                    {<FormattedDate value={key.date} />}
+                  </KeyTableCell>
+                  <KeyTableCell numeric>
+                    <DeleteKeyDialog keyName={key.name} />
+                  </KeyTableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </KeysTable>
       </KeysListPaper>

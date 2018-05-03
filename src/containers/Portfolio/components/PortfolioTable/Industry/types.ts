@@ -26,7 +26,6 @@ export interface IPortfolio {
   } | null> | null
 }
 
-
 export interface IObj {
   currency: string
   symbol: string
@@ -44,5 +43,3 @@ export interface IState {
   activeKeys: number[] | null
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }
-
-

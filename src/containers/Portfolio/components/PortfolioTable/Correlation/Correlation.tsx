@@ -105,77 +105,91 @@ export default class Correlation extends React.Component {
   }
 
   render() {
+    const { children } = this.props
     const { cols, rows } = optimizeMocks()
 
     return (
-      <Wrapper>
-        <ScrolledWrapper>
-          <Table>
-            <thead>
-              <Row>
-                <HeadItem
-                  style={{
-                    width: '4em',
-                    position: 'sticky',
-                    left: 0,
-                    backgroundColor: '#393e44',
-                  }}
-                />
-                {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
-              </Row>
-            </thead>
-            <tbody>
-              {cols.map((col, i) => {
-                return (
-                  <Row key={rows[i]}>
-                    {rows[i] && (
-                      <Item
-                        style={{
-                          textAlign: 'right',
-                          border: 'none',
-                          position: 'sticky',
-                          left: 0,
-                          backgroundColor: '#393e44',
-                        }}
-                      >
-                        {rows[i]}
-                      </Item>
-                    )}
-                    {col.map((el) => {
-                      return el.map((e) => {
-                        const value = onFloorN(Number(e), 2)
-                        const color = getColor(e)
+      <PTWrapper>
+        {children}
+        <Wrapper>
+          <ScrolledWrapper>
+            <Table>
+              <thead>
+                <Row>
+                  <HeadItem
+                    style={{
+                      width: '4em',
+                      position: 'sticky',
+                      left: 0,
+                      backgroundColor: '#393e44',
+                    }}
+                  />
+                  {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
+                </Row>
+              </thead>
+              <tbody>
+                {cols.map((col, i) => {
+                  return (
+                    <Row key={rows[i]}>
+                      {rows[i] && (
+                        <Item
+                          style={{
+                            textAlign: 'right',
+                            border: 'none',
+                            position: 'sticky',
+                            left: 0,
+                            backgroundColor: '#393e44',
+                          }}
+                        >
+                          {rows[i]}
+                        </Item>
+                      )}
+                      {col.map((el) => {
+                        return el.map((e) => {
+                          const value = onFloorN(Number(e), 2)
+                          const color = getColor(e)
 
-                        return (
-                          <Item key={e} color={color}>
-                            {value}
-                          </Item>
-                        )
-                      })
-                    })}
-                  </Row>
-                )
-              })}
-            </tbody>
-          </Table>
-        </ScrolledWrapper>
+                          return (
+                            <Item key={e} color={color}>
+                              {value}
+                            </Item>
+                          )
+                        })
+                      })}
+                    </Row>
+                  )
+                })}
+              </tbody>
+            </Table>
+          </ScrolledWrapper>
 
-        <HeatMapChart
-          data={getHeatMapData(HeatMapMocks)}
-          width={500}
-          height={500}
-        />
-      </Wrapper>
+          <HeatMapChart
+            data={getHeatMapData(HeatMapMocks)}
+            width={500}
+            height={500}
+          />
+        </Wrapper>
+      </PTWrapper>
     )
   }
 }
+
+const PTWrapper = styled.div`
+  width: calc(100% - 240px);
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+`
 
 const ScrolledWrapper = styled.div`
   max-width: 800px;
   overflow-y: scroll;
   background-color: #393e44;
   margin-bottom: 50px;
-
 
   &::-webkit-scrollbar {
     width: 12px;
