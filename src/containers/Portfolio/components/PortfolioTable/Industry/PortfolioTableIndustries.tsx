@@ -113,10 +113,21 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     const industryData = assets
       .map((row) => {
-        const { asset, key = { name: '' }, exchange } = row || {}
+        const {
+          asset = { symbol: '', priceBTC: '', priceUSD: '', industry: '' },
+          key = { name: '' },
+          exchange = { name: '' },
+        } =
+          row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
-        const { symbol, priceUSD, priceBTC, industry: ind } = asset || {}
-        const { name } = exchange
+        const {
+          symbol = '',
+          priceUSD = '',
+          priceBTC = '',
+          industry: ind = '',
+        } =
+          asset || {}
+        const { name = '' } = exchange
         const { name: industryName, performance } = ind || {
           name: '',
           performance: {

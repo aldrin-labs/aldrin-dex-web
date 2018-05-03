@@ -21,6 +21,7 @@ export interface Portfolio {
       name: string | null
       symbol: string | null
       priceUSD: string | null
+      priceBTC: string | null
     } | null
     exchange: {
       name: string | null
@@ -52,6 +53,7 @@ export interface IndProps {
           name: string | null
           symbol: string | null
           priceUSD: string | null
+          priceBTC: string | null
         } | null
         exchange: {
           name: string | null
@@ -90,6 +92,7 @@ export interface TableProps {
           name: string | null
           symbol: string | null
           priceUSD: string | null
+          priceBTC: string | null
         } | null
         exchange: {
           name: string | null
