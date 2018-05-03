@@ -12,6 +12,7 @@ import ProfileChart from '@containers/Profile/components/ProfileChart'
 import { MOCK_DATA } from '../dataMock'
 import { State, Args } from '../types'
 import { TableProps, Portfolio } from '../../../interfaces'
+import { IProps, IState } from 'PortfolioTableBalances.types'
 
 const defaultSelectedSum = {
   currency: '',
@@ -29,8 +30,11 @@ const defaultSelectedSum = {
   totalPL: 0,
 }
 
-export default class PortfolioTableBalances extends React.Component {
-  state: State = {
+export default class PortfolioTableBalances extends React.Component<
+  IProps,
+  IState
+> {
+  state: IState = {
     tableData: null,
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
@@ -286,7 +290,6 @@ export default class PortfolioTableBalances extends React.Component {
 
   render() {
     const { isShownChart, isUSDCurrently, children } = this.props
-
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
     const isSelectAll =

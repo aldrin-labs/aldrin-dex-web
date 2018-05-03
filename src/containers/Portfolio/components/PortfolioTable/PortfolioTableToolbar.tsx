@@ -12,7 +12,7 @@ import Typography from 'material-ui/Typography'
 
 import { PortfolioTableTabs } from './PortfolioTableTabs'
 
-const toolbarStyles = theme => ({
+const toolbarStyles = (theme) => ({
   root: {
     paddingRight: theme.spacing.unit,
   },
@@ -50,7 +50,10 @@ const TableToolbar = (props) => {
         {numSelected > 0 ? (
           <Typography variant="subheading">{numSelected} selected</Typography>
         ) : (
-            <PortfolioTableTabs currentTab={currentTab} handleTabSelect={handleTabSelect} />
+          <PortfolioTableTabs
+            currentTab={currentTab}
+            handleTabSelect={handleTabSelect}
+          />
         )}
       </div>
       <div className={classes.spacer} />
