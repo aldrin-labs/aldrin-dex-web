@@ -10,6 +10,7 @@ import { IndProps } from '@containers/Portfolio/interfaces'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { onSortStrings, roundUSDOff }  from '../../../../../utils/PortfolioTableUtils'
+import {IState} from './types'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -27,24 +28,6 @@ const defaultSelectedSum = {
   price: 0,
   portfolioPerf: 0,
   industryPerf: 0,
-}
-
-interface Obj {
-  currency: string
-  symbol: string
-  industry: string
-  price: number
-  portfolioPerf: number
-  industryPerf: number
-}
-
-interface State {
-  selectedSum: Obj | null
-  selectedRows: number[] | null
-  industryData: Obj[] | null
-  portfolio: Portfolio | null
-  activeKeys: number[] | null
-  currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }
 
 const TMP_LINE_CHART_MOCKS = [
@@ -85,8 +68,8 @@ const TMP_LINE_CHART_MOCKS = [
   ],
 ]
 
-class PortfolioTableIndustries extends React.Component<IndProps, State> {
-  state: State = {
+class PortfolioTableIndustries extends React.Component<IndProps, IState> {
+  state: IState = {
     activeKeys: null,
     portfolio: null,
     industryData: null,
