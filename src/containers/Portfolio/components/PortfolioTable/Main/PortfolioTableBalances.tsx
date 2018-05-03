@@ -3,10 +3,15 @@ import styled from 'styled-components'
 import PortfolioTableMain from './PortfolioTableMain'
 import PortfolioTableSum from '../PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
-import { onValidateSum, onSortStrings, calcPercentage } from '../../../../../utils/PortfolioTableUtils'
-import {MOCK_DATA} from "../dataMock";
+import {
+  onValidateSum,
+  onSortStrings,
+  calcPercentage,
+} from '../../../../../utils/PortfolioTableUtils'
+import { MOCK_DATA } from '../dataMock'
 import { State, Args } from '../types'
 import { TableProps, Portfolio } from '../../../interfaces'
+import { IProps, IState } from 'PortfolioTableBalances.types'
 
 const defaultSelectedSum = {
   currency: '',
@@ -24,8 +29,11 @@ const defaultSelectedSum = {
   totalPL: 0,
 }
 
-export default class PortfolioTableBalances extends React.Component {
-  state: State = {
+export default class PortfolioTableBalances extends React.Component<
+  IProps,
+  IState
+> {
+  state: IState = {
     tableData: null,
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
@@ -46,7 +54,7 @@ export default class PortfolioTableBalances extends React.Component {
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      console.log(portfolio);
+      console.log(portfolio)
 
       if (!portfolio) return
       const composeWithMocks = {
@@ -82,7 +90,6 @@ export default class PortfolioTableBalances extends React.Component {
     }
   }
 
-
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
       const { portfolio } = this.state
@@ -115,7 +122,7 @@ export default class PortfolioTableBalances extends React.Component {
           usdUnrealizedProfit = 0,
           btcUnrealizedProfit = 0,
         } =
-        row || {}
+          row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
         const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
         const { name } = exchange
@@ -218,7 +225,12 @@ export default class PortfolioTableBalances extends React.Component {
     const { selectedBalances } = this.state
     const { isUSDCurrently } = this.props
 
-    const validateSum = onValidateSum(reducedSum, selectedBalances, tableData, isUSDCurrently )
+    const validateSum = onValidateSum(
+      reducedSum,
+      selectedBalances,
+      tableData,
+      isUSDCurrently
+    )
     console.log('validateSum: ', validateSum)
     this.setState({ selectedSum: validateSum })
   }
@@ -276,24 +288,15 @@ export default class PortfolioTableBalances extends React.Component {
   }
 
   render() {
-    const {
-      isShownChart,
-      isUSDCurrently
-    } = this.props
+    const { isShownChart, isUSDCurrently } = this.props
 
-    const {
-      selectedSum,
-      currentSort,
-      tableData,
-      selectedBalances
-    } = this.state
+    const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
     const isSelectAll =
       (tableData &&
         selectedBalances &&
         selectedBalances.length === tableData.length) ||
       false
-
 
     return (
       <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
