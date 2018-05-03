@@ -6,20 +6,21 @@ import { onFloorN } from '../../../../../utils/PortfolioTableUtils'
 
 function optimizeMocks(): { rows: string[]; cols: any[][] } {
   const m = JSON.parse(CORRELATION_MOCKS['2018-04-24'])
-  const o = Object.keys(m).map((key) => {
-    return { [key]: m[key] }
-  })
+  const o = Object.keys(m).map((key) => ({ [key]: m[key] }))
   const rows = o.map((a) => {
     const arr = Object.keys(a)
+
     return arr[0].slice(0, -7)
   })
 
-  const cols = o.map((a) => {
-    return Object.keys(a).map((key) => {
+  const cols = o.map((a) =>
+    Object.keys(a).map((key) => {
       const s = a[key]
-      return Object.keys(s).map((key) => s[key])
+
+      return Object.keys(s).map((keyV) => s[keyV])
     })
-  })
+  )
+
   return { rows, cols }
 }
 
@@ -98,11 +99,10 @@ function getHeatMapData(
 }
 
 export default class Correlation extends React.Component {
-  initializeArray = (length: number, start: number, step: number): number[] => {
-    return Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
+  initializeArray = (length: number, start: number, step: number): number[] =>
+    Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
       (v, i) => i * step + start
     )
-  }
 
   render() {
     const { children } = this.props
@@ -128,37 +128,35 @@ export default class Correlation extends React.Component {
                 </Row>
               </thead>
               <tbody>
-                {cols.map((col, i) => {
-                  return (
-                    <Row key={rows[i]}>
-                      {rows[i] && (
-                        <Item
-                          style={{
-                            textAlign: 'right',
-                            border: 'none',
-                            position: 'sticky',
-                            left: 0,
-                            backgroundColor: '#393e44',
-                          }}
-                        >
-                          {rows[i]}
-                        </Item>
-                      )}
-                      {col.map((el) => {
-                        return el.map((e) => {
-                          const value = onFloorN(Number(e), 2)
-                          const color = getColor(e)
+                {cols.map((col, i) => (
+                  <Row key={rows[i]}>
+                    {rows[i] && (
+                      <Item
+                        style={{
+                          textAlign: 'right',
+                          border: 'none',
+                          position: 'sticky',
+                          left: 0,
+                          backgroundColor: '#393e44',
+                        }}
+                      >
+                        {rows[i]}
+                      </Item>
+                    )}
+                    {col.map((el) =>
+                      el.map((e) => {
+                        const value = onFloorN(Number(e), 2)
+                        const color = getColor(e)
 
-                          return (
-                            <Item key={e} color={color}>
-                              {value}
-                            </Item>
-                          )
-                        })
-                      })}
-                    </Row>
-                  )
-                })}
+                        return (
+                          <Item key={e} color={color}>
+                            {value}
+                          </Item>
+                        )
+                      })
+                    )}
+                  </Row>
+                ))}
               </tbody>
             </Table>
           </ScrolledWrapper>
@@ -224,7 +222,10 @@ const Row = styled.tr``
 
 const Item = styled.td`
   background-color: ${(props: { color?: string }) => {
-    if (props.color) return props.color
+    if (props.color) {
+      return props.color
+    }
+
     return 'transparent'
   }};
 
