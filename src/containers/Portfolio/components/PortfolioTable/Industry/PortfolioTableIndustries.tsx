@@ -4,13 +4,16 @@ import sortIcon from '../../../../../icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS } from './mocks'
+import { MOCKS, TMP_LINE_CHART_MOCKS } from './mocks'
 import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { onSortStrings, roundUSDOff }  from '../../../../../utils/PortfolioTableUtils'
-import {IState} from './types'
+import {
+  onSortStrings,
+  roundUSDOff,
+} from '../../../../../utils/PortfolioTableUtils'
+import { IState } from './types'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -29,44 +32,6 @@ const defaultSelectedSum = {
   portfolioPerf: 0,
   industryPerf: 0,
 }
-
-const TMP_LINE_CHART_MOCKS = [
-  [
-    { x: 1, y: 137070, label: 'BTC' },
-    { x: 2, y: 134926, label: 'BTC' },
-    { x: 3, y: 138591, label: 'BTC' },
-    { x: 4, y: 140777, label: 'BTC' },
-    { x: 5, y: 150337, label: 'BTC' },
-    { x: 6, y: 151651, label: 'BTC' },
-  ],
-
-  [
-    { x: 1, y: 50534, label: 'ETH' },
-    { x: 2, y: 49769, label: 'ETH' },
-    { x: 3, y: 51829, label: 'ETH' },
-    { x: 4, y: 56188, label: 'ETH' },
-    { x: 5, y: 60951, label: 'ETH' },
-    { x: 6, y: 59985, label: 'ETH' },
-  ],
-
-  [
-    { x: 1, y: 26012, label: 'XRP' },
-    { x: 2, y: 25705, label: 'XRP' },
-    { x: 3, y: 27857, label: 'XRP' },
-    { x: 4, y: 30952, label: 'XRP' },
-    { x: 5, y: 36189, label: 'XRP' },
-    { x: 6, y: 33912, label: 'XRP' },
-  ],
-
-  [
-    { x: 1, y: 13093, label: 'BCH' },
-    { x: 2, y: 12950, label: 'BCH' },
-    { x: 3, y: 15213, label: 'BCH' },
-    { x: 4, y: 16572, label: 'BCH' },
-    { x: 5, y: 19252, label: 'BCH' },
-    { x: 6, y: 19606, label: 'BCH' },
-  ],
-]
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
@@ -151,12 +116,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           name: '',
           performance: {
             usd: 0,
-            btc: 0
-          }
+            btc: 0,
+          },
         }
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        const industryPerformance = isUSDCurrently ? parseFloat(performance.usd).toFixed(2) : parseFloat(performance.btc).toFixed(2)
+        const industryPerformance = isUSDCurrently
+          ? parseFloat(performance.usd).toFixed(2)
+          : parseFloat(performance.btc).toFixed(2)
 
         const col = {
           currency: name || '-',
@@ -451,7 +418,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTBody>
             {selectedSum &&
               selectedSum.currency && (
-                <PortfolioTableSum selectedSum={selectedSum} isUSDCurrently={this.props.isUSDCurrently} />
+                <PortfolioTableSum
+                  selectedSum={selectedSum}
+                  isUSDCurrently={this.props.isUSDCurrently}
+                />
               )}
           </PTable>
         </Wrapper>
@@ -524,7 +494,7 @@ const PTD = styled.td`
   overflow: hidden;
   white-space: nowrap;
   text-align: right;
-  
+
   &:first-child {
     text-align: left;
   }
@@ -575,7 +545,7 @@ const PTH = styled.th`
   padding-bottom: 0;
   padding-left: 10px;
   padding-right: ${(props: { isSorted?: boolean }) =>
-  props.isSorted ? '0' : '16px'};
+    props.isSorted ? '0' : '16px'};
   font-weight: 500;
   text-align: center;
   vertical-align: bottom;
@@ -584,17 +554,17 @@ const PTH = styled.th`
   overflow: hidden;
   background-color: #393e44;
   width: 60px;
-  
+
   &:nth-child(2) {
-  width: 90px;
+    width: 90px;
   }
   &:nth-child(6) {
-  width: 98px;
-  padding-right: 0;
+    width: 98px;
+    padding-right: 0;
   }
   &:nth-child(7) {
-  width: 98px;
-  padding-right: 0;
+    width: 98px;
+    padding-right: 0;
   }
 `
 
