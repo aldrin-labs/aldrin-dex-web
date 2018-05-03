@@ -15,7 +15,7 @@ import {
   onSortStrings,
   roundUSDOff,
 } from '../../../../../utils/PortfolioTableUtils'
-import { IState } from './types'
+import { IState } from './PortfolioTableIndustries.types'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
