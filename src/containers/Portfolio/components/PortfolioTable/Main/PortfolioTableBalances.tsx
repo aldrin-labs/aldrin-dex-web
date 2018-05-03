@@ -3,8 +3,13 @@ import styled from 'styled-components'
 import PortfolioTableMain from './PortfolioTableMain'
 import PortfolioTableSum from '../PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
-import { onValidateSum, onSortStrings, calcPercentage } from '../../../../../utils/PortfolioTableUtils'
-import {MOCK_DATA} from "../dataMock";
+import {
+  onValidateSum,
+  onSortStrings,
+  calcPercentage,
+} from '../../../../../utils/PortfolioTableUtils'
+import ProfileChart from '@containers/Profile/components/ProfileChart'
+import { MOCK_DATA } from '../dataMock'
 import { State, Args } from '../types'
 import { TableProps, Portfolio } from '../../../interfaces'
 
@@ -46,7 +51,7 @@ export default class PortfolioTableBalances extends React.Component {
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      console.log(portfolio);
+      console.log(portfolio)
 
       if (!portfolio) return
       const composeWithMocks = {
@@ -82,7 +87,6 @@ export default class PortfolioTableBalances extends React.Component {
     }
   }
 
-
   componentDidUpdate(prevProps: Props, prevState: State) {
     if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
       const { portfolio } = this.state
@@ -115,7 +119,7 @@ export default class PortfolioTableBalances extends React.Component {
           usdUnrealizedProfit = 0,
           btcUnrealizedProfit = 0,
         } =
-        row || {}
+          row || {}
         if (activeKeys.indexOf(key.name) === -1) return null
         const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
         const { name } = exchange
@@ -218,7 +222,12 @@ export default class PortfolioTableBalances extends React.Component {
     const { selectedBalances } = this.state
     const { isUSDCurrently } = this.props
 
-    const validateSum = onValidateSum(reducedSum, selectedBalances, tableData, isUSDCurrently )
+    const validateSum = onValidateSum(
+      reducedSum,
+      selectedBalances,
+      tableData,
+      isUSDCurrently
+    )
     console.log('validateSum: ', validateSum)
     this.setState({ selectedSum: validateSum })
   }
@@ -276,17 +285,9 @@ export default class PortfolioTableBalances extends React.Component {
   }
 
   render() {
-    const {
-      isShownChart,
-      isUSDCurrently
-    } = this.props
+    const { isShownChart, isUSDCurrently, children } = this.props
 
-    const {
-      selectedSum,
-      currentSort,
-      tableData,
-      selectedBalances
-    } = this.state
+    const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
     const isSelectAll =
       (tableData &&
@@ -294,34 +295,55 @@ export default class PortfolioTableBalances extends React.Component {
         selectedBalances.length === tableData.length) ||
       false
 
-
     return (
-      <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
-        <PTable>
-          <PortfolioTableHead
-            isUSDCurrently={isUSDCurrently}
-            isSelectAll={isSelectAll}
-            onSelectAll={this.onSelectAll}
-            onSortTable={this.onSortTable}
-            currentSort={currentSort}
-          />
-          <PortfolioTableMain
-            tableData={tableData}
-            selectedBalances={selectedBalances}
-            isUSDCurrently={isUSDCurrently}
-            onSelectBalance={this.onSelectBalance}
-          />
-          {selectedSum.currency && (
-            <PortfolioTableSum
-              selectedSum={selectedSum}
+      <PTWrapper>
+        {children}
+        <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
+          <PTable>
+            <PortfolioTableHead
               isUSDCurrently={isUSDCurrently}
+              isSelectAll={isSelectAll}
+              onSelectAll={this.onSelectAll}
+              onSortTable={this.onSortTable}
+              currentSort={currentSort}
             />
-          )}
-        </PTable>
-      </Wrapper>
+            <PortfolioTableMain
+              tableData={tableData}
+              selectedBalances={selectedBalances}
+              isUSDCurrently={isUSDCurrently}
+              onSelectBalance={this.onSelectBalance}
+            />
+            {selectedSum.currency && (
+              <PortfolioTableSum
+                selectedSum={selectedSum}
+                isUSDCurrently={isUSDCurrently}
+              />
+            )}
+          </PTable>
+        </Wrapper>
+
+        <ProfileChart
+          style={{
+            marginLeft: 0,
+            borderTop: '1px solid #fff',
+            minHeight: '30vh',
+          }}
+        />
+      </PTWrapper>
     )
   }
 }
+
+const PTWrapper = styled.div`
+  width: calc(100% - 240px);
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+`
 
 const Wrapper = styled.div`
   width: 100%;
