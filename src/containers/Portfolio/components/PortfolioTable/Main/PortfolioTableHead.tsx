@@ -21,7 +21,6 @@ const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Unrealized P&L', value: 'unrealizedPL' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
   { name: 'Total P&L', value: 'total' },
-
 ]
 
 const btcHeadings: Array<{ name: string; value: Args }> = [

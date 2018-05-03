@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { RowT } from '../types'
-import {roundUSDOff} from '../../../../../utils/PortfolioTableUtils'
+import { roundUSDOff } from '../../../../../utils/PortfolioTableUtils'
 
 interface Props {
   tableData: RowT[] | null
@@ -25,8 +25,6 @@ export default class PortfolioTableMain extends React.Component<Props> {
       </React.Fragment>
     )
   }
-
-
 
   render() {
     const { tableData, selectedBalances, isUSDCurrently } = this.props

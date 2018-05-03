@@ -30,7 +30,7 @@ export class LoginAlert extends React.Component {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">
-            {"You need to login first!"}
+            {'You need to login first!'}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
