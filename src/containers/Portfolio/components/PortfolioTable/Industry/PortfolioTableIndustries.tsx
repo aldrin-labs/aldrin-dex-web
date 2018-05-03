@@ -7,15 +7,15 @@ import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
+import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart } from './mocks'
 import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
-
 import sortIcon from '@icons/arrow.svg'
-import { MOCKS, combineToChart } from './mocks'
 import {
   onSortStrings,
   roundUSDOff,
 } from '../../../../../utils/PortfolioTableUtils'
+import { IState } from './types'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -35,64 +35,8 @@ const defaultSelectedSum = {
   industryPerf: 0,
 }
 
-interface Obj {
-  currency: string
-  symbol: string
-  industry: string
-  price: number
-  portfolioPerf: number
-  industryPerf: number
-}
-
-interface State {
-  selectedSum: Obj | null
-  selectedRows: number[] | null
-  industryData: Obj[] | null
-  portfolio: Portfolio | null
-  activeKeys: number[] | null
-  currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
-}
-
-const TMP_LINE_CHART_MOCKS = [
-  [
-    { x: 1, y: 137070, label: 'BTC' },
-    { x: 2, y: 134926, label: 'BTC' },
-    { x: 3, y: 138591, label: 'BTC' },
-    { x: 4, y: 140777, label: 'BTC' },
-    { x: 5, y: 150337, label: 'BTC' },
-    { x: 6, y: 151651, label: 'BTC' },
-  ],
-
-  [
-    { x: 1, y: 50534, label: 'ETH' },
-    { x: 2, y: 49769, label: 'ETH' },
-    { x: 3, y: 51829, label: 'ETH' },
-    { x: 4, y: 56188, label: 'ETH' },
-    { x: 5, y: 60951, label: 'ETH' },
-    { x: 6, y: 59985, label: 'ETH' },
-  ],
-
-  [
-    { x: 1, y: 26012, label: 'XRP' },
-    { x: 2, y: 25705, label: 'XRP' },
-    { x: 3, y: 27857, label: 'XRP' },
-    { x: 4, y: 30952, label: 'XRP' },
-    { x: 5, y: 36189, label: 'XRP' },
-    { x: 6, y: 33912, label: 'XRP' },
-  ],
-
-  [
-    { x: 1, y: 13093, label: 'BCH' },
-    { x: 2, y: 12950, label: 'BCH' },
-    { x: 3, y: 15213, label: 'BCH' },
-    { x: 4, y: 16572, label: 'BCH' },
-    { x: 5, y: 19252, label: 'BCH' },
-    { x: 6, y: 19606, label: 'BCH' },
-  ],
-]
-
-class PortfolioTableIndustries extends React.Component<IndProps, State> {
-  state: State = {
+class PortfolioTableIndustries extends React.Component<IndProps, IState> {
+  state: IState = {
     activeKeys: null,
     portfolio: null,
     industryData: null,

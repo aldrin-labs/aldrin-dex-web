@@ -58,7 +58,6 @@ export class PortfolioTable extends React.Component<TableProps> {
         </LoaderWrapper>
       )
     }
-
     if (tab === 'main') {
       return (
         <PortfolioTableBalances

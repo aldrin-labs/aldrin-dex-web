@@ -7,7 +7,8 @@ import Dialog, {
   DialogTitle,
 } from 'material-ui/Dialog'
 import { Link } from 'react-router-dom'
-export class LoginAlert extends React.Component {
+import { IProps, IState } from 'LoginAlert.types'
+export class LoginAlert extends React.Component<IProps, IState> {
   state = {
     open: true,
   }

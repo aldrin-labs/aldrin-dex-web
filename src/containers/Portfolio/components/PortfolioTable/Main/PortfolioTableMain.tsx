@@ -1,16 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { RowT } from '../types'
 import { roundUSDOff } from '../../../../../utils/PortfolioTableUtils'
+import { IProps } from 'PortfolioTableMain.types'
 
-interface Props {
-  tableData: RowT[] | null
-  selectedBalances: number[] | null
-  onSelectBalance: Function
-  isUSDCurrently: boolean
-}
-
-export default class PortfolioTableMain extends React.Component<Props> {
+export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
     const { selectedBalances } = this.props
     const isSelected =
