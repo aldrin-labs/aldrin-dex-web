@@ -8,7 +8,7 @@ import {
 import sortIcon from '../../../../../icons/arrow.svg'
 import { IState, IProps } from 'PortfolioTableHead.types'
 
-const usdHeadings: Array<{ name: string; value: Args }> = [
+const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'percentage' },
