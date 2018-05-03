@@ -2,15 +2,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
+import { IProps } from './PortfolioTableSum.types'
 
-interface Props {
-  selectedSum: {
-    [key: string]: string | number | any[]
-  }
-  isUSDCurrently: boolean
-}
-
-export default class PortfolioTableSum extends React.Component<Props> {
+export default class PortfolioTableSum extends React.Component<IProps> {
   onFloorN = (x: number, n: number) => {
     if (typeof x === 'string') return x
     var mult = Math.pow(10, n)

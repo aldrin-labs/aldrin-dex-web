@@ -1,7 +1,7 @@
 import { getPortfolioQuery } from './annotations'
 
 export interface Props {
-  data: { getProfile: getPortfolioQuery }
+  data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }
 }
 
 export interface Portfolio {
@@ -21,6 +21,7 @@ export interface Portfolio {
       name: string | null
       symbol: string | null
       priceUSD: string | null
+      priceBTC: string | null
     } | null
     exchange: {
       name: string | null
@@ -52,6 +53,7 @@ export interface IndProps {
           name: string | null
           symbol: string | null
           priceUSD: string | null
+          priceBTC: string | null
         } | null
         exchange: {
           name: string | null
@@ -69,6 +71,7 @@ export interface IndProps {
 }
 
 export interface TableProps {
+  isShownChart: boolean
   loading: boolean
   data: {
     portfolioId: string | null
@@ -89,6 +92,7 @@ export interface TableProps {
           name: string | null
           symbol: string | null
           priceUSD: string | null
+          priceBTC: string | null
         } | null
         exchange: {
           name: string | null

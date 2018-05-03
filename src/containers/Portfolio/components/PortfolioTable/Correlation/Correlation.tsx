@@ -2,23 +2,25 @@ import * as React from 'react'
 import styled from 'styled-components'
 import HeatMapChart from '@components/HeatMapChart'
 import CORRELATION_MOCKS from 'utils/corr_matrices_total.json'
+import { onFloorN } from '../../../../../utils/PortfolioTableUtils'
 
 function optimizeMocks(): { rows: string[]; cols: any[][] } {
   const m = JSON.parse(CORRELATION_MOCKS['2018-04-24'])
-  const o = Object.keys(m).map((key) => {
-    return { [key]: m[key] }
-  })
+  const o = Object.keys(m).map((key) => ({ [key]: m[key] }))
   const rows = o.map((a) => {
     const arr = Object.keys(a)
+
     return arr[0].slice(0, -7)
   })
 
-  const cols = o.map((a) => {
-    return Object.keys(a).map((key) => {
+  const cols = o.map((a) =>
+    Object.keys(a).map((key) => {
       const s = a[key]
-      return Object.keys(s).map((key) => s[key])
+
+      return Object.keys(s).map((keyV) => s[keyV])
     })
-  })
+  )
+
   return { rows, cols }
 }
 
@@ -97,40 +99,36 @@ function getHeatMapData(
 }
 
 export default class Correlation extends React.Component {
-  initializeArray = (length: number, start: number, step: number): number[] => {
-    return Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
+  initializeArray = (length: number, start: number, step: number): number[] =>
+    Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
       (v, i) => i * step + start
     )
-  }
-
-  floorN = (x: number, n: number) => {
-    var mult = Math.pow(10, n)
-    return Math.floor(x * mult) / mult
-  }
 
   render() {
+    const { children } = this.props
     const { cols, rows } = optimizeMocks()
 
     return (
-      <Wrapper>
-        <ScrolledWrapper>
-          <Table>
-            <thead>
-              <Row>
-                <HeadItem
-                  style={{
-                    width: '4em',
-                    position: 'sticky',
-                    left: 0,
-                    backgroundColor: '#393e44',
-                  }}
-                />
-                {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
-              </Row>
-            </thead>
-            <tbody>
-              {cols.map((col, i) => {
-                return (
+      <PTWrapper>
+        {children}
+        <Wrapper>
+          <ScrolledWrapper>
+            <Table>
+              <thead>
+                <Row>
+                  <HeadItem
+                    style={{
+                      width: '4em',
+                      position: 'sticky',
+                      left: 0,
+                      backgroundColor: '#393e44',
+                    }}
+                  />
+                  {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
+                </Row>
+              </thead>
+              <tbody>
+                {cols.map((col, i) => (
                   <Row key={rows[i]}>
                     {rows[i] && (
                       <Item
@@ -145,9 +143,9 @@ export default class Correlation extends React.Component {
                         {rows[i]}
                       </Item>
                     )}
-                    {col.map((el) => {
-                      return el.map((e) => {
-                        const value = this.floorN(Number(e), 2)
+                    {col.map((el) =>
+                      el.map((e) => {
+                        const value = onFloorN(Number(e), 2)
                         const color = getColor(e)
 
                         return (
@@ -156,28 +154,40 @@ export default class Correlation extends React.Component {
                           </Item>
                         )
                       })
-                    })}
+                    )}
                   </Row>
-                )
-              })}
-            </tbody>
-          </Table>
-        </ScrolledWrapper>
+                ))}
+              </tbody>
+            </Table>
+          </ScrolledWrapper>
 
-        <HeatMapChart
-          data={getHeatMapData(HeatMapMocks)}
-          width={500}
-          height={500}
-        />
-      </Wrapper>
+          <HeatMapChart
+            data={getHeatMapData(HeatMapMocks)}
+            width={500}
+            height={500}
+          />
+        </Wrapper>
+      </PTWrapper>
     )
   }
 }
+
+const PTWrapper = styled.div`
+  width: calc(100% - 240px);
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+`
 
 const ScrolledWrapper = styled.div`
   max-width: 800px;
   overflow-y: scroll;
   background-color: #393e44;
+  margin-bottom: 50px;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -212,7 +222,10 @@ const Row = styled.tr``
 
 const Item = styled.td`
   background-color: ${(props: { color?: string }) => {
-    if (props.color) return props.color
+    if (props.color) {
+      return props.color
+    }
+
     return 'transparent'
   }};
 
