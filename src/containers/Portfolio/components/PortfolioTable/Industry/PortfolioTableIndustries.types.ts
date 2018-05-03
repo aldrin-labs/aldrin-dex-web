@@ -33,6 +33,7 @@ export interface IObj {
   price: number
   portfolioPerf: number
   industryPerf: number
+  [key: string]: any
 }
 
 export interface IState {

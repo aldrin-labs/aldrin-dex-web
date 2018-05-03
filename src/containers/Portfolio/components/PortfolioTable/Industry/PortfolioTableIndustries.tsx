@@ -8,7 +8,10 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
 import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart } from './mocks'
-import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
+import {
+  Portfolio,
+  Args,
+} from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
 import {

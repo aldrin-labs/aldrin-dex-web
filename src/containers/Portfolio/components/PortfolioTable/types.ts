@@ -57,6 +57,7 @@ export enum SortArgs {
 }
 
 export enum Args {
+  industry = 'industry',
   currency = 'currency',
   symbol = 'symbol',
   percentage = 'percentage',
