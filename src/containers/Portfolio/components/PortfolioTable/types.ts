@@ -16,14 +16,11 @@ export interface RowT {
 
 export interface State {
   tableData: RowT[] | null
-  selectedBalances: number[] | null
-  selectedSum: RowT
-  currentSort: { arg: SortArgs; key: Args } | null
   isShownChart: boolean
-  activeKeys: number[] | null
   portfolio: Portfolio | null
   isUSDCurrently: boolean
   tab: 'main' | 'industry' | 'rebalance' | 'correlation'
+  selectedBalances: number[]
 }
 
 export interface Portfolio {

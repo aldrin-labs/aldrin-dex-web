@@ -27,7 +27,7 @@ export const getKeysQuery = gql`
 export const deleteExchangeKeyMutation = gql`
   mutation deleteExchangeKey($name: String, $removeTrades: Boolean) {
     deleteExchangeKey(name: $name, removeTrades: $removeTrades)
-}
+  }
 `
 
 export const addExchangeKeyMutation = gql`
@@ -45,10 +45,21 @@ export const addExchangeKeyMutation = gql`
       exchange: $exchange
       date: $date
     ) {
+      _id
       name
       apiKey
       secret
       date
+      exchangeId
+      ownerId
+      owner {
+        _id
+        username
+      }
+      exchange {
+        name
+        symbol
+      }
     }
   }
 `
