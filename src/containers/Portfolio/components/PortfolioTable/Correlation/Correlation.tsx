@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import HeatMapChart from '@components/HeatMapChart'
 import CORRELATION_MOCKS from 'utils/corr_matrices_total.json'
+import { onFloorN } from '../../../../../utils/PortfolioTableUtils'
 
 function optimizeMocks(): { rows: string[]; cols: any[][] } {
   const m = JSON.parse(CORRELATION_MOCKS['2018-04-24'])
@@ -103,11 +104,6 @@ export default class Correlation extends React.Component {
     )
   }
 
-  floorN = (x: number, n: number) => {
-    var mult = Math.pow(10, n)
-    return Math.floor(x * mult) / mult
-  }
-
   render() {
     const { cols, rows } = optimizeMocks()
 
@@ -147,7 +143,7 @@ export default class Correlation extends React.Component {
                     )}
                     {col.map((el) => {
                       return el.map((e) => {
-                        const value = this.floorN(Number(e), 2)
+                        const value = onFloorN(Number(e), 2)
                         const color = getColor(e)
 
                         return (
@@ -178,6 +174,8 @@ const ScrolledWrapper = styled.div`
   max-width: 800px;
   overflow-y: scroll;
   background-color: #393e44;
+  margin-bottom: 50px;
+
 
   &::-webkit-scrollbar {
     width: 12px;

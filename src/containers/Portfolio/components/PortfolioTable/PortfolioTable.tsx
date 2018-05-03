@@ -15,8 +15,6 @@ import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
 import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
 import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Correlation from './Correlation/Correlation'
-
-import { MOCK_DATA } from './dataMock'
 import { combineToChart } from './Industry/mocks'
 
 const UPDATE_PORTFOLIO = gql`
@@ -25,305 +23,13 @@ const UPDATE_PORTFOLIO = gql`
   }
 `
 
-const defaultSelectedSum = {
-  currency: '',
-  symbol: '',
-  percentage: 0,
-  price: 0,
-  quantity: 0,
-  currentPrice: 0,
-  daily: 0,
-  dailyPerc: 0,
-  realizedPL: 0,
-  realizedPLPerc: 0,
-  unrealizedPL: 0,
-  unrealizedPLPerc: 0,
-  totalPL: 0,
-}
-
 export class PortfolioTable extends React.Component<TableProps> {
   state: State = {
     tableData: null,
-    selectedBalances: null,
-    selectedSum: defaultSelectedSum,
-    currentSort: null,
     isShownChart: true,
-    activeKeys: null,
     portfolio: null,
     isUSDCurrently: true,
     tab: 'main',
-  }
-
-  componentDidMount() {
-    const { data } = this.props
-    if (!data) {
-      const portfolio = { assets: MOCK_DATA }
-      this.setState({ portfolio })
-      this.combineTableData(portfolio)
-    }
-  }
-
-  componentWillReceiveProps(nextProps: TableProps) {
-    if (nextProps.data) {
-      const { portfolio } = nextProps.data
-      if (!portfolio) return
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-      }
-
-      this.setState({ portfolio: composeWithMocks })
-      this.combineTableData(composeWithMocks)
-    }
-
-    if (nextProps.subscription && nextProps.subscription.data) {
-      const portfolio = Object.assign(
-        this.state.portfolio,
-        JSON.parse(nextProps.subscription.data.portfolioUpdate)
-      )
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-      }
-      this.setState({ portfolio: composeWithMocks })
-      this.combineTableData(composeWithMocks)
-    }
-
-    if (nextProps.checkboxes) {
-      this.setState({ activeKeys: nextProps.checkboxes }, () =>
-        this.combineTableData(this.state.portfolio)
-      )
-    }
-
-    if (nextProps.checkboxes && nextProps.checkboxes.length === 0) {
-      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
-    }
-  }
-
-  componentDidUpdate(prevProps: Props, prevState: State) {
-    if (prevState.isUSDCurrently !== this.state.isUSDCurrently) {
-      const { portfolio } = this.state
-      this.combineTableData(portfolio)
-    }
-  }
-
-  onFloorN = (x: number, n: number) => {
-    var mult = Math.pow(10, n)
-    return Math.floor(x * mult) / mult
-  }
-
-  calcPercentage = (num: number) => {
-    return this.onFloorN(num, 2)
-  }
-
-  combineTableData = (portfolio?: Portfolio) => {
-    const { activeKeys, isUSDCurrently } = this.state
-    if (!portfolio || !portfolio.assets || !activeKeys) return
-    const { assets } = portfolio
-
-    const allSums = assets.filter(Boolean).reduce((acc, curr) => {
-      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) return null
-      const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
-      return acc + value * Number(price)
-    }, 0)
-
-    const tableData = assets
-      .map((row) => {
-        const {
-          asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
-          value = 0,
-          key = { name: '' },
-          exchange = '',
-          usdRealizedProfit = 0,
-          btcRealizedProfit = 0,
-          usdUnrealizedProfit = 0,
-          btcUnrealizedProfit = 0,
-        } =
-          row || {}
-        if (activeKeys.indexOf(key.name) === -1) return null
-        const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
-        const { name } = exchange
-
-        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        const realizedProfit = isUSDCurrently
-          ? usdRealizedProfit
-          : btcRealizedProfit
-        const unrealizedProfit = isUSDCurrently
-          ? usdUnrealizedProfit
-          : btcUnrealizedProfit
-
-        const currentPrice = mainPrice * value
-        const col = {
-          currency: name || '',
-          symbol,
-          percentage: this.calcPercentage(currentPrice / allSums * 100),
-          price: mainPrice || 0,
-          quantity: value || 0,
-          currentPrice: currentPrice || 0,
-          daily: this.calcPercentage(mainPrice / 100 * percentChangeDay),
-          dailyPerc: percentChangeDay,
-          realizedPL: realizedProfit,
-          realizedPLPerc: 0,
-          unrealizedPL: unrealizedProfit + currentPrice,
-          unrealizedPLPerc: 0,
-          totalPL: realizedProfit + currentPrice + unrealizedProfit,
-        }
-
-        return col
-      })
-      .filter(Boolean)
-    this.setState({ tableData }, () =>
-      this.calculateSum(this.state.selectedBalances)
-    )
-  }
-
-  onSelectAll = () => {
-    const { selectedBalances, tableData } = this.state
-    if (!tableData) return
-
-    if (selectedBalances && selectedBalances.length === tableData.length) {
-      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
-    } else {
-      const allRows = tableData.map((ck, idx) => idx)
-
-      this.setState({ selectedBalances: allRows }, () =>
-        this.calculateSum(allRows)
-      )
-    }
-  }
-
-  calculateSum = (selectedRows: number[] | null) => {
-    const { tableData } = this.state
-    if (!tableData) return
-
-    if (!selectedRows) {
-      this.setState({ selectedSum: defaultSelectedSum })
-      return
-    }
-
-    const sum = tableData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
-    const reducedSum = sum.reduce(
-      (acc, val) => {
-        return {
-          currency: val.currency,
-          symbol: val.symbol,
-          percentage: Number(acc.percentage) + Number(val.percentage),
-          price: '',
-          quantity: '',
-          currentPrice: Number(acc.currentPrice) + Number(val.currentPrice),
-          // daily: Number(acc.daily) + Number(val.daily),
-          // dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
-          realizedPL: Number(acc.realizedPL) + Number(val.realizedPL),
-          // realizedPLPerc:
-          //   Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
-          unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
-          totalPL: Number(acc.totalPL) + Number(val.totalPL),
-          // unrealizedPLPerc:
-          //   Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
-        }
-      },
-      {
-        currency: '',
-        symbol: '',
-        percentage: 0,
-        price: 0,
-        quantity: 0,
-        currentPrice: 0,
-        daily: 0,
-        dailyPerc: 0,
-        realizedPL: 0,
-        totalPL: 0,
-        realizedPLPerc: 0,
-        unrealizedPL: 0,
-        unrealizedPLPerc: 0,
-        totalPL: 0,
-      }
-    )
-    const validateSum = this.onValidateSum(reducedSum)
-    console.log('validateSum: ', validateSum)
-    this.setState({ selectedSum: validateSum })
-  }
-
-  onValidateSum = (reducedSum: RowT) => {
-    const { selectedBalances, tableData, isUSDCurrently } = this.state
-    if (!selectedBalances || !tableData) return null
-    const clonedSum = { ...reducedSum }
-
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" key="usd" />
-    ) : (
-      <Icon className="fa fa-btc" key="btc" />
-    )
-
-    if (selectedBalances.length === tableData.length) {
-      clonedSum.currency = 'All'
-      clonedSum.symbol = '-'
-      clonedSum.percentage = 100
-    } else if (selectedBalances.length > 1) {
-      clonedSum.currency = 'Selected'
-      clonedSum.symbol = '-'
-    }
-    clonedSum.percentage = `${this.calcPercentage(clonedSum.percentage)}%`
-    clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
-
-    return clonedSum
-  }
-
-  onSelectBalance = (index: number) => {
-    const selectedBalances =
-      (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
-
-    const hasIndex = selectedBalances.indexOf(index)
-    if (hasIndex >= 0) {
-      selectedBalances.splice(hasIndex, 1)
-    } else {
-      selectedBalances.push(index)
-    }
-
-    this.setState({ selectedBalances }, () =>
-      this.calculateSum(selectedBalances)
-    )
-  }
-
-  onSortStrings = (a: string, b: string): number => {
-    return a.localeCompare(b)
-  }
-
-  onSortTable = (key: Args) => {
-    const { tableData, currentSort } = this.state
-    if (!tableData) return
-
-    const stringKey =
-      key === 'currency' || key === 'symbol' || key === 'industry'
-
-    const newData = tableData.slice().sort((a, b) => {
-      if (currentSort && currentSort.key === key) {
-        if (currentSort.arg === 'ASC') {
-          this.setState({ currentSort: { key, arg: 'DESC' } })
-
-          if (stringKey) {
-            return this.onSortStrings(b[key], a[key])
-          }
-          return b[key] - a[key]
-        } else {
-          this.setState({ currentSort: { key, arg: 'ASC' } })
-
-          if (stringKey) {
-            return this.onSortStrings(a[key], b[key])
-          }
-          return a[key] - b[key]
-        }
-      }
-      this.setState({ currentSort: { key, arg: 'ASC' } })
-
-      if (stringKey) {
-        return this.onSortStrings(a[key], b[key])
-      }
-      return a[key] - b[key]
-    })
-
-    this.setState({ tableData: newData })
   }
 
   onToggleChart = () => {
@@ -343,11 +49,8 @@ export class PortfolioTable extends React.Component<TableProps> {
       tab,
       tableData,
       portfolio,
-      selectedSum,
-      currentSort,
       isShownChart,
       isUSDCurrently,
-      selectedBalances,
     } = this.state
 
     // if (!this.props.data) return null
@@ -369,11 +72,6 @@ export class PortfolioTable extends React.Component<TableProps> {
         )
     }
 
-    const isSelectAll =
-      (tableData &&
-        selectedBalances &&
-        selectedBalances.length === tableData.length) ||
-      false
     return (
       <PTWrapper>
         <PTHeadingBlock>
@@ -439,14 +137,10 @@ export class PortfolioTable extends React.Component<TableProps> {
           <PortfolioTableBalances
             isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
-            isSelectAll={isSelectAll}
-            selectedSum={selectedSum}
-            onSelectAll={this.onSelectAll}
-            onSortTable={this.onSortTable}
-            tableData={tableData}
-            selectedBalances={selectedBalances}
-            onSelectBalance={this.onSelectBalance}
-            currentSort={currentSort}
+            subscription={this.props.subscription}
+            data={this.props.data}
+            checkboxes={this.props.checkboxes}
+            tab={this.state.tab}
           />
         )}
 

@@ -9,6 +9,7 @@ import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+import { onSortStrings, roundUSDOff }  from '../../../../../utils/PortfolioTableUtils'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -151,39 +152,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     }
   }
 
-  roundUSDOff = (num: number): string => {
-    const reg = this.props.isUSDCurrently
-      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-    if (String(num).match(reg)) {
-      const [price] = String(num).match(reg)
-      return price
-    } else if (num > 0) {
-      return this.addZerosToEnd(String(num))
-    } else {
-      return `${num}`
-    }
-  }
-
-  addZerosToEnd = (num: string): string => {
-    const reg = /(?=\.[0-9]+)\.[0-9]+/g
-    const diff = this.props.isUSDCurrently ? 3 : 9
-
-    if (reg.test(num)) {
-      const [str] = num.match(reg) || ['']
-      let tmp = str
-      const len = str.length
-      for (let i = 0; i < diff - len; i++) {
-        tmp += 0
-      }
-      const [head] = num.match(/[0-9]+\./g) || ['']
-      let woPoint = head.slice(0, -1)
-      const result = (woPoint += tmp)
-      return result || ''
-    }
-    return num
-  }
-
   combineIndustryData = (portfolio?: Portfolio) => {
     const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
@@ -224,10 +192,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     )
   }
 
-  onSortStrings = (a: string, b: string): number => {
-    return a.localeCompare(b)
-  }
-
   renderCheckbox = (idx: number) => {
     const { selectedRows } = this.state
     const isSelected = (selectedRows && selectedRows.indexOf(idx) >= 0) || false
@@ -260,14 +224,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
           this.setState({ currentSort: { key, arg: 'DESC' } })
 
           if (stringKey) {
-            return this.onSortStrings(b[key], a[key])
+            return onSortStrings(b[key], a[key])
           }
           return b[key] - a[key]
         } else {
           this.setState({ currentSort: { key, arg: 'ASC' } })
 
           if (stringKey) {
-            return this.onSortStrings(a[key], b[key])
+            return onSortStrings(a[key], b[key])
           }
           return a[key] - b[key]
         }
@@ -275,7 +239,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
       this.setState({ currentSort: { key, arg: 'ASC' } })
 
       if (stringKey) {
-        return this.onSortStrings(a[key], b[key])
+        return onSortStrings(a[key], b[key])
       }
       return a[key] - b[key]
     })
@@ -410,7 +374,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
                     <PTH
                       key={heading.name}
                       onClick={() => this.onSortTable(heading.value)}
-                      style={{ paddingRight: isSorted ? 0 : '16px' }}
+                      isSorted={isSorted}
                     >
                       {heading.name}
 
@@ -460,7 +424,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
                     currency,
                     symbol,
                     industry,
-                    [mainSymbol, `${this.roundUSDOff(price)}`],
+                    [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
                     `${portfolioPerf}%`,
                     `${industryPerf}%`,
                   ]
@@ -624,6 +588,11 @@ const PTH = styled.th`
   line-height: 24px;
   color: #fff;
   padding: 0 10px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 10px;
+  padding-right: ${(props: { isSorted?: boolean }) =>
+  props.isSorted ? '0' : '16px'};
   font-weight: 500;
   text-align: center;
   vertical-align: bottom;
@@ -631,7 +600,19 @@ const PTH = styled.th`
   top: 0;
   overflow: hidden;
   background-color: #393e44;
-  width: 50px;
+  width: 60px;
+  
+  &:nth-child(2) {
+  width: 90px;
+  }
+  &:nth-child(6) {
+  width: 98px;
+  padding-right: 0;
+  }
+  &:nth-child(7) {
+  width: 98px;
+  padding-right: 0;
+  }
 `
 
 const PTR = styled.tr`

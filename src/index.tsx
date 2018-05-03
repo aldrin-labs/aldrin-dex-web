@@ -1,12 +1,4 @@
-import {
-  App,
-  Chart,
-  CoinMarketCap,
-  Portfolio,
-  Profile,
-  Screener,
-  User,
-} from '@containers'
+import { App } from '@containers'
 
 import { client } from '@utils/apolloClient'
 import { persistor, store } from '@utils/configureStore'
@@ -55,6 +47,42 @@ const PortfolioRoutes = Loadable({
   webpack: () => [require.resolveWeak('./containers/Portfolio/routes')],
 })
 
+const MarketRoutes = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "market" */ './containers/CoinMarketCap/routes'),
+  delay: 300,
+  loading: LoadableLoading,
+  modules: ['market'],
+  webpack: () => [require.resolveWeak('./containers/CoinMarketCap/routes')],
+})
+
+const ChartRoutes = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "chart" */ './containers/Chart/routes'),
+  delay: 300,
+  loading: LoadableLoading,
+  modules: ['chart'],
+  webpack: () => [require.resolveWeak('./containers/Chart/routes')],
+})
+
+const ScreenerRoutes = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "screener" */ './containers/Screener/routes'),
+  delay: 300,
+  loading: LoadableLoading,
+  modules: ['screener'],
+  webpack: () => [require.resolveWeak('./containers/Screener/routes')],
+})
+
+const UserRoutes = Loadable({
+  loader: () =>
+    import(/* webpackChunkName: "user" */ './containers/User/routes'),
+  delay: 300,
+  loading: LoadableLoading,
+  modules: ['user'],
+  webpack: () => [require.resolveWeak('./containers/User/routes')],
+})
+
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
@@ -67,10 +95,10 @@ const render = () =>
                   <Route exact path="/" component={HomeRoutes} />
                   <Route exact path="/profile" component={ProfileRoutes} />
                   <Route exact path="/portfolio" component={PortfolioRoutes} />
-                  <Route exact path="/market" component={CoinMarketCap} />
-                  <Route exact path="/chart" component={Chart} />
-                  <Route exact path="/screener" component={Screener} />
-                  <Route exact path="/user" component={User} />
+                  <Route exact path="/market" component={MarketRoutes} />
+                  <Route exact path="/chart" component={ChartRoutes} />
+                  <Route exact path="/screener" component={ScreenerRoutes} />
+                  <Route exact path="/user" component={UserRoutes} />
                   <Route path="*" component={NotFound} />
                 </Switch>
               </App>
