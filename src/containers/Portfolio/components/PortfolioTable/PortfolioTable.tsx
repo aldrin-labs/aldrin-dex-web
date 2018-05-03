@@ -57,19 +57,19 @@ export class PortfolioTable extends React.Component<TableProps> {
 
     if (this.props.data && !tableData) {
       return (
-          <LoaderWrapper>
-            <SvgIcon
-              src={spinLoader}
-              width={48}
-              height={48}
-              style={{
-                position: 'absolute',
-                left: 'calc(50% - 48px)',
-                top: 'calc(50% - 48px)',
-              }}
-            />
-          </LoaderWrapper>
-        )
+        <LoaderWrapper>
+          <SvgIcon
+            src={spinLoader}
+            width={48}
+            height={48}
+            style={{
+              position: 'absolute',
+              left: 'calc(50% - 48px)',
+              top: 'calc(50% - 48px)',
+            }}
+          />
+        </LoaderWrapper>
+      )
     }
 
     return (
@@ -140,7 +140,6 @@ export class PortfolioTable extends React.Component<TableProps> {
             subscription={this.props.subscription}
             data={this.props.data}
             checkboxes={this.props.checkboxes}
-            tab={this.state.tab}
           />
         )}
 
