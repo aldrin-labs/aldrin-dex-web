@@ -2,10 +2,11 @@ import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import {
-  Args,
   SortArgs,
+  Args,
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import sortIcon from '../../../../../icons/arrow.svg'
+import { IState, IProps } from 'PortfolioTableHead.types'
 
 const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Exchange', value: 'currency' },
@@ -21,7 +22,6 @@ const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Unrealized P&L', value: 'unrealizedPL' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
   { name: 'Total P&L', value: 'total' },
-
 ]
 
 const btcHeadings: Array<{ name: string; value: Args }> = [
@@ -40,20 +40,15 @@ const btcHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Total P&L', value: 'total' },
 ]
 
-interface Props {
-  isUSDCurrently: boolean
-  isSelectAll: boolean
-  onSelectAll: Function
-  onSortTable: Function
-  currentSort: { arg: SortArgs; key: Args }
-}
-
-export default class PortfolioTableHead extends React.Component<Props> {
-  state = {
+export default class PortfolioTableHead extends React.Component<
+  IProps,
+  IState
+> {
+  state: IState = {
     tableHeadings: usdHeadings,
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: IProps) {
     if (!nextProps.isUSDCurrently) {
       this.setState({ tableHeadings: btcHeadings })
     } else if (nextProps.isUSDCurrently) {
