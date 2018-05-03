@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { RadialChart, Hint } from 'react-vis'
 
-import { Props, State, PiePiece } from './annotations'
+import { Props, State, PiePiece } from './PieChart.types'
 
 export default class PieChart extends React.Component<Props, State> {
   state: State = {
