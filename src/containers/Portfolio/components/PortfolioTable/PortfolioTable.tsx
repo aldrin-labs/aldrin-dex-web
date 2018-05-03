@@ -130,17 +130,6 @@ export class PortfolioTable extends React.Component<TableProps> {
   }
 }
 
-const PTWrapper = styled.div`
-  width: calc(100% - 240px);
-  display: flex;
-  flex-direction: column;
-  margin: 24px;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
-`
-
 const LoaderWrapper = styled.div`
   width: 100%;
   display: flex;

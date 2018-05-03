@@ -1,7 +1,7 @@
 import { getPortfolioQuery } from './annotations'
 
 export interface Props {
-  data: { getProfile: getPortfolioQuery }
+  data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }
 }
 
 export interface Portfolio {
@@ -69,6 +69,7 @@ export interface IndProps {
 }
 
 export interface TableProps {
+  isShownChart: boolean
   loading: boolean
   data: {
     portfolioId: string | null
