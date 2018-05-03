@@ -1,7 +1,14 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import {IState, IProps} from './types'
-import {tableHeadings, tableData} from './mocks'
+import { IState, IProps } from './types'
+import { tableData } from './mocks'
+
+const tableHeadings = [
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
+  { name: 'Current', value: 'price' },
+]
 
 export default class PortfolioTableRebalance extends React.Component<
   IProps,

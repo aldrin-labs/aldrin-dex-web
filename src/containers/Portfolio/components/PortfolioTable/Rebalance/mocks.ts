@@ -1,10 +1,3 @@
-export const tableHeadings = [
-  { name: 'Exchange', value: 'currency' },
-  { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'Current', value: 'price' },
-]
-
 export const tableData = [
   {
     currency: 'Bitrex',
