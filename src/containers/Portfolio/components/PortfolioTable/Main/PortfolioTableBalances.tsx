@@ -44,18 +44,18 @@ export default class PortfolioTableBalances extends React.Component<
   }
 
   componentDidMount() {
-    const { data } = this.props
+    const { data, checkboxes } = this.props
     if (!data) {
       const portfolio = { assets: MOCK_DATA }
-      this.setState({ portfolio })
-      this.combineTableData(portfolio)
+      this.setState({ portfolio, activeKeys: checkboxes }, () => {
+        this.combineTableData(portfolio)
+      })
     }
   }
 
   componentWillReceiveProps(nextProps: TableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      console.log(portfolio)
 
       if (!portfolio) return
       const composeWithMocks = {
