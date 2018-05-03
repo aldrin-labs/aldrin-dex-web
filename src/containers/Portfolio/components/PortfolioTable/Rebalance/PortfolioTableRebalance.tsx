@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import {IState, IProps} from "./types";
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -39,17 +40,11 @@ const tableData = [
   },
 ]
 
-interface Props {}
-
-interface State {
-  selectedBalances: number[] | null
-}
-
 export default class PortfolioTableRebalance extends React.Component<
-  Props,
-  State
+  IProps,
+  IState
 > {
-  state: State = { selectedBalances: null }
+  state: IState = { selectedBalances: null }
 
   renderCheckbox = (idx: number) => {
     const { selectedBalances } = this.state
