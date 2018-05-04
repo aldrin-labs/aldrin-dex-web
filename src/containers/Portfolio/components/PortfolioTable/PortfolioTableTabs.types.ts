@@ -1,11 +1,11 @@
-export interface Props {
+export interface IProps {
   tab: string
-  portfolio: Portfolio | null
+  portfolio: IPortfolio | null
   onChangeTab?: Function
   onToggleChart?: Function
   onToggleUSDBTC?: Function
 }
 
-export interface Portfolio {
+export interface IPortfolio {
   processing: boolean | null
 }

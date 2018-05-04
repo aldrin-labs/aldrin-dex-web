@@ -2,16 +2,16 @@ import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
-import { State } from './types'
-import { TableProps } from '../../interfaces'
+import { IState } from './types'
+import { ITableProps } from '../../interfaces'
 import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
 import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
 import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Correlation from './Correlation/Correlation'
 import PortfolioTableTabs from './PortfolioTableTabs'
 
-export class PortfolioTable extends React.Component<TableProps> {
-  state: State = {
+export class PortfolioTable extends React.Component<ITableProps, IState> {
+  state: IState = {
     tableData: null,
     isShownChart: true,
     portfolio: null,

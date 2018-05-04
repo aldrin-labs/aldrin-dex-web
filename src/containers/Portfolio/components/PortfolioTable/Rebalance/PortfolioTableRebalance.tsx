@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { IState, IProps } from './types'
+import { IState, IProps } from './PortfolioTableRebalance.types'
 import { tableData } from './mocks'
 
 const tableHeadings = [

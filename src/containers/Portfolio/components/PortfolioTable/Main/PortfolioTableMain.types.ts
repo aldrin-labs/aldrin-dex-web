@@ -1,7 +1,7 @@
-import { RowT } from '../types'
+import { IRowT } from '../types'
 
 export interface IProps {
-  tableData: RowT[] | null
+  tableData: IRowT[] | null
   selectedBalances: number[] | null
   onSelectBalance: Function
   isUSDCurrently: boolean
