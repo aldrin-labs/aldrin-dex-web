@@ -1,10 +1,10 @@
 import { getPortfolioQuery } from './annotations'
 
-export interface Props {
+export interface IProps {
   data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }
 }
 
-export interface Portfolio {
+export interface IPortfolio {
   name: string | null
   processing: boolean | null
   assetIds: Array<string | null> | null
@@ -68,9 +68,10 @@ export interface IndProps {
 
   checkboxes: number[]
   isUSDCurrently: boolean
+  isShownMocks?: boolean
 }
 
-export interface TableProps {
+export interface ITableProps {
   isShownChart: boolean
   loading: boolean
   data: {

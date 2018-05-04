@@ -10,9 +10,9 @@ import {
 } from '../../../../../utils/PortfolioTableUtils'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import { MOCK_DATA } from '../dataMock'
-import { State, Args } from '../types'
-import { TableProps, Portfolio } from '../../../interfaces'
-import { IProps, IState } from 'PortfolioTableBalances.types'
+import { Args } from '../types'
+import { ITableProps, IPortfolio } from '../../../interfaces'
+import { IProps, IState } from './PortfolioTableBalances.types'
 
 const defaultSelectedSum = {
   currency: '',
@@ -53,7 +53,7 @@ export default class PortfolioTableBalances extends React.Component<
     }
   }
 
-  componentWillReceiveProps(nextProps: TableProps) {
+  componentWillReceiveProps(nextProps: ITableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
 
@@ -91,14 +91,14 @@ export default class PortfolioTableBalances extends React.Component<
     }
   }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
     if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
       const { portfolio } = this.state
       this.combineTableData(portfolio)
     }
   }
 
-  combineTableData = (portfolio?: Portfolio) => {
+  combineTableData = (portfolio?: IPortfolio) => {
     const { activeKeys } = this.state
     const { isUSDCurrently } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) return

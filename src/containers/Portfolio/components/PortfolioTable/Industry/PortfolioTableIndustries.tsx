@@ -9,7 +9,7 @@ import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
 import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart } from './mocks'
 import {
-  Portfolio,
+  IPortfolio,
   Args,
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
@@ -105,7 +105,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
   }
 
-  combineIndustryData = (portfolio?: Portfolio) => {
+  combineIndustryData = (portfolio?: IPortfolio) => {
     const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) return
