@@ -8,7 +8,7 @@ import Switch from '@components/Switch/Switch'
 import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
 
-import { Props } from './PortfolioTableTabs.types'
+import { IProps } from './PortfolioTableTabs.types'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -16,7 +16,7 @@ const UPDATE_PORTFOLIO = gql`
   }
 `
 
-export default class PortfolioTableTabs extends React.Component<Props> {
+export default class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
     const { onChangeTab } = this.props
     if (onChangeTab) onChangeTab(tab)

@@ -1,12 +1,12 @@
-import { RowT, SortArgs, Args, Portfolio } from '../types'
+import { IRowT, SortArgs, Args, IPortfolio } from '../types'
 
 export interface IState {
-  tableData: RowT[] | null
+  tableData: IRowT[] | null
   selectedBalances: number[] | null
-  selectedSum: RowT | null
+  selectedSum: IRowT[] | null
   currentSort: { arg: SortArgs; key: Args } | null
   activeKeys: number[] | null
-  portfolio: Portfolio | null
+  portfolio: IPortfolio | null
 }
 
 export interface IProps {
