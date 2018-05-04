@@ -14,6 +14,7 @@ export interface IProps {
   isUSDCurrently: boolean
   checkboxes: number[]
   subscription: any
+  tab: string
   data: {
     portfolioId: string | null
     portfolio: {

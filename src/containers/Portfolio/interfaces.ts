@@ -68,6 +68,7 @@ export interface IndProps {
 
   checkboxes: number[]
   isUSDCurrently: boolean
+  isShownMocks?: boolean
 }
 
 export interface ITableProps {
