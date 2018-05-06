@@ -55,5 +55,4 @@ export default graphql(getPortfolioQuery)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
-  height: calc(100vh - 80px);
 `
