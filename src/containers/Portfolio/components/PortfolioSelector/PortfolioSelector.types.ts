@@ -1,11 +1,12 @@
 import { getKeysQuery } from '../../annotations'
 
-export interface Props {
+export interface IProps {
   data: getKeysQuery
   onChangeActive: Function
+  isShownMocks: boolean
 }
 
-export interface State {
+export interface IState {
   checkedCheckboxes: number[] | null
   checkboxes: (string | null)[] | null
 }

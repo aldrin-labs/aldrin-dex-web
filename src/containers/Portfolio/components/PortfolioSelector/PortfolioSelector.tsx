@@ -4,10 +4,10 @@ import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { getKeysQuery } from '../../api'
-import { Props, State } from './types'
+import { IProps, IState } from './PortfolioSelector.types'
 
-class PortfolioSelector extends React.Component<Props, State> {
-  state: State = {
+class PortfolioSelector extends React.Component<IProps, IState> {
+  state: IState = {
     checkedCheckboxes: null,
     checkboxes: null,
   }
@@ -27,7 +27,7 @@ class PortfolioSelector extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: IProps) {
     // called once
     if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
       const { keys } = nextProps.data.getProfile

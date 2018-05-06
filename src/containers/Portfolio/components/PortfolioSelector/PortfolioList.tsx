@@ -23,6 +23,8 @@ import * as actions from '../../actions'
 import * as API from '../../api'
 import { LoginAlert } from '../'
 
+import { IProps, IState } from './PortfolioList.types'
+
 const SWrapper = styled.div`
   width: 100%;
   max-width: 320px;
@@ -38,8 +40,8 @@ const SToolbar = styled(Toolbar)`
     props.theme ? props.theme.palette.background.paper : ''};
 `
 
-class SelectPortfolioComponent extends React.Component {
-  state = {
+class SelectPortfolioComponent extends React.Component<IProps, IState> {
+  state: IState = {
     allKeysSelected: false,
   }
 

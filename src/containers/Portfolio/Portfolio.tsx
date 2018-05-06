@@ -2,8 +2,9 @@ import React from 'react'
 import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
+
 import { getPortfolioQuery } from './api'
-import { Props } from './interfaces'
+import { IProps } from './interfaces'
 import { Login } from '@containers/Login'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from './components'
@@ -14,12 +15,7 @@ const PORTFOLIO_UPDATE = gql`
   }
 `
 
-const PortfolioContainer = styled.div`
-  display: flex;
-  max-height: calc(100vh - 80px);
-`
-
-class PortfolioComponent extends React.Component<Props> {
+class PortfolioComponent extends React.Component<IProps> {
   state = {
     checkboxes: null,
   }
@@ -56,3 +52,8 @@ class PortfolioComponent extends React.Component<Props> {
 }
 
 export default graphql(getPortfolioQuery)(PortfolioComponent)
+
+const PortfolioContainer = styled.div`
+  display: flex;
+  height: calc(100vh - 80px);
+`
