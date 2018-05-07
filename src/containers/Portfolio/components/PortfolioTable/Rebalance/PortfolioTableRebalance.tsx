@@ -197,9 +197,16 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
-  padding: 20px 10px;
+  padding: 1.75px 16px 1.75px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: right;
+
+  &:first-child {
+    text-align: left;
+  }
 `
 
 const Span = styled.span``
@@ -227,7 +234,7 @@ const Checkbox = styled.input`
     border-color: #4ed8da;
   }
 
-  & :checked + ${Label} ${Span} {
+  &:checked + ${Label} ${Span} {
     border-color: #4ed8da;
     background-color: #4ed8da;
     background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
@@ -239,10 +246,10 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 20px 10px;
+  padding: 10px 10px;
   text-align: left;
   font-weight: 500;
 

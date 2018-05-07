@@ -24,6 +24,30 @@ export const tableData = [
     price: 5000,
   },
   {
+    currency: 'Binance',
+    symbol: 'LTC',
+    portfolioPerc: 4.44,
+    price: 2000,
+  },
+  {
+    currency: 'Binance',
+    symbol: 'XRP',
+    portfolioPerc: 5.55,
+    price: 5000,
+  },
+  {
+    currency: 'Binance',
+    symbol: 'LTC',
+    portfolioPerc: 4.44,
+    price: 2000,
+  },
+  {
+    currency: 'Binance',
+    symbol: 'XRP',
+    portfolioPerc: 5.55,
+    price: 5000,
+  },
+  {
     currency: 'Total',
     price: 29950,
   },
