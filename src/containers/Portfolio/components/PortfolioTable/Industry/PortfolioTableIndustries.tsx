@@ -316,7 +316,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       false
 
     return (
-      <PTWrapper>
+      <PTWrapper tableData={industryData}>
         {children}
         <Container>
           <Wrapper>
@@ -484,7 +484,8 @@ const Heading = styled.span`
 `
 
 const PTWrapper = styled.div`
-  width: calc(100% - 240px);
+  width: ${(props: { tableData?: boolean }) =>
+    props.tableData ? 'calc(100% - 240px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;

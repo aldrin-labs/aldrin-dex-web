@@ -299,7 +299,7 @@ export default class PortfolioTableBalances extends React.Component<
       false
 
     return (
-      <PTWrapper>
+      <PTWrapper tableData={tableData}>
         {children}
         <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
           <PTable>
@@ -338,7 +338,8 @@ export default class PortfolioTableBalances extends React.Component<
 }
 
 const PTWrapper = styled.div`
-  width: calc(100% - 240px);
+  width: ${(props: { tableData?: boolean }) =>
+    props.tableData ? 'calc(100% - 240px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
