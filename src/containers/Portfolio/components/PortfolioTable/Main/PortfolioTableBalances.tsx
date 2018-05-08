@@ -45,8 +45,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   componentDidMount() {
     const { data, isShownMocks } = this.props
 
-    console.log(data, isShownMocks)
-
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCK_DATA } }, () =>
         this.combineTableData({ assets: MOCK_DATA })
