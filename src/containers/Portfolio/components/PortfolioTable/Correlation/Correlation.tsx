@@ -21,7 +21,7 @@ export default class Correlation extends React.Component<IProps> {
     const { cols, rows } = optimizeMocks()
 
     return (
-      <PTWrapper data={!!cols.length && !!rows.length}>
+      <PTWrapper tableData={!!cols.length && !!rows.length}>
         {children}
         <Wrapper>
           <ScrolledWrapper>
@@ -85,8 +85,8 @@ export default class Correlation extends React.Component<IProps> {
 }
 
 const PTWrapper = styled.div`
-  width: ${(props: { data: boolean }) =>
-    props.data ? 'calc(100% - 240px);' : '100%'};
+  width: ${(props: { tableData?: boolean }) =>
+    props.tableData ? 'calc(100% - 240px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
