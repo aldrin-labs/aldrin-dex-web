@@ -1,4 +1,4 @@
-export interface RowT {
+export interface IRowT {
   currency: string
   symbol: string
   percentage: number
@@ -14,19 +14,15 @@ export interface RowT {
   [key: string]: string | number
 }
 
-export interface State {
-  tableData: RowT[] | null
-  selectedBalances: number[] | null
-  selectedSum: RowT
-  currentSort: { arg: SortArgs; key: Args } | null
+export interface IState {
+  tableData: IRowT[] | null
   isShownChart: boolean
-  activeKeys: number[] | null
-  portfolio: Portfolio | null
+  portfolio: IPortfolio | null
   isUSDCurrently: boolean
   tab: 'main' | 'industry' | 'rebalance' | 'correlation'
 }
 
-export interface Portfolio {
+export interface IPortfolio {
   name: string | null
   processing: boolean | null
   assetIds: Array<string | null> | null
@@ -60,6 +56,7 @@ export enum SortArgs {
 }
 
 export enum Args {
+  industry = 'industry',
   currency = 'currency',
   symbol = 'symbol',
   percentage = 'percentage',

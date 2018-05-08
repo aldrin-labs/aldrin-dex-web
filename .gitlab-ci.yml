@@ -47,7 +47,7 @@ stages:
 
 bundle:
   stage: bundle
-  image: node:latest
+  image: node:9.0.0
   script:
     - yarn
     - yarn build

@@ -1,15 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { RowT } from '../types'
+import { roundUSDOff } from '../../../../../utils/PortfolioTableUtils'
+import { IProps } from 'PortfolioTableMain.types'
 
-interface Props {
-  tableData: RowT[] | null
-  selectedBalances: number[] | null
-  onSelectBalance: Function
-  isUSDCurrently: boolean
-}
-
-export default class PortfolioTableMain extends React.Component<Props> {
+export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
     const { selectedBalances } = this.props
     const isSelected =
@@ -23,39 +17,6 @@ export default class PortfolioTableMain extends React.Component<Props> {
         </Label>
       </React.Fragment>
     )
-  }
-
-  addZerosToEnd = (num: string): string => {
-    const reg = /(?=\.[0-9]+)\.[0-9]+/g
-    const diff = this.props.isUSDCurrently ? 3 : 9
-
-    if (reg.test(num)) {
-      const [str] = num.match(reg) || ['']
-      let tmp = str
-      const len = str.length
-      for (let i = 0; i < diff - len; i++) {
-        tmp += 0
-      }
-      const [head] = num.match(/[0-9]+\./g) || ['']
-      let woPoint = head.slice(0, -1)
-      const result = (woPoint += tmp)
-      return result || ''
-    }
-    return num
-  }
-
-  roundUSDOff = (num: number): string => {
-    const reg = this.props.isUSDCurrently
-      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-    if (String(num).match(reg)) {
-      const [price] = String(num).match(reg)
-      return price
-    } else if (num > 0) {
-      return this.addZerosToEnd(String(num))
-    } else {
-      return `${num}`
-    }
   }
 
   render() {
@@ -100,17 +61,17 @@ export default class PortfolioTableMain extends React.Component<Props> {
             currency,
             symbol,
             `${percentage} %`,
-            [mainSymbol, `${this.roundUSDOff(price)}`],
+            [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
             quantity,
-            [mainSymbol, `${this.roundUSDOff(currentPrice)}`],
+            [mainSymbol, `${roundUSDOff(currentPrice, isUSDCurrently)}`],
             //            daily,
             //            `${dailyPerc} %`,
-            [mainSymbol, `${this.roundUSDOff(realizedPL)}`],
+            [mainSymbol, `${roundUSDOff(realizedPL, isUSDCurrently)}`],
             // realizedPL,
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
-            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`],
-            [mainSymbol, `${this.roundUSDOff(totalPL)}`], /// this WOULD BE TOTAL COLUMN!
+            [mainSymbol, `${roundUSDOff(unrealizedPL, isUSDCurrently)}`],
+            [mainSymbol, `${roundUSDOff(totalPL, isUSDCurrently)}`],
             //            `${unrealizedPLPerc} %`,
           ]
 

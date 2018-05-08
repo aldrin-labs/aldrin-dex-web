@@ -11,7 +11,7 @@ interface Props {
   data: ProfileQueryQuery
 }
 
-class Profile extends React.Component<Props, {}> {
+class ProfileComponent extends React.Component<Props, {}> {
   render() {
     const { data } = this.props
     const { assetById } = data
@@ -123,4 +123,4 @@ const options = ({ match }) => ({
   variables: { id: match ? match.params.id : '' },
 })
 
-export const ProfileWrapper = graphql(ProfileQuery, { options })(Profile)
+export default graphql(ProfileQuery, { options })(ProfileComponent)
