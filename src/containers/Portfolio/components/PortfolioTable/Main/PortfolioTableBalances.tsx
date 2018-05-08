@@ -53,9 +53,10 @@ export default class PortfolioTableBalances extends React.Component<
   }
 
   componentWillReceiveProps(nextProps: ITableProps) {
+    console.log('nextProps.data ' + nextProps.data)
+
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      console.log(portfolio)
 
       if (!portfolio) return
       const composeWithMocks = {
@@ -91,12 +92,12 @@ export default class PortfolioTableBalances extends React.Component<
     }
   }
 
-  componentDidUpdate(prevProps: IProps, prevState: IState) {
-    if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
-      const { portfolio } = this.state
-      this.combineTableData(portfolio)
-    }
-  }
+  // componentDidUpdate(prevProps: IProps, prevState: IState) {
+  //   if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
+  //     const { portfolio } = this.state
+  //     this.combineTableData(portfolio)
+  //   }
+  // }
 
   combineTableData = (portfolio?: IPortfolio) => {
     const { activeKeys } = this.state
@@ -298,8 +299,19 @@ export default class PortfolioTableBalances extends React.Component<
         selectedBalances.length === tableData.length) ||
       false
 
+    const tableDataHasData = tableData ? Object.keys(tableData).length : false
+
+    if (!tableDataHasData) {
+      return (
+        <PTWrapper tableData={tableDataHasData}>
+          {children}
+          <PTextBox>Add account for Portfolio</PTextBox>
+        </PTWrapper>
+      )
+    }
+
     return (
-      <PTWrapper tableData={tableData}>
+      <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
           <PTable>
@@ -347,6 +359,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
+  height: calc(100vh - 140px);
 `
 
 const Wrapper = styled.div`
@@ -370,4 +383,19 @@ const Wrapper = styled.div`
 const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
+`
+
+const PTextBox = styled.div`
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2d3136;
 `
