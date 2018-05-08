@@ -71,15 +71,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     this.setState({ activeKeys: this.props.checkboxes })
   }
 
-  // componentDidMount() {
-  //   const { data } = this.props
-  //   if (!data) {
-  //     const portfolio = { assets: MOCK_DATA }
-  //     this.setState({ portfolio })
-  //     this.combineTableData(portfolio)
-  //   }
-  // }
-
   componentWillReceiveProps(nextProps: ITableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
@@ -118,12 +109,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     }
   }
 
-  // componentDidUpdate(prevProps: IProps, prevState: IState) {
-  //   if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
-  //     const { portfolio } = this.state
-  //     this.combineTableData(portfolio)
-  //   }
-  // }
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
+      const { portfolio } = this.state
+      this.combineTableData(portfolio)
+    }
+  }
 
   combineTableData = (portfolio?: IPortfolio) => {
     const { activeKeys } = this.state
