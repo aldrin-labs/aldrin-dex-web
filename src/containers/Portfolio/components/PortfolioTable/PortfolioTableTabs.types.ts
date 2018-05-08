@@ -4,6 +4,8 @@ export interface IProps {
   onChangeTab?: Function
   onToggleChart?: Function
   onToggleUSDBTC?: Function
+  isShownMocks: boolean
+  data: any
 }
 
 export interface IPortfolio {
