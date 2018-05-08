@@ -13,6 +13,8 @@ import { MOCK_DATA } from '../dataMock'
 import { Args } from '../types'
 import { ITableProps, IPortfolio } from '../../../interfaces'
 import { IProps, IState } from './PortfolioTableBalances.types'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 
 const defaultSelectedSum = {
   currency: '',
@@ -30,10 +32,7 @@ const defaultSelectedSum = {
   totalPL: 0,
 }
 
-export default class PortfolioTableBalances extends React.Component<
-  IProps,
-  IState
-> {
+class PortfolioTableBalances extends React.Component<IProps, IState> {
   state: IState = {
     tableData: null,
     selectedBalances: null,
@@ -44,17 +43,44 @@ export default class PortfolioTableBalances extends React.Component<
   }
 
   componentDidMount() {
-    const { data } = this.props
-    if (!data) {
-      const portfolio = { assets: MOCK_DATA }
-      this.setState({ portfolio })
-      this.combineTableData(portfolio)
+    const { data, isShownMocks } = this.props
+
+    console.log(data, isShownMocks)
+
+    if (!data && isShownMocks) {
+      this.setState({ portfolio: { assets: MOCK_DATA } }, () =>
+        this.combineTableData({ assets: MOCK_DATA })
+      )
+
+      this.setState({ activeKeys: this.props.checkboxes })
+      return
+    } else if (!data) {
+      return
     }
+    const { portfolio } = data
+
+    const composeWithMocks = {
+      ...portfolio,
+      assets: portfolio.assets.concat(MOCK_DATA),
+    }
+
+    this.setState({ portfolio: composeWithMocks }, () =>
+      this.combineTableData(composeWithMocks)
+    )
+
+    this.setState({ activeKeys: this.props.checkboxes })
   }
 
-  componentWillReceiveProps(nextProps: ITableProps) {
-    console.log('nextProps.data ' + nextProps.data)
+  // componentDidMount() {
+  //   const { data } = this.props
+  //   if (!data) {
+  //     const portfolio = { assets: MOCK_DATA }
+  //     this.setState({ portfolio })
+  //     this.combineTableData(portfolio)
+  //   }
+  // }
 
+  componentWillReceiveProps(nextProps: ITableProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
 
@@ -399,3 +425,11 @@ const PTextBox = styled.div`
   align-items: center;
   background-color: #2d3136;
 `
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
+
+const storeComponent = connect(mapStateToProps)(PortfolioTableBalances)
+
+export default compose()(storeComponent)
