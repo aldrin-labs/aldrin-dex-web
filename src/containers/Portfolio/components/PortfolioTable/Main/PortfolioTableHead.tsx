@@ -1,12 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import {
-  SortArgs,
-  Args,
-} from '@containers/Portfolio/components/PortfolioTable/types'
+import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import sortIcon from '../../../../../icons/arrow.svg'
-import { IState, IProps } from 'PortfolioTableHead.types'
+import { IState, IProps } from './PortfolioTableHead.types'
 
 const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
@@ -24,7 +21,7 @@ const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Total P&L', value: 'total' },
 ]
 
-const btcHeadings: Array<{ name: string; value: Args }> = [
+const btcHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'percentage' },
@@ -76,6 +73,7 @@ export default class PortfolioTableHead extends React.Component<
           </PTH>
           {tableHeadings.map((heading) => {
             const isSorted = currentSort && currentSort.key === heading.value
+
             return (
               <PTH
                 key={heading.name}
