@@ -10,8 +10,8 @@ import {
 } from '../../../../../utils/PortfolioTableUtils'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import { MOCK_DATA } from '../dataMock'
-import { Args } from '../types'
-import { ITableProps, IPortfolio } from '../../../interfaces'
+import {Args, IRowT} from '../types'
+import { IPortfolio } from '../../../interfaces'
 import { IProps, IState } from './PortfolioTableBalances.types'
 
 const defaultSelectedSum = {
@@ -30,11 +30,8 @@ const defaultSelectedSum = {
   totalPL: 0,
 }
 
-export default class PortfolioTableBalances extends React.Component<
-  IProps,
-  IState
-> {
-  state: IState = {
+export default class PortfolioTableBalances extends React.Component<IProps, IState> {
+  state = {
     tableData: null,
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
@@ -52,12 +49,12 @@ export default class PortfolioTableBalances extends React.Component<
     }
   }
 
-  componentWillReceiveProps(nextProps: ITableProps) {
+  componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      console.log(portfolio)
+      // console.log(portfolio)
 
-      if (!portfolio) return
+      if (!portfolio) { return }
       const composeWithMocks = {
         ...portfolio,
         assets: portfolio.assets.concat(MOCK_DATA),
@@ -101,13 +98,14 @@ export default class PortfolioTableBalances extends React.Component<
   combineTableData = (portfolio?: IPortfolio) => {
     const { activeKeys } = this.state
     const { isUSDCurrently } = this.props
-    if (!portfolio || !portfolio.assets || !activeKeys) return
+    if (!portfolio || !portfolio.assets || !activeKeys) { return }
     const { assets } = portfolio
 
     const allSums = assets.filter(Boolean).reduce((acc, curr) => {
       const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) return null
+      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) { return null }
       const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+
       return acc + value * Number(price)
     }, 0)
 
@@ -124,7 +122,7 @@ export default class PortfolioTableBalances extends React.Component<
           btcUnrealizedProfit = 0,
         } =
           row || {}
-        if (activeKeys.indexOf(key.name) === -1) return null
+        if (activeKeys.indexOf(key.name) === -1) { return null }
         const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
         const { name } = exchange
 
@@ -163,7 +161,7 @@ export default class PortfolioTableBalances extends React.Component<
 
   onSelectAll = () => {
     const { selectedBalances, tableData } = this.state
-    if (!tableData) return
+    if (!tableData) { return }
 
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
@@ -178,17 +176,18 @@ export default class PortfolioTableBalances extends React.Component<
 
   calculateSum = (selectedRows: number[] | null) => {
     const { tableData } = this.state
-    if (!tableData) return
+    if (!tableData) { return }
 
     if (!selectedRows) {
       this.setState({ selectedSum: defaultSelectedSum })
+
       return
     }
 
     const sum = tableData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
     const reducedSum = sum.reduce(
-      (acc, val) => {
-        return {
+      (acc: IRowT, val:IRowT) =>
+        ({
           currency: val.currency,
           symbol: val.symbol,
           percentage: Number(acc.percentage) + Number(val.percentage),
@@ -204,8 +203,7 @@ export default class PortfolioTableBalances extends React.Component<
           totalPL: Number(acc.totalPL) + Number(val.totalPL),
           // unrealizedPLPerc:
           //   Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
-        }
-      },
+        }),
       {
         currency: '',
         symbol: '',
@@ -216,7 +214,6 @@ export default class PortfolioTableBalances extends React.Component<
         daily: 0,
         dailyPerc: 0,
         realizedPL: 0,
-        totalPL: 0,
         realizedPLPerc: 0,
         unrealizedPL: 0,
         unrealizedPLPerc: 0,
@@ -254,7 +251,7 @@ export default class PortfolioTableBalances extends React.Component<
 
   onSortTable = (key: Args) => {
     const { tableData, currentSort } = this.state
-    if (!tableData) return
+    if (!tableData) { return }
 
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
@@ -267,6 +264,7 @@ export default class PortfolioTableBalances extends React.Component<
           if (stringKey) {
             return onSortStrings(b[key], a[key])
           }
+
           return b[key] - a[key]
         } else {
           this.setState({ currentSort: { key, arg: 'ASC' } })
@@ -274,6 +272,7 @@ export default class PortfolioTableBalances extends React.Component<
           if (stringKey) {
             return onSortStrings(a[key], b[key])
           }
+
           return a[key] - b[key]
         }
       }
@@ -282,6 +281,7 @@ export default class PortfolioTableBalances extends React.Component<
       if (stringKey) {
         return onSortStrings(a[key], b[key])
       }
+
       return a[key] - b[key]
     })
 
