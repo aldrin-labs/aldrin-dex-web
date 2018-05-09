@@ -16,7 +16,7 @@ const UPDATE_PORTFOLIO = gql`
   }
 `
 
-export class PortfolioTableTabs extends React.Component<IProps> {
+export default class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
     const { onChangeTab } = this.props
     if (onChangeTab) {
