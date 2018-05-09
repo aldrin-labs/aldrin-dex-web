@@ -57,6 +57,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       )
 
       this.setState({ activeKeys: this.props.checkboxes })
+
       return
     } else if (!data) {
       return
@@ -65,7 +66,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     const composeWithMocks = {
       ...portfolio,
-      assets: portfolio.assets.concat(MOCKS),
+      assets: portfolio!.assets!.concat(MOCKS),
     }
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -78,7 +79,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      if (!portfolio || !portfolio.assets) return
+      if (!portfolio || !portfolio.assets) { return }
 
       const composeWithMocks = {
         ...portfolio,
@@ -108,7 +109,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   combineIndustryData = (portfolio?: IPortfolio) => {
     const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
-    if (!portfolio || !portfolio.assets || !activeKeys) return
+    if (!portfolio || !portfolio.assets || !activeKeys) { return }
     const { assets } = portfolio
 
     const industryData = assets
@@ -119,7 +120,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           exchange = { name: '' },
         } =
           row || {}
-        if (activeKeys.indexOf(key.name) === -1) return null
+        if (activeKeys.indexOf(key!.name) === -1) { return null }
         const {
           symbol = '',
           priceUSD = '',
@@ -179,7 +180,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onSortTable = (key: Args) => {
     const { industryData, currentSort } = this.state
-    if (!industryData) return
+    if (!industryData) { return }
 
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
@@ -192,6 +193,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           if (stringKey) {
             return onSortStrings(b[key], a[key])
           }
+
           return b[key] - a[key]
         } else {
           this.setState({ currentSort: { key, arg: 'ASC' } })
@@ -199,6 +201,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           if (stringKey) {
             return onSortStrings(a[key], b[key])
           }
+
           return a[key] - b[key]
         }
       }
@@ -207,6 +210,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       if (stringKey) {
         return onSortStrings(a[key], b[key])
       }
+
       return a[key] - b[key]
     })
 
@@ -231,21 +235,21 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     const { industryData } = this.state
     if (!selectedRows || !industryData) {
       this.setState({ selectedSum: defaultSelectedSum })
+
       return
     }
 
     const sum = industryData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
     const reducedSum = sum.reduce(
-      (acc, val) => {
-        return {
+      (acc, val) =>
+        ({
           currency: val.currency,
           symbol: val.symbol,
           industry: val.industry,
           price: Number(acc.price) + Number(val.price),
           portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
           industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
-        }
-      },
+        }),
       {
         currency: '',
         symbol: '',
@@ -262,24 +266,32 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) return defaultSelectedSum
+    if (!selectedRows || !industryData) { return defaultSelectedSum }
+
+    let newReducedSum = {};
 
     if (selectedRows.length === industryData.length) {
-      reducedSum.currency = 'All'
-      reducedSum.symbol = '-'
+      newReducedSum = {
+        ...reducedSum,
+        currency: 'All',
+        symbol: '-',
+        industry: '-'
+      }
     } else if (selectedRows.length > 1) {
-      reducedSum.currency = 'Selected'
-      reducedSum.symbol = '-'
+      newReducedSum = {
+        ...reducedSum,
+        currency: 'Selected',
+        symbol: '-',
+        industry: '-'
+      }
     }
 
-    reducedSum.industry = '-'
-
-    return reducedSum
+    return newReducedSum
   }
 
   onSelectAll = () => {
     const { industryData } = this.state
-    if (!industryData) return
+    if (!industryData) { return }
     const rowQuantity = industryData.length
     let allRows: number[] | null
     const selectedRows =
@@ -294,16 +306,15 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   genLineChart = () => {
     const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) return
+    if (!selectedRows || !industryData) { return }
     const data = industryData.filter((o, i) => selectedRows.indexOf(i) >= 0)
 
-    return data.map((item, i) => {
-      return {
+    return data.map((item, i) =>
+      ({
         x: i + 1,
         y: i * 2,
         label: `${item.symbol} ${item.industry}`,
-      }
-    })
+      }))
   }
 
   render() {
@@ -407,7 +418,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                           {this.renderCheckbox(idx)}
                         </PTD>
                         {cols &&
-                          cols.map((col, idx) => {
+                          cols.map((col, innerIdx) => {
                             if (col && !Array.isArray(col) && col.match(/%/g)) {
                               const color =
                                 Number(col.replace(/%/g, '')) >= 0
@@ -416,7 +427,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
                               return (
                                 <PTD
-                                  key={`${col}${idx}`}
+                                  key={`${col}${innerIdx}`}
                                   style={{ color }}
                                   isSelected={isSelected}
                                 >
@@ -424,8 +435,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                                 </PTD>
                               )
                             }
+
                             return (
-                              <PTD key={`${col}${idx}`} isSelected={isSelected}>
+                              <PTD key={`${col}${innerIdx}`} isSelected={isSelected}>
                                 {col}
                               </PTD>
                             )
@@ -629,7 +641,7 @@ const PTR = styled.tr`
 
 const PTHead = styled.thead``
 
-const mapStateToProps = (store) => ({
+const mapStateToProps = (store : object) => ({
   isShownMocks: store.user.isShownMocks,
 })
 
