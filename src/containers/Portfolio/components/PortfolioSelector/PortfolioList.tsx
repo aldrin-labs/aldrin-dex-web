@@ -1,9 +1,6 @@
-import Autorenew from 'material-ui-icons/Autorenew'
 import Checkbox from 'material-ui/Checkbox'
-import IconButton from 'material-ui/IconButton'
 import List, {
   ListItem,
-  ListItemSecondaryAction,
   ListItemText,
 } from 'material-ui/List'
 import Typography from 'material-ui/Typography'
@@ -15,7 +12,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
-import * as R from 'ramda'
 
 import { Loading } from '@components'
 
