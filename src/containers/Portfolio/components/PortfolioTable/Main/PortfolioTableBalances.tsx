@@ -12,7 +12,7 @@ import ProfileChart from '@containers/Profile/components/ProfileChart'
 import { MOCK_DATA } from '../dataMock'
 import {Args, IRowT} from '../types'
 import { IPortfolio } from '../../../interfaces'
-import { IProps, IState } from './PortfolioTableBalances.types'
+import {IProps, IState, InewRowT} from './PortfolioTableBalances.types'
 
 const defaultSelectedSum = {
   currency: '',
@@ -31,7 +31,7 @@ const defaultSelectedSum = {
 }
 
 export default class PortfolioTableBalances extends React.Component<IProps, IState> {
-  state = {
+  state: IState = {
     tableData: null,
     selectedBalances: null,
     selectedSum: defaultSelectedSum,
@@ -54,7 +54,7 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
       const { portfolio } = nextProps.data
       // console.log(portfolio)
 
-      if (!portfolio) { return }
+      if (!portfolio || portfolio === null) { return }
       const composeWithMocks = {
         ...portfolio,
         assets: portfolio.assets.concat(MOCK_DATA),
@@ -95,7 +95,7 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
     }
   }
 
-  combineTableData = (portfolio?: IPortfolio) => {
+  combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys } = this.state
     const { isUSDCurrently } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) { return }
@@ -110,7 +110,7 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
     }, 0)
 
     const tableData = assets
-      .map((row) => {
+      .map((row: InewRowT) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
           value = 0,
@@ -166,7 +166,7 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
-      const allRows = tableData.map((ck, idx) => idx)
+      const allRows = tableData.map((ck: IRowT, idx: number) => idx)
 
       this.setState({ selectedBalances: allRows }, () =>
         this.calculateSum(allRows)
@@ -184,9 +184,9 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
       return
     }
 
-    const sum = tableData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
+    const sum = tableData.filter((td: IRowT, idx: number) => selectedRows.indexOf(idx) >= 0)
     const reducedSum = sum.reduce(
-      (acc: IRowT, val:IRowT) =>
+      (acc: any, val:IRowT) =>
         ({
           currency: val.currency,
           symbol: val.symbol,
