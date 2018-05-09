@@ -57,7 +57,7 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
       if (!portfolio || portfolio === null) { return }
       const composeWithMocks = {
         ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
+        assets: portfolio!.assets!.concat(MOCK_DATA),
       }
 
       this.setState({ portfolio: composeWithMocks })
@@ -256,7 +256,7 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
 
-    const newData = tableData.slice().sort((a, b) => {
+    const newData = tableData!.slice()!.sort((a, b) => {
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
           this.setState({ currentSort: { key, arg: 'DESC' } })
