@@ -34,9 +34,6 @@ export default class LineChart extends React.Component {
     const { data } = this.props
     const { crosshairValues } = this.state
 
-    console.log(data);
-
-
     return (
       <FlexibleWidthXYPlot height={250} onMouseLeave={this.onMouseLeave}>
         <HorizontalGridLines />
