@@ -5,9 +5,11 @@ import selectedIcon from '../../../../icons/selected.svg'
 import { IProps } from './PortfolioTableSum.types'
 
 export default class PortfolioTableSum extends React.Component<IProps> {
-  onFloorN = (x: number, n: number) => {
-    if (typeof x === 'string') return x
-    var mult = Math.pow(10, n)
+  onFloorN = (x: string | number, n: number) => {
+    if (typeof x === 'string') {
+      return x
+    }
+    let mult = Math.pow(10, n)
     let multAfterCalculation = Math.floor(x * mult) / mult
 
     const reg = this.props.isUSDCurrently
@@ -16,7 +18,10 @@ export default class PortfolioTableSum extends React.Component<IProps> {
 
     if (multAfterCalculation.toString().match(reg)) {
       const sum = multAfterCalculation.toString().match(reg)
-      if (!sum) return null
+      if (!sum) {
+        return null
+      }
+
       return sum[0]
     } else if (multAfterCalculation) {
       return multAfterCalculation
@@ -27,6 +32,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
 
   render() {
     const { selectedSum } = this.props
+
     return (
       <PTBody style={{ borderBottom: 'none' }}>
         <PTR>
@@ -39,6 +45,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
             let res = selectedSum[key]
             if (Array.isArray(res)) {
               const [icon, currency] = res
+
               return (
                 <PTD key={key}>
                   {icon}
@@ -52,6 +59,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
                 this.props.isUSDCurrently ? 2 : 8
               )
             }
+
             return <PTD key={key}>{res || ''}</PTD>
           })}
         </PTR>

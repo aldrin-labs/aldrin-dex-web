@@ -16,20 +16,26 @@ const UPDATE_PORTFOLIO = gql`
   }
 `
 
-export default class PortfolioTableTabs extends React.Component<IProps> {
+export class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
     const { onChangeTab } = this.props
-    if (onChangeTab) onChangeTab(tab)
+    if (onChangeTab) {
+      onChangeTab(tab)
+    }
   }
 
   onToggleChart = () => {
     const { onToggleChart } = this.props
-    if (onToggleChart) onToggleChart()
+    if (onToggleChart) {
+      onToggleChart()
+    }
   }
 
   onToggleUSDBTC = () => {
     const { onToggleUSDBTC } = this.props
-    if (onToggleUSDBTC) onToggleUSDBTC()
+    if (onToggleUSDBTC) {
+      onToggleUSDBTC()
+    }
   }
 
   render() {
@@ -82,6 +88,7 @@ export default class PortfolioTableTabs extends React.Component<IProps> {
                 {(updatePortfolio, { data, loading }) => {
                   const isLoading =
                     loading || (portfolio && portfolio.processing)
+
                   return (
                     <ToggleBtn onClick={updatePortfolio}>
                       {isLoading ? (
@@ -142,6 +149,6 @@ const Tab = styled.button`
   box-sizing: border-box;
 `
 
-const Icon = styled.i`
-  padding-right: 5px;
-`
+// const Icon = styled.i`
+//   padding-right: 5px;
+// `
