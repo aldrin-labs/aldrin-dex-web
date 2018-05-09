@@ -435,12 +435,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                   })}
               </PTBody>
               {selectedSum &&
-                selectedSum.currency && (
+                selectedSum.currency ? (
                   <PortfolioTableSum
                     selectedSum={selectedSum}
                     isUSDCurrently={this.props.isUSDCurrently}
                   />
-                )}
+                ) : null}
             </PTable>
           </Wrapper>
 
