@@ -34,6 +34,9 @@ export default class LineChart extends React.Component {
     const { data } = this.props
     const { crosshairValues } = this.state
 
+    console.log(data);
+
+
     return (
       <FlexibleWidthXYPlot height={250} onMouseLeave={this.onMouseLeave}>
         <HorizontalGridLines />
@@ -45,8 +48,9 @@ export default class LineChart extends React.Component {
           tickValues={[1, 2, 3, 4, 5, 6]}
         />
         <YAxis title="Y Axis" hideLine tickFormat={(v) => `${v} 000 000`} />
-        {data.map((d) => (
+        {data.map((d, i) => (
           <LineSeries
+            key={i}
             data={
               d || [
                 { x: 1, y: 3 },
