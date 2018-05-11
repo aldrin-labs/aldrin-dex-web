@@ -343,12 +343,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               isUSDCurrently={isUSDCurrently}
               onSelectBalance={this.onSelectBalance}
             />
-            {selectedSum.currency && (
+            {selectedSum.currency ? (
               <PortfolioTableSum
                 selectedSum={selectedSum}
                 isUSDCurrently={isUSDCurrently}
               />
-            )}
+            ) : null}
           </PTable>
         </Wrapper>
 
