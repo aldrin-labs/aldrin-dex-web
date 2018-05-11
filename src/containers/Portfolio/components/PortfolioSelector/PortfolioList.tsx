@@ -10,13 +10,12 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
 
-import { Loading } from '@components'
-
 import * as actions from '../../actions'
 import * as API from '../../api'
-import { LoginAlert } from '../'
+import { LoginAlert } from '../PortfolioTable/LoginAlert'
 
 import { IProps, IState } from './PortfolioList.types'
+import { Loading } from '../../../../components/Loading/Loading'
 
 const SWrapper = styled.div`
   width: 100%;
@@ -126,7 +125,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts)),
-  onLoad: (data) => dispatch(actions.onLoad(data)),
+  onLoad: (data: any) => dispatch(actions.onLoad(data)),
   selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys)),
 })
 
