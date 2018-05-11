@@ -199,9 +199,16 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
-  padding: 20px 10px;
+  padding: 1.75px 16px 1.75px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: right;
+
+  &:first-child {
+    text-align: left;
+  }
 `
 
 const Span = styled.span``
@@ -240,11 +247,11 @@ const Checkbox = styled.input`
 `
 
 const PTH = styled.th`
-  font-family: 'Roboto';
-  font-size: 16px;
+  font-family: Roboto;
+  font-size: 12px;
   line-height: 24px;
-  color: #ffffff;
-  padding: 20px 10px;
+  color: #fff;
+  padding: 10px 10px;
   text-align: left;
   font-weight: 500;
   position: relative;
@@ -254,6 +261,10 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
+  &:nth-child(even) {
+    background-color: ${(props: { isSelected?: boolean }) =>
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  }
 `
 
 const PTHead = styled.thead``

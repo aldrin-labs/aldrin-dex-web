@@ -591,7 +591,7 @@ const PTH = styled.th`
   color: #fff;
   padding: 0 10px;
   padding-top: 0;
-  padding-bottom: 0;
+  padding-bottom: 10px;
   padding-left: 10px;
   padding-right: ${(props: { isSorted?: boolean }) =>
     props.isSorted ? '0' : '16px'};
