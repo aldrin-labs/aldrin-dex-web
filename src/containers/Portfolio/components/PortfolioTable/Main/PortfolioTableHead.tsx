@@ -1,10 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import {
-  SortArgs,
-  Args,
-} from '@containers/Portfolio/components/PortfolioTable/types'
+import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import sortIcon from '../../../../../icons/arrow.svg'
 import { IState, IProps } from 'PortfolioTableHead.types'
 
