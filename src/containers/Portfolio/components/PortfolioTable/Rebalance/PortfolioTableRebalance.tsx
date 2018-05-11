@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { IState, IProps } from './PortfolioTableRebalance.types'
+import { IProps, IState } from './PortfolioTableRebalance.types'
 import { tableData } from './mocks'
 
 const tableHeadings = [
@@ -62,9 +62,9 @@ export default class PortfolioTableRebalance extends React.Component<
                     <Span />
                   </Label>
                 </PTH>
-                {tableHeadings.map((heading) => {
-                  return <PTH key={heading.name}>{heading.name}</PTH>
-                })}
+                {tableHeadings.map((heading) => (
+                  <PTH key={heading.name}>{heading.name}</PTH>
+                ))}
               </PTR>
             </PTHead>
 
@@ -92,7 +92,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTD key="smt" isSelected={isSelected}>
                       {this.renderCheckbox(idx)}
                     </PTD>
-                    {cols.map((col, idx) => {
+                    {cols.map((col, index) => {
                       if (col.match(/%/g)) {
                         const color =
                           Number(col.replace(/%/g, '')) >= 0
@@ -101,7 +101,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                         return (
                           <PTD
-                            key={`${col}${idx}`}
+                            key={`${col}${index}`}
                             style={{ color }}
                             isSelected={isSelected}
                           >
@@ -109,8 +109,9 @@ export default class PortfolioTableRebalance extends React.Component<
                           </PTD>
                         )
                       }
+
                       return (
-                        <PTD key={`${col}${idx}`} isSelected={isSelected}>
+                        <PTD key={`${col}${index}`} isSelected={isSelected}>
                           {col}
                         </PTD>
                       )
@@ -124,14 +125,14 @@ export default class PortfolioTableRebalance extends React.Component<
           <Table>
             <PTHead>
               <PTR>
-                {tableHeadings.map((heading) => {
-                  return <PTH key={heading.name}>{heading.name}</PTH>
-                })}
+                {tableHeadings.map((heading) => (
+                  <PTH key={heading.name}>{heading.name}</PTH>
+                ))}
               </PTR>
             </PTHead>
 
             <PTBody>
-              {tableData.map((row, idx) => {
+              {tableData.map((row) => {
                 const { currency, symbol, portfolioPerc, price } = row
 
                 const cols = [
@@ -156,6 +157,7 @@ export default class PortfolioTableRebalance extends React.Component<
                           </PTD>
                         )
                       }
+
                       return <PTD key={`${col}${idx}`}>{col}</PTD>
                     })}
                   </PTR>
@@ -252,7 +254,6 @@ const PTH = styled.th`
   padding: 10px 10px;
   text-align: left;
   font-weight: 500;
-
   position: relative;
 `
 
