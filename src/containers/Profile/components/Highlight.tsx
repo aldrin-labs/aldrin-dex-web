@@ -115,7 +115,9 @@ export default class Highlight extends AbstractSeries {
       color,
       opacity,
     } = this.props
-    const { drawArea: { left, right, top, bottom } } = this.state
+    const {
+      drawArea: { left, right, top, bottom },
+    } = this.state
 
     return (
       <g
@@ -130,7 +132,7 @@ export default class Highlight extends AbstractSeries {
           opacity="0"
           x={0}
           y={0}
-          width={innerWidth}
+          width={innerWidth < 0 ? 0 : innerWidth}
           height={innerHeight}
         />
         <rect

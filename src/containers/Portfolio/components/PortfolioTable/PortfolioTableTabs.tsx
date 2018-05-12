@@ -9,6 +9,8 @@ import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
 
 import { IProps } from './PortfolioTableTabs.types'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -39,7 +41,8 @@ export default class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio } = this.props
+    const { tab, portfolio, isShownMocks } = this.props
+    const dataFromProps = this.props.data
 
     return (
       <React.Fragment>
@@ -79,30 +82,31 @@ export default class PortfolioTableTabs extends React.Component<IProps> {
           </ToggleBtn>
         </PTHeadingBlock>
 
-        {tab !== 'correlation' && (
-          <PTHeadingBlock>
-            <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
+        {tab !== 'correlation' &&
+          (dataFromProps || isShownMocks) && (
+            <PTHeadingBlock>
+              <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
 
-            {tab === 'main' && (
-              <Mutation mutation={UPDATE_PORTFOLIO}>
-                {(updatePortfolio, { data, loading }) => {
-                  const isLoading =
-                    loading || (portfolio && portfolio.processing)
+              {tab === 'main' && (
+                <Mutation mutation={UPDATE_PORTFOLIO}>
+                  {(updatePortfolio, { data, loading }) => {
+                    const isLoading =
+                      loading || (portfolio && portfolio.processing)
 
-                  return (
-                    <ToggleBtn onClick={updatePortfolio}>
-                      {isLoading ? (
-                        <SvgIcon src={gridLoader} width={24} height={24} />
-                      ) : (
-                        'Refresh'
-                      )}
-                    </ToggleBtn>
-                  )
-                }}
-              </Mutation>
-            )}
-          </PTHeadingBlock>
-        )}
+                    return (
+                      <ToggleBtn onClick={updatePortfolio}>
+                        {isLoading ? (
+                          <SvgIcon src={gridLoader} width={24} height={24} />
+                        ) : (
+                          'Refresh'
+                        )}
+                      </ToggleBtn>
+                    )
+                  }}
+                </Mutation>
+              )}
+            </PTHeadingBlock>
+          )}
       </React.Fragment>
     )
   }
@@ -152,3 +156,11 @@ const Tab = styled.button`
 // const Icon = styled.i`
 //   padding-right: 5px;
 // `
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
+
+const storeComponent = connect(mapStateToProps)(PortfolioTableTabs)
+
+export default compose()(storeComponent)

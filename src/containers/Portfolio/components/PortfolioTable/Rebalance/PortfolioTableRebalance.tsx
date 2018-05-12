@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { IState, IProps } from './PortfolioTableRebalance.types'
+import { IProps, IState } from './PortfolioTableRebalance.types'
 import { tableData } from './mocks'
 
 const tableHeadings = [
@@ -50,7 +50,7 @@ export default class PortfolioTableRebalance extends React.Component<
     const { selectedBalances } = this.state
 
     return (
-      <PTWrapper>
+      <PTWrapper tableData={tableData}>
         {children}
         <Container>
           <Table>
@@ -62,9 +62,9 @@ export default class PortfolioTableRebalance extends React.Component<
                     <Span />
                   </Label>
                 </PTH>
-                {tableHeadings.map((heading) => {
-                  return <PTH key={heading.name}>{heading.name}</PTH>
-                })}
+                {tableHeadings.map((heading) => (
+                  <PTH key={heading.name}>{heading.name}</PTH>
+                ))}
               </PTR>
             </PTHead>
 
@@ -92,7 +92,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTD key="smt" isSelected={isSelected}>
                       {this.renderCheckbox(idx)}
                     </PTD>
-                    {cols.map((col, idx) => {
+                    {cols.map((col, index) => {
                       if (col.match(/%/g)) {
                         const color =
                           Number(col.replace(/%/g, '')) >= 0
@@ -101,7 +101,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                         return (
                           <PTD
-                            key={`${col}${idx}`}
+                            key={`${col}${index}`}
                             style={{ color }}
                             isSelected={isSelected}
                           >
@@ -109,8 +109,9 @@ export default class PortfolioTableRebalance extends React.Component<
                           </PTD>
                         )
                       }
+
                       return (
-                        <PTD key={`${col}${idx}`} isSelected={isSelected}>
+                        <PTD key={`${col}${index}`} isSelected={isSelected}>
                           {col}
                         </PTD>
                       )
@@ -124,14 +125,14 @@ export default class PortfolioTableRebalance extends React.Component<
           <Table>
             <PTHead>
               <PTR>
-                {tableHeadings.map((heading) => {
-                  return <PTH key={heading.name}>{heading.name}</PTH>
-                })}
+                {tableHeadings.map((heading) => (
+                  <PTH key={heading.name}>{heading.name}</PTH>
+                ))}
               </PTR>
             </PTHead>
 
             <PTBody>
-              {tableData.map((row, idx) => {
+              {tableData.map((row) => {
                 const { currency, symbol, portfolioPerc, price } = row
 
                 const cols = [
@@ -156,6 +157,7 @@ export default class PortfolioTableRebalance extends React.Component<
                           </PTD>
                         )
                       }
+
                       return <PTD key={`${col}${idx}`}>{col}</PTD>
                     })}
                   </PTR>
@@ -170,7 +172,8 @@ export default class PortfolioTableRebalance extends React.Component<
 }
 
 const PTWrapper = styled.div`
-  width: calc(100% - 240px);
+  width: ${(props: { tableData?: boolean }) =>
+    props.tableData ? 'calc(100% - 240px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -197,9 +200,16 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
-  padding: 20px 10px;
+  padding: 1.75px 16px 1.75px 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: right;
+
+  &:first-child {
+    text-align: left;
+  }
 `
 
 const Span = styled.span``
@@ -213,6 +223,7 @@ const Checkbox = styled.input`
     display: inline-block;
 
     width: 18px;
+
     height: 18px;
 
     cursor: pointer;
@@ -227,7 +238,7 @@ const Checkbox = styled.input`
     border-color: #4ed8da;
   }
 
-  & :checked + ${Label} ${Span} {
+  &:checked + ${Label} ${Span} {
     border-color: #4ed8da;
     background-color: #4ed8da;
     background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
@@ -239,13 +250,12 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 20px 10px;
+  padding: 10px 10px;
   text-align: left;
   font-weight: 500;
-
   position: relative;
 `
 
@@ -253,6 +263,10 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
+  &:nth-child(even) {
+    background-color: ${(props: { isSelected?: boolean }) =>
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  }
 `
 
 const PTHead = styled.thead``
