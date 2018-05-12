@@ -1,9 +1,9 @@
 import { IRowT, SortArgs, Args, IPortfolio } from '../types'
 
 export interface IState {
-  tableData: IRowT[] | null
+  tableData: IRowT | null
   selectedBalances: number[] | null
-  selectedSum: IRowT[] | null
+  selectedSum: IRowT | null
   currentSort: { arg: SortArgs; key: Args } | null
   activeKeys: number[] | null
   portfolio: IPortfolio | null
@@ -45,4 +45,32 @@ export interface IProps {
       } | null> | null
     } | null
   } | null
+}
+
+export interface InewRowT {
+  _id: string
+  asset: {
+    name: string | null
+    priceUSD: number | null
+    priceBTC: number | null
+    symbol: string | null
+    percentChangeDay: number | null
+  }
+  assetId: string | null
+  btcRealizedProfit: number | null
+  btcTotalProfit: number | null
+  btcUnrealizedProfit: number | null
+  exchange: {
+    name: string | null
+  }
+  exchangeId: string | null
+  key: {
+    apiKey: string | null
+    name: string | null
+  }
+  keyId: string | null
+  usdRealizedProfit: number | null
+  usdTotalProfit: number | null
+  usdUnrealizedProfit: number | null
+  value: number | null
 }

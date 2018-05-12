@@ -39,6 +39,7 @@ export interface IPortfolio {
       name: string | null
       symbol: string | null
       priceUSD: string | null
+      priceBTC: string | null
     } | null
     exchange: {
       name: string | null

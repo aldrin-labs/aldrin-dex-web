@@ -1,7 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { roundUSDOff } from '../../../../../utils/PortfolioTableUtils'
-import { IProps } from 'PortfolioTableMain.types'
+import { IProps } from './PortfolioTableMain.types'
+import { IRowT } from '../types'
 
 export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
@@ -21,7 +22,9 @@ export default class PortfolioTableMain extends React.Component<IProps> {
 
   render() {
     const { tableData, selectedBalances, isUSDCurrently } = this.props
-    if (!tableData) return null
+    if (!tableData) {
+      return null
+    }
 
     return (
       <PTBody
@@ -31,7 +34,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
             : {}
         }
       >
-        {tableData.map((row, index) => {
+        {tableData.map((row: IRowT, index: number) => {
           const {
             currency,
             symbol,
@@ -94,6 +97,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
                   const [icon, str] = col
                   colorized = str
                 }
+
                 return (
                   <PTD
                     key={`${currency}${symbol}${quantity}${col}${idx}`}
@@ -129,6 +133,7 @@ const PTD = styled.td`
         return '#f44336'
       }
     }
+
     return props.isSelected ? '#4ed8da' : '#fff'
   }};
 
