@@ -10,9 +10,12 @@ import {
 } from '../../../../../utils/PortfolioTableUtils'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import { MOCK_DATA } from '../dataMock'
-import {Args, IRowT} from '../types'
+
+import { Args } from '../types'
 import { IPortfolio } from '../../../interfaces'
-import {IProps, IState, InewRowT} from './PortfolioTableBalances.types'
+import { IProps, IState } from './PortfolioTableBalances.types'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 
 const defaultSelectedSum = {
   currency: '',
@@ -30,7 +33,7 @@ const defaultSelectedSum = {
   totalPL: 0,
 }
 
-export default class PortfolioTableBalances extends React.Component<IProps, IState> {
+class PortfolioTableBalances extends React.Component<IProps, IState> {
   state: IState = {
     tableData: null,
     selectedBalances: null,
@@ -41,18 +44,35 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
   }
 
   componentDidMount() {
-    const { data } = this.props
-    if (!data) {
-      const portfolio = { assets: MOCK_DATA }
-      this.setState({ portfolio })
-      this.combineTableData(portfolio)
+    const { data, isShownMocks } = this.props
+
+    if (!data && isShownMocks) {
+      this.setState({ portfolio: { assets: MOCK_DATA } }, () =>
+        this.combineTableData({ assets: MOCK_DATA })
+      )
+
+      this.setState({ activeKeys: this.props.checkboxes })
+      return
+    } else if (!data) {
+      return
     }
+    const { portfolio } = data
+
+    const composeWithMocks = {
+      ...portfolio,
+      assets: portfolio.assets.concat(MOCK_DATA),
+    }
+
+    this.setState({ portfolio: composeWithMocks }, () =>
+      this.combineTableData(composeWithMocks)
+    )
+
+    this.setState({ activeKeys: this.props.checkboxes })
   }
 
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      // console.log(portfolio)
 
       if (!portfolio || portfolio === null) { return }
       const composeWithMocks = {
@@ -298,8 +318,19 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
         selectedBalances.length === tableData.length) ||
       false
 
+    const tableDataHasData = tableData ? Object.keys(tableData).length : false
+
+    if (!tableDataHasData) {
+      return (
+        <PTWrapper tableData={tableDataHasData}>
+          {children}
+          <PTextBox>Add account for Portfolio</PTextBox>
+        </PTWrapper>
+      )
+    }
+
     return (
-      <PTWrapper>
+      <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
           <PTable>
@@ -316,12 +347,12 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
               isUSDCurrently={isUSDCurrently}
               onSelectBalance={this.onSelectBalance}
             />
-            {selectedSum.currency && (
+            {selectedSum.currency ? (
               <PortfolioTableSum
                 selectedSum={selectedSum}
                 isUSDCurrently={isUSDCurrently}
               />
-            )}
+            ) : null}
           </PTable>
         </Wrapper>
 
@@ -338,7 +369,8 @@ export default class PortfolioTableBalances extends React.Component<IProps, ISta
 }
 
 const PTWrapper = styled.div`
-  width: calc(100% - 240px);
+  width: ${(props: { tableData?: boolean }) =>
+    props.tableData ? 'calc(100% - 240px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -346,6 +378,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
+  height: calc(100vh - 140px);
 `
 
 const Wrapper = styled.div`
@@ -370,3 +403,26 @@ const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
 `
+
+const PTextBox = styled.div`
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2d3136;
+`
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
+
+const storeComponent = connect(mapStateToProps)(PortfolioTableBalances)
+
+export default compose()(storeComponent)

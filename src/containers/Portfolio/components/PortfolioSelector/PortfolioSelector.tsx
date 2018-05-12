@@ -13,7 +13,9 @@ class PortfolioSelector extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    if (!this.props.isShownMocks) return
+    if (!this.props.isShownMocks) {
+      return
+    }
 
     const checkboxes = ['Test1', 'Test2']
     const checkedCheckboxes = checkboxes.map((ck, i) => i)
@@ -62,15 +64,20 @@ class PortfolioSelector extends React.Component<IProps, IState> {
     const hasIndex = checkedCheckboxes.indexOf(index)
     if (hasIndex >= 0) {
       checkedCheckboxes.splice(hasIndex, 1)
-    } else checkedCheckboxes.push(index)
+    } else {
+      checkedCheckboxes.push(index)
+    }
 
     this.setState({ checkedCheckboxes }, () => {
-      if (!this.state.checkboxes) return
+      if (!this.state.checkboxes) {
+        return
+      }
       const checkboxes = this.state.checkboxes
         .map((ck, idx) => {
           if (checkedCheckboxes.indexOf(idx) >= 0) {
             return ck
           }
+
           return null
         })
         .filter(Boolean)
@@ -80,7 +87,9 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
   onToggleAll = () => {
     const { checkedCheckboxes, checkboxes } = this.state
-    if (!checkboxes) return
+    if (!checkboxes) {
+      return
+    }
 
     if (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) {
       this.setState({ checkedCheckboxes: null }, () => {
@@ -90,16 +99,20 @@ class PortfolioSelector extends React.Component<IProps, IState> {
       const allAccounts = checkboxes.map((ck, i) => i)
 
       this.setState({ checkedCheckboxes: allAccounts }, () => {
-        if (!this.state.checkboxes) return
-        const checkboxes = this.state.checkboxes
+        if (!this.state.checkboxes) {
+          return
+        }
+        const checkboxesAgain = this.state.checkboxes
+        checkboxesAgain
           .map((ck, idx) => {
             if (allAccounts.indexOf(idx) >= 0) {
               return ck
             }
+
             return null
           })
           .filter(Boolean)
-        this.props.onChangeActive(checkboxes)
+        this.props.onChangeActive(checkboxesAgain)
       })
     }
   }
@@ -107,7 +120,9 @@ class PortfolioSelector extends React.Component<IProps, IState> {
   render() {
     const { checkedCheckboxes, checkboxes } = this.state
 
-    if (!checkboxes) return null
+    if (!checkboxes) {
+      return null
+    }
 
     const isCheckedAll =
       (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) ||
@@ -123,7 +138,6 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             id="all"
             defaultChecked={true}
             checked={isCheckedAll}
-            onChange={() => {}}
             onClick={this.onToggleAll}
           />
           <Label htmlFor="all">
@@ -134,7 +148,9 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
         <AccountsList>
           {checkboxes.map((checkbox, i) => {
-            if (!checkbox) return null
+            if (!checkbox) {
+              return null
+            }
             const isChecked =
               (checkedCheckboxes && checkedCheckboxes.indexOf(i) >= 0) || false
 
@@ -145,7 +161,6 @@ class PortfolioSelector extends React.Component<IProps, IState> {
                   id={checkbox}
                   defaultChecked={true}
                   checked={isChecked}
-                  onChange={() => {}}
                   onClick={() => this.onToggleCheckbox(i)}
                 />
                 <Label htmlFor={checkbox}>

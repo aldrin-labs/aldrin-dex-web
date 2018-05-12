@@ -47,7 +47,6 @@ export interface IProps {
   } | null
 }
 
-
 export interface InewRowT {
   _id: string
   asset: {
@@ -56,19 +55,19 @@ export interface InewRowT {
     priceBTC: number | null
     symbol: string | null
     percentChangeDay: number | null
-  },
+  }
   assetId: string | null
   btcRealizedProfit: number | null
   btcTotalProfit: number | null
   btcUnrealizedProfit: number | null
   exchange: {
     name: string | null
-  },
+  }
   exchangeId: string | null
   key: {
     apiKey: string | null
     name: string | null
-  },
+  }
   keyId: string | null
   usdRealizedProfit: number | null
   usdTotalProfit: number | null

@@ -315,8 +315,21 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
+    const tableDataHasData = industryData
+      ? Object.keys(industryData).length
+      : false
+
+    if (!tableDataHasData) {
+      return (
+        <PTWrapper tableData={!!tableDataHasData}>
+          {children}
+          <PTextBox>Add account for Portfolio</PTextBox>
+        </PTWrapper>
+      )
+    }
+
     return (
-      <PTWrapper>
+      <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Container>
           <Wrapper>
@@ -435,12 +448,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                   })}
               </PTBody>
               {selectedSum &&
-                selectedSum.currency && (
+                selectedSum.currency ? (
                   <PortfolioTableSum
                     selectedSum={selectedSum}
                     isUSDCurrently={this.props.isUSDCurrently}
                   />
-                )}
+                ) : null}
             </PTable>
           </Wrapper>
 
@@ -484,7 +497,8 @@ const Heading = styled.span`
 `
 
 const PTWrapper = styled.div`
-  width: calc(100% - 240px);
+  width: ${(props: { tableData?: boolean }) =>
+    props.tableData ? 'calc(100% - 240px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -492,6 +506,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
+  height: calc(100vh - 140px);
 `
 
 const LineChartContainer = styled.div`
@@ -591,7 +606,7 @@ const PTH = styled.th`
   color: #fff;
   padding: 0 10px;
   padding-top: 0;
-  padding-bottom: 0;
+  padding-bottom: 10px;
   padding-left: 10px;
   padding-right: ${(props: { isSorted?: boolean }) =>
     props.isSorted ? '0' : '16px'};
@@ -628,6 +643,21 @@ const PTR = styled.tr`
 `
 
 const PTHead = styled.thead``
+
+const PTextBox = styled.div`
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2d3136;
+`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
