@@ -21,21 +21,28 @@ const UPDATE_PORTFOLIO = gql`
 export default class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
     const { onChangeTab } = this.props
-    if (onChangeTab) onChangeTab(tab)
+    if (onChangeTab) {
+      onChangeTab(tab)
+    }
   }
 
   onToggleChart = () => {
     const { onToggleChart } = this.props
-    if (onToggleChart) onToggleChart()
+    if (onToggleChart) {
+      onToggleChart()
+    }
   }
 
   onToggleUSDBTC = () => {
     const { onToggleUSDBTC } = this.props
-    if (onToggleUSDBTC) onToggleUSDBTC()
+    if (onToggleUSDBTC) {
+      onToggleUSDBTC()
+    }
   }
 
   render() {
-    const { tab, portfolio, isShownMocks, data } = this.props
+    const { tab, portfolio, isShownMocks } = this.props
+    const dataFromProps = this.props.data
 
     return (
       <React.Fragment>
@@ -76,7 +83,7 @@ export default class PortfolioTableTabs extends React.Component<IProps> {
         </PTHeadingBlock>
 
         {tab !== 'correlation' &&
-          (data || isShownMocks) && (
+          (dataFromProps || isShownMocks) && (
             <PTHeadingBlock>
               <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
 
@@ -85,6 +92,7 @@ export default class PortfolioTableTabs extends React.Component<IProps> {
                   {(updatePortfolio, { data, loading }) => {
                     const isLoading =
                       loading || (portfolio && portfolio.processing)
+
                     return (
                       <ToggleBtn onClick={updatePortfolio}>
                         {isLoading ? (
@@ -145,9 +153,9 @@ const Tab = styled.button`
   box-sizing: border-box;
 `
 
-const Icon = styled.i`
-  padding-right: 5px;
-`
+// const Icon = styled.i`
+//   padding-right: 5px;
+// `
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
