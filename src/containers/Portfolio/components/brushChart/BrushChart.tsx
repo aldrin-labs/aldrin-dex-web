@@ -8,18 +8,18 @@ import {
 } from 'victory'
 
 const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi')
-//const data = range(100).map((x) => ({x, y: 100 + x + random(10)}));
+// const data = range(100).map((x) => ({x, y: 100 + x + random(10)}));
 
 export class BrushChart extends React.Component {
   state = {
     zoomDomain: null,
   }
 
-  handleZoom = domain => {
+  handleZoom = (domain) => {
     this.setState({ selectedDomain: domain })
   }
 
-  handleBrush = domain => {
+  handleBrush = (domain) => {
     this.setState({ zoomDomain: domain })
   }
 
@@ -38,7 +38,7 @@ export class BrushChart extends React.Component {
           scale={{ x: 'time' }}
           containerComponent={
             <VictoryZoomVoronoiContainer
-              labels={d => `${d.x}, ${d.y}`}
+              labels={(d) => `${d.x}, ${d.y}`}
               responsive={false}
               zoomDimension="x"
               zoomDomain={this.state.zoomDomain}
@@ -51,7 +51,7 @@ export class BrushChart extends React.Component {
               axis: { stroke: '#fff' },
               axisLabel: { fontSize: 20, padding: 30 },
               grid: {
-                stroke: t => (t > 0.5 ? 'rgba(255,255,255,.1)' : 'grey'),
+                stroke: (t) => (t > 0.5 ? 'rgba(255,255,255,.1)' : 'grey'),
               },
               ticks: { stroke: '#fff', size: 5 },
               tickLabels: { fontSize: 15, padding: 5, fill: '#E0F2F1' },
@@ -64,7 +64,7 @@ export class BrushChart extends React.Component {
               axis: { stroke: '#fff', fill: '#fff' },
               axisLabel: { fontSize: 20, padding: 30, fill: '#fff' },
               grid: {
-                stroke: t => (t > 0.5 ? 'rgba(255,255,255,.1)' : 'grey'),
+                stroke: (t) => (t > 0.5 ? 'rgba(255,255,255,.1)' : 'grey'),
               },
               ticks: { stroke: '#fff', size: 5, fill: '#fff' },
               tickLabels: {
@@ -119,7 +119,7 @@ export class BrushChart extends React.Component {
               new Date(2005, 1, 1),
               new Date(2010, 1, 1),
             ]}
-            tickFormat={x => new Date(x).getFullYear()}
+            tickFormat={(x) => new Date(x).getFullYear()}
           />
           <VictoryLine
             style={{

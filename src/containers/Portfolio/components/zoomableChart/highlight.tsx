@@ -151,4 +151,4 @@ export class Highlight extends AbstractSeries {
   }
 }
 
-//export default Highlight
+// export default Highlight
