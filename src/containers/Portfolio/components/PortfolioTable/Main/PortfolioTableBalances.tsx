@@ -397,7 +397,7 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
-  max-width: 900px;
+  position: relative;
   overflow-y: scroll;
   background-color: #393e44;
 
@@ -418,7 +418,7 @@ const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   position: static;
-  display: block;
+  display: inline-block;
 `
 
 const PTextBox = styled.div`

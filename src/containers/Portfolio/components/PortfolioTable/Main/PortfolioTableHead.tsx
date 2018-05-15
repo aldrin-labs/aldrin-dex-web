@@ -166,7 +166,7 @@ const PTHead = styled.thead`
   display: table;
   width: 100%;
   position: sticky;
-  top: 0px;  /* trigger sticky when reaches coordonates */
+  top: -4px;  /* trigger sticky when reaches coordonates */
 
   &::after {
     content: ' ';
@@ -174,14 +174,5 @@ const PTHead = styled.thead`
     left: 0;
     right: 0;
     border-bottom: 1px solid white;
-  }
-
-  &::before {
-    content: ' ';
-    position: absolute;
-    border-bottom: 8px solid #393e44;
-    width: 100%;
-    z-index: 1;
-    top: -8px;
   }
 `

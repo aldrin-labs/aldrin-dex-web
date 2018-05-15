@@ -85,8 +85,12 @@ const PTD = styled.td`
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+    border-bottom: none;
+    display: table;
+    position: sticky;
+    z-index: 1;
+    bottom: -2px;
+    width: 100%;
 `
 
 const PTR = styled.tr`
