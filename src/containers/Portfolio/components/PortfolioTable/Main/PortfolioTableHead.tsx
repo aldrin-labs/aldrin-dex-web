@@ -162,4 +162,21 @@ const PTR = styled.tr`
     props.isSelected ? '#2d3136' : '#393e44'};
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid white;
+  }
+
+  &::before {
+    content: ' ';
+    position: absolute;
+    border-bottom: 5px solid #393e44;
+    width: 100%;
+    z-index: 1;
+    top: 199px;
+  }
+`

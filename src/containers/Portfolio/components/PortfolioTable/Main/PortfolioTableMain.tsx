@@ -116,9 +116,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
   }
 }
 
-const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
-`
+const PTBody = styled.tbody``
 
 const PTD = styled.td`
   color: ${(props: {
