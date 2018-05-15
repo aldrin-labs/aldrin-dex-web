@@ -87,7 +87,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               <PTD
                 key={`${index}smt`}
                 isSelected={isSelected}
-                style={{ textAlign: 'right' }}
+                style={{ textAlign: 'left' }}
               >
                 {this.renderCheckbox(index)}
               </PTD>
@@ -116,7 +116,10 @@ export default class PortfolioTableMain extends React.Component<IProps> {
   }
 }
 
-const PTBody = styled.tbody``
+const PTBody = styled.tbody`
+  display: table;
+  width: 100%;
+`
 
 const PTD = styled.td`
   color: ${(props: {

@@ -163,6 +163,11 @@ const PTR = styled.tr`
 `
 
 const PTHead = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  top: 0px;  /* trigger sticky when reaches coordonates */
+
   &::after {
     content: ' ';
     position: absolute;
@@ -174,9 +179,9 @@ const PTHead = styled.thead`
   &::before {
     content: ' ';
     position: absolute;
-    border-bottom: 5px solid #393e44;
+    border-bottom: 8px solid #393e44;
     width: 100%;
     z-index: 1;
-    top: 199px;
+    top: -8px;
   }
 `

@@ -6,12 +6,19 @@ import styled from 'styled-components'
 //   coin: ProfileQueryQuery['assetById']
 // }
 
-
 interface State {
   activeChart: number
 }
 
-const chartBtns = ['1 Day', '7 Days', '1 Month', '3 Month', '1 Year', 'YTD', 'ALL PERIOD']
+const chartBtns = [
+  '1 Day',
+  '7 Days',
+  '1 Month',
+  '3 Month',
+  '1 Year',
+  'YTD',
+  'ALL PERIOD',
+]
 
 export default class ProfileChart extends React.Component<Props, State> {
   state = {
@@ -35,8 +42,6 @@ export default class ProfileChart extends React.Component<Props, State> {
             <SupplyDetail>Current rate USD</SupplyDetail>
           </SupplyBlock>
 
-        
-
           <SupplyBlock>
             <SupplyLowRate>{'904,79'}</SupplyLowRate>
             <SupplyDetail>Low: 25 Mar 2017</SupplyDetail>
@@ -50,8 +55,6 @@ export default class ProfileChart extends React.Component<Props, State> {
             <SupplyHighRate>{'+748,77%'}</SupplyHighRate>
             <SupplyDetail>Change in year USD</SupplyDetail>
           </SupplyBlock>
-
-         
         </SuppliesBlock>
 
         <BtnsContainer>
@@ -71,7 +74,6 @@ export default class ProfileChart extends React.Component<Props, State> {
             )
           })}
         </BtnsContainer>
-
       </SProfileChart>
     )
   }
@@ -121,13 +123,12 @@ const SProfileChart = styled.div`
   padding: 0 5px;
   margin-top: 5px;
 
-
   padding-bottom: 48px;
   margin-left: 16.5px;
 
   display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
 `
 const ProfileChartHeading = styled.span`
   font-family: Roboto;
