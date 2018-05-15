@@ -87,7 +87,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               <PTD
                 key={`${index}smt`}
                 isSelected={isSelected}
-                style={{ textAlign: 'left' }}
+                style={{ textAlign: 'right' }}
               >
                 {this.renderCheckbox(index)}
               </PTD>
