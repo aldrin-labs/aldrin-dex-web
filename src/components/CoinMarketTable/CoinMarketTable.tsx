@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import Button from '../Elements/Button/Button'
 import arrowIcon from '../../icons/arrow.svg'
-import { CoinMarketCapQueryQuery } from '../../containers/CoinMarketCap/annotations'
+import { tableMocks } from '@containers/Home/mocks'
 
 const kindBtns = ['All coins', 'Coins', 'Tokens']
 
@@ -11,13 +11,12 @@ const headers = [
   'Name',
   'Symbol',
   'Price',
-  'Chg (24h)',
-  'Chg (7d)',
+  'Change (24h)',
   'Market Cap',
-  'Total Supply ',
+  'Available Supply ',
 ]
 
-interface Props {
+export interface Props {
   items: Array<{
     _id: string
     name: string | null
@@ -28,6 +27,7 @@ interface Props {
     totalSupply: number | null
     availableSupply: number | null
     percentChangeDay: string | null
+    icoPrice: string | null
   } | null>
   activeSortArg?: number
   showFilterBns?: boolean
@@ -35,7 +35,7 @@ interface Props {
   redirectToProfile?: Function
 }
 
-interface State {
+export interface State {
   activeKind: number
 }
 
@@ -65,10 +65,11 @@ export default class CoinMarketTable extends React.Component<Props, State> {
   render() {
     const { activeSortArg, items, showFilterBns } = this.props
     const { activeKind } = this.state
+    const data = tableMocks
 
     return (
       <MarketWrapper>
-        <Title>TOP-20 Cryptocurrency Market Capitalizations</Title>
+        <Title>Cryptocurrency Market Capitalizations</Title>
         {showFilterBns && (
           <BtnsContainer>
             {kindBtns.map((kindBtn, i) => {
@@ -102,29 +103,50 @@ export default class CoinMarketTable extends React.Component<Props, State> {
             </tr>
           </THead>
           <TBody>
-            {items.map((item, i) => {
-              if (!item) return null
+            {data.map((item, i) => {
+              if (!data) return null
               const {
                 _id,
+                icoPrice,
                 name,
                 symbol,
                 priceUSD,
                 percentChangeDay,
                 maxSupply,
-                totalSupply,
+                availableSupply,
               } = item
+
+              const img = (
+                <img
+                  src={icoPrice}
+                  key={icoPrice}
+                  style={{
+                    paddingRight: '4px',
+                    verticalAlign: 'bottom',
+                    maxWidth: '20px',
+                    maxHeight: '16px',
+                    objectFit: 'contain',
+                  }}
+                />
+              )
+
+              const color =
+                Number(percentChangeDay) >= 0 ? '#65c000' : '#ff687a'
 
               return (
                 <TR key={_id} onClick={() => this.redirectToProfile(_id)}>
                   <TD>{`${i + 1}.`}</TD>
-                  <TD>{name}</TD>
+                  <TD>{[img, name]}</TD>
                   <TD>{symbol}</TD>
-                  <TD>{priceUSD ? `$${Number(priceUSD).toFixed(2)}` : ''}</TD>
-                  <TD>{percentChangeDay || ''}</TD>
-                  <TD>{''}</TD>
-                  <TD>{maxSupply ? `$${this.formatNumber(maxSupply)}` : ''}</TD>
+                  <TD>{priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : ''}</TD>
+                  <TD style={{ color }}>{`${percentChangeDay}%` || ''}</TD>
                   <TD>
-                    {totalSupply ? `$${this.formatNumber(totalSupply)}` : ''}
+                    {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : ''}
+                  </TD>
+                  <TD>
+                    {availableSupply
+                      ? `${this.formatNumber(availableSupply)}`
+                      : ''}
                   </TD>
                 </TR>
               )

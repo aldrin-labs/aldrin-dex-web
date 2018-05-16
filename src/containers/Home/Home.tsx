@@ -8,6 +8,8 @@ import DominanceWidget from './widgets/DominanceWidget'
 import TreeMapWidget from './widgets/TreeMapWidget'
 import MarketCapWidget from './widgets/MarketCapWidget'
 import { CoinMarketCapQueryQuery } from '../CoinMarketCap/annotations'
+import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
+import { Loading } from '@components/Loading'
 
 interface Props {
   data: CoinMarketCapQueryQuery
@@ -17,13 +19,13 @@ interface Props {
 
 class Home extends React.Component<Props, {}> {
   render() {
-    // const { data } = this.props
-    // const { assetPagination } = data
-    // if (!assetPagination || !assetPagination.items) return null
-    // const { items } = assetPagination
+    const { data } = this.props
+    const { assetPagination } = data
+    if (!assetPagination) return <Loading centerAligned />
+    const { items } = assetPagination
 
     const layout = [
-      // { i: 'table', x: 0, y: 0, w: 6, h: 6, static: true },
+      { i: 'table', x: 1, y: 0, w: 4.5, h: 6, static: true },
       { i: 'calculator', x: 6, y: 0, w: 2.5, h: 2, minW: 2.5, minH: 2 },
       { i: 'dominance', x: 6, y: 4.5, w: 2.5, h: 3, minW: 2.5, minH: 3 },
       { i: 'treeMap', x: 6, y: 9, w: 2.5, h: 2.5, minW: 2.5, minH: 2.5 },
@@ -36,9 +38,11 @@ class Home extends React.Component<Props, {}> {
         width={window.innerWidth}
         draggableHandle=".dnd"
       >
-        {/*<Column key="table">
-          <CoinMarketTable items={items} />
-        </Column>*/}
+        {items && (
+          <Column key="table">
+            <CoinMarketTable items={items} />
+          </Column>
+        )}
 
         <Column key="calculator">
           <CalculatorWidget />
