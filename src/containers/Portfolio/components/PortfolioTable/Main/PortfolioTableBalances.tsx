@@ -52,6 +52,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
 
       this.setState({ activeKeys: this.props.checkboxes })
+
       return
     } else if (!data) {
       return
@@ -74,7 +75,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
 
-      if (!portfolio || portfolio === null) { return }
+      if (!portfolio || portfolio === null) {
+        return
+      }
       const composeWithMocks = {
         ...portfolio,
         assets: portfolio!.assets!.concat(MOCK_DATA),
@@ -118,12 +121,16 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys } = this.state
     const { isUSDCurrently } = this.props
-    if (!portfolio || !portfolio.assets || !activeKeys) { return }
+    if (!portfolio || !portfolio.assets || !activeKeys) {
+      return
+    }
     const { assets } = portfolio
 
     const allSums = assets.filter(Boolean).reduce((acc, curr) => {
       const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) { return null }
+      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
+        return null
+      }
       const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
 
       return acc + value * Number(price)
@@ -142,7 +149,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           btcUnrealizedProfit = 0,
         } =
           row || {}
-        if (activeKeys.indexOf(key.name) === -1) { return null }
+        if (activeKeys.indexOf(key.name) === -1) {
+          return null
+        }
         const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
         const { name } = exchange
 
@@ -181,7 +190,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   onSelectAll = () => {
     const { selectedBalances, tableData } = this.state
-    if (!tableData) { return }
+    if (!tableData) {
+      return
+    }
 
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
@@ -196,7 +207,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   calculateSum = (selectedRows: number[] | null) => {
     const { tableData } = this.state
-    if (!tableData) { return }
+    if (!tableData) {
+      return
+    }
 
     if (!selectedRows) {
       this.setState({ selectedSum: defaultSelectedSum })
@@ -204,26 +217,27 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = tableData.filter((td: IRowT, idx: number) => selectedRows.indexOf(idx) >= 0)
+    const sum = tableData.filter(
+      (td: IRowT, idx: number) => selectedRows.indexOf(idx) >= 0
+    )
     const reducedSum = sum.reduce(
-      (acc: any, val:IRowT) =>
-        ({
-          currency: val.currency,
-          symbol: val.symbol,
-          percentage: Number(acc.percentage) + Number(val.percentage),
-          price: '',
-          quantity: '',
-          currentPrice: Number(acc.currentPrice) + Number(val.currentPrice),
-          // daily: Number(acc.daily) + Number(val.daily),
-          // dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
-          realizedPL: Number(acc.realizedPL) + Number(val.realizedPL),
-          // realizedPLPerc:
-          //   Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
-          unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
-          totalPL: Number(acc.totalPL) + Number(val.totalPL),
-          // unrealizedPLPerc:
-          //   Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
-        }),
+      (acc: any, val: IRowT) => ({
+        currency: val.currency,
+        symbol: val.symbol,
+        percentage: Number(acc.percentage) + Number(val.percentage),
+        price: '',
+        quantity: '',
+        currentPrice: Number(acc.currentPrice) + Number(val.currentPrice),
+        // daily: Number(acc.daily) + Number(val.daily),
+        // dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
+        realizedPL: Number(acc.realizedPL) + Number(val.realizedPL),
+        // realizedPLPerc:
+        //   Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
+        unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
+        totalPL: Number(acc.totalPL) + Number(val.totalPL),
+        // unrealizedPLPerc:
+        //   Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
+      }),
       {
         currency: '',
         symbol: '',
@@ -271,7 +285,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   onSortTable = (key: Args) => {
     const { tableData, currentSort } = this.state
-    if (!tableData) { return }
+    if (!tableData) {
+      return
+    }
 
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
