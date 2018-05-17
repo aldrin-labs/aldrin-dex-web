@@ -249,7 +249,6 @@ const AccountsList = styled.ul`
 
 const AccountsWalletsBlock = styled.div`
   min-width: 200px;
-  min-height: 90vh;
   background-color: #2d3136;
   padding: 16px;
 `
