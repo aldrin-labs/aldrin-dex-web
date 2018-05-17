@@ -116,7 +116,7 @@ const PTHeadingBlock = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items: center;
+  align-items: end;
   padding: 17px;
   min-height: 100px;
 `
@@ -132,6 +132,7 @@ const ToggleBtn = styled.button`
 
 const TabContainer = styled.div`
   display: flex;
+  flex-flow: wrap;
 `
 
 const Tab = styled.button`
