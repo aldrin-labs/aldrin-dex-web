@@ -378,7 +378,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               borderTop: '1px solid #fff',
               minHeight: '30vh',
             }}
-            height="15vh"
+            height="20vh"
             marginTopHr="10px"
           />
         </PTChartContainer>

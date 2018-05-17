@@ -140,7 +140,7 @@ export default class ProfileChart extends React.Component<Props, State> {
 
         <Chart
           style={{
-            height: height,
+            height
           }}
         >
           <FlexibleXYPlot
@@ -231,7 +231,6 @@ export default class ProfileChart extends React.Component<Props, State> {
 const Chart = styled.div`
   width: 100%;
   min-height: 5em;
-  max-height: 10em;
   margin-top: 24px;
 `
 
