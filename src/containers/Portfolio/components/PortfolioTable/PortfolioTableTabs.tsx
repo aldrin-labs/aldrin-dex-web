@@ -116,9 +116,23 @@ const PTHeadingBlock = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
-  align-items: end;
+  align-items: center;
   padding: 17px;
   min-height: 100px;
+  
+  @media (max-width: 700px) {
+  
+    &:first-child{
+      align-items: flex-start;
+      padding: 20px 10px 10px;
+    }
+  
+    &:not(:first-child) {
+      padding-top: 30px;
+      padding-bottom: 10px;
+    }
+  }
+  
 `
 
 const ToggleBtn = styled.button`
@@ -128,6 +142,7 @@ const ToggleBtn = styled.button`
   cursor: pointer;
   color: #fff;
   font-size: 1em;
+  
 `
 
 const TabContainer = styled.div`

@@ -371,6 +371,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           </PTable>
         </Wrapper>
 
+        <PTChartContainer>
         <ProfileChart
           style={{
             marginLeft: 0,
@@ -378,6 +379,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             minHeight: '30vh',
           }}
         />
+        </PTChartContainer>
       </PTWrapper>
     )
   }
@@ -394,6 +396,11 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 140px);
+  
+    @media (max-width: 500px) {
+      width: calc(100% - 90px);
+      height: 100vh;
+    }
 `
 
 const Wrapper = styled.div`
@@ -434,6 +441,12 @@ const PTextBox = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #2d3136;
+`
+
+const PTChartContainer = styled.div`
+  @media (max-width: 500px) {
+    display: none;
+  }
 `
 
 const mapStateToProps = (store) => ({
