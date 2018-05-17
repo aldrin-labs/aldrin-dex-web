@@ -33,7 +33,7 @@ class KeysListComponent extends React.Component {
 
   render() {
     if (this.props.data.loading) {
-      return <Loading />
+      return <Loading centerAligned />
     }
 
     const { keys } = this.state

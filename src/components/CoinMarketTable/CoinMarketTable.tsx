@@ -4,6 +4,13 @@ import Button from '../Elements/Button/Button'
 import arrowIcon from '../../icons/arrow.svg'
 import { tableMocks } from '@containers/Home/mocks'
 
+function convertUnicode(input: string) {
+  return input.replace(/\\u(\w\w\w\w)/g, (a, b) => {
+    var charcode = parseInt(b, 16)
+    return String.fromCharCode(charcode)
+  })
+}
+
 const kindBtns = ['All coins', 'Coins', 'Tokens']
 
 const headers = [
@@ -133,13 +140,17 @@ export default class CoinMarketTable extends React.Component<Props, State> {
               const color =
                 Number(percentChangeDay) >= 0 ? '#65c000' : '#ff687a'
 
+              const arrow = convertUnicode('&uarr;')
+
               return (
                 <TR key={_id} onClick={() => this.redirectToProfile(_id)}>
                   <TD>{`${i + 1}.`}</TD>
                   <TD>{[img, name]}</TD>
                   <TD>{symbol}</TD>
                   <TD>{priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : ''}</TD>
-                  <TD style={{ color }}>{`${percentChangeDay}%` || ''}</TD>
+                  <TD style={{ color }}>
+                    {`${percentChangeDay}% ${arrow}` || ''}
+                  </TD>
                   <TD>
                     {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : ''}
                   </TD>
