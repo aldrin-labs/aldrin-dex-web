@@ -20,8 +20,10 @@ interface Props {
 class Home extends React.Component<Props, {}> {
   render() {
     const { data } = this.props
+    if (data.loading) {
+      return <Loading centerAligned />
+    }
     const { assetPagination } = data
-    if (!assetPagination) return <Loading centerAligned />
     const { items } = assetPagination
 
     const layout = [
