@@ -347,7 +347,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
-        <Wrapper style={isShownChart ? { height: '30vh' } : {}}>
+        <Wrapper isShownChart={isShownChart}>
           <PTable>
             <PortfolioTableHead
               isUSDCurrently={isUSDCurrently}
@@ -372,13 +372,15 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         </Wrapper>
 
         <PTChartContainer>
-        <ProfileChart
-          style={{
-            marginLeft: 0,
-            borderTop: '1px solid #fff',
-            minHeight: '30vh',
-          }}
-        />
+          <ProfileChart
+            style={{
+              marginLeft: 0,
+              borderTop: '1px solid #fff',
+              minHeight: '30vh',
+            }}
+            height="15vh"
+            marginTopHr="10px"
+          />
         </PTChartContainer>
       </PTWrapper>
     )
@@ -396,11 +398,11 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 140px);
-  
-    @media (max-width: 500px) {
-      width: calc(100% - 90px);
-      height: 100vh;
-    }
+
+  @media (max-width: 500px) {
+    width: calc(100% - 90px);
+    height: 100vh;
+  }
 `
 
 const Wrapper = styled.div`
@@ -418,6 +420,14 @@ const Wrapper = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
+  }
+
+  height: ${(props: { isShownChart: boolean }) =>
+    props.isShownChart ? '30vh' : ''};
+
+  @media (max-height: 650px) {
+    height: ${(props: { isShownChart: boolean }) =>
+      props.isShownChart ? '45vh' : ''};
   }
 `
 
@@ -445,6 +455,10 @@ const PTextBox = styled.div`
 
 const PTChartContainer = styled.div`
   @media (max-width: 500px) {
+    display: none;
+  }
+
+  @media (max-height: 650px) {
     display: none;
   }
 `
