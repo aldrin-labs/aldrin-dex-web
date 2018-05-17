@@ -1,30 +1,75 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import Button from '@components/Elements/Button/Button'
 import { Link } from 'react-router-dom'
 import AreaChart from '@components/AreaChart'
 import Widget from '@components/Widget'
+import { intervalsData } from './marketCapMocks'
 import { yearData } from '@containers/Profile/components/chartMocks'
 
-export default class MarketCapWidget extends React.Component {
+export const intervals = ['YTD', '1D', '7D', '1M', '1Y']
+
+export default class MarketCapWidget extends React.Component<> {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      currentInterval: '1D',
+    }
+  }
+
+  onChangeCurrentInterval(i: number) {
+    this.setState({
+      currentInterval: intervals[i],
+    })
+  }
+
   render() {
+    const { currentInterval } = this.state
+
+    // index for fake data random look in chart
+    let indexOfSliceOfYearData =
+      intervals.findIndex((el) => {
+        return el === currentInterval
+      }) + 1
+
     return (
       <Widget heading="Market Cap">
+        <ShortcutDesc>Intervals</ShortcutDesc>
+        <BtnsContainer>
+          {intervals.map((interval, i) => (
+            <Button
+              style={{
+                width: '15%',
+              }}
+              key={i}
+              title={interval}
+              active={interval === currentInterval}
+              onClick={() => this.onChangeCurrentInterval(i)}
+            />
+          ))}
+        </BtnsContainer>
+
         <InfoBlock>
           <InfoItem>
-            <InfoItemKey>24h Vol:</InfoItemKey>
-            <InfoItemValue>$20.0 B</InfoItemValue>
+            <InfoItemKey>{this.state.currentInterval} Vol:</InfoItemKey>
+            <InfoItemValue>{intervalsData[currentInterval].vol}</InfoItemValue>
           </InfoItem>
         </InfoBlock>
 
         <InfoBlock>
           <InfoItem>
-            <InfoItemKey>24h high:</InfoItemKey>
-            <InfoItemValue style={{ color: '#65c000' }}>$600.0 B</InfoItemValue>
+            <InfoItemKey>{this.state.currentInterval} high:</InfoItemKey>
+            <InfoItemValue style={{ color: '#65c000' }}>
+              {intervalsData[currentInterval].high}
+            </InfoItemValue>
           </InfoItem>
 
           <InfoItem>
-            <InfoItemKey>24h low:</InfoItemKey>
-            <InfoItemValue style={{ color: '#ff687a' }}>$580.0 B</InfoItemValue>
+            <InfoItemKey>{this.state.currentInterval} low:</InfoItemKey>
+            <InfoItemValue style={{ color: '#ff687a' }}>
+              {intervalsData[currentInterval].low}
+            </InfoItemValue>
           </InfoItem>
         </InfoBlock>
 
@@ -36,7 +81,7 @@ export default class MarketCapWidget extends React.Component {
                 color: '#fff',
               }}
             >
-              590 B
+              552.8 B
             </BigNumber>
 
             <Detail>Current rate USD</Detail>
@@ -49,7 +94,7 @@ export default class MarketCapWidget extends React.Component {
           </BigNumberContainer>
         </BigNumbersContainer>
 
-        <AreaChart data={yearData.slice(0, 20)} />
+        <AreaChart data={yearData.slice(0, indexOfSliceOfYearData * 7)} />
 
         <Btn to="/chart">Open chart</Btn>
       </Widget>
@@ -71,6 +116,23 @@ const Btn = styled(Link)`
   text-transform: uppercase;
   text-decoration: none;
   width: 15em;
+`
+const ShortcutDesc = styled.span`
+  opacity: 0.5;
+  font-family: Roboto;
+  font-size: 14px;
+  color: #ffffff;
+  margin: 8px 0;
+`
+
+const BtnsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  & > * {
+    margin-bottom: 16px;
+    margin-right: 16px;
+  }
 `
 
 const Dot = styled.div`

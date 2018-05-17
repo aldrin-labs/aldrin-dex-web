@@ -12,6 +12,7 @@ export default createReducer(
   {
     [actions.getPortfolio]: (state, payload) => {
       console.log(3333, state, payload)
+
       return { ...state, ...payload }
     },
     [actions.updateSelectedAccounts]: (state, payload) => {

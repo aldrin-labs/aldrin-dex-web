@@ -8,7 +8,7 @@ import {
 } from 'victory'
 
 const VictoryZoomVoronoiContainer = createContainer('zoom', 'voronoi')
-//const data = range(100).map((x) => ({x, y: 100 + x + random(10)}));
+// const data = range(100).map((x) => ({x, y: 100 + x + random(10)}));
 
 export class BrushChart extends React.Component {
   state = {

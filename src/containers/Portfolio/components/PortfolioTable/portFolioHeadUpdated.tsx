@@ -1,14 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
-//import { ProfileQueryQuery } from '../profile-annotation'
+import { IState, IProps } from './portFolioHeadUpdated.types'
+
+// import { ProfileQueryQuery } from '../profile-annotation'
 
 // interface Props {
 //   coin: ProfileQueryQuery['assetById']
 // }
-
-interface State {
-  activeChart: number
-}
 
 const chartBtns = [
   '1 Day',
@@ -20,7 +18,8 @@ const chartBtns = [
   'ALL PERIOD',
 ]
 
-export default class ProfileChart extends React.Component<Props, State> {
+
+export default class ProfileChart extends React.Component<IProps, IState> {
   state = {
     activeChart: 4,
   }
@@ -33,6 +32,7 @@ export default class ProfileChart extends React.Component<Props, State> {
     const { coin } = this.props
     const { name = '', priceUSD = '' } = coin || {}
     console.log(coin)
+
     return (
       <SProfileChart>
         {/*TODO: need refactoring, need real data */}
@@ -58,21 +58,19 @@ export default class ProfileChart extends React.Component<Props, State> {
         </SuppliesBlock>
 
         <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => {
-            return (
-              <ChartBtn
-                onClick={() => this.onChangeActiveChart(i)}
-                style={
-                  i === this.state.activeChart
-                    ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                    : {}
-                }
-                key={chartBtn}
-              >
-                {chartBtn}
-              </ChartBtn>
-            )
-          })}
+          {chartBtns.map((chartBtn, i) => (
+            <ChartBtn
+              onClick={() => this.onChangeActiveChart(i)}
+              style={
+                i === this.state.activeChart
+                  ? { backgroundColor: '#4ed8da', color: '#4c5055' }
+                  : {}
+              }
+              key={chartBtn}
+            >
+              {chartBtn}
+            </ChartBtn>
+          ))}
         </BtnsContainer>
       </SProfileChart>
     )

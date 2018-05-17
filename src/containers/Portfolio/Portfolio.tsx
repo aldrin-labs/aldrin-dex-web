@@ -31,21 +31,19 @@ class PortfolioComponent extends React.Component<IProps> {
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
-        {(subscriptionData) => {
-          return (
-            <PortfolioContainer>
-              {error &&
-                error.toString().match('jwt expired') && <Login isShownModal />}
-              <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
-              <PortfolioTable
-                loading={loading}
-                checkboxes={checkboxes}
-                data={getProfile}
-                subscription={subscriptionData}
-              />
-            </PortfolioContainer>
-          )
-        }}
+        {(subscriptionData) => (
+          <PortfolioContainer>
+            {error &&
+              error.toString().match('jwt expired') && <Login isShownModal />}
+            <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
+            <PortfolioTable
+              loading={loading}
+              checkboxes={checkboxes}
+              data={getProfile}
+              subscription={subscriptionData}
+            />
+          </PortfolioContainer>
+        )}
       </Subscription>
     )
   }

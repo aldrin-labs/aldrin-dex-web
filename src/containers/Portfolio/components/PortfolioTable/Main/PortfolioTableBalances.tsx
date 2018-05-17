@@ -52,6 +52,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
 
       this.setState({ activeKeys: this.props.checkboxes })
+
       return
     } else if (!data) {
       return
