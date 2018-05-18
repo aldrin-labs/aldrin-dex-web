@@ -148,12 +148,26 @@ const PTH = styled.th`
   color: #fff;
   padding: 10px;
   font-weight: 500;
-  text-align: center;
+  text-align: right;
 
   position: sticky;
   top: 0;
   overflow: hidden;
   background-color: #393e44;
+  
+  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
+    min-width: 100px;
+  }
+  &:nth-child(2) {
+    text-align: left;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+    text-align: left;
+  }
+  &:nth-child(9) {
+    min-width: 110px;
+  }
 `
 
 const PTR = styled.tr`
@@ -162,4 +176,17 @@ const PTR = styled.tr`
     props.isSelected ? '#2d3136' : '#393e44'};
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  top: -5px;  /* trigger sticky when reaches coordonates */
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid white;
+  }
+`

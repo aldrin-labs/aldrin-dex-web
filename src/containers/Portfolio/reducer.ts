@@ -17,7 +17,6 @@ export default createReducer(
     },
     [actions.updateSelectedAccounts]: (state, payload) => {
       console.log(11111, state, payload)
-
       return { ...state, selectedAccounts: [...payload] }
     },
     [actions.selectAllKeys]: (state, payload) => {
@@ -25,7 +24,6 @@ export default createReducer(
       if (isEqual) {
         return { ...state, selectedAccounts: [] }
       }
-
       return { ...state, selectedAccounts: [].concat(payload) }
     },
   },

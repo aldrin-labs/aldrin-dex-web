@@ -27,11 +27,38 @@ class Home extends React.Component<Props, {}> {
     const { items } = assetPagination
 
     const layout = [
-      { i: 'table', x: 1, y: 0, w: 4.5, h: 6, static: true },
-      { i: 'calculator', x: 6, y: 0, w: 2.5, h: 2, minW: 2.5, minH: 2 },
-      { i: 'dominance', x: 6, y: 4.5, w: 2.5, h: 3, minW: 2.5, minH: 3 },
-      { i: 'treeMap', x: 6, y: 9, w: 2.5, h: 2.5, minW: 2.5, minH: 2.5 },
-      { i: 'marketCap', x: 8.5, y: 0, w: 3, h: 2.5, minW: 3, minH: 2.5 },
+      { i: 'table', x: 1.5, y: 0, w: 4.5, h: 6, static: true },
+      {
+        i: 'calculator',
+        x: 6,
+        y: 0,
+        w: 2.5,
+        h: 2,
+        minW: 2.5,
+        minH: 2,
+        maxH: 2.5,
+      },
+      {
+        i: 'dominance',
+        x: 6,
+        y: 4.5,
+        w: 2.5,
+        h: 3,
+        minW: 2.5,
+        minH: 3,
+        maxH: 3,
+      },
+      {
+        i: 'treeMap',
+        x: 6,
+        y: 9,
+        w: 2.5,
+        h: 2.5,
+        minW: 2.5,
+        minH: 2.5,
+        maxH: 2.5,
+      },
+      { i: 'marketCap', x: 8.5, y: 0, w: 3, h: 3, minW: 3, minH: 3, maxH: 3 },
     ]
 
     return (

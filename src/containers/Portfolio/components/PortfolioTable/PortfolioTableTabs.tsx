@@ -18,7 +18,7 @@ const UPDATE_PORTFOLIO = gql`
   }
 `
 
-export default class PortfolioTableTabs extends React.Component<IProps> {
+class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
     const { onChangeTab } = this.props
     if (onChangeTab) {
@@ -119,6 +119,21 @@ const PTHeadingBlock = styled.div`
   align-items: center;
   padding: 17px;
   min-height: 100px;
+
+  @media (max-width: 700px) {
+    &:first-child {
+      align-items: flex-start;
+      padding: 20px 10px 10px;
+    }
+    &:not(:first-child) {
+      padding-top: 30px;
+      padding-bottom: 10px;
+    }
+  }
+
+  @media (max-height: 700px) {
+    min-height: 60px;
+  }
 `
 
 const ToggleBtn = styled.button`
@@ -132,6 +147,7 @@ const ToggleBtn = styled.button`
 
 const TabContainer = styled.div`
   display: flex;
+  flex-flow: wrap;
 `
 
 const Tab = styled.button`

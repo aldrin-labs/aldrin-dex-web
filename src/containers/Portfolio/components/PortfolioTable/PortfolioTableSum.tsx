@@ -37,7 +37,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
       <PTBody style={{ borderBottom: 'none' }}>
         <PTR>
           {selectedSum && (
-            <PTD style={{ textAlign: 'right' }}>
+            <PTD style={{ textAlign: 'left' }}>
               <SvgIcon src={selectedIcon} width={18} height={18} />
             </PTD>
           )}
@@ -82,11 +82,32 @@ const PTD = styled.td`
   bottom: 0;
   overflow: hidden;
   background-color: #393e44;
+  
+  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
+    min-width: 100px;
+  }
+  &:nth-child(1) {
+    padding: 10px;
+  }
+  &:nth-child(2) {
+    text-align: left;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+    text-align: left;
+  }
+  &:nth-child(9) {
+    min-width: 110px;
+  }
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+    border-bottom: none;
+    display: table;
+    position: sticky;
+    z-index: 1;
+    bottom: -2px;
+    width: 100%;
 `
 
 const PTR = styled.tr`
@@ -94,7 +115,7 @@ const PTR = styled.tr`
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
 
-  & ${PTD}:nth-child(n+ 3) {
+  & ${PTD}:nth-child(n + 4) {
     text-align: right;
   }
 `

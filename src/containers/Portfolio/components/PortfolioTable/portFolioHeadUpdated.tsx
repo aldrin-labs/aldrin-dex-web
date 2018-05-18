@@ -18,6 +18,7 @@ const chartBtns = [
   'ALL PERIOD',
 ]
 
+
 export default class ProfileChart extends React.Component<IProps, IState> {
   state = {
     activeChart: 4,
