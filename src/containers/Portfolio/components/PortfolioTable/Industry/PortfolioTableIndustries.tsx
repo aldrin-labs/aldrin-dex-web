@@ -487,6 +487,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
 const Container = styled.div`
   display: flex;
+  justify-content: space-between;
 `
 
 const PieChartHeadingWrapper = styled.div`
@@ -496,7 +497,10 @@ const PieChartHeadingWrapper = styled.div`
 `
 
 const PieChartContainer = styled.div`
-  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
 `
 
 const Heading = styled.span`
