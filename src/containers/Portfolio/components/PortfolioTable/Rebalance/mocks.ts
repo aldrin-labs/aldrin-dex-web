@@ -24,6 +24,30 @@ export const tableData = [
     price: 5000,
   },
   {
+    currency: 'Binance',
+    symbol: 'PCI',
+    portfolioPerc: 4.44,
+    price: 2000,
+  },
+  {
+    currency: 'Binance',
+    symbol: 'LTU',
+    portfolioPerc: 5.55,
+    price: 5000,
+  },
+  {
+    currency: 'Binance',
+    symbol: 'PKI',
+    portfolioPerc: 4.44,
+    price: 2000,
+  },
+  {
+    currency: 'Binance',
+    symbol: 'DKI',
+    portfolioPerc: 5.55,
+    price: 5000,
+  },
+  {
     currency: 'Total',
     price: 29950,
   },
