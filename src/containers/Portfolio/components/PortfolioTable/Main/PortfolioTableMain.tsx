@@ -87,7 +87,6 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               <PTD
                 key={`${index}smt`}
                 isSelected={isSelected}
-                style={{ textAlign: 'right' }}
               >
                 {this.renderCheckbox(index)}
               </PTD>
@@ -117,7 +116,8 @@ export default class PortfolioTableMain extends React.Component<IProps> {
 }
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
+  display: table;
+  width: 100%;
 `
 
 const PTD = styled.td`
@@ -143,6 +143,20 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  
+  &:nth-child(1) {
+    text-align: center;
+    padding: 1.75px 10px;
+  }
+  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
+    min-width: 100px;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+  }
+  &:nth-child(9) {
+    min-width: 110px;
+  }
 `
 
 // #3a4e4e;
@@ -156,7 +170,7 @@ const PTR = styled.tr`
     background-color: ${(props: { isSelected?: boolean }) =>
       props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
-  & ${PTD}:nth-child(n+ 3) {
+  & ${PTD}:nth-child(n + 4) {
     text-align: right;
   }
 `

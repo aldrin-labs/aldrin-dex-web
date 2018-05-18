@@ -38,8 +38,7 @@ function getRandomSeriesData(total) {
   //   });
   //   lastY = y;
   // }
-
-  return result
+  // return result
 }
 
 export class Chart extends React.Component {
@@ -56,7 +55,6 @@ export class Chart extends React.Component {
 
   render() {
     const { series, lastDrawLocation } = this.state
-
     return (
       <div className="example-with-click-me">
         <div className="legend">
