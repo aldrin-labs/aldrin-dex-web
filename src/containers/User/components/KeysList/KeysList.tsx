@@ -19,6 +19,10 @@ import { DeleteKeyDialog } from './'
 // TODO: hoc loader fix
 
 class KeysListComponent extends React.Component {
+  state = {
+    keys: null,
+  }
+
   componentDidMount() {
     if (this.props.data.getProfile) {
       this.setState({ keys: this.props.data.getProfile.keys })
