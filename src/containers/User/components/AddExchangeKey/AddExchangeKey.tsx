@@ -85,12 +85,13 @@ class AddExchangeKeyComponent extends React.Component {
       handleChange,
       handleBlur,
       handleSubmit,
-      handleReset,
       setFieldValue,
-      setFieldTouched,
       isSubmitting,
       getExchangesList,
     } = this.props
+
+    const { loading, exchangePagination } = getExchangesList
+
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
@@ -153,21 +154,20 @@ class AddExchangeKeyComponent extends React.Component {
                 id: 'exchange',
               }}
             >
-              {console.log(values)}
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {console.log(getExchangesList)}
-              {!getExchangesList.loading &&
-                getExchangesList.exchangePagination.items.map(
-                  ({ _id, name }) => (
-                    <MenuItem key={_id} value={name}>
-                      {name}
-                    </MenuItem>
-                  )
-                )}
+
+              {!loading &&
+                exchangePagination &&
+                exchangePagination.items.map(({ _id, name }) => (
+                  <MenuItem key={_id} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
             </Select>
           </SExchangeSelect>
+
           <Button type="submit" disabled={!dirty || isSubmitting}>
             Add key
           </Button>
