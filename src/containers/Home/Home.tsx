@@ -3,13 +3,13 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import ReactGridLayout from 'react-grid-layout'
+
 import CalculatorWidget from './widgets/CalculatorWidget'
 import DominanceWidget from './widgets/DominanceWidget'
 import TreeMapWidget from './widgets/TreeMapWidget'
 import MarketCapWidget from './widgets/MarketCapWidget'
 import { CoinMarketCapQueryQuery } from '../CoinMarketCap/annotations'
 import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
-import { Loading } from '@components/Loading'
 
 interface Props {
   data: CoinMarketCapQueryQuery
@@ -18,14 +18,36 @@ interface Props {
 }
 
 class Home extends React.Component<Props, {}> {
-  render() {
-    const { data } = this.props
-    if (data.loading || !data.assetPagination) {
-      return <Loading centerAligned />
+  fetchMore = () => {
+    const { history, location, data } = this.props
+    let page
+    const query = new URLSearchParams(location.search)
+    if (query.has('page')) {
+      page = query.get('page')
+    } else {
+      query.append('page', '1')
+      page = query.get('page')
     }
-    const { assetPagination } = data
-    const { items } = assetPagination
+    const offset = (Number(page) || 1) + 1
+    history.push({ search: `?page=${offset}` })
 
+    data.fetchMore({
+      variables: {
+        offset,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev
+        return Object.assign({}, prev, {
+          assetPagination: [
+            ...prev.assetPagination,
+            ...fetchMoreResult.assetPagination,
+          ],
+        })
+      },
+    })
+  }
+
+  render() {
     const layout = [
       { i: 'table', x: 1.5, y: 0, w: 4.5, h: 6, static: true },
       {
@@ -67,11 +89,9 @@ class Home extends React.Component<Props, {}> {
         width={window.innerWidth}
         draggableHandle=".dnd"
       >
-        {items && (
-          <Column key="table">
-            <CoinMarketTable items={items} />
-          </Column>
-        )}
+        <Column key="table">
+          <CoinMarketTable data={this.props.data} fetchMore={this.fetchMore} />
+        </Column>
 
         <Column key="calculator">
           <CalculatorWidget />
@@ -131,7 +151,12 @@ const options = ({ location }) => {
     page = 1
   } else {
     const query = new URLSearchParams(location.search)
-    page = query.get('page')
+    if (query.has('page')) {
+      page = query.get('page')
+    } else {
+      query.append('page', '1')
+      page = query.get('page')
+    }
   }
   return { variables: { perPage: 20, page } }
 }

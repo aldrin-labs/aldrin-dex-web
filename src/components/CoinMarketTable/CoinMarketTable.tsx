@@ -1,15 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import Button from '../Elements/Button/Button'
-import arrowIcon from '../../icons/arrow.svg'
-import { tableMocks } from '@containers/Home/mocks'
-
-function convertUnicode(input: string) {
-  return input.replace(/\\u(\w\w\w\w)/g, (a, b) => {
-    var charcode = parseInt(b, 16)
-    return String.fromCharCode(charcode)
-  })
-}
+import arrowIcon from '@icons/arrow.svg'
+import { Loading } from '@components/Loading'
+import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 
 const kindBtns = ['All coins', 'Coins', 'Tokens']
 
@@ -24,20 +18,10 @@ const headers = [
 ]
 
 export interface Props {
-  items: Array<{
-    _id: string
-    name: string | null
-    symbol: string | null
-    nameTrue: string | null
-    priceUSD: string | null
-    maxSupply: number | null
-    totalSupply: number | null
-    availableSupply: number | null
-    percentChangeDay: string | null
-    icoPrice: string | null
-  } | null>
+  data: CoinMarketCapQueryQuery
   activeSortArg?: number
   showFilterBns?: boolean
+  fetchMore?: Function
   onChangeSortArg?: Function
   redirectToProfile?: Function
 }
@@ -49,6 +33,11 @@ export interface State {
 export default class CoinMarketTable extends React.Component<Props, State> {
   state: State = {
     activeKind: 0,
+  }
+
+  fetchMore = () => {
+    const { fetchMore } = this.props
+    if (fetchMore) fetchMore()
   }
 
   onChangeKind = (index: number) => {
@@ -70,9 +59,17 @@ export default class CoinMarketTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { activeSortArg, items, showFilterBns } = this.props
+    const { activeSortArg, showFilterBns, data } = this.props
     const { activeKind } = this.state
-    const data = tableMocks
+    const { assetPagination } = data
+
+    if (data.loading || !data.assetPagination) {
+      return (
+        <MarketWrapper>
+          <Loading centerAligned />
+        </MarketWrapper>
+      )
+    }
 
     return (
       <MarketWrapper>
@@ -110,64 +107,81 @@ export default class CoinMarketTable extends React.Component<Props, State> {
             </tr>
           </THead>
           <TBody>
-            {data.map((item, i) => {
-              if (!data) return null
-              const {
-                _id,
-                icoPrice,
-                name,
-                symbol,
-                priceUSD,
-                percentChangeDay,
-                maxSupply,
-                availableSupply,
-              } = item
+            {assetPagination &&
+              assetPagination.items.map((item, i) => {
+                if (!assetPagination.items) return null
+                const {
+                  _id,
+                  icoPrice,
+                  name,
+                  symbol,
+                  priceUSD,
+                  percentChangeDay,
+                  maxSupply,
+                  availableSupply,
+                } = item
 
-              const img = (
-                <img
-                  src={icoPrice}
-                  key={icoPrice}
-                  style={{
-                    paddingRight: '4px',
-                    verticalAlign: 'bottom',
-                    maxWidth: '20px',
-                    maxHeight: '16px',
-                    objectFit: 'contain',
-                  }}
-                />
-              )
+                const img = (
+                  <img
+                    src={icoPrice}
+                    key={icoPrice}
+                    style={{
+                      paddingRight: '4px',
+                      verticalAlign: 'bottom',
+                      maxWidth: '20px',
+                      maxHeight: '16px',
+                      objectFit: 'contain',
+                    }}
+                  />
+                )
 
-              const color =
-                Number(percentChangeDay) >= 0 ? '#65c000' : '#ff687a'
+                const color =
+                  Number(percentChangeDay) >= 0 ? '#65c000' : '#ff687a'
 
-              const arrow = convertUnicode('&uarr;')
-
-              return (
-                <TR key={_id} onClick={() => this.redirectToProfile(_id)}>
-                  <TD>{`${i + 1}.`}</TD>
-                  <TD>{[img, name]}</TD>
-                  <TD>{symbol}</TD>
-                  <TD>{priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : ''}</TD>
-                  <TD style={{ color }}>
-                    {`${percentChangeDay}% ${arrow}` || ''}
-                  </TD>
-                  <TD>
-                    {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : ''}
-                  </TD>
-                  <TD>
-                    {availableSupply
-                      ? `${this.formatNumber(availableSupply)}`
-                      : ''}
-                  </TD>
-                </TR>
-              )
-            })}
+                return (
+                  <TR key={_id} onClick={() => this.redirectToProfile(_id)}>
+                    <TD>{`${i + 1}.`}</TD>
+                    <TD>{[img, name]}</TD>
+                    <TD>{symbol}</TD>
+                    <TD>
+                      {priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : ''}
+                    </TD>
+                    <TD style={{ color }}>{`${percentChangeDay}` || ''}</TD>
+                    <TD>
+                      {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : ''}
+                    </TD>
+                    <TD>
+                      {availableSupply
+                        ? `${this.formatNumber(availableSupply)}`
+                        : ''}
+                    </TD>
+                  </TR>
+                )
+              })}
           </TBody>
         </Table>
+
+        <Btn onClick={this.fetchMore}>Show more</Btn>
       </MarketWrapper>
     )
   }
 }
+
+const Btn = styled.button`
+  border-radius: 3px;
+  background-color: #282c2f;
+  border-color: transparent;
+  color: #fff;
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  padding: 10px 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: 15em;
+`
 
 const TBody = styled.tbody`
   width: 100%;
@@ -210,6 +224,7 @@ const MarketWrapper = styled.div`
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
 `
 
 const Title = styled.span`

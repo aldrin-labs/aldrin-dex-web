@@ -6,8 +6,8 @@ import styled from 'styled-components'
 const SpinnerContainer = styled.div`
   margin: ${(props) => (props.margin ? props.margin : '0 auto')};
   position: ${(props) => (props.centerAligned ? 'absolute' : 'static')};
-  top: ${(props) => (props.centerAligned ? '50vh' : null)};
-  left: ${(props) => (props.centerAligned ? '50vw' : null)};
+  top: ${(props) => (props.centerAligned ? '50%' : null)};
+  left: ${(props) => (props.centerAligned ? '50%' : null)};
 `
 
 const Spinner = styled(CircularProgress)`
