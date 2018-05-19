@@ -161,7 +161,10 @@ export default class CoinMarketTable extends React.Component<Props, State> {
           </TBody>
         </Table>
 
-        <Btn disabled={data.hasNextPage} onClick={this.fetchMore}>
+        <Btn
+          disabled={!data.assetPagination.pageInfo.hasNextPage}
+          onClick={this.fetchMore}
+        >
           Show more
         </Btn>
       </MarketWrapper>

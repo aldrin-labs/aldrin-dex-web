@@ -29,22 +29,9 @@ class Home extends React.Component<Props, {}> {
       page = query.get('page')
     }
     const offset = (Number(page) || 1) + 1
-    history.push({ search: `?page=${offset}` })
+    query.set('page', offset)
 
-    data.fetchMore({
-      variables: {
-        offset,
-      },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-        return Object.assign({}, prev, {
-          assetPagination: [
-            ...prev.assetPagination,
-            ...fetchMoreResult.assetPagination,
-          ],
-        })
-      },
-    })
+    data.refetch()
   }
 
   render() {
@@ -158,6 +145,7 @@ const options = ({ location }) => {
       page = query.get('page')
     }
   }
+  console.log('page', page)
   return { variables: { perPage: 20, page } }
 }
 
