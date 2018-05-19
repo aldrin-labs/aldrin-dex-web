@@ -478,7 +478,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           <PieChartHeadingWrapper>
             <Heading>Industry Pie Chart</Heading>
           </PieChartHeadingWrapper>
-          <PieChart data={combineToChart()} />
+          <PieChart data={combineToChart()} flexible={true} />
         </PieChartContainer>
       </PTWrapper>
     )
@@ -501,6 +501,9 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 20px 0;
+  width: 40vw;
+  height: 40vh;
+  margin: 0 auto;
 `
 
 const Heading = styled.span`
