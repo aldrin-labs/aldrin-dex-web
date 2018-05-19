@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import ReactGridLayout from 'react-grid-layout'
 import CalculatorWidget from './widgets/CalculatorWidget'
 import DominanceWidget from './widgets/DominanceWidget'
+import BitcoinPriceChartWidget from './widgets/BitcoinPriceChartWidget'
 import TreeMapWidget from './widgets/TreeMapWidget'
 import MarketCapWidget from './widgets/MarketCapWidget'
 import { CoinMarketCapQueryQuery } from '../CoinMarketCap/annotations'
@@ -24,6 +25,17 @@ class Home extends React.Component<Props, {}> {
 
     const layout = [
       // { i: 'table', x: 0, y: 0, w: 6, h: 6, static: true },
+      {
+        i: 'btcprice',
+        x: 6,
+        y: 9,
+        w: 5.5,
+        h: 3,
+        minW: 5.5,
+        minH: 3,
+        maxH: 3,
+        maxW: 7,
+      },
       {
         i: 'calculator',
         x: 6,
@@ -66,6 +78,10 @@ class Home extends React.Component<Props, {}> {
         {/*<Column key="table">
           <CoinMarketTable items={items} />
         </Column>*/}
+
+        <Column key="btcprice">
+          <BitcoinPriceChartWidget />
+        </Column>
 
         <Column key="calculator">
           <CalculatorWidget />
