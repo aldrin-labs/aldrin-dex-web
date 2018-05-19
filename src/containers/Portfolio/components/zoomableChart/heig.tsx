@@ -75,7 +75,6 @@ export class Highlight extends AbstractSeries {
     // Invoke the callback with null if the selected area was < 5px
     if (Math.abs(drawArea.right - drawArea.left) < 5) {
       onBrushEnd(null)
-
       return
     }
 
@@ -150,5 +149,6 @@ export class Highlight extends AbstractSeries {
     )
   }
 }
+
 
 // export default Highlight
