@@ -10,6 +10,7 @@ export interface Props {
   height?: number
   radius?: number
   innerRadius?: number
+  flexible?: boolean
 }
 
 export interface State {
