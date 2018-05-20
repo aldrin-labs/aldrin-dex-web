@@ -106,61 +106,66 @@ export default class CoinMarketTable extends React.Component<Props, State> {
               ))}
             </tr>
           </THead>
-          <TBody>
-            {assetPagination &&
-              assetPagination.items.map((item, i) => {
-                if (!assetPagination.items) return null
-                const {
-                  _id,
-                  icoPrice,
-                  name,
-                  symbol,
-                  priceUSD,
-                  percentChangeDay,
-                  maxSupply,
-                  availableSupply,
-                } = item
-
-                const img = (
-                  <img
-                    src={icoPrice}
-                    key={icoPrice}
-                    style={{
-                      paddingRight: '4px',
-                      verticalAlign: 'bottom',
-                      maxWidth: '20px',
-                      maxHeight: '16px',
-                      objectFit: 'contain',
-                    }}
-                  />
-                )
-
-                const color =
-                  Number(percentChangeDay) >= 0 ? '#65c000' : '#ff687a'
-
-                return (
-                  <TR key={_id} onClick={() => this.redirectToProfile(_id)}>
-                    <TD>{`${i + 1}.`}</TD>
-                    <TD>{[img, name]}</TD>
-                    <TD>{symbol}</TD>
-                    <TD>
-                      {priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : ''}
-                    </TD>
-                    <TD style={{ color }}>{`${percentChangeDay}` || ''}</TD>
-                    <TD>
-                      {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : ''}
-                    </TD>
-                    <TD>
-                      {availableSupply
-                        ? `${this.formatNumber(availableSupply)}`
-                        : ''}
-                    </TD>
-                  </TR>
-                )
-              })}
-          </TBody>
         </Table>
 
+        <ScrolledWrapper>
+          <Table>
+            <TBody>
+              {assetPagination &&
+                assetPagination.items &&
+                assetPagination.items.map((item, i) => {
+                  if (!item) return null
+                  const {
+                    _id,
+                    icoPrice,
+                    name,
+                    symbol,
+                    priceUSD,
+                    percentChangeDay,
+                    maxSupply,
+                    availableSupply,
+                  } = item
+
+                  const img = (
+                    <img
+                      src={icoPrice}
+                      key={_id}
+                      style={{
+                        paddingRight: '4px',
+                        verticalAlign: 'bottom',
+                        maxWidth: '20px',
+                        maxHeight: '16px',
+                        objectFit: 'contain',
+                      }}
+                    />
+                  )
+
+                  const color =
+                    Number(percentChangeDay) >= 0 ? '#65c000' : '#ff687a'
+
+                  return (
+                    <TR key={_id} onClick={() => this.redirectToProfile(_id)}>
+                      <TD>{`${i + 1}.`}</TD>
+                      <TD>{[img, name]}</TD>
+                      <TD>{symbol}</TD>
+                      <TD>
+                        {priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : '-'}
+                      </TD>
+                      <TD style={{ color }}>{`${percentChangeDay}` || '-'}</TD>
+                      <TD>
+                        {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : '-'}
+                      </TD>
+                      <TD>
+                        {availableSupply
+                          ? `${this.formatNumber(availableSupply)}`
+                          : '-'}
+                      </TD>
+                    </TR>
+                  )
+                })}
+            </TBody>
+          </Table>
+        </ScrolledWrapper>
         <Btn
           disabled={!data.assetPagination.pageInfo.hasNextPage}
           onClick={this.fetchMore}
@@ -171,6 +176,24 @@ export default class CoinMarketTable extends React.Component<Props, State> {
     )
   }
 }
+
+const ScrolledWrapper = styled.div`
+  overflow-y: scroll;
+  background-color: #393e44;
+  margin-bottom: 50px;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
+`
 
 const Btn = styled.button`
   border-radius: 3px;
@@ -212,6 +235,7 @@ const Table = styled.table`
   margin-top: 16px;
   border-collapse: collapse;
   margin-bottom: 36px;
+  table-layout: fixed;
 `
 
 const BtnsContainer = styled.div`

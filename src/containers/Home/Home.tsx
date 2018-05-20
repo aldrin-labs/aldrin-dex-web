@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import ReactGridLayout from 'react-grid-layout'
+import { History } from 'history'
 
 import CalculatorWidget from './widgets/CalculatorWidget'
 import DominanceWidget from './widgets/DominanceWidget'
@@ -19,7 +20,7 @@ interface Props {
 
 class Home extends React.Component<Props, {}> {
   fetchMore = () => {
-    const { history, location, data } = this.props
+    const { history, location } = this.props
     let page
     const query = new URLSearchParams(location.search)
     if (query.has('page')) {
@@ -28,10 +29,8 @@ class Home extends React.Component<Props, {}> {
       query.append('page', '1')
       page = query.get('page')
     }
-    const offset = (Number(page) || 1) + 1
-    query.set('page', offset)
-
-    data.refetch()
+    page = (Number(page) || 1) + 1
+    history.push({ search: `?page=${page}` })
   }
 
   render() {
@@ -132,7 +131,7 @@ export const HomeQuery = gql`
   }
 `
 
-const options = ({ location }) => {
+const options = ({ location }: { location: Location }) => {
   let page
   if (!location) {
     page = 1
@@ -145,8 +144,8 @@ const options = ({ location }) => {
       page = query.get('page')
     }
   }
-  console.log('page', page)
-  return { variables: { perPage: 20, page } }
+
+  return { variables: { perPage: 40, page } }
 }
 
 export default graphql(HomeQuery, { options })(Home)
