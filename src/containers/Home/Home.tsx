@@ -3,12 +3,15 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import ReactGridLayout from 'react-grid-layout'
+import { History } from 'history'
+
 import CalculatorWidget from './widgets/CalculatorWidget'
 import DominanceWidget from './widgets/DominanceWidget'
 import BitcoinPriceChartWidget from './widgets/BitcoinPriceChartWidget'
 import TreeMapWidget from './widgets/TreeMapWidget'
 import MarketCapWidget from './widgets/MarketCapWidget'
 import { CoinMarketCapQueryQuery } from '../CoinMarketCap/annotations'
+import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 
 interface Props {
   data: CoinMarketCapQueryQuery
@@ -17,14 +20,23 @@ interface Props {
 }
 
 class Home extends React.Component<Props, {}> {
-  render() {
-    // const { data } = this.props
-    // const { assetPagination } = data
-    // if (!assetPagination || !assetPagination.items) return null
-    // const { items } = assetPagination
+  fetchMore = () => {
+    const { history, location } = this.props
+    let page
+    const query = new URLSearchParams(location.search)
+    if (query.has('page')) {
+      page = query.get('page')
+    } else {
+      query.append('page', '1')
+      page = query.get('page')
+    }
+    page = (Number(page) || 1) + 1
+    history.push({ search: `?page=${page}` })
+  }
 
+  render() {
     const layout = [
-      // { i: 'table', x: 0, y: 0, w: 6, h: 6, static: true },
+      { i: 'table', x: 1.5, y: 0, w: 4.5, h: 6, static: true },
       {
         i: 'btcprice',
         x: 6,
@@ -75,9 +87,9 @@ class Home extends React.Component<Props, {}> {
         width={window.innerWidth}
         draggableHandle=".dnd"
       >
-        {/*<Column key="table">
-          <CoinMarketTable items={items} />
-        </Column>*/}
+        <Column key="table">
+          <CoinMarketTable data={this.props.data} fetchMore={this.fetchMore} />
+        </Column>
 
         <Column key="btcprice">
           <BitcoinPriceChartWidget />
@@ -135,15 +147,21 @@ export const HomeQuery = gql`
   }
 `
 
-const options = ({ location }) => {
+const options = ({ location }: { location: Location }) => {
   let page
   if (!location) {
     page = 1
   } else {
     const query = new URLSearchParams(location.search)
-    page = query.get('page')
+    if (query.has('page')) {
+      page = query.get('page')
+    } else {
+      query.append('page', '1')
+      page = query.get('page')
+    }
   }
-  return { variables: { perPage: 20, page } }
+
+  return { variables: { perPage: 40, page } }
 }
 
 export default graphql(HomeQuery, { options })(Home)
