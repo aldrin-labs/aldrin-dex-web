@@ -5,9 +5,11 @@ import selectedIcon from '../../../../icons/selected.svg'
 import { IProps } from './PortfolioTableSum.types'
 
 export default class PortfolioTableSum extends React.Component<IProps> {
-  onFloorN = (x: number, n: number) => {
-    if (typeof x === 'string') return x
-    var mult = Math.pow(10, n)
+  onFloorN = (x: string | number, n: number) => {
+    if (typeof x === 'string') {
+      return x
+    }
+    let mult = Math.pow(10, n)
     let multAfterCalculation = Math.floor(x * mult) / mult
 
     const reg = this.props.isUSDCurrently
@@ -16,7 +18,10 @@ export default class PortfolioTableSum extends React.Component<IProps> {
 
     if (multAfterCalculation.toString().match(reg)) {
       const sum = multAfterCalculation.toString().match(reg)
-      if (!sum) return null
+      if (!sum) {
+        return null
+      }
+
       return sum[0]
     } else if (multAfterCalculation) {
       return multAfterCalculation
@@ -27,11 +32,12 @@ export default class PortfolioTableSum extends React.Component<IProps> {
 
   render() {
     const { selectedSum } = this.props
+
     return (
       <PTBody style={{ borderBottom: 'none' }}>
         <PTR>
           {selectedSum && (
-            <PTD style={{ textAlign: 'right' }}>
+            <PTD style={{ textAlign: 'left' }}>
               <SvgIcon src={selectedIcon} width={18} height={18} />
             </PTD>
           )}
@@ -39,6 +45,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
             let res = selectedSum[key]
             if (Array.isArray(res)) {
               const [icon, currency] = res
+
               return (
                 <PTD key={key}>
                   {icon}
@@ -52,6 +59,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
                 this.props.isUSDCurrently ? 2 : 8
               )
             }
+
             return <PTD key={key}>{res || ''}</PTD>
           })}
         </PTR>
@@ -74,11 +82,32 @@ const PTD = styled.td`
   bottom: 0;
   overflow: hidden;
   background-color: #393e44;
+  
+  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
+    min-width: 100px;
+  }
+  &:nth-child(1) {
+    padding: 10px;
+  }
+  &:nth-child(2) {
+    text-align: left;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+    text-align: left;
+  }
+  &:nth-child(9) {
+    min-width: 110px;
+  }
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #fff;
+    border-bottom: none;
+    display: table;
+    position: sticky;
+    z-index: 1;
+    bottom: -2px;
+    width: 100%;
 `
 
 const PTR = styled.tr`
@@ -86,7 +115,7 @@ const PTR = styled.tr`
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
 
-  & ${PTD}:nth-child(n+ 3) {
+  & ${PTD}:nth-child(n + 4) {
     text-align: right;
   }
 `

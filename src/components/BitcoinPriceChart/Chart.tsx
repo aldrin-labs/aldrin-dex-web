@@ -8,9 +8,9 @@ import {
   FlexibleXYPlot,
   Crosshair,
 } from 'react-vis'
-import Highlight from './Highlight'
-import { Props, State } from './annotations'
-import { yearData } from './chartMocks'
+import Highlight from '../../containers/Profile/components/Highlight'
+import { Props, State } from '../../containers/Profile/components/annotations'
+import { yearData } from '../../containers/Profile/components/chartMocks'
 
 function calculateMonths(v: number) {
   switch (v) {
@@ -55,18 +55,12 @@ function calculateMonths(v: number) {
   }
 }
 
-const chartBtns = ['1D', '7D', '1M', '3M', '1Y', 'YTD', 'ALL']
-
-export default class ProfileChart extends React.Component<Props, State> {
+export default class YearChart extends React.Component<Props, State> {
   showSupplies: JSX.Element
   state: State = {
     activeChart: 4,
     lastDrawLocation: null,
     crosshairValues: [],
-  }
-
-  onChangeActiveChart = (index: number) => {
-    this.setState({ activeChart: index })
   }
 
   _onNearestX = (value, { index }) => {
@@ -88,7 +82,7 @@ export default class ProfileChart extends React.Component<Props, State> {
 
   render() {
     const { lastDrawLocation, crosshairValues } = this.state
-    const { coin, style, height, marginTopHr } = this.props
+    const { coin, style } = this.props
     const { name = '', priceUSD = '' } = coin || {}
 
     const axisStyle = {
@@ -138,13 +132,10 @@ export default class ProfileChart extends React.Component<Props, State> {
           </SuppliesBlock>
         )}
 
-        <Chart
-          style={{
-            height
-          }}
-        >
+        <Chart>
           <FlexibleXYPlot
             animation
+            height={this.props.height || 195}
             onMouseLeave={this._onMouseLeave}
             xDomain={
               lastDrawLocation && [
@@ -203,26 +194,6 @@ export default class ProfileChart extends React.Component<Props, State> {
             />
           </FlexibleXYPlot>
         </Chart>
-
-        <Hr marginTopHr={marginTopHr} />
-
-        <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => {
-            return (
-              <ChartBtn
-                onClick={() => this.onChangeActiveChart(i)}
-                style={
-                  i === this.state.activeChart
-                    ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                    : {}
-                }
-                key={chartBtn}
-              >
-                {chartBtn}
-              </ChartBtn>
-            )
-          })}
-        </BtnsContainer>
       </SProfileChart>
     )
   }
@@ -230,52 +201,21 @@ export default class ProfileChart extends React.Component<Props, State> {
 
 const Chart = styled.div`
   width: 100%;
+  height: 100%;
   min-height: 5em;
-  margin-top: 24px;
-`
-
-const Hr = styled.hr`
-  margin: ${(props: { marginTopHr: string }) =>
-    props.marginTopHr
-      ? `${props.marginTopHr} auto 0 auto;`
-      : '45px auto 0 auto;'};
-  width: 95%;
-  height: 0.5px;
-  border-radius: 1px;
-  background-color: #ffffff;
-`
-
-const BtnsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 20px auto 20px auto;
-`
-
-const ChartBtn = styled.button`
-  border-radius: 2px;
-  background-color: #4c5055;
-  margin-right: 16px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-family: Roboto;
-  font-size: 12px;
-  font-weight: 500;
-  color: #4ed8da;
-  cursor: pointer;
+  max-height: 10rem;
+  margin-bottom: 1rem;
 `
 
 const SProfileChart = styled.div`
   width: 100%;
-  padding: 0 16px;
   border-radius: 3px;
   background-color: #393e44;
-  min-height: 38vh;
+  min-height: 10rem;
   margin: 0 auto;
 
   display: flex;
   flex-direction: column;
-  border-top: 1px solid #fff;
 `
 
 const SuppliesBlock = styled.div`
