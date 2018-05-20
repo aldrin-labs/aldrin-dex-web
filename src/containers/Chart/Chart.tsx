@@ -52,55 +52,59 @@ export default class Chart extends React.Component<Props, State> {
 
     return (
       <Container>
-        <SingleChart />
+        <RowContainer>
+          <SingleChart />
 
-        <Tickers />
-
-        <OrderContainer>
-          <Orders>
-            <thead>
-              <TR>
-                {headers.map((h, i) => {
-                  return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+          <Tickers />
+        </RowContainer>
+        
+        <RowContainer>
+          <OrderContainer buy>
+            <Orders>
+              <thead>
+                <TR>
+                  {headers.map((h, i) => {
+                    return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+                  })}
+                </TR>
+              </thead>
+              <Tbody>
+                {orders.map(order => {
+                  return (
+                    <TR>
+                      {order.map(o => {
+                        return <TD>{o}</TD>
+                      })}
+                    </TR>
+                  )
                 })}
-              </TR>
-            </thead>
-            <tbody>
-              {orders.map(order => {
-                return (
-                  <TR>
-                    {order.map(o => {
-                      return <TD>{o}</TD>
-                    })}
-                  </TR>
-                )
-              })}
-            </tbody>
-          </Orders>
-        </OrderContainer>
+              </Tbody>
+            </Orders>
+          </OrderContainer>
 
-        <OrderContainer>
-          <Orders>
-            <thead>
-              <TR>
-                {headers.map((h, i) => {
-                  return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+          <OrderContainer sell>
+            <Orders>
+              <thead>
+                <TR>
+                  {headers.map((h, i) => {
+                    return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+                  })}
+                </TR>
+              </thead>
+              <Tbody>
+                {orders.map(order => {
+                  return (
+                    <TR>
+                      {order.map(o => {
+                        return <TD>{o}</TD>
+                      })}
+                    </TR>
+                  )
                 })}
-              </TR>
-            </thead>
-            <tbody>
-              {orders.map(order => {
-                return (
-                  <TR>
-                    {order.map(o => {
-                      return <TD>{o}</TD>
-                    })}
-                  </TR>
-                )
-              })}
-            </tbody>
-          </Orders>
-        </OrderContainer>
+              </Tbody>
+            </Orders>
+          </OrderContainer>
+        </RowContainer>
       </Container>
     )
   }
@@ -142,17 +146,20 @@ export default class Chart extends React.Component<Props, State> {
 }
 
 const TR = styled.tr`
-  border: 1px solid #fff;
+  display: table;
+  width:100%;
+  table-layout:fixed;  
 `
 
 const TD = styled.td`
+
   text-align: right;
   font-family: Roboto;
   font-size: 16px;
   line-height: 20px;
   color: #fff;
   padding: 5px;
-  border: 1px solid #fff;
+  box-shadow: 0px 1px 0px 0px #4ed8da, 1px 0px 0px 0px #4ed8da;
 `
 
 const TH = styled.th`
@@ -162,9 +169,12 @@ const TH = styled.th`
   line-height: 20px;
   font-weight: bold;
   color: #fff;
-  border: 1px solid #fff;
   padding: 10px 5px;
   cursor: pointer;
+  box-shadow: 0px 1px 0px 0px #4ed8da, 1px 0px 0px 0px #4ed8da;
+  &:last-child{
+    box-shadow:0px 1px 0px 0px #4ed8da;
+  }
 `
 
 const TogglerContainer = styled.div`
@@ -184,30 +194,42 @@ const Toggler = styled.button`
   cursor: pointer;
 `
 
-const Container = styled.div`
+const RowContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+`
+
+const Container = styled.div`  
   width: 100%;
-  padding-bottom: 50px;
+  padding: 0 32px 0 32px;
 `
 
 const Tickers = styled.div`
   display: flex;
-  width: 35%;
+  width: 40%;
   height: 500px;
-  border: 1px solid lightgrey;
-  margin: 1%;
-`
+  border: 1px solid #4ed8da;
+  background-color: #292d31;
+  border-radius: 3px;
+  margin: 0 0 16px 0;`
 
 const OrderContainer = styled.div`
-  width: 45%;
+
+  width: 50%;
+  margin-right: ${props => props.buy ? '16px' : '0'};
+  background-color: #292d31;
+  border: 1px solid #4ed8da;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);   
+`
+const Tbody = styled.tbody`
+  display: block;
   height: 300px;
   overflow: auto;
-
+  width: 100%;
   &::-webkit-scrollbar {
-    width: 12px;
+    width: 0px;
   }
 
   &::-webkit-scrollbar-track {
@@ -220,8 +242,6 @@ const OrderContainer = styled.div`
 `
 
 const Orders = styled.table`
-  width: 98%;
-  border: 1px solid lightgrey;
-  margin: 1%;
+  width: 100%;
   border-collapse: collapse;
 `

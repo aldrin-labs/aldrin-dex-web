@@ -6,7 +6,10 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 60%;
   height: 500px;
+  /*
   margin: 1%;
+  */
+  margin: 0 16px 16px 0;
 `
 
 export const SingleChart = () => (
