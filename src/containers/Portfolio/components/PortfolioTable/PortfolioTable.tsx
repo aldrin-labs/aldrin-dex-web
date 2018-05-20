@@ -71,6 +71,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableTabs
             tab={tab}
             portfolio={portfolio}
+            data={this.props.data}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -89,6 +90,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableTabs
             tab={tab}
             portfolio={portfolio}
+            data={this.props.data}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}

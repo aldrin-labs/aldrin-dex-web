@@ -2,24 +2,24 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 interface Props {
-  onClick: Function
-  values: string[]
+  onClick?: Function
+  values?: string[]
   isActive?: boolean
 }
 
 export default class Switch extends React.Component<Props> {
   render() {
     const { onClick, values, isActive } = this.props
-    const [first, second] = values
+    const [first, second] = values || ['', '']
 
     return (
       <Container>
-        <Desc>{first}</Desc>
+        {first && <Desc>{first}</Desc>}
         <Label>
           <Input type="checkbox" onClick={onClick} checked={isActive} />
           <Slider />
         </Label>
-        <Desc>{second}</Desc>
+        {second && <Desc>{second}</Desc>}
       </Container>
     )
   }
@@ -28,7 +28,7 @@ export default class Switch extends React.Component<Props> {
 const Desc = styled.span`
   font-family: Roboto;
   font-size: 1em;
-  margin: 0 10px;
+  margin: 0 15px;
   color: #fff;
   font-weight: 500;
 `

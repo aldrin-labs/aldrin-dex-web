@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { withStyles } from 'material-ui/styles'
-import React, { SFC } from 'react'
+import React from 'react'
 
 import DeleteIcon from 'material-ui-icons/Delete'
 import FilterListIcon from 'material-ui-icons/FilterList'
@@ -10,7 +10,7 @@ import Toolbar from 'material-ui/Toolbar'
 import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
 
-import { PortfolioTableTabs } from './PortfolioTableTabs'
+import PortfolioTableTabs from './PortfolioTableTabs'
 
 const toolbarStyles = (theme) => ({
   root: {

@@ -1,16 +1,13 @@
-
-
-import {RowT} from "../containers/Portfolio/components/PortfolioTable/types";
-import styled from 'styled-components';
-import React from 'react';
-
+import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
+import styled from 'styled-components'
+import React from 'react'
 
 export const onSortStrings = (a: string, b: string): number => {
   return a.localeCompare(b)
-};
+}
 
 export const onFloorN = (x: number, n: number) => {
-  let mult = Math.pow(10, n);
+  let mult = Math.pow(10, n)
   return Math.floor(x * mult) / mult
 }
 
@@ -53,18 +50,23 @@ export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
 
 const Icon = styled.i`
   padding-right: 5px;
-`;
+`
 
-export const onValidateSum = (reducedSum: RowT, selectedBalances: RowT, tableData: RowT, isUSDCurrently: boolean) => {
+export const onValidateSum = (
+  reducedSum: RowT,
+  selectedBalances: RowT,
+  tableData: RowT,
+  isUSDCurrently: boolean
+) => {
   // const { selectedBalances, tableData, isUSDCurrently } = this.state
   if (!selectedBalances || !tableData) return null
   const clonedSum = { ...reducedSum }
 
   const mainSymbol = isUSDCurrently ? (
     <Icon className="fa fa-usd" key="usd" />
-) : (
+  ) : (
     <Icon className="fa fa-btc" key="btc" />
-)
+  )
 
   if (selectedBalances.length === tableData.length) {
     clonedSum.currency = 'All'
@@ -79,4 +81,3 @@ export const onValidateSum = (reducedSum: RowT, selectedBalances: RowT, tableDat
 
   return clonedSum
 }
-

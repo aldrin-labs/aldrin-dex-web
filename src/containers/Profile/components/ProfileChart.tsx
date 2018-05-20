@@ -55,24 +55,7 @@ function calculateMonths(v: number) {
   }
 }
 
-// const chartBtns = [
-//   '1 Day',
-//   '7 Days',
-//   '1 Month',
-//   '3 Month',
-//   '1 Year',
-//   'YTD',
-//   'ALL PERIOD',
-// ]
-const chartBtns = [
-  '1D',
-  '7D',
-  '1M',
-  '3M',
-  '1Y',
-  'YTD',
-  'ALL',
-];
+const chartBtns = ['1D', '7D', '1M', '3M', '1Y', 'YTD', 'ALL']
 
 export default class ProfileChart extends React.Component<Props, State> {
   showSupplies: JSX.Element
@@ -105,7 +88,7 @@ export default class ProfileChart extends React.Component<Props, State> {
 
   render() {
     const { lastDrawLocation, crosshairValues } = this.state
-    const { coin, style } = this.props
+    const { coin, style, height, marginTopHr } = this.props
     const { name = '', priceUSD = '' } = coin || {}
 
     const axisStyle = {
@@ -155,10 +138,13 @@ export default class ProfileChart extends React.Component<Props, State> {
           </SuppliesBlock>
         )}
 
-        <Chart>
+        <Chart
+          style={{
+            height
+          }}
+        >
           <FlexibleXYPlot
             animation
-            height={this.props.height || 195}
             onMouseLeave={this._onMouseLeave}
             xDomain={
               lastDrawLocation && [
@@ -218,7 +204,7 @@ export default class ProfileChart extends React.Component<Props, State> {
           </FlexibleXYPlot>
         </Chart>
 
-        <Hr />
+        <Hr marginTopHr={marginTopHr} />
 
         <BtnsContainer>
           {chartBtns.map((chartBtn, i) => {
@@ -237,7 +223,6 @@ export default class ProfileChart extends React.Component<Props, State> {
             )
           })}
         </BtnsContainer>
-
       </SProfileChart>
     )
   }
@@ -245,14 +230,15 @@ export default class ProfileChart extends React.Component<Props, State> {
 
 const Chart = styled.div`
   width: 100%;
-  height: 100%;
   min-height: 5em;
-  max-height: 10em;
   margin-top: 24px;
 `
 
 const Hr = styled.hr`
-  margin: 45px auto 0 auto;
+  margin: ${(props: { marginTopHr: string }) =>
+    props.marginTopHr
+      ? `${props.marginTopHr} auto 0 auto;`
+      : '45px auto 0 auto;'};
   width: 95%;
   height: 0.5px;
   border-radius: 1px;
@@ -262,7 +248,7 @@ const Hr = styled.hr`
 const BtnsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 24px auto 24px auto;
+  margin: 20px auto 20px auto;
 `
 
 const ChartBtn = styled.button`
