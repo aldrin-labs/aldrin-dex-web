@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import {
-  FlexibleWidthXYPlot,
+  FlexibleXYPlot,
   XAxis,
   YAxis,
   HorizontalGridLines,
@@ -35,7 +35,7 @@ export default class LineChart extends React.Component {
     const { crosshairValues } = this.state
 
     return (
-      <FlexibleWidthXYPlot height={250} onMouseLeave={this.onMouseLeave}>
+      <FlexibleXYPlot onMouseLeave={this.onMouseLeave}>
         <HorizontalGridLines />
         <XAxis
           title="X Axis"
@@ -78,7 +78,7 @@ export default class LineChart extends React.Component {
             ))}
           </div>
         </Crosshair>
-      </FlexibleWidthXYPlot>
+      </FlexibleXYPlot>
     )
   }
 }
