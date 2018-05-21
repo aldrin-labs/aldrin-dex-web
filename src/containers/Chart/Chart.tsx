@@ -239,7 +239,14 @@ const Tbody = styled.tbody`
 const TR = styled.tr`
   display: table;
   width:100%;
-  table-layout:fixed;  
+  table-layout:fixed;
+  tbody > & {
+    background-color: rgb(57, 62, 68);
+    &:nth-child(odd){
+      background-color: rgb(58, 78, 78);
+    }  
+  }
+  
 `
 
 const TD = styled.td`  
@@ -255,6 +262,7 @@ const TH = styled.th`
   font-weight: bold;
   padding: 10px 5px;
   cursor: pointer;
+  background-color: transparent;
   box-shadow: 0px 1px 0px 0px #4ed8da, 1px 0px 0px 0px #4ed8da;
   &:last-child{
     box-shadow:0px 1px 0px 0px #4ed8da;
