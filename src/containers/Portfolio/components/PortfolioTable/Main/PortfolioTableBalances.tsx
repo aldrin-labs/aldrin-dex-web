@@ -16,6 +16,8 @@ import { IPortfolio } from '../../../interfaces'
 import { IProps, IState } from './PortfolioTableBalances.types'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import {TMP_LINE_CHART_MOCKS} from '../Industry/mocks'
+import LineChart from '../../../../../components/LineChart/index'
 
 const defaultSelectedSum = {
   currency: '',
@@ -348,6 +350,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
+        <Container>
         <Wrapper isShownChart={isShownChart}>
           <PTable>
             <PortfolioTableHead
@@ -371,6 +374,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             ) : null}
           </PTable>
         </Wrapper>
+        </Container>
 
         <PTChartContainer>
           <ProfileChart
@@ -387,6 +391,17 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     )
   }
 }
+
+const Container = styled.div`
+  display: flex;
+  height: ${(props: { isShownChart: boolean }) =>
+  props.isShownChart ? '30vh' : ''};
+
+  @media (max-height: 650px) {
+    height: ${(props: { isShownChart: boolean }) =>
+  props.isShownChart ? '45vh' : ''};
+  }
+`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
@@ -407,8 +422,8 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
-  display: flex;
   position: relative;
+  margin: 0 20px 20px;
   overflow-y: scroll;
   background-color: #393e44;
 
@@ -422,14 +437,6 @@ const Wrapper = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
-  }
-
-  height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '30vh' : ''};
-
-  @media (max-height: 650px) {
-    height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '45vh' : ''};
   }
 `
 
