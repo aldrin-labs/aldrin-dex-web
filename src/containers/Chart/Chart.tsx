@@ -27,8 +27,8 @@ const tickersHeaders = ['Coin', 'Price', 'Volume', 'Change', 'Name']
 export default class Chart extends React.Component<Props, State> {
   state: State = {
     view: 'default',
-    orders,
     tickers,
+    orders
   }
 
   onToggleView = (view: 'default' | 'onlyCharts') => {
@@ -37,7 +37,6 @@ export default class Chart extends React.Component<Props, State> {
 
   sortOrders = (index: number) => {
     const { orders, currentOrdersSort } = this.state
-
     const newOrders = orders.slice().sort((a, b) => {
       if (currentOrdersSort && currentOrdersSort.index === index) {
         if (currentOrdersSort.arg === 'ASC') {
@@ -51,13 +50,11 @@ export default class Chart extends React.Component<Props, State> {
       this.setState({ currentOrdersSort: { index, arg: 'ASC' } })
       return a[index] - b[index]
     })
-
     this.setState({ orders: newOrders })
   }
 
   sortTickers = (index: number) => {
     const { tickers, currentTickersSort } = this.state
-
     const newTickers = tickers.slice().sort((a, b) => {
       if (currentTickersSort && currentTickersSort.index === index) {
         if (currentTickersSort.arg === 'ASC') {
@@ -71,14 +68,15 @@ export default class Chart extends React.Component<Props, State> {
         }
       }
       this.setState({ currentTickersSort: { index, arg: 'ASC' } })
-      return a[index] - b[index]
+      if(a[index] > b[index]) return -1;
+      if(a[index] < b[index]) return 1;
     })
-
     this.setState({ tickers: newTickers })
   }
 
   renderDefaultView = () => {
     const { tickers } = this.state
+    const { orders } = this.state
 
     return (
       <Container>
