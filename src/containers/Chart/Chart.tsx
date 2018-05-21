@@ -55,7 +55,28 @@ export default class Chart extends React.Component<Props, State> {
         <RowContainer>
           <SingleChart />
 
-          <Tickers />
+          <Tickers>
+            <TickersTable>
+              <thead>
+                <TR>
+                  {headers.map((h, i) => {
+                    return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+                  })}
+                </TR>
+              </thead>
+              <Tbody ticker>
+                {orders.map(order => {
+                  return (
+                    <TR>
+                      {order.map(o => {
+                        return <TD>{o}</TD>
+                      })}
+                    </TR>
+                  )
+                })}
+              </Tbody>
+            </TickersTable>
+          </Tickers>
         </RowContainer>
         
         <RowContainer>
@@ -105,6 +126,30 @@ export default class Chart extends React.Component<Props, State> {
             </Orders>
           </OrderContainer>
         </RowContainer>
+        <RowContainer>
+          <HistoryContainer>
+            <History>
+                <thead>
+                  <TR>
+                    {headers.map((h, i) => {
+                      return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+                    })}
+                  </TR>
+                </thead>
+                <Tbody>
+                  {orders.map(order => {
+                    return (
+                      <TR>
+                        {order.map(o => {
+                          return <TD>{o}</TD>
+                        })}
+                      </TR>
+                    )
+                  })}
+                </Tbody>
+            </History>
+          </HistoryContainer>
+        </RowContainer>
       </Container>
     )
   }
@@ -151,13 +196,9 @@ const TR = styled.tr`
   table-layout:fixed;  
 `
 
-const TD = styled.td`
-
+const TD = styled.td`  
   text-align: right;
   font-family: Roboto;
-  font-size: 16px;
-  line-height: 20px;
-  color: #fff;
   padding: 5px;
   box-shadow: 0px 1px 0px 0px #4ed8da, 1px 0px 0px 0px #4ed8da;
 `
@@ -165,10 +206,7 @@ const TD = styled.td`
 const TH = styled.th`
   text-align: left;
   font-family: Roboto;
-  font-size: 16px;
-  line-height: 20px;
   font-weight: bold;
-  color: #fff;
   padding: 10px 5px;
   cursor: pointer;
   box-shadow: 0px 1px 0px 0px #4ed8da, 1px 0px 0px 0px #4ed8da;
@@ -207,7 +245,7 @@ const Container = styled.div`
 
 const Tickers = styled.div`
   display: flex;
-  width: 40%;
+  width: 35%;
   height: 500px;
   border: 1px solid #4ed8da;
   background-color: #292d31;
@@ -225,7 +263,7 @@ const OrderContainer = styled.div`
 `
 const Tbody = styled.tbody`
   display: block;
-  height: 300px;
+  height: ${props => props.ticker ? '468px' : '300px'};
   overflow: auto;
   width: 100%;
   &::-webkit-scrollbar {
@@ -244,4 +282,33 @@ const Tbody = styled.tbody`
 const Orders = styled.table`
   width: 100%;
   border-collapse: collapse;
+  font-size: 16px;
+  line-height: 20px;  
+  color: #fff;
+`
+
+const TickersTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;  
+  color: #fff;
+  font-size: 12px;
+  line-height: 10px;  
+  color: #fff;
+`
+
+const HistoryContainer = styled.div`
+  width: 100%;
+  margin-top: 16px;
+  background-color: #292d31;
+  border: 1px solid #4ed8da;
+  border-radius: 3px;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);   
+`
+
+const History = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  line-height: 20px;  
+  color: #fff;
 `

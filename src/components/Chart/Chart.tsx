@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 65%;
   height: 500px;
   /*
   margin: 1%;
