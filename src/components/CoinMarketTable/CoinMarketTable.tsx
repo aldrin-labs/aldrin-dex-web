@@ -60,14 +60,6 @@ class CoinMarketTable extends React.Component<Props, State> {
     const { activeKind } = this.state
     const { assetPagination } = data
 
-    if (data.loading || !data.assetPagination) {
-      return (
-        <MarketWrapper>
-          <Loading centerAligned />
-        </MarketWrapper>
-      )
-    }
-
     return (
       <MarketWrapper>
         <Title>Cryptocurrency Market Capitalizations</Title>
