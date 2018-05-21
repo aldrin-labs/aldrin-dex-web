@@ -16,20 +16,6 @@ export interface Props {
 }
 
 export default class Home extends React.Component<Props> {
-  fetchMore = () => {
-    const { history, location } = this.props
-    let page
-    const query = new URLSearchParams(location.search)
-    if (query.has('page')) {
-      page = query.get('page')
-    } else {
-      query.append('page', '1')
-      page = query.get('page')
-    }
-    page = (Number(page) || 1) + 1
-    history.push({ search: `?page=${page}` })
-  }
-
   render() {
     const layout = [
       { i: 'table', x: 1.5, y: 0, w: 4.5, h: 6, static: true },

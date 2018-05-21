@@ -9,15 +9,17 @@ export interface Props {
   query: DocumentNode
   component: React.ReactNode
   variables?: { [key: string]: any } | null
+  [key: string]: any
 }
 
 export default class QueryRenderer extends React.Component<Props> {
   render() {
-    const { query, component, variables } = this.props
+    const { query, component, variables, ...rest } = this.props
+    console.log('QueryRenderer.props: ', this.props)
 
     return (
       <Query query={query} variables={variables}>
-        {({ loading, error, data, refetch, networkStatus }) => {
+        {({ loading, error, data, refetch, networkStatus, fetchMore }) => {
           if (loading) {
             return <Loading centerAligned />
           } else if (error) {
@@ -25,7 +27,14 @@ export default class QueryRenderer extends React.Component<Props> {
           }
 
           const Component = component
-          return <Component data={data} refetch={refetch} />
+          return (
+            <Component
+              data={data}
+              refetch={refetch}
+              fetchMore={fetchMore}
+              {...rest}
+            />
+          )
         }}
       </Query>
     )
