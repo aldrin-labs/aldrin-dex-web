@@ -253,7 +253,7 @@ const TD = styled.td`
   text-align: right;
   font-family: Roboto;
   padding: 5px;
-  box-shadow: 0px 1px 0px 0px #4ed8da, 1px 0px 0px 0px #4ed8da;
+  box-shadow: 1px 0px 0px 0px rgba(255,255,255,0.1);
 `
 
 const TH = styled.th`
@@ -263,9 +263,9 @@ const TH = styled.th`
   padding: 10px 5px;
   cursor: pointer;
   background-color: transparent;
-  box-shadow: 0px 1px 0px 0px #4ed8da, 1px 0px 0px 0px #4ed8da;
+  box-shadow: 1px 0px 0px 0px rgba(255,255,255,0.5);
   &:last-child{
-    box-shadow:0px 1px 0px 0px #4ed8da;
+    box-shadow:none;
   }
 `
 
