@@ -142,6 +142,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           ? parseFloat(performance.usd).toFixed(2)
           : parseFloat(performance.btc).toFixed(2)
 
+        // console.log(performance.usd);
+        // console.log(performance.btc);
+        console.log('ind: ', ind);
+
+
+
         const col = {
           currency: name || '-',
           symbol,
@@ -488,19 +494,20 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 30vh;
 `
 
 const PieChartHeadingWrapper = styled.div`
   width: 200px;
   text-align: center;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 `
 
 const PieChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 0;
+  padding: 3% 0;
   width: 40vw;
   height: 40vh;
   margin: 0 auto;
@@ -533,6 +540,7 @@ const LineChartContainer = styled.div`
   width: 30%;
   height: 100%;
   text-align: center;
+  margin: 0 20px;
 `
 
 const Icon = styled.i`
@@ -542,6 +550,7 @@ const Icon = styled.i`
 const Wrapper = styled.div`
   overflow-y: scroll;
   background-color: #393e44;
+  margin-left: 20px;
 
   &::-webkit-scrollbar {
     width: 12px;
