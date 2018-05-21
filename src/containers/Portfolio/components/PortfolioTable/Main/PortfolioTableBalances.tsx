@@ -16,8 +16,6 @@ import { IPortfolio } from '../../../interfaces'
 import { IProps, IState } from './PortfolioTableBalances.types'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import {TMP_LINE_CHART_MOCKS} from '../Industry/mocks'
-import LineChart from '../../../../../components/LineChart/index'
 
 const defaultSelectedSum = {
   currency: '',
