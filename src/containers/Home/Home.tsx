@@ -1,6 +1,4 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
-import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import ReactGridLayout from 'react-grid-layout'
 import { History } from 'history'
@@ -10,16 +8,14 @@ import DominanceWidget from './widgets/DominanceWidget'
 import BitcoinPriceChartWidget from './widgets/BitcoinPriceChartWidget'
 import TreeMapWidget from './widgets/TreeMapWidget'
 import MarketCapWidget from './widgets/MarketCapWidget'
-import { CoinMarketCapQueryQuery } from '../CoinMarketCap/annotations'
 import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 
-interface Props {
-  data: CoinMarketCapQueryQuery
+export interface Props {
   history: History
   location: Location
 }
 
-class Home extends React.Component<Props, {}> {
+export default class Home extends React.Component<Props> {
   fetchMore = () => {
     const { history, location } = this.props
     let page
@@ -88,7 +84,7 @@ class Home extends React.Component<Props, {}> {
         draggableHandle=".dnd"
       >
         <Column key="table">
-          <CoinMarketTable data={this.props.data} fetchMore={this.fetchMore} />
+          <CoinMarketTable {...this.props} />
         </Column>
 
         <Column key="btcprice">
@@ -118,50 +114,5 @@ class Home extends React.Component<Props, {}> {
 const Column = styled.div`
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
 `
-
-export const HomeQuery = gql`
-  query HomeQuery($page: Int, $perPage: Int) {
-    assetPagination(page: $page, perPage: $perPage) {
-      pageInfo {
-        pageCount
-        hasNextPage
-        currentPage
-        hasPreviousPage
-        perPage
-      }
-      count
-      items {
-        _id
-        name
-        symbol
-        priceUSD
-        maxSupply
-        totalSupply
-        availableSupply
-        priceBTC
-        percentChangeDay
-      }
-    }
-  }
-`
-
-const options = ({ location }: { location: Location }) => {
-  let page
-  if (!location) {
-    page = 1
-  } else {
-    const query = new URLSearchParams(location.search)
-    if (query.has('page')) {
-      page = query.get('page')
-    } else {
-      query.append('page', '1')
-      page = query.get('page')
-    }
-  }
-
-  return { variables: { perPage: 40, page } }
-}
-
-export default graphql(HomeQuery, { options })(Home)

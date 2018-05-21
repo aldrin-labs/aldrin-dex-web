@@ -1,7 +1,9 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
 import styled from 'styled-components'
 import Button from '../Elements/Button/Button'
 import arrowIcon from '@icons/arrow.svg'
+import QueryRenderer from '@components/QueryRenderer'
 import { Loading } from '@components/Loading'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 
@@ -19,18 +21,13 @@ const headers = [
 
 export interface Props {
   data: CoinMarketCapQueryQuery
-  activeSortArg?: number
-  showFilterBns?: boolean
-  fetchMore?: Function
-  onChangeSortArg?: Function
-  redirectToProfile?: Function
 }
 
 export interface State {
   activeKind: number
 }
 
-export default class CoinMarketTable extends React.Component<Props, State> {
+class CoinMarketTable extends React.Component<Props, State> {
   state: State = {
     activeKind: 0,
   }
@@ -288,3 +285,54 @@ const TR = styled.tr`
     color: #4ed8da;
   }
 `
+
+export const HomeQuery = gql`
+  query HomeQuery($page: Int, $perPage: Int) {
+    assetPagination(page: $page, perPage: $perPage) {
+      pageInfo {
+        pageCount
+        hasNextPage
+        currentPage
+        hasPreviousPage
+        perPage
+      }
+      count
+      items {
+        _id
+        name
+        symbol
+        priceUSD
+        maxSupply
+        totalSupply
+        availableSupply
+        priceBTC
+        percentChangeDay
+      }
+    }
+  }
+`
+
+export default function({ location }: { location: Location }) {
+  let page
+  if (!location) {
+    page = 1
+  } else {
+    const query = new URLSearchParams(location.search)
+    if (query.has('page')) {
+      page = query.get('page')
+    } else {
+      query.append('page', '1')
+      page = query.get('page')
+    }
+  }
+
+  const variables = { perPage: 40, page }
+
+  return (
+    <QueryRenderer
+      component={CoinMarketTable}
+      query={HomeQuery}
+      variables={variables}
+    />
+  )
+}
