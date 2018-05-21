@@ -23,6 +23,7 @@ class ProfileComponent extends React.Component<Props, {}> {
             <ProfileHeading coin={assetById} />
             <ProfileLinks coin={assetById} />
           </SWrapper>
+
           <ProfileChart
             coin={assetById}
             style={{
@@ -31,7 +32,7 @@ class ProfileComponent extends React.Component<Props, {}> {
               borderTop: 'none',
               marginLeft: '24px',
             }}
-            height={195}
+            // height={195}
           />
         </SProfile>
 

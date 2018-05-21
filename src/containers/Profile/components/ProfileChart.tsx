@@ -104,44 +104,65 @@ export default class ProfileChart extends React.Component<Props, State> {
     return (
       <SProfileChart style={style}>
         {/*TODO: need refactoring, need real data */}
-        {this.showSupplies && (
-          <SuppliesBlock>
-            <SupplyBlock>
-              <CurrentRate>{priceUSD || '9 713,19'}</CurrentRate>
-              <SupplyDetail>Current rate USD</SupplyDetail>
-            </SupplyBlock>
 
-            <SupplyBlock>
-              <CommonRate>{'5,808 B'}</CommonRate>
-              <SupplyDetail>Volume 24h USD</SupplyDetail>
-            </SupplyBlock>
+        <SuppliesBlock>
+          <SupplyBlock>
+            <CurrentRate>{priceUSD || '9 713,19'}</CurrentRate>
+            <SupplyDetail>Current rate USD</SupplyDetail>
+          </SupplyBlock>
 
-            <SupplyBlock>
-              <CommonRate>{'164,3 B'}</CommonRate>
-              <SupplyDetail>Market Cap #1 USD</SupplyDetail>
-            </SupplyBlock>
+          <SupplyBlock>
+            <CommonRate>{'5,808 B'}</CommonRate>
+            <SupplyDetail>Volume 24h USD</SupplyDetail>
+          </SupplyBlock>
 
-            <SupplyBlock>
-              <SupplyLowRate>{'904,79'}</SupplyLowRate>
-              <SupplyDetail>Low: 25 Mar 2017</SupplyDetail>
-            </SupplyBlock>
+          <SupplyBlock>
+            <CommonRate>{'164,3 B'}</CommonRate>
+            <SupplyDetail>Market Cap #1 USD</SupplyDetail>
+          </SupplyBlock>
 
-            <SupplyBlock>
-              <SupplyHighRate>{'20078,10'}</SupplyHighRate>
-              <SupplyDetail>High: 17 Dec 2017</SupplyDetail>
-            </SupplyBlock>
+          <SupplyBlock>
+            <SupplyLowRate>{'904,79'}</SupplyLowRate>
+            <SupplyDetail>Low: 25 Mar 2017</SupplyDetail>
+          </SupplyBlock>
 
-            <SupplyBlock>
-              <SupplyHighRate>{'+748,77%'}</SupplyHighRate>
-              <SupplyDetail>Change in year USD</SupplyDetail>
-            </SupplyBlock>
-          </SuppliesBlock>
-        )}
+          <SupplyBlock>
+            <SupplyHighRate>{'20078,10'}</SupplyHighRate>
+            <SupplyDetail>High: 17 Dec 2017</SupplyDetail>
+          </SupplyBlock>
+
+          <SupplyBlock>
+            <SupplyHighRate>{'+748,77%'}</SupplyHighRate>
+            <SupplyDetail>Change in year USD</SupplyDetail>
+          </SupplyBlock>
+
+          <SupplyBlock style={{ width: 'calc(100% - 270px)' }}>
+            <BtnsContainer>
+              {chartBtns.map((chartBtn, i) => {
+                return (
+                  <ChartBtn
+                    onClick={() => this.onChangeActiveChart(i)}
+                    style={
+                      i === this.state.activeChart
+                        ? { backgroundColor: '#4ed8da', color: '#4c5055' }
+                        : {}
+                    }
+                    key={chartBtn}
+                  >
+                    {chartBtn}
+                  </ChartBtn>
+                )
+              })}
+            </BtnsContainer>
+          </SupplyBlock>
+        </SuppliesBlock>
+
+        <Hr marginTopHr={marginTopHr} />
 
         <Chart
-          style={{
-            height
-          }}
+        // style={{
+        //   height,
+        // }}
         >
           <FlexibleXYPlot
             animation
@@ -203,26 +224,6 @@ export default class ProfileChart extends React.Component<Props, State> {
             />
           </FlexibleXYPlot>
         </Chart>
-
-        <Hr marginTopHr={marginTopHr} />
-
-        <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => {
-            return (
-              <ChartBtn
-                onClick={() => this.onChangeActiveChart(i)}
-                style={
-                  i === this.state.activeChart
-                    ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                    : {}
-                }
-                key={chartBtn}
-              >
-                {chartBtn}
-              </ChartBtn>
-            )
-          })}
-        </BtnsContainer>
       </SProfileChart>
     )
   }
@@ -230,6 +231,7 @@ export default class ProfileChart extends React.Component<Props, State> {
 
 const Chart = styled.div`
   width: 100%;
+  height: 50%;
   min-height: 5em;
   margin-top: 24px;
 `
@@ -248,15 +250,16 @@ const Hr = styled.hr`
 const BtnsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 20px auto 20px auto;
+  margin: auto 0 auto -1rem;
 `
 
 const ChartBtn = styled.button`
   border-radius: 2px;
   background-color: #4c5055;
   margin-right: 16px;
-  padding: 10px;
+  padding: 8px 10px;
   border: none;
+  width: 11%;
   outline: none;
   font-family: Roboto;
   font-size: 12px;
@@ -281,10 +284,12 @@ const SProfileChart = styled.div`
 const SuppliesBlock = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 16px auto 0 auto;
+  justify-content: space-evenly;
+  margin: 1rem auto 0 auto;
 `
 
 const SupplyBlock = styled.div`
+  margin-top: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
