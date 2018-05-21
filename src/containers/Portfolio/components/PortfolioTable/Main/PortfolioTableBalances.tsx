@@ -407,6 +407,7 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
+  display: flex;
   position: relative;
   overflow-y: scroll;
   background-color: #393e44;
@@ -435,7 +436,6 @@ const Wrapper = styled.div`
 const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
-  position: static;
   display: inline-block;
 `
 
