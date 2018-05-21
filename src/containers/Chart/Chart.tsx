@@ -3,24 +3,32 @@ import styled from 'styled-components'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
 import { orders } from './mocks'
+import { tickers } from './mocks'
 
 interface Props {}
 
 interface State {
   view: 'onlyCharts' | 'default'
   orders: number[][]
-  currentSort?: {
+  tickers: any[][]
+  currentOrdersSort?: {
+    arg: 'ASC' | 'DESC'
+    index: number
+  }
+  currentTickersSort?: {
     arg: 'ASC' | 'DESC'
     index: number
   }
 }
 
-const headers = ['Price', 'ETH', 'BTC', 'Sum(BTC)']
+const ordersHeaders = ['Price', 'ETH', 'BTC', 'Sum(BTC)']
+const tickersHeaders = ['Coin', 'Price', 'Volume', 'Change', 'Name']
 
 export default class Chart extends React.Component<Props, State> {
   state: State = {
     view: 'default',
     orders,
+    tickers,
   }
 
   onToggleView = (view: 'default' | 'onlyCharts') => {
@@ -28,55 +36,77 @@ export default class Chart extends React.Component<Props, State> {
   }
 
   sortOrders = (index: number) => {
-    const { orders, currentSort } = this.state
+    const { orders, currentOrdersSort } = this.state
 
     const newOrders = orders.slice().sort((a, b) => {
-      if (currentSort && currentSort.index === index) {
-        if (currentSort.arg === 'ASC') {
-          this.setState({ currentSort: { index, arg: 'DESC' } })
+      if (currentOrdersSort && currentOrdersSort.index === index) {
+        if (currentOrdersSort.arg === 'ASC') {
+          this.setState({ currentOrdersSort: { index, arg: 'DESC' } })
           return b[index] - a[index]
         } else {
-          this.setState({ currentSort: { index, arg: 'ASC' } })
+          this.setState({ currentOrdersSort: { index, arg: 'ASC' } })
           return a[index] - b[index]
         }
       }
-      this.setState({ currentSort: { index, arg: 'ASC' } })
+      this.setState({ currentOrdersSort: { index, arg: 'ASC' } })
       return a[index] - b[index]
     })
 
     this.setState({ orders: newOrders })
   }
 
+  sortTickers = (index: number) => {
+    const { tickers, currentTickersSort } = this.state
+
+    const newTickers = tickers.slice().sort((a, b) => {
+      if (currentTickersSort && currentTickersSort.index === index) {
+        if (currentTickersSort.arg === 'ASC') {
+          this.setState({ currentTickersSort: { index, arg: 'DESC' } })
+          if(a[index] < b[index]) return -1;
+          if(a[index] > b[index]) return 1;
+        } else {
+          this.setState({ currentTickersSort: { index, arg: 'ASC' } })
+          if(a[index] > b[index]) return -1;
+          if(a[index] < b[index]) return 1;
+        }
+      }
+      this.setState({ currentTickersSort: { index, arg: 'ASC' } })
+      return a[index] - b[index]
+    })
+
+    this.setState({ tickers: newTickers })
+  }
+
   renderDefaultView = () => {
-    const { orders } = this.state
+    const { tickers } = this.state
 
     return (
       <Container>
         <RowContainer>
           <SingleChart />
 
-          <Tickers>
-            <TickersTable>
+          <TickersContainer>
+            <Tickers>
               <thead>
                 <TR>
-                  {headers.map((h, i) => {
-                    return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
+                  {tickersHeaders.map((h, i) => {
+                    return <TH onClick={() => this.sortTickers(i)}>{h}</TH>
                   })}
                 </TR>
               </thead>
               <Tbody ticker>
-                {orders.map(order => {
+                {tickers.map(ticker => {
                   return (
                     <TR>
-                      {order.map(o => {
+                      {ticker.map(o => {
                         return <TD>{o}</TD>
                       })}
                     </TR>
                   )
                 })}
               </Tbody>
-            </TickersTable>
-          </Tickers>
+            </Tickers>
+          </TickersContainer>
         </RowContainer>
         
         <RowContainer>
@@ -84,7 +114,7 @@ export default class Chart extends React.Component<Props, State> {
             <Orders>
               <thead>
                 <TR>
-                  {headers.map((h, i) => {
+                  {ordersHeaders.map((h, i) => {
                     return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
                   })}
                 </TR>
@@ -107,7 +137,7 @@ export default class Chart extends React.Component<Props, State> {
             <Orders>
               <thead>
                 <TR>
-                  {headers.map((h, i) => {
+                  {ordersHeaders.map((h, i) => {
                     return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
                   })}
                 </TR>
@@ -131,7 +161,7 @@ export default class Chart extends React.Component<Props, State> {
             <History>
                 <thead>
                   <TR>
-                    {headers.map((h, i) => {
+                    {ordersHeaders.map((h, i) => {
                       return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
                     })}
                   </TR>
@@ -190,6 +220,24 @@ export default class Chart extends React.Component<Props, State> {
   }
 }
 
+const Tbody = styled.tbody`
+  display: block;
+  height: ${props => props.ticker ? '468px' : '300px'};
+  overflow: auto;
+  width: 100%;
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgb(255, 255, 255);
+  }
+`
+
 const TR = styled.tr`
   display: table;
   width:100%;
@@ -243,14 +291,25 @@ const Container = styled.div`
   padding: 0 32px 0 32px;
 `
 
-const Tickers = styled.div`
+const TickersContainer = styled.div`
   display: flex;
   width: 35%;
   height: 500px;
   border: 1px solid #4ed8da;
   background-color: #292d31;
   border-radius: 3px;
-  margin: 0 0 16px 0;`
+  margin: 0 0 16px 0;
+  `
+
+const Tickers = styled.table`
+  width: 100%;
+  border-collapse: collapse;  
+  color: #fff;
+  font-size: 12px;
+  line-height: 10px;  
+  color: #fff;
+  word-wrap: normal;
+`
 
 const OrderContainer = styled.div`
 
@@ -261,38 +320,12 @@ const OrderContainer = styled.div`
   border-radius: 3px;
   box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.4);   
 `
-const Tbody = styled.tbody`
-  display: block;
-  height: ${props => props.ticker ? '468px' : '300px'};
-  overflow: auto;
-  width: 100%;
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgb(255, 255, 255);
-  }
-`
 
 const Orders = styled.table`
   width: 100%;
   border-collapse: collapse;
   font-size: 16px;
   line-height: 20px;  
-  color: #fff;
-`
-
-const TickersTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;  
-  color: #fff;
-  font-size: 12px;
-  line-height: 10px;  
   color: #fff;
 `
 
