@@ -277,11 +277,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
+    const { isUSDCurrently } = this.props
+
     if (!selectedRows || !industryData) {
       return defaultSelectedSum
     }
 
     let newReducedSum = {}
+
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" key="usd" />
+    ) : (
+      <Icon className="fa fa-btc" key="btc" />
+    )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
