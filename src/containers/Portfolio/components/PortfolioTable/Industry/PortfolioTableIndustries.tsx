@@ -353,7 +353,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <PTable>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                  <PTH key="selectAll">
                     <Checkbox
                       type="checkbox"
                       id="selectAll"
@@ -568,10 +568,13 @@ const Wrapper = styled.div`
 const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
+  display: inline-block;
+
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
+  display: table;
+  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`
@@ -584,11 +587,21 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-align: right;
-
-  &:first-child {
-    text-align: left;
+  
+  &:nth-child(1) {
+    padding: 1.75px 10px;
   }
+  
+  &:nth-child(2) {
+    min-width: 100px;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+  }
+  &:nth-child(n + 4) {
+    text-align: right;
+    min-width: 100px;
+  } 
 `
 
 const Span = styled.span``
@@ -631,31 +644,26 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 0 10px;
-  padding-top: 0;
-  padding-bottom: 10px;
-  padding-left: 10px;
   padding-right: ${(props: { isSorted?: boolean }) =>
     props.isSorted ? '0' : '16px'};
   font-weight: 500;
-  text-align: center;
-  vertical-align: bottom;
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  background-color: #393e44;
-  width: 60px;
+  
+  &:nth-child(1) {
+    padding: 10px;
+    text-align: left;
+  }
 
   &:nth-child(2) {
-    width: 90px;
+    text-align: left;
+    width: 100px;
   }
-  &:nth-child(6) {
-    width: 98px;
-    padding-right: 0;
+  &:nth-child(3) {
+    width: 70px;
+    text-align: left;
   }
-  &:nth-child(7) {
-    width: 98px;
-    padding-right: 0;
+  &:nth-child(n + 4) {
+    width: 100px;
+    text-align: right;
   }
 `
 
@@ -669,7 +677,20 @@ const PTR = styled.tr`
   }
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  
+  &::after {
+  content: ' ';
+position: absolute;
+left: 0;
+right: 0;
+border-bottom: 1px solid white;
+  }
+`
 
 
 const PTextBox = styled.div`

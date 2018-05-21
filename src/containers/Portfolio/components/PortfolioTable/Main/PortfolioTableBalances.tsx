@@ -348,8 +348,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
-        <Container>
-        <Wrapper isShownChart={isShownChart}>
+        <Container isShownChart={isShownChart}>
+        <Wrapper>
           <PTable>
             <PortfolioTableHead
               isUSDCurrently={isUSDCurrently}
@@ -421,7 +421,7 @@ const PTWrapper = styled.div`
 
 const Wrapper = styled.div`
   position: relative;
-  margin: 0 20px 20px;
+  margin: 0 20px 5px;
   overflow-y: scroll;
   background-color: #393e44;
 

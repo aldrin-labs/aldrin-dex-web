@@ -149,11 +149,6 @@ const PTH = styled.th`
   padding: 10px;
   font-weight: 500;
   text-align: right;
-
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  background-color: #393e44;
   
   &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
     min-width: 100px;

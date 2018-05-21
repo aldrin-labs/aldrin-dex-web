@@ -159,8 +159,6 @@ const PTD = styled.td`
   }
 `
 
-// #3a4e4e;
-
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
@@ -172,6 +170,7 @@ const PTR = styled.tr`
   }
   & ${PTD}:nth-child(n + 4) {
     text-align: right;
+    
   }
 `
 
