@@ -4,8 +4,7 @@ import { RadialChart, Hint, makeVisFlexible } from 'react-vis'
 
 import { Props, State, PiePiece } from './PieChart.types'
 
-const FlexibleRadialChart = makeVisFlexible(RadialChart);
-
+const FlexibleRadialChart = makeVisFlexible(RadialChart)
 
 export default class PieChart extends React.Component<Props, State> {
   state: State = {
@@ -53,10 +52,10 @@ export default class PieChart extends React.Component<Props, State> {
     )
 
     if (flexible) {
-      return <FLRadialChart/>
+      return <FLRadialChart />
     }
 
-    return <NonFLRadialChart/>
+    return <NonFLRadialChart />
   }
 }
 
