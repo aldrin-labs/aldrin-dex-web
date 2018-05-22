@@ -1,7 +1,13 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { IProps, IState } from './PortfolioTableRebalance.types'
-import { tableData } from './mocks'
+import {
+  tableData,
+  combineToChart,
+  PieChartMockFirst,
+  PieChartMockSecond,
+} from './mocks'
+import PieChart from '@components/PieChart'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -53,118 +59,136 @@ export default class PortfolioTableRebalance extends React.Component<
       <PTWrapper tableData={tableData}>
         {children}
         <Container>
-          <Table>
-            <PTHead>
-              <PTR>
-                <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                  <Checkbox type="checkbox" id="selectAll" />
-                  <Label htmlFor="selectAll">
-                    <Span />
-                  </Label>
-                </PTH>
-                {tableHeadings.map((heading) => (
-                  <PTH key={heading.name}>{heading.name}</PTH>
-                ))}
-              </PTR>
-            </PTHead>
+          <TableChartContainer>
+            <Table>
+              <PTHead>
+                <PTR>
+                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                    <Checkbox type="checkbox" id="selectAll" />
+                    <Label htmlFor="selectAll">
+                      <Span />
+                    </Label>
+                  </PTH>
+                  {tableHeadings.map((heading) => (
+                    <PTH key={heading.name}>{heading.name}</PTH>
+                  ))}
+                </PTR>
+              </PTHead>
 
-            <PTBody>
-              {tableData.map((row, idx) => {
-                const { currency, symbol, portfolioPerc, price } = row
+              <PTBody>
+                {tableData.map((row, idx) => {
+                  const { currency, symbol, portfolioPerc, price } = row
 
-                const isSelected =
-                  (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
-                  false
+                  const isSelected =
+                    (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
+                    false
 
-                const cols = [
-                  currency,
-                  symbol || '',
-                  portfolioPerc ? `${portfolioPerc}%` : '',
-                  `${price} $`,
-                ]
+                  const cols = [
+                    currency,
+                    symbol || '',
+                    portfolioPerc ? `${portfolioPerc}%` : '',
+                    `${price} $`,
+                  ]
 
-                return (
-                  <PTR
-                    key={`${currency}${symbol}`}
-                    isSelected={isSelected}
-                    onClick={() => this.onSelectBalance(idx)}
-                  >
-                    <PTD key="smt" isSelected={isSelected}>
-                      {this.renderCheckbox(idx)}
-                    </PTD>
-                    {cols.map((col, index) => {
-                      if (col.match(/%/g)) {
-                        const color =
-                          Number(col.replace(/%/g, '')) >= 0
-                            ? '#65c000'
-                            : '#ff687a'
+                  return (
+                    <PTR
+                      key={`${currency}${symbol}`}
+                      isSelected={isSelected}
+                      onClick={() => this.onSelectBalance(idx)}
+                    >
+                      <PTD key="smt" isSelected={isSelected}>
+                        {this.renderCheckbox(idx)}
+                      </PTD>
+                      {cols.map((col, index) => {
+                        if (col.match(/%/g)) {
+                          const color =
+                            Number(col.replace(/%/g, '')) >= 0
+                              ? '#65c000'
+                              : '#ff687a'
+
+                          return (
+                            <PTD
+                              key={`${col}${index}`}
+                              style={{ color }}
+                              isSelected={isSelected}
+                            >
+                              {col}
+                            </PTD>
+                          )
+                        }
 
                         return (
-                          <PTD
-                            key={`${col}${index}`}
-                            style={{ color }}
-                            isSelected={isSelected}
-                          >
+                          <PTD key={`${col}${index}`} isSelected={isSelected}>
                             {col}
                           </PTD>
                         )
-                      }
+                      })}
+                    </PTR>
+                  )
+                })}
+              </PTBody>
+            </Table>
 
-                      return (
-                        <PTD key={`${col}${index}`} isSelected={isSelected}>
-                          {col}
-                        </PTD>
-                      )
-                    })}
-                  </PTR>
-                )
-              })}
-            </PTBody>
-          </Table>
+            <PieChartContainer>
+              <PieChart
+                data={combineToChart(PieChartMockFirst)}
+                flexible={true}
+              />
+            </PieChartContainer>
+          </TableChartContainer>
 
-          <Table>
-            <PTHead>
-              <PTR>
-                {tableHeadings.map((heading) => (
-                  <PTH key={heading.name}>{heading.name}</PTH>
-                ))}
-              </PTR>
-            </PTHead>
+          <TableChartContainer>
+            <Table>
+              <PTHead>
+                <PTR>
+                  {tableHeadings.map((heading) => (
+                    <PTH key={heading.name}>{heading.name}</PTH>
+                  ))}
+                </PTR>
+              </PTHead>
 
-            <PTBody>
-              {tableData.map((row) => {
-                const { currency, symbol, portfolioPerc, price } = row
+              <PTBody>
+                {tableData.map((row) => {
+                  const { currency, symbol, portfolioPerc, price } = row
 
-                const cols = [
-                  currency,
-                  symbol || '',
-                  portfolioPerc ? `${portfolioPerc}%` : '',
-                  `${price} $`,
-                ]
+                  const cols = [
+                    currency,
+                    symbol || '',
+                    portfolioPerc ? `${portfolioPerc}%` : '',
+                    `${price} $`,
+                  ]
 
-                return (
-                  <PTR key={`${currency}${symbol}`}>
-                    {cols.map((col, idx) => {
-                      if (col.match(/%/g)) {
-                        const color =
-                          Number(col.replace(/%/g, '')) >= 0
-                            ? '#65c000'
-                            : '#ff687a'
+                  return (
+                    <PTR key={`${currency}${symbol}`}>
+                      {cols.map((col, idx) => {
+                        if (col.match(/%/g)) {
+                          const color =
+                            Number(col.replace(/%/g, '')) >= 0
+                              ? '#65c000'
+                              : '#ff687a'
 
-                        return (
-                          <PTD key={`${col}${idx}`} style={{ color }}>
-                            {col}
-                          </PTD>
-                        )
-                      }
+                          return (
+                            <PTD key={`${col}${idx}`} style={{ color }}>
+                              {col}
+                            </PTD>
+                          )
+                        }
 
-                      return <PTD key={`${col}${idx}`}>{col}</PTD>
-                    })}
-                  </PTR>
-                )
-              })}
-            </PTBody>
-          </Table>
+                        return <PTD key={`${col}${idx}`}>{col}</PTD>
+                      })}
+                    </PTR>
+                  )
+                })}
+              </PTBody>
+            </Table>
+
+            <PieChartContainer>
+              <PieChart
+                data={combineToChart(PieChartMockSecond)}
+                flexible={true}
+              />
+            </PieChartContainer>
+          </TableChartContainer>
         </Container>
       </PTWrapper>
     )
@@ -186,6 +210,8 @@ const PTWrapper = styled.div`
 
 const Container = styled.div`
   display: flex;
+  height: 50%;
+  margin-bottom: 20px;
   padding: 20px;
 `
 
@@ -272,3 +298,33 @@ const PTR = styled.tr`
 `
 
 const PTHead = styled.thead``
+
+const TableChartContainer = styled.div``
+
+const PieChartHeadingWrapper = styled.div`
+  width: 200px;
+  text-align: center;
+  padding-bottom: 5px;
+`
+
+const PieChartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3% 0;
+  width: 35vw;
+  height: 35vh;
+  margin: 0 auto;
+
+  @media (max-height: 650px) {
+    display: none;
+  }
+`
+
+const Heading = styled.span`
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+`
