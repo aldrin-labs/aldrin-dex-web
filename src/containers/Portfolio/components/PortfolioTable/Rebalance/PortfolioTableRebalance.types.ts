@@ -3,5 +3,6 @@ export interface IProps {
 }
 
 export interface IState {
-  selectedBalances: number[] | null
+  selectedBalances: number[] | null,
+  areAllChecked: boolean
 }

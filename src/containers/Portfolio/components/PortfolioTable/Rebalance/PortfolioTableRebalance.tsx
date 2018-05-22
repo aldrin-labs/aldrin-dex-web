@@ -14,7 +14,9 @@ export default class PortfolioTableRebalance extends React.Component<
   IProps,
   IState
 > {
-  state: IState = { selectedBalances: null }
+  state: IState = { 
+    selectedBalances: null,
+    areAllChecked: false }
 
   renderCheckbox = (idx: number) => {
     const { selectedBalances } = this.state
@@ -31,18 +33,42 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 
+  onSelectAll = (e: any) => {
+    console.log("select all")
+    const selectedBalances =
+      (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
+    let {areAllChecked} = this.state
+    console.log(selectedBalances.length)
+    console.log(tableData.length)
+    if(selectedBalances.length >= tableData.length){
+      selectedBalances.splice(0, selectedBalances.length)
+      areAllChecked = false
+    }else{
+      selectedBalances.splice(0, selectedBalances.length)
+      tableData.map((a, i) =>{
+        selectedBalances.push(i)
+      })
+      areAllChecked = true
+    }
+    this.setState({ selectedBalances, areAllChecked })
+  }
+ 
   onSelectBalance = (idx: number) => {
     const selectedBalances =
       (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
-
+    let {areAllChecked} = this.state
     const hasIndex = selectedBalances.indexOf(idx)
     if (hasIndex >= 0) {
       selectedBalances.splice(hasIndex, 1)
     } else {
       selectedBalances.push(idx)
     }
-
-    this.setState({ selectedBalances })
+    if(selectedBalances.length >= tableData.length){
+      areAllChecked = true
+    }else{
+      areAllChecked = false
+    }
+    this.setState({ selectedBalances, areAllChecked })
   }
 
   render() {
@@ -57,7 +83,7 @@ export default class PortfolioTableRebalance extends React.Component<
             <PTHead>
               <PTR>
                 <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                  <Checkbox type="checkbox" id="selectAll" />
+                  <Checkbox  onClick={() => this.onSelectAll()} checked={this.state.areAllChecked} type="checkbox" id="selectAll" />
                   <Label htmlFor="selectAll">
                     <Span />
                   </Label>
