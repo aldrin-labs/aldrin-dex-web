@@ -139,11 +139,21 @@ export default class PortfolioTableRebalance extends React.Component<
                               : '#ff687a'
 
                           return (
-                            <PTD key={`${col}${index}`} isSelected={isSelected}>
+                            <PTD
+                              key={`${col}${index}`}
+                              style={{ color }}
+                              isSelected={isSelected}
+                            >
                               {col}
                             </PTD>
                           )
                         }
+
+                        return (
+                          <PTD key={`${col}${index}`} isSelected={isSelected}>
+                            {col}
+                          </PTD>
+                        )
                       })}
                     </PTR>
                   )
@@ -158,7 +168,6 @@ export default class PortfolioTableRebalance extends React.Component<
               />
             </PieChartContainer>
           </TableChartContainer>
-
           <TableChartContainer>
             <Table>
               <PTHead>
