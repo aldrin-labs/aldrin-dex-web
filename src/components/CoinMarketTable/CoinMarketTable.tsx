@@ -1,9 +1,12 @@
 import * as React from 'react'
+import { History } from 'history'
 import styled from 'styled-components'
 import Button from '../Elements/Button/Button'
 import arrowIcon from '@icons/arrow.svg'
-import { Loading } from '@components/Loading'
+import QueryRenderer from '@components/QueryRenderer'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
+
+import { HomeQuery } from './api'
 
 const kindBtns = ['All coins', 'Coins', 'Tokens']
 
@@ -19,9 +22,11 @@ const headers = [
 
 export interface Props {
   data: CoinMarketCapQueryQuery
-  activeSortArg?: number
+  location: Location
+  history: History
+  fetchMore: Function
+
   showFilterBns?: boolean
-  fetchMore?: Function
   onChangeSortArg?: Function
   redirectToProfile?: Function
 }
@@ -30,14 +35,36 @@ export interface State {
   activeKind: number
 }
 
-export default class CoinMarketTable extends React.Component<Props, State> {
+class CoinMarketTable extends React.Component<Props, State> {
   state: State = {
     activeKind: 0,
   }
 
   fetchMore = () => {
-    const { fetchMore } = this.props
-    if (fetchMore) fetchMore()
+    const { history, location, fetchMore } = this.props
+    let page
+    const query = new URLSearchParams(location.search)
+    if (query.has('page')) {
+      page = query.get('page')
+    } else {
+      query.append('page', '1')
+      page = query.get('page')
+    }
+    page = (Number(page) || 1) + 1
+    history.push({ search: `?page=${page}` })
+    fetchMore({
+      query: HomeQuery,
+      variables: { page, perPage: 40 },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev
+        return Object.assign({}, prev, {
+          assetPagination: [
+            ...prev.assetPagination,
+            ...fetchMoreResult.assetPagination,
+          ],
+        })
+      },
+    })
   }
 
   onChangeKind = (index: number) => {
@@ -59,17 +86,9 @@ export default class CoinMarketTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { activeSortArg, showFilterBns, data } = this.props
-    const { activeKind } = this.state
+    const { data, showFilterBns } = this.props
     const { assetPagination } = data
-
-    if (data.loading || !data.assetPagination) {
-      return (
-        <MarketWrapper>
-          <Loading centerAligned />
-        </MarketWrapper>
-      )
-    }
+    console.log('CoinMarketTable.props: ', this.props)
 
     return (
       <MarketWrapper>
@@ -80,7 +99,7 @@ export default class CoinMarketTable extends React.Component<Props, State> {
               return (
                 <Button
                   onClick={() => this.onChangeKind(i)}
-                  active={i === activeKind}
+                  // active={i === activeKind}
                   key={kindBtn}
                   title={kindBtn}
                   mRight
@@ -90,18 +109,18 @@ export default class CoinMarketTable extends React.Component<Props, State> {
           </BtnsContainer>
         )}
 
-        <Table>
+        <Table style={{ marginBottom: 0 }}>
           <THead>
             <tr>
               {headers.map((header, i) => (
                 <TH
                   key={header}
                   onClick={() => this.onChangeSortArg(i, header)}
-                  style={i === activeSortArg ? {} : { fontWeight: 500 }}
+                  // style={i === activeSortArg ? {} : { fontWeight: 500 }}
                 >
                   {header}
-                  {i === activeSortArg &&
-                    i !== 0 && <WebIcon src={arrowIcon.replace(/"/gi, '')} />}
+                  {/*i === activeSortArg &&
+                    i !== 0 && <WebIcon src={arrowIcon.replace(/"/gi, '')} />*/}
                 </TH>
               ))}
             </tr>
@@ -288,3 +307,36 @@ const TR = styled.tr`
     color: #4ed8da;
   }
 `
+
+export default function({
+  location,
+  history,
+}: {
+  location: Location
+  history: History
+}) {
+  let page
+  if (!location) {
+    page = 1
+  } else {
+    const query = new URLSearchParams(location.search)
+    if (query.has('page')) {
+      page = query.get('page')
+    } else {
+      query.append('page', '1')
+      page = query.get('page')
+    }
+  }
+
+  const variables = { perPage: 40, page }
+
+  return (
+    <QueryRenderer
+      component={CoinMarketTable}
+      query={HomeQuery}
+      variables={variables}
+      location={location}
+      history={history}
+    />
+  )
+}
