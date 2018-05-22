@@ -312,8 +312,8 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3% 0;
-  width: 40vw;
-  height: 40vh;
+  width: 35vw;
+  height: 35vh;
   margin: 0 auto;
 
   @media (max-height: 650px) {
