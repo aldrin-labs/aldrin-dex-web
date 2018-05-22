@@ -1,7 +1,13 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { IProps, IState } from './PortfolioTableRebalance.types'
-import { tableData } from './mocks'
+import {
+  tableData,
+  combineToChart,
+  PieChartMockFirst,
+  PieChartMockSecond,
+} from './mocks'
+import PieChart from '@components/PieChart'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -122,6 +128,16 @@ export default class PortfolioTableRebalance extends React.Component<
             </PTBody>
           </Table>
 
+          <PieChartContainer>
+            <PieChartHeadingWrapper>
+              <Heading>Current Portfolio</Heading>
+            </PieChartHeadingWrapper>
+            <PieChart
+              data={combineToChart(PieChartMockFirst)}
+              flexible={true}
+            />
+          </PieChartContainer>
+
           <Table>
             <PTHead>
               <PTR>
@@ -165,6 +181,16 @@ export default class PortfolioTableRebalance extends React.Component<
               })}
             </PTBody>
           </Table>
+
+          <PieChartContainer>
+            <PieChartHeadingWrapper>
+              <Heading>Rebalanced Portfolio</Heading>
+            </PieChartHeadingWrapper>
+            <PieChart
+              data={combineToChart(PieChartMockSecond)}
+              flexible={true}
+            />
+          </PieChartContainer>
         </Container>
       </PTWrapper>
     )
@@ -272,3 +298,31 @@ const PTR = styled.tr`
 `
 
 const PTHead = styled.thead``
+
+const PieChartHeadingWrapper = styled.div`
+  width: 200px;
+  text-align: center;
+  padding-bottom: 5px;
+`
+
+const PieChartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3% 0;
+  width: 40vw;
+  height: 40vh;
+  margin: 0 auto;
+
+  @media (max-height: 650px) {
+    display: none;
+  }
+`
+
+const Heading = styled.span`
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  color: #fff;
+`
