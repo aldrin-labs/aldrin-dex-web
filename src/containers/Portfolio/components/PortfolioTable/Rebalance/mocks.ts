@@ -1,3 +1,40 @@
+export function combineToChart(mockData) {
+  return mockData.map((dataItem) => ({
+    angle: dataItem.value,
+    label: dataItem.name,
+  }))
+}
+
+export const PieChartMockFirst = [
+  {
+    name: 'ETH',
+    value: 0.82562342,
+  },
+  {
+    name: 'BTC',
+    value: 1.62562342,
+  },
+  {
+    name: 'LTC',
+    value: 2.32562342,
+  },
+]
+
+export const PieChartMockSecond = [
+  {
+    name: 'XPR',
+    value: 2.5213123,
+  },
+  {
+    name: 'BTC',
+    value: 3.123123123,
+  },
+  {
+    name: 'LTC',
+    value: 8.12312312,
+  },
+]
+
 export const tableData = [
   {
     currency: 'Bitrex',
