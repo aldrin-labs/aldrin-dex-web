@@ -251,6 +251,10 @@ const AccountsWalletsBlock = styled.div`
   min-width: 200px;
   background-color: #2d3136;
   padding: 16px;
+
+  @media (max-width: 425px) {
+    display: none;
+  }
 `
 
 const AccountsWalletsHeading = styled.span`

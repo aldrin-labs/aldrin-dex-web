@@ -399,6 +399,11 @@ const Container = styled.div`
     height: ${(props: { isShownChart: boolean }) =>
       props.isShownChart ? '45vh' : ''};
   }
+
+  @media (max-width: 450px) {
+    height: ${(props: { isShownChart: boolean }) =>
+      props.isShownChart ? '78vh' : ''};
+  }
 `
 
 const PTWrapper = styled.div`
@@ -416,6 +421,11 @@ const PTWrapper = styled.div`
   @media (max-width: 500px) {
     width: calc(100% - 90px);
     height: 100vh;
+  }
+
+  @media (max-width: 425px) {
+    width: calc(100% - 20px);
+    margin: 10px;
   }
 `
 
