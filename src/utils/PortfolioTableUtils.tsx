@@ -78,6 +78,9 @@ export const onValidateSum = (
   }
   clonedSum.percentage = `${calcPercentage(clonedSum.percentage)}%`
   clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
+  clonedSum.realizedPL = [mainSymbol, clonedSum.realizedPL]
+  clonedSum.unrealizedPL = [mainSymbol, clonedSum.unrealizedPL]
+  clonedSum.totalPL = [mainSymbol, clonedSum.totalPL]
 
   return clonedSum
 }

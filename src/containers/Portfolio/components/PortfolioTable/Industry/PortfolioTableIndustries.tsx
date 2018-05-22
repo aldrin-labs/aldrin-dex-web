@@ -79,7 +79,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      if (!portfolio || !portfolio.assets) { return }
+      if (!portfolio || !portfolio.assets) {
+        return
+      }
 
       const composeWithMocks = {
         ...portfolio,
@@ -109,7 +111,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   combineIndustryData = (portfolio?: IPortfolio) => {
     const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
-    if (!portfolio || !portfolio.assets || !activeKeys) { return }
+    if (!portfolio || !portfolio.assets || !activeKeys) {
+      return
+    }
     const { assets } = portfolio
 
     const industryData = assets
@@ -120,7 +124,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           exchange = { name: '' },
         } =
           row || {}
-        if (activeKeys.indexOf(key!.name) === -1) { return null }
+        if (activeKeys.indexOf(key!.name) === -1) {
+          return null
+        }
         const {
           symbol = '',
           priceUSD = '',
@@ -141,6 +147,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         const industryPerformance = isUSDCurrently
           ? parseFloat(performance.usd).toFixed(2)
           : parseFloat(performance.btc).toFixed(2)
+
+        // console.log(performance.usd);
+        // console.log(performance.btc);
+        console.log('ind: ', ind)
 
         const col = {
           currency: name || '-',
@@ -180,7 +190,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onSortTable = (key: Args) => {
     const { industryData, currentSort } = this.state
-    if (!industryData) { return }
+    if (!industryData) {
+      return
+    }
 
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
@@ -241,15 +253,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     const sum = industryData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
     const reducedSum = sum.reduce(
-      (acc, val) =>
-        ({
-          currency: val.currency,
-          symbol: val.symbol,
-          industry: val.industry,
-          price: Number(acc.price) + Number(val.price),
-          portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
-          industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
-        }),
+      (acc, val) => ({
+        currency: val.currency,
+        symbol: val.symbol,
+        industry: val.industry,
+        price: Number(acc.price) + Number(val.price),
+        portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
+        industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
+      }),
       {
         currency: '',
         symbol: '',
@@ -266,23 +277,33 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) { return defaultSelectedSum }
+    const { isUSDCurrently } = this.props
 
-    let newReducedSum = {};
+    if (!selectedRows || !industryData) {
+      return defaultSelectedSum
+    }
+
+    let newReducedSum = {}
+
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" key="usd" />
+    ) : (
+      <Icon className="fa fa-btc" key="btc" />
+    )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
         ...reducedSum,
         currency: 'All',
         symbol: '-',
-        industry: '-'
+        industry: '-',
       }
     } else if (selectedRows.length > 1) {
       newReducedSum = {
         ...reducedSum,
         currency: 'Selected',
         symbol: '-',
-        industry: '-'
+        industry: '-',
       }
     }
 
@@ -291,7 +312,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onSelectAll = () => {
     const { industryData } = this.state
-    if (!industryData) { return }
+    if (!industryData) {
+      return
+    }
     const rowQuantity = industryData.length
     let allRows: number[] | null
     const selectedRows =
@@ -306,15 +329,16 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   genLineChart = () => {
     const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) { return }
+    if (!selectedRows || !industryData) {
+      return
+    }
     const data = industryData.filter((o, i) => selectedRows.indexOf(i) >= 0)
 
-    return data.map((item, i) =>
-      ({
-        x: i + 1,
-        y: i * 2,
-        label: `${item.symbol} ${item.industry}`,
-      }))
+    return data.map((item, i) => ({
+      x: i + 1,
+      y: i * 2,
+      label: `${item.symbol} ${item.industry}`,
+    }))
   }
 
   render() {
@@ -347,7 +371,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <PTable>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                  <PTH key="selectAll">
                     <Checkbox
                       type="checkbox"
                       id="selectAll"
@@ -450,7 +474,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             }
 
                             return (
-                              <PTD key={`${col}${innerIdx}`} isSelected={isSelected}>
+                              <PTD
+                                key={`${col}${innerIdx}`}
+                                isSelected={isSelected}
+                              >
                                 {col}
                               </PTD>
                             )
@@ -478,7 +505,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           <PieChartHeadingWrapper>
             <Heading>Industry Pie Chart</Heading>
           </PieChartHeadingWrapper>
-          <PieChart data={combineToChart()} />
+          <PieChart data={combineToChart()} flexible={true} />
         </PieChartContainer>
       </PTWrapper>
     )
@@ -487,16 +514,33 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
 const Container = styled.div`
   display: flex;
+  justify-content: space-between;
+  height: 30vh;
+
+  @media (max-height: 650px) {
+    height: 50%;
+    margin-bottom: 20px;
+  }
 `
 
 const PieChartHeadingWrapper = styled.div`
   width: 200px;
   text-align: center;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 `
 
 const PieChartContainer = styled.div`
-  margin: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3% 0;
+  width: 40vw;
+  height: 40vh;
+  margin: 0 auto;
+
+  @media (max-height: 650px) {
+    display: none;
+  }
 `
 
 const Heading = styled.span`
@@ -526,6 +570,14 @@ const LineChartContainer = styled.div`
   width: 30%;
   height: 100%;
   text-align: center;
+  margin: 0 20px;
+
+  @media (max-height: 650px) {
+    display: none;
+  }
+  @media (max-width: 900px) {
+    display: none;
+  }
 `
 
 const Icon = styled.i`
@@ -535,6 +587,7 @@ const Icon = styled.i`
 const Wrapper = styled.div`
   overflow-y: scroll;
   background-color: #393e44;
+  margin-left: 20px;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -552,10 +605,12 @@ const Wrapper = styled.div`
 const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
+  display: inline-block;
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
+  display: table;
+  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`
@@ -568,10 +623,20 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-align: right;
 
-  &:first-child {
-    text-align: left;
+  &:nth-child(1) {
+    padding: 1.75px 10px;
+  }
+
+  &:nth-child(2) {
+    min-width: 100px;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+  }
+  &:nth-child(n + 4) {
+    text-align: right;
+    min-width: 100px;
   }
 `
 
@@ -615,31 +680,26 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 0 10px;
-  padding-top: 0;
-  padding-bottom: 10px;
-  padding-left: 10px;
   padding-right: ${(props: { isSorted?: boolean }) =>
     props.isSorted ? '0' : '16px'};
   font-weight: 500;
-  text-align: center;
-  vertical-align: bottom;
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  background-color: #393e44;
-  width: 60px;
+
+  &:nth-child(1) {
+    padding: 10px;
+    text-align: left;
+  }
 
   &:nth-child(2) {
-    width: 90px;
+    text-align: left;
+    width: 100px;
   }
-  &:nth-child(6) {
-    width: 98px;
-    padding-right: 0;
+  &:nth-child(3) {
+    width: 70px;
+    text-align: left;
   }
-  &:nth-child(7) {
-    width: 98px;
-    padding-right: 0;
+  &:nth-child(n + 4) {
+    width: 100px;
+    text-align: right;
   }
 `
 
@@ -653,8 +713,20 @@ const PTR = styled.tr`
   }
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  top: 0;
 
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid white;
+  }
+`
 
 const PTextBox = styled.div`
   font-size: 30px;
@@ -671,7 +743,7 @@ const PTextBox = styled.div`
   background-color: #2d3136;
 `
 
-const mapStateToProps = (store : object) => ({
+const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
 })
 

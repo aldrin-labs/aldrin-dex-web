@@ -348,7 +348,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
-        <Wrapper isShownChart={isShownChart}>
+        <Container isShownChart={isShownChart}>
+        <Wrapper>
           <PTable>
             <PortfolioTableHead
               isUSDCurrently={isUSDCurrently}
@@ -371,6 +372,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             ) : null}
           </PTable>
         </Wrapper>
+        </Container>
 
         <PTChartContainer>
           <ProfileChart
@@ -387,6 +389,17 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     )
   }
 }
+
+const Container = styled.div`
+  display: flex;
+  height: ${(props: { isShownChart: boolean }) =>
+  props.isShownChart ? '30vh' : ''};
+
+  @media (max-height: 650px) {
+    height: ${(props: { isShownChart: boolean }) =>
+  props.isShownChart ? '45vh' : ''};
+  }
+`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
@@ -408,6 +421,7 @@ const PTWrapper = styled.div`
 
 const Wrapper = styled.div`
   position: relative;
+  margin: 0 20px 5px;
   overflow-y: scroll;
   background-color: #393e44;
 
@@ -422,20 +436,11 @@ const Wrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
   }
-
-  height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '30vh' : ''};
-
-  @media (max-height: 650px) {
-    height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '45vh' : ''};
-  }
 `
 
 const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
-  position: static;
   display: inline-block;
 `
 
