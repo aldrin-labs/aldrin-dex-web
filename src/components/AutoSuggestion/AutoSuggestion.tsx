@@ -1,4 +1,5 @@
 import * as React from 'react'
+import styled from 'styled-components'
 
 export interface Suggestion {
   title: string
@@ -25,6 +26,8 @@ export default class AutoSuggestion extends React.Component<Props, State> {
     this.state = {
       value: props.value || '',
     }
+
+    this.onPressSuggestion = this.onPressSuggestion.bind(this)
   }
 
   onChangeText = (e: any): void => {
@@ -41,12 +44,12 @@ export default class AutoSuggestion extends React.Component<Props, State> {
     }
   }
 
-  // onPressSuggestion = (item: { price: number; title: string }) => {
-  //   const { onChangePrice } = this.props
-  //   this.onChangeText(item.title)
-  //   this.setState({ tips: null })
-  //   if (onChangePrice) onChangePrice(String(item.price))
-  // }
+  onPressSuggestion = (item: { price: number; title: string }) => {
+    const { onChangePrice } = this.props
+    // this.onChangeText(item.title)
+    this.setState({ value: null })
+    if (onChangePrice) onChangePrice(String(item.price))
+  }
 
   render() {
     const { select, suggestions } = this.props
@@ -54,53 +57,77 @@ export default class AutoSuggestion extends React.Component<Props, State> {
 
     return (
       <div style={select ? { position: 'relative' } : {}}>
-        <input
-          value={value}
-          onChange={this.onChangeText}
-          style={
-            select
-              ? {
-                  width: '50px',
-                  padding: '5px',
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#fff',
-                  marginLeft: '15px',
-                }
-              : {}
-          }
-        />
-        <div
-          style={
-            select
-              ? {
-                  position: 'absolute',
-                  left: '15px',
-                  top: '40px',
-                  backgroundColor: '#303030',
-                  maxHeight: '100px',
-                  overflowY: 'scroll',
-                  display: 'flex',
-                  color: '#fff',
-                  flexDirection: 'column',
-                }
-              : {}
-          }
-        >
-          {suggestions &&
-            suggestions.map((item) => {
-              return (
-                <span
-                  key={item.title}
-                  style={{ padding: '5px' }}
-                  // onClick={() => this.onPressSuggestion(item)}
-                >
-                  {item.title}
-                </span>
-              )
-            })}
+        <div>
+          <Input
+            value={value}
+            onChange={this.onChangeText}
+            style={select ? {} : {}}
+          />
         </div>
+        {this.state.value !== '' ? (
+          <SuggestionContainer style={select ? {} : {}}>
+            {suggestions &&
+              suggestions.slice(0, 5).map((item) => {
+                return (
+                  <Suggestion
+                    key={item.title}
+                    style={{ padding: '5px' }}
+                    onClick={() => this.onPressSuggestion(item)}
+                  >
+                    {item.title}
+                  </Suggestion>
+                )
+              })}
+          </SuggestionContainer>
+        ) : null}
       </div>
     )
   }
 }
+
+const Input = styled.input`
+  box-sizing: border-box;
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  outline: none;
+  border-right: none;
+  width: 100%;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  color: #fff;
+  padding: 10px 0;
+  transition: border-bottom 0.3s;
+
+  &:focus {
+    border-bottom: 2px solid rgb(78, 216, 218);
+  }
+`
+
+const SuggestionContainer = styled.div`
+  box-shadow: 0 2px 6px 0 #00000066;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 2.875rem;
+  width: 100%;
+  background-color: #393e44;
+  font-family: Roboto, sans-serif;
+  color: #fff;
+  font-weight: 300;
+  font-size: 16px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  z-index: 2;
+`
+
+const Suggestion = styled.span`
+  cursor: pointer;
+  padding: 10px 20px;
+
+  &:hover {
+    background-color: #292d31;
+  }
+`

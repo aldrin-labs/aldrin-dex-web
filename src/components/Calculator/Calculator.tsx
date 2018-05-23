@@ -157,12 +157,12 @@ class Calculator extends React.Component<Props, State> {
                 )
               })}
             </RateSelect>*/}
-            <AutoSuggestion
+            {/* <AutoSuggestion
               select
               value={value}
               suggestions={suggestions}
               onChange={this.refetch}
-            />
+            /> */}
           </ExchangeContainer>
 
           <ExchangeContainer>
@@ -189,7 +189,7 @@ class Calculator extends React.Component<Props, State> {
 }
 
 const RateSelectOption = styled.option`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -201,7 +201,7 @@ const RateSelectOption = styled.option`
 `
 
 const RateSelect = styled.select`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -226,7 +226,7 @@ const Input = styled.input`
   outline: none;
   border-right: none;
   width: 75%;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
   text-align: left;
@@ -246,7 +246,7 @@ const BtnsContainer = styled.div`
 
 const ShortcutDesc = styled.span`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   color: #ffffff;
   margin: 8px 0;
