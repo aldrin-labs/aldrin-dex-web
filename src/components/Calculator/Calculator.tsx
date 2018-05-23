@@ -1,12 +1,19 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
 import styled from 'styled-components'
+import debounce from 'lodash/debounce'
+
 import Button from '@components/Elements/Button/Button'
+import AutoSuggestion from '@components/AutoSuggestion/AutoSuggestion'
+import QueryRenderer from '@components/QueryRenderer'
 
 import { Props, State } from './types'
 
-export default class Calculator extends React.Component<Props, State> {
+class Calculator extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
+
+    this.refetch = debounce(this.refetch, 300)
 
     this.state = {
       currentRate: props.rates[0],
@@ -90,13 +97,27 @@ export default class Calculator extends React.Component<Props, State> {
     })
   }
 
+  refetch = (q: string) => {
+    console.log('refetch: ', q)
+    this.props.refetch({ page: 1, perPage: 20, filter: { q } })
+  }
+
   render() {
-    const { rates } = this.props
+    const { rates, data } = this.props
     const { firstValue, secondValue, currentRate } = this.state
     const match = currentRate.name.match(/([a-z]+)/gi)
     const [firstRateName, secondRateName] = match || ['', '']
 
+    const suggestions = data.assetPagination.items.map((item) => ({
+      title: item.symbol,
+      _id: item._id,
+    }))
+
     const options = ['BTC', 'USD', 'ETH', 'XRP']
+
+    const value = data.variables.filter.q
+      ? data.variables.filter.q.toLowerCase()
+      : ''
 
     return (
       <React.Fragment>
@@ -123,7 +144,7 @@ export default class Calculator extends React.Component<Props, State> {
               }}
             />
 
-            <RateSelect
+            {/*<RateSelect
               value={firstRateName}
               defaultValue={firstRateName}
               onChange={this.onSelectFirstRate}
@@ -135,7 +156,13 @@ export default class Calculator extends React.Component<Props, State> {
                   </RateSelectOption>
                 )
               })}
-            </RateSelect>
+            </RateSelect>*/}
+            <AutoSuggestion
+              select
+              value={value}
+              suggestions={suggestions}
+              onChange={this.refetch}
+            />
           </ExchangeContainer>
 
           <ExchangeContainer>
@@ -229,3 +256,31 @@ const ShortcutWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+export const CalculatorQuery = gql`
+  query CalculatorQuery(
+    $page: Int
+    $perPage: Int
+    $filter: FilterFindManyAssetInput
+  ) {
+    assetPagination(page: $page, perPage: $perPage, filter: $filter) {
+      items {
+        _id
+        name
+        symbol
+      }
+    }
+  }
+`
+
+export default function(props: any) {
+  const variables = { page: 1, perPage: 20, filter: {} }
+  return (
+    <QueryRenderer
+      query={CalculatorQuery}
+      variables={variables}
+      component={Calculator}
+      {...props}
+    />
+  )
+}

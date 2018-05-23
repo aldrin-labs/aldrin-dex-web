@@ -11,13 +11,32 @@ export interface Props {
   variables?: { [key: string]: any } | null
 }
 
-export default class QueryRenderer extends React.Component<Props> {
+export interface State {
+  variables: { [key: string]: any } | null
+}
+
+export default class QueryRenderer extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      variables: props.variables || {},
+    }
+  }
+
+  _refetch = (variables: { [key: string]: any }, refetch: Function) => {
+    this.setState({ variables }, () => {
+      refetch(variables)
+    })
+  }
+
   render() {
-    const { query, component, variables } = this.props
+    const { query, component, ...rest } = this.props
+    const { variables } = this.state
 
     return (
       <Query query={query} variables={variables}>
-        {({ loading, error, data, refetch, networkStatus }) => {
+        {({ loading, error, data, refetch, networkStatus, client }) => {
           if (loading) {
             return <Loading centerAligned />
           } else if (error) {
@@ -25,7 +44,14 @@ export default class QueryRenderer extends React.Component<Props> {
           }
 
           const Component = component
-          return <Component data={data} refetch={refetch} />
+          return (
+            <Component
+              client={client}
+              data={{ ...data, variables }}
+              refetch={(v) => this._refetch(v, refetch)}
+              {...rest}
+            />
+          )
         }}
       </Query>
     )

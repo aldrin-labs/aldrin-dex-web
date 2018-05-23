@@ -1,148 +1,106 @@
-import React, { Component } from 'react'
-import Autosuggest from 'react-autosuggest'
-import { DebounceInput } from 'react-debounce-input'
+import * as React from 'react'
 
-import { theme } from './theme'
-import { Props, State, Suggestion } from './types'
+export interface Suggestion {
+  title: string
+  _id: any
+}
 
-export default class AutoSuggestion extends Component<Props, State> {
-  constructor() {
-    super()
+export interface Props {
+  value?: string
+  suggestions: Suggestion[]
+  select?: boolean
+  style?: any
+  onChange?: Function
+  onChangePrice?: Function
+}
+
+export interface State {
+  value: string
+}
+
+export default class AutoSuggestion extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
 
     this.state = {
-      list: [
-        {
-          name: 'C',
-          value: 1972,
-        },
-        {
-          name: 'Elm',
-          value: 2012,
-        },
-        {
-          name: 'Elma',
-          value: 2012,
-        },
-        {
-          name: 'Eelma',
-          value: 2012,
-        },
-        {
-          name: 'Eelmaa',
-          value: 2012,
-        },
-        {
-          name: 'Eelmaaa',
-          value: 2012,
-        },
-        {
-          name: 'Eelmaaaa',
-          value: 2012,
-        },
-        {
-          name: 'Eelmaaaaa',
-          value: 2012,
-        },
-        {
-          name: 'Eelmaaaaaa',
-          value: 2012,
-        },
-      ],
-      value: '',
-      suggestions: [],
+      value: props.value || '',
     }
   }
 
-  // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
-  escapeRegexCharacters(str: string) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  }
+  onChangeText = (e: any): void => {
+    const value = e.target.value
 
-  // Teach Autosuggest how to calculate suggestions for any given input value.
-  getSuggestions(value: string) {
-    const escapedValue = this.escapeRegexCharacters(value.trim())
+    if (value) {
+      const { onChange } = this.props
 
-    if (escapedValue === '') {
-      return []
+      this.setState({ value }, () => {
+        if (onChange) onChange(value)
+      })
+    } else {
+      this.setState({ value })
     }
-
-    const inputValue = value.trim().toLowerCase()
-    const inputLength = inputValue.length
-
-    return inputLength === 0
-      ? []
-      : this.state.list
-          .filter(
-            (lang) =>
-              lang.name.toLowerCase().slice(0, inputLength) === inputValue
-          )
-          .slice(0, 5)
   }
 
-  // When suggestion is clicked, Autosuggest needs to populate the input
-  // based on the clicked suggestion. Teach Autosuggest how to calculate the
-  // input value for every given suggestion.
-  getSuggestionValue(suggestion: Suggestion) {
-    return suggestion.name
-  }
-
-  renderSuggestion(suggestion: Suggestion) {
-    return (
-      <div>
-        {suggestion.name} - {suggestion.value}{' '}
-      </div>
-    )
-  }
-
-  renderInputComponent(inputProps) {
-    return (
-      <div>
-        <DebounceInput {...inputProps} minLength={2} debounceTimeout={300} />
-      </div>
-    )
-  }
-
-  onChange = (event, { newValue }: { newValue: string }) => {
-    this.setState({
-      value: newValue,
-    })
-  }
-
-  // Autosuggest will call this function every time you need to update suggestions.
-  onSuggestionsFetchRequested = ({ value }: { value: string }) => {
-    this.setState({
-      suggestions: this.getSuggestions(value),
-    })
-  }
-
-  // Autosuggest will call this function every time you need to clear suggestions.
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    })
-  }
+  // onPressSuggestion = (item: { price: number; title: string }) => {
+  //   const { onChangePrice } = this.props
+  //   this.onChangeText(item.title)
+  //   this.setState({ tips: null })
+  //   if (onChangePrice) onChangePrice(String(item.price))
+  // }
 
   render() {
-    const { value, suggestions } = this.state
-
-    // Autosuggest will pass through all these props to the input.
-    const inputProps = {
-      placeholder: this.props.placeholder,
-      value,
-      onChange: this.onChange,
-    }
+    const { select, suggestions } = this.props
+    const { value } = this.state
 
     return (
-      <Autosuggest
-        theme={theme}
-        suggestions={suggestions}
-        onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-        onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-        getSuggestionValue={this.getSuggestionValue}
-        renderSuggestion={this.renderSuggestion}
-        renderInputComponent={this.renderInputComponent}
-        inputProps={inputProps}
-      />
+      <div style={select ? { position: 'relative' } : {}}>
+        <input
+          value={value}
+          onChange={this.onChangeText}
+          style={
+            select
+              ? {
+                  width: '50px',
+                  padding: '5px',
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#fff',
+                  marginLeft: '15px',
+                }
+              : {}
+          }
+        />
+        <div
+          style={
+            select
+              ? {
+                  position: 'absolute',
+                  left: '15px',
+                  top: '40px',
+                  backgroundColor: '#303030',
+                  maxHeight: '100px',
+                  overflowY: 'scroll',
+                  display: 'flex',
+                  color: '#fff',
+                  flexDirection: 'column',
+                }
+              : {}
+          }
+        >
+          {suggestions &&
+            suggestions.map((item) => {
+              return (
+                <span
+                  key={item.title}
+                  style={{ padding: '5px' }}
+                  // onClick={() => this.onPressSuggestion(item)}
+                >
+                  {item.title}
+                </span>
+              )
+            })}
+        </div>
+      </div>
     )
   }
 }
