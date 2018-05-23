@@ -5,4 +5,5 @@ export interface IProps {
 export interface IState {
   selectedBalances: number[] | null
   areAllChecked: boolean
+  rows: any[]
 }

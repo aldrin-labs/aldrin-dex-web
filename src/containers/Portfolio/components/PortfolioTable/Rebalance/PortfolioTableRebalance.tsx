@@ -16,6 +16,15 @@ const tableHeadings = [
   { name: 'Current', value: 'price' },
 ]
 
+const newTableHeadings = [
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
+  { name: 'Current', value: 'price' },
+  { name: 'Add money', value: 'price' },
+  { name: 'Trade', value: 'price' },
+]
+
 export default class PortfolioTableRebalance extends React.Component<
   IProps,
   IState
@@ -23,6 +32,7 @@ export default class PortfolioTableRebalance extends React.Component<
   state: IState = {
     selectedBalances: null,
     areAllChecked: false,
+    rows: tableData
   }
 
   renderCheckbox = (idx: number) => {
@@ -40,19 +50,46 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 
+  onButtonClick = (idx: number) => {
+    //console.log(idx)
+    let {rows} = this.state
+    if(rows.length  -  1  ==  idx){
+      rows.splice(rows.length-2, 0, rows[0])
+    }else{
+      //console.log(rows[idx])
+      let money = [rows[idx].portfolioPerc, rows[idx].price]
+      //console.log(money)
+      let parts = rows.length-2
+      //console.log(parts)
+      let moneyPart = [money[0] / parts, money[1] / parts]
+      //console.log(moneyPart)
+      rows.splice(idx, 1)
+      rows.forEach((row, i, arr) => {
+        if(i != rows.length-1){        
+          console.log(i)
+          rows[i].portfolioPerc+=moneyPart[0]
+          rows[i].portfolioPerc = parseFloat(rows[i].portfolioPerc.toFixed(2))
+          rows[i].price+=moneyPart[1]
+          rows[i].price = Math.round(rows[i].price)
+        }
+      })
+    }    
+    this.setState({rows})
+  }
+
   onSelectAll = (e: any) => {
     console.log('select all')
     const selectedBalances =
       (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
     let { areAllChecked } = this.state
     console.log(selectedBalances.length)
-    console.log(tableData.length)
-    if (selectedBalances.length >= tableData.length) {
+    console.log(this.state.rows.length)
+    if (selectedBalances.length >= this.state.rows.length) {
       selectedBalances.splice(0, selectedBalances.length)
       areAllChecked = false
     } else {
       selectedBalances.splice(0, selectedBalances.length)
-      tableData.map((a, i) => {
+      this.state.rows.map((a, i) => {
         selectedBalances.push(i)
       })
       areAllChecked = true
@@ -70,7 +107,7 @@ export default class PortfolioTableRebalance extends React.Component<
     } else {
       selectedBalances.push(idx)
     }
-    if (selectedBalances.length >= tableData.length) {
+    if (selectedBalances.length >= this.state.rows.length) {
       areAllChecked = true
     } else {
       areAllChecked = false
@@ -83,7 +120,7 @@ export default class PortfolioTableRebalance extends React.Component<
     const { selectedBalances } = this.state
 
     return (
-      <PTWrapper tableData={tableData}>
+      <PTWrapper tableData={this.state.rows}>
         {children}
         <Container>
           <TableChartContainer>
@@ -108,7 +145,7 @@ export default class PortfolioTableRebalance extends React.Component<
               </PTHead>
 
               <PTBody>
-                {tableData.map((row, idx) => {
+                {this.state.rows.map((row, idx) => {
                   const { currency, symbol, portfolioPerc, price } = row
 
                   const isSelected =
@@ -172,14 +209,14 @@ export default class PortfolioTableRebalance extends React.Component<
             <Table>
               <PTHead>
                 <PTR>
-                  {tableHeadings.map((heading) => (
+                  {newTableHeadings.map((heading) => (
                     <PTH key={heading.name}>{heading.name}</PTH>
                   ))}
                 </PTR>
               </PTHead>
 
               <PTBody>
-                {tableData.map((row) => {
+                {this.state.rows.map((row, rowIndex) => {
                   const { currency, symbol, portfolioPerc, price } = row
 
                   const cols = [
@@ -200,14 +237,19 @@ export default class PortfolioTableRebalance extends React.Component<
 
                           return (
                             <PTD key={`${col}${idx}`} style={{ color }}>
-                              {col}
+                              {col}                              
                             </PTD>
                           )
                         }
 
                         return <PTD key={`${col}${idx}`}>{col}</PTD>
                       })}
-                    </PTR>
+                      <PTD></PTD>
+                      <PTD></PTD>
+                      <PTD><button onClick={() => this.onButtonClick(rowIndex)}>{rowIndex == this.state.rows.length-1 
+                                    ? 'add'
+                                    : 'delete' }</button></PTD>
+                    </PTR>                    
                   )
                 })}
               </PTBody>
