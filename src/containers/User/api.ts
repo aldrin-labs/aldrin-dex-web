@@ -65,7 +65,7 @@ export const addExchangeKeyMutation = gql`
 `
 export const getExchangesListQuery = gql`
   query getExchangesList($page: Int, $perPage: Int) {
-    exchangePagination(page: $page, perPage: $perPage) {
+    exchangePagination(page: $page, perPage: 50) {
       count
       items {
         _id
@@ -78,6 +78,18 @@ export const getExchangesListQuery = gql`
           exchangeIds
           price
         }
+      }
+    }
+  }
+`
+export const getExchangesForKeysListQuery = gql`
+  query getExchangesForKeysList {
+    exchangePagination(page: 1, perPage: 50) {
+      count
+      items {
+        _id
+        name
+        symbol
       }
     }
   }
