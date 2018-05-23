@@ -32,7 +32,9 @@ export default class PortfolioTableRebalance extends React.Component<
   state: IState = {
     selectedBalances: null,
     areAllChecked: false,
-    rows: tableData
+    rows: tableData,
+    staticRows: tableData,
+    savedRows: tableData
   }
 
   renderCheckbox = (idx: number) => {
@@ -52,7 +54,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onButtonClick = (idx: number) => {
     //console.log(idx)
-    let {rows} = this.state
+    let rows = JSON.parse(JSON.stringify(this.state.rows));
     if(rows.length  -  1  ==  idx){
       rows.splice(rows.length-2, 0, rows[0])
     }else{
@@ -66,7 +68,7 @@ export default class PortfolioTableRebalance extends React.Component<
       rows.splice(idx, 1)
       rows.forEach((row, i, arr) => {
         if(i != rows.length-1){        
-          console.log(i)
+          //console.log(i)
           rows[i].portfolioPerc+=moneyPart[0]
           rows[i].portfolioPerc = parseFloat(rows[i].portfolioPerc.toFixed(2))
           rows[i].price+=moneyPart[1]
@@ -83,13 +85,13 @@ export default class PortfolioTableRebalance extends React.Component<
       (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
     let { areAllChecked } = this.state
     console.log(selectedBalances.length)
-    console.log(this.state.rows.length)
-    if (selectedBalances.length >= this.state.rows.length) {
+    console.log(this.state.staticRows.length)
+    if (selectedBalances.length >= this.state.staticRows.length) {
       selectedBalances.splice(0, selectedBalances.length)
       areAllChecked = false
     } else {
       selectedBalances.splice(0, selectedBalances.length)
-      this.state.rows.map((a, i) => {
+      this.state.staticRows.map((a, i) => {
         selectedBalances.push(i)
       })
       areAllChecked = true
@@ -107,13 +109,20 @@ export default class PortfolioTableRebalance extends React.Component<
     } else {
       selectedBalances.push(idx)
     }
-    if (selectedBalances.length >= this.state.rows.length) {
+    if (selectedBalances.length >= this.state.staticRows.length) {
       areAllChecked = true
     } else {
       areAllChecked = false
     }
     this.setState({ selectedBalances, areAllChecked })
   }
+  onSaveClick = (e: any) => {
+    this.setState({savedRows:this.state.rows})
+  }
+  onLoadClick = (e: any) => {
+    this.setState({rows:this.state.savedRows})
+  }
+
 
   render() {
     const { children } = this.props
@@ -139,13 +148,13 @@ export default class PortfolioTableRebalance extends React.Component<
                     </Label>
                   </PTH>
                   {tableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
+                    <PTH /*key={heading.name}*/>{heading.name}</PTH>
                   ))}
                 </PTR>
               </PTHead>
 
               <PTBody>
-                {this.state.rows.map((row, idx) => {
+                {this.state.staticRows.map((row, idx) => {
                   const { currency, symbol, portfolioPerc, price } = row
 
                   const isSelected =
@@ -161,7 +170,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR
-                      key={`${currency}${symbol}`}
+                      /*key={`${currency}${symbol}`}*/
                       isSelected={isSelected}
                       onClick={() => this.onSelectBalance(idx)}
                     >
@@ -177,7 +186,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                           return (
                             <PTD
-                              key={`${col}${index}`}
+                              /*key={`${col}${index}`}*/
                               style={{ color }}
                               isSelected={isSelected}
                             >
@@ -187,7 +196,7 @@ export default class PortfolioTableRebalance extends React.Component<
                         }
 
                         return (
-                          <PTD key={`${col}${index}`} isSelected={isSelected}>
+                          <PTD /*key={`${col}${index}`}*/ isSelected={isSelected}>
                             {col}
                           </PTD>
                         )
@@ -210,7 +219,7 @@ export default class PortfolioTableRebalance extends React.Component<
               <PTHead>
                 <PTR>
                   {newTableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
+                    <PTH /*key={heading.name}*/>{heading.name}</PTH>
                   ))}
                 </PTR>
               </PTHead>
@@ -227,7 +236,7 @@ export default class PortfolioTableRebalance extends React.Component<
                   ]
 
                   return (
-                    <PTR key={`${currency}${symbol}`}>
+                    <PTR /*key={`${currency}${symbol}`}*/>
                       {cols.map((col, idx) => {
                         if (col.match(/%/g)) {
                           const color =
@@ -236,13 +245,13 @@ export default class PortfolioTableRebalance extends React.Component<
                               : '#ff687a'
 
                           return (
-                            <PTD key={`${col}${idx}`} style={{ color }}>
+                            <PTD /*key={`${col}${idx}`}*/ style={{ color }}>
                               {col}                              
                             </PTD>
                           )
                         }
 
-                        return <PTD key={`${col}${idx}`}>{col}</PTD>
+                        return <PTD /*key={`${col}${idx}`}*/>{col}</PTD>
                       })}
                       <PTD></PTD>
                       <PTD></PTD>
@@ -254,7 +263,8 @@ export default class PortfolioTableRebalance extends React.Component<
                 })}
               </PTBody>
             </Table>
-
+            <button onClick={() => this.onSaveClick()}>save</button>
+            <button onClick={() => this.onLoadClick()}>load</button>
             <PieChartContainer>
               <PieChart
                 data={combineToChart(PieChartMockSecond)}
