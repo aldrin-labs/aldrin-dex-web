@@ -8,7 +8,6 @@ import DominanceWidget from './widgets/DominanceWidget'
 import BitcoinPriceChartWidget from './widgets/BitcoinPriceChartWidget'
 import TreeMapWidget from './widgets/TreeMapWidget'
 import MarketCapWidget from './widgets/MarketCapWidget'
-import LineChartWidget from './widgets/LineChartWidget'
 import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 
 export interface Props {
@@ -62,7 +61,6 @@ export default class Home extends React.Component<Props> {
         maxH: 2.5,
       },
       { i: 'marketCap', x: 8.5, y: 0, w: 3, h: 3, minW: 3, minH: 3, maxH: 3 },
-      { i: 'lineChart', x: 3.5, y: 0, w: 3, h: 3, minW: 3, minH: 3, maxH: 3 },
     ]
 
     return (
@@ -77,10 +75,6 @@ export default class Home extends React.Component<Props> {
 
         <Column key="btcprice">
           <BitcoinPriceChartWidget />
-        </Column>
-
-        <Column key="lineChart">
-          <LineChartWidget />
         </Column>
 
         <Column key="calculator">

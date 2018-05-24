@@ -73,11 +73,12 @@ export default class Correlation extends React.Component<IProps> {
             </Table>
           </ScrolledWrapper>
 
-          <HeatMapChart
+
+          {/* <HeatMapChart
             data={getHeatMapData(HeatMapMocks)}
             width={500}
             height={500}
-          />
+          /> */}
         </Wrapper>
       </PTWrapper>
     )
