@@ -86,6 +86,7 @@ export const tableData = [
   },
   {
     currency: 'Total',
-    price: 29950,
+    undistributedMoney: 0,
+    price: 43950,
   },
 ]

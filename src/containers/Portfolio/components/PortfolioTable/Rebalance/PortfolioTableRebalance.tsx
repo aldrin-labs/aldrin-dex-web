@@ -16,11 +16,28 @@ const tableHeadings = [
   { name: 'Current', value: 'price' },
 ]
 
+const newTableHeadings = [
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
+  { name: 'Current', value: 'price' },
+  { name: 'Trade', value: 'price' },
+]
+
 export default class PortfolioTableRebalance extends React.Component<
   IProps,
   IState
 > {
-  state: IState = { selectedBalances: null }
+  state: IState = {
+    selectedBalances: null,
+    selectedActive: null,
+    areAllChecked: false,
+    areAllActiveChecked: false,
+    rows: tableData,
+    staticRows: tableData,
+    savedRows: tableData,
+    addMoneyInputValue: 0,
+  }
 
   renderCheckbox = (idx: number) => {
     const { selectedBalances } = this.state
@@ -37,46 +54,221 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 
-  onSelectBalance = (idx: number) => {
+  renderActiveCheckbox = (idx: number) => {
+    const { selectedActive } = this.state
+    const isSelected =
+      (selectedActive && selectedActive.indexOf(idx) >= 0) || false
+
+    return (
+      <React.Fragment>
+        <Checkbox type="checkbox" id={idx} checked={isSelected} />
+        <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
+          <Span />
+        </Label>
+      </React.Fragment>
+    )
+  }
+
+  onButtonClick = (idx: number) => {
+    let rows = JSON.parse(JSON.stringify(this.state.rows));
+    let {selectedActive, areAllActiveChecked} = this.state
+    if(rows.length  -  1  ==  idx){
+      let newRow = {
+        currency: 'Newcoin',
+        symbol: 'NEW',
+        portfolioPerc: 0.00,
+        price: 0,
+      }
+      rows.splice(rows.length-1, 0, newRow)
+      areAllActiveChecked = false
+    }else{
+      let money = rows[idx].price
+      rows[rows.length-1].undistributedMoney+=money
+      rows.splice(idx, 1)
+      if(selectedActive){
+        let toRemove = -1
+        selectedActive.forEach((row, i, arr) =>{
+          if(selectedActive[i] == idx){
+            //selectedActive.splice(i, 1)
+            toRemove = i
+          }else{
+            if(selectedActive[i] > idx){
+              selectedActive[i]-=1
+            }
+          }
+        })
+        if(toRemove!=-1){
+          selectedActive.splice(toRemove, 1)
+        }
+        if (selectedActive.length >= rows.length-1) {
+          areAllActiveChecked = true
+        } else {
+          areAllActiveChecked = false
+        }
+      }
+      /*
+      let money = [rows[idx].portfolioPerc, rows[idx].price]
+      let parts = rows.length-2
+      let moneyPart = [money[0] / parts, money[1] / parts]
+      rows.forEach((row, i, arr) => {
+        if(i != rows.length-1){   
+          rows[i].portfolioPerc+=moneyPart[0]
+          rows[i].portfolioPerc = parseFloat(rows[i].portfolioPerc.toFixed(2))
+          rows[i].price+=moneyPart[1]
+          rows[i].price = Math.round(rows[i].price)
+        }
+      })
+      */
+    }    
+    this.setState({rows, selectedActive, areAllActiveChecked})
+  }
+
+  onSelectAll = (e: any) => {
     const selectedBalances =
       (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
-
-    const hasIndex = selectedBalances.indexOf(idx)
-    if (hasIndex >= 0) {
-      selectedBalances.splice(hasIndex, 1)
+    let { areAllChecked } = this.state
+    if (selectedBalances.length >= this.state.staticRows.length-1) {
+      selectedBalances.splice(0, selectedBalances.length)
+      areAllChecked = false
     } else {
-      selectedBalances.push(idx)
+      selectedBalances.splice(0, selectedBalances.length)
+      this.state.staticRows.map((a, i) => {
+        if(i<this.state.staticRows.length-1){
+          selectedBalances.push(i)
+        }
+      })
+      areAllChecked = true
     }
-
-    this.setState({ selectedBalances })
+    this.setState({ selectedBalances, areAllChecked })
   }
+  onSelectAllActive = (e: any) => {
+    const selectedActive =
+      (this.state.selectedActive && this.state.selectedActive.slice()) || []
+    let { areAllActiveChecked } = this.state
+    if (selectedActive.length >= this.state.rows.length-1) {
+      selectedActive.splice(0, selectedActive.length)
+      areAllActiveChecked = false
+    } else {
+      selectedActive.splice(0, selectedActive.length)
+      this.state.rows.map((a, i) => {
+        if(i<this.state.rows.length-1){
+          selectedActive.push(i)
+        }
+      })
+      areAllActiveChecked = true
+    }
+    this.setState({ selectedActive, areAllActiveChecked })
+  }
+
+  onSelectBalance = (idx: number) => {
+    if(idx<this.state.staticRows.length-1){
+      const selectedBalances =
+        (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
+      let { areAllChecked } = this.state
+      const hasIndex = selectedBalances.indexOf(idx)
+      if (hasIndex >= 0) {
+        selectedBalances.splice(hasIndex, 1)
+      } else {
+        selectedBalances.push(idx)
+      }
+      if (selectedBalances.length >= this.state.staticRows.length-1) {
+        areAllChecked = true
+      } else {
+        areAllChecked = false
+      }
+      this.setState({ selectedBalances, areAllChecked })
+    }
+  }
+  onSelectActiveBalance = (idx: number) => {
+    if(idx<this.state.rows.length-1){
+      const selectedActive =
+        (this.state.selectedActive && this.state.selectedActive.slice()) || []
+      let { areAllActiveChecked } = this.state
+      const hasIndex = selectedActive.indexOf(idx)
+      if (hasIndex >= 0) {
+        selectedActive.splice(hasIndex, 1)
+      } else {
+        selectedActive.push(idx)
+      }
+      if (selectedActive.length >= this.state.rows.length-1) {
+        areAllActiveChecked = true
+      } else {
+        areAllActiveChecked = false
+      }
+      this.setState({ selectedActive, areAllActiveChecked })
+    }
+  }
+  onSaveClick = (e: any) => {
+    this.setState({savedRows:this.state.rows})
+  }
+  onLoadClick = (e: any) => {
+    this.setState({rows:this.state.savedRows})
+  }
+
+  onDistribute = (e:any) => {
+    let {selectedActive, rows} = this.state
+    if(selectedActive&&selectedActive.length>0){
+      if(selectedActive.length>1){      
+      let money = rows[rows.length-1].undistributedMoney
+      let moneyPart = Math.floor(money/selectedActive.length)
+      selectedActive.forEach((row, i, arr) => {
+        rows[selectedActive[i]].price+=moneyPart
+        money-=moneyPart        
+      })
+      rows[rows.length-1].undistributedMoney = money
+      }else{
+        rows[selectedActive[0]].price += rows[rows.length-1].undistributedMoney
+        rows[rows.length-1].undistributedMoney = 0        
+      }
+      this.setState({selectedActive, rows})
+    }
+  }
+  onAddMoneyInputChange = (e: any) => {
+    this.setState({addMoneyInputValue: e.target.value})
+  }
+  onAddMoneyButtonPressed = (e: any) => {
+    if(this.state.addMoneyInputValue!=0){
+      let {rows} = this.state
+      rows[rows.length-1].undistributedMoney += Number(this.state.addMoneyInputValue)
+      this.setState({addMoneyInputValue: 0,
+                    rows})
+    }
+  }
+  
+
 
   render() {
     const { children } = this.props
     const { selectedBalances } = this.state
+    const {selectedActive} = this.state
 
     return (
-      <PTWrapper tableData={tableData}>
+      <PTWrapper tableData={this.state.rows}>
         {children}
         <Container>
           <TableChartContainer>
             <Table>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                    <Checkbox type="checkbox" id="selectAll" />
+                  <PTH /*key="selectAll"*/ style={{ textAlign: 'left' }}>
+                    <Checkbox
+                      onChange={() => this.onSelectAll()}
+                      checked={this.state.areAllChecked}
+                      type="checkbox"
+                      id="selectAll"
+                    />
                     <Label htmlFor="selectAll">
                       <Span />
                     </Label>
                   </PTH>
                   {tableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
+                    <PTH /*key={heading.name}*/>{heading.name}</PTH>
                   ))}
                 </PTR>
               </PTHead>
 
               <PTBody>
-                {tableData.map((row, idx) => {
+                {this.state.staticRows.map((row, idx) => {
                   const { currency, symbol, portfolioPerc, price } = row
 
                   const isSelected =
@@ -92,12 +284,12 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR
-                      key={`${currency}${symbol}`}
+                      /*key={`${currency}${symbol}`}*/
                       isSelected={isSelected}
                       onClick={() => this.onSelectBalance(idx)}
                     >
-                      <PTD key="smt" isSelected={isSelected}>
-                        {this.renderCheckbox(idx)}
+                      <PTD /*key="smt"*/ isSelected={isSelected}>
+                        {idx>=this.state.staticRows.length-1?()=>{}:this.renderCheckbox(idx)}
                       </PTD>
                       {cols.map((col, index) => {
                         if (col.match(/%/g)) {
@@ -108,7 +300,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                           return (
                             <PTD
-                              key={`${col}${index}`}
+                              /*key={`${col}${index}`}*/
                               style={{ color }}
                               isSelected={isSelected}
                             >
@@ -118,7 +310,7 @@ export default class PortfolioTableRebalance extends React.Component<
                         }
 
                         return (
-                          <PTD key={`${col}${index}`} isSelected={isSelected}>
+                          <PTD /*key={`${col}${index}`}*/ isSelected={isSelected}>
                             {col}
                           </PTD>
                         )
@@ -136,20 +328,34 @@ export default class PortfolioTableRebalance extends React.Component<
               />
             </PieChartContainer>
           </TableChartContainer>
-
           <TableChartContainer>
             <Table>
               <PTHead>
                 <PTR>
-                  {tableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
+                <PTH /*key="selectAll"*/ style={{ textAlign: 'left' }}>
+                    <Checkbox
+                      onChange={() => this.onSelectAllActive()}
+                      checked={this.state.areAllActiveChecked}
+                      type="checkbox"
+                      id="selectAllActive"
+                    />
+                    <Label htmlFor="selectAllActive">
+                      <Span />
+                    </Label>
+                  </PTH>
+                  {newTableHeadings.map((heading) => (
+                    <PTH /*key={heading.name}*/>{heading.name}</PTH>
                   ))}
                 </PTR>
               </PTHead>
 
               <PTBody>
-                {tableData.map((row) => {
+                {this.state.rows.map((row, rowIndex) => {
                   const { currency, symbol, portfolioPerc, price } = row
+
+                  const isSelected =
+                    (selectedActive && selectedActive.indexOf(rowIndex) >= 0) ||
+                    false
 
                   const cols = [
                     currency,
@@ -159,7 +365,15 @@ export default class PortfolioTableRebalance extends React.Component<
                   ]
 
                   return (
-                    <PTR key={`${currency}${symbol}`}>
+                    <PTR
+                      /*key={`${currency}${symbol}`}*/
+                      isSelected={isSelected}
+                      
+                    >
+                    <PTD /*key="smt"*/ isSelected={isSelected}
+                    onClick={() => this.onSelectActiveBalance(rowIndex)}>
+                        {rowIndex>=this.state.rows.length-1?()=>{}:this.renderActiveCheckbox(rowIndex)}
+                      </PTD>
                       {cols.map((col, idx) => {
                         if (col.match(/%/g)) {
                           const color =
@@ -168,20 +382,36 @@ export default class PortfolioTableRebalance extends React.Component<
                               : '#ff687a'
 
                           return (
-                            <PTD key={`${col}${idx}`} style={{ color }}>
-                              {col}
+                            <PTD /*key={`${col}${idx}`}*/ style={{ color }}>
+                              {col}                              
                             </PTD>
                           )
                         }
 
-                        return <PTD key={`${col}${idx}`}>{col}</PTD>
+                        return <PTD /*key={`${col}${idx}`}*/>{col}</PTD>
                       })}
-                    </PTR>
+                      <PTD></PTD>
+                      <PTD><button onClick={() => this.onButtonClick(rowIndex)}>{rowIndex == this.state.rows.length-1 
+                                    ? 'add'
+                                    : 'delete' }</button></PTD>
+                    </PTR>                    
                   )
                 })}
               </PTBody>
             </Table>
-
+            <button onClick={() => this.onSaveClick()}>save</button>
+            <button onClick={() => this.onLoadClick()}>load</button>
+            <div>
+            <input type="number" value={this.state.addMoneyInputValue} onChange={this.onAddMoneyInputChange} />
+            <button onClick={() => this.onAddMoneyButtonPressed()}>Add money</button>
+            </div>
+            {this.state.rows[this.state.rows.length-1].undistributedMoney!=0?
+              <div>
+                <p>Undistributed money: {this.state.rows[this.state.rows.length-1].undistributedMoney}</p>
+                <button onClick={() => this.onDistribute()}>Distribute to selected</button>
+              </div>
+              :()=>{}}
+            
             <PieChartContainer>
               <PieChart
                 data={combineToChart(PieChartMockSecond)}
