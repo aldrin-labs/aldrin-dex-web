@@ -125,7 +125,62 @@ export default class Home extends React.Component<Props> {
       },
     ]
 
-    const layouts = { lg: lgLayout, sm: smLayout }
+    const xsLayout = [
+      { i: 'table', x: 0, y: 0, w: 4, h: 5, static: true },
+      {
+        i: 'btcprice',
+        x: 0,
+        y: 6,
+        w: 4,
+        h: 3,
+      },
+      {
+        i: 'calculator',
+        x: 0,
+        y: 9,
+        w: 2,
+        h: 2,
+        minW: 2,
+        minH: 2,
+        maxH: 3,
+        maxW: 4,
+      },
+      {
+        i: 'dominance',
+        x: 3,
+        y: 9,
+        w: 2,
+        h: 3,
+        minW: 2,
+        minH: 3,
+        maxH: 4,
+        maxW: 4,
+      },
+      {
+        i: 'treeMap',
+        x: 3,
+        y: 18,
+        w: 2,
+        h: 2.5,
+        minW: 2,
+        minH: 2.5,
+        maxH: 3,
+        maxW: 3,
+      },
+      {
+        i: 'marketCap',
+        x: 0,
+        y: 17,
+        w: 2,
+        h: 3.5,
+        minH: 2,
+        minW: 3,
+        maxH: 4,
+        maxW: 5,
+      },
+    ]
+
+    const layouts = { lg: lgLayout, sm: smLayout, xs: xsLayout }
 
     return (
       <ResponsiveGridLayout
