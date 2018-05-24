@@ -47,15 +47,12 @@ export default class QueryRenderer extends React.Component<Props, State> {
           const Component = component
           return (
             <Component
-<<<<<<< HEAD
               client={client}
               data={{ ...data, variables }}
               refetch={(v) => this._refetch(v, refetch)}
-=======
               data={data}
               refetch={refetch}
               fetchMore={fetchMore}
->>>>>>> Linechart-and-piechart
               {...rest}
             />
           )
