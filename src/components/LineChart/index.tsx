@@ -56,7 +56,7 @@ export default class LineChart extends React.Component {
           tickFormat={(v: number) => `${v + 16}`}
           tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
         />
-        <YAxis style={axisStyle} hideLine tickFormat={(v) => `${v} 000 000`} />
+        <YAxis style={axisStyle} hideLine tickFormat={(v) => `${v}М`} />
         {data.map((d, i) => (
           <LineSeries
             style={{

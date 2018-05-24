@@ -15,7 +15,7 @@ export default class Widget extends React.Component<Props> {
         <HeadingWrapper>
           <Wrapper>
             {icon && <SvgIcon src={icon} width={24} height={24} />}
-            <Heading>{heading}</Heading>
+            {heading && <Heading>{heading}</Heading>}
           </Wrapper>
           <span className="dnd" style={dndStyles}>
             <SvgIcon src={menuIcon} width={24} height={24} />
