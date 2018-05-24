@@ -36,6 +36,7 @@ export default class PortfolioTableRebalance extends React.Component<
     rows: tableData,
     staticRows: tableData,
     savedRows: tableData,
+    addMoneyInputValue: 0,
   }
 
   renderCheckbox = (idx: number) => {
@@ -123,12 +124,9 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onSelectAll = (e: any) => {
-    console.log('select all')
     const selectedBalances =
       (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
     let { areAllChecked } = this.state
-    console.log(selectedBalances.length)
-    console.log(this.state.staticRows.length)
     if (selectedBalances.length >= this.state.staticRows.length-1) {
       selectedBalances.splice(0, selectedBalances.length)
       areAllChecked = false
@@ -144,12 +142,9 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ selectedBalances, areAllChecked })
   }
   onSelectAllActive = (e: any) => {
-    console.log('select all')
     const selectedActive =
       (this.state.selectedActive && this.state.selectedActive.slice()) || []
     let { areAllActiveChecked } = this.state
-    console.log(selectedActive.length)
-    console.log(this.state.rows.length)
     if (selectedActive.length >= this.state.rows.length-1) {
       selectedActive.splice(0, selectedActive.length)
       areAllActiveChecked = false
@@ -226,6 +221,17 @@ export default class PortfolioTableRebalance extends React.Component<
         rows[rows.length-1].undistributedMoney = 0        
       }
       this.setState({selectedActive, rows})
+    }
+  }
+  onAddMoneyInputChange = (e: any) => {
+    this.setState({addMoneyInputValue: e.target.value})
+  }
+  onAddMoneyButtonPressed = (e: any) => {
+    if(this.state.addMoneyInputValue!=0){
+      let {rows} = this.state
+      rows[rows.length-1].undistributedMoney += Number(this.state.addMoneyInputValue)
+      this.setState({addMoneyInputValue: 0,
+                    rows})
     }
   }
   
@@ -395,6 +401,10 @@ export default class PortfolioTableRebalance extends React.Component<
             </Table>
             <button onClick={() => this.onSaveClick()}>save</button>
             <button onClick={() => this.onLoadClick()}>load</button>
+            <div>
+            <input type="number" value={this.state.addMoneyInputValue} onChange={this.onAddMoneyInputChange} />
+            <button onClick={() => this.onAddMoneyButtonPressed()}>Add money</button>
+            </div>
             {this.state.rows[this.state.rows.length-1].undistributedMoney!=0?
               <div>
                 <p>Undistributed money: {this.state.rows[this.state.rows.length-1].undistributedMoney}</p>

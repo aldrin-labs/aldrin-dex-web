@@ -10,4 +10,5 @@ export interface IState {
   rows: any[]
   staticRows: any[]
   savedRows: any[]
+  addMoneyInputValue: number
 }
