@@ -186,6 +186,7 @@ const PTWrapper = styled.div`
 
 const Container = styled.div`
   display: flex;
+  padding: 20px;
 `
 
 const Table = styled.table`

@@ -9,6 +9,7 @@ export interface Props {
   query: DocumentNode
   component: React.ReactNode
   variables?: { [key: string]: any } | null
+  [key: string]: any
 }
 
 export interface State {
@@ -31,12 +32,12 @@ export default class QueryRenderer extends React.Component<Props, State> {
   }
 
   render() {
-    const { query, component, ...rest } = this.props
-    const { variables } = this.state
+    const { query, component, variables, ...rest } = this.props
+    console.log('QueryRenderer.props: ', this.props)
 
     return (
       <Query query={query} variables={variables}>
-        {({ loading, error, data, refetch, networkStatus, client }) => {
+        {({ loading, error, data, refetch, networkStatus, fetchMore }) => {
           if (loading) {
             return <Loading centerAligned />
           } else if (error) {
@@ -46,9 +47,15 @@ export default class QueryRenderer extends React.Component<Props, State> {
           const Component = component
           return (
             <Component
+<<<<<<< HEAD
               client={client}
               data={{ ...data, variables }}
               refetch={(v) => this._refetch(v, refetch)}
+=======
+              data={data}
+              refetch={refetch}
+              fetchMore={fetchMore}
+>>>>>>> Linechart-and-piechart
               {...rest}
             />
           )

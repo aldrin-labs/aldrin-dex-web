@@ -134,6 +134,18 @@ const PTHeadingBlock = styled.div`
   @media (max-height: 700px) {
     min-height: 60px;
   }
+
+  @media (max-width: 425px) {
+    min-height: 60px;
+
+    &:nth-child(n) {
+      align-items: center;
+      padding: 10px;
+    }
+    &:not(:first-child) {
+      margin-bottom: 15px;
+    }
+  }
 `
 
 const ToggleBtn = styled.button`
@@ -167,6 +179,12 @@ const Tab = styled.button`
   margin: 10px 15px;
   outline: none;
   box-sizing: border-box;
+
+  @media (max-width: 425px) {
+    &:nth-child(n + 2) {
+      display: none;
+    }
+  }
 `
 
 // const Icon = styled.i`

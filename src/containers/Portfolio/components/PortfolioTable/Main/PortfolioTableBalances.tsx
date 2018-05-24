@@ -348,29 +348,31 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
-        <Wrapper isShownChart={isShownChart}>
-          <PTable>
-            <PortfolioTableHead
-              isUSDCurrently={isUSDCurrently}
-              isSelectAll={isSelectAll}
-              onSelectAll={this.onSelectAll}
-              onSortTable={this.onSortTable}
-              currentSort={currentSort}
-            />
-            <PortfolioTableMain
-              tableData={tableData}
-              selectedBalances={selectedBalances}
-              isUSDCurrently={isUSDCurrently}
-              onSelectBalance={this.onSelectBalance}
-            />
-            {selectedSum.currency ? (
-              <PortfolioTableSum
-                selectedSum={selectedSum}
+        <Container isShownChart={isShownChart}>
+          <Wrapper>
+            <PTable>
+              <PortfolioTableHead
                 isUSDCurrently={isUSDCurrently}
+                isSelectAll={isSelectAll}
+                onSelectAll={this.onSelectAll}
+                onSortTable={this.onSortTable}
+                currentSort={currentSort}
               />
-            ) : null}
-          </PTable>
-        </Wrapper>
+              <PortfolioTableMain
+                tableData={tableData}
+                selectedBalances={selectedBalances}
+                isUSDCurrently={isUSDCurrently}
+                onSelectBalance={this.onSelectBalance}
+              />
+              {selectedSum.currency ? (
+                <PortfolioTableSum
+                  selectedSum={selectedSum}
+                  isUSDCurrently={isUSDCurrently}
+                />
+              ) : null}
+            </PTable>
+          </Wrapper>
+        </Container>
 
         <PTChartContainer>
           <ProfileChart
@@ -388,6 +390,22 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 }
 
+const Container = styled.div`
+  display: flex;
+  height: ${(props: { isShownChart: boolean }) =>
+    props.isShownChart ? '30vh' : ''};
+
+  @media (max-height: 650px) {
+    height: ${(props: { isShownChart: boolean }) =>
+      props.isShownChart ? '45vh' : ''};
+  }
+
+  @media (max-width: 450px) {
+    height: ${(props: { isShownChart: boolean }) =>
+      props.isShownChart ? '78vh' : ''};
+  }
+`
+
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 240px);' : '100%'};
@@ -404,10 +422,16 @@ const PTWrapper = styled.div`
     width: calc(100% - 90px);
     height: 100vh;
   }
+
+  @media (max-width: 425px) {
+    width: calc(100% - 20px);
+    margin: 10px;
+  }
 `
 
 const Wrapper = styled.div`
   position: relative;
+  margin: 0 20px 5px;
   overflow-y: scroll;
   background-color: #393e44;
 
@@ -422,20 +446,11 @@ const Wrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
   }
-
-  height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '30vh' : ''};
-
-  @media (max-height: 650px) {
-    height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '45vh' : ''};
-  }
 `
 
 const PTable = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
-  position: static;
   display: inline-block;
 `
 
