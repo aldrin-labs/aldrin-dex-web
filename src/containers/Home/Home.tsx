@@ -67,27 +67,61 @@ export default class Home extends React.Component<Props> {
       { i: 'marketCap', x: 8.5, y: 0, w: 3, h: 3, minW: 3, minH: 3, maxH: 3 },
     ]
     const smLayout = [
-      { i: 'table', x: 0, y: 0, w: 6.5, h: 5, static: true },
+      { i: 'table', x: 0, y: 0, w: 6, h: 5, static: true },
       {
         i: 'btcprice',
-        x: 6,
-        y: 0,
-        w: 6.5,
+        x: 0,
+        y: 6,
+        w: 6,
         h: 3,
-        minW: 5.5,
+        minW: 6,
         minH: 3,
-        maxH: 3,
-        maxW: 6.5,
+        maxH: 4,
+        maxW: 6,
       },
       {
         i: 'calculator',
-        x: 9,
-        y: 0,
-        w: 2.5,
+        x: 0,
+        y: 9,
+        w: 3,
         h: 2,
-        minW: 2.5,
+        minW: 3,
         minH: 2,
-        maxH: 2.5,
+        maxH: 3,
+        maxW: 6,
+      },
+      {
+        i: 'dominance',
+        x: 3,
+        y: 9,
+        w: 3,
+        h: 3,
+        minW: 2,
+        minH: 3,
+        maxH: 4,
+        maxW: 6,
+      },
+      {
+        i: 'treeMap',
+        x: 3,
+        y: 18,
+        w: 3,
+        h: 2.5,
+        minW: 3,
+        minH: 2.5,
+        maxH: 3,
+        maxW: 3,
+      },
+      {
+        i: 'marketCap',
+        x: 0,
+        y: 17,
+        w: 3,
+        h: 3.5,
+        minH: 3.5,
+        minW: 3,
+        maxH: 4,
+        maxW: 6,
       },
     ]
 
@@ -96,7 +130,6 @@ export default class Home extends React.Component<Props> {
     return (
       <ResponsiveGridLayout
         layouts={layouts}
-        width={window.innerWidth}
         draggableHandle=".dnd"
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
