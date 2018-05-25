@@ -32,6 +32,7 @@ class CorrelationMatrix extends Component {
               {rows[i] && (
                 <Item
                   style={{
+                    color: '#fff',
                     textAlign: 'right',
                     border: 'none',
                     position: 'sticky',
@@ -43,13 +44,16 @@ class CorrelationMatrix extends Component {
                 </Item>
               )}
               {col.map((el) =>
-                el.map((e: string) => {
+                el.map((e: string, indx: number) => {
                   const value = onFloorN(Number(e), 2)
-                  const color = getColor(e)
+                  const { backgroundColor, textColor } = getColor(e)
 
                   return (
-                    <Item key={e} color={color}>
-                      {value}
+                    <Item key={e} textColor={textColor} color={backgroundColor}>
+                      <div>
+                        {value}
+                        <TT>{`${rows[i]} - ${rows[indx]}`}</TT>
+                      </div>
                     </Item>
                   )
                 })
@@ -61,6 +65,33 @@ class CorrelationMatrix extends Component {
     )
   }
 }
+
+const TT = styled.span`
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  color: #dfdfdf;
+  text-decoration: none;
+  padding: 3px;
+  margin-left: -3.5%;
+  margin-top: -2%;
+  background-color: #292d31;
+
+  border-radius: 3px;
+
+  transition: visibility 0.2s linear 1s, opacity 0.2s linear 1s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #292d31 transparent transparent transparent;
+  }
+`
 
 const HeadItem = styled.th`
   font-family: Roboto;
@@ -91,7 +122,7 @@ const Item = styled.td`
 
   font-family: Roboto;
   font-size: 0.75em;
-  color: #fff;
+  color: ${(props) => props.textColor};
   font-weight: 500;
   padding: 0.5em;
   width: 50px;
@@ -99,6 +130,11 @@ const Item = styled.td`
   overflow: hidden;
   white-space: nowrap;
   border: 1px solid #fff;
+
+  &:hover ${TT} {
+    visibility: visible;
+    opacity: 1;
+  }
 `
 
 const Table = styled.table`
