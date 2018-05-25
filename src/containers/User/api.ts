@@ -84,7 +84,7 @@ export const getExchangesListQuery = gql`
 `
 export const getExchangesForKeysListQuery = gql`
   query getExchangesForKeysList {
-    exchangePagination(page: 1, perPage: 50) {
+    exchangePagination(perPage: 150) {
       count
       items {
         _id
