@@ -420,7 +420,7 @@ const PTWrapper = styled.div`
 
   @media (max-width: 500px) {
     width: calc(100% - 90px);
-    height: 100vh;
+    height: auto;
   }
 
   @media (max-width: 425px) {

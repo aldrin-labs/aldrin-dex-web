@@ -5,7 +5,6 @@ import {
   XAxis,
   YAxis,
   HorizontalGridLines,
-  VerticalGridLines,
   LineSeries,
   Crosshair,
 } from 'react-vis'
@@ -32,21 +31,38 @@ export default class LineChart extends React.Component {
 
   render() {
     const { data } = this.props
+
     const { crosshairValues } = this.state
 
+    const axisStyle = {
+      ticks: {
+        padding: '1rem',
+        stroke: '#fff',
+        opacity: 0.5,
+        fontFamily: 'Roboto',
+        fontSize: '12px',
+        fontWeight: 100,
+      },
+    }
+
     return (
-      <FlexibleXYPlot onMouseLeave={this.onMouseLeave}>
-        <HorizontalGridLines />
+      <FlexibleXYPlot margin={{ left: 70 }} onMouseLeave={this.onMouseLeave}>
+        <HorizontalGridLines style={{ stroke: 'rgba(134, 134, 134, 0.5)' }} />
         <XAxis
-          title="X Axis"
+          style={axisStyle}
           position="start"
           hideLine
-          tickFormat={(v: number) => `${v + 16} Apr`}
-          tickValues={[1, 2, 3, 4, 5, 6]}
+          tickFormat={(v: number) => `${v + 16}`}
+          tickValues={[6, 12, 18, 24, 30, 36, 4, 48, 54, 60, 66]}
         />
-        <YAxis title="Y Axis" hideLine tickFormat={(v) => `${v} 000 000`} />
+
+        <YAxis style={axisStyle} hideLine tickFormat={(v) => `${v}М`} />
         {data.map((d, i) => (
           <LineSeries
+            style={{
+              stroke: 'rgba(133, 237, 238, 0.35)',
+              strokeWidth: '3px',
+            }}
             key={i}
             data={
               d || [

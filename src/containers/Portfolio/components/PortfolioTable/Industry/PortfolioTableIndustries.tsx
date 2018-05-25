@@ -521,6 +521,9 @@ const Container = styled.div`
     height: 50%;
     margin-bottom: 20px;
   }
+  @media (max-width: 900px) {
+    flex-wrap: wrap;
+  }
 `
 
 const PieChartHeadingWrapper = styled.div`
@@ -565,19 +568,19 @@ const PTWrapper = styled.div`
 `
 
 const LineChartContainer = styled.div`
-  background-color: #fff;
+  background-color: transparent;
   padding: 1em;
-  width: 30%;
+  width: 50%;
   height: 100%;
   text-align: center;
   margin: 0 20px;
 
-  @media (max-height: 650px) {
-    display: none;
-  }
-  @media (max-width: 900px) {
-    display: none;
-  }
+  // @media (max-height: 650px) {
+  //   display: none;
+  // }
+  // @media (max-width: 900px) {
+  //   display: none;
+  // }
 `
 
 const Icon = styled.i`
