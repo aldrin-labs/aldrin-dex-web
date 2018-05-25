@@ -10,6 +10,9 @@ import {
 import PieChart from '@components/PieChart'
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
+import SaveIcon from 'material-ui-icons/Save'
+import UndoIcon from 'material-ui-icons/Undo'
+import CompareArrows from 'material-ui-icons/CompareArrows'
 
 // import IconButton from 'material-ui/IconButton'
 // import Button from 'material-ui/Button'
@@ -343,6 +346,9 @@ export default class PortfolioTableRebalance extends React.Component<
               />
             </PieChartContainer>
           </TableChartContainer>
+        <ActionButton>
+          <CompareArrows/>
+        </ActionButton>
           <TableChartContainer>
             <Table>
               <PTHead>
@@ -410,47 +416,17 @@ export default class PortfolioTableRebalance extends React.Component<
                       })}
                       <PTD />
                       <PTD>
-                        <Button size="small" onClick={() => this.onButtonClick(rowIndex)}>
-                          {rowIndex == this.state.rows.length - 1
+                        <TableButton isDeleteColor={rowIndex === this.state.rows.length - 1} onClick={() => this.onButtonClick(rowIndex)}>
+                          {rowIndex === this.state.rows.length - 1
                             ? <AddIcon/>
                             : <DeleteIcon/> }
-                        </Button>
+                        </TableButton>
                       </PTD>
                     </PTR>
                   )
                 })}
               </PTBody>
             </Table>
-            <Button onClick={() => this.onSaveClick()}>save</Button>
-            <Button onClick={() => this.onLoadClick()}>load</Button>
-            <div>
-              <input
-                type="number"
-                value={this.state.addMoneyInputValue}
-                onChange={this.onAddMoneyInputChange}
-              />
-              <button onClick={() => this.onAddMoneyButtonPressed()}>
-                Add money
-              </button>
-            </div>
-            {this.state.rows[this.state.rows.length - 1].undistributedMoney !=
-            0 ? (
-              <div>
-                <p>
-                  Undistributed money:{' '}
-                  {
-                    this.state.rows[this.state.rows.length - 1]
-                      .undistributedMoney
-                  }
-                </p>
-                <button onClick={() => this.onDistribute()}>
-                  Distribute to selected
-                </button>
-              </div>
-            ) : (
-              () => {}
-            )}
-
             <PieChartContainer>
               <PieChart
                 data={combineToChart(PieChartMockSecond)}
@@ -458,6 +434,38 @@ export default class PortfolioTableRebalance extends React.Component<
               />
             </PieChartContainer>
           </TableChartContainer>
+    <div>
+      <ActionButton onClick={() => this.onSaveClick()}>
+        <SaveIcon/></ActionButton>
+      <ActionButton onClick={() => this.onLoadClick()}><UndoIcon/></ActionButton>
+      <div>
+        <input
+          type="number"
+          value={this.state.addMoneyInputValue}
+          onChange={this.onAddMoneyInputChange}
+        />
+        <button onClick={() => this.onAddMoneyButtonPressed()}>
+          Add money
+        </button>
+      </div>
+      {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
+      0 ? (
+        <div>
+          <p>
+            Undistributed money:{' '}
+            {
+              this.state.rows[this.state.rows.length - 1]
+                .undistributedMoney
+            }
+          </p>
+          <button onClick={() => this.onDistribute()}>
+            Distribute to selected
+          </button>
+        </div>
+      ) : (
+        () => {}
+      )}
+    </div>
         </Container>
       </PTWrapper>
     )
@@ -598,7 +606,7 @@ const Heading = styled.span`
   color: #fff;
 `
 
-const Button = styled.button`
+const TableButton = styled.button`
     border: none;
     margin: 0;
     padding: 1.75px 0;
@@ -624,7 +632,43 @@ const Button = styled.button`
     
     &:hover {
       & svg {
-        color: red;
+        color: ${(props: { isDeleteColor?: boolean }) =>
+  props.isDeleteColor ? '#65c000' : '#ff687a'};
       }
+    }
+    & svg {
+        width: 18px;
+        height: 18px;
+    }
+`
+
+const ActionButton = styled.button`
+    border: none;
+    margin: 0;
+    padding: 1.75px 0;
+    width: auto;
+    overflow: visible;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    line-height: normal;
+    text-align: inherit;
+    outline: none;
+    -webkit-font-smoothing: inherit;
+    -moz-osx-font-smoothing: inherit;
+    -webkit-appearance: none; 
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    
+    &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+    }
+    
+    & svg {
+      color: white;
+      width: 30px;
+      height: 30px;
     }
 `
