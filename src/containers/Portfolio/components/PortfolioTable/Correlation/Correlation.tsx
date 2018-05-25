@@ -2,15 +2,29 @@ import * as React from 'react'
 import styled from 'styled-components'
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
+import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 import CorrelationMatrix from './CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
 import { IProps } from './Correlation.types'
 
 export default class Correlation extends React.Component<IProps> {
+  constructor(props) {
+    super()
+
+    this.state = {
+      isFullscreenEnabled: false,
+    }
+    this.fullScreenChangeHandler = this.fullScreenChangeHandler.bind(this)
+  }
+
   initializeArray = (length: number, start: number, step: number): number[] =>
     Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
       (v, i) => i * step + start
     )
+
+  fullScreenChangeHandler(isFullscreenEnabled) {
+    this.setState({ isFullscreenEnabled })
+  }
 
   render() {
     const { children } = this.props
@@ -19,9 +33,17 @@ export default class Correlation extends React.Component<IProps> {
     return (
       <PTWrapper tableData={!!cols.length && !!rows.length}>
         {children}
+        <Button onClick={() => this.setState({ isFullscreenEnabled: true })}>
+          <FullScreenIcon />
+        </Button>
         <Wrapper>
           <ScrolledWrapper>
-            <CorrelationMatrix cols={cols} rows={rows} />
+            <CorrelationMatrix
+              fullScreenChangeHandler={this.fullScreenChangeHandler}
+              isFullscreenEnabled={this.state.isFullscreenEnabled || false}
+              cols={cols}
+              rows={rows}
+            />
           </ScrolledWrapper>
 
           {/* <HeatMapChart
@@ -50,6 +72,8 @@ const PTWrapper = styled.div`
 `
 
 const ScrolledWrapper = styled.div`
+  max-height: 70vh;
+
   overflow-y: scroll;
   background-color: #393e44;
   margin: 0 auto;
@@ -72,4 +96,21 @@ const Wrapper = styled.div`
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
+`
+const Button = styled.button`
+  color: #fff;
+  border-color: transparent;
+  padding: 10px 30px;
+  border-radius: 3px;
+  background-color: transparent;
+  font-size: 2rem;
+  text-align: center;
+  cursor: pointer;
+
+  position: absolute;
+  right: 2rem;
+  top: 0.8rem;
+
+  outline: none;
+  box-sizing: border-box;
 `

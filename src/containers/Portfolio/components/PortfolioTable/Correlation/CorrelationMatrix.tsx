@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import FullScreen from 'react-fullscreen-crossbrowser'
 
 import { onFloorN } from '../../../../../utils/PortfolioTableUtils'
 import {
@@ -9,65 +10,85 @@ import {
 
 class CorrelationMatrix extends Component {
   render() {
+    const tableStyle = this.props.isFullscreenEnabled
+      ? { width: '100vw', height: '100vh' }
+      : {}
+
     const { cols, rows } = optimizeMocks()
 
     return (
-      <Table>
-        <thead>
-          <Row>
-            <HeadItem
-              style={{
-                width: '4em',
-                position: 'sticky',
-                left: 0,
-                backgroundColor: '#393e44',
-              }}
-            />
-            {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
-          </Row>
-        </thead>
-        <tbody>
-          {cols.map((col, i) => (
-            <Row key={rows[i]}>
-              {rows[i] && (
-                <Item
-                  style={{
-                    color: '#fff',
-                    textAlign: 'right',
-                    border: 'none',
-                    position: 'sticky',
-                    left: 0,
-                    backgroundColor: '#393e44',
-                  }}
-                >
-                  {rows[i]}
-                </Item>
-              )}
-              {col.map((el) =>
-                el.map((e: string, indx: number) => {
-                  const value = onFloorN(Number(e), 2)
-                  const { backgroundColor, textColor } = getColor(e)
+      <React.Fragment>
+        <FullScreen
+          enabled={this.props.isFullscreenEnabled}
+          onChange={(isFullscreenEnabled: any) =>
+            this.props.fullScreenChangeHandler(isFullscreenEnabled)
+          }
+        >
+          <div className="full-screenable-node">
+            <Table style={tableStyle} onClick={this.onClick}>
+              <thead>
+                <Row>
+                  <HeadItem
+                    style={{
+                      width: '4em',
+                      position: this.props.isFullscreenEnabled
+                        ? 'static'
+                        : 'sticky',
+                      left: 0,
+                      backgroundColor: '#393e44',
+                    }}
+                  />
+                  {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
+                </Row>
+              </thead>
+              <tbody>
+                {cols.map((col, i) => (
+                  <Row key={rows[i]}>
+                    {rows[i] && (
+                      <Item
+                        style={{
+                          color: '#fff',
+                          textAlign: 'right',
+                          border: 'none',
+                          position: this.props.isFullscreenEnabled
+                            ? 'static'
+                            : 'sticky',
+                          left: 0,
+                          backgroundColor: '#393e44',
+                        }}
+                      >
+                        {rows[i]}
+                      </Item>
+                    )}
+                    {col.map((el) =>
+                      el.map((e: string, indx: number) => {
+                        const value = onFloorN(Number(e), 2)
+                        const { backgroundColor, textColor } = getColor(e)
 
-                  return (
-                    <Item key={e} textColor={textColor} color={backgroundColor}>
-                      <div>
-                        {value}
-                        <TT>{`${rows[i]} - ${rows[indx]}`}</TT>
-                      </div>
-                    </Item>
-                  )
-                })
-              )}
-            </Row>
-          ))}
-        </tbody>
-      </Table>
+                        return (
+                          <Item
+                            key={e}
+                            textColor={textColor}
+                            color={backgroundColor}
+                          >
+                            {value}
+                          </Item>
+                        )
+                      })
+                    )}
+                  </Row>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </FullScreen>
+      </React.Fragment>
     )
   }
 }
 
-const TT = styled.span`
-  visibility: hidden;
+const ToolTip = styled.span`
+  display: none;
   opacity: 0;
   position: absolute;
   color: #dfdfdf;
@@ -78,19 +99,6 @@ const TT = styled.span`
   background-color: #292d31;
 
   border-radius: 3px;
-
-  transition: visibility 0.2s linear 1s, opacity 0.2s linear 1s;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #292d31 transparent transparent transparent;
-  }
 `
 
 const HeadItem = styled.th`
@@ -131,8 +139,10 @@ const Item = styled.td`
   white-space: nowrap;
   border: 1px solid #fff;
 
-  &:hover ${TT} {
-    visibility: visible;
+  cursor: help;
+
+  &:hover ${ToolTip} {
+    display: inline-block;
     opacity: 1;
   }
 `
