@@ -25,8 +25,6 @@ const persistConfig = {
   whitelist: ['login', 'portfolio', 'ui', 'user'],
 }
 
-console.log(storage)
-
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = createStore(
