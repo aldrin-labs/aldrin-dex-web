@@ -69,6 +69,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           tab={this.state.tab}
         >
           <PortfolioTableTabs
+            toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
             data={this.props.data}
