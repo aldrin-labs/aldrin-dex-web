@@ -160,13 +160,21 @@ const ButtonContainer = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   height: 100%;
+
+  @media (max-width: 840px) {
+    margin-right: 1rem;
+  }
+
+  @media (max-width: 710px) {
+    margin-right: 0;
+  }
 `
 
 const AccountsButton = styled(AccountsIcon)`
   font-size: 1.5rem;
   display: none;
 
-  @media (max-width: 425px) {
+  @media (max-width: 840px) {
     display: block;
   }
 `
@@ -203,7 +211,12 @@ const Tab = styled.button`
   outline: none;
   box-sizing: border-box;
 
-  @media (max-width: 425px) {
+  @media (max-width: 840px) {
+    width: 8rem;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 615px) {
     width: 5.5rem;
     padding: 0.5rem;
   }

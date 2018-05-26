@@ -417,13 +417,18 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: auto;
-  @media (max-width: 500px) {
+
+  @media (max-width: 840px) {
+    margin: 1.5rem auto;
+  }
+
+  @media (max-width: 550px) {
     width: calc(100% - 90px);
+    margin: 0.625rem auto;
   }
 
   @media (max-width: 425px) {
     width: calc(100% - 20px);
-    margin: 10px;
   }
 `
 

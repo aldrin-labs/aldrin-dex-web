@@ -259,7 +259,7 @@ const AccountsWalletsBlock = styled.div`
   background-color: #2d3136;
   padding: 16px;
 
-  @media (max-width: 425px) {
+  @media (max-width: 840px) {
     display: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
       isSideNavOpen ? 'static' : 'none'};
     position: fixed;
@@ -281,7 +281,7 @@ const StyledIcon = styled(CloseIcon)`
   font-size: 2rem;
   text-align: center;
 
-  @media (max-width: 425px) {
+  @media (max-width: 840px) {
     display: block;
   }
 `
