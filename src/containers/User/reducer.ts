@@ -4,7 +4,7 @@ import * as actions from './actions'
 
 const initialState = {
   check: 'lol',
-  isShownMocks: true,
+  isShownMocks: false,
 }
 
 export default createReducer(
