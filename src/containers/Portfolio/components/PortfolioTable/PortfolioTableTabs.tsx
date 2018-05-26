@@ -7,6 +7,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
 import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
+import AccountsIcon from 'react-icons/lib/md/account-balance-wallet'
 
 import { IProps } from './PortfolioTableTabs.types'
 import { compose } from 'recompose'
@@ -77,9 +78,15 @@ class PortfolioTableTabs extends React.Component<IProps> {
             </Tab>
           </TabContainer>
 
-          <ToggleBtn onClick={this.onToggleChart}>
-            <SvgIcon src={filterListIcon} width={24} height={24} />
-          </ToggleBtn>
+          <ButtonContainer>
+            <ToggleBtn onClick={this.onToggleChart}>
+              <SvgIcon src={filterListIcon} width={24} height={24} />
+            </ToggleBtn>
+
+            <ToggleBtn onClick={this.props.toggleWallets}>
+              <AccountsButton />
+            </ToggleBtn>
+          </ButtonContainer>
         </PTHeadingBlock>
 
         {tab !== 'correlation' &&
@@ -148,6 +155,30 @@ const PTHeadingBlock = styled.div`
   }
 `
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+
+  @media (max-width: 840px) {
+    margin-right: 1rem;
+  }
+
+  @media (max-width: 710px) {
+    margin-right: 0;
+  }
+`
+
+const AccountsButton = styled(AccountsIcon)`
+  font-size: 1.5rem;
+  display: none;
+
+  @media (max-width: 840px) {
+    display: block;
+  }
+`
+
 const ToggleBtn = styled.button`
   background: transparent;
   border: none;
@@ -180,8 +211,13 @@ const Tab = styled.button`
   outline: none;
   box-sizing: border-box;
 
-  @media (max-width: 425px) {
-    width: 4rem;
+  @media (max-width: 840px) {
+    width: 8rem;
+    padding: 0.5rem;
+  }
+
+  @media (max-width: 615px) {
+    width: 5.5rem;
     padding: 0.5rem;
   }
 `

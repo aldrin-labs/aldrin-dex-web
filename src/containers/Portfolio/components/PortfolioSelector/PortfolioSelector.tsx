@@ -3,6 +3,7 @@ import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import CloseIcon from 'react-icons/lib/md/close'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 
@@ -129,8 +130,14 @@ class PortfolioSelector extends React.Component<IProps, IState> {
       false
 
     return (
-      <AccountsWalletsBlock>
-        <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
+      <AccountsWalletsBlock isSideNavOpen={this.props.isSideNavOpen}>
+        {console.log(this.props.isSideNavOpen)}
+        <AccountsWalletsHeadingWrapper>
+          <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
+          <CloseButton onClick={this.props.toggleWallets}>
+            <StyledIcon />
+          </CloseButton>
+        </AccountsWalletsHeadingWrapper>
 
         <SelectAll>
           <Checkbox
@@ -252,9 +259,38 @@ const AccountsWalletsBlock = styled.div`
   background-color: #2d3136;
   padding: 16px;
 
-  @media (max-width: 425px) {
-    display: none;
+  @media (max-width: 840px) {
+    display: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+      isSideNavOpen ? 'static' : 'none'};
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1301;
+    height: 100vh;
   }
+`
+
+const AccountsWalletsHeadingWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const StyledIcon = styled(CloseIcon)`
+  display: none;
+  color: #4ed8da;
+  font-size: 2rem;
+  text-align: center;
+
+  @media (max-width: 840px) {
+    display: block;
+  }
+`
+
+const CloseButton = styled.button`
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
 `
 
 const AccountsWalletsHeading = styled.span`
