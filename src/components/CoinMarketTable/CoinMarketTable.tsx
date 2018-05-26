@@ -88,7 +88,6 @@ class CoinMarketTable extends React.Component<Props, State> {
   render() {
     const { data, showFilterBns } = this.props
     const { assetPagination } = data
-    console.log('CoinMarketTable.props: ', this.props)
 
     return (
       <MarketWrapper>
@@ -186,7 +185,9 @@ class CoinMarketTable extends React.Component<Props, State> {
           </Table>
         </ScrolledWrapper>
         <Btn
-          disabled={!data.assetPagination.pageInfo.hasNextPage}
+          disabled={
+            assetPagination ? !assetPagination.pageInfo.hasNextPage : false
+          }
           onClick={this.fetchMore}
         >
           Show more
@@ -280,13 +281,6 @@ const Title = styled.span`
   font-size: 20px;
   font-weight: 500;
   color: #fff;
-`
-
-const WebIcon = styled.img`
-  width: 16px;
-  height: 16px;
-  margin-left: 1px;
-  vertical-align: middle;
 `
 
 const TD = styled.td`

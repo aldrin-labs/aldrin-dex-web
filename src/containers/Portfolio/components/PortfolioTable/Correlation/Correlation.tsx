@@ -8,13 +8,12 @@ import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
 import { IProps } from './Correlation.types'
 
 export default class Correlation extends React.Component<IProps> {
-  constructor(props) {
-    super()
+  constructor(props: IProps) {
+    super(props)
 
     this.state = {
       isFullscreenEnabled: false,
     }
-    this.fullScreenChangeHandler = this.fullScreenChangeHandler.bind(this)
   }
 
   initializeArray = (length: number, start: number, step: number): number[] =>
@@ -22,7 +21,7 @@ export default class Correlation extends React.Component<IProps> {
       (v, i) => i * step + start
     )
 
-  fullScreenChangeHandler(isFullscreenEnabled) {
+  fullScreenChangeHandler = (isFullscreenEnabled: boolean) => {
     this.setState({ isFullscreenEnabled })
   }
 
@@ -40,7 +39,9 @@ export default class Correlation extends React.Component<IProps> {
           <ScrolledWrapper>
             <CorrelationMatrix
               fullScreenChangeHandler={this.fullScreenChangeHandler}
-              isFullscreenEnabled={this.state.isFullscreenEnabled || false}
+              isFullsonClickcreenEnabled={
+                this.state.isFullscreenEnabled || false
+              }
               cols={cols}
               rows={rows}
             />

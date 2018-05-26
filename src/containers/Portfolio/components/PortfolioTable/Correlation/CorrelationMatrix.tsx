@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import debounce from 'lodash/debounce'
 import styled from 'styled-components'
 import FullScreen from 'react-fullscreen-crossbrowser'
 
@@ -8,8 +9,34 @@ import {
   optimizeMocks,
 } from '../../../../../utils/PortfolioCorrelationUtils'
 
-class CorrelationMatrix extends Component {
+export interface Props {
+  fullScreenChangeHandler: Function
+  isFullscreenEnabled: boolean
+}
+
+export interface State {
+  hint: { index: number; value: number } | null
+}
+
+class CorrelationMatrix extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.onMouseOver = debounce(this.onMouseOver, 300)
+
+    this.state = {
+      hint: null,
+    }
+  }
+
+  onMouseOver = (index: number, value: number) => {
+    this.setState({ hint: { index, value } })
+  }
+
+  onClick = () => {}
+
   render() {
+    const { hint } = this.state
     const tableStyle = this.props.isFullscreenEnabled
       ? { width: '100vw', height: '100vh' }
       : {}
@@ -70,8 +97,31 @@ class CorrelationMatrix extends Component {
                             key={e}
                             textColor={textColor}
                             color={backgroundColor}
+                            onMouseOver={() => this.onMouseOver(indx, value)}
+                            position={
+                              !!hint &&
+                              hint.index === indx &&
+                              hint.value === value
+                            }
                           >
                             {value}
+                            {!!hint &&
+                              hint.index === indx &&
+                              hint.value === value && (
+                                <span
+                                  style={{
+                                    position: 'absolute',
+                                    width: '100%',
+                                    left: 0,
+                                    top: 0,
+                                    padding: '5px',
+                                    backgroundColor: '#292d31',
+                                    color: '#4ed8da',
+                                  }}
+                                >
+                                  {hint.value}
+                                </span>
+                              )}
                           </Item>
                         )
                       })
@@ -127,6 +177,8 @@ const Item = styled.td`
 
     return 'transparent'
   }};
+
+  position: ${(props) => (props.position ? 'relative' : 'static')};
 
   font-family: Roboto;
   font-size: 0.75em;
