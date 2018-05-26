@@ -181,7 +181,7 @@ const Tab = styled.button`
   box-sizing: border-box;
 
   @media (max-width: 425px) {
-    width: 4rem;
+    width: 5.5rem;
     padding: 0.5rem;
   }
 `
