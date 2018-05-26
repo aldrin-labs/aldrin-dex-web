@@ -499,14 +499,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <Heading>Industry Line Chart</Heading>
             <LineChart data={TMP_LINE_CHART_MOCKS} />
           </LineChartContainer>
-        </Container>
 
-        <PieChartContainer>
-          <PieChartHeadingWrapper>
-            <Heading>Industry Pie Chart</Heading>
-          </PieChartHeadingWrapper>
-          <PieChart data={combineToChart()} flexible={true} />
-        </PieChartContainer>
+          <PieChartContainer>
+            <PieChartHeadingWrapper>
+              <Heading>Industry Pie Chart</Heading>
+            </PieChartHeadingWrapper>
+            <PieChart data={combineToChart()} flexible={true} />
+          </PieChartContainer>
+        </Container>
       </PTWrapper>
     )
   }
@@ -514,8 +514,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
 const Container = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  height: 30vh;
+  height: auto;
 
   @media (max-height: 650px) {
     height: 50%;
@@ -537,12 +538,13 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3% 0;
-  width: 40vw;
-  height: 40vh;
-  margin: 0 auto;
+  width: 50%;
+  min-height: 40vh;
+  margin: 2rem 0;
 
-  @media (max-height: 650px) {
-    display: none;
+  @media (max-width: 850px) {
+    width: 100%;
+    margin: 1rem 0;
   }
 `
 
@@ -556,7 +558,7 @@ const Heading = styled.span`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 240px);' : '100%'};
+    props.tableData ? 'calc(100% - 48px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -564,20 +566,25 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
+  height: auto;
+
+  // height: calc(100vh - 140px);
 `
 
 const LineChartContainer = styled.div`
   background-color: transparent;
   padding: 1em;
   width: 50%;
-  height: 100%;
+  // height: 100%;
   text-align: center;
-  margin: 0 20px;
+  width: 50%;
+  height: 40vh;
+  margin: 2rem 0;
 
-  // @media (max-height: 650px) {
-  //   display: none;
-  // }
+  @media (max-width: 850px) {
+    width: 100%;
+    margin: 1rem 0;
+  }
   // @media (max-width: 900px) {
   //   display: none;
   // }
@@ -591,6 +598,7 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   background-color: #393e44;
   margin-left: 20px;
+  width: 100%;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -607,11 +615,13 @@ const Wrapper = styled.div`
 
 const PTable = styled.table`
   table-layout: fixed;
+  width: 100%;
   border-collapse: collapse;
   display: inline-block;
 `
 
 const PTBody = styled.tbody`
+  width: 100%;
   display: table;
   border-bottom: 1px solid #fff;
 `
