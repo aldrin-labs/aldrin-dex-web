@@ -60,6 +60,23 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
+  calculatePriceDifference = (data: any[]) => {
+    let { staticRows } = this.state
+    data.forEach((row, i, arr) => {
+      staticRows.forEach((staticRow, j, staticArr) => {
+        if (
+          data[i].currency == staticRows[j].currency &&
+          data[i].symbol == staticRows[j].symbol &&
+          i < data.length - 1 &&
+          j < staticRows.length - 1
+        ) {
+          data[i].deltaPrice = data[i].price - staticRows[j].price
+        }
+      })
+    })
+    return data
+  }
+
   calculatePercents = (data: any[]) => {
     let total = 0
     data.forEach((row, i, arr) => {
@@ -76,6 +93,7 @@ export default class PortfolioTableRebalance extends React.Component<
           100
       }
     })
+    data = this.calculatePriceDifference(data)
     return data
   }
 
@@ -442,18 +460,37 @@ export default class PortfolioTableRebalance extends React.Component<
 
                 <PTBody>
                   {this.state.rows.map((row, rowIndex) => {
-                    const { currency, symbol, portfolioPerc, price } = row
+                    const {
+                      currency,
+                      symbol,
+                      portfolioPerc,
+                      price,
+                      deltaPrice,
+                    } = row
 
                     const isSelected =
                       (selectedActive &&
                         selectedActive.indexOf(rowIndex) >= 0) ||
                       false
 
+                    let deltaPriceString = ''
+
+                    if (deltaPrice) {
+                      if (deltaPrice > 0) {
+                        deltaPriceString = `BUY ${symbol} ${deltaPrice} $`
+                      } else {
+                        deltaPriceString = `SELL ${symbol} ${Math.abs(
+                          deltaPrice
+                        )} $`
+                      }
+                    }
+
                     const cols = [
                       currency,
                       symbol || '',
                       portfolioPerc ? `${portfolioPerc}%` : '',
                       `${price} $`,
+                      deltaPriceString,
                     ]
 
                     return (
@@ -496,6 +533,14 @@ export default class PortfolioTableRebalance extends React.Component<
                                 </form>
                               )
                             }
+                          }
+                          if (col.match(/BUY/g)) {
+                            const color = '#65c000'
+                            return <PTD style={{ color }}>{col}</PTD>
+                          }
+                          if (col.match(/SELL/g)) {
+                            const color = '#ff687a'
+                            return <PTD style={{ color }}>{col}</PTD>
                           }
 
                           return <PTD /*key={`${col}${idx}`}*/>{col}</PTD>
