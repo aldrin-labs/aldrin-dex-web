@@ -467,7 +467,7 @@ export default class PortfolioTableRebalance extends React.Component<
         )}
       </ButtonsWrapper>
 
-    <PieChartContainer>
+      <PieChartContainer>
       <PieChart
         data={combineToChart(PieChartMockSecond)}
         flexible={true}
@@ -666,9 +666,6 @@ const PTHead = styled.thead`
   }
 `
 
-const TableChartContainer = styled.div`
-`
-
 const PieChartsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -679,12 +676,9 @@ const PieChartsWrapper = styled.div`
   @media (max-height: 800px) {
       padding-top: 1.5%;
   }
-`
-
-const PieChartHeadingWrapper = styled.div`
-  width: 200px;
-  text-align: center;
-  padding-bottom: 5px;
+  @media (max-height: 650px) {
+      justify-content: center;
+  }
 `
 
 const PieChartContainer = styled.div`
@@ -692,7 +686,7 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   height: 100%;
-  width: 100%;
+  width: 33.3%;
   margin: 0 auto;
 
   @media (max-height: 650px) {
@@ -700,15 +694,9 @@ const PieChartContainer = styled.div`
   }
 `
 
-const Heading = styled.span`
-  font-family: Roboto;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  color: #fff;
+const ButtonsWrapper = styled.div`
+  width: 33.3%;
 `
-
-const ButtonsWrapper = styled.div``
 
 const Input = styled.input`
   box-sizing: border-box;
@@ -718,7 +706,7 @@ const Input = styled.input`
   border-left: none;
   outline: none;
   border-right: none;
-  width: 75%;
+  width: 100%;
   font-family: Roboto;
   font-size: 16px;
   line-height: 24px;
@@ -766,6 +754,7 @@ const TableButton = styled.button`
 
 const ActionButtonsContainer = styled.div`
   display: flex;
+  justify-content: space-around;
 `
 
 const ActionButton = styled.button`
@@ -796,8 +785,8 @@ const ActionButton = styled.button`
     
     & svg {
       color: white;
-      width: 30%;
-      height: 30%;
+      width: 30px;
+      height: 30px;
     }
 `
 
