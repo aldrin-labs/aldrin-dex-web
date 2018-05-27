@@ -149,7 +149,7 @@ const PTH = styled.th`
   padding: 10px;
   font-weight: 500;
   text-align: right;
-  
+
   &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
     min-width: 100px;
   }
@@ -175,7 +175,7 @@ const PTHead = styled.thead`
   display: table;
   width: 100%;
   position: sticky;
-  top: -5px;  /* trigger sticky when reaches coordonates */
+  top: -5px; /* trigger sticky when reaches coordonates */
 
   &::after {
     content: ' ';

@@ -78,6 +78,7 @@
     "react-dom": "^16.3.2",
     "react-emojione": "^5.0.0",
     "react-grid-layout": "^0.16.6",
+    "react-icons": "^2.2.7",
     "react-intl": "^2.4.0",
     "react-loadable": "^5.4.0",
     "react-redux": "^5.0.7",

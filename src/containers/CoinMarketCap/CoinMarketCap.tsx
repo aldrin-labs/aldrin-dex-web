@@ -106,13 +106,7 @@ class CoinMarket extends React.Component<Props, State> {
     return (
       <Wrapper>
         <LeftColumn>
-          <CoinMarketTable
-            onChangeSortArg={this.onChangeSortArg}
-            redirectToProfile={this.redirectToProfile}
-            activeSortArg={activeSortArg}
-            items={items}
-            showFilterBns
-          />
+          <CoinMarketTable location={this.props.location} />
 
           <Pagination>
             <Button title="Previous" onClick={this.decrementPage} />

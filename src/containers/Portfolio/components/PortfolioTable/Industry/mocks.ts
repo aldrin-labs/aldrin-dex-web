@@ -1,9 +1,8 @@
 export function combineToChart() {
-  return MOCKS.map((dataItem) =>
-    ({
-      angle: dataItem.value,
-      label: dataItem.asset.industry.name,
-    }))
+  return MOCKS.map((dataItem) => ({
+    angle: dataItem.value,
+    label: dataItem.asset.industry.name,
+  }))
 }
 
 export const MOCKS = [
@@ -255,7 +254,6 @@ export const MOCKS = [
     usdUnrealizedProfit: 30,
     value: 0.454242,
   },
-
 ]
 
 export const tableData = [

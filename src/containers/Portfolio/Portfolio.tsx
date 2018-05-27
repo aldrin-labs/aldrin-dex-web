@@ -16,12 +16,23 @@ const PORTFOLIO_UPDATE = gql`
 `
 
 class PortfolioComponent extends React.Component<IProps> {
-  state = {
-    checkboxes: null,
+  constructor(props, context) {
+    super(props, context)
+
+    this.state = {
+      checkboxes: null,
+      isSideNavOpen: false,
+    }
+
+    this.toggleWallets = this.toggleWallets.bind(this)
   }
 
   onChangeActiveKey = (checkboxes: number[]) => {
     this.setState({ checkboxes })
+  }
+
+  toggleWallets() {
+    this.setState({ isSideNavOpen: !this.state.isSideNavOpen })
   }
 
   render() {
@@ -35,12 +46,21 @@ class PortfolioComponent extends React.Component<IProps> {
           <PortfolioContainer>
             {error &&
               error.toString().match('jwt expired') && <Login isShownModal />}
-            <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
+            <PortfolioSelector
+              toggleWallets={this.toggleWallets}
+              isSideNavOpen={this.state.isSideNavOpen}
+              onChangeActive={this.onChangeActiveKey}
+            />
             <PortfolioTable
+              toggleWallets={this.toggleWallets}
               loading={loading}
               checkboxes={checkboxes}
               data={getProfile}
               subscription={subscriptionData}
+            />
+            <Backdrop
+              onClick={this.toggleWallets}
+              isSideNavOpen={this.state.isSideNavOpen}
             />
           </PortfolioContainer>
         )}
@@ -53,4 +73,15 @@ export default graphql(getPortfolioQuery)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
+`
+const Backdrop = styled.div`
+  display: ${(props) => (props.isSideNavOpen ? 'block' : 'none')};
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `

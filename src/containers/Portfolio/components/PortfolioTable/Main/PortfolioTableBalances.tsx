@@ -349,29 +349,29 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Container isShownChart={isShownChart}>
-        <Wrapper>
-          <PTable>
-            <PortfolioTableHead
-              isUSDCurrently={isUSDCurrently}
-              isSelectAll={isSelectAll}
-              onSelectAll={this.onSelectAll}
-              onSortTable={this.onSortTable}
-              currentSort={currentSort}
-            />
-            <PortfolioTableMain
-              tableData={tableData}
-              selectedBalances={selectedBalances}
-              isUSDCurrently={isUSDCurrently}
-              onSelectBalance={this.onSelectBalance}
-            />
-            {selectedSum.currency ? (
-              <PortfolioTableSum
-                selectedSum={selectedSum}
+          <Wrapper>
+            <PTable>
+              <PortfolioTableHead
                 isUSDCurrently={isUSDCurrently}
+                isSelectAll={isSelectAll}
+                onSelectAll={this.onSelectAll}
+                onSortTable={this.onSortTable}
+                currentSort={currentSort}
               />
-            ) : null}
-          </PTable>
-        </Wrapper>
+              <PortfolioTableMain
+                tableData={tableData}
+                selectedBalances={selectedBalances}
+                isUSDCurrently={isUSDCurrently}
+                onSelectBalance={this.onSelectBalance}
+              />
+              {selectedSum.currency ? (
+                <PortfolioTableSum
+                  selectedSum={selectedSum}
+                  isUSDCurrently={isUSDCurrently}
+                />
+              ) : null}
+            </PTable>
+          </Wrapper>
         </Container>
 
         <PTChartContainer>
@@ -393,11 +393,16 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 const Container = styled.div`
   display: flex;
   height: ${(props: { isShownChart: boolean }) =>
-  props.isShownChart ? '30vh' : ''};
+    props.isShownChart ? '30vh' : ''};
 
   @media (max-height: 650px) {
     height: ${(props: { isShownChart: boolean }) =>
-  props.isShownChart ? '45vh' : ''};
+      props.isShownChart ? '45vh' : ''};
+  }
+
+  @media (max-width: 450px) {
+    height: ${(props: { isShownChart: boolean }) =>
+      props.isShownChart ? '78vh' : ''};
   }
 `
 
@@ -411,11 +416,19 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
+  height: auto;
 
-  @media (max-width: 500px) {
+  @media (max-width: 840px) {
+    margin: 1.5rem auto;
+  }
+
+  @media (max-width: 550px) {
     width: calc(100% - 90px);
-    height: 100vh;
+    margin: 0.625rem auto;
+  }
+
+  @media (max-width: 425px) {
+    width: calc(100% - 20px);
   }
 `
 
