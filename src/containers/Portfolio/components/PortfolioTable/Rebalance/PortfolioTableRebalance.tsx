@@ -13,12 +13,6 @@ import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import CompareArrows from 'material-ui-icons/CompareArrows'
-// import Button from '@components/Elements/Button/Button'
-
-
-// import IconButton from 'material-ui/IconButton'
-// import Button from 'material-ui/Button'
-
 
 
 const tableHeadings = [
@@ -118,19 +112,6 @@ export default class PortfolioTableRebalance extends React.Component<
           areAllActiveChecked = false
         }
       }
-      /*
-      let money = [rows[idx].portfolioPerc, rows[idx].price]
-      let parts = rows.length-2
-      let moneyPart = [money[0] / parts, money[1] / parts]
-      rows.forEach((row, i, arr) => {
-        if(i != rows.length-1){   
-          rows[i].portfolioPerc+=moneyPart[0]
-          rows[i].portfolioPerc = parseFloat(rows[i].portfolioPerc.toFixed(2))
-          rows[i].price+=moneyPart[1]
-          rows[i].price = Math.round(rows[i].price)
-        }
-      })
-      */
     }
     this.setState({ rows, selectedActive, areAllActiveChecked })
   }
