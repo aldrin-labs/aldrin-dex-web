@@ -13,6 +13,8 @@ import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import CompareArrows from 'material-ui-icons/CompareArrows'
+// import Button from '@components/Elements/Button/Button'
+
 
 // import IconButton from 'material-ui/IconButton'
 // import Button from 'material-ui/Button'
@@ -260,8 +262,7 @@ export default class PortfolioTableRebalance extends React.Component<
       <PTWrapper tableData={this.state.rows}>
         {children}
         <Container>
-          <TableChartContainer>
-            <TableContainer>
+            <Wrapper>
             <Table>
               <PTHead>
                 <PTR>
@@ -339,20 +340,11 @@ export default class PortfolioTableRebalance extends React.Component<
                 })}
               </PTBody>
             </Table>
-          </TableContainer>
-
-            <PieChartContainer>
-              <PieChart
-                data={combineToChart(PieChartMockFirst)}
-                flexible={true}
-              />
-            </PieChartContainer>
-          </TableChartContainer>
+          </Wrapper>
         <ActionButton>
           <CompareArrows/>
         </ActionButton>
-          <TableChartContainer>
-          <TableContainer>
+          <Wrapper>
             <Table>
               <PTHead>
                 <PTR>
@@ -370,6 +362,7 @@ export default class PortfolioTableRebalance extends React.Component<
                   {newTableHeadings.map((heading) => (
                     <PTH /*key={heading.name}*/>{heading.name}</PTH>
                   ))}
+                <PTH />
                 </PTR>
               </PTHead>
 
@@ -417,7 +410,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                         return <PTD /*key={`${col}${idx}`}*/>{col}</PTD>
                       })}
-                      <PTD />
+                  <PTD> buy now </PTD>
                       <PTD>
                         <TableButton isDeleteColor={rowIndex === this.state.rows.length - 1} onClick={() => this.onButtonClick(rowIndex)}>
                           {rowIndex === this.state.rows.length - 1
@@ -430,51 +423,62 @@ export default class PortfolioTableRebalance extends React.Component<
                 })}
               </PTBody>
             </Table>
-          </TableContainer>
-            <PieChartContainer>
-              <PieChart
-                data={combineToChart(PieChartMockSecond)}
-                flexible={true}
-              />
-            </PieChartContainer>
-          </TableChartContainer>
-    <div>
-      <ActionButton onClick={() => this.onSaveClick()}>
-        <SaveIcon/></ActionButton>
-      <ActionButton onClick={() => this.onLoadClick()}><UndoIcon/></ActionButton>
-      <div>
-        <input
-          type="number"
-          value={this.state.addMoneyInputValue}
-          onChange={this.onAddMoneyInputChange}
-        />
-        <button onClick={() => this.onAddMoneyButtonPressed()}>
-          Add money
-        </button>
-      </div>
-      {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
-      0 ? (
-        <div>
-          <p>
-            Undistributed money:{' '}
-            {
-              this.state.rows[this.state.rows.length - 1]
-                .undistributedMoney
-            }
-          </p>
-          <button onClick={() => this.onDistribute()}>
-            Distribute to selected
-          </button>
-        </div>
-      ) : (
-        () => {}
-      )}
-    </div>
+          </Wrapper>
         </Container>
+    <PieChartsWrapper>
+      <PieChartContainer>
+        <PieChart
+          data={combineToChart(PieChartMockFirst)}
+          flexible={true}
+        />
+      </PieChartContainer>
+
+      <ButtonsWrapper>
+        <ActionButtonsContainer>
+        <ActionButton onClick={() => this.onSaveClick()}>
+          <SaveIcon/>
+        </ActionButton>
+        <ActionButton onClick={() => this.onLoadClick()}><UndoIcon/></ActionButton>
+        </ActionButtonsContainer>
+          <Input
+            type="number"
+            value={this.state.addMoneyInputValue}
+            onChange={this.onAddMoneyInputChange}
+          />
+        <Button onClick={() => this.onAddMoneyButtonPressed()}>
+          Add money
+        </Button>
+        {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
+        0 ? (
+          <div>
+            <p>
+              Undistributed money:{' '}
+              {
+                this.state.rows[this.state.rows.length - 1]
+                  .undistributedMoney
+              }
+            </p>
+            <Button onClick={() => this.onDistribute()}>
+              Distribute to selected
+            </Button>
+          </div>
+        ) : (
+          () => {}
+        )}
+      </ButtonsWrapper>
+
+    <PieChartContainer>
+      <PieChart
+        data={combineToChart(PieChartMockSecond)}
+        flexible={true}
+      />
+    </PieChartContainer>
+    </PieChartsWrapper>
       </PTWrapper>
     )
   }
 }
+
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
@@ -489,11 +493,29 @@ const PTWrapper = styled.div`
   height: calc(100vh - 140px);
 `
 
+const Wrapper = styled.div`
+    overflow-y: scroll;
+    padding-right: 2px;
+    
+    &::-webkit-scrollbar {
+    width: 12px;
+    }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
+`
+
+
 const Container = styled.div`
   display: flex;
-  height: 50%;
-  margin-bottom: 20px;
-  padding: 20px;
+  justify-content: space-between;
+  height: 30vh;    
+  padding: 0 20px 20px;
 `
 
 const Table = styled.table`
@@ -504,6 +526,7 @@ const Table = styled.table`
 
 const PTBody = styled.tbody`
   display: table;
+  width: 100%;
   border-bottom: 1px solid #fff;
 `
 
@@ -528,9 +551,18 @@ const PTD = styled.td`
   &:nth-child(3) {
     min-width: 70px;
   }
-  &:nth-child(n + 4) {
+  &:nth-child(4), &:nth-child(5) {
     text-align: right;
     min-width: 100px;
+  }
+  &:nth-child(6) {
+    text-align: left;
+    min-width: 150px;
+  }
+  &:nth-child(7) {
+    padding: 1.75px 5px;
+    min-width: 30px;
+    text-align: left;
   }
 `
 
@@ -578,6 +610,8 @@ const PTH = styled.th`
   text-align: left;
   font-weight: 500;
   position: relative;
+  padding: 10px 16px 10px 10px;
+  
   
   &:nth-child(1) {
     padding: 10px;
@@ -592,9 +626,18 @@ const PTH = styled.th`
     width: 70px;
     text-align: left;
   }
-  &:nth-child(n + 4) {
-    width: 100px;
+  &:nth-child(4), &:nth-child(5) {
     text-align: right;
+    min-width: 100px;
+  }
+  &:nth-child(6) {
+    text-align: left;
+    min-width: 150px;
+  }
+  &:nth-child(7) {
+    width: 30px;
+    text-align: left;
+    padding: 1.75px 5px;
   }
 `
 
@@ -626,6 +669,14 @@ const PTHead = styled.thead`
 const TableChartContainer = styled.div`
 `
 
+const PieChartsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 3% 0;
+  width: 100%;
+  height: 40vh;
+`
+
 const PieChartHeadingWrapper = styled.div`
   width: 200px;
   text-align: center;
@@ -636,9 +687,8 @@ const PieChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3% 0;
-  width: 40vw;
-  height: 40vh;
+  height: 100%;
+  width: 100%;
   margin: 0 auto;
 
   @media (max-height: 650px) {
@@ -653,6 +703,26 @@ const Heading = styled.span`
   text-align: center;
   color: #fff;
 `
+
+const ButtonsWrapper = styled.div``
+
+const Input = styled.input`
+  box-sizing: border-box;
+  border-bottom: 2px solid rgb(78, 216, 218);
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  outline: none;
+  border-right: none;
+  width: 75%;
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  padding: 10px 0;
+  color: rgb(255, 255, 255);
+`
+
 
 const TableButton = styled.button`
     border: none;
@@ -690,7 +760,12 @@ const TableButton = styled.button`
     }
 `
 
+const ActionButtonsContainer = styled.div`
+  display: flex;
+`
+
 const ActionButton = styled.button`
+    min-width: 60px;
     border: none;
     margin: 0;
     padding: 1.75px 0;
@@ -708,6 +783,7 @@ const ActionButton = styled.button`
     cursor:pointer;
     display:flex;
     align-items:center;
+    justify-content: center;
     
     &::-moz-focus-inner {
     border: 0;
@@ -716,13 +792,24 @@ const ActionButton = styled.button`
     
     & svg {
       color: white;
-      width: 30px;
-      height: 30px;
+      width: 30%;
+      height: 30%;
     }
 `
 
-const TableContainer = styled.div`
-    display: flex;
-    height: 30vh;    
-    overflow-y: scroll;
+const Button = styled.div`
+  border-radius: 2px;
+  background-color: #4c5055;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-family: Roboto;
+  letter-spacing: 0.4px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4ed8da;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin-top: 15px;
 `
