@@ -450,18 +450,18 @@ export default class PortfolioTableRebalance extends React.Component<
         </Button>
         {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
         0 ? (
-          <div>
-            <p>
+          <UndistributedMoneyContainer>
+            <UndistributedMoneyText>
               Undistributed money:{' '}
               {
                 this.state.rows[this.state.rows.length - 1]
                   .undistributedMoney
               }
-            </p>
+            </UndistributedMoneyText>
             <Button onClick={() => this.onDistribute()}>
               Distribute to selected
             </Button>
-          </div>
+          </UndistributedMoneyContainer>
         ) : (
           () => {}
         )}
@@ -675,6 +675,10 @@ const PieChartsWrapper = styled.div`
   padding: 3% 0;
   width: 100%;
   height: 40vh;
+  
+  @media (max-height: 800px) {
+      padding-top: 1.5%;
+  }
 `
 
 const PieChartHeadingWrapper = styled.div`
@@ -719,7 +723,7 @@ const Input = styled.input`
   font-size: 16px;
   line-height: 24px;
   text-align: left;
-  padding: 10px 0;
+  padding: 10px 0 0px;
   color: rgb(255, 255, 255);
 `
 
@@ -811,5 +815,15 @@ const Button = styled.div`
   color: #4ed8da;
   cursor: pointer;
   text-transform: uppercase;
-  margin-top: 15px;
+  margin-top: 10px;
+`
+
+const UndistributedMoneyContainer = styled.div``
+
+const UndistributedMoneyText = styled.p`
+  font-family: Roboto;
+  color: white;
+  font-size: 12px;
+  padding: 10px 0 0;
+  margin: 0px;
 `
