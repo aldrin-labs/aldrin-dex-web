@@ -143,6 +143,7 @@ const ToggleBtn = styled.button`
   cursor: pointer;
   color: #fff;
   font-size: 1em;
+  padding: 0;
 `
 
 const TabContainer = styled.div`
