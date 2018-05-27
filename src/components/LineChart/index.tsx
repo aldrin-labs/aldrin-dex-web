@@ -6,8 +6,9 @@ import {
   XAxis,
   YAxis,
   MarkSeries,
-  LineSeries,
+  AreaSeries,
   Crosshair,
+  GradientDefs,
 } from 'react-vis'
 
 import { Props, State } from './LineChart.types'
@@ -63,13 +64,21 @@ export default class LineChart extends React.Component<Props, State> {
           tickValues={data[0].map((d) => d.x)}
         />
 
+        <GradientDefs>
+          <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stopColor="#12939a" stopOpacity={0.4} />
+            <stop offset="100%" stopColor="#79c7e3" stopOpacity={0.3} />
+          </linearGradient>
+        </GradientDefs>
+
         <YAxis hideLine title="USD" style={axisStyle} />
         {data.map((serie, i) => (
-          <LineSeries
+          <AreaSeries
             key={i}
             animation
             data={serie}
             onNearestX={this.onNearestX}
+            color={'url(#CoolGradient)'}
           />
         ))}
 

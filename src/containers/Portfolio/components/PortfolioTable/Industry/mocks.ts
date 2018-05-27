@@ -299,11 +299,7 @@ export const tableData = [
   },
 ]
 
-const inds = [
-  'Privacy coin',
-  'Smart contracts',
-  // 'Payment'
-]
+const inds = ['Privacy coin', 'Smart contracts', 'Payment']
 
 export function randomInteger(min: number, max: number) {
   let rand = min + Math.random() * (max + 1 - min)
@@ -322,47 +318,3 @@ export function genMocks(len: number) {
     })
   })
 }
-
-export const TMP_LINE_CHART_MOCKS = [
-  [
-    { x: 1, y: 13, label: 'BTC' },
-    { x: 2, y: 14, label: 'BTC' },
-    { x: 3, y: 12, label: 'BTC' },
-    { x: 4, y: 11, label: 'BTC' },
-    { x: 5, y: 10, label: 'BTC' },
-    { x: 6, y: 11, label: 'BTC' },
-    { x: 7, y: 13, label: 'BTC' },
-    { x: 8, y: 14, label: 'BTC' },
-    { x: 9, y: 12, label: 'BTC' },
-    { x: 10, y: 11, label: 'BTC' },
-    { x: 11, y: 10, label: 'BTC' },
-    { x: 12, y: 11, label: 'BTC' },
-  ],
-
-  [
-    { x: 1, y: 50534, label: 'ETH' },
-    { x: 2, y: 49769, label: 'ETH' },
-    { x: 3, y: 51829, label: 'ETH' },
-    { x: 4, y: 56188, label: 'ETH' },
-    { x: 5, y: 60951, label: 'ETH' },
-    { x: 6, y: 59985, label: 'ETH' },
-  ],
-
-  [
-    { x: 1, y: 26012, label: 'XRP' },
-    { x: 2, y: 25705, label: 'XRP' },
-    { x: 3, y: 27857, label: 'XRP' },
-    { x: 4, y: 30952, label: 'XRP' },
-    { x: 5, y: 36189, label: 'XRP' },
-    { x: 6, y: 33912, label: 'XRP' },
-  ],
-
-  [
-    { x: 1, y: 13093, label: 'BCH' },
-    { x: 2, y: 12950, label: 'BCH' },
-    { x: 3, y: 15213, label: 'BCH' },
-    { x: 4, y: 16572, label: 'BCH' },
-    { x: 5, y: 19252, label: 'BCH' },
-    { x: 6, y: 19606, label: 'BCH' },
-  ],
-]
