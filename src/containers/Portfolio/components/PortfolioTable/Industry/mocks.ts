@@ -299,14 +299,44 @@ export const tableData = [
   },
 ]
 
+const inds = [
+  'Privacy coin',
+  'Smart contracts',
+  // 'Payment'
+]
+
+export function randomInteger(min: number, max: number) {
+  let rand = min + Math.random() * (max + 1 - min)
+  return Math.floor(rand)
+}
+
+export function genMocks(len: number) {
+  return inds.map((ind, index) => {
+    return [...Array(len)].map((_, i) => {
+      const int = randomInteger(1 * i + index, 10 * i)
+      return {
+        x: i + 1,
+        y: int,
+        label: `${ind}: ${int} USD`,
+      }
+    })
+  })
+}
+
 export const TMP_LINE_CHART_MOCKS = [
   [
-    { x: 1, y: 137070, label: 'BTC' },
-    { x: 2, y: 134926, label: 'BTC' },
-    { x: 3, y: 138591, label: 'BTC' },
-    { x: 4, y: 140777, label: 'BTC' },
-    { x: 5, y: 150337, label: 'BTC' },
-    { x: 6, y: 151651, label: 'BTC' },
+    { x: 1, y: 13, label: 'BTC' },
+    { x: 2, y: 14, label: 'BTC' },
+    { x: 3, y: 12, label: 'BTC' },
+    { x: 4, y: 11, label: 'BTC' },
+    { x: 5, y: 10, label: 'BTC' },
+    { x: 6, y: 11, label: 'BTC' },
+    { x: 7, y: 13, label: 'BTC' },
+    { x: 8, y: 14, label: 'BTC' },
+    { x: 9, y: 12, label: 'BTC' },
+    { x: 10, y: 11, label: 'BTC' },
+    { x: 11, y: 10, label: 'BTC' },
+    { x: 12, y: 11, label: 'BTC' },
   ],
 
   [

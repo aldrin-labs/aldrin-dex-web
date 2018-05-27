@@ -7,7 +7,7 @@ import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart } from './mocks'
+import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart, genMocks } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -351,7 +351,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       false
 
     const tableDataHasData = industryData
-      ? Object.keys(industryData).length
+      ? !!Object.keys(industryData).length
       : false
 
     if (!tableDataHasData) {
@@ -497,7 +497,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
           <LineChartContainer>
             <Heading>Industry Line Chart</Heading>
-            <LineChart data={TMP_LINE_CHART_MOCKS} />
+            <LineChart data={genMocks(31)} />
           </LineChartContainer>
 
           <PieChartContainer>

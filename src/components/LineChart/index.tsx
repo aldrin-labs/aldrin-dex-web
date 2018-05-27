@@ -1,26 +1,37 @@
 import * as React from 'react'
-import styled from 'styled-components'
+// import styled from 'styled-components's
 import {
   FlexibleXYPlot,
   XAxis,
   YAxis,
-  HorizontalGridLines,
+  MarkSeries,
+  // VerticalGridLines,
+  // HorizontalGridLines,
   LineSeries,
   Crosshair,
 } from 'react-vis'
+import { format } from 'date-fns'
 
-export default class LineChart extends React.Component {
+export interface Props {
+  data: { x: number; y: number; label: string }[][]
+}
+
+export interface State {
+  crosshairValues: { x: number; y: number; label: string }[]
+}
+
+export default class LineChart extends React.Component<Props, State> {
   state = {
     crosshairValues: [],
   }
 
-  onNearestX = (value, { index }) => {
+  onNearestX = (_: any, v: { index: number }) => {
     const { data } = this.props
     if (!data) return
 
     this.setState({
       crosshairValues: data.map((d) => {
-        return d[index]
+        return d[v.index]
       }),
     })
   }
@@ -47,22 +58,30 @@ export default class LineChart extends React.Component {
 
     return (
       <FlexibleXYPlot margin={{ left: 70 }} onMouseLeave={this.onMouseLeave}>
-        <HorizontalGridLines style={{ stroke: 'rgba(134, 134, 134, 0.5)' }} />
+        {/* <VerticalGridLines />
+        <HorizontalGridLines style={{ stroke: 'rgba(134, 134, 134, 0.5)' }} /> */}
         <XAxis
+          title="June 2018"
           style={axisStyle}
-          position="start"
           hideLine
-          tickFormat={(v: number) => `${v + 16}`}
-          tickValues={[6, 12, 18, 24, 30, 36, 4, 48, 54, 60, 66]}
+          // position="start"
+          tickFormat={(v: number) => `${v}`}
+          tickValues={data[0].map((d) => d.x)}
         />
 
-        <YAxis style={axisStyle} hideLine tickFormat={(v) => `${v}М`} />
+        <YAxis
+          title="USD"
+          style={axisStyle}
+          hideLine
+          // tickFormat={(v) => `${v}М`}
+        />
         {data.map((d, i) => (
           <LineSeries
-            style={{
-              stroke: 'rgba(133, 237, 238, 0.35)',
-              strokeWidth: '3px',
-            }}
+            animation
+            // style={{
+            //   // stroke: 'rgba(133, 237, 238, 0.35)',
+            //   strokeWidth: '3px',
+            // }}
             key={i}
             data={
               d || [
@@ -76,24 +95,36 @@ export default class LineChart extends React.Component {
           />
         ))}
 
-        <Crosshair values={crosshairValues}>
-          <div
-            style={{
-              width: '100px',
-              background: '#4c5055',
-              color: '#4ed8da',
-              padding: '5px',
-              fontSize: '14px',
-            }}
-          >
-            {crosshairValues.map((v) => (
-              <React.Fragment>
-                <b>{v.label}</b>
-                <p>{v.y}</p>
-              </React.Fragment>
-            ))}
-          </div>
-        </Crosshair>
+        {crosshairValues && <MarkSeries data={crosshairValues} animation />}
+
+        {crosshairValues && (
+          <Crosshair values={crosshairValues}>
+            <div
+              style={{
+                minWidth: '250px',
+                background: '#4c5055',
+                color: '#4ed8da',
+                padding: '5px',
+                margin: '5px',
+                fontSize: '1rem',
+              }}
+            >
+              <p style={{ margin: 0, padding: 0 }}>
+                {crosshairValues &&
+                  crosshairValues[0] &&
+                  format(
+                    new Date(2018, 5, crosshairValues[0].x),
+                    'dddd, MMM DD YYYY'
+                  )}
+              </p>
+              {crosshairValues.map((v) => (
+                <div key={v.label}>
+                  <b>{v.label}</b>
+                </div>
+              ))}
+            </div>
+          </Crosshair>
+        )}
       </FlexibleXYPlot>
     )
   }
