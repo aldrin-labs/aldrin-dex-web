@@ -293,6 +293,7 @@ export default class PortfolioTableRebalance extends React.Component<
         {children}
         <Container>
           <TableChartContainer>
+            <TableContainer>
             <Table>
               <PTHead>
                 <PTR>
@@ -370,6 +371,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 })}
               </PTBody>
             </Table>
+          </TableContainer>
 
             <PieChartContainer>
               <PieChart
@@ -382,6 +384,7 @@ export default class PortfolioTableRebalance extends React.Component<
             <CompareArrows />
           </ActionButton>
           <TableChartContainer>
+          <TableContainer>
             <Table>
               <PTHead>
                 <PTR>
@@ -466,6 +469,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 })}
               </PTBody>
             </Table>
+          </TableContainer>
             <PieChartContainer>
               <PieChart
                 data={combineToChart(PieChartMockSecond)}
@@ -535,11 +539,14 @@ const Container = styled.div`
 `
 
 const Table = styled.table`
+  table-layout: fixed;
   border-collapse: collapse;
+  display: inline-block;
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
+  display: table;
+  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`
@@ -552,10 +559,20 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-align: right;
 
-  &:first-child {
-    text-align: left;
+  &:nth-child(1) {
+    padding: 1.75px 10px;
+  }
+
+  &:nth-child(2) {
+    min-width: 100px;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+  }
+  &:nth-child(n + 4) {
+    text-align: right;
+    min-width: 100px;
   }
 `
 
@@ -600,10 +617,27 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 10px 10px;
   text-align: left;
   font-weight: 500;
   position: relative;
+  
+  &:nth-child(1) {
+    padding: 10px;
+    text-align: left;
+  }
+
+  &:nth-child(2) {
+    text-align: left;
+    width: 100px;
+  }
+  &:nth-child(3) {
+    width: 70px;
+    text-align: left;
+  }
+  &:nth-child(n + 4) {
+    width: 100px;
+    text-align: right;
+  }
 `
 
 const PTR = styled.tr`
@@ -616,9 +650,23 @@ const PTR = styled.tr`
   }
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  top: 0;
 
-const TableChartContainer = styled.div``
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid white;
+  }
+`
+
+const TableChartContainer = styled.div`
+`
 
 const PieChartHeadingWrapper = styled.div`
   width: 200px;
@@ -631,8 +679,8 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3% 0;
-  width: 35vw;
-  height: 35vh;
+  width: 40vw;
+  height: 40vh;
   margin: 0 auto;
 
   @media (max-height: 650px) {
@@ -713,4 +761,10 @@ const ActionButton = styled.button`
     width: 30px;
     height: 30px;
   }
+`
+
+const TableContainer = styled.div`
+    display: flex;
+    height: 30vh;    
+    overflow-y: scroll;
 `
