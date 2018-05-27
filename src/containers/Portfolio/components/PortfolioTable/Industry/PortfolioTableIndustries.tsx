@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 
+import Legends from '@components/Legends'
 import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart, genMocks } from './mocks'
+import { MOCKS, colors, combineToChart, genMocks } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -19,6 +20,15 @@ import {
   roundUSDOff,
 } from '../../../../../utils/PortfolioTableUtils'
 import { IState } from './PortfolioTableIndustries.types'
+
+const lineChartMocks = genMocks(31)
+
+const legends = lineChartMocks.map((serie, i) => {
+  return {
+    title: serie[0].label,
+    color: colors[i],
+  }
+})
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -46,6 +56,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     currentSort: null,
     selectedRows: null,
     selectedSum: defaultSelectedSum,
+    activeLegend: null,
   }
 
   componentDidMount() {
@@ -337,9 +348,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }))
   }
 
+  onChangeActiveLegend = (index: number) => {
+    this.setState({ activeLegend: index })
+  }
+
   render() {
     const { isUSDCurrently, children } = this.props
-    const { selectedRows, selectedSum, industryData, currentSort } = this.state
+    const {
+      selectedRows,
+      selectedSum,
+      industryData,
+      currentSort,
+      activeLegend,
+    } = this.state
     const isSelectAll =
       (industryData &&
         selectedRows &&
@@ -493,7 +514,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
           <LineChartContainer>
             <Heading>Industry Line Chart</Heading>
-            <LineChart data={genMocks(31)} />
+            <LineChartWrapper>
+              <Legends legends={legends} onChange={this.onChangeActiveLegend} />
+              <LineChart data={lineChartMocks} activeLine={activeLegend} />
+            </LineChartWrapper>
           </LineChartContainer>
 
           <PieChartContainer>
@@ -534,7 +558,7 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3% 0;
-  width: calc(50% - 4rem);
+  width: calc(40% - 4rem);
   min-height: 40vh;
   margin: 2rem;
 
@@ -565,13 +589,19 @@ const PTWrapper = styled.div`
   height: auto;
 `
 
+const LineChartWrapper = styled.div`
+  width: 100%;
+  height: 35vh;
+  display: flex;
+`
+
 const LineChartContainer = styled.div`
   border-radius: 3px;
   background-color: #2d3136;
   box-shadow: 0 2px 6px 0 #0006;
   padding: 1em;
   text-align: center;
-  width: calc(50% - 4rem);
+  width: calc(60% - 4rem);
   height: 40vh;
   margin: 2rem;
 

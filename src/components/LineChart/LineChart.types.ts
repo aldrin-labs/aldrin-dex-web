@@ -6,6 +6,7 @@ export interface Serie {
 
 export interface Props {
   data: Serie[][]
+  activeLine: number | null
 }
 
 export interface State {

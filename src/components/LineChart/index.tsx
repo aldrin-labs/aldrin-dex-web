@@ -6,12 +6,12 @@ import {
   XAxis,
   YAxis,
   MarkSeries,
-  AreaSeries,
+  LineSeries,
   Crosshair,
-  GradientDefs,
 } from 'react-vis'
 
 import { Props, State } from './LineChart.types'
+import { colors } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 
 export default class LineChart extends React.Component<Props, State> {
   state: State = {
@@ -34,8 +34,7 @@ export default class LineChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { data } = this.props
-
+    const { data, activeLine } = this.props
     const { crosshairValues } = this.state
 
     const axisStyle = {
@@ -64,26 +63,27 @@ export default class LineChart extends React.Component<Props, State> {
           tickValues={data[0].map((d) => d.x)}
         />
 
-        <GradientDefs>
-          <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="#12939a" stopOpacity={0.4} />
-            <stop offset="100%" stopColor="#79c7e3" stopOpacity={0.3} />
-          </linearGradient>
-        </GradientDefs>
+        <YAxis
+          hideLine
+          style={axisStyle}
+          tickFormat={(v: number) => `$ ${v}`}
+        />
 
-        <YAxis hideLine title="USD" style={axisStyle} />
-        {data.map((serie, i) => (
-          <AreaSeries
-            key={i}
-            animation
-            data={serie}
-            onNearestX={this.onNearestX}
-            color={'url(#CoolGradient)'}
-          />
-        ))}
+        {data.map((serie, i) => {
+          const color = activeLine === i ? '#fff' : colors[i]
+          return (
+            <LineSeries
+              key={i}
+              animation
+              data={serie}
+              color={color}
+              onNearestX={this.onNearestX}
+            />
+          )
+        })}
 
         {crosshairValues && (
-          <MarkSeries data={crosshairValues} animation color="#fff" />
+          <MarkSeries data={crosshairValues} animation color="#E0F2F1" />
         )}
 
         {crosshairValues && (
@@ -91,9 +91,11 @@ export default class LineChart extends React.Component<Props, State> {
             <Container>
               <HeadingParagraph>{format}</HeadingParagraph>
 
-              {crosshairValues.map((v) => (
-                <div key={v.label}>
-                  <Label>{v.label}</Label>
+              {crosshairValues.map((v, i) => (
+                <div key={`${v.label}: ${v.y} USD`}>
+                  <Label style={{ color: colors[i] }}>{`${v.label}: ${
+                    v.y
+                  } USD`}</Label>
                 </div>
               ))}
             </Container>
@@ -106,7 +108,7 @@ export default class LineChart extends React.Component<Props, State> {
 
 const Container = styled.div`
   min-width: 250px;
-  background-color: #4c5055;
+  background-color: #f5f5f5;
   color: #4ed8da;
   padding: 5px;
   margin: 5px;

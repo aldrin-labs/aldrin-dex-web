@@ -313,8 +313,12 @@ export function genMocks(len: number) {
       return {
         x: i + 1,
         y: int,
-        label: `${ind}: ${int} USD`,
+        label: ind,
       }
     })
   })
 }
+
+// palette from https://material.io/design/color/#tools-for-picking-colors
+// color A700
+export const colors = ['#6200EA', '#00C853', '#0091EA']
