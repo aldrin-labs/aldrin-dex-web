@@ -534,9 +534,9 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3% 0;
-  width: 50%;
+  width: calc(50% - 4rem);
   min-height: 40vh;
-  margin: 2rem 0;
+  margin: 2rem;
 
   @media (max-width: 850px) {
     width: 100%;
@@ -563,27 +563,22 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: auto;
-
-  // height: calc(100vh - 140px);
 `
 
 const LineChartContainer = styled.div`
-  background-color: transparent;
+  border-radius: 3px;
+  background-color: #2d3136;
+  box-shadow: 0 2px 6px 0 #0006;
   padding: 1em;
-  width: 50%;
-  // height: 100%;
   text-align: center;
-  width: 50%;
+  width: calc(50% - 4rem);
   height: 40vh;
-  margin: 2rem 0;
+  margin: 2rem;
 
   @media (max-width: 850px) {
     width: 100%;
     margin: 1rem 0;
   }
-  // @media (max-width: 900px) {
-  //   display: none;
-  // }
 `
 
 const Icon = styled.i`

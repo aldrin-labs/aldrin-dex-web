@@ -73,7 +73,9 @@ export default class LineChart extends React.Component<Props, State> {
           />
         ))}
 
-        {crosshairValues && <MarkSeries data={crosshairValues} animation />}
+        {crosshairValues && (
+          <MarkSeries data={crosshairValues} animation color="#fff" />
+        )}
 
         {crosshairValues && (
           <Crosshair values={crosshairValues}>
@@ -82,7 +84,7 @@ export default class LineChart extends React.Component<Props, State> {
 
               {crosshairValues.map((v) => (
                 <div key={v.label}>
-                  <b>{v.label}</b>
+                  <Label>{v.label}</Label>
                 </div>
               ))}
             </Container>
@@ -105,6 +107,11 @@ const Container = styled.div`
 `
 
 const HeadingParagraph = styled.p`
+  padding: 0;
+  margin: 0 0 1rem 0;
+`
+
+const Label = styled.p`
   padding: 0;
   margin: 0;
 `
