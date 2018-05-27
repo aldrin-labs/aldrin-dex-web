@@ -41,15 +41,17 @@ export default class PortfolioTableRebalance extends React.Component<
     selectedActive: null,
     areAllChecked: false,
     areAllActiveChecked: false,
-    rows: tableData,
-    staticRows: tableData,
-    savedRows: tableData,
+    rows: JSON.parse(JSON.stringify(tableData)),
+    staticRows: JSON.parse(JSON.stringify(tableData)),
+    savedRows: JSON.parse(JSON.stringify(tableData)),
     addMoneyInputValue: 0,
+    activePercentInput: null,
+    activePercentInputValue: 0,
   }
   componentWillMount() {
     this.calculateAllPercents()
   }
-  
+
   calculateAllPercents = () => {
     this.setState({
       rows: this.calculatePercents(this.state.rows),
@@ -58,13 +60,14 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
-  calculatePercents = (data: IRow[]) => {
+  calculatePercents = (data: any[]) => {
     let total = 0
     data.forEach((row, i, arr) => {
       if (i < data.length - 1) {
         total += data[i].price
       }
     })
+    total += data[data.length - 1].undistributedMoney
     data[data.length - 1].price = total
     data.forEach((row, i, arr) => {
       if (i < data.length - 1) {
@@ -126,7 +129,6 @@ export default class PortfolioTableRebalance extends React.Component<
         let toRemove = -1
         selectedActive.forEach((row, i, arr) => {
           if (selectedActive[i] == idx) {
-            //selectedActive.splice(i, 1)
             toRemove = i
           } else {
             if (selectedActive[i] > idx) {
@@ -267,15 +269,47 @@ export default class PortfolioTableRebalance extends React.Component<
       this.setState({ selectedActive, rows })
     }
   }
+
   onAddMoneyInputChange = (e: any) => {
     this.setState({ addMoneyInputValue: e.target.value })
   }
+
+  onPercentInputChange = (e: any) => {
+    this.setState({ activePercentInputValue: e.target.value })
+  }
+
+  onPercentClick = (idx: number) => {
+    this.setState({
+      activePercentInput: idx,
+      activePercentInputValue: this.state.rows[idx].portfolioPerc,
+    })
+  }
+
+  onPercentSubmit = (e: any) => {
+    let { rows } = this.state
+    let percent = this.state.activePercentInputValue
+    let idx = this.state.activePercentInput
+    let total = rows[rows.length - 1].price
+    let newMoney = Math.round(total * percent / 100)
+    let subMoney = newMoney - rows[idx].price
+    rows[idx].price = newMoney
+    rows[rows.length - 1].undistributedMoney -= subMoney
+    rows = this.calculatePercents(rows)
+    this.setState({
+      activePercentInput: null,
+      activePercentInputValue: 0,
+      rows,
+    })
+    e.preventDefault()
+  }
+
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows } = this.state
       rows[rows.length - 1].undistributedMoney += Number(
         this.state.addMoneyInputValue
       )
+      rows = this.calculatePercents(rows)
       this.setState({
         addMoneyInputValue: 0,
         rows,
@@ -294,84 +328,85 @@ export default class PortfolioTableRebalance extends React.Component<
         <Container>
           <TableChartContainer>
             <TableContainer>
-            <Table>
-              <PTHead>
-                <PTR>
-                  <PTH /*key="selectAll"*/ style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={() => this.onSelectAll()}
-                      checked={this.state.areAllChecked}
-                      type="checkbox"
-                      id="selectAll"
-                    />
-                    <Label htmlFor="selectAll">
-                      <Span />
-                    </Label>
-                  </PTH>
-                  {tableHeadings.map((heading) => (
-                    <PTH /*key={heading.name}*/>{heading.name}</PTH>
-                  ))}
-                </PTR>
-              </PTHead>
+              <Table>
+                <PTHead>
+                  <PTR>
+                    <PTH /*key="selectAll"*/ style={{ textAlign: 'left' }}>
+                      <Checkbox
+                        onChange={() => this.onSelectAll()}
+                        checked={this.state.areAllChecked}
+                        type="checkbox"
+                        id="selectAll"
+                      />
+                      <Label htmlFor="selectAll">
+                        <Span />
+                      </Label>
+                    </PTH>
+                    {tableHeadings.map((heading) => (
+                      <PTH /*key={heading.name}*/>{heading.name}</PTH>
+                    ))}
+                  </PTR>
+                </PTHead>
 
-              <PTBody>
-                {this.state.staticRows.map((row, idx) => {
-                  const { currency, symbol, portfolioPerc, price } = row
+                <PTBody>
+                  {this.state.staticRows.map((row, idx) => {
+                    const { currency, symbol, portfolioPerc, price } = row
 
-                  const isSelected =
-                    (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
-                    false
+                    const isSelected =
+                      (selectedBalances &&
+                        selectedBalances.indexOf(idx) >= 0) ||
+                      false
 
-                  const cols = [
-                    currency,
-                    symbol || '',
-                    portfolioPerc ? `${portfolioPerc}%` : '',
-                    `${price} $`,
-                  ]
+                    const cols = [
+                      currency,
+                      symbol || '',
+                      portfolioPerc ? `${portfolioPerc}%` : '',
+                      `${price} $`,
+                    ]
 
-                  return (
-                    <PTR
-                      /*key={`${currency}${symbol}`}*/
-                      isSelected={isSelected}
-                      onClick={() => this.onSelectBalance(idx)}
-                    >
-                      <PTD /*key="smt"*/ isSelected={isSelected}>
-                        {idx >= this.state.staticRows.length - 1
-                          ? () => {}
-                          : this.renderCheckbox(idx)}
-                      </PTD>
-                      {cols.map((col, index) => {
-                        if (col.match(/%/g)) {
-                          const color =
-                            Number(col.replace(/%/g, '')) >= 0
-                              ? '#65c000'
-                              : '#ff687a'
+                    return (
+                      <PTR
+                        /*key={`${currency}${symbol}`}*/
+                        isSelected={isSelected}
+                        onClick={() => this.onSelectBalance(idx)}
+                      >
+                        <PTD /*key="smt"*/ isSelected={isSelected}>
+                          {idx >= this.state.staticRows.length - 1
+                            ? () => {}
+                            : this.renderCheckbox(idx)}
+                        </PTD>
+                        {cols.map((col, index) => {
+                          if (col.match(/%/g)) {
+                            const color =
+                              Number(col.replace(/%/g, '')) >= 0
+                                ? '#65c000'
+                                : '#ff687a'
+
+                            return (
+                              <PTD
+                                /*key={`${col}${index}`}*/
+                                style={{ color }}
+                                isSelected={isSelected}
+                              >
+                                {col}
+                              </PTD>
+                            )
+                          }
 
                           return (
                             <PTD
-                              /*key={`${col}${index}`}*/
-                              style={{ color }}
-                              isSelected={isSelected}
+                              /*key={`${col}${index}`}*/ isSelected={isSelected}
                             >
                               {col}
                             </PTD>
                           )
-                        }
-
-                        return (
-                          <PTD
-                            /*key={`${col}${index}`}*/ isSelected={isSelected}
-                          >
-                            {col}
-                          </PTD>
-                        )
-                      })}
-                    </PTR>
-                  )
-                })}
-              </PTBody>
-            </Table>
-          </TableContainer>
+                        })}
+                      </PTR>
+                    )
+                  })}
+                </PTBody>
+              </Table>
+            </TableContainer>
 
             <PieChartContainer>
               <PieChart
@@ -384,92 +419,108 @@ export default class PortfolioTableRebalance extends React.Component<
             <CompareArrows />
           </ActionButton>
           <TableChartContainer>
-          <TableContainer>
-            <Table>
-              <PTHead>
-                <PTR>
-                  <PTH /*key="selectAll"*/ style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={() => this.onSelectAllActive()}
-                      checked={this.state.areAllActiveChecked}
-                      type="checkbox"
-                      id="selectAllActive"
-                    />
-                    <Label htmlFor="selectAllActive">
-                      <Span />
-                    </Label>
-                  </PTH>
-                  {newTableHeadings.map((heading) => (
-                    <PTH /*key={heading.name}*/>{heading.name}</PTH>
-                  ))}
-                </PTR>
-              </PTHead>
+            <TableContainer>
+              <Table>
+                <PTHead>
+                  <PTR>
+                    <PTH /*key="selectAll"*/ style={{ textAlign: 'left' }}>
+                      <Checkbox
+                        onChange={() => this.onSelectAllActive()}
+                        checked={this.state.areAllActiveChecked}
+                        type="checkbox"
+                        id="selectAllActive"
+                      />
+                      <Label htmlFor="selectAllActive">
+                        <Span />
+                      </Label>
+                    </PTH>
+                    {newTableHeadings.map((heading) => (
+                      <PTH /*key={heading.name}*/>{heading.name}</PTH>
+                    ))}
+                  </PTR>
+                </PTHead>
 
-              <PTBody>
-                {this.state.rows.map((row, rowIndex) => {
-                  const { currency, symbol, portfolioPerc, price } = row
+                <PTBody>
+                  {this.state.rows.map((row, rowIndex) => {
+                    const { currency, symbol, portfolioPerc, price } = row
 
-                  const isSelected =
-                    (selectedActive && selectedActive.indexOf(rowIndex) >= 0) ||
-                    false
+                    const isSelected =
+                      (selectedActive &&
+                        selectedActive.indexOf(rowIndex) >= 0) ||
+                      false
 
-                  const cols = [
-                    currency,
-                    symbol || '',
-                    portfolioPerc ? `${portfolioPerc}%` : '',
-                    `${price} $`,
-                  ]
+                    const cols = [
+                      currency,
+                      symbol || '',
+                      portfolioPerc ? `${portfolioPerc}%` : '',
+                      `${price} $`,
+                    ]
 
-                  return (
-                    <PTR
-                      /*key={`${currency}${symbol}`}*/
-                      isSelected={isSelected}
-                    >
-                      <PTD
-                        /*key="smt"*/ isSelected={isSelected}
-                        onClick={() => this.onSelectActiveBalance(rowIndex)}
+                    return (
+                      <PTR
+                        /*key={`${currency}${symbol}`}*/
+                        isSelected={isSelected}
                       >
-                        {rowIndex >= this.state.rows.length - 1
-                          ? () => {}
-                          : this.renderActiveCheckbox(rowIndex)}
-                      </PTD>
-                      {cols.map((col, idx) => {
-                        if (col.match(/%/g)) {
-                          const color =
-                            Number(col.replace(/%/g, '')) >= 0
-                              ? '#65c000'
-                              : '#ff687a'
-
-                          return (
-                            <PTD /*key={`${col}${idx}`}*/ style={{ color }}>
-                              {col}
-                            </PTD>
-                          )
-                        }
-
-                        return <PTD /*key={`${col}${idx}`}*/>{col}</PTD>
-                      })}
-                      <PTD />
-                      <PTD>
-                        <TableButton
-                          isDeleteColor={
-                            rowIndex === this.state.rows.length - 1
-                          }
-                          onClick={() => this.onButtonClick(rowIndex)}
+                        <PTD
+                          /*key="smt"*/ isSelected={isSelected}
+                          onClick={() => this.onSelectActiveBalance(rowIndex)}
                         >
-                          {rowIndex === this.state.rows.length - 1 ? (
-                            <AddIcon />
-                          ) : (
-                            <DeleteIcon />
-                          )}
-                        </TableButton>
-                      </PTD>
-                    </PTR>
-                  )
-                })}
-              </PTBody>
-            </Table>
-          </TableContainer>
+                          {rowIndex >= this.state.rows.length - 1
+                            ? () => {}
+                            : this.renderActiveCheckbox(rowIndex)}
+                        </PTD>
+                        {cols.map((col, idx) => {
+                          if (col.match(/%/g)) {
+                            const color =
+                              Number(col.replace(/%/g, '')) >= 0
+                                ? '#65c000'
+                                : '#ff687a'
+                            if (rowIndex != this.state.activePercentInput) {
+                              return (
+                                <PTD
+                                  onClick={() => this.onPercentClick(rowIndex)}
+                                  /*key={`${col}${idx}`}*/ style={{ color }}
+                                >
+                                  {col}
+                                </PTD>
+                              )
+                            } else {
+                              return (
+                                <form onSubmit={this.onPercentSubmit}>
+                                  <input
+                                    type="number"
+                                    value={this.state.activePercentInputValue}
+                                    onChange={this.onPercentInputChange}
+                                    step="0.01"
+                                  />
+                                </form>
+                              )
+                            }
+                          }
+
+                          return <PTD /*key={`${col}${idx}`}*/>{col}</PTD>
+                        })}
+                        <PTD />
+                        <PTD>
+                          <TableButton
+                            isDeleteColor={
+                              rowIndex === this.state.rows.length - 1
+                            }
+                            onClick={() => this.onButtonClick(rowIndex)}
+                          >
+                            {rowIndex === this.state.rows.length - 1 ? (
+                              <AddIcon />
+                            ) : (
+                              <DeleteIcon />
+                            )}
+                          </TableButton>
+                        </PTD>
+                      </PTR>
+                    )
+                  })}
+                </PTBody>
+              </Table>
+            </TableContainer>
             <PieChartContainer>
               <PieChart
                 data={combineToChart(PieChartMockSecond)}
@@ -620,7 +671,7 @@ const PTH = styled.th`
   text-align: left;
   font-weight: 500;
   position: relative;
-  
+
   &:nth-child(1) {
     padding: 10px;
     text-align: left;
@@ -665,8 +716,7 @@ const PTHead = styled.thead`
   }
 `
 
-const TableChartContainer = styled.div`
-`
+const TableChartContainer = styled.div``
 
 const PieChartHeadingWrapper = styled.div`
   width: 200px;
@@ -764,7 +814,7 @@ const ActionButton = styled.button`
 `
 
 const TableContainer = styled.div`
-    display: flex;
-    height: 30vh;    
-    overflow-y: scroll;
+  display: flex;
+  height: 30vh;
+  overflow-y: scroll;
 `
