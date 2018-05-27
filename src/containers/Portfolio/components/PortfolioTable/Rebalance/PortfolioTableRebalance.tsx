@@ -14,7 +14,6 @@ import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import CompareArrows from 'material-ui-icons/CompareArrows'
 
-
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
@@ -243,7 +242,7 @@ export default class PortfolioTableRebalance extends React.Component<
       <PTWrapper tableData={this.state.rows}>
         {children}
         <Container>
-            <Wrapper>
+          <Wrapper>
             <Table>
               <PTHead>
                 <PTR>
@@ -322,9 +321,9 @@ export default class PortfolioTableRebalance extends React.Component<
               </PTBody>
             </Table>
           </Wrapper>
-        <ActionButton>
-          <CompareArrows/>
-        </ActionButton>
+          <ActionButton>
+            <CompareArrows />
+          </ActionButton>
           <Wrapper>
             <Table>
               <PTHead>
@@ -343,7 +342,7 @@ export default class PortfolioTableRebalance extends React.Component<
                   {newTableHeadings.map((heading) => (
                     <PTH /*key={heading.name}*/>{heading.name}</PTH>
                   ))}
-                <PTH />
+                  <PTH />
                 </PTR>
               </PTHead>
 
@@ -391,12 +390,19 @@ export default class PortfolioTableRebalance extends React.Component<
 
                         return <PTD /*key={`${col}${idx}`}*/>{col}</PTD>
                       })}
-                  <PTD> buy now </PTD>
+                      <PTD> buy now </PTD>
                       <PTD>
-                        <TableButton isDeleteColor={rowIndex === this.state.rows.length - 1} onClick={() => this.onButtonClick(rowIndex)}>
-                          {rowIndex === this.state.rows.length - 1
-                            ? <AddIcon/>
-                            : <DeleteIcon/> }
+                        <TableButton
+                          isDeleteColor={
+                            rowIndex === this.state.rows.length - 1
+                          }
+                          onClick={() => this.onButtonClick(rowIndex)}
+                        >
+                          {rowIndex === this.state.rows.length - 1 ? (
+                            <AddIcon />
+                          ) : (
+                            <DeleteIcon />
+                          )}
                         </TableButton>
                       </PTD>
                     </PTR>
@@ -406,60 +412,61 @@ export default class PortfolioTableRebalance extends React.Component<
             </Table>
           </Wrapper>
         </Container>
-    <PieChartsWrapper>
-      <PieChartContainer>
-        <PieChart
-          data={combineToChart(PieChartMockFirst)}
-          flexible={true}
-        />
-      </PieChartContainer>
+        <PieChartsWrapper>
+          <PieChartContainer>
+            <PieChart
+              data={combineToChart(PieChartMockFirst)}
+              flexible={true}
+            />
+          </PieChartContainer>
 
-      <ButtonsWrapper>
-        <ActionButtonsContainer>
-        <ActionButton onClick={() => this.onSaveClick()}>
-          <SaveIcon/>
-        </ActionButton>
-        <ActionButton onClick={() => this.onLoadClick()}><UndoIcon/></ActionButton>
-        </ActionButtonsContainer>
-          <Input
-            type="number"
-            value={this.state.addMoneyInputValue}
-            onChange={this.onAddMoneyInputChange}
-          />
-        <Button onClick={() => this.onAddMoneyButtonPressed()}>
-          Add money
-        </Button>
-        {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
-        0 ? (
-          <UndistributedMoneyContainer>
-            <UndistributedMoneyText>
-              Undistributed money:{' '}
-              {
-                this.state.rows[this.state.rows.length - 1]
-                  .undistributedMoney
-              }
-            </UndistributedMoneyText>
-            <Button onClick={() => this.onDistribute()}>
-              Distribute to selected
+          <ButtonsWrapper>
+            <ActionButtonsContainer>
+              <ActionButton onClick={() => this.onSaveClick()}>
+                <SaveIcon />
+              </ActionButton>
+              <ActionButton onClick={() => this.onLoadClick()}>
+                <UndoIcon />
+              </ActionButton>
+            </ActionButtonsContainer>
+            <Input
+              type="number"
+              value={this.state.addMoneyInputValue}
+              onChange={this.onAddMoneyInputChange}
+            />
+            <Button onClick={() => this.onAddMoneyButtonPressed()}>
+              Add money
             </Button>
-          </UndistributedMoneyContainer>
-        ) : (
-          () => {}
-        )}
-      </ButtonsWrapper>
+            {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
+            0 ? (
+              <UndistributedMoneyContainer>
+                <UndistributedMoneyText>
+                  Undistributed money:{' '}
+                  {
+                    this.state.rows[this.state.rows.length - 1]
+                      .undistributedMoney
+                  }
+                </UndistributedMoneyText>
+                <Button onClick={() => this.onDistribute()}>
+                  Distribute to selected
+                </Button>
+              </UndistributedMoneyContainer>
+            ) : (
+              () => {}
+            )}
+          </ButtonsWrapper>
 
-      <PieChartContainer>
-      <PieChart
-        data={combineToChart(PieChartMockSecond)}
-        flexible={true}
-      />
-    </PieChartContainer>
-    </PieChartsWrapper>
+          <PieChartContainer>
+            <PieChart
+              data={combineToChart(PieChartMockSecond)}
+              flexible={true}
+            />
+          </PieChartContainer>
+        </PieChartsWrapper>
       </PTWrapper>
     )
   }
 }
-
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
@@ -475,12 +482,12 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
-    overflow-y: scroll;
-    padding-right: 2px;
-    
-    &::-webkit-scrollbar {
+  overflow-y: scroll;
+  padding-right: 2px;
+
+  &::-webkit-scrollbar {
     width: 12px;
-    }
+  }
 
   &::-webkit-scrollbar-track {
     background: rgba(45, 49, 54, 0.1);
@@ -491,11 +498,10 @@ const Wrapper = styled.div`
   }
 `
 
-
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 30vh;    
+  height: 30vh;
   padding: 0 20px 20px;
 `
 
@@ -532,7 +538,8 @@ const PTD = styled.td`
   &:nth-child(3) {
     min-width: 70px;
   }
-  &:nth-child(4), &:nth-child(5) {
+  &:nth-child(4),
+  &:nth-child(5) {
     text-align: right;
     min-width: 100px;
   }
@@ -592,8 +599,7 @@ const PTH = styled.th`
   font-weight: 500;
   position: relative;
   padding: 10px 16px 10px 10px;
-  
-  
+
   &:nth-child(1) {
     padding: 10px;
     text-align: left;
@@ -607,7 +613,8 @@ const PTH = styled.th`
     width: 70px;
     text-align: left;
   }
-  &:nth-child(4), &:nth-child(5) {
+  &:nth-child(4),
+  &:nth-child(5) {
     text-align: right;
     min-width: 100px;
   }
@@ -653,12 +660,12 @@ const PieChartsWrapper = styled.div`
   padding: 3% 0;
   width: 100%;
   height: 40vh;
-  
+
   @media (max-height: 800px) {
-      padding-top: 1.5%;
+    padding-top: 1.5%;
   }
   @media (max-height: 650px) {
-      justify-content: center;
+    justify-content: center;
   }
 `
 
@@ -696,41 +703,40 @@ const Input = styled.input`
   color: rgb(255, 255, 255);
 `
 
-
 const TableButton = styled.button`
-    border: none;
-    margin: 0;
-    padding: 1.75px 0;
-    width: auto;
-    overflow: visible;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    line-height: normal;
-    text-align: inherit;
-    outline: none;
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
-    -webkit-appearance: none; 
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    
-    &::-moz-focus-inner {
+  border: none;
+  margin: 0;
+  padding: 1.75px 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  text-align: inherit;
+  outline: none;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  &::-moz-focus-inner {
     border: 0;
     padding: 0;
-    }
-    
-    &:hover {
-      & svg {
-        color: ${(props: { isDeleteColor?: boolean }) =>
-  props.isDeleteColor ? '#65c000' : '#ff687a'};
-      }
-    }
+  }
+
+  &:hover {
     & svg {
-        width: 18px;
-        height: 18px;
+      color: ${(props: { isDeleteColor?: boolean }) =>
+        props.isDeleteColor ? '#65c000' : '#ff687a'};
     }
+  }
+  & svg {
+    width: 18px;
+    height: 18px;
+  }
 `
 
 const ActionButtonsContainer = styled.div`
@@ -739,36 +745,36 @@ const ActionButtonsContainer = styled.div`
 `
 
 const ActionButton = styled.button`
-    min-width: 60px;
-    border: none;
-    margin: 0;
-    padding: 1.75px 0;
-    width: auto;
-    overflow: visible;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    line-height: normal;
-    text-align: inherit;
-    outline: none;
-    -webkit-font-smoothing: inherit;
-    -moz-osx-font-smoothing: inherit;
-    -webkit-appearance: none; 
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content: center;
-    
-    &::-moz-focus-inner {
+  min-width: 60px;
+  border: none;
+  margin: 0;
+  padding: 1.75px 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  text-align: inherit;
+  outline: none;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::-moz-focus-inner {
     border: 0;
     padding: 0;
-    }
-    
-    & svg {
-      color: white;
-      width: 30px;
-      height: 30px;
-    }
+  }
+
+  & svg {
+    color: white;
+    width: 30px;
+    height: 30px;
+  }
 `
 
 const Button = styled.div`
