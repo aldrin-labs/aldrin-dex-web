@@ -381,7 +381,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 <PTR>
                   <PTH key="selectAll" style={{ textAlign: 'left' }}>
                     <Checkbox
-                      onChange={() => this.onSelectAll()}
+                      onClick={() => this.onSelectAll()}
                       checked={this.state.areAllChecked}
                       type="checkbox"
                       id="selectAll"
@@ -466,7 +466,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 <PTR>
                   <PTH key="selectAll" style={{ textAlign: 'left' }}>
                     <Checkbox
-                      onChange={() => this.onSelectAllActive()}
+                      onClick={() => this.onSelectAllActive()}
                       checked={this.state.areAllActiveChecked}
                       type="checkbox"
                       id="selectAllActive"
