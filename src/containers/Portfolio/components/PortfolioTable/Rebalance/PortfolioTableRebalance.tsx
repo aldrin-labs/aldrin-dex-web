@@ -13,6 +13,7 @@ import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
+import EditIcon from 'material-ui-icons/Edit'
 import CompareArrows from 'material-ui-icons/CompareArrows'
 import { Args } from '../types'
 
@@ -539,6 +540,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 style={{ color }}
                               >
                                 {col}
+                                <EditIcon />
                               </PTD>
                             )
                           } else {
@@ -710,7 +712,15 @@ const PTD = styled.td`
   &:nth-child(3) {
     min-width: 70px;
   }
-  &:nth-child(4),
+  &:nth-child(4) {
+    text-align: right;
+    min-width: 100px;
+    &:hover {
+      & svg {
+        color: #ffffff;
+      }
+    }
+  }
   &:nth-child(5) {
     text-align: right;
     min-width: 100px;
@@ -723,6 +733,10 @@ const PTD = styled.td`
     padding: 1.75px 5px;
     min-width: 30px;
     text-align: left;
+  }
+  & svg {
+    width: 18px;
+    height: 18px;
   }
 `
 
