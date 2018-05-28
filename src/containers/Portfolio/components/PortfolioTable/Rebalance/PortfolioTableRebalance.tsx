@@ -297,17 +297,24 @@ export default class PortfolioTableRebalance extends React.Component<
     let { rows } = this.state
     let percent = this.state.activePercentInputValue
     let idx = this.state.activePercentInput
-    let total = rows[rows.length - 1].price
-    let newMoney = Math.round(total * percent / 100)
-    let subMoney = newMoney - rows[idx].price
-    rows[idx].price = newMoney
-    rows[rows.length - 1].undistributedMoney -= subMoney
-    rows = this.calculatePercents(rows)
-    this.setState({
-      activePercentInput: null,
-      activePercentInputValue: 0,
-      rows,
-    })
+    if (percent != rows[idx].portfolioPerc) {
+      let total = rows[rows.length - 1].price
+      let newMoney = Math.round(total * percent / 100)
+      let subMoney = newMoney - rows[idx].price
+      rows[idx].price = newMoney
+      rows[rows.length - 1].undistributedMoney -= subMoney
+      rows = this.calculatePercents(rows)
+      this.setState({
+        activePercentInput: null,
+        activePercentInputValue: 0,
+        rows,
+      })
+    } else {
+      this.setState({
+        activePercentInput: null,
+        activePercentInputValue: 0,
+      })
+    }
     e.preventDefault()
   }
 
@@ -547,10 +554,14 @@ export default class PortfolioTableRebalance extends React.Component<
                             return (
                               <form onSubmit={this.onPercentSubmit}>
                                 <input
+                                  key="percentInput"
                                   type="number"
                                   value={this.state.activePercentInputValue}
                                   onChange={this.onPercentInputChange}
+                                  onBlur={this.onPercentSubmit}
                                   step="0.01"
+                                  min="0"
+                                  max="100"
                                 />
                               </form>
                             )
@@ -735,8 +746,8 @@ const PTD = styled.td`
     text-align: left;
   }
   & svg {
-    width: 18px;
-    height: 18px;
+    width: 15px;
+    height: 15px;
   }
 `
 

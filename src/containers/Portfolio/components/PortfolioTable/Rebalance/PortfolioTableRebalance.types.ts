@@ -1,6 +1,4 @@
-export interface IRow {
-
-}
+export interface IRow {}
 
 export interface IProps {
   children: object
