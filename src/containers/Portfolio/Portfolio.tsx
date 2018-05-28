@@ -73,6 +73,7 @@ export default graphql(getPortfolioQuery)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
+  min-height: 600px;
 `
 const Backdrop = styled.div`
   display: ${(props) => (props.isSideNavOpen ? 'block' : 'none')};
