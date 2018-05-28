@@ -8,7 +8,7 @@ import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, colors, combineToChart, genMocks } from './mocks'
+import { MOCKS, colors, combineToChart, genMocks, inds, coins } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -20,15 +20,6 @@ import {
   roundUSDOff,
 } from '../../../../../utils/PortfolioTableUtils'
 import { IState } from './PortfolioTableIndustries.types'
-
-const lineChartMocks = genMocks(31)
-
-const legends = lineChartMocks.map((serie, i) => {
-  return {
-    title: serie[0].label,
-    color: colors[i],
-  }
-})
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -57,6 +48,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     selectedRows: null,
     selectedSum: defaultSelectedSum,
     activeLegend: null,
+  }
+
+  componentWillMount() {
+    const lineChartMocks = genMocks(31, inds)
+
+    const legends = lineChartMocks.map((serie, i) => {
+      return {
+        title: serie[0].label,
+        color: colors[i],
+      }
+    })
+
+    this.setState({ legends, lineChartMocks })
   }
 
   componentDidMount() {
@@ -352,6 +356,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState({ activeLegend: index })
   }
 
+  onChangeData = (data: string[]) => {
+    const lineChartMocks = genMocks(31, data)
+
+    const legends = lineChartMocks.map((serie, i) => {
+      return {
+        title: serie[0].label,
+        color: colors[i],
+      }
+    })
+
+    this.setState({ legends, lineChartMocks })
+  }
+
   render() {
     const { isUSDCurrently, children } = this.props
     const {
@@ -515,8 +532,15 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           <LineChartContainer>
             <Heading>Industry Line Chart</Heading>
             <LineChartWrapper>
-              <Legends legends={legends} onChange={this.onChangeActiveLegend} />
-              <LineChart data={lineChartMocks} activeLine={activeLegend} />
+              <Legends
+                legends={this.state.legends}
+                onChange={this.onChangeActiveLegend}
+              />
+              <LineChart
+                data={this.state.lineChartMocks}
+                activeLine={activeLegend}
+                onChangeData={this.onChangeData}
+              />
             </LineChartWrapper>
           </LineChartContainer>
 

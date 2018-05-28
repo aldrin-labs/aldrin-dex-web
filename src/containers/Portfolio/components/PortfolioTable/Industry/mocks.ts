@@ -299,21 +299,23 @@ export const tableData = [
   },
 ]
 
-const inds = ['Privacy coin', 'Smart contracts', 'Payment']
+export const inds = ['Privacy coin', 'Smart contracts', 'Payment']
+
+export const coins = ['BTC', 'ETH', 'BCH']
 
 export function randomInteger(min: number, max: number) {
   let rand = min + Math.random() * (max + 1 - min)
   return Math.floor(rand)
 }
 
-export function genMocks(len: number) {
-  return inds.map((ind, index) => {
+export function genMocks(len: number, categories: string[]) {
+  return categories.map((categorie, index) => {
     return [...Array(len)].map((_, i) => {
       const int = randomInteger(1 * i + index, 10 * i)
       return {
         x: i + 1,
         y: int,
-        label: ind,
+        label: categorie,
       }
     })
   })

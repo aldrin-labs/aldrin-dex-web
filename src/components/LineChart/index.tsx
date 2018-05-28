@@ -11,11 +11,16 @@ import {
 } from 'react-vis'
 
 import { Props, State } from './LineChart.types'
-import { colors } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
+import {
+  colors,
+  inds,
+  coins,
+} from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 
 export default class LineChart extends React.Component<Props, State> {
   state: State = {
     crosshairValues: [],
+    deepLevel: 1,
   }
 
   onNearestX = (_: any, v: { index: number }) => {
@@ -33,9 +38,27 @@ export default class LineChart extends React.Component<Props, State> {
     this.setState({ crosshairValues: [] })
   }
 
+  onChangeData = () => {
+    const { onChangeData } = this.props
+    const { deepLevel } = this.state
+
+    this.setState({ deepLevel: deepLevel === 1 ? 2 : 1 }, () => {
+      let data = inds
+      if (deepLevel === 1) {
+        data = inds
+      } else if (deepLevel === 2) {
+        data = coins
+      }
+
+      if (onChangeData) onChangeData(data)
+    })
+  }
+
   render() {
     const { data, activeLine } = this.props
     const { crosshairValues } = this.state
+
+    if (!data) return null
 
     const axisStyle = {
       ticks: {
@@ -78,6 +101,7 @@ export default class LineChart extends React.Component<Props, State> {
               data={serie}
               color={color}
               onNearestX={this.onNearestX}
+              onSeriesClick={this.onChangeData}
             />
           )
         })}

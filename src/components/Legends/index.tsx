@@ -22,6 +22,8 @@ export default class Legends extends React.Component<Props, State> {
     const { legends } = this.props
     const { activeLegend } = this.state
 
+    if (!legends) return null
+
     return (
       <LegendsContainer>
         {legends.map((legend, i) => {
