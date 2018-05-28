@@ -211,6 +211,8 @@ const SPaper = styled(Paper)`
 
 export const AddExchangeKey = compose(
   graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
-  graphql(API.getExchangesForKeysListQuery, { name: 'getExchangesForKeysList' }),
+  graphql(API.getExchangesForKeysListQuery, {
+    name: 'getExchangesForKeysList',
+  }),
   formikEnhancer
 )(AddExchangeKeyComponent)
