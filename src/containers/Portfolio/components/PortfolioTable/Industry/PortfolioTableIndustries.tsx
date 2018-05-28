@@ -148,10 +148,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           ? parseFloat(performance.usd).toFixed(2)
           : parseFloat(performance.btc).toFixed(2)
 
-        // console.log(performance.usd);
-        // console.log(performance.btc);
-        console.log('ind: ', ind)
-
         const col = {
           currency: name || '-',
           symbol,
