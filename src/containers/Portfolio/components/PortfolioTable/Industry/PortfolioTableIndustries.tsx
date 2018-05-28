@@ -294,7 +294,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         symbol: '-',
         industry: '-',
       }
-    } else if (selectedRows.length > 1) {
+    } else if (selectedRows.length >= 1) {
       newReducedSum = {
         ...reducedSum,
         currency: 'Selected',
