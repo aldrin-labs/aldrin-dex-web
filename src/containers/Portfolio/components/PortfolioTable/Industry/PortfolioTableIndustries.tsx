@@ -515,7 +515,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   height: auto;
 
   @media (max-height: 650px) {
@@ -595,10 +595,14 @@ const Icon = styled.i`
 `
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
-  background-color: #393e44;
+  overflow-y: auto;
+  background-color: #313339;
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  margin: 2rem;
   margin-left: 20px;
   width: 100%;
+  max-width: 55rem;
+  max-height: 22.2rem;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -623,7 +627,6 @@ const PTable = styled.table`
 const PTBody = styled.tbody`
   width: 100%;
   display: table;
-  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`
@@ -631,8 +634,8 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 12px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 2rem;
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
@@ -690,8 +693,9 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 12px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 2rem;
+  width: 7%;
   color: #fff;
   padding-right: ${(props: { isSorted?: boolean }) =>
     props.isSorted ? '0' : '16px'};
@@ -719,11 +723,7 @@ const PTH = styled.th`
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
-  &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
-  }
+    props.isSelected ? '#393e44' : '#2d3136'};
 `
 
 const PTHead = styled.thead`
