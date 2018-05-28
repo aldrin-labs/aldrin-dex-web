@@ -442,7 +442,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                     ]
 
                     return (
-                      <PTR
+                      <PTRBody
                         key={`${currency}${symbol}`}
                         isSelected={isSelected}
                         onClick={() => this.onSelectBalance(idx)}
@@ -478,7 +478,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                               </PTD>
                             )
                           })}
-                      </PTR>
+                      </PTRBody>
                     )
                   })}
               </PTBody>
@@ -511,7 +511,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   height: auto;
 
   @media (max-height: 650px) {
@@ -591,10 +591,14 @@ const Icon = styled.i`
 `
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
-  background-color: #393e44;
-  margin-left: 20px;
+  overflow-y: auto;
+  background-color: #2d3136;
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  margin: 2rem;
+  padding: 0 0.5rem;
   width: 100%;
+  max-width: 56rem;
+  max-height: 24rem;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -611,7 +615,7 @@ const Wrapper = styled.div`
 
 const PTable = styled.table`
   table-layout: fixed;
-  width: 100%;
+  width: 55rem;
   border-collapse: collapse;
   display: inline-block;
 `
@@ -619,7 +623,6 @@ const PTable = styled.table`
 const PTBody = styled.tbody`
   width: 100%;
   display: table;
-  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`
@@ -627,14 +630,14 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 12px;
-  line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding: 3px 16px 3px 10px;
   overflow: hidden;
   white-space: nowrap;
 
   &:nth-child(1) {
-    padding: 1.75px 10px;
+    padding: 3px 10px;
   }
 
   &:nth-child(2) {
@@ -686,11 +689,10 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 12px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 2rem;
+  width: 7%;
   color: #fff;
-  padding-right: ${(props: { isSorted?: boolean }) =>
-    props.isSorted ? '0' : '16px'};
   font-weight: 500;
 
   &:nth-child(1) {
@@ -700,9 +702,10 @@ const PTH = styled.th`
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
+    width: 96px;
   }
   &:nth-child(3) {
+    padding-right: 3.2rem;
     width: 70px;
     text-align: left;
   }
@@ -710,16 +713,25 @@ const PTH = styled.th`
     width: 100px;
     text-align: right;
   }
+  &:nth-child(5) {
+    padding-right: 0.3rem;
+  }
+`
+
+const PTRBody = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
+
+  &:hover {
+    background-color: rgba(70, 102, 142, 0.2);
+  }
 `
 
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
-  &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
-  }
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
 `
 
 const PTHead = styled.thead`
