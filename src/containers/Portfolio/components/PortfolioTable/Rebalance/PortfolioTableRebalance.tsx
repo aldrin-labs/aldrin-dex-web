@@ -132,7 +132,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onButtonClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive, areAllActiveChecked } = this.state
+    let { selectedActive, areAllActiveChecked, staticRows } = this.state
     if (rows.length - 1 == idx) {
       let newRow = {
         currency: 'Newcoin',
@@ -145,26 +145,39 @@ export default class PortfolioTableRebalance extends React.Component<
     } else {
       let money = rows[idx].price
       rows[rows.length - 1].undistributedMoney += money
-      rows.splice(idx, 1)
-      if (selectedActive) {
-        let toRemove = -1
-        selectedActive.forEach((row, i, arr) => {
-          if (selectedActive[i] == idx) {
-            toRemove = i
-          } else {
-            if (selectedActive[i] > idx) {
-              selectedActive[i] -= 1
+      let deleteFlag = true
+      this.state.staticRows.forEach((row, i, arr) => {
+        if (
+          rows[idx].currency == staticRows[i].currency &&
+          rows[idx].symbol == staticRows[i].symbol
+        ) {
+          deleteFlag = false
+        }
+      })
+      if (deleteFlag) {
+        rows.splice(idx, 1)
+        if (selectedActive) {
+          let toRemove = -1
+          selectedActive.forEach((row, i, arr) => {
+            if (selectedActive[i] == idx) {
+              toRemove = i
+            } else {
+              if (selectedActive[i] > idx) {
+                selectedActive[i] -= 1
+              }
             }
+          })
+          if (toRemove != -1) {
+            selectedActive.splice(toRemove, 1)
           }
-        })
-        if (toRemove != -1) {
-          selectedActive.splice(toRemove, 1)
+          if (selectedActive.length >= rows.length - 1) {
+            areAllActiveChecked = true
+          } else {
+            areAllActiveChecked = false
+          }
         }
-        if (selectedActive.length >= rows.length - 1) {
-          areAllActiveChecked = true
-        } else {
-          areAllActiveChecked = false
-        }
+      } else {
+        rows[idx].price = 0
       }
     }
     rows = this.calculatePercents(rows)
@@ -425,7 +438,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR
-                      key={`${currency}${symbol}`}
+                      key={`${currency}${symbol}${idx}`}
                       isSelected={isSelected}
                       onClick={() => this.onSelectBalance(idx)}
                     >
@@ -523,7 +536,10 @@ export default class PortfolioTableRebalance extends React.Component<
                   ]
 
                   return (
-                    <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
+                    <PTR
+                      key={`${currency}${symbol}${rowIndex}`}
+                      isSelected={isSelected}
+                    >
                       <PTD
                         key="smt"
                         isSelected={isSelected}
@@ -552,18 +568,19 @@ export default class PortfolioTableRebalance extends React.Component<
                             )
                           } else {
                             return (
-                              <form onSubmit={this.onPercentSubmit}>
-                                <input
-                                  key="percentInput"
-                                  type="number"
-                                  value={this.state.activePercentInputValue}
-                                  onChange={this.onPercentInputChange}
-                                  onBlur={this.onPercentSubmit}
-                                  step="0.01"
-                                  min="0"
-                                  max="100"
-                                />
-                              </form>
+                              <PTD key="percentForm">
+                                <form onSubmit={this.onPercentSubmit}>
+                                  <input
+                                    type="number"
+                                    value={this.state.activePercentInputValue}
+                                    onChange={this.onPercentInputChange}
+                                    onBlur={this.onPercentSubmit}
+                                    step="0.01"
+                                    min="0"
+                                    max="100"
+                                  />
+                                </form>
+                              </PTD>
                             )
                           }
                         }
