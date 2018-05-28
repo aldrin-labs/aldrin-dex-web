@@ -164,6 +164,10 @@ const MainContainer = styled.div`
   justify-content: space-evenly;
   flex-wrap: wrap;
   width: 70%;
+
+  @media (max-width: 630px) {
+    width: 100%;
+  }
 `
 const SideContainer = styled.div`
   position: absolute;
@@ -173,6 +177,10 @@ const SideContainer = styled.div`
   width: 30%;
   height: calc(100% + 33px + 32px);
   border-radius: 0px 3px 3px 0px;
+
+  @media (max-width: 630px) {
+    display: none;
+  }
 `
 
 const SideContainerDataBox = styled.div`
@@ -238,6 +246,7 @@ const PricesContainer = styled.div`
   width: 100%;
   height: 30%;
   margin-top: 2rem;
+  padding-bottom: 10px;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #fff;
