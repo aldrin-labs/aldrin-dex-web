@@ -349,29 +349,29 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Container isShownChart={isShownChart}>
-        <Wrapper>
-          <PTable>
-            <PortfolioTableHead
-              isUSDCurrently={isUSDCurrently}
-              isSelectAll={isSelectAll}
-              onSelectAll={this.onSelectAll}
-              onSortTable={this.onSortTable}
-              currentSort={currentSort}
-            />
-            <PortfolioTableMain
-              tableData={tableData}
-              selectedBalances={selectedBalances}
-              isUSDCurrently={isUSDCurrently}
-              onSelectBalance={this.onSelectBalance}
-            />
-            {selectedSum.currency ? (
-              <PortfolioTableSum
-                selectedSum={selectedSum}
+          <Wrapper>
+            <PTable>
+              <PortfolioTableHead
                 isUSDCurrently={isUSDCurrently}
+                isSelectAll={isSelectAll}
+                onSelectAll={this.onSelectAll}
+                onSortTable={this.onSortTable}
+                currentSort={currentSort}
               />
-            ) : null}
-          </PTable>
-        </Wrapper>
+              <PortfolioTableMain
+                tableData={tableData}
+                selectedBalances={selectedBalances}
+                isUSDCurrently={isUSDCurrently}
+                onSelectBalance={this.onSelectBalance}
+              />
+              {selectedSum.currency ? (
+                <PortfolioTableSum
+                  selectedSum={selectedSum}
+                  isUSDCurrently={isUSDCurrently}
+                />
+              ) : null}
+            </PTable>
+          </Wrapper>
         </Container>
 
         <PTChartContainer>
@@ -393,11 +393,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 const Container = styled.div`
   display: flex;
   height: ${(props: { isShownChart: boolean }) =>
-  props.isShownChart ? '30vh' : ''};
+    props.isShownChart ? '30vh' : ''};
 
   @media (max-height: 650px) {
     height: ${(props: { isShownChart: boolean }) =>
-  props.isShownChart ? '45vh' : ''};
+      props.isShownChart ? '45vh' : ''};
   }
 `
 

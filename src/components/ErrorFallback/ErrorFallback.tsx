@@ -12,13 +12,17 @@ const Error = styled(Paper)`
   border: 1px solid red;
 `
 
-const SimpleError = () => <Typography variant="headline" color="error">Error</Typography>
+const SimpleError = () => (
+  <Typography variant="headline" color="error">
+    Error
+  </Typography>
+)
 const RefetchError = (props) => (
   <Fragment>
-  <Typography variant="headline" color="error">
-    Error! Can't load data. Press button to try again!
-  </Typography>
-  <Button onClick={props.refetch}>Refetch data</Button>
+    <Typography variant="headline" color="error">
+      Error! Can't load data. Press button to try again!
+    </Typography>
+    <Button onClick={props.refetch}>Refetch data</Button>
   </Fragment>
 )
 

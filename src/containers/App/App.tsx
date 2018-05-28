@@ -33,9 +33,9 @@ if (process.browser) {
 }
 
 export const App = ({ children }: any) => (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <NavBar />
-      {children}
-    </MuiThemeProvider>
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <NavBar />
+    {children}
+  </MuiThemeProvider>
 )
