@@ -596,13 +596,13 @@ const Icon = styled.i`
 
 const Wrapper = styled.div`
   overflow-y: auto;
-  background-color: #313339;
+  background-color: #2d3136;
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   margin: 2rem;
-  margin-left: 20px;
+  padding: 0 0.5rem;
   width: 100%;
-  max-width: 55rem;
-  max-height: 22.2rem;
+  max-width: 56rem;
+  max-height: 24rem;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -619,7 +619,7 @@ const Wrapper = styled.div`
 
 const PTable = styled.table`
   table-layout: fixed;
-  width: 100%;
+  width: 55rem;
   border-collapse: collapse;
   display: inline-block;
 `
@@ -636,12 +636,12 @@ const PTD = styled.td`
   font-family: Roboto;
   font-size: 1rem;
   line-height: 2rem;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 3px 16px 3px 10px;
   overflow: hidden;
   white-space: nowrap;
 
   &:nth-child(1) {
-    padding: 1.75px 10px;
+    padding: 3px 10px;
   }
 
   &:nth-child(2) {
@@ -697,8 +697,6 @@ const PTH = styled.th`
   line-height: 2rem;
   width: 7%;
   color: #fff;
-  padding-right: ${(props: { isSorted?: boolean }) =>
-    props.isSorted ? '0' : '16px'};
   font-weight: 500;
 
   &:nth-child(1) {
@@ -708,15 +706,19 @@ const PTH = styled.th`
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
+    width: 96px;
   }
   &:nth-child(3) {
+    padding-right: 3.2rem;
     width: 70px;
     text-align: left;
   }
   &:nth-child(n + 4) {
     width: 100px;
     text-align: right;
+  }
+  &:nth-child(5) {
+    padding-right: 0.3rem;
   }
 `
 
