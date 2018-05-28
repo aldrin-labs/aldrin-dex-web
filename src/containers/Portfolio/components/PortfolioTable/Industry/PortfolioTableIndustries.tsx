@@ -446,7 +446,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                     ]
 
                     return (
-                      <PTR
+                      <PTRBody
                         key={`${currency}${symbol}`}
                         isSelected={isSelected}
                         onClick={() => this.onSelectBalance(idx)}
@@ -482,7 +482,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                               </PTD>
                             )
                           })}
-                      </PTR>
+                      </PTRBody>
                     )
                   })}
               </PTBody>
@@ -722,10 +722,20 @@ const PTH = styled.th`
   }
 `
 
+const PTRBody = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
+
+  &:hover {
+    background-color: rgba(70, 102, 142, 0.2);
+  }
+`
+
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#393e44' : '#2d3136'};
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
 `
 
 const PTHead = styled.thead`
