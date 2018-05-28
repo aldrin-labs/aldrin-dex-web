@@ -7,12 +7,14 @@ import {
   PieChartMockFirst,
   PieChartMockSecond,
 } from './mocks'
+import { onSortStrings } from '../../../../../utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import CompareArrows from 'material-ui-icons/CompareArrows'
+import { Args } from '../types'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -44,6 +46,7 @@ export default class PortfolioTableRebalance extends React.Component<
     addMoneyInputValue: 0,
     activePercentInput: null,
     activePercentInputValue: 0,
+    currentSort: null,
   }
   componentWillMount() {
     this.calculateAllPercents()
@@ -71,6 +74,7 @@ export default class PortfolioTableRebalance extends React.Component<
         }
       })
     })
+
     return data
   }
 
@@ -91,6 +95,7 @@ export default class PortfolioTableRebalance extends React.Component<
       }
     })
     data = this.calculatePriceDifference(data)
+
     return data
   }
 
@@ -319,6 +324,47 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
+  onSortTable = (key: Args) => {
+    const { staticRows, currentSort } = this.state
+    if (!staticRows) {
+      return
+    }
+
+    const stringKey =
+      key === 'currency' || key === 'symbol' || key === 'industry'
+
+    const newData = staticRows.slice().sort((a, b) => {
+      if (currentSort && currentSort.key === key) {
+        if (currentSort.arg === 'ASC') {
+          this.setState({ currentSort: { key, arg: 'DESC' } })
+
+          if (stringKey) {
+            return onSortStrings(b[key], a[key])
+          }
+
+          return b[key] - a[key]
+        } else {
+          this.setState({ currentSort: { key, arg: 'ASC' } })
+
+          if (stringKey) {
+            return onSortStrings(a[key], b[key])
+          }
+
+          return a[key] - b[key]
+        }
+      }
+      this.setState({ currentSort: { key, arg: 'ASC' } })
+
+      if (stringKey) {
+        return onSortStrings(a[key], b[key])
+      }
+
+      return a[key] - b[key]
+    })
+
+    this.setState({ staticRows: newData })
+  }
+
   render() {
     const { children } = this.props
     const { selectedBalances } = this.state
@@ -344,7 +390,12 @@ export default class PortfolioTableRebalance extends React.Component<
                     </Label>
                   </PTH>
                   {tableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
+                    <PTH
+                      key={heading.name}
+                      onClick={() => this.onSortTable(heading.value)}
+                    >
+                      {heading.name}
+                    </PTH>
                   ))}
                 </PTR>
               </PTHead>
@@ -372,7 +423,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     >
                       <PTD key="smt" isSelected={isSelected}>
                         {idx >= this.state.staticRows.length - 1
-                          ? () => {}
+                          ? null
                           : this.renderCheckbox(idx)}
                       </PTD>
                       {cols.map((col, index) => {
@@ -471,7 +522,7 @@ export default class PortfolioTableRebalance extends React.Component<
                         onClick={() => this.onSelectActiveBalance(rowIndex)}
                       >
                         {rowIndex >= this.state.rows.length - 1
-                          ? () => {}
+                          ? null
                           : this.renderActiveCheckbox(rowIndex)}
                       </PTD>
                       {cols.map((col, idx) => {
@@ -574,9 +625,7 @@ export default class PortfolioTableRebalance extends React.Component<
                   Distribute to selected
                 </Button>
               </UndistributedMoneyContainer>
-            ) : (
-              () => {}
-            )}
+            ) : null}
           </ButtonsWrapper>
 
           <PieChartContainer>
@@ -807,6 +856,7 @@ const PieChartContainer = styled.div`
 
 const ButtonsWrapper = styled.div`
   width: 33.3%;
+  max-width: 260px;
 `
 
 const Input = styled.input`
@@ -895,8 +945,8 @@ const ActionButton = styled.button`
 
   & svg {
     color: white;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
   }
 `
 
