@@ -350,105 +350,55 @@ export default class PortfolioTableRebalance extends React.Component<
               </PTHead>
 
               <PTBody>
-                {this.state.rows.map((row, rowIndex) => {
-                  const {
-                    currency,
-                    symbol,
-                    portfolioPerc,
-                    price,
-                    deltaPrice,
-                  } = row
+                {this.state.staticRows.map((row, idx) => {
+                  const { currency, symbol, portfolioPerc, price } = row
 
                   const isSelected =
-                    (selectedActive && selectedActive.indexOf(rowIndex) >= 0) ||
+                    (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
                     false
-
-                  let deltaPriceString = ''
-
-                  if (deltaPrice) {
-                    if (deltaPrice > 0) {
-                      deltaPriceString = `BUY ${symbol} ${deltaPrice} $`
-                    } else {
-                      deltaPriceString = `SELL ${symbol} ${Math.abs(
-                        deltaPrice
-                      )} $`
-                    }
-                  }
 
                   const cols = [
                     currency,
                     symbol || '',
                     portfolioPerc ? `${portfolioPerc}%` : '',
                     `${price} $`,
-                    deltaPriceString,
                   ]
 
                   return (
-                    <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
-                      <PTD
-                        key="smt"
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectActiveBalance(rowIndex)}
-                      >
-                        {rowIndex >= this.state.rows.length - 1
+                    <PTR
+                      key={`${currency}${symbol}`}
+                      isSelected={isSelected}
+                      onClick={() => this.onSelectBalance(idx)}
+                    >
+                      <PTD key="smt" isSelected={isSelected}>
+                        {idx >= this.state.staticRows.length - 1
                           ? () => {}
-                          : this.renderActiveCheckbox(rowIndex)}
+                          : this.renderCheckbox(idx)}
                       </PTD>
-                      {cols.map((col, idx) => {
+                      {cols.map((col, index) => {
                         if (col.match(/%/g)) {
                           const color =
                             Number(col.replace(/%/g, '')) >= 0
                               ? '#65c000'
                               : '#ff687a'
-                          if (rowIndex != this.state.activePercentInput) {
-                            return (
-                              <PTD
-                                onClick={() => this.onPercentClick(rowIndex)}
-                                key={`${col}${idx}`}
-                                style={{ color }}
-                              >
-                                {col}
-                              </PTD>
-                            )
-                          } else {
-                            return (
-                              <form onSubmit={this.onPercentSubmit}>
-                                <input
-                                  type="number"
-                                  value={this.state.activePercentInputValue}
-                                  onChange={this.onPercentInputChange}
-                                  step="0.01"
-                                />
-                              </form>
-                            )
-                          }
-                        }
-                        if (col.match(/BUY/g)) {
-                          const color = '#65c000'
-                          return <PTD style={{ color }}>{col}</PTD>
-                        }
-                        if (col.match(/SELL/g)) {
-                          const color = '#ff687a'
-                          return <PTD style={{ color }}>{col}</PTD>
+
+                          return (
+                            <PTD
+                              key={`${col}${index}`}
+                              style={{ color }}
+                              isSelected={isSelected}
+                            >
+                              {col}
+                            </PTD>
+                          )
                         }
 
-                        return <PTD key={`${col}${idx}`}>{col}</PTD>
+                        return (
+                          <PTD key={`${col}${index}`} isSelected={isSelected}>
+                            {col}
+                          </PTD>
+                        )
                       })}
-                      <PTD />
-                      <PTD>
-                        <TableButton
-                          isDeleteColor={
-                            rowIndex === this.state.rows.length - 1
-                          }
-                          onClick={() => this.onButtonClick(rowIndex)}
-                        >
-                          {rowIndex === this.state.rows.length - 1 ? (
-                            <AddIcon />
-                          ) : (
-                            <DeleteIcon />
-                          )}
-                        </TableButton>
-                      </PTD>
                     </PTR>
                   )
                 })}
