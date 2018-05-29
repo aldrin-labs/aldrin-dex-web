@@ -20,14 +20,14 @@ const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'Current', value: 'price' },
+  { name: 'USD', value: 'price' },
 ]
 
 const newTableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'Current', value: 'price' },
+  { name: 'USD', value: 'price' },
   { name: 'Trade', value: 'price' },
 ]
 
