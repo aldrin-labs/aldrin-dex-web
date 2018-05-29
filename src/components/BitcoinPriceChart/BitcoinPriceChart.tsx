@@ -251,10 +251,10 @@ const PricesContainer = styled.div`
   width: 100%;
   height: 30%;
   margin-top: 2rem;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #fff;
+  //border-bottom: 1px solid #fff;
 
   @media (max-width: 480px) {
     height: 45%;
