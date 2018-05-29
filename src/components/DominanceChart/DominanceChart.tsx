@@ -74,12 +74,24 @@ const ChartInfoDesc = styled.span`
   font-weight: 500;
   text-align: left;
   color: #fff;
+
+  @media (max-width: 350px) {
+    font-size: 16px;
+  }
+
+  @media (max-width: 700px) and (min-width: 630px) {
+    font-size: 16px;
+  }
 `
 
 const ChartInfoCircle = styled.div`
   width: 8px;
   height: 8px;
   border-radius: 50%;
+
+  @media (max-width: 350px) {
+    padding-right: 5px;
+  }
 `
 
 const ChartInfoBlock = styled.div`

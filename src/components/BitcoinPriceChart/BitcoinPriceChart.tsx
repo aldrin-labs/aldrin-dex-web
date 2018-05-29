@@ -250,6 +250,12 @@ const PricesContainer = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #fff;
+
+  @media (max-width: 480px) {
+    height: 45%;
+    flex-flow: wrap;
+    border-bottom: none;
+  }
 `
 const PricesColumn = styled.div`
   display: flex;
