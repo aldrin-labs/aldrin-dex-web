@@ -87,6 +87,7 @@ const LegendColor = styled.button`
 const LegendContainer = styled.div`
   display: flex;
   align-items: center;
+  min-width: 100px;
 `
 
 const LegendsContainer = styled.div`
