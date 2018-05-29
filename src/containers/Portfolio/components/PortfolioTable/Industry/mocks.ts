@@ -299,40 +299,28 @@ export const tableData = [
   },
 ]
 
-export const TMP_LINE_CHART_MOCKS = [
-  [
-    { x: 1, y: 137070, label: 'BTC' },
-    { x: 2, y: 134926, label: 'BTC' },
-    { x: 3, y: 138591, label: 'BTC' },
-    { x: 4, y: 140777, label: 'BTC' },
-    { x: 5, y: 150337, label: 'BTC' },
-    { x: 6, y: 151651, label: 'BTC' },
-  ],
+export const inds = ['Privacy coin', 'Smart contracts', 'Payment']
 
-  [
-    { x: 1, y: 50534, label: 'ETH' },
-    { x: 2, y: 49769, label: 'ETH' },
-    { x: 3, y: 51829, label: 'ETH' },
-    { x: 4, y: 56188, label: 'ETH' },
-    { x: 5, y: 60951, label: 'ETH' },
-    { x: 6, y: 59985, label: 'ETH' },
-  ],
+export const coins = ['BTC', 'ETH', 'BCH']
 
-  [
-    { x: 1, y: 26012, label: 'XRP' },
-    { x: 2, y: 25705, label: 'XRP' },
-    { x: 3, y: 27857, label: 'XRP' },
-    { x: 4, y: 30952, label: 'XRP' },
-    { x: 5, y: 36189, label: 'XRP' },
-    { x: 6, y: 33912, label: 'XRP' },
-  ],
+export function randomInteger(min: number, max: number) {
+  let rand = min + Math.random() * (max + 1 - min)
+  return Math.floor(rand)
+}
 
-  [
-    { x: 1, y: 13093, label: 'BCH' },
-    { x: 2, y: 12950, label: 'BCH' },
-    { x: 3, y: 15213, label: 'BCH' },
-    { x: 4, y: 16572, label: 'BCH' },
-    { x: 5, y: 19252, label: 'BCH' },
-    { x: 6, y: 19606, label: 'BCH' },
-  ],
-]
+export function genMocks(len: number, categories: string[]) {
+  return categories.map((categorie, index) => {
+    return [...Array(len)].map((_, i) => {
+      const int = randomInteger(1 * i + index, 10 * i)
+      return {
+        x: i + 1,
+        y: int,
+        label: categorie,
+      }
+    })
+  })
+}
+
+// palette from https://material.io/design/color/#tools-for-picking-colors
+// color A700
+export const colors = ['#6200EA', '#00C853', '#0091EA']

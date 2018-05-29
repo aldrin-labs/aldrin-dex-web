@@ -43,4 +43,5 @@ export interface IState {
   portfolio: IPortfolio | null
   activeKeys: number[] | null
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
+  activeLegend: number | null
 }
