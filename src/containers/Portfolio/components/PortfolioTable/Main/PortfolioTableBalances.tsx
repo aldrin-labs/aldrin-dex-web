@@ -416,7 +416,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: auto;
+  height: calc(100vh - 140px);
 
   @media (max-width: 840px) {
     margin: 1.5rem auto;
