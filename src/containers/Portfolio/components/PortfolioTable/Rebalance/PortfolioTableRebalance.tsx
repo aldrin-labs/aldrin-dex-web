@@ -375,6 +375,7 @@ export default class PortfolioTableRebalance extends React.Component<
         {children}
         <Container>
           <Wrapper>
+            <TableHeading>Current portfolio</TableHeading>
             <Table>
               <PTHead>
                 <PTR>
@@ -444,6 +445,7 @@ export default class PortfolioTableRebalance extends React.Component<
             <CompareArrows />
           </ActionButton>
           <Wrapper>
+            <TableHeading>Rebalanced portfolio</TableHeading>
             <Table>
               <PTHead>
                 <PTR>
@@ -645,6 +647,15 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
+`
+
+const TableHeading = styled.div`
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-size: 17px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1.1px;
 `
 
 const PTBody = styled.tbody`
