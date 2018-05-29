@@ -378,17 +378,6 @@ export default class PortfolioTableRebalance extends React.Component<
             <Table>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={() => this.onSelectAll()}
-                      checked={this.state.areAllChecked}
-                      type="checkbox"
-                      id="selectAll"
-                    />
-                    <Label htmlFor="selectAll">
-                      <Span />
-                    </Label>
-                  </PTH>
                   {tableHeadings.map((heading) => (
                     <PTH
                       key={heading.name}
@@ -421,11 +410,6 @@ export default class PortfolioTableRebalance extends React.Component<
                       isSelected={isSelected}
                       onClick={() => this.onSelectBalance(idx)}
                     >
-                      <PTD key="smt" isSelected={isSelected}>
-                        {idx >= this.state.staticRows.length - 1
-                          ? null
-                          : this.renderCheckbox(idx)}
-                      </PTD>
                       {cols.map((col, index) => {
                         if (col.match(/%/g)) {
                           const color =
@@ -463,17 +447,6 @@ export default class PortfolioTableRebalance extends React.Component<
             <Table>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={() => this.onSelectAllActive()}
-                      checked={this.state.areAllActiveChecked}
-                      type="checkbox"
-                      id="selectAllActive"
-                    />
-                    <Label htmlFor="selectAllActive">
-                      <Span />
-                    </Label>
-                  </PTH>
                   {newTableHeadings.map((heading) => (
                     <PTH key={heading.name}>{heading.name}</PTH>
                   ))}
@@ -516,15 +489,6 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
-                      <PTD
-                        key="smt"
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectActiveBalance(rowIndex)}
-                      >
-                        {rowIndex >= this.state.rows.length - 1
-                          ? null
-                          : this.renderActiveCheckbox(rowIndex)}
-                      </PTD>
                       {cols.map((col, idx) => {
                         if (col.match(/%/g)) {
                           const color =
