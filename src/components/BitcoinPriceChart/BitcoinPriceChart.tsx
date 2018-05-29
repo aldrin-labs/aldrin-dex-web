@@ -95,6 +95,7 @@ class BitcoinPriceChart extends Component {
               justifyContent: 'center',
               position: 'relative',
               left: '-1rem ',
+              minWidth: '100%',
             }}
           />
         </MainContainer>
@@ -180,6 +181,10 @@ const SideContainer = styled.div`
 
   @media (max-width: 630px) {
     display: none;
+  }
+
+  @media (max-width: 1100px) and (min-width: 996px) {
+    width: 33%;
   }
 `
 

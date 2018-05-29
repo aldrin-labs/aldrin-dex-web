@@ -74,12 +74,16 @@ const ChartInfoDesc = styled.span`
   font-weight: 500;
   text-align: left;
   color: #fff;
+  padding-left: 7px;
 
   @media (max-width: 350px) {
     font-size: 16px;
   }
 
   @media (max-width: 700px) and (min-width: 630px) {
+    font-size: 16px;
+  }
+  @media (max-width: 1120px) and (min-width: 996px) {
     font-size: 16px;
   }
 `
@@ -96,9 +100,8 @@ const ChartInfoCircle = styled.div`
 
 const ChartInfoBlock = styled.div`
   display: flex;
-  width: 30%;
-  justify-content: space-between;
   align-items: center;
+  width: 30%;
 `
 
 const ChartInfoContainer = styled.div`
