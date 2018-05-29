@@ -8,7 +8,7 @@ import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, colors, combineToChart, genMocks, inds, coins } from './mocks'
+import { MOCKS, colors, genAngleMocks, genMocks, inds } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -548,7 +548,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <PieChartHeadingWrapper>
               <Heading>Industry Pie Chart</Heading>
             </PieChartHeadingWrapper>
-            <PieChart data={combineToChart()} flexible={true} />
+            <PieChart data={genAngleMocks(inds)} flexible />
           </PieChartContainer>
         </Container>
       </PTWrapper>
@@ -578,11 +578,14 @@ const PieChartHeadingWrapper = styled.div`
 `
 
 const PieChartContainer = styled.div`
+  border-radius: 3px;
+  background-color: #2d3136;
+  box-shadow: 0 2px 6px 0 #0006;
+  padding: 1em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3% 0;
-  width: calc(40% - 4rem);
+  width: calc(30% - 4rem);
   min-height: 40vh;
   margin: 2rem;
 
@@ -625,7 +628,7 @@ const LineChartContainer = styled.div`
   box-shadow: 0 2px 6px 0 #0006;
   padding: 1em;
   text-align: center;
-  width: calc(60% - 4rem);
+  width: calc(70% - 4rem);
   height: 40vh;
   margin: 2rem;
 
