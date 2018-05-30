@@ -522,6 +522,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   height: auto;
+  padding: 20px;
 
   @media (max-height: 650px) {
     height: 50%;
@@ -542,6 +543,9 @@ const PieChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 40vh;
+  background-color: #2d3136;
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   padding: 3% 0;
   width: 50%;
   min-height: 40vh;
@@ -550,6 +554,10 @@ const PieChartContainer = styled.div`
   @media (max-width: 850px) {
     width: 100%;
     margin: 1rem 0;
+  }
+
+  @media (max-height: 900px) {
+    display: none;
   }
 `
 
@@ -576,22 +584,20 @@ const PTWrapper = styled.div`
 `
 
 const LineChartContainer = styled.div`
-  background-color: transparent;
   padding: 1em;
   width: 50%;
-  // height: 100%;
   text-align: center;
-  width: 50%;
   height: 40vh;
-  margin: 2rem 0;
+  background-color: #2d3136;
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
 
   @media (max-width: 850px) {
     width: 100%;
     margin: 1rem 0;
   }
-  // @media (max-width: 900px) {
-  //   display: none;
-  // }
+  @media (max-height: 900px) {
+    display: none;
+  }
 `
 
 const Icon = styled.i`
@@ -602,7 +608,6 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
-  margin-left: 20px;
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
   &::-webkit-scrollbar {
