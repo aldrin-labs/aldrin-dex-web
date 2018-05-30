@@ -8,7 +8,7 @@ import { Props } from './types'
 export default class Widget extends React.Component<Props> {
   render() {
     const { children, heading, icon } = this.props
-    const dndStyles = { cursor: '-webkit-grab', 'z-index': '1' }
+    const dndStyles = { cursor: '-webkit-grab', zIndex: 1 }
 
     return (
       <Container>

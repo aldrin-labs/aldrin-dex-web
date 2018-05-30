@@ -148,10 +148,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           ? parseFloat(performance.usd).toFixed(2)
           : parseFloat(performance.btc).toFixed(2)
 
-        // console.log(performance.usd);
-        // console.log(performance.btc);
-        console.log('ind: ', ind)
-
         const col = {
           currency: name || '-',
           symbol,
@@ -298,7 +294,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         symbol: '-',
         industry: '-',
       }
-    } else if (selectedRows.length > 1) {
+    } else if (selectedRows.length >= 1) {
       newReducedSum = {
         ...reducedSum,
         currency: 'Selected',
@@ -446,7 +442,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                     ]
 
                     return (
-                      <PTR
+                      <PTRBody
                         key={`${currency}${symbol}`}
                         isSelected={isSelected}
                         onClick={() => this.onSelectBalance(idx)}
@@ -482,7 +478,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                               </PTD>
                             )
                           })}
-                      </PTR>
+                      </PTRBody>
                     )
                   })}
               </PTBody>
@@ -499,14 +495,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <Heading>Industry Line Chart</Heading>
             <LineChart data={TMP_LINE_CHART_MOCKS} />
           </LineChartContainer>
-        </Container>
 
-        <PieChartContainer>
-          <PieChartHeadingWrapper>
-            <Heading>Industry Pie Chart</Heading>
-          </PieChartHeadingWrapper>
-          <PieChart data={combineToChart()} flexible={true} />
-        </PieChartContainer>
+          <PieChartContainer>
+            <PieChartHeadingWrapper>
+              <Heading>Industry Pie Chart</Heading>
+            </PieChartHeadingWrapper>
+            <PieChart data={combineToChart()} flexible={true} />
+          </PieChartContainer>
+        </Container>
       </PTWrapper>
     )
   }
@@ -514,12 +510,16 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
-  height: 30vh;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: auto;
 
   @media (max-height: 650px) {
     height: 50%;
     margin-bottom: 20px;
+  }
+  @media (max-width: 900px) {
+    flex-wrap: wrap;
   }
 `
 
@@ -534,12 +534,13 @@ const PieChartContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 3% 0;
-  width: 40vw;
-  height: 40vh;
-  margin: 0 auto;
+  width: 50%;
+  min-height: 40vh;
+  margin: 2rem 0;
 
-  @media (max-height: 650px) {
-    display: none;
+  @media (max-width: 850px) {
+    width: 100%;
+    margin: 1rem 0;
   }
 `
 
@@ -553,7 +554,7 @@ const Heading = styled.span`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 240px);' : '100%'};
+    props.tableData ? 'calc(100% - 48px);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -561,23 +562,28 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
+  height: auto;
+
+  // height: calc(100vh - 140px);
 `
 
 const LineChartContainer = styled.div`
-  background-color: #fff;
+  background-color: transparent;
   padding: 1em;
-  width: 30%;
-  height: 100%;
+  width: 50%;
+  // height: 100%;
   text-align: center;
-  margin: 0 20px;
+  width: 50%;
+  height: 40vh;
+  margin: 2rem 0;
 
-  @media (max-height: 650px) {
-    display: none;
+  @media (max-width: 850px) {
+    width: 100%;
+    margin: 1rem 0;
   }
-  @media (max-width: 900px) {
-    display: none;
-  }
+  // @media (max-width: 900px) {
+  //   display: none;
+  // }
 `
 
 const Icon = styled.i`
@@ -585,9 +591,14 @@ const Icon = styled.i`
 `
 
 const Wrapper = styled.div`
-  overflow-y: scroll;
-  background-color: #393e44;
-  margin-left: 20px;
+  overflow-y: auto;
+  background-color: #2d3136;
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  margin: 2rem;
+  padding: 0 0.5rem;
+  width: 100%;
+  max-width: 56rem;
+  max-height: 24rem;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -604,13 +615,14 @@ const Wrapper = styled.div`
 
 const PTable = styled.table`
   table-layout: fixed;
+  width: 55rem;
   border-collapse: collapse;
   display: inline-block;
 `
 
 const PTBody = styled.tbody`
+  width: 100%;
   display: table;
-  border-bottom: 1px solid #fff;
 `
 
 const PTD = styled.td`
@@ -618,14 +630,14 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 12px;
-  line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding: 3px 16px 3px 10px;
   overflow: hidden;
   white-space: nowrap;
 
   &:nth-child(1) {
-    padding: 1.75px 10px;
+    padding: 3px 10px;
   }
 
   &:nth-child(2) {
@@ -677,11 +689,10 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 12px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 2rem;
+  width: 7%;
   color: #fff;
-  padding-right: ${(props: { isSorted?: boolean }) =>
-    props.isSorted ? '0' : '16px'};
   font-weight: 500;
 
   &:nth-child(1) {
@@ -691,9 +702,10 @@ const PTH = styled.th`
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
+    width: 96px;
   }
   &:nth-child(3) {
+    padding-right: 3.2rem;
     width: 70px;
     text-align: left;
   }
@@ -701,16 +713,25 @@ const PTH = styled.th`
     width: 100px;
     text-align: right;
   }
+  &:nth-child(5) {
+    padding-right: 0.3rem;
+  }
+`
+
+const PTRBody = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
+
+  &:hover {
+    background-color: rgba(70, 102, 142, 0.2);
+  }
 `
 
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
-  &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
-  }
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
 `
 
 const PTHead = styled.thead`

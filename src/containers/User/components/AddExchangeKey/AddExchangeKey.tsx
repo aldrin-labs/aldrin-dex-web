@@ -87,10 +87,10 @@ class AddExchangeKeyComponent extends React.Component {
       handleSubmit,
       setFieldValue,
       isSubmitting,
-      getExchangesList,
+      getExchangesForKeysList,
     } = this.props
 
-    const { loading, exchangePagination } = getExchangesList
+    const { loading, exchangePagination } = getExchangesForKeysList
 
     return (
       <SPaper>
@@ -211,6 +211,8 @@ const SPaper = styled(Paper)`
 
 export const AddExchangeKey = compose(
   graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
-  graphql(API.getExchangesListQuery, { name: 'getExchangesList' }),
+  graphql(API.getExchangesForKeysListQuery, {
+    name: 'getExchangesForKeysList',
+  }),
   formikEnhancer
 )(AddExchangeKeyComponent)

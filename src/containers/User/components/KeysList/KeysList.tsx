@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { FormattedDate } from 'react-intl'
 import styled from 'styled-components'
-import { graphql } from 'react-apollo'
-import { compose } from 'recompose'
 
 import Table, {
   TableBody,
@@ -15,8 +13,7 @@ import { Loading } from '@components/Loading'
 
 import { getKeysQuery } from '../../api'
 import { DeleteKeyDialog } from './'
-
-// TODO: hoc loader fix
+import QueryRenderer from '@components/QueryRenderer'
 
 class KeysListComponent extends React.Component {
   state = {
@@ -93,4 +90,6 @@ const KeysTable = styled(Table)`
   table-layout: fixed;
 `
 
-export const KeysList = compose(graphql(getKeysQuery))(KeysListComponent)
+export default function() {
+  return <QueryRenderer component={KeysListComponent} query={getKeysQuery} />
+}

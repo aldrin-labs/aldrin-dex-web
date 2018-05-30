@@ -1,3 +1,7 @@
+export interface IRow {
+
+}
+
 export interface IProps {
   children: object
 }
@@ -13,4 +17,5 @@ export interface IState {
   addMoneyInputValue: number
   activePercentInput: number | null
   activePercentInputValue: number
+  currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
 }

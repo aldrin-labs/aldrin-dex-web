@@ -1,9 +1,8 @@
 export function combineToChart() {
-  return MOCKS.map((dataItem) =>
-    ({
-      angle: dataItem.value,
-      label: dataItem.asset.industry.name,
-    }))
+  return MOCKS.map((dataItem) => ({
+    angle: dataItem.value,
+    label: dataItem.asset.industry.name,
+  }))
 }
 
 export const MOCKS = [
@@ -17,7 +16,7 @@ export const MOCKS = [
       percentChangeDay: -7.71,
       industry: {
         name: 'Smart contracts',
-        performance: 10,
+        performance: { usd: 14, btc: 2 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -48,7 +47,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Privacy coin',
-        performance: 10,
+        performance: { usd: 8, btc: 10 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -79,7 +78,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Payment',
-        performance: 10,
+        performance: { usd: 7, btc: 12 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -110,7 +109,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Payment',
-        performance: 10,
+        performance: { usd: 8, btc: 10 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -141,7 +140,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Payment',
-        performance: 10,
+        performance: { usd: 15, btc: 4 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -172,7 +171,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Payment',
-        performance: 10,
+        performance: { usd: 14, btc: 7 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -203,7 +202,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Payment',
-        performance: 10,
+        performance: { usd: 10, btc: 1 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -234,7 +233,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Payment',
-        performance: 10,
+        performance: { usd: 1, btc: 6 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -255,7 +254,6 @@ export const MOCKS = [
     usdUnrealizedProfit: 30,
     value: 0.454242,
   },
-
 ]
 
 export const tableData = [

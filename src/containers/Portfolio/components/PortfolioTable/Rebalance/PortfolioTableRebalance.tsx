@@ -7,25 +7,27 @@ import {
   PieChartMockFirst,
   PieChartMockSecond,
 } from './mocks'
+import { onSortStrings } from '../../../../../utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import CompareArrows from 'material-ui-icons/CompareArrows'
+import { Args } from '../types'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'Current', value: 'price' },
+  { name: 'USD', value: 'price' },
 ]
 
 const newTableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'Current', value: 'price' },
+  { name: 'USD', value: 'price' },
   { name: 'Trade', value: 'price' },
 ]
 
@@ -44,6 +46,7 @@ export default class PortfolioTableRebalance extends React.Component<
     addMoneyInputValue: 0,
     activePercentInput: null,
     activePercentInputValue: 0,
+    currentSort: null,
   }
   componentWillMount() {
     this.calculateAllPercents()
@@ -321,6 +324,47 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
+  onSortTable = (key: Args) => {
+    const { staticRows, currentSort } = this.state
+    if (!staticRows) {
+      return
+    }
+
+    const stringKey =
+      key === 'currency' || key === 'symbol' || key === 'industry'
+
+    const newData = staticRows.slice().sort((a, b) => {
+      if (currentSort && currentSort.key === key) {
+        if (currentSort.arg === 'ASC') {
+          this.setState({ currentSort: { key, arg: 'DESC' } })
+
+          if (stringKey) {
+            return onSortStrings(b[key], a[key])
+          }
+
+          return b[key] - a[key]
+        } else {
+          this.setState({ currentSort: { key, arg: 'ASC' } })
+
+          if (stringKey) {
+            return onSortStrings(a[key], b[key])
+          }
+
+          return a[key] - b[key]
+        }
+      }
+      this.setState({ currentSort: { key, arg: 'ASC' } })
+
+      if (stringKey) {
+        return onSortStrings(a[key], b[key])
+      }
+
+      return a[key] - b[key]
+    })
+
+    this.setState({ staticRows: newData })
+  }
+
   render() {
     const { children } = this.props
     const { selectedBalances } = this.state
@@ -331,128 +375,66 @@ export default class PortfolioTableRebalance extends React.Component<
         {children}
         <Container>
           <Wrapper>
+            <TableHeading>Current portfolio</TableHeading>
             <Table>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={() => this.onSelectAll()}
-                      checked={this.state.areAllChecked}
-                      type="checkbox"
-                      id="selectAll"
-                    />
-                    <Label htmlFor="selectAll">
-                      <Span />
-                    </Label>
-                  </PTH>
                   {tableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
+                    <PTH
+                      key={heading.name}
+                      onClick={() => this.onSortTable(heading.value)}
+                    >
+                      {heading.name}
+                    </PTH>
                   ))}
                 </PTR>
               </PTHead>
 
               <PTBody>
-                {this.state.rows.map((row, rowIndex) => {
-                  const {
-                    currency,
-                    symbol,
-                    portfolioPerc,
-                    price,
-                    deltaPrice,
-                  } = row
+                {this.state.staticRows.map((row, idx) => {
+                  const { currency, symbol, portfolioPerc, price } = row
 
                   const isSelected =
-                    (selectedActive && selectedActive.indexOf(rowIndex) >= 0) ||
+                    (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
                     false
-
-                  let deltaPriceString = ''
-
-                  if (deltaPrice) {
-                    if (deltaPrice > 0) {
-                      deltaPriceString = `BUY ${symbol} ${deltaPrice} $`
-                    } else {
-                      deltaPriceString = `SELL ${symbol} ${Math.abs(
-                        deltaPrice
-                      )} $`
-                    }
-                  }
 
                   const cols = [
                     currency,
                     symbol || '',
                     portfolioPerc ? `${portfolioPerc}%` : '',
                     `${price} $`,
-                    deltaPriceString,
                   ]
 
                   return (
-                    <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
-                      <PTD
-                        key="smt"
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectActiveBalance(rowIndex)}
-                      >
-                        {rowIndex >= this.state.rows.length - 1
-                          ? () => {}
-                          : this.renderActiveCheckbox(rowIndex)}
-                      </PTD>
-                      {cols.map((col, idx) => {
+                    <PTR
+                      key={`${currency}${symbol}`}
+                      isSelected={isSelected}
+                      onClick={() => this.onSelectBalance(idx)}
+                    >
+                      {cols.map((col, index) => {
                         if (col.match(/%/g)) {
                           const color =
                             Number(col.replace(/%/g, '')) >= 0
                               ? '#65c000'
                               : '#ff687a'
-                          if (rowIndex !== this.state.activePercentInput) {
-                            return (
-                              <PTD
-                                onClick={() => this.onPercentClick(rowIndex)}
-                                key={`${col}${idx}`}
-                                style={{ color }}
-                              >
-                                {col}
-                              </PTD>
-                            )
-                          } else {
-                            return (
-                              <form onSubmit={this.onPercentSubmit}>
-                                <input
-                                  type="number"
-                                  value={this.state.activePercentInputValue}
-                                  onChange={this.onPercentInputChange}
-                                  step="0.01"
-                                />
-                              </form>
-                            )
-                          }
-                        }
-                        if (col.match(/BUY/g)) {
-                          const color = '#65c000'
 
-                          return <PTD style={{ color }}>{col}</PTD>
-                        }
-                        if (col.match(/SELL/g)) {
-                          const color = '#ff687a'
-
-                          return <PTD style={{ color }}>{col}</PTD>
+                          return (
+                            <PTD
+                              key={`${col}${index}`}
+                              style={{ color }}
+                              isSelected={isSelected}
+                            >
+                              {col}
+                            </PTD>
+                          )
                         }
 
-                        return <PTD key={`${col}${idx}`}>{col}</PTD>
+                        return (
+                          <PTD key={`${col}${index}`} isSelected={isSelected}>
+                            {col}
+                          </PTD>
+                        )
                       })}
-                      <PTD />
-                      <PTD>
-                        <TableButton
-                          isDeleteColor={
-                            rowIndex === this.state.rows.length - 1
-                          }
-                          onClick={() => this.onButtonClick(rowIndex)}
-                        >
-                          {rowIndex === this.state.rows.length - 1 ? (
-                            <AddIcon />
-                          ) : (
-                            <DeleteIcon />
-                          )}
-                        </TableButton>
-                      </PTD>
                     </PTR>
                   )
                 })}
@@ -463,20 +445,10 @@ export default class PortfolioTableRebalance extends React.Component<
             <CompareArrows />
           </ActionButton>
           <Wrapper>
+            <TableHeading>Rebalanced portfolio</TableHeading>
             <Table>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={() => this.onSelectAllActive()}
-                      checked={this.state.areAllActiveChecked}
-                      type="checkbox"
-                      id="selectAllActive"
-                    />
-                    <Label htmlFor="selectAllActive">
-                      <Span />
-                    </Label>
-                  </PTH>
                   {newTableHeadings.map((heading) => (
                     <PTH key={heading.name}>{heading.name}</PTH>
                   ))}
@@ -519,15 +491,6 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
-                      <PTD
-                        key="smt"
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectActiveBalance(rowIndex)}
-                      >
-                        {rowIndex >= this.state.rows.length - 1
-                          ? () => {}
-                          : this.renderActiveCheckbox(rowIndex)}
-                      </PTD>
                       {cols.map((col, idx) => {
                         if (col.match(/%/g)) {
                           const color =
@@ -630,9 +593,7 @@ export default class PortfolioTableRebalance extends React.Component<
                   Distribute to selected
                 </Button>
               </UndistributedMoneyContainer>
-            ) : (
-              () => {}
-            )}
+            ) : null}
           </ButtonsWrapper>
 
           <PieChartContainer>
@@ -688,6 +649,15 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
+`
+
+const TableHeading = styled.div`
+  text-transform: uppercase;
+  font-family: Roboto;
+  font-size: 17px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1.1px;
 `
 
 const PTBody = styled.tbody`
@@ -863,6 +833,7 @@ const PieChartContainer = styled.div`
 
 const ButtonsWrapper = styled.div`
   width: 33.3%;
+  max-width: 260px;
 `
 
 const Input = styled.input`
@@ -951,8 +922,8 @@ const ActionButton = styled.button`
 
   & svg {
     color: white;
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
   }
 `
 

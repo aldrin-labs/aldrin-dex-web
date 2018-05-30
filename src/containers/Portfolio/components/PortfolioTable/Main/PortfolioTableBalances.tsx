@@ -399,6 +399,10 @@ const Container = styled.div`
     height: ${(props: { isShownChart: boolean }) =>
       props.isShownChart ? '45vh' : ''};
   }
+  @media (max-width: 450px) {
+    height: ${(props: { isShownChart: boolean }) =>
+      props.isShownChart ? '50vh' : ''};
+  }
 `
 
 const PTWrapper = styled.div`
@@ -411,11 +415,19 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
+  height: auto;
 
-  @media (max-width: 500px) {
+  @media (max-width: 840px) {
+    margin: 1.5rem auto;
+  }
+
+  @media (max-width: 550px) {
     width: calc(100% - 90px);
-    height: 100vh;
+    margin: 0.625rem auto;
+  }
+
+  @media (max-width: 425px) {
+    width: calc(100% - 20px);
   }
 `
 

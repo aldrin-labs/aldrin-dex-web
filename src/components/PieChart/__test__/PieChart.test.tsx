@@ -50,29 +50,29 @@ describe('PieChart', () => {
     })
   })
 
-  it('onValueMouseOver()', () => {
-    const wrapper = shallow(<PieChart data={data} />)
-    wrapper
-      .find(RadialChart)
-      .props()
-      .onValueMouseOver(data[1])
-
-    expect(wrapper.state('value')).toEqual(data[1])
-    wrapper.update()
-    expect(wrapper).toMatchSnapshot()
-  })
-
-  it('onSeriesMouseOut()', () => {
-    const wrapper = shallow(<PieChart data={data} />)
-    wrapper
-      .find(RadialChart)
-      .props()
-      .onValueMouseOver(data[1])
-    wrapper
-      .find(RadialChart)
-      .props()
-      .onSeriesMouseOut()
-
-    expect(wrapper.state('value')).toBeNull()
-  })
+  // it('onValueMouseOver()', () => {
+  //   const wrapper = shallow(<PieChart data={data} />)
+  //   wrapper
+  //     .find(RadialChart)
+  //     .props()
+  //     .onValueMouseOver(data[1])
+  //
+  //   expect(wrapper.state('value')).toEqual(data[1])
+  //   wrapper.update()
+  //   expect(wrapper).toMatchSnapshot()
+  // })
+  //
+  // it('onSeriesMouseOut()', () => {
+  //   const wrapper = shallow(<PieChart data={data} />)
+  //   wrapper
+  //     .find(RadialChart)
+  //     .props()
+  //     .onValueMouseOver(data[1])
+  //   wrapper
+  //     .find(RadialChart)
+  //     .props()
+  //     .onSeriesMouseOut()
+  //
+  //   expect(wrapper.state('value')).toBeNull()
+  // })
 })
