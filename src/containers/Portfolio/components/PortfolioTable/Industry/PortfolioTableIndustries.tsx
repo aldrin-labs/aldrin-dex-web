@@ -500,17 +500,17 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
-          <LineChartContainer>
-            <Heading>Industry Line Chart</Heading>
-            <LineChart data={TMP_LINE_CHART_MOCKS} />
-          </LineChartContainer>
-
           <PieChartContainer>
             <PieChartHeadingWrapper>
               <Heading>Industry Pie Chart</Heading>
             </PieChartHeadingWrapper>
             <PieChart data={combineToChart()} flexible={true} />
           </PieChartContainer>
+
+          <LineChartContainer>
+            <Heading>Industry Line Chart</Heading>
+            <LineChart data={TMP_LINE_CHART_MOCKS} />
+          </LineChartContainer>
         </Container>
       </PTWrapper>
     )
