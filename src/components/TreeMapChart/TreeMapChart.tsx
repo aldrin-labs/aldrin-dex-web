@@ -1,9 +1,11 @@
 import * as React from 'react'
-import { Treemap } from 'react-vis'
+import { Treemap, makeVisFlexible, FlexibleXYPlot } from 'react-vis'
 import styled from 'styled-components'
 
 import { myData } from './mocks'
 import { State } from './types'
+
+const FlexibleTreeMapChart = makeVisFlexible(Treemap)
 
 export default class TreeMapChart extends React.Component {
   state: State = {
@@ -23,7 +25,6 @@ export default class TreeMapChart extends React.Component {
       height: 300,
       mode: 'binary',
       getLabel: (x: { title: string }) => x.title,
-      width: 350,
       style: {
         border: 'thin solid #393e44',
         fontFamily: 'Roboto',
@@ -32,10 +33,11 @@ export default class TreeMapChart extends React.Component {
         backgroundColor: '#4ed8da',
       },
     }
+
     return (
       <React.Fragment>
         <ChartWrapper>
-          <Treemap {...treeProps} />
+          <FlexibleTreeMapChart {...treeProps} />
         </ChartWrapper>
       </React.Fragment>
     )
@@ -45,10 +47,10 @@ export default class TreeMapChart extends React.Component {
 const ChartWrapper = styled.div`
   display: flex;
   width: 100%;
+  min-width: 100%;
   flex-direction: column;
   position: relative;
   align-items: center;
   justify-content: center;
-  margin-top: 23px;
-  padding-left: 49px;
+  padding: 10px;
 `

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
@@ -83,37 +83,44 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <SvgIcon src={filterListIcon} width={24} height={24} />
             </ToggleBtn>
 
-            <ToggleBtn onClick={this.props.toggleWallets}>
-              <AccountsButton />
-            </ToggleBtn>
+            <AccountBtn onClick={this.props.toggleWallets}>
+              <AccountIcon />
+            </AccountBtn>
+
+            {tab !== 'correlation' &&
+              (dataFromProps || isShownMocks) && (
+                <SwitchRefreshContainer>
+                  <Switch
+                    onClick={this.onToggleUSDBTC}
+                    values={['USD', 'BTC']}
+                  />
+
+                  {tab === 'main' && (
+                    <Mutation mutation={UPDATE_PORTFOLIO}>
+                      {(updatePortfolio, { data, loading }) => {
+                        const isLoading =
+                          loading || (portfolio && portfolio.processing)
+
+                        return (
+                          <ToggleBtn onClick={updatePortfolio}>
+                            {isLoading ? (
+                              <SvgIcon
+                                src={gridLoader}
+                                width={24}
+                                height={24}
+                              />
+                            ) : (
+                              'Refresh'
+                            )}
+                          </ToggleBtn>
+                        )
+                      }}
+                    </Mutation>
+                  )}
+                </SwitchRefreshContainer>
+              )}
           </ButtonContainer>
         </PTHeadingBlock>
-
-        {tab !== 'correlation' &&
-          (dataFromProps || isShownMocks) && (
-            <PTHeadingBlock>
-              <Switch onClick={this.onToggleUSDBTC} values={['USD', 'BTC']} />
-
-              {tab === 'main' && (
-                <Mutation mutation={UPDATE_PORTFOLIO}>
-                  {(updatePortfolio, { data, loading }) => {
-                    const isLoading =
-                      loading || (portfolio && portfolio.processing)
-
-                    return (
-                      <ToggleBtn onClick={updatePortfolio}>
-                        {isLoading ? (
-                          <SvgIcon src={gridLoader} width={24} height={24} />
-                        ) : (
-                          'Refresh'
-                        )}
-                      </ToggleBtn>
-                    )
-                  }}
-                </Mutation>
-              )}
-            </PTHeadingBlock>
-          )}
       </React.Fragment>
     )
   }
@@ -144,11 +151,9 @@ const PTHeadingBlock = styled.div`
 
   @media (max-width: 425px) {
     min-height: 60px;
+    align-items: flex-start;
+    padding: 10px;
 
-    &:nth-child(n) {
-      align-items: center;
-      padding: 10px;
-    }
     &:not(:first-child) {
       margin-bottom: 15px;
     }
@@ -166,23 +171,39 @@ const ButtonContainer = styled.div`
   }
 
   @media (max-width: 710px) {
+    padding-top: 10px;
     margin-right: 0;
-    flex-direction: column;
+    flex-flow: wrap;
   }
 `
 
-const AccountsButton = styled(AccountsIcon)`
+const AccountIcon = styled(AccountsIcon)`
   font-size: 1.5rem;
+<<<<<<< HEAD
   display: block;
+=======
+>>>>>>> develop
 `
 
-const ToggleBtn = styled.button`
+const Btn = css`
   background: transparent;
   border: none;
   outline: none;
   cursor: pointer;
   color: #fff;
   font-size: 1em;
+  padding: 0;
+`
+
+const ToggleBtn = styled.button`
+  ${Btn};
+`
+const AccountBtn = styled.button`
+  ${Btn} display: none;
+
+  @media (max-width: 840px) {
+    display: block;
+  }
 `
 
 const TabContainer = styled.div`
@@ -216,6 +237,22 @@ const Tab = styled.button`
   @media (max-width: 615px) {
     width: 5.5rem;
     padding: 0.5rem;
+  }
+`
+
+const SwitchRefreshContainer = styled.div`
+  display: flex;
+
+  @media (max-width: 710px) {
+    padding-top: 10px;
+  }
+
+  @media (max-width: 615px) {
+    flex-direction: column;
+  }
+
+  @media (max-width: 500px) {
+    padding-top: 20px;
   }
 `
 

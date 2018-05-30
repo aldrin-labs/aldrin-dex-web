@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 
+import Legends from '@components/Legends'
 import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart } from './mocks'
+import { MOCKS, colors, combineToChart, genMocks, inds, coins } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -46,6 +47,20 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     currentSort: null,
     selectedRows: null,
     selectedSum: defaultSelectedSum,
+    activeLegend: null,
+  }
+
+  componentWillMount() {
+    const lineChartMocks = genMocks(31, inds)
+
+    const legends = lineChartMocks.map((serie, i) => {
+      return {
+        title: serie[0].label,
+        color: colors[i],
+      }
+    })
+
+    this.setState({ legends, lineChartMocks })
   }
 
   componentDidMount() {
@@ -294,7 +309,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         symbol: '-',
         industry: '-',
       }
-    } else if (selectedRows.length > 1) {
+    } else if (selectedRows.length >= 1) {
       newReducedSum = {
         ...reducedSum,
         currency: 'Selected',
@@ -337,9 +352,32 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }))
   }
 
+  onChangeActiveLegend = (index: number) => {
+    this.setState({ activeLegend: index })
+  }
+
+  onChangeData = (data: string[]) => {
+    const lineChartMocks = genMocks(31, data)
+
+    const legends = lineChartMocks.map((serie, i) => {
+      return {
+        title: serie[0].label,
+        color: colors[i],
+      }
+    })
+
+    this.setState({ legends, lineChartMocks })
+  }
+
   render() {
     const { isUSDCurrently, children } = this.props
-    const { selectedRows, selectedSum, industryData, currentSort } = this.state
+    const {
+      selectedRows,
+      selectedSum,
+      industryData,
+      currentSort,
+      activeLegend,
+    } = this.state
     const isSelectAll =
       (industryData &&
         selectedRows &&
@@ -354,7 +392,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
 
     const tableDataHasData = industryData
-      ? Object.keys(industryData).length
+      ? !!Object.keys(industryData).length
       : false
 
     if (!tableDataHasData) {
@@ -500,6 +538,24 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
+<<<<<<< HEAD
+=======
+          <LineChartContainer>
+            <Heading>Industry Line Chart</Heading>
+            <LineChartWrapper>
+              <Legends
+                legends={this.state.legends}
+                onChange={this.onChangeActiveLegend}
+              />
+              <LineChart
+                data={this.state.lineChartMocks}
+                activeLine={activeLegend}
+                onChangeData={this.onChangeData}
+              />
+            </LineChartWrapper>
+          </LineChartContainer>
+
+>>>>>>> develop
           <PieChartContainer>
             <PieChartHeadingWrapper>
               <Heading>Industry Pie Chart</Heading>
@@ -547,9 +603,9 @@ const PieChartContainer = styled.div`
   background-color: #2d3136;
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   padding: 3% 0;
-  width: 50%;
+  width: calc(40% - 4rem);
   min-height: 40vh;
-  margin: 2rem 0;
+  margin: 2rem;
 
   @media (max-width: 850px) {
     width: 100%;
@@ -579,6 +635,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
+<<<<<<< HEAD
 
   height: calc(100vh - 140px);
 `
@@ -590,14 +647,37 @@ const LineChartContainer = styled.div`
   height: 40vh;
   background-color: #2d3136;
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+=======
+  height: auto;
+`
+
+const LineChartWrapper = styled.div`
+  width: 100%;
+  height: 35vh;
+  display: flex;
+`
+
+const LineChartContainer = styled.div`
+  border-radius: 3px;
+  background-color: #2d3136;
+  box-shadow: 0 2px 6px 0 #0006;
+  padding: 1em;
+  text-align: center;
+  width: calc(60% - 4rem);
+  height: 40vh;
+  margin: 2rem;
+>>>>>>> develop
 
   @media (max-width: 850px) {
     width: 100%;
     margin: 1rem 0;
   }
+<<<<<<< HEAD
   @media (max-height: 900px) {
     display: none;
   }
+=======
+>>>>>>> develop
 `
 
 const Icon = styled.i`
