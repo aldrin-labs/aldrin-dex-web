@@ -95,6 +95,7 @@ class BitcoinPriceChart extends Component {
               justifyContent: 'center',
               position: 'relative',
               left: '-1rem ',
+              minWidth: '100%',
             }}
           />
         </MainContainer>
@@ -164,6 +165,10 @@ const MainContainer = styled.div`
   justify-content: space-evenly;
   flex-wrap: wrap;
   width: 70%;
+
+  @media (max-width: 630px) {
+    width: 100%;
+  }
 `
 const SideContainer = styled.div`
   position: absolute;
@@ -173,6 +178,14 @@ const SideContainer = styled.div`
   width: 30%;
   height: calc(100% + 33px + 32px);
   border-radius: 0px 3px 3px 0px;
+
+  @media (max-width: 630px) {
+    display: none;
+  }
+
+  @media (max-width: 1100px) and (min-width: 996px) {
+    width: 33%;
+  }
 `
 
 const SideContainerDataBox = styled.div`
@@ -238,9 +251,16 @@ const PricesContainer = styled.div`
   width: 100%;
   height: 30%;
   margin-top: 2rem;
+  padding-bottom: 5px;
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #fff;
+  //border-bottom: 1px solid #fff;
+
+  @media (max-width: 480px) {
+    height: 45%;
+    flex-flow: wrap;
+    border-bottom: none;
+  }
 `
 const PricesColumn = styled.div`
   display: flex;
