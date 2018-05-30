@@ -89,6 +89,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           isUSDCurrently={isUSDCurrently}
         >
           <PortfolioTableTabs
+            toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
             data={this.props.data}
@@ -104,6 +105,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <PortfolioTableRebalance>
           <PortfolioTableTabs
+            toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
             onChangeTab={this.onChangeTab}
@@ -118,6 +120,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <Correlation>
           <PortfolioTableTabs
+            toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
             onChangeTab={this.onChangeTab}

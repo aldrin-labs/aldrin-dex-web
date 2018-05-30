@@ -563,7 +563,7 @@ const Heading = styled.span`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 48px);' : '100%'};
+    props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -604,6 +604,7 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   margin-left: 20px;
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  max-height: 40vh;
   &::-webkit-scrollbar {
     width: 12px;
   }

@@ -157,7 +157,7 @@ const PTHeadingBlock = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-evenly;
   height: 100%;
 
@@ -167,16 +167,13 @@ const ButtonContainer = styled.div`
 
   @media (max-width: 710px) {
     margin-right: 0;
+    flex-direction: column;
   }
 `
 
 const AccountsButton = styled(AccountsIcon)`
   font-size: 1.5rem;
-  display: none;
-
-  @media (max-width: 840px) {
-    display: block;
-  }
+  display: block;
 `
 
 const ToggleBtn = styled.button`
