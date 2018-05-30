@@ -84,9 +84,9 @@ export const tableData = [
     portfolioPerc: 5.55,
     price: 5000,
   },
-  {
-    currency: 'Total',
-    undistributedMoney: 0,
-    price: 43950,
-  },
+  // {
+  //   currency: 'Total',
+  //   undistributedMoney: 0,
+  //   price: 43950,
+  // },
 ]

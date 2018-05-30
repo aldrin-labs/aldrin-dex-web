@@ -65,8 +65,8 @@ export default class PortfolioTableRebalance extends React.Component<
     data.forEach((row, i, arr) => {
       staticRows.forEach((staticRow, j, staticArr) => {
         if (
-          data[i].currency == staticRows[j].currency &&
-          data[i].symbol == staticRows[j].symbol &&
+          data[i].currency === staticRows[j].currency &&
+          data[i].symbol === staticRows[j].symbol &&
           i < data.length - 1 &&
           j < staticRows.length - 1
         ) {
@@ -132,7 +132,7 @@ export default class PortfolioTableRebalance extends React.Component<
   onButtonClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
     let { selectedActive, areAllActiveChecked } = this.state
-    if (rows.length - 1 == idx) {
+    if (rows.length - 1 === idx) {
       let newRow = {
         currency: 'Newcoin',
         symbol: 'NEW',
@@ -148,7 +148,7 @@ export default class PortfolioTableRebalance extends React.Component<
       if (selectedActive) {
         let toRemove = -1
         selectedActive.forEach((row, i, arr) => {
-          if (selectedActive[i] == idx) {
+          if (selectedActive[i] === idx) {
             toRemove = i
           } else {
             if (selectedActive[i] > idx) {
@@ -156,7 +156,7 @@ export default class PortfolioTableRebalance extends React.Component<
             }
           }
         })
-        if (toRemove != -1) {
+        if (toRemove !== -1) {
           selectedActive.splice(toRemove, 1)
         }
         if (selectedActive.length >= rows.length - 1) {
@@ -497,7 +497,7 @@ export default class PortfolioTableRebalance extends React.Component<
                             Number(col.replace(/%/g, '')) >= 0
                               ? '#65c000'
                               : '#ff687a'
-                          if (rowIndex != this.state.activePercentInput) {
+                          if (rowIndex !== this.state.activePercentInput) {
                             return (
                               <PTD
                                 onClick={() => this.onPercentClick(rowIndex)}
@@ -522,10 +522,12 @@ export default class PortfolioTableRebalance extends React.Component<
                         }
                         if (col.match(/BUY/g)) {
                           const color = '#65c000'
+
                           return <PTD style={{ color }}>{col}</PTD>
                         }
                         if (col.match(/SELL/g)) {
                           const color = '#ff687a'
+
                           return <PTD style={{ color }}>{col}</PTD>
                         }
 
