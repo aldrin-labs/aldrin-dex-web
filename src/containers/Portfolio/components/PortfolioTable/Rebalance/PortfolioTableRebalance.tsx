@@ -47,6 +47,7 @@ export default class PortfolioTableRebalance extends React.Component<
     activePercentInput: null,
     activePercentInputValue: 0,
     currentSort: null,
+    isEditMode: false,
   }
   componentWillMount() {
     this.calculateAllPercents()
