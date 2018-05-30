@@ -179,10 +179,6 @@ const ButtonContainer = styled.div`
 
 const AccountIcon = styled(AccountsIcon)`
   font-size: 1.5rem;
-<<<<<<< HEAD
-  display: block;
-=======
->>>>>>> develop
 `
 
 const Btn = css`

@@ -635,19 +635,6 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-<<<<<<< HEAD
-
-  height: calc(100vh - 140px);
-`
-
-const LineChartContainer = styled.div`
-  padding: 1em;
-  width: 50%;
-  text-align: center;
-  height: 40vh;
-  background-color: #2d3136;
-  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-=======
   height: auto;
 `
 
@@ -666,18 +653,14 @@ const LineChartContainer = styled.div`
   width: calc(60% - 4rem);
   height: 40vh;
   margin: 2rem;
->>>>>>> develop
 
   @media (max-width: 850px) {
     width: 100%;
     margin: 1rem 0;
   }
-<<<<<<< HEAD
   @media (max-height: 900px) {
     display: none;
   }
-=======
->>>>>>> develop
 `
 
 const Icon = styled.i`
