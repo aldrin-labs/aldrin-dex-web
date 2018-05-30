@@ -13,6 +13,7 @@ import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
+import EditIcon from 'material-ui-icons/Edit'
 import CompareArrows from 'material-ui-icons/CompareArrows'
 import { Args } from '../types'
 
@@ -131,8 +132,8 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onButtonClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive, areAllActiveChecked } = this.state
-    if (rows.length - 1 === idx) {
+    let { selectedActive, areAllActiveChecked, staticRows } = this.state
+    if (rows.length - 1 == idx) {
       let newRow = {
         currency: 'Newcoin',
         symbol: 'NEW',
@@ -144,26 +145,39 @@ export default class PortfolioTableRebalance extends React.Component<
     } else {
       let money = rows[idx].price
       rows[rows.length - 1].undistributedMoney += money
-      rows.splice(idx, 1)
-      if (selectedActive) {
-        let toRemove = -1
-        selectedActive.forEach((row, i, arr) => {
-          if (selectedActive[i] === idx) {
-            toRemove = i
-          } else {
-            if (selectedActive[i] > idx) {
-              selectedActive[i] -= 1
+      let deleteFlag = true
+      this.state.staticRows.forEach((row, i, arr) => {
+        if (
+          rows[idx].currency == staticRows[i].currency &&
+          rows[idx].symbol == staticRows[i].symbol
+        ) {
+          deleteFlag = false
+        }
+      })
+      if (deleteFlag) {
+        rows.splice(idx, 1)
+        if (selectedActive) {
+          let toRemove = -1
+          selectedActive.forEach((row, i, arr) => {
+            if (selectedActive[i] == idx) {
+              toRemove = i
+            } else {
+              if (selectedActive[i] > idx) {
+                selectedActive[i] -= 1
+              }
             }
+          })
+          if (toRemove != -1) {
+            selectedActive.splice(toRemove, 1)
           }
-        })
-        if (toRemove !== -1) {
-          selectedActive.splice(toRemove, 1)
+          if (selectedActive.length >= rows.length - 1) {
+            areAllActiveChecked = true
+          } else {
+            areAllActiveChecked = false
+          }
         }
-        if (selectedActive.length >= rows.length - 1) {
-          areAllActiveChecked = true
-        } else {
-          areAllActiveChecked = false
-        }
+      } else {
+        rows[idx].price = 0
       }
     }
     rows = this.calculatePercents(rows)
@@ -296,17 +310,24 @@ export default class PortfolioTableRebalance extends React.Component<
     let { rows } = this.state
     let percent = this.state.activePercentInputValue
     let idx = this.state.activePercentInput
-    let total = rows[rows.length - 1].price
-    let newMoney = Math.round(total * percent / 100)
-    let subMoney = newMoney - rows[idx].price
-    rows[idx].price = newMoney
-    rows[rows.length - 1].undistributedMoney -= subMoney
-    rows = this.calculatePercents(rows)
-    this.setState({
-      activePercentInput: null,
-      activePercentInputValue: 0,
-      rows,
-    })
+    if (percent != rows[idx].portfolioPerc) {
+      let total = rows[rows.length - 1].price
+      let newMoney = Math.round(total * percent / 100)
+      let subMoney = newMoney - rows[idx].price
+      rows[idx].price = newMoney
+      rows[rows.length - 1].undistributedMoney -= subMoney
+      rows = this.calculatePercents(rows)
+      this.setState({
+        activePercentInput: null,
+        activePercentInputValue: 0,
+        rows,
+      })
+    } else {
+      this.setState({
+        activePercentInput: null,
+        activePercentInputValue: 0,
+      })
+    }
     e.preventDefault()
   }
 
@@ -407,7 +428,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR
-                      key={`${currency}${symbol}`}
+                      key={`${currency}${symbol}${idx}`}
                       isSelected={isSelected}
                       onClick={() => this.onSelectBalance(idx)}
                     >
@@ -505,18 +526,24 @@ export default class PortfolioTableRebalance extends React.Component<
                                 style={{ color }}
                               >
                                 {col}
+                                <EditIcon />
                               </PTD>
                             )
                           } else {
                             return (
-                              <form onSubmit={this.onPercentSubmit}>
-                                <input
-                                  type="number"
-                                  value={this.state.activePercentInputValue}
-                                  onChange={this.onPercentInputChange}
-                                  step="0.01"
-                                />
-                              </form>
+                              <PTD key="percentForm">
+                                <form onSubmit={this.onPercentSubmit}>
+                                  <input
+                                    type="number"
+                                    value={this.state.activePercentInputValue}
+                                    onChange={this.onPercentInputChange}
+                                    onBlur={this.onPercentSubmit}
+                                    step="0.01"
+                                    min="0"
+                                    max="100"
+                                  />
+                                </form>
+                              </PTD>
                             )
                           }
                         }
@@ -687,7 +714,15 @@ const PTD = styled.td`
   &:nth-child(3) {
     min-width: 70px;
   }
-  &:nth-child(4),
+  &:nth-child(4) {
+    text-align: right;
+    min-width: 100px;
+    &:hover {
+      & svg {
+        color: #ffffff;
+      }
+    }
+  }
   &:nth-child(5) {
     text-align: right;
     min-width: 100px;
@@ -700,6 +735,10 @@ const PTD = styled.td`
     padding: 1.75px 5px;
     min-width: 30px;
     text-align: left;
+  }
+  & svg {
+    width: 15px;
+    height: 15px;
   }
 `
 
