@@ -399,7 +399,6 @@ const Container = styled.div`
     height: ${(props: { isShownChart: boolean }) =>
       props.isShownChart ? '45vh' : ''};
   }
-
   @media (max-width: 450px) {
     height: ${(props: { isShownChart: boolean }) =>
       props.isShownChart ? '50vh' : ''};
