@@ -16,6 +16,7 @@ import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
 import CompareArrows from 'material-ui-icons/CompareArrows'
 import { Args } from '../types'
+import { IndProps } from '@containers/Portfolio/interfaces'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -49,9 +50,23 @@ export default class PortfolioTableRebalance extends React.Component<
     activePercentInputValue: 0,
     currentSort: null,
     isEditModeEnabled: false,
+    isUSDCurrently: true,
   }
   componentWillMount() {
     this.calculateAllPercents()
+  }
+
+  componentWillReceiveProps(nextProps: IProps) {
+    if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
+      this.setState({ isUSDCurrently: nextProps.isUSDCurrently })
+      if (nextProps.isUSDCurrently) {
+        tableHeadings[3].name = 'USD'
+        newTableHeadings[3].name = 'USD'
+      } else {
+        tableHeadings[3].name = 'BTC'
+        newTableHeadings[3].name = 'BTC'
+      }
+    }
   }
 
   calculateAllPercents = () => {
@@ -388,7 +403,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   render() {
-    const { children } = this.props
+    const { children, isUSDCurrently } = this.props
     const { selectedBalances } = this.state
     const { selectedActive } = this.state
 
@@ -487,6 +502,12 @@ export default class PortfolioTableRebalance extends React.Component<
                     deltaPrice,
                   } = row
 
+                  const mainSymbol = isUSDCurrently ? (
+                    <Icon className="fa fa-usd" key={`${rowIndex}usd`} />
+                  ) : (
+                    <Icon className="fa fa-btc" key={`${rowIndex}btc`} />
+                  )
+
                   const isSelected =
                     (selectedActive && selectedActive.indexOf(rowIndex) >= 0) ||
                     false
@@ -507,7 +528,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     currency,
                     symbol || '',
                     portfolioPerc ? `${portfolioPerc}%` : '',
-                    `${price} $`,
+                    `${price}`,
                     deltaPriceString,
                   ]
 
@@ -557,6 +578,15 @@ export default class PortfolioTableRebalance extends React.Component<
                           const color = '#ff687a'
 
                           return <PTD style={{ color }}>{col}</PTD>
+                        }
+
+                        if (idx == 3) {
+                          return (
+                            <PTD key={`${col}${idx}`}>
+                              {mainSymbol}
+                              {col}
+                            </PTD>
+                          )
                         }
 
                         return <PTD key={`${col}${idx}`}>{col}</PTD>
@@ -635,6 +665,10 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 }
+
+const Icon = styled.i`
+  padding-right: 5px;
+`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
