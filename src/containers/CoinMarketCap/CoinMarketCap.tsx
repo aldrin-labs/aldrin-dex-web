@@ -167,7 +167,6 @@ export const CoinMarketCapQuery = gql`
         _id
         name
         symbol
-        nameTrue
         priceUSD
         maxSupply
         totalSupply
