@@ -542,10 +542,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           <LineChartContainer>
             <Heading>Industry Line Chart</Heading>
             <LineChartWrapper>
-              <Legends
+              {/*<Legends
                 legends={this.state.legends}
                 onChange={this.onChangeActiveLegend}
-              />
+              />*/}
               <LineChart
                 data={this.state.lineChartMocks}
                 activeLine={activeLegend}
@@ -569,7 +569,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
   height: auto;
   padding: 20px;
   margin-top: -2rem;
@@ -630,7 +630,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: auto;
+  height: calc(100vh - 130px);
 `
 
 const LineChartWrapper = styled.div`

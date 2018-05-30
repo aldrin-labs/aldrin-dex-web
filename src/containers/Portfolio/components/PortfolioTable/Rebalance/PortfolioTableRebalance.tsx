@@ -650,7 +650,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 130px);
 `
 
 const Wrapper = styled.div`

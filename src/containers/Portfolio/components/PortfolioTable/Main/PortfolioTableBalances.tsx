@@ -393,7 +393,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 const Container = styled.div`
   display: flex;
   height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '30vh' : ''};
+    props.isShownChart ? '40vh' : ''};
 
   @media (max-height: 650px) {
     height: ${(props: { isShownChart: boolean }) =>
@@ -416,7 +416,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 130px);
 
   @media (max-width: 840px) {
     margin: 1.5rem auto;
