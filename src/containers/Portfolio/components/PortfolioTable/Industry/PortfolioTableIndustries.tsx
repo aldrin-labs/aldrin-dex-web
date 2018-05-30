@@ -538,6 +538,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
+          {/* ToDo: add button that toggles chart */}
           <LineChartContainer>
             <Heading>Industry Line Chart</Heading>
             <LineChartWrapper>
@@ -568,9 +569,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   height: auto;
   padding: 20px;
+  margin-top: -2rem;
 
   @media (max-height: 650px) {
     height: 50%;
@@ -589,6 +591,7 @@ const PieChartHeadingWrapper = styled.div`
 
 const PieChartContainer = styled.div`
   display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   height: 40vh;
@@ -649,8 +652,6 @@ const LineChartContainer = styled.div`
   @media (max-width: 850px) {
     width: 100%;
     margin: 1rem 0;
-  }
-  @media (max-height: 900px) {
     display: none;
   }
 `
@@ -661,10 +662,12 @@ const Icon = styled.i`
 
 const Wrapper = styled.div`
   overflow-y: scroll;
+  border-radius: 3px;
   background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
+  margin-top: 2rem;
   &::-webkit-scrollbar {
     width: 12px;
   }
