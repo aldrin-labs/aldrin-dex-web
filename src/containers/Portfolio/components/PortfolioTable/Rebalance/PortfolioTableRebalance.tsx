@@ -439,8 +439,13 @@ export default class PortfolioTableRebalance extends React.Component<
                     currency,
                     symbol || '',
                     portfolioPerc ? `${portfolioPerc}%` : '',
-                    `${price} $`,
+                    `${price}`,
                   ]
+                  const mainSymbol = isUSDCurrently ? (
+                    <Icon className="fa fa-usd" key={`${idx}usd`} />
+                  ) : (
+                    <Icon className="fa fa-btc" key={`${idx}btc`} />
+                  )
 
                   return (
                     <PTR
@@ -461,6 +466,14 @@ export default class PortfolioTableRebalance extends React.Component<
                               style={{ color }}
                               isSelected={isSelected}
                             >
+                              {col}
+                            </PTD>
+                          )
+                        }
+                        if (index == 3) {
+                          return (
+                            <PTD key={`${col}${idx}`}>
+                              {mainSymbol}
                               {col}
                             </PTD>
                           )
