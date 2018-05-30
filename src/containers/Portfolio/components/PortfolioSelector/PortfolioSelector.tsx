@@ -131,7 +131,6 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
     return (
       <AccountsWalletsBlock isSideNavOpen={this.props.isSideNavOpen}>
-        {console.log(this.props.isSideNavOpen)}
         <AccountsWalletsHeadingWrapper>
           <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
           <CloseButton onClick={this.props.toggleWallets}>
@@ -259,15 +258,13 @@ const AccountsWalletsBlock = styled.div`
   background-color: #2d3136;
   padding: 16px;
 
-  @media (max-width: 840px) {
-    display: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-      isSideNavOpen ? 'static' : 'none'};
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1301;
-    height: 100vh;
-  }
+  display: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? 'static' : 'none'};
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1301;
+  height: 100vh;
 `
 
 const AccountsWalletsHeadingWrapper = styled.div`
