@@ -538,8 +538,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
-<<<<<<< HEAD
-=======
           <LineChartContainer>
             <Heading>Industry Line Chart</Heading>
             <LineChartWrapper>
@@ -555,18 +553,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </LineChartWrapper>
           </LineChartContainer>
 
->>>>>>> develop
           <PieChartContainer>
             <PieChartHeadingWrapper>
               <Heading>Industry Pie Chart</Heading>
             </PieChartHeadingWrapper>
             <PieChart data={combineToChart()} flexible={true} />
           </PieChartContainer>
-
-          <LineChartContainer>
-            <Heading>Industry Line Chart</Heading>
-            <LineChart data={TMP_LINE_CHART_MOCKS} />
-          </LineChartContainer>
         </Container>
       </PTWrapper>
     )
@@ -650,9 +642,9 @@ const LineChartContainer = styled.div`
   box-shadow: 0 2px 6px 0 #0006;
   padding: 1em;
   text-align: center;
-  width: calc(60% - 4rem);
+  width: 50%;
   height: 40vh;
-  margin: 2rem;
+  margin: 2rem 0rem;
 
   @media (max-width: 850px) {
     width: 100%;
