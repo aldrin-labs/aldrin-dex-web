@@ -148,10 +148,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           ? parseFloat(performance.usd).toFixed(2)
           : parseFloat(performance.btc).toFixed(2)
 
-        // console.log(performance.usd);
-        // console.log(performance.btc);
-        console.log('ind: ', ind)
-
         const col = {
           currency: name || '-',
           symbol,
@@ -350,6 +346,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
+    let isThereAnySelectedRows = false
+    if (selectedRows) {
+      isThereAnySelectedRows = selectedRows.length > 1 ? true : false
+      console.log(selectedRows.length)
+      console.log(isThereAnySelectedRows)
+    }
+
     const tableDataHasData = industryData
       ? Object.keys(industryData).length
       : false
@@ -367,7 +370,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Container>
-          <Wrapper>
+          <Wrapper isThereAnySelectedRows={isThereAnySelectedRows}>
             <PTable>
               <PTHead>
                 <PTR>
@@ -400,6 +403,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             width={12}
                             height={12}
                             style={{
+                              position: 'absolute',
+                              top: '1.2rem',
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
@@ -515,7 +520,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   height: auto;
 
   @media (max-height: 650px) {
@@ -566,9 +571,8 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
 
-  // height: calc(100vh - 140px);
+  height: calc(100vh - 140px);
 `
 
 const LineChartContainer = styled.div`
@@ -595,15 +599,11 @@ const Icon = styled.i`
 `
 
 const Wrapper = styled.div`
-  overflow-y: auto;
-  background-color: #2d3136;
+  overflow-y: scroll;
+  background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
+    props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
+  margin-left: 20px;
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-  margin: 2rem;
-  padding: 0 0.5rem;
-  width: 100%;
-  max-width: 56rem;
-  max-height: 24rem;
-
   &::-webkit-scrollbar {
     width: 12px;
   }
@@ -619,13 +619,12 @@ const Wrapper = styled.div`
 
 const PTable = styled.table`
   table-layout: fixed;
-  width: 55rem;
+  width: 100%;
   border-collapse: collapse;
   display: inline-block;
 `
 
 const PTBody = styled.tbody`
-  width: 100%;
   display: table;
 `
 
@@ -634,14 +633,14 @@ const PTD = styled.td`
     props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
-  font-size: 1rem;
-  line-height: 2rem;
-  padding: 3px 16px 3px 10px;
+  font-size: 12px;
+  line-height: 24px;
+  padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
 
   &:nth-child(1) {
-    padding: 3px 10px;
+    padding: 1.75px 10px;
   }
 
   &:nth-child(2) {
@@ -693,10 +692,10 @@ const Checkbox = styled.input`
 
 const PTH = styled.th`
   font-family: Roboto;
-  font-size: 1rem;
-  line-height: 2rem;
-  width: 7%;
+  font-size: 12px;
+  line-height: 24px;
   color: #fff;
+  padding-right: 16px;
   font-weight: 500;
 
   &:nth-child(1) {
@@ -706,10 +705,9 @@ const PTH = styled.th`
 
   &:nth-child(2) {
     text-align: left;
-    width: 96px;
+    width: 100px;
   }
   &:nth-child(3) {
-    padding-right: 3.2rem;
     width: 70px;
     text-align: left;
   }
@@ -717,9 +715,12 @@ const PTH = styled.th`
     width: 100px;
     text-align: right;
   }
-  &:nth-child(5) {
-    padding-right: 0.3rem;
-  }
+`
+
+const PTR = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? '#2d3136' : '#393e44'};
 `
 
 const PTRBody = styled.tr`
@@ -727,22 +728,21 @@ const PTRBody = styled.tr`
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
 
+  &:nth-child(odd) {
+    background-color: ${(props: { isSelected?: boolean }) =>
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  }
+
   &:hover {
     background-color: rgba(70, 102, 142, 0.2);
   }
 `
 
-const PTR = styled.tr`
-  cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
-`
-
 const PTHead = styled.thead`
   display: table;
-  width: 100%;
   position: sticky;
   top: 0;
+  width: 100%;
 
   &::after {
     content: ' ';
