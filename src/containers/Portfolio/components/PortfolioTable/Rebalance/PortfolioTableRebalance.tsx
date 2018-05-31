@@ -741,7 +741,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
+                      <PTR key={`${currency}${symbol}${rowIndex}`} isSelected={isSelected}>
                         {isEditModeEnabled && (
                           <PTD
                             key="smt"
@@ -934,7 +934,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 30vh;
+  height: 100vh;
   padding: 0 20px 20px;
 `
 
