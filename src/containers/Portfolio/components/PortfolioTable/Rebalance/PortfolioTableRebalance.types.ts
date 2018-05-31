@@ -2,6 +2,7 @@ export interface IRow {}
 
 export interface IProps {
   children: object
+  isUSDCurrently: boolean
 }
 
 export interface IState {
@@ -17,4 +18,5 @@ export interface IState {
   activePercentInputValue: number
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
+  isUSDCurrently: boolean
 }
