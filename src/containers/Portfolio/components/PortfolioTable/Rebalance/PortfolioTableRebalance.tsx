@@ -224,24 +224,6 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ rows, selectedActive, areAllActiveChecked })
   }
 
-  onSelectAll = (e: any) => {
-    const selectedBalances =
-      (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
-    let { areAllChecked } = this.state
-    if (selectedBalances.length >= this.state.staticRows.length - 1) {
-      selectedBalances.splice(0, selectedBalances.length)
-      areAllChecked = false
-    } else {
-      selectedBalances.splice(0, selectedBalances.length)
-      this.state.staticRows.map((a, i) => {
-        if (i < this.state.staticRows.length - 1) {
-          selectedBalances.push(i)
-        }
-      })
-      areAllChecked = true
-    }
-    this.setState({ selectedBalances, areAllChecked })
-  }
   onSelectAllActive = (e: any) => {
     const selectedActive =
       (this.state.selectedActive && this.state.selectedActive.slice()) || []
@@ -259,27 +241,6 @@ export default class PortfolioTableRebalance extends React.Component<
       areAllActiveChecked = true
     }
     this.setState({ selectedActive, areAllActiveChecked })
-  }
-
-  onSelectBalance = (idx: number) => {
-    if (idx < this.state.staticRows.length - 1) {
-      const selectedBalances =
-        (this.state.selectedBalances && this.state.selectedBalances.slice()) ||
-        []
-      let { areAllChecked } = this.state
-      const hasIndex = selectedBalances.indexOf(idx)
-      if (hasIndex >= 0) {
-        selectedBalances.splice(hasIndex, 1)
-      } else {
-        selectedBalances.push(idx)
-      }
-      if (selectedBalances.length >= this.state.staticRows.length - 1) {
-        areAllChecked = true
-      } else {
-        areAllChecked = false
-      }
-      this.setState({ selectedBalances, areAllChecked })
-    }
   }
   onSelectActiveBalance = (idx: number) => {
       const selectedActive =
