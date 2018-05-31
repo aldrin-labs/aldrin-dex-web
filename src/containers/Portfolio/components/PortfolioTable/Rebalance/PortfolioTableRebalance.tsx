@@ -295,14 +295,22 @@ export default class PortfolioTableRebalance extends React.Component<
       this.setState({ selectedActive, areAllActiveChecked })
     }
   }
+
+  // TODO: refactor all this stuff
   onSaveClick = (e: any) => {
     this.setState({ savedRows: JSON.parse(JSON.stringify(this.state.rows)) })
+    this.setState({ totalSavedRows: this.state.totalRows })
+
   }
   onLoadClick = (e: any) => {
     this.setState({ rows: JSON.parse(JSON.stringify(this.state.savedRows)) })
+    this.setState({ totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)) })
+
   }
   onReset = (e: any) => {
     this.setState({ rows: JSON.parse(JSON.stringify(this.state.staticRows)) })
+    this.setState({ totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)) })
+
   }
 
   onDistribute = (e: any) => {
@@ -451,6 +459,7 @@ export default class PortfolioTableRebalance extends React.Component<
       selectedActive,
       currentSortForStatic,
       currentSortForDynamic,
+      totalStaticRows,
       totalRows,
     } = this.state
 
@@ -554,7 +563,7 @@ export default class PortfolioTableRebalance extends React.Component<
                   <PTH>All</PTH>
                   <PTH>-</PTH>
                   <PTH>-</PTH>
-                  <PTH>{`${totalRows} $`}</PTH>
+                  <PTH>{`${totalStaticRows} $`}</PTH>
                 </PTR>
               </PTFoot>
             </Table>
@@ -707,6 +716,15 @@ export default class PortfolioTableRebalance extends React.Component<
                   )
                 })}
               </PTBody>
+              <PTFoot>
+                <PTR>
+                  <PTH>All</PTH>
+                  <PTH>-</PTH>
+                  <PTH>-</PTH>
+                  <PTH>-</PTH>
+                  <PTH>{`${totalRows} $`}</PTH>
+                </PTR>
+              </PTFoot>
             </Table>
           </Wrapper>
           </TableAndHeadingWrapper>
