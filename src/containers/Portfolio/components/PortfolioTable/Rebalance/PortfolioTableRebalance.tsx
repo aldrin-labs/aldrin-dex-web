@@ -17,6 +17,7 @@ import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
+import ClearIcon from 'material-ui-icons/Clear'
 import { Args } from '../types'
 import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
 
@@ -61,6 +62,9 @@ export default class PortfolioTableRebalance extends React.Component<
   componentWillMount() {
     this.calculateAllPercents()
     this.calculateAllTotals()
+  }
+  componentDidMount() {
+    document.addEventListener('keydown', this.escFunction);
   }
 
   calculateAllTotals = () => {
@@ -301,9 +305,10 @@ export default class PortfolioTableRebalance extends React.Component<
   onSaveClick = (e: any) => {
     this.setState({ savedRows: JSON.parse(JSON.stringify(this.state.rows)) })
     this.setState({ totalSavedRows: this.state.totalRows })
+    this.setState({ isEditModeEnabled: false })
 
   }
-  onLoadClick = (e: any) => {
+  onLoadPreviousClick = (e: any) => {
     this.setState({ rows: JSON.parse(JSON.stringify(this.state.savedRows)) })
     this.setState({ totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)) })
 
@@ -398,6 +403,16 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
+  escFunction = (e) => {
+    if(e.keyCode === 27 && this.state.isEditModeEnabled) {
+      this.setState((prevState => ({ isEditModeEnabled: !prevState.isEditModeEnabled })))
+    }
+  }
+
+  onEditModeEnable = () => {
+    this.setState((prevState => ({ isEditModeEnabled: !prevState.isEditModeEnabled })))
+  }
+
   onSortTable = (key: Args, chooseRows) => {
     let currentRowsForSort
     let currentRowsForSortText
@@ -471,6 +486,7 @@ export default class PortfolioTableRebalance extends React.Component<
       currentSortForDynamic,
       totalStaticRows,
       totalRows,
+      isEditModeEnabled
     } = this.state
 
     return (
@@ -580,22 +596,26 @@ export default class PortfolioTableRebalance extends React.Component<
           </Wrapper>
           </TableAndHeadingWrapper>
           <TableAndHeadingWrapper>
-            <TableHeading>Rebalanced portfolio</TableHeading>
+            <TableHeading>Rebalanced portfolio <EditIconWrapper onClick={this.onEditModeEnable} isEditModeEnabled={isEditModeEnabled}>
+              {isEditModeEnabled ? <ClearIcon/> : <EditIcon /> }
+            </EditIconWrapper> </TableHeading>
           <Wrapper>
             <Table>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={() => this.onSelectAllActive()}
-                      checked={this.state.areAllActiveChecked}
-                      type="checkbox"
-                      id="selectAllActive"
-                    />
-                    <Label htmlFor="selectAllActive">
-                      <Span />
-                    </Label>
-                  </PTH>
+                  {isEditModeEnabled && (
+                    <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                      <Checkbox
+                        onChange={() => this.onSelectAllActive()}
+                        checked={this.state.areAllActiveChecked}
+                        type="checkbox"
+                        id="selectAllActive"
+                      />
+                      <Label htmlFor="selectAllActive">
+                        <Span />
+                      </Label>
+                    </PTH>
+                  )}
 
                   {newTableHeadings.map((heading) => {
                     const isSorted =
@@ -669,13 +689,15 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
-                      <PTD
-                        key="smt"
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectActiveBalance(rowIndex)}
-                      >
-                        {this.renderActiveCheckbox(rowIndex)}
-                      </PTD>
+                      {isEditModeEnabled && (
+                        <PTD
+                          key="smt"
+                          isSelected={isSelected}
+                          onClick={() => this.onSelectActiveBalance(rowIndex)}
+                        >
+                          {this.renderActiveCheckbox(rowIndex)}
+                        </PTD>
+                      )}
 
                       {cols.map((col, idx) => {
                         if (col.match(/%/g)) {
@@ -764,7 +786,7 @@ export default class PortfolioTableRebalance extends React.Component<
             />
           </PieChartContainer>
 
-          <ButtonsWrapper>
+          <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
             <ActionButtonsContainer>
               <ActionButton onClick={() => this.onReset()}>
                 <Replay />
@@ -772,7 +794,7 @@ export default class PortfolioTableRebalance extends React.Component<
               <ActionButton onClick={() => this.onSaveClick()}>
                 <SaveIcon />
               </ActionButton>
-              <ActionButton onClick={() => this.onLoadClick()}>
+              <ActionButton onClick={() => this.onLoadPreviousClick()}>
                 <UndoIcon />
               </ActionButton>
             </ActionButtonsContainer>
@@ -861,6 +883,7 @@ const Table = styled.table`
 `
 
 const TableHeading = styled.div`
+  display: flex;
   text-transform: uppercase;
   font-family: Roboto;
   font-size: 17px;
@@ -1070,6 +1093,9 @@ const PieChartContainer = styled.div`
 const ButtonsWrapper = styled.div`
   width: 33.3%;
   max-width: 260px;
+  
+  visibility: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? 'visible' : 'hidden'};
 `
 
 const Input = styled.input`
@@ -1188,4 +1214,16 @@ const UndistributedMoneyText = styled.p`
   font-size: 12px;
   padding: 10px 0 0;
   margin: 0px;
+`
+const EditIconWrapper = styled.div`
+  padding-left: 15px;
+  
+  &:hover {
+      color: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? '#ff687a' : '#65c000'};
+  }
+  
+  & svg {
+    padding-bottom: 5px;
+  }
 `
