@@ -123,16 +123,11 @@ export default class PortfolioTableRebalance extends React.Component<
   calculateTotal = (data: any[]) => {
     const { undistributedMoney } = this.state
 
-    console.log('underst before: '+ undistributedMoney);
+    console.log('underst before: ' + undistributedMoney)
 
+    let total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
-    let total = data.reduce(
-      (sum, row, i) => (sum += data[i].price),
-      0
-    )
-
-    console.log('underst after: '+ undistributedMoney);
-
+    console.log('underst after: ' + undistributedMoney)
 
     console.log(total + undistributedMoney)
 
@@ -260,7 +255,7 @@ export default class PortfolioTableRebalance extends React.Component<
       selectedActive.splice(0, selectedActive.length)
       this.state.rows.map((a, i) => {
         // if (i < this.state.rows.length - 1) {
-          selectedActive.push(i)
+        selectedActive.push(i)
         // }
       })
       areAllActiveChecked = true
@@ -268,21 +263,21 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ selectedActive, areAllActiveChecked })
   }
   onSelectActiveBalance = (idx: number) => {
-      const selectedActive =
-        (this.state.selectedActive && this.state.selectedActive.slice()) || []
-      let { areAllActiveChecked } = this.state
-      const hasIndex = selectedActive.indexOf(idx)
-      if (hasIndex >= 0) {
-        selectedActive.splice(hasIndex, 1)
-      } else {
-        selectedActive.push(idx)
-      }
-      if (selectedActive.length === this.state.rows.length) {
-        areAllActiveChecked = true
-      } else {
-        areAllActiveChecked = false
-      }
-      this.setState({ selectedActive, areAllActiveChecked })
+    const selectedActive =
+      (this.state.selectedActive && this.state.selectedActive.slice()) || []
+    let { areAllActiveChecked } = this.state
+    const hasIndex = selectedActive.indexOf(idx)
+    if (hasIndex >= 0) {
+      selectedActive.splice(hasIndex, 1)
+    } else {
+      selectedActive.push(idx)
+    }
+    if (selectedActive.length === this.state.rows.length) {
+      areAllActiveChecked = true
+    } else {
+      areAllActiveChecked = false
+    }
+    this.setState({ selectedActive, areAllActiveChecked })
   }
 
   // TODO: refactor all this stuff
@@ -325,10 +320,11 @@ export default class PortfolioTableRebalance extends React.Component<
         // rows[rows.length - 1].undistributedMoney = 0
         this.setState({ undistributedMoney: 0 })
       }
-      let newTotal = this.calculateTotal(rows)
-      rows = this.calculatePercents(rows, newTotal)
-
-      this.setState({ selectedActive, rows, totalRows: newTotal })
+      setTimeout(() => {
+        let newTotal = this.calculateTotal(rows)
+        rows = this.calculatePercents(rows, newTotal)
+        this.setState({ selectedActive, rows, totalRows: newTotal }) //Very brutal fix, need to be reworked
+      }, 100)
     }
   }
 
@@ -711,7 +707,10 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR key={`${currency}${symbol}${rowIndex}`} isSelected={isSelected}>
+                      <PTR
+                        key={`${currency}${symbol}${rowIndex}`}
+                        isSelected={isSelected}
+                      >
                         {isEditModeEnabled && (
                           <PTD
                             key="smt"
