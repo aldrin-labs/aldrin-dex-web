@@ -179,7 +179,8 @@ export default class PortfolioTableRebalance extends React.Component<
       areAllActiveChecked = false
     } else {
       let money = rows[idx].price
-      rows[rows.length - 1].undistributedMoney += money
+      // rows[rows.length - 1].undistributedMoney += money
+      this.setState((prevState => ({undistributedMoney: prevState.undistributedMoney + money} )))
       let deleteFlag = true
       this.state.staticRows.forEach((row, i, arr) => {
         if (
@@ -314,20 +315,26 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onDistribute = (e: any) => {
-    let { selectedActive, rows, totalRows } = this.state
+    let { selectedActive, rows, totalRows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
       if (selectedActive.length > 1) {
-        let money = rows[rows.length - 1].undistributedMoney
+        // let money = rows[rows.length - 1].undistributedMoney
+        let money = undistributedMoney
         let moneyPart = Math.floor(money / selectedActive.length)
         selectedActive.forEach((row, i, arr) => {
           rows[selectedActive[i]].price += moneyPart
           money -= moneyPart
         })
-        rows[rows.length - 1].undistributedMoney = money
+        // rows[rows.length - 1].undistributedMoney = money
+        this.setState({undistributedMoney: money})
       } else {
-        rows[selectedActive[0]].price +=
-          rows[rows.length - 1].undistributedMoney
-        rows[rows.length - 1].undistributedMoney = 0
+        // rows[selectedActive[0]].price +=
+        //   rows[rows.length - 1].undistributedMoney
+        rows[selectedActive[0]].price += undistributedMoney
+
+        // rows[rows.length - 1].undistributedMoney = 0
+        this.setState({undistributedMoney: 0})
+
       }
       rows = this.calculatePercents(rows, totalRows)
       this.setState({ selectedActive, rows })
@@ -358,7 +365,8 @@ export default class PortfolioTableRebalance extends React.Component<
       let newMoney = Math.round(total * percent / 100)
       let subMoney = newMoney - rows[idx].price
       rows[idx].price = newMoney
-      rows[rows.length - 1].undistributedMoney -= subMoney
+      // rows[rows.length - 1].undistributedMoney -= subMoney
+      this.setState((prevState => ({undistributedMoney: prevState.undistributedMoney - subMoney} )))
       rows = this.calculatePercents(rows, totalRows)
       this.setState({
         activePercentInput: null,
@@ -376,10 +384,12 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
-      let { rows, totalRows } = this.state
-      rows[rows.length - 1].undistributedMoney += Number(
-        this.state.addMoneyInputValue
-      )
+      let { rows, totalRows, addMoneyInputValue } = this.state
+      this.setState((prevState => ({undistributedMoney: prevState.undistributedMoney + Number(addMoneyInputValue)} )))
+
+      // rows[rows.length - 1].undistributedMoney += Number(
+      //   this.state.addMoneyInputValue
+      // )
       rows = this.calculatePercents(rows, totalRows)
       this.setState({
         addMoneyInputValue: 0,
@@ -754,14 +764,13 @@ export default class PortfolioTableRebalance extends React.Component<
             <Button onClick={() => this.onAddMoneyButtonPressed()}>
               Add money
             </Button>
-            {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
+            {this.state.undistributedMoney !==
             0 ? (
               <UndistributedMoneyContainer>
                 <UndistributedMoneyText>
                   Undistributed money:{' '}
                   {
-                    this.state.rows[this.state.rows.length - 1]
-                      .undistributedMoney
+                    this.state.undistributedMoney
                   }
                 </UndistributedMoneyText>
                 <Button onClick={() => this.onDistribute()}>
