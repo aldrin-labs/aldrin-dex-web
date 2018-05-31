@@ -9,6 +9,8 @@ import {
 } from './mocks'
 import { onSortStrings } from '../../../../../utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
+import sortIcon from '@icons/arrow.svg'
+
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
@@ -16,6 +18,7 @@ import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
 import CompareArrows from 'material-ui-icons/CompareArrows'
 import { Args } from '../types'
+import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -29,7 +32,7 @@ const newTableHeadings = [
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'USD', value: 'price' },
-  { name: 'Trade', value: 'price' },
+  { name: 'Trade', value: 'trade' },
 ]
 
 export default class PortfolioTableRebalance extends React.Component<
@@ -136,7 +139,7 @@ export default class PortfolioTableRebalance extends React.Component<
   onButtonClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
     let { selectedActive, areAllActiveChecked, staticRows } = this.state
-    if (rows.length - 1 == idx) {
+    if (rows.length - 1 === idx) {
       let newRow = {
         currency: 'Newcoin',
         symbol: 'NEW',
@@ -162,7 +165,7 @@ export default class PortfolioTableRebalance extends React.Component<
         if (selectedActive) {
           let toRemove = -1
           selectedActive.forEach((row, i, arr) => {
-            if (selectedActive[i] == idx) {
+            if (selectedActive[i] === idx) {
               toRemove = i
             } else {
               if (selectedActive[i] > idx) {
@@ -414,8 +417,12 @@ export default class PortfolioTableRebalance extends React.Component<
 
   render() {
     const { children } = this.props
-    const { selectedBalances } = this.state
-    const { selectedActive } = this.state
+    const {
+      selectedBalances,
+      selectedActive,
+      currentSortForStatic,
+      currentSortForDynamic,
+    } = this.state
 
     return (
       <PTWrapper tableData={this.state.rows}>
@@ -426,14 +433,39 @@ export default class PortfolioTableRebalance extends React.Component<
             <Table>
               <PTHead>
                 <PTR>
-                  {tableHeadings.map((heading) => (
-                    <PTH
-                      key={heading.name}
-                      onClick={() => this.onSortTable(heading.value, 'static')}
-                    >
-                      {heading.name}
-                    </PTH>
-                  ))}
+                  {tableHeadings.map((heading) => {
+                    const isSorted =
+                      currentSortForStatic &&
+                      currentSortForStatic.key === heading.value
+
+                    return (
+                      <PTH
+                        key={heading.name}
+                        onClick={() =>
+                          this.onSortTable(heading.value, 'static')
+                        }
+                      >
+                        {heading.name}
+
+                        {isSorted && (
+                          <SvgIcon
+                            src={sortIcon}
+                            width={12}
+                            height={12}
+                            style={{
+                              verticalAlign: 'middle',
+                              marginLeft: '4px',
+                              transform:
+                                currentSortForStatic &&
+                                currentSortForStatic.arg === 'ASC'
+                                  ? 'rotate(180deg)'
+                                  : null,
+                            }}
+                          />
+                        )}
+                      </PTH>
+                    )
+                  })}
                 </PTR>
               </PTHead>
 
@@ -496,14 +528,39 @@ export default class PortfolioTableRebalance extends React.Component<
             <Table>
               <PTHead>
                 <PTR>
-                  {newTableHeadings.map((heading) => (
-                    <PTH
-                      key={heading.name}
-                      onClick={() => this.onSortTable(heading.value, 'dynamic')}
-                    >
-                      {heading.name}
-                    </PTH>
-                  ))}
+                  {newTableHeadings.map((heading) => {
+                    const isSorted =
+                      currentSortForDynamic &&
+                      currentSortForDynamic.key === heading.value
+
+                    return (
+                      <PTH
+                        key={heading.name}
+                        onClick={() =>
+                          this.onSortTable(heading.value, 'dynamic')
+                        }
+                      >
+                        {heading.name}
+
+                        {isSorted && (
+                          <SvgIcon
+                            src={sortIcon}
+                            width={12}
+                            height={12}
+                            style={{
+                              verticalAlign: 'middle',
+                              marginLeft: '4px',
+                              transform:
+                                currentSortForDynamic &&
+                                currentSortForDynamic.arg === 'ASC'
+                                  ? 'rotate(180deg)'
+                                  : null,
+                            }}
+                          />
+                        )}
+                      </PTH>
+                    )
+                  })}
                 </PTR>
               </PTHead>
 
