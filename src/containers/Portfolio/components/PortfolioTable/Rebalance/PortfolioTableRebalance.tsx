@@ -122,14 +122,21 @@ export default class PortfolioTableRebalance extends React.Component<
 
   calculateTotal = (data: any[]) => {
     const { undistributedMoney } = this.state
+
+    console.log('underst before: '+ undistributedMoney);
+
+
     let total = data.reduce(
       (sum, row, i) => (sum += data[i].price),
-      undistributedMoney
+      0
     )
 
-    console.log(total)
+    console.log('underst after: '+ undistributedMoney);
 
-    return total
+
+    console.log(total + undistributedMoney)
+
+    return total + undistributedMoney
   }
 
   calculatePercents = (data: any[], total) => {
@@ -237,6 +244,7 @@ export default class PortfolioTableRebalance extends React.Component<
         rows[idx].price = 0
       }
     }
+
     rows = this.calculatePercents(rows, totalRows)
     this.setState({ rows, selectedActive, areAllActiveChecked })
   }
@@ -297,7 +305,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onDistribute = (e: any) => {
-    let { selectedActive, rows, totalRows, undistributedMoney } = this.state
+    let { selectedActive, rows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
       if (selectedActive.length > 1) {
         // let money = rows[rows.length - 1].undistributedMoney
@@ -317,8 +325,10 @@ export default class PortfolioTableRebalance extends React.Component<
         // rows[rows.length - 1].undistributedMoney = 0
         this.setState({ undistributedMoney: 0 })
       }
-      rows = this.calculatePercents(rows, totalRows)
-      this.setState({ selectedActive, rows })
+      let newTotal = this.calculateTotal(rows)
+      rows = this.calculatePercents(rows, newTotal)
+
+      this.setState({ selectedActive, rows, totalRows: newTotal })
     }
   }
 
@@ -368,6 +378,7 @@ export default class PortfolioTableRebalance extends React.Component<
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, totalRows, addMoneyInputValue } = this.state
+
       this.setState((prevState) => ({
         undistributedMoney:
           prevState.undistributedMoney + Number(addMoneyInputValue),
@@ -700,7 +711,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
+                      <PTR key={`${currency}${symbol}${rowIndex}`} isSelected={isSelected}>
                         {isEditModeEnabled && (
                           <PTD
                             key="smt"
