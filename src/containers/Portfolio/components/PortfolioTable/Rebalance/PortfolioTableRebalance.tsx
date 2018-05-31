@@ -123,16 +123,11 @@ export default class PortfolioTableRebalance extends React.Component<
   calculateTotal = (data: any[]) => {
     const { undistributedMoney } = this.state
 
-    console.log('underst before: '+ undistributedMoney);
+    console.log('underst before: ' + undistributedMoney)
 
+    let total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
-    let total = data.reduce(
-      (sum, row, i) => (sum += data[i].price),
-      0
-    )
-
-    console.log('underst after: '+ undistributedMoney);
-
+    console.log('underst after: ' + undistributedMoney)
 
     console.log(total + undistributedMoney)
 
@@ -260,7 +255,7 @@ export default class PortfolioTableRebalance extends React.Component<
       selectedActive.splice(0, selectedActive.length)
       this.state.rows.map((a, i) => {
         // if (i < this.state.rows.length - 1) {
-          selectedActive.push(i)
+        selectedActive.push(i)
         // }
       })
       areAllActiveChecked = true
@@ -268,21 +263,21 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ selectedActive, areAllActiveChecked })
   }
   onSelectActiveBalance = (idx: number) => {
-      const selectedActive =
-        (this.state.selectedActive && this.state.selectedActive.slice()) || []
-      let { areAllActiveChecked } = this.state
-      const hasIndex = selectedActive.indexOf(idx)
-      if (hasIndex >= 0) {
-        selectedActive.splice(hasIndex, 1)
-      } else {
-        selectedActive.push(idx)
-      }
-      if (selectedActive.length === this.state.rows.length) {
-        areAllActiveChecked = true
-      } else {
-        areAllActiveChecked = false
-      }
-      this.setState({ selectedActive, areAllActiveChecked })
+    const selectedActive =
+      (this.state.selectedActive && this.state.selectedActive.slice()) || []
+    let { areAllActiveChecked } = this.state
+    const hasIndex = selectedActive.indexOf(idx)
+    if (hasIndex >= 0) {
+      selectedActive.splice(hasIndex, 1)
+    } else {
+      selectedActive.push(idx)
+    }
+    if (selectedActive.length === this.state.rows.length) {
+      areAllActiveChecked = true
+    } else {
+      areAllActiveChecked = false
+    }
+    this.setState({ selectedActive, areAllActiveChecked })
   }
 
   // TODO: refactor all this stuff
@@ -556,7 +551,6 @@ export default class PortfolioTableRebalance extends React.Component<
                       <PTR
                         key={`${currency}${symbol}${idx}`}
                         isSelected={isSelected}
-                        // onClick={() => this.onSelectBalance(idx)}
                       >
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
@@ -711,13 +705,17 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR key={`${currency}${symbol}${rowIndex}`} isSelected={isSelected}>
+                      <PTR
+                        key={`${currency}${symbol}${rowIndex}`}
+                        isSelected={isSelected}
+                        onClick={
+                          isEditModeEnabled
+                            ? () => this.onSelectActiveBalance(rowIndex)
+                            : null
+                        }
+                      >
                         {isEditModeEnabled && (
-                          <PTD
-                            key="smt"
-                            isSelected={isSelected}
-                            onClick={() => this.onSelectActiveBalance(rowIndex)}
-                          >
+                          <PTD key="smt" isSelected={isSelected}>
                             {this.renderActiveCheckbox(rowIndex)}
                           </PTD>
                         )}
@@ -736,14 +734,14 @@ export default class PortfolioTableRebalance extends React.Component<
                                   style={{ color }}
                                 >
                                   {col}
-                                  <EditIcon />
+                                  {isEditModeEnabled && <EditIcon />}
                                 </PTD>
                               )
                             } else {
                               return (
                                 <PTD key="percentForm">
                                   <form onSubmit={this.onPercentSubmit}>
-                                    <input
+                                    <InputTable
                                       type="number"
                                       value={this.state.activePercentInputValue}
                                       onChange={this.onPercentInputChange}
@@ -780,18 +778,20 @@ export default class PortfolioTableRebalance extends React.Component<
                           return <PTD key={`${col}${idx}`}>{col}</PTD>
                         })}
                         <PTD>
-                          <TableButton
-                            isDeleteColor={
-                              rowIndex === this.state.rows.length - 1
-                            }
-                            onClick={() => this.onButtonClick(rowIndex)}
-                          >
-                            {rowIndex === this.state.rows.length - 1 ? (
-                              <AddIcon />
-                            ) : (
-                              <DeleteIcon />
-                            )}
-                          </TableButton>
+                          {isEditModeEnabled && (
+                            <TableButton
+                              isDeleteColor={
+                                rowIndex === this.state.rows.length - 1
+                              }
+                              onClick={() => this.onButtonClick(rowIndex)}
+                            >
+                              {rowIndex === this.state.rows.length - 1 ? (
+                                <AddIcon />
+                              ) : (
+                                <DeleteIcon />
+                              )}
+                            </TableButton>
+                          )}
                         </PTD>
                       </PTR>
                     )
@@ -882,6 +882,23 @@ const PTWrapper = styled.div`
 const TableAndHeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: scroll;
+
+  &:not(:first-child) {
+    padding-left: 30px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
 `
 
 const Wrapper = styled.div`
@@ -922,6 +939,7 @@ const TableHeading = styled.div`
   color: white;
   font-weight: bold;
   letter-spacing: 1.1px;
+  min-height: 25px;
 `
 
 const PTBody = styled.tbody`
@@ -1219,6 +1237,10 @@ const ActionButton = styled.button`
     width: 50px;
     height: 50px;
   }
+
+  &:hover svg {
+    color: #4ed8da;
+  }
 `
 
 const Button = styled.div`
@@ -1258,4 +1280,11 @@ const EditIconWrapper = styled.div`
   & svg {
     padding-bottom: 5px;
   }
+`
+
+const InputTable = styled.input`
+  background-color: #2d3136;
+  border: none;
+  outline: none;
+  color: white;
 `
