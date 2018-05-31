@@ -9,14 +9,18 @@ import {
 } from './mocks'
 import { onSortStrings } from '../../../../../utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
+import sortIcon from '@icons/arrow.svg'
+
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
-import CompareArrows from 'material-ui-icons/CompareArrows'
+import Replay from 'material-ui-icons/Replay'
+import ClearIcon from 'material-ui-icons/Clear'
 import { Args } from '../types'
 import { IndProps } from '@containers/Portfolio/interfaces'
+import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -30,7 +34,7 @@ const newTableHeadings = [
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'USD', value: 'price' },
-  { name: 'Trade', value: 'price' },
+  { name: 'Trade', value: 'trade' },
 ]
 
 export default class PortfolioTableRebalance extends React.Component<
@@ -48,12 +52,29 @@ export default class PortfolioTableRebalance extends React.Component<
     addMoneyInputValue: 0,
     activePercentInput: null,
     activePercentInputValue: 0,
-    currentSort: null,
+    currentSortForStatic: null,
+    currentSortForDynamic: null,
     isEditModeEnabled: false,
     isUSDCurrently: true,
+    undistributedMoney: 0,
+    totalRows: 0,
+    totalStaticRows: 0,
+    totalSavedRows: 0,
   }
   componentWillMount() {
     this.calculateAllPercents()
+    this.calculateAllTotals()
+  }
+  componentDidMount() {
+    document.addEventListener('keydown', this.escFunction)
+  }
+
+  calculateAllTotals = () => {
+    this.setState({
+      totalRows: this.calculateTotal(this.state.rows),
+      totalStaticRows: this.calculateTotal(this.state.staticRows),
+      totalSavedRows: this.calculateTotal(this.state.savedRows),
+    })
   }
 
   componentWillReceiveProps(nextProps: IProps) {
@@ -71,21 +92,25 @@ export default class PortfolioTableRebalance extends React.Component<
 
   calculateAllPercents = () => {
     this.setState({
-      rows: this.calculatePercents(this.state.rows),
-      staticRows: this.calculatePercents(this.state.staticRows),
-      savedRows: this.calculatePercents(this.state.savedRows),
+      rows: this.calculatePercents(this.state.rows, this.state.totalRows),
+      staticRows: this.calculatePercents(
+        this.state.staticRows,
+        this.state.totalStaticRows
+      ),
+      savedRows: this.calculatePercents(
+        this.state.savedRows,
+        this.state.totalSavedRows
+      ),
     })
   }
 
   calculatePriceDifference = (data: any[]) => {
     let { staticRows } = this.state
-    data.forEach((row, i, arr) => {
-      staticRows.forEach((staticRow, j, staticArr) => {
+    data.forEach((row, i) => {
+      staticRows.forEach((staticRow, j) => {
         if (
           data[i].currency === staticRows[j].currency &&
-          data[i].symbol === staticRows[j].symbol &&
-          i < data.length - 1 &&
-          j < staticRows.length - 1
+          data[i].symbol === staticRows[j].symbol
         ) {
           data[i].deltaPrice = data[i].price - staticRows[j].price
         }
@@ -95,25 +120,33 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
-  calculatePercents = (data: any[]) => {
-    let total = 0
-    data.forEach((row, i, arr) => {
-      if (i < data.length - 1) {
-        total += data[i].price
-      }
-    })
-    total += data[data.length - 1].undistributedMoney
-    data[data.length - 1].price = total
-    data.forEach((row, i, arr) => {
-      if (i < data.length - 1) {
-        data[i].portfolioPerc =
-          Math.ceil(data[i].price * 100 / data[data.length - 1].price * 100) /
-          100
-      }
-    })
-    data = this.calculatePriceDifference(data)
+  calculateTotal = (data: any[]) => {
+    const { undistributedMoney } = this.state
+    let total = data.reduce(
+      (sum, row, i) => (sum += data[i].price),
+      undistributedMoney
+    )
 
-    return data
+    console.log(total)
+
+    return total
+  }
+
+  calculatePercents = (data: any[], total) => {
+    let newDataWithPercents = data.map((row, i) => {
+      row[i] = Math.ceil(data[i].price * 100 / total * 100) / 100
+
+      // TODO: FIX WHY INFINITY??
+      // console.log(
+      //   'percantage:' + Math.ceil(data[i].price * 100 / total * 100) / 100
+      // )
+      return row
+    })
+
+    console.log(data)
+    console.log(newDataWithPercents)
+
+    return this.calculatePriceDifference(newDataWithPercents)
   }
 
   renderCheckbox = (idx: number) => {
@@ -148,8 +181,13 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onButtonClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive, areAllActiveChecked, staticRows } = this.state
-    if (rows.length - 1 == idx) {
+    let {
+      selectedActive,
+      areAllActiveChecked,
+      staticRows,
+      totalRows,
+    } = this.state
+    if (rows.length - 1 === idx) {
       let newRow = {
         currency: 'Newcoin',
         symbol: 'NEW',
@@ -160,7 +198,10 @@ export default class PortfolioTableRebalance extends React.Component<
       areAllActiveChecked = false
     } else {
       let money = rows[idx].price
-      rows[rows.length - 1].undistributedMoney += money
+      // rows[rows.length - 1].undistributedMoney += money
+      this.setState((prevState) => ({
+        undistributedMoney: prevState.undistributedMoney + money,
+      }))
       let deleteFlag = true
       this.state.staticRows.forEach((row, i, arr) => {
         if (
@@ -175,7 +216,7 @@ export default class PortfolioTableRebalance extends React.Component<
         if (selectedActive) {
           let toRemove = -1
           selectedActive.forEach((row, i, arr) => {
-            if (selectedActive[i] == idx) {
+            if (selectedActive[i] === idx) {
               toRemove = i
             } else {
               if (selectedActive[i] > idx) {
@@ -196,7 +237,7 @@ export default class PortfolioTableRebalance extends React.Component<
         rows[idx].price = 0
       }
     }
-    rows = this.calculatePercents(rows)
+    rows = this.calculatePercents(rows, totalRows)
     this.setState({ rows, selectedActive, areAllActiveChecked })
   }
 
@@ -276,33 +317,48 @@ export default class PortfolioTableRebalance extends React.Component<
       this.setState({ selectedActive, areAllActiveChecked })
     }
   }
+
+  // TODO: refactor all this stuff
   onSaveClick = (e: any) => {
     this.setState({ savedRows: JSON.parse(JSON.stringify(this.state.rows)) })
+    this.setState({ totalSavedRows: this.state.totalRows })
+    this.setState({ isEditModeEnabled: false })
   }
-  onLoadClick = (e: any) => {
+  onLoadPreviousClick = (e: any) => {
     this.setState({ rows: JSON.parse(JSON.stringify(this.state.savedRows)) })
+    this.setState({
+      totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+    })
   }
   onReset = (e: any) => {
     this.setState({ rows: JSON.parse(JSON.stringify(this.state.staticRows)) })
+    this.setState({
+      totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
+    })
   }
 
   onDistribute = (e: any) => {
-    let { selectedActive, rows } = this.state
+    let { selectedActive, rows, totalRows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
       if (selectedActive.length > 1) {
-        let money = rows[rows.length - 1].undistributedMoney
+        // let money = rows[rows.length - 1].undistributedMoney
+        let money = undistributedMoney
         let moneyPart = Math.floor(money / selectedActive.length)
         selectedActive.forEach((row, i, arr) => {
           rows[selectedActive[i]].price += moneyPart
           money -= moneyPart
         })
-        rows[rows.length - 1].undistributedMoney = money
+        // rows[rows.length - 1].undistributedMoney = money
+        this.setState({ undistributedMoney: money })
       } else {
-        rows[selectedActive[0]].price +=
-          rows[rows.length - 1].undistributedMoney
-        rows[rows.length - 1].undistributedMoney = 0
+        // rows[selectedActive[0]].price +=
+        //   rows[rows.length - 1].undistributedMoney
+        rows[selectedActive[0]].price += undistributedMoney
+
+        // rows[rows.length - 1].undistributedMoney = 0
+        this.setState({ undistributedMoney: 0 })
       }
-      rows = this.calculatePercents(rows)
+      rows = this.calculatePercents(rows, totalRows)
       this.setState({ selectedActive, rows })
     }
   }
@@ -323,7 +379,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onPercentSubmit = (e: any) => {
-    let { rows } = this.state
+    let { rows, totalRows } = this.state
     let percent = this.state.activePercentInputValue
     let idx = this.state.activePercentInput
     if (percent != rows[idx].portfolioPerc) {
@@ -331,8 +387,11 @@ export default class PortfolioTableRebalance extends React.Component<
       let newMoney = Math.round(total * percent / 100)
       let subMoney = newMoney - rows[idx].price
       rows[idx].price = newMoney
-      rows[rows.length - 1].undistributedMoney -= subMoney
-      rows = this.calculatePercents(rows)
+      // rows[rows.length - 1].undistributedMoney -= subMoney
+      this.setState((prevState) => ({
+        undistributedMoney: prevState.undistributedMoney - subMoney,
+      }))
+      rows = this.calculatePercents(rows, totalRows)
       this.setState({
         activePercentInput: null,
         activePercentInputValue: 0,
@@ -349,11 +408,16 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
-      let { rows } = this.state
-      rows[rows.length - 1].undistributedMoney += Number(
-        this.state.addMoneyInputValue
-      )
-      rows = this.calculatePercents(rows)
+      let { rows, totalRows, addMoneyInputValue } = this.state
+      this.setState((prevState) => ({
+        undistributedMoney:
+          prevState.undistributedMoney + Number(addMoneyInputValue),
+      }))
+
+      // rows[rows.length - 1].undistributedMoney += Number(
+      //   this.state.addMoneyInputValue
+      // )
+      rows = this.calculatePercents(rows, totalRows)
       this.setState({
         addMoneyInputValue: 0,
         rows,
@@ -361,19 +425,56 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
-  onSortTable = (key: Args) => {
-    const { staticRows, currentSort } = this.state
-    if (!staticRows) {
+  escFunction = (e) => {
+    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
+      this.setState((prevState) => ({
+        isEditModeEnabled: !prevState.isEditModeEnabled,
+      }))
+    }
+  }
+
+  onEditModeEnable = () => {
+    this.setState((prevState) => ({
+      isEditModeEnabled: !prevState.isEditModeEnabled,
+    }))
+  }
+
+  onSortTable = (key: Args, chooseRows) => {
+    let currentRowsForSort
+    let currentRowsForSortText
+    let currentSort
+    let currentSortText
+    const {
+      staticRows,
+      rows,
+      currentSortForStatic,
+      currentSortForDynamic,
+    } = this.state
+    if (!staticRows && chooseRows === 'static') {
+      return
+    }
+    if (!rows && chooseRows === 'dynamic') {
       return
     }
 
-    const stringKey =
-      key === 'currency' || key === 'symbol' || key === 'industry'
+    if (chooseRows === 'static') {
+      currentRowsForSort = staticRows
+      currentRowsForSortText = 'staticRows'
+      currentSort = currentSortForStatic
+      currentSortText = 'currentSortForStatic'
+    } else {
+      currentRowsForSort = rows
+      currentRowsForSortText = 'rows'
+      currentSort = currentSortForDynamic
+      currentSortText = 'currentSortForDynamic'
+    }
 
-    const newData = staticRows.slice().sort((a, b) => {
+    const stringKey = key === 'currency' || key === 'symbol'
+
+    const newData = currentRowsForSort.slice().sort((a, b) => {
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
-          this.setState({ currentSort: { key, arg: 'DESC' } })
+          this.setState({ [currentSortText]: { key, arg: 'DESC' } })
 
           if (stringKey) {
             return onSortStrings(b[key], a[key])
@@ -381,7 +482,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
           return b[key] - a[key]
         } else {
-          this.setState({ currentSort: { key, arg: 'ASC' } })
+          this.setState({ [currentSortText]: { key, arg: 'ASC' } })
 
           if (stringKey) {
             return onSortStrings(a[key], b[key])
@@ -390,7 +491,7 @@ export default class PortfolioTableRebalance extends React.Component<
           return a[key] - b[key]
         }
       }
-      this.setState({ currentSort: { key, arg: 'ASC' } })
+      this.setState({ [currentSortText]: { key, arg: 'ASC' } })
 
       if (stringKey) {
         return onSortStrings(a[key], b[key])
@@ -399,231 +500,345 @@ export default class PortfolioTableRebalance extends React.Component<
       return a[key] - b[key]
     })
 
-    this.setState({ staticRows: newData })
+    this.setState({ [currentRowsForSortText]: newData })
   }
 
   render() {
     const { children, isUSDCurrently } = this.props
-    const { selectedBalances } = this.state
-    const { selectedActive } = this.state
+    const {
+      selectedBalances,
+      selectedActive,
+      currentSortForStatic,
+      currentSortForDynamic,
+      totalStaticRows,
+      totalRows,
+      isEditModeEnabled,
+    } = this.state
 
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
         <Container>
-          <Wrapper>
+          <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
-            <Table>
-              <PTHead>
-                <PTR>
-                  {tableHeadings.map((heading) => (
-                    <PTH
-                      key={heading.name}
-                      onClick={() => this.onSortTable(heading.value)}
-                    >
-                      {heading.name}
-                    </PTH>
-                  ))}
-                </PTR>
-              </PTHead>
+            <Wrapper>
+              <Table>
+                <PTHead>
+                  <PTR>
+                    {tableHeadings.map((heading) => {
+                      const isSorted =
+                        currentSortForStatic &&
+                        currentSortForStatic.key === heading.value
 
-              <PTBody>
-                {this.state.staticRows.map((row, idx) => {
-                  const { currency, symbol, portfolioPerc, price } = row
+                      return (
+                        <PTH
+                          key={heading.name}
+                          onClick={() =>
+                            this.onSortTable(heading.value, 'static')
+                          }
+                        >
+                          {heading.name}
 
-                  const isSelected =
-                    (selectedBalances && selectedBalances.indexOf(idx) >= 0) ||
-                    false
+                          {isSorted && (
+                            <SvgIcon
+                              src={sortIcon}
+                              width={12}
+                              height={12}
+                              style={{
+                                verticalAlign: 'middle',
+                                marginLeft: '4px',
+                                transform:
+                                  currentSortForStatic &&
+                                  currentSortForStatic.arg === 'ASC'
+                                    ? 'rotate(180deg)'
+                                    : null,
+                              }}
+                            />
+                          )}
+                        </PTH>
+                      )
+                    })}
+                  </PTR>
+                </PTHead>
 
-                  const cols = [
-                    currency,
-                    symbol || '',
-                    portfolioPerc ? `${portfolioPerc}%` : '',
-                    `${price}`,
-                  ]
-                  const mainSymbol = isUSDCurrently ? (
-                    <Icon className="fa fa-usd" key={`${idx}usd`} />
-                  ) : (
-                    <Icon className="fa fa-btc" key={`${idx}btc`} />
-                  )
+                <PTBody>
+                  {this.state.staticRows.map((row, idx) => {
+                    const { currency, symbol, portfolioPerc, price } = row
 
-                  return (
-                    <PTR
-                      key={`${currency}${symbol}${idx}`}
-                      isSelected={isSelected}
-                      onClick={() => this.onSelectBalance(idx)}
-                    >
-                      {cols.map((col, index) => {
-                        if (col.match(/%/g)) {
-                          const color =
-                            Number(col.replace(/%/g, '')) >= 0
-                              ? '#65c000'
-                              : '#ff687a'
+                    const isSelected =
+                      (selectedBalances &&
+                        selectedBalances.indexOf(idx) >= 0) ||
+                      false
 
-                          return (
-                            <PTD
-                              key={`${col}${index}`}
-                              style={{ color }}
-                              isSelected={isSelected}
-                            >
-                              {col}
-                            </PTD>
-                          )
-                        }
-                        if (index == 3) {
-                          return (
-                            <PTD key={`${col}${idx}`}>
-                              {mainSymbol}
-                              {col}
-                            </PTD>
-                          )
-                        }
+                    const cols = [
+                      currency,
+                      symbol || '',
+                      portfolioPerc ? `${portfolioPerc}%` : '',
+                      `${price}`,
+                    ]
+                    const mainSymbol = isUSDCurrently ? (
+                      <Icon className="fa fa-usd" key={`${idx}usd`} />
+                    ) : (
+                      <Icon className="fa fa-btc" key={`${idx}btc`} />
+                    )
 
-                        return (
-                          <PTD key={`${col}${index}`} isSelected={isSelected}>
-                            {col}
-                          </PTD>
-                        )
-                      })}
-                    </PTR>
-                  )
-                })}
-              </PTBody>
-            </Table>
-          </Wrapper>
-          <ActionButton onClick={() => this.onReset()}>
-            <CompareArrows />
-          </ActionButton>
-          <Wrapper>
-            <TableHeading>Rebalanced portfolio</TableHeading>
-            <Table>
-              <PTHead>
-                <PTR>
-                  {newTableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
-                  ))}
-                </PTR>
-              </PTHead>
+                    return (
+                      <PTR
+                        key={`${currency}${symbol}${idx}`}
+                        isSelected={isSelected}
+                        // onClick={() => this.onSelectBalance(idx)}
+                      >
+                        {cols.map((col, index) => {
+                          if (col.match(/%/g)) {
+                            const color =
+                              Number(col.replace(/%/g, '')) >= 0
+                                ? '#65c000'
+                                : '#ff687a'
 
-              <PTBody>
-                {this.state.rows.map((row, rowIndex) => {
-                  const {
-                    currency,
-                    symbol,
-                    portfolioPerc,
-                    price,
-                    deltaPrice,
-                  } = row
-
-                  const mainSymbol = isUSDCurrently ? (
-                    <Icon className="fa fa-usd" key={`${rowIndex}usd`} />
-                  ) : (
-                    <Icon className="fa fa-btc" key={`${rowIndex}btc`} />
-                  )
-
-                  const isSelected =
-                    (selectedActive && selectedActive.indexOf(rowIndex) >= 0) ||
-                    false
-
-                  let deltaPriceString = ''
-
-                  if (deltaPrice) {
-                    if (deltaPrice > 0) {
-                      deltaPriceString = `BUY ${symbol} ${deltaPrice} $`
-                    } else {
-                      deltaPriceString = `SELL ${symbol} ${Math.abs(
-                        deltaPrice
-                      )} $`
-                    }
-                  }
-
-                  const cols = [
-                    currency,
-                    symbol || '',
-                    portfolioPerc ? `${portfolioPerc}%` : '',
-                    `${price}`,
-                    deltaPriceString,
-                  ]
-
-                  return (
-                    <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
-                      {cols.map((col, idx) => {
-                        if (col.match(/%/g)) {
-                          const color =
-                            Number(col.replace(/%/g, '')) >= 0
-                              ? '#65c000'
-                              : '#ff687a'
-                          if (rowIndex !== this.state.activePercentInput) {
                             return (
                               <PTD
-                                onClick={() => this.onPercentClick(rowIndex)}
-                                key={`${col}${idx}`}
+                                key={`${col}${index}`}
                                 style={{ color }}
+                                isSelected={isSelected}
                               >
                                 {col}
-                                <EditIcon />
-                              </PTD>
-                            )
-                          } else {
-                            return (
-                              <PTD key="percentForm">
-                                <form onSubmit={this.onPercentSubmit}>
-                                  <input
-                                    type="number"
-                                    value={this.state.activePercentInputValue}
-                                    onChange={this.onPercentInputChange}
-                                    onBlur={this.onPercentSubmit}
-                                    step="0.01"
-                                    min="0"
-                                    max="100"
-                                  />
-                                </form>
                               </PTD>
                             )
                           }
-                        }
-                        if (col.match(/BUY/g)) {
-                          const color = '#65c000'
+                          if (index == 3) {
+                            return (
+                              <PTD key={`${col}${idx}`}>
+                                {mainSymbol}
+                                {col}
+                              </PTD>
+                            )
+                          }
 
-                          return <PTD style={{ color }}>{col}</PTD>
-                        }
-                        if (col.match(/SELL/g)) {
-                          const color = '#ff687a'
-
-                          return <PTD style={{ color }}>{col}</PTD>
-                        }
-
-                        if (idx == 3) {
                           return (
-                            <PTD key={`${col}${idx}`}>
-                              {mainSymbol}
+                            <PTD key={`${col}${index}`} isSelected={isSelected}>
                               {col}
                             </PTD>
                           )
-                        }
+                        })}
+                      </PTR>
+                    )
+                  })}
+                </PTBody>
+                <PTFoot>
+                  <PTR>
+                    <PTH>All</PTH>
+                    <PTH>-</PTH>
+                    <PTH>-</PTH>
+                    <PTH>{`${totalStaticRows} $`}</PTH>
+                  </PTR>
+                </PTFoot>
+              </Table>
+            </Wrapper>
+          </TableAndHeadingWrapper>
+          <TableAndHeadingWrapper>
+            <TableHeading>
+              Rebalanced portfolio{' '}
+              <EditIconWrapper
+                onClick={this.onEditModeEnable}
+                isEditModeEnabled={isEditModeEnabled}
+              >
+                {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
+              </EditIconWrapper>{' '}
+            </TableHeading>
+            <Wrapper>
+              <Table>
+                <PTHead>
+                  <PTR>
+                    {isEditModeEnabled && (
+                      <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                        <Checkbox
+                          onChange={() => this.onSelectAllActive()}
+                          checked={this.state.areAllActiveChecked}
+                          type="checkbox"
+                          id="selectAllActive"
+                        />
+                        <Label htmlFor="selectAllActive">
+                          <Span />
+                        </Label>
+                      </PTH>
+                    )}
 
-                        return <PTD key={`${col}${idx}`}>{col}</PTD>
-                      })}
-                      <PTD>
-                        <TableButton
-                          isDeleteColor={
-                            rowIndex === this.state.rows.length - 1
+                    {newTableHeadings.map((heading) => {
+                      const isSorted =
+                        currentSortForDynamic &&
+                        currentSortForDynamic.key === heading.value
+
+                      return (
+                        <PTH
+                          key={heading.name}
+                          onClick={() =>
+                            this.onSortTable(heading.value, 'dynamic')
                           }
-                          onClick={() => this.onButtonClick(rowIndex)}
                         >
-                          {rowIndex === this.state.rows.length - 1 ? (
-                            <AddIcon />
-                          ) : (
-                            <DeleteIcon />
+                          {heading.name}
+
+                          {isSorted && (
+                            <SvgIcon
+                              src={sortIcon}
+                              width={12}
+                              height={12}
+                              style={{
+                                verticalAlign: 'middle',
+                                marginLeft: '4px',
+                                transform:
+                                  currentSortForDynamic &&
+                                  currentSortForDynamic.arg === 'ASC'
+                                    ? 'rotate(180deg)'
+                                    : null,
+                              }}
+                            />
                           )}
-                        </TableButton>
-                      </PTD>
-                    </PTR>
-                  )
-                })}
-              </PTBody>
-            </Table>
-          </Wrapper>
+                        </PTH>
+                      )
+                    })}
+                  </PTR>
+                </PTHead>
+
+                <PTBody>
+                  {this.state.rows.map((row, rowIndex) => {
+                    const {
+                      currency,
+                      symbol,
+                      portfolioPerc,
+                      price,
+                      deltaPrice,
+                    } = row
+
+                    const mainSymbol = isUSDCurrently ? (
+                      <Icon className="fa fa-usd" key={`${rowIndex}usd`} />
+                    ) : (
+                      <Icon className="fa fa-btc" key={`${rowIndex}btc`} />
+                    )
+
+                    const isSelected =
+                      (selectedActive &&
+                        selectedActive.indexOf(rowIndex) >= 0) ||
+                      false
+
+                    let deltaPriceString = ''
+
+                    if (deltaPrice) {
+                      if (deltaPrice > 0) {
+                        deltaPriceString = `BUY ${symbol} ${deltaPrice} $`
+                      } else {
+                        deltaPriceString = `SELL ${symbol} ${Math.abs(
+                          deltaPrice
+                        )} $`
+                      }
+                    }
+
+                    const cols = [
+                      currency,
+                      symbol || '',
+                      portfolioPerc ? `${portfolioPerc}%` : '',
+                      `${price}`,
+                      deltaPriceString,
+                    ]
+
+                    return (
+                      <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
+                        {isEditModeEnabled && (
+                          <PTD
+                            key="smt"
+                            isSelected={isSelected}
+                            onClick={() => this.onSelectActiveBalance(rowIndex)}
+                          >
+                            {this.renderActiveCheckbox(rowIndex)}
+                          </PTD>
+                        )}
+
+                        {cols.map((col, idx) => {
+                          if (col.match(/%/g)) {
+                            const color =
+                              Number(col.replace(/%/g, '')) >= 0
+                                ? '#65c000'
+                                : '#ff687a'
+                            if (rowIndex !== this.state.activePercentInput) {
+                              return (
+                                <PTD
+                                  onClick={() => this.onPercentClick(rowIndex)}
+                                  key={`${col}${idx}`}
+                                  style={{ color }}
+                                >
+                                  {col}
+                                  <EditIcon />
+                                </PTD>
+                              )
+                            } else {
+                              return (
+                                <PTD key="percentForm">
+                                  <form onSubmit={this.onPercentSubmit}>
+                                    <input
+                                      type="number"
+                                      value={this.state.activePercentInputValue}
+                                      onChange={this.onPercentInputChange}
+                                      onBlur={this.onPercentSubmit}
+                                      step="0.01"
+                                      min="0"
+                                      max="100"
+                                    />
+                                  </form>
+                                </PTD>
+                              )
+                            }
+                          }
+                          if (col.match(/BUY/g)) {
+                            const color = '#65c000'
+
+                            return <PTD style={{ color }}>{col}</PTD>
+                          }
+                          if (col.match(/SELL/g)) {
+                            const color = '#ff687a'
+
+                            return <PTD style={{ color }}>{col}</PTD>
+                          }
+
+                          if (idx == 3) {
+                            return (
+                              <PTD key={`${col}${idx}`}>
+                                {mainSymbol}
+                                {col}
+                              </PTD>
+                            )
+                          }
+
+                          return <PTD key={`${col}${idx}`}>{col}</PTD>
+                        })}
+                        <PTD>
+                          <TableButton
+                            isDeleteColor={
+                              rowIndex === this.state.rows.length - 1
+                            }
+                            onClick={() => this.onButtonClick(rowIndex)}
+                          >
+                            {rowIndex === this.state.rows.length - 1 ? (
+                              <AddIcon />
+                            ) : (
+                              <DeleteIcon />
+                            )}
+                          </TableButton>
+                        </PTD>
+                      </PTR>
+                    )
+                  })}
+                </PTBody>
+                <PTFoot>
+                  <PTR>
+                    <PTH>All</PTH>
+                    <PTH>-</PTH>
+                    <PTH>-</PTH>
+                    <PTH>-</PTH>
+                    <PTH>{`${totalRows} $`}</PTH>
+                  </PTR>
+                </PTFoot>
+              </Table>
+            </Wrapper>
+          </TableAndHeadingWrapper>
         </Container>
         <PieChartsWrapper>
           <PieChartContainer>
@@ -633,12 +848,15 @@ export default class PortfolioTableRebalance extends React.Component<
             />
           </PieChartContainer>
 
-          <ButtonsWrapper>
+          <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
             <ActionButtonsContainer>
+              <ActionButton onClick={() => this.onReset()}>
+                <Replay />
+              </ActionButton>
               <ActionButton onClick={() => this.onSaveClick()}>
                 <SaveIcon />
               </ActionButton>
-              <ActionButton onClick={() => this.onLoadClick()}>
+              <ActionButton onClick={() => this.onLoadPreviousClick()}>
                 <UndoIcon />
               </ActionButton>
             </ActionButtonsContainer>
@@ -650,15 +868,10 @@ export default class PortfolioTableRebalance extends React.Component<
             <Button onClick={() => this.onAddMoneyButtonPressed()}>
               Add money
             </Button>
-            {this.state.rows[this.state.rows.length - 1].undistributedMoney !==
-            0 ? (
+            {this.state.undistributedMoney !== 0 ? (
               <UndistributedMoneyContainer>
                 <UndistributedMoneyText>
-                  Undistributed money:{' '}
-                  {
-                    this.state.rows[this.state.rows.length - 1]
-                      .undistributedMoney
-                  }
+                  Undistributed money: {this.state.undistributedMoney}
                 </UndistributedMoneyText>
                 <Button onClick={() => this.onDistribute()}>
                   Distribute to selected
@@ -696,6 +909,11 @@ const PTWrapper = styled.div`
   height: calc(100vh - 140px);
 `
 
+const TableAndHeadingWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
 const Wrapper = styled.div`
   overflow-y: scroll;
   padding-right: 2px;
@@ -727,6 +945,7 @@ const Table = styled.table`
 `
 
 const TableHeading = styled.div`
+  display: flex;
   text-transform: uppercase;
   font-family: Roboto;
   font-size: 17px;
@@ -890,6 +1109,21 @@ const PTHead = styled.thead`
   }
 `
 
+const PTFoot = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px solid white;
+  }
+`
+
 const PieChartsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -921,6 +1155,9 @@ const PieChartContainer = styled.div`
 const ButtonsWrapper = styled.div`
   width: 33.3%;
   max-width: 260px;
+
+  visibility: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? 'visible' : 'hidden'};
 `
 
 const Input = styled.input`
@@ -1039,4 +1276,16 @@ const UndistributedMoneyText = styled.p`
   font-size: 12px;
   padding: 10px 0 0;
   margin: 0px;
+`
+const EditIconWrapper = styled.div`
+  padding-left: 15px;
+
+  &:hover {
+    color: ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? '#ff687a' : '#65c000'};
+  }
+
+  & svg {
+    padding-bottom: 5px;
+  }
 `
