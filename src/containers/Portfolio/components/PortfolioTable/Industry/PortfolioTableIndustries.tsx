@@ -6,6 +6,8 @@ import { compose } from 'recompose'
 import Legends from '@components/Legends'
 import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import Switch from './SwitchWithIcons'
+
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
 import { MOCKS, colors, combineToChart, genMocks, inds, coins } from './mocks'
@@ -48,6 +50,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     selectedRows: null,
     selectedSum: defaultSelectedSum,
     activeLegend: null,
+    showChart: 'line',
   }
 
   componentWillMount() {
@@ -121,6 +124,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       const { portfolio } = this.state
       this.combineIndustryData(portfolio)
     }
+  }
+
+  toggleChart = () => {
+    this.setState((prevState: IState) => ({
+      showChart: prevState.showChart === 'line' ? 'chart' : 'line',
+    }))
   }
 
   combineIndustryData = (portfolio?: IPortfolio) => {
@@ -539,27 +548,27 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           </Wrapper>
 
           {/* ToDo: add button that toggles chart */}
-          <LineChartContainer>
-            <Heading>Industry Line Chart</Heading>
-            <LineChartWrapper>
+          <ChartContainer>
+            <Heading>
+              {' '}
+              <Switch onClick={this.toggleChart} />
+            </Heading>
+            <ChartWrapper>
               {/*<Legends
                 legends={this.state.legends}
                 onChange={this.onChangeActiveLegend}
               />*/}
-              <LineChart
-                data={this.state.lineChartMocks}
-                activeLine={activeLegend}
-                onChangeData={this.onChangeData}
-              />
-            </LineChartWrapper>
-          </LineChartContainer>
-
-          <PieChartContainer>
-            <PieChartHeadingWrapper>
-              <Heading>Industry Pie Chart</Heading>
-            </PieChartHeadingWrapper>
-            <PieChart data={combineToChart()} flexible={true} />
-          </PieChartContainer>
+              {this.state.showChart === 'line' ? (
+                <LineChart
+                  data={this.state.lineChartMocks}
+                  activeLine={activeLegend}
+                  onChangeData={this.onChangeData}
+                />
+              ) : (
+                <PieChart data={combineToChart()} flexible={true} />
+              )}
+            </ChartWrapper>
+          </ChartContainer>
         </Container>
       </PTWrapper>
     )
@@ -612,7 +621,9 @@ const PieChartContainer = styled.div`
   }
 `
 
-const Heading = styled.span`
+const Heading = styled.div`
+  display: flex;
+  justify-content: center;
   font-family: Roboto;
   font-size: 14px;
   font-weight: 500;
@@ -633,13 +644,13 @@ const PTWrapper = styled.div`
   height: calc(100vh - 130px);
 `
 
-const LineChartWrapper = styled.div`
+const ChartWrapper = styled.div`
   width: 100%;
   height: 35vh;
   display: flex;
 `
 
-const LineChartContainer = styled.div`
+const ChartContainer = styled.div`
   border-radius: 3px;
   background-color: #2d3136;
   box-shadow: 0 2px 6px 0 #0006;

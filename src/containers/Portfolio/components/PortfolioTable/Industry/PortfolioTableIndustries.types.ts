@@ -44,4 +44,5 @@ export interface IState {
   activeKeys: number[] | null
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
   activeLegend: number | null
+  showChart: string
 }
