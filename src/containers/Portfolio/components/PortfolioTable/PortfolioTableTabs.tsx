@@ -128,6 +128,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
 const PTHeadingBlock = styled.div`
   display: flex;
+  position: sticky;
+  top: 0;
+  background-color: #393e44;
+  z-index: 100;
+
   width: 100%;
   justify-content: space-between;
   align-items: center;
