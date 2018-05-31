@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
+import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import Arrow from 'react-icons/lib/md/keyboard-arrow-right'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 
@@ -136,12 +136,11 @@ class PortfolioSelector extends React.Component<IProps, IState> {
       >
         <AccountsWalletsHeadingWrapper>
           <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
-          <CloseButton
-            isSideNavOpen={this.props.isSideNavOpen}
-            onClick={this.props.toggleWallets}
-          >
-            <StyledIcon />
-          </CloseButton>
+
+          <Headline isSideNavOpen={this.props.isSideNavOpen}>Accounts</Headline>
+          <CloseContainer>
+            <StyledIcon isSideNavOpen={this.props.isSideNavOpen} />
+          </CloseContainer>
         </AccountsWalletsHeadingWrapper>
 
         <SelectAll>
@@ -188,6 +187,9 @@ class PortfolioSelector extends React.Component<IProps, IState> {
     )
   }
 }
+const CloseContainer = styled.div`
+  height: 100%;
+`
 
 const SelectAll = styled.div`
   margin-top: 32px;
@@ -291,27 +293,34 @@ const AccountsWalletsHeadingWrapper = styled.div`
 `
 
 const StyledIcon = styled(Arrow)`
+  font-family: Roboto;
   color: #4ed8da;
-  font-size: 1.2rem;
   text-align: center;
-  position: ;
+  opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? '1' : '0'};
+  font-size: 2rem;
+  right: -0.3rem;
+  position: absolute;
+  bottom: 50%;
+  transition: opacity 0.2s linear;
 `
 
-const CloseButton = styled.button`
+const Headline = styled.div`
+  font-family: Roboto;
+  color: #4ed8da;
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '0' : '1'};
-  background: transparent;
+  font-size: 0.7em;
+  transform: rotate(-90deg);
+  right: -1.2rem;
+  transform-origin: right, top;
   position: absolute;
-  top: 50vh;
-  right: -0.8rem;
+  bottom: 50%;
+  transition: opacity 0.4s linear;
 
-  border: none;
-  outline: none;
-  cursor: pointer;
-  transition: opacity 0.2s linear;
-
-  @media (min-width: 840px) {
-    right: -0.3rem;
+  @media (min-width: 1000px) {
+    font-size: 1rem;
+    right: -1.5rem;
   }
 `
 
