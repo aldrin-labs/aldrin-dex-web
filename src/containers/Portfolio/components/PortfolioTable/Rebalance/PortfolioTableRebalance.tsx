@@ -282,7 +282,6 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
   onSelectActiveBalance = (idx: number) => {
-    if (idx < this.state.rows.length - 1) {
       const selectedActive =
         (this.state.selectedActive && this.state.selectedActive.slice()) || []
       let { areAllActiveChecked } = this.state
@@ -292,13 +291,12 @@ export default class PortfolioTableRebalance extends React.Component<
       } else {
         selectedActive.push(idx)
       }
-      if (selectedActive.length >= this.state.rows.length - 1) {
+      if (selectedActive.length === this.state.rows.length) {
         areAllActiveChecked = true
       } else {
         areAllActiveChecked = false
       }
       this.setState({ selectedActive, areAllActiveChecked })
-    }
   }
 
   // TODO: refactor all this stuff
