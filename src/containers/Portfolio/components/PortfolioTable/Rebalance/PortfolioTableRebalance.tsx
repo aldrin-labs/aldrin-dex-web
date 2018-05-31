@@ -458,8 +458,9 @@ export default class PortfolioTableRebalance extends React.Component<
       <PTWrapper tableData={this.state.rows}>
         {children}
         <Container>
-          <Wrapper>
+          <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
+            <Wrapper>
             <Table>
               <PTHead>
                 <PTR>
@@ -558,11 +559,13 @@ export default class PortfolioTableRebalance extends React.Component<
               </PTFoot>
             </Table>
           </Wrapper>
+          </TableAndHeadingWrapper>
           <ActionButton onClick={() => this.onReset()}>
             <CompareArrows />
           </ActionButton>
-          <Wrapper>
+          <TableAndHeadingWrapper>
             <TableHeading>Rebalanced portfolio</TableHeading>
+          <Wrapper>
             <Table>
               <PTHead>
                 <PTR>
@@ -706,6 +709,7 @@ export default class PortfolioTableRebalance extends React.Component<
               </PTBody>
             </Table>
           </Wrapper>
+          </TableAndHeadingWrapper>
         </Container>
         <PieChartsWrapper>
           <PieChartContainer>
@@ -772,6 +776,11 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 140px);
+`
+
+const TableAndHeadingWrapper = styled.div`
+   display: flex;
+    flex-direction: column;
 `
 
 const Wrapper = styled.div`
