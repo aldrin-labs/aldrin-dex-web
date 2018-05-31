@@ -47,8 +47,10 @@ export default class PortfolioTableRebalance extends React.Component<
     addMoneyInputValue: 0,
     activePercentInput: null,
     activePercentInputValue: 0,
-    currentSort: null,
+    currentSortForStatic: null,
+    currentSortForDynamic: null,
     isEditModeEnabled: false,
+    undistributedMoney: 0,
   }
   componentWillMount() {
     this.calculateAllPercents()
@@ -64,8 +66,8 @@ export default class PortfolioTableRebalance extends React.Component<
 
   calculatePriceDifference = (data: any[]) => {
     let { staticRows } = this.state
-    data.forEach((row, i, arr) => {
-      staticRows.forEach((staticRow, j, staticArr) => {
+    data.forEach((row, i) => {
+      staticRows.forEach((staticRow, j) => {
         if (
           data[i].currency === staticRows[j].currency &&
           data[i].symbol === staticRows[j].symbol &&
@@ -81,24 +83,24 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculatePercents = (data: any[]) => {
-    let total = 0
-    data.forEach((row, i, arr) => {
-      if (i < data.length - 1) {
-        total += data[i].price
-      }
-    })
-    total += data[data.length - 1].undistributedMoney
-    data[data.length - 1].price = total
-    data.forEach((row, i, arr) => {
-      if (i < data.length - 1) {
-        data[i].portfolioPerc =
-          Math.ceil(data[i].price * 100 / data[data.length - 1].price * 100) /
-          100
-      }
-    })
-    data = this.calculatePriceDifference(data)
+    const { undistributedMoney } = this.state
+    let total = data.reduce(
+      (sum, row, i) => (sum += data[i].price),
+      undistributedMoney
+    )
+    // TODO: Need to fix it
+    // data[data.length - 1].price = total
 
-    return data
+    let newDataWithPercents = data.map((row, i) => {
+      row[i] = Math.ceil(data[i].price * 100 / total * 100) / 100
+
+      return row
+    })
+
+    console.log(data)
+    console.log(newDataWithPercents)
+
+    return this.calculatePriceDifference(newDataWithPercents)
   }
 
   renderCheckbox = (idx: number) => {
@@ -346,19 +348,42 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
-  onSortTable = (key: Args) => {
-    const { staticRows, currentSort } = this.state
-    if (!staticRows) {
+  onSortTable = (key: Args, chooseRows) => {
+    let currentRowsForSort
+    let currentRowsForSortText
+    let currentSort
+    let currentSortText
+    const {
+      staticRows,
+      rows,
+      currentSortForStatic,
+      currentSortForDynamic,
+    } = this.state
+    if (!staticRows && chooseRows === 'static') {
+      return
+    }
+    if (!rows && chooseRows === 'dynamic') {
       return
     }
 
-    const stringKey =
-      key === 'currency' || key === 'symbol' || key === 'industry'
+    if (chooseRows === 'static') {
+      currentRowsForSort = staticRows
+      currentRowsForSortText = 'staticRows'
+      currentSort = currentSortForStatic
+      currentSortText = 'currentSortForStatic'
+    } else {
+      currentRowsForSort = rows
+      currentRowsForSortText = 'rows'
+      currentSort = currentSortForDynamic
+      currentSortText = 'currentSortForDynamic'
+    }
 
-    const newData = staticRows.slice().sort((a, b) => {
+    const stringKey = key === 'currency' || key === 'symbol'
+
+    const newData = currentRowsForSort.slice().sort((a, b) => {
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
-          this.setState({ currentSort: { key, arg: 'DESC' } })
+          this.setState({ [currentSortText]: { key, arg: 'DESC' } })
 
           if (stringKey) {
             return onSortStrings(b[key], a[key])
@@ -366,7 +391,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
           return b[key] - a[key]
         } else {
-          this.setState({ currentSort: { key, arg: 'ASC' } })
+          this.setState({ [currentSortText]: { key, arg: 'ASC' } })
 
           if (stringKey) {
             return onSortStrings(a[key], b[key])
@@ -375,7 +400,7 @@ export default class PortfolioTableRebalance extends React.Component<
           return a[key] - b[key]
         }
       }
-      this.setState({ currentSort: { key, arg: 'ASC' } })
+      this.setState({ [currentSortText]: { key, arg: 'ASC' } })
 
       if (stringKey) {
         return onSortStrings(a[key], b[key])
@@ -384,7 +409,7 @@ export default class PortfolioTableRebalance extends React.Component<
       return a[key] - b[key]
     })
 
-    this.setState({ staticRows: newData })
+    this.setState({ [currentRowsForSortText]: newData })
   }
 
   render() {
@@ -404,7 +429,7 @@ export default class PortfolioTableRebalance extends React.Component<
                   {tableHeadings.map((heading) => (
                     <PTH
                       key={heading.name}
-                      onClick={() => this.onSortTable(heading.value)}
+                      onClick={() => this.onSortTable(heading.value, 'static')}
                     >
                       {heading.name}
                     </PTH>
@@ -472,7 +497,12 @@ export default class PortfolioTableRebalance extends React.Component<
               <PTHead>
                 <PTR>
                   {newTableHeadings.map((heading) => (
-                    <PTH key={heading.name}>{heading.name}</PTH>
+                    <PTH
+                      key={heading.name}
+                      onClick={() => this.onSortTable(heading.value, 'dynamic')}
+                    >
+                      {heading.name}
+                    </PTH>
                   ))}
                 </PTR>
               </PTHead>
