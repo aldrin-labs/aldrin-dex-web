@@ -16,7 +16,7 @@ import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
-import CompareArrows from 'material-ui-icons/CompareArrows'
+import Replay from 'material-ui-icons/Replay'
 import { Args } from '../types'
 import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
 
@@ -579,9 +579,6 @@ export default class PortfolioTableRebalance extends React.Component<
             </Table>
           </Wrapper>
           </TableAndHeadingWrapper>
-          <ActionButton onClick={() => this.onReset()}>
-            <CompareArrows />
-          </ActionButton>
           <TableAndHeadingWrapper>
             <TableHeading>Rebalanced portfolio</TableHeading>
           <Wrapper>
@@ -769,6 +766,9 @@ export default class PortfolioTableRebalance extends React.Component<
 
           <ButtonsWrapper>
             <ActionButtonsContainer>
+              <ActionButton onClick={() => this.onReset()}>
+                <Replay />
+              </ActionButton>
               <ActionButton onClick={() => this.onSaveClick()}>
                 <SaveIcon />
               </ActionButton>
