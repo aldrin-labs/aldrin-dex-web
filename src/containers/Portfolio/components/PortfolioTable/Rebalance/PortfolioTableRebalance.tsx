@@ -228,15 +228,15 @@ export default class PortfolioTableRebalance extends React.Component<
     const selectedActive =
       (this.state.selectedActive && this.state.selectedActive.slice()) || []
     let { areAllActiveChecked } = this.state
-    if (selectedActive.length >= this.state.rows.length - 1) {
+    if (selectedActive.length === this.state.rows.length) {
       selectedActive.splice(0, selectedActive.length)
       areAllActiveChecked = false
     } else {
       selectedActive.splice(0, selectedActive.length)
       this.state.rows.map((a, i) => {
-        if (i < this.state.rows.length - 1) {
+        // if (i < this.state.rows.length - 1) {
           selectedActive.push(i)
-        }
+        // }
       })
       areAllActiveChecked = true
     }
