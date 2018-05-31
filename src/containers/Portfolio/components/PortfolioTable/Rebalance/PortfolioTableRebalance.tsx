@@ -588,6 +588,18 @@ export default class PortfolioTableRebalance extends React.Component<
             <Table>
               <PTHead>
                 <PTR>
+                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                    <Checkbox
+                      onChange={() => this.onSelectAllActive()}
+                      checked={this.state.areAllActiveChecked}
+                      type="checkbox"
+                      id="selectAllActive"
+                    />
+                    <Label htmlFor="selectAllActive">
+                      <Span />
+                    </Label>
+                  </PTH>
+
                   {newTableHeadings.map((heading) => {
                     const isSorted =
                       currentSortForDynamic &&
@@ -660,6 +672,14 @@ export default class PortfolioTableRebalance extends React.Component<
 
                   return (
                     <PTR key={`${currency}${symbol}`} isSelected={isSelected}>
+                      <PTD
+                        key="smt"
+                        isSelected={isSelected}
+                        onClick={() => this.onSelectActiveBalance(rowIndex)}
+                      >
+                        {this.renderActiveCheckbox(rowIndex)}
+                      </PTD>
+
                       {cols.map((col, idx) => {
                         if (col.match(/%/g)) {
                           const color =
