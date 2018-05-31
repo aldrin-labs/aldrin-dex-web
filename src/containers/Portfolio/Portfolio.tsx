@@ -52,7 +52,6 @@ class PortfolioComponent extends React.Component<IProps> {
               onChangeActive={this.onChangeActiveKey}
             />
             <PortfolioTable
-              toggleWallets={this.toggleWallets}
               loading={loading}
               checkboxes={checkboxes}
               data={getProfile}
@@ -73,11 +72,8 @@ export default graphql(getPortfolioQuery)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
-<<<<<<< HEAD
   justify-content: center;
-=======
   min-height: 600px;
->>>>>>> develop
 `
 const Backdrop = styled.div`
   display: ${(props) => (props.isSideNavOpen ? 'block' : 'none')};
