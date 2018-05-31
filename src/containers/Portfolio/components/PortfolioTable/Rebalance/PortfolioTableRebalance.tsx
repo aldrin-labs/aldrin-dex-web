@@ -54,16 +54,34 @@ export default class PortfolioTableRebalance extends React.Component<
     currentSortForDynamic: null,
     isEditModeEnabled: false,
     undistributedMoney: 0,
+    totalRows: 0,
+    totalStaticRows: 0,
+    totalSavedRows: 0,
   }
   componentWillMount() {
     this.calculateAllPercents()
+    this.calculateAllTotals()
+  }
+
+  calculateAllTotals = () => {
+    this.setState({
+      totalRows: this.calculateTotal(this.state.rows),
+      totalStaticRows: this.calculateTotal(this.state.staticRows),
+      totalSavedRows: this.calculateTotal(this.state.savedRows),
+    })
   }
 
   calculateAllPercents = () => {
     this.setState({
-      rows: this.calculatePercents(this.state.rows),
-      staticRows: this.calculatePercents(this.state.staticRows),
-      savedRows: this.calculatePercents(this.state.savedRows),
+      rows: this.calculatePercents(this.state.rows, this.state.totalRows),
+      staticRows: this.calculatePercents(
+        this.state.staticRows,
+        this.state.totalStaticRows
+      ),
+      savedRows: this.calculatePercents(
+        this.state.savedRows,
+        this.state.totalSavedRows
+      ),
     })
   }
 
@@ -73,9 +91,7 @@ export default class PortfolioTableRebalance extends React.Component<
       staticRows.forEach((staticRow, j) => {
         if (
           data[i].currency === staticRows[j].currency &&
-          data[i].symbol === staticRows[j].symbol &&
-          i < data.length - 1 &&
-          j < staticRows.length - 1
+          data[i].symbol === staticRows[j].symbol
         ) {
           data[i].deltaPrice = data[i].price - staticRows[j].price
         }
@@ -85,18 +101,26 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
-  calculatePercents = (data: any[]) => {
+  calculateTotal = (data: any[]) => {
     const { undistributedMoney } = this.state
     let total = data.reduce(
       (sum, row, i) => (sum += data[i].price),
       undistributedMoney
     )
-    // TODO: Need to fix it
-    // data[data.length - 1].price = total
 
+    console.log(total)
+
+    return total
+  }
+
+  calculatePercents = (data: any[], total) => {
     let newDataWithPercents = data.map((row, i) => {
       row[i] = Math.ceil(data[i].price * 100 / total * 100) / 100
 
+      // TODO: FIX WHY INFINITY??
+      // console.log(
+      //   'percantage:' + Math.ceil(data[i].price * 100 / total * 100) / 100
+      // )
       return row
     })
 
@@ -138,7 +162,12 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onButtonClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive, areAllActiveChecked, staticRows } = this.state
+    let {
+      selectedActive,
+      areAllActiveChecked,
+      staticRows,
+      totalRows,
+    } = this.state
     if (rows.length - 1 === idx) {
       let newRow = {
         currency: 'Newcoin',
@@ -186,7 +215,7 @@ export default class PortfolioTableRebalance extends React.Component<
         rows[idx].price = 0
       }
     }
-    rows = this.calculatePercents(rows)
+    rows = this.calculatePercents(rows, totalRows)
     this.setState({ rows, selectedActive, areAllActiveChecked })
   }
 
@@ -277,7 +306,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onDistribute = (e: any) => {
-    let { selectedActive, rows } = this.state
+    let { selectedActive, rows, totalRows } = this.state
     if (selectedActive && selectedActive.length > 0) {
       if (selectedActive.length > 1) {
         let money = rows[rows.length - 1].undistributedMoney
@@ -292,7 +321,7 @@ export default class PortfolioTableRebalance extends React.Component<
           rows[rows.length - 1].undistributedMoney
         rows[rows.length - 1].undistributedMoney = 0
       }
-      rows = this.calculatePercents(rows)
+      rows = this.calculatePercents(rows, totalRows)
       this.setState({ selectedActive, rows })
     }
   }
@@ -313,7 +342,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onPercentSubmit = (e: any) => {
-    let { rows } = this.state
+    let { rows, totalRows } = this.state
     let percent = this.state.activePercentInputValue
     let idx = this.state.activePercentInput
     if (percent != rows[idx].portfolioPerc) {
@@ -322,7 +351,7 @@ export default class PortfolioTableRebalance extends React.Component<
       let subMoney = newMoney - rows[idx].price
       rows[idx].price = newMoney
       rows[rows.length - 1].undistributedMoney -= subMoney
-      rows = this.calculatePercents(rows)
+      rows = this.calculatePercents(rows, totalRows)
       this.setState({
         activePercentInput: null,
         activePercentInputValue: 0,
@@ -339,11 +368,11 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
-      let { rows } = this.state
+      let { rows, totalRows } = this.state
       rows[rows.length - 1].undistributedMoney += Number(
         this.state.addMoneyInputValue
       )
-      rows = this.calculatePercents(rows)
+      rows = this.calculatePercents(rows, totalRows)
       this.setState({
         addMoneyInputValue: 0,
         rows,
@@ -422,6 +451,7 @@ export default class PortfolioTableRebalance extends React.Component<
       selectedActive,
       currentSortForStatic,
       currentSortForDynamic,
+      totalRows,
     } = this.state
 
     return (
@@ -488,7 +518,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTR
                       key={`${currency}${symbol}${idx}`}
                       isSelected={isSelected}
-                      onClick={() => this.onSelectBalance(idx)}
+                      // onClick={() => this.onSelectBalance(idx)}
                     >
                       {cols.map((col, index) => {
                         if (col.match(/%/g)) {
@@ -518,6 +548,14 @@ export default class PortfolioTableRebalance extends React.Component<
                   )
                 })}
               </PTBody>
+              <PTFoot>
+                <PTR>
+                  <PTH>All</PTH>
+                  <PTH>-</PTH>
+                  <PTH>-</PTH>
+                  <PTH>{`${totalRows} $`}</PTH>
+                </PTR>
+              </PTFoot>
             </Table>
           </Wrapper>
           <ActionButton onClick={() => this.onReset()}>
@@ -927,6 +965,21 @@ const PTHead = styled.thead`
     left: 0;
     right: 0;
     border-bottom: 1px solid white;
+  }
+`
+
+const PTFoot = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px solid white;
   }
 `
 
