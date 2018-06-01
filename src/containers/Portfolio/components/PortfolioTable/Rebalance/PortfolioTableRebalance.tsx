@@ -1092,6 +1092,10 @@ const PTHC = styled.th`
     min-width: 70px;
     text-align: left;
   }
+  &:nth-child(3),
+  &:nth-child(4) {
+    text-align: right;
+  }
 `
 const PTHR = styled.th`
   ${PTH} &:nth-child(1) {
@@ -1102,10 +1106,6 @@ const PTHR = styled.th`
   &:nth-child(2) {
     text-align: left;
     width: 100px;
-  }
-  &:nth-child(3),
-  &:nth-child(4) {
-    text-align: right;
   }
 
   &:nth-child(4),
