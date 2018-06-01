@@ -116,6 +116,7 @@ const Btn = styled(Link)`
   text-transform: uppercase;
   text-decoration: none;
   width: 15em;
+  margin: 0 auto;
 `
 const ShortcutDesc = styled.span`
   opacity: 0.5;

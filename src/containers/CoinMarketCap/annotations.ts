@@ -28,7 +28,6 @@ export interface CoinMarketCapQueryQuery {
       _id: string,
       name: string | null,
       symbol: string | null,
-      nameTrue: string | null,
       priceUSD: string | null,
       maxSupply: number | null,
       totalSupply: number | null,
