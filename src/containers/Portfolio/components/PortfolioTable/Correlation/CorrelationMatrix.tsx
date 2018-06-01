@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import debounce from 'lodash/debounce'
 import styled from 'styled-components'
 import FullScreen from 'react-fullscreen-crossbrowser'
-
 import { onFloorN } from '../../../../../utils/PortfolioTableUtils'
 import {
   getColor,
@@ -15,7 +14,14 @@ export interface Props {
 }
 
 export interface State {
-  hint: { index: number; value: number } | null
+  hint: {
+    index: number
+    value: number
+    colName: string
+    rowName: string
+    x: number
+    y: number
+  } | null
 }
 
 class CorrelationMatrix extends Component<Props, State> {
@@ -29,8 +35,17 @@ class CorrelationMatrix extends Component<Props, State> {
     }
   }
 
-  onMouseOver = (index: number, value: number) => {
-    this.setState({ hint: { index, value } })
+  onMouseOver = (
+    index: number,
+    value: number,
+    colName: string,
+    rowName: string,
+    x: number,
+    y: number
+  ) => {
+    console.log(x)
+    console.log(y)
+    this.setState({ hint: { index, value, colName, rowName, x, y } })
   }
 
   onClick = () => {}
@@ -45,7 +60,6 @@ class CorrelationMatrix extends Component<Props, State> {
 
     return (
       <React.Fragment>
-        {console.log(this.props.isFullscreenEnabled)}
         <FullScreen
           enabled={this.props.isFullscreenEnabled}
           onChange={(isFullscreenEnabled: any) =>
@@ -98,31 +112,20 @@ class CorrelationMatrix extends Component<Props, State> {
                             key={e}
                             textColor={textColor}
                             color={backgroundColor}
-                            onMouseOver={() => this.onMouseOver(indx, value)}
-                            position={
-                              !!hint &&
-                              hint.index === indx &&
-                              hint.value === value
-                            }
+                            onMouseOver={(event) => {
+                              console.log(event.nativeEvent)
+
+                              return this.onMouseOver(
+                                indx,
+                                value,
+                                rows[i],
+                                rows[indx],
+                                1,
+                                2
+                              )
+                            }}
                           >
                             {value}
-                            {!!hint &&
-                              hint.index === indx &&
-                              hint.value === value && (
-                                <span
-                                  style={{
-                                    position: 'absolute',
-                                    width: '100%',
-                                    left: 0,
-                                    top: 0,
-                                    padding: '5px',
-                                    backgroundColor: '#292d31',
-                                    color: '#4ed8da',
-                                  }}
-                                >
-                                  {hint.value}
-                                </span>
-                              )}
                           </Item>
                         )
                       })
@@ -131,6 +134,22 @@ class CorrelationMatrix extends Component<Props, State> {
                 ))}
               </tbody>
             </Table>
+            {!!hint && (
+              <span
+                style={{
+                  zIndex: 1997,
+                  position: 'absolute',
+                  width: '100%',
+                  left: `${hint.x + 30}px`,
+                  top: `${hint.x + 100}px`,
+                  padding: '5px',
+                  backgroundColor: '#292d31',
+                  color: '#4ed8da',
+                }}
+              >
+                {`${hint.colName} - ${hint.rowName} `}
+              </span>
+            )}
           </div>
         </FullScreen>
       </React.Fragment>

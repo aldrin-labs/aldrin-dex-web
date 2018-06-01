@@ -32,6 +32,7 @@ export default class Correlation extends React.Component<IProps> {
     return (
       <PTWrapper tableData={!!cols.length && !!rows.length}>
         {children}
+        {console.log(this.props)}
         <Button onClick={() => this.setState({ isFullscreenEnabled: true })}>
           <FullScreenIcon />
         </Button>
