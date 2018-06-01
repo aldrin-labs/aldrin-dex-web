@@ -52,6 +52,7 @@ export default class PieChart extends React.Component<Props, State> {
         {value && (
           <Hint value={value}>
             <ChartTooltip>{value.label}</ChartTooltip>
+            <ChartTooltip>{value.angle}</ChartTooltip>
           </Hint>
         )}
       </FlexibleRadialChart>
