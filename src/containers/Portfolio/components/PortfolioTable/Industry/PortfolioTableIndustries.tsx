@@ -642,6 +642,7 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
+  overflow: auto;
 `
 
 const ChartWrapper = styled.div`
@@ -654,11 +655,12 @@ const ChartContainer = styled.div`
   border-radius: 3px;
   background-color: #2d3136;
   box-shadow: 0 2px 6px 0 #0006;
+
   padding: 1em;
   text-align: center;
   width: 50%;
   height: 40vh;
-  margin: 2rem 0rem;
+  margin: 2rem 1rem;
 
   @media (max-width: 850px) {
     width: 100%;
