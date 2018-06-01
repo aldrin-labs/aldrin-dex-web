@@ -805,8 +805,9 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
-                    <PTHR>-</PTHR>
                     <PTHR>{`${totalRows} $`}</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>-</PTHR>
                   </PTR>
                 </PTFoot>
               </Table>
@@ -1002,20 +1003,59 @@ const PTDC = styled.td`
   }
 `
 
+// const PTDR = styled.td`
+//   ${PTD} &:nth-child(1) {
+//     padding: 1.75px 10px;
+//   }
+//
+//   &:nth-child(2) {
+//     min-width: 100px;
+//   }
+//   &:nth-child(3) {
+//     min-width: 70px;
+//   }
+//   &:nth-child(4) {
+//     text-align: right;
+//     min-width: 100px;
+//     &:hover {
+//       & svg {
+//         color: #ffffff;
+//       }
+//     }
+//   }
+//   &:nth-child(5) {
+//     text-align: right;
+//     min-width: 100px;
+//   }
+//   &:nth-child(6) {
+//     text-align: left;
+//     min-width: 150px;
+//   }
+//   &:nth-child(7) {
+//     padding: 1.75px 5px;
+//     min-width: 30px;
+//     text-align: left;
+//   }
+// `
+
 const PTDR = styled.td`
-  ${PTD} &:nth-child(1) {
-    padding: 1.75px 10px;
-  }
+  ${PTD};
+  min-width: 100px;
 
   &:nth-child(2) {
-    min-width: 100px;
-  }
-  &:nth-child(3) {
     min-width: 70px;
   }
+
+  &:nth-child(3) {
+    text-align: right;
+  }
+
   &:nth-child(4) {
     text-align: right;
-    min-width: 100px;
+  }
+
+  &:nth-child(4) {
+    text-align: right;
     &:hover {
       & svg {
         color: #ffffff;
@@ -1023,53 +1063,10 @@ const PTDR = styled.td`
     }
   }
   &:nth-child(5) {
-    text-align: right;
-    min-width: 100px;
-  }
-  &:nth-child(6) {
-    text-align: left;
     min-width: 150px;
   }
-  &:nth-child(7) {
-    padding: 1.75px 5px;
-    min-width: 30px;
-    text-align: left;
-  }
-`
-
-const Span = styled.span``
-
-const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 18px;
-
-    height: 18px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  &:checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
+  &:nth-child(6) {
+    display: none;
   }
 `
 
@@ -1097,32 +1094,70 @@ const PTHC = styled.th`
     text-align: right;
   }
 `
+
 const PTHR = styled.th`
-  ${PTH} &:nth-child(1) {
-    padding: 10px;
-    text-align: left;
+  ${PTH} min-width: 100px;
+
+  &:nth-child(1) {
   }
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
+    min-width: 70px;
   }
 
-  &:nth-child(4),
-  &:nth-child(5) {
+  &:nth-child(3) {
     text-align: right;
-    min-width: 100px;
   }
-  &:nth-child(6) {
-    text-align: left;
+
+  &:nth-child(4) {
+    text-align: right;
+  }
+
+  &:nth-child(5) {
     min-width: 150px;
   }
-  &:nth-child(7) {
-    width: 30px;
-    text-align: left;
-    padding: 1.75px 5px;
+  &:nth-child(6) {
+    display: none;
   }
 `
+
+const PTFR = styled.th`
+  ${PTH};
+  min-width: 100px;
+
+  &:nth-child(2) {
+    text-align: left;
+    min-width: 70px;
+  }
+`
+
+// const PTHR = styled.th`
+//   ${PTH} &:nth-child(1) {
+//     padding: 10px;
+//     text-align: left;
+//   }
+//
+//   &:nth-child(2) {
+//     text-align: left;
+//     width: 100px;
+//   }
+//
+//   &:nth-child(4),
+//   &:nth-child(5) {
+//     text-align: right;
+//     min-width: 100px;
+//   }
+//   &:nth-child(6) {
+//     text-align: left;
+//     min-width: 150px;
+//   }
+//   &:nth-child(7) {
+//     width: 30px;
+//     text-align: left;
+//     padding: 1.75px 5px;
+//   }
+// `
 
 const PTR = styled.tr`
   cursor: pointer;
@@ -1161,6 +1196,42 @@ const PTFoot = styled.thead`
     left: 0;
     right: 0;
     border-top: 1px solid white;
+  }
+`
+
+const Span = styled.span``
+
+const Label = styled.label``
+
+const Checkbox = styled.input`
+  display: none;
+
+  & + ${Label} ${Span} {
+    display: inline-block;
+
+    width: 18px;
+
+    height: 18px;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    border: 1.5px solid #909294;
+    border-radius: 3px;
+    background-color: transparent;
+  }
+
+  & + ${Label}:hover ${Span} {
+    border-color: #4ed8da;
+  }
+
+  &:checked + ${Label} ${Span} {
+    border-color: #4ed8da;
+    background-color: #4ed8da;
+    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
   }
 `
 
