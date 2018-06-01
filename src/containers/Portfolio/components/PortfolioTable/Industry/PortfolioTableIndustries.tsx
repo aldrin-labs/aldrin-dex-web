@@ -22,6 +22,8 @@ import {
 } from '../../../../../utils/PortfolioTableUtils'
 import { IState } from './PortfolioTableIndustries.types'
 
+import PieChartQuery from './PieChartQuery'
+
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
@@ -542,7 +544,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                   onChangeData={this.onChangeData}
                 />
               ) : (
-                <PieChart data={genAngleMocks(inds)} flexible />
+                // <PieChart data={genAngleMocks(inds)} flexible />
+                <PieChartQuery />
               )}
             </ChartWrapper>
           </ChartContainer>
@@ -555,7 +558,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   height: auto;
   padding: 20px;
   margin-top: -2rem;
