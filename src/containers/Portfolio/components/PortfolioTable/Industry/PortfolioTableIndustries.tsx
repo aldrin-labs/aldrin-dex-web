@@ -3,14 +3,13 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 
-import Legends from '@components/Legends'
 import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from './SwitchWithIcons'
 
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, colors, combineToChart, genMocks, inds, coins } from './mocks'
+import { MOCKS, colors, genAngleMocks, genMocks, inds } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -22,6 +21,8 @@ import {
   roundUSDOff,
 } from '../../../../../utils/PortfolioTableUtils'
 import { IState } from './PortfolioTableIndustries.types'
+
+import PieChartQuery from './PieChartQuery'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -55,15 +56,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   componentWillMount() {
     const lineChartMocks = genMocks(31, inds)
-
-    const legends = lineChartMocks.map((serie, i) => {
-      return {
-        title: serie[0].label,
-        color: colors[i],
-      }
-    })
-
-    this.setState({ legends, lineChartMocks })
+    this.setState({ lineChartMocks })
   }
 
   componentDidMount() {
@@ -297,7 +290,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    const { isUSDCurrently } = this.props
+    // const { isUSDCurrently } = this.props
 
     if (!selectedRows || !industryData) {
       return defaultSelectedSum
@@ -305,11 +298,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     let newReducedSum = {}
 
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" key="usd" />
-    ) : (
-      <Icon className="fa fa-btc" key="btc" />
-    )
+    // const mainSymbol = isUSDCurrently ? (
+    //   <Icon className="fa fa-usd" key="usd" />
+    // ) : (
+    //   <Icon className="fa fa-btc" key="btc" />
+    // )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
@@ -368,14 +361,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   onChangeData = (data: string[]) => {
     const lineChartMocks = genMocks(31, data)
 
-    const legends = lineChartMocks.map((serie, i) => {
-      return {
-        title: serie[0].label,
-        color: colors[i],
-      }
-    })
-
-    this.setState({ legends, lineChartMocks })
+    this.setState({ lineChartMocks })
   }
 
   render() {
@@ -396,8 +382,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     let isThereAnySelectedRows = false
     if (selectedRows) {
       isThereAnySelectedRows = selectedRows.length > 1 ? true : false
-      console.log(selectedRows.length)
-      console.log(isThereAnySelectedRows)
     }
 
     const tableDataHasData = industryData
@@ -550,14 +534,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           {/* ToDo: add button that toggles chart */}
           <ChartContainer>
             <Heading>
-              {' '}
               <Switch onClick={this.toggleChart} />
             </Heading>
             <ChartWrapper>
-              {/*<Legends
-                legends={this.state.legends}
-                onChange={this.onChangeActiveLegend}
-              />*/}
               {this.state.showChart === 'line' ? (
                 <LineChart
                   data={this.state.lineChartMocks}
@@ -565,7 +544,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                   onChangeData={this.onChangeData}
                 />
               ) : (
-                <PieChart data={combineToChart()} flexible={true} />
+                // <PieChart data={genAngleMocks(inds)} flexible />
+                <PieChartQuery />
               )}
             </ChartWrapper>
           </ChartContainer>
@@ -578,7 +558,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
   height: auto;
   padding: 20px;
   margin-top: -2rem;
@@ -599,6 +578,10 @@ const PieChartHeadingWrapper = styled.div`
 `
 
 const PieChartContainer = styled.div`
+  border-radius: 3px;
+  background-color: #2d3136;
+  box-shadow: 0 2px 6px 0 #0006;
+  padding: 1em;
   display: flex;
   display: none;
   flex-direction: column;
@@ -658,7 +641,7 @@ const ChartContainer = styled.div`
 
   padding: 1em;
   text-align: center;
-  width: 50%;
+  width: calc(60% - 4rem);
   height: 40vh;
   margin: 2rem 1rem;
 

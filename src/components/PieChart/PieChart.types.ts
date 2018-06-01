@@ -1,7 +1,9 @@
 export interface PiePiece {
   angle: number
   label: string
-  color?: string
+  opacity?: number
+  color?: string | number
+  style?: Object
 }
 
 export interface Props {
@@ -14,5 +16,6 @@ export interface Props {
 }
 
 export interface State {
+  data: PiePiece[]
   value: PiePiece | null
 }

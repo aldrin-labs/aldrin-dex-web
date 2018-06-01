@@ -13,6 +13,12 @@ const Error = styled(Paper)`
   border: 1px solid red;
 `
 
+export const CustomError = (props: { error?: string }) => (
+  <Typography variant="headline" color="error">
+    {props.error || 'Error'}
+  </Typography>
+)
+
 const SimpleError = (props: { error?: ApolloError }) => (
   <Typography variant="headline" color="error">
     {props.error ? props.error.message : 'Error'}
