@@ -51,7 +51,7 @@ export default class PortfolioTableRebalance extends React.Component<
     savedRows: JSON.parse(JSON.stringify(tableData)),
     addMoneyInputValue: 0,
     activePercentInput: null,
-    activePercentInputValue: 0,
+    activePercentInputValues: [],
     currentSortForStatic: null,
     currentSortForDynamic: null,
     isEditModeEnabled: false,
@@ -336,7 +336,7 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ activePercentInputValue: e.target.value })
   }
 
-  onPercentClick = (idx: number) => {
+  /* onPercentClick = (idx: number) => {
     this.setState({
       activePercentInput: idx,
       activePercentInputValue: this.state.rows[idx].portfolioPerc,
@@ -370,7 +370,7 @@ export default class PortfolioTableRebalance extends React.Component<
     }
     e.preventDefault()
   }
-
+*/
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, totalRows, addMoneyInputValue } = this.state
@@ -398,10 +398,17 @@ export default class PortfolioTableRebalance extends React.Component<
       }))
     }
   }
-
   onEditModeEnable = () => {
+    let percValues = []
+    if (!this.state.isEditModeEnabled) {
+      const { rows } = this.state
+      rows.forEach((row, i, arr) => {
+        percValues[i] = rows[i].portfolioPerc
+      })
+    }
     this.setState((prevState) => ({
       isEditModeEnabled: !prevState.isEditModeEnabled,
+      activePercentInputValues: percValues,
     }))
   }
 
@@ -481,6 +488,11 @@ export default class PortfolioTableRebalance extends React.Component<
       isEditModeEnabled,
     } = this.state
 
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" />
+    ) : (
+      <Icon className="fa fa-btc" />
+    )
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
@@ -542,11 +554,6 @@ export default class PortfolioTableRebalance extends React.Component<
                       portfolioPerc ? `${portfolioPerc}%` : '',
                       `${price}`,
                     ]
-                    const mainSymbol = isUSDCurrently ? (
-                      <Icon className="fa fa-usd" key={`${idx}usd`} />
-                    ) : (
-                      <Icon className="fa fa-btc" key={`${idx}btc`} />
-                    )
 
                     return (
                       <PTR
@@ -595,7 +602,10 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTH>All</PTH>
                     <PTH>-</PTH>
                     <PTH>-</PTH>
-                    <PTH>{`${totalStaticRows} $`}</PTH>
+                    <PTH>
+                      {mainSymbol}
+                      {`${totalStaticRows}`}
+                    </PTH>
                   </PTR>
                 </PTFoot>
               </Table>
@@ -675,12 +685,6 @@ export default class PortfolioTableRebalance extends React.Component<
                       deltaPrice,
                     } = row
 
-                    const mainSymbol = isUSDCurrently ? (
-                      <Icon className="fa fa-usd" key={`${rowIndex}usd`} />
-                    ) : (
-                      <Icon className="fa fa-btc" key={`${rowIndex}btc`} />
-                    )
-
                     const isSelected =
                       (selectedActive &&
                         selectedActive.indexOf(rowIndex) >= 0) ||
@@ -727,7 +731,7 @@ export default class PortfolioTableRebalance extends React.Component<
                               Number(col.replace(/%/g, '')) >= 0
                                 ? '#65c000'
                                 : '#ff687a'
-                            if (rowIndex !== this.state.activePercentInput) {
+                            if (!this.state.isEditModeEnabled) {
                               return (
                                 <PTD
                                   onClick={() => this.onPercentClick(rowIndex)}
@@ -735,16 +739,17 @@ export default class PortfolioTableRebalance extends React.Component<
                                   style={{ color }}
                                 >
                                   {col}
-                                  <EditIcon />
                                 </PTD>
                               )
                             } else {
                               return (
-                                <PTD key="percentForm">
+                                <PTD key={`${col}${idx}`}>
                                   <form onSubmit={this.onPercentSubmit}>
                                     <input
                                       type="number"
-                                      value={this.state.activePercentInputValue}
+                                      value={
+                                        this.state.rows[rowIndex].portfolioPerc
+                                      }
                                       onChange={this.onPercentInputChange}
                                       onBlur={this.onPercentSubmit}
                                       step="0.01"
@@ -802,7 +807,11 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTH>-</PTH>
                     <PTH>-</PTH>
                     <PTH>-</PTH>
-                    <PTH>{`${totalRows} $`}</PTH>
+
+                    <PTH>
+                      {mainSymbol}
+                      {`${totalRows}`}
+                    </PTH>
                   </PTR>
                 </PTFoot>
               </Table>
