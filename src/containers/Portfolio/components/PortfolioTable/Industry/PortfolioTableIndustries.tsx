@@ -531,7 +531,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
-          {/* ToDo: add button that toggles chart */}
           <ChartContainer>
             <Heading>
               <Switch onClick={this.toggleChart} />
@@ -698,6 +697,7 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  max-width: 108px;
 
   &:nth-child(1) {
     padding: 1.75px 10px;
