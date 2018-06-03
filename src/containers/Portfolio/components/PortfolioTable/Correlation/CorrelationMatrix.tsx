@@ -80,7 +80,13 @@ class CorrelationMatrix extends Component<Props, State> {
           >
             <Table style={tableStyle}>
               <thead>
-                <Row>
+                <Row
+                  style={{
+                    position: this.props.isFullscreenEnabled
+                      ? 'fixed'
+                      : 'sticky',
+                  }}
+                >
                   <HeadItem
                     style={{
                       width: '4em',
