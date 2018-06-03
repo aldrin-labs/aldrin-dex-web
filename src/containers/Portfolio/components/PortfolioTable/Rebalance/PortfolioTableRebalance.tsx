@@ -813,8 +813,9 @@ export default class PortfolioTableRebalance extends React.Component<
                     )
                   })}
                 </PTBody>
-                <PTFoot>
+                <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
+                    {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                     <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
@@ -1217,6 +1218,10 @@ const PTFoot = styled.thead`
     right: 0;
     border-top: 1px solid white;
   }
+  
+  & ${PTHR} {
+    ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
 `
 
 const Span = styled.span``
