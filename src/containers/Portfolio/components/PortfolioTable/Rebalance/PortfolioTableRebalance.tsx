@@ -62,8 +62,10 @@ export default class PortfolioTableRebalance extends React.Component<
     totalSavedRows: 0,
   }
   componentWillMount() {
-    this.calculateAllPercents()
     this.calculateAllTotals()
+    setTimeout(() => {
+      this.calculateAllPercents()
+    }, 100)
   }
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
@@ -136,7 +138,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   calculatePercents = (data: any[], total) => {
     let newDataWithPercents = data.map((row, i) => {
-      row[i] = Math.ceil(data[i].price * 100 / total * 100) / 100
+      row.portfolioPerc = Math.ceil(row.price * 100 / total * 100) / 100
 
       // TODO: FIX WHY INFINITY??
       // console.log(
@@ -733,10 +735,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 : '#ff687a'
                             if (!this.state.isEditModeEnabled) {
                               return (
-                                <PTD
-                                  key={`${col}${idx}`}
-                                  style={{ color }}
-                                >
+                                <PTD key={`${col}${idx}`} style={{ color }}>
                                   {col}
                                 </PTD>
                               )
