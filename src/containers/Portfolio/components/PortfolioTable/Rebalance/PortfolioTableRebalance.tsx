@@ -858,38 +858,6 @@ export default class PortfolioTableRebalance extends React.Component<
             />
           </PieChartContainer>
 
-          <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
-            <ActionButtonsContainer>
-              <ActionButton onClick={() => this.onReset()}>
-                <Replay />
-              </ActionButton>
-              <ActionButton onClick={() => this.onSaveClick()}>
-                <SaveIcon />
-              </ActionButton>
-              <ActionButton onClick={() => this.onLoadPreviousClick()}>
-                <UndoIcon />
-              </ActionButton>
-            </ActionButtonsContainer>
-            <Input
-              type="number"
-              value={this.state.addMoneyInputValue}
-              onChange={this.onAddMoneyInputChange}
-            />
-            <Button onClick={() => this.onAddMoneyButtonPressed()}>
-              Add money
-            </Button>
-            {this.state.undistributedMoney !== 0 ? (
-              <UndistributedMoneyContainer>
-                <UndistributedMoneyText>
-                  Undistributed money: {this.state.undistributedMoney}
-                </UndistributedMoneyText>
-                <Button onClick={() => this.onDistribute()}>
-                  Distribute to selected
-                </Button>
-              </UndistributedMoneyContainer>
-            ) : null}
-          </ButtonsWrapper>
-
           <PieChartContainer>
             <PieChart
               data={combineToChart(PieChartMockSecond)}
