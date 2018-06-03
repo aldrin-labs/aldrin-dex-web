@@ -15,7 +15,7 @@ export interface IState {
   savedRows: any[]
   addMoneyInputValue: number
   activePercentInput: number | null
-  activePercentInputValue: number
+  activePercentInputValues: number[]
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
   isUSDCurrently: boolean
