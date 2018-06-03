@@ -545,7 +545,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 />
               ) : (
                 // <PieChart data={genAngleMocks(inds)} flexible />
-                <PieChartQuery />
+                <PieChartQuery isShownMocks={this.props.isShownMocks} />
               )}
             </ChartWrapper>
           </ChartContainer>

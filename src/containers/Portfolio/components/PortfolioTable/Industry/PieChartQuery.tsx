@@ -10,6 +10,7 @@ import { MOCKS, colors } from './mocks'
 
 export interface Props {
   data: PortfolioPieChartQuery
+  isShownMocks: boolean
 }
 
 export interface State {
@@ -22,7 +23,21 @@ class PieChartQuery extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const { data } = this.props
+    const { data, isShownMocks } = this.props
+
+    if (isShownMocks) {
+      if (!data) return
+      const { getProfile } = data
+      if (!getProfile) return
+      const { portfolio } = getProfile
+      if (!portfolio) return
+      const { assets } = portfolio
+      if (!assets) return
+
+      const tmpCombinedAssets = assets.concat(...MOCKS)
+      this.setState({ data: tmpCombinedAssets })
+    }
+
     this.setState({ data })
   }
 
@@ -37,8 +52,7 @@ class PieChartQuery extends React.Component<Props, State> {
     if (!assets) return <CustomError error="!assets" />
 
     const obj: { [key: string]: number } = {}
-    const tmpCombinedAssets = assets.concat(...MOCKS)
-    tmpCombinedAssets.forEach((asset) => {
+    assets.forEach((asset) => {
       if (!asset) return null
       const { value, asset: internalAsset } = asset
       if (!internalAsset) return null
@@ -59,7 +73,7 @@ class PieChartQuery extends React.Component<Props, State> {
       return {
         angle: obj[key],
         label: key,
-        color: colors[i],
+        color: i + 1,
       }
     })
 
@@ -67,6 +81,12 @@ class PieChartQuery extends React.Component<Props, State> {
   }
 }
 
-export default function() {
-  return <QueryRenderer component={PieChartQuery} query={PortfolioPieChart} />
+export default function(props: any) {
+  return (
+    <QueryRenderer
+      component={PieChartQuery}
+      query={PortfolioPieChart}
+      {...props}
+    />
+  )
 }
