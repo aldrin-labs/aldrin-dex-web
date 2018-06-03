@@ -675,10 +675,11 @@ export default class PortfolioTableRebalance extends React.Component<
                         </PTHR>
                       )
                     })}
+                    <PTHR />
                   </PTR>
                 </PTHead>
 
-                <PTBody>
+                <PTBody isEditModeEnabled={isEditModeEnabled}>
                   {this.state.rows.map((row, rowIndex) => {
                     const {
                       currency,
@@ -950,12 +951,6 @@ const TableHeading = styled.div`
   min-height: 25px;
 `
 
-const PTBody = styled.tbody`
-  display: table;
-  width: 100%;
-  border-bottom: 1px solid #fff;
-`
-
 const PTD = css`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
@@ -1007,43 +1002,42 @@ const PTDC = styled.td`
   }
 `
 
-// const PTDR = styled.td`
-//   ${PTD} &:nth-child(1) {
-//     padding: 1.75px 10px;
-//   }
-//
-//   &:nth-child(2) {
-//     min-width: 100px;
-//   }
-//   &:nth-child(3) {
-//     min-width: 70px;
-//   }
-//   &:nth-child(4) {
-//     text-align: right;
-//     min-width: 100px;
-//     &:hover {
-//       & svg {
-//         color: #ffffff;
-//       }
-//     }
-//   }
-//   &:nth-child(5) {
-//     text-align: right;
-//     min-width: 100px;
-//   }
-//   &:nth-child(6) {
-//     text-align: left;
-//     min-width: 150px;
-//   }
-//   &:nth-child(7) {
-//     padding: 1.75px 5px;
-//     min-width: 30px;
-//     text-align: left;
-//   }
-// `
+const PTDREditMode = css`
+  ${PTD} &:nth-child(1) {
+    padding: 1.75px 10px;
+  }
 
-const PTDR = styled.td`
-  ${PTD};
+  &:nth-child(2) {
+    min-width: 100px;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+  }
+  &:nth-child(4) {
+    text-align: right;
+    min-width: 100px;
+    &:hover {
+      & svg {
+        color: #ffffff;
+      }
+    }
+  }
+  &:nth-child(5) {
+    text-align: right;
+    min-width: 100px;
+  }
+  &:nth-child(6) {
+    text-align: left;
+    min-width: 150px;
+  }
+  &:nth-child(7) {
+    padding: 1.75px 5px;
+    min-width: 30px;
+    text-align: left;
+  }
+`
+
+const PTDRNoEditMode = css`
   min-width: 100px;
 
   &:nth-child(2) {
@@ -1072,6 +1066,19 @@ const PTDR = styled.td`
   &:nth-child(6) {
     display: none;
   }
+`
+const PTDR = styled.td`
+  ${PTD};
+`
+
+const PTBody = styled.tbody`
+  display: table;
+  width: 100%;
+  border-bottom: 1px solid #fff;
+  
+  & ${PTDR} {
+    ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode}
 `
 
 const PTH = css`
@@ -1131,7 +1138,11 @@ const PTHREditMode = css`
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
+    min-width: 100px;
+  }
+
+  &:nth-child(3) {
+    min-width: 70px;
   }
 
   &:nth-child(4),
