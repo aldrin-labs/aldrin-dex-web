@@ -929,7 +929,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 30vh;
+  height: 45vh;
   padding: 0 20px 20px;
 `
 
@@ -1244,7 +1244,7 @@ const PieChartsWrapper = styled.div`
   justify-content: space-between;
   padding: 3% 0;
   width: 100%;
-  height: 40vh;
+  height: 25vh;
 
   @media (max-height: 800px) {
     padding-top: 1.5%;
@@ -1268,8 +1268,8 @@ const PieChartContainer = styled.div`
 `
 
 const ButtonsWrapper = styled.div`
-  visibility: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? 'visible' : 'hidden'};
+  display: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? 'block' : 'none'};
 `
 
 const ButtonsInnerWrapper = styled.div`
