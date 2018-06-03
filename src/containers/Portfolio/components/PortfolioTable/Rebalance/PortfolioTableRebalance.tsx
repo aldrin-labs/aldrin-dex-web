@@ -734,7 +734,6 @@ export default class PortfolioTableRebalance extends React.Component<
                             if (!this.state.isEditModeEnabled) {
                               return (
                                 <PTD
-                                  onClick={() => this.onPercentClick(rowIndex)}
                                   key={`${col}${idx}`}
                                   style={{ color }}
                                 >
