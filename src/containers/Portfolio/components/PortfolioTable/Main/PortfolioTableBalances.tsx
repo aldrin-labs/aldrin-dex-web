@@ -59,10 +59,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     }
     const { portfolio } = data
 
-    const composeWithMocks = {
-      ...portfolio,
-      assets: portfolio.assets.concat(MOCK_DATA),
-    }
+    const composeWithMocks = isShownMocks
+      ? {
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+        }
+      : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
       this.combineTableData(composeWithMocks)
@@ -78,10 +80,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       if (!portfolio || portfolio === null) {
         return
       }
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio!.assets!.concat(MOCK_DATA),
-      }
+
+      const composeWithMocks = nextProps.isShownMocks
+        ? {
+            ...portfolio,
+            assets: portfolio!.assets!.concat(MOCK_DATA),
+          }
+        : portfolio
 
       this.setState({ portfolio: composeWithMocks })
       this.combineTableData(composeWithMocks)
@@ -92,10 +97,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         this.state.portfolio,
         JSON.parse(nextProps.subscription.data.portfolioUpdate)
       )
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-      }
+      const composeWithMocks = nextProps.isShownMocks
+        ? {
+            ...portfolio,
+            assets: portfolio.assets.concat(MOCK_DATA),
+          }
+        : portfolio
+
       this.setState({ portfolio: composeWithMocks })
       this.combineTableData(composeWithMocks)
     }
@@ -167,7 +175,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const col = {
           currency: name || '',
           symbol,
-          percentage: calcPercentage(currentPrice / allSums * 100),
+          percentage: calcPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: currentPrice || 0,
@@ -393,7 +401,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 const Container = styled.div`
   display: flex;
   height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '30vh' : ''};
+    props.isShownChart ? '40vh' : ''};
 
   @media (max-height: 650px) {
     height: ${(props: { isShownChart: boolean }) =>
@@ -407,7 +415,7 @@ const Container = styled.div`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 240px);' : '100%'};
+    props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -415,7 +423,7 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: auto;
+  height: calc(100vh - 130px);
 
   @media (max-width: 840px) {
     margin: 1.5rem auto;

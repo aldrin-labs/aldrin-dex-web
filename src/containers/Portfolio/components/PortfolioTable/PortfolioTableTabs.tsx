@@ -7,7 +7,6 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
 import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
-import AccountsIcon from 'react-icons/lib/md/account-balance-wallet'
 
 import { IProps } from './PortfolioTableTabs.types'
 import { compose } from 'recompose'
@@ -83,10 +82,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <SvgIcon src={filterListIcon} width={24} height={24} />
             </ToggleBtn>
 
-            <AccountBtn onClick={this.props.toggleWallets}>
-              <AccountIcon />
-            </AccountBtn>
-
             {tab !== 'correlation' &&
               (dataFromProps || isShownMocks) && (
                 <SwitchRefreshContainer>
@@ -128,6 +123,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
 const PTHeadingBlock = styled.div`
   display: flex;
+  position: sticky;
+  top: 0;
+  background-color: #393e44;
+  z-index: 100;
+
   width: 100%;
   justify-content: space-between;
   align-items: center;
@@ -177,10 +177,6 @@ const ButtonContainer = styled.div`
   }
 `
 
-const AccountIcon = styled(AccountsIcon)`
-  font-size: 1.5rem;
-`
-
 const Btn = css`
   background: transparent;
   border: none;
@@ -193,13 +189,6 @@ const Btn = css`
 
 const ToggleBtn = styled.button`
   ${Btn};
-`
-const AccountBtn = styled.button`
-  ${Btn} display: none;
-
-  @media (max-width: 840px) {
-    display: block;
-  }
 `
 
 const TabContainer = styled.div`

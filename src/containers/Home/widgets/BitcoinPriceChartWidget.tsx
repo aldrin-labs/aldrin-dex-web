@@ -28,6 +28,12 @@ const WidgetWrapper = styled.div`
     content: '';
     background-color: #292d31;
   }
+
+  @media (max-width: 630px) {
+    &::before {
+      display: none;
+    }
+  }
 `
 
 export default BitcoinPriceChartWidget

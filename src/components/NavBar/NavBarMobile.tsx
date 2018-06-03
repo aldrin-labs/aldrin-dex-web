@@ -33,8 +33,7 @@ const NavMobileContainer = styled.div`
 const NavButtonsContainer = styled.nav`
   width: 100%;
   display: flex;
-  margin: 0 10px;
-  padding: 10px;
+  padding: 10px 20px;
   align-items: center;
   justify-content: space-between;
 
