@@ -53,19 +53,24 @@ class KeysListComponent extends React.Component {
           </TableHead>
           <TableBody>
             {keys &&
-              keys.map((key) => (
-                <TableRow key={key._id}>
-                  <KeyTableCell>{key.name}</KeyTableCell>
-                  <KeyTableCell numeric>{key.exchange.name}</KeyTableCell>
-                  <KeyTableCell numeric>{key.apiKey}</KeyTableCell>
-                  <KeyTableCell numeric>
-                    {<FormattedDate value={key.date} />}
-                  </KeyTableCell>
-                  <KeyTableCell numeric>
-                    <DeleteKeyDialog keyName={key.name} />
-                  </KeyTableCell>
-                </TableRow>
-              ))}
+              keys.map((key) => {
+                const { _id, name, exchange, apiKey, date } = key
+                return (
+                  <TableRow key={_id}>
+                    <KeyTableCell>{name}</KeyTableCell>
+                    <KeyTableCell numeric>
+                      {exchange ? exchange.name : ''}
+                    </KeyTableCell>
+                    <KeyTableCell numeric>{apiKey}</KeyTableCell>
+                    <KeyTableCell numeric>
+                      {<FormattedDate value={date} />}
+                    </KeyTableCell>
+                    <KeyTableCell numeric>
+                      <DeleteKeyDialog keyName={name} />
+                    </KeyTableCell>
+                  </TableRow>
+                )
+              })}
           </TableBody>
         </KeysTable>
       </KeysListPaper>

@@ -38,11 +38,11 @@ const Nav = styled.div`
 `
 
 const Logo = styled.img`
-  margin: 25px 0 25px 32px;
+  padding: 25px 0 25px 32px;
   z-index: 1300;
   position: relative;
 
-  @media (max-width: 425px) {
+  @media (max-width: 768px) {
     margin: 0;
   }
 `
