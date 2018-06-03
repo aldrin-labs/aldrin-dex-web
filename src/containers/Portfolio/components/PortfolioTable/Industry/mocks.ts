@@ -665,3 +665,14 @@ export function genMocks(len: number, categories: string[]) {
 // palette from https://material.io/design/color/#tools-for-picking-colors
 // color A700
 export const colors = ['#6200EA', '#00C853', '#0091EA']
+
+export function genAngleMocks(categories: string[]) {
+  return categories.map((categorie, index) => {
+    const int = randomInteger(1 + index, 10 + index)
+    return {
+      angle: int,
+      label: categorie,
+      color: colors[index],
+    }
+  })
+}

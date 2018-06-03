@@ -59,10 +59,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     }
     const { portfolio } = data
 
-    const composeWithMocks = {
-      ...portfolio,
-      assets: portfolio.assets.concat(MOCK_DATA),
-    }
+    const composeWithMocks = isShownMocks
+      ? {
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+        }
+      : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
       this.combineTableData(composeWithMocks)
@@ -78,10 +80,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       if (!portfolio || portfolio === null) {
         return
       }
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio!.assets!.concat(MOCK_DATA),
-      }
+
+      const composeWithMocks = nextProps.isShownMocks
+        ? {
+            ...portfolio,
+            assets: portfolio!.assets!.concat(MOCK_DATA),
+          }
+        : portfolio
 
       this.setState({ portfolio: composeWithMocks })
       this.combineTableData(composeWithMocks)
@@ -92,10 +97,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         this.state.portfolio,
         JSON.parse(nextProps.subscription.data.portfolioUpdate)
       )
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-      }
+      const composeWithMocks = nextProps.isShownMocks
+        ? {
+            ...portfolio,
+            assets: portfolio.assets.concat(MOCK_DATA),
+          }
+        : portfolio
+
       this.setState({ portfolio: composeWithMocks })
       this.combineTableData(composeWithMocks)
     }
@@ -167,7 +175,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const col = {
           currency: name || '',
           symbol,
-          percentage: calcPercentage(currentPrice / allSums * 100),
+          percentage: calcPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: currentPrice || 0,
