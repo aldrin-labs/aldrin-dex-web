@@ -43,9 +43,11 @@ class CorrelationMatrix extends Component<Props, State> {
     x: number,
     y: number
   ) => {
-    console.log(x)
-    console.log(y)
     this.setState({ hint: { index, value, colName, rowName, x, y } })
+
+    setTimeout(() => {
+      this.setState({ hint: null })
+    }, 5000)
   }
 
   onClick = () => {}
@@ -113,15 +115,13 @@ class CorrelationMatrix extends Component<Props, State> {
                             textColor={textColor}
                             color={backgroundColor}
                             onMouseOver={(event) => {
-                              console.log(event.nativeEvent)
-
                               return this.onMouseOver(
                                 indx,
                                 value,
                                 rows[i],
                                 rows[indx],
-                                1,
-                                2
+                                event.nativeEvent.clientX,
+                                event.nativeEvent.clientY
                               )
                             }}
                           >
@@ -135,20 +135,9 @@ class CorrelationMatrix extends Component<Props, State> {
               </tbody>
             </Table>
             {!!hint && (
-              <span
-                style={{
-                  zIndex: 1997,
-                  position: 'absolute',
-                  width: '100%',
-                  left: `${hint.x + 30}px`,
-                  top: `${hint.x + 100}px`,
-                  padding: '5px',
-                  backgroundColor: '#292d31',
-                  color: '#4ed8da',
-                }}
-              >
+              <Hint x={hint.x} y={hint.y}>
                 {`${hint.colName} - ${hint.rowName} `}
-              </span>
+              </Hint>
             )}
           </div>
         </FullScreen>
@@ -157,18 +146,16 @@ class CorrelationMatrix extends Component<Props, State> {
   }
 }
 
-const ToolTip = styled.span`
-  display: none;
-  opacity: 0;
-  position: absolute;
-  color: #dfdfdf;
-  text-decoration: none;
-  padding: 3px;
-  margin-left: -3.5%;
-  margin-top: -2%;
+const Hint = styled.span`
+  z-index: 1997;
+  position: fixed;
+  width: auto;
+  left: ${(props) => props.x + 8}px;
+  top: ${(props: { x: number; y: number }) => props.y + 8}px;
+  padding: 5px;
   background-color: #292d31;
-
-  border-radius: 3px;
+  color: #4ed8da;
+  transition: all 0.2s linear;
 `
 
 const HeadItem = styled.th`
@@ -212,11 +199,6 @@ const Item = styled.td`
   border: 1px solid #fff;
 
   cursor: help;
-
-  &:hover ${ToolTip} {
-    display: inline-block;
-    opacity: 1;
-  }
 `
 
 const Table = styled.table`
