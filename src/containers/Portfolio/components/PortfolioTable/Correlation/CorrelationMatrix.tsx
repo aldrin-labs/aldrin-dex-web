@@ -44,10 +44,6 @@ class CorrelationMatrix extends Component<Props, State> {
     y: number
   ) => {
     this.setState({ hint: { index, value, colName, rowName, x, y } })
-
-    setTimeout(() => {
-      this.setState({ hint: null })
-    }, 5000)
   }
 
   onClick = () => {}
@@ -124,6 +120,7 @@ class CorrelationMatrix extends Component<Props, State> {
                                 event.nativeEvent.clientY
                               )
                             }}
+                            onMouseLeave={() => this.setState({ hint: null })}
                           >
                             {value}
                           </Item>
