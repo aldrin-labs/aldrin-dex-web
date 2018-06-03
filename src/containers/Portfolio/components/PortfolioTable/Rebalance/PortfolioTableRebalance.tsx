@@ -478,6 +478,7 @@ export default class PortfolioTableRebalance extends React.Component<
       totalStaticRows,
       totalRows,
       isEditModeEnabled,
+      undistributedMoney,
     } = this.state
 
     return (
@@ -604,13 +605,24 @@ export default class PortfolioTableRebalance extends React.Component<
           </TableAndHeadingWrapper>
           <TableAndHeadingWrapper>
             <TableHeading>
-              Rebalanced portfolio{' '}
-              <EditIconWrapper
-                onClick={this.onEditModeEnable}
-                isEditModeEnabled={isEditModeEnabled}
-              >
-                {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
-              </EditIconWrapper>{' '}
+              Rebalanced portfolio
+              <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
+                <EditIconWrapper
+                  onClick={this.onEditModeEnable}
+                  isEditModeEnabled={isEditModeEnabled}
+                >
+                  {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
+                </EditIconWrapper>
+                <ActionButton onClick={() => this.onReset()}>
+                  <Replay />
+                </ActionButton>
+                <ActionButton onClick={() => this.onSaveClick()}>
+                  <SaveIcon />
+                </ActionButton>
+                <ActionButton onClick={() => this.onLoadPreviousClick()}>
+                  <UndoIcon />
+                </ActionButton>
+              </ActionButtonsContainer>
             </TableHeading>
             <Wrapper>
               <Table>
@@ -812,6 +824,30 @@ export default class PortfolioTableRebalance extends React.Component<
                 </PTFoot>
               </Table>
             </Wrapper>
+            <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
+              <ButtonsInnerWrapper>
+                <AddMoneyContainer>
+                  <Input
+                    type="number"
+                    value={this.state.addMoneyInputValue}
+                    onChange={this.onAddMoneyInputChange}
+                  />
+                  <Button onClick={() => this.onAddMoneyButtonPressed()}>
+                    Add money
+                  </Button>
+                </AddMoneyContainer>
+                {undistributedMoney !== 0 && (
+                  <UndistributedMoneyContainer>
+                    <UndistributedMoneyText>
+                      Undistributed money: {undistributedMoney}
+                    </UndistributedMoneyText>
+                    <Button onClick={() => this.onDistribute()}>
+                      Distribute to selected
+                    </Button>
+                  </UndistributedMoneyContainer>
+                )}
+              </ButtonsInnerWrapper>
+            </ButtonsWrapper>
           </TableAndHeadingWrapper>
         </Container>
         <PieChartsWrapper>
@@ -1264,11 +1300,13 @@ const PieChartContainer = styled.div`
 `
 
 const ButtonsWrapper = styled.div`
-  width: 33.3%;
-  max-width: 260px;
-
   visibility: ${(props: { isEditModeEnabled?: boolean }) =>
     props.isEditModeEnabled ? 'visible' : 'hidden'};
+`
+
+const ButtonsInnerWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 const Input = styled.input`
@@ -1323,14 +1361,7 @@ const TableButton = styled.button`
     height: 18px;
   }
 `
-
-const ActionButtonsContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-`
-
 const ActionButton = styled.button`
-  min-width: 60px;
   border: none;
   margin: 0;
   padding: 1.75px 0;
@@ -1357,12 +1388,23 @@ const ActionButton = styled.button`
 
   & svg {
     color: white;
-    width: 50px;
-    height: 50px;
+    padding-bottom: 7px;
   }
 
   &:hover svg {
     color: #4ed8da;
+  }
+`
+
+const ActionButtonsContainer = styled.div`
+  display: flex;
+  min-width: 150px;
+  justify-content: space-around;
+  padding-left: 10px;
+
+  & ${ActionButton} {
+    visibility: ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? 'visible' : 'hidden'};
   }
 `
 
@@ -1383,25 +1425,35 @@ const Button = styled.div`
   margin-top: 10px;
 `
 
-const UndistributedMoneyContainer = styled.div``
+const UndistributedMoneyContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+`
+
+const AddMoneyContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 120px;
+`
 
 const UndistributedMoneyText = styled.p`
   font-family: Roboto;
   color: white;
-  font-size: 12px;
-  padding: 10px 0 0;
+  font-size: 14px;
+  padding: 15px 0px 5px;
   margin: 0px;
 `
 const EditIconWrapper = styled.div`
-  padding-left: 15px;
-
   &:hover {
     color: ${(props: { isEditModeEnabled?: boolean }) =>
       props.isEditModeEnabled ? '#ff687a' : '#65c000'};
   }
 
   & svg {
-    padding-bottom: 7px;
+    padding-bottom: ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? '4px' : '7px'};
   }
 `
 
