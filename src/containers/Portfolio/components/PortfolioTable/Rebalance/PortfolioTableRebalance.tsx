@@ -626,7 +626,7 @@ export default class PortfolioTableRebalance extends React.Component<
             </TableHeading>
             <Wrapper>
               <Table>
-                <PTHead>
+                <PTHead isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
                     {isEditModeEnabled && (
                       <PTHR key="selectAll" style={{ textAlign: 'left' }}>
@@ -1098,10 +1098,8 @@ const PTHC = styled.th`
     text-align: right;
   }
 `
-
-const PTHR = styled.th`
-  ${PTH} min-width: 100px;
-
+const PTHRNoEditMode = css`
+  min-width: 100px;
   &:nth-child(1) {
   }
 
@@ -1125,6 +1123,36 @@ const PTHR = styled.th`
     display: none;
   }
 `
+const PTHREditMode = css`
+  &:nth-child(1) {
+    padding: 10px;
+    text-align: left;
+  }
+
+  &:nth-child(2) {
+    text-align: left;
+    width: 100px;
+  }
+
+  &:nth-child(4),
+  &:nth-child(5) {
+    text-align: right;
+    min-width: 100px;
+  }
+  &:nth-child(6) {
+    text-align: left;
+    min-width: 150px;
+  }
+  &:nth-child(7) {
+    width: 30px;
+    text-align: left;
+    padding: 1.75px 5px;
+  }
+`
+
+const PTHR = styled.th`
+  ${PTH};
+`
 
 const PTFR = styled.th`
   ${PTH};
@@ -1135,33 +1163,6 @@ const PTFR = styled.th`
     min-width: 70px;
   }
 `
-
-// const PTHR = styled.th`
-//   ${PTH} &:nth-child(1) {
-//     padding: 10px;
-//     text-align: left;
-//   }
-//
-//   &:nth-child(2) {
-//     text-align: left;
-//     width: 100px;
-//   }
-//
-//   &:nth-child(4),
-//   &:nth-child(5) {
-//     text-align: right;
-//     min-width: 100px;
-//   }
-//   &:nth-child(6) {
-//     text-align: left;
-//     min-width: 150px;
-//   }
-//   &:nth-child(7) {
-//     width: 30px;
-//     text-align: left;
-//     padding: 1.75px 5px;
-//   }
-// `
 
 const PTR = styled.tr`
   cursor: pointer;
@@ -1186,6 +1187,10 @@ const PTHead = styled.thead`
     right: 0;
     border-bottom: 1px solid white;
   }
+
+  & ${PTHR} {
+    ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
 `
 
 const PTFoot = styled.thead`
