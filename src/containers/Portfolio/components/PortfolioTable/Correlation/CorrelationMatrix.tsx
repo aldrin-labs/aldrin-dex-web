@@ -22,6 +22,7 @@ export interface State {
     x: number
     y: number
   } | null
+  hintOpacity: number
 }
 
 class CorrelationMatrix extends Component<Props, State> {
@@ -32,6 +33,7 @@ class CorrelationMatrix extends Component<Props, State> {
 
     this.state = {
       hint: null,
+      hintOpacity: 0,
     }
   }
 
@@ -43,10 +45,15 @@ class CorrelationMatrix extends Component<Props, State> {
     x: number,
     y: number
   ) => {
-    this.setState({ hint: { index, value, colName, rowName, x, y } })
+    this.setState({
+      hint: { index, value, colName, rowName, x, y },
+      hintOpacity: 1,
+    })
   }
 
-  onClick = () => {}
+  onMouseLeave = () => {
+    this.setState({ hintOpacity: 0 })
+  }
 
   render() {
     const { hint } = this.state
@@ -64,8 +71,14 @@ class CorrelationMatrix extends Component<Props, State> {
             this.props.fullScreenChangeHandler(isFullscreenEnabled)
           }
         >
-          <div className="full-screenable-node">
-            <Table style={tableStyle} onClick={this.onClick}>
+          <div
+            className="full-screenable-node"
+            onMouseLeave={() => {
+              this.onMouseLeave()
+              console.log('leaved')
+            }}
+          >
+            <Table style={tableStyle}>
               <thead>
                 <Row>
                   <HeadItem
@@ -120,7 +133,7 @@ class CorrelationMatrix extends Component<Props, State> {
                                 event.nativeEvent.clientY
                               )
                             }}
-                            onMouseLeave={() => this.setState({ hint: null })}
+                            onMouseLeave={() => this.onMouseLeave()}
                           >
                             {value}
                           </Item>
@@ -132,7 +145,7 @@ class CorrelationMatrix extends Component<Props, State> {
               </tbody>
             </Table>
             {!!hint && (
-              <Hint x={hint.x} y={hint.y}>
+              <Hint x={hint.x} y={hint.y} opacity={this.state.hintOpacity}>
                 {`${hint.colName} - ${hint.rowName} `}
               </Hint>
             )}
@@ -147,8 +160,9 @@ const Hint = styled.span`
   z-index: 1997;
   position: fixed;
   width: auto;
+  opacity: ${(props) => props.opacity};
   left: ${(props) => props.x + 8}px;
-  top: ${(props: { x: number; y: number }) => props.y + 8}px;
+  top: ${(props: { x: number; y: number; opacity: number }) => props.y + 8}px;
   padding: 5px;
   background-color: #292d31;
   color: #4ed8da;
