@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
 import {
   tableData,
@@ -51,7 +51,7 @@ export default class PortfolioTableRebalance extends React.Component<
     savedRows: JSON.parse(JSON.stringify(tableData)),
     addMoneyInputValue: 0,
     activePercentInput: null,
-    activePercentInputValues: [],
+    activePercentInputValue: 0,
     currentSortForStatic: null,
     currentSortForDynamic: null,
     isEditModeEnabled: false,
@@ -320,11 +320,10 @@ export default class PortfolioTableRebalance extends React.Component<
         // rows[rows.length - 1].undistributedMoney = 0
         this.setState({ undistributedMoney: 0 })
       }
-      setTimeout(() => {
-        let newTotal = this.calculateTotal(rows)
-        rows = this.calculatePercents(rows, newTotal)
-        this.setState({ selectedActive, rows, totalRows: newTotal }) //Very brutal fix, need to be reworked
-      }, 100)
+      let newTotal = this.calculateTotal(rows)
+      rows = this.calculatePercents(rows, newTotal)
+
+      this.setState({ selectedActive, rows, totalRows: newTotal })
     }
   }
 
@@ -336,7 +335,7 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ activePercentInputValue: e.target.value })
   }
 
-  /* onPercentClick = (idx: number) => {
+  onPercentClick = (idx: number) => {
     this.setState({
       activePercentInput: idx,
       activePercentInputValue: this.state.rows[idx].portfolioPerc,
@@ -370,7 +369,7 @@ export default class PortfolioTableRebalance extends React.Component<
     }
     e.preventDefault()
   }
-*/
+
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, totalRows, addMoneyInputValue } = this.state
@@ -398,17 +397,10 @@ export default class PortfolioTableRebalance extends React.Component<
       }))
     }
   }
+
   onEditModeEnable = () => {
-    let percValues = []
-    if (!this.state.isEditModeEnabled) {
-      const { rows } = this.state
-      rows.forEach((row, i, arr) => {
-        percValues[i] = rows[i].portfolioPerc
-      })
-    }
     this.setState((prevState) => ({
       isEditModeEnabled: !prevState.isEditModeEnabled,
-      activePercentInputValues: percValues,
     }))
   }
 
@@ -488,11 +480,6 @@ export default class PortfolioTableRebalance extends React.Component<
       isEditModeEnabled,
     } = this.state
 
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-      <Icon className="fa fa-btc" />
-    )
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
@@ -509,7 +496,7 @@ export default class PortfolioTableRebalance extends React.Component<
                         currentSortForStatic.key === heading.value
 
                       return (
-                        <PTH
+                        <PTHC
                           key={heading.name}
                           onClick={() =>
                             this.onSortTable(heading.value, 'static')
@@ -533,7 +520,7 @@ export default class PortfolioTableRebalance extends React.Component<
                               }}
                             />
                           )}
-                        </PTH>
+                        </PTHC>
                       )
                     })}
                   </PTR>
@@ -554,12 +541,16 @@ export default class PortfolioTableRebalance extends React.Component<
                       portfolioPerc ? `${portfolioPerc}%` : '',
                       `${price}`,
                     ]
+                    const mainSymbol = isUSDCurrently ? (
+                      <Icon className="fa fa-usd" key={`${idx}usd`} />
+                    ) : (
+                      <Icon className="fa fa-btc" key={`${idx}btc`} />
+                    )
 
                     return (
                       <PTR
                         key={`${currency}${symbol}${idx}`}
                         isSelected={isSelected}
-                        // onClick={() => this.onSelectBalance(idx)}
                       >
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
@@ -569,28 +560,31 @@ export default class PortfolioTableRebalance extends React.Component<
                                 : '#ff687a'
 
                             return (
-                              <PTD
+                              <PTDC
                                 key={`${col}${index}`}
                                 style={{ color }}
                                 isSelected={isSelected}
                               >
                                 {col}
-                              </PTD>
+                              </PTDC>
                             )
                           }
                           if (index == 3) {
                             return (
-                              <PTD key={`${col}${idx}`}>
+                              <PTDC key={`${col}${idx}`}>
                                 {mainSymbol}
                                 {col}
-                              </PTD>
+                              </PTDC>
                             )
                           }
 
                           return (
-                            <PTD key={`${col}${index}`} isSelected={isSelected}>
+                            <PTDC
+                              key={`${col}${index}`}
+                              isSelected={isSelected}
+                            >
                               {col}
-                            </PTD>
+                            </PTDC>
                           )
                         })}
                       </PTR>
@@ -599,13 +593,10 @@ export default class PortfolioTableRebalance extends React.Component<
                 </PTBody>
                 <PTFoot>
                   <PTR>
-                    <PTH>All</PTH>
-                    <PTH>-</PTH>
-                    <PTH>-</PTH>
-                    <PTH>
-                      {mainSymbol}
-                      {`${totalStaticRows}`}
-                    </PTH>
+                    <PTHC>All</PTHC>
+                    <PTHC>-</PTHC>
+                    <PTHC>-</PTHC>
+                    <PTHC>{`${totalStaticRows} $`}</PTHC>
                   </PTR>
                 </PTFoot>
               </Table>
@@ -626,7 +617,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 <PTHead>
                   <PTR>
                     {isEditModeEnabled && (
-                      <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                      <PTHR key="selectAll" style={{ textAlign: 'left' }}>
                         <Checkbox
                           onChange={() => this.onSelectAllActive()}
                           checked={this.state.areAllActiveChecked}
@@ -636,7 +627,7 @@ export default class PortfolioTableRebalance extends React.Component<
                         <Label htmlFor="selectAllActive">
                           <Span />
                         </Label>
-                      </PTH>
+                      </PTHR>
                     )}
 
                     {newTableHeadings.map((heading) => {
@@ -645,7 +636,7 @@ export default class PortfolioTableRebalance extends React.Component<
                         currentSortForDynamic.key === heading.value
 
                       return (
-                        <PTH
+                        <PTHR
                           key={heading.name}
                           onClick={() =>
                             this.onSortTable(heading.value, 'dynamic')
@@ -669,7 +660,7 @@ export default class PortfolioTableRebalance extends React.Component<
                               }}
                             />
                           )}
-                        </PTH>
+                        </PTHR>
                       )
                     })}
                   </PTR>
@@ -684,6 +675,12 @@ export default class PortfolioTableRebalance extends React.Component<
                       price,
                       deltaPrice,
                     } = row
+
+                    const mainSymbol = isUSDCurrently ? (
+                      <Icon className="fa fa-usd" key={`${rowIndex}usd`} />
+                    ) : (
+                      <Icon className="fa fa-btc" key={`${rowIndex}btc`} />
+                    )
 
                     const isSelected =
                       (selectedActive &&
@@ -714,15 +711,16 @@ export default class PortfolioTableRebalance extends React.Component<
                       <PTR
                         key={`${currency}${symbol}${rowIndex}`}
                         isSelected={isSelected}
+                        onClick={
+                          isEditModeEnabled
+                            ? () => this.onSelectActiveBalance(rowIndex)
+                            : null
+                        }
                       >
                         {isEditModeEnabled && (
-                          <PTD
-                            key="smt"
-                            isSelected={isSelected}
-                            onClick={() => this.onSelectActiveBalance(rowIndex)}
-                          >
+                          <PTDR key="smt" isSelected={isSelected}>
                             {this.renderActiveCheckbox(rowIndex)}
-                          </PTD>
+                          </PTDR>
                         )}
 
                         {cols.map((col, idx) => {
@@ -731,25 +729,24 @@ export default class PortfolioTableRebalance extends React.Component<
                               Number(col.replace(/%/g, '')) >= 0
                                 ? '#65c000'
                                 : '#ff687a'
-                            if (!this.state.isEditModeEnabled) {
+                            if (rowIndex !== this.state.activePercentInput) {
                               return (
-                                <PTD
+                                <PTDR
                                   onClick={() => this.onPercentClick(rowIndex)}
                                   key={`${col}${idx}`}
                                   style={{ color }}
                                 >
                                   {col}
-                                </PTD>
+                                  {isEditModeEnabled && <EditIcon />}
+                                </PTDR>
                               )
                             } else {
                               return (
-                                <PTD key={`${col}${idx}`}>
+                                <PTDR key="percentForm">
                                   <form onSubmit={this.onPercentSubmit}>
-                                    <input
+                                    <InputTable
                                       type="number"
-                                      value={
-                                        this.state.rows[rowIndex].portfolioPerc
-                                      }
+                                      value={this.state.activePercentInputValue}
                                       onChange={this.onPercentInputChange}
                                       onBlur={this.onPercentSubmit}
                                       step="0.01"
@@ -757,61 +754,60 @@ export default class PortfolioTableRebalance extends React.Component<
                                       max="100"
                                     />
                                   </form>
-                                </PTD>
+                                </PTDR>
                               )
                             }
                           }
                           if (col.match(/BUY/g)) {
                             const color = '#65c000'
 
-                            return <PTD style={{ color }}>{col}</PTD>
+                            return <PTDR style={{ color }}>{col}</PTDR>
                           }
                           if (col.match(/SELL/g)) {
                             const color = '#ff687a'
 
-                            return <PTD style={{ color }}>{col}</PTD>
+                            return <PTDR style={{ color }}>{col}</PTDR>
                           }
 
                           if (idx == 3) {
                             return (
-                              <PTD key={`${col}${idx}`}>
+                              <PTDR key={`${col}${idx}`}>
                                 {mainSymbol}
                                 {col}
-                              </PTD>
+                              </PTDR>
                             )
                           }
 
-                          return <PTD key={`${col}${idx}`}>{col}</PTD>
+                          return <PTDR key={`${col}${idx}`}>{col}</PTDR>
                         })}
-                        <PTD>
-                          <TableButton
-                            isDeleteColor={
-                              rowIndex === this.state.rows.length - 1
-                            }
-                            onClick={() => this.onButtonClick(rowIndex)}
-                          >
-                            {rowIndex === this.state.rows.length - 1 ? (
-                              <AddIcon />
-                            ) : (
-                              <DeleteIcon />
-                            )}
-                          </TableButton>
-                        </PTD>
+                        <PTDR>
+                          {isEditModeEnabled && (
+                            <TableButton
+                              isDeleteColor={
+                                rowIndex === this.state.rows.length - 1
+                              }
+                              onClick={() => this.onButtonClick(rowIndex)}
+                            >
+                              {rowIndex === this.state.rows.length - 1 ? (
+                                <AddIcon />
+                              ) : (
+                                <DeleteIcon />
+                              )}
+                            </TableButton>
+                          )}
+                        </PTDR>
                       </PTR>
                     )
                   })}
                 </PTBody>
                 <PTFoot>
                   <PTR>
-                    <PTH>All</PTH>
-                    <PTH>-</PTH>
-                    <PTH>-</PTH>
-                    <PTH>-</PTH>
-
-                    <PTH>
-                      {mainSymbol}
-                      {`${totalRows}`}
-                    </PTH>
+                    <PTHR>All</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>{`${totalRows} $`}</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>-</PTHR>
                   </PTR>
                 </PTFoot>
               </Table>
@@ -890,6 +886,23 @@ const PTWrapper = styled.div`
 const TableAndHeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  overflow-x: scroll;
+
+  &:not(:first-child) {
+    padding-left: 30px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
 `
 
 const Wrapper = styled.div`
@@ -912,7 +925,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 100vh;
+  height: 30vh;
   padding: 0 20px 20px;
 `
 
@@ -930,6 +943,7 @@ const TableHeading = styled.div`
   color: white;
   font-weight: bold;
   letter-spacing: 1.1px;
+  min-height: 25px;
 `
 
 const PTBody = styled.tbody`
@@ -938,7 +952,7 @@ const PTBody = styled.tbody`
   border-bottom: 1px solid #fff;
 `
 
-const PTD = styled.td`
+const PTD = css`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
 
@@ -949,15 +963,21 @@ const PTD = styled.td`
   overflow: hidden;
   white-space: nowrap;
 
-  &:nth-child(1) {
-    padding: 1.75px 10px;
+  & svg {
+    width: 15px;
+    height: 15px;
   }
+`
+
+const PTDC = styled.td`
+  ${PTD} min-width: 100px;
 
   &:nth-child(2) {
-    min-width: 100px;
+    min-width: 70px;
+    text-align: left;
   }
   &:nth-child(3) {
-    min-width: 70px;
+    text-align: right;
   }
   &:nth-child(4) {
     text-align: right;
@@ -981,49 +1001,76 @@ const PTD = styled.td`
     min-width: 30px;
     text-align: left;
   }
-  & svg {
-    width: 15px;
-    height: 15px;
+`
+
+// const PTDR = styled.td`
+//   ${PTD} &:nth-child(1) {
+//     padding: 1.75px 10px;
+//   }
+//
+//   &:nth-child(2) {
+//     min-width: 100px;
+//   }
+//   &:nth-child(3) {
+//     min-width: 70px;
+//   }
+//   &:nth-child(4) {
+//     text-align: right;
+//     min-width: 100px;
+//     &:hover {
+//       & svg {
+//         color: #ffffff;
+//       }
+//     }
+//   }
+//   &:nth-child(5) {
+//     text-align: right;
+//     min-width: 100px;
+//   }
+//   &:nth-child(6) {
+//     text-align: left;
+//     min-width: 150px;
+//   }
+//   &:nth-child(7) {
+//     padding: 1.75px 5px;
+//     min-width: 30px;
+//     text-align: left;
+//   }
+// `
+
+const PTDR = styled.td`
+  ${PTD};
+  min-width: 100px;
+
+  &:nth-child(2) {
+    min-width: 70px;
+  }
+
+  &:nth-child(3) {
+    text-align: right;
+  }
+
+  &:nth-child(4) {
+    text-align: right;
+  }
+
+  &:nth-child(4) {
+    text-align: right;
+    &:hover {
+      & svg {
+        color: #ffffff;
+      }
+    }
+  }
+  &:nth-child(5) {
+    min-width: 150px;
+  }
+  &:nth-child(6) {
+    display: none;
   }
 `
 
-const Span = styled.span``
-
-const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 18px;
-
-    height: 18px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  &:checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
-  }
-`
-
-const PTH = styled.th`
+const PTH = css`
   font-family: Roboto;
   font-size: 12px;
   line-height: 24px;
@@ -1032,35 +1079,85 @@ const PTH = styled.th`
   font-weight: 500;
   position: relative;
   padding: 10px 16px 10px 10px;
+`
+
+const PTHC = styled.th`
+  ${PTH};
+  min-width: 100px;
+
+  &:nth-child(2) {
+    min-width: 70px;
+    text-align: left;
+  }
+  &:nth-child(3),
+  &:nth-child(4) {
+    text-align: right;
+  }
+`
+
+const PTHR = styled.th`
+  ${PTH} min-width: 100px;
 
   &:nth-child(1) {
-    padding: 10px;
-    text-align: left;
   }
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
+    min-width: 70px;
   }
+
   &:nth-child(3) {
-    width: 70px;
-    text-align: left;
-  }
-  &:nth-child(4),
-  &:nth-child(5) {
     text-align: right;
-    min-width: 100px;
   }
-  &:nth-child(6) {
-    text-align: left;
+
+  &:nth-child(4) {
+    text-align: right;
+  }
+
+  &:nth-child(5) {
     min-width: 150px;
   }
-  &:nth-child(7) {
-    width: 30px;
-    text-align: left;
-    padding: 1.75px 5px;
+  &:nth-child(6) {
+    display: none;
   }
 `
+
+const PTFR = styled.th`
+  ${PTH};
+  min-width: 100px;
+
+  &:nth-child(2) {
+    text-align: left;
+    min-width: 70px;
+  }
+`
+
+// const PTHR = styled.th`
+//   ${PTH} &:nth-child(1) {
+//     padding: 10px;
+//     text-align: left;
+//   }
+//
+//   &:nth-child(2) {
+//     text-align: left;
+//     width: 100px;
+//   }
+//
+//   &:nth-child(4),
+//   &:nth-child(5) {
+//     text-align: right;
+//     min-width: 100px;
+//   }
+//   &:nth-child(6) {
+//     text-align: left;
+//     min-width: 150px;
+//   }
+//   &:nth-child(7) {
+//     width: 30px;
+//     text-align: left;
+//     padding: 1.75px 5px;
+//   }
+// `
 
 const PTR = styled.tr`
   cursor: pointer;
@@ -1099,6 +1196,42 @@ const PTFoot = styled.thead`
     left: 0;
     right: 0;
     border-top: 1px solid white;
+  }
+`
+
+const Span = styled.span``
+
+const Label = styled.label``
+
+const Checkbox = styled.input`
+  display: none;
+
+  & + ${Label} ${Span} {
+    display: inline-block;
+
+    width: 18px;
+
+    height: 18px;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    border: 1.5px solid #909294;
+    border-radius: 3px;
+    background-color: transparent;
+  }
+
+  & + ${Label}:hover ${Span} {
+    border-color: #4ed8da;
+  }
+
+  &:checked + ${Label} ${Span} {
+    border-color: #4ed8da;
+    background-color: #4ed8da;
+    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
   }
 `
 
@@ -1227,6 +1360,10 @@ const ActionButton = styled.button`
     width: 50px;
     height: 50px;
   }
+
+  &:hover svg {
+    color: #4ed8da;
+  }
 `
 
 const Button = styled.div`
@@ -1264,6 +1401,13 @@ const EditIconWrapper = styled.div`
   }
 
   & svg {
-    padding-bottom: 5px;
+    padding-bottom: 7px;
   }
+`
+
+const InputTable = styled.input`
+  background-color: #2d3136;
+  border: none;
+  outline: none;
+  color: white;
 `
