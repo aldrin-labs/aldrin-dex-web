@@ -5,15 +5,11 @@ import styled from 'styled-components'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 import CorrelationMatrix from './CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
-import { IProps } from './Correlation.types'
+import { IProps, IState } from './Correlation.types'
 
 export default class Correlation extends React.Component<IProps> {
-  constructor(props: IProps) {
-    super(props)
-
-    this.state = {
-      isFullscreenEnabled: false,
-    }
+  state: IState = {
+    isFullscreenEnabled: false,
   }
 
   initializeArray = (length: number, start: number, step: number): number[] =>

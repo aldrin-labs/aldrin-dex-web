@@ -8,25 +8,27 @@ import {
   optimizeMocks,
 } from '../../../../../utils/PortfolioCorrelationUtils'
 
-export interface Props {
+export interface IProps {
   fullScreenChangeHandler: Function
   isFullscreenEnabled: boolean
 }
 
-export interface State {
-  hint: {
-    index: number
-    value: number
-    colName: string
-    rowName: string
-    x: number
-    y: number
-  } | null
+export interface IHint {
+  index: number
+  value: number
+  colName: string
+  rowName: string
+  x: number
+  y: number
+}
+
+export interface IState {
+  hint: IHint | null
   hintOpacity: number
 }
 
-class CorrelationMatrix extends Component<Props, State> {
-  constructor(props: Props) {
+class CorrelationMatrix extends Component<IProps, IState> {
+  constructor(props: IProps) {
     super(props)
 
     this.onMouseOver = debounce(this.onMouseOver, 300)
@@ -57,7 +59,8 @@ class CorrelationMatrix extends Component<Props, State> {
 
   render() {
     const { hint } = this.state
-    const tableStyle = this.props.isFullscreenEnabled
+    const { isFullscreenEnabled } = this.props
+    const tableStyle = isFullscreenEnabled
       ? { width: '100vw', height: '100vh' }
       : {}
 
@@ -66,8 +69,8 @@ class CorrelationMatrix extends Component<Props, State> {
     return (
       <React.Fragment>
         <FullScreen
-          enabled={this.props.isFullscreenEnabled}
-          onChange={(isFullscreenEnabled: any) =>
+          enabled={isFullscreenEnabled}
+          onChange={(isFSEnabled: any) =>
             this.props.fullScreenChangeHandler(isFullscreenEnabled)
           }
         >
@@ -75,24 +78,19 @@ class CorrelationMatrix extends Component<Props, State> {
             className="full-screenable-node"
             onMouseLeave={() => {
               this.onMouseLeave()
-              console.log('leaved')
             }}
           >
             <Table style={tableStyle}>
               <thead>
                 <Row
                   style={{
-                    position: this.props.isFullscreenEnabled
-                      ? 'fixed'
-                      : 'sticky',
+                    position: isFullscreenEnabled ? 'fixed' : 'sticky',
                   }}
                 >
                   <HeadItem
                     style={{
                       width: '4em',
-                      position: this.props.isFullscreenEnabled
-                        ? 'static'
-                        : 'sticky',
+                      position: isFullscreenEnabled ? 'static' : 'sticky',
                       left: 0,
                       backgroundColor: '#393e44',
                     }}
@@ -109,9 +107,7 @@ class CorrelationMatrix extends Component<Props, State> {
                           color: '#fff',
                           textAlign: 'right',
                           border: 'none',
-                          position: this.props.isFullscreenEnabled
-                            ? 'static'
-                            : 'sticky',
+                          position: isFullscreenEnabled ? 'static' : 'sticky',
                           left: 0,
                           backgroundColor: '#393e44',
                         }}
@@ -129,8 +125,8 @@ class CorrelationMatrix extends Component<Props, State> {
                             key={e}
                             textColor={textColor}
                             color={backgroundColor}
-                            onMouseOver={(event) => {
-                              return this.onMouseOver(
+                            onMouseOver={(event) =>
+                              this.onMouseOver(
                                 indx,
                                 value,
                                 rows[i],
@@ -138,7 +134,7 @@ class CorrelationMatrix extends Component<Props, State> {
                                 event.nativeEvent.clientX,
                                 event.nativeEvent.clientY
                               )
-                            }}
+                            }
                             onMouseLeave={() => this.onMouseLeave()}
                           >
                             {value}
