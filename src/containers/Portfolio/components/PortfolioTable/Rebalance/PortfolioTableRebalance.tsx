@@ -831,7 +831,10 @@ export default class PortfolioTableRebalance extends React.Component<
                               onClick={() => this.onButtonClick(rowIndex)}
                             >
                               {rowIndex === this.state.rows.length - 1 ? (
-                                <AddIcon />
+                                <TableButtonDual>
+                                  <DeleteIcon />
+                                  <AddIcon />
+                                </TableButtonDual>
                               ) : (
                                 <DeleteIcon />
                               )}
@@ -1379,6 +1382,8 @@ const TableButton = styled.button`
     height: 18px;
   }
 `
+
+const TableButtonDual = styled.div``
 const ActionButton = styled.button`
   border: none;
   margin: 0;
