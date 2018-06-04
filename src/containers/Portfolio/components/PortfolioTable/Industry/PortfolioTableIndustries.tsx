@@ -531,7 +531,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
-          {/* ToDo: add button that toggles chart */}
           <ChartContainer>
             <Heading>
               <Switch onClick={this.toggleChart} />
