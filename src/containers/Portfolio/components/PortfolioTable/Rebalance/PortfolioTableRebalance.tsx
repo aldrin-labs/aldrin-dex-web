@@ -63,20 +63,22 @@ export default class PortfolioTableRebalance extends React.Component<
   }
   componentWillMount() {
     this.calculateAllTotals()
-    setTimeout(() => {
-      this.calculateAllPercents() //TODO: find better way to fix it
-    }, 100)
   }
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
   }
 
   calculateAllTotals = () => {
-    this.setState({
-      totalRows: this.calculateTotal(this.state.rows),
-      totalStaticRows: this.calculateTotal(this.state.staticRows),
-      totalSavedRows: this.calculateTotal(this.state.savedRows),
-    })
+    this.setState(
+      {
+        totalRows: this.calculateTotal(this.state.rows),
+        totalStaticRows: this.calculateTotal(this.state.staticRows),
+        totalSavedRows: this.calculateTotal(this.state.savedRows),
+      },
+      () => {
+        this.calculateAllPercents()
+      }
+    )
   }
 
   componentWillReceiveProps(nextProps: IProps) {
@@ -143,11 +145,12 @@ export default class PortfolioTableRebalance extends React.Component<
       row.portfolioPerc = Math.round(row.price * 100 / total * 100) / 100
       sum += row.portfolioPerc
       maxSum -= row.portfolioPerc
-      if (i == data.length - 1 && Math.abs(maxSum) <= 0.01) {
+      if (i === data.length - 1 && Math.abs(maxSum) <= 0.01) {
         row.portfolioPerc += maxSum
         row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
         sum += maxSum
       }
+
       return row
     })
     console.log(sum)
