@@ -222,8 +222,8 @@ export default class PortfolioTableRebalance extends React.Component<
       let deleteFlag = true
       this.state.staticRows.forEach((row, i, arr) => {
         if (
-          rows[idx].currency == staticRows[i].currency &&
-          rows[idx].symbol == staticRows[i].symbol
+          rows[idx].currency === staticRows[i].currency &&
+          rows[idx].symbol === staticRows[i].symbol
         ) {
           deleteFlag = false
         }
@@ -599,7 +599,7 @@ export default class PortfolioTableRebalance extends React.Component<
                               </PTDC>
                             )
                           }
-                          if (index == 3) {
+                          if (index === 3) {
                             return (
                               <PTDC key={`${col}${idx}`}>
                                 {mainSymbol}
@@ -811,7 +811,7 @@ export default class PortfolioTableRebalance extends React.Component<
                             return <PTDR style={{ color }}>{col}</PTDR>
                           }
 
-                          if (idx == 3) {
+                          if (idx === 3) {
                             return (
                               <PTDR key={`${col}${idx}`}>
                                 {mainSymbol}
