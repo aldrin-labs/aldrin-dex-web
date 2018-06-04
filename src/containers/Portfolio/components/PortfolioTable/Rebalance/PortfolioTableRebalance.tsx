@@ -62,8 +62,10 @@ export default class PortfolioTableRebalance extends React.Component<
     totalSavedRows: 0,
   }
   componentWillMount() {
-    this.calculateAllPercents()
     this.calculateAllTotals()
+    setTimeout(() => {
+      this.calculateAllPercents() //TODO: find better way to fix it
+    }, 100)
   }
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
@@ -135,18 +137,28 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculatePercents = (data: any[], total) => {
+    let sum = 0
+    let maxSum = 100
     let newDataWithPercents = data.map((row, i) => {
-      row[i] = Math.ceil(data[i].price * 100 / total * 100) / 100
-
-      // TODO: FIX WHY INFINITY??
-      // console.log(
-      //   'percantage:' + Math.ceil(data[i].price * 100 / total * 100) / 100
-      // )
+      row.portfolioPerc = Math.round(row.price * 100 / total * 100) / 100
+      sum += row.portfolioPerc
+      maxSum -= row.portfolioPerc
+      if (i == data.length - 1 && Math.abs(maxSum) <= 0.01) {
+        row.portfolioPerc += maxSum
+        row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
+        sum += maxSum
+      }
       return row
     })
-
-    console.log(data)
-    console.log(newDataWithPercents)
+    console.log(sum)
+    console.log(maxSum)
+    /*
+      TODO:
+      Sometimes sum of all percents isn't 100
+      console.log(sum)
+      Sometimes it is 99.99000000000001 or 100.0099999999999
+      Have to be fixed
+    */
 
     return this.calculatePriceDifference(newDataWithPercents)
   }
@@ -331,8 +343,21 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ addMoneyInputValue: e.target.value })
   }
 
-  onPercentInputChange = (e: any) => {
-    this.setState({ activePercentInputValue: e.target.value })
+  onPercentInputChange = (e: any, idx: number) => {
+    let { rows } = this.state
+    rows[idx].portfolioPerc = e.target.value
+    let sum = 0
+    rows.forEach((row, i, arr) => {
+      sum += parseFloat(rows[i].portfolioPerc)
+    })
+    if (Math.abs(sum - 100) > 0.01) {
+      console.log('BAD')
+    } else {
+      console.log('GOOD')
+    }
+    this.setState({ rows })
+    e.preventDefault()
+    e.target.focus()
   }
 
   onPercentClick = (idx: number) => {
@@ -744,11 +769,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 : '#ff687a'
                             if (rowIndex !== this.state.activePercentInput) {
                               return (
-                                <PTDR
-                                  onClick={() => this.onPercentClick(rowIndex)}
-                                  key={`${col}${idx}`}
-                                  style={{ color }}
-                                >
+                                <PTDR key={`${col}${idx}`} style={{ color }}>
                                   {col}
                                   {isEditModeEnabled && <EditIcon />}
                                 </PTDR>
@@ -759,8 +780,12 @@ export default class PortfolioTableRebalance extends React.Component<
                                   <form onSubmit={this.onPercentSubmit}>
                                     <InputTable
                                       type="number"
-                                      value={this.state.activePercentInputValue}
-                                      onChange={this.onPercentInputChange}
+                                      value={
+                                        this.state.rows[rowIndex].portfolioPerc
+                                      }
+                                      onChange={(e) =>
+                                        this.onPercentInputChange(e, rowIndex)
+                                      }
                                       onBlur={this.onPercentSubmit}
                                       step="0.01"
                                       min="0"
