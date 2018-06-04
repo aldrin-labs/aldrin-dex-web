@@ -40,7 +40,7 @@ const newTableHeadings = [
 export default class PortfolioTableRebalance extends React.Component<
   IProps,
   IState
-> {
+  > {
   state: IState = {
     selectedBalances: null,
     selectedActive: null,
@@ -516,8 +516,8 @@ export default class PortfolioTableRebalance extends React.Component<
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
-      <Icon className="fa fa-btc" />
-    )
+        <Icon className="fa fa-btc" />
+      )
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
@@ -552,7 +552,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 marginLeft: '4px',
                                 transform:
                                   currentSortForStatic &&
-                                  currentSortForStatic.arg === 'ASC'
+                                    currentSortForStatic.arg === 'ASC'
                                     ? 'rotate(180deg)'
                                     : null,
                               }}
@@ -584,7 +584,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       <PTR
                         key={`${currency}${symbol}${idx}`}
                         isSelected={isSelected}
-                        // onClick={() => this.onSelectBalance(idx)}
+                      // onClick={() => this.onSelectBalance(idx)}
                       >
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
@@ -688,7 +688,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 marginLeft: '4px',
                                 transform:
                                   currentSortForDynamic &&
-                                  currentSortForDynamic.arg === 'ASC'
+                                    currentSortForDynamic.arg === 'ASC'
                                     ? 'rotate(180deg)'
                                     : null,
                               }}
@@ -816,8 +816,8 @@ export default class PortfolioTableRebalance extends React.Component<
                             {rowIndex === this.state.rows.length - 1 ? (
                               <AddIcon />
                             ) : (
-                              <DeleteIcon />
-                            )}
+                                <DeleteIcon />
+                              )}
                           </TableButton>
                         </PTD>
                       </PTR>
@@ -1091,7 +1091,7 @@ const PTR = styled.tr`
     props.isSelected ? '#2d3136' : '#393e44'};
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+    props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
 
@@ -1205,7 +1205,7 @@ const TableButton = styled.button`
   &:hover {
     & svg {
       color: ${(props: { isDeleteColor?: boolean }) =>
-        props.isDeleteColor ? '#65c000' : '#ff687a'};
+    props.isDeleteColor ? '#65c000' : '#ff687a'};
     }
   }
   & svg {
@@ -1283,7 +1283,7 @@ const EditIconWrapper = styled.div`
 
   &:hover {
     color: ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? '#ff687a' : '#65c000'};
+    props.isEditModeEnabled ? '#ff687a' : '#65c000'};
   }
 
   & svg {
