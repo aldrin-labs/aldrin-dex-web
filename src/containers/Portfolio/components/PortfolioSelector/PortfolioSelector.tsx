@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
+import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import CloseIcon from 'react-icons/lib/md/close'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 
@@ -130,13 +130,17 @@ class PortfolioSelector extends React.Component<IProps, IState> {
       false
 
     return (
-      <AccountsWalletsBlock isSideNavOpen={this.props.isSideNavOpen}>
-        {console.log(this.props.isSideNavOpen)}
+      <AccountsWalletsBlock
+        onClick={this.props.toggleWallets}
+        isSideNavOpen={this.props.isSideNavOpen}
+      >
         <AccountsWalletsHeadingWrapper>
           <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
-          <CloseButton onClick={this.props.toggleWallets}>
-            <StyledIcon />
-          </CloseButton>
+
+          <Headline isSideNavOpen={this.props.isSideNavOpen}>Accounts</Headline>
+          <CloseContainer>
+            <StyledIcon isSideNavOpen={this.props.isSideNavOpen} />
+          </CloseContainer>
         </AccountsWalletsHeadingWrapper>
 
         <SelectAll>
@@ -183,6 +187,9 @@ class PortfolioSelector extends React.Component<IProps, IState> {
     )
   }
 }
+const CloseContainer = styled.div`
+  height: 100%;
+`
 
 const SelectAll = styled.div`
   margin-top: 32px;
@@ -258,15 +265,25 @@ const AccountsWalletsBlock = styled.div`
   min-width: 200px;
   background-color: #2d3136;
   padding: 16px;
+  left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? '0' : '-11.5rem'};
+  cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? 'auto' : 'pointer'};
+  display: block;
+  position: fixed;
+  top: 0;
+  z-index: 1301;
+  height: 100vh;
+  transition: left 0.2s ease-in;
 
-  @media (max-width: 840px) {
-    display: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-      isSideNavOpen ? 'static' : 'none'};
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 1301;
-    height: 100vh;
+  @media (max-width: 1000px) {
+    left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+      isSideNavOpen ? '0' : '-12rem'};
+  }
+
+  &:hover {
+    background-color: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+      isSideNavOpen ? '#2d3136' : '#323941'};
   }
 `
 
@@ -275,22 +292,36 @@ const AccountsWalletsHeadingWrapper = styled.div`
   justify-content: space-between;
 `
 
-const StyledIcon = styled(CloseIcon)`
-  display: none;
+const StyledIcon = styled(Arrow)`
+  font-family: Roboto;
   color: #4ed8da;
-  font-size: 2rem;
   text-align: center;
-
-  @media (max-width: 840px) {
-    display: block;
-  }
+  opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? '1' : '0'};
+  font-size: 2rem;
+  right: -0.3rem;
+  position: absolute;
+  bottom: 50%;
+  transition: opacity 0.2s linear;
 `
 
-const CloseButton = styled.button`
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
+const Headline = styled.div`
+  font-family: Roboto;
+  color: #4ed8da;
+  opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? '0' : '1'};
+  font-size: 0.7em;
+  transform: rotate(-90deg);
+  right: -1.2rem;
+  transform-origin: right, top;
+  position: absolute;
+  bottom: 50%;
+  transition: opacity 0.4s linear;
+
+  @media (min-width: 1000px) {
+    font-size: 1rem;
+    right: -1.5rem;
+  }
 `
 
 const AccountsWalletsHeading = styled.span`

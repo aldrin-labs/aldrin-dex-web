@@ -15,7 +15,6 @@ export interface Props {
 export default class QueryRenderer extends React.Component<Props> {
   render() {
     const { query, component, variables, ...rest } = this.props
-    console.log('QueryRenderer.props: ', this.props)
 
     return (
       <Query query={query} variables={variables}>

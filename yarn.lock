@@ -958,9 +958,9 @@
   version "8.11.2"
   resolved "https://registry.yarnpkg.com/@types/auth0-js/-/auth0-js-8.11.2.tgz#4890c662d40c41bea42d9e7b8490e9d88eac78c1"
 
-"@types/auth0-lock@^10.16.3":
-  version "10.16.4"
-  resolved "https://registry.yarnpkg.com/@types/auth0-lock/-/auth0-lock-10.16.4.tgz#0149e3296d5b27994dc0e012dab659ced4865cb9"
+"@types/auth0-lock@^11.4.3":
+  version "11.4.3"
+  resolved "https://registry.yarnpkg.com/@types/auth0-lock/-/auth0-lock-11.4.3.tgz#801858bba30288e760eb624f11f42e409e8aa6d7"
   dependencies:
     "@types/auth0-js" "*"
 
@@ -1010,7 +1010,11 @@
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@types/jwt-decode/-/jwt-decode-2.2.1.tgz#afdf5c527fcfccbd4009b5fd02d1e18241f2d2f2"
 
-"@types/lodash@^4.14.105", "@types/lodash@^4.14.85":
+"@types/lodash@^4.14.109":
+  version "4.14.109"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.109.tgz#b1c4442239730bf35cabaf493c772b18c045886d"
+
+"@types/lodash@^4.14.85":
   version "4.14.107"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.107.tgz#b2d2ae3958bfb8ff828495cbe12214af9e4d035e"
 
@@ -1024,13 +1028,13 @@
   version "9.6.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.6.tgz#439b91f9caf3983cad2eef1e11f6bedcbf9431d2"
 
-"@types/prop-types@^15.5.2":
-  version "15.5.2"
-  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.2.tgz#3c6b8dceb2906cc87fe4358e809f9d20c8d59be1"
+"@types/prop-types@^15.5.3":
+  version "15.5.3"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.3.tgz#bef071852dca2a2dbb65fecdb7bfb30cedae2de2"
 
-"@types/ramda@^0.25.20":
-  version "0.25.24"
-  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.24.tgz#2f64ce2100271163247f93fa7b4b052db40ce155"
+"@types/ramda@^0.25.30":
+  version "0.25.30"
+  resolved "https://registry.yarnpkg.com/@types/ramda/-/ramda-0.25.30.tgz#422a7514591cddb2be37374d595aa5990014bd59"
 
 "@types/react-dom@^16.0.4":
   version "16.0.5"
@@ -1039,16 +1043,16 @@
     "@types/node" "*"
     "@types/react" "*"
 
-"@types/react-intl@^2.3.5":
-  version "2.3.7"
-  resolved "https://registry.yarnpkg.com/@types/react-intl/-/react-intl-2.3.7.tgz#40bae586f11d19894621ed40170dd75c3e0f5708"
+"@types/react-intl@^2.3.8":
+  version "2.3.8"
+  resolved "https://registry.yarnpkg.com/@types/react-intl/-/react-intl-2.3.8.tgz#de56b21b67e39df24bc0fc7e67b437976b666919"
 
-"@types/react-redux@^5.0.15":
-  version "5.0.16"
-  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-5.0.16.tgz#46f1b2043abd2b4364a857100abf5e5a6ef94bf0"
+"@types/react-redux@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-6.0.0.tgz#31711592b13ed6d6d2fd4506e5447b00e1f0b484"
   dependencies:
     "@types/react" "*"
-    redux "^3.6.0"
+    redux "^4.0.0"
 
 "@types/react-router-dom@^4.2.5":
   version "4.2.6"
@@ -1058,9 +1062,9 @@
     "@types/react" "*"
     "@types/react-router" "*"
 
-"@types/react-router-redux@^5.0.12":
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/@types/react-router-redux/-/react-router-redux-5.0.13.tgz#46dc040afc150ff7bbc8bb837b14ef4fa6a0b07e"
+"@types/react-router-redux@^5.0.14":
+  version "5.0.14"
+  resolved "https://registry.yarnpkg.com/@types/react-router-redux/-/react-router-redux-5.0.14.tgz#4f140248f65c74217e296854b1abe8c55e99764c"
   dependencies:
     "@types/history" "*"
     "@types/react" "*"
@@ -1080,21 +1084,27 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.0.40":
+"@types/react@*":
   version "16.3.12"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.12.tgz#68d9146f3e9797e38ffbf22f7ed1dde91a2cfd2e"
   dependencies:
     csstype "^2.2.0"
 
-"@types/recompose@^0.24.6":
-  version "0.24.7"
-  resolved "https://registry.yarnpkg.com/@types/recompose/-/recompose-0.24.7.tgz#8a62a76227053970476b208d859b70e398baabc5"
+"@types/react@^16.3.14":
+  version "16.3.14"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.3.14.tgz#f90ac6834de172e13ecca430dcb6814744225d36"
+  dependencies:
+    csstype "^2.2.0"
+
+"@types/recompose@^0.26.1":
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/@types/recompose/-/recompose-0.26.1.tgz#a21c5728dea223551882b763335cb1bc641bf1d0"
   dependencies:
     "@types/react" "*"
 
-"@types/yup@^0.24.1":
-  version "0.24.3"
-  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.24.3.tgz#42da6b4d78d1394bf9af794a8b636ebb423f4f29"
+"@types/yup@^0.24.4":
+  version "0.24.4"
+  resolved "https://registry.yarnpkg.com/@types/yup/-/yup-0.24.4.tgz#82733e0b0c2da5e9d91c4fe6826cb082cd0e3f06"
 
 "@types/zen-observable@^0.5.3":
   version "0.5.3"
@@ -3672,7 +3682,7 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.0.0"
     whatwg-url "^6.4.0"
 
-date-fns@^1.27.2:
+date-fns@^1.27.2, date-fns@^1.29.0:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
 
@@ -9578,7 +9588,7 @@ redux-persist@^5.9.1:
   version "5.9.1"
   resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.9.1.tgz#83bd4abd526ef768f63fceee338fa9d8ed6552d6"
 
-redux@^3.6.0, redux@^3.7.2:
+redux@^3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/redux/-/redux-3.7.2.tgz#06b73123215901d25d065be342eb026bc1c8537b"
   dependencies:
@@ -9586,6 +9596,13 @@ redux@^3.6.0, redux@^3.7.2:
     lodash-es "^4.2.1"
     loose-envify "^1.1.0"
     symbol-observable "^1.0.3"
+
+redux@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-4.0.0.tgz#aa698a92b729315d22b34a0553d7e6533555cc03"
+  dependencies:
+    loose-envify "^1.1.0"
+    symbol-observable "^1.2.0"
 
 regenerate-unicode-properties@^5.1.1:
   version "5.1.3"
@@ -10916,7 +10933,7 @@ symbol-observable@^0.2.2:
   version "0.2.4"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-0.2.4.tgz#95a83db26186d6af7e7a18dbd9760a2f86d08f40"
 
-symbol-observable@^1.0.2, symbol-observable@^1.0.3, symbol-observable@^1.0.4, symbol-observable@^1.1.0:
+symbol-observable@^1.0.2, symbol-observable@^1.0.3, symbol-observable@^1.0.4, symbol-observable@^1.1.0, symbol-observable@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/symbol-observable/-/symbol-observable-1.2.0.tgz#c22688aed4eab3cdc2dfeacbb561660560a00804"
 
@@ -11156,13 +11173,17 @@ ts-graphql-plugin@^1.1.2:
   dependencies:
     graphql-language-service-interface "^1.0.15"
 
-tslib@^1.0.0, tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.0.0, tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.0.tgz#e37a86fda8cbbaf23a057f473c9f4dc64e5fc2e8"
 
-tslint-config-prettier@^1.10.0:
-  version "1.12.0"
-  resolved "https://registry.yarnpkg.com/tslint-config-prettier/-/tslint-config-prettier-1.12.0.tgz#bc8504f286ecf42b906f3d1126a093114f5729cc"
+tslib@^1.9.2:
+  version "1.9.2"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.2.tgz#8be0cc9a1f6dc7727c38deb16c2ebd1a2892988e"
+
+tslint-config-prettier@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/tslint-config-prettier/-/tslint-config-prettier-1.13.0.tgz#189e821931ad89e0364e4e292d5c44a14e90ecd6"
 
 tslint-config-standard@^7.0.0:
   version "7.0.0"
@@ -11189,15 +11210,15 @@ tslint-plugin-prettier@^1.3.0:
     eslint-plugin-prettier "^2.2.0"
     tslib "^1.7.1"
 
-tslint-react@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/tslint-react/-/tslint-react-3.5.1.tgz#a5ca48034bf583fb63b42763bb89fa23062d5390"
+tslint-react@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/tslint-react/-/tslint-react-3.6.0.tgz#7f462c95c4a0afaae82507f06517ff02942196a1"
   dependencies:
     tsutils "^2.13.1"
 
-tslint@^5.9.1:
-  version "5.9.1"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.9.1.tgz#1255f87a3ff57eb0b0e1f0e610a8b4748046c9ae"
+tslint@^5.10.0:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.10.0.tgz#11e26bccb88afa02dd0d9956cae3d4540b5f54c3"
   dependencies:
     babel-code-frame "^6.22.0"
     builtin-modules "^1.1.1"

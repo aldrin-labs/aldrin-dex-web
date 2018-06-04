@@ -7,25 +7,50 @@ import { Props, State, PiePiece } from './PieChart.types'
 const FlexibleRadialChart = makeVisFlexible(RadialChart)
 
 export default class PieChart extends React.Component<Props, State> {
-  state: State = {
-    value: null,
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      data: props.data,
+      value: null,
+    }
+  }
+
+  onValueMouseOver = (value: PiePiece) => {
+    const { data } = this.state
+    if (this.state.value && this.state.value.label === value.label) return
+
+    const index = data.findIndex((d) => d.label === value.label)
+    const newData = data.slice().map((d) => ({ ...d, opacity: 0.5 }))
+    newData.splice(index, 1, {
+      ...data[index],
+      opacity: 1,
+      style: { stroke: '#fff', strokeWidth: '0.5px' },
+    })
+
+    this.setState({ value, data: newData })
+  }
+
+  onSeriesMouseOut = () => {
+    this.setState({ value: null, data: this.props.data })
   }
 
   render() {
-    const { value } = this.state
-    const { data, width, height, radius, innerRadius, flexible } = this.props
-    const hasCustomColors = data.some((a) => !!a.color)
+    const { value, data } = this.state
+    const { width, height, radius, innerRadius, flexible } = this.props
+    const hasCustomColors = data.some((a) => !!a.color || !!a.style)
 
     const FLRadialChart = () => (
       <FlexibleRadialChart
         data={data}
+        animation
         innerRadius={innerRadius || 0}
-        colorType={hasCustomColors ? 'literal' : 'linear'}
-        onValueMouseOver={(v: PiePiece) => this.setState({ value: v })}
-        onSeriesMouseOut={() => this.setState({ value: null })}
+        colorType="literal"
+        onValueMouseOver={this.onValueMouseOver}
+        onSeriesMouseOut={this.onSeriesMouseOut}
       >
         {value && (
-          <Hint value={value} orientation="topleft">
+          <Hint value={value}>
             <ChartTooltip>{value.label}</ChartTooltip>
           </Hint>
         )}
@@ -35,6 +60,7 @@ export default class PieChart extends React.Component<Props, State> {
     const NonFLRadialChart = () => (
       <RadialChart
         data={data}
+        animation
         width={width || 200}
         height={height || 200}
         radius={radius || 200}
@@ -44,7 +70,7 @@ export default class PieChart extends React.Component<Props, State> {
         onSeriesMouseOut={() => this.setState({ value: null })}
       >
         {value && (
-          <Hint value={value} orientation="topleft">
+          <Hint value={value}>
             <ChartTooltip>{value.label}</ChartTooltip>
           </Hint>
         )}

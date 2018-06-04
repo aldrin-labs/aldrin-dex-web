@@ -32,32 +32,8 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   }
 
   render() {
-    const {
-      tab,
-      tableData,
-      portfolio,
-      isShownChart,
-      isUSDCurrently,
-    } = this.state
+    const { tab, portfolio, isShownChart, isUSDCurrently } = this.state
 
-    // if (!this.props.data) return null
-
-    if (this.props.data && !tableData) {
-      return (
-        <LoaderWrapper>
-          <SvgIcon
-            src={spinLoader}
-            width={48}
-            height={48}
-            style={{
-              position: 'absolute',
-              left: 'calc(50% - 48px)',
-              top: 'calc(50% - 48px)',
-            }}
-          />
-        </LoaderWrapper>
-      )
-    }
     if (tab === 'main') {
       return (
         <PortfolioTableBalances
@@ -89,6 +65,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           isUSDCurrently={isUSDCurrently}
         >
           <PortfolioTableTabs
+            toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
             data={this.props.data}
@@ -104,6 +81,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <PortfolioTableRebalance isUSDCurrently={isUSDCurrently}>
           <PortfolioTableTabs
+            toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
             onChangeTab={this.onChangeTab}
@@ -118,6 +96,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <Correlation>
           <PortfolioTableTabs
+            toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
             onChangeTab={this.onChangeTab}
