@@ -60,6 +60,7 @@ export default class PortfolioTableRebalance extends React.Component<
     totalRows: 0,
     totalStaticRows: 0,
     totalSavedRows: 0,
+    isPercentSumGood: true,
   }
   componentWillMount() {
     this.calculateAllTotals()
@@ -139,14 +140,16 @@ export default class PortfolioTableRebalance extends React.Component<
   calculatePercents = (data: any[], total) => {
     let sum = 0
     let maxSum = 100
+    let lastFlag = false
     let newDataWithPercents = data.map((row, i) => {
       row.portfolioPerc = Math.round(row.price * 100 / total * 100) / 100
       sum += row.portfolioPerc
       maxSum -= row.portfolioPerc
-      if (i == data.length - 1 && Math.abs(maxSum) <= 0.01) {
+      if (Math.abs(maxSum) <= 0.02 && !lastFlag) {
         row.portfolioPerc += maxSum
         row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
         sum += maxSum
+        lastFlag = true
       }
       return row
     })
@@ -192,6 +195,25 @@ export default class PortfolioTableRebalance extends React.Component<
       </React.Fragment>
     )
   }
+  onAddRowButtonClick = () => {
+    let rows = JSON.parse(JSON.stringify(this.state.rows))
+    let {
+      selectedActive,
+      areAllActiveChecked,
+      staticRows,
+      totalRows,
+    } = this.state
+    let newRow = {
+      currency: 'Newcoin',
+      symbol: 'NEW',
+      portfolioPerc: 0.0,
+      price: 0,
+    }
+    rows.splice(rows.length, 0, newRow)
+    areAllActiveChecked = false
+    rows = this.calculatePercents(rows, totalRows)
+    this.setState({ rows, selectedActive, areAllActiveChecked })
+  }
 
   onButtonClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
@@ -201,59 +223,49 @@ export default class PortfolioTableRebalance extends React.Component<
       staticRows,
       totalRows,
     } = this.state
-    if (rows.length - 1 === idx) {
-      let newRow = {
-        currency: 'Newcoin',
-        symbol: 'NEW',
-        portfolioPerc: 0.0,
-        price: 0,
+    let money = rows[idx].price
+    // rows[rows.length - 1].undistributedMoney += money
+    this.setState((prevState) => ({
+      undistributedMoney: prevState.undistributedMoney + money,
+    }))
+    let deleteFlag = true
+    this.state.staticRows.forEach((row, i, arr) => {
+      if (
+        rows[idx].currency == staticRows[i].currency &&
+        rows[idx].symbol == staticRows[i].symbol
+      ) {
+        deleteFlag = false
       }
-      rows.splice(rows.length - 1, 0, newRow)
-      areAllActiveChecked = false
-    } else {
-      let money = rows[idx].price
-      // rows[rows.length - 1].undistributedMoney += money
-      this.setState((prevState) => ({
-        undistributedMoney: prevState.undistributedMoney + money,
-      }))
-      let deleteFlag = true
-      this.state.staticRows.forEach((row, i, arr) => {
-        if (
-          rows[idx].currency == staticRows[i].currency &&
-          rows[idx].symbol == staticRows[i].symbol
-        ) {
-          deleteFlag = false
-        }
-      })
-      if (deleteFlag) {
-        rows.splice(idx, 1)
-        if (selectedActive) {
-          let toRemove = -1
-          selectedActive.forEach((row, i, arr) => {
-            if (selectedActive[i] === idx) {
-              toRemove = i
-            } else {
-              if (selectedActive[i] > idx) {
-                selectedActive[i] -= 1
-              }
-            }
-          })
-          if (toRemove != -1) {
-            selectedActive.splice(toRemove, 1)
-          }
-          if (selectedActive.length >= rows.length - 1) {
-            areAllActiveChecked = true
+    })
+    if (deleteFlag) {
+      rows.splice(idx, 1)
+      if (selectedActive) {
+        let toRemove = -1
+        selectedActive.forEach((row, i, arr) => {
+          if (selectedActive[i] === idx) {
+            toRemove = i
           } else {
-            areAllActiveChecked = false
+            if (selectedActive[i] > idx) {
+              selectedActive[i] -= 1
+            }
           }
+        })
+        if (toRemove != -1) {
+          selectedActive.splice(toRemove, 1)
         }
-      } else {
-        rows[idx].price = 0
+        if (selectedActive.length >= rows.length - 1) {
+          areAllActiveChecked = true
+        } else {
+          areAllActiveChecked = false
+        }
       }
+    } else {
+      rows[idx].price = 0
     }
 
+
     rows = this.calculatePercents(rows, totalRows)
-    this.setState({ rows, selectedActive, areAllActiveChecked })
+    this.setState({ rows, selectedActive, areAllActiveChecked, isPercentSumGood: this.checkPercentSum(rows) })
   }
 
   onSelectAllActive = (e: any) => {
@@ -294,9 +306,33 @@ export default class PortfolioTableRebalance extends React.Component<
 
   // TODO: refactor all this stuff
   onSaveClick = (e: any) => {
-    this.setState({ savedRows: JSON.parse(JSON.stringify(this.state.rows)) })
-    this.setState({ totalSavedRows: this.state.totalRows })
-    this.setState({ isEditModeEnabled: false })
+    if (this.state.isPercentSumGood) {
+      let { rows, totalRows, undistributedMoney } = this.state
+      let sumTotal = totalRows
+      rows.forEach((row, i, arr) => {
+        if (rows[i].portfolioPerc) {
+          let newPrice = Math.round(totalRows / 100 * rows[i].portfolioPerc)
+          console.log(newPrice)
+          if (sumTotal <= newPrice) {
+            rows[i].price = newPrice
+            sumTotal = 0
+          } else {
+            rows[i].price = newPrice
+            sumTotal -= newPrice
+          }
+        }
+      })
+      rows = this.calculatePriceDifference(rows)
+
+      this.setState({
+        savedRows: JSON.parse(JSON.stringify(this.state.rows)),
+        rows,
+        totalSavedRows: this.state.totalRows,
+        isEditModeEnabled: false,
+        undistributedMoney: 0,
+
+      })
+    }
   }
   onLoadPreviousClick = (e: any) => {
     this.setState({ rows: JSON.parse(JSON.stringify(this.state.savedRows)) })
@@ -335,8 +371,9 @@ export default class PortfolioTableRebalance extends React.Component<
       setTimeout(() => {
         let newTotal = this.calculateTotal(rows)
         rows = this.calculatePercents(rows, newTotal)
-        this.setState({ selectedActive, rows, totalRows: newTotal }) //Very brutal fix, need to be reworked
+        this.setState({ selectedActive, rows, totalRows: newTotal, isPercentSumGood: this.checkPercentSum(rows) }) //Very brutal fix, need to be reworked
       }, 100)
+
     }
   }
 
@@ -344,22 +381,27 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ addMoneyInputValue: e.target.value })
   }
 
+  checkPercentSum = (data: any[]) => {
+    let sum = 0
+    data.forEach((row, i, arr) => {
+      sum += parseFloat(data[i].portfolioPerc)
+    })
+    if (Math.abs(sum - 100) > 0.01) {
+      return false
+    } else {
+      return true
+    }
+  }
+
   onPercentInputChange = (e: any, idx: number) => {
     let { rows } = this.state
     rows[idx].portfolioPerc = e.target.value
-    let sum = 0
-    rows.forEach((row, i, arr) => {
-      sum += parseFloat(rows[i].portfolioPerc)
-    })
-    if (Math.abs(sum - 100) > 0.01) {
-      console.log('BAD')
-    } else {
-      console.log('GOOD')
-    }
-    this.setState({ rows })
+    this.setState({ isPercentSumGood: this.checkPercentSum(rows) })
     e.preventDefault()
     e.target.focus()
   }
+
+
 
   /* onPercentClick = (idx: number) => {
     this.setState({
@@ -408,11 +450,16 @@ export default class PortfolioTableRebalance extends React.Component<
       // rows[rows.length - 1].undistributedMoney += Number(
       //   this.state.addMoneyInputValue
       // )
-      rows = this.calculatePercents(rows, totalRows)
-      this.setState({
-        addMoneyInputValue: 0,
-        rows,
-      })
+      setTimeout(() => {
+        let newTotal = this.calculateTotal(rows)
+        //rows = this.calculatePercents(rows, newTotal)
+        this.setState({
+          addMoneyInputValue: 0,
+          rows,
+          totalRows: newTotal
+        }) //Very brutal fix, need to be reworked
+      }, 100)
+
     }
   }
 
@@ -431,10 +478,20 @@ export default class PortfolioTableRebalance extends React.Component<
         percValues[i] = rows[i].portfolioPerc
       })
     }
-    this.setState((prevState) => ({
-      isEditModeEnabled: !prevState.isEditModeEnabled,
-      activePercentInputValues: percValues,
-    }))
+
+    if (this.state.isEditModeEnabled) {
+      this.setState((prevState) => ({
+        isEditModeEnabled: !prevState.isEditModeEnabled,
+        activePercentInputValues: percValues,
+        totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+        rows: JSON.parse(JSON.stringify(this.state.savedRows)),
+      }))
+    } else {
+      this.setState((prevState) => ({
+        isEditModeEnabled: !prevState.isEditModeEnabled,
+        activePercentInputValues: percValues,
+      }))
+    }
   }
 
   onSortTable = (key: Args, chooseRows) => {
@@ -513,7 +570,10 @@ export default class PortfolioTableRebalance extends React.Component<
       isEditModeEnabled,
       undistributedMoney,
     } = this.state
-
+    const saveButtonColor =
+      this.state.isPercentSumGood
+        ? '#65c000'
+        : '#ff687a'
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
@@ -646,12 +706,13 @@ export default class PortfolioTableRebalance extends React.Component<
                   isEditModeEnabled={isEditModeEnabled}
                 >
                   {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
+
                 </EditIconWrapper>
                 <ActionButton onClick={() => this.onReset()}>
                   <Replay />
                 </ActionButton>
                 <ActionButton onClick={() => this.onSaveClick()}>
-                  <SaveIcon />
+                  <SaveIcon style={{ color: saveButtonColor }} />
                 </ActionButton>
                 <ActionButton onClick={() => this.onLoadPreviousClick()}>
                   <UndoIcon />
@@ -822,20 +883,47 @@ export default class PortfolioTableRebalance extends React.Component<
                         <PTDR>
                           <TableButton
                             isDeleteColor={
-                              rowIndex === this.state.rows.length - 1
+                              false
                             }
                             onClick={() => this.onButtonClick(rowIndex)}
                           >
-                            {rowIndex === this.state.rows.length - 1 ? (
-                              <AddIcon />
-                            ) : (
-                                <DeleteIcon />
-                              )}
+
+                            <DeleteIcon />
+
                           </TableButton>
                         </PTDR>
                       </PTR>
                     )
                   })}
+                  {this.state.isEditModeEnabled ? (
+                    <PTR>
+                      <PTDR>
+                      </PTDR>
+                      <PTDR>
+                      </PTDR>
+                      <PTDR>
+                      </PTDR>
+                      <PTDR>
+                      </PTDR>
+                      <PTDR>
+                      </PTDR>
+                      <PTDR>
+                      </PTDR>
+                      <PTDR>
+                        <TableButton
+                          isDeleteColor={
+                            true
+                          }
+                          onClick={() => this.onAddRowButtonClick()}
+                        >
+
+                          <AddIcon />
+
+                        </TableButton>
+                      </PTDR>
+                    </PTR>
+                  ) : () => { }}
+
                 </PTBody>
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
@@ -956,7 +1044,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 45vh;
+  height: 200vh;//45vh
   padding: 0 20px 20px;
 `
 

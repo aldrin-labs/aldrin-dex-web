@@ -1,4 +1,4 @@
-export interface IRow {}
+export interface IRow { }
 
 export interface IProps {
   children: object
@@ -15,8 +15,11 @@ export interface IState {
   savedRows: any[]
   addMoneyInputValue: number
   activePercentInput: number | null
-  activePercentInputValue: number
+  activePercentInputValues: any[]
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
   isUSDCurrently: boolean
+  isPercentSumGood: boolean
+  totalRows: number
+  undistributedMoney: number
 }
