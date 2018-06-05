@@ -55,44 +55,72 @@ class Optimization extends Component<{}> {
           </UpperArea>
 
           <MainArea>
-            <BtnsContainer>
-              {percentages.map((percentage, i) => (
-                <ChartBtn
-                  onClick={() => this.onPercentageButtonsClick(i)}
-                  style={
-                    i === this.state.activePercentageButton
-                      ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                      : {}
-                  }
-                  key={percentage}
-                >
-                  {`${percentage}%`}
-                </ChartBtn>
-              ))}
-            </BtnsContainer>
-            <Table>
-              <Head>
-                <HeadItem>Coin</HeadItem>
-                <HeadItem>Portfolio%</HeadItem>
-              </Head>
-              <Body>
-                <Col>
-                  {FakeData.map((item, i) => <Item key={i}>{item.coin}</Item>)}
-                </Col>
+            <MainAreaUpperPart>
+              <BtnsContainer>
+                {percentages.map((percentage, i) => (
+                  <ChartBtn
+                    onClick={() => this.onPercentageButtonsClick(i)}
+                    style={
+                      i === this.state.activePercentageButton
+                        ? { backgroundColor: '#4ed8da', color: '#4c5055' }
+                        : {}
+                    }
+                    key={percentage}
+                  >
+                    {`${percentage}%`}
+                  </ChartBtn>
+                ))}
+              </BtnsContainer>
 
-                <Col>
-                  {FakeData.map((item, i) => (
-                    <Item key={i}>{`${item.percentage}%`}</Item>
-                  ))}
-                </Col>
-              </Body>
-            </Table>
+              <Table style={{ width: '212px' }}>
+                <Head>
+                  <HeadItem>Coin</HeadItem>
+                  <HeadItem>Portfolio%</HeadItem>
+                </Head>
+                <Body>
+                  <Col>
+                    {FakeData.map((item, i) => (
+                      <Item key={i}>{item.coin}</Item>
+                    ))}
+                  </Col>
+
+                  <Col>
+                    {FakeData.map((item, i) => (
+                      <Item key={i}>{`${item.percentage}%`}</Item>
+                    ))}
+                  </Col>
+                </Body>
+              </Table>
+            </MainAreaUpperPart>
+            <ChartsContainer>
+              <Chart>first chart</Chart>
+              <Chart>second chart</Chart>
+            </ChartsContainer>
           </MainArea>
         </Content>
       </PTWrapper>
     )
   }
 }
+
+const ChartsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+const Chart = styled.div`
+  padding: 0.5rem;
+  margin: 1rem;
+  flex-basis: calc(50% - 2rem);
+  height: 500px;
+  border: 1px solid white;
+`
+
+const MainAreaUpperPart = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`
 
 const BtnsContainer = styled.div`
   display: flex;
@@ -117,9 +145,9 @@ const ChartBtn = styled.button`
 
 const MainArea = styled.div`
   color: white;
+  flex-direction: column;
   background: #292d31;
-  height: 500px;
-  width: 80%;
+  height: auto;
   display: flex;
   margin: 2rem;
 `
