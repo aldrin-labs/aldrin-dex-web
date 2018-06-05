@@ -40,7 +40,7 @@ const newTableHeadings = [
 export default class PortfolioTableRebalance extends React.Component<
   IProps,
   IState
-  > {
+> {
   state: IState = {
     selectedBalances: null,
     selectedActive: null,
@@ -263,9 +263,13 @@ export default class PortfolioTableRebalance extends React.Component<
       rows[idx].price = 0
     }
 
-
     rows = this.calculatePercents(rows, totalRows)
-    this.setState({ rows, selectedActive, areAllActiveChecked, isPercentSumGood: this.checkPercentSum(rows) })
+    this.setState({
+      rows,
+      selectedActive,
+      areAllActiveChecked,
+      isPercentSumGood: this.checkPercentSum(rows),
+    })
   }
 
   onSelectAllActive = (e: any) => {
@@ -330,7 +334,6 @@ export default class PortfolioTableRebalance extends React.Component<
         totalSavedRows: this.state.totalRows,
         isEditModeEnabled: false,
         undistributedMoney: 0,
-
       })
     }
   }
@@ -371,9 +374,13 @@ export default class PortfolioTableRebalance extends React.Component<
       setTimeout(() => {
         let newTotal = this.calculateTotal(rows)
         rows = this.calculatePercents(rows, newTotal)
-        this.setState({ selectedActive, rows, totalRows: newTotal, isPercentSumGood: this.checkPercentSum(rows) }) //Very brutal fix, need to be reworked
+        this.setState({
+          selectedActive,
+          rows,
+          totalRows: newTotal,
+          isPercentSumGood: this.checkPercentSum(rows),
+        }) //Very brutal fix, need to be reworked
       }, 100)
-
     }
   }
 
@@ -383,7 +390,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   checkPercentSum = (data: any[]) => {
     let sum = 0
-    data.forEach((row, i, arr) => {
+    data.forEach((row, i) => {
       sum += parseFloat(data[i].portfolioPerc)
     })
     if (Math.abs(sum - 100) > 0.01) {
@@ -394,14 +401,42 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onPercentInputChange = (e: any, idx: number) => {
-    let { rows } = this.state
-    rows[idx].portfolioPerc = e.target.value
-    this.setState({ isPercentSumGood: this.checkPercentSum(rows) })
-    e.preventDefault()
-    e.target.focus()
+
+    e.preventDefault();
+    let percentInput = e.target.value
+
+    console.log(percentInput);
+    console.log(/^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput));
+
+
+
+    if (!/^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)) {
+      console.log('not true');
+
+      return
+    }
+
+    //TODO: It should be in onFocusOut
+    if (percentInput === '') {
+      percentInput = 0
+    }
+
+    console.log(percentInput);
+
+
+    let rows = this.state.rows.slice()
+    rows[idx].portfolioPerc = String(percentInput)
+
+    this.setState({rows}, () => {
+      console.log(rows[idx]);
+
+    })
+    // this.setState({ isPercentSumGood: this.checkPercentSum(rows) })
+
+
+    // e.preventDefault()
+    // e.target.focus()
   }
-
-
 
   /* onPercentClick = (idx: number) => {
     this.setState({
@@ -456,10 +491,9 @@ export default class PortfolioTableRebalance extends React.Component<
         this.setState({
           addMoneyInputValue: 0,
           rows,
-          totalRows: newTotal
+          totalRows: newTotal,
         }) //Very brutal fix, need to be reworked
       }, 100)
-
     }
   }
 
@@ -570,15 +604,12 @@ export default class PortfolioTableRebalance extends React.Component<
       isEditModeEnabled,
       undistributedMoney,
     } = this.state
-    const saveButtonColor =
-      this.state.isPercentSumGood
-        ? '#65c000'
-        : '#ff687a'
+    const saveButtonColor = this.state.isPercentSumGood ? '#65c000' : '#ff687a'
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
-        <Icon className="fa fa-btc" />
-      )
+      <Icon className="fa fa-btc" />
+    )
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
@@ -613,7 +644,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 marginLeft: '4px',
                                 transform:
                                   currentSortForStatic &&
-                                    currentSortForStatic.arg === 'ASC'
+                                  currentSortForStatic.arg === 'ASC'
                                     ? 'rotate(180deg)'
                                     : null,
                               }}
@@ -645,7 +676,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       <PTR
                         key={`${currency}${symbol}${idx}`}
                         isSelected={isSelected}
-                      // onClick={() => this.onSelectBalance(idx)}
+                        // onClick={() => this.onSelectBalance(idx)}
                       >
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
@@ -674,7 +705,10 @@ export default class PortfolioTableRebalance extends React.Component<
                           }
 
                           return (
-                            <PTDC key={`${col}${index}`} isSelected={isSelected}>
+                            <PTDC
+                              key={`${col}${index}`}
+                              isSelected={isSelected}
+                            >
                               {col}
                             </PTDC>
                           )
@@ -706,7 +740,6 @@ export default class PortfolioTableRebalance extends React.Component<
                   isEditModeEnabled={isEditModeEnabled}
                 >
                   {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
-
                 </EditIconWrapper>
                 <ActionButton onClick={() => this.onReset()}>
                   <Replay />
@@ -761,7 +794,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 marginLeft: '4px',
                                 transform:
                                   currentSortForDynamic &&
-                                    currentSortForDynamic.arg === 'ASC'
+                                  currentSortForDynamic.arg === 'ASC'
                                     ? 'rotate(180deg)'
                                     : null,
                               }}
@@ -839,8 +872,8 @@ export default class PortfolioTableRebalance extends React.Component<
                             } else {
                               return (
                                 <PTDR key={`${col}${idx}`}>
-                                  <form onSubmit={this.onPercentSubmit}>
-                                    <input
+                                    <InputTable
+                                      key={`${col}${rowIndex}${idx}`}
                                       type="number"
                                       value={
                                         this.state.rows[rowIndex].portfolioPerc
@@ -848,12 +881,10 @@ export default class PortfolioTableRebalance extends React.Component<
                                       onChange={(e) =>
                                         this.onPercentInputChange(e, rowIndex)
                                       }
-                                      onBlur={this.onPercentSubmit}
                                       step="0.01"
                                       min="0"
                                       max="100"
                                     />
-                                  </form>
                                 </PTDR>
                               )
                             }
@@ -882,48 +913,33 @@ export default class PortfolioTableRebalance extends React.Component<
                         })}
                         <PTDR>
                           <TableButton
-                            isDeleteColor={
-                              false
-                            }
+                            isDeleteColor={false}
                             onClick={() => this.onButtonClick(rowIndex)}
                           >
-
                             <DeleteIcon />
-
                           </TableButton>
                         </PTDR>
                       </PTR>
                     )
                   })}
-                  {this.state.isEditModeEnabled ? (
+                  {this.state.isEditModeEnabled && (
                     <PTR>
-                      <PTDR>
-                      </PTDR>
-                      <PTDR>
-                      </PTDR>
-                      <PTDR>
-                      </PTDR>
-                      <PTDR>
-                      </PTDR>
-                      <PTDR>
-                      </PTDR>
-                      <PTDR>
-                      </PTDR>
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
                       <PTDR>
                         <TableButton
-                          isDeleteColor={
-                            true
-                          }
+                          isDeleteColor={true}
                           onClick={() => this.onAddRowButtonClick()}
                         >
-
                           <AddIcon />
-
                         </TableButton>
                       </PTDR>
                     </PTR>
-                  ) : () => { }}
-
+                  )}
                 </PTBody>
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
@@ -931,8 +947,10 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
-                    <PTHR>{mainSymbol}
-                      {`${totalRows}`}</PTHR>
+                    <PTHR>
+                      {mainSymbol}
+                      {`${totalRows}`}
+                    </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
                   </PTR>
@@ -1044,7 +1062,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 200vh;//45vh
+  height: 200vh; //45vh
   padding: 0 20px 20px;
 `
 
@@ -1192,7 +1210,7 @@ const PTBody = styled.tbody`
   
   & ${PTDR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode}
+      props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode}
 `
 
 const PTH = css`
@@ -1295,7 +1313,7 @@ const PTR = styled.tr`
     props.isSelected ? '#2d3136' : '#393e44'};
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
 
@@ -1315,7 +1333,7 @@ const PTHead = styled.thead`
 
   & ${PTHR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
+      props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
 `
 
 const PTFoot = styled.thead`
@@ -1334,7 +1352,7 @@ const PTFoot = styled.thead`
   
   & ${PTHR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
+      props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
 `
 
 const Span = styled.span``
@@ -1455,7 +1473,7 @@ const TableButton = styled.button`
   &:hover {
     & svg {
       color: ${(props: { isDeleteColor?: boolean }) =>
-    props.isDeleteColor ? '#65c000' : '#ff687a'};
+        props.isDeleteColor ? '#65c000' : '#ff687a'};
     }
   }
   & svg {
@@ -1506,7 +1524,7 @@ const ActionButtonsContainer = styled.div`
 
   & ${ActionButton} {
     visibility: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? 'visible' : 'hidden'};
+      props.isEditModeEnabled ? 'visible' : 'hidden'};
   }
 `
 
@@ -1550,18 +1568,19 @@ const UndistributedMoneyText = styled.p`
 const EditIconWrapper = styled.div`
   &:hover {
     color: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? '#ff687a' : '#65c000'};
+      props.isEditModeEnabled ? '#ff687a' : '#65c000'};
   }
 
   & svg {
     padding-bottom: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? '4px' : '7px'};
+      props.isEditModeEnabled ? '4px' : '7px'};
   }
 `
 
 const InputTable = styled.input`
+  min-width: 100px;
   background-color: #2d3136;
   border: none;
   outline: none;
   color: white;
-  `
+`
