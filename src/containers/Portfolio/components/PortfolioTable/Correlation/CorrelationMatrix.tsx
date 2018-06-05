@@ -57,13 +57,13 @@ class CorrelationMatrix extends Component<IProps, IState> {
   }
 
   mouseUpHandle = () => {
-    this.setState({ dragging: true })
+    this.setState({ dragging: false })
   }
 
   mouseDownHandle = (e: any) => {
     this.setState(
       {
-        dragging: false,
+        dragging: true,
         clientX: e.clientX,
         clientY: e.clientY,
       },
