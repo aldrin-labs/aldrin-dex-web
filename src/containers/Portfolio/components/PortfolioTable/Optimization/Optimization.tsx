@@ -1,10 +1,99 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import FakeData from './mocks'
+
+const Table = (props) => {
+  const { withInput, data } = props
+  if (withInput) {
+    return (
+      <StyledTable>
+        <Head>
+          <HeadItem>Coin</HeadItem>
+          <HeadItem>Portfolio%</HeadItem>
+        </Head>
+        <Body>
+          <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+
+          <Col>
+            {data.map((item, i) => (
+              <Item key={i}>
+                {`${item.percentage}%`} <StyledDeleteIcon />
+              </Item>
+            ))}
+          </Col>
+        </Body>
+        <TableInput>
+          <Item>
+            <Input type="text" />
+          </Item>
+          <Item
+            style={{
+              background: 'rgb(45, 49, 54)',
+              // because of nth-child(even)
+            }}
+          >
+            <Input type="text" />
+          </Item>
+        </TableInput>
+      </StyledTable>
+    )
+  } else {
+    return (
+      <StyledTable style={{ width: '212px' }}>
+        <Head>
+          <HeadItem>Coin</HeadItem>
+          <HeadItem>Portfolio%</HeadItem>
+        </Head>
+        <Body>
+          <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+
+          <Col>
+            {data.map((item, i) => (
+              <Item key={i}>
+                {`${item.percentage}%`}
+                <StyledDeleteIcon />
+              </Item>
+            ))}
+          </Col>
+        </Body>
+      </StyledTable>
+    )
+  }
+}
 
 class Optimization extends Component<{}> {
   state = {
     activePercentageButton: 0,
+    data: [],
+  }
+
+  componentDidMount() {
+    // const { data, isShownMocks } = this.props
+    const data = false
+    const isShownMocks = true
+
+    if (!data && isShownMocks) {
+      this.setState({ data: FakeData })
+      return
+    } else if (!data) {
+      return
+    }
+    // I dunno how exactly data looks like
+    const { someData } = data
+
+    this.setState({ data: someData })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data) {
+      const { someData } = nextProps.data
+      if (!someData) {
+        return
+      }
+
+      this.setState({ data: someData })
+    }
   }
 
   render() {
@@ -22,36 +111,7 @@ class Optimization extends Component<{}> {
               <Button>Optimize Portfolio</Button>
             </InputContainer>
 
-            <Table>
-              <Head>
-                <HeadItem>Coin</HeadItem>
-                <HeadItem>Portfolio%</HeadItem>
-              </Head>
-              <Body>
-                <Col>
-                  {FakeData.map((item, i) => <Item key={i}>{item.coin}</Item>)}
-                </Col>
-
-                <Col>
-                  {FakeData.map((item, i) => (
-                    <Item key={i}>{`${item.percentage}%`}</Item>
-                  ))}
-                </Col>
-              </Body>
-              <TableInput>
-                <Item>
-                  <Input type="text" />
-                </Item>
-                <Item
-                  style={{
-                    background: 'rgb(45, 49, 54)',
-                    // because of nth-child(even)
-                  }}
-                >
-                  <Input type="text" />
-                </Item>
-              </TableInput>
-            </Table>
+            <Table data={this.state.data} withInput />
           </UpperArea>
 
           <MainArea>
@@ -72,25 +132,7 @@ class Optimization extends Component<{}> {
                 ))}
               </BtnsContainer>
 
-              <Table style={{ width: '212px' }}>
-                <Head>
-                  <HeadItem>Coin</HeadItem>
-                  <HeadItem>Portfolio%</HeadItem>
-                </Head>
-                <Body>
-                  <Col>
-                    {FakeData.map((item, i) => (
-                      <Item key={i}>{item.coin}</Item>
-                    ))}
-                  </Col>
-
-                  <Col>
-                    {FakeData.map((item, i) => (
-                      <Item key={i}>{`${item.percentage}%`}</Item>
-                    ))}
-                  </Col>
-                </Body>
-              </Table>
+              <Table data={this.state.data} withInput={false} />
             </MainAreaUpperPart>
             <ChartsContainer>
               <Chart>first chart</Chart>
@@ -162,6 +204,7 @@ const Head = styled.div`
 `
 
 const Item = styled.div`
+  position: relative;
   color: white;
   justify-content: center;
   padding: 0.5rem;
@@ -191,6 +234,18 @@ const HeadItem = Item.extend`
     background: rgb(45, 49, 54);
   }
 `
+const StyledDeleteIcon = styled(DeleteIcon)`
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+  right: 0.5rem;
+  font-size: 1rem;
+  transition: opacity 0.3s ease-in;
+
+  ${Item}:hover & {
+    opacity: 1;
+  }
+`
 
 const TableInput = styled.div`
   display: flex;
@@ -199,7 +254,7 @@ const TableInput = styled.div`
   width: 192px;
 `
 
-const Table = styled.div`
+const StyledTable = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
