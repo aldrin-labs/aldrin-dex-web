@@ -49,6 +49,7 @@ export default class PortfolioTableRebalance extends React.Component<
     rows: JSON.parse(JSON.stringify(tableData)),
     staticRows: JSON.parse(JSON.stringify(tableData)),
     savedRows: JSON.parse(JSON.stringify(tableData)),
+    testRows: JSON.parse(JSON.stringify(tableData)),
     addMoneyInputValue: 0,
     activePercentInput: null,
     activePercentInputValues: [],
@@ -61,6 +62,7 @@ export default class PortfolioTableRebalance extends React.Component<
     totalStaticRows: 0,
     totalSavedRows: 0,
     isPercentSumGood: true,
+    testvar: 0
   }
   componentWillMount() {
     this.calculateAllTotals()
@@ -400,6 +402,54 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
+  onBlurFunc = (e: any) => {
+    console.log('blurred');
+  }
+
+  onTestFunc = (e: any, idx: number) => {
+
+    let percentInput = e.target.value
+    const { testRows, rows } = this.state
+
+    // console.log(testRows);
+
+
+    // this.setState({
+    //   testvar: Number(percentInput)
+    // }, () => {
+    //   console.log('testvar: ' + this.state.testvar);
+    // })
+
+    // console.log(this.state.rows);
+    // console.log(this.state.rows[idx]);
+    // console.log(this.state.rows[idx].portfolioPerc);
+
+
+    const clonedRows = testRows.map(a => ({...a}));
+    clonedRows[idx].portfolioPerc = percentInput
+
+
+
+    this.setState({
+      testRows: clonedRows
+    })
+
+
+    // const clonedRows = rows.map(a => ({...a}));
+    // let rows = JSON.parse(JSON.stringify(this.state.rows));
+
+    // console.log(rows);
+    // console.log('this.state.rows: ', this.state.rows);
+    //
+    //
+    // rows[idx].portfolioPerc = String(percentInput)
+    //
+    // this.setState({rows}, () => {
+    //   console.log(rows[idx]);
+    // })
+
+  }
+
   onPercentInputChange = (e: any, idx: number) => {
 
     e.preventDefault();
@@ -676,7 +726,6 @@ export default class PortfolioTableRebalance extends React.Component<
                       <PTR
                         key={`${currency}${symbol}${idx}`}
                         isSelected={isSelected}
-                        // onClick={() => this.onSelectBalance(idx)}
                       >
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
@@ -845,14 +894,9 @@ export default class PortfolioTableRebalance extends React.Component<
                       <PTR
                         key={`${currency}${symbol}${rowIndex}`}
                         isSelected={isSelected}
-                        onClick={
-                          isEditModeEnabled
-                            ? () => this.onSelectActiveBalance(rowIndex)
-                            : null
-                        }
                       >
                         {isEditModeEnabled && (
-                          <PTDR key="smt" isSelected={isSelected}>
+                          <PTDR key="smt" isSelected={isSelected} onClick={() => this.onSelectActiveBalance(rowIndex)}>
                             {this.renderActiveCheckbox(rowIndex)}
                           </PTDR>
                         )}
@@ -873,17 +917,18 @@ export default class PortfolioTableRebalance extends React.Component<
                               return (
                                 <PTDR key={`${col}${idx}`}>
                                     <InputTable
-                                      key={`${col}${rowIndex}${idx}`}
-                                      type="number"
+                                      key={`${rowIndex}`}
+                                      // type="number"
                                       value={
-                                        this.state.rows[rowIndex].portfolioPerc
+                                        this.state.testRows[rowIndex].portfolioPerc
                                       }
                                       onChange={(e) =>
-                                        this.onPercentInputChange(e, rowIndex)
+                                        this.onTestFunc(e, rowIndex)
                                       }
-                                      step="0.01"
-                                      min="0"
-                                      max="100"
+                                      onBlur={this.onBlurFunc}
+                                      // step="0.01"
+                                      // min="0"
+                                      // max="100"
                                     />
                                 </PTDR>
                               )
@@ -1002,6 +1047,14 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 }
+
+const InputTable = styled.input`
+  min-width: 100px;
+  background-color: #2d3136;
+  border: none;
+  outline: none;
+  color: white;
+`
 
 const Icon = styled.i`
   padding-right: 5px;
@@ -1311,9 +1364,22 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
+  
+  & ${InputTable} {
+    background-color: ${(props: { isSelected?: boolean }) =>
+  props.isSelected ? '#2d3136' : '#393e44'};
+    
+    border: 1px solid indianred;
+  }
+  
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
       props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  }
+  
+  &:nth-child(even) ${InputTable} {
+    background-color: ${(props: { isSelected?: boolean }) =>
+  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
 
@@ -1577,10 +1643,4 @@ const EditIconWrapper = styled.div`
   }
 `
 
-const InputTable = styled.input`
-  min-width: 100px;
-  background-color: #2d3136;
-  border: none;
-  outline: none;
-  color: white;
-`
+
