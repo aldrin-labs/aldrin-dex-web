@@ -1,64 +1,109 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
-import FakeData from './mocks'
+import AddIcon from 'react-icons/lib/md/add'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
+import { MOCK_DATA } from '../dataMock'
+import BarChart from './BarChart'
+import { calcPercentage } from '../../../../../utils/PortfolioTableUtils'
 
-const Table = (props) => {
-  const { withInput, data } = props
-  if (withInput) {
-    return (
-      <StyledTable>
-        <Head>
-          <HeadItem>Coin</HeadItem>
-          <HeadItem>Portfolio%</HeadItem>
-        </Head>
-        <Body>
-          <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+class Table extends Component<{}> {
+  state = {
+    name: '',
+    value: null,
+  }
 
-          <Col>
-            {data.map((item, i) => (
-              <Item key={i}>
-                {`${item.percentage}%`} <StyledDeleteIcon />
-              </Item>
-            ))}
-          </Col>
-        </Body>
-        <TableInput>
-          <Item>
-            <Input type="text" />
-          </Item>
-          <Item
-            style={{
-              background: 'rgb(45, 49, 54)',
-              // because of nth-child(even)
-            }}
-          >
-            <Input type="text" />
-          </Item>
-        </TableInput>
-      </StyledTable>
-    )
-  } else {
-    return (
-      <StyledTable style={{ width: '212px' }}>
-        <Head>
-          <HeadItem>Coin</HeadItem>
-          <HeadItem>Portfolio%</HeadItem>
-        </Head>
-        <Body>
-          <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+  formatString = (str: string) => str.toUpperCase().replace(/\s+/g, '')
 
-          <Col>
-            {data.map((item, i) => (
-              <Item key={i}>
-                {`${item.percentage}%`}
-                <StyledDeleteIcon />
-              </Item>
-            ))}
-          </Col>
-        </Body>
-      </StyledTable>
-    )
+  handleChangeName = (event) => {
+    if (event.target.value.length < 10) {
+      this.setState({
+        name: this.formatString(event.target.value),
+      })
+    }
+  }
+  handleChangeValue = (event) => {
+    this.setState({
+      value: this.formatString(event.target.value),
+    })
+  }
+
+  render() {
+    const { withInput, data, onClickDeleteIcon, onPlusClick } = this.props
+    if (withInput) {
+      return (
+        <StyledTable>
+          <Head>
+            <HeadItem>Coin</HeadItem>
+            <HeadItem>Portfolio%</HeadItem>
+          </Head>
+          <Body>
+            <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+
+            <Col>
+              {data.map((item, i) => (
+                <Item key={i}>
+                  {`${item.percentage}%`}{' '}
+                  <StyledDeleteIcon
+                    onClick={() => {
+                      onClickDeleteIcon(i)
+                    }}
+                  />
+                </Item>
+              ))}
+            </Col>
+          </Body>
+          <TableInput>
+            <Item>
+              <Input
+                type="text"
+                value={this.state.name || ''}
+                onChange={this.handleChangeName}
+              />
+            </Item>
+            <Item
+              style={{
+                background: 'rgb(45, 49, 54)',
+                // because of nth-child(even)
+              }}
+            >
+              <Input
+                type="number"
+                value={this.state.value || ''}
+                onChange={this.handleChangeValue}
+              />
+              <AddStyled
+                show={!!this.state.name}
+                onClick={() => {
+                  onPlusClick(this.state.name, this.state.value)
+                  this.setState({ name: '' })
+                  this.setState({ value: '' })
+                }}
+              />
+            </Item>
+          </TableInput>
+        </StyledTable>
+      )
+    } else {
+      return (
+        <StyledTable style={{ width: '212px' }}>
+          <Head>
+            <HeadItem>Coin</HeadItem>
+            <HeadItem>Portfolio%</HeadItem>
+          </Head>
+          <Body>
+            <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+
+            <Col>
+              {data.map((item, i) => (
+                <Item key={i}>{`${item.percentage}%`}</Item>
+              ))}
+            </Col>
+          </Body>
+        </StyledTable>
+      )
+    }
   }
 }
 
@@ -66,34 +111,108 @@ class Optimization extends Component<{}> {
   state = {
     activePercentageButton: 0,
     data: [],
+    optimizedData: [],
   }
 
-  componentDidMount() {
-    // const { data, isShownMocks } = this.props
-    const data = false
-    const isShownMocks = true
+  // componentDidMount() {
+  //   // const { data, isShownMocks } = this.props
+  //   const data = false
+  //   const isShownMocks = true
 
-    if (!data && isShownMocks) {
-      this.setState({ data: FakeData })
-      return
-    } else if (!data) {
-      return
-    }
-    // I dunno how exactly data looks like
-    const { someData } = data
+  //   if (!data && isShownMocks) {
+  //     this.setState({ data: FakeData })
+  //     return
+  //   } else if (!data) {
+  //     return
+  //   }
+  //   const { someData } = data
 
-    this.setState({ data: someData })
-  }
+  //   this.setState({ data: someData })
+  // }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.data) {
-      const { someData } = nextProps.data
-      if (!someData) {
-        return
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.data) {
+  //     const { someData } = nextProps.data
+  //     if (!someData) {
+  //       return
+  //     }
+
+  //     this.setState({ data: someData })
+  //   }
+  // }
+
+  sumSameCoins = (rawData) => {
+    const data = []
+
+    rawData.forEach((asset) => {
+      const index = data.findIndex((obj) => obj.coin === asset.coin)
+      if (index >= 0) {
+        data[index].percentage =
+          Number(asset.percentage) + Number(data[index].percentage)
+      } else {
+        data.push(asset)
       }
+    })
 
-      this.setState({ data: someData })
+    const result = data.map((asset) => {
+      const { coin, percentage } = asset
+
+      return { coin, percentage: calcPercentage(percentage) }
+    })
+
+    return result
+  }
+
+  importPortfolio = () => {
+    // i dunno what happens on backend so...
+    let assets
+    if (this.props.isShownMocks) {
+      assets = MOCK_DATA
+    } else {
+      // assets = getDataFromBackend
+      console.log('NoBackEnd fetch Logic here')
     }
+
+    const allSums = assets.filter(Boolean).reduce((acc, curr) => {
+      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
+      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
+        return null
+      }
+      const price = asset.priceBTC
+
+      return acc + value * Number(price)
+    }, 0)
+
+    const rawData = assets.map((data) => ({
+      coin: data.asset.symbol,
+      percentage: data.asset.priceBTC * data.value * 100 / allSums,
+    }))
+
+    this.setState({
+      data: this.sumSameCoins(rawData),
+    })
+  }
+
+  addRow = (name: string, value: number) => {
+    //
+
+    if (name) {
+      this.setState((prevState) => ({
+        data: this.sumSameCoins([
+          ...prevState.data,
+          { coin: name, percentage: value },
+        ]),
+      }))
+    }
+  }
+
+  deleteRow = (i: number) => {
+    console.log(i)
+    this.setState(() => {
+      const filteredArray = [...this.state.data]
+      filteredArray.splice(i, 1)
+      return { data: filteredArray }
+    })
   }
 
   render() {
@@ -106,12 +225,17 @@ class Optimization extends Component<{}> {
           {children}
           <UpperArea>
             <InputContainer>
-              <Button>Import Portfolio</Button>
+              <Button onClick={this.importPortfolio}>Import Portfolio</Button>
               <Input type="number" placeholder="Expected return" />
               <Button>Optimize Portfolio</Button>
             </InputContainer>
 
-            <Table data={this.state.data} withInput />
+            <Table
+              onPlusClick={this.addRow}
+              data={this.state.data}
+              withInput
+              onClickDeleteIcon={this.deleteRow}
+            />
           </UpperArea>
 
           <MainArea>
@@ -135,8 +259,42 @@ class Optimization extends Component<{}> {
               <Table data={this.state.data} withInput={false} />
             </MainAreaUpperPart>
             <ChartsContainer>
-              <Chart>first chart</Chart>
-              <Chart>second chart</Chart>
+              <Chart>
+                <BarChart
+                  data={[
+                    { x0: 0, x: 1, y: 1 },
+                    { x0: 2, x: 3, y: 1 },
+                    { x0: 4, x: 5, y: 3 },
+                    { x0: 7, x: 8, y: 21 },
+                    { x0: 10, x: 11, y: 12 },
+                    { x0: 12, x: 13, y: 10 },
+                    { x0: 14, x: 15, y: 13 },
+                    { x0: 16, x: 17, y: 2 },
+                    { x0: 18, x: 19, y: 4 },
+                    { x0: 20, x: 21, y: 3 },
+                    { x0: 22, x: 23, y: 6 },
+                    { x0: 24, x: 25, y: 3 },
+                  ]}
+                />
+              </Chart>
+              <Chart>
+                <BarChart
+                  data={[
+                    { x0: 0, x: 1, y: 1 },
+                    { x0: 2, x: 3, y: 1 },
+                    { x0: 4, x: 5, y: 3 },
+                    { x0: 7, x: 8, y: 21 },
+                    { x0: 10, x: 11, y: 12 },
+                    { x0: 12, x: 13, y: 10 },
+                    { x0: 14, x: 15, y: 13 },
+                    { x0: 16, x: 17, y: 2 },
+                    { x0: 18, x: 19, y: 4 },
+                    { x0: 20, x: 21, y: 3 },
+                    { x0: 22, x: 23, y: 6 },
+                    { x0: 24, x: 25, y: 3 },
+                  ]}
+                />
+              </Chart>
             </ChartsContainer>
           </MainArea>
         </Content>
@@ -145,16 +303,36 @@ class Optimization extends Component<{}> {
   }
 }
 
+const AddStyled = styled(AddIcon)`
+  position: relative;
+  font-size: 2rem;
+  cursor: pointer;
+  top: ${(props: { show: boolean }) => (props.show ? '0px' : '100px')};
+  opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
+  transition: all 0.4s linear;
+
+  @-moz-document url-prefix() {
+    min-width: 32px;
+    min-height: 32px;
+  }
+`
+
 const ChartsContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+
+  @media (max-width: 900px) {
+    flex-wrap: wrap;
+  }
 `
 const Chart = styled.div`
   padding: 0.5rem;
   margin: 1rem;
   flex-basis: calc(50% - 2rem);
-  height: 500px;
-  border: 1px solid white;
+  flex-grow: 1;
+  height: 300px;
+  border-radius: 1rem;
+  background: #393e44;
 `
 
 const MainAreaUpperPart = styled.div`
@@ -187,6 +365,8 @@ const ChartBtn = styled.button`
 
 const MainArea = styled.div`
   color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  border-radius: 3px;
   flex-direction: column;
   background: #292d31;
   height: auto;
@@ -248,6 +428,7 @@ const StyledDeleteIcon = styled(DeleteIcon)`
 `
 
 const TableInput = styled.div`
+  margin-left: 0.5rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -259,7 +440,7 @@ const StyledTable = styled.div`
   flex-direction: column;
   flex-wrap: nowrap;
   background: rgb(45, 49, 54);
-  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 `
 
 const Col = styled.div`
@@ -373,5 +554,10 @@ const Input = styled.input`
   padding: 10px 0 0px;
   color: rgb(255, 255, 255);
 `
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
 
-export default Optimization
+const storeComponent = connect(mapStateToProps)(Optimization)
+
+export default compose()(storeComponent)
