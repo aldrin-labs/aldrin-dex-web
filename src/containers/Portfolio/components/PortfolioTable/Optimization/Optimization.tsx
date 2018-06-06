@@ -112,34 +112,40 @@ class Optimization extends Component<{}> {
     activePercentageButton: 0,
     data: [],
     optimizedData: [],
+    expectedReturn: '',
+    activeButton: 2,
+    percentages: [0],
   }
 
-  // componentDidMount() {
-  //   // const { data, isShownMocks } = this.props
-  //   const data = false
-  //   const isShownMocks = true
+  handleChange = (event) => {
+    if (event.target.value.match(/^-?\d*\.?\d*$/g)) {
+      this.setState({
+        expectedReturn: event.target.value,
+      })
+    }
+  }
 
-  //   if (!data && isShownMocks) {
-  //     this.setState({ data: FakeData })
-  //     return
-  //   } else if (!data) {
-  //     return
-  //   }
-  //   const { someData } = data
+  optimizePortfolio = () => {
+    if (!(this.state.expectedReturn === '' || this.state.data.length < 1)) {
+      if (this.props.isShownMocks) {
+        this.setState({
+          optimizedData: this.state.data.map(({ coin }: { coin: string }) => ({
+            coin,
+            percentage: (Math.random() * 100).toFixed(2),
+          })),
+        })
+      } else {
+        // send some data to backend maybe?
+        // also get data from props and push it to main table
+        this.props.optimizedData &&
+          this.setState({ optimizedData: this.props.optimizedData })
+      }
 
-  //   this.setState({ data: someData })
-  // }
-
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.data) {
-  //     const { someData } = nextProps.data
-  //     if (!someData) {
-  //       return
-  //     }
-
-  //     this.setState({ data: someData })
-  //   }
-  // }
+      this.setState({
+        percentages: this.getPercentages(Number(this.state.expectedReturn)),
+      })
+    }
+  }
 
   sumSameCoins = (rawData) => {
     const data = []
@@ -169,7 +175,7 @@ class Optimization extends Component<{}> {
     if (this.props.isShownMocks) {
       assets = MOCK_DATA
     } else {
-      // assets = getDataFromBackend
+      assets = this.props.data
       console.log('NoBackEnd fetch Logic here')
     }
 
@@ -194,8 +200,6 @@ class Optimization extends Component<{}> {
   }
 
   addRow = (name: string, value: number) => {
-    //
-
     if (name) {
       this.setState((prevState) => ({
         data: this.sumSameCoins([
@@ -206,8 +210,53 @@ class Optimization extends Component<{}> {
     }
   }
 
+  onBtnClick = (index: number) => {
+    this.optimizePortfolio()
+    this.setState({ activeButton: index })
+  }
+
+  getPercentages = (percentage: number) => {
+    // sorry for not optimized code
+    const percetageArray = []
+
+    if (percentage <= 0) {
+      return []
+    }
+
+    if (percentage <= 5) {
+      percetageArray.push(percentage)
+
+      for (let index = 1; index < 5; index++) {
+        percetageArray.push(percentage + 5 * index)
+      }
+
+      return percetageArray
+    }
+
+    if (percentage <= 10) {
+      percetageArray.push(percentage - 5)
+      percetageArray.push(percentage)
+      for (let index = 1; index < 4; index++) {
+        percetageArray.push(percentage + 5 * index)
+      }
+
+      return percetageArray
+    }
+
+    for (let index = 1; index < 3; index++) {
+      percetageArray.push(percentage - 5 * (3 - index))
+    }
+
+    percetageArray.push(percentage)
+
+    for (let index = 1; index < 3; index++) {
+      percetageArray.push(percentage + 5 * index)
+    }
+
+    return percetageArray
+  }
+
   deleteRow = (i: number) => {
-    console.log(i)
     this.setState(() => {
       const filteredArray = [...this.state.data]
       filteredArray.splice(i, 1)
@@ -217,7 +266,13 @@ class Optimization extends Component<{}> {
 
   render() {
     const { children } = this.props
-    const percentages = [10, 15, 20, 25, 30]
+    const {
+      percentages,
+      expectedReturn,
+      data,
+      optimizedData,
+      activeButton,
+    } = this.state
 
     return (
       <PTWrapper>
@@ -226,8 +281,18 @@ class Optimization extends Component<{}> {
           <UpperArea>
             <InputContainer>
               <Button onClick={this.importPortfolio}>Import Portfolio</Button>
-              <Input type="number" placeholder="Expected return" />
-              <Button>Optimize Portfolio</Button>
+              <Input
+                type="number"
+                placeholder="Expected return"
+                value={expectedReturn || ''}
+                onChange={this.handleChange}
+              />
+              <Button
+                disabled={expectedReturn === '' || data.length < 1}
+                onClick={this.optimizePortfolio}
+              >
+                Optimize Portfolio
+              </Button>
             </InputContainer>
 
             <Table
@@ -240,23 +305,25 @@ class Optimization extends Component<{}> {
 
           <MainArea>
             <MainAreaUpperPart>
-              <BtnsContainer>
+              <BtnsContainer show={optimizedData.length >= 1}>
                 {percentages.map((percentage, i) => (
-                  <ChartBtn
-                    onClick={() => this.onPercentageButtonsClick(i)}
+                  <Btn
+                    onClick={() => {
+                      this.onBtnClick(i)
+                    }}
                     style={
-                      i === this.state.activePercentageButton
+                      i === activeButton
                         ? { backgroundColor: '#4ed8da', color: '#4c5055' }
                         : {}
                     }
                     key={percentage}
                   >
                     {`${percentage}%`}
-                  </ChartBtn>
+                  </Btn>
                 ))}
               </BtnsContainer>
 
-              <Table data={this.state.data} withInput={false} />
+              <Table data={optimizedData} withInput={false} />
             </MainAreaUpperPart>
             <ChartsContainer>
               <Chart>
@@ -347,9 +414,13 @@ const BtnsContainer = styled.div`
   flex-wrap: wrap;
   margin: 20px auto 20px auto;
   max-height: 2rem;
+  position: relative;
+  top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
+  z-index: ${(props: { show: boolean }) => (props.show ? '1' : '-10')};
+  transition: all 0.4s ease-out;
 `
 
-const ChartBtn = styled.button`
+const Btn = styled.button`
   border-radius: 2px;
   background-color: #4c5055;
   margin-right: 16px;
@@ -441,6 +512,7 @@ const StyledTable = styled.div`
   flex-wrap: nowrap;
   background: rgb(45, 49, 54);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  transition: all 0.3s linear;
 `
 
 const Col = styled.div`
@@ -529,7 +601,8 @@ const Button = styled.div`
   font-size: 12px;
   font-weight: 500;
   color: #4ed8da;
-  cursor: pointer;
+  cursor: ${(props: { disabled: boolean }) =>
+    props.disabled ? 'not-allowed' : 'pointer'};
   text-transform: uppercase;
   margin-top: 10px;
 
