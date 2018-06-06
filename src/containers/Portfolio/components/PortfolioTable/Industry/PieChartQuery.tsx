@@ -6,7 +6,7 @@ import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 import { PortfolioPieChart } from './api'
 import { PortfolioPieChartQuery } from './annotations'
-import { MOCKS, colors } from './mocks'
+import { MOCKS } from './mocks'
 
 export interface Props {
   data: PortfolioPieChartQuery

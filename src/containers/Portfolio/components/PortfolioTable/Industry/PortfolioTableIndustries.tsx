@@ -509,7 +509,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
                     return (
                       <PTRBody
-                        key={`${currency}${symbol}`}
+                        key={`${currency}${symbol}${idx}`}
                         isSelected={isSelected}
                         onClick={() => this.onSelectBalance(idx)}
                       >
@@ -657,6 +657,7 @@ const ChartWrapper = styled.div`
   width: 100%;
   height: 35vh;
   display: flex;
+  position: relative;
 `
 
 const ChartContainer = styled.div`

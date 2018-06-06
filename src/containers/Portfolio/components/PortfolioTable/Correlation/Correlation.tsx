@@ -53,8 +53,6 @@ export default class Correlation extends React.Component<IProps> {
 }
 
 const PTWrapper = styled.div`
-  width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 240px);' : '100%'};
   min-width: 70vw;
   display: flex;
   flex-direction: column;

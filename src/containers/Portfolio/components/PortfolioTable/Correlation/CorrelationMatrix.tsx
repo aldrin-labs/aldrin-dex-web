@@ -32,6 +32,7 @@ class CorrelationMatrix extends Component<IProps, IState> {
     super(props)
 
     this.onMouseOver = debounce(this.onMouseOver, 300)
+    this.onMouseLeave = debounce(this.onMouseLeave, 300)
 
     this.state = {
       hint: null,
@@ -54,7 +55,7 @@ class CorrelationMatrix extends Component<IProps, IState> {
   }
 
   onMouseLeave = () => {
-    this.setState({ hintOpacity: 0 })
+    this.setState({ hintOpacity: 0, hint: null })
   }
 
   render() {
