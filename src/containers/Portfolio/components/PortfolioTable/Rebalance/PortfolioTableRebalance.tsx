@@ -216,7 +216,7 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ rows, selectedActive, areAllActiveChecked })
   }
 
-  onButtonClick = (idx: number) => {
+  onDeleteRowClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
     let {
       selectedActive,
@@ -518,25 +518,15 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
   onEditModeEnable = () => {
-    let percValues = []
-    if (!this.state.isEditModeEnabled) {
-      const { rows } = this.state
-      rows.forEach((row, i, arr) => {
-        percValues[i] = rows[i].portfolioPerc
-      })
-    }
-
     if (this.state.isEditModeEnabled) {
       this.setState((prevState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
-        activePercentInputValues: percValues,
         totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
         rows: JSON.parse(JSON.stringify(this.state.savedRows)),
       }))
     } else {
       this.setState((prevState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
-        activePercentInputValues: percValues,
       }))
     }
   }
@@ -623,6 +613,7 @@ export default class PortfolioTableRebalance extends React.Component<
     ) : (
       <Icon className="fa fa-btc" />
     )
+
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
@@ -922,7 +913,7 @@ export default class PortfolioTableRebalance extends React.Component<
                         <PTDR>
                           <TableButton
                             isDeleteColor={false}
-                            onClick={() => this.onButtonClick(rowIndex)}
+                            onClick={() => this.onDeleteRowClick(rowIndex)}
                           >
                             <DeleteIcon />
                           </TableButton>
