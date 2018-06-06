@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 
-import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from './SwitchWithIcons'
 
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, colors, genAngleMocks, genMocks, inds } from './mocks'
+import { MOCKS, genMocks, inds } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -43,6 +42,9 @@ const defaultSelectedSum = {
 }
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
+  wrapperRef!: HTMLElement | null
+  childNode!: HTMLElement | null
+
   state: IState = {
     activeKeys: null,
     portfolio: null,
@@ -364,6 +366,25 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState({ lineChartMocks })
   }
 
+  setChildNodeRef = (ref: HTMLElement | null) => {
+    this.childNode = ref
+  }
+
+  setWrapperRef = (ref: HTMLElement | null) => {
+    this.wrapperRef = ref
+  }
+
+  setChartWidth = () => {
+    if (this.wrapperRef && this.childNode) {
+      const wrapperWidth = this.wrapperRef.offsetWidth
+      const tableWidth = this.childNode.offsetWidth
+      const divider = wrapperWidth / 20
+
+      return wrapperWidth - tableWidth - divider
+    }
+    return 300
+  }
+
   render() {
     const { isUSDCurrently, children } = this.props
     const {
@@ -378,6 +399,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         selectedRows &&
         industryData.length === selectedRows.length) ||
       false
+
+    const chartWidth = this.setChartWidth()
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
@@ -398,10 +421,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={!!tableDataHasData}>
+      <PTWrapper tableData={!!tableDataHasData} innerRef={this.setWrapperRef}>
         {children}
         <Container>
-          <Wrapper isThereAnySelectedRows={isThereAnySelectedRows}>
+          <Wrapper
+            isThereAnySelectedRows={isThereAnySelectedRows}
+            innerRef={this.setChildNodeRef}
+          >
             <PTable>
               <PTHead>
                 <PTR>
@@ -531,7 +557,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
-          <ChartContainer>
+          <ChartContainer style={{ width: chartWidth }}>
             <Heading>
               <Switch onClick={this.toggleChart} />
             </Heading>
@@ -640,7 +666,6 @@ const ChartContainer = styled.div`
 
   padding: 1em;
   text-align: center;
-  width: calc(60% - 4rem);
   height: 40vh;
   margin: 2rem 1rem;
 

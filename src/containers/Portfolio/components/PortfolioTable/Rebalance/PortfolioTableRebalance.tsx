@@ -629,10 +629,7 @@ export default class PortfolioTableRebalance extends React.Component<
           </ButtonsWrapper>
 
           <PieChartContainer>
-            <PieChart
-              data={combineToChart(PieChartMockSecond)}
-              flexible={true}
-            />
+            <PieChart data={combineToChart(PieChartMockSecond)} flexible />
           </PieChartContainer>
         </PieChartsWrapper>
       </PTWrapper>

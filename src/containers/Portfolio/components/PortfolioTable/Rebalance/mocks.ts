@@ -1,7 +1,8 @@
 export function combineToChart(mockData) {
-  return mockData.map((dataItem) => ({
+  return mockData.map((dataItem, i) => ({
     angle: dataItem.value,
     label: dataItem.name,
+    color: i + 1,
   }))
 }
 
