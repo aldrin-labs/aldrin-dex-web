@@ -436,13 +436,26 @@ export default class PortfolioTableRebalance extends React.Component<
     return Math.abs(sumOfAllPercents - 100) <= 0.01
   }
 
-  onBlurFunc = (e: any) => {
-    console.log('blurred')
+  onBlurFunc = (e: any, idx: number) => {
+    const { rows } = this.state
+    let percentInput = e.target.value
+
+    if (percentInput !== '') {
+      return
+    }
+    percentInput = 0
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].portfolioPerc = percentInput
+
+    this.setState({
+      rows: clonedRows,
+    })
   }
 
   onTestFunc = (e: any, idx: number) => {
-    let percentInput = e.target.value
     const { rows } = this.state
+    let percentInput = e.target.value
 
     if (
       !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|)$/.test(
@@ -462,33 +475,33 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onPercentInputChange = (e: any, idx: number) => {
-    e.preventDefault()
-    let percentInput = e.target.value
+    // e.preventDefault()
+    // let percentInput = e.target.value
+    //
+    // console.log(percentInput)
+    // console.log(
+    //   /^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)
+    // )
+    //
+    // if (!/^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)) {
+    //   console.log('not true')
+    //
+    //   return
+    // }
 
-    console.log(percentInput)
-    console.log(
-      /^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)
-    )
-
-    if (!/^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)) {
-      console.log('not true')
-
-      return
-    }
-
-    //TODO: It should be in onFocusOut
-    if (percentInput === '') {
-      percentInput = 0
-    }
-
-    console.log(percentInput)
-
-    let rows = this.state.rows.slice()
-    rows[idx].portfolioPerc = String(percentInput)
-
-    this.setState({ rows }, () => {
-      console.log(rows[idx])
-    })
+    // //TODO: It should be in onFocusOut
+    // if (percentInput === '') {
+    //   percentInput = 0
+    // }
+    //
+    // console.log(percentInput)
+    //
+    // let rows = this.state.rows.slice()
+    // rows[idx].portfolioPerc = String(percentInput)
+    //
+    // this.setState({ rows }, () => {
+    //   console.log(rows[idx])
+    // })
     // this.setState({ isPercentSumGood: this.checkPercentSum(rows) })
 
     // e.preventDefault()
@@ -934,7 +947,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                     onChange={(e) =>
                                       this.onTestFunc(e, rowIndex)
                                     }
-                                    onBlur={this.onBlurFunc}
+                                    onBlur={(e) => this.onBlurFunc(e, rowIndex)}
                                   />
                                 </PTDR>
                               )
