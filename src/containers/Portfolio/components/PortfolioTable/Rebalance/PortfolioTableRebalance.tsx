@@ -215,7 +215,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onDeleteRowClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive, staticRows, totalRows } = this.state
+    let { selectedActive, staticRows } = this.state
     let money = rows[idx].price
     // rows[rows.length - 1].undistributedMoney += money
     this.setState((prevState) => ({
@@ -251,12 +251,16 @@ export default class PortfolioTableRebalance extends React.Component<
       rows[idx].price = 0
     }
 
-    rows = this.calculatePercents(rows, totalRows)
+    // rows = this.calculatePercents(rows, totalRows)
+    let newTotalRows = this.calculateTotal(rows)
+    let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
+    let newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+
     this.setState({
-      rows,
       selectedActive,
-      isPercentSumGood: this.checkPercentSum(rows),
-      totalRows: this.calculateTotal(rows),
+      totalRows: newTotalRows,
+      rows: newRowsWithNewPercents,
+      isPercentSumGood: newIsPercentSumGood,
     })
   }
 
@@ -414,15 +418,10 @@ export default class PortfolioTableRebalance extends React.Component<
     const clonedRows = rows.map((a) => ({ ...a }))
     clonedRows[idx].portfolioPerc = percentInput
 
-    this.setState(
-      {
-        rows: clonedRows,
-        isPercentSumGood: this.checkPercentSum(clonedRows),
-      },
-      () => {
-        // console.log('isPerce: ', this.state.isPercentSumGood)
-      }
-    )
+    this.setState({
+      rows: clonedRows,
+      isPercentSumGood: this.checkPercentSum(clonedRows),
+    })
   }
 
   onPercentInputChange = (e: any, idx: number) => {
