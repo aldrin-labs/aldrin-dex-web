@@ -124,6 +124,27 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
+  checkForChanges = (data: any[]) => {
+    let { staticRows } = this.state
+    let isHasChangesInPrice = false
+
+    data.forEach((row, i) => {
+      staticRows.forEach((staticRow, j) => {
+        if (
+          data[i].currency === staticRows[j].currency &&
+          data[i].symbol === staticRows[j].symbol
+        ) {
+          console.log(data[i].portfolioPerc !== staticRows[j].portfolioPerc)
+          if (data[i].portfolioPerc !== staticRows[j].portfolioPerc) {
+            isHasChangesInPrice = true
+          }
+        }
+      })
+    })
+
+    return isHasChangesInPrice
+  }
+
   calculateTotal = (data: any[]) => {
     // const { undistributedMoney } = this.state
 
@@ -314,26 +335,32 @@ export default class PortfolioTableRebalance extends React.Component<
   onSaveClick = (e: any) => {
     if (this.state.isPercentSumGood) {
       let { rows, totalRows, undistributedMoney } = this.state
-      let sumTotal = totalRows
-      rows.forEach((row, i, arr) => {
-        if (rows[i].portfolioPerc) {
-          let newPrice = Math.round((totalRows / 100) * rows[i].portfolioPerc)
-          console.log(newPrice)
-          if (sumTotal <= newPrice) {
-            rows[i].price = newPrice
-            sumTotal = 0
-          } else {
-            rows[i].price = newPrice
-            sumTotal -= newPrice
+
+      if (this.checkForChanges(rows)) {
+        console.log('has changes')
+
+        let sumTotal = totalRows
+        rows.forEach((row, i) => {
+          if (rows[i].portfolioPerc) {
+            let newPrice = Math.round((totalRows / 100) * rows[i].portfolioPerc)
+            console.log('newPrice: ', newPrice)
+            if (sumTotal <= newPrice) {
+              rows[i].price = newPrice
+              sumTotal = 0
+            } else {
+              rows[i].price = newPrice
+              sumTotal -= newPrice
+            }
           }
-        }
-      })
-      rows = this.calculatePriceDifference(rows)
+        })
+
+        rows = this.calculatePriceDifference(rows)
+      }
 
       this.setState({
         savedRows: JSON.parse(JSON.stringify(this.state.rows)),
         rows,
-        totalSavedRows: this.state.totalRows,
+        totalSavedRows: totalRows,
         isEditModeEnabled: false,
         undistributedMoney: 0,
       })
