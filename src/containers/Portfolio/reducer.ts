@@ -6,17 +6,20 @@ import * as actions from './actions'
 const initialState = {
   portfolio: null,
   selectedAccounts: [],
+  optimizationData: [],
 }
 
 export default createReducer(
   {
-    [actions.getPortfolio]: (state, payload) => {
-      console.log(3333, state, payload)
+    [actions.updateDataForOptimization]: (state, payload) => ({
+      ...state,
+      optimizationData: payload,
+    }),
 
+    [actions.getPortfolio]: (state, payload) => {
       return { ...state, ...payload }
     },
     [actions.updateSelectedAccounts]: (state, payload) => {
-      console.log(11111, state, payload)
       return { ...state, selectedAccounts: [...payload] }
     },
     [actions.selectAllKeys]: (state, payload) => {

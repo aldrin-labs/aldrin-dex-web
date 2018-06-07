@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { MOCK_DATA } from '../dataMock'
 import BarChart from './BarChart'
 import { calcPercentage } from '../../../../../utils/PortfolioTableUtils'
+import * as actions from '../../../actions'
 
 class Table extends Component<{}> {
   state = {
@@ -126,10 +127,10 @@ class Optimization extends Component<{}> {
   }
 
   optimizePortfolio = () => {
-    if (!(this.state.expectedReturn === '' || this.state.data.length < 1)) {
+    if (!(this.state.expectedReturn === '' || this.props.data.length < 1)) {
       if (this.props.isShownMocks) {
         this.setState({
-          optimizedData: this.state.data.map(({ coin }: { coin: string }) => ({
+          optimizedData: this.props.data.map(({ coin }: { coin: string }) => ({
             coin,
             percentage: (Math.random() * 100).toFixed(2),
           })),
@@ -194,19 +195,17 @@ class Optimization extends Component<{}> {
       percentage: data.asset.priceBTC * data.value * 100 / allSums,
     }))
 
-    this.setState({
-      data: this.sumSameCoins(rawData),
-    })
+    this.props.updateData(this.sumSameCoins(rawData))
   }
 
   addRow = (name: string, value: number) => {
     if (name) {
-      this.setState((prevState) => ({
-        data: this.sumSameCoins([
-          ...prevState.data,
+      this.props.updateData(
+        this.sumSameCoins([
+          ...this.props.data,
           { coin: name, percentage: value },
-        ]),
-      }))
+        ])
+      )
     }
   }
 
@@ -256,20 +255,16 @@ class Optimization extends Component<{}> {
     return percetageArray
   }
 
-  deleteRow = (i: number) => {
-    this.setState(() => {
-      const filteredArray = [...this.state.data]
-      filteredArray.splice(i, 1)
-      return { data: filteredArray }
-    })
-  }
+  deleteRow = (i: number) =>
+    this.props.updateData(
+      [...this.props.data].filter((el, index) => i !== index)
+    )
 
   render() {
-    const { children } = this.props
+    const { children, data } = this.props
     const {
       percentages,
       expectedReturn,
-      data,
       optimizedData,
       activeButton,
     } = this.state
@@ -297,7 +292,7 @@ class Optimization extends Component<{}> {
 
             <Table
               onPlusClick={this.addRow}
-              data={this.state.data}
+              data={data}
               withInput
               onClickDeleteIcon={this.deleteRow}
             />
@@ -627,10 +622,16 @@ const Input = styled.input`
   padding: 10px 0 0px;
   color: rgb(255, 255, 255);
 `
-const mapStateToProps = (store) => ({
+const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
+  data: store.portfolio.optimizationData,
 })
 
-const storeComponent = connect(mapStateToProps)(Optimization)
+const mapDispatchToProps = (dispatch: any) => ({
+  updateData: (data: any) => dispatch(actions.updateDataForOptimization(data)),
+})
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  Optimization
+)
 
 export default compose()(storeComponent)
