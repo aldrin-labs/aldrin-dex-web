@@ -177,12 +177,13 @@ export default class PortfolioTableRebalance extends React.Component<
       }
 
       //TODO: SHOULD BE REFACTORED
-      row.portfolioPerc = row.portfolioPerc.toFixed(1)
+      row.portfolioPerc =
+        row.portfolioPerc === 0 ? 0 : row.portfolioPerc.toFixed(1)
       return row
     })
-    console.log('total', total)
-    console.log('sum: ', sum)
-    console.log('maxSum: ', maxSum)
+    // console.log('total', total)
+    // console.log('sum: ', sum)
+    // console.log('maxSum: ', maxSum)
     /*
       TODO:
       Sometimes sum of all percents isn't 100
@@ -239,6 +240,8 @@ export default class PortfolioTableRebalance extends React.Component<
         deleteFlag = false
       }
     })
+    console.log(deleteFlag)
+
     if (deleteFlag) {
       rows.splice(idx, 1)
       if (selectedActive) {
@@ -410,7 +413,9 @@ export default class PortfolioTableRebalance extends React.Component<
     //   Math.abs(sumOfAllPercents - 100)
     // )
 
-    return Math.abs(sumOfAllPercents - 100) <= 0.01
+    // console.log(Math.abs(sumOfAllPercents - 100))
+
+    return Math.abs(sumOfAllPercents - 100) <= 0.01 || sumOfAllPercents === 0
   }
 
   onBlurPercentInput = (e: any, idx: number) => {
