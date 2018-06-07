@@ -428,7 +428,7 @@ export default class PortfolioTableRebalance extends React.Component<
       Math.abs(sumOfAllPercents - 100)
     )
 
-    return Math.abs(sumOfAllPercents - 100) <= 0.1
+    return Math.abs(sumOfAllPercents - 100) <= 0.01
   }
 
   onBlurFunc = (e: any) => {
