@@ -360,6 +360,9 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({
       totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
     })
+    this.setState({
+      undistributedMoney: 0,
+    })
   }
 
   onDistribute = (e: any) => {
@@ -425,10 +428,14 @@ export default class PortfolioTableRebalance extends React.Component<
     const { rows } = this.state
     let percentInput = e.target.value
 
-    if (percentInput !== '') {
+    if (!/^([0-9]{1,3}\.|)$/.test(percentInput)) {
       return
     }
-    percentInput = 0
+    if (percentInput === '') {
+      percentInput = 0
+    } else {
+      percentInput = percentInput.slice(0, -1)
+    }
 
     const clonedRows = rows.map((a) => ({ ...a }))
     clonedRows[idx].portfolioPerc = percentInput
