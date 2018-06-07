@@ -138,7 +138,17 @@ export default class PortfolioTableRebalance extends React.Component<
     return total
   }
 
-  calculatePercents = (data: any[], total) => {
+  calculatePercents = (data: any[], total: number) => {
+    if (total === 0) {
+      return this.calculatePriceDifference(
+        data.map((row) => {
+          row.portfolioPerc = 0.0
+
+          return row
+        })
+      )
+    }
+
     let sum = 0
     let maxSum = 100
     let lastFlag = false
@@ -157,8 +167,9 @@ export default class PortfolioTableRebalance extends React.Component<
       row.portfolioPerc = row.portfolioPerc.toFixed(1)
       return row
     })
-    console.log(sum)
-    console.log(maxSum)
+    console.log('total', total)
+    console.log('sum: ', sum)
+    console.log('maxSum: ', maxSum)
     /*
       TODO:
       Sometimes sum of all percents isn't 100
@@ -170,20 +181,20 @@ export default class PortfolioTableRebalance extends React.Component<
     return this.calculatePriceDifference(newDataWithPercents)
   }
 
-  renderCheckbox = (idx: number) => {
-    const { selectedBalances } = this.state
-    const isSelected =
-      (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
-
-    return (
-      <React.Fragment>
-        <Checkbox type="checkbox" id={idx} checked={isSelected} />
-        <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
-          <Span />
-        </Label>
-      </React.Fragment>
-    )
-  }
+  // renderCheckbox = (idx: number) => {
+  //   const { selectedBalances } = this.state
+  //   const isSelected =
+  //     (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
+  //
+  //   return (
+  //     <React.Fragment>
+  //       <Checkbox type="checkbox" id={idx} checked={isSelected} />
+  //       <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
+  //         <Span />
+  //       </Label>
+  //     </React.Fragment>
+  //   )
+  // }
 
   renderActiveCheckbox = (idx: number) => {
     const { selectedActive } = this.state
@@ -251,7 +262,6 @@ export default class PortfolioTableRebalance extends React.Component<
       rows[idx].price = 0
     }
 
-    // rows = this.calculatePercents(rows, totalRows)
     let newTotalRows = this.calculateTotal(rows)
     let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
     let newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
@@ -386,15 +396,15 @@ export default class PortfolioTableRebalance extends React.Component<
       0
     )
 
-    console.log(
-      'checksum: ',
-      sumOfAllPercents - 100 > 0.1,
-      'sum of al perc: ',
-      sumOfAllPercents,
-      Math.abs(sumOfAllPercents - 100) > 0.1,
-      'math abs : ',
-      Math.abs(sumOfAllPercents - 100)
-    )
+    // console.log(
+    //   'checksum: ',
+    //   sumOfAllPercents - 100 > 0.1,
+    //   'sum of al perc: ',
+    //   sumOfAllPercents,
+    //   Math.abs(sumOfAllPercents - 100) > 0.1,
+    //   'math abs : ',
+    //   Math.abs(sumOfAllPercents - 100)
+    // )
 
     return Math.abs(sumOfAllPercents - 100) <= 0.01
   }
