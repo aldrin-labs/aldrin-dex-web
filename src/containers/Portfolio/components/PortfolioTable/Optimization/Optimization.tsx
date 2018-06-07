@@ -88,7 +88,7 @@ class Table extends Component<{}> {
       )
     } else {
       return (
-        <StyledTable style={{ width: '212px' }}>
+        <SyledTableWithoutInput>
           <Head>
             <HeadItem>Coin</HeadItem>
             <HeadItem>Portfolio%</HeadItem>
@@ -102,7 +102,7 @@ class Table extends Component<{}> {
               ))}
             </Col>
           </Body>
-        </StyledTable>
+        </SyledTableWithoutInput>
       )
     }
   }
@@ -119,11 +119,9 @@ class Optimization extends Component<{}> {
   }
 
   handleChange = (event) => {
-    if (event.target.value.match(/^-?\d*\.?\d*$/g)) {
-      this.setState({
-        expectedReturn: event.target.value,
-      })
-    }
+    this.setState({
+      expectedReturn: event.target.value.replace(/-|\+/g, ''),
+    })
   }
 
   optimizePortfolio = () => {
@@ -255,10 +253,17 @@ class Optimization extends Component<{}> {
     return percetageArray
   }
 
-  deleteRow = (i: number) =>
-    this.props.updateData(
+  deleteRow = (i: number) => {
+    this.setState({
+      optimizedData: this.state.optimizedData.filter(
+        (el) => el.coin !== this.props.data[i].coin
+      ),
+    })
+
+    return this.props.updateData(
       [...this.props.data].filter((el, index) => i !== index)
     )
+  }
 
   render() {
     const { children, data } = this.props
@@ -268,6 +273,8 @@ class Optimization extends Component<{}> {
       optimizedData,
       activeButton,
     } = this.state
+
+    const barChartData = { data, optimizedData }
 
     return (
       <PTWrapper>
@@ -322,41 +329,9 @@ class Optimization extends Component<{}> {
             </MainAreaUpperPart>
             <ChartsContainer>
               <Chart>
-                <BarChart
-                  data={[
-                    { x0: 0, x: 1, y: 1 },
-                    { x0: 2, x: 3, y: 1 },
-                    { x0: 4, x: 5, y: 3 },
-                    { x0: 7, x: 8, y: 21 },
-                    { x0: 10, x: 11, y: 12 },
-                    { x0: 12, x: 13, y: 10 },
-                    { x0: 14, x: 15, y: 13 },
-                    { x0: 16, x: 17, y: 2 },
-                    { x0: 18, x: 19, y: 4 },
-                    { x0: 20, x: 21, y: 3 },
-                    { x0: 22, x: 23, y: 6 },
-                    { x0: 24, x: 25, y: 3 },
-                  ]}
-                />
+                <BarChart data={barChartData} />
               </Chart>
-              <Chart>
-                <BarChart
-                  data={[
-                    { x0: 0, x: 1, y: 1 },
-                    { x0: 2, x: 3, y: 1 },
-                    { x0: 4, x: 5, y: 3 },
-                    { x0: 7, x: 8, y: 21 },
-                    { x0: 10, x: 11, y: 12 },
-                    { x0: 12, x: 13, y: 10 },
-                    { x0: 14, x: 15, y: 13 },
-                    { x0: 16, x: 17, y: 2 },
-                    { x0: 18, x: 19, y: 4 },
-                    { x0: 20, x: 21, y: 3 },
-                    { x0: 22, x: 23, y: 6 },
-                    { x0: 24, x: 25, y: 3 },
-                  ]}
-                />
-              </Chart>
+              <Chart>Chart</Chart>
             </ChartsContainer>
           </MainArea>
         </Content>
@@ -412,7 +387,8 @@ const BtnsContainer = styled.div`
   position: relative;
   top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
   z-index: ${(props: { show: boolean }) => (props.show ? '1' : '-10')};
-  transition: all 0.4s ease-out;
+  opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
+  transition: top 0.3s ease-in, opacity 0.3s ease-out;
 `
 
 const Btn = styled.button`
@@ -508,6 +484,11 @@ const StyledTable = styled.div`
   background: rgb(45, 49, 54);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   transition: all 0.3s linear;
+`
+
+const SyledTableWithoutInput = StyledTable.extend`
+  width: 212px;
+  min-height: 10rem;
 `
 
 const Col = styled.div`
@@ -608,10 +589,10 @@ const Button = styled.div`
 
 const Input = styled.input`
   box-sizing: border-box;
-  border-bottom: 2px solid rgb(78, 216, 218);
   background: transparent;
   border-top: none;
   border-left: none;
+  border-bottom: 2px solid rgba(78, 216, 218, 0.3);
   outline: none;
   border-right: none;
   width: 100%;
@@ -621,6 +602,11 @@ const Input = styled.input`
   text-align: left;
   padding: 10px 0 0px;
   color: rgb(255, 255, 255);
+  transition: all 0.25s ease-out;
+
+  &:focus {
+    border-bottom: 2px solid rgb(78, 216, 218);
+  }
 `
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
