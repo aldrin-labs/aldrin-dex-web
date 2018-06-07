@@ -128,6 +128,7 @@ export default class PortfolioTableRebalance extends React.Component<
     let { staticRows } = this.state
     let isHasChangesInPrice = false
 
+    //TODO: Should be more fast, maybe with old for loop, because we need to break loop when we found changes and go out of the function
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
         if (
@@ -231,37 +232,39 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState((prevState) => ({
       undistributedMoney: prevState.undistributedMoney + money,
     }))
-    let deleteFlag = true
-    this.state.staticRows.forEach((row, i, arr) => {
-      if (
-        rows[idx].currency == staticRows[i].currency &&
-        rows[idx].symbol == staticRows[i].symbol
-      ) {
-        deleteFlag = false
-      }
-    })
-    console.log(deleteFlag)
+    rows[idx].price = 0
 
-    if (deleteFlag) {
-      rows.splice(idx, 1)
-      if (selectedActive) {
-        let toRemove = -1
-        selectedActive.forEach((row, i, arr) => {
-          if (selectedActive[i] === idx) {
-            toRemove = i
-          } else {
-            if (selectedActive[i] > idx) {
-              selectedActive[i] -= 1
-            }
-          }
-        })
-        if (toRemove != -1) {
-          selectedActive.splice(toRemove, 1)
-        }
-      }
-    } else {
-      rows[idx].price = 0
-    }
+    // let deleteFlag = true
+    // this.state.staticRows.forEach((row, i, arr) => {
+    //   if (
+    //     rows[idx].currency == staticRows[i].currency &&
+    //     rows[idx].symbol == staticRows[i].symbol
+    //   ) {
+    //     deleteFlag = false
+    //   }
+    // })
+    // console.log(deleteFlag)
+    //
+    // if (deleteFlag) {
+    //   rows.splice(idx, 1)
+    //   if (selectedActive) {
+    //     let toRemove = -1
+    //     selectedActive.forEach((row, i, arr) => {
+    //       if (selectedActive[i] === idx) {
+    //         toRemove = i
+    //       } else {
+    //         if (selectedActive[i] > idx) {
+    //           selectedActive[i] -= 1
+    //         }
+    //       }
+    //     })
+    //     if (toRemove != -1) {
+    //       selectedActive.splice(toRemove, 1)
+    //     }
+    //   }
+    // } else {
+    //   rows[idx].price = 0
+    // }
 
     let newTotalRows = this.calculateTotal(rows)
     let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
@@ -440,7 +443,7 @@ export default class PortfolioTableRebalance extends React.Component<
     let percentInput = e.target.value
 
     if (
-      !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|)$/.test(
+      !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|100\.?|100\.0?|)$/.test(
         percentInput
       )
     ) {
