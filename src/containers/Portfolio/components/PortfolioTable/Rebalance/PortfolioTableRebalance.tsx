@@ -201,32 +201,21 @@ export default class PortfolioTableRebalance extends React.Component<
   }
   onAddRowButtonClick = () => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let {
-      selectedActive,
-      areAllActiveChecked,
-      staticRows,
-      totalRows,
-    } = this.state
+    let { totalRows } = this.state
     let newRow = {
       currency: 'Newcoin',
       symbol: 'NEW',
       portfolioPerc: 0.0,
       price: 0,
     }
-    rows.splice(rows.length, 0, newRow)
-    areAllActiveChecked = false
+    rows.push(newRow)
     rows = this.calculatePercents(rows, totalRows)
-    this.setState({ rows, selectedActive, areAllActiveChecked })
+    this.setState({ rows, areAllActiveChecked: false })
   }
 
   onDeleteRowClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let {
-      selectedActive,
-      areAllActiveChecked,
-      staticRows,
-      totalRows,
-    } = this.state
+    let { selectedActive, staticRows, totalRows } = this.state
     let money = rows[idx].price
     // rows[rows.length - 1].undistributedMoney += money
     this.setState((prevState) => ({
@@ -257,11 +246,6 @@ export default class PortfolioTableRebalance extends React.Component<
         if (toRemove != -1) {
           selectedActive.splice(toRemove, 1)
         }
-        if (selectedActive.length >= rows.length - 1) {
-          areAllActiveChecked = true
-        } else {
-          areAllActiveChecked = false
-        }
       }
     } else {
       rows[idx].price = 0
@@ -271,7 +255,6 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({
       rows,
       selectedActive,
-      areAllActiveChecked,
       isPercentSumGood: this.checkPercentSum(rows),
       totalRows: this.calculateTotal(rows),
     })
