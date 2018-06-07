@@ -152,6 +152,9 @@ export default class PortfolioTableRebalance extends React.Component<
         sum += maxSum
         lastFlag = true
       }
+
+      //TODO: SHOULD BE REFACTORED
+      row.portfolioPerc = row.portfolioPerc.toFixed(1)
       return row
     })
     console.log(sum)
@@ -389,16 +392,33 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ addMoneyInputValue: e.target.value })
   }
 
-  checkPercentSum = (data: any[]) => {
-    let sum = 0
-    data.forEach((row, i) => {
-      sum += parseFloat(data[i].portfolioPerc)
-    })
-    if (Math.abs(sum - 100) > 0.01) {
-      return false
-    } else {
-      return true
-    }
+  // checkPercentSum = (data: any[]) => {
+  //   // let sum = 0
+  //   // data.forEach((row, i) => {
+  //   //   sum += parseFloat(data[i].portfolioPerc)
+  //   // })
+  //
+  //   const sumOfAllPercents = data.reduce(
+  //     (sum, row) => (sum += parseFloat(row.portfolioPerc)),
+  //     0
+  //   )
+  //
+  //   // console.log('sum: ', sum)
+  //
+  //   if (Math.abs(sum - 100) > 0.1) {
+  //     return false
+  //   } else {
+  //     return true
+  //   }
+  // }
+
+  checkPercentSum = (data) => {
+    const sumOfAllPercents = data.reduce(
+      (sum, row) => (sum += parseFloat(row.portfolioPerc)),
+      0
+    )
+
+    return sumOfAllPercents - 100 > 0.1
   }
 
   onBlurFunc = (e: any) => {
@@ -409,12 +429,33 @@ export default class PortfolioTableRebalance extends React.Component<
     let percentInput = e.target.value
     const { rows } = this.state
 
+    // console.log(percentInput)
+    // console.log(
+    //   /^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)
+    // )
+
+    if (
+      !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|)$/.test(
+        percentInput
+      )
+    ) {
+      // console.log('not true')
+
+      return
+    }
+
     const clonedRows = rows.map((a) => ({ ...a }))
     clonedRows[idx].portfolioPerc = percentInput
 
-    this.setState({
-      rows: clonedRows,
-    })
+    this.setState(
+      {
+        rows: clonedRows,
+        isPercentSumGood: this.checkPercentSum(clonedRows),
+      },
+      () => {
+        console.log('isPerce: ', this.state.isPercentSumGood)
+      }
+    )
   }
 
   onPercentInputChange = (e: any, idx: number) => {
@@ -606,8 +647,9 @@ export default class PortfolioTableRebalance extends React.Component<
       totalRows,
       isEditModeEnabled,
       undistributedMoney,
+      isPercentSumGood,
     } = this.state
-    const saveButtonColor = this.state.isPercentSumGood ? '#65c000' : '#ff687a'
+    const saveButtonColor = isPercentSumGood ? '#65c000' : '#ff687a'
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
@@ -698,7 +740,7 @@ export default class PortfolioTableRebalance extends React.Component<
                               </PTDC>
                             )
                           }
-                          if (index == 3) {
+                          if (index === 3) {
                             return (
                               <PTDC key={`${col}${idx}`}>
                                 {mainSymbol}
@@ -806,6 +848,8 @@ export default class PortfolioTableRebalance extends React.Component<
                         </PTHR>
                       )
                     })}
+
+                    {isEditModeEnabled && <PTHR />}
                   </PTR>
                 </PTHead>
 
@@ -876,6 +920,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 <PTDR key={`input${idx}`}>
                                   <InputTable
                                     key={`${rowIndex}`}
+                                    isPercentSumGood={isPercentSumGood}
                                     value={
                                       this.state.rows[rowIndex].portfolioPerc
                                     }
@@ -1003,11 +1048,12 @@ export default class PortfolioTableRebalance extends React.Component<
 }
 
 const InputTable = styled.input`
-  min-width: 100px;
+  max-width: 60px;
   background-color: #2d3136;
   border: none;
   outline: none;
-  color: white;
+  color: ${(props: { isPercentSumGood?: boolean }) =>
+    props.isPercentSumGood ? 'white' : 'red'};
 `
 
 const Icon = styled.i`
