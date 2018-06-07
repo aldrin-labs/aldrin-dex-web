@@ -146,15 +146,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculateTotal = (data: any[]) => {
-    // const { undistributedMoney } = this.state
-
-    // console.log('underst before: ' + undistributedMoney)
-
     let total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
-
-    // console.log('underst after: ' + undistributedMoney)
-    //
-    // console.log(total + undistributedMoney)
 
     return total
   }
@@ -201,21 +193,6 @@ export default class PortfolioTableRebalance extends React.Component<
 
     return this.calculatePriceDifference(newDataWithPercents)
   }
-
-  // renderCheckbox = (idx: number) => {
-  //   const { selectedBalances } = this.state
-  //   const isSelected =
-  //     (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
-  //
-  //   return (
-  //     <React.Fragment>
-  //       <Checkbox type="checkbox" id={idx} checked={isSelected} />
-  //       <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
-  //         <Span />
-  //       </Label>
-  //     </React.Fragment>
-  //   )
-  // }
 
   renderActiveCheckbox = (idx: number) => {
     const { selectedActive } = this.state
@@ -436,7 +413,7 @@ export default class PortfolioTableRebalance extends React.Component<
     return Math.abs(sumOfAllPercents - 100) <= 0.01
   }
 
-  onBlurFunc = (e: any, idx: number) => {
+  onBlurPercentInput = (e: any, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -453,7 +430,7 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
-  onTestFunc = (e: any, idx: number) => {
+  onPercentInputChange = (e: any, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -474,75 +451,6 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
-  onPercentInputChange = (e: any, idx: number) => {
-    // e.preventDefault()
-    // let percentInput = e.target.value
-    //
-    // console.log(percentInput)
-    // console.log(
-    //   /^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)
-    // )
-    //
-    // if (!/^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)) {
-    //   console.log('not true')
-    //
-    //   return
-    // }
-
-    // //TODO: It should be in onFocusOut
-    // if (percentInput === '') {
-    //   percentInput = 0
-    // }
-    //
-    // console.log(percentInput)
-    //
-    // let rows = this.state.rows.slice()
-    // rows[idx].portfolioPerc = String(percentInput)
-    //
-    // this.setState({ rows }, () => {
-    //   console.log(rows[idx])
-    // })
-    // this.setState({ isPercentSumGood: this.checkPercentSum(rows) })
-
-    // e.preventDefault()
-    // e.target.focus()
-  }
-
-  /* onPercentClick = (idx: number) => {
-    this.setState({
-      activePercentInput: idx,
-      activePercentInputValue: this.state.rows[idx].portfolioPerc,
-    })
-  }
-
-  onPercentSubmit = (e: any) => {
-    let { rows, totalRows } = this.state
-    let percent = this.state.activePercentInputValue
-    let idx = this.state.activePercentInput
-    if (percent != rows[idx].portfolioPerc) {
-      let total = rows[rows.length - 1].price
-      let newMoney = Math.round(total * percent / 100)
-      let subMoney = newMoney - rows[idx].price
-      rows[idx].price = newMoney
-      // rows[rows.length - 1].undistributedMoney -= subMoney
-      this.setState((prevState) => ({
-        undistributedMoney: prevState.undistributedMoney - subMoney,
-      }))
-      rows = this.calculatePercents(rows, totalRows)
-      this.setState({
-        activePercentInput: null,
-        activePercentInputValue: 0,
-        rows,
-      })
-    } else {
-      this.setState({
-        activePercentInput: null,
-        activePercentInputValue: 0,
-      })
-    }
-    e.preventDefault()
-  }
-*/
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, totalRows, addMoneyInputValue } = this.state
@@ -945,9 +853,11 @@ export default class PortfolioTableRebalance extends React.Component<
                                       this.state.rows[rowIndex].portfolioPerc
                                     }
                                     onChange={(e) =>
-                                      this.onTestFunc(e, rowIndex)
+                                      this.onPercentInputChange(e, rowIndex)
                                     }
-                                    onBlur={(e) => this.onBlurFunc(e, rowIndex)}
+                                    onBlur={(e) =>
+                                      this.onBlurPercentInput(e, rowIndex)
+                                    }
                                   />
                                 </PTDR>
                               )
