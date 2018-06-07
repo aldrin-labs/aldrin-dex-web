@@ -125,17 +125,17 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculateTotal = (data: any[]) => {
-    const { undistributedMoney } = this.state
+    // const { undistributedMoney } = this.state
 
-    console.log('underst before: ' + undistributedMoney)
+    // console.log('underst before: ' + undistributedMoney)
 
     let total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
-    console.log('underst after: ' + undistributedMoney)
+    // console.log('underst after: ' + undistributedMoney)
+    //
+    // console.log(total + undistributedMoney)
 
-    console.log(total + undistributedMoney)
-
-    return total + undistributedMoney
+    return total
   }
 
   calculatePercents = (data: any[], total) => {
@@ -273,6 +273,7 @@ export default class PortfolioTableRebalance extends React.Component<
       selectedActive,
       areAllActiveChecked,
       isPercentSumGood: this.checkPercentSum(rows),
+      totalRows: this.calculateTotal(rows),
     })
   }
 
