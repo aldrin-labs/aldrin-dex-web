@@ -414,7 +414,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   checkPercentSum = (data) => {
     const sumOfAllPercents = data.reduce(
-      (sum, row) => (sum += parseFloat(row.portfolioPerc)),
+      (sum, row) => (sum += +row.portfolioPerc),
       0
     )
 
