@@ -345,7 +345,6 @@ export default class PortfolioTableRebalance extends React.Component<
         rows,
         totalSavedRows: totalRows,
         isEditModeEnabled: false,
-        undistributedMoney: 0,
       })
     }
   }
