@@ -418,7 +418,17 @@ export default class PortfolioTableRebalance extends React.Component<
       0
     )
 
-    return sumOfAllPercents - 100 > 0.1
+    console.log(
+      'checksum: ',
+      sumOfAllPercents - 100 > 0.1,
+      'sum of al perc: ',
+      sumOfAllPercents,
+      Math.abs(sumOfAllPercents - 100) > 0.1,
+      'math abs : ',
+      Math.abs(sumOfAllPercents - 100)
+    )
+
+    return Math.abs(sumOfAllPercents - 100) <= 0.1
   }
 
   onBlurFunc = (e: any) => {
@@ -429,18 +439,11 @@ export default class PortfolioTableRebalance extends React.Component<
     let percentInput = e.target.value
     const { rows } = this.state
 
-    // console.log(percentInput)
-    // console.log(
-    //   /^([0-9]([.][1-9])?|[1-9][0-9]([.][1-9])?|100|)$/.test(percentInput)
-    // )
-
     if (
       !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|)$/.test(
         percentInput
       )
     ) {
-      // console.log('not true')
-
       return
     }
 
@@ -453,7 +456,7 @@ export default class PortfolioTableRebalance extends React.Component<
         isPercentSumGood: this.checkPercentSum(clonedRows),
       },
       () => {
-        console.log('isPerce: ', this.state.isPercentSumGood)
+        // console.log('isPerce: ', this.state.isPercentSumGood)
       }
     )
   }
