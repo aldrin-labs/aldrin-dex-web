@@ -378,6 +378,8 @@ export default class PortfolioTableRebalance extends React.Component<
         rows = this.calculatePriceDifference(rowsWithNewPrice)
       }
 
+      console.log(rows)
+
       this.setState({
         savedRows: JSON.parse(JSON.stringify(this.state.rows)),
         rows,
@@ -469,7 +471,7 @@ export default class PortfolioTableRebalance extends React.Component<
       return
     }
     if (percentInput === '') {
-      percentInput = 0
+      percentInput = '0'
     } else {
       percentInput = percentInput.slice(0, -1)
     }
@@ -497,7 +499,7 @@ export default class PortfolioTableRebalance extends React.Component<
     const clonedRows = rows.map((a) => ({ ...a }))
     clonedRows[idx].portfolioPerc = percentInput
 
-    let newCalculatedRowsWithPercents = this.calculatePriceByPercents(
+    const newCalculatedRowsWithPercents = this.calculatePriceByPercents(
       clonedRows
     )
 
