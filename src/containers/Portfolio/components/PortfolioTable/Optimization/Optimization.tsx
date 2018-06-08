@@ -6,6 +6,7 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { MOCK_DATA } from '../dataMock'
 import BarChart from './BarChart'
+import EfficientFrontier from './EfficientFrontier'
 import { calcPercentage } from '../../../../../utils/PortfolioTableUtils'
 import * as actions from '../../../actions'
 
@@ -266,7 +267,7 @@ class Optimization extends Component<{}> {
   }
 
   render() {
-    const { children, data } = this.props
+    const { children, data, risk } = this.props
     const {
       percentages,
       expectedReturn,
@@ -275,6 +276,21 @@ class Optimization extends Component<{}> {
     } = this.state
 
     const barChartData = { data, optimizedData }
+    const efficientFrontierData = {
+      percentages,
+      // if there is no riskData from server so push some random data
+      // demoPurpose
+      risk: risk
+        ? risk
+        : [
+            (Math.random() * 100).toFixed(2),
+            (Math.random() * 100).toFixed(2),
+            (Math.random() * 100).toFixed(2),
+            (Math.random() * 100).toFixed(2),
+            (Math.random() * 100).toFixed(2),
+          ],
+      activeButton,
+    }
 
     return (
       <PTWrapper>
@@ -285,7 +301,7 @@ class Optimization extends Component<{}> {
               <Button onClick={this.importPortfolio}>Import Portfolio</Button>
               <Input
                 type="number"
-                placeholder="Expected return"
+                placeholder="Expected return in %"
                 value={expectedReturn || ''}
                 onChange={this.handleChange}
               />
@@ -331,7 +347,9 @@ class Optimization extends Component<{}> {
               <Chart>
                 <BarChart data={barChartData} />
               </Chart>
-              <Chart>Chart</Chart>
+              <Chart>
+                <EfficientFrontier data={efficientFrontierData} />
+              </Chart>
             </ChartsContainer>
           </MainArea>
         </Content>
