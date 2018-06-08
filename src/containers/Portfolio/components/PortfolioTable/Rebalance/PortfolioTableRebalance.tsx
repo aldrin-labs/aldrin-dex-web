@@ -165,7 +165,7 @@ export default class PortfolioTableRebalance extends React.Component<
     if (total === 0) {
       return this.calculatePriceDifference(
         data.map((row) => {
-          row.portfolioPerc = 0.0
+          row.portfolioPerc = '0'
 
           return row
         })
@@ -188,7 +188,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
       //TODO: SHOULD BE REFACTORED
       row.portfolioPerc =
-        row.portfolioPerc === 0 ? 0 : row.portfolioPerc.toFixed(1)
+        row.portfolioPerc == 0 ? '0' : row.portfolioPerc.toFixed(1)
       return row
     })
     // console.log('total', total)
