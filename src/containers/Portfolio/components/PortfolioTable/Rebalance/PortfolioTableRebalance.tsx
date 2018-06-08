@@ -831,7 +831,10 @@ export default class PortfolioTableRebalance extends React.Component<
                 <ActionButton onClick={() => this.onSaveClick()}>
                   <SaveIcon style={{ color: saveButtonColor }} />
                 </ActionButton>
-                <ActionButton onClick={() => this.onLoadPreviousClick()}>
+                <ActionButton
+                  onClick={() => this.onLoadPreviousClick()}
+                  style={{ display: 'none' }}
+                >
                   <UndoIcon />
                 </ActionButton>
               </ActionButtonsContainer>
