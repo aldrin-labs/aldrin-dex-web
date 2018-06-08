@@ -932,12 +932,26 @@ export default class PortfolioTableRebalance extends React.Component<
                           if (col.match(/BUY/g)) {
                             const color = '#65c000'
 
-                            return <PTDR style={{ color }}>{col}</PTDR>
+                            return (
+                              <PTDR
+                                key={`buy${idx}${col}${rowIndex}`}
+                                style={{ color }}
+                              >
+                                {col}
+                              </PTDR>
+                            )
                           }
                           if (col.match(/SELL/g)) {
                             const color = '#ff687a'
 
-                            return <PTDR style={{ color }}>{col}</PTDR>
+                            return (
+                              <PTDR
+                                key={`sell${idx}${col}${rowIndex}`}
+                                style={{ color }}
+                              >
+                                {col}
+                              </PTDR>
+                            )
                           }
 
                           if (idx === 3) {
