@@ -66,20 +66,25 @@ export default class PortfolioTableRebalance extends React.Component<
   }
   componentWillMount() {
     this.calculateAllTotals()
-    setTimeout(() => {
-      this.calculateAllPercents() //TODO: find better way to fix it
-    }, 100)
+    // setTimeout(() => {
+    //   this.calculateAllPercents() //TODO: find better way to fix it
+    // }, 100)
   }
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
   }
 
   calculateAllTotals = () => {
-    this.setState({
-      totalRows: this.calculateTotal(this.state.rows),
-      totalStaticRows: this.calculateTotal(this.state.staticRows),
-      totalSavedRows: this.calculateTotal(this.state.savedRows),
-    })
+    this.setState(
+      {
+        totalRows: this.calculateTotal(this.state.rows),
+        totalStaticRows: this.calculateTotal(this.state.staticRows),
+        totalSavedRows: this.calculateTotal(this.state.savedRows),
+      },
+      () => {
+        this.calculateAllPercents()
+      }
+    )
   }
 
   componentWillReceiveProps(nextProps: IProps) {
@@ -189,6 +194,7 @@ export default class PortfolioTableRebalance extends React.Component<
       //TODO: SHOULD BE REFACTORED
       row.portfolioPerc =
         row.portfolioPerc == 0 ? '0' : row.portfolioPerc.toFixed(1)
+
       return row
     })
     // console.log('total', total)
@@ -389,17 +395,26 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
   onLoadPreviousClick = (e: any) => {
-    this.setState({ rows: JSON.parse(JSON.stringify(this.state.savedRows)) })
+    // this.setState({ rows: JSON.parse(JSON.stringify(this.state.savedRows)) })
+    // this.setState({
+    //   totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+    // })
     this.setState({
+      rows: JSON.parse(JSON.stringify(this.state.savedRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
     })
   }
   onReset = (e: any) => {
-    this.setState({ rows: JSON.parse(JSON.stringify(this.state.staticRows)) })
+    // this.setState({ rows: JSON.parse(JSON.stringify(this.state.staticRows)) })
+    // this.setState({
+    //   totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
+    // })
+    // this.setState({
+    //   undistributedMoney: 0,
+    // })
     this.setState({
+      rows: JSON.parse(JSON.stringify(this.state.staticRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
-    })
-    this.setState({
       undistributedMoney: 0,
     })
   }
@@ -407,25 +422,20 @@ export default class PortfolioTableRebalance extends React.Component<
   onDistribute = (e: any) => {
     let { selectedActive, rows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
+      let money = undistributedMoney
+
       if (selectedActive.length > 1) {
-        // let money = rows[rows.length - 1].undistributedMoney
-        let money = undistributedMoney
         let moneyPart = Math.floor(money / selectedActive.length)
         selectedActive.forEach((row, i, arr) => {
           rows[selectedActive[i]].price += moneyPart
           money -= moneyPart
         })
-        // rows[rows.length - 1].undistributedMoney = money
-        this.setState({ undistributedMoney: money })
       } else {
-        // rows[selectedActive[0]].price +=
-        //   rows[rows.length - 1].undistributedMoney
         rows[selectedActive[0]].price += undistributedMoney
-
-        // rows[rows.length - 1].undistributedMoney = 0
-        this.setState({ undistributedMoney: 0 })
+        money = 0
       }
-      setTimeout(() => {
+
+      this.setState({ undistributedMoney: money }, () => {
         let newTotal = this.calculateTotal(rows)
         rows = this.calculatePercents(rows, newTotal)
         this.setState({
@@ -434,7 +444,18 @@ export default class PortfolioTableRebalance extends React.Component<
           totalRows: newTotal,
           isPercentSumGood: this.checkPercentSum(rows),
         }) //Very brutal fix, need to be reworked
-      }, 100)
+      })
+
+      // setTimeout(() => {
+      //   let newTotal = this.calculateTotal(rows)
+      //   rows = this.calculatePercents(rows, newTotal)
+      //   this.setState({
+      //     selectedActive,
+      //     rows,
+      //     totalRows: newTotal,
+      //     isPercentSumGood: this.checkPercentSum(rows),
+      //   }) //Very brutal fix, need to be reworked
+      // }, 100)
     }
   }
 
@@ -511,6 +532,24 @@ export default class PortfolioTableRebalance extends React.Component<
       newCalculatedRowsWithPercents
     )
 
+    const newTotalRows = this.calculateTotal(newCalculatedRowsWithPercents)
+
+    // NOT READY FOR NOW
+    // //TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
+    // let oldRowPrice = rows[idx].price
+    // let newRowPrice = newCalculatedRowsWithPercents[idx].price
+    // let oldNewPriceDiff = oldRowPrice - newRowPrice
+    //
+    // console.log('oldRowPrice: ', oldRowPrice)
+    // console.log('newRowPrice: ', newRowPrice)
+    // console.log('oldNewPriceDiff: ', oldNewPriceDiff)
+    //
+    // if (oldRowPrice > newRowPrice) {
+    //   this.setState((prevState) => ({
+    //     undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
+    //   }))
+    // }
+
     this.setState({
       rows: rowWithNewPriceDiff,
       isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
@@ -522,23 +561,31 @@ export default class PortfolioTableRebalance extends React.Component<
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, totalRows, addMoneyInputValue } = this.state
 
-      this.setState((prevState) => ({
-        undistributedMoney:
-          prevState.undistributedMoney + Number(addMoneyInputValue),
-      }))
+      this.setState(
+        (prevState) => ({
+          undistributedMoney:
+            prevState.undistributedMoney + Number(addMoneyInputValue),
+        }),
+        () => {
+          let newTotal = this.calculateTotal(rows)
+          //rows = this.calculatePercents(rows, newTotal)
+          this.setState({
+            addMoneyInputValue: 0,
+            rows,
+            totalRows: newTotal,
+          }) //Very brutal fix, need to be reworked
+        }
+      )
 
-      // rows[rows.length - 1].undistributedMoney += Number(
-      //   this.state.addMoneyInputValue
-      // )
-      setTimeout(() => {
-        let newTotal = this.calculateTotal(rows)
-        //rows = this.calculatePercents(rows, newTotal)
-        this.setState({
-          addMoneyInputValue: 0,
-          rows,
-          totalRows: newTotal,
-        }) //Very brutal fix, need to be reworked
-      }, 100)
+      // setTimeout(() => {
+      //   let newTotal = this.calculateTotal(rows)
+      //   //rows = this.calculatePercents(rows, newTotal)
+      //   this.setState({
+      //     addMoneyInputValue: 0,
+      //     rows,
+      //     totalRows: newTotal,
+      //   }) //Very brutal fix, need to be reworked
+      // }, 100)
     }
   }
 
