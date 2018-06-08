@@ -1043,6 +1043,19 @@
     "@types/node" "*"
     "@types/react" "*"
 
+"@types/react-icon-base@*":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-icon-base/-/react-icon-base-2.1.1.tgz#0e15d2e314ca1c0ca64f8b8235d85c4b68f31e0e"
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-icons@^2.2.5":
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/@types/react-icons/-/react-icons-2.2.5.tgz#fc6e78d113415ecc5602f56550a8e3022f5fdf11"
+  dependencies:
+    "@types/react" "*"
+    "@types/react-icon-base" "*"
+
 "@types/react-intl@^2.3.8":
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/@types/react-intl/-/react-intl-2.3.8.tgz#de56b21b67e39df24bc0fc7e67b437976b666919"

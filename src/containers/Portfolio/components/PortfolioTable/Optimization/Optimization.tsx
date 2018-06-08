@@ -21,7 +21,7 @@ class Optimization extends Component<{}> {
 
   handleChange = (event) => {
     this.setState({
-      expectedReturn: event.target.value.replace(/-|\+/g, ''),
+      expectedReturn: event.target.value.replace(/-|%/g, ''),
     })
   }
 
@@ -70,12 +70,12 @@ class Optimization extends Component<{}> {
   }
 
   importPortfolio = () => {
-    // i dunno what happens on backend so...
     let assets
     if (this.props.isShownMocks) {
       assets = MOCK_DATA
     } else {
       assets = this.props.data
+      // Implement BackEnd fetch Logic here
       console.log('NoBackEnd fetch Logic here')
     }
 
@@ -200,7 +200,6 @@ class Optimization extends Component<{}> {
             <InputContainer>
               <Button onClick={this.importPortfolio}>Import Portfolio</Button>
               <Input
-                type="number"
                 placeholder="Expected return in %"
                 value={expectedReturn || ''}
                 onChange={this.handleChange}

@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
+import { IProps, IState } from './tableTypes'
 
-class Table extends Component<{}> {
+class Table extends Component<IProps, IState> {
   state = {
     name: '',
     value: null,
@@ -11,14 +12,14 @@ class Table extends Component<{}> {
 
   formatString = (str: string) => str.toUpperCase().replace(/\s+/g, '')
 
-  handleChangeName = (event) => {
+  handleChangeName = (event: any) => {
     if (event.target.value.length < 10) {
       this.setState({
         name: this.formatString(event.target.value),
       })
     }
   }
-  handleChangeValue = (event) => {
+  handleChangeValue = (event: any) => {
     this.setState({
       value: this.formatString(event.target.value),
     })
@@ -26,6 +27,7 @@ class Table extends Component<{}> {
 
   render() {
     const { withInput, data, onClickDeleteIcon, onPlusClick } = this.props
+
     if (withInput) {
       return (
         <StyledTable>

@@ -51,6 +51,7 @@
     "@types/d3-time-format": "^2.1.0",
     "@types/lodash": "^4.14.109",
     "@types/prop-types": "^15.5.3",
+    "@types/react-icons": "^2.2.5",
     "apollo-cache-inmemory": "^1.1.11",
     "apollo-client": "^2.2.7",
     "apollo-link-context": "^1.0.7",

@@ -9,6 +9,26 @@ import {
   DiscreteColorLegend,
 } from 'react-vis'
 
+export interface IValue {
+  x: string
+  y: string
+}
+
+export interface IData {
+  coin: string
+  percentage: number
+}
+
+export interface IProps {
+  data: {
+    data: IData[]
+    optimizedData: IData[]
+  }
+}
+export interface IState {
+  value: IValue | null
+}
+
 const ITEMS = [
   { title: 'Optimized', color: '#4fa1da' },
   { title: 'Original', color: '#4fd8da' },
@@ -24,21 +44,24 @@ const axisStyle = {
     fontWeight: 100,
   },
 }
-class BarChart extends Component {
+class BarChart extends Component<IProps, IState> {
   state = {
     value: null,
   }
 
-  onValueMouseOver = (value: { x: string; y: number }) =>
-    this.setState({ value })
+  onValueMouseOver = (value: IValue) => this.setState({ value })
 
   onSeriesMouseOut = () => this.setState({ value: null })
 
   render() {
     const { data, optimizedData } = this.props.data
     const { value } = this.state
+    console.log(value)
 
-    const formatedData = data.map((el, i) => ({ x: el.coin, y: el.percentage }))
+    const formatedData = data.map((el: IData, i) => ({
+      x: el.coin,
+      y: el.percentage,
+    }))
     const formatedOptimizedData = optimizedData.map((el, i) => ({
       x: el.coin,
       y: el.percentage,
@@ -102,10 +125,10 @@ class BarChart extends Component {
 }
 
 const LegendContainer = styled.div`
-  opacity: ${(props) => (props.value ? '1' : '0')};
+  opacity: ${(props: { value: IValue }) => (props.value ? '1' : '0')};
   border-radius: 5px;
   position: absolute;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   background-color: #869eb180;
   top: 0px;
   left: 10%;
@@ -119,7 +142,7 @@ const Container = styled.div`
 `
 
 const ChartTooltip = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;
