@@ -257,37 +257,6 @@ export default class PortfolioTableRebalance extends React.Component<
     }))
     rows[idx].price = 0
 
-    // let deleteFlag = true
-    // this.state.staticRows.forEach((row, i, arr) => {
-    //   if (
-    //     rows[idx].currency == staticRows[i].currency &&
-    //     rows[idx].symbol == staticRows[i].symbol
-    //   ) {
-    //     deleteFlag = false
-    //   }
-    // })
-    // console.log(deleteFlag)
-    //
-    // if (deleteFlag) {
-    //   rows.splice(idx, 1)
-    //   if (selectedActive) {
-    //     let toRemove = -1
-    //     selectedActive.forEach((row, i, arr) => {
-    //       if (selectedActive[i] === idx) {
-    //         toRemove = i
-    //       } else {
-    //         if (selectedActive[i] > idx) {
-    //           selectedActive[i] -= 1
-    //         }
-    //       }
-    //     })
-    //     if (toRemove != -1) {
-    //       selectedActive.splice(toRemove, 1)
-    //     }
-    //   }
-    // } else {
-    //   rows[idx].price = 0
-    // }
 
     let newTotalRows = this.calculateTotal(rows)
     let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
@@ -364,21 +333,6 @@ export default class PortfolioTableRebalance extends React.Component<
       if (this.checkForChanges(rows)) {
         console.log('has changes')
 
-        // let sumTotal = totalRows
-        // rows.forEach((row, i) => {
-        //   if (rows[i].portfolioPerc) {
-        //     let newPrice = Math.round((totalRows / 100) * rows[i].portfolioPerc)
-        //     console.log('newPrice: ', newPrice)
-        //     if (sumTotal <= newPrice) {
-        //       rows[i].price = newPrice
-        //       sumTotal = 0
-        //     } else {
-        //       rows[i].price = newPrice
-        //       sumTotal -= newPrice
-        //     }
-        //   }
-        // })
-
         let rowsWithNewPrice = this.calculatePriceByPercents(rows)
 
         rows = this.calculatePriceDifference(rowsWithNewPrice)
@@ -395,23 +349,12 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
   onLoadPreviousClick = (e: any) => {
-    // this.setState({ rows: JSON.parse(JSON.stringify(this.state.savedRows)) })
-    // this.setState({
-    //   totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
-    // })
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.savedRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
     })
   }
   onReset = (e: any) => {
-    // this.setState({ rows: JSON.parse(JSON.stringify(this.state.staticRows)) })
-    // this.setState({
-    //   totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
-    // })
-    // this.setState({
-    //   undistributedMoney: 0,
-    // })
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.staticRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
