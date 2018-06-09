@@ -153,9 +153,11 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculateTotal = (data: any[]) => {
-    let total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
+    const { undistributedMoney } = this.state
 
-    return total
+    const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
+
+    return total + undistributedMoney
   }
 
   calculateTotalPercents = (data: any[]) => {
@@ -256,7 +258,6 @@ export default class PortfolioTableRebalance extends React.Component<
       undistributedMoney: prevState.undistributedMoney + money,
     }))
     rows[idx].price = 0
-
 
     let newTotalRows = this.calculateTotal(rows)
     let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
@@ -500,6 +501,7 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
+  //TODO: Should be refactored (without callback)
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, totalRows, addMoneyInputValue } = this.state
@@ -511,24 +513,17 @@ export default class PortfolioTableRebalance extends React.Component<
         }),
         () => {
           let newTotal = this.calculateTotal(rows)
-          //rows = this.calculatePercents(rows, newTotal)
+          rows = this.calculatePercents(rows, newTotal)
+          let checkedPercentsIsGood = this.checkPercentSum(rows)
+
           this.setState({
             addMoneyInputValue: 0,
             rows,
             totalRows: newTotal,
-          }) //Very brutal fix, need to be reworked
+            isPercentSumGood: checkedPercentsIsGood,
+          })
         }
       )
-
-      // setTimeout(() => {
-      //   let newTotal = this.calculateTotal(rows)
-      //   //rows = this.calculatePercents(rows, newTotal)
-      //   this.setState({
-      //     addMoneyInputValue: 0,
-      //     rows,
-      //     totalRows: newTotal,
-      //   }) //Very brutal fix, need to be reworked
-      // }, 100)
     }
   }
 
