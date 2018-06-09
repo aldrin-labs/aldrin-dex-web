@@ -253,7 +253,6 @@ export default class PortfolioTableRebalance extends React.Component<
     let rows = JSON.parse(JSON.stringify(this.state.rows))
     let { selectedActive, staticRows } = this.state
     let money = rows[idx].price
-    // rows[rows.length - 1].undistributedMoney += money
     this.setState((prevState) => ({
       undistributedMoney: prevState.undistributedMoney + money,
     }))
@@ -379,6 +378,7 @@ export default class PortfolioTableRebalance extends React.Component<
         money = 0
       }
 
+      //TODO: //Very brutal fix, need to be reworked
       this.setState({ undistributedMoney: money }, () => {
         let newTotal = this.calculateTotal(rows)
         rows = this.calculatePercents(rows, newTotal)
@@ -387,19 +387,8 @@ export default class PortfolioTableRebalance extends React.Component<
           rows,
           totalRows: newTotal,
           isPercentSumGood: this.checkPercentSum(rows),
-        }) //Very brutal fix, need to be reworked
+        })
       })
-
-      // setTimeout(() => {
-      //   let newTotal = this.calculateTotal(rows)
-      //   rows = this.calculatePercents(rows, newTotal)
-      //   this.setState({
-      //     selectedActive,
-      //     rows,
-      //     totalRows: newTotal,
-      //     isPercentSumGood: this.checkPercentSum(rows),
-      //   }) //Very brutal fix, need to be reworked
-      // }, 100)
     }
   }
 
@@ -781,20 +770,20 @@ export default class PortfolioTableRebalance extends React.Component<
               <Table>
                 <PTHead isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
-                    {isEditModeEnabled &&
-                      !!undistributedMoney && (
-                        <PTHR key="selectAll" style={{ textAlign: 'left' }}>
-                          <Checkbox
-                            onChange={() => this.onSelectAllActive()}
-                            checked={this.state.areAllActiveChecked}
-                            type="checkbox"
-                            id="selectAllActive"
-                          />
-                          <Label htmlFor="selectAllActive">
-                            <Span />
-                          </Label>
-                        </PTHR>
-                      )}
+                    {isEditModeEnabled && (
+                      // !!undistributedMoney &&
+                      <PTHR key="selectAll" style={{ textAlign: 'left' }}>
+                        <Checkbox
+                          onChange={() => this.onSelectAllActive()}
+                          checked={this.state.areAllActiveChecked}
+                          type="checkbox"
+                          id="selectAllActive"
+                        />
+                        <Label htmlFor="selectAllActive">
+                          <Span />
+                        </Label>
+                      </PTHR>
+                    )}
 
                     {newTableHeadings.map((heading) => {
                       const isSorted =
@@ -874,18 +863,16 @@ export default class PortfolioTableRebalance extends React.Component<
                         key={`${currency}${symbol}${rowIndex}`}
                         isSelected={isSelected}
                       >
-                        {isEditModeEnabled &&
-                          !!undistributedMoney && (
-                            <PTDR
-                              key="smt"
-                              isSelected={isSelected}
-                              onClick={() =>
-                                this.onSelectActiveBalance(rowIndex)
-                              }
-                            >
-                              {this.renderActiveCheckbox(rowIndex)}
-                            </PTDR>
-                          )}
+                        {isEditModeEnabled && (
+                          // !!undistributedMoney &&
+                          <PTDR
+                            key="smt"
+                            isSelected={isSelected}
+                            onClick={() => this.onSelectActiveBalance(rowIndex)}
+                          >
+                            {this.renderActiveCheckbox(rowIndex)}
+                          </PTDR>
+                        )}
 
                         {cols.map((col, idx) => {
                           if (idx === 2) {
@@ -987,10 +974,10 @@ export default class PortfolioTableRebalance extends React.Component<
                 </PTBody>
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
-                    {isEditModeEnabled &&
-                      !!undistributedMoney && (
-                        <PTHR style={{ width: '38px' }} />
-                      )}
+                    {isEditModeEnabled && (
+                      // !!undistributedMoney &&
+                      <PTHR style={{ width: '38px' }} />
+                    )}
                     <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>{`${totalPercents}%`}</PTHR>
