@@ -473,26 +473,35 @@ export default class PortfolioTableRebalance extends React.Component<
     const newTotalRows = this.calculateTotal(newCalculatedRowsWithPercents)
 
     // NOT READY FOR NOW
-    // //TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
-    // let oldRowPrice = rows[idx].price
-    // let newRowPrice = newCalculatedRowsWithPercents[idx].price
-    // let oldNewPriceDiff = oldRowPrice - newRowPrice
-    //
-    // console.log('oldRowPrice: ', oldRowPrice)
-    // console.log('newRowPrice: ', newRowPrice)
-    // console.log('oldNewPriceDiff: ', oldNewPriceDiff)
-    //
+    //TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
+    let oldRowPrice = rows[idx].price
+    let newRowPrice = newCalculatedRowsWithPercents[idx].price
+    let oldNewPriceDiff = oldRowPrice - newRowPrice
+
+    console.log('oldRowPrice: ', oldRowPrice)
+    console.log('newRowPrice: ', newRowPrice)
+    console.log('oldNewPriceDiff: ', oldNewPriceDiff)
+
     // if (oldRowPrice > newRowPrice) {
     //   this.setState((prevState) => ({
     //     undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
     //   }))
     // }
 
-    this.setState({
-      rows: rowWithNewPriceDiff,
-      isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
-      totalPercents,
-    })
+    this.setState(
+      {
+        rows: rowWithNewPriceDiff,
+        isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
+        totalPercents,
+      },
+      () => {
+        // if (oldRowPrice > newRowPrice) {
+        this.setState((prevState) => ({
+          undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
+        }))
+        // }
+      }
+    )
   }
 
   //TODO: Should be refactored (without callback)
@@ -896,6 +905,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 <PTDR key={`input${idx}`}>
                                   <InputTable
                                     key={`${rowIndex}`}
+                                    tabIndex={rowIndex + 1}
                                     isPercentSumGood={isPercentSumGood}
                                     value={
                                       this.state.rows[rowIndex].portfolioPerc
