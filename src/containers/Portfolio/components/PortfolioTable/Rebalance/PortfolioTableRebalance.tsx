@@ -251,23 +251,28 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onDeleteRowClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive, staticRows } = this.state
-    let money = rows[idx].price
-    this.setState((prevState) => ({
-      undistributedMoney: prevState.undistributedMoney + money,
-    }))
+    let { selectedActive, undistributedMoney } = this.state
+    let currentRowMoney = rows[idx].price
     rows[idx].price = 0
 
-    let newTotalRows = this.calculateTotal(rows)
-    let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
-    let newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+    //TODO: This should be refactored (calculate totatl should have second argument - undistributed money it it should be a pure function)
+    this.setState(
+      (prevState) => ({
+        undistributedMoney: prevState.undistributedMoney + currentRowMoney,
+      }),
+      () => {
+        let newTotalRows = this.calculateTotal(rows)
+        let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
+        let newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
-    this.setState({
-      selectedActive,
-      totalRows: newTotalRows,
-      rows: newRowsWithNewPercents,
-      isPercentSumGood: newIsPercentSumGood,
-    })
+        this.setState({
+          selectedActive,
+          totalRows: newTotalRows,
+          rows: newRowsWithNewPercents,
+          isPercentSumGood: newIsPercentSumGood,
+        })
+      }
+    )
   }
 
   onSelectAllActive = (e: any) => {
