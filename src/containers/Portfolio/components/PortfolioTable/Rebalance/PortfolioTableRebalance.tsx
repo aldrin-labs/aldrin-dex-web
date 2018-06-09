@@ -367,6 +367,31 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
+  onDeleteUndistributedMoney = () => {
+    const { rows } = this.state
+
+    //TODO: Should be refactored (calculatotal should pe a pure function, no second setstate)
+    this.setState(
+      {
+        undistributedMoney: 0,
+      },
+      () => {
+        const newTotalRows = this.calculateTotal(rows)
+        const newRowsWithNewPercents = this.calculatePercents(
+          rows,
+          newTotalRows
+        )
+        const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+
+        this.setState({
+          totalRows: newTotalRows,
+          rows: newRowsWithNewPercents,
+          isPercentSumGood: newIsPercentSumGood,
+        })
+      }
+    )
+  }
+
   onDistribute = (e: any) => {
     let { selectedActive, rows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
@@ -1018,7 +1043,13 @@ export default class PortfolioTableRebalance extends React.Component<
                     Add money
                   </Button>
                 </AddMoneyContainer>
-                {undistributedMoney !== 0 && (
+                <AddMoneyContainer>
+                  <Button onClick={() => this.onDeleteUndistributedMoney()}>
+                    Delete undistributed
+                  </Button>
+                </AddMoneyContainer>
+                {
+                  // undistributedMoney !== 0 &&
                   <UndistributedMoneyContainer>
                     <UndistributedMoneyText>
                       Undistributed money: {undistributedMoney}
@@ -1027,7 +1058,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       Distribute to selected
                     </Button>
                   </UndistributedMoneyContainer>
-                )}
+                }
               </ButtonsInnerWrapper>
             </ButtonsWrapper>
           </TableAndHeadingWrapper>
