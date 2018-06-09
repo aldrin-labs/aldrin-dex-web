@@ -331,27 +331,31 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   // TODO: refactor all this stuff
-  onSaveClick = (e: any) => {
-    if (this.state.isPercentSumGood) {
-      let { rows, totalRows, undistributedMoney } = this.state
-
-      if (this.checkForChanges(rows)) {
-        console.log('has changes')
-
-        let rowsWithNewPrice = this.calculatePriceByPercents(rows)
-
-        rows = this.calculatePriceDifference(rowsWithNewPrice)
-      }
-
-      console.log(rows)
-
-      this.setState({
-        savedRows: JSON.parse(JSON.stringify(this.state.rows)),
-        rows,
-        totalSavedRows: totalRows,
-        isEditModeEnabled: false,
-      })
+  onSaveClick = () => {
+    if (!this.state.isPercentSumGood) {
+      return
     }
+
+    let { rows, totalRows, undistributedMoney } = this.state
+
+    if (this.checkForChanges(rows)) {
+      console.log('has changes')
+
+      let rowsWithNewPrice = this.calculatePriceByPercents(rows)
+
+      rows = this.calculatePriceDifference(rowsWithNewPrice)
+    }
+
+    console.log(rows)
+
+    this.setState({
+      savedRows: JSON.parse(JSON.stringify(this.state.rows)),
+      rows,
+      totalSavedRows: totalRows,
+      isEditModeEnabled: false,
+      selectedActive: [],
+      areAllActiveChecked: false,
+    })
   }
   onLoadPreviousClick = (e: any) => {
     this.setState({
@@ -364,7 +368,33 @@ export default class PortfolioTableRebalance extends React.Component<
       rows: JSON.parse(JSON.stringify(this.state.staticRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
       undistributedMoney: 0,
+      selectedActive: [],
+      areAllActiveChecked: false,
     })
+  }
+
+  onEditModeEnable = () => {
+    if (this.state.isEditModeEnabled) {
+      this.setState((prevState) => ({
+        isEditModeEnabled: !prevState.isEditModeEnabled,
+        totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+        rows: JSON.parse(JSON.stringify(this.state.savedRows)),
+        selectedActive: [],
+        areAllActiveChecked: false,
+      }))
+    } else {
+      this.setState((prevState) => ({
+        isEditModeEnabled: !prevState.isEditModeEnabled,
+      }))
+    }
+  }
+
+  escFunction = (e) => {
+    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
+      this.setState((prevState) => ({
+        isEditModeEnabled: !prevState.isEditModeEnabled,
+      }))
+    }
   }
 
   onDeleteUndistributedMoney = () => {
@@ -552,27 +582,6 @@ export default class PortfolioTableRebalance extends React.Component<
           })
         }
       )
-    }
-  }
-
-  escFunction = (e) => {
-    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
-      this.setState((prevState) => ({
-        isEditModeEnabled: !prevState.isEditModeEnabled,
-      }))
-    }
-  }
-  onEditModeEnable = () => {
-    if (this.state.isEditModeEnabled) {
-      this.setState((prevState) => ({
-        isEditModeEnabled: !prevState.isEditModeEnabled,
-        totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
-        rows: JSON.parse(JSON.stringify(this.state.savedRows)),
-      }))
-    } else {
-      this.setState((prevState) => ({
-        isEditModeEnabled: !prevState.isEditModeEnabled,
-      }))
     }
   }
 
