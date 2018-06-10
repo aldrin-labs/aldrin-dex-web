@@ -39,6 +39,31 @@ class CorrelationMatrix extends Component<IProps, IState> {
     }
   }
 
+  /*componentWillReceiveProps(nextProps: IProps) {
+    let { hintOpacity } = this.state
+    let showHint = !!hintOpacity
+    console.log('Hint opacity = ')
+    console.log(hintOpacity)
+    if (showHint !== nextProps.isMouseOnMatrix) {
+      hintOpacity = Math.abs(hintOpacity - 1)
+
+      this.setState({ hintOpacity })
+    }
+  }*/
+
+  onTableMouseOver = () => {
+    this.setState({ hintOpacity: 1 })
+    console.log('onMouseOver')
+  }
+
+  onTableMouseLeave = () => {
+    this.setState({
+      hintOpacity: 0,
+      hint: null,
+    })
+    console.log('onMouseLeave')
+  }
+
   onMouseOver = (
     index: number,
     value: number,
@@ -49,12 +74,11 @@ class CorrelationMatrix extends Component<IProps, IState> {
   ) => {
     this.setState({
       hint: { index, value, colName, rowName, x, y },
-      hintOpacity: 1,
     })
   }
 
   onMouseLeave = () => {
-    this.setState({ hintOpacity: 0 })
+    // this.setState({ hintOpacity: 0 })
   }
 
   render() {
@@ -98,7 +122,10 @@ class CorrelationMatrix extends Component<IProps, IState> {
                   {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
                 </Row>
               </thead>
-              <tbody>
+              <tbody
+                onMouseLeave={() => this.onTableMouseLeave()}
+                onMouseOver={() => this.onTableMouseOver()}
+              >
                 {cols.map((col, i) => (
                   <Row key={rows[i]}>
                     {rows[i] && (
