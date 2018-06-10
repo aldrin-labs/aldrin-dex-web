@@ -1091,6 +1091,21 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
                   </PTR>
+                  <PTR>
+                    {isEditModeEnabled && (
+                      // !!undistributedMoney &&
+                      <PTHR style={{ width: '38px' }} />
+                    )}
+                    <PTHR>Subtotal</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>
+                      {mainSymbol}
+                      {`${totalRows}`}
+                    </PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>-</PTHR>
+                  </PTR>
                 </PTFoot>
               </Table>
             </Wrapper>
