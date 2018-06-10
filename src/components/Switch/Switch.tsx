@@ -2,24 +2,24 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 interface Props {
-  onClick: Function
-  values: string[]
+  onClick?: Function
+  values?: string[]
   isActive?: boolean
 }
 
 export default class Switch extends React.Component<Props> {
   render() {
     const { onClick, values, isActive } = this.props
-    const [first, second] = values
+    const [first, second] = values || ['', '']
 
     return (
       <Container>
-        <Desc>{first}</Desc>
+        {first && <Desc>{first}</Desc>}
         <Label>
           <Input type="checkbox" onClick={onClick} checked={isActive} />
           <Slider />
         </Label>
-        <Desc>{second}</Desc>
+        {second && <Desc>{second}</Desc>}
       </Container>
     )
   }
@@ -36,6 +36,14 @@ const Desc = styled.span`
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  @media (max-width: 610px) {
+    padding-bottom: 10px;
+  }
+
+  @media (max-width: 500px) {
+    padding-bottom: 20px;
+  }
 `
 
 const Slider = styled.span`

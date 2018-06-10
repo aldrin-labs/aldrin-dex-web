@@ -1,9 +1,8 @@
 export function combineToChart() {
-  return MOCKS.map((dataItem) =>
-    ({
-      angle: dataItem.value,
-      label: dataItem.asset.industry.name,
-    }))
+  return MOCKS.map((dataItem) => ({
+    angle: dataItem.value,
+    label: dataItem.asset.industry.name,
+  }))
 }
 
 export const MOCKS = [
@@ -17,7 +16,7 @@ export const MOCKS = [
       percentChangeDay: -7.71,
       industry: {
         name: 'Smart contracts',
-        performance: 10,
+        performance: { usd: 14, btc: 2 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -48,7 +47,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Privacy coin',
-        performance: 10,
+        performance: { usd: 8, btc: 10 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -79,7 +78,7 @@ export const MOCKS = [
       percentChangeDay: -7.39,
       industry: {
         name: 'Payment',
-        performance: 10,
+        performance: { usd: 7, btc: 12 },
       },
     },
     assetId: '5abbebe80dfdb5c3e01b7319',
@@ -88,6 +87,254 @@ export const MOCKS = [
     btcUnrealizedProfit: 60,
     exchange: {
       name: 'GDAX',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a62',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 7, btc: 12 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'GDAX',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a62',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 7, btc: 12 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'GDAX',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a62',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 7, btc: 12 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'GDAX',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a64',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 8, btc: 10 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'PKAX',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a65',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 15, btc: 4 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'LKAX',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a66',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 14, btc: 7 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'NPAE',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a67',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 10, btc: 1 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'BDAS',
+    },
+    exchangeId: '5abbeba80dfdb5c3e01b71cf',
+    key: {
+      apiKey: '34be780a9a27431bad2ad6693beefa03',
+      name: 'Test2',
+    },
+    keyId: '5abbf00f19f6b8001b2872df',
+    usdRealizedProfit: 10,
+    usdTotalProfit: 20,
+    usdUnrealizedProfit: 30,
+    value: 0.454242,
+  },
+  {
+    _id: '5abbf010cd922f0027555a68',
+    asset: {
+      name: 'Ethereum',
+      priceUSD: 380.373123123,
+      priceBTC: 0.341,
+      symbol: 'ETH',
+      percentChangeDay: -7.39,
+      industry: {
+        name: 'Payment',
+        performance: { usd: 1, btc: 6 },
+      },
+    },
+    assetId: '5abbebe80dfdb5c3e01b7319',
+    btcRealizedProfit: 40,
+    btcTotalProfit: 50,
+    btcUnrealizedProfit: 60,
+    exchange: {
+      name: 'LOREX',
     },
     exchangeId: '5abbeba80dfdb5c3e01b71cf',
     key: {
@@ -145,40 +392,39 @@ export const tableData = [
   },
 ]
 
-export const TMP_LINE_CHART_MOCKS = [
-  [
-    { x: 1, y: 137070, label: 'BTC' },
-    { x: 2, y: 134926, label: 'BTC' },
-    { x: 3, y: 138591, label: 'BTC' },
-    { x: 4, y: 140777, label: 'BTC' },
-    { x: 5, y: 150337, label: 'BTC' },
-    { x: 6, y: 151651, label: 'BTC' },
-  ],
+export const inds = ['Privacy coin', 'Smart contracts', 'Payment']
 
-  [
-    { x: 1, y: 50534, label: 'ETH' },
-    { x: 2, y: 49769, label: 'ETH' },
-    { x: 3, y: 51829, label: 'ETH' },
-    { x: 4, y: 56188, label: 'ETH' },
-    { x: 5, y: 60951, label: 'ETH' },
-    { x: 6, y: 59985, label: 'ETH' },
-  ],
+export const coins = ['BTC', 'ETH', 'BCH']
 
-  [
-    { x: 1, y: 26012, label: 'XRP' },
-    { x: 2, y: 25705, label: 'XRP' },
-    { x: 3, y: 27857, label: 'XRP' },
-    { x: 4, y: 30952, label: 'XRP' },
-    { x: 5, y: 36189, label: 'XRP' },
-    { x: 6, y: 33912, label: 'XRP' },
-  ],
+export function randomInteger(min: number, max: number) {
+  let rand = min + Math.random() * (max + 1 - min)
+  return Math.floor(rand)
+}
 
-  [
-    { x: 1, y: 13093, label: 'BCH' },
-    { x: 2, y: 12950, label: 'BCH' },
-    { x: 3, y: 15213, label: 'BCH' },
-    { x: 4, y: 16572, label: 'BCH' },
-    { x: 5, y: 19252, label: 'BCH' },
-    { x: 6, y: 19606, label: 'BCH' },
-  ],
-]
+export function genMocks(len: number, categories: string[]) {
+  return categories.map((categorie, index) => {
+    return [...Array(len)].map((_, i) => {
+      const int = randomInteger(1 * i + index, 10 * i)
+      return {
+        x: i + 1,
+        y: int,
+        label: categorie,
+      }
+    })
+  })
+}
+
+// palette from https://material.io/design/color/#tools-for-picking-colors
+// color A700
+export const colors = ['#6200EA', '#00C853', '#0091EA']
+
+export function genAngleMocks(categories: string[]) {
+  return categories.map((categorie, index) => {
+    const int = randomInteger(1 + index, 10 + index)
+    return {
+      angle: int,
+      label: categorie,
+      color: colors[index],
+    }
+  })
+}

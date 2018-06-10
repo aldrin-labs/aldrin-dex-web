@@ -8,6 +8,7 @@ import Calculator from '../../components/Calculator/Calculator'
 import DominanceChart from '../../components/DominanceChart/DominanceChart'
 import CoinMarketTable from '../../components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from './annotations'
+import { Loading } from '@components/Loading'
 
 interface Props {
   data: CoinMarketCapQueryQuery
@@ -96,20 +97,16 @@ class CoinMarket extends React.Component<Props, State> {
   render() {
     const { activeSortArg } = this.state
     const { data } = this.props
+    if (data.loading || !data.assetPagination) {
+      return <Loading centerAligned />
+    }
     const { assetPagination } = data
-    if (!assetPagination || !assetPagination.items) return null
     const { items } = assetPagination
 
     return (
       <Wrapper>
         <LeftColumn>
-          <CoinMarketTable
-            onChangeSortArg={this.onChangeSortArg}
-            redirectToProfile={this.redirectToProfile}
-            activeSortArg={activeSortArg}
-            items={items}
-            showFilterBns
-          />
+          <CoinMarketTable location={this.props.location} />
 
           <Pagination>
             <Button title="Previous" onClick={this.decrementPage} />
@@ -170,7 +167,6 @@ export const CoinMarketCapQuery = gql`
         _id
         name
         symbol
-        nameTrue
         priceUSD
         maxSupply
         totalSupply

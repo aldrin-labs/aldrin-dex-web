@@ -84,10 +84,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               isSelected={isSelected}
               onClick={() => this.props.onSelectBalance(index)}
             >
-              <PTD
-                key={`${index}smt`}
-                isSelected={isSelected}
-              >
+              <PTD key={`${index}smt`} isSelected={isSelected}>
                 {this.renderCheckbox(index)}
               </PTD>
               {cols.map((col, idx) => {
@@ -143,7 +140,7 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  
+
   &:nth-child(1) {
     text-align: center;
     padding: 1.75px 10px;
@@ -158,8 +155,6 @@ const PTD = styled.td`
     min-width: 110px;
   }
 `
-
-// #3a4e4e;
 
 const PTR = styled.tr`
   cursor: pointer;

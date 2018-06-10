@@ -18,7 +18,6 @@ export const getCoinMarketCapQuery = gql`
         _id
         name
         symbol
-        nameTrue
         priceUSD
         maxSupply
         totalSupply

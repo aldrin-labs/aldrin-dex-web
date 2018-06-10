@@ -7,7 +7,7 @@ import { compose } from 'recompose'
 
 import { Home } from '@containers/Home'
 import { NavBar } from '@components'
-
+import { NavBarMobile } from '@components'
 // TODO: 2 themes
 
 const theme = createMuiTheme({
@@ -33,9 +33,10 @@ if (process.browser) {
 }
 
 export const App = ({ children }: any) => (
-    <MuiThemeProvider theme={theme}>
-      <CssBaseline />
-      <NavBar />
-      {children}
-    </MuiThemeProvider>
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <NavBar />
+    {children}
+    <NavBarMobile />
+  </MuiThemeProvider>
 )

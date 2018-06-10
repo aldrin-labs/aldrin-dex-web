@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { FormattedDate } from 'react-intl'
 import styled from 'styled-components'
-import { graphql } from 'react-apollo'
-import { compose } from 'recompose'
 
 import Table, {
   TableBody,
@@ -15,10 +13,13 @@ import { Loading } from '@components/Loading'
 
 import { getKeysQuery } from '../../api'
 import { DeleteKeyDialog } from './'
-
-// TODO: hoc loader fix
+import QueryRenderer from '@components/QueryRenderer'
 
 class KeysListComponent extends React.Component {
+  state = {
+    keys: null,
+  }
+
   componentDidMount() {
     if (this.props.data.getProfile) {
       this.setState({ keys: this.props.data.getProfile.keys })
@@ -33,7 +34,7 @@ class KeysListComponent extends React.Component {
 
   render() {
     if (this.props.data.loading) {
-      return <Loading />
+      return <Loading centerAligned />
     }
 
     const { keys } = this.state
@@ -52,19 +53,24 @@ class KeysListComponent extends React.Component {
           </TableHead>
           <TableBody>
             {keys &&
-              keys.map((key) => (
-                <TableRow key={key._id}>
-                  <KeyTableCell>{key.name}</KeyTableCell>
-                  <KeyTableCell numeric>{key.exchange.name}</KeyTableCell>
-                  <KeyTableCell numeric>{key.apiKey}</KeyTableCell>
-                  <KeyTableCell numeric>
-                    {<FormattedDate value={key.date} />}
-                  </KeyTableCell>
-                  <KeyTableCell numeric>
-                    <DeleteKeyDialog keyName={key.name} />
-                  </KeyTableCell>
-                </TableRow>
-              ))}
+              keys.map((key) => {
+                const { _id, name, exchange, apiKey, date } = key
+                return (
+                  <TableRow key={_id}>
+                    <KeyTableCell>{name}</KeyTableCell>
+                    <KeyTableCell numeric>
+                      {exchange ? exchange.name : ''}
+                    </KeyTableCell>
+                    <KeyTableCell numeric>{apiKey}</KeyTableCell>
+                    <KeyTableCell numeric>
+                      {<FormattedDate value={date} />}
+                    </KeyTableCell>
+                    <KeyTableCell numeric>
+                      <DeleteKeyDialog keyName={name} />
+                    </KeyTableCell>
+                  </TableRow>
+                )
+              })}
           </TableBody>
         </KeysTable>
       </KeysListPaper>
@@ -89,4 +95,6 @@ const KeysTable = styled(Table)`
   table-layout: fixed;
 `
 
-export const KeysList = compose(graphql(getKeysQuery))(KeysListComponent)
+export default function() {
+  return <QueryRenderer component={KeysListComponent} query={getKeysQuery} />
+}

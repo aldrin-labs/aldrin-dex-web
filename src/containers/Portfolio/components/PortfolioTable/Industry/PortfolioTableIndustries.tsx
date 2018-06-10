@@ -5,9 +5,11 @@ import { compose } from 'recompose'
 
 import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import Switch from './SwitchWithIcons'
+
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, TMP_LINE_CHART_MOCKS, combineToChart } from './mocks'
+import { MOCKS, colors, genAngleMocks, genMocks, inds } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -19,6 +21,8 @@ import {
   roundUSDOff,
 } from '../../../../../utils/PortfolioTableUtils'
 import { IState } from './PortfolioTableIndustries.types'
+
+import PieChartQuery from './PieChartQuery'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -46,6 +50,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     currentSort: null,
     selectedRows: null,
     selectedSum: defaultSelectedSum,
+    activeLegend: null,
+    showChart: 'line',
+  }
+
+  componentWillMount() {
+    const lineChartMocks = genMocks(31, inds)
+    this.setState({ lineChartMocks })
   }
 
   componentDidMount() {
@@ -79,7 +90,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      if (!portfolio || !portfolio.assets) { return }
+      if (!portfolio || !portfolio.assets) {
+        return
+      }
 
       const composeWithMocks = {
         ...portfolio,
@@ -106,10 +119,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
   }
 
+  toggleChart = () => {
+    this.setState((prevState: IState) => ({
+      showChart: prevState.showChart === 'line' ? 'chart' : 'line',
+    }))
+  }
+
   combineIndustryData = (portfolio?: IPortfolio) => {
     const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
-    if (!portfolio || !portfolio.assets || !activeKeys) { return }
+    if (!portfolio || !portfolio.assets || !activeKeys) {
+      return
+    }
     const { assets } = portfolio
 
     const industryData = assets
@@ -120,7 +141,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           exchange = { name: '' },
         } =
           row || {}
-        if (activeKeys.indexOf(key!.name) === -1) { return null }
+        if (activeKeys.indexOf(key!.name) === -1) {
+          return null
+        }
         const {
           symbol = '',
           priceUSD = '',
@@ -180,7 +203,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onSortTable = (key: Args) => {
     const { industryData, currentSort } = this.state
-    if (!industryData) { return }
+    if (!industryData) {
+      return
+    }
 
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
@@ -241,15 +266,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     const sum = industryData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
     const reducedSum = sum.reduce(
-      (acc, val) =>
-        ({
-          currency: val.currency,
-          symbol: val.symbol,
-          industry: val.industry,
-          price: Number(acc.price) + Number(val.price),
-          portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
-          industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
-        }),
+      (acc, val) => ({
+        currency: val.currency,
+        symbol: val.symbol,
+        industry: val.industry,
+        price: Number(acc.price) + Number(val.price),
+        portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
+        industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
+      }),
       {
         currency: '',
         symbol: '',
@@ -266,23 +290,33 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) { return defaultSelectedSum }
+    // const { isUSDCurrently } = this.props
 
-    let newReducedSum = {};
+    if (!selectedRows || !industryData) {
+      return defaultSelectedSum
+    }
+
+    let newReducedSum = {}
+
+    // const mainSymbol = isUSDCurrently ? (
+    //   <Icon className="fa fa-usd" key="usd" />
+    // ) : (
+    //   <Icon className="fa fa-btc" key="btc" />
+    // )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
         ...reducedSum,
         currency: 'All',
         symbol: '-',
-        industry: '-'
+        industry: '-',
       }
-    } else if (selectedRows.length > 1) {
+    } else if (selectedRows.length >= 1) {
       newReducedSum = {
         ...reducedSum,
         currency: 'Selected',
         symbol: '-',
-        industry: '-'
+        industry: '-',
       }
     }
 
@@ -291,7 +325,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onSelectAll = () => {
     const { industryData } = this.state
-    if (!industryData) { return }
+    if (!industryData) {
+      return
+    }
     const rowQuantity = industryData.length
     let allRows: number[] | null
     const selectedRows =
@@ -306,28 +342,50 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   genLineChart = () => {
     const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) { return }
+    if (!selectedRows || !industryData) {
+      return
+    }
     const data = industryData.filter((o, i) => selectedRows.indexOf(i) >= 0)
 
-    return data.map((item, i) =>
-      ({
-        x: i + 1,
-        y: i * 2,
-        label: `${item.symbol} ${item.industry}`,
-      }))
+    return data.map((item, i) => ({
+      x: i + 1,
+      y: i * 2,
+      label: `${item.symbol} ${item.industry}`,
+    }))
+  }
+
+  onChangeActiveLegend = (index: number) => {
+    this.setState({ activeLegend: index })
+  }
+
+  onChangeData = (data: string[]) => {
+    const lineChartMocks = genMocks(31, data)
+
+    this.setState({ lineChartMocks })
   }
 
   render() {
     const { isUSDCurrently, children } = this.props
-    const { selectedRows, selectedSum, industryData, currentSort } = this.state
+    const {
+      selectedRows,
+      selectedSum,
+      industryData,
+      currentSort,
+      activeLegend,
+    } = this.state
     const isSelectAll =
       (industryData &&
         selectedRows &&
         industryData.length === selectedRows.length) ||
       false
 
+    let isThereAnySelectedRows = false
+    if (selectedRows) {
+      isThereAnySelectedRows = selectedRows.length > 1 ? true : false
+    }
+
     const tableDataHasData = industryData
-      ? Object.keys(industryData).length
+      ? !!Object.keys(industryData).length
       : false
 
     if (!tableDataHasData) {
@@ -343,11 +401,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Container>
-          <Wrapper>
+          <Wrapper isThereAnySelectedRows={isThereAnySelectedRows}>
             <PTable>
               <PTHead>
                 <PTR>
-                  <PTH key="selectAll" style={{ textAlign: 'left' }}>
+                  <PTH key="selectAll">
                     <Checkbox
                       type="checkbox"
                       id="selectAll"
@@ -376,6 +434,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             width={12}
                             height={12}
                             style={{
+                              position: 'absolute',
+                              top: '1.2rem',
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
@@ -422,7 +482,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                     ]
 
                     return (
-                      <PTR
+                      <PTRBody
                         key={`${currency}${symbol}`}
                         isSelected={isSelected}
                         onClick={() => this.onSelectBalance(idx)}
@@ -450,12 +510,15 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             }
 
                             return (
-                              <PTD key={`${col}${innerIdx}`} isSelected={isSelected}>
+                              <PTD
+                                key={`${col}${innerIdx}`}
+                                isSelected={isSelected}
+                              >
                                 {col}
                               </PTD>
                             )
                           })}
-                      </PTR>
+                      </PTRBody>
                     )
                   })}
               </PTBody>
@@ -468,18 +531,24 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
-          <LineChartContainer>
-            <Heading>Industry Line Chart</Heading>
-            <LineChart data={TMP_LINE_CHART_MOCKS} />
-          </LineChartContainer>
+          <ChartContainer>
+            <Heading>
+              <Switch onClick={this.toggleChart} />
+            </Heading>
+            <ChartWrapper>
+              {this.state.showChart === 'line' ? (
+                <LineChart
+                  data={this.state.lineChartMocks}
+                  activeLine={activeLegend}
+                  onChangeData={this.onChangeData}
+                />
+              ) : (
+                // <PieChart data={genAngleMocks(inds)} flexible />
+                <PieChartQuery />
+              )}
+            </ChartWrapper>
+          </ChartContainer>
         </Container>
-
-        <PieChartContainer>
-          <PieChartHeadingWrapper>
-            <Heading>Industry Pie Chart</Heading>
-          </PieChartHeadingWrapper>
-          <PieChart data={combineToChart()} />
-        </PieChartContainer>
       </PTWrapper>
     )
   }
@@ -487,19 +556,56 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
 const Container = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  height: auto;
+  padding: 20px;
+  margin-top: -2rem;
+
+  @media (max-height: 650px) {
+    height: 50%;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 900px) {
+    flex-wrap: wrap;
+  }
 `
 
 const PieChartHeadingWrapper = styled.div`
   width: 200px;
   text-align: center;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 `
 
 const PieChartContainer = styled.div`
-  margin: 10px;
+  border-radius: 3px;
+  background-color: #2d3136;
+  box-shadow: 0 2px 6px 0 #0006;
+  padding: 1em;
+  display: flex;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  height: 40vh;
+  background-color: #2d3136;
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  padding: 3% 0;
+  width: calc(40% - 4rem);
+  min-height: 40vh;
+  margin: 2rem;
+
+  @media (max-width: 850px) {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  @media (max-height: 900px) {
+    display: none;
+  }
 `
 
-const Heading = styled.span`
+const Heading = styled.div`
+  display: flex;
+  justify-content: center;
   font-family: Roboto;
   font-size: 14px;
   font-weight: 500;
@@ -509,7 +615,7 @@ const Heading = styled.span`
 
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 240px);' : '100%'};
+    props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -517,15 +623,32 @@ const PTWrapper = styled.div`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 130px);
+  overflow: auto;
 `
 
-const LineChartContainer = styled.div`
-  background-color: #fff;
+const ChartWrapper = styled.div`
+  width: 100%;
+  height: 35vh;
+  display: flex;
+`
+
+const ChartContainer = styled.div`
+  border-radius: 3px;
+  background-color: #2d3136;
+  box-shadow: 0 2px 6px 0 #0006;
+
   padding: 1em;
-  width: 30%;
-  height: 100%;
   text-align: center;
+  width: calc(60% - 4rem);
+  height: 40vh;
+  margin: 2rem 1rem;
+
+  @media (max-width: 850px) {
+    width: 100%;
+    margin: 1rem 0;
+    display: none;
+  }
 `
 
 const Icon = styled.i`
@@ -534,8 +657,12 @@ const Icon = styled.i`
 
 const Wrapper = styled.div`
   overflow-y: scroll;
-  background-color: #393e44;
-
+  border-radius: 3px;
+  background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
+    props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  max-height: 40vh;
+  margin-top: 2rem;
   &::-webkit-scrollbar {
     width: 12px;
   }
@@ -551,11 +678,13 @@ const Wrapper = styled.div`
 
 const PTable = styled.table`
   table-layout: fixed;
+  width: 100%;
   border-collapse: collapse;
+  display: inline-block;
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
+  display: table;
 `
 
 const PTD = styled.td`
@@ -568,10 +697,20 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-align: right;
 
-  &:first-child {
-    text-align: left;
+  &:nth-child(1) {
+    padding: 1.75px 10px;
+  }
+
+  &:nth-child(2) {
+    min-width: 100px;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+  }
+  &:nth-child(n + 4) {
+    text-align: right;
+    min-width: 100px;
   }
 `
 
@@ -615,31 +754,25 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 0 10px;
-  padding-top: 0;
-  padding-bottom: 10px;
-  padding-left: 10px;
-  padding-right: ${(props: { isSorted?: boolean }) =>
-    props.isSorted ? '0' : '16px'};
+  padding-right: 16px;
   font-weight: 500;
-  text-align: center;
-  vertical-align: bottom;
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  background-color: #393e44;
-  width: 60px;
+
+  &:nth-child(1) {
+    padding: 10px;
+    text-align: left;
+  }
 
   &:nth-child(2) {
-    width: 90px;
+    text-align: left;
+    width: 100px;
   }
-  &:nth-child(6) {
-    width: 98px;
-    padding-right: 0;
+  &:nth-child(3) {
+    width: 70px;
+    text-align: left;
   }
-  &:nth-child(7) {
-    width: 98px;
-    padding-right: 0;
+  &:nth-child(n + 4) {
+    width: 100px;
+    text-align: right;
   }
 `
 
@@ -647,14 +780,37 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
-  &:nth-child(even) {
+`
+
+const PTRBody = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
+
+  &:nth-child(odd) {
     background-color: ${(props: { isSelected?: boolean }) =>
       props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
+
+  &:hover {
+    background-color: rgba(70, 102, 142, 0.2);
+  }
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  display: table;
+  position: sticky;
+  top: 0;
+  width: 100%;
 
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid white;
+  }
+`
 
 const PTextBox = styled.div`
   font-size: 30px;
@@ -671,7 +827,7 @@ const PTextBox = styled.div`
   background-color: #2d3136;
 `
 
-const mapStateToProps = (store : object) => ({
+const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
 })
 

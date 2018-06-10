@@ -20,48 +20,67 @@ export function optimizeMocks(): { rows: string[]; cols: any[][] } {
   return { rows, cols }
 }
 
-export function getColor(value: string): string {
+export function getColor(
+  value: string
+): { backgroundColor: string; textColor: string } {
   const n = Number(value)
   if (n >= 0.9) {
-    return '#1B5E20'
+    return { backgroundColor: '#1B5E20', textColor: 'white' }
   } else if (n >= 0.8 && n < 0.9) {
-    return '#2E7D32'
+    return { backgroundColor: '#2E7D32', textColor: 'white' }
   } else if (n >= 0.7 && n < 0.8) {
-    return '#388E3C'
+    return { backgroundColor: '#388E3C', textColor: 'white' }
   } else if (n >= 0.6 && n < 0.7) {
-    return '#43A047'
+    return { backgroundColor: '#43A047', textColor: 'white' }
   } else if (n >= 0.5 && n < 0.6) {
-    return '#4CAF50'
+    return { backgroundColor: '#4CAF50', textColor: 'white' }
   } else if (n >= 0.4 && n < 0.5) {
-    return '#66BB6A'
+    return { backgroundColor: '#66BB6A', textColor: 'white' }
   } else if (n >= 0.3 && n < 0.4) {
-    return '#81C784'
+    return { backgroundColor: '#81C784', textColor: 'black' }
   } else if (n >= 0.2 && n < 0.3) {
-    return '#A5D6A7'
+    return { backgroundColor: '#A5D6A7', textColor: 'black' }
   } else if (n >= 0.1 && n < 0.2) {
-    return '#C8E6C9'
+    return { backgroundColor: '#C8E6C9', textColor: 'black' }
   } else if (n >= 0 && n < 0.1) {
-    return '#E8F5E9'
+    return { backgroundColor: '#E8F5E9', textColor: 'black' }
   } else if (n >= -0.1 && n < 0) {
-    return '#B9F6CA'
+    return { backgroundColor: '#B9F6CA', textColor: 'black' }
   } else if (n >= -0.2 && n < -0.1) {
-    return '#FFEBEE'
+    return { backgroundColor: '#FFEBEE', textColor: 'black' }
   } else if (n >= -0.3 && n < -0.2) {
-    return '#FFCDD2'
+    return { backgroundColor: '#FFCDD2', textColor: 'black' }
   } else if (n >= -0.4 && n < -0.3) {
-    return '#EF9A9A'
+    return { backgroundColor: '#EF9A9A', textColor: 'black' }
   } else if (n >= -0.5 && n < -0.4) {
-    return '#E57373'
+    return { backgroundColor: '#E57373', textColor: 'black' }
   } else if (n >= -0.6 && n < -0.5) {
-    return '#EF5350'
+    return { backgroundColor: '#EF5350', textColor: 'black' }
   } else if (n >= -0.7 && n < -0.6) {
-    return '#F44336'
+    return { backgroundColor: '#F44336', textColor: 'black' }
   } else if (n >= -0.8 && n < -0.7) {
-    return '#E53935'
+    return { backgroundColor: '#E53935', textColor: 'black' }
   } else if (n >= -0.9 && n < -0.8) {
-    return '#D32F2F'
+    return { backgroundColor: '#D32F2F', textColor: 'black' }
   } else if (n >= -1 && n < -0.9) {
-    return '#C62828'
+    return { backgroundColor: '#C62828', textColor: 'black' }
+  }
+}
+
+export function getTextColor(color: string) {
+  if (color === '#C8E6C9' || color === '#E8F5E9') {
+  }
+  switch (color) {
+    case '#C8E6C9':
+      return 'black'
+      break
+
+    case '#E8F5E9':
+      return 'black'
+      break
+
+    default:
+      break
   }
 }
 
@@ -74,7 +93,7 @@ export function getHeatMapData(
       result.push({
         x: i + 1,
         y: idx * 2,
-        color: getColor(value.v),
+        color: getColor(value.v).backgroundColor,
       })
     })
   })

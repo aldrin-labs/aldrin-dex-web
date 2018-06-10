@@ -136,6 +136,8 @@ class LoginQuery extends React.Component<Props, State> {
 
     if (isShownModal) return null
 
+    // TODO: change width on Button when resolution width < 340px
+
     return (
       <SWrapper>
         {!loginStatus && <Button onClick={this.showLogin}>Log in</Button>}
