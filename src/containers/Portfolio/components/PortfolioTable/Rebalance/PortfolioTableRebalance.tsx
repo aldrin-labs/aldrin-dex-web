@@ -179,26 +179,34 @@ export default class PortfolioTableRebalance extends React.Component<
       )
     }
 
-    let sum = 0
-    let maxSum = 100
-    let lastFlag = false
-    let newDataWithPercents = data.map((row, i) => {
-      row.portfolioPerc = Math.round(((row.price * 100) / total) * 100) / 100
-      sum += row.portfolioPerc
-      maxSum -= row.portfolioPerc
-      if (Math.abs(maxSum) <= 0.02 && !lastFlag) {
-        row.portfolioPerc += maxSum
-        row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
-        sum += maxSum
-        lastFlag = true
-      }
+    const newDataWithPercents = data.map((row) => {
+      row.portfolioPerc = ((row.price * 100) / total).toFixed(4)
 
-      //TODO: SHOULD BE REFACTORED
-      row.portfolioPerc =
-        row.portfolioPerc == 0 ? '0' : row.portfolioPerc.toFixed(1)
+      row.portfolioPerc = row.portfolioPerc == 0 ? '0' : row.portfolioPerc
 
       return row
     })
+
+    // let sum = 0
+    // let maxSum = 100
+    // let lastFlag = false
+    // let newDataWithPercents = data.map((row, i) => {
+    //   row.portfolioPerc = Math.round(((row.price * 100) / total) * 100) / 100
+    //   sum += row.portfolioPerc
+    //   maxSum -= row.portfolioPerc
+    //   if (Math.abs(maxSum) <= 0.02 && !lastFlag) {
+    //     row.portfolioPerc += maxSum
+    //     row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
+    //     sum += maxSum
+    //     lastFlag = true
+    //   }
+    //
+    //   //TODO: SHOULD BE REFACTORED
+    //   row.portfolioPerc =
+    //     row.portfolioPerc == 0 ? '0' : row.portfolioPerc.toFixed(1)
+    //
+    //   return row
+    // })
     // console.log('total', total)
     // console.log('sum: ', sum)
     // console.log('maxSum: ', maxSum)
@@ -332,19 +340,20 @@ export default class PortfolioTableRebalance extends React.Component<
 
   // TODO: refactor all this stuff
   onSaveClick = () => {
-    if (!this.state.isPercentSumGood) {
+    if (!this.state.isPercentSumGood || this.state.undistributedMoney < 0) {
       return
     }
 
     let { rows, totalRows, undistributedMoney } = this.state
 
-    if (this.checkForChanges(rows)) {
-      console.log('has changes')
+    // if (this.checkForChanges(rows)) {
+    // if (true) {
+    console.log('has changes')
 
-      let rowsWithNewPrice = this.calculatePriceByPercents(rows)
+    let rowsWithNewPrice = this.calculatePriceByPercents(rows)
 
-      rows = this.calculatePriceDifference(rowsWithNewPrice)
-    }
+    rows = this.calculatePriceDifference(rowsWithNewPrice)
+    // }
 
     console.log(rows)
 
@@ -502,13 +511,13 @@ export default class PortfolioTableRebalance extends React.Component<
     const { rows } = this.state
     let percentInput = e.target.value
 
-    if (
-      !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|100\.?|100\.0?|)$/.test(
-        percentInput
-      )
-    ) {
-      return
-    }
+    // if (
+    //   !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|100\.?|100\.0?|)$/.test(
+    //     percentInput
+    //   )
+    // ) {
+    //   return
+    // }
 
     const clonedRows = rows.map((a) => ({ ...a }))
     clonedRows[idx].portfolioPerc = percentInput
@@ -616,6 +625,7 @@ export default class PortfolioTableRebalance extends React.Component<
     }
 
     const stringKey = key === 'currency' || key === 'symbol'
+    console.log(currentRowsForSort)
 
     const newData = currentRowsForSort.slice().sort((a, b) => {
       if (currentSort && currentSort.key === key) {
@@ -663,7 +673,8 @@ export default class PortfolioTableRebalance extends React.Component<
       isPercentSumGood,
       totalPercents,
     } = this.state
-    const saveButtonColor = isPercentSumGood ? '#65c000' : '#ff687a'
+    const saveButtonColor =
+      isPercentSumGood && undistributedMoney >= 0 ? '#65c000' : '#ff687a'
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
