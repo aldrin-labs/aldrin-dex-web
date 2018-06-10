@@ -39,21 +39,8 @@ class CorrelationMatrix extends Component<IProps, IState> {
     }
   }
 
-  /*componentWillReceiveProps(nextProps: IProps) {
-    let { hintOpacity } = this.state
-    let showHint = !!hintOpacity
-    console.log('Hint opacity = ')
-    console.log(hintOpacity)
-    if (showHint !== nextProps.isMouseOnMatrix) {
-      hintOpacity = Math.abs(hintOpacity - 1)
-
-      this.setState({ hintOpacity })
-    }
-  }*/
-
   onTableMouseOver = () => {
     this.setState({ hintOpacity: 1 })
-    console.log('onMouseOver')
   }
 
   onTableMouseLeave = () => {
@@ -61,7 +48,6 @@ class CorrelationMatrix extends Component<IProps, IState> {
       hintOpacity: 0,
       hint: null,
     })
-    console.log('onMouseLeave')
   }
 
   onMouseOver = (
@@ -75,10 +61,6 @@ class CorrelationMatrix extends Component<IProps, IState> {
     this.setState({
       hint: { index, value, colName, rowName, x, y },
     })
-  }
-
-  onMouseLeave = () => {
-    // this.setState({ hintOpacity: 0 })
   }
 
   render() {
@@ -98,12 +80,7 @@ class CorrelationMatrix extends Component<IProps, IState> {
             this.props.fullScreenChangeHandler(isFullscreenEnabled)
           }
         >
-          <div
-            className="full-screenable-node"
-            onMouseLeave={() => {
-              this.onMouseLeave()
-            }}
-          >
+          <div className="full-screenable-node">
             <Table style={tableStyle}>
               <thead>
                 <Row
@@ -162,7 +139,6 @@ class CorrelationMatrix extends Component<IProps, IState> {
                                 event.nativeEvent.clientY
                               )
                             }
-                            onMouseLeave={() => this.onMouseLeave()}
                           >
                             {value}
                           </Item>
