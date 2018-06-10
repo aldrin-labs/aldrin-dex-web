@@ -340,7 +340,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   // TODO: refactor all this stuff
   onSaveClick = () => {
-    if (!this.state.isPercentSumGood || this.state.undistributedMoney < 0) {
+    if (!this.state.isPercentSumGood || !(this.state.undistributedMoney > 0)) {
       return
     }
 
