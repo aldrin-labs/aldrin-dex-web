@@ -75,6 +75,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
             >
               Correlation
             </Tab>
+
+            <Tab
+              onClick={() => this.onChangeTab('optimization')}
+              active={tab === 'optimization'}
+            >
+              Optimization
+            </Tab>
           </TabContainer>
 
           <ButtonContainer>
