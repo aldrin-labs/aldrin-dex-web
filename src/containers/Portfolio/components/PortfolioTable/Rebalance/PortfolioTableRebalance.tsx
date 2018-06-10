@@ -163,7 +163,7 @@ export default class PortfolioTableRebalance extends React.Component<
   calculateTotalPercents = (data: any[]) => {
     const totalPercents = data
       .reduce((sum, row) => (sum += +row.portfolioPerc), 0)
-      .toFixed(1)
+      .toFixed(4)
 
     return totalPercents
   }
@@ -340,7 +340,10 @@ export default class PortfolioTableRebalance extends React.Component<
 
   // TODO: refactor all this stuff
   onSaveClick = () => {
-    if (!this.state.isPercentSumGood || !(this.state.undistributedMoney > 0)) {
+    if (!this.state.isPercentSumGood) {
+      return
+    }
+    if (this.state.undistributedMoney < 0) {
       return
     }
 
@@ -380,6 +383,9 @@ export default class PortfolioTableRebalance extends React.Component<
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: this.checkPercentSum(
+        JSON.parse(JSON.stringify(this.state.staticRows))
+      ),
+      totalPercents: this.calculateTotalPercents(
         JSON.parse(JSON.stringify(this.state.staticRows))
       ),
     })
@@ -486,7 +492,23 @@ export default class PortfolioTableRebalance extends React.Component<
 
     // console.log(Math.abs(sumOfAllPercents - 100))
 
-    return Math.abs(sumOfAllPercents - 100) <= 0.01 || sumOfAllPercents === 0
+    return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
+  }
+
+  onFocusPercentInput = (e: any, idx: number) => {
+    const { rows } = this.state
+    let percentInput = e.target.value
+
+    if (percentInput === '0' || percentInput === 0) {
+      percentInput = ''
+    }
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].portfolioPerc = percentInput
+
+    this.setState({
+      rows: clonedRows,
+    })
   }
 
   onBlurPercentInput = (e: any, idx: number) => {
@@ -963,6 +985,9 @@ export default class PortfolioTableRebalance extends React.Component<
                                     }
                                     onBlur={(e) =>
                                       this.onBlurPercentInput(e, rowIndex)
+                                    }
+                                    onFocus={(e) =>
+                                      this.onFocusPercentInput(e, rowIndex)
                                     }
                                   />
                                 </PTDR>
