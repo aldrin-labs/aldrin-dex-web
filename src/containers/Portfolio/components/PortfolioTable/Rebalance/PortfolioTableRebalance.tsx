@@ -471,7 +471,22 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onAddMoneyInputChange = (e: any) => {
-    this.setState({ addMoneyInputValue: e.target.value })
+    const inputAddMoney = e.target.value
+
+    if (!/^(!?(-?[0-9]+\.?[0-9]+)|(-?[0-9]\.?)|)$/.test(inputAddMoney)) {
+      console.log('not our number')
+      return
+    }
+
+    this.setState({ addMoneyInputValue: inputAddMoney })
+  }
+  onFocusAddMoneyInput = (e: any) => {
+    let inputAddMoney = e.target.value
+
+    if (inputAddMoney === 0 || inputAddMoney === '0') {
+      inputAddMoney = ''
+      this.setState({ addMoneyInputValue: inputAddMoney })
+    }
   }
 
   checkPercentSum = (data) => {
@@ -1086,6 +1101,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     type="number"
                     value={this.state.addMoneyInputValue}
                     onChange={this.onAddMoneyInputChange}
+                    onFocus={this.onFocusAddMoneyInput}
                   />
                   <Button onClick={() => this.onAddMoneyButtonPressed()}>
                     Add money
