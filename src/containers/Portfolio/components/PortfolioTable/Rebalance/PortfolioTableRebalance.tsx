@@ -379,6 +379,9 @@ export default class PortfolioTableRebalance extends React.Component<
       undistributedMoney: 0,
       selectedActive: [],
       areAllActiveChecked: false,
+      isPercentSumGood: this.checkPercentSum(
+        JSON.parse(JSON.stringify(this.state.staticRows))
+      ),
     })
   }
 
@@ -511,13 +514,13 @@ export default class PortfolioTableRebalance extends React.Component<
     const { rows } = this.state
     let percentInput = e.target.value
 
-    // if (
-    //   !/^([0-9]\.?[1-9]?|(!?[1-9][0-9]\.[1-9]|[1-9][0-9]\.?)|100|100\.?|100\.0?|)$/.test(
-    //     percentInput
-    //   )
-    // ) {
-    //   return
-    // }
+    if (
+      !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[1-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
+        percentInput
+      )
+    ) {
+      return
+    }
 
     const clonedRows = rows.map((a) => ({ ...a }))
     clonedRows[idx].portfolioPerc = percentInput
