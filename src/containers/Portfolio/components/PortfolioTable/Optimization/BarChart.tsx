@@ -21,12 +21,12 @@ export interface IData {
 
 export interface IProps {
   data: {
-    data: IData[]
+    rawDataBeforeOptimization: IData[]
     optimizedData: IData[]
   }
 }
 export interface IState {
-  value: IValue | null
+  value: IValue | { x: null; y: null }
 }
 
 const ITEMS = [
@@ -46,25 +46,24 @@ const axisStyle = {
 }
 class BarChart extends Component<IProps, IState> {
   state = {
-    value: null,
+    value: { x: null, y: null },
   }
 
   onValueMouseOver = (value: IValue) => this.setState({ value })
 
-  onSeriesMouseOut = () => this.setState({ value: null })
+  onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { data, optimizedData } = this.props.data
+    const { rawDataBeforeOptimization, optimizedData } = this.props.data
     const { value } = this.state
-    console.log(value)
 
-    const formatedData = data.map((el: IData, i) => ({
+    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
       x: el.coin,
-      y: el.percentage,
+      y: Number(el.percentage).toFixed(1),
     }))
     const formatedOptimizedData = optimizedData.map((el, i) => ({
       x: el.coin,
-      y: el.percentage,
+      y: Number(el.percentage).toFixed(1),
     }))
 
     return (
@@ -74,7 +73,8 @@ class BarChart extends Component<IProps, IState> {
             <LegendContainer value={value}>
               <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
             </LegendContainer>
-            {data.length < 1 || optimizedData.length < 1 ? (
+            {rawDataBeforeOptimization.length < 1 ||
+            optimizedData.length < 1 ? (
               <VerticalBarSeries
                 animation="gentle"
                 key="chart"
@@ -103,7 +103,8 @@ class BarChart extends Component<IProps, IState> {
               ]
             )}
 
-            {formatedOptimizedData.length > 0 && data.length > 0 ? (
+            {formatedOptimizedData.length > 0 &&
+            rawDataBeforeOptimization.length > 0 ? (
               <VerticalBarSeries
                 style={{ cursor: 'pointer' }}
                 onSeriesMouseOut={this.onSeriesMouseOut}
@@ -112,8 +113,11 @@ class BarChart extends Component<IProps, IState> {
                 color="#4fa1da"
               />
             ) : null}
-            {value && (
-              <Hint value={value}>
+            {value.x === null || value.y === null ? null : (
+              <Hint
+                align={{ vertical: 'top', horizontal: 'left' }}
+                value={value}
+              >
                 <ChartTooltip>{`${value.x} - ${value.y}%`}</ChartTooltip>
               </Hint>
             )}
@@ -125,7 +129,8 @@ class BarChart extends Component<IProps, IState> {
 }
 
 const LegendContainer = styled.div`
-  opacity: ${(props: { value: IValue }) => (props.value ? '1' : '0')};
+  opacity: ${(props: { value: IValue | { x: null; y: null } }) =>
+    props.value.x === null || props.value.y === null ? '0' : '1'};
   border-radius: 5px;
   position: absolute;
   font-family: Roboto, sans-serif;
