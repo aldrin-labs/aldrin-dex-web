@@ -75,7 +75,7 @@ export default class OnlyCharts extends React.Component<Props, {}> {
                     &#10008;
                   </AddChartBtn>
                 </ChartInfo>
-                <iframe src={'http://chart.igorlimansky.me'} height={'100%'} />
+                <iframe src={'http://chart.cryptocurrencies.ai'} height={'100%'} />
               </Wrapper>
             )
           })}
