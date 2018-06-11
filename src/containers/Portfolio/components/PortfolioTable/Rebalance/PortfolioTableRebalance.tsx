@@ -1219,7 +1219,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     <UndistributedMoneyText>
                       Undistributed money: {undistributedMoney}
                     </UndistributedMoneyText>
-                    <Button onClick={() => this.onDistribute()}>
+                    <Button disabled={undistributedMoney < 0} onClick={() => this.onDistribute()}>
                       Distribute to selected
                     </Button>
                   </UndistributedMoneyContainer>
@@ -1807,7 +1807,7 @@ const ActionButtonsContainer = styled.div`
   }
 `
 
-const Button = styled.div`
+const Button = styled.button`
   border-radius: 2px;
   background-color: #4c5055;
   padding: 10px;
@@ -1822,6 +1822,11 @@ const Button = styled.div`
   cursor: pointer;
   text-transform: uppercase;
   margin-top: 10px;
+  
+  &:disabled {
+    cursor: not-allowed;
+    background-color: gray;
+  }
 `
 
 const UndistributedMoneyContainer = styled.div`
