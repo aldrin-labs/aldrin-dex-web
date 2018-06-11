@@ -45,7 +45,7 @@ export default class PieChart extends React.Component<Props, State> {
         data={data}
         animation
         innerRadius={innerRadius || 0}
-        colorType="literal"
+        colorType="linear"
         onValueMouseOver={this.onValueMouseOver}
         onSeriesMouseOut={this.onSeriesMouseOut}
       >

@@ -25,17 +25,60 @@ export interface IHint {
 export interface IState {
   hint: IHint | null
   hintOpacity: number
+  dragging: boolean
+  clientX: number | null
+  clientY: number | null
 }
 
 class CorrelationMatrix extends Component<IProps, IState> {
+  childNode!: HTMLElement | null
+
   constructor(props: IProps) {
     super(props)
 
-    this.onMouseOver = debounce(this.onMouseOver, 300)
-
+    this.mouseMoveHandle = debounce(this.mouseMoveHandle, 50)
     this.state = {
       hint: null,
       hintOpacity: 0,
+      dragging: false,
+      clientX: null,
+      clientY: null,
+    }
+  }
+
+  componentDidMount() {
+    window.addEventListener('mouseup', this.mouseUpHandle)
+    window.addEventListener('mousemove', this.mouseMoveHandle)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mouseup', this.mouseUpHandle)
+    window.removeEventListener('mousemove', this.mouseMoveHandle)
+  }
+
+  mouseUpHandle = () => {
+    this.setState({ dragging: false })
+  }
+
+  mouseDownHandle = (e: any) => {
+    this.setState(
+      {
+        dragging: true,
+        clientX: e.clientX,
+        clientY: e.clientY,
+      },
+      () => {
+        e.preventDefault()
+      }
+    )
+  }
+
+  mouseMoveHandle = (e: any) => {
+    const { dragging, clientX, clientY } = this.state
+    if (!dragging) return
+    if (dragging && clientX && clientY && this.childNode) {
+      this.childNode.scrollLeft += -clientX + e.clientX
+      this.childNode.scrollTop += -clientY + e.clientY
     }
   }
 
@@ -54,7 +97,11 @@ class CorrelationMatrix extends Component<IProps, IState> {
   }
 
   onMouseLeave = () => {
-    this.setState({ hintOpacity: 0 })
+    this.setState({ hintOpacity: 0, hint: null })
+  }
+
+  setChildNodeRef = (ref: HTMLElement | null) => {
+    this.childNode = ref
   }
 
   render() {
@@ -67,7 +114,11 @@ class CorrelationMatrix extends Component<IProps, IState> {
     const { cols, rows } = optimizeMocks()
 
     return (
-      <React.Fragment>
+      <ScrolledWrapper
+        innerRef={this.setChildNodeRef}
+        onMouseUp={this.mouseUpHandle}
+        onMouseDown={this.mouseDownHandle}
+      >
         <FullScreen
           enabled={isFullscreenEnabled}
           onChange={(isFSEnabled: any) =>
@@ -76,9 +127,7 @@ class CorrelationMatrix extends Component<IProps, IState> {
         >
           <div
             className="full-screenable-node"
-            onMouseLeave={() => {
-              this.onMouseLeave()
-            }}
+            onMouseLeave={this.onMouseLeave}
           >
             <Table style={tableStyle}>
               <thead>
@@ -153,10 +202,31 @@ class CorrelationMatrix extends Component<IProps, IState> {
             )}
           </div>
         </FullScreen>
-      </React.Fragment>
+      </ScrolledWrapper>
     )
   }
 }
+
+const ScrolledWrapper = styled.div`
+  max-height: 70vh;
+
+  overflow-y: scroll;
+  background-color: #393e44;
+  margin: 0 auto;
+  margin-bottom: 3.125rem;
+
+  &::-webkit-scrollbar {
+    width: 0.75rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
+`
 
 const Hint = styled.span`
   z-index: 1997;
@@ -185,6 +255,7 @@ const HeadItem = styled.th`
   position: sticky;
   background-color: #393e44;
   top: 0;
+  user-select: none;
 `
 
 const Row = styled.tr``
@@ -212,6 +283,7 @@ const Item = styled.td`
   border: 1px solid #fff;
 
   cursor: help;
+  user-select: none;
 `
 
 const Table = styled.table`

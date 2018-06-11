@@ -170,7 +170,10 @@ class CoinMarketTable extends React.Component<Props, State> {
                       <TD>
                         {priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : '-'}
                       </TD>
-                      <TD style={{ color }}>{`${percentChangeDay}` || '-'}</TD>
+                      <TD /*style={{ color }}*/>
+                        {/*`${percentChangeDay}` || '-'*/}
+                        -
+                      </TD>
                       <TD>
                         {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : '-'}
                       </TD>
