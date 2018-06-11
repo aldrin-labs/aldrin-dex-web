@@ -634,12 +634,24 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 
-  onEditNameCoin = (e: any, idx: number) => {
+  onEditCoinName = (e: any, idx: number) => {
     const { rows } = this.state
     let nameCurrencyInput = e.target.value
 
     const clonedRows = rows.map((a) => ({ ...a }))
     clonedRows[idx].currency = nameCurrencyInput
+
+    this.setState({
+      rows: clonedRows,
+    })
+  }
+
+  onEditCoinSymbol = (e: any, idx: number) => {
+    const { rows } = this.state
+    let symbolCurrencyInput = e.target.value
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].symbol = symbolCurrencyInput
 
     this.setState({
       rows: clonedRows,
@@ -1000,7 +1012,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR key={`${symbol}${rowIndex}`} isSelected={isSelected}>
+                      <PTR key={`${rowIndex}`} isSelected={isSelected}>
                         {isEditModeEnabled && (
                           // !!undistributedMoney &&
                           <PTDR
@@ -1021,7 +1033,21 @@ export default class PortfolioTableRebalance extends React.Component<
                                   isPercentSumGood={true}
                                   value={this.state.rows[rowIndex].currency}
                                   onChange={(e) =>
-                                    this.onEditNameCoin(e, rowIndex)
+                                    this.onEditCoinName(e, rowIndex)
+                                  }
+                                />
+                              </PTDR>
+                            )
+                          }
+                          if (row.editable && idx === 1 && isEditModeEnabled) {
+                            return (
+                              <PTDR key={`CoinSymbol${idx}`}>
+                                <InputTable
+                                  key={`inputCoinSymbol${rowIndex}`}
+                                  isPercentSumGood={true}
+                                  value={this.state.rows[rowIndex].symbol}
+                                  onChange={(e) =>
+                                    this.onEditCoinSymbol(e, rowIndex)
                                   }
                                 />
                               </PTDR>
@@ -1040,9 +1066,9 @@ export default class PortfolioTableRebalance extends React.Component<
                               )
                             } else {
                               return (
-                                <PTDR key={`input${idx}`}>
+                                <PTDR key={`percentageInCont${idx}`}>
                                   <InputTable
-                                    key={`${rowIndex}`}
+                                    key={`inputPercentage${rowIndex}`}
                                     tabIndex={rowIndex + 1}
                                     isPercentSumGood={isPercentSumGood}
                                     value={
@@ -1537,7 +1563,7 @@ const PTR = styled.tr`
     background-color: ${(props: { isSelected?: boolean }) =>
       props.isSelected ? '#2d3136' : '#393e44'};
 
-    border: 1px solid indianred;
+    border: 1px solid #928282;
   }
 
   &:nth-child(even) {
