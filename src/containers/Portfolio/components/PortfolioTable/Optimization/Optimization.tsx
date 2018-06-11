@@ -272,8 +272,8 @@ const ChartsContainer = styled.div`
 const Chart = styled.div`
   padding: 0.5rem;
   margin: 1rem;
-  flex-basis: calc(50% - 2rem);
   flex-grow: 1;
+  min-width: 0;
   height: 300px;
   border-radius: 1rem;
   background: #393e44;
