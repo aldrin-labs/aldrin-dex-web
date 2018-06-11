@@ -59,11 +59,11 @@ class BarChart extends Component<IProps, IState> {
 
     const formatedData = data.map((el: IData, i) => ({
       x: el.coin,
-      y: el.percentage,
+      y: Number(el.percentage).toFixed(1),
     }))
     const formatedOptimizedData = optimizedData.map((el, i) => ({
       x: el.coin,
-      y: el.percentage,
+      y: Number(el.percentage).toFixed(1),
     }))
 
     return (

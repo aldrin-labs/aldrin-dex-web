@@ -6,7 +6,6 @@ import { MOCK_DATA } from '../dataMock'
 import BarChart from './BarChart'
 import EfficientFrontier from './EfficientFrontier'
 import Table from './Table'
-import { calcPercentage } from '../../../../../utils/PortfolioTableUtils'
 import * as actions from '../../../actions'
 import { IState, IData, IProps } from './optimizationTypes'
 
@@ -81,7 +80,7 @@ class Optimization extends Component<IProps, IState> {
     const result = data.map((asset) => {
       const { coin, percentage } = asset
 
-      return { coin, percentage: calcPercentage(+percentage) }
+      return { coin, percentage: Number(percentage) }
     })
 
     return result

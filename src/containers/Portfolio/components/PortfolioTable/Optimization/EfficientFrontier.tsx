@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import isEmpty from 'lodash/isEmpty'
 import {
   FlexibleXYPlot,
   XAxis,
@@ -64,8 +63,8 @@ class EfficientFrontier extends Component<IProps, IState> {
 
     if (percentages.length > 1) {
       data = percentages.map((percentage, i) => ({
-        x: Number(risk[i]),
-        y: Number(percentage),
+        x: +Number(risk[i]).toFixed(1),
+        y: +Number(percentage).toFixed(1),
       }))
 
       highlightedDotData.push(

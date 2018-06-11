@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
+
 import { IProps, IState } from './tableTypes'
 
 class Table extends Component<IProps, IState> {
@@ -27,7 +28,7 @@ class Table extends Component<IProps, IState> {
 
   render() {
     const { withInput, data, onClickDeleteIcon, onPlusClick } = this.props
-
+    console.log(data)
     if (withInput) {
       return (
         <StyledTable>
@@ -41,7 +42,7 @@ class Table extends Component<IProps, IState> {
             <Col>
               {data.map((item, i) => (
                 <Item key={i}>
-                  {`${item.percentage}%`}{' '}
+                  {`${Number(item.percentage).toFixed(2)}%`}{' '}
                   <StyledDeleteIcon
                     onClick={() => {
                       onClickDeleteIcon(i)
@@ -94,7 +95,7 @@ class Table extends Component<IProps, IState> {
 
             <Col>
               {data.map((item, i) => (
-                <Item key={i}>{`${item.percentage}%`}</Item>
+                <Item key={i}>{`${Number(item.percentage).toFixed(2)}%`}</Item>
               ))}
             </Col>
           </Body>
@@ -127,7 +128,7 @@ const Input = styled.input`
   outline: none;
   border-right: none;
   width: 100%;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
   text-align: left;
@@ -145,7 +146,7 @@ const Item = styled.div`
   color: white;
   justify-content: center;
   padding: 0.5rem;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 0.8rem;
   font-weight: normal;
   text-align: center;
