@@ -61,6 +61,9 @@ export default class PortfolioTableRebalance extends React.Component<
     totalRows: 0,
     totalStaticRows: 0,
     totalSavedRows: 0,
+    totalTableRows: 0,
+    totalTableStaticRows: 0,
+    totalTableSavedRows: 0,
     isPercentSumGood: true,
     totalPercents: 0,
   }
@@ -80,6 +83,9 @@ export default class PortfolioTableRebalance extends React.Component<
         totalRows: this.calculateTotal(this.state.rows),
         totalStaticRows: this.calculateTotal(this.state.staticRows),
         totalSavedRows: this.calculateTotal(this.state.savedRows),
+        totalTableRows: this.calculateTableTotal(this.state.rows),
+        totalTableStaticRows: this.calculateTableTotal(this.state.staticRows),
+        totalTableSavedRows: this.calculateTableTotal(this.state.savedRows),
       },
       () => {
         this.calculateAllPercents()
@@ -158,6 +164,12 @@ export default class PortfolioTableRebalance extends React.Component<
     const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
     return total + undistributedMoney
+  }
+
+  calculateTableTotal = (data: any[]) => {
+    const tableTotal = data.reduce((sum, row, i) => (sum += data[i].price), 0)
+
+    return tableTotal
   }
 
   calculateTotalPercents = (data: any[]) => {
@@ -270,12 +282,14 @@ export default class PortfolioTableRebalance extends React.Component<
       }),
       () => {
         let newTotalRows = this.calculateTotal(rows)
+        let newTableTotalRows = this.calculateTableTotal(rows)
         let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
         let newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
         this.setState({
           selectedActive,
           totalRows: newTotalRows,
+          totalTableRows: newTableTotalRows,
           rows: newRowsWithNewPercents,
           isPercentSumGood: newIsPercentSumGood,
         })
@@ -373,12 +387,14 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.savedRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+      totalTableRows: this.state.totalTableSavedRows,
     })
   }
   onReset = (e: any) => {
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.staticRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
+      totalTableRows: this.state.totalTableStaticRows,
       undistributedMoney: 0,
       selectedActive: [],
       areAllActiveChecked: false,
@@ -396,6 +412,7 @@ export default class PortfolioTableRebalance extends React.Component<
       this.setState((prevState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+        totalTableRows: this.state.totalTableSavedRows,
         rows: JSON.parse(JSON.stringify(this.state.savedRows)),
         selectedActive: [],
         areAllActiveChecked: false,
@@ -425,6 +442,7 @@ export default class PortfolioTableRebalance extends React.Component<
       },
       () => {
         const newTotalRows = this.calculateTotal(rows)
+        const newTableTotalRows = this.calculateTableTotal(rows)
         const newRowsWithNewPercents = this.calculatePercents(
           rows,
           newTotalRows
@@ -433,6 +451,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
         this.setState({
           totalRows: newTotalRows,
+          totalTableRows: newTableTotalRows,
           rows: newRowsWithNewPercents,
           isPercentSumGood: newIsPercentSumGood,
         })
@@ -459,11 +478,13 @@ export default class PortfolioTableRebalance extends React.Component<
       //TODO: //Very brutal fix, need to be reworked
       this.setState({ undistributedMoney: money }, () => {
         let newTotal = this.calculateTotal(rows)
+        let newTableTotal = this.calculateTableTotal(rows)
         rows = this.calculatePercents(rows, newTotal)
         this.setState({
           selectedActive,
           rows,
           totalRows: newTotal,
+          totalTableRows: newTableTotal,
           isPercentSumGood: this.checkPercentSum(rows),
         })
       })
@@ -552,7 +573,7 @@ export default class PortfolioTableRebalance extends React.Component<
     let percentInput = e.target.value
 
     if (
-      !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[1-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
+      !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
         percentInput
       )
     ) {
@@ -575,6 +596,9 @@ export default class PortfolioTableRebalance extends React.Component<
     )
 
     const newTotalRows = this.calculateTotal(newCalculatedRowsWithPercents)
+    const newTableTotalRows = this.calculateTableTotal(
+      newCalculatedRowsWithPercents
+    )
 
     // NOT READY FOR NOW
     //TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
@@ -602,6 +626,7 @@ export default class PortfolioTableRebalance extends React.Component<
         // if (oldRowPrice > newRowPrice) {
         this.setState((prevState) => ({
           undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
+          totalTableRows: newTableTotalRows,
         }))
         // }
       }
@@ -620,6 +645,8 @@ export default class PortfolioTableRebalance extends React.Component<
         }),
         () => {
           let newTotal = this.calculateTotal(rows)
+          let newTableTotal = this.calculateTableTotal(rows)
+
           rows = this.calculatePercents(rows, newTotal)
           let checkedPercentsIsGood = this.checkPercentSum(rows)
 
@@ -627,6 +654,7 @@ export default class PortfolioTableRebalance extends React.Component<
             addMoneyInputValue: 0,
             rows,
             totalRows: newTotal,
+            totalTableRows: newTableTotal,
             isPercentSumGood: checkedPercentsIsGood,
           })
         }
@@ -712,6 +740,7 @@ export default class PortfolioTableRebalance extends React.Component<
       undistributedMoney,
       isPercentSumGood,
       totalPercents,
+      totalTableRows,
     } = this.state
     const saveButtonColor =
       isPercentSumGood && undistributedMoney >= 0 ? '#65c000' : '#ff687a'
@@ -1086,7 +1115,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTHR>{`${totalPercents}%`}</PTHR>
                     <PTHR>
                       {mainSymbol}
-                      {`${totalRows}`}
+                      {`${totalTableRows}`}
                     </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
