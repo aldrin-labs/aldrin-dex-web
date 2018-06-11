@@ -59,4 +59,5 @@ const SNav = styled.nav`
     display: none;
   }
 `
+
 const LoginWrapper = styled.div``

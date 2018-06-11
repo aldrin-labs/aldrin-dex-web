@@ -7,6 +7,7 @@ import { ITableProps } from '../../interfaces'
 import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
 import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
 import PortfolioTableBalances from './Main/PortfolioTableBalances'
+import Optimization from './Optimization/Optimization'
 import Correlation from './Correlation/Correlation'
 import PortfolioTableTabs from './PortfolioTableTabs'
 
@@ -79,7 +80,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
     if (tab === 'rebalance') {
       return (
-        <PortfolioTableRebalance>
+        <PortfolioTableRebalance isUSDCurrently={isUSDCurrently}>
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
@@ -104,6 +105,19 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             onToggleUSDBTC={this.onToggleUSDBTC}
           />
         </Correlation>
+      )
+    }
+
+    if (tab === 'optimization') {
+      return (
+        <Optimization>
+          <PortfolioTableTabs
+            tab={tab}
+            portfolio={portfolio}
+            onChangeTab={this.onChangeTab}
+            onToggleUSDBTC={this.onToggleUSDBTC}
+          />
+        </Optimization>
       )
     }
 
