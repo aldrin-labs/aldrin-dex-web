@@ -28,7 +28,6 @@ class Table extends Component<IProps, IState> {
 
   render() {
     const { withInput, data, onClickDeleteIcon, onPlusClick } = this.props
-    console.log(data)
     if (withInput) {
       return (
         <StyledTable>

@@ -21,7 +21,7 @@ export interface IData {
 
 export interface IProps {
   data: {
-    data: IData[]
+    rawDataBeforeOptimization: IData[]
     optimizedData: IData[]
   }
 }
@@ -54,10 +54,10 @@ class BarChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { data, optimizedData } = this.props.data
+    const { rawDataBeforeOptimization, optimizedData } = this.props.data
     const { value } = this.state
 
-    const formatedData = data.map((el: IData, i) => ({
+    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
       x: el.coin,
       y: Number(el.percentage).toFixed(1),
     }))
@@ -73,7 +73,8 @@ class BarChart extends Component<IProps, IState> {
             <LegendContainer value={value}>
               <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
             </LegendContainer>
-            {data.length < 1 || optimizedData.length < 1 ? (
+            {rawDataBeforeOptimization.length < 1 ||
+            optimizedData.length < 1 ? (
               <VerticalBarSeries
                 animation="gentle"
                 key="chart"
@@ -102,7 +103,8 @@ class BarChart extends Component<IProps, IState> {
               ]
             )}
 
-            {formatedOptimizedData.length > 0 && data.length > 0 ? (
+            {formatedOptimizedData.length > 0 &&
+            rawDataBeforeOptimization.length > 0 ? (
               <VerticalBarSeries
                 style={{ cursor: 'pointer' }}
                 onSeriesMouseOut={this.onSeriesMouseOut}
@@ -112,7 +114,10 @@ class BarChart extends Component<IProps, IState> {
               />
             ) : null}
             {value.x === null || value.y === null ? null : (
-              <Hint value={value}>
+              <Hint
+                align={{ vertical: 'top', horizontal: 'left' }}
+                value={value}
+              >
                 <ChartTooltip>{`${value.x} - ${value.y}%`}</ChartTooltip>
               </Hint>
             )}

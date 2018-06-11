@@ -13,8 +13,8 @@ class Optimization extends Component<IProps, IState> {
   state = {
     activePercentageButton: 0,
     risk: [],
-    data: [],
     optimizedData: [],
+    rawDataBeforeOptimization: [],
     expectedReturn: '',
     activeButton: 2,
     percentages: [0],
@@ -42,6 +42,7 @@ class Optimization extends Component<IProps, IState> {
             percentage: (Math.random() * 100).toFixed(2),
           })),
           risk,
+          rawDataBeforeOptimization: this.props.data,
         })
       } else {
         // send some data to backend maybe?
@@ -171,17 +172,10 @@ class Optimization extends Component<IProps, IState> {
     return percetageArray
   }
 
-  deleteRow = (i: number) => {
-    this.setState({
-      optimizedData: this.state.optimizedData.filter(
-        (el: IData) => el.coin !== this.props.data[i].coin
-      ),
-    })
-
-    return this.props.updateData(
+  deleteRow = (i: number) =>
+    this.props.updateData(
       [...this.props.data].filter((el, index) => i !== index)
     )
-  }
 
   render() {
     const { children, data } = this.props
@@ -189,16 +183,15 @@ class Optimization extends Component<IProps, IState> {
       percentages,
       expectedReturn,
       optimizedData,
+      rawDataBeforeOptimization,
       activeButton,
       risk,
     } = this.state
 
-    const barChartData = { data, optimizedData }
+    const barChartData = { rawDataBeforeOptimization, optimizedData }
     const efficientFrontierData = {
       data,
       percentages,
-      // if there is no riskData from server so push some random data
-      // demoPurpose
       risk,
       activeButton,
     }

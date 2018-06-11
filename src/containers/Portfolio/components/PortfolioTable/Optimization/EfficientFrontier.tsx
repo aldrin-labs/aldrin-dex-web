@@ -75,9 +75,7 @@ class EfficientFrontier extends Component<IProps, IState> {
     return (
       <Container>
         <FlexibleXYPlot>
-          {data.length < 1 ||
-          highlightedDotData.length < 1 ||
-          rawData.length < 1 ? (
+          {highlightedDotData.length < 1 ? (
             <LineMarkSeries
               animation="gentle"
               curve={'curveNatural'}
