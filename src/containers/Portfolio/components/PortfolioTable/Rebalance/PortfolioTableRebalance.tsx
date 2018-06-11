@@ -49,17 +49,24 @@ export default class PortfolioTableRebalance extends React.Component<
     rows: JSON.parse(JSON.stringify(tableData)),
     staticRows: JSON.parse(JSON.stringify(tableData)),
     savedRows: JSON.parse(JSON.stringify(tableData)),
+    testRows: JSON.parse(JSON.stringify(tableData)),
     addMoneyInputValue: 0,
     activePercentInput: null,
-    activePercentInputValue: 0,
+    activePercentInputValues: [],
     currentSortForStatic: null,
     currentSortForDynamic: null,
     isEditModeEnabled: false,
     isUSDCurrently: true,
     undistributedMoney: 0,
+    undistributedMoneySaved: 0,
     totalRows: 0,
     totalStaticRows: 0,
     totalSavedRows: 0,
+    totalTableRows: 0,
+    totalTableStaticRows: 0,
+    totalTableSavedRows: 0,
+    isPercentSumGood: true,
+    totalPercents: 0,
   }
   componentWillMount() {
     this.calculateAllTotals()
@@ -74,6 +81,9 @@ export default class PortfolioTableRebalance extends React.Component<
         totalRows: this.calculateTotal(this.state.rows),
         totalStaticRows: this.calculateTotal(this.state.staticRows),
         totalSavedRows: this.calculateTotal(this.state.savedRows),
+        totalTableRows: this.calculateTableTotal(this.state.rows),
+        totalTableStaticRows: this.calculateTableTotal(this.state.staticRows),
+        totalTableSavedRows: this.calculateTableTotal(this.state.savedRows),
       },
       () => {
         this.calculateAllPercents()
@@ -124,37 +134,92 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
+  checkForChanges = (data: any[]) => {
+    let { staticRows } = this.state
+    let isHasChangesInPrice = false
+
+    //TODO: Should be more fast, maybe with old for loop, because we need to break loop when we found changes and go out of the function
+    data.forEach((row, i) => {
+      staticRows.forEach((staticRow, j) => {
+        if (
+          data[i].currency === staticRows[j].currency &&
+          data[i].symbol === staticRows[j].symbol
+        ) {
+          console.log(data[i].portfolioPerc !== staticRows[j].portfolioPerc)
+          if (data[i].portfolioPerc !== staticRows[j].portfolioPerc) {
+            isHasChangesInPrice = true
+          }
+        }
+      })
+    })
+
+    return isHasChangesInPrice
+  }
+
   calculateTotal = (data: any[]) => {
     const { undistributedMoney } = this.state
 
-    console.log('underst before: ' + undistributedMoney)
-
-    let total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
-
-    console.log('underst after: ' + undistributedMoney)
-
-    console.log(total + undistributedMoney)
+    const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
     return total + undistributedMoney
   }
 
-  calculatePercents = (data: any[], total) => {
-    let sum = 0
-    let maxSum = 100
-    let newDataWithPercents = data.map((row, i) => {
-      row.portfolioPerc = Math.round(row.price * 100 / total * 100) / 100
-      sum += row.portfolioPerc
-      maxSum -= row.portfolioPerc
-      if (i === data.length - 1 && Math.abs(maxSum) <= 0.01) {
-        row.portfolioPerc += maxSum
-        row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
-        sum += maxSum
-      }
+  calculateTableTotal = (data: any[]) => {
+    const tableTotal = data.reduce((sum, row, i) => (sum += data[i].price), 0)
+
+    return tableTotal
+  }
+
+  calculateTotalPercents = (data: any[]) => {
+    const totalPercents = data
+      .reduce((sum, row) => (sum += +row.portfolioPerc), 0)
+      .toFixed(4)
+
+    return totalPercents
+  }
+
+  calculatePercents = (data: any[], total: number) => {
+    if (total === 0) {
+      return this.calculatePriceDifference(
+        data.map((row) => {
+          row.portfolioPerc = '0'
+
+          return row
+        })
+      )
+    }
+
+    const newDataWithPercents = data.map((row) => {
+      row.portfolioPerc = ((row.price * 100) / total).toFixed(4)
+
+      row.portfolioPerc = row.portfolioPerc == 0 ? '0' : row.portfolioPerc
 
       return row
     })
-    console.log(sum)
-    console.log(maxSum)
+
+    // let sum = 0
+    // let maxSum = 100
+    // let lastFlag = false
+    // let newDataWithPercents = data.map((row, i) => {
+    //   row.portfolioPerc = Math.round(((row.price * 100) / total) * 100) / 100
+    //   sum += row.portfolioPerc
+    //   maxSum -= row.portfolioPerc
+    //   if (Math.abs(maxSum) <= 0.02 && !lastFlag) {
+    //     row.portfolioPerc += maxSum
+    //     row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
+    //     sum += maxSum
+    //     lastFlag = true
+    //   }
+    //
+    //   //TODO: SHOULD BE REFACTORED
+    //   row.portfolioPerc =
+    //     row.portfolioPerc == 0 ? '0' : row.portfolioPerc.toFixed(1)
+    //
+    //   return row
+    // })
+    // console.log('total', total)
+    // console.log('sum: ', sum)
+    // console.log('maxSum: ', maxSum)
     /*
       TODO:
       Sometimes sum of all percents isn't 100
@@ -163,22 +228,15 @@ export default class PortfolioTableRebalance extends React.Component<
       Have to be fixed
     */
 
+    //Just to update totalPercets
+
+    const totalPercents = this.calculateTotalPercents(newDataWithPercents)
+
+    this.setState({
+      totalPercents,
+    })
+
     return this.calculatePriceDifference(newDataWithPercents)
-  }
-
-  renderCheckbox = (idx: number) => {
-    const { selectedBalances } = this.state
-    const isSelected =
-      (selectedBalances && selectedBalances.indexOf(idx) >= 0) || false
-
-    return (
-      <React.Fragment>
-        <Checkbox type="checkbox" id={idx} checked={isSelected} />
-        <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
-          <Span />
-        </Label>
-      </React.Fragment>
-    )
   }
 
   renderActiveCheckbox = (idx: number) => {
@@ -195,68 +253,47 @@ export default class PortfolioTableRebalance extends React.Component<
       </React.Fragment>
     )
   }
-
-  onButtonClick = (idx: number) => {
-    let rows = this.state.rows
-    let {
-      selectedActive,
-      areAllActiveChecked,
-      staticRows,
-      totalRows,
-    } = this.state
-    if (rows.length - 1 === idx) {
-      let newRow = {
-        currency: 'Newcoin',
-        symbol: 'NEW',
-        portfolioPerc: 0.0,
-        price: 0,
-      }
-      rows.splice(rows.length - 1, 0, newRow)
-      areAllActiveChecked = false
-    } else {
-      let money = rows[idx].price
-      // rows[rows.length - 1].undistributedMoney += money
-      this.setState((prevState) => ({
-        undistributedMoney: prevState.undistributedMoney + money,
-      }))
-      let deleteFlag = true
-      this.state.staticRows.forEach((row, i, arr) => {
-        if (
-          rows[idx].currency === staticRows[i].currency &&
-          rows[idx].symbol === staticRows[i].symbol
-        ) {
-          deleteFlag = false
-        }
-      })
-      if (deleteFlag) {
-        rows.splice(idx, 1)
-        if (selectedActive) {
-          let toRemove = -1
-          selectedActive.forEach((row, i, arr) => {
-            if (selectedActive[i] === idx) {
-              toRemove = i
-            } else {
-              if (selectedActive[i] > idx) {
-                selectedActive[i] -= 1
-              }
-            }
-          })
-          if (toRemove != -1) {
-            selectedActive.splice(toRemove, 1)
-          }
-          if (selectedActive.length >= rows.length - 1) {
-            areAllActiveChecked = true
-          } else {
-            areAllActiveChecked = false
-          }
-        }
-      } else {
-        rows[idx].price = 0
-      }
+  onAddRowButtonClick = () => {
+    let rows = JSON.parse(JSON.stringify(this.state.rows))
+    let { totalRows } = this.state
+    let newRow = {
+      currency: 'Newcoin',
+      symbol: 'NEW',
+      portfolioPerc: 0.0,
+      price: 0,
+      editable: true,
     }
-
+    rows.push(newRow)
     rows = this.calculatePercents(rows, totalRows)
-    this.setState({ rows, selectedActive, areAllActiveChecked })
+    this.setState({ rows, areAllActiveChecked: false })
+  }
+
+  onDeleteRowClick = (idx: number) => {
+    let rows = JSON.parse(JSON.stringify(this.state.rows))
+    let { selectedActive, undistributedMoney } = this.state
+    let currentRowMoney = rows[idx].price
+    rows[idx].price = 0
+
+    //TODO: This should be refactored (calculate totatl should have second argument - undistributed money it it should be a pure function)
+    this.setState(
+      (prevState) => ({
+        undistributedMoney: prevState.undistributedMoney + currentRowMoney,
+      }),
+      () => {
+        let newTotalRows = this.calculateTotal(rows)
+        let newTableTotalRows = this.calculateTableTotal(rows)
+        let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
+        let newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+
+        this.setState({
+          selectedActive,
+          totalRows: newTotalRows,
+          totalTableRows: newTableTotalRows,
+          rows: newRowsWithNewPercents,
+          isPercentSumGood: newIsPercentSumGood,
+        })
+      }
+    )
   }
 
   onSelectAllActive = (e: any) => {
@@ -295,142 +332,364 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ selectedActive, areAllActiveChecked })
   }
 
-  onSaveClick = (e: any) => {
+  calculatePriceByPercents = (data: any) => {
+    const { totalRows } = this.state
+
+    let sumTotal = totalRows
+    data.forEach((row, i) => {
+      let newPrice = Math.round((totalRows / 100) * data[i].portfolioPerc)
+      console.log('newPrice: ', newPrice)
+      if (sumTotal <= newPrice) {
+        data[i].price = newPrice
+        sumTotal = 0
+      } else {
+        data[i].price = newPrice
+        sumTotal -= newPrice
+      }
+    })
+
+    return data
+  }
+
+  // TODO: refactor all this stuff
+  onSaveClick = () => {
+    if (!this.state.isPercentSumGood) {
+      return
+    }
+    if (this.state.undistributedMoney < 0) {
+      return
+    }
+
+    let { rows, totalRows, undistributedMoney } = this.state
+
+    // if (this.checkForChanges(rows)) {
+    // if (true) {
+    console.log('has changes')
+
+    let rowsWithNewPrice = this.calculatePriceByPercents(rows)
+
+    rows = this.calculatePriceDifference(rowsWithNewPrice)
+    // }
+
+    console.log(rows)
+
     this.setState({
-      savedRows: this.state.rows,
-      totalSavedRows: this.state.totalRows,
+      savedRows: JSON.parse(JSON.stringify(this.state.rows)),
+      rows,
+      totalSavedRows: totalRows,
       isEditModeEnabled: false,
+      selectedActive: [],
+      areAllActiveChecked: false,
+      undistributedMoneySaved: this.state.undistributedMoney,
     })
   }
   onLoadPreviousClick = (e: any) => {
     this.setState({
-      rows: this.state.savedRows,
-      totalRows: this.state.totalSavedRows,
+      rows: JSON.parse(JSON.stringify(this.state.savedRows)),
+      totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+      totalTableRows: this.state.totalTableSavedRows,
+      undistributedMoney: this.state.undistributedMoneySaved,
     })
   }
   onReset = (e: any) => {
     this.setState({
-      rows: this.state.staticRows,
-      totalRows: this.state.totalStaticRows,
+      rows: JSON.parse(JSON.stringify(this.state.staticRows)),
+      totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
+      totalTableRows: this.state.totalTableStaticRows,
+      undistributedMoney: 0,
+      selectedActive: [],
+      areAllActiveChecked: false,
+      isPercentSumGood: this.checkPercentSum(
+        JSON.parse(JSON.stringify(this.state.staticRows))
+      ),
+      totalPercents: this.calculateTotalPercents(
+        JSON.parse(JSON.stringify(this.state.staticRows))
+      ),
     })
   }
 
-  onDistribute = (e: any) => {
-    let { selectedActive, rows, undistributedMoney } = this.state
-    if (selectedActive && selectedActive.length > 0) {
-      if (selectedActive.length > 1) {
-        // let money = rows[rows.length - 1].undistributedMoney
-        let money = undistributedMoney
-        let moneyPart = Math.floor(money / selectedActive.length)
-        selectedActive.forEach((row, i, arr) => {
-          rows[selectedActive[i]].price += moneyPart
-          money -= moneyPart
-        })
-        // rows[rows.length - 1].undistributedMoney = money
-        this.setState({ undistributedMoney: money })
-      } else {
-        // rows[selectedActive[0]].price +=
-        //   rows[rows.length - 1].undistributedMoney
-        rows[selectedActive[0]].price += undistributedMoney
-
-        // rows[rows.length - 1].undistributedMoney = 0
-        this.setState({ undistributedMoney: 0 })
-      }
-      let newTotal = this.calculateTotal(rows)
-      rows = this.calculatePercents(rows, newTotal)
-
-      this.setState({ selectedActive, rows, totalRows: newTotal })
-    }
-  }
-
-  onAddMoneyInputChange = (e: any) => {
-    this.setState({ addMoneyInputValue: e.target.value })
-  }
-
-  onPercentInputChange = (e: any, idx: number) => {
-    let { rows } = this.state
-    rows[idx].portfolioPerc = e.target.value
-    let sum = 0
-    rows.forEach((row, i, arr) => {
-      sum += parseFloat(rows[i].portfolioPerc)
-    })
-    if (Math.abs(sum - 100) > 0.01) {
-      console.log('BAD')
-    } else {
-      console.log('GOOD')
-    }
-    this.setState({ rows })
-    e.preventDefault()
-    e.target.focus()
-  }
-
-  onPercentClick = (idx: number) => {
-    this.setState({
-      activePercentInput: idx,
-      activePercentInputValue: this.state.rows[idx].portfolioPerc,
-    })
-  }
-
-  onPercentSubmit = (e: any) => {
-    let { rows, totalRows } = this.state
-    let percent = this.state.activePercentInputValue
-    let idx = this.state.activePercentInput
-    if (percent != rows[idx].portfolioPerc) {
-      let total = rows[rows.length - 1].price
-      let newMoney = Math.round(total * percent / 100)
-      let subMoney = newMoney - rows[idx].price
-      rows[idx].price = newMoney
-      // rows[rows.length - 1].undistributedMoney -= subMoney
+  onEditModeEnable = () => {
+    if (this.state.isEditModeEnabled) {
       this.setState((prevState) => ({
-        undistributedMoney: prevState.undistributedMoney - subMoney,
+        isEditModeEnabled: !prevState.isEditModeEnabled,
+        totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+        totalTableRows: this.state.totalTableSavedRows,
+        rows: JSON.parse(JSON.stringify(this.state.savedRows)),
+        selectedActive: [],
+        areAllActiveChecked: false,
+        undistributedMoney: this.state.undistributedMoneySaved,
+        isPercentSumGood: this.checkPercentSum(
+          JSON.parse(JSON.stringify(this.state.savedRows))
+        ),
+        totalPercents: this.calculateTotalPercents(
+          JSON.parse(JSON.stringify(this.state.savedRows))
+        ),
       }))
-      rows = this.calculatePercents(rows, totalRows)
-      this.setState({
-        activePercentInput: null,
-        activePercentInputValue: 0,
-        rows,
-      })
     } else {
-      this.setState({
-        activePercentInput: null,
-        activePercentInputValue: 0,
-      })
-    }
-    e.preventDefault()
-  }
-
-  onAddMoneyButtonPressed = (e: any) => {
-    if (this.state.addMoneyInputValue !== 0) {
-      let { rows, totalRows, addMoneyInputValue } = this.state
-
-      this.setState((prevState) => ({
-        undistributedMoney:
-          prevState.undistributedMoney + Number(addMoneyInputValue),
-      }))
-
-      // rows[rows.length - 1].undistributedMoney += Number(
-      //   this.state.addMoneyInputValue
-      // )
-      rows = this.calculatePercents(rows, totalRows)
-      this.setState({
-        addMoneyInputValue: 0,
-        rows,
-      })
-    }
-  }
-
-  escFunction = (e) => {
-    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
       this.setState((prevState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
       }))
     }
   }
 
-  onEditModeEnable = () => {
-    this.setState((prevState) => ({
-      isEditModeEnabled: !prevState.isEditModeEnabled,
-    }))
+  escFunction = (e) => {
+    if (e.keyCode === 27) {
+      this.onEditModeEnable()
+    }
+  }
+
+  onDeleteUndistributedMoney = () => {
+    const { rows } = this.state
+
+    //TODO: Should be refactored (calculatotal should pe a pure function, no second setstate)
+    this.setState(
+      {
+        undistributedMoney: 0,
+      },
+      () => {
+        const newTotalRows = this.calculateTotal(rows)
+        const newTableTotalRows = this.calculateTableTotal(rows)
+        const newRowsWithNewPercents = this.calculatePercents(
+          rows,
+          newTotalRows
+        )
+        const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+
+        this.setState({
+          totalRows: newTotalRows,
+          totalTableRows: newTableTotalRows,
+          rows: newRowsWithNewPercents,
+          isPercentSumGood: newIsPercentSumGood,
+        })
+      }
+    )
+  }
+
+  onDistribute = (e: any) => {
+    let { selectedActive, rows, undistributedMoney } = this.state
+    if (selectedActive && selectedActive.length > 0) {
+      let money = undistributedMoney
+
+      if (selectedActive.length > 1) {
+        let moneyPart = Math.floor(money / selectedActive.length)
+        selectedActive.forEach((row, i, arr) => {
+          rows[selectedActive[i]].price += moneyPart
+          money -= moneyPart
+        })
+      } else {
+        rows[selectedActive[0]].price += undistributedMoney
+        money = 0
+      }
+
+      //TODO: //Very brutal fix, need to be reworked
+      this.setState({ undistributedMoney: money }, () => {
+        let newTotal = this.calculateTotal(rows)
+        let newTableTotal = this.calculateTableTotal(rows)
+        rows = this.calculatePercents(rows, newTotal)
+        this.setState({
+          selectedActive,
+          rows,
+          totalRows: newTotal,
+          totalTableRows: newTableTotal,
+          isPercentSumGood: this.checkPercentSum(rows),
+        })
+      })
+    }
+  }
+
+  onAddMoneyInputChange = (e: any) => {
+    const inputAddMoney = e.target.value
+
+    if (!/^(!?(-?[0-9]+\.?[0-9]+)|(-?[0-9]\.?)|)$/.test(inputAddMoney)) {
+      console.log('not our number')
+      return
+    }
+
+    this.setState({ addMoneyInputValue: inputAddMoney })
+  }
+  onFocusAddMoneyInput = (e: any) => {
+    let inputAddMoney = e.target.value
+
+    if (inputAddMoney === 0 || inputAddMoney === '0') {
+      inputAddMoney = ''
+      this.setState({ addMoneyInputValue: inputAddMoney })
+    }
+  }
+
+  checkPercentSum = (data) => {
+    const sumOfAllPercents = data.reduce(
+      (sum, row) => (sum += +row.portfolioPerc),
+      0
+    )
+
+    // console.log(
+    //   'checksum: ',
+    //   sumOfAllPercents - 100 > 0.1,
+    //   'sum of al perc: ',
+    //   sumOfAllPercents,
+    //   Math.abs(sumOfAllPercents - 100) > 0.1,
+    //   'math abs : ',
+    //   Math.abs(sumOfAllPercents - 100)
+    // )
+
+    // console.log(Math.abs(sumOfAllPercents - 100))
+
+    return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
+  }
+
+  onFocusPercentInput = (e: any, idx: number) => {
+    const { rows } = this.state
+    let percentInput = e.target.value
+
+    if (percentInput === '0' || percentInput === 0) {
+      percentInput = ''
+    }
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].portfolioPerc = percentInput
+
+    this.setState({
+      rows: clonedRows,
+    })
+  }
+
+  onBlurPercentInput = (e: any, idx: number) => {
+    const { rows } = this.state
+    let percentInput = e.target.value
+
+    if (!/^([0-9]{1,3}\.|)$/.test(percentInput)) {
+      return
+    }
+    if (percentInput === '') {
+      percentInput = '0'
+    } else {
+      percentInput = percentInput.slice(0, -1)
+    }
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].portfolioPerc = percentInput
+
+    this.setState({
+      rows: clonedRows,
+    })
+  }
+
+  onPercentInputChange = (e: any, idx: number) => {
+    const { rows } = this.state
+    let percentInput = e.target.value
+
+    if (
+      !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
+        percentInput
+      )
+    ) {
+      return
+    }
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].portfolioPerc = percentInput
+
+    const newCalculatedRowsWithPercents = this.calculatePriceByPercents(
+      clonedRows
+    )
+
+    const totalPercents = this.calculateTotalPercents(
+      newCalculatedRowsWithPercents
+    )
+
+    const rowWithNewPriceDiff = this.calculatePriceDifference(
+      newCalculatedRowsWithPercents
+    )
+
+    const newTotalRows = this.calculateTotal(newCalculatedRowsWithPercents)
+    const newTableTotalRows = this.calculateTableTotal(
+      newCalculatedRowsWithPercents
+    )
+
+    // NOT READY FOR NOW
+    //TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
+    let oldRowPrice = rows[idx].price
+    let newRowPrice = newCalculatedRowsWithPercents[idx].price
+    let oldNewPriceDiff = oldRowPrice - newRowPrice
+
+    console.log('oldRowPrice: ', oldRowPrice)
+    console.log('newRowPrice: ', newRowPrice)
+    console.log('oldNewPriceDiff: ', oldNewPriceDiff)
+
+    // if (oldRowPrice > newRowPrice) {
+    //   this.setState((prevState) => ({
+    //     undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
+    //   }))
+    // }
+
+    this.setState(
+      {
+        rows: rowWithNewPriceDiff,
+        isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
+        totalPercents,
+      },
+      () => {
+        // if (oldRowPrice > newRowPrice) {
+        this.setState((prevState) => ({
+          undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
+          totalTableRows: newTableTotalRows,
+        }))
+        // }
+      }
+    )
+  }
+
+  onEditCoinName = (e: any, idx: number) => {
+    const { rows } = this.state
+    let nameCurrencyInput = e.target.value
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].currency = nameCurrencyInput
+
+    this.setState({
+      rows: clonedRows,
+    })
+  }
+
+  onEditCoinSymbol = (e: any, idx: number) => {
+    const { rows } = this.state
+    let symbolCurrencyInput = e.target.value
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].symbol = symbolCurrencyInput
+
+    this.setState({
+      rows: clonedRows,
+    })
+  }
+
+  //TODO: Should be refactored (without callback)
+  onAddMoneyButtonPressed = (e: any) => {
+    if (this.state.addMoneyInputValue !== 0) {
+      let { rows, totalRows, addMoneyInputValue } = this.state
+
+      this.setState(
+        (prevState) => ({
+          undistributedMoney:
+            prevState.undistributedMoney + Number(addMoneyInputValue),
+        }),
+        () => {
+          let newTotal = this.calculateTotal(rows)
+          let newTableTotal = this.calculateTableTotal(rows)
+
+          rows = this.calculatePercents(rows, newTotal)
+          let checkedPercentsIsGood = this.checkPercentSum(rows)
+
+          this.setState({
+            addMoneyInputValue: 0,
+            rows,
+            totalRows: newTotal,
+            totalTableRows: newTableTotal,
+            isPercentSumGood: checkedPercentsIsGood,
+          })
+        }
+      )
+    }
   }
 
   onSortTable = (key: Args, chooseRows) => {
@@ -464,6 +723,7 @@ export default class PortfolioTableRebalance extends React.Component<
     }
 
     const stringKey = key === 'currency' || key === 'symbol'
+    console.log(currentRowsForSort)
 
     const newData = currentRowsForSort.slice().sort((a, b) => {
       if (currentSort && currentSort.key === key) {
@@ -508,7 +768,17 @@ export default class PortfolioTableRebalance extends React.Component<
       totalRows,
       isEditModeEnabled,
       undistributedMoney,
+      isPercentSumGood,
+      totalPercents,
+      totalTableRows,
     } = this.state
+    const saveButtonColor =
+      isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" />
+    ) : (
+      <Icon className="fa fa-btc" />
+    )
 
     return (
       <PTWrapper tableData={this.state.rows}>
@@ -571,11 +841,6 @@ export default class PortfolioTableRebalance extends React.Component<
                       portfolioPerc ? `${portfolioPerc}%` : '',
                       `${price}`,
                     ]
-                    const mainSymbol = isUSDCurrently ? (
-                      <Icon className="fa fa-usd" key={`${idx}usd`} />
-                    ) : (
-                      <Icon className="fa fa-btc" key={`${idx}btc`} />
-                    )
 
                     return (
                       <PTR
@@ -586,8 +851,8 @@ export default class PortfolioTableRebalance extends React.Component<
                           if (col.match(/%/g)) {
                             const color =
                               Number(col.replace(/%/g, '')) >= 0
-                                ? '#65c000'
-                                : '#ff687a'
+                                ? '#4caf50'
+                                : '#f44336'
 
                             return (
                               <PTDC
@@ -626,7 +891,10 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTHC>All</PTHC>
                     <PTHC>-</PTHC>
                     <PTHC>-</PTHC>
-                    <PTHC>{`${totalStaticRows} $`}</PTHC>
+                    <PTHC>
+                      {mainSymbol}
+                      {`${totalStaticRows}`}
+                    </PTHC>
                   </PTR>
                 </PTFoot>
               </Table>
@@ -646,9 +914,12 @@ export default class PortfolioTableRebalance extends React.Component<
                   <Replay />
                 </ActionButton>
                 <ActionButton onClick={() => this.onSaveClick()}>
-                  <SaveIcon />
+                  <SaveIcon style={{ color: saveButtonColor }} />
                 </ActionButton>
-                <ActionButton onClick={() => this.onLoadPreviousClick()}>
+                <ActionButton
+                  onClick={() => this.onLoadPreviousClick()}
+                  style={{ display: 'none' }}
+                >
                   <UndoIcon />
                 </ActionButton>
               </ActionButtonsContainer>
@@ -658,6 +929,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 <PTHead isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
                     {isEditModeEnabled && (
+                      // !!undistributedMoney &&
                       <PTHR key="selectAll" style={{ textAlign: 'left' }}>
                         <Checkbox
                           onChange={() => this.onSelectAllActive()}
@@ -704,7 +976,8 @@ export default class PortfolioTableRebalance extends React.Component<
                         </PTHR>
                       )
                     })}
-                    <PTHR />
+
+                    {isEditModeEnabled && <PTHR />}
                   </PTR>
                 </PTHead>
 
@@ -717,12 +990,6 @@ export default class PortfolioTableRebalance extends React.Component<
                       price,
                       deltaPrice,
                     } = row
-
-                    const mainSymbol = isUSDCurrently ? (
-                      <Icon className="fa fa-usd" key={`${rowIndex}usd`} />
-                    ) : (
-                      <Icon className="fa fa-btc" key={`${rowIndex}btc`} />
-                    )
 
                     const isSelected =
                       (selectedActive &&
@@ -750,65 +1017,105 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR
-                        key={`${currency}${symbol}${rowIndex}`}
-                        isSelected={isSelected}
-                        onClick={
-                          isEditModeEnabled
-                            ? () => this.onSelectActiveBalance(rowIndex)
-                            : null
-                        }
-                      >
+                      <PTR key={`${rowIndex}`} isSelected={isSelected}>
                         {isEditModeEnabled && (
-                          <PTDR key="smt" isSelected={isSelected}>
+                          // !!undistributedMoney &&
+                          <PTDR
+                            key="smt"
+                            isSelected={isSelected}
+                            onClick={() => this.onSelectActiveBalance(rowIndex)}
+                          >
                             {this.renderActiveCheckbox(rowIndex)}
                           </PTDR>
                         )}
 
                         {cols.map((col, idx) => {
-                          if (col.match(/%/g)) {
+                          if (row.editable && idx === 0 && isEditModeEnabled) {
+                            return (
+                              <PTDR key={`NameCoin${idx}`}>
+                                <InputTable
+                                  key={`inputNameCoin${rowIndex}`}
+                                  isPercentSumGood={true}
+                                  value={this.state.rows[rowIndex].currency}
+                                  onChange={(e) =>
+                                    this.onEditCoinName(e, rowIndex)
+                                  }
+                                />
+                              </PTDR>
+                            )
+                          }
+                          if (row.editable && idx === 1 && isEditModeEnabled) {
+                            return (
+                              <PTDR key={`CoinSymbol${idx}`}>
+                                <InputTable
+                                  key={`inputCoinSymbol${rowIndex}`}
+                                  isPercentSumGood={true}
+                                  value={this.state.rows[rowIndex].symbol}
+                                  onChange={(e) =>
+                                    this.onEditCoinSymbol(e, rowIndex)
+                                  }
+                                />
+                              </PTDR>
+                            )
+                          }
+                          if (idx === 2) {
                             const color =
                               Number(col.replace(/%/g, '')) >= 0
-                                ? '#65c000'
-                                : '#ff687a'
-                            if (rowIndex !== this.state.activePercentInput) {
+                                ? '#4caf50'
+                                : '#f44336'
+                            if (!this.state.isEditModeEnabled) {
                               return (
                                 <PTDR key={`${col}${idx}`} style={{ color }}>
                                   {col}
-                                  {isEditModeEnabled && <EditIcon />}
                                 </PTDR>
                               )
                             } else {
                               return (
-                                <PTDR key="percentForm">
-                                  <form onSubmit={this.onPercentSubmit}>
-                                    <InputTable
-                                      type="number"
-                                      value={
-                                        this.state.rows[rowIndex].portfolioPerc
-                                      }
-                                      onChange={(e) =>
-                                        this.onPercentInputChange(e, rowIndex)
-                                      }
-                                      onBlur={this.onPercentSubmit}
-                                      step="0.01"
-                                      min="0"
-                                      max="100"
-                                    />
-                                  </form>
+                                <PTDR key={`percentageInCont${idx}`}>
+                                  <InputTable
+                                    key={`inputPercentage${rowIndex}`}
+                                    tabIndex={rowIndex + 1}
+                                    isPercentSumGood={isPercentSumGood}
+                                    value={
+                                      this.state.rows[rowIndex].portfolioPerc
+                                    }
+                                    onChange={(e) =>
+                                      this.onPercentInputChange(e, rowIndex)
+                                    }
+                                    onBlur={(e) =>
+                                      this.onBlurPercentInput(e, rowIndex)
+                                    }
+                                    onFocus={(e) =>
+                                      this.onFocusPercentInput(e, rowIndex)
+                                    }
+                                  />
                                 </PTDR>
                               )
                             }
                           }
                           if (col.match(/BUY/g)) {
-                            const color = '#65c000'
+                            const color = '#4caf50'
 
-                            return <PTDR style={{ color }}>{col}</PTDR>
+                            return (
+                              <PTDR
+                                key={`buy${idx}${col}${rowIndex}`}
+                                style={{ color }}
+                              >
+                                {col}
+                              </PTDR>
+                            )
                           }
                           if (col.match(/SELL/g)) {
-                            const color = '#ff687a'
+                            const color = '#f44336'
 
-                            return <PTDR style={{ color }}>{col}</PTDR>
+                            return (
+                              <PTDR
+                                key={`sell${idx}${col}${rowIndex}`}
+                                style={{ color }}
+                              >
+                                {col}
+                              </PTDR>
+                            )
                           }
 
                           if (idx === 3) {
@@ -823,35 +1130,63 @@ export default class PortfolioTableRebalance extends React.Component<
                           return <PTDR key={`${col}${idx}`}>{col}</PTDR>
                         })}
                         <PTDR>
-                          {isEditModeEnabled && (
-                            <TableButton
-                              isDeleteColor={
-                                rowIndex === this.state.rows.length - 1
-                              }
-                              onClick={() => this.onButtonClick(rowIndex)}
-                            >
-                              {rowIndex === this.state.rows.length - 1 ? (
-                                <TableButtonDual>
-                                  <DeleteIcon />
-                                  <AddIcon />
-                                </TableButtonDual>
-                              ) : (
-                                <DeleteIcon />
-                              )}
-                            </TableButton>
-                          )}
+                          <TableButton
+                            isDeleteColor={false}
+                            onClick={() => this.onDeleteRowClick(rowIndex)}
+                          >
+                            <DeleteIcon />
+                          </TableButton>
                         </PTDR>
                       </PTR>
                     )
                   })}
+                  {this.state.isEditModeEnabled && (
+                    <PTR>
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
+                      <PTDR />
+                      <PTDR>
+                        <TableButton
+                          isDeleteColor={true}
+                          onClick={() => this.onAddRowButtonClick()}
+                        >
+                          <AddIcon />
+                        </TableButton>
+                      </PTDR>
+                    </PTR>
+                  )}
                 </PTBody>
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
-                    {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
+                    {isEditModeEnabled && (
+                      // !!undistributedMoney &&
+                      <PTHR style={{ width: '38px' }} />
+                    )}
                     <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
+                    <PTHR>{`${totalPercents}%`}</PTHR>
+                    <PTHR>
+                      {mainSymbol}
+                      {`${totalTableRows}`}
+                    </PTHR>
                     <PTHR>-</PTHR>
-                    <PTHR>{`${totalRows} $`}</PTHR>
+                    <PTHR>-</PTHR>
+                  </PTR>
+                  <PTR>
+                    {isEditModeEnabled && (
+                      // !!undistributedMoney &&
+                      <PTHR style={{ width: '38px' }} />
+                    )}
+                    <PTHR>Subtotal</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>-</PTHR>
+                    <PTHR>
+                      {mainSymbol}
+                      {`${totalRows}`}
+                    </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
                   </PTR>
@@ -865,12 +1200,19 @@ export default class PortfolioTableRebalance extends React.Component<
                     type="number"
                     value={this.state.addMoneyInputValue}
                     onChange={this.onAddMoneyInputChange}
+                    onFocus={this.onFocusAddMoneyInput}
                   />
                   <Button onClick={() => this.onAddMoneyButtonPressed()}>
                     Add money
                   </Button>
                 </AddMoneyContainer>
-                {undistributedMoney !== 0 && (
+                <AddMoneyContainer>
+                  <Button onClick={() => this.onDeleteUndistributedMoney()}>
+                    Delete undistributed
+                  </Button>
+                </AddMoneyContainer>
+                {
+                  // undistributedMoney !== 0 &&
                   <UndistributedMoneyContainer>
                     <UndistributedMoneyText>
                       Undistributed money: {undistributedMoney}
@@ -879,7 +1221,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       Distribute to selected
                     </Button>
                   </UndistributedMoneyContainer>
-                )}
+                }
               </ButtonsInnerWrapper>
             </ButtonsWrapper>
           </TableAndHeadingWrapper>
@@ -903,6 +1245,15 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 }
+
+const InputTable = styled.input`
+  max-width: 60px;
+  background-color: #2d3136;
+  border: none;
+  outline: none;
+  color: ${(props: { isPercentSumGood?: boolean }) =>
+    props.isPercentSumGood ? '#fff' : '#f44336'};
+`
 
 const Icon = styled.i`
   padding-right: 5px;
@@ -963,7 +1314,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 45vh;
+  height: 45vh; //45vh
   padding: 0 20px 20px;
 `
 
@@ -971,6 +1322,9 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
+
+  //  TODO: SHOULD BE CHANGED, VERY BAD FIX I THINK
+  width: 45vw;
 `
 
 const TableHeading = styled.div`
@@ -1212,7 +1566,20 @@ const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
+
+  & ${InputTable} {
+    background-color: ${(props: { isSelected?: boolean }) =>
+      props.isSelected ? '#2d3136' : '#393e44'};
+
+    border: 1px solid #928282;
+  }
+
   &:nth-child(even) {
+    background-color: ${(props: { isSelected?: boolean }) =>
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  }
+
+  &:nth-child(even) ${InputTable} {
     background-color: ${(props: { isSelected?: boolean }) =>
       props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
@@ -1374,7 +1741,7 @@ const TableButton = styled.button`
   &:hover {
     & svg {
       color: ${(props: { isDeleteColor?: boolean }) =>
-        props.isDeleteColor ? '#65c000' : '#ff687a'};
+        props.isDeleteColor ? '#4caf50' : '#f44336'};
     }
   }
   & svg {
@@ -1471,18 +1838,11 @@ const UndistributedMoneyText = styled.p`
 const EditIconWrapper = styled.div`
   &:hover {
     color: ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? '#ff687a' : '#65c000'};
+      props.isEditModeEnabled ? '#f44336' : '#4caf50'};
   }
 
   & svg {
     padding-bottom: ${(props: { isEditModeEnabled?: boolean }) =>
       props.isEditModeEnabled ? '4px' : '7px'};
   }
-`
-
-const InputTable = styled.input`
-  background-color: #2d3136;
-  border: none;
-  outline: none;
-  color: white;
 `
