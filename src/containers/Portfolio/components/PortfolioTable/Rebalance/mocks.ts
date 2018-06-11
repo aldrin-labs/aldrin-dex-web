@@ -1,7 +1,7 @@
 export function combineToChart(mockData) {
   return mockData.map((dataItem) => ({
-    angle: dataItem.value,
-    label: dataItem.name,
+    angle: parseFloat(dataItem.portfolioPerc),
+    label: dataItem.symbol,
   }))
 }
 
@@ -83,10 +83,5 @@ export const tableData = [
     symbol: 'DKI',
     portfolioPerc: 5.55,
     price: 5000,
-  },
-  {
-    currency: 'Total',
-    undistributedMoney: 0,
-    price: 43950,
   },
 ]

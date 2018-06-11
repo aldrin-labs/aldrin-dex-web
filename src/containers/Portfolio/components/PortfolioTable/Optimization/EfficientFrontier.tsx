@@ -10,6 +10,28 @@ import {
   Hint,
 } from 'react-vis'
 
+export interface IValue {
+  x: string
+  y: string
+}
+export interface IState {
+  value: IValue | { x: null; y: null }
+}
+
+export interface IData {
+  coin: string
+  percentage: number
+}
+
+export interface IProps {
+  data: {
+    risk: string[]
+    percentages: number[]
+    activeButton: number
+    data: IData[]
+  }
+}
+
 const axisStyle = {
   ticks: {
     padding: '1rem',
@@ -21,27 +43,28 @@ const axisStyle = {
   },
 }
 
-class EfficientFrontier extends Component {
+class EfficientFrontier extends Component<IProps, IState> {
   state = {
-    value: null,
+    value: { x: null, y: null },
   }
 
-  onValueMouseOver = (value: { x: string; y: number }) =>
+  onValueMouseOver = (value: { x: string; y: string }) =>
     this.setState({ value })
 
-  onSeriesMouseOut = () => this.setState({ value: null })
+  onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { percentages, risk, activeButton } = this.props.data
+    const { percentages, risk, activeButton, data: rawData } = this.props.data
+
     const { value } = this.state
 
-    let data = []
+    let data: { x: number; y: number }[] = []
     let highlightedDotData = []
 
     if (percentages.length > 1) {
       data = percentages.map((percentage, i) => ({
-        x: Number(risk[i]),
-        y: Number(percentage),
+        x: +Number(risk[i]).toFixed(1),
+        y: +Number(percentage).toFixed(1),
       }))
 
       highlightedDotData.push(
@@ -52,7 +75,7 @@ class EfficientFrontier extends Component {
     return (
       <Container>
         <FlexibleXYPlot>
-          {data.length < 1 || highlightedDotData.length < 1 ? (
+          {highlightedDotData.length < 1 ? (
             <LineMarkSeries
               animation="gentle"
               curve={'curveNatural'}
@@ -62,14 +85,7 @@ class EfficientFrontier extends Component {
           ) : (
             [
               <XAxis style={axisStyle} key="x" title="Risk" />,
-              <YAxis
-                hideLine
-                tickValues={[0, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
-                tickFormat={(v: number) => `${v}`}
-                style={axisStyle}
-                key="y"
-                title="Return"
-              />,
+              <YAxis hideLine style={axisStyle} key="y" title="Return" />,
               <LineMarkSeries
                 key="c"
                 curve={'curveNatural'}
@@ -90,7 +106,7 @@ class EfficientFrontier extends Component {
             ]
           )}
 
-          {value && (
+          {value.x === null || value.y === null ? null : (
             <Hint value={value}>
               <ChartTooltip>{`Risk ${value.x}% - Return ${
                 value.y
@@ -109,7 +125,7 @@ const Container = styled.div`
 `
 
 const ChartTooltip = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;
