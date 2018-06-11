@@ -58,6 +58,7 @@ export default class PortfolioTableRebalance extends React.Component<
     isEditModeEnabled: false,
     isUSDCurrently: true,
     undistributedMoney: 0,
+    undistributedMoneySaved: 0,
     totalRows: 0,
     totalStaticRows: 0,
     totalSavedRows: 0,
@@ -382,6 +383,7 @@ export default class PortfolioTableRebalance extends React.Component<
       isEditModeEnabled: false,
       selectedActive: [],
       areAllActiveChecked: false,
+      undistributedMoneySaved: this.state.undistributedMoney,
     })
   }
   onLoadPreviousClick = (e: any) => {
@@ -389,6 +391,7 @@ export default class PortfolioTableRebalance extends React.Component<
       rows: JSON.parse(JSON.stringify(this.state.savedRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
       totalTableRows: this.state.totalTableSavedRows,
+      undistributedMoney: this.state.undistributedMoneySaved,
     })
   }
   onReset = (e: any) => {
@@ -417,6 +420,13 @@ export default class PortfolioTableRebalance extends React.Component<
         rows: JSON.parse(JSON.stringify(this.state.savedRows)),
         selectedActive: [],
         areAllActiveChecked: false,
+        undistributedMoney: this.state.undistributedMoneySaved,
+        isPercentSumGood: this.checkPercentSum(
+          JSON.parse(JSON.stringify(this.state.savedRows))
+        ),
+        totalPercents: this.calculateTotalPercents(
+          JSON.parse(JSON.stringify(this.state.savedRows))
+        ),
       }))
     } else {
       this.setState((prevState) => ({
@@ -426,10 +436,8 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   escFunction = (e) => {
-    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
-      this.setState((prevState) => ({
-        isEditModeEnabled: !prevState.isEditModeEnabled,
-      }))
+    if (e.keyCode === 27) {
+      this.onEditModeEnable()
     }
   }
 
@@ -768,7 +776,7 @@ export default class PortfolioTableRebalance extends React.Component<
       totalTableRows,
     } = this.state
     const saveButtonColor =
-      isPercentSumGood && undistributedMoney >= 0 ? '#65c000' : '#ff687a'
+      isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
@@ -846,8 +854,8 @@ export default class PortfolioTableRebalance extends React.Component<
                           if (col.match(/%/g)) {
                             const color =
                               Number(col.replace(/%/g, '')) >= 0
-                                ? '#65c000'
-                                : '#ff687a'
+                                ? '#4caf50'
+                                : '#f44336'
 
                             return (
                               <PTDC
@@ -1056,8 +1064,8 @@ export default class PortfolioTableRebalance extends React.Component<
                           if (idx === 2) {
                             const color =
                               Number(col.replace(/%/g, '')) >= 0
-                                ? '#65c000'
-                                : '#ff687a'
+                                ? '#4caf50'
+                                : '#f44336'
                             if (!this.state.isEditModeEnabled) {
                               return (
                                 <PTDR key={`${col}${idx}`} style={{ color }}>
@@ -1089,7 +1097,7 @@ export default class PortfolioTableRebalance extends React.Component<
                             }
                           }
                           if (col.match(/BUY/g)) {
-                            const color = '#65c000'
+                            const color = '#4caf50'
 
                             return (
                               <PTDR
@@ -1101,7 +1109,7 @@ export default class PortfolioTableRebalance extends React.Component<
                             )
                           }
                           if (col.match(/SELL/g)) {
-                            const color = '#ff687a'
+                            const color = '#f44336'
 
                             return (
                               <PTDR
@@ -1247,7 +1255,7 @@ const InputTable = styled.input`
   border: none;
   outline: none;
   color: ${(props: { isPercentSumGood?: boolean }) =>
-    props.isPercentSumGood ? 'white' : 'red'};
+    props.isPercentSumGood ? '#fff' : '#f44336'};
 `
 
 const Icon = styled.i`
@@ -1736,7 +1744,7 @@ const TableButton = styled.button`
   &:hover {
     & svg {
       color: ${(props: { isDeleteColor?: boolean }) =>
-        props.isDeleteColor ? '#65c000' : '#ff687a'};
+        props.isDeleteColor ? '#4caf50' : '#f44336'};
     }
   }
   & svg {
@@ -1831,7 +1839,7 @@ const UndistributedMoneyText = styled.p`
 const EditIconWrapper = styled.div`
   &:hover {
     color: ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? '#ff687a' : '#65c000'};
+      props.isEditModeEnabled ? '#f44336' : '#4caf50'};
   }
 
   & svg {
