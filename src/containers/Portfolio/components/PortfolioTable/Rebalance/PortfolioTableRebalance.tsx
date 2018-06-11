@@ -771,6 +771,7 @@ export default class PortfolioTableRebalance extends React.Component<
       isPercentSumGood,
       totalPercents,
       totalTableRows,
+      rows
     } = this.state
     const saveButtonColor =
       isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
@@ -1229,14 +1230,14 @@ export default class PortfolioTableRebalance extends React.Component<
         <PieChartsWrapper>
           <PieChartContainer>
             <PieChart
-              data={combineToChart(PieChartMockFirst)}
+              data={combineToChart(rows)}
               flexible={true}
             />
           </PieChartContainer>
 
           <PieChartContainer>
             <PieChart
-              data={combineToChart(PieChartMockSecond)}
+              data={combineToChart(rows)}
               flexible={true}
             />
           </PieChartContainer>
