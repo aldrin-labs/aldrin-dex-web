@@ -1617,6 +1617,13 @@ const PTFoot = styled.thead`
     right: 0;
     border-top: 1px solid white;
   }
+    &::before {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px solid white;
+  }
   
   & ${PTHR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
