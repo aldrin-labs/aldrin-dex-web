@@ -1317,6 +1317,9 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
+
+  //  TODO: SHOULD BE CHANGED, VERY BAD FIX I THINK
+  width: 45vw;
 `
 
 const TableHeading = styled.div`
