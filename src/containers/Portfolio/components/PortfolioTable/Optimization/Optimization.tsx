@@ -8,10 +8,12 @@ import EfficientFrontier from './EfficientFrontier'
 import Table from './Table'
 import { calcPercentage } from '../../../../../utils/PortfolioTableUtils'
 import * as actions from '../../../actions'
+import { IState, IData, IProps } from './optimizationTypes'
 
-class Optimization extends Component<{}> {
+class Optimization extends Component<IProps, IState> {
   state = {
     activePercentageButton: 0,
+    risk: [],
     data: [],
     optimizedData: [],
     expectedReturn: '',
@@ -19,7 +21,7 @@ class Optimization extends Component<{}> {
     percentages: [0],
   }
 
-  handleChange = (event) => {
+  handleChange = (event: any) => {
     this.setState({
       expectedReturn: event.target.value.replace(/-|%/g, ''),
     })
@@ -28,17 +30,25 @@ class Optimization extends Component<{}> {
   optimizePortfolio = () => {
     if (!(this.state.expectedReturn === '' || this.props.data.length < 1)) {
       if (this.props.isShownMocks) {
+        const risk = [
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+        ]
         this.setState({
           optimizedData: this.props.data.map(({ coin }: { coin: string }) => ({
             coin,
             percentage: (Math.random() * 100).toFixed(2),
           })),
+          risk,
         })
       } else {
         // send some data to backend maybe?
         // also get data from props and push it to main table
-        this.props.optimizedData &&
-          this.setState({ optimizedData: this.props.optimizedData })
+        // this.props.optimizedData &&
+        //   this.setState({ optimizedData: this.props.optimizedData })
       }
 
       this.setState({
@@ -47,14 +57,22 @@ class Optimization extends Component<{}> {
     }
   }
 
-  sumSameCoins = (rawData) => {
-    const data = []
+  sumSameCoins = (rawData: IData[]) => {
+    let data: IData[] = []
 
     rawData.forEach((asset) => {
       const index = data.findIndex((obj) => obj.coin === asset.coin)
       if (index >= 0) {
-        data[index].percentage =
-          Number(asset.percentage) + Number(data[index].percentage)
+        data = data.map(
+          (el, inx) =>
+            inx === index
+              ? Object.assign(el, {
+                  coin: el.coin,
+                  percentage:
+                    Number(asset.percentage) + Number(data[index].percentage),
+                })
+              : el
+        )
       } else {
         data.push(asset)
       }
@@ -63,7 +81,7 @@ class Optimization extends Component<{}> {
     const result = data.map((asset) => {
       const { coin, percentage } = asset
 
-      return { coin, percentage: calcPercentage(percentage) }
+      return { coin, percentage: calcPercentage(+percentage) }
     })
 
     return result
@@ -157,7 +175,7 @@ class Optimization extends Component<{}> {
   deleteRow = (i: number) => {
     this.setState({
       optimizedData: this.state.optimizedData.filter(
-        (el) => el.coin !== this.props.data[i].coin
+        (el: IData) => el.coin !== this.props.data[i].coin
       ),
     })
 
@@ -167,28 +185,22 @@ class Optimization extends Component<{}> {
   }
 
   render() {
-    const { children, data, risk } = this.props
+    const { children, data } = this.props
     const {
       percentages,
       expectedReturn,
       optimizedData,
       activeButton,
+      risk,
     } = this.state
 
     const barChartData = { data, optimizedData }
     const efficientFrontierData = {
+      data,
       percentages,
       // if there is no riskData from server so push some random data
       // demoPurpose
-      risk: risk
-        ? risk
-        : [
-            (Math.random() * 100).toFixed(2),
-            (Math.random() * 100).toFixed(2),
-            (Math.random() * 100).toFixed(2),
-            (Math.random() * 100).toFixed(2),
-            (Math.random() * 100).toFixed(2),
-          ],
+      risk,
       activeButton,
     }
 
@@ -301,7 +313,7 @@ const Btn = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #4ed8da;

@@ -26,7 +26,7 @@ export interface IProps {
   }
 }
 export interface IState {
-  value: IValue | null
+  value: IValue | { x: null; y: null }
 }
 
 const ITEMS = [
@@ -46,17 +46,16 @@ const axisStyle = {
 }
 class BarChart extends Component<IProps, IState> {
   state = {
-    value: null,
+    value: { x: null, y: null },
   }
 
   onValueMouseOver = (value: IValue) => this.setState({ value })
 
-  onSeriesMouseOut = () => this.setState({ value: null })
+  onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
     const { data, optimizedData } = this.props.data
     const { value } = this.state
-    console.log(value)
 
     const formatedData = data.map((el: IData, i) => ({
       x: el.coin,
@@ -112,7 +111,7 @@ class BarChart extends Component<IProps, IState> {
                 color="#4fa1da"
               />
             ) : null}
-            {value && (
+            {value.x === null || value.y === null ? null : (
               <Hint value={value}>
                 <ChartTooltip>{`${value.x} - ${value.y}%`}</ChartTooltip>
               </Hint>
@@ -125,7 +124,8 @@ class BarChart extends Component<IProps, IState> {
 }
 
 const LegendContainer = styled.div`
-  opacity: ${(props: { value: IValue }) => (props.value ? '1' : '0')};
+  opacity: ${(props: { value: IValue | { x: null; y: null } }) =>
+    props.value.x === null || props.value.y === null ? '0' : '1'};
   border-radius: 5px;
   position: absolute;
   font-family: Roboto, sans-serif;
