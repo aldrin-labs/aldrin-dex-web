@@ -263,6 +263,7 @@ export default class PortfolioTableRebalance extends React.Component<
       symbol: 'NEW',
       portfolioPerc: 0.0,
       price: 0,
+      editable: true,
     }
     rows.push(newRow)
     rows = this.calculatePercents(rows, totalRows)
@@ -633,6 +634,18 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 
+  onEditNameCoin = (e: any, idx: number) => {
+    const { rows } = this.state
+    let nameCurrencyInput = e.target.value
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    clonedRows[idx].currency = nameCurrencyInput
+
+    this.setState({
+      rows: clonedRows,
+    })
+  }
+
   //TODO: Should be refactored (without callback)
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
@@ -987,10 +1000,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR
-                        key={`${currency}${symbol}${rowIndex}`}
-                        isSelected={isSelected}
-                      >
+                      <PTR key={`${symbol}${rowIndex}`} isSelected={isSelected}>
                         {isEditModeEnabled && (
                           // !!undistributedMoney &&
                           <PTDR
@@ -1003,6 +1013,20 @@ export default class PortfolioTableRebalance extends React.Component<
                         )}
 
                         {cols.map((col, idx) => {
+                          if (row.editable && idx === 0 && isEditModeEnabled) {
+                            return (
+                              <PTDR key={`NameCoin${idx}`}>
+                                <InputTable
+                                  key={`inputNameCoin${rowIndex}`}
+                                  isPercentSumGood={true}
+                                  value={this.state.rows[rowIndex].currency}
+                                  onChange={(e) =>
+                                    this.onEditNameCoin(e, rowIndex)
+                                  }
+                                />
+                              </PTDR>
+                            )
+                          }
                           if (idx === 2) {
                             const color =
                               Number(col.replace(/%/g, '')) >= 0
