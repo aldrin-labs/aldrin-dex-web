@@ -114,10 +114,7 @@ class BarChart extends Component<IProps, IState> {
               />
             ) : null}
             {value.x === null || value.y === null ? null : (
-              <Hint
-                align={{ vertical: 'top', horizontal: 'left' }}
-                value={value}
-              >
+              <Hint value={value}>
                 <ChartTooltip>{`${value.x} - ${value.y}%`}</ChartTooltip>
               </Hint>
             )}
