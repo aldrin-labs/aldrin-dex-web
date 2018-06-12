@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
 
-import { IProps, IState } from './tableTypes'
+import { IProps, IState } from './table.types'
 
 class Table extends Component<IProps, IState> {
   state = {

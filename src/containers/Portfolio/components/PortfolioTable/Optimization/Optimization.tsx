@@ -4,11 +4,11 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
 import * as actions from '../../../actions'
-import { IState, IData, IProps } from './optimizationTypes'
+import { IState, IData, IProps } from './optimization.types'
 import { MOCK_DATA } from '../dataMock'
-import BarChart from './BarChart'
-import EfficientFrontierChart from './EfficientFrontierChart'
-import Table from './Table'
+import BarChart from '@components/BarChart/BarChart'
+import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
+import Table from './Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 
 class Optimization extends Component<IProps, IState> {
@@ -222,7 +222,28 @@ class Optimization extends Component<IProps, IState> {
       risk,
     } = this.state
 
-    const barChartData = { rawDataBeforeOptimization, optimizedData }
+    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
+      x: el.coin,
+      y: Number(el.percentage).toFixed(2),
+    }))
+    const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+      x: el.coin,
+      y: Number(el.percentage).toFixed(2),
+    }))
+
+    const barChartData = [
+      {
+        data: formatedData,
+        title: 'Original',
+        color: '#4fd8da',
+      },
+      {
+        data: formatedOptimizedData,
+        title: 'Optimized',
+        color: '#4fa1da',
+      },
+    ]
+
     const efficientFrontierData = {
       percentages,
       risk,
@@ -232,7 +253,10 @@ class Optimization extends Component<IProps, IState> {
     return (
       <ChartsContainer>
         <Chart>
-          <BarChart data={barChartData} />
+          <BarChart
+            showPlaceholder={optimizedData.length < 1}
+            charts={barChartData}
+          />
         </Chart>
         <Chart>
           <EfficientFrontierChart data={efficientFrontierData} />

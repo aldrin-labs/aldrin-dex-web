@@ -9,27 +9,7 @@ import {
   DiscreteColorLegend,
 } from 'react-vis'
 
-import { IData } from './optimizationTypes'
-
-export interface IValue {
-  x: string
-  y: string
-}
-
-export interface IProps {
-  data: {
-    rawDataBeforeOptimization: IData[]
-    optimizedData: IData[]
-  }
-}
-export interface IState {
-  value: IValue | { x: null; y: null }
-}
-
-const ITEMS = [
-  { title: 'Optimized', color: '#4fa1da' },
-  { title: 'Original', color: '#4fd8da' },
-]
+import { IProps, IState, Items, IValue, IChart } from './types'
 
 const axisStyle = {
   ticks: {
@@ -51,17 +31,28 @@ class BarChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { rawDataBeforeOptimization, optimizedData } = this.props.data
+    const { showPlaceholder, charts } = this.props
     const { value } = this.state
 
-    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
-      x: el.coin,
-      y: Number(el.percentage).toFixed(2),
-    }))
-    const formatedOptimizedData = optimizedData.map((el, i) => ({
-      x: el.coin,
-      y: Number(el.percentage).toFixed(2),
-    }))
+    const ITEMS: Items[] = []
+
+    const Charts = charts.map((chart: IChart, chartIndex: number) => {
+      const { color, title, data } = chart
+      ITEMS.push({ title, color })
+      console.log(data)
+
+      return (
+        <VerticalBarSeries
+          style={{ cursor: 'pointer' }}
+          onSeriesMouseOut={this.onSeriesMouseOut}
+          onValueMouseOver={this.onValueMouseOver}
+          key={chartIndex}
+          data={data}
+          color={color}
+          animation="gentle"
+        />
+      )
+    })
 
     return (
       <div>
@@ -70,8 +61,7 @@ class BarChart extends Component<IProps, IState> {
             <LegendContainer value={value}>
               <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
             </LegendContainer>
-            {rawDataBeforeOptimization.length < 1 ||
-            optimizedData.length < 1 ? (
+            {showPlaceholder ? (
               <VerticalBarSeries
                 animation="gentle"
                 key="chart"
@@ -88,23 +78,7 @@ class BarChart extends Component<IProps, IState> {
               [
                 <YAxis style={axisStyle} key="y" />,
                 <XAxis style={axisStyle} key="x" />,
-                <VerticalBarSeries
-                  style={{ cursor: 'pointer' }}
-                  onSeriesMouseOut={this.onSeriesMouseOut}
-                  onValueMouseOver={this.onValueMouseOver}
-                  key="chart"
-                  data={formatedData}
-                  color="#4fd8da"
-                  animation="gentle"
-                />,
-                <VerticalBarSeries
-                  key="fg"
-                  style={{ cursor: 'pointer' }}
-                  onSeriesMouseOut={this.onSeriesMouseOut}
-                  onValueMouseOver={this.onValueMouseOver}
-                  data={formatedOptimizedData}
-                  color="#4fa1da"
-                />,
+                ...Charts,
               ]
             )}
 

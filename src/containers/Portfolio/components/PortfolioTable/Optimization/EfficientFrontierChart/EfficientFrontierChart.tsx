@@ -10,21 +10,7 @@ import {
   Hint,
 } from 'react-vis'
 
-export interface IValue {
-  x: string
-  y: string
-}
-export interface IState {
-  value: IValue | { x: null; y: null }
-}
-
-export interface IProps {
-  data: {
-    risk: string[]
-    percentages: number[]
-    activeButton: number
-  }
-}
+import { IState, IProps } from './efficientFrontierChart.types'
 
 const axisStyle = {
   ticks: {
