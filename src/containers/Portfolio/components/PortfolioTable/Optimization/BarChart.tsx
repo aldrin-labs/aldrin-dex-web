@@ -9,14 +9,11 @@ import {
   DiscreteColorLegend,
 } from 'react-vis'
 
+import { IData } from './optimizationTypes'
+
 export interface IValue {
   x: string
   y: string
-}
-
-export interface IData {
-  coin: string
-  percentage: number
 }
 
 export interface IProps {
@@ -59,11 +56,11 @@ class BarChart extends Component<IProps, IState> {
 
     const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
       x: el.coin,
-      y: Number(el.percentage).toFixed(1),
+      y: Number(el.percentage).toFixed(2),
     }))
     const formatedOptimizedData = optimizedData.map((el, i) => ({
       x: el.coin,
-      y: Number(el.percentage).toFixed(1),
+      y: Number(el.percentage).toFixed(2),
     }))
 
     return (
@@ -100,19 +97,17 @@ class BarChart extends Component<IProps, IState> {
                   color="#4fd8da"
                   animation="gentle"
                 />,
+                <VerticalBarSeries
+                  key="fg"
+                  style={{ cursor: 'pointer' }}
+                  onSeriesMouseOut={this.onSeriesMouseOut}
+                  onValueMouseOver={this.onValueMouseOver}
+                  data={formatedOptimizedData}
+                  color="#4fa1da"
+                />,
               ]
             )}
 
-            {formatedOptimizedData.length > 0 &&
-            rawDataBeforeOptimization.length > 0 ? (
-              <VerticalBarSeries
-                style={{ cursor: 'pointer' }}
-                onSeriesMouseOut={this.onSeriesMouseOut}
-                onValueMouseOver={this.onValueMouseOver}
-                data={formatedOptimizedData}
-                color="#4fa1da"
-              />
-            ) : null}
             {value.x === null || value.y === null ? null : (
               <Hint value={value}>
                 <ChartTooltip>{`${value.x} - ${value.y}%`}</ChartTooltip>

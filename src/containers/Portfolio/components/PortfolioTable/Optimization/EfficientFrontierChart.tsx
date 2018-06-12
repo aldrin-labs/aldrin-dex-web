@@ -18,17 +18,11 @@ export interface IState {
   value: IValue | { x: null; y: null }
 }
 
-export interface IData {
-  coin: string
-  percentage: number
-}
-
 export interface IProps {
   data: {
     risk: string[]
     percentages: number[]
     activeButton: number
-    data: IData[]
   }
 }
 
@@ -43,7 +37,7 @@ const axisStyle = {
   },
 }
 
-class EfficientFrontier extends Component<IProps, IState> {
+class EfficientFrontierChart extends Component<IProps, IState> {
   state = {
     value: { x: null, y: null },
   }
@@ -54,7 +48,7 @@ class EfficientFrontier extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { percentages, risk, activeButton, data: rawData } = this.props.data
+    const { percentages, risk, activeButton } = this.props.data
 
     const { value } = this.state
 
@@ -63,8 +57,8 @@ class EfficientFrontier extends Component<IProps, IState> {
 
     if (percentages.length > 1) {
       data = percentages.map((percentage, i) => ({
-        x: +Number(risk[i]).toFixed(1),
-        y: +Number(percentage).toFixed(1),
+        x: +Number(risk[i]).toFixed(2),
+        y: +Number(percentage).toFixed(2),
       }))
 
       highlightedDotData.push(
@@ -136,4 +130,4 @@ const ChartTooltip = styled.span`
   padding: 8px;
 `
 
-export default EfficientFrontier
+export default EfficientFrontierChart

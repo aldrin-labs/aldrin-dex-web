@@ -1,8 +1,9 @@
+import { IData } from './optimizationTypes'
 export interface IProps {
   withInput: boolean
-  onClickDeleteIcon: Function
-  onPlusClick: Function
-  data: { coin: string; percentage: number }[]
+  onClickDeleteIcon?: Function
+  onPlusClick?: Function
+  data: IData[]
 }
 export interface IState {
   name: string
