@@ -10,7 +10,7 @@ import {
   Hint,
 } from 'react-vis'
 
-import { IState, IProps } from './efficientFrontierChart.types'
+import { IState, IProps } from './EfficientFrontierChart.types'
 
 const axisStyle = {
   ticks: {
