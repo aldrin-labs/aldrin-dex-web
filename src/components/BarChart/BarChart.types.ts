@@ -16,6 +16,7 @@ export interface IChart {
 export interface IProps {
   charts: IChart[]
   showPlaceholder: boolean
+  height: number
 }
 export interface IState {
   value: IValue | { x: null; y: null }

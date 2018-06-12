@@ -31,7 +31,7 @@ class BarChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { showPlaceholder, charts } = this.props
+    const { showPlaceholder, charts, height } = this.props
     const { value } = this.state
 
     const ITEMS: Items[] = []
@@ -49,14 +49,14 @@ class BarChart extends Component<IProps, IState> {
           key={chartIndex}
           data={data}
           color={color}
-          animation="gentle"
+          animation="wobbly"
         />
       )
     })
 
     return (
       <div>
-        <Container>
+        <Container height={height}>
           <FlexibleXYPlot xType="ordinal">
             <LegendContainer value={value}>
               <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
@@ -76,8 +76,8 @@ class BarChart extends Component<IProps, IState> {
               />
             ) : (
               [
-                <YAxis style={axisStyle} key="y" />,
-                <XAxis style={axisStyle} key="x" />,
+                <YAxis animation={'gentle'} style={axisStyle} key="y" />,
+                <XAxis animation={'gentle'} style={axisStyle} key="x" />,
                 ...Charts,
               ]
             )}
@@ -108,7 +108,8 @@ const LegendContainer = styled.div`
 `
 
 const Container = styled.div`
-  height: 300px;
+  height: ${(props: { height: number }) =>
+    props.height ? props.height : 100}px;
   width: 100%;
 `
 

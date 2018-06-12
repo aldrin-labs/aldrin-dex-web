@@ -64,7 +64,12 @@ class EfficientFrontierChart extends Component<IProps, IState> {
             />
           ) : (
             [
-              <XAxis style={axisStyle} key="x" title="Risk" />,
+              <XAxis
+                animation="gentle"
+                style={axisStyle}
+                key="x"
+                title="Risk"
+              />,
               <YAxis hideLine style={axisStyle} key="y" title="Return" />,
               <LineMarkSeries
                 key="c"
@@ -77,6 +82,7 @@ class EfficientFrontierChart extends Component<IProps, IState> {
               <MarkSeries
                 onSeriesMouseOut={this.onSeriesMouseOut}
                 onValueMouseOver={this.onValueMouseOver}
+                animation="stiff"
                 key="h"
                 color="#4fa1da"
                 size={8}
