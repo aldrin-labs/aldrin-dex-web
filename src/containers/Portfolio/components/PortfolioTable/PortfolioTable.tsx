@@ -46,6 +46,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           tab={this.state.tab}
         >
           <PortfolioTableTabs
+            isSideNavOpen={this.props.isSideNavOpen}
             toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}

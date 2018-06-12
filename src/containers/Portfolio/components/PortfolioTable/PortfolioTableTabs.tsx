@@ -46,7 +46,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <React.Fragment>
-        <PTHeadingBlock>
+        <PTHeadingBlock isSideNavOpen={this.props.isSideNavOpen}>
           <TabContainer>
             <Tab
               onClick={() => this.onChangeTab('main')}
@@ -133,7 +133,8 @@ const PTHeadingBlock = styled.div`
   position: sticky;
   top: 0;
   background-color: #393e44;
-  z-index: 100;
+  z-index: ${(props: { isSideNavOpen?: boolean }) =>
+    props.isSideNavOpen ? '0' : '100'};
 
   width: 100%;
   justify-content: space-between;
@@ -247,10 +248,6 @@ const SwitchRefreshContainer = styled.div`
     padding-top: 20px;
   }
 `
-
-// const Icon = styled.i`
-//   padding-right: 5px;
-// `
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
