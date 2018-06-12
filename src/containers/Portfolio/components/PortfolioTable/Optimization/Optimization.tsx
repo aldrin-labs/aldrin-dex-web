@@ -4,7 +4,7 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
 import * as actions from '../../../actions'
-import { IState, IData, IProps } from './optimization.types'
+import { IState, IData, IProps } from './Optimization.types'
 import { MOCK_DATA } from '../dataMock'
 import BarChart from '@components/BarChart/BarChart'
 import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
@@ -202,13 +202,14 @@ class Optimization extends Component<IProps, IState> {
             Optimize Portfolio
           </Button>
         </InputContainer>
-
-        <Table
-          onPlusClick={this.addRow}
-          data={data}
-          withInput
-          onClickDeleteIcon={this.deleteRow}
-        />
+        <TableContainer>
+          <Table
+            onPlusClick={this.addRow}
+            data={data}
+            withInput
+            onClickDeleteIcon={this.deleteRow}
+          />
+        </TableContainer>
       </>
     )
   }
@@ -396,6 +397,12 @@ const UpperArea = styled.div`
   width: 50%;
   display: flex;
   margin: 0 auto;
+
+  @media (max-width: 900px) {
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
 `
 
 const InputContainer = styled.div`
@@ -403,6 +410,18 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: 900px) {
+    margin: auto;
+    flex-wrap: wrap;
+  }
+`
+
+const TableContainer = styled.div`
+  margin: auto;
+  @media (max-width: 600px) {
+    margin-top: 1rem;
+  }
 `
 
 const Button = styled.div`
