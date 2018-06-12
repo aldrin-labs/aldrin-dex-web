@@ -34,6 +34,23 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
   render() {
     const { tab, portfolio, isShownChart, isUSDCurrently } = this.state
+    
+    if (this.props.loading) {
+      return (
+        <LoaderWrapper>
+          <SvgIcon
+            src={spinLoader}
+            width={48}
+            height={48}
+            style={{
+              position: 'absolute',
+              left: 'calc(50% - 48px)',
+              top: 'calc(50% - 48px)',
+            }}
+          />
+        </LoaderWrapper>
+      )
+    }
 
     if (tab === 'main') {
       return (
