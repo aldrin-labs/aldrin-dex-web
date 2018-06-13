@@ -197,39 +197,6 @@ export default class PortfolioTableRebalance extends React.Component<
       return row
     })
 
-    // let sum = 0
-    // let maxSum = 100
-    // let lastFlag = false
-    // let newDataWithPercents = data.map((row, i) => {
-    //   row.portfolioPerc = Math.round(((row.price * 100) / total) * 100) / 100
-    //   sum += row.portfolioPerc
-    //   maxSum -= row.portfolioPerc
-    //   if (Math.abs(maxSum) <= 0.02 && !lastFlag) {
-    //     row.portfolioPerc += maxSum
-    //     row.portfolioPerc = Math.round(row.portfolioPerc * 100) / 100
-    //     sum += maxSum
-    //     lastFlag = true
-    //   }
-    //
-    //   //TODO: SHOULD BE REFACTORED
-    //   row.portfolioPerc =
-    //     row.portfolioPerc == 0 ? '0' : row.portfolioPerc.toFixed(1)
-    //
-    //   return row
-    // })
-    // console.log('total', total)
-    // console.log('sum: ', sum)
-    // console.log('maxSum: ', maxSum)
-    /*
-      TODO:
-      Sometimes sum of all percents isn't 100
-      console.log(sum)
-      Sometimes it is 99.99000000000001 or 100.0099999999999
-      Have to be fixed
-    */
-
-    //Just to update totalPercets
-
     const totalPercents = this.calculateTotalPercents(newDataWithPercents)
 
     this.setState({
@@ -522,18 +489,6 @@ export default class PortfolioTableRebalance extends React.Component<
       0
     )
 
-    // console.log(
-    //   'checksum: ',
-    //   sumOfAllPercents - 100 > 0.1,
-    //   'sum of al perc: ',
-    //   sumOfAllPercents,
-    //   Math.abs(sumOfAllPercents - 100) > 0.1,
-    //   'math abs : ',
-    //   Math.abs(sumOfAllPercents - 100)
-    // )
-
-    // console.log(Math.abs(sumOfAllPercents - 100))
-
     return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
   }
 
@@ -611,16 +566,6 @@ export default class PortfolioTableRebalance extends React.Component<
     let oldRowPrice = rows[idx].price
     let newRowPrice = newCalculatedRowsWithPercents[idx].price
     let oldNewPriceDiff = oldRowPrice - newRowPrice
-
-    console.log('oldRowPrice: ', oldRowPrice)
-    console.log('newRowPrice: ', newRowPrice)
-    console.log('oldNewPriceDiff: ', oldNewPriceDiff)
-
-    // if (oldRowPrice > newRowPrice) {
-    //   this.setState((prevState) => ({
-    //     undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
-    //   }))
-    // }
 
     this.setState(
       {
@@ -912,14 +857,14 @@ export default class PortfolioTableRebalance extends React.Component<
                 >
                   {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
                 </EditIconWrapper>
-                <ActionButton onClick={() => this.onReset()}>
+                <ActionButton onClick={this.onReset}>
                   <Replay />
                 </ActionButton>
-                <ActionButton onClick={() => this.onSaveClick()}>
+                <ActionButton onClick={this.onSaveClick}>
                   <SaveIcon style={{ color: saveButtonColor }} />
                 </ActionButton>
                 <ActionButton
-                  onClick={() => this.onLoadPreviousClick()}
+                  onClick={this.onLoadPreviousClick}
                   style={{ display: 'none' }}
                 >
                   <UndoIcon />
@@ -1032,7 +977,10 @@ export default class PortfolioTableRebalance extends React.Component<
                         )}
 
                         {cols.map((col, idx) => {
-                          if (row.editable && idx === 0 && isEditModeEnabled) {
+                          const isNewCoinName = row.editable && idx === 0 && isEditModeEnabled
+                          const isNewCoinSymbol = row.editable && idx === 1 && isEditModeEnabled
+
+                          if (isNewCoinName) {
                             return (
                               <PTDR key={`NameCoin${idx}`}>
                                 <InputTable
@@ -1046,7 +994,8 @@ export default class PortfolioTableRebalance extends React.Component<
                               </PTDR>
                             )
                           }
-                          if (row.editable && idx === 1 && isEditModeEnabled) {
+
+                          if (isNewCoinSymbol) {
                             return (
                               <PTDR key={`CoinSymbol${idx}`}>
                                 <InputTable
@@ -1060,6 +1009,7 @@ export default class PortfolioTableRebalance extends React.Component<
                               </PTDR>
                             )
                           }
+
                           if (idx === 2) {
                             const color =
                               Number(col.replace(/%/g, '')) >= 0
@@ -1153,7 +1103,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       <PTDR>
                         <TableButton
                           isDeleteColor={true}
-                          onClick={() => this.onAddRowButtonClick()}
+                          onClick={this.onAddRowButtonClick}
                         >
                           <AddIcon />
                         </TableButton>
@@ -1164,7 +1114,6 @@ export default class PortfolioTableRebalance extends React.Component<
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
                     {isEditModeEnabled && (
-                      // !!undistributedMoney &&
                       <PTHR style={{ width: '38px' }} />
                     )}
                     <PTHR>All</PTHR>
@@ -1179,7 +1128,6 @@ export default class PortfolioTableRebalance extends React.Component<
                   </PTR>
                   <PTR>
                     {isEditModeEnabled && (
-                      // !!undistributedMoney &&
                       <PTHR style={{ width: '38px' }} />
                     )}
                     <PTHR>Subtotal</PTHR>
@@ -1204,22 +1152,21 @@ export default class PortfolioTableRebalance extends React.Component<
                     onChange={this.onAddMoneyInputChange}
                     onFocus={this.onFocusAddMoneyInput}
                   />
-                  <Button onClick={() => this.onAddMoneyButtonPressed()}>
+                  <Button onClick={this.onAddMoneyButtonPressed}>
                     Add money
                   </Button>
                 </AddMoneyContainer>
                 <AddMoneyContainer>
-                  <Button onClick={() => this.onDeleteUndistributedMoney()}>
+                  <Button onClick={this.onDeleteUndistributedMoney}>
                     Delete undistributed
                   </Button>
                 </AddMoneyContainer>
                 {
-                  // undistributedMoney !== 0 &&
                   <UndistributedMoneyContainer>
                     <UndistributedMoneyText>
                       Undistributed money: {undistributedMoney}
                     </UndistributedMoneyText>
-                    <Button disabled={undistributedMoney < 0} onClick={() => this.onDistribute()}>
+                    <Button disabled={undistributedMoney < 0} onClick={this.onDistribute}>
                       Distribute to selected
                     </Button>
                   </UndistributedMoneyContainer>
@@ -1587,7 +1534,7 @@ const PTR = styled.tr`
   }
 `
 
-const PTHead = styled.thead`
+const PT = css`
   display: table;
   width: 100%;
   position: sticky;
@@ -1600,6 +1547,10 @@ const PTHead = styled.thead`
     right: 0;
     border-bottom: 1px solid white;
   }
+`
+
+const PTHead = styled.thead`
+  ${PT}
 
   & ${PTHR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
@@ -1607,18 +1558,8 @@ const PTHead = styled.thead`
 `
 
 const PTFoot = styled.thead`
-  display: table;
-  width: 100%;
-  position: sticky;
-  bottom: 0;
-
-  &::after {
-    content: ' ';
-    position: absolute;
-    left: 0;
-    right: 0;
-    border-top: 1px solid white;
-  }
+  ${PT}
+  
     &::before {
     content: ' ';
     position: absolute;
