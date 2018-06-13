@@ -300,7 +300,7 @@ const ChartsContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1080px) {
     flex-wrap: wrap;
   }
 `
@@ -398,7 +398,7 @@ const UpperArea = styled.div`
   display: flex;
   margin: 0 auto;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1080px) {
     justify-content: space-between;
     width: 100%;
     flex-wrap: wrap;
@@ -411,7 +411,7 @@ const InputContainer = styled.div`
   flex-direction: column;
   justify-content: center;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1080px) {
     margin: auto;
     flex-wrap: wrap;
   }
