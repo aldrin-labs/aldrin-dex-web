@@ -1,11 +1,9 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
+import { IProps, IState } from './PortfolioTableRebalance.types'
 import {
   tableData,
-  combineToChart,
-  PieChartMockFirst,
-  PieChartMockSecond,
+  combineToChart
 } from './mocks'
 import { onSortStrings } from '../../../../../utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
@@ -19,7 +17,6 @@ import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
 import { Args } from '../types'
-import { IndProps } from '@containers/Portfolio/interfaces'
 import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
 
 const tableHeadings = [
@@ -49,7 +46,6 @@ export default class PortfolioTableRebalance extends React.Component<
     rows: JSON.parse(JSON.stringify(tableData)),
     staticRows: JSON.parse(JSON.stringify(tableData)),
     savedRows: JSON.parse(JSON.stringify(tableData)),
-    testRows: JSON.parse(JSON.stringify(tableData)),
     addMoneyInputValue: 0,
     activePercentInput: null,
     activePercentInputValues: [],
@@ -320,6 +316,10 @@ export default class PortfolioTableRebalance extends React.Component<
 
   // TODO: refactor all this stuff
   onSaveClick = () => {
+
+    let { rows, totalRows, undistributedMoney, isPercentSumGood } = this.state
+
+
     if (!this.state.isPercentSumGood) {
       return
     }
@@ -327,16 +327,12 @@ export default class PortfolioTableRebalance extends React.Component<
       return
     }
 
-    let { rows, totalRows, undistributedMoney } = this.state
 
-    // if (this.checkForChanges(rows)) {
-    // if (true) {
-    console.log('has changes')
+
 
     let rowsWithNewPrice = this.calculatePriceByPercents(rows)
 
     rows = this.calculatePriceDifference(rowsWithNewPrice)
-    // }
 
     console.log(rows)
 
@@ -350,7 +346,7 @@ export default class PortfolioTableRebalance extends React.Component<
       undistributedMoneySaved: this.state.undistributedMoney,
     })
   }
-  onLoadPreviousClick = (e: any) => {
+  onLoadPreviousClick = () => {
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.savedRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
@@ -358,7 +354,7 @@ export default class PortfolioTableRebalance extends React.Component<
       undistributedMoney: this.state.undistributedMoneySaved,
     })
   }
-  onReset = (e: any) => {
+  onReset = () => {
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.staticRows)),
       totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
@@ -469,6 +465,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
     if (!/^(!?(-?[0-9]+\.?[0-9]+)|(-?[0-9]\.?)|)$/.test(inputAddMoney)) {
       console.log('not our number')
+
       return
     }
 
@@ -774,7 +771,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 </PTHead>
 
                 <PTBody>
-                  {this.state.staticRows.map((row, idx) => {
+                  {staticRows.map((row, idx) => {
                     const { currency, symbol, portfolioPerc, price } = row
 
                     const isSelected =
@@ -929,7 +926,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 </PTHead>
 
                 <PTBody isEditModeEnabled={isEditModeEnabled}>
-                  {this.state.rows.map((row, rowIndex) => {
+                  {rows.map((row, rowIndex) => {
                     const {
                       currency,
                       symbol,
@@ -1092,7 +1089,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       </PTR>
                     )
                   })}
-                  {this.state.isEditModeEnabled && (
+                  {isEditModeEnabled && (
                     <PTR>
                       <PTDR />
                       <PTDR />
