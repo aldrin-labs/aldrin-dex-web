@@ -275,7 +275,6 @@ export default class PortfolioTableRebalance extends React.Component<
   onSelectActiveBalance = (idx: number) => {
     const selectedActive =
       (this.state.selectedActive && this.state.selectedActive.slice()) || []
-    let { areAllActiveChecked } = this.state
     const hasIndex = selectedActive.indexOf(idx)
     if (hasIndex >= 0) {
       selectedActive.splice(hasIndex, 1)
@@ -936,7 +935,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       // !!undistributedMoney &&
                       <PTHR key="selectAll" style={{ textAlign: 'left' }}>
                         <Checkbox
-                          onChange={() => this.onSelectAllActive()}
+                          onChange={this.onSelectAllActive}
                           checked={this.state.areAllActiveChecked}
                           type="checkbox"
                           id="selectAllActive"
