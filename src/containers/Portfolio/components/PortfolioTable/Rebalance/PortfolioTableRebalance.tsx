@@ -19,14 +19,14 @@ import ClearIcon from 'material-ui-icons/Clear'
 import { Args } from '../types'
 import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
 
-const tableHeadings = [
+const tableHeadingsCurrentPortfolio = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'USD', value: 'price' },
 ]
 
-const newTableHeadings = [
+const tableHeadingsRebalancedPortfolio = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
@@ -86,11 +86,11 @@ export default class PortfolioTableRebalance extends React.Component<
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
       // this.setState({ isUSDCurrently: nextProps.isUSDCurrently })
       if (nextProps.isUSDCurrently) {
-        tableHeadings[3].name = 'USD'
-        newTableHeadings[3].name = 'USD'
+        tableHeadingsCurrentPortfolio[3].name = 'USD'
+        tableHeadingsRebalancedPortfolio[3].name = 'USD'
       } else {
-        tableHeadings[3].name = 'BTC'
-        newTableHeadings[3].name = 'BTC'
+        tableHeadingsCurrentPortfolio[3].name = 'BTC'
+        tableHeadingsRebalancedPortfolio[3].name = 'BTC'
       }
     }
   }
@@ -163,7 +163,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   calculateTotalPercents = (data: IRow[]) => {
     const totalPercents = data
-      .reduce((sum, row) => (sum += +row.portfolioPerc), 0)
+      .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
       .toFixed(4)
 
     return totalPercents
@@ -183,7 +183,7 @@ export default class PortfolioTableRebalance extends React.Component<
     const newDataWithPercents = data.map((row) => {
       row.portfolioPerc = ((row.price * 100) / total).toFixed(4)
 
-      row.portfolioPerc = row.portfolioPerc == 0 ? '0' : row.portfolioPerc
+      row.portfolioPerc = row.portfolioPerc === 0 || row.portfolioPerc === '0' ? '0' : row.portfolioPerc
 
       return row
     })
@@ -296,7 +296,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
     let sumTotal = totalRows
     data.forEach((row: IRow, i: number) => {
-      let newPrice = Math.round((totalRows / 100) * data[i].portfolioPerc)
+      let newPrice = Math.round((totalRows / 100) * data![i]!.portfolioPerc)
       console.log('newPrice: ', newPrice)
       if (sumTotal <= newPrice) {
         data[i].price = newPrice
@@ -432,12 +432,12 @@ export default class PortfolioTableRebalance extends React.Component<
 
       if (selectedActive.length > 1) {
         let moneyPart = Math.floor(money / selectedActive.length)
-        selectedActive.forEach((row, i, arr) => {
-          rows[selectedActive[i]].price += moneyPart
+        selectedActive.forEach((row, i) => {
+          rows![selectedActive![i]]!.price += moneyPart
           money -= moneyPart
         })
       } else {
-        rows[selectedActive[0]].price += undistributedMoney
+        rows![selectedActive![0]]!.price += undistributedMoney
         money = 0
       }
 
@@ -479,7 +479,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   checkPercentSum = (data : IRow[]) => {
     const sumOfAllPercents = data.reduce(
-      (sum, row) => (sum += +row.portfolioPerc),
+      (sum, row) => (sum += +row!.portfolioPerc),
       0
     )
 
@@ -781,7 +781,7 @@ export default class PortfolioTableRebalance extends React.Component<
               <Table>
                 <PTHead>
                   <PTR>
-                    {tableHeadings.map((heading) => {
+                    {tableHeadingsCurrentPortfolio.map((heading) => {
                       const isSorted =
                         currentSortForStatic &&
                         currentSortForStatic.key === heading.value
@@ -926,7 +926,7 @@ export default class PortfolioTableRebalance extends React.Component<
                       </PTHR>
                     )}
 
-                    {newTableHeadings.map((heading) => {
+                    {tableHeadingsRebalancedPortfolio.map((heading) => {
                       const isSorted =
                         currentSortForDynamic &&
                         currentSortForDynamic.key === heading.value
@@ -1536,15 +1536,15 @@ const PTHR = styled.th`
   ${PTH};
 `
 
-const PTFR = styled.th`
-  ${PTH};
-  min-width: 100px;
-
-  &:nth-child(2) {
-    text-align: left;
-    min-width: 70px;
-  }
-`
+// const PTFR = styled.th`
+//   ${PTH};
+//   min-width: 100px;
+//
+//   &:nth-child(2) {
+//     text-align: left;
+//     min-width: 70px;
+//   }
+// `
 
 const PTR = styled.tr`
   cursor: pointer;
