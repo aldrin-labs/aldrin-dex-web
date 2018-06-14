@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import { IProps, IState } from './PortfolioTableRebalance.types'
+import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
 import {
   tableData,
   combineToChart
@@ -109,7 +109,7 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
-  calculatePriceDifference = (data: any[]) => {
+  calculatePriceDifference = (data: IRow[]) => {
     let { staticRows } = this.state
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
@@ -125,7 +125,7 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
-  checkForChanges = (data: any[]) => {
+  checkForChanges = (data: IRow[]) => {
     let { staticRows } = this.state
     let isHasChangesInPrice = false
 
@@ -147,7 +147,7 @@ export default class PortfolioTableRebalance extends React.Component<
     return isHasChangesInPrice
   }
 
-  calculateTotal = (data: any[]) => {
+  calculateTotal = (data: IRow[]) => {
     const { undistributedMoney } = this.state
 
     const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
@@ -155,13 +155,13 @@ export default class PortfolioTableRebalance extends React.Component<
     return total + undistributedMoney
   }
 
-  calculateTableTotal = (data: any[]) => {
+  calculateTableTotal = (data: IRow[]) => {
     const tableTotal = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
     return tableTotal
   }
 
-  calculateTotalPercents = (data: any[]) => {
+  calculateTotalPercents = (data: IRow[]) => {
     const totalPercents = data
       .reduce((sum, row) => (sum += +row.portfolioPerc), 0)
       .toFixed(4)
@@ -169,7 +169,7 @@ export default class PortfolioTableRebalance extends React.Component<
     return totalPercents
   }
 
-  calculatePercents = (data: any[], total: number) => {
+  calculatePercents = (data: IRow[], total: number) => {
     if (total === 0) {
       return this.calculatePriceDifference(
         data.map((row) => {
@@ -423,7 +423,7 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 
-  onDistribute = (e: any) => {
+  onDistribute = () => {
     let { selectedActive, rows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
       let money = undistributedMoney

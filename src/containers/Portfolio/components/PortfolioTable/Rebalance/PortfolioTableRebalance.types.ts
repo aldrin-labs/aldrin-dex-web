@@ -3,6 +3,7 @@ export interface IRow {
   symbol: string
   price: number
   portfolioPerc?: number
+  deltaPrice?: number
 }
 
 export interface IProps {
