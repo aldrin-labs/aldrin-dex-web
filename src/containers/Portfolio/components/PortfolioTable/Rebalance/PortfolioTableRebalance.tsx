@@ -669,7 +669,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   // TODO: Should be refactored (without callback)
-  onAddMoneyButtonPressed = (e: any) => {
+  onAddMoneyButtonPressed = () => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, addMoneyInputValue } = this.state
 
