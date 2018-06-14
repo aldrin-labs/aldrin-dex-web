@@ -1568,7 +1568,6 @@ const PT = css`
   display: table;
   width: 100%;
   position: sticky;
-  top: 0;
 
   &::after {
     content: ' ';
@@ -1580,15 +1579,18 @@ const PT = css`
 `
 
 const PTHead = styled.thead`
-  ${PT}
+  ${PT};
+  top: 0;
+
 
   & ${PTHR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
       props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
 `
 
-const PTFoot = styled.thead`
-  ${PT}
+const PTFoot = styled.tfoot`
+  ${PT};
+  bottom: 0;
   
     &::before {
     content: ' ';
