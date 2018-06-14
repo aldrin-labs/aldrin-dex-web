@@ -19,20 +19,39 @@ import ClearIcon from 'material-ui-icons/Clear'
 import { Args } from '../types'
 import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
 
-const tableHeadingsCurrentPortfolio = [
+const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'USD', value: 'price' },
 ]
 
-const tableHeadingsRebalancedPortfolio = [
+const btcHeadingForCurrent = [
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
+  { name: 'BTC', value: 'price' },
+]
+
+const usdHeadingForRebalanced = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'USD', value: 'price' },
   { name: 'Trade', value: 'trade' },
 ]
+
+const btcHeadingForRebalanced = [
+  { name: 'Exchange', value: 'currency' },
+  { name: 'Coin', value: 'symbol' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
+  { name: 'BTC', value: 'price' },
+  { name: 'Trade', value: 'trade' },
+]
+
+let tableHeadingsCurrentPortfolio = usdHeadingForCurrent
+
+let tableHeadingsRebalancedPortfolio = usdHeadingForRebalanced
 
 export default class PortfolioTableRebalance extends React.Component<
   IProps,
@@ -84,13 +103,12 @@ export default class PortfolioTableRebalance extends React.Component<
 
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
-      // this.setState({ isUSDCurrently: nextProps.isUSDCurrently })
       if (nextProps.isUSDCurrently) {
-        tableHeadingsCurrentPortfolio[3].name = 'USD'
-        tableHeadingsRebalancedPortfolio[3].name = 'USD'
+        tableHeadingsCurrentPortfolio = usdHeadingForCurrent
+        tableHeadingsRebalancedPortfolio = usdHeadingForRebalanced
       } else {
-        tableHeadingsCurrentPortfolio[3].name = 'BTC'
-        tableHeadingsRebalancedPortfolio[3].name = 'BTC'
+        tableHeadingsCurrentPortfolio = btcHeadingForCurrent
+        tableHeadingsRebalancedPortfolio = btcHeadingForRebalanced
       }
     }
   }
