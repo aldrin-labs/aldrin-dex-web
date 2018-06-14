@@ -4,6 +4,7 @@ export interface IRow {
   price: number
   portfolioPerc?: number
   deltaPrice?: number
+  editable?: boolean
 }
 
 export interface IProps {

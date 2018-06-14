@@ -228,7 +228,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onDeleteRowClick = (idx: number) => {
     let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive, undistributedMoney } = this.state
+    let { selectedActive } = this.state
     let currentRowMoney = rows[idx].price
     rows[idx].price = 0
 
@@ -254,24 +254,6 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 
-  onSelectAllActive = (e: any) => {
-    const selectedActive =
-      (this.state.selectedActive && this.state.selectedActive.slice()) || []
-    let { areAllActiveChecked } = this.state
-    if (selectedActive.length === this.state.rows.length) {
-      selectedActive.splice(0, selectedActive.length)
-      areAllActiveChecked = false
-    } else {
-      selectedActive.splice(0, selectedActive.length)
-      this.state.rows.map((a, i) => {
-        // if (i < this.state.rows.length - 1) {
-        selectedActive.push(i)
-        // }
-      })
-      areAllActiveChecked = true
-    }
-    this.setState({ selectedActive, areAllActiveChecked })
-  }
   onSelectActiveBalance = (idx: number) => {
     const selectedActive =
       (this.state.selectedActive && this.state.selectedActive.slice()) || []
@@ -290,7 +272,26 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ selectedActive, areAllActiveChecked })
   }
 
-  calculatePriceByPercents = (data: any) => {
+  onSelectAllActive = () => {
+    const selectedActive =
+      (this.state.selectedActive && this.state.selectedActive.slice()) || []
+    let { areAllActiveChecked } = this.state
+    if (selectedActive.length === this.state.rows.length) {
+      selectedActive.splice(0, selectedActive.length)
+      areAllActiveChecked = false
+    } else {
+      selectedActive.splice(0, selectedActive.length)
+      this.state.rows.map((a, i) => {
+        // if (i < this.state.rows.length - 1) {
+        selectedActive.push(i)
+        // }
+      })
+      areAllActiveChecked = true
+    }
+    this.setState({ selectedActive, areAllActiveChecked })
+  }
+
+  calculatePriceByPercents = (data: IRow) => {
     const { totalRows } = this.state
 
     let sumTotal = totalRows
