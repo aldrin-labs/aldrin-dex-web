@@ -40,18 +40,14 @@ export default class PortfolioTableRebalance extends React.Component<
 > {
   state: IState = {
     selectedActive: null,
-    areAllChecked: false,
     areAllActiveChecked: false,
     rows: JSON.parse(JSON.stringify(tableData)),
     staticRows: JSON.parse(JSON.stringify(tableData)),
     savedRows: JSON.parse(JSON.stringify(tableData)),
     addMoneyInputValue: 0,
-    activePercentInput: null,
-    activePercentInputValues: [],
     currentSortForStatic: null,
     currentSortForDynamic: null,
     isEditModeEnabled: false,
-    isUSDCurrently: true,
     undistributedMoney: 0,
     undistributedMoneySaved: 0,
     totalRows: 0,

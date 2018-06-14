@@ -1,4 +1,9 @@
-export interface IRow { }
+export interface IRow {
+  currency: string
+  symbol: string
+  price: number
+  portfolioPerc?: number
+}
 
 export interface IProps {
   children: object
@@ -6,20 +11,23 @@ export interface IProps {
 }
 
 export interface IState {
-  selectedBalances: number[] | null
   selectedActive: number[] | null
-  areAllChecked: boolean
-  areAllActiveChecked: boolean
-  rows: any[]
-  staticRows: any[]
-  savedRows: any[]
-  addMoneyInputValue: number
-  activePercentInput: number | null
-  activePercentInputValues: any[]
-  currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
+  areAllActiveChecked: boolean | null
+  rows: IRow[] | null
+  staticRows: IRow[] | null
+  savedRows: IRow[] | null
+  addMoneyInputValue: number | null
+  currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
+  currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
-  isUSDCurrently: boolean
-  isPercentSumGood: boolean
-  totalRows: number
   undistributedMoney: number
+  undistributedMoneySaved: number
+  totalRows: number
+  totalStaticRows: number
+  totalSavedRows: number
+  totalTableRows: number
+  totalTableStaticRows: number
+  totalTableSavedRows: number
+  isPercentSumGood: boolean
+  totalPercents: number
 }
