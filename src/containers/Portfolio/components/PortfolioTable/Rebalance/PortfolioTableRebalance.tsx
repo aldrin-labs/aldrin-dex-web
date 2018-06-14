@@ -39,7 +39,6 @@ export default class PortfolioTableRebalance extends React.Component<
   IState
 > {
   state: IState = {
-    selectedBalances: null,
     selectedActive: null,
     areAllChecked: false,
     areAllActiveChecked: false,
@@ -748,7 +747,6 @@ export default class PortfolioTableRebalance extends React.Component<
   render() {
     const { children, isUSDCurrently } = this.props
     const {
-      selectedBalances,
       selectedActive,
       currentSortForStatic,
       currentSortForDynamic,
@@ -819,11 +817,6 @@ export default class PortfolioTableRebalance extends React.Component<
                 <PTBody>
                   {staticRows.map((row, idx) => {
                     const { currency, symbol, portfolioPerc, price } = row
-
-                    const isSelected =
-                      (selectedBalances &&
-                        selectedBalances.indexOf(idx) >= 0) ||
-                      false
 
                     const cols = [
                       currency,
@@ -1314,8 +1307,6 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
-
-  //  TODO: SHOULD BE CHANGED, VERY BAD FIX I THINK
   width: 45vw;
 `
 
@@ -1348,7 +1339,8 @@ const PTD = css`
 `
 
 const PTDC = styled.td`
-  ${PTD} min-width: 100px;
+  ${PTD};
+   min-width: 100px;
 
   &:nth-child(2) {
     min-width: 70px;
@@ -1742,8 +1734,6 @@ const TableButton = styled.button`
     height: 18px;
   }
 `
-
-const TableButtonDual = styled.div``
 const ActionButton = styled.button`
   border: none;
   margin: 0;
