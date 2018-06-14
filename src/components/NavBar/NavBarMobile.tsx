@@ -36,6 +36,12 @@ const NavButtonsContainer = styled.nav`
   padding: 10px 20px;
   align-items: center;
   justify-content: space-between;
+  background: #2d3136;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  cursor: pointer;
 
   @media (max-width: 840px) {
     margin: 0 !important;
