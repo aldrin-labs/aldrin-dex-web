@@ -129,7 +129,7 @@ export default class PortfolioTableRebalance extends React.Component<
     let { staticRows } = this.state
     let isHasChangesInPrice = false
 
-    //TODO: Should be more fast, maybe with old for loop, because we need to break loop when we found changes and go out of the function
+    // TODO: Should be more fast, maybe with old for loop, because we need to break loop when we found changes and go out of the function
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
         if (
@@ -232,7 +232,7 @@ export default class PortfolioTableRebalance extends React.Component<
     let currentRowMoney = rows[idx].price
     rows[idx].price = 0
 
-    //TODO: This should be refactored (calculate totatl should have second argument - undistributed money it it should be a pure function)
+    // TODO: This should be refactored (calculate totatl should have second argument - undistributed money it it should be a pure function)
     this.setState(
       (prevState) => ({
         undistributedMoney: prevState.undistributedMoney + currentRowMoney,
@@ -396,10 +396,11 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
+
   onDeleteUndistributedMoney = () => {
     const { rows } = this.state
 
-    //TODO: Should be refactored (calculatotal should pe a pure function, no second setstate)
+    // TODO: Should be refactored (calculatotal should pe a pure function, no second setstate)
     this.setState(
       {
         undistributedMoney: 0,
@@ -439,7 +440,7 @@ export default class PortfolioTableRebalance extends React.Component<
         money = 0
       }
 
-      //TODO: //Very brutal fix, need to be reworked
+      // TODO: //Very brutal fix, need to be reworked
       this.setState({ undistributedMoney: money }, () => {
         let newTotal = this.calculateTotal(rows)
         let newTableTotal = this.calculateTableTotal(rows)
@@ -582,7 +583,7 @@ export default class PortfolioTableRebalance extends React.Component<
     )
 
     // NOT READY FOR NOW
-    //TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
+    // TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
     let oldRowPrice = rows[idx].price
     let newRowPrice = newCalculatedRowsWithPercents[idx].price
     let oldNewPriceDiff = oldRowPrice - newRowPrice
@@ -646,7 +647,7 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
-  //TODO: Should be refactored (without callback)
+  // TODO: Should be refactored (without callback)
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
       let { rows, totalRows, addMoneyInputValue } = this.state
