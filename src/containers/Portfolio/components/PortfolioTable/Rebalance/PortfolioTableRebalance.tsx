@@ -205,7 +205,7 @@ export default class PortfolioTableRebalance extends React.Component<
     return (
       <React.Fragment>
         <Checkbox type="checkbox" id={idx} checked={isSelected} />
-        <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
+        <Label htmlFor={idx} >
           <Span />
         </Label>
       </React.Fragment>
@@ -678,9 +678,9 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onSortTable = (key: Args, chooseRows: string) => {
-    let currentRowsForSort : IRow
+    let currentRowsForSort : IRow[]
     let currentRowsForSortText : string
-    let currentSort
+    let currentSort : { key: string; arg: 'ASC' | 'DESC' } | null
     let currentSortText : string
     const {
       staticRows,
@@ -706,6 +706,9 @@ export default class PortfolioTableRebalance extends React.Component<
       currentSort = currentSortForDynamic
       currentSortText = 'currentSortForDynamic'
     }
+
+    console.log(currentSort);
+
 
     const stringKey = key === 'currency' || key === 'symbol'
     console.log(currentRowsForSort)
