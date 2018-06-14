@@ -6,6 +6,7 @@ export interface IProps {
   onToggleUSDBTC?: Function
   isShownMocks: boolean
   isSideNavOpen: boolean
+  toggleWallets: Function
   data: any
 }
 

@@ -4,6 +4,7 @@ import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import AccountIcon from 'react-icons/lib/md/supervisor-account'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
@@ -41,7 +42,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio, isShownMocks, isSideNavOpen } = this.props
+    const {
+      tab,
+      portfolio,
+      isShownMocks,
+      isSideNavOpen,
+      toggleWallets,
+    } = this.props
     const dataFromProps = this.props.data
 
     return (
@@ -49,6 +56,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
         <PTHeadingBlock isSideNavOpen={isSideNavOpen}>
           <TabContainer>
             <Menu onMenuItemClick={this.onChangeTab} />
+            <ToggleAccountsBtn
+              onClick={() => {
+                toggleWallets()
+              }}
+            >
+              <StyledAccountIcon />
+            </ToggleAccountsBtn>
             <Tab
               onClick={() => this.onChangeTab('main')}
               active={tab === 'main'}
@@ -198,6 +212,19 @@ const Btn = css`
 
 const ToggleBtn = styled.button`
   ${Btn};
+`
+
+const ToggleAccountsBtn = ToggleBtn.extend`
+  display: block;
+
+  @media (min-width: 1080px) {
+    display: none;
+  }
+`
+
+const StyledAccountIcon = styled(AccountIcon)`
+  font-size: 1.5rem;
+  margin-top: 0.3rem;
 `
 
 const TabContainer = styled.div`

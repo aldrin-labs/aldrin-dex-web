@@ -54,6 +54,7 @@ class PortfolioComponent extends React.Component<IProps> {
             <PortfolioTable
               loading={loading}
               checkboxes={checkboxes}
+              toggleWallets={this.toggleWallets}
               isSideNavOpen={this.state.isSideNavOpen}
               data={getProfile}
               subscription={subscriptionData}

@@ -65,6 +65,7 @@ class LongMenu extends React.Component {
 const Container = styled.div`
   display: block;
   padding: 0.75rem;
+  margin-top: 0.5rem;
 
   @media (min-width: 1080px) {
     display: none;
