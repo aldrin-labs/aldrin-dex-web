@@ -498,10 +498,20 @@ export default class PortfolioTableRebalance extends React.Component<
     }
 
     const clonedRows = rows.map((a) => ({ ...a }))
-    clonedRows[idx].portfolioPerc = percentInput
+
+    // clonedRows[idx].portfolioPerc = percentInput
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: percentInput
+      },
+      ...clonedRows.slice(idx, clonedRows.length)
+    ]
 
     this.setState({
-      rows: clonedRows,
+      rows: resultRows,
     })
   }
 
@@ -519,10 +529,19 @@ export default class PortfolioTableRebalance extends React.Component<
     }
 
     const clonedRows = rows.map((a) => ({ ...a }))
-    clonedRows[idx].portfolioPerc = percentInput
+    // clonedRows[idx].portfolioPerc = percentInput
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: percentInput
+      },
+      ...clonedRows.slice(idx, clonedRows.length)
+    ]
 
     this.setState({
-      rows: clonedRows,
+      rows: resultRows,
     })
   }
 
@@ -539,10 +558,19 @@ export default class PortfolioTableRebalance extends React.Component<
     }
 
     const clonedRows = rows.map((a) => ({ ...a }))
-    clonedRows[idx].portfolioPerc = percentInput
+    // clonedRows[idx].portfolioPerc = percentInput
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: percentInput
+      },
+      ...clonedRows.slice(idx, clonedRows.length)
+    ]
 
     const newCalculatedRowsWithPercents = this.calculatePriceByPercents(
-      clonedRows
+      resultRows
     )
 
     const totalPercents = this.calculateTotalPercents(
@@ -586,10 +614,19 @@ export default class PortfolioTableRebalance extends React.Component<
     let nameCurrencyInput = e.target.value
 
     const clonedRows = rows.map((a) => ({ ...a }))
-    clonedRows[idx].currency = nameCurrencyInput
+    // clonedRows[idx].currency = nameCurrencyInput
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        currency: nameCurrencyInput
+      },
+      ...clonedRows.slice(idx, clonedRows.length)
+    ]
 
     this.setState({
-      rows: clonedRows,
+      rows: resultRows,
     })
   }
 
@@ -598,10 +635,19 @@ export default class PortfolioTableRebalance extends React.Component<
     let symbolCurrencyInput = e.target.value
 
     const clonedRows = rows.map((a) => ({ ...a }))
-    clonedRows[idx].symbol = symbolCurrencyInput
+    // clonedRows[idx].symbol = symbolCurrencyInput
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        symbol: symbolCurrencyInput
+      },
+      ...clonedRows.slice(idx, clonedRows.length)
+    ]
 
     this.setState({
-      rows: clonedRows,
+      rows: resultRows,
     })
   }
 
