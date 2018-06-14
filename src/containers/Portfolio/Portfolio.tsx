@@ -55,7 +55,6 @@ class PortfolioComponent extends React.Component<IProps> {
               loading={loading}
               checkboxes={checkboxes}
               toggleWallets={this.toggleWallets}
-              isSideNavOpen={this.state.isSideNavOpen}
               data={getProfile}
               subscription={subscriptionData}
             />
@@ -87,4 +86,5 @@ const Backdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 100;
 `

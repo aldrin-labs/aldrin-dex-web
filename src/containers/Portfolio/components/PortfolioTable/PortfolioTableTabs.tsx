@@ -42,18 +42,12 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const {
-      tab,
-      portfolio,
-      isShownMocks,
-      isSideNavOpen,
-      toggleWallets,
-    } = this.props
+    const { tab, portfolio, isShownMocks, toggleWallets } = this.props
     const dataFromProps = this.props.data
 
     return (
       <React.Fragment>
-        <PTHeadingBlock isSideNavOpen={isSideNavOpen}>
+        <PTHeadingBlock>
           <TabContainer>
             <Menu onMenuItemClick={this.onChangeTab} />
             <ToggleAccountsBtn
@@ -63,6 +57,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             >
               <StyledAccountIcon />
             </ToggleAccountsBtn>
+
             <Tab
               onClick={() => this.onChangeTab('main')}
               active={tab === 'main'}
@@ -148,8 +143,7 @@ const PTHeadingBlock = styled.div`
   position: sticky;
   top: 0;
   background-color: #393e44;
-  z-index: ${(props: { isSideNavOpen?: boolean }) =>
-    props.isSideNavOpen ? '0' : '100'};
+  z-index: 99;
 
   width: 100%;
   justify-content: space-between;
