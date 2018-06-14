@@ -30,5 +30,5 @@ export interface IState {
   totalTableStaticRows: number
   totalTableSavedRows: number
   isPercentSumGood: boolean
-  totalPercents: number
+  totalPercents: number | string
 }

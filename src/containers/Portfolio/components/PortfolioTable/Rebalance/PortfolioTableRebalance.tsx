@@ -368,7 +368,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onEditModeEnable = () => {
     if (this.state.isEditModeEnabled) {
-      this.setState((prevState) => ({
+      this.setState((prevState: IState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
         totalTableRows: this.state.totalTableSavedRows,
@@ -824,7 +824,6 @@ export default class PortfolioTableRebalance extends React.Component<
                     return (
                       <PTR
                         key={`${currency}${symbol}${idx}`}
-                        isSelected={isSelected}
                       >
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
@@ -837,7 +836,6 @@ export default class PortfolioTableRebalance extends React.Component<
                               <PTDC
                                 key={`${col}${index}`}
                                 style={{ color }}
-                                isSelected={isSelected}
                               >
                                 {col}
                               </PTDC>
@@ -855,7 +853,6 @@ export default class PortfolioTableRebalance extends React.Component<
                           return (
                             <PTDC
                               key={`${col}${index}`}
-                              isSelected={isSelected}
                             >
                               {col}
                             </PTDC>
