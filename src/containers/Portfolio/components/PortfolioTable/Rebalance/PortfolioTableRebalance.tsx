@@ -84,7 +84,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
-      this.setState({ isUSDCurrently: nextProps.isUSDCurrently })
+      // this.setState({ isUSDCurrently: nextProps.isUSDCurrently })
       if (nextProps.isUSDCurrently) {
         tableHeadings[3].name = 'USD'
         newTableHeadings[3].name = 'USD'
@@ -291,11 +291,11 @@ export default class PortfolioTableRebalance extends React.Component<
     this.setState({ selectedActive, areAllActiveChecked })
   }
 
-  calculatePriceByPercents = (data: IRow) => {
+  calculatePriceByPercents = (data: IRow[]) => {
     const { totalRows } = this.state
 
     let sumTotal = totalRows
-    data.forEach((row, i) => {
+    data.forEach((row: IRow, i: number) => {
       let newPrice = Math.round((totalRows / 100) * data[i].portfolioPerc)
       console.log('newPrice: ', newPrice)
       if (sumTotal <= newPrice) {
@@ -313,13 +313,13 @@ export default class PortfolioTableRebalance extends React.Component<
   // TODO: refactor all this stuff
   onSaveClick = () => {
 
-    let { rows, totalRows, undistributedMoney, isPercentSumGood } = this.state
+    let { rows, totalRows, isPercentSumGood, undistributedMoney } = this.state
 
 
-    if (!this.state.isPercentSumGood) {
+    if (!isPercentSumGood) {
       return
     }
-    if (this.state.undistributedMoney < 0) {
+    if (undistributedMoney < 0) {
       return
     }
 
@@ -391,7 +391,7 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
-  escFunction = (e) => {
+  escFunction = (e: any) => {
     if (e.keyCode === 27) {
       this.onEditModeEnable()
     }
@@ -477,7 +477,7 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
-  checkPercentSum = (data) => {
+  checkPercentSum = (data : IRow[]) => {
     const sumOfAllPercents = data.reduce(
       (sum, row) => (sum += +row.portfolioPerc),
       0
@@ -578,7 +578,7 @@ export default class PortfolioTableRebalance extends React.Component<
       newCalculatedRowsWithPercents
     )
 
-    const newTotalRows = this.calculateTotal(newCalculatedRowsWithPercents)
+    // const newTotalRows = this.calculateTotal(newCalculatedRowsWithPercents)
     const newTableTotalRows = this.calculateTableTotal(
       newCalculatedRowsWithPercents
     )
@@ -651,7 +651,7 @@ export default class PortfolioTableRebalance extends React.Component<
   // TODO: Should be refactored (without callback)
   onAddMoneyButtonPressed = (e: any) => {
     if (this.state.addMoneyInputValue !== 0) {
-      let { rows, totalRows, addMoneyInputValue } = this.state
+      let { rows, addMoneyInputValue } = this.state
 
       this.setState(
         (prevState) => ({
@@ -677,11 +677,11 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
-  onSortTable = (key: Args, chooseRows) => {
-    let currentRowsForSort
-    let currentRowsForSortText
+  onSortTable = (key: Args, chooseRows: string) => {
+    let currentRowsForSort : IRow
+    let currentRowsForSortText : string
     let currentSort
-    let currentSortText
+    let currentSortText : string
     const {
       staticRows,
       rows,
@@ -710,7 +710,9 @@ export default class PortfolioTableRebalance extends React.Component<
     const stringKey = key === 'currency' || key === 'symbol'
     console.log(currentRowsForSort)
 
-    const newData = currentRowsForSort.slice().sort((a, b) => {
+    const newData = currentRowsForSort.slice().sort((a: IRow, b: IRow) => {
+      console.log('sorting in:',a, typeof a);
+
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
           this.setState({ [currentSortText]: { key, arg: 'DESC' } })

@@ -2,7 +2,7 @@ export interface IRow {
   currency: string
   symbol: string
   price: number
-  portfolioPerc?: number
+  portfolioPerc?: number | string
   deltaPrice?: number
   editable?: boolean
 }
