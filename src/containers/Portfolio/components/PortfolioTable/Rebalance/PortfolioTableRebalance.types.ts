@@ -14,10 +14,10 @@ export interface IProps {
 
 export interface IState {
   selectedActive: number[] | null
-  areAllActiveChecked: boolean | null
-  rows: IRow[] | null
-  staticRows: IRow[] | null
-  savedRows: IRow[] | null
+  areAllActiveChecked: boolean
+  rows: IRow[]
+  staticRows: IRow[]
+  savedRows: IRow[]
   addMoneyInputValue: number | null
   currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
   currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
