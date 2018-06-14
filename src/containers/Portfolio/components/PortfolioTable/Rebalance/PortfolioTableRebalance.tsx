@@ -282,11 +282,14 @@ export default class PortfolioTableRebalance extends React.Component<
     } else {
       selectedActive.push(idx)
     }
-    if (selectedActive.length === this.state.rows.length) {
-      areAllActiveChecked = true
-    } else {
-      areAllActiveChecked = false
-    }
+
+    areAllActiveChecked = selectedActive.length === this.state.rows.length
+
+    // if (selectedActive.length === this.state.rows.length) {
+    //   areAllActiveChecked = true
+    // } else {
+    //   areAllActiveChecked = false
+    // }
     this.setState({ selectedActive, areAllActiveChecked })
   }
 
