@@ -312,6 +312,11 @@ const Chart = styled.div`
   height: 300px;
   border-radius: 1rem;
   background: #393e44;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-basis: 100%;
+  }
 `
 
 const MainAreaUpperPart = styled.div`
