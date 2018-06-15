@@ -145,36 +145,6 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
-  // checkForChanges = (data: IRow[]) => {
-  //   let { staticRows } = this.state
-  //   let isHasChangesInPrice = false
-  //
-  //   // TODO: Should be more fast, maybe with old for loop, because we need to break loop when we found changes and go out of the function
-  //   data.forEach((row, i) => {
-  //     staticRows.forEach((staticRow, j) => {
-  //       if (
-  //         data[i].currency === staticRows[j].currency &&
-  //         data[i].symbol === staticRows[j].symbol
-  //       ) {
-  //         console.log(data[i].portfolioPerc !== staticRows[j].portfolioPerc)
-  //         if (data[i].portfolioPerc !== staticRows[j].portfolioPerc) {
-  //           isHasChangesInPrice = true
-  //         }
-  //       }
-  //     })
-  //   })
-  //
-  //   return isHasChangesInPrice
-  // }
-
-  // calculateTotal = (data: IRow[]) => {
-  //   const { undistributedMoney } = this.state
-  //
-  //   const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
-  //
-  //   return total + undistributedMoney
-  // }
-
   calculateTotal = (data: IRow[], undistributedMoney: number) => {
     const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
@@ -313,26 +283,21 @@ export default class PortfolioTableRebalance extends React.Component<
   calculatePriceByPercents = (data: IRow[]) => {
     const { totalRows } = this.state
 
-    let sumTotal = totalRows
-    data.forEach((row: IRow, i: number) => {
-      let newPrice = Math.round((totalRows / 100) * data![i]!.portfolioPerc)
-      console.log('newPrice: ', newPrice)
-      if (sumTotal <= newPrice) {
-        data[i].price = newPrice
-        sumTotal = 0
-      } else {
-        data[i].price = newPrice
-        sumTotal -= newPrice
-      }
+    const dataWithNewPrices = data.map((row: IRow) => {
+        let newPrice = Math.round((totalRows / 100) * row.portfolioPerc)
+
+        return {
+          ...row,
+          price: newPrice
+        }
     })
 
-    return data
+
+    return dataWithNewPrices
   }
 
   onSaveClick = () => {
-
     const { rows, totalRows, isPercentSumGood, undistributedMoney } = this.state
-
 
     if (!isPercentSumGood) {
       return
