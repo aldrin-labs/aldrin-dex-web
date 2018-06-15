@@ -15,16 +15,19 @@ class ProfileComponent extends React.Component<Props, {}> {
   render() {
     const { data } = this.props
     const { assetById } = data
+    console.log(this.props)
+    //console.log(this.props.match.params)
+    let testAsset = { name: 'Coinname', symbol: this.props.match.params.id }
 
     return (
       <SProfileWrapper>
         <SProfile>
           <SWrapper>
-            <ProfileHeading coin={assetById} />
-            <ProfileLinks coin={assetById} />
+            <ProfileHeading coin={testAsset} />
+            <ProfileLinks coin={testAsset} />
           </SWrapper>
           <ProfileChart
-            coin={assetById}
+            coin={testAsset}
             style={{
               maxWidth: '900px',
               marginTop: '24px',
@@ -120,7 +123,7 @@ export const ProfileQuery = gql`
 `
 
 const options = ({ match }) => ({
-  variables: { id: match ? match.params.id : '' },
+  variables: { id: match ? match.params.id : '1' },
 })
 
 export default graphql(ProfileQuery, { options })(ProfileComponent)

@@ -93,7 +93,7 @@ const render = () =>
               <App>
                 <Switch>
                   <Route exact path="/" component={HomeRoutes} />
-                  <Route exact path="/profile" component={ProfileRoutes} />
+                  <Route path="/profile" component={ProfileRoutes} />
                   <Route exact path="/portfolio" component={PortfolioRoutes} />
                   <Route exact path="/market" component={MarketRoutes} />
                   <Route exact path="/chart" component={ChartRoutes} />

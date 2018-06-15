@@ -5,8 +5,8 @@ import Profile from './Profile'
 export default function ProfileRoutes({ match, location }) {
   return (
     <Switch>
-      <Route path={match.url} component={Profile} />
-      <Route path={`${match.url}:id`} component={Profile} />
+      <Route exact path={match.url} component={Profile} />
+      <Route path={`${match.url}/:id`} component={Profile} />
     </Switch>
   )
 }
