@@ -4,9 +4,8 @@ import styled from 'styled-components'
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 60%;
-  height: 500px;
-  margin: 1%;
+  width: 50%;
+  height: calc(100vh - 59px - 80px);
 `
 
 export const SingleChart = () => (
