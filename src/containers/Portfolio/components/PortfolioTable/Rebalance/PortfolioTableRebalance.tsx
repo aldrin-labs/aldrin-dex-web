@@ -88,8 +88,8 @@ export default class PortfolioTableRebalance extends React.Component<
   calculateAllTotals = () => {
     this.setState(
       {
-        totalRows: this.calculateTotal(this.state.rows),
         totalStaticRows: this.calculateTotal(this.state.staticRows),
+        totalRows: this.calculateTotal(this.state.rows),
         totalSavedRows: this.calculateTotal(this.state.savedRows),
         totalTableRows: this.calculateTableTotal(this.state.rows),
         totalTableStaticRows: this.calculateTableTotal(this.state.staticRows),
@@ -452,20 +452,6 @@ export default class PortfolioTableRebalance extends React.Component<
         money = 0
       }
 
-      // // TODO: //Very brutal fix, need to be reworked
-      // this.setState({ undistributedMoney: money }, () => {
-      //   let newTotal = this.calculateTotal(rows)
-      //   let newTableTotal = this.calculateTableTotal(rows)
-      //   rows = this.calculatePercents(rows, newTotal)
-      //   this.setState({
-      //     selectedActive,
-      //     rows,
-      //     totalRows: newTotal,
-      //     totalTableRows: newTableTotal,
-      //     isPercentSumGood: this.checkPercentSum(rows),
-      //   })
-      // })
-
       const newUndistributedMoney = money
 
       const newTotal = this.calculateTotal(rows, newUndistributedMoney)
@@ -677,31 +663,31 @@ export default class PortfolioTableRebalance extends React.Component<
 
   // TODO: Should be refactored (without callback)
   onAddMoneyButtonPressed = () => {
-    if (this.state.addMoneyInputValue !== 0) {
-      let { rows, addMoneyInputValue } = this.state
+    if (+this.state.addMoneyInputValue === 0) {
+      return
+    }
+    console.log('addmoneypressed');
 
-      this.setState(
-        (prevState) => ({
-          undistributedMoney:
-            prevState.undistributedMoney + Number(addMoneyInputValue),
-        }),
-        () => {
-          let newTotal = this.calculateTotal(rows)
-          let newTableTotal = this.calculateTableTotal(rows)
+      let { rows, addMoneyInputValue, undistributedMoney } = this.state
 
-          rows = this.calculatePercents(rows, newTotal)
-          let checkedPercentsIsGood = this.checkPercentSum(rows)
+
+      const newUndistributedMoney = undistributedMoney +  Number(addMoneyInputValue)
+
+
+          const newTotal = this.calculateTotal(rows, newUndistributedMoney)
+          const newTableTotal = this.calculateTableTotal(rows)
+
+          const newRows = this.calculatePercents(rows, newTotal)
+          const checkedPercentsIsGood = this.checkPercentSum(newRows)
 
           this.setState({
+            undistributedMoney: newUndistributedMoney,
             addMoneyInputValue: 0,
-            rows,
+            rows: newRows,
             totalRows: newTotal,
             totalTableRows: newTableTotal,
             isPercentSumGood: checkedPercentsIsGood,
           })
-        }
-      )
-    }
   }
 
   onSortTable = (key: Args, chooseRows: string) => {
