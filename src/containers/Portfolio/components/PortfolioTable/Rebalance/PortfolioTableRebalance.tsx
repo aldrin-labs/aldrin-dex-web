@@ -188,13 +188,21 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculatePercents = (data: IRow[], total: number) => {
-    if (total === 0) {
-      return this.calculatePriceDifference(
-        data.map((row) => {
-          row.portfolioPerc = '0'
+    // if (total === 0) {
+    //   return this.calculatePriceDifference(
+    //     data.map((row) => {
+    //       row.portfolioPerc = '0'
+    //
+    //       return row
+    //     })
+    //   )
+    // }
 
-          return row
-        })
+    if (total === 0) {
+      console.log('total is 0 now', data.map((row) => Object.assign({}, row, {portfolioPerc: '0'})));
+
+      return this.calculatePriceDifference(
+        data.map((row) => Object.assign({}, row, {portfolioPerc: '0'}))
       )
     }
 
@@ -282,7 +290,7 @@ export default class PortfolioTableRebalance extends React.Component<
       selectedActive.push(idx)
     }
 
-    areAllActiveChecked = selectedActive.length === this.state.rows.length
+    const areAllActiveChecked = selectedActive.length === this.state.rows.length
 
     // if (selectedActive.length === this.state.rows.length) {
     //   areAllActiveChecked = true
@@ -524,7 +532,7 @@ export default class PortfolioTableRebalance extends React.Component<
         ...clonedRows[idx],
         portfolioPerc: percentInput
       },
-      ...clonedRows.slice(idx, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length)
     ]
 
     this.setState({
@@ -554,7 +562,7 @@ export default class PortfolioTableRebalance extends React.Component<
         ...clonedRows[idx],
         portfolioPerc: percentInput
       },
-      ...clonedRows.slice(idx, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length)
     ]
 
     this.setState({
@@ -583,7 +591,7 @@ export default class PortfolioTableRebalance extends React.Component<
         ...clonedRows[idx],
         portfolioPerc: percentInput
       },
-      ...clonedRows.slice(idx, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length)
     ]
 
     const newCalculatedRowsWithPercents = this.calculatePriceByPercents(
@@ -639,7 +647,7 @@ export default class PortfolioTableRebalance extends React.Component<
         ...clonedRows[idx],
         currency: nameCurrencyInput
       },
-      ...clonedRows.slice(idx, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length)
     ]
 
     this.setState({
@@ -660,7 +668,7 @@ export default class PortfolioTableRebalance extends React.Component<
         ...clonedRows[idx],
         symbol: symbolCurrencyInput
       },
-      ...clonedRows.slice(idx, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length)
     ]
 
     this.setState({
