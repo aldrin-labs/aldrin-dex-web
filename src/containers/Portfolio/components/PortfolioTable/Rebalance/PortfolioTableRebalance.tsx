@@ -418,13 +418,8 @@ export default class PortfolioTableRebalance extends React.Component<
   onDeleteUndistributedMoney = () => {
     const { rows } = this.state
 
-    // TODO: Should be refactored (calculatotal should pe a pure function, no second setstate)
-    this.setState(
-      {
-        undistributedMoney: 0,
-      },
-      () => {
-        const newTotalRows = this.calculateTotal(rows)
+        const newUndistributedMoney = 0
+        const newTotalRows = this.calculateTotal(rows, newUndistributedMoney)
         const newTableTotalRows = this.calculateTableTotal(rows)
         const newRowsWithNewPercents = this.calculatePercents(
           rows,
@@ -433,13 +428,12 @@ export default class PortfolioTableRebalance extends React.Component<
         const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
         this.setState({
+          undistributedMoney: 0,
           totalRows: newTotalRows,
           totalTableRows: newTableTotalRows,
           rows: newRowsWithNewPercents,
           isPercentSumGood: newIsPercentSumGood,
         })
-      }
-    )
   }
 
   onDistribute = () => {
