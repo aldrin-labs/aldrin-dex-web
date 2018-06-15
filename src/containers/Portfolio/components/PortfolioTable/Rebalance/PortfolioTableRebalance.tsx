@@ -197,12 +197,13 @@ export default class PortfolioTableRebalance extends React.Component<
     return (
       <React.Fragment>
         <Checkbox type="checkbox" id={idx} checked={isSelected} />
-        <Label htmlFor={idx} >
+        <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
       </React.Fragment>
     )
   }
+
   onAddRowButtonClick = () => {
     let rows = cloneArrayElementsOneLevelDeep(this.state.rows)
     let { totalRows } = this.state
