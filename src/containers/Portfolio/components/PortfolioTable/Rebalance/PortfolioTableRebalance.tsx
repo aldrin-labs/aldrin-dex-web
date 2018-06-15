@@ -86,14 +86,16 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculateAllTotals = () => {
+    const {staticRows, rows, savedRows, undistributedMoney} = this.state
+
     this.setState(
       {
-        totalStaticRows: this.calculateTotal(this.state.staticRows),
-        totalRows: this.calculateTotal(this.state.rows),
-        totalSavedRows: this.calculateTotal(this.state.savedRows),
-        totalTableRows: this.calculateTableTotal(this.state.rows),
-        totalTableStaticRows: this.calculateTableTotal(this.state.staticRows),
-        totalTableSavedRows: this.calculateTableTotal(this.state.savedRows),
+        totalStaticRows: this.calculateTotal(staticRows, 0),
+        totalRows: this.calculateTotal(rows, undistributedMoney),
+        totalSavedRows: this.calculateTotal(savedRows, undistributedMoney),
+        totalTableRows: this.calculateTableTotal(rows),
+        totalTableStaticRows: this.calculateTableTotal(staticRows),
+        totalTableSavedRows: this.calculateTableTotal(savedRows),
       },
       () => {
         this.calculateAllPercents()
@@ -115,11 +117,11 @@ export default class PortfolioTableRebalance extends React.Component<
 
   calculateAllPercents = () => {
     this.setState({
-      rows: this.calculatePercents(this.state.rows, this.state.totalRows),
       staticRows: this.calculatePercents(
         this.state.staticRows,
         this.state.totalStaticRows
       ),
+      rows: this.calculatePercents(this.state.rows, this.state.totalRows),
       savedRows: this.calculatePercents(
         this.state.savedRows,
         this.state.totalSavedRows
@@ -143,27 +145,27 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
-  checkForChanges = (data: IRow[]) => {
-    let { staticRows } = this.state
-    let isHasChangesInPrice = false
-
-    // TODO: Should be more fast, maybe with old for loop, because we need to break loop when we found changes and go out of the function
-    data.forEach((row, i) => {
-      staticRows.forEach((staticRow, j) => {
-        if (
-          data[i].currency === staticRows[j].currency &&
-          data[i].symbol === staticRows[j].symbol
-        ) {
-          console.log(data[i].portfolioPerc !== staticRows[j].portfolioPerc)
-          if (data[i].portfolioPerc !== staticRows[j].portfolioPerc) {
-            isHasChangesInPrice = true
-          }
-        }
-      })
-    })
-
-    return isHasChangesInPrice
-  }
+  // checkForChanges = (data: IRow[]) => {
+  //   let { staticRows } = this.state
+  //   let isHasChangesInPrice = false
+  //
+  //   // TODO: Should be more fast, maybe with old for loop, because we need to break loop when we found changes and go out of the function
+  //   data.forEach((row, i) => {
+  //     staticRows.forEach((staticRow, j) => {
+  //       if (
+  //         data[i].currency === staticRows[j].currency &&
+  //         data[i].symbol === staticRows[j].symbol
+  //       ) {
+  //         console.log(data[i].portfolioPerc !== staticRows[j].portfolioPerc)
+  //         if (data[i].portfolioPerc !== staticRows[j].portfolioPerc) {
+  //           isHasChangesInPrice = true
+  //         }
+  //       }
+  //     })
+  //   })
+  //
+  //   return isHasChangesInPrice
+  // }
 
   // calculateTotal = (data: IRow[]) => {
   //   const { undistributedMoney } = this.state
@@ -327,7 +329,6 @@ export default class PortfolioTableRebalance extends React.Component<
     return data
   }
 
-  // TODO: refactor all this stuff
   onSaveClick = () => {
 
     const { rows, totalRows, isPercentSumGood, undistributedMoney } = this.state
