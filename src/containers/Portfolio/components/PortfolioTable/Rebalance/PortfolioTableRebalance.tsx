@@ -239,10 +239,18 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onDeleteRowClick = (idx: number) => {
-    let rows = JSON.parse(JSON.stringify(this.state.rows))
-    let { selectedActive } = this.state
-    let currentRowMoney = rows[idx].price
-    rows[idx].price = 0
+    const {rows} = this.state
+    const clonedRows = rows.map((a) => ({ ...a }))
+    const currentRowMoney = clonedRows[idx].price
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        price: 0
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length)
+    ]
 
     // TODO: This should be refactored (calculate totatl should have second argument - undistributed money it it should be a pure function)
     this.setState(
@@ -250,13 +258,12 @@ export default class PortfolioTableRebalance extends React.Component<
         undistributedMoney: prevState.undistributedMoney + currentRowMoney,
       }),
       () => {
-        let newTotalRows = this.calculateTotal(rows)
-        let newTableTotalRows = this.calculateTableTotal(rows)
-        let newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
-        let newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+        const newTotalRows = this.calculateTotal(resultRows)
+        const newTableTotalRows = this.calculateTableTotal(resultRows)
+        const newRowsWithNewPercents = this.calculatePercents(resultRows, newTotalRows)
+        const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
         this.setState({
-          selectedActive,
           totalRows: newTotalRows,
           totalTableRows: newTableTotalRows,
           rows: newRowsWithNewPercents,
@@ -278,11 +285,6 @@ export default class PortfolioTableRebalance extends React.Component<
 
     const areAllActiveChecked = selectedActive.length === this.state.rows.length
 
-    // if (selectedActive.length === this.state.rows.length) {
-    //   areAllActiveChecked = true
-    // } else {
-    //   areAllActiveChecked = false
-    // }
     this.setState({ selectedActive, areAllActiveChecked })
   }
 
