@@ -452,19 +452,35 @@ export default class PortfolioTableRebalance extends React.Component<
         money = 0
       }
 
-      // TODO: //Very brutal fix, need to be reworked
-      this.setState({ undistributedMoney: money }, () => {
-        let newTotal = this.calculateTotal(rows)
-        let newTableTotal = this.calculateTableTotal(rows)
-        rows = this.calculatePercents(rows, newTotal)
+      // // TODO: //Very brutal fix, need to be reworked
+      // this.setState({ undistributedMoney: money }, () => {
+      //   let newTotal = this.calculateTotal(rows)
+      //   let newTableTotal = this.calculateTableTotal(rows)
+      //   rows = this.calculatePercents(rows, newTotal)
+      //   this.setState({
+      //     selectedActive,
+      //     rows,
+      //     totalRows: newTotal,
+      //     totalTableRows: newTableTotal,
+      //     isPercentSumGood: this.checkPercentSum(rows),
+      //   })
+      // })
+
+      const newUndistributedMoney = money
+
+      const newTotal = this.calculateTotal(rows, newUndistributedMoney)
+      const newTableTotal = this.calculateTableTotal(rows)
+      const newRows = this.calculatePercents(rows, newTotal)
+
         this.setState({
+          undistributedMoney: newUndistributedMoney,
           selectedActive,
-          rows,
+          rows: newRows,
           totalRows: newTotal,
           totalTableRows: newTableTotal,
           isPercentSumGood: this.checkPercentSum(rows),
         })
-      })
+
     }
   }
 
