@@ -165,9 +165,15 @@ export default class PortfolioTableRebalance extends React.Component<
     return isHasChangesInPrice
   }
 
-  calculateTotal = (data: IRow[]) => {
-    const { undistributedMoney } = this.state
+  // calculateTotal = (data: IRow[]) => {
+  //   const { undistributedMoney } = this.state
+  //
+  //   const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
+  //
+  //   return total + undistributedMoney
+  // }
 
+  calculateTotal = (data: IRow[], undistributedMoney: number) => {
     const total = data.reduce((sum, row, i) => (sum += data[i].price), 0)
 
     return total + undistributedMoney
@@ -239,7 +245,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onDeleteRowClick = (idx: number) => {
-    const {rows} = this.state
+    const {rows, undistributedMoney} = this.state
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
 
@@ -252,25 +258,20 @@ export default class PortfolioTableRebalance extends React.Component<
       ...clonedRows.slice(idx + 1, clonedRows.length)
     ]
 
-    // TODO: This should be refactored (calculate totatl should have second argument - undistributed money it it should be a pure function)
-    this.setState(
-      (prevState) => ({
-        undistributedMoney: prevState.undistributedMoney + currentRowMoney,
-      }),
-      () => {
-        const newTotalRows = this.calculateTotal(resultRows)
+        const newUndistributedMoney = undistributedMoney + currentRowMoney
+
+        const newTotalRows = this.calculateTotal(resultRows, newUndistributedMoney)
         const newTableTotalRows = this.calculateTableTotal(resultRows)
         const newRowsWithNewPercents = this.calculatePercents(resultRows, newTotalRows)
         const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
         this.setState({
+          undistributedMoney: newUndistributedMoney,
           totalRows: newTotalRows,
           totalTableRows: newTableTotalRows,
           rows: newRowsWithNewPercents,
           isPercentSumGood: newIsPercentSumGood,
         })
-      }
-    )
   }
 
   onSelectActiveBalance = (idx: number) => {
