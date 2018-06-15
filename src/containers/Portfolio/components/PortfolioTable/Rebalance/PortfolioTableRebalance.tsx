@@ -188,30 +188,16 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculatePercents = (data: IRow[], total: number) => {
-    // if (total === 0) {
-    //   return this.calculatePriceDifference(
-    //     data.map((row) => {
-    //       row.portfolioPerc = '0'
-    //
-    //       return row
-    //     })
-    //   )
-    // }
-
-    if (total === 0) {
-      console.log('total is 0 now', data.map((row) => Object.assign({}, row, {portfolioPerc: '0'})));
-
-      return this.calculatePriceDifference(
-        data.map((row) => Object.assign({}, row, {portfolioPerc: '0'}))
-      )
-    }
 
     const newDataWithPercents = data.map((row) => {
-      row.portfolioPerc = ((row.price * 100) / total).toFixed(4)
+      const percentCaluclation = ((row.price * 100) / total).toFixed(4)
+      const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
-      row.portfolioPerc = row.portfolioPerc === 0 || row.portfolioPerc === '0' ? '0' : row.portfolioPerc
+      return {
+        ...row,
+        portfolioPerc: percentResult
+      }
 
-      return row
     })
 
     const totalPercents = this.calculateTotalPercents(newDataWithPercents)
@@ -735,14 +721,10 @@ export default class PortfolioTableRebalance extends React.Component<
       currentSortText = 'currentSortForDynamic'
     }
 
-    console.log(currentSort);
-
 
     const stringKey = key === 'currency' || key === 'symbol'
-    console.log(currentRowsForSort)
 
     const newData = currentRowsForSort.slice().sort((a: IRow, b: IRow) => {
-      console.log('sorting in:',a, typeof a);
 
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
