@@ -1,7 +1,11 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { Paper, Collapse } from '@material-ui/core'
-import AddIcon from 'react-icons/lib/md/add-circle-outline'
+import {
+  MdAddCircleOutline,
+  MdArrowUpward,
+  MdArrowDownward,
+} from 'react-icons/lib/md/'
 
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
@@ -68,24 +72,39 @@ export default class Chart extends React.Component<Props, State> {
               <Title>Order Book</Title>
               <Head background={'#292d31'}>
                 <Row isHead background={'#292d31'}>
-                  <HeadCell width={'25%'} />
-                  <HeadCell width={'25%'}>Market Size</HeadCell>
-                  <HeadCell width={'25%'}>
+                  <EmptyCell color="#9ca2aa" width={'25%'} />
+                  <HeadCell color="#9ca2aa" width={'25%'}>
+                    Market Size
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'25%'}>
                     Price<br />(USD)
                   </HeadCell>
-                  <HeadCell width={'25%'}>My Size</HeadCell>
+                  <HeadCell color="#9ca2aa" width={'25%'}>
+                    My Size
+                  </HeadCell>
                 </Row>
               </Head>
               <Body
                 notScrollable={this.state.tableCollapsed}
                 height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}
               >
-                {orderBook.map((order) => (
+                {orderBook.slice(0, 30).map((order) => (
                   <Row background={'#292d31'}>
-                    <Cell width={'25%'} />
-                    <Cell width={'25%'}>{Number(order.size).toFixed(8)}</Cell>
-                    <Cell width={'25%'}>{Number(order.price).toFixed(4)}</Cell>
-                    <Cell width={'25%'}>---</Cell>
+                    <EmptyCell
+                      status={'rise'}
+                      colored={order.percentageOfChange.toString()}
+                      color="#9ca2aa"
+                      width={'25%'}
+                    />
+                    <Cell color="#9ca2aa" width={'25%'}>
+                      {Number(order.size).toFixed(8)}
+                    </Cell>
+                    <Cell color="#34cb86d1" width={'25%'}>
+                      {Number(order.price).toFixed(4)}
+                    </Cell>
+                    <Cell color="#9ca2aa" width={'25%'}>
+                      ---
+                    </Cell>
                   </Row>
                 ))}
               </Body>
@@ -104,17 +123,28 @@ export default class Chart extends React.Component<Props, State> {
                   style={{ cursor: 'pointer', height: '1.625rem' }}
                 >
                   <Row isHead background={'#292d31'}>
-                    <HeadCell width={'20%'} />
-                    <HeadCell width={'35%'}>USD spread </HeadCell>
-                    <HeadCell width={'14%'}>0.01</HeadCell>
+                    <HeadCell color="#9ca2aa" width={'20%'} />
+                    <HeadCell color="#9ca2aa" width={'35%'}>
+                      USD spread{' '}
+                    </HeadCell>
+                    <HeadCell color="#9ca2aa" width={'14%'}>
+                      0.01
+                    </HeadCell>
                   </Row>
                 </Head>
-                <Body height="500px">
-                  {orderBook.map((order) => (
+                <Body height="300px">
+                  {orderBook.slice(10, 40).map((order) => (
                     <Row background={'#25282c'}>
-                      <Cell width={'20%'} />
-                      <Cell width={'35%'}>{Number(order.size).toFixed(8)}</Cell>
-                      <Cell width={'30%'}>
+                      <EmptyCell
+                        status={'fall'}
+                        colored={order.percentageOfChange.toString()}
+                        color="#9ca2aa"
+                        width={'25%'}
+                      />
+                      <Cell color="#9ca2aa" width={'35%'}>
+                        {Number(order.size).toFixed(8)}
+                      </Cell>
+                      <Cell color="#d77455" width={'30%'}>
                         {Number(order.price).toFixed(4)}
                       </Cell>
                     </Row>
@@ -125,11 +155,17 @@ export default class Chart extends React.Component<Props, State> {
             <Table>
               <Head background={'#292d31'}>
                 <Row background={'#292d31'} isHead>
-                  <Cell width={'25%'} />
-                  <HeadCell width={'25%'}>Aggregation</HeadCell>
-                  <HeadCell width={'25%'}>0.01</HeadCell>
-                  <HeadCell width={'25%'}>
-                    <AddIcon />
+                  <Cell color="#9ca2aa" width={'25%'} />
+                  <HeadCell color="#9ca2aa" width={'25%'}>
+                    Aggregation
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'25%'}>
+                    0.01
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'25%'}>
+                    <MdAddCircleOutline
+                      style={{ fontSize: '1rem', cursor: 'pointer' }}
+                    />
                   </HeadCell>
                 </Row>
               </Head>
@@ -140,24 +176,48 @@ export default class Chart extends React.Component<Props, State> {
               <Title>Trade history</Title>
               <Head background={'#292d31'}>
                 <Row background={'#292d31'} isHead>
-                  <HeadCell width={'33%'}>Trade size</HeadCell>
-                  <HeadCell width={'33%'}>Price (USD)</HeadCell>
-                  <HeadCell width={'33%'}>Time</HeadCell>
+                  <HeadCell color="#9ca2aa" width={'33%'}>
+                    Trade size
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'33%'}>
+                    Price (USD)
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'33%'}>
+                    Time
+                  </HeadCell>
                 </Row>
               </Head>
               <Body
                 notScrollable={this.state.exchangeTableCollapsed}
                 height="calc(100vh - 59px - 80px - 39px - 37px - 32px )"
               >
-                {orderBook.map((order) => (
+                {orderBook.slice(0, 30).map((order) => (
                   <Row background={'#292d31'}>
-                    <Cell width={'33%'} />
-                    <Cell width={'33%'}>{Number(order.size).toFixed(8)}</Cell>
-                    <Cell width={'33%'}>{Number(order.price).toFixed(4)}</Cell>
+                    <Cell color="#9ca2aa" width={'33%'}>
+                      {order.tradeSize.toFixed(5)}
+                    </Cell>
+                    <Cell
+                      color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
+                      width={'33%'}
+                    >
+                      {Number(order.size).toFixed(8)}
+                      {order.status === 'fall' ? (
+                        <MdArrowDownward style={{ verticalAlign: 'top' }} />
+                      ) : (
+                        <MdArrowUpward style={{ verticalAlign: 'top' }} />
+                      )}
+                    </Cell>
+                    <Cell
+                      color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
+                      width={'33%'}
+                    >
+                      {Number(order.price).toFixed(4)}
+                    </Cell>
                   </Row>
                 ))}
               </Body>
             </Table>
+
             <CollapsibleTable
               style={{ bottom: -1 }}
               onClick={() => {
@@ -298,6 +358,10 @@ const CollapsibleTable = Table.extend`
   left: 0;
   z-index: 999;
   width: 100%;
+
+  @-moz-document url-prefix() {
+    bottom: 22.5px;
+  }
 `
 
 const Row = styled.div`
@@ -323,7 +387,7 @@ const Cell = styled.div`
   font-weight: 600;
   font-size: 0.75rem;
   flex-basis: ${(props: { width: string }) => props.width};
-  color: #9ca2aa;
+  color: ${(props: { color: string; width: string }) => props.color};
   text-align: center;
   vertical-align: middle;
 `
@@ -333,6 +397,22 @@ const HeadCell = Cell.extend`
   white-space: nowrap;
   width: 7%;
   color: white;
+`
+
+const EmptyCell = Cell.extend`
+  position: relative;
+
+  &:before {
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: ${(props: { colored?: string }) => Number(props.colored) / 4}%;
+    height: 100%;
+    content: '';
+    background-color: ${(props: { status?: string; colored?: string }) =>
+      props.status === 'fall' ? '#d77455' : '#34cb86d1'};
+  }
 `
 
 const Head = styled.div`
