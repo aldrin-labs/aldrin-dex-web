@@ -324,7 +324,7 @@ export default class PortfolioTableRebalance extends React.Component<
   onLoadPreviousClick = () => {
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.savedRows)),
-      totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+      totalRows: this.state.totalSavedRows,
       totalTableRows: this.state.totalTableSavedRows,
       undistributedMoney: this.state.undistributedMoneySaved,
     })
@@ -332,7 +332,7 @@ export default class PortfolioTableRebalance extends React.Component<
   onReset = () => {
     this.setState({
       rows: JSON.parse(JSON.stringify(this.state.staticRows)),
-      totalRows: JSON.parse(JSON.stringify(this.state.totalStaticRows)),
+      totalRows: this.state.totalStaticRows,
       totalTableRows: this.state.totalTableStaticRows,
       undistributedMoney: 0,
       selectedActive: [],
@@ -350,7 +350,7 @@ export default class PortfolioTableRebalance extends React.Component<
     if (this.state.isEditModeEnabled) {
       this.setState((prevState: IState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
-        totalRows: JSON.parse(JSON.stringify(this.state.totalSavedRows)),
+        totalRows: this.state.totalSavedRows,
         totalTableRows: this.state.totalTableSavedRows,
         rows: JSON.parse(JSON.stringify(this.state.savedRows)),
         selectedActive: [],
