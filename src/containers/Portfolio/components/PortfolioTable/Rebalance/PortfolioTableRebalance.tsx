@@ -330,7 +330,7 @@ export default class PortfolioTableRebalance extends React.Component<
   // TODO: refactor all this stuff
   onSaveClick = () => {
 
-    let { rows, totalRows, isPercentSumGood, undistributedMoney } = this.state
+    const { rows, totalRows, isPercentSumGood, undistributedMoney } = this.state
 
 
     if (!isPercentSumGood) {
@@ -341,22 +341,18 @@ export default class PortfolioTableRebalance extends React.Component<
     }
 
 
+    const rowsWithNewPrice = this.calculatePriceByPercents(rows)
+    const newRows = this.calculatePriceDifference(rowsWithNewPrice)
 
-
-    let rowsWithNewPrice = this.calculatePriceByPercents(rows)
-
-    rows = this.calculatePriceDifference(rowsWithNewPrice)
-
-    console.log(rows)
 
     this.setState({
-      savedRows: JSON.parse(JSON.stringify(this.state.rows)),
-      rows,
+      savedRows: JSON.parse(JSON.stringify(newRows)),
+      rows: newRows,
       totalSavedRows: totalRows,
       isEditModeEnabled: false,
       selectedActive: [],
       areAllActiveChecked: false,
-      undistributedMoneySaved: this.state.undistributedMoney,
+      undistributedMoneySaved: undistributedMoney,
     })
   }
   onLoadPreviousClick = () => {
@@ -507,7 +503,7 @@ export default class PortfolioTableRebalance extends React.Component<
       percentInput = ''
     }
 
-    const clonedRows = rows.map((a) => ({ ...a }))
+    const clonedRows = rows!.map((a) => ({ ...a }))
 
     // clonedRows[idx].portfolioPerc = percentInput
 
@@ -661,7 +657,6 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
 
-  // TODO: Should be refactored (without callback)
   onAddMoneyButtonPressed = () => {
     if (+this.state.addMoneyInputValue === 0) {
       return
