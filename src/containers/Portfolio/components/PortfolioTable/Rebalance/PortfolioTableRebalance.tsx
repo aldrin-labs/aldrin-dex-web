@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components'
 import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
 import {
   tableData,
-  combineToChart
+  combineToChart,
 } from './mocks'
-import { onSortStrings } from '../../../../../utils/PortfolioTableUtils'
+import { onSortStrings, cloneArrayElementsOneLevelDeep } from '../../../../../utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
 import sortIcon from '@icons/arrow.svg'
 
@@ -60,9 +60,9 @@ export default class PortfolioTableRebalance extends React.Component<
   state: IState = {
     selectedActive: null,
     areAllActiveChecked: false,
-    rows: JSON.parse(JSON.stringify(tableData)),
-    staticRows: JSON.parse(JSON.stringify(tableData)),
-    savedRows: JSON.parse(JSON.stringify(tableData)),
+    rows: cloneArrayElementsOneLevelDeep(tableData),
+    staticRows: cloneArrayElementsOneLevelDeep(tableData),
+    savedRows: cloneArrayElementsOneLevelDeep(tableData),
     addMoneyInputValue: 0,
     currentSortForStatic: null,
     currentSortForDynamic: null,
@@ -137,6 +137,8 @@ export default class PortfolioTableRebalance extends React.Component<
           data[i].currency === staticRows[j].currency &&
           data[i].symbol === staticRows[j].symbol
         ) {
+          // TODO: Refactor when we have much more time than now
+          // tslint:disable-next-line no-object-mutation
           data[i].deltaPrice = data[i].price - staticRows[j].price
         }
       })
@@ -202,7 +204,7 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
   onAddRowButtonClick = () => {
-    let rows = JSON.parse(JSON.stringify(this.state.rows))
+    let rows = cloneArrayElementsOneLevelDeep(this.state.rows)
     let { totalRows } = this.state
     let newRow = {
       currency: 'Newcoin',
@@ -312,7 +314,7 @@ export default class PortfolioTableRebalance extends React.Component<
 
 
     this.setState({
-      savedRows: JSON.parse(JSON.stringify(newRows)),
+      savedRows: cloneArrayElementsOneLevelDeep(newRows),
       rows: newRows,
       totalSavedRows: totalRows,
       isEditModeEnabled: false,
@@ -323,45 +325,43 @@ export default class PortfolioTableRebalance extends React.Component<
   }
   onLoadPreviousClick = () => {
     this.setState({
-      rows: JSON.parse(JSON.stringify(this.state.savedRows)),
+      rows: cloneArrayElementsOneLevelDeep(this.state.savedRows),
       totalRows: this.state.totalSavedRows,
       totalTableRows: this.state.totalTableSavedRows,
       undistributedMoney: this.state.undistributedMoneySaved,
     })
   }
   onReset = () => {
+
+    const clonedStaticRows = cloneArrayElementsOneLevelDeep(this.state.staticRows)
+
     this.setState({
-      rows: JSON.parse(JSON.stringify(this.state.staticRows)),
+      rows: clonedStaticRows,
       totalRows: this.state.totalStaticRows,
       totalTableRows: this.state.totalTableStaticRows,
       undistributedMoney: 0,
       selectedActive: [],
       areAllActiveChecked: false,
-      isPercentSumGood: this.checkPercentSum(
-        JSON.parse(JSON.stringify(this.state.staticRows))
-      ),
-      totalPercents: this.calculateTotalPercents(
-        JSON.parse(JSON.stringify(this.state.staticRows))
-      ),
+      isPercentSumGood: this.checkPercentSum(clonedStaticRows),
+      totalPercents: this.calculateTotalPercents(clonedStaticRows),
     })
   }
 
   onEditModeEnable = () => {
     if (this.state.isEditModeEnabled) {
+
+      const clonedSavedRows = cloneArrayElementsOneLevelDeep(this.state.savedRows)
+
       this.setState((prevState: IState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: this.state.totalSavedRows,
         totalTableRows: this.state.totalTableSavedRows,
-        rows: JSON.parse(JSON.stringify(this.state.savedRows)),
+        rows: clonedSavedRows,
         selectedActive: [],
         areAllActiveChecked: false,
         undistributedMoney: this.state.undistributedMoneySaved,
-        isPercentSumGood: this.checkPercentSum(
-          JSON.parse(JSON.stringify(this.state.savedRows))
-        ),
-        totalPercents: this.calculateTotalPercents(
-          JSON.parse(JSON.stringify(this.state.savedRows))
-        ),
+        isPercentSumGood: this.checkPercentSum(clonedSavedRows),
+        totalPercents: this.calculateTotalPercents(clonedSavedRows),
       }))
     } else {
       this.setState((prevState) => ({
@@ -406,10 +406,13 @@ export default class PortfolioTableRebalance extends React.Component<
       if (selectedActive.length > 1) {
         let moneyPart = Math.floor(money / selectedActive.length)
         selectedActive.forEach((row, i) => {
+          // TODO: Refactor when we have much more time than now
+          // tslint:disable-next-line no-object-mutation
           rows![selectedActive![i]]!.price += moneyPart
           money -= moneyPart
         })
       } else {
+        // tslint:disable-next-line no-object-mutation
         rows![selectedActive![0]]!.price += undistributedMoney
         money = 0
       }
