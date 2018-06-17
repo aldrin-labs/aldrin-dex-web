@@ -82,6 +82,17 @@ class CorrelationMatrix extends Component<IProps, IState> {
     }
   }
 
+  onTableMouseOver = () => {
+    this.setState({ hintOpacity: 1 })
+  }
+
+  onTableMouseLeave = () => {
+    this.setState({
+      hintOpacity: 0,
+      hint: null,
+    })
+  }
+
   onMouseOver = (
     index: number,
     value: number,
@@ -92,16 +103,7 @@ class CorrelationMatrix extends Component<IProps, IState> {
   ) => {
     this.setState({
       hint: { index, value, colName, rowName, x, y },
-      hintOpacity: 1,
     })
-  }
-
-  onMouseLeave = () => {
-    this.setState({ hintOpacity: 0, hint: null })
-  }
-
-  setChildNodeRef = (ref: HTMLElement | null) => {
-    this.childNode = ref
   }
 
   render() {
@@ -125,10 +127,7 @@ class CorrelationMatrix extends Component<IProps, IState> {
             this.props.fullScreenChangeHandler(isFullscreenEnabled)
           }
         >
-          <div
-            className="full-screenable-node"
-            onMouseLeave={this.onMouseLeave}
-          >
+          <div className="full-screenable-node">
             <Table style={tableStyle}>
               <thead>
                 <Row
@@ -147,7 +146,10 @@ class CorrelationMatrix extends Component<IProps, IState> {
                   {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
                 </Row>
               </thead>
-              <tbody>
+              <tbody
+                onMouseLeave={() => this.onTableMouseLeave()}
+                onMouseOver={() => this.onTableMouseOver()}
+              >
                 {cols.map((col, i) => (
                   <Row key={rows[i]}>
                     {rows[i] && (
@@ -184,7 +186,6 @@ class CorrelationMatrix extends Component<IProps, IState> {
                                 event.nativeEvent.clientY
                               )
                             }
-                            onMouseLeave={() => this.onMouseLeave()}
                           >
                             {value}
                           </Item>
