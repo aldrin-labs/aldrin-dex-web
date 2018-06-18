@@ -32,14 +32,12 @@ export default class Correlation extends React.Component<IProps> {
           <FullScreenIcon />
         </Button>
         <Wrapper>
-          <ScrolledWrapper>
-            <CorrelationMatrix
-              fullScreenChangeHandler={this.fullScreenChangeHandler}
-              isFullscreenEnabled={this.state.isFullscreenEnabled || false}
-              cols={cols}
-              rows={rows}
-            />
-          </ScrolledWrapper>
+          <CorrelationMatrix
+            fullScreenChangeHandler={this.fullScreenChangeHandler}
+            isFullscreenEnabled={this.state.isFullscreenEnabled || false}
+            cols={cols}
+            rows={rows}
+          />
 
           {/* <HeatMapChart
             data={getHeatMapData(HeatMapMocks)}
@@ -62,27 +60,6 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: auto;
-`
-
-const ScrolledWrapper = styled.div`
-  max-height: 70vh;
-
-  overflow-y: scroll;
-  background-color: #393e44;
-  margin: 0 auto;
-  margin-bottom: 3.125rem;
-
-  &::-webkit-scrollbar {
-    width: 0.75rem;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
 `
 
 const Wrapper = styled.div`

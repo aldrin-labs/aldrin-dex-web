@@ -114,7 +114,7 @@ export const tableData = [
   },
 ]
 
-export const MOCK_DATA = [
+export const MOCK_DATA: any = [
   {
     _id: '5abbf010cd922f0027555a61',
     asset: {

@@ -2,6 +2,10 @@ import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 
+export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) => {
+  return arrayOfObjects.map(a => Object.assign({}, a));
+}
+
 export const onSortStrings = (a: string, b: string): number => {
   return a.localeCompare(b)
 }
@@ -11,9 +15,7 @@ export const onFloorN = (x: number, n: number) => {
   return Math.floor(x * mult) / mult
 }
 
-export const calcPercentage = (num: number) => {
-  return onFloorN(num, 2)
-}
+export const calcPercentage = (num: number) => onFloorN(num, 2)
 
 export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
   const reg = /(?=\.[0-9]+)\.[0-9]+/g

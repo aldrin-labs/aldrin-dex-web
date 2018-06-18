@@ -557,7 +557,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
 
-          <ChartContainer style={{ width: chartWidth }}>
+          <ChartContainer>
             <Heading>
               <Switch onClick={this.toggleChart} />
             </Heading>
@@ -669,6 +669,8 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 40vh;
   margin: 2rem 1rem;
+  width: calc(60% - 4rem);
+
 
   @media (max-width: 850px) {
     width: 100%;
