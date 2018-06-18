@@ -638,6 +638,7 @@ const Heading = styled.div`
   font-weight: 500;
   text-align: center;
   color: #fff;
+  padding-bottom: 20px;
 `
 
 const PTWrapper = styled.div`
@@ -656,7 +657,7 @@ const PTWrapper = styled.div`
 
 const ChartWrapper = styled.div`
   width: 100%;
-  height: 35vh;
+  height: 25vh;
   display: flex;
   position: relative;
 `
@@ -668,15 +669,17 @@ const ChartContainer = styled.div`
 
   padding: 1em;
   text-align: center;
-  height: 40vh;
+  height: 35vh;
   margin: 2rem 1rem;
-  width: 100%;
+  width: 900px;
 
 
   @media (max-width: 850px) {
-    width: 100%;
-    margin: 1rem 0;
     display: none;
+  }
+  
+ @media (min-width: 1950px) {
+    margin: 1rem;
   }
 `
 
