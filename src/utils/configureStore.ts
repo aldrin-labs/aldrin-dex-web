@@ -22,7 +22,7 @@ const persistConfig = {
   key: 'root',
   storage,
   stateReconciler: autoMergeLevel2,
-  whitelist: ['login', 'portfolio', 'ui', 'user'],
+  whitelist: ['login', 'portfolio', 'ui', 'user', 'chart'],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

@@ -1,12 +1,16 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 import { Paper, Collapse } from '@material-ui/core'
 import {
   MdAddCircleOutline,
   MdArrowUpward,
   MdArrowDownward,
 } from 'react-icons/lib/md/'
+import { FaCircle } from 'react-icons/lib/fa'
 
+import * as actions from './actions'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
 import { orders } from './mocks'
@@ -19,7 +23,6 @@ interface IState {
   tableCollapsed: boolean
   exchangeTableCollapsed: boolean
   orders: number[][]
-  activeExchange: number | null
   aggregation: number
   searchSymbol: string
   mCharts: string
@@ -31,13 +34,12 @@ interface IState {
 
 const headers = ['Price', 'ETH', 'BTC', 'Sum(BTC)']
 
-export default class Chart extends React.Component<Props, IState> {
+class Chart extends React.Component<Props, IState> {
   state: IState = {
     view: 'default',
     orders,
     searchSymbol: '',
     mCharts: '',
-    activeExchange: null,
     tableCollapsed: false,
     exchangeTableCollapsed: false,
     aggregation: 0.01,
@@ -96,7 +98,7 @@ export default class Chart extends React.Component<Props, IState> {
   }
 
   changeExchange = (i: number) => {
-    this.setState({ activeExchange: i })
+    this.props.selectExchange(i)
   }
 
   setAggregation = () => {
@@ -134,7 +136,8 @@ export default class Chart extends React.Component<Props, IState> {
   }
 
   renderDefaultView = () => {
-    const { orders, tableCollapsed, activeExchange, aggregation } = this.state
+    const { orders, tableCollapsed, aggregation } = this.state
+    const { activeExchange } = this.props
 
     return (
       <Container>
@@ -364,11 +367,44 @@ export default class Chart extends React.Component<Props, IState> {
                         activeExchange === ind ? '#353c42' : '#16181b'
                       }
                     >
-                      {Object.values(exchange).map((prop) => (
-                        <Cell color="#9ca2aa" width="20%">
-                          {prop}
-                        </Cell>
-                      ))}
+                      {Object.values(exchange).map((prop) => {
+                        const keyByValue = Object.keys(exchange).find(
+                          (key) => exchange[key] === prop
+                        )
+
+                        if (keyByValue === 'status') {
+                          return
+                        } else if (keyByValue === 'name') {
+                          return (
+                            <Cell
+                              style={{
+                                alignItems: 'center',
+                                display: 'flex',
+                                flexWrap: 'nowrap',
+                              }}
+                              color="#9ca2aa"
+                              width="20%"
+                            >
+                              <FaCircle
+                                style={{
+                                  fontSize: '0.5rem',
+                                  minWidth: '20%',
+                                  flexBasis: '20%',
+                                  color: exchange.status,
+                                  marginRight: '0.25rem',
+                                }}
+                              />
+                              {prop}
+                            </Cell>
+                          )
+                        } else {
+                          return (
+                            <Cell color="#9ca2aa" width="20%">
+                              {prop}
+                            </Cell>
+                          )
+                        }
+                      })}
                     </Row>
                   ))}
                 </Body>
@@ -617,7 +653,7 @@ const TR = styled.tr`
 
 const TD = styled.td`
   text-align: right;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   color: #fff;
@@ -627,7 +663,7 @@ const TD = styled.td`
 
 const TH = styled.th`
   text-align: left;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   font-weight: bold;
@@ -686,3 +722,14 @@ const Orders = styled.table`
   margin: 1%;
   border-collapse: collapse;
 `
+
+const mapStateToProps = (store: any) => ({
+  activeExchange: store.chart.activeExchange,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  selectExchange: (ex: number) => dispatch(actions.selectExchange(ex)),
+})
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Chart)
+
+export default compose()(storeComponent)
