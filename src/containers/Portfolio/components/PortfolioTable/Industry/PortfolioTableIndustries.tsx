@@ -669,7 +669,7 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 40vh;
   margin: 2rem 1rem;
-  width: calc(60% - 4rem);
+  width: 100%;
 
 
   @media (max-width: 850px) {
@@ -690,7 +690,10 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
-  margin-top: 2rem;
+  width: 100%;
+  margin: 1rem;
+
+
   &::-webkit-scrollbar {
     width: 12px;
   }
@@ -713,6 +716,7 @@ const PTable = styled.table`
 
 const PTBody = styled.tbody`
   display: table;
+  width: 100%;
 `
 
 const PTD = styled.td`
