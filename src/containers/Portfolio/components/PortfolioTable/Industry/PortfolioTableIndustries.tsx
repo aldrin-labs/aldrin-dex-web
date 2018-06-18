@@ -550,6 +550,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               </PTBody>
               {selectedSum && selectedSum.currency ? (
                 <PortfolioTableSum
+                  industry={true}
                   selectedSum={selectedSum}
                   isUSDCurrently={this.props.isUSDCurrently}
                 />
@@ -596,38 +597,38 @@ const Container = styled.div`
   }
 `
 
-const PieChartHeadingWrapper = styled.div`
-  width: 200px;
-  text-align: center;
-  padding-bottom: 5px;
-`
-
-const PieChartContainer = styled.div`
-  border-radius: 3px;
-  background-color: #2d3136;
-  box-shadow: 0 2px 6px 0 #0006;
-  padding: 1em;
-  display: flex;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  height: 40vh;
-  background-color: #2d3136;
-  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-  padding: 3% 0;
-  width: calc(40% - 4rem);
-  min-height: 40vh;
-  margin: 2rem;
-
-  @media (max-width: 850px) {
-    width: 100%;
-    margin: 1rem 0;
-  }
-
-  @media (max-height: 900px) {
-    display: none;
-  }
-`
+// const PieChartHeadingWrapper = styled.div`
+//   width: 200px;
+//   text-align: center;
+//   padding-bottom: 5px;
+// `
+//
+// const PieChartContainer = styled.div`
+//   border-radius: 3px;
+//   background-color: #2d3136;
+//   box-shadow: 0 2px 6px 0 #0006;
+//   padding: 1em;
+//   display: flex;
+//   display: none;
+//   flex-direction: column;
+//   align-items: center;
+//   height: 40vh;
+//   background-color: #2d3136;
+//   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+//   padding: 3% 0;
+//   width: calc(40% - 4rem);
+//   min-height: 40vh;
+//   margin: 2rem;
+//
+//   @media (max-width: 850px) {
+//     width: 100%;
+//     margin: 1rem 0;
+//   }
+//
+//   @media (max-height: 900px) {
+//     display: none;
+//   }
+// `
 
 const Heading = styled.div`
   display: flex;
@@ -690,7 +691,6 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
-  width: 100%;
   margin: 1rem;
 
 
@@ -729,21 +729,28 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 108px;
+  
 
   &:nth-child(1) {
     padding: 1.75px 10px;
   }
-
-  &:nth-child(2) {
+  
+  &:nth-child(n + 2) {
     min-width: 100px;
   }
+
   &:nth-child(3) {
-    min-width: 70px;
   }
   &:nth-child(n + 4) {
     text-align: right;
-    min-width: 100px;
+  }
+  
+  &:nth-child(4) {
+    min-width: 250px;
+  }
+  
+  &:nth-child(n + 6) {
+    min-width: 150px;
   }
 `
 
@@ -787,8 +794,12 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding-right: 16px;
+  padding: 1.75px 16px 1.75px 10px;
   font-weight: 500;
+
+  &:nth-child(n + 2) {
+    min-width: 100px;
+  }
 
   &:nth-child(1) {
     padding: 10px;
@@ -797,15 +808,18 @@ const PTH = styled.th`
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
   }
   &:nth-child(3) {
-    width: 70px;
     text-align: left;
   }
   &:nth-child(n + 4) {
-    width: 100px;
     text-align: right;
+  }
+  &:nth-child(4) {
+    min-width: 250px;
+  }
+  &:nth-child(n + 6) {
+    min-width: 150px;
   }
 `
 
