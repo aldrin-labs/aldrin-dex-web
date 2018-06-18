@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import ProfileHeading from './components/ProfileHeading'
 import ProfileLinks from './components/ProfileLinks'
 import ProfileChart from './components/ProfileChart'
+import ProfileDataBlock from './components/ProfileDataBlock'
 import { ProfileQueryQuery } from './profile-annotation'
 
 interface Props {
@@ -14,20 +15,18 @@ interface Props {
 class ProfileComponent extends React.Component<Props, {}> {
   render() {
     const { data } = this.props
-    const { assetById } = data
+    const { assetBySymbol } = data
     console.log(this.props)
-    //console.log(this.props.match.params)
-    let testAsset = { name: 'Coinname', symbol: this.props.match.params.id }
 
     return (
       <SProfileWrapper>
         <SProfile>
           <SWrapper>
-            <ProfileHeading coin={testAsset} />
-            <ProfileLinks coin={testAsset} />
+            <ProfileHeading coin={assetBySymbol} />
+            <ProfileLinks coin={assetBySymbol} />
           </SWrapper>
           <ProfileChart
-            coin={testAsset}
+            coin={assetBySymbol}
             style={{
               maxWidth: '900px',
               marginTop: '24px',
@@ -37,7 +36,7 @@ class ProfileComponent extends React.Component<Props, {}> {
             height={195}
           />
         </SProfile>
-
+        <ProfileDataBlock coin={assetBySymbol} />
         <Divider>
           <LeftPath />
           <DividerText>MUST-READ ARTICLES</DividerText>
@@ -106,24 +105,34 @@ const SProfile = styled.div`
 `
 
 export const ProfileQuery = gql`
-  query ProfileQuery($id: MongoID!) {
-    assetById(_id: $id) {
+  query ProfileQuery($symbol: String!) {
+    assetBySymbol(symbol: $symbol) {
       _id
       name
       symbol
-      nameTrue
-      priceUSD
-      maxSupply
-      totalSupply
       availableSupply
+      totalSupply
+      maxSupply
+      icoPrice
+      blockchain
+      industryId
+      otherIndustries
+      product
+      icoRaised
+      tokenDistribution
+      updatedAt
+      createdAt
       priceUSD
+      priceBTC
       percentChangeDay
     }
   }
 `
 
 const options = ({ match }) => ({
-  variables: { id: match ? match.params.id : '1' },
+  variables: {
+    symbol: match.params.id ? match.params.id.toUpperCase() : 'BTC',
+  },
 })
 
 export default graphql(ProfileQuery, { options })(ProfileComponent)

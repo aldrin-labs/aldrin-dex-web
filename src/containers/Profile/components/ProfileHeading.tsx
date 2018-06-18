@@ -9,7 +9,7 @@ interface Props {
 export default class ProfileHeading extends React.Component<Props, {}> {
   render() {
     const { coin } = this.props
-    const { name = '', symbol = '' } = coin || {}
+    const { name = '', symbol = '', priceUSD = '' } = coin || {}
 
     return (
       <SProfileHeading>
@@ -21,10 +21,7 @@ export default class ProfileHeading extends React.Component<Props, {}> {
             <CoinShortName>{symbol}</CoinShortName>
           </CoinName>
           {/*TODO: need real description */}
-          <CoinDescription>
-            Basic info lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt.
-          </CoinDescription>
+          <CoinDescription>Price: ${priceUSD}</CoinDescription>
         </CoinProfileWrapper>
       </SProfileHeading>
     )

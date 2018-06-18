@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-
+// unused yet
 export const ProfileQuery = gql`
   query ProfileQuery($id: MongoID!) {
     assetById(_id: $id) {
