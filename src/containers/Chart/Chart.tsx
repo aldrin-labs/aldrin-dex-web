@@ -10,15 +10,19 @@ import {
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
 import { orders } from './mocks'
-import { orderBook } from './fakeData'
+import { orderBook, exchanges } from './fakeData'
 
 interface Props {}
 
-interface State {
+interface IState {
   view: 'onlyCharts' | 'default'
   tableCollapsed: boolean
   exchangeTableCollapsed: boolean
   orders: number[][]
+  activeExchange: number | null
+  aggregation: number
+  searchSymbol: string
+  mCharts: string
   currentSort?: {
     arg: 'ASC' | 'DESC'
     index: number
@@ -27,12 +31,44 @@ interface State {
 
 const headers = ['Price', 'ETH', 'BTC', 'Sum(BTC)']
 
-export default class Chart extends React.Component<Props, State> {
-  state: State = {
+export default class Chart extends React.Component<Props, IState> {
+  state: IState = {
     view: 'default',
     orders,
+    searchSymbol: '',
+    mCharts: '',
+    activeExchange: null,
     tableCollapsed: false,
     exchangeTableCollapsed: false,
+    aggregation: 0.01,
+  }
+
+  roundTill = (n: number, initial: string): number => {
+    //  need testing. Not working on all numbers
+    // sorry have not much time
+    // also working only on aggregation <=10
+    // and keeps floor of number instead of round it
+    let s = 0
+
+    if (this.state.aggregation <= 5.0) {
+      s = -4
+    } else {
+      s = -5
+    }
+
+    let agg = Number(
+      initial
+        .split('')
+        .slice(s)
+        .join('')
+    )
+    /* tslint:disable */
+    while (n < agg) {
+      agg = agg - n
+    }
+    /* tslint:enable */
+
+    return +initial - agg
   }
 
   onToggleView = (view: 'default' | 'onlyCharts') => {
@@ -59,8 +95,46 @@ export default class Chart extends React.Component<Props, State> {
     this.setState({ orders: newOrders })
   }
 
+  changeExchange = (i: number) => {
+    this.setState({ activeExchange: i })
+  }
+
+  setAggregation = () => {
+    const { aggregation } = this.state
+    switch (aggregation) {
+      case 0.01:
+        this.setState({ aggregation: 0.05 })
+        break
+      case 0.05:
+        this.setState({ aggregation: 0.1 })
+        break
+      case 0.1:
+        this.setState({ aggregation: 0.5 })
+        break
+      case 0.5:
+        this.setState({ aggregation: 1 })
+        break
+      case 1:
+        this.setState({ aggregation: 2.5 })
+        break
+      case 2.5:
+        this.setState({ aggregation: 5 })
+        break
+      case 5:
+        this.setState({ aggregation: 10 })
+        break
+      case 10:
+        this.setState({ aggregation: 0.01 })
+        break
+      default:
+        this.setState({ aggregation: 0.01 })
+
+        break
+    }
+  }
+
   renderDefaultView = () => {
-    const { orders, tableCollapsed } = this.state
+    const { orders, tableCollapsed, activeExchange, aggregation } = this.state
 
     return (
       <Container>
@@ -100,7 +174,10 @@ export default class Chart extends React.Component<Props, State> {
                       {Number(order.size).toFixed(8)}
                     </Cell>
                     <Cell color="#34cb86d1" width={'25%'}>
-                      {Number(order.price).toFixed(4)}
+                      {this.roundTill(
+                        aggregation,
+                        Number(order.price).toFixed(2)
+                      ).toFixed(2)}
                     </Cell>
                     <Cell color="#9ca2aa" width={'25%'}>
                       ---
@@ -127,8 +204,15 @@ export default class Chart extends React.Component<Props, State> {
                     <HeadCell color="#9ca2aa" width={'35%'}>
                       USD spread{' '}
                     </HeadCell>
-                    <HeadCell color="#9ca2aa" width={'14%'}>
-                      0.01
+                    <HeadCell
+                      style={{
+                        position: 'relative',
+                        left: '13%',
+                      }}
+                      color="#9ca2aa"
+                      width={'14%'}
+                    >
+                      {this.props.usdSpread || 0.01}
                     </HeadCell>
                   </Row>
                 </Head>
@@ -145,7 +229,10 @@ export default class Chart extends React.Component<Props, State> {
                         {Number(order.size).toFixed(8)}
                       </Cell>
                       <Cell color="#d77455" width={'30%'}>
-                        {Number(order.price).toFixed(4)}
+                        {this.roundTill(
+                          aggregation,
+                          Number(order.price).toFixed(2)
+                        ).toFixed(2)}
                       </Cell>
                     </Row>
                   ))}
@@ -159,11 +246,25 @@ export default class Chart extends React.Component<Props, State> {
                   <HeadCell color="#9ca2aa" width={'25%'}>
                     Aggregation
                   </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'25%'}>
-                    0.01
+                  <HeadCell
+                    style={{
+                      position: 'relative',
+                      left: '13%',
+                    }}
+                    color="#9ca2aa"
+                    width={'25%'}
+                  >
+                    {aggregation.toFixed(2)}
                   </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'25%'}>
+                  <HeadCell
+                    style={{
+                      zIndex: 1000,
+                    }}
+                    color="#9ca2aa"
+                    width={'25%'}
+                  >
                     <MdAddCircleOutline
+                      onClick={this.setAggregation}
                       style={{ fontSize: '1rem', cursor: 'pointer' }}
                     />
                   </HeadCell>
@@ -218,24 +319,58 @@ export default class Chart extends React.Component<Props, State> {
               </Body>
             </Table>
 
-            <CollapsibleTable
-              style={{ bottom: -1 }}
-              onClick={() => {
-                this.setState((prevState) => ({
-                  exchangeTableCollapsed: !prevState.exchangeTableCollapsed,
-                }))
-              }}
-            >
+            <CollapsibleTable style={{ bottom: -1 }}>
               <CollapseWrapper
                 in={this.state.exchangeTableCollapsed}
                 collapsedHeight="2rem"
               >
-                <Title style={{ cursor: 'pointer' }}>Exchanges</Title>
-                <Body height="100%">
-                  <Row background={'#25282c'}>
-                    <Cell width={'33%'} />
-                    <Cell width={'33%'}>IN WORK</Cell>
+                <Title
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      exchangeTableCollapsed: !prevState.exchangeTableCollapsed,
+                    }))
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  Exchanges
+                </Title>
+                <Head style={{ height: '1.625rem' }} background={'#292d31'}>
+                  <Row isHead background={'#292d31'}>
+                    <HeadCell color="#9ca2aa" width={'20%'}>
+                      Name
+                    </HeadCell>
+                    <HeadCell color="#9ca2aa" width={'20%'}>
+                      Cross{' '}
+                    </HeadCell>
+                    <HeadCell color="#9ca2aa" width={'20%'}>
+                      Price
+                    </HeadCell>
+                    <HeadCell color="#9ca2aa" width={'20%'}>
+                      USD
+                    </HeadCell>
+                    <HeadCell color="#9ca2aa" width={'20%'}>
+                      1D Vol(K)
+                    </HeadCell>
                   </Row>
+                </Head>
+                <Body style={{ width: '105%' }} height="100%">
+                  {exchanges.map((exchange, ind) => (
+                    <Row
+                      style={{ cursor: 'pointer' }}
+                      onClick={() => {
+                        this.changeExchange(ind)
+                      }}
+                      background={
+                        activeExchange === ind ? '#353c42' : '#16181b'
+                      }
+                    >
+                      {Object.values(exchange).map((prop) => (
+                        <Cell color="#9ca2aa" width="20%">
+                          {prop}
+                        </Cell>
+                      ))}
+                    </Row>
+                  ))}
                 </Body>
               </CollapseWrapper>
             </CollapsibleTable>
@@ -266,18 +401,35 @@ export default class Chart extends React.Component<Props, State> {
     return null
   }
 
-  renderOrderBookTable = () => {
-    return
+  onInputChangeMCharts = (event: any) => {
+    this.setState({ mCharts: event.target.value })
+  }
+  onInputChangeSearchSymbol = (event: any) => {
+    this.setState({ searchSymbol: event.target.value })
   }
 
   render() {
-    const { view } = this.state
-
+    const { view, searchSymbol, mCharts } = this.state
     const toggler = this.renderToggler()
 
     return (
       <div>
-        <TogglerContainer>{toggler}</TogglerContainer>
+        <TogglerContainer>
+          <InputContainer>
+            <Input
+              onChange={this.onInputChangeSearchSymbol}
+              value={searchSymbol}
+              placeholder="Search symbol"
+            />
+            <Input
+              onChange={this.onInputChangeMCharts}
+              value={mCharts}
+              placeholder="Multiple charts"
+            />
+          </InputContainer>
+
+          {toggler}
+        </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
       </div>
@@ -285,6 +437,36 @@ export default class Chart extends React.Component<Props, State> {
   }
 }
 
+const InputContainer = styled.div`
+  padding: 0.5rem;
+  margin: auto 2rem auto 0;
+  display: flex;
+  width: 30%;
+  justify-content: center;
+`
+
+const Input = styled.input`
+  margin: 0 1rem;
+  box-sizing: border-box;
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-bottom: 2px solid rgba(78, 216, 218, 0.3);
+  outline: none;
+  border-right: none;
+  width: 100%;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  padding: 10px 0 0px;
+  color: rgb(255, 255, 255);
+  transition: all 0.25s ease-out;
+
+  &:focus {
+    border-bottom: 2px solid rgb(78, 216, 218);
+  }
+`
 //  FlexTable
 
 const Title = styled.div`

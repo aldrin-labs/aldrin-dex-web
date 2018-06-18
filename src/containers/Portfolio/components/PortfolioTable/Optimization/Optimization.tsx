@@ -374,13 +374,13 @@ const Button = styled.div`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   letter-spacing: 0.4px;
   text-align: center;
   font-size: 12px;
   font-weight: 500;
   color: #4ed8da;
-  cursor: ${(props: { disabled: boolean }) =>
+  cursor: ${(props: { disabled?: boolean }) =>
     props.disabled ? 'not-allowed' : 'pointer'};
   text-transform: uppercase;
   margin-top: 10px;
@@ -399,7 +399,7 @@ const Input = styled.input`
   outline: none;
   border-right: none;
   width: 100%;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
   text-align: left;

@@ -496,3 +496,76 @@ export const orderBook = [
     time: '09:57:20',
   },
 ]
+
+export const exchanges = [
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+  {
+    name: 'Bitfinex',
+    cross: 'USD',
+    price: 6535.9,
+    exchange: 6535.2,
+    vol: 19.7,
+  },
+]
