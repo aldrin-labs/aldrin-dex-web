@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { Paper, Collapse } from '@material-ui/core'
+import { Paper, Collapse, Button } from '@material-ui/core'
 import {
   MdAddCircleOutline,
   MdArrowUpward,
@@ -25,6 +25,7 @@ interface IState {
   orders: number[][]
   aggregation: number
   searchSymbol: string
+  showTableOnMobile: string
   mCharts: string
   currentSort?: {
     arg: 'ASC' | 'DESC'
@@ -43,6 +44,7 @@ class Chart extends React.Component<Props, IState> {
     tableCollapsed: false,
     exchangeTableCollapsed: false,
     aggregation: 0.01,
+    showTableOnMobile: 'TRADE',
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -101,6 +103,13 @@ class Chart extends React.Component<Props, IState> {
     this.props.selectExchange(i)
   }
 
+  changeTable = () => {
+    this.setState((prevState) => ({
+      showTableOnMobile:
+        prevState.showTableOnMobile === 'ORDER' ? 'TRADE' : 'ORDER',
+    }))
+  }
+
   setAggregation = () => {
     const { aggregation } = this.state
     switch (aggregation) {
@@ -136,7 +145,12 @@ class Chart extends React.Component<Props, IState> {
   }
 
   renderDefaultView = () => {
-    const { orders, tableCollapsed, aggregation } = this.state
+    const {
+      orders,
+      tableCollapsed,
+      aggregation,
+      showTableOnMobile,
+    } = this.state
     const { activeExchange } = this.props
 
     return (
@@ -144,9 +158,18 @@ class Chart extends React.Component<Props, IState> {
         <SingleChart />
 
         <TablesContainer>
-          <OrderBookTableWrapper>
+          <TablesBlockWrapper show={showTableOnMobile === 'ORDER'}>
             <Table>
-              <Title>Order Book</Title>
+              <Title>
+                Order Book
+                <SwitchTablesButton
+                  onClick={this.changeTable}
+                  variant="outlined"
+                  color="primary"
+                >
+                  TRADE
+                </SwitchTablesButton>
+              </Title>
               <Head background={'#292d31'}>
                 <Row isHead background={'#292d31'}>
                   <EmptyCell color="#9ca2aa" width={'25%'} />
@@ -190,7 +213,7 @@ class Chart extends React.Component<Props, IState> {
               </Body>
             </Table>
 
-            <CollapsibleTable
+            <USDSpreadTable
               onClick={() => {
                 this.setState((prevState) => ({
                   tableCollapsed: !prevState.tableCollapsed,
@@ -241,8 +264,8 @@ class Chart extends React.Component<Props, IState> {
                   ))}
                 </Body>
               </CollapseWrapper>
-            </CollapsibleTable>
-            <Table>
+            </USDSpreadTable>
+            <AggregationTable>
               <Head background={'#292d31'}>
                 <Row background={'#292d31'} isHead>
                   <Cell color="#9ca2aa" width={'25%'} />
@@ -273,11 +296,21 @@ class Chart extends React.Component<Props, IState> {
                   </HeadCell>
                 </Row>
               </Head>
-            </Table>
-          </OrderBookTableWrapper>
-          <OrderBookTableWrapper>
+            </AggregationTable>
+          </TablesBlockWrapper>
+
+          <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
             <Table>
-              <Title>Trade history</Title>
+              <Title>
+                Trade history
+                <SwitchTablesButton
+                  onClick={this.changeTable}
+                  variant="outlined"
+                  color="primary"
+                >
+                  ORDER
+                </SwitchTablesButton>
+              </Title>
               <Head background={'#292d31'}>
                 <Row background={'#292d31'} isHead>
                   <HeadCell color="#9ca2aa" width={'33%'}>
@@ -322,7 +355,7 @@ class Chart extends React.Component<Props, IState> {
               </Body>
             </Table>
 
-            <CollapsibleTable style={{ bottom: -1 }}>
+            <ExchangesTable>
               <CollapseWrapper
                 in={this.state.exchangeTableCollapsed}
                 collapsedHeight="2rem"
@@ -409,8 +442,8 @@ class Chart extends React.Component<Props, IState> {
                   ))}
                 </Body>
               </CollapseWrapper>
-            </CollapsibleTable>
-          </OrderBookTableWrapper>
+            </ExchangesTable>
+          </TablesBlockWrapper>
         </TablesContainer>
       </Container>
     )
@@ -505,6 +538,16 @@ const Input = styled.input`
 `
 //  FlexTable
 
+const SwitchTablesButton = styled(Button)`
+  && {
+    display: none;
+
+    @media (max-width: 1080px) {
+      display: block;
+    }
+  }
+`
+
 const Title = styled.div`
   width: 100%;
   text-transform: uppercase;
@@ -515,9 +558,15 @@ const Title = styled.div`
   background: #353d46;
   text-align: center;
   vertical-align: middle;
+
+  @media (max-width: 1080px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 `
 
-const OrderBookTableWrapper = styled(Paper)`
+const TablesBlockWrapper = styled(Paper)`
   min-width: 300px;
   width: 50%;
   position: relative;
@@ -527,6 +576,13 @@ const OrderBookTableWrapper = styled(Paper)`
     overflow: hidden;
     background-color: #292d31;
     box-shadow: none !important;
+  }
+
+  @media (max-width: 1080px) {
+    display: ${(props: { show: boolean }) => (props.show ? 'block' : 'none')};
+    width: 100%;
+    height: calc(100vh - 57px - 70px);
+    position: relative;
   }
 `
 
@@ -540,6 +596,10 @@ const TablesContainer = styled.div`
   width: 50%;
   height: calc(100vh - 59px - 80px);
   overflow: hidden;
+
+  @media (max-width: 1080px) {
+    flex-wrap: wrap;
+  }
 `
 const Table = styled.div`
   font-family: Roboto, sans-serif;
@@ -548,6 +608,46 @@ const Table = styled.div`
   padding: 0;
   max-height: calc(100vh - 59px - 80px);
   overflow-y: hidden;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+  }
+`
+
+const CollapsibleTable = Table.extend`
+  max-height: 28rem;
+  position: absolute;
+  bottom: 23px;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+
+  @-moz-document url-prefix() {
+    bottom: 22.5px;
+  }
+`
+
+const ExchangesTable = CollapsibleTable.extend`
+  bottom: -1px;
+
+  @media (max-width: 1080px) {
+    bottom: 0.5rem;
+  }
+`
+
+const AggregationTable = Table.extend`
+  @media (max-width: 1080px) {
+    z-index: 1000;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+  }
+`
+
+const USDSpreadTable = CollapsibleTable.extend`
+  @media (max-width: 1080px) {
+    bottom: 40px;
+  }
 `
 
 const Body = styled.div`
@@ -566,19 +666,6 @@ const Body = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
-  }
-`
-
-const CollapsibleTable = Table.extend`
-  max-height: 28rem;
-  position: absolute;
-  bottom: 23px;
-  left: 0;
-  z-index: 999;
-  width: 100%;
-
-  @-moz-document url-prefix() {
-    bottom: 22.5px;
   }
 `
 
