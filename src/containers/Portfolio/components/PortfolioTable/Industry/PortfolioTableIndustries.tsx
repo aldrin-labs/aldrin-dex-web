@@ -42,8 +42,6 @@ const defaultSelectedSum = {
 }
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
-  wrapperRef!: HTMLElement | null
-  childNode!: HTMLElement | null
 
   state: IState = {
     activeKeys: null,
@@ -342,47 +340,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState({ selectedRows: allRows }, () => this.calculateSum(allRows))
   }
 
-  genLineChart = () => {
-    const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) {
-      return
-    }
-    const data = industryData.filter((o, i) => selectedRows.indexOf(i) >= 0)
-
-    return data.map((item, i) => ({
-      x: i + 1,
-      y: i * 2,
-      label: `${item.symbol} ${item.industry}`,
-    }))
-  }
-
-  onChangeActiveLegend = (index: number) => {
-    this.setState({ activeLegend: index })
-  }
-
   onChangeData = (data: string[]) => {
     const lineChartMocks = genMocks(31, data)
 
     this.setState({ lineChartMocks })
-  }
-
-  setChildNodeRef = (ref: HTMLElement | null) => {
-    this.childNode = ref
-  }
-
-  setWrapperRef = (ref: HTMLElement | null) => {
-    this.wrapperRef = ref
-  }
-
-  setChartWidth = () => {
-    if (this.wrapperRef && this.childNode) {
-      const wrapperWidth = this.wrapperRef.offsetWidth
-      const tableWidth = this.childNode.offsetWidth
-      const divider = wrapperWidth / 20
-
-      return wrapperWidth - tableWidth - divider
-    }
-    return 300
   }
 
   render() {
