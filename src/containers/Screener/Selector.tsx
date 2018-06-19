@@ -3,41 +3,13 @@ import Input, { InputLabel } from 'material-ui/Input'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
-import { withStyles } from 'material-ui/styles'
 import Select from 'material-ui/Select'
 import styled from 'styled-components'
 
-const SContainer = styled.form`
-  margin-top: 15px !important;
-  align-self: center;
-  margin: 0 auto;
-`
+import { IProps, IState } from './Selector.types'
 
-const TextDemo = styled.div`
-  display: flex;
-  align-self: center;
-  align-items: center;
-  flex-direction: column;
-`
-
-const STypography = styled(Typography)`
-  margin: 20px;
-`
-
-const MainWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-`
-
-const SFormControl = styled(FormControl)`
-  width: 200px;
-  margin: 10px !important;
-`
-
-class ScreenerSelect extends React.Component {
-  state = {
+export default class ScreenerSelect extends React.Component<IProps, IState> {
+  state: IState = {
     coin: '',
     marketCap: '',
     price: '',
@@ -90,6 +62,9 @@ class ScreenerSelect extends React.Component {
   }
 
   render() {
+
+    console.log(this.state);
+
 
     return (
       <MainWrapper>
@@ -193,4 +168,33 @@ class ScreenerSelect extends React.Component {
   }
 }
 
-export default ScreenerSelect
+const SContainer = styled.form`
+  padding: 15px 0;
+`
+
+const TextDemo = styled.div`
+  display: flex;
+  align-self: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+const STypography = styled(Typography)`
+  margin: 20px;
+`
+
+const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+`
+
+const SFormControl = styled(FormControl)`
+  width: 200px;
+  && {
+    margin: 10px;
+  }
+`
+
+
