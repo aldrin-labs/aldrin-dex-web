@@ -80,7 +80,7 @@ class PieChartQuery extends React.Component<Props, State> {
 
     console.log('pieData: ', pieData);
 
-    return <PieChart data={pieData} flexible />
+    return <PieChart data={pieData} flexible/>
   }
 }
 

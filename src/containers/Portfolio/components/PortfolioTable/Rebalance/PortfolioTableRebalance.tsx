@@ -1190,6 +1190,7 @@ export default class PortfolioTableRebalance extends React.Component<
             <PieChart
               data={combineToChart(staticRows)}
               flexible={true}
+              withHints={true}
             />
           </PieChartContainer>
 
@@ -1197,6 +1198,7 @@ export default class PortfolioTableRebalance extends React.Component<
             <PieChart
               data={combineToChart(rows)}
               flexible={true}
+              withHints={true}
             />
           </PieChartContainer>
         </PieChartsWrapper>
