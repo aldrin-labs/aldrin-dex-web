@@ -557,7 +557,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               ) : null}
             </PTable>
           </Wrapper>
-
           <ChartContainer>
             <Heading>
               <Switch onClick={this.toggleChart} />
@@ -584,51 +583,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: auto;
-  padding: 20px;
-  margin-top: -2rem;
-
-  @media (max-height: 650px) {
-    height: 50%;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 900px) {
-    flex-wrap: wrap;
-  }
+  padding: 0 20px 20px;
 `
-
-// const PieChartHeadingWrapper = styled.div`
-//   width: 200px;
-//   text-align: center;
-//   padding-bottom: 5px;
-// `
-//
-// const PieChartContainer = styled.div`
-//   border-radius: 3px;
-//   background-color: #2d3136;
-//   box-shadow: 0 2px 6px 0 #0006;
-//   padding: 1em;
-//   display: flex;
-//   display: none;
-//   flex-direction: column;
-//   align-items: center;
-//   height: 40vh;
-//   background-color: #2d3136;
-//   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-//   padding: 3% 0;
-//   width: calc(40% - 4rem);
-//   min-height: 40vh;
-//   margin: 2rem;
-//
-//   @media (max-width: 850px) {
-//     width: 100%;
-//     margin: 1rem 0;
-//   }
-//
-//   @media (max-height: 900px) {
-//     display: none;
-//   }
-// `
 
 const Heading = styled.div`
   display: flex;
@@ -660,6 +616,10 @@ const ChartWrapper = styled.div`
   height: 25vh;
   display: flex;
   position: relative;
+  
+  @media (max-height: 850px) {
+    height: 20vh;
+  }
 `
 
 const ChartContainer = styled.div`
@@ -672,14 +632,20 @@ const ChartContainer = styled.div`
   height: 35vh;
   margin: 2rem 1rem;
   width: 900px;
-
-
-  @media (max-width: 850px) {
-    display: none;
+  
+  @media (min-width: 1950px) {
+    margin: 1rem;
   }
   
- @media (min-width: 1950px) {
-    margin: 1rem;
+  @media (max-height: 850px) {
+    height: 30vh;
+    margin: 1%;
+  }
+  @media (max-height: 680px) {
+    display: none;
+  }
+  @media (max-width: 850px) {
+    display: none;
   }
 `
 
@@ -694,7 +660,11 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
-  margin: 1rem;
+  margin: 1%;
+  
+  @media (max-height: 850px) {
+      max-height: 30vh;
+  }
 
 
   &::-webkit-scrollbar {
