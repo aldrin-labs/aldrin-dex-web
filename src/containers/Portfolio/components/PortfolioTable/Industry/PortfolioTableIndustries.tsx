@@ -361,7 +361,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    const chartWidth = this.setChartWidth()
+    // const chartWidth = this.setChartWidth()
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
