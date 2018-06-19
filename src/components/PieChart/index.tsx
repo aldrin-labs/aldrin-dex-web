@@ -52,7 +52,7 @@ export default class PieChart extends React.Component<Props, State> {
       >
         {value && !!withHints && (
           <Hint value={value}>
-            <ChartTooltip>{`${value.label} ${value.realValue}`}</ChartTooltip>
+            <ChartTooltip>{`${value.labelCurrency ? value.labelCurrency : ''} ${value.label} ${value.realValue}`}</ChartTooltip>
           </Hint>
         )}
         {value && !withHints && (
