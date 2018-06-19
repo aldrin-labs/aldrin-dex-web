@@ -639,7 +639,7 @@ const ChartContainer = styled.div`
   
   @media (max-height: 850px) {
     height: 30vh;
-    margin: 1%;
+    margin: 0.5rem 1rem;
   }
   @media (max-height: 680px) {
     display: none;
@@ -660,10 +660,22 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
-  margin: 1%;
+  margin: 1rem;
   
   @media (max-height: 850px) {
-      max-height: 30vh;
+    max-height: 30vh;
+  }
+  
+  @media (max-height: 680px) {
+      max-height: 50vh;
+  }
+  
+  @media (max-height: 550px) {
+      max-height: 45vh;
+  }
+  
+  @media (max-height: 460px) {
+      max-height: 40vh;
   }
 
 
