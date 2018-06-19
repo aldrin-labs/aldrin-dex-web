@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { Paper, Collapse, Button } from '@material-ui/core'
@@ -13,8 +13,7 @@ import { FaCircle } from 'react-icons/lib/fa'
 import * as actions from './actions'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
-import { orders } from './mocks'
-import { orderBook, exchanges } from './fakeData'
+import { orderBook, exchanges, orders, usdSpread } from './mocks'
 
 interface Props {}
 
@@ -24,6 +23,7 @@ interface IState {
   exchangeTableCollapsed: boolean
   orders: number[][]
   aggregation: number
+  data: any
   searchSymbol: string
   showTableOnMobile: string
   mCharts: string
@@ -33,10 +33,9 @@ interface IState {
   }
 }
 
-const headers = ['Price', 'ETH', 'BTC', 'Sum(BTC)']
-
 class Chart extends React.Component<Props, IState> {
   state: IState = {
+    items: [123, 123, 312],
     view: 'default',
     orders,
     searchSymbol: '',
@@ -44,7 +43,21 @@ class Chart extends React.Component<Props, IState> {
     tableCollapsed: false,
     exchangeTableCollapsed: false,
     aggregation: 0.01,
-    showTableOnMobile: 'TRADE',
+    showTableOnMobile: 'ORDER',
+
+    orderBook: [],
+    exchanges: [],
+    usdSpread: [],
+  }
+
+  componentDidMount() {
+    const { isShownMocks } = this.props
+
+    if (isShownMocks) {
+      this.setState({ orderBook, exchanges, usdSpread })
+    } else {
+      // fetchData
+    }
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -143,6 +156,69 @@ class Chart extends React.Component<Props, IState> {
         break
     }
   }
+  // bullshit code be carefuly
+  demoAnime = (sizeInd: number) => {
+    const setFalseForSecond = (ind: number) => {
+      setTimeout(() => {
+        this.setState({
+          orderBook: this.state.orderBook.map(
+            (el, i) =>
+              i === ind
+                ? Object.assign({}, el, {
+                    updated: true,
+                  })
+                : el
+          ),
+        })
+      }, 10)
+
+      return false
+    }
+
+    this.setState({
+      orderBook: this.state.orderBook.map(
+        (el, i) =>
+          el.size === sizeInd
+            ? Object.assign({}, el, {
+                updated: el.updated === true ? setFalseForSecond(i) : true,
+                percentageOfChange:
+                  Math.floor(Math.random() * (100 - 0 + 1)) + 0,
+              })
+            : el
+      ),
+    })
+  }
+  demoAnimed = (sizeInd: number) => {
+    const setFalseForSecond = (ind: number) => {
+      setTimeout(() => {
+        this.setState({
+          usdSpread: this.state.usdSpread.map(
+            (el, i) =>
+              i === ind
+                ? Object.assign({}, el, {
+                    updated: true,
+                  })
+                : el
+          ),
+        })
+      }, 10)
+
+      return false
+    }
+
+    this.setState({
+      usdSpread: this.state.usdSpread.map(
+        (el, i) =>
+          el.size === sizeInd
+            ? Object.assign({}, el, {
+                updated: el.updated === true ? setFalseForSecond(i) : true,
+                percentageOfChange:
+                  Math.floor(Math.random() * (100 - 0 + 1)) + 0,
+              })
+            : el
+      ),
+    })
+  }
 
   renderDefaultView = () => {
     const {
@@ -167,7 +243,7 @@ class Chart extends React.Component<Props, IState> {
                   variant="outlined"
                   color="primary"
                 >
-                  TRADE
+                  HISTORY
                 </SwitchTablesButton>
               </Title>
               <Head background={'#292d31'}>
@@ -188,15 +264,26 @@ class Chart extends React.Component<Props, IState> {
                 notScrollable={this.state.tableCollapsed}
                 height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}
               >
-                {orderBook.slice(0, 30).map((order) => (
-                  <Row background={'#292d31'}>
+                {this.state.orderBook.map((order, i) => (
+                  <Row
+                    onClick={() => {
+                      this.demoAnime(order.size)
+                    }}
+                    key={i}
+                    background={'#292d31'}
+                  >
                     <EmptyCell
                       status={'rise'}
                       colored={order.percentageOfChange.toString()}
                       color="#9ca2aa"
                       width={'25%'}
                     />
-                    <Cell color="#9ca2aa" width={'25%'}>
+
+                    <Cell
+                      color="#9ca2aa"
+                      animated={order.updated ? 'green' : 'none'}
+                      width={'25%'}
+                    >
                       {Number(order.size).toFixed(8)}
                     </Cell>
                     <Cell color="#34cb86d1" width={'25%'}>
@@ -213,15 +300,14 @@ class Chart extends React.Component<Props, IState> {
               </Body>
             </Table>
 
-            <USDSpreadTable
-              onClick={() => {
-                this.setState((prevState) => ({
-                  tableCollapsed: !prevState.tableCollapsed,
-                }))
-              }}
-            >
+            <USDSpreadTable>
               <CollapseWrapper in={tableCollapsed} collapsedHeight="1.5rem">
                 <Head
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      tableCollapsed: !prevState.tableCollapsed,
+                    }))
+                  }}
                   background={'#292d31'}
                   style={{ cursor: 'pointer', height: '1.625rem' }}
                 >
@@ -243,15 +329,26 @@ class Chart extends React.Component<Props, IState> {
                   </Row>
                 </Head>
                 <Body height="300px">
-                  {orderBook.slice(10, 40).map((order) => (
-                    <Row background={'#25282c'}>
+                  {this.state.usdSpread.slice(0, 30).map((order, i) => (
+                    <Row
+                      onClick={() => {
+                        this.demoAnimed(order.size)
+                        console.log(order.updated === true)
+                      }}
+                      key={i}
+                      background={'#25282c'}
+                    >
                       <EmptyCell
                         status={'fall'}
                         colored={order.percentageOfChange.toString()}
                         color="#9ca2aa"
                         width={'25%'}
                       />
-                      <Cell color="#9ca2aa" width={'35%'}>
+                      <Cell
+                        animated={order.updated ? 'red' : 'none'}
+                        color="#9ca2aa"
+                        width={'35%'}
+                      >
                         {Number(order.size).toFixed(8)}
                       </Cell>
                       <Cell color="#d77455" width={'30%'}>
@@ -328,8 +425,8 @@ class Chart extends React.Component<Props, IState> {
                 notScrollable={this.state.exchangeTableCollapsed}
                 height="calc(100vh - 59px - 80px - 39px - 37px - 32px )"
               >
-                {orderBook.slice(0, 30).map((order) => (
-                  <Row background={'#292d31'}>
+                {this.state.orderBook.slice(0, 30).map((order, i) => (
+                  <Row key={i} background={'#292d31'}>
                     <Cell color="#9ca2aa" width={'33%'}>
                       {order.tradeSize.toFixed(5)}
                     </Cell>
@@ -390,8 +487,9 @@ class Chart extends React.Component<Props, IState> {
                   </Row>
                 </Head>
                 <Body style={{ width: '105%' }} height="100%">
-                  {exchanges.map((exchange, ind) => (
+                  {this.state.exchanges.map((exchange, ind) => (
                     <Row
+                      key={ind}
                       style={{ cursor: 'pointer' }}
                       onClick={() => {
                         this.changeExchange(ind)
@@ -400,7 +498,7 @@ class Chart extends React.Component<Props, IState> {
                         activeExchange === ind ? '#353c42' : '#16181b'
                       }
                     >
-                      {Object.values(exchange).map((prop) => {
+                      {Object.values(exchange).map((prop, propinx) => {
                         const keyByValue = Object.keys(exchange).find(
                           (key) => exchange[key] === prop
                         )
@@ -410,6 +508,7 @@ class Chart extends React.Component<Props, IState> {
                         } else if (keyByValue === 'name') {
                           return (
                             <Cell
+                              key={propinx}
                               style={{
                                 alignItems: 'center',
                                 display: 'flex',
@@ -432,7 +531,7 @@ class Chart extends React.Component<Props, IState> {
                           )
                         } else {
                           return (
-                            <Cell color="#9ca2aa" width="20%">
+                            <Cell key={propinx} color="#9ca2aa" width="20%">
                               {prop}
                             </Cell>
                           )
@@ -654,7 +753,7 @@ const Body = styled.div`
   width: 100%;
   height: ${(props: { height: string }) => props.height};
   overflow-y: ${(props: { notScrollable?: boolean; height: string }) =>
-    props.notScrollable ? 'hidden' : 'scroll'};
+    props.notScrollable ? 'hidden' : 'auto'};
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -669,6 +768,31 @@ const Body = styled.div`
   }
 `
 
+const fadeInGreen = keyframes`
+0% {
+  color: #9ca2aa;
+}
+50% {
+  color: #34cb86d1;
+}
+100% {
+  color: #9ca2aa;
+}
+`
+const fadeInRed = keyframes`
+0% {
+  color: #9ca2aa;
+}
+50% {
+  color: #d77455;
+
+}
+100% {
+  color: #9ca2aa;
+
+}
+`
+
 const Row = styled.div`
   width: 100%;
   display: flex;
@@ -676,8 +800,11 @@ const Row = styled.div`
     props.isHead ? '1px solid #818d9ae6' : 'none'};
   border-bottom: 1px solid #2d3136;
   transition: background 0.25s ease;
-  background-color: ${(props: { isHead?: boolean; background: string }) =>
-    props.background};
+  background-color: ${(props: {
+    animated?: string
+    isHead?: boolean
+    background: string
+  }) => props.background};
 
   &:hover {
     background: ${(props: { isHead?: boolean }) =>
@@ -695,6 +822,21 @@ const Cell = styled.div`
   color: ${(props: { color: string; width: string }) => props.color};
   text-align: center;
   vertical-align: middle;
+  animation: ${(props: { animated?: string; width: string; color: string }) => {
+    if (props.animated === 'none') {
+      return ''
+    }
+
+    if (props.animated === 'green') {
+      return `${fadeInGreen} 1.5s ease`
+    }
+
+    if (props.animated === 'red') {
+      return `${fadeInRed} 1.5s ease`
+    }
+
+    return ''
+  }};
 `
 const HeadCell = Cell.extend`
   font-weight: 400;
@@ -734,32 +876,6 @@ const Head = styled.div`
 
 // end of FlexTable
 
-const TR = styled.tr`
-  border: 1px solid #fff;
-`
-
-const TD = styled.td`
-  text-align: right;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 20px;
-  color: #fff;
-  padding: 5px;
-  border: 1px solid #fff;
-`
-
-const TH = styled.th`
-  text-align: left;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: bold;
-  color: #fff;
-  border: 1px solid #fff;
-  padding: 10px 5px;
-  cursor: pointer;
-`
-
 const TogglerContainer = styled.div`
   display: flex;
   width: 100%;
@@ -785,33 +901,9 @@ const Container = styled.div`
   width: 100%;
 `
 
-const OrderContainer = styled.div`
-  width: 45%;
-  height: 300px;
-  overflow: auto;
-
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgb(255, 255, 255);
-  }
-`
-
-const Orders = styled.table`
-  width: 98%;
-  border: 1px solid lightgrey;
-  margin: 1%;
-  border-collapse: collapse;
-`
-
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
+  isShownMocks: store.user.isShownMocks,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
