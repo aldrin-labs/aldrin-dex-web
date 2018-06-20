@@ -212,44 +212,9 @@ const PTHC = styled.th`
   }
 `
 
-const PTHR = styled.th`
-  ${PTH};
-`
-
-const PTHRNoEditMode = css`
-  min-width: 100px;
-  &:nth-child(1) {
-  }
-
-  &:nth-child(2) {
-    text-align: left;
-    min-width: 70px;
-  }
-
-  &:nth-child(3) {
-    text-align: right;
-  }
-
-  &:nth-child(4) {
-    text-align: right;
-  }
-
-  &:nth-child(5) {
-    min-width: 150px;
-  }
-  &:nth-child(6) {
-    display: none;
-  }
-`
-
 const PTHead = styled.thead`
   ${PT};
   top: 0;
-
-
-  & ${PTHR} {
-    ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
 `
 
 const PTR = styled.tr`
@@ -282,80 +247,12 @@ const PTD = css`
 const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
-
-  &:nth-child(2) {
-    min-width: 70px;
-    text-align: left;
-  }
-  &:nth-child(3) {
-    text-align: right;
-  }
-  &:nth-child(4) {
-    text-align: right;
-    min-width: 100px;
-    &:hover {
-      & svg {
-        color: #ffffff;
-      }
-    }
-  }
-  &:nth-child(5) {
-    text-align: right;
-    min-width: 100px;
-  }
-  &:nth-child(6) {
-    text-align: left;
-    min-width: 150px;
-  }
-  &:nth-child(7) {
-    padding: 1.75px 5px;
-    min-width: 30px;
-    text-align: left;
-  }
-`
-
-const PTDR = styled.td`
-  ${PTD};
-`
-const PTDRNoEditMode = css`
-  min-width: 100px;
-
-  &:nth-child(2) {
-    min-width: 70px;
-  }
-
-  &:nth-child(3) {
-    text-align: right;
-  }
-
-  &:nth-child(4) {
-    text-align: right;
-  }
-
-  &:nth-child(4) {
-    text-align: right;
-    &:hover {
-      & svg {
-        color: #ffffff;
-      }
-    }
-  }
-  &:nth-child(5) {
-    min-width: 150px;
-  }
-  &:nth-child(6) {
-    display: none;
-  }
 `
 
 const PTBody = styled.tbody`
   display: table;
   width: 100%;
   border-bottom: 1px solid #fff;
-  
-  & ${PTDR} {
-    ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode}
 `
 const Icon = styled.i`
   padding-right: 5px;
