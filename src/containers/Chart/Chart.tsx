@@ -263,10 +263,7 @@ class Chart extends React.Component<Props, IState> {
                   </HeadCell>
                 </Row>
               </Head>
-              <Body
-                notScrollable={this.state.tableCollapsed}
-                height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}
-              >
+              <BodyOrderBook notScrollable={this.state.tableCollapsed}>
                 {this.state.orderBook.map((order, i) => (
                   <Row
                     onClick={() => {
@@ -300,7 +297,7 @@ class Chart extends React.Component<Props, IState> {
                     </Cell>
                   </Row>
                 ))}
-              </Body>
+              </BodyOrderBook>
             </Table>
 
             <USDSpreadTable>
@@ -425,7 +422,7 @@ class Chart extends React.Component<Props, IState> {
               </Head>
               <Body
                 notScrollable={this.state.exchangeTableCollapsed}
-                height="calc(100vh - 59px - 80px - 39px - 37px - 32px )"
+                height="calc(100vh - 59px - 80px - 39px - 37px - 32px)"
               >
                 {this.state.orderBook.slice(0, 30).map((order, i) => (
                   <Row
@@ -797,6 +794,10 @@ const ExchangesTable = CollapsibleTable.extend`
 `
 
 const AggregationTable = Table.extend`
+  position: absolute;
+  width: 100%;
+  bottom: -17px;
+
   @media (max-width: 1080px) {
     z-index: 1000;
     bottom: 0;
@@ -827,6 +828,14 @@ const Body = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
+  }
+`
+
+const BodyOrderBook = Body.extend`
+  height: calc(100vh - 59px - 80px - 39px - 37px - 24px - 24px);
+
+  @media (max-width: 1080px) {
+    height: calc(100vh - 59px - 80px - 39px - 37px - 24px - 24px - 24px);
   }
 `
 
