@@ -7,6 +7,8 @@ import {
   MdAddCircleOutline,
   MdArrowUpward,
   MdArrowDownward,
+  MdArrowDropUp,
+  MdArrowDropDown,
 } from 'react-icons/lib/md/'
 import { FaCircle } from 'react-icons/lib/fa'
 
@@ -29,6 +31,7 @@ interface IState {
   searchSymbol: string
   showTableOnMobile: string
   mCharts: string
+  activeChart: string
   currentSort?: {
     arg: 'ASC' | 'DESC'
     index: number
@@ -37,19 +40,19 @@ interface IState {
 
 class Chart extends React.Component<Props, IState> {
   state: IState = {
-    items: [123, 123, 312],
     view: 'default',
     orders,
     searchSymbol: '',
     mCharts: '',
-    tableCollapsed: false,
-    exchangeTableCollapsed: false,
+    tableCollapsed: true,
+    exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
     activeChart: 'depth',
     orderBook: [],
     exchanges: [],
     usdSpread: [],
+    usdSpreads: null,
   }
 
   componentDidMount() {
@@ -228,6 +231,7 @@ class Chart extends React.Component<Props, IState> {
       tableCollapsed,
       aggregation,
       showTableOnMobile,
+      exchangeTableCollapsed,
     } = this.state
     const { activeExchange } = this.props
 
@@ -269,22 +273,30 @@ class Chart extends React.Component<Props, IState> {
               </Title>
               <Head background={'#292d31'}>
                 <Row isHead background={'#292d31'}>
-                  <EmptyCell color="#9ca2aa" width={'25%'} />
-                  <HeadCell color="#9ca2aa" width={'25%'}>
+                  <EmptyCell color="#9ca2aa" width={'20%'} />
+                  <HeadCell
+                    style={{
+                      position: 'relative',
+                      left: '5%',
+                    }}
+                    color="#9ca2aa"
+                    width={'35%'}
+                  >
                     Market Size
                   </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'25%'}>
+                  <HeadCell
+                    color="#9ca2aa"
+                    style={{
+                      position: 'relative',
+                      left: '13%',
+                    }}
+                    width={'14%'}
+                  >
                     Price<br />(USD)
-                  </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'25%'}>
-                    My Size
                   </HeadCell>
                 </Row>
               </Head>
-              <Body
-                notScrollable={this.state.tableCollapsed}
-                height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}
-              >
+              <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}>
                 {this.state.orderBook.map((order, i) => (
                   <Row
                     onClick={() => {
@@ -303,22 +315,15 @@ class Chart extends React.Component<Props, IState> {
                     <Cell
                       color="#9ca2aa"
                       animated={order.updated ? 'green' : 'none'}
-                      width={'25%'}
+                      width={'35%'}
                     >
                       {Number(order.size).toFixed(8)}
                     </Cell>
-                    <Cell color="#34cb86d1" width={'25%'}>
+                    <Cell color="#34cb86d1" width={'30%'}>
                       {this.roundTill(
                         aggregation,
                         Number(order.price).toFixed(2)
                       ).toFixed(2)}
-                    </Cell>
-                    <Cell
-                      animated={order.updated ? 'green' : 'none'}
-                      color="#9ca2aa"
-                      width={'25%'}
-                    >
-                      ---
                     </Cell>
                   </Row>
                 ))}
@@ -337,8 +342,17 @@ class Chart extends React.Component<Props, IState> {
                   style={{ cursor: 'pointer', height: '1.625rem' }}
                 >
                   <Row isHead background={'#292d31'}>
-                    <HeadCell color="#9ca2aa" width={'20%'} />
-                    <HeadCell color="#9ca2aa" width={'35%'}>
+                    <HeadCell color="#9ca2aa" width={'20%'}>
+                      <StyledArrowSign up={!tableCollapsed} />
+                    </HeadCell>
+                    <HeadCell
+                      style={{
+                        position: 'relative',
+                        left: '5%',
+                      }}
+                      color="#9ca2aa"
+                      width={'35%'}
+                    >
                       USD spread{' '}
                     </HeadCell>
                     <HeadCell
@@ -349,7 +363,7 @@ class Chart extends React.Component<Props, IState> {
                       color="#9ca2aa"
                       width={'14%'}
                     >
-                      {this.props.usdSpread || 0.01}
+                      {this.state.usdSpreads || 0.01}
                     </HeadCell>
                   </Row>
                 </Head>
@@ -390,7 +404,14 @@ class Chart extends React.Component<Props, IState> {
               <Head background={'#292d31'}>
                 <Row background={'#292d31'} isHead>
                   <Cell color="#9ca2aa" width={'25%'} />
-                  <HeadCell color="#9ca2aa" width={'25%'}>
+                  <HeadCell
+                    style={{
+                      position: 'relative',
+                      left: '5%',
+                    }}
+                    color="#9ca2aa"
+                    width={'25%'}
+                  >
                     Aggregation
                   </HeadCell>
                   <HeadCell
@@ -445,10 +466,7 @@ class Chart extends React.Component<Props, IState> {
                   </HeadCell>
                 </Row>
               </Head>
-              <Body
-                notScrollable={this.state.exchangeTableCollapsed}
-                height="calc(100vh - 59px - 80px - 39px - 37px - 32px )"
-              >
+              <Body height="calc(100vh - 59px - 80px - 39px - 37px - 32px )">
                 {this.state.orderBook.slice(0, 30).map((order, i) => (
                   <Row
                     onClick={() => {
@@ -531,6 +549,10 @@ class Chart extends React.Component<Props, IState> {
                   }}
                   style={{ cursor: 'pointer' }}
                 >
+                  <StyledArrowSign
+                    style={{ marginRight: '0.5rem' }}
+                    up={!exchangeTableCollapsed}
+                  />
                   Exchanges
                 </Title>
                 <Head style={{ height: '1.625rem' }} background={'#292d31'}>
@@ -721,6 +743,13 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
+const StyledArrowSign = styled(MdArrowDropUp)`
+  font-size: 1rem;
+  transform: ${(props: { up: boolean }) =>
+    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
+  transition: all 0.5s ease;
+`
+
 const Title = styled.div`
   width: 100%;
   text-transform: uppercase;
@@ -766,7 +795,7 @@ const CollapseWrapper = styled(Collapse)`
 const TablesContainer = styled.div`
   position: relative;
   display: flex;
-  width: 50%;
+  width: 40%;
   height: calc(100vh - 59px - 80px);
   overflow: hidden;
 
@@ -781,6 +810,7 @@ const ChartsContainer = TablesContainer.extend`
   justify-content: flex-end;
   flex-direction: column;
   border-right: 1px solid #30353a;
+  width: 60%;
 
   @media (max-width: 1080px) {
     height: calc(100vh - 59px - 80px);
@@ -850,19 +880,10 @@ const USDSpreadTable = CollapsibleTable.extend`
 const Body = styled.div`
   width: 100%;
   height: ${(props: { height: string }) => props.height};
-  overflow-y: ${(props: { notScrollable?: boolean; height: string }) =>
-    props.notScrollable ? 'hidden' : 'auto'};
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
+    width: 0px;
   }
 `
 
