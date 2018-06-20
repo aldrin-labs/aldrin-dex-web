@@ -231,7 +231,10 @@ class Chart extends React.Component<Props, IState> {
 
     return (
       <Container>
-        <SingleChart />
+        <ChartsContainer>
+          <ChartsSwitcher>Switch</ChartsSwitcher>
+          <SingleChart />
+        </ChartsContainer>
 
         <TablesContainer>
           <TablesBlockWrapper show={showTableOnMobile === 'ORDER'}>
@@ -581,7 +584,7 @@ class Chart extends React.Component<Props, IState> {
     const toggler = this.renderToggler()
 
     return (
-      <div>
+      <MainContainer>
         <TogglerContainer>
           <InputContainer>
             <Input
@@ -600,10 +603,14 @@ class Chart extends React.Component<Props, IState> {
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
-      </div>
+      </MainContainer>
     )
   }
 }
+
+const MainContainer = styled.div`
+  font-family: Roboto, sans-serif;
+`
 
 const InputContainer = styled.div`
   padding: 0.5rem;
@@ -699,6 +706,20 @@ const TablesContainer = styled.div`
   @media (max-width: 1080px) {
     flex-wrap: wrap;
   }
+`
+
+const ChartsContainer = TablesContainer.extend`
+  height: calc(100vh - 59px - 80px);
+  justify-content: flex-end;
+  flex-direction: column;
+  border-right: 1px solid #30353a;
+`
+
+const ChartsSwitcher = styled.div`
+  width: 100%;
+  height: 38px;
+  background: rgb(53, 61, 70);
+  color: white;
 `
 const Table = styled.div`
   font-family: Roboto, sans-serif;
@@ -880,6 +901,7 @@ const TogglerContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  font-family: Roboto, sans-serif;
 `
 
 const Toggler = styled.button`
