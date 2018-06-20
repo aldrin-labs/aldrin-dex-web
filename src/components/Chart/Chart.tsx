@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: calc(100vh - 59px - 80px);
+  height: 100%;
 `
 
 export const SingleChart = () => (

@@ -14,6 +14,8 @@ import * as actions from './actions'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
 import { orderBook, exchanges, orders, usdSpread } from './mocks'
+import Switch from '@components/Switch/Switch'
+import DepthChart from './DepthChart'
 
 interface Props {}
 
@@ -44,7 +46,7 @@ class Chart extends React.Component<Props, IState> {
     exchangeTableCollapsed: false,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
-
+    activeChart: 'depth',
     orderBook: [],
     exchanges: [],
     usdSpread: [],
@@ -232,8 +234,24 @@ class Chart extends React.Component<Props, IState> {
     return (
       <Container>
         <ChartsContainer>
-          <ChartsSwitcher>Switch</ChartsSwitcher>
-          <SingleChart />
+          <ChartsSwitcher>
+            <Switch
+              onClick={() => {
+                this.setState((prevState) => ({
+                  activeChart:
+                    prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                }))
+              }}
+              values={['Depth Chart', 'Candle Chart']}
+            />
+          </ChartsSwitcher>
+          {this.state.activeChart === 'candle' ? (
+            <SingleChart />
+          ) : (
+            <DepthChartContainer>
+              <DepthChart />
+            </DepthChartContainer>
+          )}
         </ChartsContainer>
 
         <TablesContainer>
@@ -295,7 +313,11 @@ class Chart extends React.Component<Props, IState> {
                         Number(order.price).toFixed(2)
                       ).toFixed(2)}
                     </Cell>
-                    <Cell color="#9ca2aa" width={'25%'}>
+                    <Cell
+                      animated={order.updated ? 'green' : 'none'}
+                      color="#9ca2aa"
+                      width={'25%'}
+                    >
                       ---
                     </Cell>
                   </Row>
@@ -652,6 +674,10 @@ class Chart extends React.Component<Props, IState> {
 const MainContainer = styled.div`
   font-family: Roboto, sans-serif;
 `
+const DepthChartContainer = styled.div`
+  height: calc(100vh - 59px - 80px - 38px);
+  width: 100%;
+`
 
 const InputContainer = styled.div`
   padding: 0.5rem;
@@ -746,21 +772,31 @@ const TablesContainer = styled.div`
 
   @media (max-width: 1080px) {
     flex-wrap: wrap;
+    width: 100%;
   }
 `
 
 const ChartsContainer = TablesContainer.extend`
-  height: calc(100vh - 59px - 80px);
+  height: calc(100vh - 59px - 80px - 1px);
   justify-content: flex-end;
   flex-direction: column;
   border-right: 1px solid #30353a;
+
+  @media (max-width: 1080px) {
+    height: calc(100vh - 59px - 80px);
+    flex-wrap: nowrap;
+  }
 `
 
 const ChartsSwitcher = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
   width: 100%;
   height: 38px;
   background: rgb(53, 61, 70);
   color: white;
+  border-bottom: 1px solid #818d9ae6;
 `
 const Table = styled.div`
   font-family: Roboto, sans-serif;
@@ -962,6 +998,10 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+
+  @media (max-width: 1080px) {
+    flex-direction: column-reverse;
+  }
 `
 
 const mapStateToProps = (store: any) => ({
