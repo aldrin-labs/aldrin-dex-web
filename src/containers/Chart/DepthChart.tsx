@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
+import { maxBy } from 'lodash'
+
 import {
   FlexibleXYPlot,
   VerticalRectSeries,
@@ -30,8 +32,16 @@ const orderData = [
 ]
 const spreadData = [
   { x: 20, y: 2500 },
+  { x: 19.3, y: 2500 },
+  { x: 19.2, y: 2502 },
+  { x: 19.1, y: 2501 },
+  { x: 19.02, y: 2500 },
   { x: 17, y: 2000 },
+  { x: 16.2, y: 2006.2 },
+  { x: 16.1, y: 2000.1 },
   { x: 14, y: 1500 },
+  { x: 13.6, y: 1503.6 },
+  { x: 12.3, y: 1502.3 },
   { x: 12, y: 700 },
   { x: 10, y: 0 },
 ]
@@ -49,9 +59,25 @@ const axisStyle = {
 
 class DepthChart extends Component {
   state = {
+    // must be calculated
     MAX_DOMAIN_PLOT: 5000,
-    crosshairValues: [],
-    crosshairsValues: [],
+    crosshairValuesForSpread: [],
+    crosshairValuesForOrder: [],
+    nearestOrderXIndex: null,
+  }
+
+  componentDidMount() {
+    const maximumYinDataSet = Math.max(
+      maxBy(spreadData, (el) => el.y).y,
+      maxBy(orderData, (el) => el.y).y
+    )
+    this.setState(
+      {
+        MAX_DOMAIN_PLOT:
+          maximumYinDataSet < 50000 ? maximumYinDataSet / 4 : 50000,
+      },
+      () => console.log(this.state)
+    )
   }
 
   scale = (type: 'increase' | 'decrease', scale: number) => {
@@ -72,8 +98,12 @@ class DepthChart extends Component {
     console.log(index + '0')
 
     this.setState({
-      crosshairValues: orderData
+      crosshairValuesForOrder: orderData
         .map((d, i) => {
+          if (index === orderData.length - 1) {
+            return null
+          }
+
           if (i === index) {
             return d
           }
@@ -81,14 +111,27 @@ class DepthChart extends Component {
           return null
         })
         .filter(Boolean),
+      nearestOrderXIndex: index,
     })
   }
 
   onNearestSpreadX = (value, { index }) => {
     console.log(index + 'S')
     this.setState({
-      crosshairsValues: spreadData
+      crosshairValuesForSpread: spreadData
         .map((d, i) => {
+          if (
+            index === spreadData.length - 1 &&
+            this.state.nearestOrderXIndex === orderData.length - 1 &&
+            i === index
+          ) {
+            return d
+          }
+
+          if (index === spreadData.length - 1) {
+            return null
+          }
+
           if (i === index) {
             return d
           }
@@ -99,18 +142,18 @@ class DepthChart extends Component {
     })
   }
 
-  _onMouseLeave = () => {
-    this.setState({ crosshairValues: [] })
+  onMouseLeave = () => {
+    this.setState({ crosshairValues: [], crosshairsValues: [] })
   }
 
   render() {
-    const { crosshairValues, crosshairsValues } = this.state
+    const { crosshairValuesForSpread, crosshairValuesForOrder } = this.state
 
     return (
       <Container>
         <FlexibleXYPlot
           margin={{ right: 48 }}
-          onMouseLeave={this._onMouseLeave}
+          onMouseLeave={this.onMouseLeave}
           yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
         >
           <MidPriceContainer>
@@ -143,9 +186,6 @@ class DepthChart extends Component {
             color="rgba(91, 96, 102, 0.7)"
           />
           <AreaSeries
-            onSeriesMouseOver={() => {
-              this.setState({ crosshairsValues: [] })
-            }}
             onNearestX={this.onNearestOrderX}
             style={{
               fill: 'rgba(27, 94, 32, 0.43)',
@@ -170,7 +210,7 @@ class DepthChart extends Component {
             color="rgba(91, 96, 102, 0.7)"
           />
 
-          <Crosshair values={crosshairValues}>
+          <Crosshair values={crosshairValuesForSpread}>
             <div
               style={{
                 background: '#4c50559e',
@@ -181,12 +221,13 @@ class DepthChart extends Component {
             >
               <p>
                 {JSON.stringify(
-                  crosshairValues.length >= 1 && crosshairValues[0].x
+                  crosshairValuesForSpread.length >= 1 &&
+                    crosshairValuesForSpread[0].x
                 )}
               </p>
             </div>
           </Crosshair>
-          <Crosshair values={crosshairsValues}>
+          <Crosshair values={crosshairValuesForOrder}>
             <div
               style={{
                 background: '#4c50559e',
@@ -197,7 +238,8 @@ class DepthChart extends Component {
             >
               <p>
                 {JSON.stringify(
-                  crosshairsValues.length >= 1 && crosshairValues[0]
+                  crosshairValuesForSpread.length >= 1 &&
+                    crosshairValuesForSpread[0]
                 )}
               </p>
             </div>

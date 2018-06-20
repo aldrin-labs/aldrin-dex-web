@@ -246,7 +246,7 @@ class Chart extends React.Component<Props, IState> {
                     prevState.activeChart === 'candle' ? 'depth' : 'candle',
                 }))
               }}
-              values={['Depth Chart', 'Candle Chart']}
+              values={['Depth', 'Chart']}
             />
           </ChartsSwitcher>
           {this.state.activeChart === 'candle' ? (
