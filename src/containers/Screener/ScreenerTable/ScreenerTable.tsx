@@ -35,11 +35,9 @@ export default class ScreenerTable extends React.Component<IProps, IState> {
   render() {
     const { currentSort } = this.state
 
-    const mainSymbol = true ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-      <Icon className="fa fa-btc" />
-    )
+    const usdSymbol = <Icon className="fa fa-usd" />
+
+    const btcSymbol = <Icon className="fa fa-btc" />
 
     return (
       <Wrapper>
@@ -115,26 +113,36 @@ export default class ScreenerTable extends React.Component<IProps, IState> {
               return (
                 <PTR key={`${rank}${ticker}${idx}`}>
                   {cols.map((col, index) => {
-                    // if (col.match(/%/g)) {
-                    //   const color =
-                    //     Number(col.replace(/%/g, '')) >= 0
-                    //       ? '#4caf50'
-                    //       : '#f44336'
-                    //
-                    //   return (
-                    //     <PTDC key={`${col}${index}`} style={{ color }}>
-                    //       {col}
-                    //     </PTDC>
-                    //   )
-                    // }
-                    // if (index === 3) {
-                    //   return (
-                    //     <PTDC key={`${col}${idx}`}>
-                    //       {mainSymbol}
-                    //       {col}
-                    //     </PTDC>
-                    //   )
-                    // }
+                    if (String(col).match(/%/g)) {
+                      const color =
+                        Number(col.replace(/%/g, '')) >= 0
+                          ? '#4caf50'
+                          : '#f44336'
+
+                      return (
+                        <PTDC key={`${col}${index}`} style={{ color }}>
+                          {col}
+                        </PTDC>
+                      )
+                    }
+
+                    if (index === 2 || index === 4 || index === 5) {
+                      return (
+                        <PTDC key={`${col}${idx}`}>
+                          {usdSymbol}
+                          {col}
+                        </PTDC>
+                      )
+                    }
+
+                    if (index === 3) {
+                      return (
+                        <PTDC key={`${col}${idx}`}>
+                          {btcSymbol}
+                          {col}
+                        </PTDC>
+                      )
+                    }
 
                     return <PTDC key={`${col}${index}`}>{col}</PTDC>
                   })}
