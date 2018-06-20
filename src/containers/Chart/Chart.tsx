@@ -336,7 +336,6 @@ class Chart extends React.Component<Props, IState> {
                     <Row
                       onClick={() => {
                         this.demoAnimed(order.size)
-                        console.log(order.updated === true)
                       }}
                       key={i}
                       background={'#25282c'}
@@ -429,11 +428,42 @@ class Chart extends React.Component<Props, IState> {
                 height="calc(100vh - 59px - 80px - 39px - 37px - 32px )"
               >
                 {this.state.orderBook.slice(0, 30).map((order, i) => (
-                  <Row key={i} background={'#292d31'}>
-                    <Cell color="#9ca2aa" width={'33%'}>
+                  <Row
+                    onClick={() => {
+                      this.demoAnime(order.size)
+                    }}
+                    key={i}
+                    background={'#292d31'}
+                  >
+                    <Cell
+                      animated={(() => {
+                        if (order.status === 'fall' && order.updated) {
+                          return 'red'
+                        }
+
+                        if (order.status === 'grow' && order.updated) {
+                          return 'green'
+                        }
+
+                        return 'none'
+                      })()}
+                      color="#9ca2aa"
+                      width={'33%'}
+                    >
                       {order.tradeSize.toFixed(5)}
                     </Cell>
                     <Cell
+                      animated={(() => {
+                        if (order.status === 'fall' && order.updated) {
+                          return 'red'
+                        }
+
+                        if (order.status === 'grow' && order.updated) {
+                          return 'green'
+                        }
+
+                        return 'none'
+                      })()}
                       color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
                       width={'33%'}
                     >
@@ -445,10 +475,21 @@ class Chart extends React.Component<Props, IState> {
                       )}
                     </Cell>
                     <Cell
-                      color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
+                      animated={(() => {
+                        if (order.status === 'fall' && order.updated) {
+                          return 'red'
+                        }
+
+                        if (order.status === 'grow' && order.updated) {
+                          return 'green'
+                        }
+
+                        return 'none'
+                      })()}
+                      color="#9ca2aa"
                       width={'33%'}
                     >
-                      {Number(order.price).toFixed(4)}
+                      {order.time}
                     </Cell>
                   </Row>
                 ))}
