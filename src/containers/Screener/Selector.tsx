@@ -627,7 +627,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 }
 
 const SContainer = styled.form`
-  padding: 15px 0;
+  padding-bottom: 15px;
 
   display: ${(props: { showFilters?: boolean }) =>
     props.showFilters ? 'block' : 'none'};
