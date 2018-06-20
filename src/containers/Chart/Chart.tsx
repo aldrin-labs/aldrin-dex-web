@@ -388,10 +388,12 @@ class Chart extends React.Component<Props, IState> {
                     color="#9ca2aa"
                     width={'25%'}
                   >
-                    <MdAddCircleOutline
-                      onClick={this.setAggregation}
-                      style={{ fontSize: '1rem', cursor: 'pointer' }}
-                    />
+                    <AggregationButton>
+                      <MdAddCircleOutline
+                        onClick={this.setAggregation}
+                        style={{ fontSize: '1rem', cursor: 'pointer' }}
+                      />
+                    </AggregationButton>
                   </HeadCell>
                 </Row>
               </Head>
@@ -962,6 +964,12 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
+`
+
+const AggregationButton = styled.button`
+  background: none;
+  border: none;
+  outline: none;
 `
 
 const mapStateToProps = (store: any) => ({
