@@ -970,12 +970,7 @@ const AggregationButton = styled.button`
   background: none;
   border: none;
   outline: none;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+  color: #fff;  
 `
 
 const mapStateToProps = (store: any) => ({
