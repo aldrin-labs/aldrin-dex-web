@@ -201,15 +201,6 @@ const PTH = css`
 const PTHC = styled.th`
   ${PTH};
   min-width: 100px;
-
-  &:nth-child(2) {
-    min-width: 70px;
-    text-align: left;
-  }
-  &:nth-child(3),
-  &:nth-child(4) {
-    text-align: right;
-  }
 `
 
 const PTHead = styled.thead`
