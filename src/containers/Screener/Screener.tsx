@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import styled from 'styled-components'
 
-import Selector from './Selector'
+import Selector from './Selector/Selector'
 import ScreenerTabs from './ScreenerTabs/ScreenerTabs'
 import ScreenerTable from './ScreenerTable/ScreenerTable.tsx'
 import UserForm from './UserForm'

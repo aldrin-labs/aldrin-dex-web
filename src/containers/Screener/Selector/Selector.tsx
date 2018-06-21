@@ -6,7 +6,7 @@ import Typography from 'material-ui/Typography'
 import Select from 'material-ui/Select'
 import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '../../components/SvgIcon/SvgIcon'
+import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 
 import { IProps, IState } from './Selector.types'
 
@@ -302,7 +302,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           <SColumnForm showFilters={showFilters}>
             <SFormControl>
               <InputLabel htmlFor="performance">Performance</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.performance}
                 onChange={this.handleChange}
                 inputProps={{
@@ -315,11 +315,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="performance2">Performance 2</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.performance2}
                 onChange={this.handleChange}
                 inputProps={{
@@ -332,13 +332,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DayHighLow">
                 20-days High/Low
               </InputLabel>
-              <Select
+              <SSelect
                 value={this.state.twenty20DayHighLow}
                 onChange={this.handleChange}
                 inputProps={{
@@ -351,13 +351,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DaySimpleMoving">
                 20-Day Simple Moving Average Beta
               </InputLabel>
-              <Select
+              <SSelect
                 value={this.state.twenty20DaySimpleMoving}
                 onChange={this.handleChange}
                 inputProps={{
@@ -370,7 +370,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -378,7 +378,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <InputLabel htmlFor="fifty50DaySimpleMoving">
                 50-Day Simple Moving Average
               </InputLabel>
-              <Select
+              <SSelect
                 value={this.state.fifty50DaySimpleMoving}
                 onChange={this.handleChange}
                 inputProps={{
@@ -391,13 +391,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="fifty50DayHighLow">
                 50-Day High/Low
               </InputLabel>
-              <Select
+              <SSelect
                 value={this.state.fifty50DayHighLow}
                 onChange={this.handleChange}
                 inputProps={{
@@ -410,13 +410,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="averageTrueRange">
                 Average True Range
               </InputLabel>
-              <Select
+              <SSelect
                 value={this.state.averageTrueRange}
                 onChange={this.handleChange}
                 inputProps={{
@@ -429,13 +429,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twoHundreds200SimpleMoving">
                 200-Day Simple Moving Average
               </InputLabel>
-              <Select
+              <SSelect
                 value={this.state.twoHundreds200SimpleMoving}
                 onChange={this.handleChange}
                 inputProps={{
@@ -448,7 +448,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -456,7 +456,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <InputLabel htmlFor="fiftyTwo52WeekHighLow">
                 52-Week High/Low
               </InputLabel>
-              <Select
+              <SSelect
                 value={this.state.fiftyTwo52WeekHighLow}
                 onChange={this.handleChange}
                 inputProps={{
@@ -469,11 +469,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="rsi14">RSI (14)</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.rsi14}
                 onChange={this.handleChange}
                 inputProps={{
@@ -486,11 +486,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="change">Change</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.change}
                 onChange={this.handleChange}
                 inputProps={{
@@ -503,11 +503,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="pattern">Pattern</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.pattern}
                 onChange={this.handleChange}
                 inputProps={{
@@ -520,13 +520,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
             <SFormControl>
               <InputLabel htmlFor="gap">Gap</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.gap}
                 onChange={this.handleChange}
                 inputProps={{
@@ -539,11 +539,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="changeFromOpen">Change From Open</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.changeFromOpen}
                 onChange={this.handleChange}
                 inputProps={{
@@ -556,11 +556,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="candleStick">Candlestick</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.candleStick}
                 onChange={this.handleChange}
                 inputProps={{
@@ -573,11 +573,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="volatility">Volatility</InputLabel>
-              <Select
+              <SSelect
                 value={this.state.volatility}
                 onChange={this.handleChange}
                 inputProps={{
@@ -590,7 +590,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </Select>
+              </SSelect>
             </SFormControl>
           </SColumnForm>
         </SContainer>
@@ -666,4 +666,11 @@ const ToggleFiltersContainer = styled.div`
   user-select: none;
   padding: 20px;
   width: 57vw;
+`
+
+// TODO: Just a hack, replace it with the normal material-ui ovverriding
+const SSelect = styled(Select)`
+  && > div > div {
+        min-height: 1.8875em;
+  }
 `
