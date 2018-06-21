@@ -350,9 +350,12 @@ class Chart extends React.Component<Props, IState> {
                   background={'#292d31'}
                   style={{ cursor: 'pointer', height: '1.625rem' }}
                 >
-                  <Row isHead background={'#292d31'}>
+                  <TriggerRow isHead background={'#292d31'}>
                     <HeadCell color="#9ca2aa" width={'20%'}>
-                      <StyledArrowSign up={!tableCollapsed} />
+                      <StyledArrowSign
+                        tableCollapsed={!tableCollapsed}
+                        up={!tableCollapsed}
+                      />
                     </HeadCell>
                     <HeadCell
                       style={{
@@ -374,7 +377,7 @@ class Chart extends React.Component<Props, IState> {
                     >
                       {this.state.usdSpreads || 0.01}
                     </HeadCell>
-                  </Row>
+                  </TriggerRow>
                 </Head>
                 <Body height="300px">
                   {this.state.usdSpread.slice(0, 30).map((order, i) => (
@@ -550,20 +553,20 @@ class Chart extends React.Component<Props, IState> {
                 in={this.state.exchangeTableCollapsed}
                 collapsedHeight="2rem"
               >
-                <Title
+                <TriggerTitle
                   onClick={() => {
                     this.setState((prevState) => ({
                       exchangeTableCollapsed: !prevState.exchangeTableCollapsed,
                     }))
                   }}
-                  style={{ cursor: 'pointer' }}
                 >
                   <StyledArrowSign
                     style={{ marginRight: '0.5rem' }}
+                    tableCollapsed={!exchangeTableCollapsed}
                     up={!exchangeTableCollapsed}
                   />
                   Exchanges
-                </Title>
+                </TriggerTitle>
                 <Head style={{ height: '1.625rem' }} background={'#292d31'}>
                   <Row isHead background={'#292d31'}>
                     <HeadCell color="#9ca2aa" width={'20%'}>
@@ -752,7 +755,7 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-const JumpArrow = keyframes`
+const JumpDownArrow = keyframes`
 0% {
   top: 0px;
 }
@@ -761,6 +764,17 @@ const JumpArrow = keyframes`
 }
 100% {
   top: 0px;
+}
+`
+const JumpUpArrow = keyframes`
+0% {
+  bottom: 0px;
+}
+50% {
+ bottom: 0.25rem;
+}
+100% {
+  bottom: 0px;
 }
 `
 
@@ -945,16 +959,6 @@ const Row = styled.div`
   }
 `
 
-const StyledArrowSign = styled(MdArrowDropUp)`
-  font-size: 1rem;
-  transform: ${(props: { up: boolean }) =>
-    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
-  position: relative;
-  animation: ${JumpArrow} 0.5s linear 5s 2;
-
-  transition: all 0.5s ease;
-`
-
 const Cell = styled.div`
   overflow: hidden;
   list-style: none;
@@ -981,12 +985,41 @@ const Cell = styled.div`
     return ''
   }};
 `
+
 const HeadCell = Cell.extend`
   font-weight: 400;
   font-size: 0.75rem;
   white-space: nowrap;
   width: 7%;
   color: white;
+`
+
+const TriggerRow = Row.extend`
+  display: flex;
+`
+
+const TriggerTitle = Title.extend`
+  cursor: pointer;
+`
+
+const StyledArrowSign = styled(MdArrowDropUp)`
+  font-size: 1rem;
+  transform: ${(props: { up: boolean }) =>
+    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
+  position: relative;
+  transition: all 0.5s ease;
+
+  ${TriggerRow}:hover & {
+    animation: ${(props: { tableCollapsed: boolean }) =>
+        props.tableCollapsed ? JumpUpArrow : JumpDownArrow}
+      0.5s linear 0.5s 2;
+  }
+
+  ${TriggerTitle}:hover & {
+    animation: ${(props: { tableCollapsed: boolean }) =>
+        props.tableCollapsed ? JumpUpArrow : JumpDownArrow}
+      0.5s linear 0.5s 2;
+  }
 `
 
 const EmptyCell = Cell.extend`
