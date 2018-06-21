@@ -4,10 +4,11 @@ import { IProps, IState } from './ScreenerTable.types'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 import { tableData } from './mocks'
+import {
+  onSortTableFull
+} from '../../../utils/PortfolioTableUtils'
 
-const staticRows = tableData
-
-console.log(tableData)
+let staticRows = tableData
 
 const tableHeadingsCurrentScreenerTable = [
   { name: 'Rank', value: 'rank' },
@@ -16,13 +17,18 @@ const tableHeadingsCurrentScreenerTable = [
   { name: 'Price BTC', value: 'priceBTC' },
   { name: 'Market Cap', value: 'marketCap' },
   { name: 'Volume 24 Hr', value: 'volume24' },
-  { name: '% 1Hr USD ', value: '1hrUSD' },
-  { name: '% 1Hr BTC', value: '1hrBTC' },
-  { name: '% 24 Hr USD', value: '24hrUSD' },
-  { name: '% 24 Hr BTC', value: '24hrBTC' },
-  { name: '% 7 Days USD', value: '7daysUSD' },
-  { name: '% 7 Days BTC', value: '7daysBTC' },
+  { name: '% 1Hr USD ', value: 'one1hrUSD' },
+  { name: '% 1Hr BTC', value: 'one1hrBTC' },
+  { name: '% 24 Hr USD', value: 'twentyFour24hrUSD' },
+  { name: '% 24 Hr BTC', value: 'twentyFour24hrBTC' },
+  { name: '% 7 Days USD', value: 'seven7daysUSD' },
+  { name: '% 7 Days BTC', value: 'seven7daysBTC' },
   { name: '% Chg ATH', value: 'chgATH' },
+]
+
+
+const arrayOfStringHeadings = [
+  'ticker'
 ]
 
 export default class ScreenerTable extends React.Component<IProps, IState> {
@@ -30,7 +36,20 @@ export default class ScreenerTable extends React.Component<IProps, IState> {
     currentSort: null,
   }
 
-  onSortTable = () => {}
+  onSortTable = (key) => {
+
+    const {currentSort} = this.state
+
+    const {newData, newCurrentSort} = onSortTableFull(key,staticRows,currentSort,arrayOfStringHeadings)
+
+    // TODO: Should be refactored
+    staticRows = newData
+
+
+    this.setState({
+      currentSort: newCurrentSort
+    })
+  }
 
   render() {
     const { currentSort } = this.state

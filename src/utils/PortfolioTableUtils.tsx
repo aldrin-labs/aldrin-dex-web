@@ -2,8 +2,58 @@ import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 
+export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadings) => {
+    if (!tableData) {
+      return
+    }
+
+    const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
+    let newCurrentSort : { key: string; arg: 'ASC' | 'DESC' } | null
+
+    const newData = tableData.slice().sort((a, b) => {
+      if (currentSort && currentSort.key === key) {
+        if (currentSort.arg === 'ASC') {
+          newCurrentSort = { key, arg: 'DESC' }
+
+          if (stringKey) {
+            return onSortStrings(b[key], a[key])
+          }
+
+          return b[key] - a[key]
+        } else {
+          newCurrentSort = { key, arg: 'ASC' }
+
+          if (stringKey) {
+            return onSortStrings(a[key], b[key])
+          }
+
+          return a[key] - b[key]
+        }
+      }
+
+      newCurrentSort = { key, arg: 'ASC' }
+
+      if (stringKey) {
+        return onSortStrings(a[key], b[key])
+      }
+
+      return a[key] - b[key]
+    })
+
+    console.log(newData)
+    console.log(newCurrentSort)
+    console.log('stringKey: ', stringKey)
+
+
+  return {
+      newData,
+      newCurrentSort
+    }
+
+}
+
 export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) => {
-  return arrayOfObjects.map(a => Object.assign({}, a));
+  return arrayOfObjects.map((a) => Object.assign({}, a))
 }
 
 export const onSortStrings = (a: string, b: string): number => {
