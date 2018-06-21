@@ -3,15 +3,17 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import styled from 'styled-components'
 
-import Selector from './Selector/Selector'
-import ScreenerTabs from './ScreenerTabs/ScreenerTabs'
-import ScreenerTable from './ScreenerTable/ScreenerTable.tsx'
-import UserForm from './UserForm'
+import Selector from '../Selector/Selector'
+import ScreenerTabs from '../ScreenerTabs/ScreenerTabs'
+import ScreenerTable from '../ScreenerTable/ScreenerTable.tsx'
+import ScreenerSearch from '../ScreenerSearch/ScreenerSearch'
+import UserForm from '../UserForm'
 import { IProps, IState } from './Screener.types'
 
 class ScreenerBase extends React.Component<IProps, IState> {
   state: IState = {
     tab: 'marketSummary',
+    searchText: ''
   }
 
   onChangeTab = (
@@ -25,12 +27,24 @@ class ScreenerBase extends React.Component<IProps, IState> {
     this.setState({ tab: kind })
   }
 
+  onChangeSearchText = (newSearchText: string) => {
+    // const newSearchText = e.target.value
+    //
+    // this.setState(({searchText: newSearchText}), () => {
+    //   console.log(this.state.searchText);
+    // })
+
+    this.setState({searchText: newSearchText})
+  }
+
+
   render() {
     return (
       <div>
         <ScreenerTabs onChangeTab={this.onChangeTab} tab={this.state.tab} />
         <Selector />
-        <ScreenerTable />
+        <ScreenerSearch searchText={this.state.searchText} onChangeSearchText={this.onChangeSearchText}/>
+        <ScreenerTable searchText={this.state.searchText} />
       </div>
     )
   }

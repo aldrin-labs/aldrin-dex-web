@@ -53,7 +53,7 @@ export default class ScreenerTable extends React.Component<IProps, IState> {
 
   render() {
     const { currentSort } = this.state
-
+    const {searchText} = this.props
     const usdSymbol = <Icon className="fa fa-usd" />
 
     const btcSymbol = <Icon className="fa fa-btc" />
@@ -130,9 +130,14 @@ export default class ScreenerTable extends React.Component<IProps, IState> {
                 `${chgATH}%`,
               ]
 
+              if (searchText && ticker.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) === -1) {
+                return
+              }
+
               return (
                 <PTR key={`${rank}${ticker}${idx}`}>
                   {cols.map((col, index) => {
+
                     if (String(col).match(/%/g)) {
                       const color =
                         Number(col.replace(/%/g, '')) >= 0
