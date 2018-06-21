@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
 import { maxBy } from 'lodash'
-
 import {
   FlexibleXYPlot,
   VerticalRectSeries,
@@ -11,40 +10,9 @@ import {
   AreaSeries,
   Crosshair,
 } from 'react-vis'
+import { CircularProgress, Divider } from '@material-ui/core'
 
-const orderData = [
-  { x: 1, y: 2500 },
-  { x: 1.1, y: 2502 },
-  { x: 1.2, y: 2503 },
-  { x: 1.4, y: 2504 },
-  { x: 1.5, y: 2505 },
-  { x: 1.6, y: 2506 },
-  { x: 1.7, y: 2507 },
-  { x: 1.8, y: 2508 },
-  { x: 1.85, y: 2505 },
-  { x: 1.89, y: 2503 },
-  { x: 1.91, y: 2504 },
-  { x: 1.9, y: 2509 },
-  { x: 3, y: 2000 },
-  { x: 4, y: 1500 },
-  { x: 6, y: 700 },
-  { x: 10, y: 0 },
-]
-const spreadData = [
-  { x: 20, y: 2500 },
-  { x: 19.3, y: 2500 },
-  { x: 19.2, y: 2502 },
-  { x: 19.1, y: 2501 },
-  { x: 19.02, y: 2500 },
-  { x: 17, y: 2000 },
-  { x: 16.2, y: 2006.2 },
-  { x: 16.1, y: 2000.1 },
-  { x: 14, y: 1500 },
-  { x: 13.6, y: 1503.6 },
-  { x: 12.3, y: 1502.3 },
-  { x: 12, y: 700 },
-  { x: 10, y: 0 },
-]
+import { abbrNum } from './depthChartUtil'
 
 const axisStyle = {
   ticks: {
@@ -63,21 +31,23 @@ class DepthChart extends Component {
     MAX_DOMAIN_PLOT: 5000,
     crosshairValuesForSpread: [],
     crosshairValuesForOrder: [],
-    nearestOrderXIndex: null,
+    // nearestOrderXIndex: null,
   }
 
   componentDidMount() {
+    const { orderData, spreadData } = this.props
+
+    if (!orderData || !spreadData) {
+      return null
+    }
     const maximumYinDataSet = Math.max(
       maxBy(spreadData, (el) => el.y).y,
       maxBy(orderData, (el) => el.y).y
     )
-    this.setState(
-      {
-        MAX_DOMAIN_PLOT:
-          maximumYinDataSet < 50000 ? maximumYinDataSet / 4 : 50000,
-      },
-      () => console.log(this.state)
-    )
+    this.setState({
+      MAX_DOMAIN_PLOT:
+        maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
+    })
   }
 
   scale = (type: 'increase' | 'decrease', scale: number) => {
@@ -95,12 +65,10 @@ class DepthChart extends Component {
   }
 
   onNearestOrderX = (value, { index }) => {
-    console.log(index + '0')
-
     this.setState({
-      crosshairValuesForOrder: orderData
+      crosshairValuesForOrder: this.props.orderData
         .map((d, i) => {
-          if (index === orderData.length - 1) {
+          if (index === this.props.orderData.length - 1) {
             return null
           }
 
@@ -111,22 +79,22 @@ class DepthChart extends Component {
           return null
         })
         .filter(Boolean),
-      nearestOrderXIndex: index,
+      //   nearestOrderXIndex: index,
     })
   }
 
   onNearestSpreadX = (value, { index }) => {
-    console.log(index + 'S')
+    const { orderData, spreadData } = this.props
     this.setState({
       crosshairValuesForSpread: spreadData
         .map((d, i) => {
-          if (
-            index === spreadData.length - 1 &&
-            this.state.nearestOrderXIndex === orderData.length - 1 &&
-            i === index
-          ) {
-            return d
-          }
+          //   if (
+          //     index !== spreadData.length - 1 &&
+          //     this.state.nearestOrderXIndex === orderData.length - 1 &&
+          //     i === index
+          //   ) {
+          //     return d
+          //   }
 
           if (index === spreadData.length - 1) {
             return null
@@ -143,11 +111,16 @@ class DepthChart extends Component {
   }
 
   onMouseLeave = () => {
-    this.setState({ crosshairValues: [], crosshairsValues: [] })
+    this.setState({ crosshairValuesForSpread: [], crosshairValuesForOrder: [] })
   }
 
   render() {
     const { crosshairValuesForSpread, crosshairValuesForOrder } = this.state
+    const { orderData, spreadData } = this.props
+
+    if (!orderData || !spreadData) {
+      return <CircularProgress color="primary" />
+    }
 
     return (
       <Container>
@@ -172,17 +145,32 @@ class DepthChart extends Component {
           </MidPriceContainer>
           <XAxis style={axisStyle} />
           <YAxis
+            tickFormat={(value) => abbrNum(+value.toFixed(2), 2)}
             key="afd"
             hideLine
             animation="stiff"
             orientation="right"
             style={axisStyle}
           />
-          <YAxis key="dsafd" hideLine animation="stiff" style={axisStyle} />
+          <YAxis
+            tickFormat={(value) => abbrNum(+value.toFixed(2), 2)}
+            key="dsafd"
+            hideLine
+            animation="stiff"
+            style={axisStyle}
+          />
           <VerticalRectSeries
             animation="gentle"
             key="charst"
-            data={[{ x0: 9.99999, x: 10, y: 25 / 2 }]}
+            data={[
+              {
+                x0:
+                  orderData.length > 1 &&
+                  orderData[orderData.length - 1].x - 0.01,
+                x: orderData.length > 1 && orderData[orderData.length - 1].x,
+                y: this.state.MAX_DOMAIN_PLOT / 2,
+              },
+            ]}
             color="rgba(91, 96, 102, 0.7)"
           />
           <AreaSeries
@@ -211,38 +199,57 @@ class DepthChart extends Component {
           />
 
           <Crosshair values={crosshairValuesForSpread}>
-            <div
-              style={{
-                background: '#4c50559e',
-                color: '#4ed8da',
-                padding: '5px',
-                fontSize: '14px',
-              }}
-            >
-              <p>
-                {JSON.stringify(
-                  crosshairValuesForSpread.length >= 1 &&
-                    crosshairValuesForSpread[0].x
-                )}
-              </p>
-            </div>
+            <CrosshairContent>
+              {crosshairValuesForSpread.length >= 1 ? (
+                <>
+                  <h4>{crosshairValuesForSpread[0].y.toFixed(2)} USD</h4>
+                  <Br light />
+                  <CrosshairBottomWrapper>
+                    <div>
+                      Can be bought {crosshairValuesForSpread[0].x.toFixed(2)}{' '}
+                      BTC
+                    </div>
+                    <RotatedBr />
+                    <div>
+                      For a total of{' '}
+                      {(
+                        crosshairValuesForSpread[0].y *
+                        crosshairValuesForSpread[0].x
+                      ).toFixed(2)}
+                      USD
+                    </div>
+                  </CrosshairBottomWrapper>
+                </>
+              ) : (
+                <CircularProgress color="primary" />
+              )}
+            </CrosshairContent>
           </Crosshair>
           <Crosshair values={crosshairValuesForOrder}>
-            <div
-              style={{
-                background: '#4c50559e',
-                color: '#4ed8da',
-                padding: '5px',
-                fontSize: '14px',
-              }}
-            >
-              <p>
-                {JSON.stringify(
-                  crosshairValuesForSpread.length >= 1 &&
-                    crosshairValuesForSpread[0]
-                )}
-              </p>
-            </div>
+            <CrosshairContent>
+              {crosshairValuesForOrder.length >= 1 ? (
+                <>
+                  <h4>{crosshairValuesForOrder[0].y.toFixed(2)} USD</h4>
+                  <Br light />
+                  <CrosshairBottomWrapper>
+                    <div>
+                      Can be sold {crosshairValuesForOrder[0].x.toFixed(2)} BTC
+                    </div>
+                    <RotatedBr />
+                    <div>
+                      For a total of{' '}
+                      {(
+                        crosshairValuesForOrder[0].y *
+                        crosshairValuesForOrder[0].x
+                      ).toFixed(2)}
+                      USD
+                    </div>
+                  </CrosshairBottomWrapper>
+                </>
+              ) : (
+                <CircularProgress color="primary" />
+              )}
+            </CrosshairContent>
           </Crosshair>
         </FlexibleXYPlot>
       </Container>
@@ -264,6 +271,39 @@ const PriceTitle = styled.span`
 const Button = styled.div`
   cursor: pointer;
   padding: 0.25rem;
+`
+
+const CrosshairContent = styled.div`
+  background: rgba(37, 40, 44, 0.65);
+  color: #9ca2aa;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  min-width: 15rem;
+`
+
+const Br = styled(Divider)`
+  && {
+    width: 10%;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+  }
+`
+
+const RotatedBr = Br.extend`
+  && {
+    transform: rotate(90deg);
+    margin-top: 1rem;
+    margin-left: -1rem;
+  }
+`
+
+const CrosshairBottomWrapper = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  color: gray;
+  font-weight: 300;
+  font-size: 0.75rem;
 `
 
 const MidPriceContainer = styled.div`

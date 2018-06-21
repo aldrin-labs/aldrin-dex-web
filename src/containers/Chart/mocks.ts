@@ -1,3 +1,29 @@
+function getRandomArbitrary(min: number, max: number) {
+  return Math.random() * (max - min) + min
+}
+
+export const getFakeDepthChartData = () => {
+  /* tslint:disable */
+  const orderBook = []
+  for (let index = 1; index < 101; index++) {
+    orderBook.push({
+      x: getRandomArbitrary(index * 100 - 2, index * 100),
+      y: getRandomArbitrary(100 - index - 1, 100 - index),
+    })
+  }
+
+  const usdSpread = []
+  for (let index = 100; index < 201; index++) {
+    usdSpread.push({
+      x: getRandomArbitrary((300 - index) * 100 - 1, (300 - index) * 100),
+      y: getRandomArbitrary(200 - index - 1, 200 - index),
+    })
+  }
+  /* tslint:enable */
+
+  return { usdSpread, orderBook }
+}
+
 export const orders = [
   [0.061585, 28.53809065, 1.75751821, 1.75751821],
   [0.06159, 6.82004859, 0.42004606, 2.17756427],

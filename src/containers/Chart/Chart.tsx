@@ -15,7 +15,13 @@ import { FaCircle } from 'react-icons/lib/fa'
 import * as actions from './actions'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
-import { orderBook, exchanges, orders, usdSpread } from './mocks'
+import {
+  orderBook,
+  exchanges,
+  orders,
+  usdSpread,
+  getFakeDepthChartData,
+} from './mocks'
 import Switch from '@components/Switch/Switch'
 import DepthChart from './DepthChart'
 
@@ -234,6 +240,7 @@ class Chart extends React.Component<Props, IState> {
       exchangeTableCollapsed,
     } = this.state
     const { activeExchange } = this.props
+    const { usdSpread, orderBook } = getFakeDepthChartData()
 
     return (
       <Container>
@@ -253,7 +260,9 @@ class Chart extends React.Component<Props, IState> {
             <SingleChart />
           ) : (
             <DepthChartContainer>
-              <DepthChart />
+              <DepthChart
+                {...{ orderData: orderBook, spreadData: usdSpread }}
+              />
             </DepthChartContainer>
           )}
         </ChartsContainer>
@@ -743,11 +752,16 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-const StyledArrowSign = styled(MdArrowDropUp)`
-  font-size: 1rem;
-  transform: ${(props: { up: boolean }) =>
-    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
-  transition: all 0.5s ease;
+const JumpArrow = keyframes`
+0% {
+  top: 0px;
+}
+50% {
+ top: 0.25rem;
+}
+100% {
+  top: 0px;
+}
 `
 
 const Title = styled.div`
@@ -929,6 +943,16 @@ const Row = styled.div`
     background: ${(props: { isHead?: boolean }) =>
       props.isHead ? '#292d31' : '#454f59'};
   }
+`
+
+const StyledArrowSign = styled(MdArrowDropUp)`
+  font-size: 1rem;
+  transform: ${(props: { up: boolean }) =>
+    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
+  position: relative;
+  animation: ${JumpArrow} 0.5s linear 5s 2;
+
+  transition: all 0.5s ease;
 `
 
 const Cell = styled.div`
