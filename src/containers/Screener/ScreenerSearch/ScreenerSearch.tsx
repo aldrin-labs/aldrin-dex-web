@@ -20,10 +20,6 @@ export default class ScreenerSearch extends React.Component <IProps, IState> {
 
   render() {
 
-    // console.log(this.state.inputSearchText);
-    // console.log('render');
-
-
     return (
       <SearchWrapper>
         <InputWrapper>
