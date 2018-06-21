@@ -180,7 +180,7 @@ const Wrapper = styled.div`
   justify-content: center;
 
   overflow-y: scroll;
-  padding-top: 20px;
+  padding: 20px;
 
   &::-webkit-scrollbar {
     width: 12px;
