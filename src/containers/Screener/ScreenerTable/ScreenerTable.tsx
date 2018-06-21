@@ -236,7 +236,7 @@ const PTHC = styled.th`
   min-width: 100px;
   
   &:nth-child(1) {
-    min-width: 50px;
+    min-width: 70px;
   }
   &:nth-child(n + 4) {
     min-width: 120px;
@@ -280,7 +280,7 @@ const PTDC = styled.td`
   min-width: 100px;
   
   &:nth-child(1) {
-    min-width: 50px;
+    min-width: 70px;
   }
   
   &:nth-child(n + 4) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Input, { InputLabel } from 'material-ui/Input'
+import {InputLabel } from 'material-ui/Input'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
@@ -9,6 +9,14 @@ import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 
 import { IProps, IState } from './Selector.types'
+
+// Value Below
+// Value Below or Equal
+// Value Above
+// Value Above or Equal
+// Value Between
+// Value Equals To
+// Value Not Equal To
 
 const data = {
   coin: [
@@ -229,40 +237,43 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               verticalAlign: 'middle',
               marginLeft: '4px',
               transform: showFilters ? 'rotate(180deg)' : null,
+              transition: 'all 0.3s ease'
             }}
           />
         </ToggleFiltersContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
-          {/*<SFormControl>*/}
-          {/*<InputLabel htmlFor="coin">Coin</InputLabel>*/}
-          {/*<Select*/}
-          {/*value={this.state.coin}*/}
-          {/*onChange={this.handleChange}*/}
-          {/*inputProps={{*/}
-          {/*name: 'coin',*/}
-          {/*id: 'coin',*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*{data.coin.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
-          {/*</Select>*/}
+          <SColumnForm showFilters={showFilters}>
+          <SFormControl>
+          <InputLabel htmlFor="coin">Coin</InputLabel>
+          <SSelect
+          value={this.state.coin}
+          onChange={this.handleChange}
+          inputProps={{
+          name: 'coin',
+          id: 'coin',
+          }}
+          >
+          {data.coin.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
+          </SSelect>
           {/*<FormHelperText>Label demo. Select coin!</FormHelperText>*/}
-          {/*</SFormControl>*/}
-          {/*<SFormControl>*/}
-          {/*<InputLabel htmlFor="marketCap">Market Cap</InputLabel>*/}
-          {/*<Select*/}
-          {/*value={this.state.marketCap}*/}
-          {/*onChange={this.handleChange}*/}
-          {/*inputProps={{*/}
-          {/*name: 'marketCap',*/}
-          {/*id: 'marketCap',*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*{data.marketCap.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
-          {/*</Select>*/}
-          {/*</SFormControl>*/}
+            <Input/>
+          </SFormControl>
+          <SFormControl>
+          <InputLabel htmlFor="marketCap">Market Cap</InputLabel>
+          <SSelect
+          value={this.state.marketCap}
+          onChange={this.handleChange}
+          inputProps={{
+          name: 'marketCap',
+          id: 'marketCap',
+          }}
+          >
+          {data.marketCap.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
+          </SSelect><Input/>
+          </SFormControl>
           {/*<SFormControl>*/}
           {/*<InputLabel htmlFor="price">Price</InputLabel>*/}
-          {/*<Select*/}
+          {/*<SSelect*/}
           {/*value={this.state.price}*/}
           {/*onChange={this.handleChange}*/}
           {/*inputProps={{*/}
@@ -271,34 +282,35 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           {/*}}*/}
           {/*>*/}
           {/*{data.price.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
-          {/*</Select>*/}
+          {/*</SSelect>*/}
           {/*</SFormControl>*/}
-          {/*<SFormControl>*/}
-          {/*<InputLabel htmlFor="peg">PEG</InputLabel>*/}
-          {/*<Select*/}
-          {/*value={this.state.peg}*/}
-          {/*onChange={this.handleChange}*/}
-          {/*inputProps={{*/}
-          {/*name: 'peg',*/}
-          {/*id: 'peg',*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*{data.peg.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
-          {/*</Select>*/}
-          {/*</SFormControl>*/}
-          {/*<SFormControl>*/}
-          {/*<InputLabel htmlFor="volume">Volume</InputLabel>*/}
-          {/*<Select*/}
-          {/*value={this.state.volume}*/}
-          {/*onChange={this.handleChange}*/}
-          {/*inputProps={{*/}
-          {/*name: 'volume',*/}
-          {/*id: 'volume',*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*{data.volume.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
-          {/*</Select>*/}
-          {/*</SFormControl>*/}
+          <SFormControl>
+          <InputLabel htmlFor="peg">PEG</InputLabel>
+          <SSelect
+          value={this.state.peg}
+          onChange={this.handleChange}
+          inputProps={{
+          name: 'peg',
+          id: 'peg',
+          }}
+          >
+          {data.peg.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
+          </SSelect><Input/>
+          </SFormControl>
+          <SFormControl>
+          <InputLabel htmlFor="volume">Volume</InputLabel>
+          <SSelect
+          value={this.state.volume}
+          onChange={this.handleChange}
+          inputProps={{
+          name: 'volume',
+          id: 'volume',
+          }}
+          >
+          {data.volume.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
+          </SSelect><Input/>
+          </SFormControl>
+          </SColumnForm>
           <SColumnForm showFilters={showFilters}>
             <SFormControl>
               <InputLabel htmlFor="performance">Performance</InputLabel>
@@ -315,7 +327,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="performance2">Performance 2</InputLabel>
@@ -332,7 +344,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DayHighLow">
@@ -351,7 +363,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DaySimpleMoving">
@@ -370,7 +382,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -391,7 +403,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="fifty50DayHighLow">
@@ -410,7 +422,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="averageTrueRange">
@@ -429,7 +441,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twoHundreds200SimpleMoving">
@@ -448,7 +460,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -469,7 +481,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="rsi14">RSI (14)</InputLabel>
@@ -486,7 +498,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="change">Change</InputLabel>
@@ -503,7 +515,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="pattern">Pattern</InputLabel>
@@ -520,7 +532,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -539,7 +551,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="changeFromOpen">Change From Open</InputLabel>
@@ -556,7 +568,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="candleStick">Candlestick</InputLabel>
@@ -573,7 +585,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="volatility">Volatility</InputLabel>
@@ -590,7 +602,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect>
+              </SSelect><Input/>
             </SFormControl>
           </SColumnForm>
         </SContainer>
@@ -630,7 +642,7 @@ const SContainer = styled.form`
   padding-bottom: 15px;
 
   display: ${(props: { showFilters?: boolean }) =>
-    props.showFilters ? 'block' : 'none'};
+    props.showFilters ? 'flex' : 'none'};
 `
 
 const TextDemo = styled.div`
@@ -658,9 +670,13 @@ const SFormControl = styled(FormControl)`
   }
 `
 
-const SColumnForm = styled.div``
+const SColumnForm = styled.div`
+display: flex;
+    flex-direction: column;
+`
 
 const ToggleFiltersContainer = styled.div`
+  font-family: Roboto;
   color: white;
   text-align: center;
   user-select: none;
@@ -673,4 +689,25 @@ const SSelect = styled(Select)`
   && > div > div {
         min-height: 1.8875em;
   }
+`
+
+const Input = styled.input`
+  box-sizing: border-box;
+  border-bottom: 2px solid rgb(78, 216, 218);
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  outline: none;
+  border-right: none;
+  width: 100%;
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  padding: 10px 0 0px;
+  color: rgb(255, 255, 255);
+`
+
+const SFilterWrapper = styled.div`
+  display: flex;
 `
