@@ -71,16 +71,28 @@ class Chart extends React.Component<Props, IState> {
     }
   }
 
-  roundTillTest = (n: number, initial: string): number => {
+  roundTillTest = (n: number, initial: string): string => {
     let p = Number(initial) % n
     let rounded
+    let outputString
     if (p < n / 2) {
       rounded = Number(initial) - p
     } else {
       rounded = Number(initial) + (n - p)
     }
 
-    return rounded
+    if (n >= 1) {
+      outputString = rounded.toFixed()
+    } else {
+      outputString = rounded.toFixed(2)
+    }
+
+    if (n >= 1000) {
+      rounded = rounded / 1000
+      outputString = rounded.toFixed() + 'k'
+    }
+
+    return outputString
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -357,7 +369,7 @@ class Chart extends React.Component<Props, IState> {
                       {this.roundTillTest(
                         aggregation,
                         Number(order.price).toFixed(2)
-                      ).toFixed(2)}
+                      )}
                     </Cell>
                   </Row>
                 ))}
@@ -430,7 +442,7 @@ class Chart extends React.Component<Props, IState> {
                         {this.roundTillTest(
                           aggregation,
                           Number(order.price).toFixed(2)
-                        ).toFixed(2)}
+                        )}
                       </Cell>
                     </Row>
                   ))}
