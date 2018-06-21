@@ -4,24 +4,24 @@ function getRandomArbitrary(min: number, max: number) {
 
 export const getFakeDepthChartData = () => {
   /* tslint:disable */
-  const orderBook = []
+  const orderBookFakeData = []
   for (let index = 1; index < 101; index++) {
-    orderBook.push({
+    orderBookFakeData.push({
       x: getRandomArbitrary(index * 100 - 2, index * 100),
       y: getRandomArbitrary(100 - index - 1, 100 - index),
     })
   }
 
-  const usdSpread = []
+  const usdSpreadFakeData = []
   for (let index = 100; index < 201; index++) {
-    usdSpread.push({
+    usdSpreadFakeData.push({
       x: getRandomArbitrary((300 - index) * 100 - 1, (300 - index) * 100),
       y: getRandomArbitrary(200 - index - 1, 200 - index),
     })
   }
   /* tslint:enable */
 
-  return { usdSpread, orderBook }
+  return { usdSpreadFakeData, orderBookFakeData }
 }
 
 export const orders = [

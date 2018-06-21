@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
@@ -8,10 +8,11 @@ import {
   MdArrowUpward,
   MdArrowDownward,
   MdArrowDropUp,
-  MdArrowDropDown,
 } from 'react-icons/lib/md/'
 import { FaCircle } from 'react-icons/lib/fa'
 
+import OrderBookTable from './Tables/OrderBookTable/OrderBookTable'
+import UsdSpreadTable from './Tables/UsdSpreadTable/UsdSpreadTable'
 import * as actions from './actions'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
@@ -23,13 +24,21 @@ import {
   getFakeDepthChartData,
 } from './mocks'
 import Switch from '@components/Switch/Switch'
-import DepthChart from './DepthChart'
-
+import DepthChart from './DepthChart/DepthChart'
+import {
+  Table,
+  Row,
+  Title,
+  Body,
+  Head,
+  Cell as RowCell,
+  HeadCell,
+} from '@components/Table/Table'
+import Input from '@components/Input/Input'
 interface Props {}
 
 interface IState {
   view: 'onlyCharts' | 'default'
-  tableCollapsed: boolean
   exchangeTableCollapsed: boolean
   orders: number[][]
   aggregation: number
@@ -50,7 +59,6 @@ class Chart extends React.Component<Props, IState> {
     orders,
     searchSymbol: '',
     mCharts: '',
-    tableCollapsed: true,
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
@@ -231,16 +239,270 @@ class Chart extends React.Component<Props, IState> {
     })
   }
 
-  renderDefaultView = () => {
+  renderTables: any = () => {
     const {
-      orders,
-      tableCollapsed,
       aggregation,
       showTableOnMobile,
       exchangeTableCollapsed,
     } = this.state
     const { activeExchange } = this.props
-    const { usdSpread, orderBook } = getFakeDepthChartData()
+
+    return (
+      <TablesContainer>
+        <TablesBlockWrapper show={showTableOnMobile === 'ORDER'}>
+          <OrderBookTable
+            {...{
+              onButtonClick: this.changeTable,
+              data: orderBook,
+              demoAnime: this.demoAnime,
+              roundTill: this.roundTill,
+              aggregation,
+            }}
+          />
+
+          <UsdSpreadTable
+            {...{
+              roundTill: this.roundTill,
+              data: usdSpread,
+              aggregation,
+            }}
+          />
+
+          <AggregationTable>
+            <Head background={'#292d31'}>
+              <Row background={'#292d31'} isHead>
+                <Cell color="#9ca2aa" width={'25%'} />
+                <HeadCell
+                  style={{
+                    position: 'relative',
+                    left: '5%',
+                  }}
+                  color="#9ca2aa"
+                  width={'25%'}
+                >
+                  Aggregation
+                </HeadCell>
+                <HeadCell
+                  style={{
+                    position: 'relative',
+                    left: '13%',
+                  }}
+                  color="#9ca2aa"
+                  width={'25%'}
+                >
+                  {aggregation.toFixed(2)}
+                </HeadCell>
+                <HeadCell
+                  style={{
+                    zIndex: 1000,
+                  }}
+                  color="#9ca2aa"
+                  width={'25%'}
+                >
+                  <MdAddCircleOutline
+                    onClick={this.setAggregation}
+                    style={{ fontSize: '1rem', cursor: 'pointer' }}
+                  />
+                </HeadCell>
+              </Row>
+            </Head>
+          </AggregationTable>
+        </TablesBlockWrapper>
+
+        <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
+          <Table>
+            <Title>
+              Trade history
+              <SwitchTablesButton
+                onClick={this.changeTable}
+                variant="outlined"
+                color="primary"
+              >
+                ORDER
+              </SwitchTablesButton>
+            </Title>
+            <Head background={'#292d31'}>
+              <Row background={'#292d31'} isHead>
+                <HeadCell color="#9ca2aa" width={'33%'}>
+                  Trade size
+                </HeadCell>
+                <HeadCell color="#9ca2aa" width={'33%'}>
+                  Price (USD)
+                </HeadCell>
+                <HeadCell color="#9ca2aa" width={'33%'}>
+                  Time
+                </HeadCell>
+              </Row>
+            </Head>
+            <Body height="calc(100vh - 59px - 80px - 39px - 37px - 32px )">
+              {this.state.orderBook.slice(0, 30).map((order, i) => (
+                <Row
+                  onClick={() => {
+                    this.demoAnime(order.size)
+                  }}
+                  key={i}
+                  background={'#292d31'}
+                >
+                  <Cell
+                    animated={(() => {
+                      if (order.status === 'fall' && order.updated) {
+                        return 'red'
+                      }
+
+                      if (order.status === 'grow' && order.updated) {
+                        return 'green'
+                      }
+
+                      return 'none'
+                    })()}
+                    color="#9ca2aa"
+                    width={'33%'}
+                  >
+                    {order.tradeSize.toFixed(5)}
+                  </Cell>
+                  <Cell
+                    animated={(() => {
+                      if (order.status === 'fall' && order.updated) {
+                        return 'red'
+                      }
+
+                      if (order.status === 'grow' && order.updated) {
+                        return 'green'
+                      }
+
+                      return 'none'
+                    })()}
+                    color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
+                    width={'33%'}
+                  >
+                    {Number(order.size).toFixed(8)}
+                    {order.status === 'fall' ? (
+                      <MdArrowDownward style={{ verticalAlign: 'top' }} />
+                    ) : (
+                      <MdArrowUpward style={{ verticalAlign: 'top' }} />
+                    )}
+                  </Cell>
+                  <Cell
+                    animated={(() => {
+                      if (order.status === 'fall' && order.updated) {
+                        return 'red'
+                      }
+
+                      if (order.status === 'grow' && order.updated) {
+                        return 'green'
+                      }
+
+                      return 'none'
+                    })()}
+                    color="#9ca2aa"
+                    width={'33%'}
+                  >
+                    {order.time}
+                  </Cell>
+                </Row>
+              ))}
+            </Body>
+          </Table>
+
+          <ExchangesTable>
+            <CollapseWrapper
+              in={this.state.exchangeTableCollapsed}
+              collapsedHeight="2rem"
+            >
+              <TriggerTitle
+                onClick={() => {
+                  this.setState((prevState) => ({
+                    exchangeTableCollapsed: !prevState.exchangeTableCollapsed,
+                  }))
+                }}
+              >
+                <StyledArrowSign
+                  style={{ marginRight: '0.5rem' }}
+                  tableCollapsed={!exchangeTableCollapsed}
+                  up={!exchangeTableCollapsed}
+                />
+                Exchanges
+              </TriggerTitle>
+              <Head style={{ height: '1.625rem' }} background={'#292d31'}>
+                <Row isHead background={'#292d31'}>
+                  <HeadCell color="#9ca2aa" width={'20%'}>
+                    Name
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'20%'}>
+                    Cross{' '}
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'20%'}>
+                    Price
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'20%'}>
+                    USD
+                  </HeadCell>
+                  <HeadCell color="#9ca2aa" width={'20%'}>
+                    1D Vol(K)
+                  </HeadCell>
+                </Row>
+              </Head>
+              <Body style={{ width: '105%' }} height="100%">
+                {this.state.exchanges.map((exchange, ind) => (
+                  <Row
+                    key={ind}
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      this.changeExchange(ind)
+                    }}
+                    background={activeExchange === ind ? '#353c42' : '#16181b'}
+                  >
+                    {Object.values(exchange).map((prop, propinx) => {
+                      const keyByValue = Object.keys(exchange).find(
+                        (key) => exchange[key] === prop
+                      )
+
+                      if (keyByValue === 'status') {
+                        return
+                      } else if (keyByValue === 'name') {
+                        return (
+                          <Cell
+                            key={propinx}
+                            style={{
+                              alignItems: 'center',
+                              display: 'flex',
+                              flexWrap: 'nowrap',
+                            }}
+                            color="#9ca2aa"
+                            width="20%"
+                          >
+                            <FaCircle
+                              style={{
+                                fontSize: '0.5rem',
+                                minWidth: '20%',
+                                flexBasis: '20%',
+                                color: exchange.status,
+                                marginRight: '0.25rem',
+                              }}
+                            />
+                            {prop}
+                          </Cell>
+                        )
+                      } else {
+                        return (
+                          <Cell key={propinx} color="#9ca2aa" width="20%">
+                            {prop}
+                          </Cell>
+                        )
+                      }
+                    })}
+                  </Row>
+                ))}
+              </Body>
+            </CollapseWrapper>
+          </ExchangesTable>
+        </TablesBlockWrapper>
+      </TablesContainer>
+    )
+  }
+
+  renderDefaultView = () => {
+    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
 
     return (
       <Container>
@@ -261,389 +523,16 @@ class Chart extends React.Component<Props, IState> {
           ) : (
             <DepthChartContainer>
               <DepthChart
-                {...{ orderData: orderBook, spreadData: usdSpread }}
+                {...{
+                  orderData: orderBookFakeData,
+                  spreadData: usdSpreadFakeData,
+                }}
               />
             </DepthChartContainer>
           )}
         </ChartsContainer>
 
-        <TablesContainer>
-          <TablesBlockWrapper show={showTableOnMobile === 'ORDER'}>
-            <Table>
-              <Title>
-                Order Book
-                <SwitchTablesButton
-                  onClick={this.changeTable}
-                  variant="outlined"
-                  color="primary"
-                >
-                  HISTORY
-                </SwitchTablesButton>
-              </Title>
-              <Head background={'#292d31'}>
-                <Row isHead background={'#292d31'}>
-                  <EmptyCell color="#9ca2aa" width={'20%'} />
-                  <HeadCell
-                    style={{
-                      position: 'relative',
-                      left: '5%',
-                    }}
-                    color="#9ca2aa"
-                    width={'35%'}
-                  >
-                    Market Size
-                  </HeadCell>
-                  <HeadCell
-                    color="#9ca2aa"
-                    style={{
-                      position: 'relative',
-                      left: '13%',
-                    }}
-                    width={'14%'}
-                  >
-                    Price<br />(USD)
-                  </HeadCell>
-                </Row>
-              </Head>
-              <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}>
-                {this.state.orderBook.map((order, i) => (
-                  <Row
-                    onClick={() => {
-                      this.demoAnime(order.size)
-                    }}
-                    key={i}
-                    background={'#292d31'}
-                  >
-                    <EmptyCell
-                      status={'rise'}
-                      colored={order.percentageOfChange.toString()}
-                      color="#9ca2aa"
-                      width={'25%'}
-                    />
-
-                    <Cell
-                      color="#9ca2aa"
-                      animated={order.updated ? 'green' : 'none'}
-                      width={'35%'}
-                    >
-                      {Number(order.size).toFixed(8)}
-                    </Cell>
-                    <Cell color="#34cb86d1" width={'30%'}>
-                      {this.roundTill(
-                        aggregation,
-                        Number(order.price).toFixed(2)
-                      ).toFixed(2)}
-                    </Cell>
-                  </Row>
-                ))}
-              </Body>
-            </Table>
-
-            <USDSpreadTable>
-              <CollapseWrapper in={tableCollapsed} collapsedHeight="1.5rem">
-                <Head
-                  onClick={() => {
-                    this.setState((prevState) => ({
-                      tableCollapsed: !prevState.tableCollapsed,
-                    }))
-                  }}
-                  background={'#292d31'}
-                  style={{ cursor: 'pointer', height: '1.625rem' }}
-                >
-                  <TriggerRow isHead background={'#292d31'}>
-                    <HeadCell color="#9ca2aa" width={'20%'}>
-                      <StyledArrowSign
-                        tableCollapsed={!tableCollapsed}
-                        up={!tableCollapsed}
-                      />
-                    </HeadCell>
-                    <HeadCell
-                      style={{
-                        position: 'relative',
-                        left: '5%',
-                      }}
-                      color="#9ca2aa"
-                      width={'35%'}
-                    >
-                      USD spread{' '}
-                    </HeadCell>
-                    <HeadCell
-                      style={{
-                        position: 'relative',
-                        left: '13%',
-                      }}
-                      color="#9ca2aa"
-                      width={'14%'}
-                    >
-                      {this.state.usdSpreads || 0.01}
-                    </HeadCell>
-                  </TriggerRow>
-                </Head>
-                <Body height="300px">
-                  {this.state.usdSpread.slice(0, 30).map((order, i) => (
-                    <Row
-                      onClick={() => {
-                        this.demoAnimed(order.size)
-                      }}
-                      key={i}
-                      background={'#25282c'}
-                    >
-                      <EmptyCell
-                        status={'fall'}
-                        colored={order.percentageOfChange.toString()}
-                        color="#9ca2aa"
-                        width={'25%'}
-                      />
-                      <Cell
-                        animated={order.updated ? 'red' : 'none'}
-                        color="#9ca2aa"
-                        width={'35%'}
-                      >
-                        {Number(order.size).toFixed(8)}
-                      </Cell>
-                      <Cell color="#d77455" width={'30%'}>
-                        {this.roundTill(
-                          aggregation,
-                          Number(order.price).toFixed(2)
-                        ).toFixed(2)}
-                      </Cell>
-                    </Row>
-                  ))}
-                </Body>
-              </CollapseWrapper>
-            </USDSpreadTable>
-            <AggregationTable>
-              <Head background={'#292d31'}>
-                <Row background={'#292d31'} isHead>
-                  <Cell color="#9ca2aa" width={'25%'} />
-                  <HeadCell
-                    style={{
-                      position: 'relative',
-                      left: '5%',
-                    }}
-                    color="#9ca2aa"
-                    width={'25%'}
-                  >
-                    Aggregation
-                  </HeadCell>
-                  <HeadCell
-                    style={{
-                      position: 'relative',
-                      left: '13%',
-                    }}
-                    color="#9ca2aa"
-                    width={'25%'}
-                  >
-                    {aggregation.toFixed(2)}
-                  </HeadCell>
-                  <HeadCell
-                    style={{
-                      zIndex: 1000,
-                    }}
-                    color="#9ca2aa"
-                    width={'25%'}
-                  >
-                    <MdAddCircleOutline
-                      onClick={this.setAggregation}
-                      style={{ fontSize: '1rem', cursor: 'pointer' }}
-                    />
-                  </HeadCell>
-                </Row>
-              </Head>
-            </AggregationTable>
-          </TablesBlockWrapper>
-
-          <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
-            <Table>
-              <Title>
-                Trade history
-                <SwitchTablesButton
-                  onClick={this.changeTable}
-                  variant="outlined"
-                  color="primary"
-                >
-                  ORDER
-                </SwitchTablesButton>
-              </Title>
-              <Head background={'#292d31'}>
-                <Row background={'#292d31'} isHead>
-                  <HeadCell color="#9ca2aa" width={'33%'}>
-                    Trade size
-                  </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'33%'}>
-                    Price (USD)
-                  </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'33%'}>
-                    Time
-                  </HeadCell>
-                </Row>
-              </Head>
-              <Body height="calc(100vh - 59px - 80px - 39px - 37px - 32px )">
-                {this.state.orderBook.slice(0, 30).map((order, i) => (
-                  <Row
-                    onClick={() => {
-                      this.demoAnime(order.size)
-                    }}
-                    key={i}
-                    background={'#292d31'}
-                  >
-                    <Cell
-                      animated={(() => {
-                        if (order.status === 'fall' && order.updated) {
-                          return 'red'
-                        }
-
-                        if (order.status === 'grow' && order.updated) {
-                          return 'green'
-                        }
-
-                        return 'none'
-                      })()}
-                      color="#9ca2aa"
-                      width={'33%'}
-                    >
-                      {order.tradeSize.toFixed(5)}
-                    </Cell>
-                    <Cell
-                      animated={(() => {
-                        if (order.status === 'fall' && order.updated) {
-                          return 'red'
-                        }
-
-                        if (order.status === 'grow' && order.updated) {
-                          return 'green'
-                        }
-
-                        return 'none'
-                      })()}
-                      color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
-                      width={'33%'}
-                    >
-                      {Number(order.size).toFixed(8)}
-                      {order.status === 'fall' ? (
-                        <MdArrowDownward style={{ verticalAlign: 'top' }} />
-                      ) : (
-                        <MdArrowUpward style={{ verticalAlign: 'top' }} />
-                      )}
-                    </Cell>
-                    <Cell
-                      animated={(() => {
-                        if (order.status === 'fall' && order.updated) {
-                          return 'red'
-                        }
-
-                        if (order.status === 'grow' && order.updated) {
-                          return 'green'
-                        }
-
-                        return 'none'
-                      })()}
-                      color="#9ca2aa"
-                      width={'33%'}
-                    >
-                      {order.time}
-                    </Cell>
-                  </Row>
-                ))}
-              </Body>
-            </Table>
-
-            <ExchangesTable>
-              <CollapseWrapper
-                in={this.state.exchangeTableCollapsed}
-                collapsedHeight="2rem"
-              >
-                <TriggerTitle
-                  onClick={() => {
-                    this.setState((prevState) => ({
-                      exchangeTableCollapsed: !prevState.exchangeTableCollapsed,
-                    }))
-                  }}
-                >
-                  <StyledArrowSign
-                    style={{ marginRight: '0.5rem' }}
-                    tableCollapsed={!exchangeTableCollapsed}
-                    up={!exchangeTableCollapsed}
-                  />
-                  Exchanges
-                </TriggerTitle>
-                <Head style={{ height: '1.625rem' }} background={'#292d31'}>
-                  <Row isHead background={'#292d31'}>
-                    <HeadCell color="#9ca2aa" width={'20%'}>
-                      Name
-                    </HeadCell>
-                    <HeadCell color="#9ca2aa" width={'20%'}>
-                      Cross{' '}
-                    </HeadCell>
-                    <HeadCell color="#9ca2aa" width={'20%'}>
-                      Price
-                    </HeadCell>
-                    <HeadCell color="#9ca2aa" width={'20%'}>
-                      USD
-                    </HeadCell>
-                    <HeadCell color="#9ca2aa" width={'20%'}>
-                      1D Vol(K)
-                    </HeadCell>
-                  </Row>
-                </Head>
-                <Body style={{ width: '105%' }} height="100%">
-                  {this.state.exchanges.map((exchange, ind) => (
-                    <Row
-                      key={ind}
-                      style={{ cursor: 'pointer' }}
-                      onClick={() => {
-                        this.changeExchange(ind)
-                      }}
-                      background={
-                        activeExchange === ind ? '#353c42' : '#16181b'
-                      }
-                    >
-                      {Object.values(exchange).map((prop, propinx) => {
-                        const keyByValue = Object.keys(exchange).find(
-                          (key) => exchange[key] === prop
-                        )
-
-                        if (keyByValue === 'status') {
-                          return
-                        } else if (keyByValue === 'name') {
-                          return (
-                            <Cell
-                              key={propinx}
-                              style={{
-                                alignItems: 'center',
-                                display: 'flex',
-                                flexWrap: 'nowrap',
-                              }}
-                              color="#9ca2aa"
-                              width="20%"
-                            >
-                              <FaCircle
-                                style={{
-                                  fontSize: '0.5rem',
-                                  minWidth: '20%',
-                                  flexBasis: '20%',
-                                  color: exchange.status,
-                                  marginRight: '0.25rem',
-                                }}
-                              />
-                              {prop}
-                            </Cell>
-                          )
-                        } else {
-                          return (
-                            <Cell key={propinx} color="#9ca2aa" width="20%">
-                              {prop}
-                            </Cell>
-                          )
-                        }
-                      })}
-                    </Row>
-                  ))}
-                </Body>
-              </CollapseWrapper>
-            </ExchangesTable>
-          </TablesBlockWrapper>
-        </TablesContainer>
+        {this.renderTables()}
       </Container>
     )
   }
@@ -721,40 +610,6 @@ const InputContainer = styled.div`
   justify-content: center;
 `
 
-const Input = styled.input`
-  margin: 0 1rem;
-  box-sizing: border-box;
-  background: transparent;
-  border-top: none;
-  border-left: none;
-  border-bottom: 2px solid rgba(78, 216, 218, 0.3);
-  outline: none;
-  border-right: none;
-  width: 100%;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: left;
-  padding: 10px 0 0px;
-  color: rgb(255, 255, 255);
-  transition: all 0.25s ease-out;
-
-  &:focus {
-    border-bottom: 2px solid rgb(78, 216, 218);
-  }
-`
-//  FlexTable
-
-const SwitchTablesButton = styled(Button)`
-  && {
-    display: none;
-
-    @media (max-width: 1080px) {
-      display: block;
-    }
-  }
-`
-
 const JumpDownArrow = keyframes`
 0% {
   top: 0px;
@@ -778,26 +633,18 @@ const JumpUpArrow = keyframes`
 }
 `
 
-const Title = styled.div`
-  width: 100%;
-  text-transform: uppercase;
-  color: white;
-  font-size: 14px;
-  font-weight: 700;
-  padding: 10px;
-  background: #353d46;
-  text-align: center;
-  vertical-align: middle;
+const SwitchTablesButton = styled(Button)`
+  && {
+    display: none;
 
-  @media (max-width: 1080px) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @media (max-width: 1080px) {
+      display: block;
+    }
   }
 `
 
 const TablesBlockWrapper = styled(Paper)`
-  min-width: 300px;
+  min-width: 150px;
   width: 50%;
   position: relative;
   border-right: 1px solid #30353a;
@@ -856,18 +703,6 @@ const ChartsSwitcher = styled.div`
   color: white;
   border-bottom: 1px solid #818d9ae6;
 `
-const Table = styled.div`
-  font-family: Roboto, sans-serif;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  max-height: calc(100vh - 59px - 80px);
-  overflow-y: hidden;
-
-  @media (max-width: 1080px) {
-    width: 100%;
-  }
-`
 
 const CollapsibleTable = Table.extend`
   max-height: 28rem;
@@ -899,101 +734,6 @@ const AggregationTable = Table.extend`
   }
 `
 
-const USDSpreadTable = CollapsibleTable.extend`
-  @media (max-width: 1080px) {
-    bottom: 40px;
-  }
-`
-
-const Body = styled.div`
-  width: 100%;
-  height: ${(props: { height: string }) => props.height};
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
-`
-
-const fadeInGreen = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #34cb86d1;
-}
-100% {
-  color: #9ca2aa;
-}
-`
-const fadeInRed = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #d77455;
-
-}
-100% {
-  color: #9ca2aa;
-
-}
-`
-
-const Row = styled.div`
-  width: 100%;
-  display: flex;
-  border-top: ${(props: { isHead?: boolean }) =>
-    props.isHead ? '1px solid #818d9ae6' : 'none'};
-  border-bottom: 1px solid #2d3136;
-  transition: background 0.25s ease;
-  background-color: ${(props: {
-    animated?: string
-    isHead?: boolean
-    background: string
-  }) => props.background};
-
-  &:hover {
-    background: ${(props: { isHead?: boolean }) =>
-      props.isHead ? '#292d31' : '#454f59'};
-  }
-`
-
-const Cell = styled.div`
-  overflow: hidden;
-  list-style: none;
-  padding: 0.25rem 0.4rem;
-  font-weight: 600;
-  font-size: 0.75rem;
-  flex-basis: ${(props: { width: string }) => props.width};
-  color: ${(props: { color: string; width: string }) => props.color};
-  text-align: center;
-  vertical-align: middle;
-  animation: ${(props: { animated?: string; width: string; color: string }) => {
-    if (props.animated === 'none') {
-      return ''
-    }
-
-    if (props.animated === 'green') {
-      return `${fadeInGreen} 1.5s ease`
-    }
-
-    if (props.animated === 'red') {
-      return `${fadeInRed} 1.5s ease`
-    }
-
-    return ''
-  }};
-`
-
-const HeadCell = Cell.extend`
-  font-weight: 400;
-  font-size: 0.75rem;
-  white-space: nowrap;
-  width: 7%;
-  color: white;
-`
-
 const TriggerRow = Row.extend`
   display: flex;
 `
@@ -1022,32 +762,47 @@ const StyledArrowSign = styled(MdArrowDropUp)`
   }
 `
 
-const EmptyCell = Cell.extend`
-  position: relative;
+const fadeInGreen = keyframes`
+0% {
+  color: #9ca2aa;
+}
+50% {
+  color: #34cb86d1;
+}
+100% {
+  color: #9ca2aa;
+}
+`
+const fadeInRed = keyframes`
+0% {
+  color: #9ca2aa;
+}
+50% {
+  color: #d77455;
 
-  &:before {
-    position: absolute;
-    z-index: 100;
-    top: 0;
-    left: 0;
-    width: ${(props: { colored?: string }) => Number(props.colored) / 4}%;
-    height: 100%;
-    content: '';
-    background-color: ${(props: { status?: string; colored?: string }) =>
-      props.status === 'fall' ? '#d77455' : '#34cb86d1'};
-  }
+}
+100% {
+  color: #9ca2aa;
+
+}
 `
 
-const Head = styled.div`
-  height: 40px;
-  width: 100%;
-  color: white;
-  background-color: ${(props: { background: string }) => props.background};
-  border-bottom: 1px solid #818d9ae6;
-  position: sticky;
-  top: 0;
+const Cell = styled(RowCell)`
+  animation: ${(props: { animated?: string; width: string; color: string }) => {
+    if (props.animated === 'none') {
+      return ''
+    }
 
-  font-family: Roboto, sans-serif;
+    if (props.animated === 'green') {
+      return `${fadeInGreen} 1.5s ease`
+    }
+
+    if (props.animated === 'red') {
+      return `${fadeInRed} 1.5s ease`
+    }
+
+    return ''
+  }};
 `
 
 // end of FlexTable
