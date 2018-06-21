@@ -71,6 +71,18 @@ class Chart extends React.Component<Props, IState> {
     }
   }
 
+  roundTillTest = (n: number, initial: string): number => {
+    let p = Number(initial) % n
+    let rounded
+    if (p < n / 2) {
+      rounded = Number(initial) - p
+    } else {
+      rounded = Number(initial) + (n - p)
+    }
+
+    return rounded
+  }
+
   roundTill = (n: number, initial: string): number => {
     //  need testing. Not working on all numbers
     // sorry have not much time
@@ -159,8 +171,21 @@ class Chart extends React.Component<Props, IState> {
         this.setState({ aggregation: 10 })
         break
       case 10:
+        this.setState({ aggregation: 50 })
+        break
+      case 50:
+        this.setState({ aggregation: 100 })
+        break
+      case 100:
+        this.setState({ aggregation: 500 })
+        break
+      case 500:
+        this.setState({ aggregation: 1000 })
+        break
+      case 1000:
         this.setState({ aggregation: 0.01 })
         break
+
       default:
         this.setState({ aggregation: 0.01 })
 
@@ -329,7 +354,7 @@ class Chart extends React.Component<Props, IState> {
                       {Number(order.size).toFixed(8)}
                     </Cell>
                     <Cell color="#34cb86d1" width={'30%'}>
-                      {this.roundTill(
+                      {this.roundTillTest(
                         aggregation,
                         Number(order.price).toFixed(2)
                       ).toFixed(2)}
@@ -402,7 +427,7 @@ class Chart extends React.Component<Props, IState> {
                         {Number(order.size).toFixed(8)}
                       </Cell>
                       <Cell color="#d77455" width={'30%'}>
-                        {this.roundTill(
+                        {this.roundTillTest(
                           aggregation,
                           Number(order.price).toFixed(2)
                         ).toFixed(2)}
