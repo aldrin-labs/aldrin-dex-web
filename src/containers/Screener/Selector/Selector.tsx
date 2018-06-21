@@ -10,13 +10,6 @@ import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 
 import { IProps, IState } from './Selector.types'
 
-// Value Below
-// Value Below or Equal
-// Value Above
-// Value Above or Equal
-// Value Between
-// Value Equals To
-// Value Not Equal To
 
 const data = {
   coin: [
@@ -197,7 +190,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     peg: '',
     volume: '',
 
-    showFilters: false,
     performance: '',
     performance2: '',
     twenty20DayHighLow: '',
@@ -214,6 +206,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     changeFromOpen: '',
     candleStick: '',
     volatility: '',
+
+    showFilters: false,
   }
 
   handleChange = (event) => {
