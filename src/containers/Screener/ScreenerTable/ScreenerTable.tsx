@@ -59,6 +59,7 @@ export default class ScreenerTable extends React.Component<IProps, IState> {
     const btcSymbol = <Icon className="fa fa-btc" />
 
     return (
+      <Container>
       <Wrapper>
         <Table>
           <PTHead>
@@ -171,16 +172,21 @@ export default class ScreenerTable extends React.Component<IProps, IState> {
           </PTBody>
         </Table>
       </Wrapper>
+      </Container>
     )
   }
 }
 
-const Wrapper = styled.div`
+const Container = styled.div`
   display: flex;
   justify-content: center;
-
-  overflow-y: scroll;
+  
   padding: 20px;
+`
+
+
+const Wrapper = styled.div`
+  overflow-y: scroll;
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -228,6 +234,13 @@ const PTH = css`
 const PTHC = styled.th`
   ${PTH};
   min-width: 100px;
+  
+  &:nth-child(1) {
+    min-width: 50px;
+  }
+  &:nth-child(n + 4) {
+    min-width: 120px;
+  }
 `
 
 const PTHead = styled.thead`
@@ -265,6 +278,14 @@ const PTD = css`
 const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
+  
+  &:nth-child(1) {
+    min-width: 50px;
+  }
+  
+  &:nth-child(n + 4) {
+    min-width: 120px;
+  }
 `
 
 const PTBody = styled.tbody`
@@ -275,3 +296,4 @@ const PTBody = styled.tbody`
 const Icon = styled.i`
   padding-right: 5px;
 `
+
