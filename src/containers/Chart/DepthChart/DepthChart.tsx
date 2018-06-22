@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
-import { maxBy } from 'lodash'
+import { maxBy, has } from 'lodash'
 import {
   FlexibleXYPlot,
   VerticalRectSeries,
@@ -34,23 +34,40 @@ class DepthChart extends PureComponent {
     // nearestOrderXIndex: null,
   }
 
-  componentDidMount() {
-    const { orderData, spreadData } = this.props
-
-    if (orderData.lenght < 1 || spreadData.lenght < 1) {
+  static getDerivedStateFromProps(props) {
+    const { orderData, spreadData } = props
+    if (orderData.length < 1 || spreadData.length < 1) {
       return null
     }
-    console.log(spreadData)
-    console.log(orderData)
-    // const maximumYinDataSet = Math.max(
-    //   maxBy(spreadData, (el) => el.y).y,
-    //   maxBy(orderData, (el) => el.y).y
-    // )
-    // this.setState({
-    //   MAX_DOMAIN_PLOT:
-    //     maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
-    // })
+
+    const maximumYinDataSet = Math.max(
+      maxBy(spreadData, (el) => el.y).y,
+      maxBy(orderData, (el) => el.y).y
+    )
+
+    return {
+      MAX_DOMAIN_PLOT:
+        maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
+    }
   }
+
+  // componentDidMount() {
+  //   const { orderData, spreadData } = this.props
+
+  //   if (orderData.lenght < 1 || spreadData.lenght < 1) {
+  //     return null
+  //   }
+  //   console.log(spreadData)
+  //   console.log(orderData)
+  //   const maximumYinDataSet = Math.max(
+  //     maxBy(spreadData, (el) => el.y).y,
+  //     maxBy(orderData, (el) => el.y).y
+  //   )
+  //   this.setState({
+  //     MAX_DOMAIN_PLOT:
+  //       maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
+  //   })
+  // }
 
   scale = (type: 'increase' | 'decrease', scale: number) => {
     if (type === 'increase') {
