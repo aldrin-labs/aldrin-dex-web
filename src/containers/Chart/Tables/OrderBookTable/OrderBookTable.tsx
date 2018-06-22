@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Button } from '@material-ui/core'
 
@@ -12,7 +12,7 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 
-class OrderBookTable extends Component {
+class OrderBookTable extends PureComponent {
   state = {
     data: [],
   }

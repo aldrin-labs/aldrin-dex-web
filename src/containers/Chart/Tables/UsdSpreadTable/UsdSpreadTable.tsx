@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
 import { Collapse } from '@material-ui/core'
@@ -11,9 +11,9 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 
-class UsdSpreadTable extends Component {
+class UsdSpreadTable extends PureComponent {
   state = {
-    tableCollapsed: false,
+    tableExpanded: true,
     data: [],
   }
 
@@ -25,7 +25,7 @@ class UsdSpreadTable extends Component {
 
   onHeadClick = () => {
     this.setState((prevState) => ({
-      tableCollapsed: !prevState.tableCollapsed,
+      tableExpanded: !prevState.tableExpanded,
     }))
   }
 
@@ -62,12 +62,12 @@ class UsdSpreadTable extends Component {
   }
 
   render() {
-    const { tableCollapsed, data } = this.state
+    const { tableExpanded, data } = this.state
     const { roundTill, aggregation, usdSpread } = this.props
 
     return (
       <USDSpreadTable>
-        <CollapseWrapper in={tableCollapsed} collapsedHeight="1.5rem">
+        <CollapseWrapper in={tableExpanded} collapsedHeight="1.5rem">
           <Head
             onClick={this.onHeadClick}
             background={'#292d31'}
@@ -76,8 +76,8 @@ class UsdSpreadTable extends Component {
             <TriggerRow isHead background={'#292d31'}>
               <HeadCell color="#9ca2aa" width={'20%'}>
                 <StyledArrowSign
-                  tableCollapsed={!tableCollapsed}
-                  up={!tableCollapsed}
+                  tableExpanded={!tableExpanded}
+                  up={!tableExpanded}
                 />
               </HeadCell>
               <HeadCell
@@ -207,7 +207,7 @@ const CollapseWrapper = styled(Collapse)`
 `
 
 const CollapsibleTable = Table.extend`
-  max-height: 28rem;
+  max-height: calc(50% - 37px);
   position: absolute;
   bottom: 23px;
   left: 0;
@@ -227,8 +227,8 @@ const StyledArrowSign = styled(MdArrowDropUp)`
   transition: all 0.5s ease;
 
   ${TriggerRow}:hover & {
-    animation: ${(props: { tableCollapsed: boolean }) =>
-        props.tableCollapsed ? JumpUpArrow : JumpDownArrow}
+    animation: ${(props: { tableExpanded: boolean }) =>
+        props.tableExpanded ? JumpUpArrow : JumpDownArrow}
       0.5s linear 0.5s 2;
   }
 `

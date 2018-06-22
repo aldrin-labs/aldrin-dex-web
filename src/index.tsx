@@ -18,6 +18,11 @@ import Loadable from 'react-loadable'
 
 import LoadableLoading from '@components/Loading/LoadableLoading'
 
+// if (process.env.NODE_ENV !== 'production') {
+//   const { whyDidYouUpdate } = require('why-did-you-update')
+//   whyDidYouUpdate(React)
+// }
+
 const history = createHistory()
 
 const HomeRoutes = Loadable({

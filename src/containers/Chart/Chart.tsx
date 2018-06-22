@@ -2,17 +2,15 @@ import React from 'react'
 import styled, { keyframes } from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { Paper, Collapse, Button } from '@material-ui/core'
-import {
-  MdAddCircleOutline,
-  MdArrowUpward,
-  MdArrowDownward,
-  MdArrowDropUp,
-} from 'react-icons/lib/md/'
-import { FaCircle } from 'react-icons/lib/fa'
+import { Paper } from '@material-ui/core'
 
-import OrderBookTable from './Tables/OrderBookTable/OrderBookTable'
-import UsdSpreadTable from './Tables/UsdSpreadTable/UsdSpreadTable'
+import {
+  OrderBookTable,
+  UsdSpreadTable,
+  Aggregation,
+  TradeHistoryTable,
+  ExchangesTable,
+} from './Tables/Tables'
 import * as actions from './actions'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
@@ -25,16 +23,8 @@ import {
 } from './mocks'
 import Switch from '@components/Switch/Switch'
 import DepthChart from './DepthChart/DepthChart'
-import {
-  Table,
-  Row,
-  Title,
-  Body,
-  Head,
-  Cell as RowCell,
-  HeadCell,
-} from '@components/Table/Table'
-import Input from '@components/Input/Input'
+import Inputs from './Inputs/Inputs'
+import { Row, Cell as RowCell } from '@components/Table/Table'
 interface Props {}
 
 interface IState {
@@ -57,8 +47,8 @@ class Chart extends React.Component<Props, IState> {
   state: IState = {
     view: 'default',
     orders,
-    searchSymbol: '',
-    mCharts: '',
+    orderBookFakeData: [],
+    usdSpreadFakeData: [],
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
@@ -69,14 +59,32 @@ class Chart extends React.Component<Props, IState> {
     usdSpreads: null,
   }
 
+  // shouldComponentUpdate() {
+  //   if (condition) {
+  //   }
+  // }
+
   componentDidMount() {
     const { isShownMocks } = this.props
+    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
 
     if (isShownMocks) {
-      this.setState({ orderBook, exchanges, usdSpread })
+      this.setState({
+        orderBook,
+        exchanges,
+        usdSpread,
+        usdSpreadFakeData,
+        orderBookFakeData,
+      })
     } else {
       // fetchData
     }
+  }
+
+  handleTextInputChanges = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    })
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -175,77 +183,12 @@ class Chart extends React.Component<Props, IState> {
         break
     }
   }
-  // bullshit code be carefuly
-  demoAnime = (sizeInd: number) => {
-    const setFalseForSecond = (ind: number) => {
-      setTimeout(() => {
-        this.setState({
-          orderBook: this.state.orderBook.map(
-            (el, i) =>
-              i === ind
-                ? Object.assign({}, el, {
-                    updated: true,
-                  })
-                : el
-          ),
-        })
-      }, 10)
-
-      return false
-    }
-
-    this.setState({
-      orderBook: this.state.orderBook.map(
-        (el, i) =>
-          el.size === sizeInd
-            ? Object.assign({}, el, {
-                updated: el.updated === true ? setFalseForSecond(i) : true,
-                percentageOfChange:
-                  Math.floor(Math.random() * (100 - 0 + 1)) + 0,
-              })
-            : el
-      ),
-    })
-  }
-  demoAnimed = (sizeInd: number) => {
-    const setFalseForSecond = (ind: number) => {
-      setTimeout(() => {
-        this.setState({
-          usdSpread: this.state.usdSpread.map(
-            (el, i) =>
-              i === ind
-                ? Object.assign({}, el, {
-                    updated: true,
-                  })
-                : el
-          ),
-        })
-      }, 10)
-
-      return false
-    }
-
-    this.setState({
-      usdSpread: this.state.usdSpread.map(
-        (el, i) =>
-          el.size === sizeInd
-            ? Object.assign({}, el, {
-                updated: el.updated === true ? setFalseForSecond(i) : true,
-                percentageOfChange:
-                  Math.floor(Math.random() * (100 - 0 + 1)) + 0,
-              })
-            : el
-      ),
-    })
-  }
 
   renderTables: any = () => {
-    const {
-      aggregation,
-      showTableOnMobile,
-      exchangeTableCollapsed,
-    } = this.state
+    const { aggregation, showTableOnMobile } = this.state
+
     const { activeExchange } = this.props
+    const { changeExchange } = this
 
     return (
       <TablesContainer>
@@ -254,7 +197,6 @@ class Chart extends React.Component<Props, IState> {
             {...{
               onButtonClick: this.changeTable,
               data: orderBook,
-              demoAnime: this.demoAnime,
               roundTill: this.roundTill,
               aggregation,
             }}
@@ -268,242 +210,35 @@ class Chart extends React.Component<Props, IState> {
             }}
           />
 
-          <AggregationTable>
-            <Head background={'#292d31'}>
-              <Row background={'#292d31'} isHead>
-                <Cell color="#9ca2aa" width={'25%'} />
-                <HeadCell
-                  style={{
-                    position: 'relative',
-                    left: '5%',
-                  }}
-                  color="#9ca2aa"
-                  width={'25%'}
-                >
-                  Aggregation
-                </HeadCell>
-                <HeadCell
-                  style={{
-                    position: 'relative',
-                    left: '13%',
-                  }}
-                  color="#9ca2aa"
-                  width={'25%'}
-                >
-                  {aggregation.toFixed(2)}
-                </HeadCell>
-                <HeadCell
-                  style={{
-                    zIndex: 1000,
-                  }}
-                  color="#9ca2aa"
-                  width={'25%'}
-                >
-                  <MdAddCircleOutline
-                    onClick={this.setAggregation}
-                    style={{ fontSize: '1rem', cursor: 'pointer' }}
-                  />
-                </HeadCell>
-              </Row>
-            </Head>
-          </AggregationTable>
+          <Aggregation
+            {...{
+              aggregation: this.state.aggregation,
+              onButtonClick: this.setAggregation,
+            }}
+          />
         </TablesBlockWrapper>
 
         <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
-          <Table>
-            <Title>
-              Trade history
-              <SwitchTablesButton
-                onClick={this.changeTable}
-                variant="outlined"
-                color="primary"
-              >
-                ORDER
-              </SwitchTablesButton>
-            </Title>
-            <Head background={'#292d31'}>
-              <Row background={'#292d31'} isHead>
-                <HeadCell color="#9ca2aa" width={'33%'}>
-                  Trade size
-                </HeadCell>
-                <HeadCell color="#9ca2aa" width={'33%'}>
-                  Price (USD)
-                </HeadCell>
-                <HeadCell color="#9ca2aa" width={'33%'}>
-                  Time
-                </HeadCell>
-              </Row>
-            </Head>
-            <Body height="calc(100vh - 59px - 80px - 39px - 37px - 32px )">
-              {this.state.orderBook.slice(0, 30).map((order, i) => (
-                <Row
-                  onClick={() => {
-                    this.demoAnime(order.size)
-                  }}
-                  key={i}
-                  background={'#292d31'}
-                >
-                  <Cell
-                    animated={(() => {
-                      if (order.status === 'fall' && order.updated) {
-                        return 'red'
-                      }
+          <TradeHistoryTable
+            {...{
+              data: orderBook,
+              onButtonClick: this.changeTable,
+            }}
+          />
 
-                      if (order.status === 'grow' && order.updated) {
-                        return 'green'
-                      }
-
-                      return 'none'
-                    })()}
-                    color="#9ca2aa"
-                    width={'33%'}
-                  >
-                    {order.tradeSize.toFixed(5)}
-                  </Cell>
-                  <Cell
-                    animated={(() => {
-                      if (order.status === 'fall' && order.updated) {
-                        return 'red'
-                      }
-
-                      if (order.status === 'grow' && order.updated) {
-                        return 'green'
-                      }
-
-                      return 'none'
-                    })()}
-                    color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
-                    width={'33%'}
-                  >
-                    {Number(order.size).toFixed(8)}
-                    {order.status === 'fall' ? (
-                      <MdArrowDownward style={{ verticalAlign: 'top' }} />
-                    ) : (
-                      <MdArrowUpward style={{ verticalAlign: 'top' }} />
-                    )}
-                  </Cell>
-                  <Cell
-                    animated={(() => {
-                      if (order.status === 'fall' && order.updated) {
-                        return 'red'
-                      }
-
-                      if (order.status === 'grow' && order.updated) {
-                        return 'green'
-                      }
-
-                      return 'none'
-                    })()}
-                    color="#9ca2aa"
-                    width={'33%'}
-                  >
-                    {order.time}
-                  </Cell>
-                </Row>
-              ))}
-            </Body>
-          </Table>
-
-          <ExchangesTable>
-            <CollapseWrapper
-              in={this.state.exchangeTableCollapsed}
-              collapsedHeight="2rem"
-            >
-              <TriggerTitle
-                onClick={() => {
-                  this.setState((prevState) => ({
-                    exchangeTableCollapsed: !prevState.exchangeTableCollapsed,
-                  }))
-                }}
-              >
-                <StyledArrowSign
-                  style={{ marginRight: '0.5rem' }}
-                  tableCollapsed={!exchangeTableCollapsed}
-                  up={!exchangeTableCollapsed}
-                />
-                Exchanges
-              </TriggerTitle>
-              <Head style={{ height: '1.625rem' }} background={'#292d31'}>
-                <Row isHead background={'#292d31'}>
-                  <HeadCell color="#9ca2aa" width={'20%'}>
-                    Name
-                  </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'20%'}>
-                    Cross{' '}
-                  </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'20%'}>
-                    Price
-                  </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'20%'}>
-                    USD
-                  </HeadCell>
-                  <HeadCell color="#9ca2aa" width={'20%'}>
-                    1D Vol(K)
-                  </HeadCell>
-                </Row>
-              </Head>
-              <Body style={{ width: '105%' }} height="100%">
-                {this.state.exchanges.map((exchange, ind) => (
-                  <Row
-                    key={ind}
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      this.changeExchange(ind)
-                    }}
-                    background={activeExchange === ind ? '#353c42' : '#16181b'}
-                  >
-                    {Object.values(exchange).map((prop, propinx) => {
-                      const keyByValue = Object.keys(exchange).find(
-                        (key) => exchange[key] === prop
-                      )
-
-                      if (keyByValue === 'status') {
-                        return
-                      } else if (keyByValue === 'name') {
-                        return (
-                          <Cell
-                            key={propinx}
-                            style={{
-                              alignItems: 'center',
-                              display: 'flex',
-                              flexWrap: 'nowrap',
-                            }}
-                            color="#9ca2aa"
-                            width="20%"
-                          >
-                            <FaCircle
-                              style={{
-                                fontSize: '0.5rem',
-                                minWidth: '20%',
-                                flexBasis: '20%',
-                                color: exchange.status,
-                                marginRight: '0.25rem',
-                              }}
-                            />
-                            {prop}
-                          </Cell>
-                        )
-                      } else {
-                        return (
-                          <Cell key={propinx} color="#9ca2aa" width="20%">
-                            {prop}
-                          </Cell>
-                        )
-                      }
-                    })}
-                  </Row>
-                ))}
-              </Body>
-            </CollapseWrapper>
-          </ExchangesTable>
+          <ExchangesTable
+            {...{
+              exchanges,
+              activeExchange,
+              changeExchange,
+            }}
+          />
         </TablesBlockWrapper>
       </TablesContainer>
     )
   }
 
   renderDefaultView = () => {
-    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
-
     return (
       <Container>
         <ChartsContainer>
@@ -524,8 +259,8 @@ class Chart extends React.Component<Props, IState> {
             <DepthChartContainer>
               <DepthChart
                 {...{
-                  orderData: orderBookFakeData,
-                  spreadData: usdSpreadFakeData,
+                  orderData: this.state.orderBookFakeData,
+                  spreadData: this.state.usdSpreadFakeData,
                 }}
               />
             </DepthChartContainer>
@@ -558,32 +293,20 @@ class Chart extends React.Component<Props, IState> {
     return null
   }
 
-  onInputChangeMCharts = (event: any) => {
-    this.setState({ mCharts: event.target.value })
-  }
-  onInputChangeSearchSymbol = (event: any) => {
-    this.setState({ searchSymbol: event.target.value })
-  }
-
   render() {
-    const { view, searchSymbol, mCharts } = this.state
+    const { view, searchSymbol, addChart } = this.state
     const toggler = this.renderToggler()
 
     return (
       <MainContainer>
         <TogglerContainer>
-          <InputContainer>
-            <Input
-              onChange={this.onInputChangeSearchSymbol}
-              value={searchSymbol}
-              placeholder="Search symbol"
-            />
-            <Input
-              onChange={this.onInputChangeMCharts}
-              value={mCharts}
-              placeholder="Multiple charts"
-            />
-          </InputContainer>
+          <Inputs
+            {...{
+              searchSymbol,
+              addChart,
+              handleChange: this.handleTextInputChanges,
+            }}
+          />
 
           {toggler}
         </TogglerContainer>
@@ -600,47 +323,6 @@ const MainContainer = styled.div`
 const DepthChartContainer = styled.div`
   height: calc(100vh - 59px - 80px - 38px);
   width: 100%;
-`
-
-const InputContainer = styled.div`
-  padding: 0.5rem;
-  margin: auto 2rem auto 0;
-  display: flex;
-  width: 30%;
-  justify-content: center;
-`
-
-const JumpDownArrow = keyframes`
-0% {
-  top: 0px;
-}
-50% {
- top: 0.25rem;
-}
-100% {
-  top: 0px;
-}
-`
-const JumpUpArrow = keyframes`
-0% {
-  bottom: 0px;
-}
-50% {
- bottom: 0.25rem;
-}
-100% {
-  bottom: 0px;
-}
-`
-
-const SwitchTablesButton = styled(Button)`
-  && {
-    display: none;
-
-    @media (max-width: 1080px) {
-      display: block;
-    }
-  }
 `
 
 const TablesBlockWrapper = styled(Paper)`
@@ -661,10 +343,6 @@ const TablesBlockWrapper = styled(Paper)`
     height: calc(100vh - 57px - 70px);
     position: relative;
   }
-`
-
-const CollapseWrapper = styled(Collapse)`
-  width: 100%;
 `
 
 const TablesContainer = styled.div`
@@ -704,62 +382,8 @@ const ChartsSwitcher = styled.div`
   border-bottom: 1px solid #818d9ae6;
 `
 
-const CollapsibleTable = Table.extend`
-  max-height: 28rem;
-  position: absolute;
-  bottom: 23px;
-  left: 0;
-  z-index: 999;
-  width: 100%;
-
-  @-moz-document url-prefix() {
-    bottom: 22.5px;
-  }
-`
-
-const ExchangesTable = CollapsibleTable.extend`
-  bottom: -1px;
-
-  @media (max-width: 1080px) {
-    bottom: 0.5rem;
-  }
-`
-
-const AggregationTable = Table.extend`
-  @media (max-width: 1080px) {
-    z-index: 1000;
-    bottom: 0;
-    position: absolute;
-    width: 100%;
-  }
-`
-
 const TriggerRow = Row.extend`
   display: flex;
-`
-
-const TriggerTitle = Title.extend`
-  cursor: pointer;
-`
-
-const StyledArrowSign = styled(MdArrowDropUp)`
-  font-size: 1rem;
-  transform: ${(props: { up: boolean }) =>
-    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
-  position: relative;
-  transition: all 0.5s ease;
-
-  ${TriggerRow}:hover & {
-    animation: ${(props: { tableCollapsed: boolean }) =>
-        props.tableCollapsed ? JumpUpArrow : JumpDownArrow}
-      0.5s linear 0.5s 2;
-  }
-
-  ${TriggerTitle}:hover & {
-    animation: ${(props: { tableCollapsed: boolean }) =>
-        props.tableCollapsed ? JumpUpArrow : JumpDownArrow}
-      0.5s linear 0.5s 2;
-  }
 `
 
 const fadeInGreen = keyframes`
