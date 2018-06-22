@@ -857,7 +857,7 @@ export default class PortfolioTableRebalance extends React.Component<
               </Table>
             </Wrapper>
           </TableAndHeadingWrapper>
-          <TableAndHeadingWrapper>
+          <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
             <TableHeading>
               Rebalanced portfolio
               <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
@@ -1190,13 +1190,15 @@ export default class PortfolioTableRebalance extends React.Component<
             <PieChart
               data={combineToChart(staticRows)}
               flexible={true}
+              withHints={true}
             />
           </PieChartContainer>
 
-          <PieChartContainer>
+          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
             <PieChart
               data={combineToChart(rows)}
               flexible={true}
+              withHints={true}
             />
           </PieChartContainer>
         </PieChartsWrapper>
@@ -1235,6 +1237,12 @@ const TableAndHeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
+  
+  &:not(:first-child) {
+   min-height: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? '55vh' : ''}
+  }
+  
 
   &:not(:first-child) {
     padding-left: 30px;
@@ -1646,6 +1654,12 @@ const PieChartContainer = styled.div`
   @media (max-height: 650px) {
     display: none;
   }
+  
+  &:not(:first-child) {
+   visibility: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? 'hidden' : 'visible'}
+  }
+  
 `
 
 const ButtonsWrapper = styled.div`
