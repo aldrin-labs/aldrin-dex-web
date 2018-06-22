@@ -12,6 +12,7 @@ import {
   Cell as RowCell,
   HeadCell,
 } from '@components/Table/Table'
+import { demoAnime } from '../utils'
 
 class TradeHistoryTable extends PureComponent {
   state = {
@@ -24,36 +25,8 @@ class TradeHistoryTable extends PureComponent {
     })
   }
 
-  demoAnime = (sizeInd: number) => {
-    const setFalseForSecond = (ind: number) => {
-      setTimeout(() => {
-        this.setState({
-          data: this.state.data.map(
-            (el, i) =>
-              i === ind
-                ? Object.assign({}, el, {
-                    updated: true,
-                  })
-                : el
-          ),
-        })
-      }, 10)
-
-      return false
-    }
-
-    this.setState({
-      data: this.state.data.map(
-        (el, i) =>
-          el.size === sizeInd
-            ? Object.assign({}, el, {
-                updated: el.updated === true ? setFalseForSecond(i) : true,
-                percentageOfChange:
-                  Math.floor(Math.random() * (100 - 0 + 1)) + 0,
-              })
-            : el
-      ),
-    })
+  demoAnimation = (sizeInd: number) => {
+    this.setState({ data: demoAnime(sizeInd, this.state.data) })
   }
 
   render() {
@@ -89,7 +62,7 @@ class TradeHistoryTable extends PureComponent {
           {data.slice(0, 30).map((order, i) => (
             <Row
               onClick={() => {
-                this.demoAnime(order.size)
+                this.demoAnimation(order.size)
               }}
               key={i}
               background={'#292d31'}

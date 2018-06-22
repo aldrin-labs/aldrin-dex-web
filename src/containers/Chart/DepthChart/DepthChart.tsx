@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
-import { maxBy, has } from 'lodash'
+import { maxBy } from 'lodash'
 import {
   FlexibleXYPlot,
   VerticalRectSeries,
@@ -25,10 +25,10 @@ const axisStyle = {
   },
 }
 
-class DepthChart extends PureComponent {
+class DepthChart extends Component {
   state = {
     // must be calculated
-    MAX_DOMAIN_PLOT: 5000,
+    MAX_DOMAIN_PLOT: 0,
     crosshairValuesForSpread: [],
     crosshairValuesForOrder: [],
     // nearestOrderXIndex: null,
@@ -50,24 +50,6 @@ class DepthChart extends PureComponent {
         maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
     }
   }
-
-  // componentDidMount() {
-  //   const { orderData, spreadData } = this.props
-
-  //   if (orderData.lenght < 1 || spreadData.lenght < 1) {
-  //     return null
-  //   }
-  //   console.log(spreadData)
-  //   console.log(orderData)
-  //   const maximumYinDataSet = Math.max(
-  //     maxBy(spreadData, (el) => el.y).y,
-  //     maxBy(orderData, (el) => el.y).y
-  //   )
-  //   this.setState({
-  //     MAX_DOMAIN_PLOT:
-  //       maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
-  //   })
-  // }
 
   scale = (type: 'increase' | 'decrease', scale: number) => {
     if (type === 'increase') {

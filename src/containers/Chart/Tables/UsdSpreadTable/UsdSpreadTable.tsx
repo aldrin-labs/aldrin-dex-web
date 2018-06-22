@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
 import { Collapse } from '@material-ui/core'
+
 import {
   Table,
   Row,
@@ -10,6 +11,7 @@ import {
   Cell as RowCell,
   HeadCell,
 } from '@components/Table/Table'
+import { demoAnime } from '../utils'
 
 class UsdSpreadTable extends PureComponent {
   state = {
@@ -29,36 +31,8 @@ class UsdSpreadTable extends PureComponent {
     }))
   }
 
-  demoAnime = (sizeInd: number) => {
-    const setFalseForSecond = (ind: number) => {
-      setTimeout(() => {
-        this.setState({
-          data: this.state.data.map(
-            (el, i) =>
-              i === ind
-                ? Object.assign({}, el, {
-                    updated: true,
-                  })
-                : el
-          ),
-        })
-      }, 10)
-
-      return false
-    }
-
-    this.setState({
-      data: this.state.data.map(
-        (el, i) =>
-          el.size === sizeInd
-            ? Object.assign({}, el, {
-                updated: el.updated === true ? setFalseForSecond(i) : true,
-                percentageOfChange:
-                  Math.floor(Math.random() * (100 - 0 + 1)) + 0,
-              })
-            : el
-      ),
-    })
+  demoAnimation = (sizeInd: number) => {
+    this.setState({ data: demoAnime(sizeInd, this.state.data) })
   }
 
   render() {
@@ -106,7 +80,7 @@ class UsdSpreadTable extends PureComponent {
             {data.slice(0, 30).map((order, i) => (
               <Row
                 onClick={() => {
-                  this.demoAnime(order.size)
+                  this.demoAnimation(order.size)
                 }}
                 key={i}
                 background={'#25282c'}
