@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Button } from '@material-ui/core'
-import { MdArrowUpward, MdArrowDownward } from 'react-icons/lib/md/'
+import { MdArrowUpward } from 'react-icons/lib/md/'
 
 import {
   Table,
@@ -126,12 +126,10 @@ class TradeHistoryTable extends PureComponent {
                 color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
                 width={'33%'}
               >
-                {Number(order.size).toFixed(8)}
-                {order.status === 'fall' ? (
-                  <MdArrowDownward style={{ verticalAlign: 'top' }} />
-                ) : (
-                  <MdArrowUpward style={{ verticalAlign: 'top' }} />
-                )}
+                <div>{Number(order.size).toFixed(8)}</div>
+                <StyledArrow
+                  direction={order.status === 'fall' ? 'down' : 'up'}
+                />
               </Cell>
               <Cell
                 animated={(() => {
@@ -168,7 +166,16 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
+const StyledArrow = styled(MdArrowUpward)`
+  vertical-align: top;
+  min-width: 20%;
+  transform: ${(props: { direction: string }) =>
+    props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
+`
+
 const Cell = styled(RowCell)`
+  display: flex;
+  flex-wrap: nowrap;
   animation: ${(props: { animated?: string; width: string; color: string }) => {
     if (props.animated === 'none') {
       return ''
