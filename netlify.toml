@@ -4,12 +4,9 @@
   status = 200
 
 
-# Deploy Preview context: All Deploy Previews
-# will inherit these settings.
-[context.deploy-preview.environment]
-  command = "super"
-
-# Branch Deploy context: All deploys that are not in
-# an active Deploy Preview will inherit these settings.
-[context.branch-deploy]
-  command = "super"
+# Production context: All deploys to the main
+# repository branch will inherit these settings.
+[context.production]
+  command = "buildMaster"
+  [context.production.environment]
+    API_ENDPOINT = "api.cryptocurrencies.ai"
