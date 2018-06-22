@@ -43,8 +43,8 @@ class ScreenerBase extends React.Component<IProps, IState> {
       <div>
         <ScreenerTabs onChangeTab={this.onChangeTab} tab={this.state.tab} />
         <Selector />
-        <ScreenerSearch searchText={this.state.searchText} onChangeSearchText={this.onChangeSearchText}/>
-        <ScreenerTable searchText={this.state.searchText} />
+        <ScreenerSearch searchText={this.state.searchText} onChangeSearchText={this.onChangeSearchText} />
+        <ScreenerTable searchText={this.state.searchText} tab={this.state.tab} />
       </div>
     )
   }
