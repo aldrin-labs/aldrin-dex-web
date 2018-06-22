@@ -19,7 +19,7 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
-        API_ENDPOINT: JSON.stringify('api.cryptocurrencies.ai')
+        API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT)
       },
     }),
     new UglifyJsPlugin({
