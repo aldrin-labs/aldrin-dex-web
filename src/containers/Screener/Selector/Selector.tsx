@@ -251,10 +251,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           id: 'coin',
           }}
           >
-          {data.coin.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
+              <Input/>
+              {data.coin.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
           </SSelect>
           {/*<FormHelperText>Label demo. Select coin!</FormHelperText>*/}
-            <Input/>
+            {/*<Input/>*/}
           </SFormControl>
           <SFormControl>
           <InputLabel htmlFor="marketCap">Market Cap</InputLabel>
