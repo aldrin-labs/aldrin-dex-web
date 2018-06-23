@@ -1,5 +1,5 @@
 import React from 'react'
-import {InputLabel } from 'material-ui/Input'
+import { InputLabel } from 'material-ui/Input'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl, FormHelperText } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
@@ -9,7 +9,6 @@ import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 
 import { IProps, IState } from './Selector.types'
-
 
 const data = {
   coin: [
@@ -51,6 +50,21 @@ const data = {
     { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
+  industry: [
+    { label: 'Smart Contracts', value: 'smartContracts' },
+    { label: 'Payments', value: 'payments' },
+    { label: 'Blockchain Platform', value: 'blockchain' },
+    { label: 'Payment Coin', value: 'paymentCoin' },
+    { label: 'Privacy Coin', value: 'privacyCoin' },
+    {
+      label: 'Third Generation Blockchain',
+      value: 'thirdGenerationBlockchain',
+    },
+    {
+      label: 'Scalable Blockchain as a Service Platform',
+      value: 'scalableBlockchain',
+    },
   ],
   performance: [
     { label: 'Value Below', value: 'valueBelow' },
@@ -184,11 +198,12 @@ const data = {
 
 export default class ScreenerSelect extends React.Component<IProps, IState> {
   state: IState = {
-    coin: '',
+    coin: [],
     marketCap: '',
     price: '',
     peg: '',
     volume: '',
+    industry: [],
 
     performance: '',
     performance2: '',
@@ -235,80 +250,120 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               verticalAlign: 'middle',
               marginLeft: '4px',
               transform: showFilters ? 'rotate(180deg)' : null,
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
             }}
           />
         </ToggleFiltersContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
           <SColumnForm showFilters={showFilters}>
-          <SFormControl>
-          <InputLabel htmlFor="coin">Coin</InputLabel>
-          <SSelect
-          value={this.state.coin}
-          onChange={this.handleChange}
-          inputProps={{
-          name: 'coin',
-          id: 'coin',
-          }}
-          >
-              <Input/>
-              {data.coin.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
-          </SSelect>
-          {/*<FormHelperText>Label demo. Select coin!</FormHelperText>*/}
-            {/*<Input/>*/}
-          </SFormControl>
-          <SFormControl>
-          <InputLabel htmlFor="marketCap">Market Cap</InputLabel>
-          <SSelect
-          value={this.state.marketCap}
-          onChange={this.handleChange}
-          inputProps={{
-          name: 'marketCap',
-          id: 'marketCap',
-          }}
-          >
-          {data.marketCap.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
-          </SSelect><Input/>
-          </SFormControl>
-          {/*<SFormControl>*/}
-          {/*<InputLabel htmlFor="price">Price</InputLabel>*/}
-          {/*<SSelect*/}
-          {/*value={this.state.price}*/}
-          {/*onChange={this.handleChange}*/}
-          {/*inputProps={{*/}
-          {/*name: 'price',*/}
-          {/*id: 'price',*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*{data.price.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
-          {/*</SSelect>*/}
-          {/*</SFormControl>*/}
-          <SFormControl>
-          <InputLabel htmlFor="peg">PEG</InputLabel>
-          <SSelect
-          value={this.state.peg}
-          onChange={this.handleChange}
-          inputProps={{
-          name: 'peg',
-          id: 'peg',
-          }}
-          >
-          {data.peg.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
-          </SSelect><Input/>
-          </SFormControl>
-          <SFormControl>
-          <InputLabel htmlFor="volume">Volume</InputLabel>
-          <SSelect
-          value={this.state.volume}
-          onChange={this.handleChange}
-          inputProps={{
-          name: 'volume',
-          id: 'volume',
-          }}
-          >
-          {data.volume.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}
-          </SSelect><Input/>
-          </SFormControl>
+            <SFormControl>
+              <InputLabel htmlFor="coin">Coin</InputLabel>
+              <SSelect
+                value={this.state.coin}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'coin',
+                  id: 'coin',
+                }}
+                multiple={true}
+              >
+                {data.coin.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              {/*<FormHelperText>Label demo. Select coin!</FormHelperText>*/}
+            </SFormControl>
+
+            <SFormControl>
+              <InputLabel htmlFor="industry">Industry</InputLabel>
+              <SSelect
+                value={this.state.industry}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'industry',
+                  id: 'industry',
+                }}
+                multiple={true}
+              >
+                {data.industry.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+            </SFormControl>
+
+            <SFormControl>
+              <InputLabel htmlFor="marketCap">Market Cap</InputLabel>
+              <SSelect
+                value={this.state.marketCap}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'marketCap',
+                  id: 'marketCap',
+                }}
+              >
+                <Input />
+
+                {data.marketCap.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input />
+            </SFormControl>
+            {/*<SFormControl>*/}
+            {/*<InputLabel htmlFor="price">Price</InputLabel>*/}
+            {/*<SSelect*/}
+            {/*value={this.state.price}*/}
+            {/*onChange={this.handleChange}*/}
+            {/*inputProps={{*/}
+            {/*name: 'price',*/}
+            {/*id: 'price',*/}
+            {/*}}*/}
+            {/*>*/}
+            {/*{data.price.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
+            {/*</SSelect>*/}
+            {/*</SFormControl>*/}
+            <SFormControl>
+              <InputLabel htmlFor="peg">PEG</InputLabel>
+              <SSelect
+                value={this.state.peg}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'peg',
+                  id: 'peg',
+                }}
+              >
+                {data.peg.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input />
+            </SFormControl>
+            <SFormControl>
+              <InputLabel htmlFor="volume">Volume</InputLabel>
+              <SSelect
+                value={this.state.volume}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'volume',
+                  id: 'volume',
+                }}
+              >
+                {data.volume.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input />
+            </SFormControl>
           </SColumnForm>
           <SColumnForm showFilters={showFilters}>
             <SFormControl>
@@ -326,7 +381,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="performance2">Performance 2</InputLabel>
@@ -343,7 +399,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DayHighLow">
@@ -362,7 +419,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DaySimpleMoving">
@@ -381,7 +439,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -402,7 +461,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="fifty50DayHighLow">
@@ -421,7 +481,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="averageTrueRange">
@@ -440,7 +501,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twoHundreds200SimpleMoving">
@@ -459,7 +521,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -480,7 +543,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="rsi14">RSI (14)</InputLabel>
@@ -497,7 +561,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="change">Change</InputLabel>
@@ -514,7 +579,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="pattern">Pattern</InputLabel>
@@ -531,7 +597,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -550,7 +617,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="changeFromOpen">Change From Open</InputLabel>
@@ -567,7 +635,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="candleStick">Candlestick</InputLabel>
@@ -584,7 +653,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="volatility">Volatility</InputLabel>
@@ -601,7 +671,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     {label}
                   </MenuItem>
                 ))}
-              </SSelect><Input/>
+              </SSelect>
+              <Input />
             </SFormControl>
           </SColumnForm>
         </SContainer>
@@ -670,8 +741,8 @@ const SFormControl = styled(FormControl)`
 `
 
 const SColumnForm = styled.div`
-display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `
 
 const ToggleFiltersContainer = styled.div`
@@ -686,7 +757,7 @@ const ToggleFiltersContainer = styled.div`
 // TODO: Just a hack, replace it with the normal material-ui ovverriding
 const SSelect = styled(Select)`
   && > div > div {
-        min-height: 1.8875em;
+    min-height: 1.8875em;
   }
 `
 
