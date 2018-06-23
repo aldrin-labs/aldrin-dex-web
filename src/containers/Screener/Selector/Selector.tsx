@@ -27,14 +27,6 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  price: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
   peg: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
@@ -200,7 +192,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   state: IState = {
     coin: [],
     marketCap: '',
-    price: '',
     peg: '',
     volume: '',
     industry: [],
@@ -225,7 +216,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     showFilters: false,
   }
 
-  handleChange = (event) => {
+  handleSelectChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     })
@@ -260,7 +251,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <InputLabel htmlFor="coin">Coin</InputLabel>
               <SSelect
                 value={this.state.coin}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'coin',
                   id: 'coin',
@@ -280,7 +271,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <InputLabel htmlFor="industry">Industry</InputLabel>
               <SSelect
                 value={this.state.industry}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'industry',
                   id: 'industry',
@@ -299,13 +290,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <InputLabel htmlFor="marketCap">Market Cap</InputLabel>
               <SSelect
                 value={this.state.marketCap}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'marketCap',
                   id: 'marketCap',
                 }}
               >
-                <Input />
+                <Input onChange={handleInputChange} />
 
                 {data.marketCap.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
@@ -313,26 +304,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
-            {/*<SFormControl>*/}
-            {/*<InputLabel htmlFor="price">Price</InputLabel>*/}
-            {/*<SSelect*/}
-            {/*value={this.state.price}*/}
-            {/*onChange={this.handleChange}*/}
-            {/*inputProps={{*/}
-            {/*name: 'price',*/}
-            {/*id: 'price',*/}
-            {/*}}*/}
-            {/*>*/}
-            {/*{data.price.map(({ value, label }) => <MenuItem key={label} value={value}>{label}</MenuItem>)}*/}
-            {/*</SSelect>*/}
-            {/*</SFormControl>*/}
             <SFormControl>
               <InputLabel htmlFor="peg">PEG</InputLabel>
               <SSelect
                 value={this.state.peg}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'peg',
                   id: 'peg',
@@ -344,13 +322,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="volume">Volume</InputLabel>
               <SSelect
                 value={this.state.volume}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'volume',
                   id: 'volume',
@@ -362,7 +340,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
           </SColumnForm>
           <SColumnForm showFilters={showFilters}>
@@ -370,7 +348,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <InputLabel htmlFor="performance">Performance</InputLabel>
               <SSelect
                 value={this.state.performance}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'performance',
                   id: 'performance',
@@ -382,13 +360,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="performance2">Performance 2</InputLabel>
               <SSelect
                 value={this.state.performance2}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'performance2',
                   id: 'performance2',
@@ -400,7 +378,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DayHighLow">
@@ -408,7 +386,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </InputLabel>
               <SSelect
                 value={this.state.twenty20DayHighLow}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'twenty20DayHighLow',
                   id: 'twenty20DayHighLow',
@@ -420,7 +398,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twenty20DaySimpleMoving">
@@ -428,7 +406,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </InputLabel>
               <SSelect
                 value={this.state.twenty20DaySimpleMoving}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'twenty20DaySimpleMoving',
                   id: 'twenty20DaySimpleMoving',
@@ -440,7 +418,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -450,7 +428,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </InputLabel>
               <SSelect
                 value={this.state.fifty50DaySimpleMoving}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'fifty50DaySimpleMoving',
                   id: 'fifty50DaySimpleMoving',
@@ -462,7 +440,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="fifty50DayHighLow">
@@ -470,7 +448,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </InputLabel>
               <SSelect
                 value={this.state.fifty50DayHighLow}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'fifty50DayHighLow',
                   id: 'fifty50DayHighLow',
@@ -482,7 +460,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="averageTrueRange">
@@ -490,7 +468,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </InputLabel>
               <SSelect
                 value={this.state.averageTrueRange}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'averageTrueRange',
                   id: 'averageTrueRange',
@@ -502,7 +480,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="twoHundreds200SimpleMoving">
@@ -510,7 +488,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </InputLabel>
               <SSelect
                 value={this.state.twoHundreds200SimpleMoving}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'twoHundreds200SimpleMoving',
                   id: 'twoHundreds200SimpleMoving',
@@ -522,7 +500,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -532,7 +510,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </InputLabel>
               <SSelect
                 value={this.state.fiftyTwo52WeekHighLow}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'fiftyTwo52WeekHighLow',
                   id: 'fiftyTwo52WeekHighLow',
@@ -544,13 +522,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="rsi14">RSI (14)</InputLabel>
               <SSelect
                 value={this.state.rsi14}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'rsi14',
                   id: 'rsi14',
@@ -562,13 +540,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="change">Change</InputLabel>
               <SSelect
                 value={this.state.change}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'change',
                   id: 'change',
@@ -580,13 +558,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="pattern">Pattern</InputLabel>
               <SSelect
                 value={this.state.pattern}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'pattern',
                   id: 'pattern',
@@ -598,7 +576,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -606,7 +584,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <InputLabel htmlFor="gap">Gap</InputLabel>
               <SSelect
                 value={this.state.gap}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'gap',
                   id: 'gap',
@@ -618,13 +596,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="changeFromOpen">Change From Open</InputLabel>
               <SSelect
                 value={this.state.changeFromOpen}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'changeFromOpen',
                   id: 'changeFromOpen',
@@ -636,13 +614,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="candleStick">Candlestick</InputLabel>
               <SSelect
                 value={this.state.candleStick}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'candleStick',
                   id: 'candleStick',
@@ -654,13 +632,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="volatility">Volatility</InputLabel>
               <SSelect
                 value={this.state.volatility}
-                onChange={this.handleChange}
+                onChange={this.handleSelectChange}
                 inputProps={{
                   name: 'volatility',
                   id: 'volatility',
@@ -672,37 +650,10 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input />
+              <Input onChange={handleInputChange} />
             </SFormControl>
           </SColumnForm>
         </SContainer>
-        {/*<TextDemo>*/}
-        {/*{this.state.coin &&*/}
-        {/*<Typography type="title" color="inherit">*/}
-        {/*Selected coin: {this.state.coin}*/}
-        {/*</Typography>*/}
-        {/*}*/}
-        {/*{this.state.marketCap &&*/}
-        {/*<STypography type="title" color="inherit">*/}
-        {/*Selected market cap: {this.state.marketCap}*/}
-        {/*</STypography>*/}
-        {/*}*/}
-        {/*{this.state.price &&*/}
-        {/*<STypography type="title" color="inherit">*/}
-        {/*Selected price: {this.state.price}*/}
-        {/*</STypography>*/}
-        {/*}*/}
-        {/*{this.state.peg &&*/}
-        {/*<STypography type="title" color="inherit">*/}
-        {/*Selected PEG: {this.state.peg}*/}
-        {/*</STypography>*/}
-        {/*}*/}
-        {/*{this.state.volume &&*/}
-        {/*<STypography type="title" color="inherit">*/}
-        {/*Selected volume: {this.state.volume}*/}
-        {/*</STypography>*/}
-        {/*}*/}
-        {/*</TextDemo>*/}
       </MainWrapper>
     )
   }
