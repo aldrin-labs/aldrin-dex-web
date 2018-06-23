@@ -11,38 +11,6 @@ import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 import { IProps, IState } from './Selector.types'
 
 const data = {
-  coin: [
-    { label: 'USD', value: 'USD' },
-    { label: 'BTC', value: 'BTC' },
-    { label: 'LTC', value: 'LTC' },
-    { label: 'ETH', value: 'ETH' },
-    { label: 'DOGE', value: 'DOGE' },
-    { label: 'Monero', value: 'Monero' },
-  ],
-  marketCap: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  peg: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  volume: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
   industry: [
     { label: 'Smart Contracts', value: 'smartContracts' },
     { label: 'Payments', value: 'payments' },
@@ -58,7 +26,7 @@ const data = {
       value: 'scalableBlockchain',
     },
   ],
-  performance: [
+  marketCap: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -66,7 +34,63 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  performance2: [
+  coin: [
+    { label: 'USD', value: 'USD' },
+    { label: 'BTC', value: 'BTC' },
+    { label: 'LTC', value: 'LTC' },
+    { label: 'ETH', value: 'ETH' },
+    { label: 'DOGE', value: 'DOGE' },
+    { label: 'Monero', value: 'Monero' },
+  ],
+  averageVolume: [
+    { label: 'Value Below', value: 'valueBelow' },
+    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
+    { label: 'Value Above', value: 'valueAbove' },
+    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
+    { label: 'Value Equals To', value: 'valueEqualsTo' },
+    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
+  averageVolumeOnBalance: [
+    { label: 'Value Below', value: 'valueBelow' },
+    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
+    { label: 'Value Above', value: 'valueAbove' },
+    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
+    { label: 'Value Equals To', value: 'valueEqualsTo' },
+    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
+  chaikinMoneyFlow: [
+    { label: 'Value Below', value: 'valueBelow' },
+    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
+    { label: 'Value Above', value: 'valueAbove' },
+    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
+    { label: 'Value Equals To', value: 'valueEqualsTo' },
+    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
+  changeDigits: [
+    { label: 'Value Below', value: 'valueBelow' },
+    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
+    { label: 'Value Above', value: 'valueAbove' },
+    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
+    { label: 'Value Equals To', value: 'valueEqualsTo' },
+    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
+  changePercentage: [
+    { label: 'Value Below', value: 'valueBelow' },
+    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
+    { label: 'Value Above', value: 'valueAbove' },
+    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
+    { label: 'Value Equals To', value: 'valueEqualsTo' },
+    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
+  closingPriceAverage: [
+    { label: 'Value Below', value: 'valueBelow' },
+    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
+    { label: 'Value Above', value: 'valueAbove' },
+    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
+    { label: 'Value Equals To', value: 'valueEqualsTo' },
+    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
+  simpleMovingAverage: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -138,14 +162,6 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  change: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
   pattern: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
@@ -178,26 +194,19 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  volatility: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
 }
 
 export default class ScreenerSelect extends React.Component<IProps, IState> {
   state: IState = {
     coin: [],
     marketCap: '',
-    peg: '',
-    volume: '',
+    chaikinMoneyFlow: '',
+    averageVolume: '',
+    averageVolumeOnBalance: '',
     industry: [],
 
-    performance: '',
-    performance2: '',
+    changeDigits: '',
+    changePercentage: '',
     twenty20DayHighLow: '',
     twenty20DaySimpleMoving: '',
     fifty50DaySimpleMoving: '',
@@ -206,12 +215,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     twoHundreds200SimpleMoving: '',
     fiftyTwo52WeekHighLow: '',
     rsi14: '',
-    change: '',
+    simpleMovingAverage: '',
     pattern: '',
     gap: '',
     changeFromOpen: '',
     candleStick: '',
-    volatility: '',
+    closingPriceAverage: '',
 
     showFilters: false,
   }
@@ -307,16 +316,16 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="peg">PEG</InputLabel>
+              <InputLabel htmlFor="chaikinMoneyFlow">PEG</InputLabel>
               <SSelect
-                value={this.state.peg}
+                value={this.state.chaikinMoneyFlow}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'peg',
-                  id: 'peg',
+                  name: 'chaikinMoneyFlow',
+                  id: 'chaikinMoneyFlow',
                 }}
               >
-                {data.peg.map(({ value, label }) => (
+                {data.chaikinMoneyFlow.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
@@ -325,16 +334,34 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="volume">Volume</InputLabel>
+              <InputLabel htmlFor="averageVolume">Volume</InputLabel>
               <SSelect
-                value={this.state.volume}
+                value={this.state.averageVolume}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'volume',
-                  id: 'volume',
+                  name: 'averageVolume',
+                  id: 'averageVolume',
                 }}
               >
-                {data.volume.map(({ value, label }) => (
+                {data.averageVolume.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input onChange={handleInputChange} />
+            </SFormControl>
+            <SFormControl>
+              <InputLabel htmlFor="averageVolumeOnBalance">Volume</InputLabel>
+              <SSelect
+                value={this.state.averageVolumeOnBalance}
+                onChange={this.handleSelectChange}
+                inputProps={{
+                  name: 'averageVolumeOnBalance',
+                  id: 'averageVolumeOnBalance',
+                }}
+              >
+                {data.averageVolumeOnBalance.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
@@ -345,16 +372,16 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm showFilters={showFilters}>
             <SFormControl>
-              <InputLabel htmlFor="performance">Performance</InputLabel>
+              <InputLabel htmlFor="changeDigits">Performance</InputLabel>
               <SSelect
-                value={this.state.performance}
+                value={this.state.changeDigits}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'performance',
-                  id: 'performance',
+                  name: 'changeDigits',
+                  id: 'changeDigits',
                 }}
               >
-                {data.performance.map(({ value, label }) => (
+                {data.changeDigits.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
@@ -363,16 +390,16 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="performance2">Performance 2</InputLabel>
+              <InputLabel htmlFor="changePercentage">Performance 2</InputLabel>
               <SSelect
-                value={this.state.performance2}
+                value={this.state.changePercentage}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'performance2',
-                  id: 'performance2',
+                  name: 'changePercentage',
+                  id: 'changePercentage',
                 }}
               >
-                {data.performance2.map(({ value, label }) => (
+                {data.changePercentage.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
@@ -543,16 +570,18 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="change">Change</InputLabel>
+              <InputLabel htmlFor="simpleMovingAverage">
+                Simple Moving Average
+              </InputLabel>
               <SSelect
-                value={this.state.change}
+                value={this.state.simpleMovingAverage}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'change',
-                  id: 'change',
+                  name: 'simpleMovingAverage',
+                  id: 'simpleMovingAverage',
                 }}
               >
-                {data.change.map(({ value, label }) => (
+                {data.simpleMovingAverage.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
@@ -635,16 +664,16 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input onChange={handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="volatility">Volatility</InputLabel>
+              <InputLabel htmlFor="closingPriceAverage">Volatility</InputLabel>
               <SSelect
-                value={this.state.volatility}
+                value={this.state.closingPriceAverage}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'volatility',
-                  id: 'volatility',
+                  name: 'closingPriceAverage',
+                  id: 'closingPriceAverage',
                 }}
               >
-                {data.volatility.map(({ value, label }) => (
+                {data.closingPriceAverage.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
