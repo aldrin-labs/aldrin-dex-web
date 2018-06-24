@@ -787,15 +787,17 @@ const Input = styled.input`
   border-right: none;
   width: 100%;
   font-family: Roboto;
-  font-size: 16px;
-  line-height: 24px;
+
   text-align: left;
   padding: 10px 0 0px;
   color: rgb(255, 255, 255);
+  
+  font-size: 0.7em;
+  line-height: 0.7em;
 `
 
 const SFormControl = styled(FormControl)`
-  min-height: 96px;
+  min-height: 68px;
   width: 200px;
 
   & ${Input} {
@@ -811,6 +813,10 @@ const SFormControl = styled(FormControl)`
 const SColumnForm = styled.div`
   display: flex;
   flex-direction: column;
+  
+  && label {
+    font-size: 0.7em;
+  }
 `
 
 const ToggleFiltersContainer = styled.div`
@@ -822,15 +828,21 @@ const ToggleFiltersContainer = styled.div`
   width: 57vw;
 `
 
-// TODO: Just a hack, replace it with the normal material-ui ovverriding
+// TODO: Just a hack, replace it with the normal material-ui ovverriding withStyles
 const SSelect = styled(Select)`
   && > div > div {
-    min-height: 1.8875em;
+    min-height: 0.8em;
   }
 
   && svg {
-    top: calc(50% - 17px);
+    font-size: 1.7em;
+    top: calc(50% - 12px);
   }
+  
+  && {
+      font-size: 0.7em;
+  }
+  
 `
 
 const SFilterWrapper = styled.div`
