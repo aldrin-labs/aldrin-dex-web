@@ -269,7 +269,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
         </ToggleFiltersContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
           <SColumnForm>
-            <SFormControl>
+            <SFormControl value={this.state.coin}>
               <InputLabel htmlFor="coin">Coin</InputLabel>
               <SSelect
                 value={this.state.coin}
@@ -289,7 +289,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               {/*<FormHelperText>Label demo. Select coin!</FormHelperText>*/}
             </SFormControl>
 
-            <SFormControl>
+            <SFormControl value={this.state.industry}>
               <InputLabel htmlFor="industry">Industry</InputLabel>
               <SSelect
                 value={this.state.industry}
@@ -308,7 +308,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </SSelect>
             </SFormControl>
 
-            <SFormControl>
+            <SFormControl value={this.state.simpleMovingAverage}>
               <InputLabel htmlFor="simpleMovingAverage">
                 Simple Moving Average
               </InputLabel>
@@ -331,7 +331,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.closingPriceAverage}>
               <InputLabel htmlFor="closingPriceAverage">
                 Closing Price Average
               </InputLabel>
@@ -356,7 +356,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl>
+            <SFormControl value={this.state.marketCap}>
               <InputLabel htmlFor="marketCap">Market Cap</InputLabel>
               <SSelect
                 value={this.state.marketCap}
@@ -378,7 +378,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </SSelect>
               <Input name="InputMarketCap" onChange={this.handleInputChange} />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.chaikinMoneyFlow}>
               <InputLabel htmlFor="chaikinMoneyFlow">
                 Chaikin Money Flow
               </InputLabel>
@@ -401,7 +401,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.averageVolume}>
               <InputLabel htmlFor="averageVolume">Average Volume</InputLabel>
               <SSelect
                 value={this.state.averageVolume}
@@ -422,7 +422,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.averageVolumeOnBalance}>
               <InputLabel htmlFor="averageVolumeOnBalance">
                 On-Balance Volume
               </InputLabel>
@@ -447,7 +447,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl>
+            <SFormControl value={this.state.changeInDigits}>
               <InputLabel htmlFor="changeInDigits">Change</InputLabel>
               <SSelect
                 value={this.state.changeInDigits}
@@ -468,7 +468,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.changeInPercentage}>
               <InputLabel htmlFor="changeInPercentage">Change %</InputLabel>
               <SSelect
                 value={this.state.changeInPercentage}
@@ -489,7 +489,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.one1HourLow}>
               <InputLabel htmlFor="one1HourLow">Hourly Low</InputLabel>
               <SSelect
                 value={this.state.one1HourLow}
@@ -510,7 +510,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.one1HourHigh}>
               <InputLabel htmlFor="one1HourHigh">Hourly High</InputLabel>
               <SSelect
                 value={this.state.one1HourHigh}
@@ -533,7 +533,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl>
+            <SFormControl value={this.state.one1DayLow}>
               <InputLabel htmlFor="one1DayLow">1-Day Low</InputLabel>
               <SSelect
                 value={this.state.one1DayLow}
@@ -551,7 +551,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </SSelect>
               <Input name="InputOne1DayLow" onChange={this.handleInputChange} />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.one1DayHigh}>
               <InputLabel htmlFor="one1DayHigh">1 Day High</InputLabel>
               <SSelect
                 value={this.state.one1DayHigh}
@@ -572,7 +572,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.three3MonthLow}>
               <InputLabel htmlFor="three3MonthLow">3-Month Low</InputLabel>
               <SSelect
                 value={this.state.three3MonthLow}
@@ -593,7 +593,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.three3MonthHigh}>
               <InputLabel htmlFor="three3MonthHigh">3-Month High</InputLabel>
               <SSelect
                 value={this.state.three3MonthHigh}
@@ -616,7 +616,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl>
+            <SFormControl value={this.state.one1MonthLow}>
               <InputLabel htmlFor="one1MonthLow">1-Month Low</InputLabel>
               <SSelect
                 value={this.state.one1MonthLow}
@@ -637,7 +637,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.one1MonthHigh}>
               <InputLabel htmlFor="one1MonthHigh">1-Month High</InputLabel>
               <SSelect
                 value={this.state.one1MonthHigh}
@@ -658,7 +658,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.twelve12MonthLow}>
               <InputLabel htmlFor="twelve12MonthLow">12-Month Low</InputLabel>
               <SSelect
                 value={this.state.twelve12MonthLow}
@@ -679,7 +679,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
               />
             </SFormControl>
-            <SFormControl>
+            <SFormControl value={this.state.twelve12MonthHigh}>
               <InputLabel htmlFor="twelve12MonthHigh">12-Month High</InputLabel>
               <SSelect
                 value={this.state.twelve12MonthHigh}
@@ -732,8 +732,32 @@ const MainWrapper = styled.div`
   align-items: center;
 `
 
+const Input = styled.input`
+  box-sizing: border-box;
+  border-bottom: 2px solid rgb(78, 216, 218);
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  outline: none;
+  border-right: none;
+  width: 100%;
+  font-family: Roboto;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: left;
+  padding: 10px 0 0px;
+  color: rgb(255, 255, 255);
+`
+
 const SFormControl = styled(FormControl)`
+  min-height: 96px;
   width: 200px;
+
+  & ${Input} {
+    visibility: ${(props: { value?: boolean }) =>
+      props.value ? 'visible' : 'hidden'};
+  }
+
   && {
     margin: 10px;
   }
@@ -762,23 +786,6 @@ const SSelect = styled(Select)`
   && svg {
     top: calc(50% - 17px);
   }
-`
-
-const Input = styled.input`
-  box-sizing: border-box;
-  border-bottom: 2px solid rgb(78, 216, 218);
-  background: transparent;
-  border-top: none;
-  border-left: none;
-  outline: none;
-  border-right: none;
-  width: 100%;
-  font-family: Roboto;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: left;
-  padding: 10px 0 0px;
-  color: rgb(255, 255, 255);
 `
 
 const SFilterWrapper = styled.div`
