@@ -234,6 +234,13 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     })
   }
   handleInputChange = (event) => {
+    const inputValue = event.target.value
+    // TODO: But regex should be changed for multiple zeros catch
+
+    if (!/^([0-9]+\.|[0-9]+\.[0-9]{1,2}|[0-9]+|)$/.test(inputValue)) {
+      return
+    }
+
     this.setState(
       {
         [event.target.name]: event.target.value,
