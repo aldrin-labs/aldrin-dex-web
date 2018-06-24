@@ -66,7 +66,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  changeDigits: [
+  changeInDigits: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -74,7 +74,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  changePercentage: [
+  changeInPercentage: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -98,7 +98,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  twenty20DayHighLow: [
+  one1DayLow: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -106,7 +106,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  twenty20DaySimpleMoving: [
+  one1DayHigh: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -114,7 +114,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  fifty50DaySimpleMoving: [
+  one1HourLow: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -122,7 +122,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  fifty50DayHighLow: [
+  one1HourHigh: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -130,7 +130,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  averageTrueRange: [
+  one1MonthLow: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -138,7 +138,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  twoHundreds200SimpleMoving: [
+  one1MonthHigh: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -146,7 +146,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  fiftyTwo52WeekHighLow: [
+  three3MonthLow: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -154,7 +154,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  rsi14: [
+  three3MonthHigh: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -162,7 +162,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  pattern: [
+  twelve12MonthLow: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -170,23 +170,7 @@ const data = {
     { label: 'Value Equals To', value: 'valueEqualsTo' },
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
-  gap: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  changeFromOpen: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  candleStick: [
+  twelve12MonthHigh: [
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -200,32 +184,36 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   state: IState = {
     coin: [],
     marketCap: '',
-    chaikinMoneyFlow: '',
-    averageVolume: '',
-    averageVolumeOnBalance: '',
     industry: [],
 
-    changeDigits: '',
-    changePercentage: '',
-    twenty20DayHighLow: '',
-    twenty20DaySimpleMoving: '',
-    fifty50DaySimpleMoving: '',
-    fifty50DayHighLow: '',
-    averageTrueRange: '',
-    twoHundreds200SimpleMoving: '',
-    fiftyTwo52WeekHighLow: '',
-    rsi14: '',
+    changeInDigits: '',
+    changeInPercentage: '',
     simpleMovingAverage: '',
-    pattern: '',
-    gap: '',
-    changeFromOpen: '',
-    candleStick: '',
     closingPriceAverage: '',
+    averageVolume: '',
+    averageVolumeOnBalance: '',
+    chaikinMoneyFlow: '',
+
+    one1DayLow: '',
+    one1DayHigh: '',
+    one1HourLow: '',
+    one1HourHigh: '',
+    one1MonthLow: '',
+    one1MonthHigh: '',
+    three3MonthLow: '',
+    three3MonthHigh: '',
+    twelve12MonthLow: '',
+    twelve12MonthHigh: '',
 
     showFilters: false,
   }
 
   handleSelectChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value,
+    })
+  }
+  handleInputChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
     })
@@ -305,7 +293,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   id: 'marketCap',
                 }}
               >
-                <Input onChange={handleInputChange} />
+                <Input onChange={this.handleInputChange} />
 
                 {data.marketCap.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
@@ -313,10 +301,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="chaikinMoneyFlow">PEG</InputLabel>
+              <InputLabel htmlFor="chaikinMoneyFlow">
+                Chaikin Money Flow
+              </InputLabel>
               <SSelect
                 value={this.state.chaikinMoneyFlow}
                 onChange={this.handleSelectChange}
@@ -331,10 +321,10 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="averageVolume">Volume</InputLabel>
+              <InputLabel htmlFor="averageVolume">Average Volume</InputLabel>
               <SSelect
                 value={this.state.averageVolume}
                 onChange={this.handleSelectChange}
@@ -349,10 +339,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="averageVolumeOnBalance">Volume</InputLabel>
+              <InputLabel htmlFor="averageVolumeOnBalance">
+                On-Balance Volume
+              </InputLabel>
               <SSelect
                 value={this.state.averageVolumeOnBalance}
                 onChange={this.handleSelectChange}
@@ -367,208 +359,230 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
           </SColumnForm>
           <SColumnForm showFilters={showFilters}>
             <SFormControl>
-              <InputLabel htmlFor="changeDigits">Performance</InputLabel>
+              <InputLabel htmlFor="changeInDigits">Change</InputLabel>
               <SSelect
-                value={this.state.changeDigits}
+                value={this.state.changeInDigits}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'changeDigits',
-                  id: 'changeDigits',
+                  name: 'changeInDigits',
+                  id: 'changeInDigits',
                 }}
               >
-                {data.changeDigits.map(({ value, label }) => (
+                {data.changeInDigits.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="changePercentage">Performance 2</InputLabel>
+              <InputLabel htmlFor="changeInPercentage">Change %</InputLabel>
               <SSelect
-                value={this.state.changePercentage}
+                value={this.state.changeInPercentage}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'changePercentage',
-                  id: 'changePercentage',
+                  name: 'changeInPercentage',
+                  id: 'changeInPercentage',
                 }}
               >
-                {data.changePercentage.map(({ value, label }) => (
+                {data.changeInPercentage.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="twenty20DayHighLow">
-                20-days High/Low
-              </InputLabel>
+              <InputLabel htmlFor="one1HourLow">Hourly Low</InputLabel>
               <SSelect
-                value={this.state.twenty20DayHighLow}
+                value={this.state.one1HourLow}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'twenty20DayHighLow',
-                  id: 'twenty20DayHighLow',
+                  name: 'one1HourLow',
+                  id: 'one1HourLow',
                 }}
               >
-                {data.twenty20DayHighLow.map(({ value, label }) => (
+                {data.one1HourLow.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="twenty20DaySimpleMoving">
-                20-Day Simple Moving Average Beta
-              </InputLabel>
+              <InputLabel htmlFor="one1HourHigh">Hourly High</InputLabel>
               <SSelect
-                value={this.state.twenty20DaySimpleMoving}
+                value={this.state.one1HourHigh}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'twenty20DaySimpleMoving',
-                  id: 'twenty20DaySimpleMoving',
+                  name: 'one1HourHigh',
+                  id: 'one1HourHigh',
                 }}
               >
-                {data.twenty20DaySimpleMoving.map(({ value, label }) => (
+                {data.one1HourHigh.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
+            </SFormControl>
+            <SFormControl>
+              <InputLabel htmlFor="one1DayLow">1-Day Low</InputLabel>
+              <SSelect
+                value={this.state.one1DayLow}
+                onChange={this.handleSelectChange}
+                inputProps={{
+                  name: 'one1DayLow',
+                  id: 'one1DayLow',
+                }}
+              >
+                {data.one1DayLow.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input onChange={this.handleInputChange} />
+            </SFormControl>
+            <SFormControl>
+              <InputLabel htmlFor="one1DayHigh">1 Day High</InputLabel>
+              <SSelect
+                value={this.state.one1DayHigh}
+                onChange={this.handleSelectChange}
+                inputProps={{
+                  name: 'one1DayHigh',
+                  id: 'one1DayHigh',
+                }}
+              >
+                {data.one1DayHigh.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
             <SFormControl>
-              <InputLabel htmlFor="fifty50DaySimpleMoving">
-                50-Day Simple Moving Average
-              </InputLabel>
+              <InputLabel htmlFor="one1MonthLow">1-Month Low</InputLabel>
               <SSelect
-                value={this.state.fifty50DaySimpleMoving}
+                value={this.state.one1MonthLow}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'fifty50DaySimpleMoving',
-                  id: 'fifty50DaySimpleMoving',
+                  name: 'one1MonthLow',
+                  id: 'one1MonthLow',
                 }}
               >
-                {data.fifty50DaySimpleMoving.map(({ value, label }) => (
+                {data.one1MonthLow.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="fifty50DayHighLow">
-                50-Day High/Low
-              </InputLabel>
+              <InputLabel htmlFor="one1MonthHigh">1-Month High</InputLabel>
               <SSelect
-                value={this.state.fifty50DayHighLow}
+                value={this.state.one1MonthHigh}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'fifty50DayHighLow',
-                  id: 'fifty50DayHighLow',
+                  name: 'one1MonthHigh',
+                  id: 'one1MonthHigh',
                 }}
               >
-                {data.fifty50DayHighLow.map(({ value, label }) => (
+                {data.one1MonthHigh.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="averageTrueRange">
-                Average True Range
-              </InputLabel>
+              <InputLabel htmlFor="three3MonthLow">3-Month Low</InputLabel>
               <SSelect
-                value={this.state.averageTrueRange}
+                value={this.state.three3MonthLow}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'averageTrueRange',
-                  id: 'averageTrueRange',
+                  name: 'three3MonthLow',
+                  id: 'three3MonthLow',
                 }}
               >
-                {data.averageTrueRange.map(({ value, label }) => (
+                {data.three3MonthLow.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
             <SFormControl>
-              <InputLabel htmlFor="twoHundreds200SimpleMoving">
-                200-Day Simple Moving Average
-              </InputLabel>
+              <InputLabel htmlFor="three3MonthHigh">3-Month High</InputLabel>
               <SSelect
-                value={this.state.twoHundreds200SimpleMoving}
+                value={this.state.three3MonthHigh}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'twoHundreds200SimpleMoving',
-                  id: 'twoHundreds200SimpleMoving',
+                  name: 'three3MonthHigh',
+                  id: 'three3MonthHigh',
                 }}
               >
-                {data.twoHundreds200SimpleMoving.map(({ value, label }) => (
+                {data.three3MonthHigh.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
+            </SFormControl>
+            <SFormControl>
+              <InputLabel htmlFor="twelve12MonthLow">12-Month Low</InputLabel>
+              <SSelect
+                value={this.state.twelve12MonthLow}
+                onChange={this.handleSelectChange}
+                inputProps={{
+                  name: 'twelve12MonthLow',
+                  id: 'twelve12MonthLow',
+                }}
+              >
+                {data.twelve12MonthLow.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input onChange={this.handleInputChange} />
+            </SFormControl>
+            <SFormControl>
+              <InputLabel htmlFor="twelve12MonthHigh">12-Month High</InputLabel>
+              <SSelect
+                value={this.state.twelve12MonthHigh}
+                onChange={this.handleSelectChange}
+                inputProps={{
+                  name: 'twelve12MonthHigh',
+                  id: 'twelve12MonthHigh',
+                }}
+              >
+                {data.twelve12MonthHigh.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl>
-              <InputLabel htmlFor="fiftyTwo52WeekHighLow">
-                52-Week High/Low
-              </InputLabel>
-              <SSelect
-                value={this.state.fiftyTwo52WeekHighLow}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'fiftyTwo52WeekHighLow',
-                  id: 'fiftyTwo52WeekHighLow',
-                }}
-              >
-                {data.fiftyTwo52WeekHighLow.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input onChange={handleInputChange} />
-            </SFormControl>
-            <SFormControl>
-              <InputLabel htmlFor="rsi14">RSI (14)</InputLabel>
-              <SSelect
-                value={this.state.rsi14}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'rsi14',
-                  id: 'rsi14',
-                }}
-              >
-                {data.rsi14.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input onChange={handleInputChange} />
-            </SFormControl>
             <SFormControl>
               <InputLabel htmlFor="simpleMovingAverage">
                 Simple Moving Average
@@ -587,99 +601,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input onChange={handleInputChange} />
-            </SFormControl>
-            <SFormControl>
-              <InputLabel htmlFor="pattern">Pattern</InputLabel>
-              <SSelect
-                value={this.state.pattern}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'pattern',
-                  id: 'pattern',
-                }}
-              >
-                {data.pattern.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input onChange={handleInputChange} />
-            </SFormControl>
-          </SColumnForm>
-          <SColumnForm>
-            <SFormControl>
-              <InputLabel htmlFor="gap">Gap</InputLabel>
-              <SSelect
-                value={this.state.gap}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'gap',
-                  id: 'gap',
-                }}
-              >
-                {data.gap.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input onChange={handleInputChange} />
-            </SFormControl>
-            <SFormControl>
-              <InputLabel htmlFor="changeFromOpen">Change From Open</InputLabel>
-              <SSelect
-                value={this.state.changeFromOpen}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'changeFromOpen',
-                  id: 'changeFromOpen',
-                }}
-              >
-                {data.changeFromOpen.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input onChange={handleInputChange} />
-            </SFormControl>
-            <SFormControl>
-              <InputLabel htmlFor="candleStick">Candlestick</InputLabel>
-              <SSelect
-                value={this.state.candleStick}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'candleStick',
-                  id: 'candleStick',
-                }}
-              >
-                {data.candleStick.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input onChange={handleInputChange} />
-            </SFormControl>
-            <SFormControl>
-              <InputLabel htmlFor="closingPriceAverage">Volatility</InputLabel>
-              <SSelect
-                value={this.state.closingPriceAverage}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'closingPriceAverage',
-                  id: 'closingPriceAverage',
-                }}
-              >
-                {data.closingPriceAverage.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input onChange={handleInputChange} />
+              <Input onChange={this.handleInputChange} />
             </SFormControl>
           </SColumnForm>
         </SContainer>
