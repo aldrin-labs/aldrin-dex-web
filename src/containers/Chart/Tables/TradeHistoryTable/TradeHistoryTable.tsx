@@ -30,7 +30,7 @@ class TradeHistoryTable extends PureComponent {
   }
 
   render() {
-    const { onButtonClick } = this.props
+    const { onButtonClick, base } = this.props
     const { data } = this.state
 
     return (
@@ -46,12 +46,12 @@ class TradeHistoryTable extends PureComponent {
           </SwitchTablesButton>
         </Title>
         <Head background={'#292d31'}>
-          <Row background={'#292d31'} isHead>
+          <Row background={'#292d31'} isHead style={{ height: '100%' }}>
             <HeadCell color="#9ca2aa" width={'33%'}>
-              Trade size
+              Trade <br /> size
             </HeadCell>
             <HeadCell color="#9ca2aa" width={'33%'}>
-              Price (USD)
+              Price<br /> ({base || 'Fiat'})
             </HeadCell>
             <HeadCell color="#9ca2aa" width={'33%'}>
               Time
@@ -84,7 +84,7 @@ class TradeHistoryTable extends PureComponent {
               >
                 {order.tradeSize.toFixed(5)}
               </Cell>
-              <Cell
+              <CellWithArrow
                 animated={(() => {
                   if (order.status === 'fall' && order.updated) {
                     return 'red'
@@ -103,7 +103,7 @@ class TradeHistoryTable extends PureComponent {
                 <StyledArrow
                   direction={order.status === 'fall' ? 'down' : 'up'}
                 />
-              </Cell>
+              </CellWithArrow>
               <Cell
                 animated={(() => {
                   if (order.status === 'fall' && order.updated) {
@@ -140,15 +140,34 @@ const SwitchTablesButton = styled(Button)`
 `
 
 const StyledArrow = styled(MdArrowUpward)`
-  vertical-align: top;
   min-width: 20%;
+  position: absolute;
+  right: 0;
+  top: calc(50% - 8px);
   transform: ${(props: { direction: string }) =>
     props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
 `
 
 const Cell = styled(RowCell)`
-  display: flex;
-  flex-wrap: nowrap;
+  animation: ${(props: { animated?: string; width: string; color: string }) => {
+    if (props.animated === 'none') {
+      return ''
+    }
+
+    if (props.animated === 'green') {
+      return `${fadeInGreenAndBack} 1.5s ease`
+    }
+
+    if (props.animated === 'red') {
+      return `${fadeInRedAndBack} 1.5s ease`
+    }
+
+    return ''
+  }};
+`
+
+const CellWithArrow = Cell.extend`
+  position: relative;
   animation: ${(props: { animated?: string; width: string; color: string }) => {
     if (props.animated === 'none') {
       return ''
@@ -166,7 +185,7 @@ const Cell = styled(RowCell)`
   }};
 `
 
-const fadeInGreen = keyframes`
+const fadeInGreenAndBack = keyframes`
 0% {
   color: #9ca2aa;
 }
@@ -177,7 +196,7 @@ const fadeInGreen = keyframes`
   color: #9ca2aa;
 }
 `
-const fadeInRed = keyframes`
+const fadeInRedAndBack = keyframes`
 0% {
   color: #9ca2aa;
 }
@@ -189,6 +208,30 @@ const fadeInRed = keyframes`
   color: #9ca2aa;
 
 }
+`
+const fadeInGreen = keyframes`
+0% {
+  color: #34cb86d1; 
+}
+50% {
+  color: #9ca2aa;
+}
+100% {
+  color: #34cb86d1;
+}
+
+`
+const fadeInRed = keyframes`
+0% {
+  color: #d77455;
+}
+50% {
+  color: #9ca2aa;
+}
+100% {
+  color: #d77455;
+}
+
 `
 
 export default TradeHistoryTable

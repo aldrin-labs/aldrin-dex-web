@@ -44,6 +44,7 @@ export const Body = styled.div`
 
 export const Row = styled.div`
   width: 100%;
+
   display: flex;
   border-top: ${(props: { isHead?: boolean }) =>
     props.isHead ? '1px solid #818d9ae6' : 'none'};

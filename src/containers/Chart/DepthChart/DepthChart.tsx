@@ -144,7 +144,10 @@ class DepthChart extends Component {
               <MdAddCircleOutline />
             </Button>
           </MidPriceContainer>
-          <XAxis style={axisStyle} />
+          <XAxis
+            tickFormat={(value) => abbrNum(+value.toFixed(2), 2)}
+            style={axisStyle}
+          />
           <YAxis
             tickFormat={(value) => abbrNum(+value.toFixed(2), 2)}
             key="afd"

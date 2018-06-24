@@ -6,7 +6,7 @@ import { Paper } from '@material-ui/core'
 
 import {
   OrderBookTable,
-  UsdSpreadTable,
+  SpreadTable,
   Aggregation,
   TradeHistoryTable,
   ExchangesTable,
@@ -58,11 +58,6 @@ class Chart extends React.Component<Props, IState> {
     usdSpread: [],
     usdSpreads: null,
   }
-
-  // shouldComponentUpdate() {
-  //   if (condition) {
-  //   }
-  // }
 
   componentDidMount() {
     const { isShownMocks } = this.props
@@ -202,7 +197,7 @@ class Chart extends React.Component<Props, IState> {
             }}
           />
 
-          <UsdSpreadTable
+          <SpreadTable
             {...{
               roundTill: this.roundTill,
               data: usdSpread,

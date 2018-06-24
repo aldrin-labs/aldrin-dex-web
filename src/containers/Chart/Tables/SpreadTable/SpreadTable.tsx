@@ -13,7 +13,7 @@ import {
 } from '@components/Table/Table'
 import { demoAnime } from '../utils'
 
-class UsdSpreadTable extends PureComponent {
+class SpreadTable extends PureComponent {
   state = {
     tableExpanded: true,
     data: [],
@@ -37,10 +37,10 @@ class UsdSpreadTable extends PureComponent {
 
   render() {
     const { tableExpanded, data } = this.state
-    const { roundTill, aggregation, usdSpread } = this.props
+    const { roundTill, aggregation, spread, base } = this.props
 
     return (
-      <USDSpreadTable>
+      <SpreadreadTableWrapper>
         <CollapseWrapper in={tableExpanded} collapsedHeight="1.5rem">
           <Head
             onClick={this.onHeadClick}
@@ -62,7 +62,7 @@ class UsdSpreadTable extends PureComponent {
                 color="#9ca2aa"
                 width={'35%'}
               >
-                USD spread{' '}
+                {base || 'Fiat'} spread{' '}
               </HeadCell>
               <HeadCell
                 style={{
@@ -72,7 +72,7 @@ class UsdSpreadTable extends PureComponent {
                 color="#9ca2aa"
                 width={'14%'}
               >
-                {usdSpread || 0.01}
+                {spread || 0.01}
               </HeadCell>
             </TriggerRow>
           </Head>
@@ -108,7 +108,7 @@ class UsdSpreadTable extends PureComponent {
             ))}
           </Body>
         </CollapseWrapper>
-      </USDSpreadTable>
+      </SpreadreadTableWrapper>
     )
   }
 }
@@ -207,7 +207,7 @@ const StyledArrowSign = styled(MdArrowDropUp)`
   }
 `
 
-const USDSpreadTable = CollapsibleTable.extend`
+const SpreadreadTableWrapper = CollapsibleTable.extend`
   @media (max-width: 1080px) {
     bottom: 40px;
   }
@@ -236,4 +236,4 @@ const JumpUpArrow = keyframes`
 }
 `
 
-export default UsdSpreadTable
+export default SpreadTable

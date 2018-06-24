@@ -20,7 +20,7 @@ class ExchangesTable extends PureComponent {
   }
 
   render() {
-    const { exchanges, activeExchange, changeExchange } = this.props
+    const { exchanges, activeExchange, changeExchange, base } = this.props
     const { exchangeTableExpanded } = this.state
 
     return (
@@ -41,7 +41,11 @@ class ExchangesTable extends PureComponent {
             Exchanges
           </TriggerTitle>
           <Head style={{ height: '1.625rem' }} background={'#292d31'}>
-            <Row isHead background={'#292d31'}>
+            <Row
+              style={{ width: 'calc(100% + 10px)' }}
+              isHead
+              background={'#292d31'}
+            >
               <HeadCell color="#9ca2aa" width={'20%'}>
                 Name
               </HeadCell>
@@ -52,7 +56,7 @@ class ExchangesTable extends PureComponent {
                 Price
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'20%'}>
-                USD
+                {base || 'Fiat'}
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'20%'}>
                 1D Vol(K)

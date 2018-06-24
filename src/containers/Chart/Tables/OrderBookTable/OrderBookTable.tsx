@@ -11,7 +11,7 @@ import {
   Cell as RowCell,
   HeadCell,
 } from '@components/Table/Table'
-import { demoAnime } from '@containers/Chart/Tables/utils';
+import { demoAnime } from '@containers/Chart/Tables/utils'
 
 class OrderBookTable extends PureComponent {
   state = {
@@ -24,13 +24,12 @@ class OrderBookTable extends PureComponent {
     })
   }
 
-  
   demoAnimation = (sizeInd: number) => {
     this.setState({ data: demoAnime(sizeInd, this.state.data) })
   }
 
   render() {
-    const { onButtonClick, roundTill, aggregation } = this.props
+    const { onButtonClick, roundTill, aggregation, base } = this.props
 
     const { data } = this.state
 
@@ -57,7 +56,7 @@ class OrderBookTable extends PureComponent {
               color="#9ca2aa"
               width={'35%'}
             >
-              Market Size
+              Market <br /> Size
             </HeadCell>
             <HeadCell
               color="#9ca2aa"
@@ -67,7 +66,7 @@ class OrderBookTable extends PureComponent {
               }}
               width={'14%'}
             >
-              Price<br />(USD)
+              Price<br />({base || 'Fiat'})
             </HeadCell>
           </Row>
         </Head>
