@@ -329,6 +329,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputSimpleMovingAverage"
                 onChange={this.handleInputChange}
+                value={this.state.InputSimpleMovingAverage}
               />
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
@@ -352,6 +353,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputClosingPriceAverage"
                 onChange={this.handleInputChange}
+                value={this.state.InputClosingPriceAverage}
               />
             </SFormControl>
           </SColumnForm>
@@ -372,7 +374,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input name="InputMarketCap" onChange={this.handleInputChange} />
+              <Input
+                name="InputMarketCap"
+                onChange={this.handleInputChange}
+                value={this.state.InputMarketCap}
+              />
             </SFormControl>
             <SFormControl value={this.state.chaikinMoneyFlow}>
               <InputLabel htmlFor="chaikinMoneyFlow">
@@ -395,6 +401,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputChaikinMoneyFlow"
                 onChange={this.handleInputChange}
+                value={this.state.InputChaikinMoneyFlow}
               />
             </SFormControl>
             <SFormControl value={this.state.averageVolume}>
@@ -416,6 +423,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputAverageVolume"
                 onChange={this.handleInputChange}
+                value={this.state.InputAverageVolume}
               />
             </SFormControl>
             <SFormControl value={this.state.averageVolumeOnBalance}>
@@ -439,6 +447,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputAverageVolumeOnBalance"
                 onChange={this.handleInputChange}
+                value={this.state.InputAverageVolumeOnBalance}
               />
             </SFormControl>
           </SColumnForm>
@@ -462,6 +471,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputChangeInDigits"
                 onChange={this.handleInputChange}
+                value={this.state.InputChangeInDigits}
               />
             </SFormControl>
             <SFormControl value={this.state.changeInPercentage}>
@@ -483,6 +493,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputChangeInPercentage"
                 onChange={this.handleInputChange}
+                value={this.state.InputChangeInPercentage}
               />
             </SFormControl>
             <SFormControl value={this.state.one1HourLow}>
@@ -504,6 +515,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputOne1HourLow"
                 onChange={this.handleInputChange}
+                value={this.state.InputOne1HourLow}
               />
             </SFormControl>
             <SFormControl value={this.state.one1HourHigh}>
@@ -525,6 +537,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputOne1HourHigh"
                 onChange={this.handleInputChange}
+                value={this.state.InputOne1HourHigh}
               />
             </SFormControl>
           </SColumnForm>
@@ -545,7 +558,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
-              <Input name="InputOne1DayLow" onChange={this.handleInputChange} />
+              <Input
+                name="InputOne1DayLow"
+                onChange={this.handleInputChange}
+                value={this.state.InputOne1DayLow}
+              />
             </SFormControl>
             <SFormControl value={this.state.one1DayHigh}>
               <InputLabel htmlFor="one1DayHigh">1 Day High</InputLabel>
@@ -566,6 +583,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputOne1DayHigh"
                 onChange={this.handleInputChange}
+                value={this.state.InputOne1DayHigh}
               />
             </SFormControl>
             <SFormControl value={this.state.three3MonthLow}>
@@ -587,6 +605,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputThree3MonthLow"
                 onChange={this.handleInputChange}
+                value={this.state.InputThree3MonthLow}
               />
             </SFormControl>
             <SFormControl value={this.state.three3MonthHigh}>
@@ -608,6 +627,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputThree3MonthHigh"
                 onChange={this.handleInputChange}
+                value={this.state.InputThree3MonthHigh}
               />
             </SFormControl>
           </SColumnForm>
@@ -631,6 +651,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputOne1MonthLow"
                 onChange={this.handleInputChange}
+                value={this.state.InputOne1MonthLow}
               />
             </SFormControl>
             <SFormControl value={this.state.one1MonthHigh}>
@@ -652,6 +673,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputOne1MonthHigh"
                 onChange={this.handleInputChange}
+                value={this.state.InputOne1MonthHigh}
               />
             </SFormControl>
             <SFormControl value={this.state.twelve12MonthLow}>
@@ -673,6 +695,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputTwelve12MonthLow"
                 onChange={this.handleInputChange}
+                value={this.state.InputTwelve12MonthLow}
               />
             </SFormControl>
             <SFormControl value={this.state.twelve12MonthHigh}>
@@ -694,6 +717,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <Input
                 name="InputTwelve12MonthHigh"
                 onChange={this.handleInputChange}
+                value={this.state.InputTwelve12MonthHigh}
               />
             </SFormControl>
           </SColumnForm>
