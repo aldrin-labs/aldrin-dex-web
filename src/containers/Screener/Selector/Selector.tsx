@@ -26,14 +26,6 @@ const data = {
       value: 'scalableBlockchain',
     },
   ],
-  marketCap: [
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
   coin: [
     { label: 'USD', value: 'USD' },
     { label: 'BTC', value: 'BTC' },
@@ -42,7 +34,17 @@ const data = {
     { label: 'DOGE', value: 'DOGE' },
     { label: 'Monero', value: 'Monero' },
   ],
+  marketCap: [
+    { label: 'Any', value: 'Any' },
+    { label: 'Value Below', value: 'valueBelow' },
+    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
+    { label: 'Value Above', value: 'valueAbove' },
+    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
+    { label: 'Value Equals To', value: 'valueEqualsTo' },
+    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
+  ],
   averageVolume: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -51,6 +53,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   averageVolumeOnBalance: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -59,6 +62,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   chaikinMoneyFlow: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -67,6 +71,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   changeInDigits: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -75,6 +80,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   changeInPercentage: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -83,6 +89,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   closingPriceAverage: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -91,6 +98,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   simpleMovingAverage: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -99,6 +107,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   one1DayLow: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -107,6 +116,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   one1DayHigh: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -115,6 +125,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   one1HourLow: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -123,6 +134,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   one1HourHigh: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -131,6 +143,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   one1MonthLow: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -139,6 +152,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   one1MonthHigh: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -147,6 +161,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   three3MonthLow: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -155,6 +170,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   three3MonthHigh: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -163,6 +179,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   twelve12MonthLow: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -171,6 +188,7 @@ const data = {
     { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
   ],
   twelve12MonthHigh: [
+    { label: 'Any', value: 'Any' },
     { label: 'Value Below', value: 'valueBelow' },
     { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
     { label: 'Value Above', value: 'valueAbove' },
@@ -782,7 +800,7 @@ const SFormControl = styled(FormControl)`
 
   & ${Input} {
     visibility: ${(props: { value?: boolean }) =>
-      props.value ? 'visible' : 'hidden'};
+      props.value && !(props.value === 'Any') ? 'visible' : 'hidden'};
   }
 
   && {
