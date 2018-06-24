@@ -366,10 +366,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   id: 'marketCap',
                 }}
               >
-                <Input
-                  name="InputMarketCap"
-                  onChange={this.handleInputChange}
-                />
                 {data.marketCap.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
