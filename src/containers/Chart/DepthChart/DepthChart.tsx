@@ -32,22 +32,39 @@ class DepthChart extends Component {
     crosshairValuesForSpread: [],
     crosshairValuesForOrder: [],
     nearestOrderXIndex: null,
+    transformedOrdersData: [],
+    transformedSpreadData: [],
   }
 
   static getDerivedStateFromProps(props) {
-    const { orderData, spreadData } = props
-    if (orderData.length < 1 || spreadData.length < 1) {
+    const { ordersData, spreadData } = props
+
+    if (!ordersData || !spreadData) {
       return null
     }
 
+    if (ordersData.length < 1 || spreadData.length < 1) {
+      return null
+    }
+    const transformedOrdersData = ordersData.map((el) => ({
+      x: el.price,
+      y: el.size,
+    }))
+    const transformedSpreadData = spreadData.map((el) => ({
+      x: el.price,
+      y: el.size,
+    }))
+
     const maximumYinDataSet = Math.max(
-      maxBy(spreadData, (el) => el.y).y,
-      maxBy(orderData, (el) => el.y).y
+      maxBy(transformedSpreadData, (el) => el.y).y,
+      maxBy(transformedOrdersData, (el) => el.y).y
     )
 
     return {
       MAX_DOMAIN_PLOT:
         maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
+      transformedSpreadData,
+      transformedOrdersData,
     }
   }
 
@@ -67,9 +84,9 @@ class DepthChart extends Component {
 
   onNearestOrderX = (value, { index }) => {
     this.setState({
-      crosshairValuesForOrder: this.props.orderData
+      crosshairValuesForOrder: this.state.transformedOrdersData
         .map((d, i) => {
-          if (index === this.props.orderData.length - 1) {
+          if (index === this.state.transformedOrdersData.length - 1) {
             return null
           }
 
@@ -85,19 +102,20 @@ class DepthChart extends Component {
   }
 
   onNearestSpreadX = (value, { index }) => {
-    const { orderData, spreadData } = this.props
+    const { transformedOrdersData, transformedSpreadData } = this.state
     this.setState({
-      crosshairValuesForSpread: spreadData
+      crosshairValuesForSpread: transformedSpreadData
         .map((d, i) => {
           if (
-            index === spreadData.length - 1 &&
-            this.state.nearestOrderXIndex === orderData.length - 1 &&
+            index === transformedSpreadData.length - 1 &&
+            this.state.nearestOrderXIndex ===
+              transformedOrdersData.length - 1 &&
             i === index
           ) {
             return d
           }
 
-          if (index === spreadData.length - 1) {
+          if (index === transformedSpreadData.length - 1) {
             return null
           }
 
@@ -116,10 +134,16 @@ class DepthChart extends Component {
   }
 
   render() {
-    let { crosshairValuesForSpread, crosshairValuesForOrder } = this.state
-    const { orderData, spreadData, base, quote } = this.props
+    let {
+      crosshairValuesForSpread,
+      crosshairValuesForOrder,
+      transformedOrdersData: ordersData,
+      transformedSpreadData: spreadData,
+    } = this.state
+    const { base, quote } = this.props
 
-    // ToDo transofrm Data
+    // console.log(ordersData)
+    // console.log(spreadData)
 
     // hack for showing only one crosshair at once
     if (
@@ -129,8 +153,13 @@ class DepthChart extends Component {
       crosshairValuesForSpread = []
     }
 
-    if (!orderData || !spreadData) {
-      return <CircularProgress color="primary" />
+    if (!ordersData || !spreadData) {
+      return (
+        <CircularProgress
+          style={{ position: 'absolute', top: '50%', left: '50%' }}
+          color="primary"
+        />
+      )
     }
 
     return (
@@ -179,9 +208,9 @@ class DepthChart extends Component {
             data={[
               {
                 x0:
-                  orderData.length > 1 &&
-                  orderData[orderData.length - 1].x - 0.01,
-                x: orderData.length > 1 && orderData[orderData.length - 1].x,
+                  ordersData.length > 1 &&
+                  ordersData[ordersData.length - 1].x - 0.01,
+                x: ordersData.length > 1 && ordersData[ordersData.length - 1].x,
                 y: this.state.MAX_DOMAIN_PLOT / 2,
               },
             ]}
@@ -196,7 +225,7 @@ class DepthChart extends Component {
             }}
             animation="gentle"
             key="chart"
-            data={orderData}
+            data={ordersData}
             color="rgba(91, 96, 102, 0.7)"
           />
           <AreaSeries
@@ -281,6 +310,7 @@ class DepthChart extends Component {
 const Container = styled.div`
   height: 100%;
   width: 100%;
+  position: relative;
 `
 
 const PriceTitle = styled.span`

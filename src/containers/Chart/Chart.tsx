@@ -24,6 +24,7 @@ import {
 import Switch from '@components/Switch/Switch'
 import DepthChart from './DepthChart/DepthChart'
 import Inputs from './Inputs/Inputs'
+import SelectCurrencies from './Inputs/SelectDialog'
 
 interface IState {
   view: 'onlyCharts' | 'default'
@@ -47,8 +48,6 @@ class Chart extends React.Component<Props, IState> {
     orders,
     base: '',
     quote: '',
-    orderBookFakeData: [],
-    usdSpreadFakeData: [],
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
@@ -65,9 +64,9 @@ class Chart extends React.Component<Props, IState> {
 
     if (isShownMocks) {
       this.setState({
-        ordersData: orderBook,
+        ordersData: orderBookFakeData,
         exchanges,
-        spreadData: usdSpread,
+        spreadData: usdSpreadFakeData,
         usdSpreadFakeData,
         orderBookFakeData,
       })
@@ -262,8 +261,8 @@ class Chart extends React.Component<Props, IState> {
           <DepthChartContainer>
             <DepthChart
               {...{
-                orderData: this.state.orderBookFakeData,
-                spreadData: this.state.usdSpreadFakeData,
+                ordersData: this.state.ordersData,
+                spreadData: this.state.spreadData,
               }}
             />
           </DepthChartContainer>
@@ -302,6 +301,8 @@ class Chart extends React.Component<Props, IState> {
     return (
       <MainContainer>
         <TogglerContainer>
+          <SelectCurrencies />
+
           <Inputs
             {...{
               searchSymbol,
@@ -391,6 +392,7 @@ const TogglerContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  align-items: center;
   font-family: Roboto, sans-serif;
 `
 

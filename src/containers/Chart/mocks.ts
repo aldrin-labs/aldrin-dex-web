@@ -7,16 +7,18 @@ export const getFakeDepthChartData = () => {
   const orderBookFakeData = []
   for (let index = 1; index < 101; index++) {
     orderBookFakeData.push({
-      x: getRandomArbitrary(index * 100 - 2, index * 100),
-      y: getRandomArbitrary(100 - index - 1, 100 - index),
+      price: getRandomArbitrary(index * 100 - 2, index * 100),
+      size: getRandomArbitrary(100 - index - 1, 100 - index),
+      percentageOfChange: 23,
     })
   }
 
   const usdSpreadFakeData = []
   for (let index = 100; index < 201; index++) {
     usdSpreadFakeData.push({
-      x: getRandomArbitrary((300 - index) * 100 - 1, (300 - index) * 100),
-      y: getRandomArbitrary(200 - index - 1, 200 - index),
+      price: getRandomArbitrary((300 - index) * 100 - 1, (300 - index) * 100),
+      size: getRandomArbitrary(200 - index - 1, 200 - index),
+      percentageOfChange: 23,
     })
   }
   /* tslint:enable */
