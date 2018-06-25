@@ -24,10 +24,7 @@ import {
 import Switch from '@components/Switch/Switch'
 import DepthChart from './DepthChart/DepthChart'
 import Inputs from './Inputs/Inputs'
-import { Row, Cell as RowCell } from '@components/Table/Table'
-interface Props {}
 
-let i = true
 interface IState {
   view: 'onlyCharts' | 'default'
   exchangeTableCollapsed: boolean
@@ -55,10 +52,9 @@ class Chart extends React.Component<Props, IState> {
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
     activeChart: 'depth',
-    orderBook: [],
+    ordersData: [],
+    spreadData: [],
     exchanges: [],
-    usdSpread: [],
-    usdSpreads: null,
     tradeHistory: [],
   }
 
@@ -68,9 +64,9 @@ class Chart extends React.Component<Props, IState> {
 
     if (isShownMocks) {
       this.setState({
-        orderBook,
+        ordersData: orderBook,
         exchanges,
-        usdSpread,
+        spreadData: usdSpread,
         usdSpreadFakeData,
         orderBookFakeData,
       })
@@ -182,103 +178,15 @@ class Chart extends React.Component<Props, IState> {
     }
   }
 
-  setTradeHistoryFakeData = (i: boolean) => {
-    if (i) {
-      this.setState({
-        tradeHistory: [
-          {
-            size: 1,
-            price: 1,
-            tradeSize: 1,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-          {
-            size: 2.1,
-            price: 2,
-            tradeSize: 2,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-          {
-            size: 3,
-            price: 2.1,
-            tradeSize: 2,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-          {
-            size: 3,
-            price: 2,
-            tradeSize: 2,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-        ],
-      })
-    } else {
-      this.setState({
-        tradeHistory: [
-          {
-            size: 1,
-            price: 1,
-            tradeSize: 1,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-          {
-            size: 666,
-            price: 666,
-            tradeSize: 666,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-          {
-            size: 66,
-            price: 666,
-            tradeSize: 666,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-          {
-            size: 3,
-            price: 2,
-            tradeSize: 2,
-            status: 'grow',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-          {
-            size: 123,
-            price: 1234,
-            tradeSize: 1423,
-            status: 'fall',
-            percentageOfChange: 31,
-            time: '10:06:11',
-            updated: false,
-          },
-        ],
-      })
-    }
-  }
-
   renderTables: any = () => {
-    const { aggregation, showTableOnMobile, base, tradeHistory } = this.state
+    const {
+      aggregation,
+      showTableOnMobile,
+      base,
+      tradeHistory,
+      ordersData,
+      spreadData,
+    } = this.state
 
     const { activeExchange } = this.props
     const { changeExchange } = this
@@ -289,7 +197,7 @@ class Chart extends React.Component<Props, IState> {
           <OrderBookTable
             {...{
               onButtonClick: this.changeTable,
-              data: orderBook,
+              data: ordersData,
               roundTill: this.roundTill,
               aggregation,
             }}
@@ -298,7 +206,7 @@ class Chart extends React.Component<Props, IState> {
           <SpreadTable
             {...{
               roundTill: this.roundTill,
-              data: usdSpread,
+              data: spreadData,
               aggregation,
             }}
           />
@@ -311,17 +219,12 @@ class Chart extends React.Component<Props, IState> {
           />
         </TablesBlockWrapper>
 
-        <TablesBlockWrapper
-          onClick={() => {
-            i = !i
-            this.setTradeHistoryFakeData(i)
-          }}
-          show={showTableOnMobile === 'TRADE'}
-        >
+        <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
           <TradeHistoryTable
             {...{
               data: tradeHistory,
               onButtonClick: this.changeTable,
+              base,
             }}
           />
 

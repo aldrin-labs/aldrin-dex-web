@@ -12,27 +12,10 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
-import { demoAnime } from '@containers/Chart/Tables/utils'
 
 class OrderBookTable extends PureComponent {
-  state = {
-    data: [],
-  }
-
-  componentDidMount() {
-    this.setState({
-      data: this.props.data,
-    })
-  }
-
-  demoAnimation = (sizeInd: number) => {
-    this.setState({ data: demoAnime(sizeInd, this.state.data) })
-  }
-
   render() {
-    const { onButtonClick, roundTill, aggregation, base } = this.props
-
-    const { data } = this.state
+    const { onButtonClick, roundTill, aggregation, base, data } = this.props
 
     return (
       <Table>
@@ -73,13 +56,7 @@ class OrderBookTable extends PureComponent {
         </Head>
         <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}>
           {data.map((order, i) => (
-            <Row
-              onClick={() => {
-                this.demoAnimation(order.size)
-              }}
-              key={i}
-              background={'#292d31'}
-            >
+            <Row key={i} background={'#292d31'}>
               <EmptyCell
                 status={'rise'}
                 colored={order.percentageOfChange.toString()}

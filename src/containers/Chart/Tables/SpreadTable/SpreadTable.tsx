@@ -5,18 +5,11 @@ import { Collapse } from '@material-ui/core'
 
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
-import { demoAnime } from '../utils'
 
 class SpreadTable extends PureComponent {
   state = {
     tableExpanded: true,
     data: [],
-  }
-
-  componentDidMount() {
-    this.setState({
-      data: this.props.data,
-    })
   }
 
   onHeadClick = () => {
@@ -25,13 +18,9 @@ class SpreadTable extends PureComponent {
     }))
   }
 
-  demoAnimation = (sizeInd: number) => {
-    this.setState({ data: demoAnime(sizeInd, this.state.data) })
-  }
-
   render() {
-    const { tableExpanded, data } = this.state
-    const { roundTill, aggregation, spread, base } = this.props
+    const { tableExpanded } = this.state
+    const { roundTill, aggregation, spread, base, data } = this.props
 
     return (
       <SpreadreadTableWrapper>
@@ -72,13 +61,7 @@ class SpreadTable extends PureComponent {
           </Head>
           <Body height="300px">
             {data.slice(0, 30).map((order, i) => (
-              <Row
-                onClick={() => {
-                  this.demoAnimation(order.size)
-                }}
-                key={i}
-                background={'#25282c'}
-              >
+              <Row key={i} background={'#25282c'}>
                 <EmptyCell
                   status={'fall'}
                   colored={order.percentageOfChange.toString()}

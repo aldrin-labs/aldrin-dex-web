@@ -59,7 +59,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 }
                 color="#9ca2aa"
                 width={'33%'}
-                value={order.tradeSize.toFixed(5)}
+                value={order.size.toFixed(8)}
               />
 
               <AnimatedCell
@@ -68,7 +68,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 }
                 color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
                 width={'33%'}
-                value={Number(order.size).toFixed(8)}
+                value={Number(order.price).toFixed(2)}
               >
                 <StyledArrow
                   direction={order.status === 'fall' ? 'down' : 'up'}
