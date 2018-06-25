@@ -120,7 +120,6 @@ const CollapseWrapper = styled(Collapse)`
 
 const CollapsibleTable = Table.extend`
   max-height: calc(50% - 37px);
-  height: 50%;
   position: absolute;
   bottom: 23px;
   left: 0;
