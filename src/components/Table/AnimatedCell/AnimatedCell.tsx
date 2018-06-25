@@ -7,7 +7,11 @@ export interface IProps {
   color: string
   width: string
   value: any
-  animation: string
+  animation:
+    | 'fadeInRedAndBack'
+    | 'fadeInGreenAndBack'
+    | 'fadeInRed'
+    | 'fadeInGreen'
 }
 
 class AnimatedCell extends Component<IProps> {

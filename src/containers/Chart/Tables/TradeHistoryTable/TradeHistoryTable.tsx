@@ -9,12 +9,17 @@ import {
   Title,
   Body,
   Head,
-  Cell as RowCell,
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
-class TradeHistoryTable extends PureComponent {
+export interface IProps {
+  onButtonClick: Function
+  base: string
+  data: any[]
+}
+
+class TradeHistoryTable extends PureComponent<IProps> {
   render() {
     const { onButtonClick, base, data } = this.props
 

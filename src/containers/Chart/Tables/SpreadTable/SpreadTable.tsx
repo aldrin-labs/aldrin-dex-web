@@ -3,14 +3,8 @@ import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
 import { Collapse } from '@material-ui/core'
 
-import {
-  Table,
-  Row,
-  Body,
-  Head,
-  Cell as RowCell,
-  HeadCell,
-} from '@components/Table/Table'
+import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
+import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 import { demoAnime } from '../utils'
 
 class SpreadTable extends PureComponent {
@@ -91,19 +85,22 @@ class SpreadTable extends PureComponent {
                   color="#9ca2aa"
                   width={'25%'}
                 />
-                <Cell
-                  animated={order.updated ? 'red' : 'none'}
+                <AnimatedCell
+                  animation={'fadeInRedAndBack'}
                   color="#9ca2aa"
                   width={'35%'}
-                >
-                  {Number(order.size).toFixed(8)}
-                </Cell>
-                <Cell color="#d77455" width={'30%'}>
-                  {roundTill(
+                  value={Number(order.size).toFixed(8)}
+                />
+
+                <AnimatedCell
+                  value={roundTill(
                     aggregation,
                     Number(order.price).toFixed(2)
                   ).toFixed(2)}
-                </Cell>
+                  animation={'fadeInRed'}
+                  color="#d77455"
+                  width={'30%'}
+                />
               </Row>
             ))}
           </Body>
@@ -112,49 +109,6 @@ class SpreadTable extends PureComponent {
     )
   }
 }
-
-const fadeInGreen = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #34cb86d1;
-}
-100% {
-  color: #9ca2aa;
-}
-`
-const fadeInRed = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #d77455;
-
-}
-100% {
-  color: #9ca2aa;
-
-}
-`
-
-const Cell = styled(RowCell)`
-  animation: ${(props: { animated?: string; width: string; color: string }) => {
-    if (props.animated === 'none') {
-      return ''
-    }
-
-    if (props.animated === 'green') {
-      return `${fadeInGreen} 1.5s ease`
-    }
-
-    if (props.animated === 'red') {
-      return `${fadeInRed} 1.5s ease`
-    }
-
-    return ''
-  }};
-`
 
 const EmptyCell = Cell.extend`
   position: relative;
@@ -169,6 +123,7 @@ const EmptyCell = Cell.extend`
     content: '';
     background-color: ${(props: { status?: string; colored?: string }) =>
       props.status === 'fall' ? '#d77455' : '#34cb86d1'};
+    transition: all 0.5s linear;
   }
 `
 

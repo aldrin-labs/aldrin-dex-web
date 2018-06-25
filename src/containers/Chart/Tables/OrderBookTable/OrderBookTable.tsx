@@ -11,6 +11,7 @@ import {
   Cell as RowCell,
   HeadCell,
 } from '@components/Table/Table'
+import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 import { demoAnime } from '@containers/Chart/Tables/utils'
 
 class OrderBookTable extends PureComponent {
@@ -86,18 +87,21 @@ class OrderBookTable extends PureComponent {
                 width={'25%'}
               />
 
-              <Cell
+              <AnimatedCell
+                value={Number(order.size).toFixed(8)}
                 color="#9ca2aa"
-                animated={order.updated ? 'green' : 'none'}
+                animation={'fadeInGreenAndBack'}
                 width={'35%'}
-              >
-                {Number(order.size).toFixed(8)}
-              </Cell>
-              <Cell color="#34cb86d1" width={'30%'}>
-                {roundTill(aggregation, Number(order.price).toFixed(2)).toFixed(
-                  2
-                )}
-              </Cell>
+              />
+              <AnimatedCell
+                value={roundTill(
+                  aggregation,
+                  Number(order.price).toFixed(2)
+                ).toFixed(2)}
+                animation={'fadeInGreen'}
+                color="#34cb86d1"
+                width={'30%'}
+              />
             </Row>
           ))}
         </Body>
@@ -163,6 +167,7 @@ const EmptyCell = Cell.extend`
   position: relative;
 
   &:before {
+    transition: all 0.5s linear;
     position: absolute;
     z-index: 100;
     top: 0;
