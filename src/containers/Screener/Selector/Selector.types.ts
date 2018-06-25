@@ -5,17 +5,16 @@ export interface IProps {
 }
 
 export interface IState {
-  coin: undefined[] | string[]
+  timeInterval: string
   industry: undefined[] | string[]
 
   marketCap: string
-  changeInDigits: string
   changeInPercentage: string
   simpleMovingAverage: string
   closingPriceAverage: string
   averageVolume: string
   averageVolumeOnBalance: string
-  chaikinMoneyFlow: string
+  // chaikinMoneyFlow: string
 
   one1DayLow: string
   one1DayHigh: string
