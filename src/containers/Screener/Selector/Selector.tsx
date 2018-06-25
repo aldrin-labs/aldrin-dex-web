@@ -332,7 +332,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
             </SFormControl>
-
+            </SColumnForm>
+            <SColumnForm>
             <SFormControl value={this.state.simpleMovingAverage}>
               <InputLabel htmlFor="simpleMovingAverage">
                 Simple Moving Average
@@ -429,6 +430,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 value={this.state.InputChaikinMoneyFlow}
               />
             </SFormControl>
+          </SColumnForm>
+            <SColumnForm>
             <SFormControl value={this.state.averageVolume}>
               <InputLabel htmlFor="averageVolume">Average Volume</InputLabel>
               <SSelect
@@ -521,6 +524,30 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 value={this.state.InputChangeInPercentage}
               />
             </SFormControl>
+            <SFormControl value={this.state.three3MonthLow}>
+              <InputLabel htmlFor="three3MonthLow">3-Month Low</InputLabel>
+              <SSelect
+                value={this.state.three3MonthLow}
+                onChange={this.handleSelectChange}
+                inputProps={{
+                  name: 'three3MonthLow',
+                  id: 'three3MonthLow',
+                }}
+              >
+                {data.three3MonthLow.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input
+                name="InputThree3MonthLow"
+                onChange={this.handleInputChange}
+                value={this.state.InputThree3MonthLow}
+              />
+            </SFormControl>
+          </SColumnForm>
+            <SColumnForm>
             <SFormControl value={this.state.one1HourLow}>
               <InputLabel htmlFor="one1HourLow">Hourly Low</InputLabel>
               <SSelect
@@ -565,6 +592,28 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 value={this.state.InputOne1HourHigh}
               />
             </SFormControl>
+              <SFormControl value={this.state.three3MonthHigh}>
+                <InputLabel htmlFor="three3MonthHigh">3-Month High</InputLabel>
+                <SSelect
+                  value={this.state.three3MonthHigh}
+                  onChange={this.handleSelectChange}
+                  inputProps={{
+                    name: 'three3MonthHigh',
+                    id: 'three3MonthHigh',
+                  }}
+                >
+                  {data.three3MonthHigh.map(({ value, label }) => (
+                    <MenuItem key={label} value={value}>
+                      {label}
+                    </MenuItem>
+                  ))}
+                </SSelect>
+                <Input
+                  name="InputThree3MonthHigh"
+                  onChange={this.handleInputChange}
+                  value={this.state.InputThree3MonthHigh}
+                />
+              </SFormControl>
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.one1DayLow}>
@@ -611,48 +660,26 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 value={this.state.InputOne1DayHigh}
               />
             </SFormControl>
-            <SFormControl value={this.state.three3MonthLow}>
-              <InputLabel htmlFor="three3MonthLow">3-Month Low</InputLabel>
+            <SFormControl value={this.state.twelve12MonthLow}>
+              <InputLabel htmlFor="twelve12MonthLow">12-Month Low</InputLabel>
               <SSelect
-                value={this.state.three3MonthLow}
+                value={this.state.twelve12MonthLow}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'three3MonthLow',
-                  id: 'three3MonthLow',
+                  name: 'twelve12MonthLow',
+                  id: 'twelve12MonthLow',
                 }}
               >
-                {data.three3MonthLow.map(({ value, label }) => (
+                {data.twelve12MonthLow.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
               <Input
-                name="InputThree3MonthLow"
+                name="InputTwelve12MonthLow"
                 onChange={this.handleInputChange}
-                value={this.state.InputThree3MonthLow}
-              />
-            </SFormControl>
-            <SFormControl value={this.state.three3MonthHigh}>
-              <InputLabel htmlFor="three3MonthHigh">3-Month High</InputLabel>
-              <SSelect
-                value={this.state.three3MonthHigh}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'three3MonthHigh',
-                  id: 'three3MonthHigh',
-                }}
-              >
-                {data.three3MonthHigh.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input
-                name="InputThree3MonthHigh"
-                onChange={this.handleInputChange}
-                value={this.state.InputThree3MonthHigh}
+                value={this.state.InputTwelve12MonthLow}
               />
             </SFormControl>
           </SColumnForm>
@@ -701,28 +728,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 value={this.state.InputOne1MonthHigh}
               />
             </SFormControl>
-            <SFormControl value={this.state.twelve12MonthLow}>
-              <InputLabel htmlFor="twelve12MonthLow">12-Month Low</InputLabel>
-              <SSelect
-                value={this.state.twelve12MonthLow}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'twelve12MonthLow',
-                  id: 'twelve12MonthLow',
-                }}
-              >
-                {data.twelve12MonthLow.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input
-                name="InputTwelve12MonthLow"
-                onChange={this.handleInputChange}
-                value={this.state.InputTwelve12MonthLow}
-              />
-            </SFormControl>
             <SFormControl value={this.state.twelve12MonthHigh}>
               <InputLabel htmlFor="twelve12MonthHigh">12-Month High</InputLabel>
               <SSelect
@@ -753,8 +758,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 }
 
 const SContainer = styled.form`
-  padding-bottom: 15px;
-
   display: ${(props: { showFilters?: boolean }) =>
     props.showFilters ? 'flex' : 'none'};
 `
@@ -797,16 +800,15 @@ const Input = styled.input`
 `
 
 const SFormControl = styled(FormControl)`
-  min-height: 68px;
-  width: 200px;
+  width: 150px;
 
   & ${Input} {
-    visibility: ${(props: { value?: boolean }) =>
-      props.value && !(props.value === 'Any') ? 'visible' : 'hidden'};
+    display: ${(props: { value?: boolean }) =>
+      props.value && !(props.value === 'Any') ? 'block' : 'none'};
   }
 
   && {
-    margin: 10px;
+    margin: 5px 10px;
   }
 `
 
