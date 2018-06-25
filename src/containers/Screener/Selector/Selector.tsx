@@ -9,194 +9,7 @@ import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 
 import { IProps, IState } from './Selector.types'
-
-const data = {
-  industry: [
-    { label: 'Smart Contracts', value: 'smartContracts' },
-    { label: 'Payments', value: 'payments' },
-    { label: 'Blockchain Platform', value: 'blockchain' },
-    { label: 'Payment Coin', value: 'paymentCoin' },
-    { label: 'Privacy Coin', value: 'privacyCoin' },
-    {
-      label: 'Third Generation Blockchain',
-      value: 'thirdGenerationBlockchain',
-    },
-    {
-      label: 'Scalable Blockchain as a Service Platform',
-      value: 'scalableBlockchain',
-    },
-  ],
-  coin: [
-    { label: 'USD', value: 'USD' },
-    { label: 'BTC', value: 'BTC' },
-    { label: 'LTC', value: 'LTC' },
-    { label: 'ETH', value: 'ETH' },
-    { label: 'DOGE', value: 'DOGE' },
-    { label: 'Monero', value: 'Monero' },
-  ],
-  marketCap: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  averageVolume: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  averageVolumeOnBalance: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  chaikinMoneyFlow: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  changeInDigits: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  changeInPercentage: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  closingPriceAverage: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  simpleMovingAverage: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  one1DayLow: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  one1DayHigh: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  one1HourLow: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  one1HourHigh: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  one1MonthLow: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  one1MonthHigh: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  three3MonthLow: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  three3MonthHigh: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  twelve12MonthLow: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-  twelve12MonthHigh: [
-    { label: 'Any', value: null },
-    { label: 'Value Below', value: 'valueBelow' },
-    { label: 'Value Below or Equal', value: 'valueBelowOrEqual' },
-    { label: 'Value Above', value: 'valueAbove' },
-    { label: 'Value Above or Equal', value: 'valueAboveOrEqual' },
-    { label: 'Value Equals To', value: 'valueEqualsTo' },
-    { label: 'Value Not Equal To', value: 'valueNotEqualTo' },
-  ],
-}
+import { data } from './selectsData'
 
 export default class ScreenerSelect extends React.Component<IProps, IState> {
   state: IState = {
@@ -332,8 +145,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
             </SFormControl>
-            </SColumnForm>
-            <SColumnForm>
+          </SColumnForm>
+          <SColumnForm>
             <SFormControl value={this.state.simpleMovingAverage}>
               <InputLabel htmlFor="simpleMovingAverage">
                 Simple Moving Average
@@ -431,7 +244,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
           </SColumnForm>
-            <SColumnForm>
+          <SColumnForm>
             <SFormControl value={this.state.averageVolume}>
               <InputLabel htmlFor="averageVolume">Average Volume</InputLabel>
               <SSelect
@@ -547,7 +360,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
           </SColumnForm>
-            <SColumnForm>
+          <SColumnForm>
             <SFormControl value={this.state.one1HourLow}>
               <InputLabel htmlFor="one1HourLow">Hourly Low</InputLabel>
               <SSelect
@@ -592,28 +405,28 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 value={this.state.InputOne1HourHigh}
               />
             </SFormControl>
-              <SFormControl value={this.state.three3MonthHigh}>
-                <InputLabel htmlFor="three3MonthHigh">3-Month High</InputLabel>
-                <SSelect
-                  value={this.state.three3MonthHigh}
-                  onChange={this.handleSelectChange}
-                  inputProps={{
-                    name: 'three3MonthHigh',
-                    id: 'three3MonthHigh',
-                  }}
-                >
-                  {data.three3MonthHigh.map(({ value, label }) => (
-                    <MenuItem key={label} value={value}>
-                      {label}
-                    </MenuItem>
-                  ))}
-                </SSelect>
-                <Input
-                  name="InputThree3MonthHigh"
-                  onChange={this.handleInputChange}
-                  value={this.state.InputThree3MonthHigh}
-                />
-              </SFormControl>
+            <SFormControl value={this.state.three3MonthHigh}>
+              <InputLabel htmlFor="three3MonthHigh">3-Month High</InputLabel>
+              <SSelect
+                value={this.state.three3MonthHigh}
+                onChange={this.handleSelectChange}
+                inputProps={{
+                  name: 'three3MonthHigh',
+                  id: 'three3MonthHigh',
+                }}
+              >
+                {data.three3MonthHigh.map(({ value, label }) => (
+                  <MenuItem key={label} value={value}>
+                    {label}
+                  </MenuItem>
+                ))}
+              </SSelect>
+              <Input
+                name="InputThree3MonthHigh"
+                onChange={this.handleInputChange}
+                value={this.state.InputThree3MonthHigh}
+              />
+            </SFormControl>
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.one1DayLow}>
@@ -794,7 +607,7 @@ const Input = styled.input`
   text-align: left;
   padding: 10px 0 0px;
   color: rgb(255, 255, 255);
-  
+
   font-size: 0.7em;
   line-height: 0.7em;
 `
@@ -815,7 +628,7 @@ const SFormControl = styled(FormControl)`
 const SColumnForm = styled.div`
   display: flex;
   flex-direction: column;
-  
+
   && label {
     font-size: 0.7em;
   }
@@ -840,11 +653,10 @@ const SSelect = styled(Select)`
     font-size: 1.7em;
     top: calc(50% - 12px);
   }
-  
+
   && {
-      font-size: 0.7em;
+    font-size: 0.7em;
   }
-  
 `
 
 const SFilterWrapper = styled.div`

@@ -1,12 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
+import { IProps } from './ScreenerTabs.types'
 
-const ScreenerTabs = ({ ...props }) => {
-  const onClickTab = (tab: string) => {
+const ScreenerTabs = ({ ...props }: IProps) => {
+  const onClickTab = (clickedTab: string) => {
     const { onChangeTab } = props
 
     if (onChangeTab) {
-      onChangeTab(tab)
+      onChangeTab(clickedTab)
     }
   }
 

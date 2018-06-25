@@ -1,12 +1,15 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
-import { IProps, IState } from './MarketSummaryTable.types'
+import {
+  IProps,
+  IState,
+  ICurrentSort,
+  IMarketSummaryTableData,
+} from './MarketSummaryTable.types'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../../components/SvgIcon/SvgIcon'
 import { tableData } from './mocks'
-import {
-  onSortTableFull
-} from '../../../../utils/PortfolioTableUtils'
+import { onSortTableFull } from '../../../../utils/PortfolioTableUtils'
 
 // TODO: Think about this
 let staticRows = tableData
@@ -29,33 +32,38 @@ const tableHeadingsCurrentScreenerTable = [
 
 // TODO: delete selected stuff in styled components
 
-const arrayOfStringHeadings = [
-  'ticker'
-]
+const arrayOfStringHeadings = ['ticker']
 
-export default class MarketSummaryTable extends React.Component<IProps, IState> {
+export default class MarketSummaryTable extends React.Component<
+  IProps,
+  IState
+> {
   state: IState = {
     currentSort: null,
   }
 
-  onSortTable = (key) => {
+  onSortTable = (key: string) => {
+    const { currentSort } = this.state
 
-    const {currentSort} = this.state
-
-    const {newData, newCurrentSort} = onSortTableFull(key,staticRows,currentSort,arrayOfStringHeadings)
+    const {
+      newData,
+      newCurrentSort,
+    }: {
+      newData: IMarketSummaryTableData
+      newCurrentSort: ICurrentSort
+    } = onSortTableFull(key, staticRows, currentSort, arrayOfStringHeadings)
 
     // TODO: Should be refactored
     staticRows = newData
 
-
     this.setState({
-      currentSort: newCurrentSort
+      currentSort: newCurrentSort,
     })
   }
 
   render() {
     const { currentSort } = this.state
-    const {searchText} = this.props
+    const { searchText } = this.props
     const usdSymbol = <Icon className="fa fa-usd" />
 
     const btcSymbol = <Icon className="fa fa-btc" />
@@ -132,14 +140,18 @@ export default class MarketSummaryTable extends React.Component<IProps, IState> 
                   `${chgATH}%`,
                 ]
 
-                if (searchText && ticker.toLocaleLowerCase().indexOf(searchText.toLocaleLowerCase()) === -1) {
+                if (
+                  searchText &&
+                  ticker
+                    .toLocaleLowerCase()
+                    .indexOf(searchText.toLocaleLowerCase()) === -1
+                ) {
                   return
                 }
 
                 return (
                   <PTR key={`${rank}${ticker}${idx}`}>
                     {cols.map((col, index) => {
-
                       if (String(col).match(/%/g)) {
                         const color =
                           Number(col.replace(/%/g, '')) >= 0
@@ -187,10 +199,9 @@ export default class MarketSummaryTable extends React.Component<IProps, IState> 
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  
+
   padding: 20px;
 `
-
 
 const Wrapper = styled.div`
   overflow-y: scroll;
@@ -241,19 +252,20 @@ const PTH = css`
 const PTHC = styled.th`
   ${PTH};
   min-width: 100px;
-  
+
   &:nth-child(1) {
     min-width: 70px;
   }
   &:nth-child(2) {
     min-width: 75px;
   }
-  
+
   &:nth-child(n + 4) {
     min-width: 110px;
   }
-  
-  &:nth-child(11), &:nth-child(12) {
+
+  &:nth-child(11),
+  &:nth-child(12) {
     min-width: 116px;
   }
 `
@@ -266,17 +278,17 @@ const PTHead = styled.thead`
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3136' : '#393e44'};
+    props.isSelected ? '#2d3136' : '#393e44'};
 
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
 
 const PTD = css`
   color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#4ed8da' : '#fff'};
+    props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
   font-size: 12px;
@@ -293,14 +305,14 @@ const PTD = css`
 const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
-  
+
   &:nth-child(1) {
     min-width: 70px;
   }
   &:nth-child(2) {
     min-width: 70px;
   }
-  
+
   &:nth-child(n + 4) {
     min-width: 110px;
   }
@@ -314,4 +326,3 @@ const PTBody = styled.tbody`
 const Icon = styled.i`
   padding-right: 5px;
 `
-
