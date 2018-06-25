@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { Button } from '@material-ui/core'
 import { MdArrowUpward } from 'react-icons/lib/md/'
 
@@ -62,7 +62,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 value={order.tradeSize.toFixed(5)}
               />
 
-              <CellWithArrow
+              <AnimatedCell
                 animation={
                   order.status === 'fall' ? 'fadeInRed' : 'fadeInGreen'
                 }
@@ -73,7 +73,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 <StyledArrow
                   direction={order.status === 'fall' ? 'down' : 'up'}
                 />
-              </CellWithArrow>
+              </AnimatedCell>
               <AnimatedCell
                 animation={
                   order.status === 'fall'
@@ -91,10 +91,6 @@ class TradeHistoryTable extends PureComponent<IProps> {
     )
   }
 }
-
-const CellWithArrow = styled(AnimatedCell)`
-  position: relative;
-`
 
 const SwitchTablesButton = styled(Button)`
   && {

@@ -102,6 +102,7 @@ const fadeInRed = keyframes`
 `
 
 const Cell = styled(RowCell)`
+  position: relative;
   animation: ${(props: { animated?: string; width: string; color: string }) => {
     if (props.animated === 'none') {
       return ''
