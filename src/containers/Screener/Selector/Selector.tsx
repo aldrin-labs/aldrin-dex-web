@@ -1,7 +1,7 @@
 import React from 'react'
 import { InputLabel } from 'material-ui/Input'
 import { MenuItem } from 'material-ui/Menu'
-import { FormControl, FormHelperText } from 'material-ui/Form'
+import { FormControl } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
 import Select from 'material-ui/Select'
 import styled from 'styled-components'
@@ -803,7 +803,7 @@ const SFormControl = styled(FormControl)`
   width: 150px;
 
   & ${Input} {
-    display: ${(props: { value?: boolean }) =>
+    display: ${(props: { value?: boolean | string }) =>
       props.value && !(props.value === 'Any') ? 'block' : 'none'};
   }
 
