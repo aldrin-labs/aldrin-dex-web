@@ -12,26 +12,11 @@ import {
   Cell as RowCell,
   HeadCell,
 } from '@components/Table/Table'
-import { demoAnime } from '../utils'
+import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
 class TradeHistoryTable extends PureComponent {
-  state = {
-    data: [],
-  }
-
-  componentDidMount() {
-    this.setState({
-      data: this.props.data,
-    })
-  }
-
-  demoAnimation = (sizeInd: number) => {
-    this.setState({ data: demoAnime(sizeInd, this.state.data) })
-  }
-
   render() {
-    const { onButtonClick, base } = this.props
-    const { data } = this.state
+    const { onButtonClick, base, data } = this.props
 
     return (
       <Table>
@@ -60,67 +45,40 @@ class TradeHistoryTable extends PureComponent {
         </Head>
         <Body height="calc(100vh - 59px - 80px - 39px - 37px - 32px )">
           {data.slice(0, 30).map((order, i) => (
-            <Row
-              onClick={() => {
-                this.demoAnimation(order.size)
-              }}
-              key={i}
-              background={'#292d31'}
-            >
-              <Cell
-                animated={(() => {
-                  if (order.status === 'fall' && order.updated) {
-                    return 'red'
-                  }
-
-                  if (order.status === 'grow' && order.updated) {
-                    return 'green'
-                  }
-
-                  return 'none'
-                })()}
+            <Row key={i} background={'#292d31'}>
+              <AnimatedCell
+                animation={
+                  order.status === 'fall'
+                    ? 'fadeInRedAndBack'
+                    : 'fadeInGreenAndBack'
+                }
                 color="#9ca2aa"
                 width={'33%'}
-              >
-                {order.tradeSize.toFixed(5)}
-              </Cell>
+                value={order.tradeSize.toFixed(5)}
+              />
+
               <CellWithArrow
-                animated={(() => {
-                  if (order.status === 'fall' && order.updated) {
-                    return 'red'
-                  }
-
-                  if (order.status === 'grow' && order.updated) {
-                    return 'green'
-                  }
-
-                  return 'none'
-                })()}
+                animation={
+                  order.status === 'fall' ? 'fadeInRed' : 'fadeInGreen'
+                }
                 color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
                 width={'33%'}
+                value={Number(order.size).toFixed(8)}
               >
-                <div>{Number(order.size).toFixed(8)}</div>
                 <StyledArrow
                   direction={order.status === 'fall' ? 'down' : 'up'}
                 />
               </CellWithArrow>
-              <Cell
-                animated={(() => {
-                  if (order.status === 'fall' && order.updated) {
-                    return 'red'
-                  }
-
-                  if (order.status === 'grow' && order.updated) {
-                    return 'green'
-                  }
-
-                  return 'none'
-                })()}
+              <AnimatedCell
+                animation={
+                  order.status === 'fall'
+                    ? 'fadeInRedAndBack'
+                    : 'fadeInGreenAndBack'
+                }
                 color="#9ca2aa"
                 width={'33%'}
-              >
-                {order.time}
-              </Cell>
+                value={order.time}
+              />
             </Row>
           ))}
         </Body>
@@ -128,6 +86,10 @@ class TradeHistoryTable extends PureComponent {
     )
   }
 }
+
+const CellWithArrow = styled(AnimatedCell)`
+  position: relative;
+`
 
 const SwitchTablesButton = styled(Button)`
   && {
@@ -146,92 +108,6 @@ const StyledArrow = styled(MdArrowUpward)`
   top: calc(50% - 8px);
   transform: ${(props: { direction: string }) =>
     props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
-`
-
-const Cell = styled(RowCell)`
-  animation: ${(props: { animated?: string; width: string; color: string }) => {
-    if (props.animated === 'none') {
-      return ''
-    }
-
-    if (props.animated === 'green') {
-      return `${fadeInGreenAndBack} 1.5s ease`
-    }
-
-    if (props.animated === 'red') {
-      return `${fadeInRedAndBack} 1.5s ease`
-    }
-
-    return ''
-  }};
-`
-
-const CellWithArrow = Cell.extend`
-  position: relative;
-  animation: ${(props: { animated?: string; width: string; color: string }) => {
-    if (props.animated === 'none') {
-      return ''
-    }
-
-    if (props.animated === 'green') {
-      return `${fadeInGreen} 1.5s ease`
-    }
-
-    if (props.animated === 'red') {
-      return `${fadeInRed} 1.5s ease`
-    }
-
-    return ''
-  }};
-`
-
-const fadeInGreenAndBack = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #34cb86d1;
-}
-100% {
-  color: #9ca2aa;
-}
-`
-const fadeInRedAndBack = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #d77455;
-
-}
-100% {
-  color: #9ca2aa;
-
-}
-`
-const fadeInGreen = keyframes`
-0% {
-  color: #34cb86d1; 
-}
-50% {
-  color: #9ca2aa;
-}
-100% {
-  color: #34cb86d1;
-}
-
-`
-const fadeInRed = keyframes`
-0% {
-  color: #d77455;
-}
-50% {
-  color: #9ca2aa;
-}
-100% {
-  color: #d77455;
-}
-
 `
 
 export default TradeHistoryTable

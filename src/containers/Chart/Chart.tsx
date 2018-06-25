@@ -27,6 +27,7 @@ import Inputs from './Inputs/Inputs'
 import { Row, Cell as RowCell } from '@components/Table/Table'
 interface Props {}
 
+let i = true
 interface IState {
   view: 'onlyCharts' | 'default'
   exchangeTableCollapsed: boolean
@@ -47,6 +48,7 @@ class Chart extends React.Component<Props, IState> {
   state: IState = {
     view: 'default',
     orders,
+    base: '',
     orderBookFakeData: [],
     usdSpreadFakeData: [],
     exchangeTableCollapsed: true,
@@ -57,6 +59,7 @@ class Chart extends React.Component<Props, IState> {
     exchanges: [],
     usdSpread: [],
     usdSpreads: null,
+    tradeHistory: [],
   }
 
   componentDidMount() {
@@ -179,8 +182,103 @@ class Chart extends React.Component<Props, IState> {
     }
   }
 
+  setTradeHistoryFakeData = (i: boolean) => {
+    if (i) {
+      this.setState({
+        tradeHistory: [
+          {
+            size: 1,
+            price: 1,
+            tradeSize: 1,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+          {
+            size: 2.1,
+            price: 2,
+            tradeSize: 2,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+          {
+            size: 3,
+            price: 2.1,
+            tradeSize: 2,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+          {
+            size: 3,
+            price: 2,
+            tradeSize: 2,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+        ],
+      })
+    } else {
+      this.setState({
+        tradeHistory: [
+          {
+            size: 1,
+            price: 1,
+            tradeSize: 1,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+          {
+            size: 666,
+            price: 666,
+            tradeSize: 666,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+          {
+            size: 66,
+            price: 666,
+            tradeSize: 666,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+          {
+            size: 3,
+            price: 2,
+            tradeSize: 2,
+            status: 'grow',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+          {
+            size: 123,
+            price: 1234,
+            tradeSize: 1423,
+            status: 'fall',
+            percentageOfChange: 31,
+            time: '10:06:11',
+            updated: false,
+          },
+        ],
+      })
+    }
+  }
+
   renderTables: any = () => {
-    const { aggregation, showTableOnMobile } = this.state
+    const { aggregation, showTableOnMobile, base, tradeHistory } = this.state
 
     const { activeExchange } = this.props
     const { changeExchange } = this
@@ -213,10 +311,16 @@ class Chart extends React.Component<Props, IState> {
           />
         </TablesBlockWrapper>
 
-        <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
+        <TablesBlockWrapper
+          onClick={() => {
+            i = !i
+            this.setTradeHistoryFakeData(i)
+          }}
+          show={showTableOnMobile === 'TRADE'}
+        >
           <TradeHistoryTable
             {...{
-              data: orderBook,
+              data: tradeHistory,
               onButtonClick: this.changeTable,
             }}
           />
@@ -233,39 +337,37 @@ class Chart extends React.Component<Props, IState> {
     )
   }
 
-  renderDefaultView = () => {
-    return (
-      <Container>
-        <ChartsContainer>
-          <ChartsSwitcher>
-            <Switch
-              onClick={() => {
-                this.setState((prevState) => ({
-                  activeChart:
-                    prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                }))
+  renderDefaultView = () => (
+    <Container>
+      <ChartsContainer>
+        <ChartsSwitcher>
+          <Switch
+            onClick={() => {
+              this.setState((prevState) => ({
+                activeChart:
+                  prevState.activeChart === 'candle' ? 'depth' : 'candle',
+              }))
+            }}
+            values={['Depth', 'Chart']}
+          />
+        </ChartsSwitcher>
+        {this.state.activeChart === 'candle' ? (
+          <SingleChart />
+        ) : (
+          <DepthChartContainer>
+            <DepthChart
+              {...{
+                orderData: this.state.orderBookFakeData,
+                spreadData: this.state.usdSpreadFakeData,
               }}
-              values={['Depth', 'Chart']}
             />
-          </ChartsSwitcher>
-          {this.state.activeChart === 'candle' ? (
-            <SingleChart />
-          ) : (
-            <DepthChartContainer>
-              <DepthChart
-                {...{
-                  orderData: this.state.orderBookFakeData,
-                  spreadData: this.state.usdSpreadFakeData,
-                }}
-              />
-            </DepthChartContainer>
-          )}
-        </ChartsContainer>
+          </DepthChartContainer>
+        )}
+      </ChartsContainer>
 
-        {this.renderTables()}
-      </Container>
-    )
-  }
+      {this.renderTables()}
+    </Container>
+  )
 
   renderOnlyCharts = () => <OnlyCharts />
 
@@ -375,53 +477,6 @@ const ChartsSwitcher = styled.div`
   background: rgb(53, 61, 70);
   color: white;
   border-bottom: 1px solid #818d9ae6;
-`
-
-const TriggerRow = Row.extend`
-  display: flex;
-`
-
-const fadeInGreen = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #34cb86d1;
-}
-100% {
-  color: #9ca2aa;
-}
-`
-const fadeInRed = keyframes`
-0% {
-  color: #9ca2aa;
-}
-50% {
-  color: #d77455;
-
-}
-100% {
-  color: #9ca2aa;
-
-}
-`
-
-const Cell = styled(RowCell)`
-  animation: ${(props: { animated?: string; width: string; color: string }) => {
-    if (props.animated === 'none') {
-      return ''
-    }
-
-    if (props.animated === 'green') {
-      return `${fadeInGreen} 1.5s ease`
-    }
-
-    if (props.animated === 'red') {
-      return `${fadeInRed} 1.5s ease`
-    }
-
-    return ''
-  }};
 `
 
 // end of FlexTable
