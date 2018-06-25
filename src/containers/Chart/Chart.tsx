@@ -374,6 +374,7 @@ const ChartsContainer = TablesContainer.extend`
 `
 
 const ChartsSwitcher = styled.div`
+  border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: flex-end;

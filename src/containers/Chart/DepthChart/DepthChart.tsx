@@ -31,7 +31,7 @@ class DepthChart extends Component {
     MAX_DOMAIN_PLOT: 0,
     crosshairValuesForSpread: [],
     crosshairValuesForOrder: [],
-    // nearestOrderXIndex: null,
+    nearestOrderXIndex: null,
   }
 
   static getDerivedStateFromProps(props) {
@@ -80,7 +80,7 @@ class DepthChart extends Component {
           return null
         })
         .filter(Boolean),
-      //   nearestOrderXIndex: index,
+      nearestOrderXIndex: index,
     })
   }
 
@@ -89,13 +89,13 @@ class DepthChart extends Component {
     this.setState({
       crosshairValuesForSpread: spreadData
         .map((d, i) => {
-          //   if (
-          //     index !== spreadData.length - 1 &&
-          //     this.state.nearestOrderXIndex === orderData.length - 1 &&
-          //     i === index
-          //   ) {
-          //     return d
-          //   }
+          if (
+            index === spreadData.length - 1 &&
+            this.state.nearestOrderXIndex === orderData.length - 1 &&
+            i === index
+          ) {
+            return d
+          }
 
           if (index === spreadData.length - 1) {
             return null
@@ -116,8 +116,18 @@ class DepthChart extends Component {
   }
 
   render() {
-    const { crosshairValuesForSpread, crosshairValuesForOrder } = this.state
-    const { orderData, spreadData } = this.props
+    let { crosshairValuesForSpread, crosshairValuesForOrder } = this.state
+    const { orderData, spreadData, base, quote } = this.props
+
+    console.log(crosshairValuesForSpread.length)
+
+    // hack for showing only one crosshair at once
+    if (
+      crosshairValuesForSpread.length >= 1 &&
+      crosshairValuesForOrder.length >= 1
+    ) {
+      crosshairValuesForSpread = []
+    }
 
     if (!orderData || !spreadData) {
       return <CircularProgress color="primary" />
@@ -206,12 +216,15 @@ class DepthChart extends Component {
             <CrosshairContent>
               {crosshairValuesForSpread.length >= 1 ? (
                 <>
-                  <h4>{crosshairValuesForSpread[0].y.toFixed(2)} USD</h4>
+                  <h4>
+                    {`${crosshairValuesForSpread[0].y.toFixed(2)} `}
+                    {base || 'Fiat'}
+                  </h4>
                   <Br light />
                   <CrosshairBottomWrapper>
                     <div>
                       Can be bought {crosshairValuesForSpread[0].x.toFixed(2)}{' '}
-                      BTC
+                      {quote || 'CC'}
                     </div>
                     <RotatedBr />
                     <div>
@@ -219,8 +232,8 @@ class DepthChart extends Component {
                       {(
                         crosshairValuesForSpread[0].y *
                         crosshairValuesForSpread[0].x
-                      ).toFixed(2)}
-                      USD
+                      ).toFixed(2)}{' '}
+                      {base || 'Fiat'}
                     </div>
                   </CrosshairBottomWrapper>
                 </>
@@ -233,11 +246,15 @@ class DepthChart extends Component {
             <CrosshairContent>
               {crosshairValuesForOrder.length >= 1 ? (
                 <>
-                  <h4>{crosshairValuesForOrder[0].y.toFixed(2)} USD</h4>
+                  <h4>
+                    {`${crosshairValuesForOrder[0].y.toFixed(2)} `}{' '}
+                    {base || 'Fiat'}
+                  </h4>
                   <Br light />
                   <CrosshairBottomWrapper>
                     <div>
-                      Can be sold {crosshairValuesForOrder[0].x.toFixed(2)} BTC
+                      Can be sold {crosshairValuesForOrder[0].x.toFixed(2)}{' '}
+                      {quote || 'CC'}
                     </div>
                     <RotatedBr />
                     <div>
@@ -245,8 +262,8 @@ class DepthChart extends Component {
                       {(
                         crosshairValuesForOrder[0].y *
                         crosshairValuesForOrder[0].x
-                      ).toFixed(2)}
-                      USD
+                      ).toFixed(2)}{' '}
+                      {base || 'Fiat'}
                     </div>
                   </CrosshairBottomWrapper>
                 </>
