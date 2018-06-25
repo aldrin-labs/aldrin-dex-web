@@ -119,7 +119,7 @@ class DepthChart extends Component {
     let { crosshairValuesForSpread, crosshairValuesForOrder } = this.state
     const { orderData, spreadData, base, quote } = this.props
 
-    console.log(crosshairValuesForSpread.length)
+    // ToDo transofrm Data
 
     // hack for showing only one crosshair at once
     if (
