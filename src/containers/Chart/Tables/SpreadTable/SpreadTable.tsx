@@ -59,8 +59,8 @@ class SpreadTable extends PureComponent {
               </HeadCell>
             </TriggerRow>
           </Head>
-          <Body height="300px">
-            {data.slice(0, 30).map((order, i) => (
+          <Body height="220px">
+            {data.map((order, i) => (
               <Row key={i} background={'#25282c'}>
                 <EmptyCell
                   status={'fall'}

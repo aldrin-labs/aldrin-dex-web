@@ -54,7 +54,7 @@ class OrderBookTable extends PureComponent {
             </HeadCell>
           </Row>
         </Head>
-        <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px)'}>
+        <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
           {data.map((order, i) => (
             <Row key={i} background={'#292d31'}>
               <EmptyCell

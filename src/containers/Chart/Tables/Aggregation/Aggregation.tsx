@@ -9,7 +9,7 @@ const Aggregation = (props) => {
 
   return (
     <AggregationWrapper>
-      <Head background={'#292d31'}>
+      <AggHead background={'#292d31'}>
         <Row background={'#292d31'} isHead>
           <Cell color="#9ca2aa" width={'25%'} />
           <HeadCell
@@ -51,10 +51,18 @@ const Aggregation = (props) => {
             </Button>
           </HeadCell>
         </Row>
-      </Head>
+      </AggHead>
     </AggregationWrapper>
   )
 }
+
+const AggHead = styled(Head)`
+  height: 26px;
+
+  @media (max-width: 1080px) {
+    height: 40px;
+  }
+`
 
 const Button = styled.button`
   position: relative;
@@ -78,6 +86,11 @@ const Button = styled.button`
 `
 
 const AggregationWrapper = Table.extend`
+  z-index: 1000;
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+
   @media (max-width: 1080px) {
     z-index: 1000;
     bottom: 0;
