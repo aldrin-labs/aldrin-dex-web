@@ -47,7 +47,7 @@ class DialogSelect extends React.Component {
 
     return (
       <div>
-        <Button onClick={this.handleClickOpen}>Open select dialog</Button>
+        <Button onClick={this.handleClickOpen}>Add Currency</Button>
         <Dialog
           disableBackdropClick
           disableEscapeKeyDown
@@ -60,10 +60,9 @@ class DialogSelect extends React.Component {
               <FormControl className={classes.formControl}>
                 <InputLabel htmlFor="age-native-simple">Age</InputLabel>
                 <Select
-                  native
                   value={this.state.age}
                   onChange={this.handleChange('age')}
-                  input={<Input id="age-native-simple" />}
+                  input={<Input id="CRYPTOCURRENCY" />}
                 >
                   <option value="" />
                   <option value={10}>Ten</option>
