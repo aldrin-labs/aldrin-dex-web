@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { Paper } from '@material-ui/core'
@@ -14,13 +14,7 @@ import {
 import * as actions from './actions'
 import { SingleChart } from '../../components/Chart'
 import OnlyCharts from './OnlyCharts'
-import {
-  orderBook,
-  exchanges,
-  orders,
-  usdSpread,
-  getFakeDepthChartData,
-} from './mocks'
+import { exchanges, orders, getFakeDepthChartData } from './mocks'
 import Switch from '@components/Switch/Switch'
 import DepthChart from './DepthChart/DepthChart'
 import Inputs from './Inputs/Inputs'
@@ -32,6 +26,8 @@ interface IState {
   orders: number[][]
   aggregation: number
   data: any
+  base: string
+  quote: string
   searchSymbol: string
   showTableOnMobile: string
   mCharts: string
@@ -42,12 +38,14 @@ interface IState {
   }
 }
 
-class Chart extends React.Component<Props, IState> {
+class Chart extends React.Component<IState> {
   state: IState = {
     view: 'default',
     orders,
-    base: '',
-    quote: '',
+    base: 'BTC',
+    quote: 'USD',
+    searchSymbol: '',
+    addChart: '',
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
@@ -75,9 +73,15 @@ class Chart extends React.Component<Props, IState> {
     }
   }
 
-  handleTextInputChanges = (event) => {
+  handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
+    })
+  }
+
+  handleChangeInModalDialog = (name) => (value) => {
+    this.setState({
+      [name]: value,
     })
   }
 
@@ -241,37 +245,46 @@ class Chart extends React.Component<Props, IState> {
     )
   }
 
-  renderDefaultView = () => (
-    <Container>
-      <ChartsContainer>
-        <ChartsSwitcher>
-          <Switch
-            onClick={() => {
-              this.setState((prevState) => ({
-                activeChart:
-                  prevState.activeChart === 'candle' ? 'depth' : 'candle',
-              }))
-            }}
-            values={['Depth', 'Chart']}
-          />
-        </ChartsSwitcher>
-        {this.state.activeChart === 'candle' ? (
-          <SingleChart />
-        ) : (
-          <DepthChartContainer>
-            <DepthChart
-              {...{
-                ordersData: this.state.ordersData,
-                spreadData: this.state.spreadData,
-              }}
-            />
-          </DepthChartContainer>
-        )}
-      </ChartsContainer>
+  renderDefaultView = () => {
+    const { quote, base, ordersData, spreadData } = this.state
 
-      {this.renderTables()}
-    </Container>
-  )
+    return (
+      <Container>
+        <ChartsContainer>
+          <ChartsSwitcher>
+            <ExchangePair
+              variant="title"
+              color="primary"
+              noWrap
+            >{`${base} - ${quote}`}</ExchangePair>
+            <Switch
+              onClick={() => {
+                this.setState((prevState) => ({
+                  activeChart:
+                    prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                }))
+              }}
+              values={['Depth', 'Chart']}
+            />
+          </ChartsSwitcher>
+          {this.state.activeChart === 'candle' ? (
+            <SingleChart />
+          ) : (
+            <DepthChartContainer>
+              <DepthChart
+                {...{
+                  ordersData,
+                  spreadData,
+                }}
+              />
+            </DepthChartContainer>
+          )}
+        </ChartsContainer>
+
+        {this.renderTables()}
+      </Container>
+    )
+  }
 
   renderOnlyCharts = () => <OnlyCharts />
 
@@ -295,21 +308,24 @@ class Chart extends React.Component<Props, IState> {
   }
 
   render() {
-    const { view, searchSymbol, addChart } = this.state
+    const { view, base, quote } = this.state
     const toggler = this.renderToggler()
 
     return (
       <MainContainer>
         <TogglerContainer>
-          <SelectCurrencies />
+          <SelectCurrencies
+            handleChange={this.handleChangeInModalDialog}
+            value={[base, quote]}
+          />
 
-          <Inputs
+          {/* <Inputs
             {...{
               searchSymbol,
               addChart,
-              handleChange: this.handleTextInputChanges,
+              handleChange: this.handleChange,
             }}
-          />
+          /> */}
 
           {toggler}
         </TogglerContainer>
@@ -326,6 +342,16 @@ const MainContainer = styled.div`
 const DepthChartContainer = styled.div`
   height: calc(100vh - 59px - 80px - 38px);
   width: 100%;
+`
+
+const ExchangePair = styled.div`
+  margin: 0 0.5rem;
+  background: #2e353fd9;
+  line-height: 36px;
+  white-space: nowrap;
+  border-radius: 3px;
+  height: 100%;
+  padding: 0 1rem;
 `
 
 const TablesBlockWrapper = styled(Paper)`

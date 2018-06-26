@@ -3,31 +3,20 @@ import styled from 'styled-components'
 import Input from '@components/Input/Input'
 
 class Inputs extends PureComponent {
-  state = {
-    searchSymbol: '',
-    addChart: '',
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    })
-  }
-
   render() {
-    const { searchSymbol, addChart } = this.state
+    const { searchSymbol, addChart } = this.props
 
     return (
       <InputContainer>
         <Input
           name="searchSymbol"
-          onChange={this.handleChange}
+          onChange={this.props.handleChange}
           value={searchSymbol}
           placeholder="Search symbol"
         />
         <Input
           name="addChart"
-          onChange={this.handleChange}
+          onChange={this.props.handleChange}
           value={addChart}
           placeholder="Multiple charts"
         />

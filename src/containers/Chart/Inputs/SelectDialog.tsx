@@ -5,22 +5,29 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  InputLabel,
-  Input,
-  MenuItem,
   FormControl,
-  Select,
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
+import AutoSuggestSelect from './AutoSuggestSelect/AutoSuggestSelect'
+
 const styles = (theme) => ({
+  root: {
+    overflow: 'visible !important',
+  },
+  rootContent: {
+    overflow: 'visible',
+    height: '4rem',
+  },
   container: {
     display: 'flex',
     flexWrap: 'wrap',
+    color: 'white',
   },
   formControl: {
     margin: theme.spacing.unit,
     minWidth: 120,
+    color: 'white',
   },
 })
 
@@ -28,10 +35,6 @@ class DialogSelect extends React.Component {
   state = {
     open: false,
     age: '',
-  }
-
-  handleChange = (name) => (event) => {
-    this.setState({ [name]: Number(event.target.value) })
   }
 
   handleClickOpen = () => {
@@ -43,47 +46,38 @@ class DialogSelect extends React.Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, handleChange, value } = this.props
+    const [base, quote] = value
 
     return (
       <div>
-        <Button onClick={this.handleClickOpen}>Add Currency</Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.handleClickOpen}
+        >
+          Add Currencies
+        </Button>
         <Dialog
-          disableBackdropClick
-          disableEscapeKeyDown
+          classes={{
+            paper: classes.root,
+          }}
+          className={classes.root}
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <DialogTitle>Fill the form</DialogTitle>
-          <DialogContent>
+          <DialogTitle>Add pair of currencies</DialogTitle>
+          <DialogContent className={classes.rootContent}>
             <form className={classes.container}>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-native-simple">Age</InputLabel>
-                <Select
-                  value={this.state.age}
-                  onChange={this.handleChange('age')}
-                  input={<Input id="CRYPTOCURRENCY" />}
-                >
-                  <option value="" />
-                  <option value={10}>Ten</option>
-                  <option value={20}>Twenty</option>
-                  <option value={30}>Thirty</option>
-                </Select>
+                <AutoSuggestSelect
+                  {...{ handleChange, id: 'base', value: base }}
+                />
               </FormControl>
               <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-simple">Age</InputLabel>
-                <Select
-                  value={this.state.age}
-                  onChange={this.handleChange('age')}
-                  input={<Input id="age-simple" />}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
+                <AutoSuggestSelect
+                  {...{ handleChange, id: 'quote', value: quote }}
+                />
               </FormControl>
             </form>
           </DialogContent>
@@ -92,7 +86,7 @@ class DialogSelect extends React.Component {
               Cancel
             </Button>
             <Button onClick={this.handleClose} color="primary">
-              Ok
+              Add
             </Button>
           </DialogActions>
         </Dialog>

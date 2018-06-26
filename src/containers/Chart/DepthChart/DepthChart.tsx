@@ -142,9 +142,6 @@ class DepthChart extends Component {
     } = this.state
     const { base, quote } = this.props
 
-    // console.log(ordersData)
-    // console.log(spreadData)
-
     // hack for showing only one crosshair at once
     if (
       crosshairValuesForSpread.length >= 1 &&
