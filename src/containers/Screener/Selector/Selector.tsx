@@ -23,38 +23,17 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     closingPriceAverage: '',
     averageVolume: '',
     averageVolumeOnBalance: '',
-    // chaikinMoneyFlow: '',
+    low: '',
+    high: '',
 
-    one1DayLow: '',
-    one1DayHigh: '',
-    one1HourLow: '',
-    one1HourHigh: '',
-    one1MonthLow: '',
-    one1MonthHigh: '',
-    three3MonthLow: '',
-    three3MonthHigh: '',
-    twelve12MonthLow: '',
-    twelve12MonthHigh: '',
-
-    InputMarketCap: '',
-    InputChangeInDigits: '',
-    InputChangeInPercentage: '',
-    InputSimpleMovingAverage: '',
-    InputClosingPriceAverage: '',
-    InputAverageVolume: '',
-    InputAverageVolumeOnBalance: '',
-    InputChaikinMoneyFlow: '',
-
-    InputOne1HourLow: '',
-    InputOne1HourHigh: '',
-    InputOne1DayLow: '',
-    InputOne1DayHigh: '',
-    InputOne1MonthLow: '',
-    InputOne1MonthHigh: '',
-    InputThree3MonthLow: '',
-    InputThree3MonthHigh: '',
-    InputTwelve12MonthLow: '',
-    InputTwelve12MonthHigh: '',
+    marketCapInput: '',
+    changeInPercentageInput: '',
+    simpleMovingAverageInput: '',
+    closingPriceAverageInput: '',
+    averageVolumeInput: '',
+    averageVolumeOnBalanceInput: '',
+    lowInput: '',
+    highInput: '',
 
     showFilters: false,
   }
@@ -188,9 +167,9 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
               <Input
-                name="InputSimpleMovingAverage"
+                name="simpleMovingAverageInput"
                 onChange={this.handleInputChange}
-                value={this.state.InputSimpleMovingAverage}
+                value={this.state.simpleMovingAverageInput}
               />
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
@@ -206,12 +185,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
                 <Input
                   autoFocus
-                  name="InputClosingPriceAverage"
+                  name="closingPriceAverageInput"
                   onChange={this.handleInputChange}
-                  value={this.state.InputClosingPriceAverage}
+                  value={this.state.closingPriceAverageInput}
                   innerRef={this.myRef}
                 />
-
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -233,9 +211,9 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
               <Input
-                name="InputMarketCap"
+                name="marketCapInput"
                 onChange={this.handleInputChange}
-                value={this.state.InputMarketCap}
+                value={this.state.marketCapInput}
               />
             </SFormControl>
             <SFormControl value={this.state.changeInPercentage}>
@@ -256,9 +234,9 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
               <Input
-                name="InputChangeInPercentage"
+                name="changeInPercentageInput"
                 onChange={this.handleInputChange}
-                value={this.state.InputChangeInPercentage}
+                value={this.state.changeInPercentageInput}
               />
             </SFormControl>
           </SColumnForm>
@@ -281,9 +259,9 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
               <Input
-                name="InputAverageVolume"
+                name="averageVolumeInput"
                 onChange={this.handleInputChange}
-                value={this.state.InputAverageVolume}
+                value={this.state.averageVolumeInput}
               />
             </SFormControl>
             <SFormControl value={this.state.averageVolumeOnBalance}>
@@ -306,57 +284,57 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
               <Input
-                name="InputAverageVolumeOnBalance"
+                name="averageVolumeOnBalanceInput"
                 onChange={this.handleInputChange}
-                value={this.state.InputAverageVolumeOnBalance}
+                value={this.state.averageVolumeOnBalanceInput}
               />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl value={this.state.one1HourLow}>
-              <InputLabel htmlFor="one1HourLow">Hourly Low</InputLabel>
+            <SFormControl value={this.state.low}>
+              <InputLabel htmlFor="low">Low</InputLabel>
               <SSelect
-                key="one1HourLow"
-                value={this.state.one1HourLow}
+                key="low"
+                value={this.state.low}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'one1HourLow',
-                  id: 'one1HourLow',
+                  name: 'low',
+                  id: 'low',
                 }}
               >
-                {data.one1HourLow.map(({ value, label }) => (
+                {data.low.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
               <Input
-                name="InputOne1HourLow"
+                name="InputLow"
                 onChange={this.handleInputChange}
-                value={this.state.InputOne1HourLow}
+                value={this.state.InputLow}
               />
             </SFormControl>
-            <SFormControl value={this.state.one1HourHigh}>
-              <InputLabel htmlFor="one1HourHigh">Hourly High</InputLabel>
+            <SFormControl value={this.state.high}>
+              <InputLabel htmlFor="high">High</InputLabel>
               <SSelect
-                key="one1HourHigh"
-                value={this.state.one1HourHigh}
+                key="high"
+                value={this.state.high}
                 onChange={this.handleSelectChange}
                 inputProps={{
-                  name: 'one1HourHigh',
-                  id: 'one1HourHigh',
+                  name: 'high',
+                  id: 'high',
                 }}
               >
-                {data.one1HourHigh.map(({ value, label }) => (
+                {data.high.map(({ value, label }) => (
                   <MenuItem key={label} value={value}>
                     {label}
                   </MenuItem>
                 ))}
               </SSelect>
               <Input
-                name="InputOne1HourHigh"
+                name="high"
                 onChange={this.handleInputChange}
-                value={this.state.InputOne1HourHigh}
+                value={this.state.high}
               />
             </SFormControl>
           </SColumnForm>
