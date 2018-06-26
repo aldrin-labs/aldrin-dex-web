@@ -4,6 +4,7 @@ import { MenuItem } from 'material-ui/Menu'
 import { FormControl } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
 import Select from 'material-ui/Select'
+import SelectReact from 'react-select'
 import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
@@ -58,6 +59,27 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     showFilters: false,
   }
 
+  myRef = React.createRef()
+
+  handleInputNewChange = (...sd) => {
+    console.log('sd', sd)
+  }
+
+  onChangeFunc(name, optionSelected, action) {
+    const value = optionSelected ? optionSelected.value : ''
+
+    console.log('action: ', action)
+
+
+    this.setState({
+      [name]: value,
+    }, () => {
+      console.log(this.state);
+    })
+
+    // this[`myRef`].current.focus()
+  }
+
   handleSelectChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
@@ -86,7 +108,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { showFilters } = this.state
+    const { showFilters, closingPriceAverage } = this.state
 
     return (
       <MainWrapper>
@@ -172,29 +194,24 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
-              <InputLabel htmlFor="closingPriceAverage">
+              <Label>
                 Closing Price Average
-              </InputLabel>
-              <SSelect
-                key="closingPriceAverage"
-                value={this.state.closingPriceAverage}
-                onChange={this.handleSelectChange}
-                inputProps={{
-                  name: 'closingPriceAverage',
-                  id: 'closingPriceAverage',
-                }}
-              >
-                {data.closingPriceAverage.map(({ value, label }) => (
-                  <MenuItem key={label} value={value}>
-                    {label}
-                  </MenuItem>
-                ))}
-              </SSelect>
-              <Input
-                name="InputClosingPriceAverage"
-                onChange={this.handleInputChange}
-                value={this.state.InputClosingPriceAverage}
+              </Label>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                options={data.closingPriceAverage}
+                onChange={this.onChangeFunc.bind(this, 'closingPriceAverage')}
+                onInputChange={this.handleInputNewChange}
               />
+                <Input
+                  autoFocus
+                  name="InputClosingPriceAverage"
+                  onChange={this.handleInputChange}
+                  value={this.state.InputClosingPriceAverage}
+                  innerRef={this.myRef}
+                />
+
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -564,6 +581,83 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   }
 }
 
+const customStyles = {
+  control: () => {
+    return {
+      position: 'relative',
+      boxSizing: 'border-box',
+      cursor: 'default',
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      outline: '0',
+      transition: 'all 100ms',
+      backgroundColor: 'transparent',
+      minHeight: '0.8em',
+      border: 'none',
+    }
+  },
+  menu: (base, state) => ({
+    ...base,
+    backgroundColor: '#424242',
+    minWidth: '250px',
+  }),
+  option: (base, state) => ({
+    ...base,
+    color: '#fff',
+    fontSize: '1.5em',
+    fontFamily: 'Roboto',
+    backgroundColor: state.isSelected
+      ? 'rgba(255, 255, 255, 0.2)'
+      : state.isFocused
+        ? 'rgba(255, 255, 255, 0.1)'
+        : '#424242',
+    [':active']: null,
+  }),
+  clearIndicator: (base, state) => {
+    return ({
+      [':hover']: {
+        color: '#fff'
+      },
+      display: 'flex',
+      width: '20px',
+      boxSizing: 'border-box',
+      color: 'hsl(0, 0%, 80%)',
+      padding: '2px',
+      transition: 'color 150ms',
+    })
+  },
+  dropdownIndicator: (base, state) => ({
+    [':hover']: {
+      color: '#fff'
+    },
+    display: 'flex',
+    width: '20px',
+    boxSizing: 'border-box',
+    color: 'hsl(0, 0%, 80%)',
+    padding: '2px',
+    transition: 'color 150ms',
+  }),
+  valueContainer: (base, state) => ({
+    ...base,
+    paddingLeft: 0,
+  }),
+  singleValue: (base, state) => ({
+    ...base,
+    color: '#fff',
+    marginLeft: '0'
+  }),
+  placeholder: (base, state) => ({
+    ...base,
+    marginLeft: 0,
+  }),
+  input: (base, state) => ({
+    ...base,
+    color: '#fff'
+  })
+}
+
 const SContainer = styled.form`
   display: ${(props: { showFilters?: boolean }) =>
     props.showFilters ? 'flex' : 'none'};
@@ -606,13 +700,18 @@ const Input = styled.input`
   line-height: 0.7em;
 `
 
+//   & ${Input} {
+//     display: ${(props: { value?: boolean | string }) =>
+// props.value && !(props.value === 'Any') ? 'block' : 'none'};
+// }
+
 const SFormControl = styled(FormControl)`
   width: 150px;
-
+  
   & ${Input} {
-    display: ${(props: { value?: boolean | string }) =>
-      props.value && !(props.value === 'Any') ? 'block' : 'none'};
-  }
+  opacity: ${(props: { value?: boolean | string }) =>
+  props.value && !(props.value === 'Any') ? '1' : '0'};
+}
 
   && {
     margin: 5px 10px;
@@ -622,10 +721,6 @@ const SFormControl = styled(FormControl)`
 const SColumnForm = styled.div`
   display: flex;
   flex-direction: column;
-
-  && label {
-    font-size: 0.7em;
-  }
 `
 
 const ToggleFiltersContainer = styled.div`
@@ -651,6 +746,23 @@ const SSelect = styled(Select)`
   && {
     font-size: 0.7em;
   }
+`
+
+const SelectR = styled(SelectReact)`
+  font-family: Roboto;
+  font-size: 12px;
+  border-bottom: 1px solid #c1c1c1;
+
+  &:hover {
+    border-bottom: 1px solid #fff;
+  }
+`
+
+const Label = styled.label`
+    font-size: 0.6em;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    line-height: 1;
 `
 
 const SFilterWrapper = styled.div`
