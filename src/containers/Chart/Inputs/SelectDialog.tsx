@@ -34,7 +34,14 @@ const styles = (theme) => ({
 class DialogSelect extends React.Component {
   state = {
     open: false,
-    age: '',
+    base: '',
+    quote: '',
+  }
+
+  handleChange = (name) => (value) => {
+    this.setState({
+      [name]: value,
+    })
   }
 
   handleClickOpen = () => {
@@ -46,8 +53,9 @@ class DialogSelect extends React.Component {
   }
 
   render() {
-    const { classes, handleChange, value } = this.props
-    const [base, quote] = value
+    const { classes, handleSelect } = this.props
+    const { handleChange } = this
+    const { base, quote } = this.state
 
     return (
       <div>
@@ -85,7 +93,13 @@ class DialogSelect extends React.Component {
             <Button onClick={this.handleClose} color="primary">
               Cancel
             </Button>
-            <Button onClick={this.handleClose} color="primary">
+            <Button
+              onClick={() => {
+                handleSelect([base, quote].join('/'))
+                this.handleClose()
+              }}
+              color="primary"
+            >
               Add
             </Button>
           </DialogActions>

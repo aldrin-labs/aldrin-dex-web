@@ -26,8 +26,7 @@ interface IState {
   orders: number[][]
   aggregation: number
   data: any
-  base: string
-  quote: string
+
   searchSymbol: string
   showTableOnMobile: string
   mCharts: string
@@ -42,8 +41,7 @@ class Chart extends React.Component<IState> {
   state: IState = {
     view: 'default',
     orders,
-    base: 'BTC',
-    quote: 'USD',
+
     searchSymbol: '',
     addChart: '',
     exchangeTableCollapsed: true,
@@ -76,12 +74,6 @@ class Chart extends React.Component<IState> {
   handleChange = (event) => {
     this.setState({
       [event.target.name]: event.target.value,
-    })
-  }
-
-  handleChangeInModalDialog = (name) => (value) => {
-    this.setState({
-      [name]: value,
     })
   }
 
@@ -186,12 +178,13 @@ class Chart extends React.Component<IState> {
     const {
       aggregation,
       showTableOnMobile,
-      base,
-      quote,
+
       tradeHistory,
       ordersData,
       spreadData,
     } = this.state
+
+    const { base, quote } = this.props
 
     const { activeExchange } = this.props
     const { changeExchange } = this
@@ -246,7 +239,8 @@ class Chart extends React.Component<IState> {
   }
 
   renderDefaultView = () => {
-    const { quote, base, ordersData, spreadData } = this.state
+    const { ordersData, spreadData } = this.state
+    const { quote, base } = this.props
 
     return (
       <Container>
@@ -256,7 +250,7 @@ class Chart extends React.Component<IState> {
               variant="title"
               color="primary"
               noWrap
-            >{`${base} - ${quote}`}</ExchangePair>
+            >{`${base}/${quote}`}</ExchangePair>
             <Switch
               onClick={() => {
                 this.setState((prevState) => ({
@@ -308,14 +302,15 @@ class Chart extends React.Component<IState> {
   }
 
   render() {
-    const { view, base, quote } = this.state
+    const { view } = this.state
+    const { base, quote } = this.props
     const toggler = this.renderToggler()
 
     return (
       <MainContainer>
         <TogglerContainer>
           <SelectCurrencies
-            handleChange={this.handleChangeInModalDialog}
+            handleSelect={this.props.selectCurrencies}
             value={[base, quote]}
           />
 
@@ -447,11 +442,15 @@ const Container = styled.div`
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
+  base: store.chart.base,
+  quote: store.chart.quote,
   isShownMocks: store.user.isShownMocks,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   selectExchange: (ex: number) => dispatch(actions.selectExchange(ex)),
+  selectCurrencies: (baseQuote: string) =>
+    dispatch(actions.selectCurrencies(baseQuote)),
 })
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Chart)
 
