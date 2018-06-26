@@ -332,9 +332,9 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
               <Input
-                name="high"
+                name="highInput"
                 onChange={this.handleInputChange}
-                value={this.state.high}
+                value={this.state.highInput}
               />
             </SFormControl>
           </SColumnForm>
