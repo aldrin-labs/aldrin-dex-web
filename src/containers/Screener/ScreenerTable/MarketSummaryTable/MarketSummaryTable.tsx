@@ -256,12 +256,17 @@ const PTHC = styled.th`
   &:nth-child(1) {
     min-width: 70px;
   }
+  
   &:nth-child(2) {
-    min-width: 75px;
+    min-width: 76px;
   }
 
   &:nth-child(n + 4) {
     min-width: 110px;
+  }
+  
+  &:nth-child(6) {
+    min-width: 116px;
   }
 
   &:nth-child(11),
@@ -310,11 +315,15 @@ const PTDC = styled.td`
     min-width: 70px;
   }
   &:nth-child(2) {
-    min-width: 70px;
+    min-width: 76px;
   }
 
   &:nth-child(n + 4) {
     min-width: 110px;
+  }
+  
+  &:nth-child(6) {
+    min-width: 116px;
   }
 `
 
