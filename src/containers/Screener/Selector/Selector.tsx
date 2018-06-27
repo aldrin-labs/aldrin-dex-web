@@ -38,8 +38,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     showFilters: false,
   }
 
-  myRef = React.createRef()
-
   marketCapRef = React.createRef()
   changeInPercentageRef = React.createRef()
   simpleMovingAverageRef = React.createRef()
@@ -152,11 +150,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
 
             <SFormControl value={this.state.industry}>
-              <InputLabel htmlFor="industry">Industry</InputLabel>
+              <Label>Industry</Label>
               <SSelect
                 key="industry"
                 value={this.state.industry}
                 onChange={this.handleSelectChange}
+                placeholder='Select...'
                 inputProps={{
                   name: 'industry',
                   id: 'industry',
@@ -392,9 +391,9 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleSelectChangeWithInput.bind(this, 'low')}
               />
               <Input
-                name="InputLow"
+                name="lowInput"
                 onChange={this.handleInputChange}
-                value={this.state.InputLow}
+                value={this.state.lowInput}
                 innerRef={this.lowRef}
               />
             </SFormControl>
@@ -564,6 +563,7 @@ const Input = styled.input`
 
 const SFormControl = styled(FormControl)`
   width: 150px;
+  min-height: 63px;
   
   & ${Input} {
   opacity: ${(props: { value?: boolean | string }) =>
@@ -601,8 +601,10 @@ const SSelect = styled(Select)`
   }
 
   && {
-    font-size: 0.7em;
+    font-size: 12px;
+    margin-top: 0;
   }
+ 
 `
 
 const SelectR = styled(SelectReact)`
