@@ -256,6 +256,7 @@ const PTH = css`
 const PTHC = styled.th`
   ${PTH};
   min-width: 100px;
+  padding-right: 0;
 
   &:nth-child(1) {
     min-width: 70px;
@@ -264,18 +265,19 @@ const PTHC = styled.th`
   &:nth-child(2) {
     min-width: 76px;
   }
-
-  &:nth-child(n + 4) {
-    min-width: 110px;
+  
+  &:nth-child(3) {
+    padding-right: 10px;
+  }
+ 
+  
+  &:nth-child(n + 8) {
+    min-width: 94px;
+    padding-right: 0;
   }
   
-  &:nth-child(7) {
-    min-width: 116px;
-  }
-
-  &:nth-child(12),
-  &:nth-child(13) {
-    min-width: 116px;
+  &:nth-child(12), &:nth-child(13) {
+    min-width: 100px;
   }
 `
 
@@ -314,6 +316,7 @@ const PTD = css`
 const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
+  padding-right: 0;
 
   &:nth-child(1) {
     min-width: 70px;
@@ -325,14 +328,15 @@ const PTDC = styled.td`
   &:nth-child(3) {
     max-width: 100px;
     text-overflow: ellipsis;
-  }
-
-  &:nth-child(n + 4) {
-    min-width: 110px;
+    padding-right: 10px;
   }
   
-  &:nth-child(7) {
-    min-width: 116px;
+  &:nth-child(n + 8) {
+    min-width: 94px;
+  }
+  
+    &:nth-child(12), &:nth-child(13) {
+    min-width: 100px;
   }
 `
 
