@@ -1,8 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { Paper } from '@material-ui/core'
+import { Paper, Button } from '@material-ui/core'
 
 import {
   OrderBookTable,
@@ -12,13 +11,12 @@ import {
   ExchangesTable,
 } from './Tables/Tables'
 import * as actions from './actions'
-import { SingleChart } from '../../components/Chart'
-import OnlyCharts from './OnlyCharts'
+import { SingleChart } from '@components/Chart'
+import OnlyCharts from './OnlyCharts/OnlyCharts'
 import { exchanges, orders, getFakeDepthChartData } from './mocks'
 import Switch from '@components/Switch/Switch'
 import DepthChart from './DepthChart/DepthChart'
-import Inputs from './Inputs/Inputs'
-import SelectCurrencies from './Inputs/SelectDialog'
+import AutoSuggestSelect from './Inputs/AutoSuggestSelect/AutoSuggestSelect'
 
 interface IState {
   view: 'onlyCharts' | 'default'
@@ -41,13 +39,11 @@ class Chart extends React.Component<IState> {
   state: IState = {
     view: 'default',
     orders,
-
-    searchSymbol: '',
-    addChart: '',
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
     activeChart: 'depth',
+    currencyPairRaw: '',
     ordersData: [],
     spreadData: [],
     exchanges: [],
@@ -69,12 +65,6 @@ class Chart extends React.Component<IState> {
     } else {
       // fetchData
     }
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      [event.target.name]: event.target.value,
-    })
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -183,8 +173,14 @@ class Chart extends React.Component<IState> {
       ordersData,
       spreadData,
     } = this.state
+    const { currencyPair } = this.props
 
-    const { base, quote } = this.props
+    let base
+    let quote
+    if (currencyPair) {
+      base = currencyPair.split('/')[0]
+      quote = currencyPair.split('/')[1]
+    }
 
     const { activeExchange } = this.props
     const { changeExchange } = this
@@ -240,17 +236,20 @@ class Chart extends React.Component<IState> {
 
   renderDefaultView = () => {
     const { ordersData, spreadData } = this.state
-    const { quote, base } = this.props
+    const { currencyPair } = this.props
+
+    let base
+    let quote
+    if (currencyPair) {
+      base = currencyPair.split('/')[0]
+      quote = currencyPair.split('/')[1]
+    }
 
     return (
       <Container>
         <ChartsContainer>
           <ChartsSwitcher>
-            <ExchangePair
-              variant="title"
-              color="primary"
-              noWrap
-            >{`${base}/${quote}`}</ExchangePair>
+            <ExchangePair>{`${base}/${quote}`}</ExchangePair>
             <Switch
               onClick={() => {
                 this.setState((prevState) => ({
@@ -282,19 +281,27 @@ class Chart extends React.Component<IState> {
 
   renderOnlyCharts = () => <OnlyCharts />
 
+  handleChange = (name) => (value) => {
+    this.setState({
+      [name]: value,
+    })
+  }
+
   renderToggler = () => {
     const { view } = this.state
 
     if (view === 'default') {
       return (
         <Toggler onClick={() => this.onToggleView('onlyCharts')}>
-          &#9680;
+          Multi Charts
         </Toggler>
       )
     }
     if (view === 'onlyCharts') {
       return (
-        <Toggler onClick={() => this.onToggleView('default')}>&#9681;</Toggler>
+        <Toggler onClick={() => this.onToggleView('default')}>
+          Single Chart
+        </Toggler>
       )
     }
 
@@ -302,25 +309,22 @@ class Chart extends React.Component<IState> {
   }
 
   render() {
-    const { view } = this.state
-    const { base, quote } = this.props
+    const { view, currencyPairRaw } = this.state
     const toggler = this.renderToggler()
 
     return (
       <MainContainer>
         <TogglerContainer>
-          <SelectCurrencies
+          {/* <SelectCurrencies
             handleSelect={this.props.selectCurrencies}
             value={[base, quote]}
-          />
-
-          {/* <Inputs
-            {...{
-              searchSymbol,
-              addChart,
-              handleChange: this.handleChange,
-            }}
           /> */}
+
+          <AutoSuggestSelect
+            handleChange={this.handleChange}
+            value={currencyPairRaw}
+            id={'currencyPairRaw'}
+          />
 
           {toggler}
         </TogglerContainer>
@@ -417,15 +421,10 @@ const TogglerContainer = styled.div`
   font-family: Roboto, sans-serif;
 `
 
-const Toggler = styled.button`
-  font-size: 30px;
-  border: none;
-  background: transparent;
-  color: #fff;
-  outline: none;
-  margin: 0.5% 2%;
-  padding: 5px;
-  cursor: pointer;
+const Toggler = styled(Button)`
+  && {
+    margin: 0.7rem;
+  }
 `
 
 const Container = styled.div`
@@ -442,8 +441,7 @@ const Container = styled.div`
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
-  base: store.chart.base,
-  quote: store.chart.quote,
+  currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
 })
 
@@ -454,4 +452,4 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Chart)
 
-export default compose()(storeComponent)
+export default storeComponent

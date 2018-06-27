@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 //  https://github.com/mui-org/material-ui/blob/master/docs/src/pages/demos/autocomplete/IntegrationReactSelect.js
 import React from 'react'
+import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import Input from '@material-ui/core/Input'
@@ -9,21 +10,23 @@ import Chip from '@material-ui/core/Chip'
 import Select from 'react-select'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
+import * as actions from '../../actions'
+
 const suggestions = [
-  { label: 'BTC' },
-  { label: 'ETH' },
-  { label: 'BCH' },
-  { label: 'EOS' },
-  { label: 'LTC' },
-  { label: 'XLM' },
-  { label: 'ADA' },
-  { label: 'MIOTA' },
-  { label: 'USDT' },
-  { label: 'TRX' },
-  { label: 'LOL' },
-  { label: 'KEK' },
-  { label: 'USD' },
-  { label: 'XMR' },
+  { label: 'BTC/USD' },
+  { label: 'ETH/BTC' },
+  { label: 'BCH/USD' },
+  { label: 'EOS/BTC' },
+  { label: 'LTC/ETH' },
+  { label: 'XLM/ADA' },
+  { label: 'ADA/EUR' },
+  { label: 'MIOTA/RUB' },
+  { label: 'USDT/USD' },
+  { label: 'TRX/EUR' },
+  { label: 'LOL/KEK' },
+  { label: 'KEK/LOL' },
+  { label: 'USD/ETH' },
+  { label: 'XMR/USD ' },
 ].map((suggestion) => ({
   value: suggestion.label,
   label: suggestion.label,
@@ -32,6 +35,7 @@ const suggestions = [
 class Option extends React.Component {
   handleClick = (event) => {
     this.props.onSelect(this.props.option, event)
+    this.props.selectCurrencies(this.props.option.value)
   }
 
   render() {
@@ -53,12 +57,36 @@ class Option extends React.Component {
   }
 }
 
+const mapStateToProps = (store: any) => ({
+  activeExchange: store.chart.activeExchange,
+  currencyPair: store.chart.currencyPair,
+  isShownMocks: store.user.isShownMocks,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  selectCurrencies: (baseQuote: string) =>
+    dispatch(actions.selectCurrencies(baseQuote)),
+})
+
+const Opt = connect(mapStateToProps, mapDispatchToProps)(Option)
+
 function SelectWrapped(props) {
   const { classes, ...other } = props
 
+  const onInputKeyDown = (e) => {
+    switch (e.keyCode) {
+      case 13: // ENTER
+        e.preventDefault()
+        break
+      default:
+        break
+    }
+  }
+
   return (
     <Select
-      optionComponent={Option}
+      onInputKeyDown={onInputKeyDown}
+      optionComponent={Opt}
       noResultsText={<Typography>{'No results found'}</Typography>}
       arrowRenderer={(arrowProps) =>
         arrowProps.isOpen ? <MdArrowDropDown /> : <MdArrowDropUp />
@@ -96,11 +124,16 @@ const ITEM_HEIGHT = 48
 
 const styles = (theme) => ({
   root: {
-    flexGrow: 1,
-    height: 250,
+    height: '100%',
+    width: '15%',
   },
   chip: {
     margin: theme.spacing.unit / 4,
+  },
+  cssUnderline: {
+    '&:after': {
+      borderBottomColor: '#4ed8da',
+    },
   },
   // We had to use a lot of global selectors in order to style react-select.
   // We are waiting on https://github.com/JedWatson/react-select/issues/1679
@@ -209,23 +242,20 @@ const styles = (theme) => ({
 })
 
 class IntegrationReactSelect extends React.Component {
-  // handleChange = (name) => (value) => {
-  //   this.setState({
-  //     [name]: value,
-  //   })
-  // }
-
   render() {
     const { classes, handleChange, id, value } = this.props
 
     return (
       <div className={classes.root}>
         <Input
+          classes={{
+            underline: classes.cssUnderline,
+          }}
           fullWidth
           inputComponent={SelectWrapped}
           value={value}
           onChange={handleChange(id)}
-          placeholder="Add currency"
+          placeholder="Add currency pair"
           id={id}
           inputProps={{
             classes,

@@ -4,8 +4,7 @@ import * as actions from './actions'
 
 const initialState = {
   activeExchange: null,
-  base: null,
-  quote: null,
+  currencyPair: null,
 }
 
 export default createReducer(
@@ -16,8 +15,7 @@ export default createReducer(
     }),
     [actions.selectCurrencies]: (state, payload) => ({
       ...state,
-      base: payload.split('/')[0],
-      quote: payload.split('/')[1],
+      currencyPair: payload,
     }),
   },
   initialState
