@@ -40,14 +40,20 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 
   myRef = React.createRef()
 
-  handleInputNewChange = (...sd) => {
-    console.log('sd', sd)
-  }
+  marketCapRef = React.createRef()
+  changeInPercentageRef = React.createRef()
+  simpleMovingAverageRef = React.createRef()
+  closingPriceAverageRef = React.createRef()
+  averageVolumeRef = React.createRef()
+  averageVolumeOnBalanceRef = React.createRef()
+  lowRef = React.createRef()
+  highRef = React.createRef()
+
 
   onChangeFunc(name, optionSelected, action) {
     const value = optionSelected ? optionSelected.value : ''
 
-    console.log('action: ', action)
+    // console.log('action: ', action)
 
 
     this.setState({
@@ -56,7 +62,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
       console.log(this.state);
     })
 
-    // this[`myRef`].current.focus()
+    this[`${name}Ref`].current.focus()
   }
 
   handleSelectChange = (event) => {
@@ -170,7 +176,9 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="simpleMovingAverageInput"
                 onChange={this.handleInputChange}
                 value={this.state.simpleMovingAverageInput}
+                ref={this.simpleMovingAverageRef}
               />
+
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
               <Label>
@@ -181,14 +189,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 options={data.closingPriceAverage}
                 onChange={this.onChangeFunc.bind(this, 'closingPriceAverage')}
-                onInputChange={this.handleInputNewChange}
               />
                 <Input
-                  autoFocus
                   name="closingPriceAverageInput"
                   onChange={this.handleInputChange}
                   value={this.state.closingPriceAverageInput}
-                  innerRef={this.myRef}
+                  innerRef={this.closingPriceAverageRef}
                 />
             </SFormControl>
           </SColumnForm>
@@ -214,6 +220,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="marketCapInput"
                 onChange={this.handleInputChange}
                 value={this.state.marketCapInput}
+                ref={this.marketCapRef}
               />
             </SFormControl>
             <SFormControl value={this.state.changeInPercentage}>
@@ -237,6 +244,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="changeInPercentageInput"
                 onChange={this.handleInputChange}
                 value={this.state.changeInPercentageInput}
+                ref={this.changeInPercentageRef}
               />
             </SFormControl>
           </SColumnForm>
@@ -262,6 +270,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="averageVolumeInput"
                 onChange={this.handleInputChange}
                 value={this.state.averageVolumeInput}
+                ref={this.averageVolumeRef}
               />
             </SFormControl>
             <SFormControl value={this.state.averageVolumeOnBalance}>
@@ -287,6 +296,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="averageVolumeOnBalanceInput"
                 onChange={this.handleInputChange}
                 value={this.state.averageVolumeOnBalanceInput}
+                ref={this.averageVolumeOnBalanceInputRef}
               />
             </SFormControl>
           </SColumnForm>
@@ -312,6 +322,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="InputLow"
                 onChange={this.handleInputChange}
                 value={this.state.InputLow}
+                ref={this.lowRef}
               />
             </SFormControl>
             <SFormControl value={this.state.high}>
@@ -335,6 +346,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="highInput"
                 onChange={this.handleInputChange}
                 value={this.state.highInput}
+                ref={this.highRef}
               />
             </SFormControl>
           </SColumnForm>
