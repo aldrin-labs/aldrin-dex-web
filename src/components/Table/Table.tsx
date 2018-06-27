@@ -1,5 +1,5 @@
 import React from 'react'
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 export const Table = styled.div`
   font-family: Roboto, sans-serif;
@@ -52,8 +52,8 @@ export const Row = styled.div`
   transition: background 0.25s ease;
   background-color: ${(props: { isHead?: boolean; background: string }) =>
     props.background};
-
-  &:hover {
+  ${(props: { isHead?: boolean }) =>
+    props.isHead ? 'height: 100%;' : ''} &:hover {
     background: ${(props: { isHead?: boolean }) =>
       props.isHead ? '#292d31' : '#454f59'};
   }

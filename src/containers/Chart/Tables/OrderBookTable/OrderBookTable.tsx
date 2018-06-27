@@ -46,9 +46,9 @@ class OrderBookTable extends PureComponent {
               color="#9ca2aa"
               style={{
                 position: 'relative',
-                left: '13%',
+                left: '12%',
               }}
-              width={'14%'}
+              width={'16%'}
             >
               Price<br />({base || 'Fiat'})
             </HeadCell>

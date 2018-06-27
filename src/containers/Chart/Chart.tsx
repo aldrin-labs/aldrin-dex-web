@@ -13,7 +13,7 @@ import {
 import * as actions from './actions'
 import { SingleChart } from '@components/Chart'
 import OnlyCharts from './OnlyCharts/OnlyCharts'
-import { exchanges, orders, getFakeDepthChartData } from './mocks'
+import { exchanges, orders, getFakeDepthChartData, orderBook } from './mocks'
 import Switch from '@components/Switch/Switch'
 import DepthChart from './DepthChart/DepthChart'
 import AutoSuggestSelect from './Inputs/AutoSuggestSelect/AutoSuggestSelect'
@@ -216,19 +216,19 @@ class Chart extends React.Component<IState> {
         </TablesBlockWrapper>
 
         <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
-          <TradeHistoryTable
-            {...{
-              data: tradeHistory,
-              onButtonClick: this.changeTable,
-              base,
-            }}
-          />
-
           <ExchangesTable
             {...{
               exchanges,
               activeExchange,
               changeExchange,
+              base,
+            }}
+          />
+
+          <TradeHistoryTable
+            {...{
+              data: orderBook,
+              onButtonClick: this.changeTable,
               base,
             }}
           />
