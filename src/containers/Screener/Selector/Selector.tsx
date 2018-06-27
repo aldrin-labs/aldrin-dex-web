@@ -184,31 +184,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 options={data.simpleMovingAverage}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'simpleMovingAverage')}
               />
-              {/*<InputLabel htmlFor="simpleMovingAverage">*/}
-                {/*Simple Moving Average*/}
-              {/*</InputLabel>*/}
-              {/*<SSelect*/}
-                {/*key="simpleMovingAverage"*/}
-                {/*value={this.state.simpleMovingAverage}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'simpleMovingAverage',*/}
-                  {/*id: 'simpleMovingAverage',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.simpleMovingAverage.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
               <Input
                 name="simpleMovingAverageInput"
                 onChange={this.handleInputChange}
                 value={this.state.simpleMovingAverageInput}
                 innerRef={this.simpleMovingAverageRef}
               />
-
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
               <Label>
@@ -461,7 +442,13 @@ const SFormControl = styled(FormControl)`
   & ${Input} {
   opacity: ${(props: { value?: boolean | string }) =>
   props.value && !(props.value === 'Any') ? '1' : '0'};
-}
+  }
+  
+  & ${Input} {
+  pointer-events: ${(props: { value?: boolean | string }) =>
+  props.value && !(props.value === 'Any') ? 'auto' : 'none'};
+  
+  }
 
   && {
     margin: 5px 10px;
