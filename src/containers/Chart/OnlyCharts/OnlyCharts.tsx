@@ -1,20 +1,16 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Paper } from '@material-ui/core'
+import { Paper, Button } from '@material-ui/core'
+import { connect } from 'react-redux'
+import { MdClear } from 'react-icons/lib/md'
 
+import * as actions from '../actions'
 import { SingleChart } from '@components/Chart'
 import Switch from '@components/Switch/Switch'
 import DepthChart from '../DepthChart/DepthChart'
-import { getFakeDepthChartData } from '../mocks'
+import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 
-const options = [
-  'BTC/USD',
-  'ETH/USD',
-  'XRP/USD',
-  'BCH/USD',
-  'LTC/USD',
-  'ADA/USD',
-]
+import { getFakeDepthChartData } from '../mocks'
 
 interface Props {}
 
@@ -48,8 +44,10 @@ class Charts extends Component {
   }
 
   render() {
-    const { base, quote } = this.props
+    const { currencyPair, removeChart, index } = this.props
     const { ordersData, spreadData } = this.state
+
+    const [base, quote] = currencyPair.split('/')
 
     return (
       <>
@@ -64,6 +62,13 @@ class Charts extends Component {
             }}
             values={['Depth', 'Chart']}
           />
+          <Button
+            onClick={() => {
+              removeChart(index)
+            }}
+          >
+            <MdClear />
+          </Button>
         </ChartsSwitcher>
         {this.state.activeChart === 'candle' ? (
           <SingleChart />
@@ -73,6 +78,9 @@ class Charts extends Component {
               {...{
                 ordersData,
                 spreadData,
+                base,
+                quote,
+                animated: false,
               }}
             />
           </DepthChartContainer>
@@ -82,30 +90,7 @@ class Charts extends Component {
   }
 }
 
-export default class OnlyCharts extends Component<Props, {}> {
-  state: State = {
-    charts: ['BTC/USD'],
-  }
-
-  addChart = () => {
-    const { charts, choosedChart } = this.state
-    if (!choosedChart || charts.indexOf(choosedChart) >= 0) return
-
-    const newCharts = charts.slice()
-
-    newCharts.push(choosedChart)
-    this.setState({ charts: newCharts })
-  }
-
-  removeChart = (index: number) => {
-    const { charts } = this.state
-
-    const newCharts = charts.slice()
-    newCharts.splice(index, 1)
-
-    this.setState({ charts: newCharts })
-  }
-
+class OnlyCharts extends Component<Props, {}> {
   onSelectChart = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target
 
@@ -113,31 +98,32 @@ export default class OnlyCharts extends Component<Props, {}> {
   }
 
   render() {
-    const { charts } = this.state
+    const {
+      charts,
+      removeChart,
+      openedWarning,
+      toggleWarningMessage,
+    } = this.props
+    console.log(openedWarning)
 
     return (
       <div>
-        <ChartCtrlBlock>
-          <ChartSelect defaultValue="BTC/USD" onChange={this.onSelectChart}>
-            {options.map((opt) => {
-              return (
-                <ChartSelectOption key={opt} value={opt}>
-                  {opt}
-                </ChartSelectOption>
-              )
-            })}
-          </ChartSelect>
-
-          <AddChartBtn onClick={this.addChart}>&#10010;</AddChartBtn>
-        </ChartCtrlBlock>
         <ChartContainer>
-          {charts.map((chart, i) => {
-            return (
-              <Wrapper width={100 / charts.length} key={chart}>
-                <Charts chartsCount={charts.length} base="USD" quote="BTC" />
-              </Wrapper>
-            )
-          })}
+          {charts.map((chart, i) => (
+            <Wrapper width={100 / charts.length} key={chart}>
+              <Charts
+                removeChart={removeChart}
+                index={i}
+                chartsCount={charts.length}
+                currencyPair={chart}
+              />
+            </Wrapper>
+          ))}
+          <WarningMessageSnack
+            open={openedWarning}
+            onCloseClick={toggleWarningMessage}
+            messageText={'You can create up to 8 charts.'}
+          />
         </ChartContainer>
       </div>
     )
@@ -170,47 +156,12 @@ const ChartsSwitcher = styled.div`
   color: white;
   border-bottom: 1px solid #818d9ae6;
 `
-
-const ChartCtrlBlock = styled.div`
-  margin: 10px auto;
-  background-color: #373c4e;
-  width: 200px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-`
-
-const ChartSelectOption = styled.option`
-  font-family: Roboto;
-  font-size: 16px;
-  line-height: 20px;
-  text-align: left;
-  color: #ffffffde;
-  margin-left: 15px;
-  border: none;
-  background-color: #292d31;
-  outline: none;
-`
-
-const ChartSelect = styled.select`
-  font-family: Roboto;
-  font-size: 16px;
-  line-height: 20px;
-  text-align: left;
-  font-weight: bold;
-  color: #ffffffde;
-  margin-left: 15px;
-  border: none;
-  background: transparent;
-  outline: none;
-`
-
 const Wrapper = styled(Paper)`
   display: flex;
   flex-direction: column;
   width: ${(props: { width: number }) => props.width}%;
-  height: 500px;
+  height: 40vh;
+  min-width: 23.125rem;
   margin: 1%;
 
   && {
@@ -219,18 +170,23 @@ const Wrapper = styled(Paper)`
 `
 
 const ChartContainer = styled.div`
+  overflow-x: hidden;
   width: 100%;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 `
 
-const AddChartBtn = styled.button`
-  background: transparent;
-  border: none;
-  padding: 5px;
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  color: #ffffff;
-  cursor: pointer;
-`
+const mapStateToProps = (store: any) => ({
+  charts: store.chart.charts,
+  currencyPair: store.chart.currencyPair,
+  isShownMocks: store.user.isShownMocks,
+  openedWarning: store.chart.warningMessageOpened,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  removeChart: (i: number) => dispatch(actions.removeChart(i)),
+  toggleWarningMessage: () => dispatch(actions.toggleWarningMessage()),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(OnlyCharts)

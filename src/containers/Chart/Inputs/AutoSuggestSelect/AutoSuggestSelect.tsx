@@ -14,12 +14,15 @@ import * as actions from '../../actions'
 
 const suggestions = [
   { label: 'BTC/USD' },
+  { label: 'XRP/USD' },
+  { label: 'LTC/USD' },
   { label: 'ETH/BTC' },
   { label: 'BCH/USD' },
   { label: 'EOS/BTC' },
   { label: 'LTC/ETH' },
   { label: 'XLM/ADA' },
   { label: 'ADA/EUR' },
+  { label: 'ADA/USD' },
   { label: 'MIOTA/RUB' },
   { label: 'USDT/USD' },
   { label: 'TRX/EUR' },
@@ -34,8 +37,29 @@ const suggestions = [
 
 class Option extends React.Component {
   handleClick = (event) => {
-    this.props.onSelect(this.props.option, event)
-    this.props.selectCurrencies(this.props.option.value)
+    const {
+      onSelect,
+      selectCurrencies,
+      charts,
+      view,
+      addChart,
+      toggleWarningMessage,
+    } = this.props
+    onSelect(this.props.option, event)
+    if (view === 'default') {
+      selectCurrencies(this.props.option.value)
+
+      return
+    } else if (
+      charts.length < 8
+      // && view === 'onlyCharts'
+    ) {
+      addChart(this.props.option.value)
+
+      return
+    } else {
+      toggleWarningMessage()
+    }
   }
 
   render() {
@@ -59,13 +83,15 @@ class Option extends React.Component {
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
-  currencyPair: store.chart.currencyPair,
+  charts: store.chart.charts,
   isShownMocks: store.user.isShownMocks,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
+  toggleWarningMessage: () => dispatch(actions.toggleWarningMessage()),
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
+  addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
 const Opt = connect(mapStateToProps, mapDispatchToProps)(Option)

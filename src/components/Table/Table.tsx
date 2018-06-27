@@ -52,8 +52,9 @@ export const Row = styled.div`
   transition: background 0.25s ease;
   background-color: ${(props: { isHead?: boolean; background: string }) =>
     props.background};
-  ${(props: { isHead?: boolean }) =>
-    props.isHead ? 'height: 100%;' : ''} &:hover {
+  height: ${(props: { isHead?: boolean }) => (props.isHead ? '100%' : '22px')};
+
+  &:hover {
     background: ${(props: { isHead?: boolean }) =>
       props.isHead ? '#292d31' : '#454f59'};
   }

@@ -53,7 +53,11 @@ class TradeHistoryTable extends PureComponent<IProps> {
               <HeadCell color="#9ca2aa" width={'33%'}>
                 Price<br /> ({base || 'Fiat'})
               </HeadCell>
-              <HeadCell color="#9ca2aa" width={'33%'}>
+              <HeadCell
+                style={{ lineHeight: '32px' }}
+                color="#9ca2aa"
+                width={'33%'}
+              >
                 Time
               </HeadCell>
             </Row>

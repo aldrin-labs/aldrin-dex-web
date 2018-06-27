@@ -95,10 +95,6 @@ class Chart extends React.Component<IState> {
     return +initial - agg
   }
 
-  onToggleView = (view: 'default' | 'onlyCharts') => {
-    this.setState({ view })
-  }
-
   sortOrders = (index: number) => {
     const { orders, currentSort } = this.state
 
@@ -273,6 +269,7 @@ class Chart extends React.Component<IState> {
                   spreadData,
                   base,
                   quote,
+                  animated: 'gentle',
                 }}
               />
             </DepthChartContainer>
@@ -293,20 +290,16 @@ class Chart extends React.Component<IState> {
   }
 
   renderToggler = () => {
-    const { view } = this.state
+    const { toggleView, view } = this.props
 
     if (view === 'default') {
       return (
-        <Toggler onClick={() => this.onToggleView('onlyCharts')}>
-          Multi Charts
-        </Toggler>
+        <Toggler onClick={() => toggleView('onlyCharts')}>Multi Charts</Toggler>
       )
     }
     if (view === 'onlyCharts') {
       return (
-        <Toggler onClick={() => this.onToggleView('default')}>
-          Single Chart
-        </Toggler>
+        <Toggler onClick={() => toggleView('default')}>Single Chart</Toggler>
       )
     }
 
@@ -314,21 +307,19 @@ class Chart extends React.Component<IState> {
   }
 
   render() {
-    const { view, currencyPairRaw } = this.state
+    const { currencyPairRaw } = this.state
+    const { view } = this.props
+
     const toggler = this.renderToggler()
 
     return (
       <MainContainer>
         <TogglerContainer>
-          {/* <SelectCurrencies
-            handleSelect={this.props.selectCurrencies}
-            value={[base, quote]}
-          /> */}
-
           <AutoSuggestSelect
             handleChange={this.handleChange}
             value={currencyPairRaw}
             id={'currencyPairRaw'}
+            view={view}
           />
 
           {toggler}
@@ -446,12 +437,15 @@ const Container = styled.div`
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
+  view: store.chart.view,
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   selectExchange: (ex: number) => dispatch(actions.selectExchange(ex)),
+  toggleView: (view: 'default' | 'onlyCharts') =>
+    dispatch(actions.toggleView(view)),
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
 })

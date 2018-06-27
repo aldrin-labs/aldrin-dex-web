@@ -140,7 +140,7 @@ class DepthChart extends Component {
       transformedOrdersData: ordersData,
       transformedSpreadData: spreadData,
     } = this.state
-    const { base, quote } = this.props
+    const { base, quote, animated } = this.props
 
     // hack for showing only one crosshair at once
     if (
@@ -220,7 +220,7 @@ class DepthChart extends Component {
               stroke: 'rgba(76, 175, 80, 0.74)',
               strokeWidth: '3px',
             }}
-            animation="gentle"
+            animation={animated}
             key="chart"
             data={ordersData}
             color="rgba(91, 96, 102, 0.7)"
@@ -232,7 +232,7 @@ class DepthChart extends Component {
               stroke: '#FF5722b0',
               strokeWidth: '3px',
             }}
-            animation="gentle"
+            animation={animated}
             key="chardt"
             data={spreadData}
             color="rgba(91, 96, 102, 0.7)"
