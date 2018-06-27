@@ -132,21 +132,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 options={data.timeInterval}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'timeInterval')}
               />
-
-              {/*<SSelect*/}
-                {/*value={this.state.timeInterval}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'timeInterval',*/}
-                  {/*id: 'timeInterval',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.timeInterval.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
             </SFormControl>
 
             <SFormControl value={this.state.industry}>
@@ -236,22 +221,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 options={data.marketCap}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'marketCap')}
               />
-              {/*<InputLabel htmlFor="marketCap">Market Cap</InputLabel>*/}
-              {/*<SSelect*/}
-                {/*key="marketCap"*/}
-                {/*value={this.state.marketCap}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'marketCap',*/}
-                  {/*id: 'marketCap',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.marketCap.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
               <Input
                 name="marketCapInput"
                 onChange={this.handleInputChange}
@@ -260,22 +229,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.changeInPercentage}>
-              {/*<InputLabel htmlFor="changeInPercentage">Change %</InputLabel>*/}
-              {/*<SSelect*/}
-                {/*key="changeInPercentage"*/}
-                {/*value={this.state.changeInPercentage}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'changeInPercentage',*/}
-                  {/*id: 'changeInPercentage',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.changeInPercentage.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
               <Label>
                 Change %
               </Label>
@@ -295,22 +248,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.averageVolume}>
-              {/*<InputLabel htmlFor="averageVolume">Average Volume</InputLabel>*/}
-              {/*<SSelect*/}
-                {/*key="averageVolume"*/}
-                {/*value={this.state.averageVolume}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'averageVolume',*/}
-                  {/*id: 'averageVolume',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.averageVolume.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
               <Label>
                 Average Volume
               </Label>
@@ -328,24 +265,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.averageVolumeOnBalance}>
-              {/*<InputLabel htmlFor="averageVolumeOnBalance">*/}
-                {/*On-Balance Volume*/}
-              {/*</InputLabel>*/}
-              {/*<SSelect*/}
-                {/*key="averageVolumeOnBalance"*/}
-                {/*value={this.state.averageVolumeOnBalance}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'averageVolumeOnBalance',*/}
-                  {/*id: 'averageVolumeOnBalance',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.averageVolumeOnBalance.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
               <Label>
                 On-Balance Volume
               </Label>
@@ -365,22 +284,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.low}>
-              {/*<InputLabel htmlFor="low">Low</InputLabel>*/}
-              {/*<SSelect*/}
-                {/*key="low"*/}
-                {/*value={this.state.low}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'low',*/}
-                  {/*id: 'low',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.low.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
               <Label>
                 Low
               </Label>
@@ -398,22 +301,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.high}>
-              {/*<InputLabel htmlFor="high">High</InputLabel>*/}
-              {/*<SSelect*/}
-                {/*key="high"*/}
-                {/*value={this.state.high}*/}
-                {/*onChange={this.handleSelectChange}*/}
-                {/*inputProps={{*/}
-                  {/*name: 'high',*/}
-                  {/*id: 'high',*/}
-                {/*}}*/}
-              {/*>*/}
-                {/*{data.high.map(({ value, label }) => (*/}
-                  {/*<MenuItem key={label} value={value}>*/}
-                    {/*{label}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-              {/*</SSelect>*/}
               <Label>
                 High
               </Label>
