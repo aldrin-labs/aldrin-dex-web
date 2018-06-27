@@ -34,7 +34,7 @@ export default class ScreenerSearch extends React.Component<IProps, IState> {
 }
 
 const SearchWrapper = styled.div`
-  width: 1395px;
+  width: 1370px;
   margin: 0 auto;
   padding: 20px;
 `

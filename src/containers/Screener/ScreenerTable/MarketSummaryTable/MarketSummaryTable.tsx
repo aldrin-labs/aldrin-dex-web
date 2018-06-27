@@ -208,6 +208,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   overflow-y: scroll;
+  height: 50vh;
 
   &::-webkit-scrollbar {
     width: 12px;
