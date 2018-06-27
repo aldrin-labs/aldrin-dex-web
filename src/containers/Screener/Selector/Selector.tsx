@@ -32,8 +32,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     closingPriceAverageInput: '',
     averageVolumeInput: '',
     averageVolumeOnBalanceInput: '',
-    lowInput: '',
-    highInput: '',
 
     showFilters: false,
   }
@@ -44,23 +42,43 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   closingPriceAverageRef = React.createRef()
   averageVolumeRef = React.createRef()
   averageVolumeOnBalanceRef = React.createRef()
-  lowRef = React.createRef()
-  highRef = React.createRef()
 
 
-  handleSelectChangeWithInput(name, optionSelected, action) {
+  handleSelectChangeWithInput(name: string, optionSelected: {label: string, value: string} | null, actionObj: {action: string}) {
     const value = optionSelected ? optionSelected.value : ''
 
-    // console.log('action: ', action)
+    console.log('action: ', actionObj)
 
 
-    this.setState({
-      [name]: value,
-    }, () => {
-      console.log(this.state);
-    })
+    switch (actionObj.action) {
 
-    this[`${name}Ref`].current.focus()
+      case 'clear': {
+
+        this.setState({
+          [name]: value,
+          [`${name}Input`]: ''
+        }, () => {
+          console.log(this.state);
+        })
+
+        return
+      }
+      case 'select-option': {
+
+        this.setState({
+          [name]: value,
+        }, () => {
+          console.log(this.state);
+        })
+
+        this[`${name}Ref`].current.focus()
+
+        return
+      }
+      default: return
+    }
+
+
   }
 
   handleSelectChangeWithoutInput(name, optionSelected) {
@@ -102,7 +120,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { showFilters, closingPriceAverage } = this.state
+    const { showFilters } = this.state
 
     return (
       <MainWrapper>
@@ -291,13 +309,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 styles={customStyles}
                 isClearable
                 options={data.low}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'low')}
-              />
-              <Input
-                name="lowInput"
-                onChange={this.handleInputChange}
-                value={this.state.lowInput}
-                innerRef={this.lowRef}
+                onChange={this.handleSelectChangeWithoutInput.bind(this, 'low')}
               />
             </SFormControl>
             <SFormControl value={this.state.high}>
@@ -308,13 +320,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 styles={customStyles}
                 isClearable
                 options={data.high}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'high')}
-              />
-              <Input
-                name="highInput"
-                onChange={this.handleInputChange}
-                value={this.state.highInput}
-                innerRef={this.highRef}
+                onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
               />
             </SFormControl>
           </SColumnForm>

@@ -23,8 +23,6 @@ export interface IState {
   closingPriceAverageInput: string
   averageVolumeInput: string
   averageVolumeOnBalanceInput: string
-  lowInput: string
-  highInput: string
 
   showFilters: boolean
 }

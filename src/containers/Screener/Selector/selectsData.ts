@@ -87,5 +87,4 @@ export const data = {
     { label: '12 Month High', value: 'twelve12MonthHigh' },
     { label: 'All time High', value: 'allTimeHigh' },
   ],
-
 }
