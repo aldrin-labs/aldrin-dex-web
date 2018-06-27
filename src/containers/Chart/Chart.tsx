@@ -194,6 +194,7 @@ class Chart extends React.Component<IState> {
               data: ordersData,
               roundTill: this.roundTill,
               aggregation,
+              base,
             }}
           />
 
@@ -202,6 +203,7 @@ class Chart extends React.Component<IState> {
               roundTill: this.roundTill,
               data: spreadData,
               aggregation,
+              base,
             }}
           />
 
@@ -227,6 +229,7 @@ class Chart extends React.Component<IState> {
               exchanges,
               activeExchange,
               changeExchange,
+              base,
             }}
           />
         </TablesBlockWrapper>
@@ -268,6 +271,8 @@ class Chart extends React.Component<IState> {
                 {...{
                   ordersData,
                   spreadData,
+                  base,
+                  quote,
                 }}
               />
             </DepthChartContainer>
