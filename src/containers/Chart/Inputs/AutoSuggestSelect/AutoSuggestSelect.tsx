@@ -50,10 +50,7 @@ class Option extends React.Component {
       selectCurrencies(this.props.option.value)
 
       return
-    } else if (
-      charts.length < 8
-      // && view === 'onlyCharts'
-    ) {
+    } else if (charts.length < 8 && view === 'onlyCharts') {
       addChart(this.props.option.value)
 
       return
@@ -83,6 +80,7 @@ class Option extends React.Component {
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
+  view: store.chart.view,
   charts: store.chart.charts,
   isShownMocks: store.user.isShownMocks,
 })
