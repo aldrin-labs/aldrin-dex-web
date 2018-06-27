@@ -12,6 +12,7 @@ import {
   Cell,
   HeadCell,
 } from '@components/Table/Table'
+import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
 class ExchangesTable extends PureComponent {
   render() {
@@ -105,9 +106,13 @@ class ExchangesTable extends PureComponent {
                   )
                 } else {
                   return (
-                    <Cell key={propinx} color="#9ca2aa" width="20%">
-                      {prop}
-                    </Cell>
+                    <AnimatedCell
+                      value={prop}
+                      animation={'fadeInGreenAndBack'}
+                      key={keyByValue}
+                      color="#9ca2aa"
+                      width="20%"
+                    />
                   )
                 }
               })}

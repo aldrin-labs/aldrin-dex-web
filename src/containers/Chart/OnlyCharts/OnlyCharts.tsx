@@ -147,6 +147,7 @@ const ExchangePair = styled.div`
 
 const ChartsSwitcher = styled.div`
   border-radius: 2px;
+  overflow-x: hidden;
   display: flex;
   align-items: center;
   justify-content: flex-end;
