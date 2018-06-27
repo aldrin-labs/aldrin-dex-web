@@ -15,6 +15,7 @@ export interface ICurrentSort {
 export interface IMarketSummaryTableData {
   rank: number
   ticker: string
+  tickerFull: string
   priceUSD: number
   priceBTC: number
   marketCap: number

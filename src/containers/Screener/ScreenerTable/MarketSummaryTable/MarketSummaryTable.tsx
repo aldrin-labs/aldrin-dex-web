@@ -17,6 +17,7 @@ let staticRows = tableData
 const tableHeadingsCurrentScreenerTable = [
   { name: 'Rank', value: 'rank' },
   { name: 'Ticker', value: 'ticker' },
+  { name: 'Ticker Full', value: 'tickerFull' },
   { name: 'Price USD', value: 'priceUSD' },
   { name: 'Price BTC', value: 'priceBTC' },
   { name: 'Market Cap', value: 'marketCap' },
@@ -32,7 +33,7 @@ const tableHeadingsCurrentScreenerTable = [
 
 // TODO: delete selected stuff in styled components
 
-const arrayOfStringHeadings = ['ticker']
+const arrayOfStringHeadings = ['ticker', 'tickerFull']
 
 export default class MarketSummaryTable extends React.Component<
   IProps,
@@ -111,6 +112,7 @@ export default class MarketSummaryTable extends React.Component<
                 const {
                   rank,
                   ticker,
+                  tickerFull,
                   priceUSD,
                   priceBTC,
                   marketCap,
@@ -127,6 +129,7 @@ export default class MarketSummaryTable extends React.Component<
                 const cols = [
                   rank,
                   ticker,
+                  tickerFull,
                   priceUSD,
                   priceBTC,
                   marketCap,
@@ -165,7 +168,7 @@ export default class MarketSummaryTable extends React.Component<
                         )
                       }
 
-                      if (index === 2 || index === 4 || index === 5) {
+                      if (index === 3 || index === 5 || index === 6) {
                         return (
                           <PTDC key={`${col}${idx}`}>
                             {usdSymbol}
@@ -174,7 +177,7 @@ export default class MarketSummaryTable extends React.Component<
                         )
                       }
 
-                      if (index === 3) {
+                      if (index === 4) {
                         return (
                           <PTDC key={`${col}${idx}`}>
                             {btcSymbol}
@@ -247,6 +250,7 @@ const PTH = css`
   font-weight: 500;
   position: relative;
   padding: 10px 16px 10px 10px;
+  user-select: none;
 `
 
 const PTHC = styled.th`
@@ -265,12 +269,12 @@ const PTHC = styled.th`
     min-width: 110px;
   }
   
-  &:nth-child(6) {
+  &:nth-child(7) {
     min-width: 116px;
   }
 
-  &:nth-child(11),
-  &:nth-child(12) {
+  &:nth-child(12),
+  &:nth-child(13) {
     min-width: 116px;
   }
 `
@@ -317,12 +321,17 @@ const PTDC = styled.td`
   &:nth-child(2) {
     min-width: 76px;
   }
+  
+  &:nth-child(3) {
+    max-width: 100px;
+    text-overflow: ellipsis;
+  }
 
   &:nth-child(n + 4) {
     min-width: 110px;
   }
   
-  &:nth-child(6) {
+  &:nth-child(7) {
     min-width: 116px;
   }
 `
