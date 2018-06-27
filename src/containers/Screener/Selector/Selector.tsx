@@ -423,7 +423,7 @@ const Input = styled.input`
   font-family: Roboto;
 
   text-align: left;
-  padding: 10px 0 0px;
+  padding: 10px 0 0;
   color: rgb(255, 255, 255);
 
   font-size: 0.7em;
@@ -491,9 +491,10 @@ const SelectR = styled(SelectReact)`
   font-family: Roboto;
   font-size: 12px;
   border-bottom: 1px solid #c1c1c1;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
-    border-bottom: 1px solid #fff;
+    border-bottom: 2px solid #fff;
   }
 `
 
