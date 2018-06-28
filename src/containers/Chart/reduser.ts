@@ -39,9 +39,13 @@ export default createReducer(
         return false
       }),
     }),
-    [actions.toggleWarningMessage]: (state) => ({
+    [actions.openWarningMessage]: (state) => ({
       ...state,
-      warningMessageOpened: !state.warningMessageOpened,
+      warningMessageOpened: true,
+    }),
+    [actions.removeWarningMessage]: (state) => ({
+      ...state,
+      warningMessageOpened: false,
     }),
     [actions.toggleView]: (state, payload: 'default' | 'onlyCharts') => ({
       ...state,

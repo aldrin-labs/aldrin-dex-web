@@ -43,7 +43,8 @@ class Option extends React.Component {
       charts,
       view,
       addChart,
-      toggleWarningMessage,
+      openWarningMessage,
+      removeWarningMessage,
     } = this.props
     onSelect(this.props.option, event)
     if (view === 'default') {
@@ -55,7 +56,10 @@ class Option extends React.Component {
 
       return
     } else {
-      toggleWarningMessage()
+      setTimeout(() => {
+        removeWarningMessage()
+      }, 1500)
+      openWarningMessage()
     }
   }
 
@@ -86,7 +90,8 @@ const mapStateToProps = (store: any) => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  toggleWarningMessage: () => dispatch(actions.toggleWarningMessage()),
+  openWarningMessage: () => dispatch(actions.openWarningMessage()),
+  removeWarningMessage: () => dispatch(actions.removeWarningMessage()),
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),

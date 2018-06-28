@@ -13,7 +13,6 @@ import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageS
 import { getFakeDepthChartData } from '../mocks'
 
 interface Props {}
-
 interface State {
   charts: string[]
   choosedChart?: string
@@ -102,7 +101,7 @@ class OnlyCharts extends Component<Props, {}> {
       charts,
       removeChart,
       openedWarning,
-      toggleWarningMessage,
+      removeWarningMessage,
     } = this.props
 
     return (
@@ -120,7 +119,7 @@ class OnlyCharts extends Component<Props, {}> {
           ))}
           <WarningMessageSnack
             open={openedWarning}
-            onCloseClick={toggleWarningMessage}
+            onCloseClick={removeWarningMessage}
             messageText={'You can create up to 8 charts.'}
           />
         </ChartContainer>
@@ -158,7 +157,8 @@ const ChartsSwitcher = styled.div`
 `
 
 const ChartContainer = styled.div`
-  overflow-x: hidden;
+  overflow: hidden;
+  max-height: calc(100vh - 59px - 80px);
   width: 100%;
   display: grid;
   grid-template-columns: repeat(
@@ -198,7 +198,7 @@ const mapStateToProps = (store: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   removeChart: (i: number) => dispatch(actions.removeChart(i)),
-  toggleWarningMessage: () => dispatch(actions.toggleWarningMessage()),
+  removeWarningMessage: () => dispatch(actions.removeWarningMessage()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(OnlyCharts)
