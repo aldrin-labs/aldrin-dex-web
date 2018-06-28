@@ -169,6 +169,13 @@ const ChartsSwitcher = styled.div`
 `
 
 const ChartContainer = styled.div`
+  margin-top: ${(props: { chartsCount?: number }) => {
+    if (props.chartsCount === 3 || props.chartsCount === 4) {
+      return '10vh'
+    } else {
+      return 0
+    }
+  }};
   overflow: hidden;
   max-height: calc(100vh - 59px - 80px);
   width: 100%;
@@ -187,13 +194,13 @@ const ChartContainer = styled.div`
     ${(props: { chartsCount?: number }) => {
       if (props.chartsCount && props.chartsCount > 4) {
         return '2, 41.5vh'
+      } else if (props.chartsCount === 3 || props.chartsCount === 4) {
+        return '1, 60vh'
       } else {
         return '1, 80vh'
       }
     }}
   );
-  flex-wrap: wrap;
-  justify-content: space-evenly;
 `
 
 const Wrapper = styled(Paper)`
