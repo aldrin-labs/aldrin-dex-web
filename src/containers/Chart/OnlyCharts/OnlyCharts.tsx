@@ -104,11 +104,10 @@ class OnlyCharts extends Component<Props, {}> {
       openedWarning,
       toggleWarningMessage,
     } = this.props
-    console.log(openedWarning)
 
     return (
       <div>
-        <ChartContainer>
+        <ChartContainer chartsCount={charts.length}>
           {charts.map((chart, i) => (
             <Wrapper width={100 / charts.length} key={chart}>
               <Charts
@@ -157,27 +156,39 @@ const ChartsSwitcher = styled.div`
   color: white;
   border-bottom: 1px solid #818d9ae6;
 `
-const Wrapper = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-  width: ${(props: { width: number }) => props.width}%;
-  height: 40vh;
-  min-width: 23.125rem;
-  margin: 1%;
-
-  && {
-    margin: 0.25rem;
-  }
-`
 
 const ChartContainer = styled.div`
   overflow-x: hidden;
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(
+    ${(props: { chartsCount?: number }) => {
+      if (props.chartsCount && props.chartsCount <= 3) {
+        return props.chartsCount
+      } else {
+        return 4
+      }
+    }},
+    1fr
+  );
+  grid-template-rows: repeat(
+    ${(props: { chartsCount?: number }) => {
+      console.log(props.chartsCount)
+      if (props.chartsCount && props.chartsCount > 4) {
+        return '2, 41.5vh'
+      } else {
+        return '1, 80vh'
+      }
+    }}
+  );
   flex-wrap: wrap;
   justify-content: space-evenly;
 `
 
+const Wrapper = styled(Paper)`
+  display: flex;
+  flex-direction: column;
+`
 const mapStateToProps = (store: any) => ({
   charts: store.chart.charts,
   currencyPair: store.chart.currencyPair,
