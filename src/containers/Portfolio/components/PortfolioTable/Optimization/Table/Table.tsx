@@ -127,7 +127,7 @@ const Input = styled.input`
   outline: none;
   border-right: none;
   width: 100%;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 16px;
   line-height: 24px;
   text-align: left;
@@ -145,7 +145,7 @@ const Item = styled.div`
   color: white;
   justify-content: center;
   padding: 0.5rem;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 0.8rem;
   font-weight: normal;
   text-align: center;

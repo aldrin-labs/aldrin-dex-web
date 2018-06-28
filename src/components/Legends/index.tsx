@@ -57,7 +57,7 @@ const ResetButton = styled.button`
   border: 1px solid #4c5055;
   padding: 10px;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   letter-spacing: 0.4px;
   text-align: center;
   font-size: 12px;

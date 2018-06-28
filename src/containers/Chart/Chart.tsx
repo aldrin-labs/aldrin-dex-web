@@ -147,7 +147,7 @@ const TR = styled.tr`
 
 const TD = styled.td`
   text-align: right;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   color: #fff;
@@ -157,7 +157,7 @@ const TD = styled.td`
 
 const TH = styled.th`
   text-align: left;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   font-weight: bold;

@@ -69,7 +69,7 @@ const ChartWrapper = styled.div`
 `
 
 const ChartInfoDesc = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;
@@ -117,7 +117,7 @@ const ChartInfoContainer = styled.div`
 
 const ChartInnerText = styled.span`
   max-width: 100px;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 28px;
   text-align: center;
   color: #ffffff;

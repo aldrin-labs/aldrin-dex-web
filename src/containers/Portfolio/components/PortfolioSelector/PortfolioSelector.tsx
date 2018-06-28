@@ -200,7 +200,7 @@ const AccountName = styled.span`
   color: ${(props: { isChecked: boolean }) =>
     props.isChecked ? '#4ed8da' : '#fff'};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1em;
   font-weight: 500;
   text-align: left;
@@ -245,7 +245,7 @@ const Checkbox = styled.input`
 const AccountsListItem = styled.li`
   display: flex;
   align-items: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1em;
   font-weight: 500;
   text-align: left;
@@ -293,7 +293,7 @@ const AccountsWalletsHeadingWrapper = styled.div`
 `
 
 const StyledIcon = styled(Arrow)`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   color: #4ed8da;
   text-align: center;
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
@@ -306,7 +306,7 @@ const StyledIcon = styled(Arrow)`
 `
 
 const Headline = styled.div`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   color: #4ed8da;
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '0' : '1'};
@@ -325,7 +325,7 @@ const Headline = styled.div`
 `
 
 const AccountsWalletsHeading = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1.25em;
   font-weight: 500;
   letter-spacing: 0.5px;

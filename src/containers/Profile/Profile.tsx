@@ -56,7 +56,7 @@ const Smile = styled.div`
 `
 
 const DividerText = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: #ffffff;

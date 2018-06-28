@@ -97,7 +97,7 @@ const ChartCtrlBlock = styled.div`
 `
 
 const ChartSelectOption = styled.option`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -109,7 +109,7 @@ const ChartSelectOption = styled.option`
 `
 
 const ChartSelect = styled.select`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -140,7 +140,7 @@ const ChartInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: #ffffff;
@@ -154,7 +154,7 @@ const AddChartBtn = styled.button`
   background: transparent;
   border: none;
   padding: 5px;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: #ffffff;

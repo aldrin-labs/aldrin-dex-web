@@ -134,7 +134,7 @@ const PTD = styled.td`
     return props.isSelected ? '#4ed8da' : '#fff'
   }};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;

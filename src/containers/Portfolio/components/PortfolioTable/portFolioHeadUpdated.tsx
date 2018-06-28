@@ -18,7 +18,6 @@ const chartBtns = [
   'ALL PERIOD',
 ]
 
-
 export default class ProfileChart extends React.Component<IProps, IState> {
   state = {
     activeChart: 4,
@@ -109,7 +108,7 @@ const ChartBtn = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #4ed8da;
@@ -129,7 +128,7 @@ const SProfileChart = styled.div`
   align-items: center;
 `
 const ProfileChartHeading = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   color: #ffffff;
@@ -151,33 +150,33 @@ const SupplyBlock = styled.div`
 `
 
 const CurrentRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 22px;
   font-weight: 500;
   color: #4ed8da;
 `
 
 const CommonRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #ffffff;
 `
 
 const SupplyLowRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #ff687a;
 `
 
 const SupplyHighRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #65c000;
 `
 
 const SupplyDetail = styled.span`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #ffffff;
   margin-top: 4px;

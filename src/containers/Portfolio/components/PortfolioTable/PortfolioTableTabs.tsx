@@ -235,7 +235,7 @@ const Tab = styled.button`
   padding: 10px 30px;
   border-radius: 3px;
   background-color: #292d31;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;

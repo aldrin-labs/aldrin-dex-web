@@ -26,7 +26,7 @@ export default class Switch extends React.Component<Props> {
 }
 
 const Desc = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1em;
   margin: 0 15px;
   color: #fff;

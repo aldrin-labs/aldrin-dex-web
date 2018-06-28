@@ -3,7 +3,7 @@ import styled from 'styled-components'
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
-import CorrelationMatrix from './CorrelationMatrix'
+import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
 import { IProps, IState } from './Correlation.types'
 
