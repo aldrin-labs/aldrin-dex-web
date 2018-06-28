@@ -248,7 +248,7 @@ class Chart extends React.Component<IState> {
       <Container>
         <ChartsContainer>
           <ChartsSwitcher>
-            <ExchangePair>{`${base}/${quote}`}</ExchangePair>
+            {base && quote && <ExchangePair>{`${base}/${quote}`}</ExchangePair>}
             <Switch
               onClick={() => {
                 this.setState((prevState) => ({

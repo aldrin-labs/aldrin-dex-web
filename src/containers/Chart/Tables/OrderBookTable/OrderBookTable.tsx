@@ -47,6 +47,7 @@ class OrderBookTable extends PureComponent {
               style={{
                 position: 'relative',
                 left: '12%',
+                overflow: 'visible',
               }}
               width={'16%'}
             >
