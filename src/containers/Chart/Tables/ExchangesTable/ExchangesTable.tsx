@@ -62,7 +62,7 @@ class ExchangesTable extends PureComponent {
         </StyledHead>
         <Body
           style={{ width: '105%' }}
-          height={'calc(100vh - 59px - 80px - 39px - 37px - 26px)'}
+          height={'calc(100vh - 59px - 80px - 39px - 37px - 30px)'}
         >
           {exchanges.map((exchange, ind) => (
             <Row
