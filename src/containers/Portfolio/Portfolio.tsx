@@ -54,6 +54,7 @@ class PortfolioComponent extends React.Component<IProps> {
             <PortfolioTable
               loading={loading}
               checkboxes={checkboxes}
+              toggleWallets={this.toggleWallets}
               data={getProfile}
               subscription={subscriptionData}
             />
@@ -85,4 +86,5 @@ const Backdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 100;
 `

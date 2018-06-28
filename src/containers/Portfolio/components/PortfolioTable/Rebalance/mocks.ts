@@ -1,7 +1,10 @@
 export function combineToChart(mockData) {
+
   return mockData.map((dataItem) => ({
     angle: parseFloat(dataItem.portfolioPerc),
     label: dataItem.symbol,
+    realValue: parseFloat(dataItem.portfolioPerc),
+    labelCurrency: dataItem.currency
   }))
 }
 

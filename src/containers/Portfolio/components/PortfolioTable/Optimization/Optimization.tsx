@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { MOCK_DATA } from '../dataMock'
-import BarChart from './BarChart'
-import EfficientFrontier from './EfficientFrontier'
-import Table from './Table'
+
 import * as actions from '../../../actions'
-import { IState, IData, IProps } from './optimizationTypes'
+import { IState, IData, IProps } from './Optimization.types'
+import { MOCK_DATA } from '../dataMock'
+import BarChart from '@components/BarChart/BarChart'
+import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
+import Table from './Table/Table'
+import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -97,7 +99,7 @@ class Optimization extends Component<IProps, IState> {
       console.log('NoBackEnd fetch Logic here')
     }
 
-    const allSums = assets.filter(Boolean).reduce((acc, curr) => {
+    const allSums = assets.filter(Boolean).reduce((acc: number, curr: any) => {
       const { value = 0, asset = { priceUSD: 0 } } = curr || {}
       if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
         return null
@@ -107,7 +109,7 @@ class Optimization extends Component<IProps, IState> {
       return acc + value * Number(price)
     }, 0)
 
-    const rawData = assets.map((data) => ({
+    const rawData = assets.map((data: any) => ({
       coin: data.asset.symbol,
       percentage: data.asset.priceBTC * data.value * 100 / allSums,
     }))
@@ -132,8 +134,9 @@ class Optimization extends Component<IProps, IState> {
   }
 
   getPercentages = (percentage: number) => {
-    // sorry for not optimized code
-    const percetageArray = []
+    /* tslint:disable */
+    //  not optimized code
+    const percetageArray: number[] = []
 
     if (percentage <= 0) {
       return []
@@ -141,7 +144,6 @@ class Optimization extends Component<IProps, IState> {
 
     if (percentage <= 5) {
       percetageArray.push(percentage)
-
       for (let index = 1; index < 5; index++) {
         percetageArray.push(percentage + 5 * index)
       }
@@ -152,6 +154,7 @@ class Optimization extends Component<IProps, IState> {
     if (percentage <= 10) {
       percetageArray.push(percentage - 5)
       percetageArray.push(percentage)
+
       for (let index = 1; index < 4; index++) {
         percetageArray.push(percentage + 5 * index)
       }
@@ -168,6 +171,7 @@ class Optimization extends Component<IProps, IState> {
     for (let index = 1; index < 3; index++) {
       percetageArray.push(percentage + 5 * index)
     }
+    /* tslint:enable */
 
     return percetageArray
   }
@@ -177,83 +181,114 @@ class Optimization extends Component<IProps, IState> {
       [...this.props.data].filter((el, index) => i !== index)
     )
 
-  render() {
-    const { children, data } = this.props
+  renderInput = () => {
+    const { data } = this.props
+    const { expectedReturn } = this.state
+
+    return (
+      <>
+        <InputContainer>
+          <Button onClick={this.importPortfolio}>Import Portfolio</Button>
+          <Input
+            type="number"
+            placeholder="Expected return in %"
+            value={expectedReturn || ''}
+            onChange={this.handleChange}
+          />
+          <Button
+            disabled={expectedReturn === '' || data.length < 1}
+            onClick={this.optimizePortfolio}
+          >
+            Optimize Portfolio
+          </Button>
+        </InputContainer>
+        <TableContainer>
+          <Table
+            onPlusClick={this.addRow}
+            data={data}
+            withInput
+            onClickDeleteIcon={this.deleteRow}
+          />
+        </TableContainer>
+      </>
+    )
+  }
+
+  renderCharts = () => {
     const {
       percentages,
-      expectedReturn,
       optimizedData,
       rawDataBeforeOptimization,
       activeButton,
       risk,
     } = this.state
 
-    const barChartData = { rawDataBeforeOptimization, optimizedData }
+    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
+      x: el.coin,
+      y: Number(Number(el.percentage).toFixed(2)),
+    }))
+    const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+      x: el.coin,
+      y: Number(Number(el.percentage).toFixed(2)),
+    }))
+
+    const barChartData = [
+      {
+        data: formatedData,
+        title: 'Original',
+        color: '#4fd8da',
+      },
+      {
+        data: formatedOptimizedData,
+        title: 'Optimized',
+        color: '#4fa1da',
+      },
+    ]
+
     const efficientFrontierData = {
-      data,
       percentages,
       risk,
       activeButton,
     }
 
     return (
+      <ChartsContainer>
+        <Chart>
+          <BarChart
+            height={300}
+            showPlaceholder={optimizedData.length < 1}
+            charts={barChartData}
+          />
+        </Chart>
+        <Chart>
+          <EfficientFrontierChart data={efficientFrontierData} />
+        </Chart>
+      </ChartsContainer>
+    )
+  }
+
+  render() {
+    const { children } = this.props
+    const { optimizedData, percentages, activeButton } = this.state
+
+    return (
       <PTWrapper>
         <Content>
           {children}
-          <UpperArea>
-            <InputContainer>
-              <Button onClick={this.importPortfolio}>Import Portfolio</Button>
-              <Input
-                placeholder="Expected return in %"
-                value={expectedReturn || ''}
-                onChange={this.handleChange}
-              />
-              <Button
-                disabled={expectedReturn === '' || data.length < 1}
-                onClick={this.optimizePortfolio}
-              >
-                Optimize Portfolio
-              </Button>
-            </InputContainer>
-
-            <Table
-              onPlusClick={this.addRow}
-              data={data}
-              withInput
-              onClickDeleteIcon={this.deleteRow}
-            />
-          </UpperArea>
+          <UpperArea>{this.renderInput()}</UpperArea>
 
           <MainArea>
             <MainAreaUpperPart>
-              <BtnsContainer show={optimizedData.length >= 1}>
-                {percentages.map((percentage, i) => (
-                  <Btn
-                    onClick={() => {
-                      this.onBtnClick(i)
-                    }}
-                    style={
-                      i === activeButton
-                        ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                        : {}
-                    }
-                    key={percentage}
-                  >
-                    {`${percentage}%`}
-                  </Btn>
-                ))}
-              </BtnsContainer>
+              <SwitchButtons
+                onBtnClick={this.onBtnClick}
+                values={percentages}
+                show={optimizedData.length >= 1}
+                activeButton={activeButton}
+              />
 
               <Table data={optimizedData} withInput={false} />
             </MainAreaUpperPart>
-            <ChartsContainer>
-              <Chart>
-                <BarChart data={barChartData} />
-              </Chart>
-              <Chart>
-                <EfficientFrontier data={efficientFrontierData} />
-              </Chart>
-            </ChartsContainer>
+            {this.renderCharts()}
           </MainArea>
         </Content>
       </PTWrapper>
@@ -265,18 +300,23 @@ const ChartsContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
 
-  @media (max-width: 900px) {
+  @media (max-width: 1080px) {
     flex-wrap: wrap;
   }
 `
 const Chart = styled.div`
   padding: 0.5rem;
   margin: 1rem;
-  flex-basis: calc(50% - 2rem);
   flex-grow: 1;
+  min-width: 0;
   height: 300px;
   border-radius: 1rem;
   background: #393e44;
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-basis: 100%;
+  }
 `
 
 const MainAreaUpperPart = styled.div`
@@ -300,7 +340,8 @@ const BtnsContainer = styled.div`
 
 const Btn = styled.button`
   border-radius: 2px;
-  background-color: #4c5055;
+  background-color: ${(props: { active: boolean }) =>
+    props.active ? '#4ed8da' : '#4c5055'};
   margin-right: 16px;
   padding: 10px;
   border: none;
@@ -308,8 +349,10 @@ const Btn = styled.button`
   font-family: Roboto, sans-serif;
   font-size: 12px;
   font-weight: 500;
-  color: #4ed8da;
+  color: ${(props: { active: boolean }) =>
+    props.active ? '#4c5055' : '#4ed8da'};
   cursor: pointer;
+  transition: all 0.25s linear;
 `
 
 const MainArea = styled.div`
@@ -359,6 +402,12 @@ const UpperArea = styled.div`
   width: 50%;
   display: flex;
   margin: 0 auto;
+
+  @media (max-width: 1080px) {
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+  }
 `
 
 const InputContainer = styled.div`
@@ -366,6 +415,18 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: 1080px) {
+    margin: auto;
+    flex-wrap: wrap;
+  }
+`
+
+const TableContainer = styled.div`
+  margin: auto;
+  @media (max-width: 600px) {
+    margin-top: 1rem;
+  }
 `
 
 const Button = styled.div`
