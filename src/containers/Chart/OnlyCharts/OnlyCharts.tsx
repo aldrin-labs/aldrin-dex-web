@@ -21,7 +21,7 @@ interface State {
 
 class Charts extends Component {
   state = {
-    activeChart: 'depth',
+    activeChart: 'candle',
     ordersData: [],
     spreadData: [],
   }
@@ -60,7 +60,7 @@ class Charts extends Component {
                   prevState.activeChart === 'candle' ? 'depth' : 'candle',
               }))
             }}
-            values={['Depth', 'Chart']}
+            values={['Chart', 'Depth']}
           />
           <Button
             onClick={() => {
@@ -147,7 +147,7 @@ const ExchangePair = styled.div`
 
 const ChartsSwitcher = styled.div`
   border-radius: 2px;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: flex-end;

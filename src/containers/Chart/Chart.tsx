@@ -42,7 +42,7 @@ class Chart extends React.Component<IState> {
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
-    activeChart: 'depth',
+    activeChart: 'candle',
     currencyPairRaw: '',
     ordersData: [],
     spreadData: [],
@@ -256,7 +256,7 @@ class Chart extends React.Component<IState> {
                     prevState.activeChart === 'candle' ? 'depth' : 'candle',
                 }))
               }}
-              values={['Depth', 'Chart']}
+              values={['Chart', 'Depth']}
             />
           </ChartsSwitcher>
           {this.state.activeChart === 'candle' ? (
