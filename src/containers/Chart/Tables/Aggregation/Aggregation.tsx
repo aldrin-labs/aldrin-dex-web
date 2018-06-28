@@ -34,7 +34,7 @@ const Aggregation = (props) => {
           </HeadCell>
           <HeadCell
             style={{
-              zIndex: 10,
+              zIndex: 1000,
             }}
             color="#9ca2aa"
             width={'25%'}
@@ -86,13 +86,13 @@ const Button = styled.button`
 `
 
 const AggregationWrapper = Table.extend`
-  z-index: 1000;
+  z-index: 100;
   bottom: 0;
   position: absolute;
   width: 100%;
 
   @media (max-width: 1080px) {
-    z-index: 1000;
+    z-index: 100;
     bottom: 0;
     position: absolute;
     width: 100%;
