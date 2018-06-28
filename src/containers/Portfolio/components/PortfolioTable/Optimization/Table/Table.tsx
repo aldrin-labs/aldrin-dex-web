@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
 
-import { IProps, IState } from './tableTypes'
+import { IProps, IState } from './Table.types'
 
 class Table extends Component<IProps, IState> {
   state = {
@@ -44,7 +44,7 @@ class Table extends Component<IProps, IState> {
                   {`${Number(item.percentage).toFixed(2)}%`}{' '}
                   <StyledDeleteIcon
                     onClick={() => {
-                      onClickDeleteIcon(i)
+                      onClickDeleteIcon && onClickDeleteIcon(i)
                     }}
                   />
                 </Item>
@@ -73,7 +73,7 @@ class Table extends Component<IProps, IState> {
               <AddStyled
                 show={!!this.state.name}
                 onClick={() => {
-                  onPlusClick(this.state.name, this.state.value)
+                  onPlusClick && onPlusClick(this.state.name, this.state.value)
                   this.setState({ name: '' })
                   this.setState({ value: '' })
                 }}

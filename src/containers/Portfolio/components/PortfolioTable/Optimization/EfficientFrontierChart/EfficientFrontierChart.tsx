@@ -10,27 +10,7 @@ import {
   Hint,
 } from 'react-vis'
 
-export interface IValue {
-  x: string
-  y: string
-}
-export interface IState {
-  value: IValue | { x: null; y: null }
-}
-
-export interface IData {
-  coin: string
-  percentage: number
-}
-
-export interface IProps {
-  data: {
-    risk: string[]
-    percentages: number[]
-    activeButton: number
-    data: IData[]
-  }
-}
+import { IState, IProps } from './EfficientFrontierChart.types'
 
 const axisStyle = {
   ticks: {
@@ -43,7 +23,7 @@ const axisStyle = {
   },
 }
 
-class EfficientFrontier extends Component<IProps, IState> {
+class EfficientFrontierChart extends Component<IProps, IState> {
   state = {
     value: { x: null, y: null },
   }
@@ -54,7 +34,7 @@ class EfficientFrontier extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { percentages, risk, activeButton, data: rawData } = this.props.data
+    const { percentages, risk, activeButton } = this.props.data
 
     const { value } = this.state
 
@@ -63,8 +43,8 @@ class EfficientFrontier extends Component<IProps, IState> {
 
     if (percentages.length > 1) {
       data = percentages.map((percentage, i) => ({
-        x: +Number(risk[i]).toFixed(1),
-        y: +Number(percentage).toFixed(1),
+        x: +Number(risk[i]).toFixed(2),
+        y: +Number(percentage).toFixed(2),
       }))
 
       highlightedDotData.push(
@@ -84,7 +64,12 @@ class EfficientFrontier extends Component<IProps, IState> {
             />
           ) : (
             [
-              <XAxis style={axisStyle} key="x" title="Risk" />,
+              <XAxis
+                animation="gentle"
+                style={axisStyle}
+                key="x"
+                title="Risk"
+              />,
               <YAxis hideLine style={axisStyle} key="y" title="Return" />,
               <LineMarkSeries
                 key="c"
@@ -97,6 +82,7 @@ class EfficientFrontier extends Component<IProps, IState> {
               <MarkSeries
                 onSeriesMouseOut={this.onSeriesMouseOut}
                 onValueMouseOver={this.onValueMouseOver}
+                animation="stiff"
                 key="h"
                 color="#4fa1da"
                 size={8}
@@ -136,4 +122,4 @@ const ChartTooltip = styled.span`
   padding: 8px;
 `
 
-export default EfficientFrontier
+export default EfficientFrontierChart

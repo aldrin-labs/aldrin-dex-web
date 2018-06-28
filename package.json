@@ -10,7 +10,8 @@
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
-    "build": "cross-env NODE_ENV=production webpack -p --env.env=prod",
+    "build": "cross-env NODE_ENV=production cross-env API_ENDPOINT=develop.api.cryptocurrencies.ai webpack -p --env.env=prod --env.API_ENDPOINT=develop.api.cryptocurrencies.ai",
+    "buildMaster": "cross-env NODE_ENV=production webpack -p --env.env=prod",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
     "test": "jest",
     "test:coverage": "jest --coverage",
@@ -48,6 +49,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.41",
+    "@material-ui/core": "^1.2.1",
     "@types/d3-time-format": "^2.1.0",
     "@types/lodash": "^4.14.109",
     "@types/prop-types": "^15.5.3",

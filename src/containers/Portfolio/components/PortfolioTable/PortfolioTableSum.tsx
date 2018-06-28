@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
 import { IProps } from './PortfolioTableSum.types'
@@ -31,7 +31,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
   }
 
   render() {
-    const { selectedSum } = this.props
+    const { selectedSum, industry } = this.props
 
     return (
       <PTBody style={{ borderBottom: 'none' }}>
@@ -60,29 +60,36 @@ export default class PortfolioTableSum extends React.Component<IProps> {
               )
             }
 
-            return <PTD key={key}>{res || ''}</PTD>
+            return <PTD key={key} industry={industry}>{res || ''}</PTD>
           })}
         </PTR>
       </PTBody>
     )
   }
 }
+const PTDIndustry = css`
+  min-width: 100px;
 
-const PTD = styled.td`
-  color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#4ed8da' : '#fff'};
+  &:nth-child(1) {
+    padding: 1.75px 10px;
+  }
 
-  font-family: Roboto;
-  font-size: 12px;
-  line-height: 24px;
-  padding: 10px 16px 10px 10px;
-  text-align: left;
+  &:nth-child(3) {
+  }
+  &:nth-child(n + 4) {
+    text-align: right;
+  }
 
-  position: sticky;
-  bottom: 0;
-  overflow: hidden;
-  background-color: #393e44;
-  
+  &:nth-child(4) {
+    min-width: 250px;
+  }
+
+  &:nth-child(n + 6) {
+    min-width: 150px;
+  }
+`
+
+const PTDOther = css`
   &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
     min-width: 100px;
   }
@@ -99,6 +106,26 @@ const PTD = styled.td`
   &:nth-child(9) {
     min-width: 110px;
   }
+`
+
+
+const PTD = styled.td`
+  color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? '#4ed8da' : '#fff'};
+
+  font-family: Roboto;
+  font-size: 12px;
+  line-height: 24px;
+  padding: 10px 16px 10px 10px;
+  text-align: left;
+
+  position: sticky;
+  bottom: 0;
+  overflow: hidden;
+  background-color: #393e44;
+  
+  ${(props: { industry?: boolean }) =>
+  props.industry ? PTDIndustry : PTDOther};
 `
 
 const PTBody = styled.tbody`

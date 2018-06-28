@@ -2,6 +2,10 @@ import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 
+export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) => {
+  return arrayOfObjects.map(a => Object.assign({}, a));
+}
+
 export const onSortStrings = (a: string, b: string): number => {
   return a.localeCompare(b)
 }
