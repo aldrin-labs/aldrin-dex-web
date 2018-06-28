@@ -18,8 +18,9 @@ const config = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-        API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT)
+          NODE_ENV: JSON.stringify('production'),
+          API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT),
+          CHARTS_API_ENDPOINT: JSON.stringify(process.env.CHARTS_API_ENDPOINT)
       },
     }),
     new UglifyJsPlugin({

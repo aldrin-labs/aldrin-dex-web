@@ -10,3 +10,4 @@
   command = "buildMaster"
   [context.production.environment]
     API_ENDPOINT = "api.cryptocurrencies.ai"
+    CHARTS_API_ENDPOINT = "chart.cryptocurrencies.ai"
