@@ -9,10 +9,17 @@ import {
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../../components/SvgIcon/SvgIcon'
 import { tableData } from './mocks'
-import { onSortTableFull } from '../../../../utils/PortfolioTableUtils'
+import { onSortTableFull, getArrayContainsOnlyOnePropertyType, combineDataToSelect } from '../../../../utils/PortfolioTableUtils'
+import SuperSearch from './SuperSearch'
 
 // TODO: Think about this
 let staticRows = tableData
+
+// TODO: Think more about this
+const arrayOfTickerValues = getArrayContainsOnlyOnePropertyType(tableData,'ticker')
+const combinedTickerValues = combineDataToSelect(arrayOfTickerValues)
+
+
 
 const tableHeadingsCurrentScreenerTable = [
   { name: 'Rank', value: 'rank' },
@@ -64,13 +71,22 @@ export default class MarketSummaryTable extends React.Component<
 
   render() {
     const { currentSort } = this.state
-    const { searchText } = this.props
+    const { searchText, searchArrayText } = this.props
+
+    const searchArray = searchArrayText.split(',')
+
     const usdSymbol = <Icon className="fa fa-usd" />
 
     const btcSymbol = <Icon className="fa fa-btc" />
 
+    console.log('searchArrayText in markeESUMMARY', searchArrayText);
+
+
     return (
-      <Container>
+      <TableAndSearchWrapper>
+        <SuperSearch combinedTickerValues={combinedTickerValues} onChangeSearchArrayText={this.props.onChangeSearchArrayText}
+        />
+        <Container>
         <Wrapper>
           <Table>
             <PTHead>
@@ -152,6 +168,21 @@ export default class MarketSummaryTable extends React.Component<
                   return
                 }
 
+
+                const searchExpression = searchArray.some((elem)=> {
+                  return elem === ticker
+                })
+
+                console.log('searchExpress', searchExpression);
+                console.log('searchArray', searchArray);
+
+
+
+                if (!searchExpression && searchArrayText) {
+                  return
+                }
+
+
                 return (
                   <PTR key={`${rank}${ticker}${idx}`}>
                     {cols.map((col, index) => {
@@ -195,9 +226,15 @@ export default class MarketSummaryTable extends React.Component<
           </Table>
         </Wrapper>
       </Container>
+      </TableAndSearchWrapper>
+
     )
   }
 }
+
+const TableAndSearchWrapper = styled.div`
+
+`
 
 const Container = styled.div`
   display: flex;

@@ -14,7 +14,7 @@ export default class ScreenerSearch extends React.Component<IProps, IState> {
   }
 
   onUpdateGlobalFilterValue = (newSearchText: string) => {
-    this.props.onChangeSearchText(newSearchText)
+    this.props.onChangeSearchArrayText(newSearchText)
   }
 
   render() {
@@ -34,7 +34,7 @@ export default class ScreenerSearch extends React.Component<IProps, IState> {
 }
 
 const SearchWrapper = styled.div`
-  width: 1370px;
+  width: 1395px;
   margin: 0 auto;
   padding: 20px;
 `

@@ -12,6 +12,7 @@ class ScreenerBase extends React.Component<IProps, IState> {
   state: IState = {
     tab: 'marketSummary',
     searchText: '',
+    searchArrayText: '',
   }
 
   onChangeTab = (
@@ -29,18 +30,26 @@ class ScreenerBase extends React.Component<IProps, IState> {
     this.setState({ searchText: newSearchText })
   }
 
+  onChangeSearchArrayText = (newSearchArrayText: string) => {
+    this.setState({
+      searchArrayText: newSearchArrayText
+    })
+  }
+
   render() {
     return (
       <div>
         <ScreenerTabs onChangeTab={this.onChangeTab} tab={this.state.tab} />
         <Selector />
-        <ScreenerSearch
-          searchText={this.state.searchText}
-          onChangeSearchText={this.onChangeSearchText}
-        />
+        {/*<ScreenerSearch*/}
+          {/*searchText={this.state.searchText}*/}
+          {/*onChangeSearchText={this.onChangeSearchText}*/}
+        {/*/>*/}
         <ScreenerTable
           searchText={this.state.searchText}
           tab={this.state.tab}
+          onChangeSearchArrayText={this.onChangeSearchArrayText}
+          searchArrayText={this.state.searchArrayText}
         />
       </div>
     )

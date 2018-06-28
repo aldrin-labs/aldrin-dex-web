@@ -465,7 +465,7 @@ const ToggleFiltersContainer = styled.div`
   color: white;
   text-align: center;
   user-select: none;
-  padding: 20px;
+  padding: 20px 20px 35px;
   width: 57vw;
 `
 

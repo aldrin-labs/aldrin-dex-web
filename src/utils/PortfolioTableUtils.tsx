@@ -52,6 +52,23 @@ export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadin
 
 }
 
+export const getArrayContainsOnlyOnePropertyType = (arrayOfObjects: object, prop) => {
+  return arrayOfObjects.reduce((result, element) => {
+    result.push(element[prop])
+
+    return result
+  }, [])
+}
+
+export const combineDataToSelect = (arrayOfOneType: object) => {
+  return arrayOfOneType.map((elem) => {
+    return {
+      value: elem,
+      label: elem,
+    }
+  })
+}
+
 export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) => {
   return arrayOfObjects.map((a) => Object.assign({}, a))
 }

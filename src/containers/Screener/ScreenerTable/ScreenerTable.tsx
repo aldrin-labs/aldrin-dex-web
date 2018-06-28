@@ -7,7 +7,7 @@ export default class ScreenerTable extends React.Component<IProps> {
     const { searchText, tab } = this.props
 
     if (tab === 'marketSummary') {
-      return <MarketSummaryTable searchText={searchText} />
+      return <MarketSummaryTable searchText={searchText} onChangeSearchArrayText={this.props.onChangeSearchArrayText} searchArrayText={this.props.searchArrayText}/>
     } else {
       return null
     }
