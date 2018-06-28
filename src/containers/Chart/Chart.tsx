@@ -183,7 +183,11 @@ class Chart extends React.Component<IState> {
 
     return (
       <TablesContainer>
-        <TablesBlockWrapper show={showTableOnMobile === 'ORDER'}>
+        <TablesBlockWrapper
+          variant={{
+            show: showTableOnMobile === 'ORDER',
+          }}
+        >
           <OrderBookTable
             {...{
               onButtonClick: this.changeTable,
@@ -211,7 +215,11 @@ class Chart extends React.Component<IState> {
           />
         </TablesBlockWrapper>
 
-        <TablesBlockWrapper show={showTableOnMobile === 'TRADE'}>
+        <TablesBlockWrapper
+          variant={{
+            show: showTableOnMobile === 'TRADE',
+          }}
+        >
           <ExchangesTable
             {...{
               exchanges,
@@ -362,7 +370,8 @@ const TablesBlockWrapper = styled(Paper)`
   }
 
   @media (max-width: 1080px) {
-    display: ${(props: { show: boolean }) => (props.show ? 'block' : 'none')};
+    display: ${(props: { show: boolean }) =>
+      props.variant.show ? 'block' : 'none'};
     width: 100%;
     height: calc(100vh - 57px - 70px);
     position: relative;

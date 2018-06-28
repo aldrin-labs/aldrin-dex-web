@@ -33,8 +33,10 @@ class SpreadTable extends PureComponent {
             <TriggerRow isHead background={'#292d31'}>
               <HeadCell color="#9ca2aa" width={'20%'}>
                 <StyledArrowSign
-                  tableExpanded={!tableExpanded}
-                  up={!tableExpanded}
+                  variant={{
+                    tableExpanded: !tableExpanded,
+                    up: !tableExpanded,
+                  }}
                 />
               </HeadCell>
               <HeadCell
@@ -133,14 +135,14 @@ const CollapsibleTable = Table.extend`
 
 const StyledArrowSign = styled(MdArrowDropUp)`
   font-size: 1rem;
-  transform: ${(props: { up: boolean }) =>
-    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
+  transform: ${(props) =>
+    props.variant.up ? 'rotate(0deg)' : 'rotate(180deg)'};
   position: relative;
   transition: all 0.5s ease;
 
   ${TriggerRow}:hover & {
-    animation: ${(props: { tableExpanded: boolean }) =>
-        props.tableExpanded ? JumpUpArrow : JumpDownArrow}
+    animation: ${(props: { tableExpanded: boolean; up: boolean }) =>
+        props.variant.tableExpanded ? JumpUpArrow : JumpDownArrow}
       0.5s linear 0.5s 2;
   }
 `

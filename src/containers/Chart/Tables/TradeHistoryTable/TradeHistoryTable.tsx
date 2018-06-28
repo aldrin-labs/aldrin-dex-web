@@ -40,9 +40,11 @@ class TradeHistoryTable extends PureComponent<IProps> {
           >
             Trade history
             <StyledArrowSign
+              variant={{
+                tableCollapsed: !tableExpanded,
+                up: !tableExpanded,
+              }}
               style={{ marginRight: '0.5rem' }}
-              tableCollapsed={!tableExpanded}
-              up={!tableExpanded}
             />
           </TriggerTitle>
           <Head background={'#25282c'}>
@@ -136,14 +138,14 @@ const TradeHistoryTableCollapsible = CollapsibleTable.extend`
 
 const StyledArrowSign = styled(MdArrowDropUp)`
   font-size: 1rem;
-  transform: ${(props: { up: boolean }) =>
-    props.up ? 'rotate(0deg)' : 'rotate(180deg)'};
+  transform: ${(props) =>
+    props.variant.up ? 'rotate(0deg)' : 'rotate(180deg)'};
   position: relative;
   transition: all 0.5s ease;
 
   ${TriggerTitle}:hover & {
-    animation: ${(props: { tableCollapsed: boolean }) =>
-        props.tableCollapsed ? JumpUpArrow : JumpDownArrow}
+    animation: ${(props) =>
+        props.variant.tableCollapsed ? JumpUpArrow : JumpDownArrow}
       0.5s linear 0.5s 2;
   }
 `

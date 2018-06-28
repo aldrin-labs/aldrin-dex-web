@@ -12,14 +12,26 @@ import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageS
 
 import { getFakeDepthChartData } from '../mocks'
 
-interface Props {}
-interface State {
-  charts: string[]
-  choosedChart?: string
+interface IChartProps {
+  currencyPair: string
+  removeChart: Function
+  index: number
+  chartsCount: number
 }
 
-class Charts extends Component {
-  state = {
+interface IExchange {
+  price: string | number
+  size: string | number
+}
+
+interface IChartState {
+  ordersData: IExchange[]
+  spreadData: IExchange[]
+  activeChart: 'candle' | 'depth'
+}
+
+class Charts extends Component<IChartProps, IChartState> {
+  state: IChartState = {
     activeChart: 'candle',
     ordersData: [],
     spreadData: [],
@@ -107,8 +119,8 @@ class OnlyCharts extends Component<Props, {}> {
     return (
       <div>
         <ChartContainer chartsCount={charts.length}>
-          {charts.map((chart, i) => (
-            <Wrapper width={100 / charts.length} key={chart}>
+          {charts.map((chart: string, i: number) => (
+            <Wrapper key={chart}>
               <Charts
                 removeChart={removeChart}
                 index={i}
@@ -173,7 +185,6 @@ const ChartContainer = styled.div`
   );
   grid-template-rows: repeat(
     ${(props: { chartsCount?: number }) => {
-      console.log(props.chartsCount)
       if (props.chartsCount && props.chartsCount > 4) {
         return '2, 41.5vh'
       } else {
