@@ -39,7 +39,6 @@ class BarChart extends Component<IProps, IState> {
     const Charts = charts.map((chart: IChart, chartIndex: number) => {
       const { color, title, data } = chart
       ITEMS.push({ title, color })
-      console.log(data)
 
       return (
         <VerticalBarSeries

@@ -123,7 +123,7 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
       >
         <FullScreen
           enabled={isFullscreenEnabled}
-          onChange={(isFSEnabled: any) =>
+          onChange={() =>
             this.props.fullScreenChangeHandler(isFullscreenEnabled)
           }
         >

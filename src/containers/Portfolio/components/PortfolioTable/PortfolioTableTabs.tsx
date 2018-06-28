@@ -5,6 +5,8 @@ import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/supervisor-account'
+import { Button } from '@material-ui/core'
+import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
@@ -12,6 +14,7 @@ import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
+import { toggleCorrelationTableFullscreen } from '../../actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -95,6 +98,14 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </TabContainer>
 
           <ButtonContainer>
+            {tab === 'correlation' ? (
+              <StyledFullscreenButton
+                onClick={this.props.onFullscreenButtonClick}
+              >
+                <FullScreenIcon />
+              </StyledFullscreenButton>
+            ) : null}
+
             <ToggleBtn onClick={this.onToggleChart}>
               <SvgIcon src={filterListIcon} width={24} height={24} />
             </ToggleBtn>
@@ -272,10 +283,26 @@ const SwitchRefreshContainer = styled.div`
   }
 `
 
+const StyledFullscreenButton = styled(Button)`
+  z-index: 100;
+  color: #fff;
+
+  && {
+    font-size: 2rem;
+    margin: auto 1rem;
+    width: 2rem;
+  }
+`
+
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
 })
+const mapDispatchToProps = (dispatch: any) => ({
+  onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
+})
 
-const storeComponent = connect(mapStateToProps)(PortfolioTableTabs)
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  PortfolioTableTabs
+)
 
 export default compose()(storeComponent)

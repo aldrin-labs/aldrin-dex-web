@@ -1,13 +1,15 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
-import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
 import { IProps, IState } from './Correlation.types'
+import { toggleCorrelationTableFullscreen } from '../../../actions'
 
-export default class Correlation extends React.Component<IProps> {
+class Correlation extends React.Component<IProps> {
   state: IState = {
     isFullscreenEnabled: false,
   }
@@ -18,23 +20,32 @@ export default class Correlation extends React.Component<IProps> {
     )
 
   fullScreenChangeHandler = (isFullscreenEnabled: boolean) => {
-    this.setState({ isFullscreenEnabled })
+    if (isFullscreenEnabled) {
+      console.log('here')
+      return null
+    } else {
+      console.log('or here')
+      this.props.toggleFullscreen()
+
+      return null
+    }
   }
 
+  onButtonClick = () => this.setState({ isFullscreenEnabled: true })
+
   render() {
-    const { children } = this.props
+    const { children, isFullscreenEnabled } = this.props
     const { cols, rows } = optimizeMocks()
+    console.log(isFullscreenEnabled)
 
     return (
       <PTWrapper tableData={!!cols.length && !!rows.length}>
         {children}
-        <Button onClick={() => this.setState({ isFullscreenEnabled: true })}>
-          <FullScreenIcon />
-        </Button>
+
         <Wrapper>
           <CorrelationMatrix
             fullScreenChangeHandler={this.fullScreenChangeHandler}
-            isFullscreenEnabled={this.state.isFullscreenEnabled || false}
+            isFullscreenEnabled={isFullscreenEnabled || false}
             cols={cols}
             rows={rows}
           />
@@ -67,21 +78,16 @@ const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
 `
-const Button = styled.button`
-  z-index: 100;
-  color: #fff;
-  border-color: transparent;
-  padding: 10px 30px;
-  border-radius: 3px;
-  background-color: transparent;
-  font-size: 2rem;
-  text-align: center;
-  cursor: pointer;
 
-  position: absolute;
-  right: 2rem;
-  top: 0.8rem;
+const mapStateToProps = (store: any) => ({
+  isShownMocks: store.user.isShownMocks,
+  data: store.portfolio.optimizationData,
+  isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
+})
 
-  outline: none;
-  box-sizing: border-box;
-`
+const mapDispatchToProps = (dispatch: any) => ({
+  toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
+})
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Correlation)
+
+export default storeComponent
