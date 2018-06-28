@@ -59,7 +59,7 @@ class SpreadTable extends PureComponent {
               </HeadCell>
             </TriggerRow>
           </Head>
-          <Body height="230px">
+          <Body height="254px">
             {data.map((order, i) => (
               <Row key={i} background={'#25282c'}>
                 <EmptyCell
@@ -119,7 +119,7 @@ const CollapseWrapper = styled(Collapse)`
 `
 
 const CollapsibleTable = Table.extend`
-  max-height: calc(50% - 37px);
+  max-height: 50%;
   position: absolute;
   bottom: 23px;
   left: 0;

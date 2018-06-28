@@ -62,7 +62,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
               </HeadCell>
             </Row>
           </Head>
-          <Body height="205px">
+          <Body height="400px">
             {data.slice(0, 30).map((order, i) => (
               <Row key={i} background={'#25282c'}>
                 <AnimatedCell
@@ -128,6 +128,7 @@ const CollapsibleTable = Table.extend`
 `
 
 const TradeHistoryTableCollapsible = CollapsibleTable.extend`
+  max-height: 80%;
   @media (max-width: 1080px) {
     bottom: 0.5rem;
   }
