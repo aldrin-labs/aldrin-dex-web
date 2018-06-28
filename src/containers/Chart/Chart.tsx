@@ -226,13 +226,13 @@ class Chart extends React.Component<IState> {
               activeExchange,
               changeExchange,
               base,
+              onButtonClick: this.changeTable,
             }}
           />
 
           <TradeHistoryTable
             {...{
               data: orderBook,
-              onButtonClick: this.changeTable,
               base,
             }}
           />

@@ -27,6 +27,7 @@ class ExchangesTable extends PureComponent {
     return (
       <StyledTable>
         <Title>
+          Exchanges
           <SwitchTablesButton
             onClick={onButtonClick}
             variant="outlined"
@@ -34,7 +35,6 @@ class ExchangesTable extends PureComponent {
           >
             ORDER
           </SwitchTablesButton>
-          Exchanges
         </Title>
         <StyledHead background={'#292d31'}>
           <Row isHead background={'#292d31'}>

@@ -34,7 +34,7 @@ const Aggregation = (props) => {
           </HeadCell>
           <HeadCell
             style={{
-              zIndex: 1000,
+              zIndex: 10,
             }}
             color="#9ca2aa"
             width={'25%'}

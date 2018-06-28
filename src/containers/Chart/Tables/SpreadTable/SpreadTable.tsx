@@ -125,7 +125,7 @@ const CollapsibleTable = Table.extend`
   position: absolute;
   bottom: 23px;
   left: 0;
-  z-index: 999;
+  z-index: 10;
   width: 100%;
 
   @-moz-document url-prefix() {

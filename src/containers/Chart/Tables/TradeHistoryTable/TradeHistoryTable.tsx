@@ -14,7 +14,6 @@ import {
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
 export interface IProps {
-  onButtonClick: Function
   base: string
   data: any[]
 }
@@ -121,7 +120,7 @@ const CollapsibleTable = Table.extend`
   position: absolute;
   bottom: 0;
   max-height: calc(50% - 37px);
-  z-index: 999;
+  z-index: 10;
   width: 100%;
 
   @-moz-document url-prefix() {
