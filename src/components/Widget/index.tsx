@@ -28,7 +28,7 @@ export default class Widget extends React.Component<Props> {
 }
 
 const Heading = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   text-align: left;
   color: #fff;

@@ -222,7 +222,7 @@ const Btn = styled.button`
   background-color: #282c2f;
   border-color: transparent;
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
@@ -238,7 +238,7 @@ const TBody = styled.tbody`
 `
 
 const TH = styled.th`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   text-align: left;
   color: #fff;
@@ -279,7 +279,7 @@ const MarketWrapper = styled.div`
 `
 
 const Title = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: #fff;
@@ -293,7 +293,7 @@ const WebIcon = styled.img`
 `
 
 const TD = styled.td`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   text-align: left;
   color: #fff;

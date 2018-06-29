@@ -2,8 +2,75 @@ import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 
+export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadings) => {
+    if (!tableData) {
+      return
+    }
+
+    const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
+    let newCurrentSort : { key: string; arg: 'ASC' | 'DESC' } | null
+
+    const newData = tableData.slice().sort((a, b) => {
+      if (currentSort && currentSort.key === key) {
+        if (currentSort.arg === 'ASC') {
+          newCurrentSort = { key, arg: 'DESC' }
+
+          if (stringKey) {
+            return onSortStrings(b[key], a[key])
+          }
+
+          return b[key] - a[key]
+        } else {
+          newCurrentSort = { key, arg: 'ASC' }
+
+          if (stringKey) {
+            return onSortStrings(a[key], b[key])
+          }
+
+          return a[key] - b[key]
+        }
+      }
+
+      newCurrentSort = { key, arg: 'ASC' }
+
+      if (stringKey) {
+        return onSortStrings(a[key], b[key])
+      }
+
+      return a[key] - b[key]
+    })
+
+    console.log(newData)
+    console.log(newCurrentSort)
+    console.log('stringKey: ', stringKey)
+
+
+  return {
+      newData,
+      newCurrentSort
+    }
+
+}
+
+export const getArrayContainsOnlyOnePropertyType = (arrayOfObjects: object, prop) => {
+  return arrayOfObjects.reduce((result, element) => {
+    result.push(element[prop])
+
+    return result
+  }, [])
+}
+
+export const combineDataToSelect = (arrayOfOneType: object) => {
+  return arrayOfOneType.map((elem) => {
+    return {
+      value: elem,
+      label: elem,
+    }
+  })
+}
+
 export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) => {
-  return arrayOfObjects.map(a => Object.assign({}, a));
+  return arrayOfObjects.map((a) => Object.assign({}, a))
 }
 
 export const onSortStrings = (a: string, b: string): number => {
@@ -37,17 +104,8 @@ export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
 }
 
 export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
-  const reg = isUSDCurrently
-    ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-    : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-  if (String(num).match(reg)) {
-    const [price] = String(num).match(reg)
-    return price
-  } else if (num > 0) {
-    return addZerosToEnd(String(num), isUSDCurrently)
-  } else {
-    return `${num}`
-  }
+  if (num === 0.0) return "0";
+  return new Number(num).toFixed(isUSDCurrently ? 2 : 8);
 }
 
 const Icon = styled.i`

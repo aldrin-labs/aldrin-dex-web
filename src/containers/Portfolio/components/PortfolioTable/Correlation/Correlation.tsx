@@ -1,40 +1,41 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
+
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
-import FullScreenIcon from 'react-icons/lib/md/fullscreen'
-import CorrelationMatrix from './CorrelationMatrix'
+import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
-import { IProps, IState } from './Correlation.types'
+import { IProps } from './Correlation.types'
+import { toggleCorrelationTableFullscreen } from '../../../actions'
 
-export default class Correlation extends React.Component<IProps> {
-  state: IState = {
-    isFullscreenEnabled: false,
-  }
-
+class Correlation extends React.Component<IProps, IState> {
   initializeArray = (length: number, start: number, step: number): number[] =>
     Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
       (v, i) => i * step + start
     )
 
   fullScreenChangeHandler = (isFullscreenEnabled: boolean) => {
-    this.setState({ isFullscreenEnabled })
+    this.props.toggleFullscreen()
   }
 
   render() {
-    const { children } = this.props
-    const { cols, rows } = optimizeMocks()
+    const { children, isFullscreenEnabled, data } = this.props
+    // const { cols, rows } = optimizeMocks()
+    // console.log(cols)
+    // console.log()
+    // console.log(data)
+    const cols = data.map((el: { coin: string; percentage: number }) => el.coin)
+    const rows = cols
 
     return (
       <PTWrapper tableData={!!cols.length && !!rows.length}>
         {children}
-        <Button onClick={() => this.setState({ isFullscreenEnabled: true })}>
-          <FullScreenIcon />
-        </Button>
+
         <Wrapper>
           <CorrelationMatrix
             fullScreenChangeHandler={this.fullScreenChangeHandler}
-            isFullscreenEnabled={this.state.isFullscreenEnabled || false}
+            isFullscreenEnabled={isFullscreenEnabled || false}
             cols={cols}
             rows={rows}
           />
@@ -63,25 +64,21 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
+  height: 80%;
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
 `
-const Button = styled.button`
-  z-index: 100;
-  color: #fff;
-  border-color: transparent;
-  padding: 10px 30px;
-  border-radius: 3px;
-  background-color: transparent;
-  font-size: 2rem;
-  text-align: center;
-  cursor: pointer;
 
-  position: absolute;
-  right: 2rem;
-  top: 0.8rem;
+const mapStateToProps = (store: any) => ({
+  isShownMocks: store.user.isShownMocks,
+  data: store.portfolio.optimizationData,
+  isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
+})
 
-  outline: none;
-  box-sizing: border-box;
-`
+const mapDispatchToProps = (dispatch: any) => ({
+  toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
+})
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Correlation)
+
+export default storeComponent

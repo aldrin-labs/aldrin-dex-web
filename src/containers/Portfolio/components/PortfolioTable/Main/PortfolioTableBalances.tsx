@@ -132,6 +132,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
+    console.log(portfolio)
     const { assets } = portfolio
 
     const allSums = assets.filter(Boolean).reduce((acc, curr) => {
@@ -155,6 +156,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           btcRealizedProfit = 0,
           usdUnrealizedProfit = 0,
           btcUnrealizedProfit = 0,
+          usdTotalProfit = 0,
+          btcTotalProfit = 0,
         } =
           row || {}
         if (activeKeys.indexOf(key.name) === -1) {
@@ -170,6 +173,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const unrealizedProfit = isUSDCurrently
           ? usdUnrealizedProfit
           : btcUnrealizedProfit
+          const totalProfit = isUSDCurrently
+            ? usdTotalProfit
+            : btcTotalProfit
 
         const currentPrice = mainPrice * value
         const col = {
@@ -183,10 +189,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           dailyPerc: percentChangeDay,
           realizedPL: realizedProfit,
           realizedPLPerc: 0,
-          unrealizedPL: unrealizedProfit + currentPrice,
+          unrealizedPL: unrealizedProfit,
           unrealizedPLPerc: 0,
-          totalPL: realizedProfit + currentPrice + unrealizedProfit,
+          totalPL: realizedProfit + unrealizedProfit,
         }
+        console.log(symbol, realizedProfit, unrealizedProfit)
 
         return col
       })
@@ -271,7 +278,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       tableData,
       isUSDCurrently
     )
-    console.log('validateSum: ', validateSum)
+    // console.log('validateSum: ', validateSum)
     this.setState({ selectedSum: validateSum })
   }
 
