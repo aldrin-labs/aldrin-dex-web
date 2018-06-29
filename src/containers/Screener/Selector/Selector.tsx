@@ -5,13 +5,16 @@ import { FormControl } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
 import TextField from 'material-ui/TextField'
 import Select from 'material-ui/Select'
-import SelectReact from 'react-select'
+import SelectReact, { components } from 'react-select'
 import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 import Slider from '@material-ui/lab/Slider';
 import { IProps, IState } from './Selector.types'
 import { data } from './selectsData'
+import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
+
+
 
 export default class ScreenerSelect extends React.Component<IProps, IState> {
   state: IState = {
@@ -157,6 +160,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 placeholder=''
                 options={data.timeInterval}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'timeInterval')}
               />
             </SFormControl>
@@ -191,6 +195,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 placeholder=''
                 options={data.simpleMovingAverage}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'simpleMovingAverage')}
               />
               <Input
@@ -209,6 +214,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 placeholder=''
                 options={data.closingPriceAverage}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'closingPriceAverage')}
               />
                 <Input
@@ -274,6 +280,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 placeholder=''
                 options={data.changeInPercentage}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'changeInPercentage')}
               />
               <Input
@@ -294,6 +301,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 placeholder=''
                 options={data.averageVolume}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolume')}
               />
               <Input
@@ -312,6 +320,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 placeholder=''
                 options={data.averageVolumeOnBalance}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolumeOnBalance')}
               />
               <Input
@@ -332,6 +341,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 isClearable
                 placeholder=''
                 options={data.low}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'low')}
               />
             </SFormControl>
@@ -343,6 +353,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 styles={customStyles}
                 isClearable
                 placeholder=''
+                components={{ DropdownIndicator }}
                 options={data.high}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
               />
@@ -394,7 +405,7 @@ const customStyles = {
         color: '#fff'
       },
       display: 'flex',
-      width: '20px',
+      width: '19px',
       boxSizing: 'border-box',
       color: 'hsl(0, 0%, 80%)',
       padding: '2px',
@@ -406,10 +417,8 @@ const customStyles = {
       color: '#fff'
     },
     display: 'flex',
-    width: '20px',
     boxSizing: 'border-box',
     color: 'hsl(0, 0%, 80%)',
-    padding: '2px',
     transition: 'color 150ms',
   }),
   valueContainer: (base, state) => ({
@@ -433,6 +442,22 @@ const customStyles = {
     display: 'none'
   })
 }
+
+
+const DropdownIndicator = (props) => {
+  return components.DropdownIndicator && (
+    <components.DropdownIndicator {...props}>
+      <SvgIcon
+        src={dropDownIcon}
+        width={19}
+        height={19}
+        style={{
+          verticalAlign: 'middle',
+        }}
+      />
+    </components.DropdownIndicator>
+  );
+};
 
 const SContainer = styled.form`
   display: ${(props: { showFilters?: boolean }) =>
