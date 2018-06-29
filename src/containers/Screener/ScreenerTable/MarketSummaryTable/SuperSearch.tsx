@@ -167,5 +167,8 @@ const customStyles = {
       color: '#fff',
       backgroundColor: '#4ed8da'
     },
+  }),
+  indicatorSeparator: () => ({
+    display: 'none'
   })
 }

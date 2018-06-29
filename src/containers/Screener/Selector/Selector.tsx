@@ -10,8 +10,6 @@ import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
 import Slider from '@material-ui/lab/Slider';
-
-
 import { IProps, IState } from './Selector.types'
 import { data } from './selectsData'
 
@@ -330,7 +328,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                       }
                     },
                   },
-                  renderValue: () => this.state.marketCapSlider
+                  renderValue: () => this.state.marketCapSlider.toString()
                 }}
               >
                 <SliderContainer>
@@ -424,6 +422,9 @@ const customStyles = {
   input: (base, state) => ({
     ...base,
     color: '#fff'
+  }),
+  indicatorSeparator: () => ({
+    display: 'none'
   })
 }
 
