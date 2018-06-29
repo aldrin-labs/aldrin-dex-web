@@ -155,6 +155,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <SelectR
                 styles={customStyles}
                 isClearable
+                placeholder=''
                 options={data.timeInterval}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'timeInterval')}
               />
@@ -166,7 +167,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 key="industry"
                 value={this.state.industry}
                 onChange={this.handleSelectChange}
-                placeholder='Select...'
                 inputProps={{
                   name: 'industry',
                   id: 'industry',
@@ -189,6 +189,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <SelectR
                 styles={customStyles}
                 isClearable
+                placeholder=''
                 options={data.simpleMovingAverage}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'simpleMovingAverage')}
               />
@@ -206,6 +207,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <SelectR
                 styles={customStyles}
                 isClearable
+                placeholder=''
                 options={data.closingPriceAverage}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'closingPriceAverage')}
               />
@@ -218,100 +220,23 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl value={this.state.marketCap}>
-              <Label>
-                Market Cap
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                options={data.marketCap}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'marketCap')}
-              />
-              <Input
-                name="marketCapInput"
-                onChange={this.handleInputChange}
-                value={this.state.marketCapInput}
-                innerRef={this.marketCapRef}
-              />
-            </SFormControl>
-            <SFormControl value={this.state.changeInPercentage}>
-              <Label>
-                Change %
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                options={data.changeInPercentage}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'changeInPercentage')}
-              />
-              <Input
-                name="changeInPercentageInput"
-                onChange={this.handleInputChange}
-                value={this.state.changeInPercentageInput}
-                innerRef={this.changeInPercentageRef}
-              />
-            </SFormControl>
-          </SColumnForm>
-          <SColumnForm>
-            <SFormControl value={this.state.averageVolume}>
-              <Label>
-                Average Volume
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                options={data.averageVolume}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolume')}
-              />
-              <Input
-                name="averageVolumeInput"
-                onChange={this.handleInputChange}
-                value={this.state.averageVolumeInput}
-                innerRef={this.averageVolumeRef}
-              />
-            </SFormControl>
-            <SFormControl value={this.state.averageVolumeOnBalance}>
-              <Label>
-                On-Balance Volume
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                options={data.averageVolumeOnBalance}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolumeOnBalance')}
-              />
-              <Input
-                name="averageVolumeOnBalanceInput"
-                onChange={this.handleInputChange}
-                value={this.state.averageVolumeOnBalanceInput}
-                innerRef={this.averageVolumeOnBalanceRef}
-              />
-            </SFormControl>
-          </SColumnForm>
-          <SColumnForm>
-            <SFormControl value={this.state.low}>
-              <Label>
-                Low
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                options={data.low}
-                onChange={this.handleSelectChangeWithoutInput.bind(this, 'low')}
-              />
-            </SFormControl>
-            <SFormControl value={this.state.high}>
-              <Label>
-                High
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                options={data.high}
-                onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
-              />
-            </SFormControl>
+            {/*<SFormControl value={this.state.marketCap}>*/}
+              {/*<Label>*/}
+                {/*Market Cap*/}
+              {/*</Label>*/}
+              {/*<SelectR*/}
+                {/*styles={customStyles}*/}
+                {/*isClearable*/}
+                {/*options={data.marketCap}*/}
+                {/*onChange={this.handleSelectChangeWithInput.bind(this, 'marketCap')}*/}
+              {/*/>*/}
+              {/*<Input*/}
+                {/*name="marketCapInput"*/}
+                {/*onChange={this.handleInputChange}*/}
+                {/*value={this.state.marketCapInput}*/}
+                {/*innerRef={this.marketCapRef}*/}
+              {/*/>*/}
+            {/*</SFormControl>*/}
             <SFormControl>
               <Label>Market Cap Slider</Label>
               <STextField
@@ -332,14 +257,95 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 }}
               >
                 <SliderContainer>
-                <SliderWrapper>
-                  <SliderLabel>Market Cap Slider</SliderLabel>
-                  <SliderMaterial id='marketCapSlider' value={this.state.marketCapSlider} step={1} aria-labelledby="label" min={0} max={100} onChange={this.handleSliderChange} />
-                  <SliderValueWrapper>{this.state.marketCapSlider}</SliderValueWrapper>
-                </SliderWrapper>
+                  <SliderWrapper>
+                    <SliderLabel>Market Cap Slider</SliderLabel>
+                    <SliderMaterial id='marketCapSlider' value={this.state.marketCapSlider} step={1} aria-labelledby="label" min={0} max={100} onChange={this.handleSliderChange} />
+                    <SliderValueWrapper>{this.state.marketCapSlider}</SliderValueWrapper>
+                  </SliderWrapper>
                 </SliderContainer>
               </STextField>
-
+            </SFormControl>
+            <SFormControl value={this.state.changeInPercentage}>
+              <Label>
+                Change %
+              </Label>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=''
+                options={data.changeInPercentage}
+                onChange={this.handleSelectChangeWithInput.bind(this, 'changeInPercentage')}
+              />
+              <Input
+                name="changeInPercentageInput"
+                onChange={this.handleInputChange}
+                value={this.state.changeInPercentageInput}
+                innerRef={this.changeInPercentageRef}
+              />
+            </SFormControl>
+          </SColumnForm>
+          <SColumnForm>
+            <SFormControl value={this.state.averageVolume}>
+              <Label>
+                Average Volume
+              </Label>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=''
+                options={data.averageVolume}
+                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolume')}
+              />
+              <Input
+                name="averageVolumeInput"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolumeInput}
+                innerRef={this.averageVolumeRef}
+              />
+            </SFormControl>
+            <SFormControl value={this.state.averageVolumeOnBalance}>
+              <Label>
+                On-Balance Volume
+              </Label>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=''
+                options={data.averageVolumeOnBalance}
+                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolumeOnBalance')}
+              />
+              <Input
+                name="averageVolumeOnBalanceInput"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolumeOnBalanceInput}
+                innerRef={this.averageVolumeOnBalanceRef}
+              />
+            </SFormControl>
+          </SColumnForm>
+          <SColumnForm>
+            <SFormControl value={this.state.low}>
+              <Label>
+                Low
+              </Label>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=''
+                options={data.low}
+                onChange={this.handleSelectChangeWithoutInput.bind(this, 'low')}
+              />
+            </SFormControl>
+            <SFormControl value={this.state.high}>
+              <Label>
+                High
+              </Label>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=''
+                options={data.high}
+                onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
+              />
             </SFormControl>
           </SColumnForm>
         </SContainer>
