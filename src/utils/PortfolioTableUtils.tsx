@@ -104,17 +104,8 @@ export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
 }
 
 export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
-  const reg = isUSDCurrently
-    ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-    : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-  if (String(num).match(reg)) {
-    const [price] = String(num).match(reg)
-    return price
-  } else if (num > 0) {
-    return addZerosToEnd(String(num), isUSDCurrently)
-  } else {
-    return `${num}`
-  }
+  if (num === 0.0) return "0";
+  return new Number(num).toFixed(isUSDCurrently ? 2 : 8);
 }
 
 const Icon = styled.i`
