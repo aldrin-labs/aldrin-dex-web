@@ -1,30 +1,98 @@
-import * as React from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { SingleChart } from '../../components/Chart'
-import OnlyCharts from './OnlyCharts'
-import { orders } from './mocks'
+import { connect } from 'react-redux'
+import { Paper, Button } from '@material-ui/core'
 
-interface Props {}
+import {
+  OrderBookTable,
+  SpreadTable,
+  Aggregation,
+  TradeHistoryTable,
+  ExchangesTable,
+} from './Tables/Tables'
+import * as actions from './actions'
+import { SingleChart } from '@components/Chart'
+import OnlyCharts from './OnlyCharts/OnlyCharts'
+import { exchanges, orders, getFakeDepthChartData, orderBook } from './mocks'
+import Switch from '@components/Switch/Switch'
+import DepthChart from './DepthChart/DepthChart'
+import AutoSuggestSelect from './Inputs/AutoSuggestSelect/AutoSuggestSelect'
 
-interface State {
+interface IState {
   view: 'onlyCharts' | 'default'
+  exchangeTableCollapsed: boolean
   orders: number[][]
+  aggregation: number
+  data: any
+
+  searchSymbol: string
+  showTableOnMobile: string
+  mCharts: string
+  activeChart: string
   currentSort?: {
     arg: 'ASC' | 'DESC'
     index: number
   }
 }
 
-const headers = ['Price', 'ETH', 'BTC', 'Sum(BTC)']
-
-export default class Chart extends React.Component<Props, State> {
-  state: State = {
+class Chart extends React.Component<IState> {
+  state: IState = {
     view: 'default',
     orders,
+    exchangeTableCollapsed: true,
+    aggregation: 0.01,
+    showTableOnMobile: 'ORDER',
+    activeChart: 'candle',
+    currencyPairRaw: '',
+    ordersData: [],
+    spreadData: [],
+    exchanges: [],
+    tradeHistory: [],
   }
 
-  onToggleView = (view: 'default' | 'onlyCharts') => {
-    this.setState({ view })
+  componentDidMount() {
+    const { isShownMocks } = this.props
+    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
+
+    if (isShownMocks) {
+      this.setState({
+        ordersData: orderBookFakeData,
+        exchanges,
+        spreadData: usdSpreadFakeData,
+        usdSpreadFakeData,
+        orderBookFakeData,
+      })
+    } else {
+      // fetchData
+    }
+  }
+
+  roundTill = (n: number, initial: string): number => {
+    //  need testing. Not working on all numbers
+    // sorry have not much time
+    // also working only on aggregation <=10
+    // and keeps floor of number instead of round it
+    let s = 0
+
+    if (this.state.aggregation <= 5.0) {
+      s = -4
+    } else {
+      s = -5
+    }
+
+    let agg = Number(
+      initial
+        .split('')
+        .slice(s)
+        .join('')
+    )
+    /* tslint:disable */
+    while (n < agg) {
+      agg = agg - n
+    }
+    /* tslint:enable */
+
+    return +initial - agg
   }
 
   sortOrders = (index: number) => {
@@ -47,141 +115,321 @@ export default class Chart extends React.Component<Props, State> {
     this.setState({ orders: newOrders })
   }
 
+  changeExchange = (i: number) => {
+    this.props.selectExchange(i)
+  }
+
+  changeTable = () => {
+    this.setState((prevState) => ({
+      showTableOnMobile:
+        prevState.showTableOnMobile === 'ORDER' ? 'TRADE' : 'ORDER',
+    }))
+  }
+
+  setAggregation = () => {
+    const { aggregation } = this.state
+    switch (aggregation) {
+      case 0.01:
+        this.setState({ aggregation: 0.05 })
+        break
+      case 0.05:
+        this.setState({ aggregation: 0.1 })
+        break
+      case 0.1:
+        this.setState({ aggregation: 0.5 })
+        break
+      case 0.5:
+        this.setState({ aggregation: 1 })
+        break
+      case 1:
+        this.setState({ aggregation: 2.5 })
+        break
+      case 2.5:
+        this.setState({ aggregation: 5 })
+        break
+      case 5:
+        this.setState({ aggregation: 10 })
+        break
+      case 10:
+        this.setState({ aggregation: 0.01 })
+        break
+      default:
+        this.setState({ aggregation: 0.01 })
+
+        break
+    }
+  }
+
+  renderTables: any = () => {
+    const {
+      aggregation,
+      showTableOnMobile,
+
+      tradeHistory,
+      ordersData,
+      spreadData,
+    } = this.state
+    const { currencyPair } = this.props
+
+    let base
+    let quote
+    if (currencyPair) {
+      base = currencyPair.split('/')[0]
+      quote = currencyPair.split('/')[1]
+    }
+
+    const { activeExchange } = this.props
+    const { changeExchange } = this
+
+    return (
+      <TablesContainer>
+        <TablesBlockWrapper
+          variant={{
+            show: showTableOnMobile === 'ORDER',
+          }}
+        >
+          <OrderBookTable
+            {...{
+              onButtonClick: this.changeTable,
+              data: ordersData,
+              roundTill: this.roundTill,
+              aggregation,
+              quote,
+            }}
+          />
+
+          <SpreadTable
+            {...{
+              roundTill: this.roundTill,
+              data: spreadData,
+              aggregation,
+              quote,
+            }}
+          />
+
+          <Aggregation
+            {...{
+              aggregation: this.state.aggregation,
+              onButtonClick: this.setAggregation,
+            }}
+          />
+        </TablesBlockWrapper>
+
+        <TablesBlockWrapper
+          variant={{
+            show: showTableOnMobile === 'TRADE',
+          }}
+        >
+          <ExchangesTable
+            {...{
+              exchanges,
+              activeExchange,
+              changeExchange,
+              quote,
+              onButtonClick: this.changeTable,
+            }}
+          />
+
+          <TradeHistoryTable
+            {...{
+              data: orderBook,
+              quote,
+            }}
+          />
+        </TablesBlockWrapper>
+      </TablesContainer>
+    )
+  }
+
   renderDefaultView = () => {
-    const { orders } = this.state
+    const { ordersData, spreadData } = this.state
+    const { currencyPair } = this.props
+
+    let base
+    let quote
+    if (currencyPair) {
+      base = currencyPair.split('/')[0]
+      quote = currencyPair.split('/')[1]
+    }
 
     return (
       <Container>
-        <SingleChart />
+        <ChartsContainer>
+          <ChartsSwitcher>
+            {base && quote && <ExchangePair>{`${base}/${quote}`}</ExchangePair>}
+            <Switch
+              onClick={() => {
+                this.setState((prevState) => ({
+                  activeChart:
+                    prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                }))
+              }}
+              values={['Chart', 'Depth']}
+            />
+          </ChartsSwitcher>
+          {this.state.activeChart === 'candle' ? (
+            <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
+          ) : (
+            <DepthChartContainer>
+              <DepthChart
+                {...{
+                  ordersData,
+                  spreadData,
+                  base,
+                  quote,
+                  animated: 'gentle',
+                }}
+              />
+            </DepthChartContainer>
+          )}
+        </ChartsContainer>
 
-        <Tickers />
-
-        <OrderContainer>
-          <Orders>
-            <thead>
-              <TR>
-                {headers.map((h, i) => {
-                  return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
-                })}
-              </TR>
-            </thead>
-            <tbody>
-              {orders.map(order => {
-                return (
-                  <TR>
-                    {order.map(o => {
-                      return <TD>{o}</TD>
-                    })}
-                  </TR>
-                )
-              })}
-            </tbody>
-          </Orders>
-        </OrderContainer>
-
-        <OrderContainer>
-          <Orders>
-            <thead>
-              <TR>
-                {headers.map((h, i) => {
-                  return <TH onClick={() => this.sortOrders(i)}>{h}</TH>
-                })}
-              </TR>
-            </thead>
-            <tbody>
-              {orders.map(order => {
-                return (
-                  <TR>
-                    {order.map(o => {
-                      return <TD>{o}</TD>
-                    })}
-                  </TR>
-                )
-              })}
-            </tbody>
-          </Orders>
-        </OrderContainer>
+        {this.renderTables()}
       </Container>
     )
   }
 
-  renderOnlyCharts = () => {
-    return <OnlyCharts />
+  renderOnlyCharts = () => <OnlyCharts />
+
+  handleChange = (name) => (value) => {
+    this.setState({
+      [name]: value,
+    })
   }
 
   renderToggler = () => {
-    const { view } = this.state
+    const { toggleView, view } = this.props
 
-    if (view === 'default')
+    if (view === 'default') {
       return (
-        <Toggler onClick={() => this.onToggleView('onlyCharts')}>
-          &#9680;
-        </Toggler>
+        <Toggler onClick={() => toggleView('onlyCharts')}>Multi Charts</Toggler>
       )
-    if (view === 'onlyCharts')
+    }
+    if (view === 'onlyCharts') {
       return (
-        <Toggler onClick={() => this.onToggleView('default')}>&#9681;</Toggler>
+        <Toggler onClick={() => toggleView('default')}>Single Chart</Toggler>
       )
+    }
 
     return null
   }
 
   render() {
-    const { view } = this.state
+    const { currencyPairRaw } = this.state
+    const { view } = this.props
 
     const toggler = this.renderToggler()
 
     return (
-      <div>
-        <TogglerContainer>{toggler}</TogglerContainer>
+      <MainContainer>
+        <TogglerContainer>
+          <AutoSuggestSelect
+            handleChange={this.handleChange}
+            value={currencyPairRaw}
+            id={'currencyPairRaw'}
+            view={view}
+          />
+
+          {toggler}
+        </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
-      </div>
+      </MainContainer>
     )
   }
 }
 
-const TR = styled.tr`
-  border: 1px solid #fff;
+const MainContainer = styled.div`
+  font-family: Roboto, sans-serif;
+`
+const DepthChartContainer = styled.div`
+  height: calc(100vh - 59px - 80px - 38px);
+  width: 100%;
 `
 
-const TD = styled.td`
-  text-align: right;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 20px;
-  color: #fff;
-  padding: 5px;
-  border: 1px solid #fff;
+const ExchangePair = styled.div`
+  margin: 0 0.5rem;
+  background: #2e353fd9;
+  line-height: 36px;
+  white-space: nowrap;
+  border-radius: 3px;
+  height: 100%;
+  padding: 0 1rem;
 `
 
-const TH = styled.th`
-  text-align: left;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: bold;
-  color: #fff;
-  border: 1px solid #fff;
-  padding: 10px 5px;
-  cursor: pointer;
+const TablesBlockWrapper = styled(Paper)`
+  min-width: 150px;
+  width: 50%;
+  position: relative;
+  border-right: 1px solid #30353a;
+
+  && {
+    overflow: hidden;
+    background-color: #292d31;
+    box-shadow: none !important;
+  }
+
+  @media (max-width: 1080px) {
+    display: ${(props: { show: boolean }) =>
+      props.variant.show ? 'block' : 'none'};
+    width: 100%;
+    height: calc(100vh - 57px - 70px);
+    position: relative;
+  }
 `
+
+const TablesContainer = styled.div`
+  position: relative;
+  display: flex;
+  width: 40%;
+  height: calc(100vh - 59px - 80px);
+  overflow: hidden;
+
+  @media (max-width: 1080px) {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+`
+
+const ChartsContainer = TablesContainer.extend`
+  height: calc(100vh - 59px - 80px - 1px);
+  justify-content: flex-end;
+  flex-direction: column;
+  border-right: 1px solid #30353a;
+  width: 60%;
+
+  @media (max-width: 1080px) {
+    height: calc(100vh - 59px - 80px);
+    flex-wrap: nowrap;
+  }
+`
+
+const ChartsSwitcher = styled.div`
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 38px;
+  background: rgb(53, 61, 70);
+  color: white;
+  border-bottom: 1px solid #818d9ae6;
+`
+
+// end of FlexTable
 
 const TogglerContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-end;
+  align-items: center;
+  font-family: Roboto, sans-serif;
 `
 
-const Toggler = styled.button`
-  font-size: 30px;
-  border: none;
-  background: transparent;
-  color: #fff;
-  outline: none;
-  margin: 0.5% 2%;
-  padding: 5px;
-  cursor: pointer;
+const Toggler = styled(Button)`
+  && {
+    margin: 0.7rem;
+  }
 `
 
 const Container = styled.div`
@@ -190,38 +438,26 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding-bottom: 50px;
-`
 
-const Tickers = styled.div`
-  display: flex;
-  width: 35%;
-  height: 500px;
-  border: 1px solid lightgrey;
-  margin: 1%;
-`
-
-const OrderContainer = styled.div`
-  width: 45%;
-  height: 300px;
-  overflow: auto;
-
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: rgb(255, 255, 255);
+  @media (max-width: 1080px) {
+    flex-direction: column-reverse;
   }
 `
 
-const Orders = styled.table`
-  width: 98%;
-  border: 1px solid lightgrey;
-  margin: 1%;
-  border-collapse: collapse;
-`
+const mapStateToProps = (store: any) => ({
+  activeExchange: store.chart.activeExchange,
+  view: store.chart.view,
+  currencyPair: store.chart.currencyPair,
+  isShownMocks: store.user.isShownMocks,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  selectExchange: (ex: number) => dispatch(actions.selectExchange(ex)),
+  toggleView: (view: 'default' | 'onlyCharts') =>
+    dispatch(actions.toggleView(view)),
+  selectCurrencies: (baseQuote: string) =>
+    dispatch(actions.selectCurrencies(baseQuote)),
+})
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Chart)
+
+export default storeComponent
