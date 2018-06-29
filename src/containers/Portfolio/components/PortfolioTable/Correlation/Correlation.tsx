@@ -9,9 +9,12 @@ import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
 import { IProps, IState } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
 
-class Correlation extends React.Component<IProps> {
-  state: IState = {
-    isFullscreenEnabled: false,
+class Correlation extends React.Component<IProps, IState> {
+  state = {
+    // this hack needs due our styles depended on status of fullscreen
+    // and if you want to remove this hack you need to track is user leaved
+    // fullscreen by pressing ESC
+    howManyTimesOpenedFullscreen: 0,
   }
 
   initializeArray = (length: number, start: number, step: number): number[] =>
@@ -20,8 +23,20 @@ class Correlation extends React.Component<IProps> {
     )
 
   fullScreenChangeHandler = (isFullscreenEnabled: boolean) => {
+    let { howManyTimesOpenedFullscreen } = this.state
     if (isFullscreenEnabled) {
-      console.log('here')
+      console.log(howManyTimesOpenedFullscreen)
+
+      this.setState((prevState) => ({
+        howManyTimesOpenedFullscreen:
+          prevState.howManyTimesOpenedFullscreen + 1,
+      }))
+
+      if (howManyTimesOpenedFullscreen === 1) {
+        this.props.toggleFullscreen()
+        this.setState({ howManyTimesOpenedFullscreen: 0 })
+      }
+
       return null
     } else {
       console.log('or here')

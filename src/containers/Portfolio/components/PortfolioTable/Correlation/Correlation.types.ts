@@ -3,5 +3,5 @@ export interface IProps {
 }
 
 export interface IState {
-  isFullscreenEnabled: boolean
+  howManyTimesOpenedFullscreen: number
 }
