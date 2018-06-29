@@ -184,12 +184,11 @@ const ChartContainer = styled.div`
   grid-template-columns: repeat(
     ${(props: { chartsCount?: number }) => {
       if (props.chartsCount && props.chartsCount <= 3) {
-        return props.chartsCount
+        return `${props.chartsCount}, ${100 / props.chartsCount}%`
       } else {
-        return 4
+        return '4, 25%'
       }
-    }},
-    1fr
+    }}
   );
   grid-template-rows: repeat(
     ${(props: { chartsCount?: number }) => {
