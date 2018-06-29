@@ -3,11 +3,14 @@ import { InputLabel } from 'material-ui/Input'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl } from 'material-ui/Form'
 import Typography from 'material-ui/Typography'
+import TextField from 'material-ui/TextField'
 import Select from 'material-ui/Select'
 import SelectReact from 'react-select'
 import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
+import Slider from '@material-ui/lab/Slider';
+
 
 import { IProps, IState } from './Selector.types'
 import { data } from './selectsData'
@@ -17,6 +20,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     timeInterval: '',
     industry: [],
 
+    marketCapSlider: '',
     marketCap: '',
     changeInPercentage: '',
     simpleMovingAverage: '',
@@ -42,6 +46,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   closingPriceAverageRef = React.createRef()
   averageVolumeRef = React.createRef()
   averageVolumeOnBalanceRef = React.createRef()
+
+  handleSliderChange = (event, value) => {
+    this.setState({
+      [event.target.id]: value
+    });
+  };
 
 
   handleSelectChangeWithInput(name: string, optionSelected: {label: string, value: string} | null, actionObj: {action: string}) {
@@ -304,6 +314,35 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
               />
             </SFormControl>
+            <SFormControl>
+              <Label>Market Cap Slider</Label>
+              <TextField
+                fullWidth
+                select
+                value={[{label: 100, value: 200}]}
+                SelectProps={{
+                  multiple: true,
+
+                  MenuProps: {
+                    PaperProps: {
+                      style: {
+                        background: '#ff',
+                      }
+                    },
+                  },
+                  renderValue: () => this.state.marketCapSlider
+                }}
+              >
+                <SliderContainer>
+                <SliderWrapper>
+                  <SliderLabel>Market Cap Slider</SliderLabel>
+                  <SliderMaterial id='marketCapSlider' value={this.state.marketCapSlider} step={1} aria-labelledby="label" min={0} max={100} onChange={this.handleSliderChange} />
+                  <SliderValueWrapper>{this.state.marketCapSlider}</SliderValueWrapper>
+                </SliderWrapper>
+                </SliderContainer>
+              </TextField>
+
+            </SFormControl>
           </SColumnForm>
         </SContainer>
       </MainWrapper>
@@ -507,4 +546,37 @@ const Label = styled.label`
 
 const SFilterWrapper = styled.div`
   display: flex;
+`
+
+
+const SliderWrapper = styled.div`
+  width: 100px;
+  outline: none;
+`
+
+const SliderLabel = styled.div`
+  text-align: center;
+  font-size: 0.6em;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1;
+`
+
+const SliderMaterial = styled(Slider)`
+
+  & > div {
+    background-color: rgb(78,216,218);
+  }
+`
+
+const SliderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+`
+
+const SliderValueWrapper = styled.div`
+  text-align: center;
+  color: #fff;
 `
