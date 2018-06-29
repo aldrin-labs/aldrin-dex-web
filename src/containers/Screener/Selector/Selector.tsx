@@ -125,7 +125,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     return (
       <MainWrapper>
         <ToggleFiltersContainer onClick={this.hangleToggleFilters}>
-          {showFilters ? 'Hide' : 'Show'} signals
+          Screener
           <SvgIcon
             src={sortIcon}
             width={12}

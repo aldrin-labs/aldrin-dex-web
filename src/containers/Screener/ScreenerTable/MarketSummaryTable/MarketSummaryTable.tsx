@@ -24,7 +24,7 @@ const combinedTickerValues = combineDataToSelect(arrayOfTickerValues)
 const tableHeadingsCurrentScreenerTable = [
   { name: 'Rank', value: 'rank' },
   { name: 'Ticker', value: 'ticker' },
-  { name: 'Ticker Full', value: 'tickerFull' },
+  { name: 'Name', value: 'tickerFull' },
   { name: 'Price USD', value: 'priceUSD' },
   { name: 'Price BTC', value: 'priceBTC' },
   { name: 'Market Cap', value: 'marketCap' },

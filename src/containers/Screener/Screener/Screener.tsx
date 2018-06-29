@@ -23,7 +23,7 @@ class ScreenerBase extends React.Component<IProps, IState> {
       | 'oscillators'
       | 'trendFollowing'
   ) => {
-    this.setState({ tab: kind })
+    this.setState({ tab: kind, searchArrayText: '' })
   }
 
   onChangeSearchText = (newSearchText: string) => {
