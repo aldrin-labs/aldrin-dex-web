@@ -36,7 +36,7 @@ class CorrelationMatrixTable extends PureComponent {
     const tableStyle = isFullscreenEnabled
       ? { width: '100vw', height: '100vh' }
       : {}
-    console.log(isFullscreenEnabled)
+
     return (
       <Table style={tableStyle}>
         <thead>

@@ -30,7 +30,7 @@ export default class ProfileChart extends React.Component<IProps, IState> {
   render() {
     const { coin } = this.props
     const { name = '', priceUSD = '' } = coin || {}
-    console.log(coin)
+    // console.log(coin)
 
     return (
       <SProfileChart>
