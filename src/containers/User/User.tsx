@@ -42,7 +42,7 @@ class UserContainer extends React.Component {
 
 const Heading = styled.span`
   font-size: 1em;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   color: #fff;
   padding-bottom: 10px;
 `

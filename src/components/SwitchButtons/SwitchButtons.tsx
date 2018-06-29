@@ -43,7 +43,7 @@ const Btn = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: ${(props: { active: boolean }) =>

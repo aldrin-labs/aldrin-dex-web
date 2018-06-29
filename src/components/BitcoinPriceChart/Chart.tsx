@@ -233,33 +233,33 @@ const SupplyBlock = styled.div`
 `
 
 const CurrentRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 25px;
   font-weight: 500;
   color: #4ed8da;
 `
 
 const CommonRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   color: #ffffff;
 `
 
 const SupplyLowRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   color: #ff687a;
 `
 
 const SupplyHighRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   color: #65c000;
 `
 
 const SupplyDetail = styled.span`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   color: #ffffff;
   margin-top: 4px;

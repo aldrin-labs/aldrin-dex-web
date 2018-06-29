@@ -39,7 +39,6 @@ class BarChart extends Component<IProps, IState> {
     const Charts = charts.map((chart: IChart, chartIndex: number) => {
       const { color, title, data } = chart
       ITEMS.push({ title, color })
-      console.log(data)
 
       return (
         <VerticalBarSeries
@@ -99,7 +98,7 @@ const LegendContainer = styled.div`
     props.value.x === null || props.value.y === null ? '0' : '1'};
   border-radius: 5px;
   position: absolute;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   background-color: #869eb180;
   top: 0px;
   left: 10%;
@@ -114,7 +113,7 @@ const Container = styled.div`
 `
 
 const ChartTooltip = styled.span`
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;

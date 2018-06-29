@@ -550,7 +550,7 @@ const Container = styled.div`
 const Heading = styled.div`
   display: flex;
   justify-content: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
@@ -669,7 +669,7 @@ const PTD = styled.td`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
@@ -736,7 +736,7 @@ const Checkbox = styled.input`
 `
 
 const PTH = styled.th`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   color: #fff;

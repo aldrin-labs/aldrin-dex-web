@@ -142,7 +142,7 @@ const Checkbox = styled.input`
 `
 
 const PTH = styled.th`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   color: #fff;

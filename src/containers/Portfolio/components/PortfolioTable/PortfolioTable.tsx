@@ -34,7 +34,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
   render() {
     const { tab, portfolio, isShownChart, isUSDCurrently } = this.state
-    
+
     if (this.props.loading) {
       return (
         <LoaderWrapper>
@@ -114,6 +114,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <Correlation>
           <PortfolioTableTabs
+            data={this.props.data}
             toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
@@ -129,6 +130,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <Optimization>
           <PortfolioTableTabs
+            data={this.props.data}
             tab={tab}
             portfolio={portfolio}
             onChangeTab={this.onChangeTab}

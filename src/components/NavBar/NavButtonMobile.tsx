@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 10px;
   font-weight: 500;
   font-style: normal;
