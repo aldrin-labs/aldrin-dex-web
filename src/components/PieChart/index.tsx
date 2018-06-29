@@ -37,8 +37,9 @@ export default class PieChart extends React.Component<Props, State> {
 
   render() {
     const { value, data } = this.state
-    const { width, height, radius, innerRadius, flexible } = this.props
+    const { width, height, radius, innerRadius, flexible, withHints } = this.props
     const hasCustomColors = data.some((a) => !!a.color || !!a.style)
+    const colorIsNumber = data.every((a) => typeof a.color === 'number')
 
     const FLRadialChart = () => (
       <FlexibleRadialChart
@@ -49,11 +50,15 @@ export default class PieChart extends React.Component<Props, State> {
         onValueMouseOver={this.onValueMouseOver}
         onSeriesMouseOut={this.onSeriesMouseOut}
       >
-        {value && (
+        {value && !!withHints && (
           <Hint value={value}>
-            <ChartTooltip>{value.label}</ChartTooltip>
+            <ChartTooltip>{`${value.labelCurrency ? value.labelCurrency : ''} ${value.label} ${value.realValue}`}</ChartTooltip>
           </Hint>
         )}
+        {value && !withHints && (
+            <ChartTooltip>{`${value.label} ${value.realValue}`}</ChartTooltip>
+        )}
+
       </FlexibleRadialChart>
     )
 
@@ -69,11 +74,16 @@ export default class PieChart extends React.Component<Props, State> {
         onValueMouseOver={(v: PiePiece) => this.setState({ value: v })}
         onSeriesMouseOut={() => this.setState({ value: null })}
       >
-        {value && (
+
+        {value && !!withHints && (
           <Hint value={value}>
-            <ChartTooltip>{value.label}</ChartTooltip>
+            <ChartTooltip>{`${value.label} ${value.realValue}`}</ChartTooltip>
           </Hint>
         )}
+        {value && !withHints && (
+          <ChartTooltip>{`${value.label} ${value.realValue}`}</ChartTooltip>
+        )}
+
       </RadialChart>
     )
 
@@ -86,7 +96,7 @@ export default class PieChart extends React.Component<Props, State> {
 }
 
 const ChartTooltip = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;
@@ -95,4 +105,6 @@ const ChartTooltip = styled.span`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #0006;
   padding: 8px;
+  width: 100px;
+  height: 100px;
 `

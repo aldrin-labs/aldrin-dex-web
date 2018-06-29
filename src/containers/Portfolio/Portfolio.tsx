@@ -39,6 +39,7 @@ class PortfolioComponent extends React.Component<IProps> {
     const { checkboxes } = this.state
     const { data } = this.props
     const { getProfile, loading, error } = data
+    // console.log(data)
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>

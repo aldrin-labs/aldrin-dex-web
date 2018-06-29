@@ -107,7 +107,7 @@ const Btn = styled(Link)`
   background-color: #282c2f;
   border-color: transparent;
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
@@ -120,7 +120,7 @@ const Btn = styled(Link)`
 `
 const ShortcutDesc = styled.span`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   color: #ffffff;
   margin: 8px 0;
@@ -145,14 +145,14 @@ const Dot = styled.div`
 
 const Detail = styled.span`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   text-align: left;
   color: #ffffff;
 `
 
 const BigNumber = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 35px;
   text-align: left;
 `
@@ -172,7 +172,7 @@ const BigNumbersContainer = styled.div`
 `
 
 const InfoItemValue = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   letter-spacing: 0.7px;
   text-align: left;
@@ -181,7 +181,7 @@ const InfoItemValue = styled.span`
 `
 
 const InfoItemKey = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   letter-spacing: 0.7px;
   text-align: left;

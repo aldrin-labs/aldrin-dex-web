@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 
-import PieChart from '@components/PieChart'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from './SwitchWithIcons'
 
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, colors, genAngleMocks, genMocks, inds } from './mocks'
+import { MOCKS, genMocks, inds } from './mocks'
 import {
   IPortfolio,
   Args,
@@ -43,6 +42,7 @@ const defaultSelectedSum = {
 }
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
+
   state: IState = {
     activeKeys: null,
     portfolio: null,
@@ -340,24 +340,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState({ selectedRows: allRows }, () => this.calculateSum(allRows))
   }
 
-  genLineChart = () => {
-    const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) {
-      return
-    }
-    const data = industryData.filter((o, i) => selectedRows.indexOf(i) >= 0)
-
-    return data.map((item, i) => ({
-      x: i + 1,
-      y: i * 2,
-      label: `${item.symbol} ${item.industry}`,
-    }))
-  }
-
-  onChangeActiveLegend = (index: number) => {
-    this.setState({ activeLegend: index })
-  }
-
   onChangeData = (data: string[]) => {
     const lineChartMocks = genMocks(31, data)
 
@@ -379,6 +361,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
+    // const chartWidth = this.setChartWidth()
+
     let isThereAnySelectedRows = false
     if (selectedRows) {
       isThereAnySelectedRows = selectedRows.length > 1 ? true : false
@@ -398,10 +382,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={!!tableDataHasData}>
+      <PTWrapper tableData={!!tableDataHasData} innerRef={this.setWrapperRef}>
         {children}
         <Container>
-          <Wrapper isThereAnySelectedRows={isThereAnySelectedRows}>
+          <Wrapper
+            isThereAnySelectedRows={isThereAnySelectedRows}
+            innerRef={this.setChildNodeRef}
+          >
             <PTable>
               <PTHead>
                 <PTR>
@@ -483,7 +470,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
                     return (
                       <PTRBody
-                        key={`${currency}${symbol}`}
+                        key={`${currency}${symbol}${idx}`}
                         isSelected={isSelected}
                         onClick={() => this.onSelectBalance(idx)}
                       >
@@ -524,13 +511,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               </PTBody>
               {selectedSum && selectedSum.currency ? (
                 <PortfolioTableSum
+                  industry={true}
                   selectedSum={selectedSum}
                   isUSDCurrently={this.props.isUSDCurrently}
                 />
               ) : null}
             </PTable>
           </Wrapper>
-
           <ChartContainer>
             <Heading>
               <Switch onClick={this.toggleChart} />
@@ -544,7 +531,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 />
               ) : (
                 // <PieChart data={genAngleMocks(inds)} flexible />
-                <PieChartQuery />
+                <PieChartQuery isShownMocks={this.props.isShownMocks} />
               )}
             </ChartWrapper>
           </ChartContainer>
@@ -557,60 +544,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: auto;
-  padding: 20px;
-  margin-top: -2rem;
-
-  @media (max-height: 650px) {
-    height: 50%;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 900px) {
-    flex-wrap: wrap;
-  }
-`
-
-const PieChartHeadingWrapper = styled.div`
-  width: 200px;
-  text-align: center;
-  padding-bottom: 5px;
-`
-
-const PieChartContainer = styled.div`
-  border-radius: 3px;
-  background-color: #2d3136;
-  box-shadow: 0 2px 6px 0 #0006;
-  padding: 1em;
-  display: flex;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  height: 40vh;
-  background-color: #2d3136;
-  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-  padding: 3% 0;
-  width: calc(40% - 4rem);
-  min-height: 40vh;
-  margin: 2rem;
-
-  @media (max-width: 850px) {
-    width: 100%;
-    margin: 1rem 0;
-  }
-
-  @media (max-height: 900px) {
-    display: none;
-  }
+  padding: 0 20px 20px;
 `
 
 const Heading = styled.div`
   display: flex;
   justify-content: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
   color: #fff;
+  padding-bottom: 20px;
 `
 
 const PTWrapper = styled.div`
@@ -629,8 +574,13 @@ const PTWrapper = styled.div`
 
 const ChartWrapper = styled.div`
   width: 100%;
-  height: 35vh;
+  height: 25vh;
   display: flex;
+  position: relative;
+  
+  @media (max-height: 850px) {
+    height: 20vh;
+  }
 `
 
 const ChartContainer = styled.div`
@@ -640,13 +590,22 @@ const ChartContainer = styled.div`
 
   padding: 1em;
   text-align: center;
-  width: calc(60% - 4rem);
-  height: 40vh;
+  height: 35vh;
   margin: 2rem 1rem;
-
+  width: 900px;
+  
+  @media (min-width: 1950px) {
+    margin: 1rem;
+  }
+  
+  @media (max-height: 850px) {
+    height: 30vh;
+    margin: 0.5rem 1rem;
+  }
+  @media (max-height: 680px) {
+    display: none;
+  }
   @media (max-width: 850px) {
-    width: 100%;
-    margin: 1rem 0;
     display: none;
   }
 `
@@ -662,7 +621,25 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
-  margin-top: 2rem;
+  margin: 1rem;
+  
+  @media (max-height: 850px) {
+    max-height: 30vh;
+  }
+  
+  @media (max-height: 680px) {
+      max-height: 50vh;
+  }
+  
+  @media (max-height: 550px) {
+      max-height: 45vh;
+  }
+  
+  @media (max-height: 460px) {
+      max-height: 40vh;
+  }
+
+
   &::-webkit-scrollbar {
     width: 12px;
   }
@@ -685,32 +662,41 @@ const PTable = styled.table`
 
 const PTBody = styled.tbody`
   display: table;
+  width: 100%;
 `
 
 const PTD = styled.td`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  
 
   &:nth-child(1) {
     padding: 1.75px 10px;
   }
-
-  &:nth-child(2) {
+  
+  &:nth-child(n + 2) {
     min-width: 100px;
   }
+
   &:nth-child(3) {
-    min-width: 70px;
   }
   &:nth-child(n + 4) {
     text-align: right;
-    min-width: 100px;
+  }
+  
+  &:nth-child(4) {
+    min-width: 250px;
+  }
+  
+  &:nth-child(n + 6) {
+    min-width: 150px;
   }
 `
 
@@ -750,12 +736,16 @@ const Checkbox = styled.input`
 `
 
 const PTH = styled.th`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding-right: 16px;
+  padding: 1.75px 16px 1.75px 10px;
   font-weight: 500;
+
+  &:nth-child(n + 2) {
+    min-width: 100px;
+  }
 
   &:nth-child(1) {
     padding: 10px;
@@ -764,15 +754,18 @@ const PTH = styled.th`
 
   &:nth-child(2) {
     text-align: left;
-    width: 100px;
   }
   &:nth-child(3) {
-    width: 70px;
     text-align: left;
   }
   &:nth-child(n + 4) {
-    width: 100px;
     text-align: right;
+  }
+  &:nth-child(4) {
+    min-width: 250px;
+  }
+  &:nth-child(n + 6) {
+    min-width: 150px;
   }
 `
 

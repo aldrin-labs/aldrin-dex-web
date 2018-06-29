@@ -857,7 +857,7 @@ export default class PortfolioTableRebalance extends React.Component<
               </Table>
             </Wrapper>
           </TableAndHeadingWrapper>
-          <TableAndHeadingWrapper>
+          <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
             <TableHeading>
               Rebalanced portfolio
               <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
@@ -1190,13 +1190,15 @@ export default class PortfolioTableRebalance extends React.Component<
             <PieChart
               data={combineToChart(staticRows)}
               flexible={true}
+              withHints={true}
             />
           </PieChartContainer>
 
-          <PieChartContainer>
+          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
             <PieChart
               data={combineToChart(rows)}
               flexible={true}
+              withHints={true}
             />
           </PieChartContainer>
         </PieChartsWrapper>
@@ -1235,6 +1237,12 @@ const TableAndHeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
+  
+  &:not(:first-child) {
+   min-height: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? '55vh' : ''}
+  }
+  
 
   &:not(:first-child) {
     padding-left: 30px;
@@ -1287,7 +1295,7 @@ const Table = styled.table`
 const TableHeading = styled.div`
   display: flex;
   text-transform: uppercase;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 17px;
   color: white;
   font-weight: bold;
@@ -1299,7 +1307,7 @@ const PTD = css`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
@@ -1427,7 +1435,7 @@ const PTBody = styled.tbody`
 `
 
 const PTH = css`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   color: #fff;
@@ -1646,6 +1654,12 @@ const PieChartContainer = styled.div`
   @media (max-height: 650px) {
     display: none;
   }
+  
+  &:not(:first-child) {
+   visibility: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? 'hidden' : 'visible'}
+  }
+  
 `
 
 const ButtonsWrapper = styled.div`
@@ -1667,7 +1681,7 @@ const Input = styled.input`
   outline: none;
   border-right: none;
   width: 100%;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
   text-align: left;
@@ -1763,7 +1777,7 @@ const Button = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   letter-spacing: 0.4px;
   text-align: center;
   font-size: 12px;
@@ -1793,7 +1807,7 @@ const AddMoneyContainer = styled.div`
 `
 
 const UndistributedMoneyText = styled.p`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   color: white;
   font-size: 14px;
   padding: 15px 0px 5px;

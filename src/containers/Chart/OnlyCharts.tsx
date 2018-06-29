@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { CHARTS_API_URL } from '../../utils/config'
 
 const options = [
   'BTC/USD',
@@ -75,7 +76,7 @@ export default class OnlyCharts extends React.Component<Props, {}> {
                     &#10008;
                   </AddChartBtn>
                 </ChartInfo>
-                <iframe src={'http://chart.cryptocurrencies.ai'} height={'100%'} />
+                <iframe src={`http://${CHARTS_API_URL}`} height={'100%'} />
               </Wrapper>
             )
           })}
@@ -96,7 +97,7 @@ const ChartCtrlBlock = styled.div`
 `
 
 const ChartSelectOption = styled.option`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -108,7 +109,7 @@ const ChartSelectOption = styled.option`
 `
 
 const ChartSelect = styled.select`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -139,7 +140,7 @@ const ChartInfo = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: #ffffff;
@@ -153,7 +154,7 @@ const AddChartBtn = styled.button`
   background: transparent;
   border: none;
   padding: 5px;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: #ffffff;

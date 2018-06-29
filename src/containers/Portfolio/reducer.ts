@@ -7,6 +7,7 @@ const initialState = {
   portfolio: null,
   selectedAccounts: [],
   optimizationData: [],
+  correlationTableFullscreenEnabled: false,
 }
 
 export default createReducer(
@@ -14,6 +15,10 @@ export default createReducer(
     [actions.updateDataForOptimization]: (state, payload) => ({
       ...state,
       optimizationData: payload,
+    }),
+    [actions.toggleCorrelationTableFullscreen]: (state, payload) => ({
+      ...state,
+      correlationTableFullscreenEnabled: !state.correlationTableFullscreenEnabled,
     }),
 
     [actions.getPortfolio]: (state, payload) => {

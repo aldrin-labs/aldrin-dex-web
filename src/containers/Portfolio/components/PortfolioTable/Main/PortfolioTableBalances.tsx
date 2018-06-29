@@ -271,7 +271,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       tableData,
       isUSDCurrently
     )
-    console.log('validateSum: ', validateSum)
+    // console.log('validateSum: ', validateSum)
     this.setState({ selectedSum: validateSum })
   }
 

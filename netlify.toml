@@ -2,3 +2,12 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
+
+# Production context: All deploys to the main
+# repository branch will inherit these settings.
+[context.production]
+  command = "buildMaster"
+  [context.production.environment]
+    API_ENDPOINT = "api.cryptocurrencies.ai"
+    CHARTS_API_ENDPOINT = "chart.cryptocurrencies.ai"
