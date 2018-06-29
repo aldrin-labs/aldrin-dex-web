@@ -30,6 +30,9 @@ export const data = {
     { label: 'Above or Equal', value: 'valueAboveOrEqual' },
     { label: 'Equals To', value: 'valueEqualsTo' },
     { label: 'Not Equal To', value: 'valueNotEqualTo' },
+    { label: 'Crosses', value: 'crosses' },
+    { label: 'Cross Up', value: 'crossUp' },
+    { label: 'Cross Down', value: 'crossUp' },
   ],
   averageVolume: [
     { label: 'Below', value: 'valueBelow' },
@@ -38,6 +41,9 @@ export const data = {
     { label: 'Above or Equal', value: 'valueAboveOrEqual' },
     { label: 'Equals To', value: 'valueEqualsTo' },
     { label: 'Not Equal To', value: 'valueNotEqualTo' },
+    { label: 'Crosses', value: 'crosses' },
+    { label: 'Cross Up', value: 'crossUp' },
+    { label: 'Cross Down', value: 'crossUp' },
   ],
   averageVolumeOnBalance: [
     { label: 'Below', value: 'valueBelow' },
@@ -46,6 +52,9 @@ export const data = {
     { label: 'Above or Equal', value: 'valueAboveOrEqual' },
     { label: 'Equals To', value: 'valueEqualsTo' },
     { label: 'Not Equal To', value: 'valueNotEqualTo' },
+    { label: 'Crosses', value: 'crosses' },
+    { label: 'Cross Up', value: 'crossUp' },
+    { label: 'Cross Down', value: 'crossUp' },
   ],
   changeInPercentage: [
     { label: 'Below', value: 'valueBelow' },
@@ -54,6 +63,9 @@ export const data = {
     { label: 'Above or Equal', value: 'valueAboveOrEqual' },
     { label: 'Equals To', value: 'valueEqualsTo' },
     { label: 'Not Equal To', value: 'valueNotEqualTo' },
+    { label: 'Crosses', value: 'crosses' },
+    { label: 'Cross Up', value: 'crossUp' },
+    { label: 'Cross Down', value: 'crossUp' },
   ],
   closingPriceAverage: [
     { label: 'Below', value: 'valueBelow' },
@@ -62,6 +74,9 @@ export const data = {
     { label: 'Above or Equal', value: 'valueAboveOrEqual' },
     { label: 'Equals To', value: 'valueEqualsTo' },
     { label: 'Not Equal To', value: 'valueNotEqualTo' },
+    { label: 'Crosses', value: 'crosses' },
+    { label: 'Cross Up', value: 'crossUp' },
+    { label: 'Cross Down', value: 'crossUp' },
   ],
   simpleMovingAverage: [
     { label: 'Below', value: 'valueBelow' },
@@ -70,6 +85,9 @@ export const data = {
     { label: 'Above or Equal', value: 'valueAboveOrEqual' },
     { label: 'Equals To', value: 'valueEqualsTo' },
     { label: 'Not Equal To', value: 'valueNotEqualTo' },
+    { label: 'Crosses', value: 'crosses' },
+    { label: 'Cross Up', value: 'crossUp' },
+    { label: 'Cross Down', value: 'crossUp' },
   ],
   low: [
     { label: '1 Hour Low', value: 'one1HourLow' },
