@@ -112,8 +112,13 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
 
   render() {
     const { hint } = this.state
-    const { isFullscreenEnabled } = this.props
-    const { onTableMouseLeave, onTableMouseOver, onMouseOver } = this
+    const { isFullscreenEnabled, cols, rows } = this.props
+    const {
+      onTableMouseLeave,
+
+      onTableMouseOver,
+      onMouseOver,
+    } = this
 
     return (
       <ScrolledWrapper
@@ -122,18 +127,21 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
         onMouseDown={this.mouseDownHandle}
       >
         <FullScreen
-          enabled={isFullscreenEnabled}
-          onChange={() =>
+          onClose={() => {
             this.props.fullScreenChangeHandler(isFullscreenEnabled)
-          }
+          }}
+          style={{ height: '100%' }}
+          enabled={isFullscreenEnabled}
         >
-          <div className="full-screenable-node">
+          <FullscreenNode className="full-screenable-node">
             <Table
               {...{
                 isFullscreenEnabled,
                 onTableMouseLeave,
                 onTableMouseOver,
                 onMouseOver,
+                cols,
+                rows,
               }}
             />
             {!!hint && (
@@ -141,16 +149,20 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
                 {`${hint.colName} - ${hint.rowName} `}
               </Hint>
             )}
-          </div>
+          </FullscreenNode>
         </FullScreen>
       </ScrolledWrapper>
     )
   }
 }
 
+const FullscreenNode = styled.div`
+  height: 100%;
+`
+
 const ScrolledWrapper = styled.div`
   max-height: 70vh;
-
+  height: 100%;
   overflow-y: scroll;
   background-color: #393e44;
   margin: 0 auto;

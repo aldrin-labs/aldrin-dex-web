@@ -1,7 +1,5 @@
 export interface IProps {
   children: object
-}
-
-export interface IState {
-  howManyTimesOpenedFullscreen: number
+  toggleFullscreen: Function
+  isFullscreenEnabled: boolean
 }

@@ -7,7 +7,7 @@ import {
 } from '../../../../../../utils/PortfolioCorrelationUtils'
 import { onFloorN } from '../../../../../../utils/PortfolioTableUtils'
 
-const { cols, rows } = optimizeMocks()
+const { cols: mockCols } = optimizeMocks()
 
 class CorrelationMatrixTable extends PureComponent {
   constructor(props) {
@@ -20,7 +20,18 @@ class CorrelationMatrixTable extends PureComponent {
       onTableMouseLeave,
       onTableMouseOver,
       onMouseOver,
+      cols: c,
+      rows,
     } = this.props
+
+    // this bullshit needs to be removed when correlation API are done
+    const cols = mockCols
+      .map((col) => col[0].slice(0, rows.length))
+      .slice(0, rows.length)
+
+    if (!(Array.isArray(cols) && Array.isArray(rows))) {
+      return null
+    }
 
     const tableStyle = isFullscreenEnabled
       ? { width: '100vw', height: '100vh' }
@@ -62,32 +73,30 @@ class CorrelationMatrixTable extends PureComponent {
                   {rows[i]}
                 </Item>
               )}
-              {col.map((el) =>
-                el.map((e: string, indx: number) => {
-                  const value = onFloorN(Number(e), 2)
-                  const { backgroundColor, textColor } = getColor(e)
+              {col.map((el, indx) => {
+                const value = onFloorN(Number(el), 2)
+                const { backgroundColor, textColor } = getColor(el)
 
-                  return (
-                    <Item
-                      key={e}
-                      textColor={textColor}
-                      color={backgroundColor}
-                      onMouseOver={(event) =>
-                        onMouseOver(
-                          indx,
-                          value,
-                          rows[i],
-                          rows[indx],
-                          event.nativeEvent.clientX,
-                          event.nativeEvent.clientY
-                        )
-                      }
-                    >
-                      {value}
-                    </Item>
-                  )
-                })
-              )}
+                return (
+                  <Item
+                    key={el}
+                    textColor={textColor}
+                    color={backgroundColor}
+                    onMouseOver={(event) =>
+                      onMouseOver(
+                        indx,
+                        value,
+                        rows[i],
+                        rows[indx],
+                        event.nativeEvent.clientX,
+                        event.nativeEvent.clientY
+                      )
+                    }
+                  >
+                    {value}
+                  </Item>
+                )
+              })}
             </Row>
           ))}
         </tbody>
@@ -142,6 +151,8 @@ const Item = styled.td`
 `
 
 const Table = styled.table`
+  width: 100%;
+  height: 100%;
   table-layout: fixed;
   border-collapse: collapse;
 `

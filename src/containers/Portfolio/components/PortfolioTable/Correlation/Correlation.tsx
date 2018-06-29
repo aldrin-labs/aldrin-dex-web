@@ -6,52 +6,27 @@ import { connect } from 'react-redux'
 // import { HeatMapMocks } from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
-import { IProps, IState } from './Correlation.types'
+import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
 
 class Correlation extends React.Component<IProps, IState> {
-  state = {
-    // this hack needs due our styles depended on status of fullscreen
-    // and if you want to remove this hack you need to track is user leaved
-    // fullscreen by pressing ESC
-    howManyTimesOpenedFullscreen: 0,
-  }
-
   initializeArray = (length: number, start: number, step: number): number[] =>
     Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
       (v, i) => i * step + start
     )
 
   fullScreenChangeHandler = (isFullscreenEnabled: boolean) => {
-    let { howManyTimesOpenedFullscreen } = this.state
-    if (isFullscreenEnabled) {
-      console.log(howManyTimesOpenedFullscreen)
-
-      this.setState((prevState) => ({
-        howManyTimesOpenedFullscreen:
-          prevState.howManyTimesOpenedFullscreen + 1,
-      }))
-
-      if (howManyTimesOpenedFullscreen === 1) {
-        this.props.toggleFullscreen()
-        this.setState({ howManyTimesOpenedFullscreen: 0 })
-      }
-
-      return null
-    } else {
-      console.log('or here')
-      this.props.toggleFullscreen()
-
-      return null
-    }
+    this.props.toggleFullscreen()
   }
 
-  onButtonClick = () => this.setState({ isFullscreenEnabled: true })
-
   render() {
-    const { children, isFullscreenEnabled } = this.props
-    const { cols, rows } = optimizeMocks()
-    console.log(isFullscreenEnabled)
+    const { children, isFullscreenEnabled, data } = this.props
+    // const { cols, rows } = optimizeMocks()
+    // console.log(cols)
+    // console.log()
+    // console.log(data)
+    const cols = data.map((el: { coin: string; percentage: number }) => el.coin)
+    const rows = cols
 
     return (
       <PTWrapper tableData={!!cols.length && !!rows.length}>
@@ -89,6 +64,7 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
+  height: 80%;
   padding: 1rem;
   display: flex;
   flex-wrap: wrap;
