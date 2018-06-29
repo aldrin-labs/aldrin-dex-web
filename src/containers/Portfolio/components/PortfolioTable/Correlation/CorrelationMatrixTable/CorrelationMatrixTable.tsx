@@ -36,24 +36,23 @@ class CorrelationMatrixTable extends PureComponent {
     const tableStyle = isFullscreenEnabled
       ? { width: '100vw', height: '100vh' }
       : {}
-
+    console.log(isFullscreenEnabled)
     return (
       <Table style={tableStyle}>
         <thead>
-          <Row
-            style={{
-              position: isFullscreenEnabled ? 'fixed' : 'sticky',
-            }}
-          >
+          <Row>
             <HeadItem
+              isFullscreenEnabled={isFullscreenEnabled}
               style={{
                 width: '4em',
-                position: isFullscreenEnabled ? 'static' : 'sticky',
-                left: 0,
                 backgroundColor: '#393e44',
               }}
             />
-            {rows.map((row) => <HeadItem key={row}>{row}</HeadItem>)}
+            {rows.map((row) => (
+              <HeadItem isFullscreenEnabled={isFullscreenEnabled} key={row}>
+                {row}
+              </HeadItem>
+            ))}
           </Row>
         </thead>
         <tbody onMouseLeave={onTableMouseLeave} onMouseOver={onTableMouseOver}>
@@ -65,7 +64,6 @@ class CorrelationMatrixTable extends PureComponent {
                     color: '#fff',
                     textAlign: 'right',
                     border: 'none',
-                    position: isFullscreenEnabled ? 'static' : 'sticky',
                     left: 0,
                     backgroundColor: '#393e44',
                   }}
@@ -116,7 +114,8 @@ const HeadItem = styled.th`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  position: sticky;
+  position: ${(props: { isFullscreenEnabled: boolean }) =>
+    props.isFullscreenEnabled ? 'static' : 'sticky'};
   background-color: #393e44;
   top: 0;
   user-select: none;
