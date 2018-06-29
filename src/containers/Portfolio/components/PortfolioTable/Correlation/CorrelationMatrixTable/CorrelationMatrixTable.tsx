@@ -150,7 +150,7 @@ const Item = styled.td`
 `
 
 const Table = styled.table`
-  width: 100%;
+  width: 80%;
   height: 100%;
   table-layout: fixed;
   border-collapse: collapse;
