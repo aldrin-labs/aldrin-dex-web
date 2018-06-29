@@ -20,7 +20,7 @@ class ExchangesTable extends PureComponent {
       exchanges,
       activeExchange,
       changeExchange,
-      base,
+      quote,
       onButtonClick,
     } = this.props
 
@@ -48,7 +48,7 @@ class ExchangesTable extends PureComponent {
               Price
             </StyledHeadCell>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              {base || 'Fiat'}
+              {quote || 'Fiat'}
             </StyledHeadCell>
             <StyledHeadCell
               style={{ lineHeight: 'inherit', paddingTop: '0.25rem' }}

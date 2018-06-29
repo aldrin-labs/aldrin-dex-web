@@ -14,7 +14,7 @@ import {
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
 export interface IProps {
-  base: string
+  quote: string
   data: any[]
 }
 
@@ -24,7 +24,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
   }
 
   render() {
-    const { base, data } = this.props
+    const { quote, data } = this.props
     const { tableExpanded } = this.state
 
     return (
@@ -52,7 +52,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 Trade <br /> size
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'33%'}>
-                Price<br /> ({base || 'Fiat'})
+                Price<br /> ({quote || 'Fiat'})
               </HeadCell>
               <HeadCell
                 style={{ lineHeight: '32px' }}
@@ -129,7 +129,7 @@ const CollapsibleTable = Table.extend`
 `
 
 const TradeHistoryTableCollapsible = CollapsibleTable.extend`
-  max-height: 80%;
+  max-height: 65%;
   @media (max-width: 1080px) {
     bottom: 0.5rem;
   }

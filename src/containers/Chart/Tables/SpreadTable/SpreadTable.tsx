@@ -20,7 +20,7 @@ class SpreadTable extends PureComponent {
 
   render() {
     const { tableExpanded } = this.state
-    const { roundTill, aggregation, spread, base, data } = this.props
+    const { roundTill, aggregation, spread, quote, data } = this.props
 
     return (
       <SpreadreadTableWrapper>
@@ -47,7 +47,7 @@ class SpreadTable extends PureComponent {
                 color="#9ca2aa"
                 width={'35%'}
               >
-                {base || 'Fiat'} spread{' '}
+                {quote || 'Fiat'} spread{' '}
               </HeadCell>
               <HeadCell
                 style={{

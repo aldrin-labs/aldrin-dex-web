@@ -15,7 +15,7 @@ import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
 class OrderBookTable extends PureComponent {
   render() {
-    const { onButtonClick, roundTill, aggregation, base, data } = this.props
+    const { onButtonClick, roundTill, aggregation, quote, data } = this.props
 
     return (
       <Table>
@@ -51,7 +51,7 @@ class OrderBookTable extends PureComponent {
               }}
               width={'16%'}
             >
-              Price<br />({base || 'Fiat'})
+              Price<br />({quote || 'Fiat'})
             </HeadCell>
           </Row>
         </Head>

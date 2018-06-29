@@ -194,7 +194,7 @@ class Chart extends React.Component<IState> {
               data: ordersData,
               roundTill: this.roundTill,
               aggregation,
-              base,
+              quote,
             }}
           />
 
@@ -203,7 +203,7 @@ class Chart extends React.Component<IState> {
               roundTill: this.roundTill,
               data: spreadData,
               aggregation,
-              base,
+              quote,
             }}
           />
 
@@ -225,7 +225,7 @@ class Chart extends React.Component<IState> {
               exchanges,
               activeExchange,
               changeExchange,
-              base,
+              quote,
               onButtonClick: this.changeTable,
             }}
           />
@@ -233,7 +233,7 @@ class Chart extends React.Component<IState> {
           <TradeHistoryTable
             {...{
               data: orderBook,
-              base,
+              quote,
             }}
           />
         </TablesBlockWrapper>
@@ -268,7 +268,7 @@ class Chart extends React.Component<IState> {
             />
           </ChartsSwitcher>
           {this.state.activeChart === 'candle' ? (
-            <SingleChart />
+            <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
             <DepthChartContainer>
               <DepthChart

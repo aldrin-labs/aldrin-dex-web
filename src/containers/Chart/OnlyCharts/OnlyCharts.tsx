@@ -81,8 +81,9 @@ class Charts extends Component<IChartProps, IChartState> {
             <MdClear />
           </Button>
         </ChartsSwitcher>
+        {console.log(`/?symbol=${base}/${quote}`)}
         {this.state.activeChart === 'candle' ? (
-          <SingleChart />
+          <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
         ) : (
           <DepthChartContainer>
             <DepthChart

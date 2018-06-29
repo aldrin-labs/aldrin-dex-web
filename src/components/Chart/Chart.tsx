@@ -9,8 +9,9 @@ const Wrapper = styled.div`
   height: 100%;
 `
 
-export const SingleChart = () => (
+export const SingleChart = ({ additionalUrl }: { additionalUrl: string }) => (
   <Wrapper>
-    <iframe src={`http://${CHARTS_API_URL}`} height={'100%'} />
+    {console.log(additionalUrl)}
+    <iframe src={`http://${CHARTS_API_URL}${additionalUrl}`} height={'100%'} />
   </Wrapper>
 )
