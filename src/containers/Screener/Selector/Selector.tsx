@@ -314,7 +314,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
             <SFormControl>
               <Label>Market Cap Slider</Label>
-              <TextField
+              <STextField
                 fullWidth
                 select
                 value={[{label: 100, value: 200}]}
@@ -338,7 +338,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   <SliderValueWrapper>{this.state.marketCapSlider}</SliderValueWrapper>
                 </SliderWrapper>
                 </SliderContainer>
-              </TextField>
+              </STextField>
 
             </SFormControl>
           </SColumnForm>
@@ -580,4 +580,17 @@ const SliderContainer = styled.div`
 const SliderValueWrapper = styled.div`
   text-align: center;
   color: #fff;
+`
+
+
+const STextField = styled(TextField)`
+  && svg {
+    font-size: 1.7em;
+    top: calc(50% - 12px);
+  }
+
+  && > div {
+    font-size: 12px;
+    margin-top: 0;
+  }
 `
