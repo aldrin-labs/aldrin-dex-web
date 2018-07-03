@@ -23,7 +23,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     industry: [],
 
     marketCapSlider: '',
-    marketCap: '',
     changeInPercentage: '',
     simpleMovingAverage: '',
     closingPriceAverage: '',
@@ -32,7 +31,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     low: '',
     high: '',
 
-    marketCapInput: '',
     changeInPercentageInput: '',
     simpleMovingAverageInput: '',
     closingPriceAverageInput: '',
@@ -40,14 +38,29 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     averageVolumeOnBalanceInput: '',
 
     showFilters: false,
+    autoSave: false,
+    autoLoad: false
   }
 
-  marketCapRef = React.createRef()
   changeInPercentageRef = React.createRef()
   simpleMovingAverageRef = React.createRef()
   closingPriceAverageRef = React.createRef()
   averageVolumeRef = React.createRef()
   averageVolumeOnBalanceRef = React.createRef()
+
+  componentWillMount = () => {
+    const savedState = JSON.parse(localStorage.getItem('savedState'));
+
+    if (savedState.autoLoad) {
+      this.loadValuesFromLocalStorage();
+    }
+  }
+
+  componentDidUpdate = () => {
+    if (this.state.autoSave) {
+      this.updateLocalStorage()
+    }
+  }
 
   handleSliderChange = (event: SyntheticEvent, value: string | number) => {
     this.setState({
@@ -57,7 +70,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 
 
   handleSelectChangeWithInput(name: string, optionSelected: {label: string, value: string} | null, actionObj: {action: string}) {
-    const value = optionSelected ? optionSelected.value : ''
+    const value = optionSelected ? optionSelected : ''
 
     console.log('action: ', actionObj)
 
@@ -94,7 +107,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   }
 
   handleSelectChangeWithoutInput(name: string, optionSelected: {label: string, value: string} | null) {
-    const value = optionSelected ? optionSelected.value : ''
+    const value = optionSelected ? optionSelected : ''
 
     console.log(optionSelected);
 
@@ -144,10 +157,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     this.loadValuesFromLocalStorage()
   }
 
-  initLocalStorage = () => {
-
-  }
-
   updateLocalStorage = () => {
     localStorage.setItem('savedState', JSON.stringify(this.state))
   }
@@ -158,7 +167,20 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     this.setState({
       ...savedState
     })
+  }
 
+  handleAutoSaveCheckBox = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      autoSave: !prevState.autoSave
+    }))
+  }
+
+  handleAutoLoadCheckBox = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      autoLoad: !prevState.autoLoad
+    }))
   }
 
 
@@ -189,25 +211,54 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           <ActionButton onClick={this.handleLoadClick}>
             <ReplayIcon />
           </ActionButton>
+          <CheckBoxContainer>
+          <Checkbox
+            onChange={this.handleAutoSaveCheckBox}
+            checked={this.state.autoSave}
+            type="checkbox"
+            id="autoSave"
+          />
+          <Label htmlFor="autoSave">
+            <Span />
+          </Label>
+            <CheckBoxLabel>
+              Autosave
+            </CheckBoxLabel>
+          </CheckBoxContainer>
+          <CheckBoxContainer>
+            <Checkbox
+              onChange={this.handleAutoLoadCheckBox}
+              checked={this.state.autoLoad}
+              type="checkbox"
+              id="autoLoad"
+            />
+            <Label htmlFor="autoLoad">
+              <Span />
+            </Label>
+            <CheckBoxLabel>
+              Autoload
+            </CheckBoxLabel>
+          </CheckBoxContainer>
         </ButtonsContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
           <SColumnForm>
             <SFormControl value={this.state.timeInterval}>
-              <Label>
+              <SelectLabel>
                 Time interval
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
+                value={this.state.timeInterval}
                 options={data.timeInterval}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'timeInterval')}
               />
             </SFormControl>
 
-            <SFormControl value={this.state.industry}>
-              <Label>Industry</Label>
+            <SFormControl>
+              <SelectLabel>Industry</SelectLabel>
               <SSelect
                 key="industry"
                 value={this.state.industry}
@@ -228,13 +279,14 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.simpleMovingAverage}>
-              <Label>
+              <SelectLabel>
                 Simple Moving Average
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
+                value={this.state.simpleMovingAverage}
                 options={data.simpleMovingAverage}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'simpleMovingAverage')}
@@ -247,13 +299,14 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
-              <Label>
+              <SelectLabel>
                 Closing Price Average
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
+                value={this.state.closingPriceAverage}
                 options={data.closingPriceAverage}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'closingPriceAverage')}
@@ -268,7 +321,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl>
-              <Label>Market Cap Slider</Label>
+              <SelectLabel>Market Cap Slider</SelectLabel>
               <STextField
                 fullWidth
                 select
@@ -296,13 +349,14 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               </STextField>
             </SFormControl>
             <SFormControl value={this.state.changeInPercentage}>
-              <Label>
+              <SelectLabel>
                 Change %
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
+                value={this.state.changeInPercentage}
                 options={data.changeInPercentage}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'changeInPercentage')}
@@ -317,13 +371,14 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.averageVolume}>
-              <Label>
+              <SelectLabel>
                 Average Volume
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
+                value={this.state.averageVolume}
                 options={data.averageVolume}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolume')}
@@ -336,13 +391,14 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.averageVolumeOnBalance}>
-              <Label>
+              <SelectLabel>
                 On-Balance Volume
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
+                value={this.state.averageVolumeOnBalance}
                 options={data.averageVolumeOnBalance}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolumeOnBalance')}
@@ -357,28 +413,30 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.low}>
-              <Label>
+              <SelectLabel>
                 Low
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
                 options={data.low}
+                value={this.state.low}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'low')}
               />
             </SFormControl>
             <SFormControl value={this.state.high}>
-              <Label>
+              <SelectLabel>
                 High
-              </Label>
+              </SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=''
-                components={{ DropdownIndicator }}
                 options={data.high}
+                value={this.state.high}
+                components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
               />
             </SFormControl>
@@ -468,8 +526,8 @@ const customStyles = {
 }
 
 
-const DropdownIndicator = (props) => {
-  return components.DropdownIndicator && (
+const DropdownIndicator = (props) =>
+  components.DropdownIndicator && (
     <components.DropdownIndicator {...props}>
       <SvgIcon
         src={dropDownIcon}
@@ -481,7 +539,6 @@ const DropdownIndicator = (props) => {
       />
     </components.DropdownIndicator>
   );
-};
 
 const SContainer = styled.form`
   display: ${(props: { showFilters?: boolean }) =>
@@ -522,12 +579,12 @@ const SFormControl = styled(FormControl)`
   
   & ${Input} {
   opacity: ${(props: { value?: boolean | string | string[] }) =>
-  props.value && !(props.value === 'Any') ? '1' : '0'};
+  props.value && props.value!.hasOwnProperty('value') ? '1' : '0'};
   }
   
   & ${Input} {
   pointer-events: ${(props: { value?: boolean | string | string[] }) =>
-  props.value && !(props.value === 'Any') ? 'auto' : 'none'};
+  props.value && props.value!.hasOwnProperty('value') ? 'auto' : 'none'};
   
   }
 
@@ -552,7 +609,7 @@ const ToggleFiltersContainer = styled.div`
 
 const ButtonsContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   text-align: center;
   user-select: none;
   padding: 20px 20px 35px;
@@ -588,7 +645,7 @@ const SelectR = styled(SelectReact)`
   }
 `
 
-const Label = styled.label`
+const SelectLabel = styled.label`
     font-size: 0.6em;
     color: rgba(255, 255, 255, 0.7);
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -673,4 +730,51 @@ const ActionButton = styled.button`
   &:hover svg {
     color: #4caf50;
   }
+`
+
+const Label = styled.label``
+
+const Span = styled.span``
+
+const Checkbox = styled.input`
+  display: none;
+
+  & + ${Label} ${Span} {
+    display: inline-block;
+
+    width: 18px;
+
+    height: 18px;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    border: 1.5px solid #909294;
+    border-radius: 3px;
+    background-color: transparent;
+  }
+
+  & + ${Label}:hover ${Span} {
+    border-color: #4ed8da;
+  }
+
+  &:checked + ${Label} ${Span} {
+    border-color: #4ed8da;
+    background-color: #4ed8da;
+    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+  }
+`
+
+const CheckBoxLabel = styled.label`
+  color: #fff;
+  font-family: Roboto;
+  padding-left: 10px;
+  padding-top: 1px;
+`
+
+const CheckBoxContainer = styled.div`
+  display: flex;
 `
