@@ -51,7 +51,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   componentWillMount = () => {
     const savedState = JSON.parse(localStorage.getItem('savedState'));
 
-    if (savedState.autoLoad) {
+    if (savedState && savedState.autoLoad) {
       this.loadValuesFromLocalStorage();
     }
   }
