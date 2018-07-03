@@ -11,6 +11,9 @@ import Slider from '@material-ui/lab/Slider';
 import { IProps, IState } from './Selector.types'
 import { data } from './selectsData'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
+import SaveIcon from 'material-ui-icons/Save'
+import ReplayIcon from 'material-ui-icons/Replay'
+
 
 
 
@@ -93,6 +96,10 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   handleSelectChangeWithoutInput(name: string, optionSelected: {label: string, value: string} | null) {
     const value = optionSelected ? optionSelected.value : ''
 
+    console.log(optionSelected);
+
+
+
     this.setState({
       [name]: value,
     }, () => {
@@ -101,11 +108,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 
   }
 
-  handleSelectChange = (event: SyntheticEvent) => {
+  handleSelectChangeMaterial = (event: SyntheticEvent) => {
     this.setState({
       [event.target.name]: event.target.value,
     })
   }
+
   handleInputChange = (event) => {
     const inputValue = event.target.value
     // TODO: But regex should be changed for multiple zeros catch
@@ -124,16 +132,43 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     )
   }
 
-  hangleToggleFilters = () => {
+  handleToggleFilters = () => {
     this.setState((prevState) => ({ showFilters: !prevState.showFilters }))
   }
+
+  handleSaveClick = () => {
+    this.updateLocalStorage()
+  }
+
+  handleLoadClick = () => {
+    this.loadValuesFromLocalStorage()
+  }
+
+  initLocalStorage = () => {
+
+  }
+
+  updateLocalStorage = () => {
+    localStorage.setItem('savedState', JSON.stringify(this.state))
+  }
+
+  loadValuesFromLocalStorage = () => {
+    const savedState = JSON.parse(localStorage.getItem('savedState'));
+
+    this.setState({
+      ...savedState
+    })
+
+  }
+
+
 
   render() {
     const { showFilters } = this.state
 
     return (
       <MainWrapper>
-        <ToggleFiltersContainer onClick={this.hangleToggleFilters}>
+        <ToggleFiltersContainer onClick={this.handleToggleFilters}>
           Screener
           <SvgIcon
             src={sortIcon}
@@ -147,6 +182,14 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             }}
           />
         </ToggleFiltersContainer>
+        <ButtonsContainer>
+          <ActionButton onClick={this.handleSaveClick}>
+            <SaveIcon />
+          </ActionButton>
+          <ActionButton onClick={this.handleLoadClick}>
+            <ReplayIcon />
+          </ActionButton>
+        </ButtonsContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
           <SColumnForm>
             <SFormControl value={this.state.timeInterval}>
@@ -168,7 +211,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <SSelect
                 key="industry"
                 value={this.state.industry}
-                onChange={this.handleSelectChange}
+                onChange={this.handleSelectChangeMaterial}
                 inputProps={{
                   name: 'industry',
                   id: 'industry',
@@ -471,6 +514,8 @@ const Input = styled.input`
   line-height: 0.7em;
 `
 
+// TODO: remove any from the opacity & pointer-events props
+
 const SFormControl = styled(FormControl)`
   width: 150px;
   min-height: 63px;
@@ -499,6 +544,15 @@ const SColumnForm = styled.div`
 const ToggleFiltersContainer = styled.div`
   font-family: Roboto;
   color: white;
+  text-align: center;
+  user-select: none;
+  padding: 20px 20px 35px;
+  width: 57vw;
+`
+
+const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
   text-align: center;
   user-select: none;
   padding: 20px 20px 35px;
@@ -583,5 +637,40 @@ const STextField = styled(TextField)`
   && > div {
     font-size: 12px;
     margin-top: 0;
+  }
+`
+
+const ActionButton = styled.button`
+  border: none;
+  margin: 0;
+  padding: 1.75px 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  text-align: inherit;
+  outline: none;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  & svg {
+    color: white;
+    padding-bottom: 7px;
+  }
+
+  &:hover svg {
+    color: #4caf50;
   }
 `
