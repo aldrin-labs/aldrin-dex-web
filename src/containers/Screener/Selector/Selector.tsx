@@ -1,8 +1,6 @@
-import React from 'react'
-import { InputLabel } from 'material-ui/Input'
+import React, {SyntheticEvent} from 'react'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl } from 'material-ui/Form'
-import Typography from 'material-ui/Typography'
 import TextField from 'material-ui/TextField'
 import Select from 'material-ui/Select'
 import SelectReact, { components } from 'react-select'
@@ -48,7 +46,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   averageVolumeRef = React.createRef()
   averageVolumeOnBalanceRef = React.createRef()
 
-  handleSliderChange = (event, value) => {
+  handleSliderChange = (event: SyntheticEvent, value: string | number) => {
     this.setState({
       [event.target.id]: value
     });
@@ -92,7 +90,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 
   }
 
-  handleSelectChangeWithoutInput(name, optionSelected) {
+  handleSelectChangeWithoutInput(name: string, optionSelected: {label: string, value: string} | null) {
     const value = optionSelected ? optionSelected.value : ''
 
     this.setState({
@@ -103,7 +101,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 
   }
 
-  handleSelectChange = (event) => {
+  handleSelectChange = (event: SyntheticEvent) => {
     this.setState({
       [event.target.name]: event.target.value,
     })
@@ -226,23 +224,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            {/*<SFormControl value={this.state.marketCap}>*/}
-              {/*<Label>*/}
-                {/*Market Cap*/}
-              {/*</Label>*/}
-              {/*<SelectR*/}
-                {/*styles={customStyles}*/}
-                {/*isClearable*/}
-                {/*options={data.marketCap}*/}
-                {/*onChange={this.handleSelectChangeWithInput.bind(this, 'marketCap')}*/}
-              {/*/>*/}
-              {/*<Input*/}
-                {/*name="marketCapInput"*/}
-                {/*onChange={this.handleInputChange}*/}
-                {/*value={this.state.marketCapInput}*/}
-                {/*innerRef={this.marketCapRef}*/}
-              {/*/>*/}
-            {/*</SFormControl>*/}
             <SFormControl>
               <Label>Market Cap Slider</Label>
               <STextField
@@ -464,17 +445,6 @@ const SContainer = styled.form`
     props.showFilters ? 'flex' : 'none'};
 `
 
-const TextDemo = styled.div`
-  display: flex;
-  align-self: center;
-  align-items: center;
-  flex-direction: column;
-`
-
-const STypography = styled(Typography)`
-  margin: 20px;
-`
-
 const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -501,22 +471,17 @@ const Input = styled.input`
   line-height: 0.7em;
 `
 
-//   & ${Input} {
-//     display: ${(props: { value?: boolean | string }) =>
-// props.value && !(props.value === 'Any') ? 'block' : 'none'};
-// }
-
 const SFormControl = styled(FormControl)`
   width: 150px;
   min-height: 63px;
   
   & ${Input} {
-  opacity: ${(props: { value?: boolean | string }) =>
+  opacity: ${(props: { value?: boolean | string | string[] }) =>
   props.value && !(props.value === 'Any') ? '1' : '0'};
   }
   
   & ${Input} {
-  pointer-events: ${(props: { value?: boolean | string }) =>
+  pointer-events: ${(props: { value?: boolean | string | string[] }) =>
   props.value && !(props.value === 'Any') ? 'auto' : 'none'};
   
   }
@@ -575,11 +540,6 @@ const Label = styled.label`
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     line-height: 1;
 `
-
-const SFilterWrapper = styled.div`
-  display: flex;
-`
-
 
 const SliderWrapper = styled.div`
   width: 100px;

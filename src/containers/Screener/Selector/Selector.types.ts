@@ -9,6 +9,7 @@ export interface IState {
   industry: undefined[] | string[]
 
   marketCap: string
+  marketCapSlider: string
   changeInPercentage: string
   simpleMovingAverage: string
   closingPriceAverage: string
