@@ -26,4 +26,6 @@ export interface IState {
   averageVolumeOnBalanceInput: string
 
   showFilters: boolean
+  autoSave: boolean
+  autoLoad: boolean
 }
