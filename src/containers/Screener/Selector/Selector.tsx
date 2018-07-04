@@ -7,12 +7,15 @@ import SelectReact, { components } from 'react-select'
 import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
-import Slider from '@material-ui/lab/Slider'
+// import Slider from '@material-ui/lab/Slider'
 import { IProps, IState } from './Selector.types'
 import { data } from './selectsData'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import SaveIcon from 'material-ui-icons/Save'
 import DeleteIcon from 'material-ui-icons/Delete'
+
+import { Range } from 'rc-slider'
+import 'rc-slider/assets/index.css'
 
 const initialState = {
   timeInterval: '',
@@ -192,7 +195,10 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           <ActionButton onClick={this.handleSaveClick}>
             <SaveIcon />
           </ActionButton>
-          <ActionButton isDeleteColor={true} onClick={this.handleDeleteAllClick}>
+          <ActionButton
+            isDeleteColor={true}
+            onClick={this.handleDeleteAllClick}
+          >
             <DeleteIcon />
           </ActionButton>
         </ButtonsContainer>
@@ -301,15 +307,20 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 <SliderContainer>
                   <SliderWrapper>
                     <SliderLabel>Market Cap Slider</SliderLabel>
-                    <SliderMaterial
-                      id="marketCapSlider"
-                      value={this.state.marketCapSlider}
-                      step={1}
-                      aria-labelledby="label"
-                      min={0}
-                      max={100}
-                      onChange={this.handleSliderChange}
-                    />
+                    {/*<SliderMaterial*/}
+                    {/*id="marketCapSlider"*/}
+                    {/*value={this.state.marketCapSlider}*/}
+                    {/*step={1}*/}
+                    {/*aria-labelledby="label"*/}
+                    {/*min={0}*/}
+                    {/*max={100}*/}
+                    {/*onChange={this.handleSliderChange}*/}
+                    {/*/>*/}
+                    <RangeSliderWrapper>
+                      <Input />
+                      <RangeSlider allowCross={false} value={[20, 40]} />
+                      <Input />
+                    </RangeSliderWrapper>
                     <SliderValueWrapper>
                       {this.state.marketCapSlider}
                     </SliderValueWrapper>
@@ -622,8 +633,11 @@ const SelectLabel = styled.label`
 `
 
 const SliderWrapper = styled.div`
-  width: 100px;
+  width: 400px;
   outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const SliderLabel = styled.div`
@@ -634,9 +648,24 @@ const SliderLabel = styled.div`
   line-height: 1;
 `
 
-const SliderMaterial = styled(Slider)`
-  & > div {
+const RangeSliderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 20px 10px;
+
+  ${Input} {
+    margin: 0 10px;
+    width: 50px;
+  }
+`
+
+const RangeSlider = styled(Range)`
+  & ${`.rc-slider-track`} {
     background-color: rgb(78, 216, 218);
+  }
+
+  & ${`.rc-slider-handle`} {
+    border-color: #fff;
   }
 `
 
@@ -697,9 +726,9 @@ const ActionButton = styled.button`
   }
 
   &:hover svg {
-      color: ${(props: { isDeleteColor?: boolean }) =>
-  props.isDeleteColor ? '#f44336' : '#4caf50'};
-}
+    color: ${(props: { isDeleteColor?: boolean }) =>
+      props.isDeleteColor ? '#f44336' : '#4caf50'};
+  }
 `
 
 const Label = styled.label``
