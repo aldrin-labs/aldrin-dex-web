@@ -192,7 +192,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           <ActionButton onClick={this.handleSaveClick}>
             <SaveIcon />
           </ActionButton>
-          <ActionButton onClick={this.handleDeleteAllClick}>
+          <ActionButton isDeleteColor={true} onClick={this.handleDeleteAllClick}>
             <DeleteIcon />
           </ActionButton>
         </ButtonsContainer>
@@ -520,6 +520,7 @@ const MainWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
+  position: static;
 `
 
 const Input = styled.input`
@@ -578,11 +579,11 @@ const ToggleFiltersContainer = styled.div`
 
 const ButtonsContainer = styled.div`
   display: flex;
-  justify-content: space-around;
-  text-align: center;
   user-select: none;
-  padding: 20px 20px 35px;
-  width: 57vw;
+  flex-direction: column;
+  position: absolute;
+  top: 110px;
+  right: 30px;
 `
 
 // TODO: Just a hack, replace it with the normal material-ui ovverriding withStyles
@@ -691,11 +692,14 @@ const ActionButton = styled.button`
   & svg {
     color: white;
     padding-bottom: 7px;
+    width: 33px;
+    height: 33px;
   }
 
   &:hover svg {
-    color: #4caf50;
-  }
+      color: ${(props: { isDeleteColor?: boolean }) =>
+  props.isDeleteColor ? '#f44336' : '#4caf50'};
+}
 `
 
 const Label = styled.label``
