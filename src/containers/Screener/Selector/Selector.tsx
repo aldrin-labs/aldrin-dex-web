@@ -1,4 +1,4 @@
-import React, {SyntheticEvent} from 'react'
+import React, { SyntheticEvent } from 'react'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl } from 'material-ui/Form'
 import TextField from 'material-ui/TextField'
@@ -7,40 +7,37 @@ import SelectReact, { components } from 'react-select'
 import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/lab/Slider'
 import { IProps, IState } from './Selector.types'
 import { data } from './selectsData'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import SaveIcon from 'material-ui-icons/Save'
-import ReplayIcon from 'material-ui-icons/Replay'
+import DeleteIcon from 'material-ui-icons/Delete'
 
+const initialState = {
+  timeInterval: '',
+  industry: [],
 
+  marketCapSlider: '',
+  changeInPercentage: '',
+  simpleMovingAverage: '',
+  closingPriceAverage: '',
+  averageVolume: '',
+  averageVolumeOnBalance: '',
+  low: '',
+  high: '',
 
+  changeInPercentageInput: '',
+  simpleMovingAverageInput: '',
+  closingPriceAverageInput: '',
+  averageVolumeInput: '',
+  averageVolumeOnBalanceInput: '',
+
+  showFilters: false,
+}
 
 export default class ScreenerSelect extends React.Component<IProps, IState> {
-  state: IState = {
-    timeInterval: '',
-    industry: [],
-
-    marketCapSlider: '',
-    changeInPercentage: '',
-    simpleMovingAverage: '',
-    closingPriceAverage: '',
-    averageVolume: '',
-    averageVolumeOnBalance: '',
-    low: '',
-    high: '',
-
-    changeInPercentageInput: '',
-    simpleMovingAverageInput: '',
-    closingPriceAverageInput: '',
-    averageVolumeInput: '',
-    averageVolumeOnBalanceInput: '',
-
-    showFilters: false,
-    autoSave: false,
-    autoLoad: false
-  }
+  state: IState = Object.assign({}, initialState)
 
   changeInPercentageRef = React.createRef()
   simpleMovingAverageRef = React.createRef()
@@ -49,76 +46,77 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   averageVolumeOnBalanceRef = React.createRef()
 
   componentWillMount = () => {
-    const savedState = JSON.parse(localStorage.getItem('savedState'));
+    const savedState = JSON.parse(localStorage.getItem('savedState'))
 
-    if (savedState && savedState.autoLoad) {
-      this.loadValuesFromLocalStorage();
-    }
-  }
-
-  componentDidUpdate = () => {
-    if (this.state.autoSave) {
-      this.updateLocalStorage()
+    if (savedState) {
+      this.loadValuesFromLocalStorage()
     }
   }
 
   handleSliderChange = (event: SyntheticEvent, value: string | number) => {
     this.setState({
-      [event.target.id]: value
-    });
-  };
+      [event.target.id]: value,
+    })
+  }
 
-
-  handleSelectChangeWithInput(name: string, optionSelected: {label: string, value: string} | null, actionObj: {action: string}) {
+  handleSelectChangeWithInput(
+    name: string,
+    optionSelected: { label: string; value: string } | null,
+    actionObj: { action: string }
+  ) {
     const value = optionSelected ? optionSelected : ''
 
     console.log('action: ', actionObj)
 
-
     switch (actionObj.action) {
-
       case 'clear': {
-
-        this.setState({
-          [name]: value,
-          [`${name}Input`]: ''
-        }, () => {
-          console.log(this.state);
-        })
+        this.setState(
+          {
+            [name]: value,
+            [`${name}Input`]: '',
+          },
+          () => {
+            console.log(this.state)
+          }
+        )
 
         return
       }
       case 'select-option': {
-
-        this.setState({
-          [name]: value,
-        }, () => {
-          console.log(this.state);
-        })
+        this.setState(
+          {
+            [name]: value,
+          },
+          () => {
+            console.log(this.state)
+          }
+        )
 
         this[`${name}Ref`].current.focus()
 
         return
       }
-      default: return
+      default:
+        return
     }
-
-
   }
 
-  handleSelectChangeWithoutInput(name: string, optionSelected: {label: string, value: string} | null) {
+  handleSelectChangeWithoutInput(
+    name: string,
+    optionSelected: { label: string; value: string } | null
+  ) {
     const value = optionSelected ? optionSelected : ''
 
-    console.log(optionSelected);
+    console.log(optionSelected)
 
-
-
-    this.setState({
-      [name]: value,
-    }, () => {
-      console.log(this.state);
-    })
-
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => {
+        console.log(this.state)
+      }
+    )
   }
 
   handleSelectChangeMaterial = (event: SyntheticEvent) => {
@@ -153,8 +151,12 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     this.updateLocalStorage()
   }
 
-  handleLoadClick = () => {
-    this.loadValuesFromLocalStorage()
+  handleDeleteAllClick = () => {
+    this.deleteCurrentValues()
+  }
+
+  deleteCurrentValues = () => {
+    this.setState({ ...initialState, showFilters: true })
   }
 
   updateLocalStorage = () => {
@@ -162,28 +164,10 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   }
 
   loadValuesFromLocalStorage = () => {
-    const savedState = JSON.parse(localStorage.getItem('savedState'));
+    const savedState = JSON.parse(localStorage.getItem('savedState'))
 
-    this.setState({
-      ...savedState
-    })
+    this.setState(savedState)
   }
-
-  handleAutoSaveCheckBox = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      autoSave: !prevState.autoSave
-    }))
-  }
-
-  handleAutoLoadCheckBox = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      autoLoad: !prevState.autoLoad
-    }))
-  }
-
-
 
   render() {
     const { showFilters } = this.state
@@ -208,52 +192,25 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           <ActionButton onClick={this.handleSaveClick}>
             <SaveIcon />
           </ActionButton>
-          <ActionButton onClick={this.handleLoadClick}>
-            <ReplayIcon />
+          <ActionButton onClick={this.handleDeleteAllClick}>
+            <DeleteIcon />
           </ActionButton>
-          <CheckBoxContainer>
-          <Checkbox
-            onChange={this.handleAutoSaveCheckBox}
-            checked={this.state.autoSave}
-            type="checkbox"
-            id="autoSave"
-          />
-          <Label htmlFor="autoSave">
-            <Span />
-          </Label>
-            <CheckBoxLabel>
-              Autosave
-            </CheckBoxLabel>
-          </CheckBoxContainer>
-          <CheckBoxContainer>
-            <Checkbox
-              onChange={this.handleAutoLoadCheckBox}
-              checked={this.state.autoLoad}
-              type="checkbox"
-              id="autoLoad"
-            />
-            <Label htmlFor="autoLoad">
-              <Span />
-            </Label>
-            <CheckBoxLabel>
-              Autoload
-            </CheckBoxLabel>
-          </CheckBoxContainer>
         </ButtonsContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
           <SColumnForm>
             <SFormControl value={this.state.timeInterval}>
-              <SelectLabel>
-                Time interval
-              </SelectLabel>
+              <SelectLabel>Time interval</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 value={this.state.timeInterval}
                 options={data.timeInterval}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithoutInput.bind(this, 'timeInterval')}
+                onChange={this.handleSelectChangeWithoutInput.bind(
+                  this,
+                  'timeInterval'
+                )}
               />
             </SFormControl>
 
@@ -279,17 +236,18 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.simpleMovingAverage}>
-              <SelectLabel>
-                Simple Moving Average
-              </SelectLabel>
+              <SelectLabel>Simple Moving Average</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 value={this.state.simpleMovingAverage}
                 options={data.simpleMovingAverage}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'simpleMovingAverage')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'simpleMovingAverage'
+                )}
               />
               <Input
                 name="simpleMovingAverageInput"
@@ -299,24 +257,25 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
-              <SelectLabel>
-                Closing Price Average
-              </SelectLabel>
+              <SelectLabel>Closing Price Average</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 value={this.state.closingPriceAverage}
                 options={data.closingPriceAverage}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'closingPriceAverage')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'closingPriceAverage'
+                )}
               />
-                <Input
-                  name="closingPriceAverageInput"
-                  onChange={this.handleInputChange}
-                  value={this.state.closingPriceAverageInput}
-                  innerRef={this.closingPriceAverageRef}
-                />
+              <Input
+                name="closingPriceAverageInput"
+                onChange={this.handleInputChange}
+                value={this.state.closingPriceAverageInput}
+                innerRef={this.closingPriceAverageRef}
+              />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -325,7 +284,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               <STextField
                 fullWidth
                 select
-                value={[{label: 100, value: 200}]}
+                value={[{ label: 100, value: 200 }]}
                 SelectProps={{
                   multiple: true,
 
@@ -333,33 +292,44 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                     PaperProps: {
                       style: {
                         background: '#ff',
-                      }
+                      },
                     },
                   },
-                  renderValue: () => this.state.marketCapSlider.toString()
+                  renderValue: () => this.state.marketCapSlider.toString(),
                 }}
               >
                 <SliderContainer>
                   <SliderWrapper>
                     <SliderLabel>Market Cap Slider</SliderLabel>
-                    <SliderMaterial id='marketCapSlider' value={this.state.marketCapSlider} step={1} aria-labelledby="label" min={0} max={100} onChange={this.handleSliderChange} />
-                    <SliderValueWrapper>{this.state.marketCapSlider}</SliderValueWrapper>
+                    <SliderMaterial
+                      id="marketCapSlider"
+                      value={this.state.marketCapSlider}
+                      step={1}
+                      aria-labelledby="label"
+                      min={0}
+                      max={100}
+                      onChange={this.handleSliderChange}
+                    />
+                    <SliderValueWrapper>
+                      {this.state.marketCapSlider}
+                    </SliderValueWrapper>
                   </SliderWrapper>
                 </SliderContainer>
               </STextField>
             </SFormControl>
             <SFormControl value={this.state.changeInPercentage}>
-              <SelectLabel>
-                Change %
-              </SelectLabel>
+              <SelectLabel>Change %</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 value={this.state.changeInPercentage}
                 options={data.changeInPercentage}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'changeInPercentage')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'changeInPercentage'
+                )}
               />
               <Input
                 name="changeInPercentageInput"
@@ -371,17 +341,18 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.averageVolume}>
-              <SelectLabel>
-                Average Volume
-              </SelectLabel>
+              <SelectLabel>Average Volume</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 value={this.state.averageVolume}
                 options={data.averageVolume}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolume')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume'
+                )}
               />
               <Input
                 name="averageVolumeInput"
@@ -391,17 +362,18 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.averageVolumeOnBalance}>
-              <SelectLabel>
-                On-Balance Volume
-              </SelectLabel>
+              <SelectLabel>On-Balance Volume</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 value={this.state.averageVolumeOnBalance}
                 options={data.averageVolumeOnBalance}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolumeOnBalance')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolumeOnBalance'
+                )}
               />
               <Input
                 name="averageVolumeOnBalanceInput"
@@ -413,13 +385,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
           </SColumnForm>
           <SColumnForm>
             <SFormControl value={this.state.low}>
-              <SelectLabel>
-                Low
-              </SelectLabel>
+              <SelectLabel>Low</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 options={data.low}
                 value={this.state.low}
                 components={{ DropdownIndicator }}
@@ -427,17 +397,18 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
               />
             </SFormControl>
             <SFormControl value={this.state.high}>
-              <SelectLabel>
-                High
-              </SelectLabel>
+              <SelectLabel>High</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
                 options={data.high}
                 value={this.state.high}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
+                onChange={this.handleSelectChangeWithoutInput.bind(
+                  this,
+                  'high'
+                )}
               />
             </SFormControl>
           </SColumnForm>
@@ -482,9 +453,9 @@ const customStyles = {
     [':active']: null,
   }),
   clearIndicator: (base, state) => {
-    return ({
+    return {
       [':hover']: {
-        color: '#fff'
+        color: '#fff',
       },
       display: 'flex',
       width: '19px',
@@ -492,11 +463,11 @@ const customStyles = {
       color: 'hsl(0, 0%, 80%)',
       padding: '2px',
       transition: 'color 150ms',
-    })
+    }
   },
   dropdownIndicator: (base, state) => ({
     [':hover']: {
-      color: '#fff'
+      color: '#fff',
     },
     display: 'flex',
     boxSizing: 'border-box',
@@ -510,7 +481,7 @@ const customStyles = {
   singleValue: (base, state) => ({
     ...base,
     color: '#fff',
-    marginLeft: '0'
+    marginLeft: '0',
   }),
   placeholder: (base, state) => ({
     ...base,
@@ -518,13 +489,12 @@ const customStyles = {
   }),
   input: (base, state) => ({
     ...base,
-    color: '#fff'
+    color: '#fff',
   }),
   indicatorSeparator: () => ({
-    display: 'none'
-  })
+    display: 'none',
+  }),
 }
-
 
 const DropdownIndicator = (props) =>
   components.DropdownIndicator && (
@@ -538,7 +508,7 @@ const DropdownIndicator = (props) =>
         }}
       />
     </components.DropdownIndicator>
-  );
+  )
 
 const SContainer = styled.form`
   display: ${(props: { showFilters?: boolean }) =>
@@ -576,16 +546,15 @@ const Input = styled.input`
 const SFormControl = styled(FormControl)`
   width: 150px;
   min-height: 63px;
-  
+
   & ${Input} {
-  opacity: ${(props: { value?: boolean | string | string[] }) =>
-  props.value && props.value!.hasOwnProperty('value') ? '1' : '0'};
+    opacity: ${(props: { value?: boolean | string | string[] }) =>
+      props.value && props.value!.hasOwnProperty('value') ? '1' : '0'};
   }
-  
+
   & ${Input} {
-  pointer-events: ${(props: { value?: boolean | string | string[] }) =>
-  props.value && props.value!.hasOwnProperty('value') ? 'auto' : 'none'};
-  
+    pointer-events: ${(props: { value?: boolean | string | string[] }) =>
+      props.value && props.value!.hasOwnProperty('value') ? 'auto' : 'none'};
   }
 
   && {
@@ -631,7 +600,6 @@ const SSelect = styled(Select)`
     font-size: 12px;
     margin-top: 0;
   }
- 
 `
 
 const SelectR = styled(SelectReact)`
@@ -646,10 +614,10 @@ const SelectR = styled(SelectReact)`
 `
 
 const SelectLabel = styled.label`
-    font-size: 0.6em;
-    color: rgba(255, 255, 255, 0.7);
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1;
+  font-size: 0.6em;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1;
 `
 
 const SliderWrapper = styled.div`
@@ -661,14 +629,13 @@ const SliderLabel = styled.div`
   text-align: center;
   font-size: 0.6em;
   color: rgba(255, 255, 255, 0.7);
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1;
 `
 
 const SliderMaterial = styled(Slider)`
-
   & > div {
-    background-color: rgb(78,216,218);
+    background-color: rgb(78, 216, 218);
   }
 `
 
@@ -683,7 +650,6 @@ const SliderValueWrapper = styled.div`
   text-align: center;
   color: #fff;
 `
-
 
 const STextField = styled(TextField)`
   && svg {
