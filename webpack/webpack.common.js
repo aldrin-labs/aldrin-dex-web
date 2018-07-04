@@ -33,6 +33,11 @@ const config = {
           limit: 4096, // 4kb
         },
       },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        loaders: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [
