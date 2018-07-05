@@ -346,7 +346,7 @@ const Btn = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: ${(props: { active: boolean }) =>
@@ -435,7 +435,7 @@ const Button = styled.div`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   letter-spacing: 0.4px;
   text-align: center;
   font-size: 12px;
@@ -460,7 +460,7 @@ const Input = styled.input`
   outline: none;
   border-right: none;
   width: 100%;
-  font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif;, sans-serif;
   font-size: 16px;
   line-height: 24px;
   text-align: left;

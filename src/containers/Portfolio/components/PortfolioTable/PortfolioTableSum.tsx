@@ -60,7 +60,11 @@ export default class PortfolioTableSum extends React.Component<IProps> {
               )
             }
 
-            return <PTD key={key} industry={industry}>{res || ''}</PTD>
+            return (
+              <PTD key={key} industry={industry}>
+                {res || ''}
+              </PTD>
+            )
           })}
         </PTR>
       </PTBody>
@@ -108,12 +112,11 @@ const PTDOther = css`
   }
 `
 
-
 const PTD = styled.td`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   padding: 10px 16px 10px 10px;
@@ -123,18 +126,18 @@ const PTD = styled.td`
   bottom: 0;
   overflow: hidden;
   background-color: #393e44;
-  
+
   ${(props: { industry?: boolean }) =>
-  props.industry ? PTDIndustry : PTDOther};
+    props.industry ? PTDIndustry : PTDOther};
 `
 
 const PTBody = styled.tbody`
-    border-bottom: none;
-    display: table;
-    position: sticky;
-    z-index: 1;
-    bottom: -2px;
-    width: 100%;
+  border-bottom: none;
+  display: table;
+  position: sticky;
+  z-index: 1;
+  bottom: -2px;
+  width: 100%;
 `
 
 const PTR = styled.tr`

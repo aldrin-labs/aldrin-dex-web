@@ -96,7 +96,7 @@ export default class PieChart extends React.Component<Props, State> {
 }
 
 const ChartTooltip = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;

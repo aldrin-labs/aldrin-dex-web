@@ -74,13 +74,13 @@ class PieChartQuery extends React.Component<Props, State> {
         angle: obj[key],
         label: key,
         color: i + 1,
-        realValue: obj[key]
+        realValue: obj[key],
       }
     })
 
-    console.log('pieData: ', pieData);
+    // console.log('pieData: ', pieData);
 
-    return <PieChart data={pieData} flexible/>
+    return <PieChart data={pieData} flexible />
   }
 }
 

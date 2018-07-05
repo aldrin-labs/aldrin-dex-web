@@ -196,7 +196,7 @@ const SideContainerDataBox = styled.div`
   justify-content: space-evenly;
 `
 const SideContainerData = styled.div`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   font-style: normal;
@@ -210,7 +210,7 @@ const SideContainerData = styled.div`
 const SideContainerDataDetail = styled.div`
   padding-left: 3.5rem;
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   font-weight: normal;
   font-style: normal;
@@ -226,7 +226,7 @@ const Btn = styled(Link)`
   background-color: #393e44;
   border-color: transparent;
   color: #fff;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
@@ -271,7 +271,7 @@ const PricesColumn = styled.div`
 const Value = styled.div`
   margin: 0 auto;
   height: 33px;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: normal;
   font-style: normal;
   font-stretch: normal;
@@ -282,7 +282,7 @@ const Value = styled.div`
 const PriceLabel = styled.div`
   height: 19px;
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: normal;
   font-style: normal;

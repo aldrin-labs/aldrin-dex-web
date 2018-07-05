@@ -89,7 +89,7 @@ const CoinLinkHeadingRow = styled.div`
 `
 
 const CoinLinkHeading = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   font-style: normal;
@@ -107,7 +107,7 @@ const WebIcon = styled.img`
 `
 
 const RowHeading = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   font-style: normal;
@@ -121,7 +121,7 @@ const RowHeading = styled.span`
 `
 
 const RowLinks = styled.div`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   font-style: normal;

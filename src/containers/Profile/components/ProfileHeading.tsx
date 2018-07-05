@@ -54,7 +54,7 @@ const CoinProfileWrapper = styled.div`
 `
 
 const CoinName = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   font-style: normal;
@@ -68,7 +68,7 @@ const CoinName = styled.span`
 
 const CoinShortName = styled.span`
   color: rgba(255, 255, 255, 0.5);
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   font-style: normal;
@@ -80,7 +80,7 @@ const CoinShortName = styled.span`
 `
 
 const CoinDescription = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   font-weight: normal;
   font-style: normal;
