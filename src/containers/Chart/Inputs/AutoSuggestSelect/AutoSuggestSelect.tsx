@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import Input from '@material-ui/core/Input'
 import MenuItem from '@material-ui/core/MenuItem'
 import Chip from '@material-ui/core/Chip'
-import Select from 'react-select'
+import Select from 'react-select-for-charting-page'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
 import * as actions from '../../actions'
@@ -46,6 +46,7 @@ class Option extends React.Component {
       openWarningMessage,
       removeWarningMessage,
     } = this.props
+    console.log('here')
     onSelect(this.props.option, event)
     if (view === 'default') {
       selectCurrencies(this.props.option.value)
