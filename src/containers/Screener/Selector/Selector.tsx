@@ -21,7 +21,10 @@ const initialState = {
   timeInterval: '',
   industry: [],
 
-  marketCapSlider: '',
+  marketCapSliderValues: [50000, 50000000],
+
+  lowerBoundSlider: 50000,
+  upperBoundSlider: 50000000,
   changeInPercentage: '',
   simpleMovingAverage: '',
   closingPriceAverage: '',
@@ -68,9 +71,42 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     }
   }
 
-  handleSliderChange = (event: SyntheticEvent, value: string | number) => {
+  lowerBoundSliderChange = (e) => {
+    if (!/^([0-9]+|)$/.test(e.target.value)) {
+      return
+    }
+
+    const value = +e.target.value
+
+    this.setState((prevState) => ({
+      lowerBoundSlider: value,
+      marketCapSliderValues: [value, prevState.marketCapSliderValues[1]],
+    }))
+  }
+
+  upperBoundSliderChange = (e) => {
+    if (!/^([0-9]+|)$/.test(e.target.value)) {
+      return
+    }
+
+    const value = +e.target.value
+
+    this.setState((prevState) => ({
+      upperBoundSlider: value,
+      marketCapSliderValues: [prevState.marketCapSliderValues[0], value],
+    }))
+
+    // this.setState((prevState) => ({
+    //   upperBoundSlider: e.target.value,
+    //   // marketCapSlider: [prevState.marketCapSlider[0], +e.target.value],
+    // }))
+  }
+
+  handleSliderChange = (value) => {
     this.setState({
-      [event.target.id]: value,
+      marketCapSliderValues: value,
+      lowerBoundSlider: value[0],
+      upperBoundSlider: value[1],
     })
   }
 
@@ -313,28 +349,35 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                       },
                     },
                   },
-                  renderValue: () => this.state.marketCapSlider.toString(),
+                  renderValue: () =>
+                    `${this.state.marketCapSliderValues[0]} -
+                        ${this.state.marketCapSliderValues[1]}`,
                 }}
               >
                 <SliderContainer>
                   <SliderWrapper>
                     <SliderLabel>Market Cap Slider</SliderLabel>
-                    {/*<SliderMaterial*/}
-                    {/*id="marketCapSlider"*/}
-                    {/*value={this.state.marketCapSlider}*/}
-                    {/*step={1}*/}
-                    {/*aria-labelledby="label"*/}
-                    {/*min={0}*/}
-                    {/*max={100}*/}
-                    {/*onChange={this.handleSliderChange}*/}
-                    {/*/>*/}
                     <RangeSliderWrapper>
-                      <Input />
-                      <RangeSlider allowCross={false} value={[20, 40]} />
-                      <Input />
+                      <Input
+                        value={this.state.lowerBoundSlider}
+                        onChange={this.lowerBoundSliderChange}
+                      />
+                      <RangeSlider
+                        allowCross={false}
+                        step={10000}
+                        min={50000}
+                        max={50000000}
+                        value={this.state.marketCapSliderValues}
+                        onChange={this.handleSliderChange}
+                      />
+                      <Input
+                        value={this.state.upperBoundSlider}
+                        onChange={this.upperBoundSliderChange}
+                      />
                     </RangeSliderWrapper>
                     <SliderValueWrapper>
-                      {this.state.marketCapSlider}
+                      {`${this.state.marketCapSliderValues[0]} -
+                        ${this.state.marketCapSliderValues[1]}`}
                     </SliderValueWrapper>
                   </SliderWrapper>
                 </SliderContainer>
@@ -714,7 +757,7 @@ const SelectLabel = styled.label`
 `
 
 const SliderWrapper = styled.div`
-  width: 400px;
+  width: 500px;
   outline: none;
   display: flex;
   flex-direction: column;
@@ -735,8 +778,8 @@ const RangeSliderWrapper = styled.div`
   padding: 20px 10px;
 
   ${Input} {
-    margin: 0 10px;
-    width: 50px;
+    margin: 0px 20px;
+    width: 70px;
   }
 `
 
