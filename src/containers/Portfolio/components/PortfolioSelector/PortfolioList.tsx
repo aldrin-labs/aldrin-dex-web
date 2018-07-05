@@ -63,7 +63,7 @@ class SelectPortfolioComponent extends React.Component<IProps, IState> {
 
   render() {
     if (this.props.keys.loading) {
-      return <Loading />
+      return <Loading centerAligned />
     }
 
     if (this.props.keys.error) {
