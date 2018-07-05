@@ -7,6 +7,8 @@ import { data } from '../../Selector/selectsData'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import SvgIcon from '../../../../components/SvgIcon/SvgIcon'
 
+// TODO: Update types
+
 export default class SuperSearch extends React.Component<IProps, IState> {
   state: IState = {
     inputSearchArray: [],
