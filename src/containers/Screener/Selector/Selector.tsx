@@ -17,8 +17,9 @@ import DeleteIcon from 'material-ui-icons/Delete'
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
+// TODO: Update Selector types
+
 const initialState = {
-  timeInterval: '',
   industry: [],
 
   marketCapSliderValues: [50000, 50000000],
@@ -252,22 +253,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
         </ButtonsContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
           <SColumnForm>
-            <SFormControl value={this.state.timeInterval}>
-              <SelectLabel>Time interval</SelectLabel>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                placeholder=""
-                value={this.state.timeInterval}
-                options={data.timeInterval}
-                components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithoutInput.bind(
-                  this,
-                  'timeInterval'
-                )}
-              />
-            </SFormControl>
-
             <SFormControl>
               <SelectLabel>Industry</SelectLabel>
               <SSelect
@@ -286,6 +271,27 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                   </MenuItem>
                 ))}
               </SSelect>
+            </SFormControl>
+            <SFormControl value={this.state.changeInPercentage}>
+              <SelectLabel>Change %</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.changeInPercentage}
+                options={data.changeInPercentage}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'changeInPercentage'
+                )}
+              />
+              <Input
+                name="changeInPercentageInput"
+                onChange={this.handleInputChange}
+                value={this.state.changeInPercentageInput}
+                innerRef={this.changeInPercentageRef}
+              />
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
@@ -383,25 +389,26 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 </SliderContainer>
               </STextField>
             </SFormControl>
-            <SFormControl value={this.state.changeInPercentage}>
-              <SelectLabel>Change %</SelectLabel>
+
+            <SFormControl value={this.state.averageVolumeOnBalance}>
+              <SelectLabel>On-Balance Volume</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=""
-                value={this.state.changeInPercentage}
-                options={data.changeInPercentage}
+                value={this.state.averageVolumeOnBalance}
+                options={data.averageVolumeOnBalance}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(
                   this,
-                  'changeInPercentage'
+                  'averageVolumeOnBalance'
                 )}
               />
               <Input
-                name="changeInPercentageInput"
+                name="averageVolumeOnBalanceInput"
                 onChange={this.handleInputChange}
-                value={this.state.changeInPercentageInput}
-                innerRef={this.changeInPercentageRef}
+                value={this.state.averageVolumeOnBalanceInput}
+                innerRef={this.averageVolumeOnBalanceRef}
               />
             </SFormControl>
           </SColumnForm>
@@ -492,29 +499,6 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 onChange={this.handleInputChange}
                 value={this.state.averageVolume90Input}
                 innerRef={this.averageVolume90Ref}
-              />
-            </SFormControl>
-          </SColumnForm>
-          <SColumnForm>
-            <SFormControl value={this.state.averageVolumeOnBalance}>
-              <SelectLabel>On-Balance Volume</SelectLabel>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                placeholder=""
-                value={this.state.averageVolumeOnBalance}
-                options={data.averageVolumeOnBalance}
-                components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(
-                  this,
-                  'averageVolumeOnBalance'
-                )}
-              />
-              <Input
-                name="averageVolumeOnBalanceInput"
-                onChange={this.handleInputChange}
-                value={this.state.averageVolumeOnBalanceInput}
-                innerRef={this.averageVolumeOnBalanceRef}
               />
             </SFormControl>
           </SColumnForm>

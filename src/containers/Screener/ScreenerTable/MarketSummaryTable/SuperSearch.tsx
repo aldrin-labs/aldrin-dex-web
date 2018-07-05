@@ -2,23 +2,28 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { IProps, IState } from './ScreenerSearch.types'
 import Input from 'material-ui/Input'
-import SelectReact from 'react-select'
-
+import SelectReact, { components } from 'react-select'
+import { data } from '../../Selector/selectsData'
+import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
+import SvgIcon from '../../../../components/SvgIcon/SvgIcon'
 
 export default class SuperSearch extends React.Component<IProps, IState> {
   state: IState = {
     inputSearchArray: [],
+    timeInterval: '',
   }
 
-  handleMultiSelectSearchChange = (arrayOfObjectsValues: { value: string, label: string}[]) => {
+  handleMultiSelectSearchChange = (
+    arrayOfObjectsValues: { value: string; label: string }[]
+  ) => {
+    const stringValues = arrayOfObjectsValues
+      .map((elem) => {
+        return elem['value']
+      })
+      .join()
 
-    const stringValues = arrayOfObjectsValues.map((elem) => {
-      return elem['value']
-    }).join()
-
-
-    console.log(arrayOfObjectsValues);
-    console.log(stringValues);
+    console.log(arrayOfObjectsValues)
+    console.log(stringValues)
 
     this.onUpdateGlobalFilterValue(stringValues)
   }
@@ -27,8 +32,25 @@ export default class SuperSearch extends React.Component<IProps, IState> {
     this.props.onChangeSearchArrayText(newSearchArrayInString)
   }
 
-  render() {
+  handleSelectChangeWithoutInput(
+    name: string,
+    optionSelected: { label: string; value: string } | null
+  ) {
+    const value = optionSelected ? optionSelected : ''
 
+    console.log(optionSelected)
+
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => {
+        console.log(this.state)
+      }
+    )
+  }
+
+  render() {
     const { combinedTickerValues } = this.props
 
     return (
@@ -36,12 +58,25 @@ export default class SuperSearch extends React.Component<IProps, IState> {
         <InputWrapper>
           <SelectR
             styles={customStyles}
-            placeholder='Search ticker...'
+            placeholder="Search ticker..."
             isClearable
             isMulti
             options={combinedTickerValues}
+            components={{ DropdownIndicator }}
             onChange={this.handleMultiSelectSearchChange.bind(this)}
-        />
+          />
+          <SelectR
+            styles={customStyles}
+            isClearable
+            placeholder="Select time interval"
+            value={this.state.timeInterval}
+            options={data.timeInterval}
+            components={{ DropdownIndicator }}
+            onChange={this.handleSelectChangeWithoutInput.bind(
+              this,
+              'timeInterval'
+            )}
+          />
         </InputWrapper>
       </SearchWrapper>
     )
@@ -55,7 +90,7 @@ const SearchWrapper = styled.div`
 `
 
 const InputWrapper = styled.div`
-    display: flex;
+  display: flex;
 `
 
 const SelectR = styled(SelectReact)`
@@ -67,6 +102,10 @@ const SelectR = styled(SelectReact)`
 
   &:hover {
     border-bottom: 1px solid #fff;
+  }
+
+  & + & {
+    margin-left: 25px;
   }
 `
 
@@ -105,9 +144,9 @@ const customStyles = {
     [':active']: null,
   }),
   clearIndicator: (base, state) => {
-    return ({
+    return {
       [':hover']: {
-        color: '#fff'
+        color: '#fff',
       },
       display: 'flex',
       width: '20px',
@@ -115,11 +154,11 @@ const customStyles = {
       color: 'hsl(0, 0%, 80%)',
       padding: '2px',
       transition: 'color 150ms',
-    })
+    }
   },
   dropdownIndicator: (base, state) => ({
     [':hover']: {
-      color: '#fff'
+      color: '#fff',
     },
     display: 'flex',
     width: '20px',
@@ -135,7 +174,7 @@ const customStyles = {
   singleValue: (base, state) => ({
     ...base,
     color: '#fff',
-    marginLeft: '0'
+    marginLeft: '0',
   }),
   placeholder: (base, state) => ({
     ...base,
@@ -143,12 +182,12 @@ const customStyles = {
   }),
   input: (base, state) => ({
     ...base,
-    color: '#fff'
+    color: '#fff',
   }),
   multiValue: (base, state) => ({
     ...base,
     [':hover']: {
-      borderColor: '#4ed8da'
+      borderColor: '#4ed8da',
     },
 
     color: '#fff',
@@ -159,16 +198,30 @@ const customStyles = {
   }),
   multiValueLabel: (base, state) => ({
     ...base,
-    color: '#fff'
+    color: '#fff',
   }),
   multiValueRemove: (base, state) => ({
     ...base,
     [':hover']: {
       color: '#fff',
-      backgroundColor: '#4ed8da'
+      backgroundColor: '#4ed8da',
     },
   }),
   indicatorSeparator: () => ({
-    display: 'none'
-  })
+    display: 'none',
+  }),
 }
+
+const DropdownIndicator = (props) =>
+  components.DropdownIndicator && (
+    <components.DropdownIndicator {...props}>
+      <SvgIcon
+        src={dropDownIcon}
+        width={19}
+        height={19}
+        style={{
+          verticalAlign: 'middle',
+        }}
+      />
+    </components.DropdownIndicator>
+  )
