@@ -25,7 +25,11 @@ const initialState = {
   changeInPercentage: '',
   simpleMovingAverage: '',
   closingPriceAverage: '',
-  averageVolume: '',
+  averageVolume10: '',
+  averageVolume30: '',
+  averageVolume60: '',
+  averageVolume90: '',
+
   averageVolumeOnBalance: '',
   low: '',
   high: '',
@@ -33,7 +37,11 @@ const initialState = {
   changeInPercentageInput: '',
   simpleMovingAverageInput: '',
   closingPriceAverageInput: '',
-  averageVolumeInput: '',
+  averageVolume10Input: '',
+  averageVolume30Input: '',
+  averageVolume60Input: '',
+  averageVolume90Input: '',
+
   averageVolumeOnBalanceInput: '',
 
   showFilters: false,
@@ -45,7 +53,11 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
   changeInPercentageRef = React.createRef()
   simpleMovingAverageRef = React.createRef()
   closingPriceAverageRef = React.createRef()
-  averageVolumeRef = React.createRef()
+  averageVolume10Ref = React.createRef()
+  averageVolume30Ref = React.createRef()
+  averageVolume60Ref = React.createRef()
+  averageVolume90Ref = React.createRef()
+
   averageVolumeOnBalanceRef = React.createRef()
 
   componentWillMount = () => {
@@ -351,27 +363,96 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl value={this.state.averageVolume}>
-              <SelectLabel>Average Volume</SelectLabel>
+            <SFormControl value={this.state.averageVolume10}>
+              <SelectLabel>Average Volume 10</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
                 placeholder=""
-                value={this.state.averageVolume}
-                options={data.averageVolume}
+                value={this.state.averageVolume10}
+                options={data.averageVolume10}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithInput.bind(
                   this,
-                  'averageVolume'
+                  'averageVolume10'
                 )}
               />
               <Input
-                name="averageVolumeInput"
+                name="averageVolume10Input"
                 onChange={this.handleInputChange}
-                value={this.state.averageVolumeInput}
-                innerRef={this.averageVolumeRef}
+                value={this.state.averageVolume10Input}
+                innerRef={this.averageVolume10Ref}
               />
             </SFormControl>
+
+            <SFormControl value={this.state.averageVolume30}>
+              <SelectLabel>Average Volume 30</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.averageVolume30}
+                options={data.averageVolume30}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume30'
+                )}
+              />
+              <Input
+                name="averageVolume30Input"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolume30Input}
+                innerRef={this.averageVolume30Ref}
+              />
+            </SFormControl>
+          </SColumnForm>
+          <SColumnForm>
+            <SFormControl value={this.state.averageVolume60}>
+              <SelectLabel>Average Volume 60</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.averageVolume60}
+                options={data.averageVolume60}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume60'
+                )}
+              />
+              <Input
+                name="averageVolume60Input"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolume60Input}
+                innerRef={this.averageVolume60Ref}
+              />
+            </SFormControl>
+
+            <SFormControl value={this.state.averageVolume90}>
+              <SelectLabel>Average Volume 90</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.averageVolume90}
+                options={data.averageVolume90}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume90'
+                )}
+              />
+              <Input
+                name="averageVolume90Input"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolume90Input}
+                innerRef={this.averageVolume90Ref}
+              />
+            </SFormControl>
+          </SColumnForm>
+          <SColumnForm>
             <SFormControl value={this.state.averageVolumeOnBalance}>
               <SelectLabel>On-Balance Volume</SelectLabel>
               <SelectR
