@@ -11,6 +11,7 @@ import Select from 'react-select-for-charting-page'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
 import * as actions from '../../actions'
+import { Loading } from '@components/Loading/Loading'
 
 const suggestions = [
   { label: 'BTC/USD' },
@@ -274,6 +275,9 @@ const styles = (theme) => ({
 class IntegrationReactSelect extends React.Component {
   render() {
     const { classes, handleChange, id, value } = this.props
+    if (!suggestions) {
+      return <Loading centerAligned />
+    }
 
     return (
       <div className={classes.root}>

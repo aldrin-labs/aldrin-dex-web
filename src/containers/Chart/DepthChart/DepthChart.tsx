@@ -11,7 +11,7 @@ import {
   Crosshair,
 } from 'react-vis'
 import { CircularProgress, Divider } from '@material-ui/core'
-
+import { Loading } from '@components/Loading/Loading'
 import { abbrNum } from './depthChartUtil'
 
 const axisStyle = {
@@ -151,12 +151,7 @@ class DepthChart extends Component {
     }
 
     if (!ordersData || !spreadData) {
-      return (
-        <CircularProgress
-          style={{ position: 'absolute', top: '50%', left: '50%' }}
-          color="primary"
-        />
-      )
+      return <Loading centerAligned />
     }
 
     return (
