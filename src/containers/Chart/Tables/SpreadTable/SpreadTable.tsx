@@ -61,7 +61,7 @@ class SpreadTable extends PureComponent {
               </HeadCell>
             </TriggerRow>
           </Head>
-          <Body height="254px">
+          <StyledBody>
             {data.map((order, i) => (
               <Row key={i} background={'#25282c'}>
                 <EmptyCell
@@ -88,12 +88,21 @@ class SpreadTable extends PureComponent {
                 />
               </Row>
             ))}
-          </Body>
+          </StyledBody>
         </CollapseWrapper>
       </SpreadreadTableWrapper>
     )
   }
 }
+
+const StyledBody = Body.extend`
+  height: 254px;
+  transition: height 0.75s ease-in-out;
+
+  @media (min-width: 1366px) {
+    height: 40vh;
+  }
+`
 
 const EmptyCell = Cell.extend`
   position: relative;
