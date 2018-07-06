@@ -46,7 +46,7 @@ class Option extends React.Component {
       openWarningMessage,
       removeWarningMessage,
     } = this.props
-    console.log('here')
+
     onSelect(this.props.option, event)
     if (view === 'default') {
       selectCurrencies(this.props.option.value)
@@ -119,7 +119,7 @@ function SelectWrapped(props) {
       optionComponent={Opt}
       noResultsText={<Typography>{'No results found'}</Typography>}
       arrowRenderer={(arrowProps) =>
-        arrowProps.isOpen ? <MdArrowDropDown /> : <MdArrowDropUp />
+        arrowProps.isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />
       }
       clearRenderer={() => <MdClear />}
       valueComponent={(valueProps) => {
