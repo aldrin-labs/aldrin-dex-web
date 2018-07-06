@@ -343,7 +343,7 @@ const MainContainer = styled.div`
   font-family: Roboto, sans-serif;
 
   @media (min-width: 1900px) {
-    margin-top: -0.5rem;
+    margin-top: -0.75rem;
   }
 `
 const DepthChartContainer = styled.div`
