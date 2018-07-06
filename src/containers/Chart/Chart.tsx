@@ -341,6 +341,10 @@ class Chart extends React.Component<IState> {
 
 const MainContainer = styled.div`
   font-family: Roboto, sans-serif;
+
+  @media (min-width: 1900px) {
+    margin-top: -0.5rem;
+  }
 `
 const DepthChartContainer = styled.div`
   height: calc(100vh - 59px - 80px - 38px);
