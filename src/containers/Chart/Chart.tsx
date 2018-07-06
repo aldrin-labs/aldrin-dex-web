@@ -277,7 +277,7 @@ class Chart extends React.Component<IState> {
                   spreadData,
                   base,
                   quote,
-                  animated: 'gentle',
+                  animated: false,
                 }}
               />
             </DepthChartContainer>
