@@ -1,6 +1,10 @@
 import * as React from 'react'
+import { Subscription, Query, graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import QueryRenderer from '@components/QueryRenderer'
+import Select from 'react-select'
 
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
@@ -9,44 +13,110 @@ import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
 
+const CORRELATION_UPDATE = gql`
+  subscription onCorrelationUpdated {
+    matrix
+  }
+`
+
+const getCorrelationQuery = gql`
+  query getPortfolio($startDate: String!, $endDate: String!) {
+    correlationMatrixByDay(
+      expectedReturnPercent: 0.25
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`
+
 class Correlation extends React.Component<IProps, IState> {
   initializeArray = (length: number, start: number, step: number): number[] =>
     Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
       (v, i) => i * step + start
     )
 
-  fullScreenChangeHandler = (isFullscreenEnabled: boolean) => {
-    this.props.toggleFullscreen()
-  }
-
   render() {
     const { children, isFullscreenEnabled, data } = this.props
     // const { cols, rows } = optimizeMocks()
-    // console.log(cols)
-    // console.log()
-    // console.log(data)
-    const cols = data.map((el: { coin: string; percentage: number }) => el.coin)
-    const rows = cols
 
     return (
-      <PTWrapper tableData={!!cols.length && !!rows.length}>
-        {children}
+      <Subscription subscription={CORRELATION_UPDATE}>
+        {(subscriptionData) => {
+          const cols = data.map(
+            (el: { coin: string; percentage: number }) => el.coin
+          )
+          const rows = cols
+          return (
+            <PTWrapper tableData={!!cols.length && !!rows.length}>
+              {children}
 
-        <Wrapper>
-          <CorrelationMatrix
-            fullScreenChangeHandler={this.fullScreenChangeHandler}
-            isFullscreenEnabled={isFullscreenEnabled || false}
-            cols={cols}
-            rows={rows}
-          />
+              <Wrapper>
+                <CorrelationMatrix
+                  fullScreenChangeHandler={this.props.toggleFullscreen}
+                  isFullscreenEnabled={isFullscreenEnabled || false}
+                  cols={cols}
+                  rows={rows}
+                />
 
-          {/* <HeatMapChart
+                {/* <HeatMapChart
             data={getHeatMapData(HeatMapMocks)}
             width={500}
             height={500}
           /> */}
-        </Wrapper>
-      </PTWrapper>
+              </Wrapper>
+            </PTWrapper>
+          )
+        }}
+      </Subscription>
+    )
+  }
+}
+
+class CorrelationWrapper extends React.Component<IProps, IState> {
+  state = {
+    startDate: 0,
+    endDate: 0,
+    selectedOption: '',
+  }
+
+  optionsMap = {
+    lastWeek: () => ({startDate: }),
+    lastDay: () => {},
+    lastMonth: () => {},
+  }
+
+  handleChange = (selectedOption) => {
+    const { startDate, endDate } = this.optionsMap[selectedOption]()
+    this.setState({ selectedOption, startDate, endDate })
+    // selectedOption can be null when the `x` (close) button is clicked
+    if (selectedOption) {
+      console.log(`Selected: ${selectedOption.label}`)
+    }
+  }
+
+  render() {
+    const { selectedOption } = this.state
+    return (
+      <Wrapper>
+        <Select
+          name="form-field-name"
+          value={selectedOption}
+          onChange={this.handleChange}
+          options={[
+            { value: 'lastWeek', label: 'Today' },
+            { value: 'two', label: 'Two' },
+          ]}
+        />
+        <QueryRenderer
+          component={Correlation}
+          query={getCorrelationQuery}
+          variables={{
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+          }}
+          {...this.props}
+        />
+      </Wrapper>
     )
   }
 }
@@ -79,6 +149,9 @@ const mapStateToProps = (store: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
 })
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Correlation)
+
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  CorrelationWrapper
+)
 
 export default storeComponent
