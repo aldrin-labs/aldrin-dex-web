@@ -16,6 +16,7 @@ import { IPortfolio } from '../../../interfaces'
 import { IProps, IState } from './PortfolioTableBalances.types'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import TradeOrderHistoryTable from './TradeOrderHistory/TradeOrderHistoryTable'
 
 const defaultSelectedSum = {
   currency: '',
@@ -387,6 +388,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               ) : null}
             </PTable>
           </Wrapper>
+          <WrapperForTrade>
+            <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} />
+          </WrapperForTrade>
         </Container>
 
         <PTChartContainer>
@@ -447,6 +451,25 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
+  position: relative;
+  margin: 0 20px 5px;
+  overflow-y: scroll;
+  background-color: #393e44;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
+`
+
+const WrapperForTrade = styled.div`
   position: relative;
   margin: 0 20px 5px;
   overflow-y: scroll;
