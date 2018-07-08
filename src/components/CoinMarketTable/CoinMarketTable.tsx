@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { History } from 'history'
 import styled from 'styled-components'
+import { Button as Btn } from '@material-ui/core'
+
 import Button from '../Elements/Button/Button'
-import arrowIcon from '@icons/arrow.svg'
 import QueryRenderer from '@components/QueryRenderer'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
-
 import { HomeQuery } from './api'
 
 const kindBtns = ['All coins', 'Coins', 'Tokens']
@@ -71,9 +71,8 @@ class CoinMarketTable extends React.Component<Props, State> {
     this.setState({ activeKind: index })
   }
 
-  formatNumber = (num: number) => {
-    return String(num).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')
-  }
+  formatNumber = (num: number) =>
+    String(num).replace(/(\d)(?=(\d{3})+$)/g, '$1 ')
 
   onChangeSortArg = (index: number, header: string) => {
     const { onChangeSortArg } = this.props
@@ -88,24 +87,21 @@ class CoinMarketTable extends React.Component<Props, State> {
   render() {
     const { data, showFilterBns } = this.props
     const { assetPagination } = data
-    console.log('CoinMarketTable.props: ', this.props)
 
     return (
       <MarketWrapper>
         <Title>Cryptocurrency Market Capitalizations</Title>
         {showFilterBns && (
           <BtnsContainer>
-            {kindBtns.map((kindBtn, i) => {
-              return (
-                <Button
-                  onClick={() => this.onChangeKind(i)}
-                  // active={i === activeKind}
-                  key={kindBtn}
-                  title={kindBtn}
-                  mRight
-                />
-              )
-            })}
+            {kindBtns.map((kindBtn, i) => (
+              <Button
+                onClick={() => this.onChangeKind(i)}
+                // active={i === activeKind}
+                key={kindBtn}
+                title={kindBtn}
+                mRight
+              />
+            ))}
           </BtnsContainer>
         )}
 
@@ -188,12 +184,14 @@ class CoinMarketTable extends React.Component<Props, State> {
             </TBody>
           </Table>
         </ScrolledWrapper>
-        <Btn
+        <MaterialBtn
+          variant="flat"
+          color="primary"
           disabled={!data.assetPagination.pageInfo.hasNextPage}
           onClick={this.fetchMore}
         >
           Show more
-        </Btn>
+        </MaterialBtn>
       </MarketWrapper>
     )
   }
@@ -217,20 +215,8 @@ const ScrolledWrapper = styled.div`
   }
 `
 
-const Btn = styled.button`
-  border-radius: 3px;
-  background-color: #282c2f;
-  border-color: transparent;
-  color: #fff;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  padding: 10px 0;
-  cursor: pointer;
-  text-transform: uppercase;
-  text-decoration: none;
-  width: 15em;
+const MaterialBtn = styled(Btn)`
+  width: 20%;
 `
 
 const TBody = styled.tbody`
@@ -283,13 +269,6 @@ const Title = styled.span`
   font-size: 20px;
   font-weight: 500;
   color: #fff;
-`
-
-const WebIcon = styled.img`
-  width: 16px;
-  height: 16px;
-  margin-left: 1px;
-  vertical-align: middle;
 `
 
 const TD = styled.td`
