@@ -471,7 +471,7 @@ const Wrapper = styled.div`
 
 const WrapperForTrade = styled.div`
   position: relative;
-  margin: 0 20px 5px;
+  margin: 0 20px 5px 0;
   overflow-y: scroll;
   background-color: #393e44;
 
