@@ -20,7 +20,7 @@ const CORRELATION_UPDATE = gql`
 `
 
 const getCorrelationQuery = gql`
-  query getPortfolio($startDate: String!, $endDate: String!) {
+  query getPortfolio($startDate: Int!, $endDate: Int!) {
     correlationMatrixByDay(
       expectedReturnPercent: 0.25
       startDate: $startDate
@@ -79,23 +79,39 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
     selectedOption: '',
   }
 
-  optionsMap = {
-    lastWeek: () => ({startDate: }),
-    lastDay: () => {},
-    lastMonth: () => {},
+  optionsMap: { [id: string]: any } = {
+    lastWeek: () => ({
+      startDate: this.daysFromNow(-7),
+      endDate: this.daysFromNow(0),
+    }),
+    lastDay: () => ({
+      startDate: this.daysFromNow(-1),
+      endDate: this.daysFromNow(0),
+    }),
+    lastMonth: () => ({
+      startDate: this.daysFromNow(-31),
+      endDate: this.daysFromNow(0),
+    }),
   }
 
-  handleChange = (selectedOption) => {
-    const { startDate, endDate } = this.optionsMap[selectedOption]()
+  formatTimestamp = (timestamp: number) => Math.round(timestamp / 1000)
+
+  daysFromNow = (days: number) => {
+    let date = new Date()
+    date.setDate(date.getDate() + days)
+    date.setHours(0, 0, 0, 0)
+
+    return this.formatTimestamp(date.getTime())
+  }
+
+  handleChange = (selectedOption: string) => {
+    const { startDate, endDate } = this.optionsMap[selectedOption.value]()
     this.setState({ selectedOption, startDate, endDate })
-    // selectedOption can be null when the `x` (close) button is clicked
-    if (selectedOption) {
-      console.log(`Selected: ${selectedOption.label}`)
-    }
   }
 
   render() {
     const { selectedOption } = this.state
+
     return (
       <Wrapper>
         <Select
@@ -103,8 +119,9 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
           value={selectedOption}
           onChange={this.handleChange}
           options={[
-            { value: 'lastWeek', label: 'Today' },
-            { value: 'two', label: 'Two' },
+            { value: 'lastDay', label: 'Last 24h' },
+            { value: 'lastWeek', label: 'Last week' },
+            { value: 'lastMonth', label: 'Last Month' },
           ]}
         />
         <QueryRenderer
