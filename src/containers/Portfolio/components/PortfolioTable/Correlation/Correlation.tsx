@@ -30,7 +30,9 @@ class Correlation extends React.Component<IProps, IState> {
 
       <StyledCard>
         <CardContent>
-          <Typography variant="headline">Empty Here...</Typography>
+          <Typography color="secondary" variant="headline">
+            Empty Here...
+          </Typography>
         </CardContent>
       </StyledCard>
     </>
@@ -43,10 +45,11 @@ class Correlation extends React.Component<IProps, IState> {
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
-          const cols = data.map(
-            (el: { coin: string; percentage: number }) => el.coin
-          )
+          // const cols = data.map(
+          //   (el: { coin: string; percentage: number }) => el.coin
+          // )
 
+          const cols = []
           const rows = cols
 
           return (
