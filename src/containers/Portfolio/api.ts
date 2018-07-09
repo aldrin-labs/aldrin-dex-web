@@ -1,5 +1,21 @@
 import gql from 'graphql-tag'
 
+export const CORRELATION_UPDATE = gql`
+  subscription onCorrelationUpdated {
+    matrix
+  }
+`
+
+export const getCorrelationQuery = gql`
+  query getPortfolio($startDate: Int!, $endDate: Int!) {
+    correlationMatrixByDay(
+      expectedReturnPercent: 0.25
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`
+
 export const getKeysQuery = gql`
   query getKeys {
     getProfile {

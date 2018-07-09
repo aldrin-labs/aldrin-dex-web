@@ -1,33 +1,18 @@
 import * as React from 'react'
-import { Subscription, Query, graphql } from 'react-apollo'
-import gql from 'graphql-tag'
+import { Subscription } from 'react-apollo'
+
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import QueryRenderer from '@components/QueryRenderer'
-import Select from 'react-select'
 
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
+import Selector from '@components/SimpleDropDownSelector'
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
-
-const CORRELATION_UPDATE = gql`
-  subscription onCorrelationUpdated {
-    matrix
-  }
-`
-
-const getCorrelationQuery = gql`
-  query getPortfolio($startDate: Int!, $endDate: Int!) {
-    correlationMatrixByDay(
-      expectedReturnPercent: 0.25
-      startDate: $startDate
-      endDate: $endDate
-    )
-  }
-`
+import { getCorrelationQuery, CORRELATION_UPDATE } from '../../../api'
 
 class Correlation extends React.Component<IProps, IState> {
   initializeArray = (length: number, start: number, step: number): number[] =>
@@ -77,7 +62,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
   state = {
     startDate: 0,
     endDate: 0,
-    selectedOption: '',
+    period: '',
   }
 
   optionsMap: { [id: string]: any } = {
@@ -105,20 +90,25 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
     return this.formatTimestamp(date.getTime())
   }
 
-  handleChange = (selectedOption: string) => {
-    const { startDate, endDate } = this.optionsMap[selectedOption.value]()
-    this.setState({ selectedOption, startDate, endDate })
+  handleChange = (event) => {
+    const { startDate, endDate } = this.optionsMap[event.target.value]()
+    this.setState({
+      [event.target.name]: event.target.value,
+      startDate,
+      endDate,
+    })
   }
 
   render() {
-    const { selectedOption } = this.state
+    const { period } = this.state
 
     return (
       <Wrapper>
-        <Select
-          name="form-field-name"
-          value={selectedOption}
-          onChange={this.handleChange}
+        <Selector
+          name="period"
+          id="period"
+          value={period}
+          handleChange={this.handleChange}
           options={[
             { value: 'lastDay', label: 'Last 24h' },
             { value: 'lastWeek', label: 'Last week' },
