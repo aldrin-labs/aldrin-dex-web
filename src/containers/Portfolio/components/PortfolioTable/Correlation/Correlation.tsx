@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 // import { HeatMapMocks } from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
+import Selector from '@components/SimpleDropDownSelector'
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
 
