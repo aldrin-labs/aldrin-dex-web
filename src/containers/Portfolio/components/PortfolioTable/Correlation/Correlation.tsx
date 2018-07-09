@@ -1,6 +1,11 @@
 import * as React from 'react'
 import { Subscription } from 'react-apollo'
-
+import {
+  Card,
+  CardContent,
+  Typography,
+  LinearProgress,
+} from '@material-ui/core'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import QueryRenderer from '@components/QueryRenderer'
@@ -9,7 +14,6 @@ import QueryRenderer from '@components/QueryRenderer'
 // import { HeatMapMocks } from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
-
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
 import { getCorrelationQuery, CORRELATION_UPDATE } from '../../../api'
@@ -19,6 +23,18 @@ class Correlation extends React.Component<IProps, IState> {
     Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
       (v, i) => i * step + start
     )
+
+  renderPlaceholder = () => (
+    <>
+      <LinearProgress color="secondary" />
+
+      <StyledCard>
+        <CardContent>
+          <Typography variant="headline">Empty Here...</Typography>
+        </CardContent>
+      </StyledCard>
+    </>
+  )
 
   render() {
     const { children, isFullscreenEnabled, data } = this.props
@@ -30,26 +46,30 @@ class Correlation extends React.Component<IProps, IState> {
           const cols = data.map(
             (el: { coin: string; percentage: number }) => el.coin
           )
+
           const rows = cols
 
           return (
             <PTWrapper tableData={!!cols.length && !!rows.length}>
               {children}
+              {cols.length === 0 ? (
+                this.renderPlaceholder()
+              ) : (
+                <Wrapper>
+                  <CorrelationMatrix
+                    fullScreenChangeHandler={this.props.toggleFullscreen}
+                    isFullscreenEnabled={isFullscreenEnabled || false}
+                    cols={cols}
+                    rows={rows}
+                  />
 
-              <Wrapper>
-                <CorrelationMatrix
-                  fullScreenChangeHandler={this.props.toggleFullscreen}
-                  isFullscreenEnabled={isFullscreenEnabled || false}
-                  cols={cols}
-                  rows={rows}
-                />
-
-                {/* <HeatMapChart
+                  {/* <HeatMapChart
             data={getHeatMapData(HeatMapMocks)}
             width={500}
             height={500}
           /> */}
-              </Wrapper>
+                </Wrapper>
+              )}
             </PTWrapper>
           )
         }}
@@ -86,6 +106,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
 
 const PTWrapper = styled.div`
   min-width: 70vw;
+  min-height: 75vh;
   display: flex;
   flex-direction: column;
   margin: 1.5rem;
@@ -94,6 +115,15 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: auto;
+`
+
+const StyledCard = styled(Card)`
+  && {
+    width: 20%;
+    height: 20%;
+    margin: auto;
+    background: #292d31;
+  }
 `
 
 const Wrapper = styled.div`
