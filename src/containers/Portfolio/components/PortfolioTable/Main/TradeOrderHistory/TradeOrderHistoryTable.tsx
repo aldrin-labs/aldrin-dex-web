@@ -16,7 +16,9 @@ const tradeOrderHistoryTableHeadings = [
   { name: 'Side', value: 'side' },
 ]
 
-const arrayOfStringHeadings = ['exchange', 'datetime', 'symbol', 'side']
+const arrayOfStringHeadings = ['exchange', 'symbol', 'side']
+
+const arrayOfDateHeadings = ['datetime']
 
 // TODO: Should be replaced to the state
 let staticRows = tradeOrderHistoryTableData
@@ -38,7 +40,7 @@ export default class TradeOrderHistoryTable extends React.Component<
     }: {
       newData: ITradeOrderHistoryTableData
       newCurrentSort: ICurrentSort
-    } = onSortTableFull(key, staticRows, currentSort, arrayOfStringHeadings)
+    } = onSortTableFull(key, staticRows, currentSort, arrayOfStringHeadings, arrayOfDateHeadings)
 
     // TODO: Should be refactored and included into setState
     staticRows = newData
@@ -51,14 +53,6 @@ export default class TradeOrderHistoryTable extends React.Component<
   render() {
     const { currentSort } = this.state
     const { isUSDCurrently } = this.props
-
-
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-      <Icon className="fa fa-btc" />
-    )
-
 
     return (
           <Wrapper>
@@ -107,6 +101,12 @@ export default class TradeOrderHistoryTable extends React.Component<
                     symbol,
                     side,
                   } = row
+
+                  const mainSymbol = isUSDCurrently ? (
+                    <Icon className="fa fa-usd" key={`${idx}usd`} />
+                  ) : (
+                    <Icon className="fa fa-btc" key={`${idx}btc`} />
+                  )
 
                   const cols = [
                     exchange,
