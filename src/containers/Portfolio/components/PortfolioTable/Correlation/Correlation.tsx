@@ -39,17 +39,26 @@ class Correlation extends React.Component<IProps, IState> {
   )
 
   render() {
-    const { children, isFullscreenEnabled, data } = this.props
+    const {
+      children,
+      isFullscreenEnabled,
+      data,
+      mockData,
+      isShownMocks,
+    } = this.props
     // const { cols, rows } = optimizeMocks()
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
-          // const cols = data.map(
-          //   (el: { coin: string; percentage: number }) => el.coin
-          // )
+          let cols = []
 
-          const cols = []
+          if (isShownMocks) {
+            cols = mockData.map(
+              (el: { coin: string; percentage: number }) => el.coin
+            )
+          }
+
           const rows = cols
 
           return (
@@ -139,7 +148,7 @@ const Wrapper = styled.div`
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
-  data: store.portfolio.optimizationData,
+  mockData: store.portfolio.optimizationData,
   isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
