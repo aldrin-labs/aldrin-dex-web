@@ -46,6 +46,7 @@ class Correlation extends React.Component<IProps, IState> {
             (el: { coin: string; percentage: number }) => el.coin
           )
           const rows = cols
+
           return (
             <PTWrapper tableData={!!cols.length && !!rows.length}>
               {children}
@@ -124,6 +125,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             { value: 'lastMonth', label: 'Last Month' },
           ]}
         />
+
         <QueryRenderer
           component={Correlation}
           query={getCorrelationQuery}
@@ -151,6 +153,7 @@ const PTWrapper = styled.div`
 `
 
 const Wrapper = styled.div`
+  max-width: 90vw;
   height: 80%;
   padding: 1rem;
   display: flex;
