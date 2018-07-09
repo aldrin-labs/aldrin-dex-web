@@ -5,16 +5,16 @@ import Selector from '@components/SimpleDropDownSelector'
 class DropDownMenu extends Component {
   optionsMap: { [id: string]: any } = {
     lastWeek: () => ({
-      startDate: this.daysFromNow(-7),
-      endDate: this.daysFromNow(0),
+      startDate: this.daysFromNow(-17),
+      endDate: this.daysFromNow(-10),
     }),
     lastDay: () => ({
-      startDate: this.daysFromNow(-1),
-      endDate: this.daysFromNow(0),
+      startDate: this.daysFromNow(-10),
+      endDate: this.daysFromNow(-10),
     }),
     lastMonth: () => ({
-      startDate: this.daysFromNow(-31),
-      endDate: this.daysFromNow(0),
+      startDate: this.daysFromNow(-41),
+      endDate: this.daysFromNow(-10),
     }),
   }
 
