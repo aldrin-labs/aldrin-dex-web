@@ -17,7 +17,13 @@ import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
 import { Args } from '../types'
-import SvgIcon from '../../../../../components/SvgIcon/SvgIcon'
+import SvgIcon from '@components/SvgIcon/SvgIcon'
+import spinLoader from '@icons/tail-spin.svg'
+
+
+import { graphql } from 'react-apollo'
+import {getMyRebalanceQuery} from './api'
+
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'currency' },
@@ -53,7 +59,7 @@ let tableHeadingsCurrentPortfolio = usdHeadingForCurrent
 
 let tableHeadingsRebalancedPortfolio = usdHeadingForRebalanced
 
-export default class PortfolioTableRebalance extends React.Component<
+class PortfolioTableRebalance extends React.Component<
   IProps,
   IState
 > {
@@ -745,6 +751,30 @@ export default class PortfolioTableRebalance extends React.Component<
       <Icon className="fa fa-btc" />
     )
 
+    console.log('dataFromServer: ', this.props.data);
+
+
+    const { data } = this.props
+    const { getProfile, loading, error } = data
+
+    if (loading) {
+      return (
+        <LoaderWrapper>
+          <SvgIcon
+            src={spinLoader}
+            width={48}
+            height={48}
+            style={{
+              position: 'absolute',
+              left: 'calc(50% - 48px)',
+              top: 'calc(50% - 48px)',
+            }}
+          />
+        </LoaderWrapper>
+      )
+    }
+
+
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
@@ -1206,6 +1236,8 @@ export default class PortfolioTableRebalance extends React.Component<
     )
   }
 }
+
+export default graphql(getMyRebalanceQuery)(PortfolioTableRebalance)
 
 const InputTable = styled.input`
   max-width: 60px;
@@ -1823,4 +1855,13 @@ const EditIconWrapper = styled.div`
     padding-bottom: ${(props: { isEditModeEnabled?: boolean }) =>
       props.isEditModeEnabled ? '4px' : '7px'};
   }
+`
+
+
+const LoaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  position: relative;
 `
