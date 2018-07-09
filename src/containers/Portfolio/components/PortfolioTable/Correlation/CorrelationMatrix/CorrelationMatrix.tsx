@@ -133,7 +133,10 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
           style={{ height: '100%' }}
           enabled={isFullscreenEnabled}
         >
-          <FullscreenNode className="full-screenable-node">
+          <FullscreenNode
+            style={{ display: 'flex', placeContent: 'center' }}
+            className="full-screenable-node"
+          >
             <Table
               {...{
                 isFullscreenEnabled,
