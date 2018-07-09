@@ -8,6 +8,7 @@ import { onSortTableFull } from '@utils/PortfolioTableUtils'
 import { IProps, IState, ICurrentSort, ITradeOrderHistoryTableData } from './TradeOrderHistoryTable.types'
 
 const tradeOrderHistoryTableHeadings = [
+  { name: 'Exchange', value: 'exchange' },
   { name: 'Amount', value: 'amount' },
   { name: 'Cost', value: 'cost' },
   { name: 'Datetime', value: 'datetime' },
@@ -15,7 +16,7 @@ const tradeOrderHistoryTableHeadings = [
   { name: 'Side', value: 'side' },
 ]
 
-const arrayOfStringHeadings = ['datetime', 'symbol', 'side']
+const arrayOfStringHeadings = ['exchange', 'datetime', 'symbol', 'side']
 
 // TODO: Should be replaced to the state
 let staticRows = tradeOrderHistoryTableData
@@ -59,7 +60,6 @@ export default class TradeOrderHistoryTable extends React.Component<
     )
 
 
-
     return (
           <Wrapper>
             <Table>
@@ -100,6 +100,7 @@ export default class TradeOrderHistoryTable extends React.Component<
               <PTBody>
                 {staticRows.map((row, idx) => {
                   const {
+                    exchange,
                     amount,
                     cost,
                     datetime,
@@ -108,6 +109,7 @@ export default class TradeOrderHistoryTable extends React.Component<
                   } = row
 
                   const cols = [
+                    exchange,
                     amount,
                     [mainSymbol, cost],
                     datetime,
@@ -194,16 +196,16 @@ const PTHC = styled.th`
   min-width: 100px;
   padding-right: 0;
 
-  &:nth-child(1) {
+  &:nth-child(2) {
     min-width: 80px;
   }
   
-  &:nth-child(3) {
+  &:nth-child(4) {
     min-width: 170px;
     padding-right: 10px;
   }
  
-  &:nth-child(5) {
+  &:nth-child(6) {
     min-width: 60px;
   }
 `
@@ -245,17 +247,17 @@ const PTDC = styled.td`
   min-width: 100px;
   padding-right: 0;
 
-  &:nth-child(1) {
+  &:nth-child(2) {
     min-width: 80px;
   }
   
-  &:nth-child(3) {
+  &:nth-child(4) {
     min-width: 170px;
     text-overflow: ellipsis;
     padding-right: 10px;
   }
   
-  &:nth-child(5) {
+  &:nth-child(6) {
     min-width: 60px;
   }
 `
