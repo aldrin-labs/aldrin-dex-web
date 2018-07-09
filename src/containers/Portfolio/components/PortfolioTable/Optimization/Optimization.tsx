@@ -326,35 +326,6 @@ const MainAreaUpperPart = styled.div`
   width: 100%;
 `
 
-const BtnsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 20px auto 20px auto;
-  max-height: 2rem;
-  position: relative;
-  top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
-  z-index: ${(props: { show: boolean }) => (props.show ? '1' : '-10')};
-  opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
-  transition: top 0.3s ease-in, opacity 0.3s ease-out;
-`
-
-const Btn = styled.button`
-  border-radius: 2px;
-  background-color: ${(props: { active: boolean }) =>
-    props.active ? '#4ed8da' : '#4c5055'};
-  margin-right: 16px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-family: Roboto, sans-serif;, sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  color: ${(props: { active: boolean }) =>
-    props.active ? '#4c5055' : '#4ed8da'};
-  cursor: pointer;
-  transition: all 0.25s linear;
-`
-
 const MainArea = styled.div`
   color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
