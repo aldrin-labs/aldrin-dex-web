@@ -8,6 +8,9 @@ const initialState = {
   selectedAccounts: [],
   optimizationData: [],
   correlationTableFullscreenEnabled: false,
+  correlationPeriod: '',
+  correlationStartDate: 0,
+  correlationEndDate: 0,
 }
 
 export default createReducer(
@@ -24,6 +27,12 @@ export default createReducer(
     [actions.getPortfolio]: (state, payload) => {
       return { ...state, ...payload }
     },
+    [actions.setCorrelationPeriod]: (state, payload) => ({
+      ...state,
+      correlationPeriod: payload.correlationPeriod,
+      correlationStartDate: payload.correlationStartDate,
+      correlationEndDate: payload.correlationEndDate,
+    }),
     [actions.updateSelectedAccounts]: (state, payload) => {
       return { ...state, selectedAccounts: [...payload] }
     },

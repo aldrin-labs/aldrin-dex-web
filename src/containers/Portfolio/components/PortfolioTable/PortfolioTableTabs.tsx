@@ -14,7 +14,11 @@ import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
-import { toggleCorrelationTableFullscreen } from '../../actions'
+import Selector from './Correlation/DropDownMenu/DropDownMenu'
+import {
+  toggleCorrelationTableFullscreen,
+  setCorrelationPeriod,
+} from '../../actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -45,7 +49,14 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio, isShownMocks, toggleWallets } = this.props
+    const {
+      tab,
+      portfolio,
+      isShownMocks,
+      toggleWallets,
+      setCorrelationPeriod,
+      correlationPeriod,
+    } = this.props
     const dataFromProps = this.props.data
 
     return (
@@ -99,11 +110,17 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
           <ButtonContainer>
             {tab === 'correlation' ? (
-              <StyledFullscreenButton
-                onClick={this.props.onFullscreenButtonClick}
-              >
-                <FullScreenIcon />
-              </StyledFullscreenButton>
+              <>
+                <Selector
+                  correlationPeriod={correlationPeriod}
+                  setCorrelationPeriodToStore={setCorrelationPeriod}
+                />
+                <StyledFullscreenButton
+                  onClick={this.props.onFullscreenButtonClick}
+                >
+                  <FullScreenIcon />
+                </StyledFullscreenButton>
+              </>
             ) : null}
 
             <ToggleBtn onClick={this.onToggleChart}>
@@ -296,9 +313,12 @@ const StyledFullscreenButton = styled(Button)`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  correlationPeriod: store.portfolio.correlationPeriod,
 })
 const mapDispatchToProps = (dispatch: any) => ({
   onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
+  setCorrelationPeriod: (payload: any) =>
+    dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(

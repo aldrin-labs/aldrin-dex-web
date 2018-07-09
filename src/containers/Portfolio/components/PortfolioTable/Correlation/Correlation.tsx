@@ -9,7 +9,7 @@ import QueryRenderer from '@components/QueryRenderer'
 // import { HeatMapMocks } from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
-import Selector from '@components/SimpleDropDownSelector'
+
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
 import { getCorrelationQuery, CORRELATION_UPDATE } from '../../../api'
@@ -65,63 +65,17 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
     period: '',
   }
 
-  optionsMap: { [id: string]: any } = {
-    lastWeek: () => ({
-      startDate: this.daysFromNow(-7),
-      endDate: this.daysFromNow(0),
-    }),
-    lastDay: () => ({
-      startDate: this.daysFromNow(-1),
-      endDate: this.daysFromNow(0),
-    }),
-    lastMonth: () => ({
-      startDate: this.daysFromNow(-31),
-      endDate: this.daysFromNow(0),
-    }),
-  }
-
-  formatTimestamp = (timestamp: number) => Math.round(timestamp / 1000)
-
-  daysFromNow = (days: number) => {
-    let date = new Date()
-    date.setDate(date.getDate() + days)
-    date.setHours(0, 0, 0, 0)
-
-    return this.formatTimestamp(date.getTime())
-  }
-
-  handleChange = (event) => {
-    const { startDate, endDate } = this.optionsMap[event.target.value]()
-    this.setState({
-      [event.target.name]: event.target.value,
-      startDate,
-      endDate,
-    })
-  }
-
   render() {
-    const { period } = this.state
+    const { startDate, endDate } = this.props
 
     return (
       <Wrapper>
-        <Selector
-          name="period"
-          id="period"
-          value={period}
-          handleChange={this.handleChange}
-          options={[
-            { value: 'lastDay', label: 'Last 24h' },
-            { value: 'lastWeek', label: 'Last week' },
-            { value: 'lastMonth', label: 'Last Month' },
-          ]}
-        />
-
         <QueryRenderer
           component={Correlation}
           query={getCorrelationQuery}
           variables={{
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
+            startDate,
+            endDate,
           }}
           {...this.props}
         />
@@ -154,6 +108,8 @@ const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   data: store.portfolio.optimizationData,
   isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
+  startDate: store.portfolio.correlationStartDate,
+  endDate: store.portfolio.correlationEndDate,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
