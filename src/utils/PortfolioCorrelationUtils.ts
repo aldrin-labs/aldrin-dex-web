@@ -25,45 +25,45 @@ export function getColor(
 ): { backgroundColor: string; textColor: string } {
   const n = Number(value)
   if (n >= 0.9) {
-    return { backgroundColor: '#1B5E20', textColor: 'white' }
+    return { backgroundColor: '#4caf50', textColor: 'white' }
   } else if (n >= 0.8 && n < 0.9) {
-    return { backgroundColor: '#2E7D32', textColor: 'white' }
+    return { backgroundColor: '#449d48', textColor: 'white' }
   } else if (n >= 0.7 && n < 0.8) {
-    return { backgroundColor: '#388E3C', textColor: 'white' }
+    return { backgroundColor: '#3d8b40', textColor: 'white' }
   } else if (n >= 0.6 && n < 0.7) {
-    return { backgroundColor: '#43A047', textColor: 'white' }
+    return { backgroundColor: '#357a38', textColor: 'white' }
   } else if (n >= 0.5 && n < 0.6) {
-    return { backgroundColor: '#4CAF50', textColor: 'white' }
+    return { backgroundColor: '#2d6830', textColor: 'white' }
   } else if (n >= 0.4 && n < 0.5) {
-    return { backgroundColor: '#66BB6A', textColor: 'white' }
+    return { backgroundColor: '#265628', textColor: 'white' }
   } else if (n >= 0.3 && n < 0.4) {
-    return { backgroundColor: '#81C784', textColor: 'black' }
+    return { backgroundColor: '#1e4520', textColor: 'white' }
   } else if (n >= 0.2 && n < 0.3) {
-    return { backgroundColor: '#A5D6A7', textColor: 'black' }
+    return { backgroundColor: '#163318', textColor: 'white' }
   } else if (n >= 0.1 && n < 0.2) {
-    return { backgroundColor: '#C8E6C9', textColor: 'black' }
+    return { backgroundColor: '#163318', textColor: 'white' }
   } else if (n >= 0 && n < 0.1) {
-    return { backgroundColor: '#E8F5E9', textColor: 'black' }
+    return { backgroundColor: '#173317', textColor: 'white' }
   } else if (n >= -0.1 && n < 0) {
-    return { backgroundColor: '#B9F6CA', textColor: 'black' }
+    return { backgroundColor: '#0f220f', textColor: 'white' }
   } else if (n >= -0.2 && n < -0.1) {
-    return { backgroundColor: '#FFEBEE', textColor: 'black' }
+    return { backgroundColor: '#561500', textColor: 'white' }
   } else if (n >= -0.3 && n < -0.2) {
-    return { backgroundColor: '#FFCDD2', textColor: 'black' }
+    return { backgroundColor: '#701b00', textColor: 'white' }
   } else if (n >= -0.4 && n < -0.3) {
-    return { backgroundColor: '#EF9A9A', textColor: 'black' }
+    return { backgroundColor: '#892100', textColor: 'white' }
   } else if (n >= -0.5 && n < -0.4) {
-    return { backgroundColor: '#E57373', textColor: 'black' }
+    return { backgroundColor: '#a22700', textColor: 'black' }
   } else if (n >= -0.6 && n < -0.5) {
-    return { backgroundColor: '#EF5350', textColor: 'black' }
+    return { backgroundColor: '#bc2d00', textColor: 'black' }
   } else if (n >= -0.7 && n < -0.6) {
-    return { backgroundColor: '#F44336', textColor: 'black' }
+    return { backgroundColor: '#d53300', textColor: 'black' }
   } else if (n >= -0.8 && n < -0.7) {
-    return { backgroundColor: '#E53935', textColor: 'black' }
+    return { backgroundColor: '#ee3900', textColor: 'black' }
   } else if (n >= -0.9 && n < -0.8) {
-    return { backgroundColor: '#D32F2F', textColor: 'black' }
+    return { backgroundColor: '#ff4408', textColor: 'black' }
   } else if (n >= -1 && n < -0.9) {
-    return { backgroundColor: '#C62828', textColor: 'black' }
+    return { backgroundColor: '#ff5722', textColor: 'black' }
   }
 }
 

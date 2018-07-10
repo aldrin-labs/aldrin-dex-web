@@ -6,7 +6,6 @@ import {
   optimizeMocks,
   getColor,
 } from '../../../../../../utils/PortfolioCorrelationUtils'
-import { onFloorN } from '../../../../../../utils/PortfolioTableUtils'
 
 const { cols: mockCols } = optimizeMocks()
 
@@ -14,6 +13,10 @@ class CorrelationMatrixTable extends PureComponent {
   state = {
     activeRow: null,
     activeColumn: null,
+  }
+
+  onCellMouseOver = (activeRow: number, activeColumn: number) => {
+    this.setState({ activeRow, activeColumn })
   }
 
   render() {
@@ -73,21 +76,27 @@ class CorrelationMatrixTable extends PureComponent {
 
         {/* content */}
         {cols.map((col, ind) =>
-          col.map((el: number, i: number) => (
-            <Cell
-              onMouseOver={() => {
-                this.setState({ activeRow: i, activeColumn: ind })
-                console.log(i)
-                console.log(ind)
-              }}
-              style={{ gridColumnStart: i + 2, gridRowStart: ind + 2 }}
-              key={el.toString()}
-            >
-              <CellContent active={i === activeRow && ind === activeColumn}>
-                {el.toFixed(2)}
-              </CellContent>
-            </Cell>
-          ))
+          col.map((el: number, i: number) => {
+            const { backgroundColor, textColor } = getColor(el)
+
+            return (
+              <Cell
+                textColor={textColor}
+                onMouseOver={() => {
+                  this.onCellMouseOver(i, ind)
+                }}
+                style={{ gridColumnStart: i + 2, gridRowStart: ind + 2 }}
+                key={el.toString()}
+              >
+                <CellContent
+                  color={backgroundColor}
+                  active={i === activeRow && ind === activeColumn}
+                >
+                  {el.toFixed(2)}
+                </CellContent>
+              </Cell>
+            )
+          })
         )}
       </GridTable>
     )
@@ -118,6 +127,13 @@ const GridTable = styled.div`
 `
 
 const CellContent = styled.div`
+  background-color: ${(props: { color?: string }) => {
+    if (props.color) {
+      return props.color
+    }
+
+    return 'transparent'
+  }};
   padding: 0.25rem;
   width: ${(props: { active?: boolean }) => (props.active ? '100%' : '97%')};
   height: ${(props: { active?: boolean }) => (props.active ? '100%' : '97%')};
@@ -128,13 +144,7 @@ const CellContent = styled.div`
 
 const Cell = styled.div`
   z-index: 100;
-  background-color: ${(props: { color?: string }) => {
-    if (props.color) {
-      return props.color
-    }
 
-    return 'transparent'
-  }};
   font-family: Roboto, sans-serif;
   font-size: 1rem;
   color: ${(props: { textColor: string }) => props.textColor};
