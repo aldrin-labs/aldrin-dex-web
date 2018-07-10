@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
+import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa/'
 
 import {
   optimizeMocks,
@@ -10,22 +11,17 @@ import { onFloorN } from '../../../../../../utils/PortfolioTableUtils'
 const { cols: mockCols } = optimizeMocks()
 
 class CorrelationMatrixTable extends PureComponent {
-  constructor(props) {
-    super(props)
+  state = {
+    activeRow: null,
+    activeColumn: null,
   }
 
   render() {
-    const {
-      isFullscreenEnabled,
-      onTableMouseLeave,
-      onTableMouseOver,
-      onMouseOver,
-      cols: c,
-      rows,
-    } = this.props
+    const { isFullscreenEnabled, cols: c, rows } = this.props
+    const { activeRow, activeColumn } = this.state
 
     // this bullshit needs to be removed when correlation API are done
-    const cols = mockCols
+    let cols = mockCols
       .map((col) => col[0].slice(0, rows.length))
       .slice(0, rows.length)
 
@@ -37,132 +33,101 @@ class CorrelationMatrixTable extends PureComponent {
       ? { width: '100vw', height: '100vh' }
       : {}
 
-    console.log(cols)
-    console.log(rows)
+    // console.dir(cols)
+    // console.log(rows)
 
     return (
-      <GridTable rows={4} columns={4}>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
-        <Cell color="black" textColor="white">
-          1
-        </Cell>
+      <GridTable
+        onMouseLeave={() => {
+          this.setState({ activeRow: null, activeColumn: null })
+        }}
+        rows={cols.length + 1}
+        columns={cols[0].length + 1}
+      >
+        {/* first empty cell */}
+        <Cell />
+
+        {/* first row with coin names */}
+        {rows.map((el, i) => (
+          <HeadCell
+            textColor={activeRow === i ? '#4ed8da' : 'black'}
+            key={el.toString()}
+          >
+            <StyledArrowDown show={activeRow === i} />
+
+            {el}
+          </HeadCell>
+        ))}
+
+        {/* first column with coin names */}
+        {rows.map((el, i) => (
+          <HeadCell
+            textColor={activeColumn === i ? '#4ed8da' : 'black'}
+            style={{ gridColumnStart: 1 }}
+            key={el.toString()}
+          >
+            <StyledArrowRight show={activeColumn === i} />
+            {el}
+          </HeadCell>
+        ))}
+
+        {/* content */}
+        {cols.map((col, ind) =>
+          col.map((el: number, i: number) => (
+            <Cell
+              onMouseOver={() => {
+                this.setState({ activeRow: i, activeColumn: ind })
+                console.log(i)
+                console.log(ind)
+              }}
+              style={{ gridColumnStart: i + 2, gridRowStart: ind + 2 }}
+              key={el.toString()}
+            >
+              <CellContent active={i === activeRow && ind === activeColumn}>
+                {el.toFixed(2)}
+              </CellContent>
+            </Cell>
+          ))
+        )}
       </GridTable>
-
-      // <Table style={tableStyle}>
-      //   <thead>
-      //     <Row>
-      //       <HeadItem
-      //         isFullscreenEnabled={isFullscreenEnabled}
-      //         style={{
-      //           width: '4em',
-      //           backgroundColor: '#393e44',
-      //         }}
-      //       />
-      //       {rows.map((row) => (
-      //         <HeadItem isFullscreenEnabled={isFullscreenEnabled} key={row}>
-      //           {row}
-      //         </HeadItem>
-      //       ))}
-      //     </Row>
-      //   </thead>
-      //   <tbody onMouseLeave={onTableMouseLeave} onMouseOver={onTableMouseOver}>
-      //     {cols.map((col, i) => (
-      //       <Row key={rows[i]}>
-      //         {rows[i] && (
-      //           <Item
-      //             style={{
-      //               color: '#fff',
-      //               textAlign: 'right',
-      //               border: 'none',
-      //               left: 0,
-      //               backgroundColor: '#393e44',
-      //             }}
-      //           >
-      //             {rows[i]}
-      //           </Item>
-      //         )}
-      //         {col.map((el, indx) => {
-      //           const value = onFloorN(Number(el), 2)
-      //           const { backgroundColor, textColor } = getColor(el)
-
-      //           return (
-      //             <Item
-      //               key={el}
-      //               textColor={textColor}
-      //               color={backgroundColor}
-      //               onMouseOver={(event) =>
-      //                 onMouseOver(
-      //                   indx,
-      //                   value,
-      //                   rows[i],
-      //                   rows[indx],
-      //                   event.nativeEvent.clientX,
-      //                   event.nativeEvent.clientY
-      //                 )
-      //               }
-      //             >
-      //               {value}
-      //             </Item>
-      //           )
-      //         })}
-      //       </Row>
-      //     ))}
-      //   </tbody>
-      // </Table>
     )
   }
 }
 
-const GridTable = styled.div`
-  width: 80%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: ${(props) =>
-    `repeat(${props.rows}, ${100 / props.rows}%)`};
-  grid-template-columns: ${(props) =>
-    `repeat(${props.columns}, ${100 / props.columns}%)`};
-  gap: 1% 1%;
+const StyledArrowRight = styled(FaAngleRight)`
+  opacity: ${(props: { show?: boolean }) => (props.show ? '1' : '0')};
+  left: 0;
+  color: #4ed8da;
+  position: absolute;
+  transition: opacity 0.25s ease-out;
+`
+const StyledArrowDown = styled(FaAngleDown)`
+  opacity: ${(props: { show?: boolean }) => (props.show ? '1' : '0')};
+  top: 0;
+  color: #4ed8da;
+  position: absolute;
+  transition: opacity 0.25s ease-out;
 `
 
-const HeadItem = styled.th`
-  font-family: Roboto, sans-serif;
-  font-size: 0.75em;
-  color: #fff;
-  font-weight: 500;
-  padding: 0.5em;
-  width: 50px;
-  text-align: center;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  position: ${(props: { isFullscreenEnabled: boolean }) =>
-    props.isFullscreenEnabled ? 'static' : 'sticky'};
-  background-color: #393e44;
-  top: 0;
-  user-select: none;
+const GridTable = styled.div`
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+  grid-template-rows: ${(props) => `repeat(${props.rows}, 4rem)`};
+  grid-template-columns: ${(props) => `repeat(${props.columns}, 4rem)`};
+`
+
+const CellContent = styled.div`
+  padding: 0.25rem;
+  width: ${(props: { active?: boolean }) => (props.active ? '100%' : '97%')};
+  height: ${(props: { active?: boolean }) => (props.active ? '100%' : '97%')};
+  border: ${(props: { active?: boolean }) =>
+    props.active ? '2px solid #4ed8da' : '1px solid #292d31'};
+  transition: border 0.25s ease-in-out;
 `
 
 const Cell = styled.div`
+  z-index: 100;
   background-color: ${(props: { color?: string }) => {
     if (props.color) {
       return props.color
@@ -172,21 +137,20 @@ const Cell = styled.div`
   }};
   font-family: Roboto, sans-serif;
   font-size: 1rem;
-  color: ${(props) => props.textColor};
+  color: ${(props: { textColor: string }) => props.textColor};
   font-weight: 500;
-  padding: 0.5em;
-
+  display: flex;
+  place-content: center;
+  place-items: center;
   text-align: center;
+  line-height: 3rem;
   overflow: hidden;
   white-space: nowrap;
-  border: 1px solid #fff;
+  transition: color 0.25s ease-out;
 `
 
-const Table = styled.table`
-  width: 80%;
-  height: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+const HeadCell = Cell.extend`
+  position: relative;
 `
 
 export default CorrelationMatrixTable

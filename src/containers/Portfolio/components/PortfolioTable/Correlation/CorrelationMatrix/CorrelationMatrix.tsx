@@ -33,10 +33,6 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props)
 
-    this.onMouseOver = debounce(this.onMouseOver, 300)
-    this.onMouseLeave = debounce(this.onMouseLeave, 300)
-    this.mouseMoveHandle = debounce(this.mouseMoveHandle, 50)
-
     this.state = {
       hint: null,
       hintOpacity: 0,
@@ -54,19 +50,6 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.mouseUpHandle)
     window.removeEventListener('mousemove', this.mouseMoveHandle)
-  }
-
-  onMouseOver = (
-    index: number,
-    value: number,
-    colName: string,
-    rowName: string,
-    x: number,
-    y: number
-  ) => {
-    this.setState({
-      hint: { index, value, colName, rowName, x, y },
-    })
   }
 
   onTableMouseOver = () => {
@@ -134,7 +117,13 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
           enabled={isFullscreenEnabled}
         >
           <FullscreenNode
-            style={{ display: 'flex', placeContent: 'center' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gridTemplateRows: '100%',
+              alignItems: 'center',
+              justifyItems: 'center',
+            }}
             className="full-screenable-node"
           >
             <Table
@@ -170,7 +159,6 @@ const ScrolledWrapper = styled.div`
   overflow-y: scroll;
   background-color: #393e44;
   margin: 0 auto;
-  margin-bottom: 3.125rem;
 
   &::-webkit-scrollbar {
     width: 0.75rem;

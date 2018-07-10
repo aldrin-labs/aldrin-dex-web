@@ -67,7 +67,7 @@ class Correlation extends React.Component<IProps, IState> {
               {cols.length === 0 ? (
                 this.renderPlaceholder()
               ) : (
-                <Wrapper>
+                <>
                   <CorrelationMatrix
                     fullScreenChangeHandler={this.props.toggleFullscreen}
                     isFullscreenEnabled={isFullscreenEnabled || false}
@@ -80,7 +80,7 @@ class Correlation extends React.Component<IProps, IState> {
             width={500}
             height={500}
           /> */}
-                </Wrapper>
+                </>
               )}
             </PTWrapper>
           )
@@ -118,10 +118,11 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
 
 const PTWrapper = styled.div`
   min-width: 70vw;
+  width: 100%;
   min-height: 75vh;
   display: flex;
   flex-direction: column;
-  margin-top: 1.5rem;
+
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
@@ -139,9 +140,9 @@ const StyledCard = styled(Card)`
 `
 
 const Wrapper = styled.div`
-  max-width: 90vw;
-  height: 80%;
-  padding: 1rem;
+  height: calc(100vh - 130px);
+  width: calc(100% - 2rem);
+  margin: 1.5rem;
   display: flex;
   flex-wrap: wrap;
 `
