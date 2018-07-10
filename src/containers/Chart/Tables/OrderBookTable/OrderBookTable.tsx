@@ -12,10 +12,15 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
+import { Loading } from '@components/Loading/Loading'
 
 class OrderBookTable extends PureComponent {
   render() {
     const { onButtonClick, roundTill, aggregation, quote, data } = this.props
+
+    if (!data) {
+      return <Loading centerAligned />
+    }
 
     return (
       <Table>

@@ -171,10 +171,8 @@ class Chart extends React.Component<IState> {
     } = this.state
     const { currencyPair } = this.props
 
-    let base
     let quote
     if (currencyPair) {
-      base = currencyPair.split('/')[0]
       quote = currencyPair.split('/')[1]
     }
 
@@ -277,7 +275,7 @@ class Chart extends React.Component<IState> {
                   spreadData,
                   base,
                   quote,
-                  animated: 'gentle',
+                  animated: false,
                 }}
               />
             </DepthChartContainer>

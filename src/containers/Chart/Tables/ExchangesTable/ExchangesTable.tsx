@@ -13,6 +13,7 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
+import { Loading } from '@components/Loading/Loading'
 
 class ExchangesTable extends PureComponent {
   render() {
@@ -23,6 +24,10 @@ class ExchangesTable extends PureComponent {
       quote,
       onButtonClick,
     } = this.props
+
+    if (!exchanges) {
+      return <Loading centerAligned />
+    }
 
     return (
       <StyledTable>
