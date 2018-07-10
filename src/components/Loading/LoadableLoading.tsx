@@ -12,7 +12,7 @@ export default class LoadableLoading extends React.Component {
       return <div>Taking a long time...</div>
     } else if (pastDelay) {
       // When the loader has taken longer than the delay
-      return <Loading />
+      return <Loading centerAligned />
     } else {
       // When the loader has just started
       return null

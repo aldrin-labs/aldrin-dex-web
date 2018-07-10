@@ -1,7 +1,4 @@
 import * as React from 'react'
-import styled from 'styled-components'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
-import spinLoader from '@icons/tail-spin.svg'
 import { IState } from './types'
 import { ITableProps } from '../../interfaces'
 import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
@@ -9,6 +6,7 @@ import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
 import PortfolioTableBalances from './Main/PortfolioTableBalances'
 import Optimization from './Optimization/Optimization'
 import Correlation from './Correlation/Correlation'
+import { Loading } from '@components/Loading/Loading'
 import PortfolioTableTabs from './PortfolioTableTabs'
 
 export class PortfolioTable extends React.Component<ITableProps, IState> {
@@ -36,20 +34,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     const { tab, portfolio, isShownChart, isUSDCurrently } = this.state
 
     if (this.props.loading) {
-      return (
-        <LoaderWrapper>
-          <SvgIcon
-            src={spinLoader}
-            width={48}
-            height={48}
-            style={{
-              position: 'absolute',
-              left: 'calc(50% - 48px)',
-              top: 'calc(50% - 48px)',
-            }}
-          />
-        </LoaderWrapper>
-      )
+      return <Loading centerAligned />
     }
 
     if (tab === 'main') {
@@ -142,11 +127,3 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     return null
   }
 }
-
-const LoaderWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 24px;
-  position: relative;
-`

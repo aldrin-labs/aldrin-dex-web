@@ -12,6 +12,7 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
+import { Loading } from '@components/Loading/Loading'
 
 export interface IProps {
   quote: string
@@ -26,6 +27,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
   render() {
     const { quote, data } = this.props
     const { tableExpanded } = this.state
+
+    if (!data) {
+      return <Loading centerAligned />
+    }
 
     return (
       <TradeHistoryTableCollapsible>

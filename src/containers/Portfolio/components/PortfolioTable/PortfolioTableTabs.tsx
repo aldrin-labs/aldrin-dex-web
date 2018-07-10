@@ -123,9 +123,9 @@ class PortfolioTableTabs extends React.Component<IProps> {
               </>
             ) : null}
 
-            <ToggleBtn onClick={this.onToggleChart}>
-              <SvgIcon src={filterListIcon} width={24} height={24} />
-            </ToggleBtn>
+            {/*<ToggleBtn onClick={this.onToggleChart}>*/}
+              {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
+            {/*</ToggleBtn>*/}
 
             {tab !== 'correlation' &&
               (dataFromProps || isShownMocks) && (

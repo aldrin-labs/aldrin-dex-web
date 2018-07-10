@@ -5,6 +5,7 @@ import { Collapse } from '@material-ui/core'
 
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
+import { Loading } from '@components/Loading/Loading'
 
 class SpreadTable extends PureComponent {
   state = {
@@ -21,6 +22,10 @@ class SpreadTable extends PureComponent {
   render() {
     const { tableExpanded } = this.state
     const { roundTill, aggregation, spread, quote, data } = this.props
+
+    if (!data) {
+      return <Loading centerAligned />
+    }
 
     return (
       <SpreadreadTableWrapper>
