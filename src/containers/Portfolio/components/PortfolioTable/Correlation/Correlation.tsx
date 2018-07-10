@@ -121,7 +121,7 @@ const PTWrapper = styled.div`
   min-height: 75vh;
   display: flex;
   flex-direction: column;
-  margin: 1.5rem;
+  margin-top: 1.5rem;
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;

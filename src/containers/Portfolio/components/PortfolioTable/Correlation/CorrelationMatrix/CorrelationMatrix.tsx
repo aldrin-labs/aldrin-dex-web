@@ -166,6 +166,7 @@ const FullscreenNode = styled.div`
 const ScrolledWrapper = styled.div`
   max-height: 70vh;
   height: 100%;
+  width: 100%;
   overflow-y: scroll;
   background-color: #393e44;
   margin: 0 auto;

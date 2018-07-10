@@ -37,71 +37,112 @@ class CorrelationMatrixTable extends PureComponent {
       ? { width: '100vw', height: '100vh' }
       : {}
 
-    return (
-      <Table style={tableStyle}>
-        <thead>
-          <Row>
-            <HeadItem
-              isFullscreenEnabled={isFullscreenEnabled}
-              style={{
-                width: '4em',
-                backgroundColor: '#393e44',
-              }}
-            />
-            {rows.map((row) => (
-              <HeadItem isFullscreenEnabled={isFullscreenEnabled} key={row}>
-                {row}
-              </HeadItem>
-            ))}
-          </Row>
-        </thead>
-        <tbody onMouseLeave={onTableMouseLeave} onMouseOver={onTableMouseOver}>
-          {cols.map((col, i) => (
-            <Row key={rows[i]}>
-              {rows[i] && (
-                <Item
-                  style={{
-                    color: '#fff',
-                    textAlign: 'right',
-                    border: 'none',
-                    left: 0,
-                    backgroundColor: '#393e44',
-                  }}
-                >
-                  {rows[i]}
-                </Item>
-              )}
-              {col.map((el, indx) => {
-                const value = onFloorN(Number(el), 2)
-                const { backgroundColor, textColor } = getColor(el)
+    console.log(cols)
+    console.log(rows)
 
-                return (
-                  <Item
-                    key={el}
-                    textColor={textColor}
-                    color={backgroundColor}
-                    onMouseOver={(event) =>
-                      onMouseOver(
-                        indx,
-                        value,
-                        rows[i],
-                        rows[indx],
-                        event.nativeEvent.clientX,
-                        event.nativeEvent.clientY
-                      )
-                    }
-                  >
-                    {value}
-                  </Item>
-                )
-              })}
-            </Row>
-          ))}
-        </tbody>
-      </Table>
+    return (
+      <GridTable rows={4} columns={4}>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+        <Cell color="black" textColor="white">
+          1
+        </Cell>
+      </GridTable>
+
+      // <Table style={tableStyle}>
+      //   <thead>
+      //     <Row>
+      //       <HeadItem
+      //         isFullscreenEnabled={isFullscreenEnabled}
+      //         style={{
+      //           width: '4em',
+      //           backgroundColor: '#393e44',
+      //         }}
+      //       />
+      //       {rows.map((row) => (
+      //         <HeadItem isFullscreenEnabled={isFullscreenEnabled} key={row}>
+      //           {row}
+      //         </HeadItem>
+      //       ))}
+      //     </Row>
+      //   </thead>
+      //   <tbody onMouseLeave={onTableMouseLeave} onMouseOver={onTableMouseOver}>
+      //     {cols.map((col, i) => (
+      //       <Row key={rows[i]}>
+      //         {rows[i] && (
+      //           <Item
+      //             style={{
+      //               color: '#fff',
+      //               textAlign: 'right',
+      //               border: 'none',
+      //               left: 0,
+      //               backgroundColor: '#393e44',
+      //             }}
+      //           >
+      //             {rows[i]}
+      //           </Item>
+      //         )}
+      //         {col.map((el, indx) => {
+      //           const value = onFloorN(Number(el), 2)
+      //           const { backgroundColor, textColor } = getColor(el)
+
+      //           return (
+      //             <Item
+      //               key={el}
+      //               textColor={textColor}
+      //               color={backgroundColor}
+      //               onMouseOver={(event) =>
+      //                 onMouseOver(
+      //                   indx,
+      //                   value,
+      //                   rows[i],
+      //                   rows[indx],
+      //                   event.nativeEvent.clientX,
+      //                   event.nativeEvent.clientY
+      //                 )
+      //               }
+      //             >
+      //               {value}
+      //             </Item>
+      //           )
+      //         })}
+      //       </Row>
+      //     ))}
+      //   </tbody>
+      // </Table>
     )
   }
 }
+
+const GridTable = styled.div`
+  width: 80%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: ${(props) =>
+    `repeat(${props.rows}, ${100 / props.rows}%)`};
+  grid-template-columns: ${(props) =>
+    `repeat(${props.columns}, ${100 / props.columns}%)`};
+  gap: 1% 1%;
+`
 
 const HeadItem = styled.th`
   font-family: Roboto, sans-serif;
@@ -121,9 +162,7 @@ const HeadItem = styled.th`
   user-select: none;
 `
 
-const Row = styled.tr``
-
-const Item = styled.td`
+const Cell = styled.div`
   background-color: ${(props: { color?: string }) => {
     if (props.color) {
       return props.color
@@ -131,22 +170,16 @@ const Item = styled.td`
 
     return 'transparent'
   }};
-
-  position: ${(props) => (props.position ? 'relative' : 'static')};
-
   font-family: Roboto, sans-serif;
-  font-size: 0.75em;
+  font-size: 1rem;
   color: ${(props) => props.textColor};
   font-weight: 500;
   padding: 0.5em;
-  width: 50px;
+
   text-align: center;
   overflow: hidden;
   white-space: nowrap;
   border: 1px solid #fff;
-
-  cursor: help;
-  user-select: none;
 `
 
 const Table = styled.table`
