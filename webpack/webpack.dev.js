@@ -13,7 +13,7 @@ const config = {
   output: {
     filename: 'bundle.[hash].js',
   },
-  devtool: 'source-map',
+  devtool: 'eval-source-map',
   module: {},
   plugins: [
     new ErrorOverlayPlugin(),
@@ -21,6 +21,7 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
   ],
+  cache: true,
   devServer: {
     host: 'localhost',
     port,

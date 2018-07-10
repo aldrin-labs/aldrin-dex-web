@@ -19,7 +19,7 @@ const config = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        loader: 'babel-loader?cacheDirectory=true'
       },
       {
         test: /\.(graphql|gql)$/,
