@@ -1,113 +1,182 @@
-import React from 'react'
-import { InputLabel } from 'material-ui/Input'
+import React, { SyntheticEvent } from 'react'
 import { MenuItem } from 'material-ui/Menu'
 import { FormControl } from 'material-ui/Form'
-import Typography from 'material-ui/Typography'
 import TextField from 'material-ui/TextField'
 import Select from 'material-ui/Select'
 import SelectReact, { components } from 'react-select'
 import styled from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '../../../components/SvgIcon/SvgIcon'
-import Slider from '@material-ui/lab/Slider';
+// import Slider from '@material-ui/lab/Slider'
 import { IProps, IState } from './Selector.types'
 import { data } from './selectsData'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
+import SaveIcon from 'material-ui-icons/Save'
+import DeleteIcon from 'material-ui-icons/Delete'
 
+import { Range } from 'rc-slider'
+import 'rc-slider/assets/index.css'
 
+// TODO: Update Selector types
+
+const initialState = {
+  industry: [],
+
+  marketCapSliderValues: [50000, 50000000],
+
+  lowerBoundSlider: 50000,
+  upperBoundSlider: 50000000,
+  changeInPercentage: '',
+  simpleMovingAverage: '',
+  closingPriceAverage: '',
+  averageVolume10: '',
+  averageVolume30: '',
+  averageVolume60: '',
+  averageVolume90: '',
+
+  averageVolumeOnBalance: '',
+  low: '',
+  high: '',
+
+  changeInPercentageInput: '',
+  simpleMovingAverageInput: '',
+  closingPriceAverageInput: '',
+  averageVolume10Input: '',
+  averageVolume30Input: '',
+  averageVolume60Input: '',
+  averageVolume90Input: '',
+
+  averageVolumeOnBalanceInput: '',
+
+  showFilters: false,
+}
 
 export default class ScreenerSelect extends React.Component<IProps, IState> {
-  state: IState = {
-    timeInterval: '',
-    industry: [],
+  state: IState = Object.assign({}, initialState)
 
-    marketCapSlider: '',
-    marketCap: '',
-    changeInPercentage: '',
-    simpleMovingAverage: '',
-    closingPriceAverage: '',
-    averageVolume: '',
-    averageVolumeOnBalance: '',
-    low: '',
-    high: '',
-
-    marketCapInput: '',
-    changeInPercentageInput: '',
-    simpleMovingAverageInput: '',
-    closingPriceAverageInput: '',
-    averageVolumeInput: '',
-    averageVolumeOnBalanceInput: '',
-
-    showFilters: false,
-  }
-
-  marketCapRef = React.createRef()
   changeInPercentageRef = React.createRef()
   simpleMovingAverageRef = React.createRef()
   closingPriceAverageRef = React.createRef()
-  averageVolumeRef = React.createRef()
+  averageVolume10Ref = React.createRef()
+  averageVolume30Ref = React.createRef()
+  averageVolume60Ref = React.createRef()
+  averageVolume90Ref = React.createRef()
+
   averageVolumeOnBalanceRef = React.createRef()
 
-  handleSliderChange = (event, value) => {
+  componentWillMount = () => {
+    const savedState = JSON.parse(localStorage.getItem('savedState'))
+
+    if (savedState) {
+      this.loadValuesFromLocalStorage()
+    }
+  }
+
+  lowerBoundSliderChange = (e) => {
+    if (!/^([0-9]+|)$/.test(e.target.value)) {
+      return
+    }
+
+    const value = +e.target.value
+
+    this.setState((prevState) => ({
+      lowerBoundSlider: value,
+      marketCapSliderValues: [value, prevState.marketCapSliderValues[1]],
+    }))
+  }
+
+  upperBoundSliderChange = (e) => {
+    if (!/^([0-9]+|)$/.test(e.target.value)) {
+      return
+    }
+
+    const value = +e.target.value
+
+    this.setState((prevState) => ({
+      upperBoundSlider: value,
+      marketCapSliderValues: [prevState.marketCapSliderValues[0], value],
+    }))
+
+    // this.setState((prevState) => ({
+    //   upperBoundSlider: e.target.value,
+    //   // marketCapSlider: [prevState.marketCapSlider[0], +e.target.value],
+    // }))
+  }
+
+  handleSliderChange = (value) => {
     this.setState({
-      [event.target.id]: value
-    });
-  };
+      marketCapSliderValues: value,
+      lowerBoundSlider: value[0],
+      upperBoundSlider: value[1],
+    })
+  }
 
-
-  handleSelectChangeWithInput(name: string, optionSelected: {label: string, value: string} | null, actionObj: {action: string}) {
-    const value = optionSelected ? optionSelected.value : ''
+  handleSelectChangeWithInput(
+    name: string,
+    optionSelected: { label: string; value: string } | null,
+    actionObj: { action: string }
+  ) {
+    const value = optionSelected ? optionSelected : ''
 
     console.log('action: ', actionObj)
 
-
     switch (actionObj.action) {
-
       case 'clear': {
-
-        this.setState({
-          [name]: value,
-          [`${name}Input`]: ''
-        }, () => {
-          console.log(this.state);
-        })
+        this.setState(
+          {
+            [name]: value,
+            [`${name}Input`]: '',
+          },
+          () => {
+            console.log(this.state)
+          }
+        )
 
         return
       }
       case 'select-option': {
-
-        this.setState({
-          [name]: value,
-        }, () => {
-          console.log(this.state);
-        })
+        this.setState(
+          {
+            [name]: value,
+          },
+          () => {
+            console.log(this.state)
+          }
+        )
 
         this[`${name}Ref`].current.focus()
 
         return
       }
-      default: return
+      default:
+        return
     }
-
-
   }
 
-  handleSelectChangeWithoutInput(name, optionSelected) {
-    const value = optionSelected ? optionSelected.value : ''
+  handleSelectChangeWithoutInput(
+    name: string,
+    optionSelected: { label: string; value: string } | null
+  ) {
+    const value = optionSelected ? optionSelected : ''
 
-    this.setState({
-      [name]: value,
-    }, () => {
-      console.log(this.state);
-    })
+    console.log(optionSelected)
 
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => {
+        console.log(this.state)
+      }
+    )
   }
 
-  handleSelectChange = (event) => {
+  handleSelectChangeMaterial = (event: SyntheticEvent) => {
     this.setState({
       [event.target.name]: event.target.value,
     })
   }
+
   handleInputChange = (event) => {
     const inputValue = event.target.value
     // TODO: But regex should be changed for multiple zeros catch
@@ -126,8 +195,30 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
     )
   }
 
-  hangleToggleFilters = () => {
+  handleToggleFilters = () => {
     this.setState((prevState) => ({ showFilters: !prevState.showFilters }))
+  }
+
+  handleSaveClick = () => {
+    this.updateLocalStorage()
+  }
+
+  handleDeleteAllClick = () => {
+    this.deleteCurrentValues()
+  }
+
+  deleteCurrentValues = () => {
+    this.setState({ ...initialState, showFilters: true })
+  }
+
+  updateLocalStorage = () => {
+    localStorage.setItem('savedState', JSON.stringify(this.state))
+  }
+
+  loadValuesFromLocalStorage = () => {
+    const savedState = JSON.parse(localStorage.getItem('savedState'))
+
+    this.setState(savedState)
   }
 
   render() {
@@ -135,8 +226,8 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
 
     return (
       <MainWrapper>
-        <ToggleFiltersContainer onClick={this.hangleToggleFilters}>
-          Screener
+        <ToggleFiltersContainer onClick={this.handleToggleFilters}>
+          Screener signals
           <SvgIcon
             src={sortIcon}
             width={12}
@@ -149,28 +240,25 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             }}
           />
         </ToggleFiltersContainer>
+        <ButtonsContainer>
+          <ActionButton onClick={this.handleSaveClick}>
+            <SaveIcon />
+          </ActionButton>
+          <ActionButton
+            isDeleteColor={true}
+            onClick={this.handleDeleteAllClick}
+          >
+            <DeleteIcon />
+          </ActionButton>
+        </ButtonsContainer>
         <SContainer autoComplete="off" showFilters={showFilters}>
           <SColumnForm>
-            <SFormControl value={this.state.timeInterval}>
-              <Label>
-                Time interval
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                placeholder=''
-                options={data.timeInterval}
-                components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithoutInput.bind(this, 'timeInterval')}
-              />
-            </SFormControl>
-
-            <SFormControl value={this.state.industry}>
-              <Label>Industry</Label>
+            <SFormControl>
+              <SelectLabel>Industry</SelectLabel>
               <SSelect
                 key="industry"
                 value={this.state.industry}
-                onChange={this.handleSelectChange}
+                onChange={this.handleSelectChangeMaterial}
                 inputProps={{
                   name: 'industry',
                   id: 'industry',
@@ -184,104 +272,19 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 ))}
               </SSelect>
             </SFormControl>
-          </SColumnForm>
-          <SColumnForm>
-            <SFormControl value={this.state.simpleMovingAverage}>
-              <Label>
-                Simple Moving Average
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                placeholder=''
-                options={data.simpleMovingAverage}
-                components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'simpleMovingAverage')}
-              />
-              <Input
-                name="simpleMovingAverageInput"
-                onChange={this.handleInputChange}
-                value={this.state.simpleMovingAverageInput}
-                innerRef={this.simpleMovingAverageRef}
-              />
-            </SFormControl>
-            <SFormControl value={this.state.closingPriceAverage}>
-              <Label>
-                Closing Price Average
-              </Label>
-              <SelectR
-                styles={customStyles}
-                isClearable
-                placeholder=''
-                options={data.closingPriceAverage}
-                components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'closingPriceAverage')}
-              />
-                <Input
-                  name="closingPriceAverageInput"
-                  onChange={this.handleInputChange}
-                  value={this.state.closingPriceAverageInput}
-                  innerRef={this.closingPriceAverageRef}
-                />
-            </SFormControl>
-          </SColumnForm>
-          <SColumnForm>
-            {/*<SFormControl value={this.state.marketCap}>*/}
-              {/*<Label>*/}
-                {/*Market Cap*/}
-              {/*</Label>*/}
-              {/*<SelectR*/}
-                {/*styles={customStyles}*/}
-                {/*isClearable*/}
-                {/*options={data.marketCap}*/}
-                {/*onChange={this.handleSelectChangeWithInput.bind(this, 'marketCap')}*/}
-              {/*/>*/}
-              {/*<Input*/}
-                {/*name="marketCapInput"*/}
-                {/*onChange={this.handleInputChange}*/}
-                {/*value={this.state.marketCapInput}*/}
-                {/*innerRef={this.marketCapRef}*/}
-              {/*/>*/}
-            {/*</SFormControl>*/}
-            <SFormControl>
-              <Label>Market Cap Slider</Label>
-              <STextField
-                fullWidth
-                select
-                value={[{label: 100, value: 200}]}
-                SelectProps={{
-                  multiple: true,
-
-                  MenuProps: {
-                    PaperProps: {
-                      style: {
-                        background: '#ff',
-                      }
-                    },
-                  },
-                  renderValue: () => this.state.marketCapSlider.toString()
-                }}
-              >
-                <SliderContainer>
-                  <SliderWrapper>
-                    <SliderLabel>Market Cap Slider</SliderLabel>
-                    <SliderMaterial id='marketCapSlider' value={this.state.marketCapSlider} step={1} aria-labelledby="label" min={0} max={100} onChange={this.handleSliderChange} />
-                    <SliderValueWrapper>{this.state.marketCapSlider}</SliderValueWrapper>
-                  </SliderWrapper>
-                </SliderContainer>
-              </STextField>
-            </SFormControl>
             <SFormControl value={this.state.changeInPercentage}>
-              <Label>
-                Change %
-              </Label>
+              <SelectLabel>Change %</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
+                value={this.state.changeInPercentage}
                 options={data.changeInPercentage}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'changeInPercentage')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'changeInPercentage'
+                )}
               />
               <Input
                 name="changeInPercentageInput"
@@ -292,36 +295,114 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl value={this.state.averageVolume}>
-              <Label>
-                Average Volume
-              </Label>
+            <SFormControl value={this.state.simpleMovingAverage}>
+              <SelectLabel>Simple Moving Average</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
-                options={data.averageVolume}
+                placeholder=""
+                value={this.state.simpleMovingAverage}
+                options={data.simpleMovingAverage}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolume')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'simpleMovingAverage'
+                )}
               />
               <Input
-                name="averageVolumeInput"
+                name="simpleMovingAverageInput"
                 onChange={this.handleInputChange}
-                value={this.state.averageVolumeInput}
-                innerRef={this.averageVolumeRef}
+                value={this.state.simpleMovingAverageInput}
+                innerRef={this.simpleMovingAverageRef}
               />
             </SFormControl>
-            <SFormControl value={this.state.averageVolumeOnBalance}>
-              <Label>
-                On-Balance Volume
-              </Label>
+            <SFormControl value={this.state.closingPriceAverage}>
+              <SelectLabel>Closing Price Average</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
+                value={this.state.closingPriceAverage}
+                options={data.closingPriceAverage}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'closingPriceAverage'
+                )}
+              />
+              <Input
+                name="closingPriceAverageInput"
+                onChange={this.handleInputChange}
+                value={this.state.closingPriceAverageInput}
+                innerRef={this.closingPriceAverageRef}
+              />
+            </SFormControl>
+          </SColumnForm>
+          <SColumnForm>
+            <SFormControl>
+              <SelectLabel>Market Cap Slider</SelectLabel>
+              <STextField
+                fullWidth
+                select
+                value={[{ label: 100, value: 200 }]}
+                SelectProps={{
+                  multiple: true,
+
+                  MenuProps: {
+                    PaperProps: {
+                      style: {
+                        background: '#ff',
+                      },
+                    },
+                  },
+                  renderValue: () =>
+                    `${this.state.marketCapSliderValues[0]} -
+                        ${this.state.marketCapSliderValues[1]}`,
+                }}
+              >
+                <SliderContainer>
+                  <SliderWrapper>
+                    <SliderLabel>Market Cap Slider</SliderLabel>
+                    <RangeSliderWrapper>
+                      <Input
+                        value={this.state.lowerBoundSlider}
+                        onChange={this.lowerBoundSliderChange}
+                      />
+                      <RangeSlider
+                        allowCross={false}
+                        step={10000}
+                        min={50000}
+                        max={50000000}
+                        value={this.state.marketCapSliderValues}
+                        onChange={this.handleSliderChange}
+                      />
+                      <Input
+                        value={this.state.upperBoundSlider}
+                        onChange={this.upperBoundSliderChange}
+                      />
+                    </RangeSliderWrapper>
+                    <SliderValueWrapper>
+                      {`${this.state.marketCapSliderValues[0]} -
+                        ${this.state.marketCapSliderValues[1]}`}
+                    </SliderValueWrapper>
+                  </SliderWrapper>
+                </SliderContainer>
+              </STextField>
+            </SFormControl>
+
+            <SFormControl value={this.state.averageVolumeOnBalance}>
+              <SelectLabel>On-Balance Volume</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.averageVolumeOnBalance}
                 options={data.averageVolumeOnBalance}
                 components={{ DropdownIndicator }}
-                onChange={this.handleSelectChangeWithInput.bind(this, 'averageVolumeOnBalance')}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolumeOnBalance'
+                )}
               />
               <Input
                 name="averageVolumeOnBalanceInput"
@@ -332,30 +413,121 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
             </SFormControl>
           </SColumnForm>
           <SColumnForm>
-            <SFormControl value={this.state.low}>
-              <Label>
-                Low
-              </Label>
+            <SFormControl value={this.state.averageVolume10}>
+              <SelectLabel>Average Volume 10</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
+                placeholder=""
+                value={this.state.averageVolume10}
+                options={data.averageVolume10}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume10'
+                )}
+              />
+              <Input
+                name="averageVolume10Input"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolume10Input}
+                innerRef={this.averageVolume10Ref}
+              />
+            </SFormControl>
+
+            <SFormControl value={this.state.averageVolume30}>
+              <SelectLabel>Average Volume 30</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.averageVolume30}
+                options={data.averageVolume30}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume30'
+                )}
+              />
+              <Input
+                name="averageVolume30Input"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolume30Input}
+                innerRef={this.averageVolume30Ref}
+              />
+            </SFormControl>
+          </SColumnForm>
+          <SColumnForm>
+            <SFormControl value={this.state.averageVolume60}>
+              <SelectLabel>Average Volume 60</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.averageVolume60}
+                options={data.averageVolume60}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume60'
+                )}
+              />
+              <Input
+                name="averageVolume60Input"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolume60Input}
+                innerRef={this.averageVolume60Ref}
+              />
+            </SFormControl>
+
+            <SFormControl value={this.state.averageVolume90}>
+              <SelectLabel>Average Volume 90</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
+                value={this.state.averageVolume90}
+                options={data.averageVolume90}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithInput.bind(
+                  this,
+                  'averageVolume90'
+                )}
+              />
+              <Input
+                name="averageVolume90Input"
+                onChange={this.handleInputChange}
+                value={this.state.averageVolume90Input}
+                innerRef={this.averageVolume90Ref}
+              />
+            </SFormControl>
+          </SColumnForm>
+          <SColumnForm>
+            <SFormControl value={this.state.low}>
+              <SelectLabel>Low</SelectLabel>
+              <SelectR
+                styles={customStyles}
+                isClearable
+                placeholder=""
                 options={data.low}
+                value={this.state.low}
                 components={{ DropdownIndicator }}
                 onChange={this.handleSelectChangeWithoutInput.bind(this, 'low')}
               />
             </SFormControl>
             <SFormControl value={this.state.high}>
-              <Label>
-                High
-              </Label>
+              <SelectLabel>High</SelectLabel>
               <SelectR
                 styles={customStyles}
                 isClearable
-                placeholder=''
-                components={{ DropdownIndicator }}
+                placeholder=""
                 options={data.high}
-                onChange={this.handleSelectChangeWithoutInput.bind(this, 'high')}
+                value={this.state.high}
+                components={{ DropdownIndicator }}
+                onChange={this.handleSelectChangeWithoutInput.bind(
+                  this,
+                  'high'
+                )}
               />
             </SFormControl>
           </SColumnForm>
@@ -400,9 +572,9 @@ const customStyles = {
     [':active']: null,
   }),
   clearIndicator: (base, state) => {
-    return ({
+    return {
       [':hover']: {
-        color: '#fff'
+        color: '#fff',
       },
       display: 'flex',
       width: '19px',
@@ -410,11 +582,11 @@ const customStyles = {
       color: 'hsl(0, 0%, 80%)',
       padding: '2px',
       transition: 'color 150ms',
-    })
+    }
   },
   dropdownIndicator: (base, state) => ({
     [':hover']: {
-      color: '#fff'
+      color: '#fff',
     },
     display: 'flex',
     boxSizing: 'border-box',
@@ -428,7 +600,7 @@ const customStyles = {
   singleValue: (base, state) => ({
     ...base,
     color: '#fff',
-    marginLeft: '0'
+    marginLeft: '0',
   }),
   placeholder: (base, state) => ({
     ...base,
@@ -436,16 +608,15 @@ const customStyles = {
   }),
   input: (base, state) => ({
     ...base,
-    color: '#fff'
+    color: '#fff',
   }),
   indicatorSeparator: () => ({
-    display: 'none'
-  })
+    display: 'none',
+  }),
 }
 
-
-const DropdownIndicator = (props) => {
-  return components.DropdownIndicator && (
+const DropdownIndicator = (props) =>
+  components.DropdownIndicator && (
     <components.DropdownIndicator {...props}>
       <SvgIcon
         src={dropDownIcon}
@@ -456,23 +627,11 @@ const DropdownIndicator = (props) => {
         }}
       />
     </components.DropdownIndicator>
-  );
-};
+  )
 
 const SContainer = styled.form`
   display: ${(props: { showFilters?: boolean }) =>
     props.showFilters ? 'flex' : 'none'};
-`
-
-const TextDemo = styled.div`
-  display: flex;
-  align-self: center;
-  align-items: center;
-  flex-direction: column;
-`
-
-const STypography = styled(Typography)`
-  margin: 20px;
 `
 
 const MainWrapper = styled.div`
@@ -480,6 +639,7 @@ const MainWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   align-items: center;
+  position: static;
 `
 
 const Input = styled.input`
@@ -501,24 +661,20 @@ const Input = styled.input`
   line-height: 0.7em;
 `
 
-//   & ${Input} {
-//     display: ${(props: { value?: boolean | string }) =>
-// props.value && !(props.value === 'Any') ? 'block' : 'none'};
-// }
+// TODO: remove any from the opacity & pointer-events props
 
 const SFormControl = styled(FormControl)`
   width: 150px;
   min-height: 63px;
-  
+
   & ${Input} {
-  opacity: ${(props: { value?: boolean | string }) =>
-  props.value && !(props.value === 'Any') ? '1' : '0'};
+    opacity: ${(props: { value?: boolean | string | string[] }) =>
+      props.value && props.value!.hasOwnProperty('value') ? '1' : '0'};
   }
-  
+
   & ${Input} {
-  pointer-events: ${(props: { value?: boolean | string }) =>
-  props.value && !(props.value === 'Any') ? 'auto' : 'none'};
-  
+    pointer-events: ${(props: { value?: boolean | string | string[] }) =>
+      props.value && props.value!.hasOwnProperty('value') ? 'auto' : 'none'};
   }
 
   && {
@@ -540,6 +696,15 @@ const ToggleFiltersContainer = styled.div`
   width: 57vw;
 `
 
+const ButtonsContainer = styled.div`
+  display: flex;
+  user-select: none;
+  flex-direction: column;
+  position: absolute;
+  top: 110px;
+  right: 30px;
+`
+
 // TODO: Just a hack, replace it with the normal material-ui ovverriding withStyles
 const SSelect = styled(Select)`
   && > div > div {
@@ -555,7 +720,6 @@ const SSelect = styled(Select)`
     font-size: 12px;
     margin-top: 0;
   }
- 
 `
 
 const SelectR = styled(SelectReact)`
@@ -569,35 +733,47 @@ const SelectR = styled(SelectReact)`
   }
 `
 
-const Label = styled.label`
-    font-size: 0.6em;
-    color: rgba(255, 255, 255, 0.7);
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-    line-height: 1;
+const SelectLabel = styled.label`
+  font-size: 0.6em;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  line-height: 1;
 `
-
-const SFilterWrapper = styled.div`
-  display: flex;
-`
-
 
 const SliderWrapper = styled.div`
-  width: 100px;
+  width: 500px;
   outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
 const SliderLabel = styled.div`
   text-align: center;
   font-size: 0.6em;
   color: rgba(255, 255, 255, 0.7);
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   line-height: 1;
 `
 
-const SliderMaterial = styled(Slider)`
+const RangeSliderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 20px 10px;
 
-  & > div {
-    background-color: rgb(78,216,218);
+  ${Input} {
+    margin: 0px 20px;
+    width: 70px;
+  }
+`
+
+const RangeSlider = styled(Range)`
+  & ${`.rc-slider-track`} {
+    background-color: rgb(78, 216, 218);
+  }
+
+  & ${`.rc-slider-handle`} {
+    border-color: #fff;
   }
 `
 
@@ -613,7 +789,6 @@ const SliderValueWrapper = styled.div`
   color: #fff;
 `
 
-
 const STextField = styled(TextField)`
   && svg {
     font-size: 1.7em;
@@ -624,4 +799,89 @@ const STextField = styled(TextField)`
     font-size: 12px;
     margin-top: 0;
   }
+`
+
+const ActionButton = styled.button`
+  border: none;
+  margin: 0;
+  padding: 1.75px 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: normal;
+  text-align: inherit;
+  outline: none;
+  -webkit-font-smoothing: inherit;
+  -moz-osx-font-smoothing: inherit;
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+  }
+
+  & svg {
+    color: white;
+    padding-bottom: 7px;
+    width: 33px;
+    height: 33px;
+  }
+
+  &:hover svg {
+    color: ${(props: { isDeleteColor?: boolean }) =>
+      props.isDeleteColor ? '#f44336' : '#4caf50'};
+  }
+`
+
+const Label = styled.label``
+
+const Span = styled.span``
+
+const Checkbox = styled.input`
+  display: none;
+
+  & + ${Label} ${Span} {
+    display: inline-block;
+
+    width: 18px;
+
+    height: 18px;
+
+    cursor: pointer;
+    vertical-align: middle;
+
+    border: 1.5px solid #909294;
+    border-radius: 3px;
+    background-color: transparent;
+  }
+
+  & + ${Label}:hover ${Span} {
+    border-color: #4ed8da;
+  }
+
+  &:checked + ${Label} ${Span} {
+    border-color: #4ed8da;
+    background-color: #4ed8da;
+    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px;
+  }
+`
+
+const CheckBoxLabel = styled.label`
+  color: #fff;
+  font-family: Roboto;
+  padding-left: 10px;
+  padding-top: 1px;
+`
+
+const CheckBoxContainer = styled.div`
+  display: flex;
 `
