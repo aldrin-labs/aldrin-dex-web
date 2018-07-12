@@ -53,7 +53,7 @@ class CorrelationMatrixTable extends PureComponent {
         {/* first row with coin names */}
         {rows.map((el, i) => (
           <HeadCell
-            textColor={activeRow === i ? '#4ed8da' : 'black'}
+            textColor={activeRow === i ? '#4ed8da' : '#dedede'}
             key={el.toString()}
           >
             <StyledArrowDown show={activeRow === i} />
@@ -65,7 +65,7 @@ class CorrelationMatrixTable extends PureComponent {
         {/* first column with coin names */}
         {rows.map((el, i) => (
           <HeadCell
-            textColor={activeColumn === i ? '#4ed8da' : 'black'}
+            textColor={activeColumn === i ? '#4ed8da' : '#dedede'}
             style={{ gridColumnStart: 1 }}
             key={el.toString()}
           >
