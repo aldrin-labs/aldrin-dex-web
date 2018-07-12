@@ -13,6 +13,21 @@ const Error = styled(Paper)`
   border: 1px solid red;
 `
 
+const FormatErrorToUser = (errorMessage: string) => {
+  switch (errorMessage) {
+    case 'GraphQL error: You must supply a JWT for authorization!':
+      console.log(errorMessage)
+
+      return 'You not authorized, click Log In and then return back.'
+      break
+
+    default:
+      break
+  }
+
+  return errorMessage
+}
+
 export const CustomError = (props: { error?: string }) => (
   <Typography variant="headline" color="error">
     {props.error || 'Error'}
@@ -20,8 +35,8 @@ export const CustomError = (props: { error?: string }) => (
 )
 
 const SimpleError = (props: { error?: ApolloError }) => (
-  <Typography variant="headline" color="error">
-    {props.error ? props.error.message : 'Error'}
+  <Typography style={{ margin: 'auto' }} variant="headline" color="error">
+    {props.error ? FormatErrorToUser(props.error.message) : 'Error'}
   </Typography>
 )
 const RefetchError = (props: { error?: ApolloError; refetch: Function }) => (
