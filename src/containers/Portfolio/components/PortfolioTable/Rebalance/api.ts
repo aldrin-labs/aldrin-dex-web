@@ -33,3 +33,30 @@ query{
   }
 }
 `
+
+export const getMyPortfolioData = gql`
+query {
+  getProfile {
+    portfolio {
+      assetIds
+      assets {
+        exchange {
+          name
+        }
+      	asset {
+          name
+          priceUSD
+        }
+      }
+    }
+  	myRebalance {
+      total
+      assets {
+        percent
+        amount
+        diff
+      }
+    }
+  }
+}
+`
