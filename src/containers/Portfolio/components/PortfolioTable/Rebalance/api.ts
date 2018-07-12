@@ -14,3 +14,22 @@ query {
   }
 }
 `
+
+export const getMyPortfolioQuery = gql`
+query{
+  getProfile{
+    portfolio{
+      assetIds
+      assets{
+        exchange {
+          name
+        }
+        asset{
+          symbol
+          priceUSD
+        }
+      }
+    }
+  }
+}
+`

@@ -25,7 +25,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 
 
-import { getMyRebalanceQuery } from './api'
+import { getMyRebalanceQuery, getMyPortfolioQuery } from './api'
 
 
 const usdHeadingForCurrent = [
