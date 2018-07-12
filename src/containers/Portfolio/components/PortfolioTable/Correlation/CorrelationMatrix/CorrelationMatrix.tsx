@@ -10,18 +10,7 @@ export interface IProps {
   isFullscreenEnabled: boolean
 }
 
-export interface IHint {
-  index: number
-  value: number
-  colName: string
-  rowName: string
-  x: number
-  y: number
-}
-
 export interface IState {
-  hint: IHint | null
-  hintOpacity: number
   dragging: boolean
   clientX: number | null
   clientY: number | null
@@ -33,13 +22,7 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props)
 
-    this.onMouseOver = debounce(this.onMouseOver, 300)
-    this.onMouseLeave = debounce(this.onMouseLeave, 300)
-    this.mouseMoveHandle = debounce(this.mouseMoveHandle, 50)
-
     this.state = {
-      hint: null,
-      hintOpacity: 0,
       dragging: false,
       clientX: null,
       clientY: null,
@@ -54,30 +37,6 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.mouseUpHandle)
     window.removeEventListener('mousemove', this.mouseMoveHandle)
-  }
-
-  onMouseOver = (
-    index: number,
-    value: number,
-    colName: string,
-    rowName: string,
-    x: number,
-    y: number
-  ) => {
-    this.setState({
-      hint: { index, value, colName, rowName, x, y },
-    })
-  }
-
-  onTableMouseOver = () => {
-    this.setState({ hintOpacity: 1 })
-  }
-
-  onTableMouseLeave = () => {
-    this.setState({
-      hintOpacity: 0,
-      hint: null,
-    })
   }
 
   mouseUpHandle = () => {
@@ -106,19 +65,8 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
     }
   }
 
-  onMouseLeave = () => {
-    this.setState({ hintOpacity: 0, hint: null })
-  }
-
   render() {
-    const { hint } = this.state
-    const { isFullscreenEnabled, cols, rows } = this.props
-    const {
-      onTableMouseLeave,
-
-      onTableMouseOver,
-      onMouseOver,
-    } = this
+    const { isFullscreenEnabled, data } = this.props
 
     return (
       <ScrolledWrapper
@@ -134,24 +82,21 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
           enabled={isFullscreenEnabled}
         >
           <FullscreenNode
-            style={{ display: 'flex', placeContent: 'center' }}
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gridTemplateRows: '100%',
+              alignItems: 'center',
+              justifyItems: 'center',
+            }}
             className="full-screenable-node"
           >
             <Table
               {...{
                 isFullscreenEnabled,
-                onTableMouseLeave,
-                onTableMouseOver,
-                onMouseOver,
-                cols,
-                rows,
+                data,
               }}
             />
-            {!!hint && (
-              <Hint x={hint.x} y={hint.y} opacity={this.state.hintOpacity}>
-                {`${hint.colName} - ${hint.rowName} `}
-              </Hint>
-            )}
           </FullscreenNode>
         </FullScreen>
       </ScrolledWrapper>
@@ -166,10 +111,10 @@ const FullscreenNode = styled.div`
 const ScrolledWrapper = styled.div`
   max-height: 70vh;
   height: 100%;
+  width: 100%;
   overflow-y: scroll;
   background-color: #393e44;
   margin: 0 auto;
-  margin-bottom: 3.125rem;
 
   &::-webkit-scrollbar {
     width: 0.75rem;
@@ -182,19 +127,6 @@ const ScrolledWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
   }
-`
-
-const Hint = styled.span`
-  z-index: 1997;
-  position: fixed;
-  width: auto;
-  opacity: ${(props) => props.opacity};
-  left: ${(props) => props.x + 8}px;
-  top: ${(props: { x: number; y: number; opacity: number }) => props.y + 8}px;
-  padding: 5px;
-  background-color: #292d31;
-  color: #4ed8da;
-  transition: all 0.2s linear;
 `
 
 export default CorrelationMatrix
