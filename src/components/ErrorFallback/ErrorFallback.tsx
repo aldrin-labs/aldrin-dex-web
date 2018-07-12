@@ -35,7 +35,7 @@ export const CustomError = (props: { error?: string }) => (
 )
 
 const SimpleError = (props: { error?: ApolloError }) => (
-  <Typography style={{ margin: 'auto' }} variant="headline" color="error">
+  <Typography variant="headline" color="error">
     {props.error ? FormatErrorToUser(props.error.message) : 'Error'}
   </Typography>
 )
@@ -52,7 +52,7 @@ export const ErrorFallback = (props: {
   error?: ApolloError
   refetch?: Function
 }) => (
-  <Error elevation={10}>
+  <Error style={{ margin: 'auto' }} elevation={10}>
     <SimpleError {...props} />
   </Error>
 )
