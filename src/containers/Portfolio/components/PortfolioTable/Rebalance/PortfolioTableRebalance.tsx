@@ -1,11 +1,15 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
+import { graphql } from 'react-apollo'
+
 import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
 import {
   tableData,
   combineToChart,
 } from './mocks'
-import { onSortStrings, cloneArrayElementsOneLevelDeep } from '../../../../../utils/PortfolioTableUtils'
+import { onSortStrings, cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
 import sortIcon from '@icons/arrow.svg'
 
@@ -21,8 +25,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 
 
-import { graphql } from 'react-apollo'
-import {getMyRebalanceQuery} from './api'
+import { getMyRebalanceQuery } from './api'
 
 
 const usdHeadingForCurrent = [
@@ -56,7 +59,6 @@ const btcHeadingForRebalanced = [
 ]
 
 let tableHeadingsCurrentPortfolio = usdHeadingForCurrent
-
 let tableHeadingsRebalancedPortfolio = usdHeadingForRebalanced
 
 class PortfolioTableRebalance extends React.Component<
@@ -89,6 +91,16 @@ class PortfolioTableRebalance extends React.Component<
   }
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
+
+    const { data, isShownMocks } = this.props
+
+    console.log(data, isShownMocks);
+
+    if (data && data.getProfile && data.getProfile.myRebalance) {
+
+    }
+
+
   }
 
   calculateAllTotals = () => {
@@ -728,28 +740,6 @@ class PortfolioTableRebalance extends React.Component<
   }
 
   render() {
-    const { children, isUSDCurrently } = this.props
-    const {
-      selectedActive,
-      currentSortForStatic,
-      currentSortForDynamic,
-      totalStaticRows,
-      totalRows,
-      isEditModeEnabled,
-      undistributedMoney,
-      isPercentSumGood,
-      totalPercents,
-      totalTableRows,
-      rows,
-      staticRows
-    } = this.state
-    const saveButtonColor =
-      isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-      <Icon className="fa fa-btc" />
-    )
 
     console.log('dataFromServer: ', this.props.data);
 
@@ -773,6 +763,30 @@ class PortfolioTableRebalance extends React.Component<
         </LoaderWrapper>
       )
     }
+
+
+    const { children, isUSDCurrently } = this.props
+    const {
+      selectedActive,
+      currentSortForStatic,
+      currentSortForDynamic,
+      totalStaticRows,
+      totalRows,
+      isEditModeEnabled,
+      undistributedMoney,
+      isPercentSumGood,
+      totalPercents,
+      totalTableRows,
+      rows,
+      staticRows
+    } = this.state
+    const saveButtonColor =
+      isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" />
+    ) : (
+      <Icon className="fa fa-btc" />
+    )
 
 
     return (
@@ -1237,7 +1251,18 @@ class PortfolioTableRebalance extends React.Component<
   }
 }
 
-export default graphql(getMyRebalanceQuery)(PortfolioTableRebalance)
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
+
+export default compose(connect(mapStateToProps), graphql(getMyRebalanceQuery))(PortfolioTableRebalance)
+
+
+
+
+
+
 
 const InputTable = styled.input`
   max-width: 60px;
