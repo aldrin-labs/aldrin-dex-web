@@ -98,10 +98,19 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { startDate, endDate } = this.props
+    const { isShownMocks, startDate, endDate } = this.props
 
     return (
       <Wrapper>
+        {/* {isShownMocks ? <Correlation /> :   <QueryRenderer
+          component={Correlation}
+          query={getCorrelationQuery}
+          variables={{
+            startDate,
+            endDate,
+          }}
+          {...this.props}
+        />} */}
         <QueryRenderer
           component={Correlation}
           query={getCorrelationQuery}
