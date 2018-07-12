@@ -90,6 +90,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     document.addEventListener('keydown', this.escFunction)
 
     const { data, isShownMocks } = this.props
+    console.log('data in componentDidMount' + '', data)
 
     const userHasRebalancePortfolio =
       data && data.getProfile && data.getProfile.myRebalance
@@ -128,6 +129,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   componentWillReceiveProps(nextProps: IProps) {
     const { data } = nextProps
+
+    console.log('data in componentWillReceiveProps', data)
+
     const userHasRebalancePortfolio =
       data && data.getProfile && data.getProfile.myRebalance
     const userHasPortfolio =
@@ -1308,8 +1312,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
 })
-
-// export default compose(connect(mapStateToProps), graphql(getMyRebalanceQuery, {name: 'getMyRebalance'}), graphql(getMyPortfolioQuery, {name: 'getMyPortfolio'}))(PortfolioTableRebalance)
 
 export default compose(
   connect(mapStateToProps),
