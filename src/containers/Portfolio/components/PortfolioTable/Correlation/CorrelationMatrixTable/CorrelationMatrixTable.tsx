@@ -19,18 +19,16 @@ class CorrelationMatrixTable extends PureComponent {
     this.setState({ activeRow, activeColumn })
   }
 
+  onMouseLeave = () => {
+    this.setState({ activeRow: null, activeColumn: null })
+  }
+
   render() {
-    const { isFullscreenEnabled, cols: c, rows } = this.props
+    const { isFullscreenEnabled, data } = this.props
     const { activeRow, activeColumn } = this.state
 
-    // this bullshit needs to be removed when correlation API are done
-    let cols = mockCols
-      .map((col) => col[0].slice(0, rows.length))
-      .slice(0, rows.length)
-
-    if (!(Array.isArray(cols) && Array.isArray(rows))) {
-      return null
-    }
+    const cols = data.values
+    const rows = data.header
 
     const tableStyle = isFullscreenEnabled
       ? { width: '100vw', height: '100vh' }
@@ -41,9 +39,7 @@ class CorrelationMatrixTable extends PureComponent {
 
     return (
       <GridTable
-        onMouseLeave={() => {
-          this.setState({ activeRow: null, activeColumn: null })
-        }}
+        onMouseLeave={this.onMouseLeave}
         rows={cols.length + 1}
         columns={cols[0].length + 1}
       >

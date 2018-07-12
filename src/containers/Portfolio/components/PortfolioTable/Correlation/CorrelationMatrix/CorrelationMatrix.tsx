@@ -10,18 +10,7 @@ export interface IProps {
   isFullscreenEnabled: boolean
 }
 
-export interface IHint {
-  index: number
-  value: number
-  colName: string
-  rowName: string
-  x: number
-  y: number
-}
-
 export interface IState {
-  hint: IHint | null
-  hintOpacity: number
   dragging: boolean
   clientX: number | null
   clientY: number | null
@@ -34,8 +23,6 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
     super(props)
 
     this.state = {
-      hint: null,
-      hintOpacity: 0,
       dragging: false,
       clientX: null,
       clientY: null,
@@ -50,17 +37,6 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
   componentWillUnmount() {
     window.removeEventListener('mouseup', this.mouseUpHandle)
     window.removeEventListener('mousemove', this.mouseMoveHandle)
-  }
-
-  onTableMouseOver = () => {
-    this.setState({ hintOpacity: 1 })
-  }
-
-  onTableMouseLeave = () => {
-    this.setState({
-      hintOpacity: 0,
-      hint: null,
-    })
   }
 
   mouseUpHandle = () => {
@@ -89,19 +65,8 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
     }
   }
 
-  onMouseLeave = () => {
-    this.setState({ hintOpacity: 0, hint: null })
-  }
-
   render() {
-    const { hint } = this.state
-    const { isFullscreenEnabled, cols, rows } = this.props
-    const {
-      onTableMouseLeave,
-
-      onTableMouseOver,
-      onMouseOver,
-    } = this
+    const { isFullscreenEnabled, data } = this.props
 
     return (
       <ScrolledWrapper
@@ -129,18 +94,9 @@ class CorrelationMatrix extends PureComponent<IProps, IState> {
             <Table
               {...{
                 isFullscreenEnabled,
-                onTableMouseLeave,
-                onTableMouseOver,
-                onMouseOver,
-                cols,
-                rows,
+                data,
               }}
             />
-            {!!hint && (
-              <Hint x={hint.x} y={hint.y} opacity={this.state.hintOpacity}>
-                {`${hint.colName} - ${hint.rowName} `}
-              </Hint>
-            )}
           </FullscreenNode>
         </FullScreen>
       </ScrolledWrapper>
@@ -171,19 +127,6 @@ const ScrolledWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
   }
-`
-
-const Hint = styled.span`
-  z-index: 1997;
-  position: fixed;
-  width: auto;
-  opacity: ${(props) => props.opacity};
-  left: ${(props) => props.x + 8}px;
-  top: ${(props: { x: number; y: number; opacity: number }) => props.y + 8}px;
-  padding: 5px;
-  background-color: #292d31;
-  color: #4ed8da;
-  transition: all 0.2s linear;
 `
 
 export default CorrelationMatrix

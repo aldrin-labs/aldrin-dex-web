@@ -9,6 +9,7 @@ import {
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import QueryRenderer from '@components/QueryRenderer'
+import { has } from 'lodash'
 
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
@@ -19,11 +20,6 @@ import { toggleCorrelationTableFullscreen } from '../../../actions'
 import { getCorrelationQuery, CORRELATION_UPDATE } from '../../../api'
 
 class Correlation extends React.Component<IProps, IState> {
-  initializeArray = (length: number, start: number, step: number): number[] =>
-    Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
-      (v, i) => i * step + start
-    )
-
   renderPlaceholder = () => (
     <>
       <LinearProgress color="secondary" />
@@ -39,48 +35,32 @@ class Correlation extends React.Component<IProps, IState> {
   )
 
   render() {
-    const {
-      children,
-      isFullscreenEnabled,
-      data,
-      mockData,
-      isShownMocks,
-    } = this.props
-    // const { cols, rows } = optimizeMocks()
+    const { children, isFullscreenEnabled, data } = this.props
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
-          let cols = []
-
-          if (isShownMocks) {
-            cols = mockData.map(
-              (el: { coin: string; percentage: number }) => el.coin
-            )
-          }
-
-          const rows = cols
+          console.log(data)
 
           return (
-            <PTWrapper tableData={!!cols.length && !!rows.length}>
+            <PTWrapper>
               {children}
-              {cols.length === 0 ? (
-                this.renderPlaceholder()
-              ) : (
+              {has(data, 'values') && data.values.length !== 0 ? (
                 <>
                   <CorrelationMatrix
                     fullScreenChangeHandler={this.props.toggleFullscreen}
                     isFullscreenEnabled={isFullscreenEnabled || false}
-                    cols={cols}
-                    rows={rows}
+                    data={data}
                   />
 
                   {/* <HeatMapChart
-            data={getHeatMapData(HeatMapMocks)}
-            width={500}
-            height={500}
-          /> */}
+          data={getHeatMapData(HeatMapMocks)}
+          width={500}
+          height={500}
+        /> */}
                 </>
+              ) : (
+                this.renderPlaceholder()
               )}
             </PTWrapper>
           )
@@ -98,11 +78,41 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { isShownMocks, startDate, endDate } = this.props
+    const {
+      isShownMocks,
+      startDate,
+      endDate,
+      children,
+      isFullscreenEnabled,
+      toggleFullscreen,
+    } = this.props
 
     return (
       <Wrapper>
-        {/* {isShownMocks ? <Correlation /> :   <QueryRenderer
+        {isShownMocks ? (
+          <Correlation
+            toggleFullscreen={toggleFullscreen}
+            isFullscreenEnabled={isFullscreenEnabled}
+            data={{
+              unique_id_for_redis: 1336,
+              status: 0,
+              header: ['ETH', 'BTC'],
+              values: [[0.1, 0.2], [0.2, 0.3]],
+            }}
+            children={children}
+          />
+        ) : (
+          <QueryRenderer
+            component={Correlation}
+            query={getCorrelationQuery}
+            variables={{
+              startDate,
+              endDate,
+            }}
+            {...this.props}
+          />
+        )}
+        {/* <QueryRenderer
           component={Correlation}
           query={getCorrelationQuery}
           variables={{
@@ -110,16 +120,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             endDate,
           }}
           {...this.props}
-        />} */}
-        <QueryRenderer
-          component={Correlation}
-          query={getCorrelationQuery}
-          variables={{
-            startDate,
-            endDate,
-          }}
-          {...this.props}
-        />
+        /> */}
       </Wrapper>
     )
   }
@@ -158,7 +159,6 @@ const Wrapper = styled.div`
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
-  mockData: store.portfolio.optimizationData,
   isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
