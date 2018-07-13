@@ -14,7 +14,6 @@ import { has } from 'lodash'
 // import HeatMapChart from '@components/HeatMapChart'
 // import { HeatMapMocks } from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
-import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
 import { getCorrelationQuery, CORRELATION_UPDATE } from '../../../api'
@@ -50,7 +49,11 @@ class Correlation extends React.Component<IProps, IState> {
                   <CorrelationMatrix
                     fullScreenChangeHandler={this.props.toggleFullscreen}
                     isFullscreenEnabled={isFullscreenEnabled || false}
-                    data={data}
+                    data={
+                      has(subscriptionData, 'data') && subscriptionData.data
+                        ? subscriptionData
+                        : data
+                    }
                   />
 
                   {/* <HeatMapChart
@@ -112,15 +115,6 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             {...this.props}
           />
         )}
-        {/* <QueryRenderer
-          component={Correlation}
-          query={getCorrelationQuery}
-          variables={{
-            startDate,
-            endDate,
-          }}
-          {...this.props}
-        /> */}
       </Wrapper>
     )
   }

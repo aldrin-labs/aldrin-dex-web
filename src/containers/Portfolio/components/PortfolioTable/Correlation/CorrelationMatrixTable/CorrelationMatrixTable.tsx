@@ -2,15 +2,10 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa/'
 
-import {
-  optimizeMocks,
-  getColor,
-} from '../../../../../../utils/PortfolioCorrelationUtils'
-
-const { cols: mockCols } = optimizeMocks()
-
-class CorrelationMatrixTable extends PureComponent {
-  state = {
+import { getColor } from '@utils/PortfolioCorrelationUtils'
+import { IProps, IState } from './CorrelationMatrixTable.types'
+class CorrelationMatrixTable extends PureComponent<IProps, IState> {
+  state: IState = {
     activeRow: null,
     activeColumn: null,
   }
@@ -30,15 +25,12 @@ class CorrelationMatrixTable extends PureComponent {
     const cols = data.values
     const rows = data.header
 
-    const tableStyle = isFullscreenEnabled
-      ? { width: '100vw', height: '100vh' }
-      : {}
-
     // console.dir(cols)
     // console.log(rows)
 
     return (
       <GridTable
+        isFullscreenEnabled={isFullscreenEnabled}
         onMouseLeave={this.onMouseLeave}
         rows={cols.length + 1}
         columns={cols[0].length + 1}
@@ -118,8 +110,16 @@ const GridTable = styled.div`
   max-width: 100%;
   max-height: 100%;
   display: grid;
-  grid-template-rows: ${(props) => `repeat(${props.rows}, 4rem)`};
-  grid-template-columns: ${(props) => `repeat(${props.columns}, 4rem)`};
+  background: ${(props) =>
+    props.isFullscreenEnabled ? '#393e44' : 'transparent'};
+  grid-template-rows: ${(props) =>
+    props.isFullscreenEnabled
+      ? `repeat(${props.rows}, ${100 / props.rows}vh)`
+      : `repeat(${props.rows}, 4rem)`};
+  grid-template-columns: ${(props) =>
+    props.isFullscreenEnabled
+      ? `repeat(${props.columns}, ${100 / props.columns}vw)`
+      : `repeat(${props.columns}, 4rem)`};
 `
 
 const CellContent = styled.div`
