@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 
 import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
-import { tableData, combineToChart } from './mocks'
+import { mockTableData, combineToChart } from './mocks'
 import {
   onSortStrings,
   cloneArrayElementsOneLevelDeep,
@@ -94,12 +94,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     console.log('data in componentDidMount' + '', data)
 
     const userHasRebalancePortfolio =
-      data && data.getProfile && data.getProfile.myRebalance
+      data && data.myRebalance
     const userHasPortfolio =
-      data && data.getProfile && data.getProfile.portfolio.assets.length > 0
+      data && data.portfolio.assets.length > 0
+    let newTableData = []
+
 
     if (userHasRebalancePortfolio) {
-      const newTableData = data.getProfile.myRebalance.assets.map((el) => {
+      newTableData = data.myRebalance.assets.map((el) => {
         return {
           exchange: el._id.exchange,
           symbol: el_._id.coin,
@@ -108,14 +110,13 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
 
       // console.log('userHasRebalancePortfolio', newTableData)
-      this.setTableData(newTableData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      const newTableData = data.getProfile.portfolio.assets.map((el) => {
+      newTableData = data.portfolio.assets.map((el) => {
         return {
           exchange: el.exchange.name,
-          symbol: el.asset.name,
+          symbol: el.asset.symbol,
           price: el.asset.priceUSD,
         }
       })
@@ -124,22 +125,31 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       //   '!userHasRebalancePortfolio && userHasPortfolio',
       //   newTableData
       // )
-      this.setTableData(newTableData)
     }
+
+    const composeWithMocks = isShownMocks
+      ? [
+        ...newTableData,
+        ...mockTableData
+      ]
+      : newTableData
+
+    this.setTableData(composeWithMocks)
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    const { data } = nextProps
+    const { data, isShownMocks } = nextProps
 
     console.log('data in componentWillReceiveProps', data)
 
     const userHasRebalancePortfolio =
-      data && data.getProfile && data.getProfile.myRebalance
+      data && data.myRebalance
     const userHasPortfolio =
-      data && data.getProfile && data.getProfile.portfolio.assets.length > 0
+      data && data.portfolio.assets.length > 0
+    let newTableData = []
 
     if (userHasRebalancePortfolio) {
-      const newTableData = data.getProfile.myRebalance.assets.map((el) => {
+      newTableData = data.myRebalance.assets.map((el) => {
         return {
           exchange: el._id.exchange,
           symbol: el_._id.coin,
@@ -147,18 +157,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         }
       })
 
-      // const  { _id, amount } = data.getProfile.myRebalance.assets
-      // const { exchange, coint} = _id
-
       console.log('userHasRebalancePortfolio', newTableData)
-      this.setTableData(newTableData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      const newTableData = data.getProfile.portfolio.assets.map((el) => {
+      newTableData = data.portfolio.assets.map((el) => {
         return {
           exchange: el.exchange.name,
-          symbol: el.asset.name,
+          symbol: el.asset.symbol,
           price: el.asset.priceUSD,
         }
       })
@@ -167,8 +173,17 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         '!userHasRebalancePortfolio && userHasPortfolio',
         newTableData
       )
-      this.setTableData(newTableData)
     }
+
+    const composeWithMocks = isShownMocks
+      ? [
+        ...newTableData,
+        ...mockTableData
+      ]
+      : newTableData
+
+    this.setTableData(composeWithMocks)
+
 
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
       if (nextProps.isUSDCurrently) {
@@ -813,27 +828,27 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   render() {
-    console.log('dataFromServer: ', this.props.data)
-
-    const { data } = this.props
-    const { getProfile, loading, error } = data
-
-    if (loading) {
-      return (
-        <LoaderWrapper>
-          <SvgIcon
-            src={spinLoader}
-            width={48}
-            height={48}
-            style={{
-              position: 'absolute',
-              left: 'calc(50% - 48px)',
-              top: 'calc(50% - 48px)',
-            }}
-          />
-        </LoaderWrapper>
-      )
-    }
+    console.log('dataFromServer in render: ', this.props.data)
+    //
+    // const { data } = this.props
+    // // const { getProfile, loading, error } = data
+    //
+    // if (loading) {
+    //   return (
+    //     <LoaderWrapper>
+    //       <SvgIcon
+    //         src={spinLoader}
+    //         width={48}
+    //         height={48}
+    //         style={{
+    //           position: 'absolute',
+    //           left: 'calc(50% - 48px)',
+    //           top: 'calc(50% - 48px)',
+    //         }}
+    //       />
+    //     </LoaderWrapper>
+    //   )
+    // }
 
     const { children, isUSDCurrently } = this.props
     const {
@@ -1317,7 +1332,7 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   connect(mapStateToProps),
-  graphql(getMyPortfolioData)
+  // graphql(getMyPortfolioData)
 )(PortfolioTableRebalance)
 
 const InputTable = styled.input`
