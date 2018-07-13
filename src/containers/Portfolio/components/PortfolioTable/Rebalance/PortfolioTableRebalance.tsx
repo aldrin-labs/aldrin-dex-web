@@ -1,11 +1,11 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
+import { tableData, combineToChart } from './mocks'
 import {
-  tableData,
-  combineToChart,
-} from './mocks'
-import { onSortStrings, cloneArrayElementsOneLevelDeep } from '../../../../../utils/PortfolioTableUtils'
+  onSortStrings,
+  cloneArrayElementsOneLevelDeep,
+} from '../../../../../utils/PortfolioTableUtils'
 import PieChart from '@components/PieChart'
 import sortIcon from '@icons/arrow.svg'
 
@@ -86,7 +86,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculateAllTotals = () => {
-    const {staticRows, rows, savedRows, undistributedMoney} = this.state
+    const { staticRows, rows, savedRows, undistributedMoney } = this.state
 
     this.setState(
       {
@@ -168,16 +168,14 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   calculatePercents = (data: IRow[], total: number) => {
-
     const newDataWithPercents = data.map((row) => {
       const percentCaluclation = ((row.price * 100) / total).toFixed(4)
       const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
       return {
         ...row,
-        portfolioPerc: percentResult
+        portfolioPerc: percentResult,
       }
-
     })
 
     const totalPercents = this.calculateTotalPercents(newDataWithPercents)
@@ -220,7 +218,7 @@ export default class PortfolioTableRebalance extends React.Component<
   }
 
   onDeleteRowClick = (idx: number) => {
-    const {rows, undistributedMoney} = this.state
+    const { rows, undistributedMoney } = this.state
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
 
@@ -228,25 +226,28 @@ export default class PortfolioTableRebalance extends React.Component<
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        price: 0
+        price: 0,
       },
-      ...clonedRows.slice(idx + 1, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
-        const newUndistributedMoney = undistributedMoney + currentRowMoney
+    const newUndistributedMoney = undistributedMoney + currentRowMoney
 
-        const newTotalRows = this.calculateTotal(resultRows, newUndistributedMoney)
-        const newTableTotalRows = this.calculateTableTotal(resultRows)
-        const newRowsWithNewPercents = this.calculatePercents(resultRows, newTotalRows)
-        const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+    const newTotalRows = this.calculateTotal(resultRows, newUndistributedMoney)
+    const newTableTotalRows = this.calculateTableTotal(resultRows)
+    const newRowsWithNewPercents = this.calculatePercents(
+      resultRows,
+      newTotalRows
+    )
+    const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
-        this.setState({
-          undistributedMoney: newUndistributedMoney,
-          totalRows: newTotalRows,
-          totalTableRows: newTableTotalRows,
-          rows: newRowsWithNewPercents,
-          isPercentSumGood: newIsPercentSumGood,
-        })
+    this.setState({
+      undistributedMoney: newUndistributedMoney,
+      totalRows: newTotalRows,
+      totalTableRows: newTableTotalRows,
+      rows: newRowsWithNewPercents,
+      isPercentSumGood: newIsPercentSumGood,
+    })
   }
 
   onSelectActiveBalance = (idx: number) => {
@@ -287,14 +288,13 @@ export default class PortfolioTableRebalance extends React.Component<
     const { totalRows } = this.state
 
     const dataWithNewPrices = data.map((row: IRow) => {
-        let newPrice = Math.round((totalRows / 100) * row.portfolioPerc)
+      let newPrice = Math.round((totalRows / 100) * row.portfolioPerc)
 
-        return {
-          ...row,
-          price: newPrice
-        }
+      return {
+        ...row,
+        price: newPrice,
+      }
     })
-
 
     return dataWithNewPrices
   }
@@ -309,10 +309,8 @@ export default class PortfolioTableRebalance extends React.Component<
       return
     }
 
-
     const rowsWithNewPrice = this.calculatePriceByPercents(rows)
     const newRows = this.calculatePriceDifference(rowsWithNewPrice)
-
 
     this.setState({
       savedRows: cloneArrayElementsOneLevelDeep(newRows),
@@ -333,8 +331,9 @@ export default class PortfolioTableRebalance extends React.Component<
     })
   }
   onReset = () => {
-
-    const clonedStaticRows = cloneArrayElementsOneLevelDeep(this.state.staticRows)
+    const clonedStaticRows = cloneArrayElementsOneLevelDeep(
+      this.state.staticRows
+    )
 
     this.setState({
       rows: clonedStaticRows,
@@ -350,8 +349,9 @@ export default class PortfolioTableRebalance extends React.Component<
 
   onEditModeEnable = () => {
     if (this.state.isEditModeEnabled) {
-
-      const clonedSavedRows = cloneArrayElementsOneLevelDeep(this.state.savedRows)
+      const clonedSavedRows = cloneArrayElementsOneLevelDeep(
+        this.state.savedRows
+      )
 
       this.setState((prevState: IState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
@@ -377,26 +377,22 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
-
   onDeleteUndistributedMoney = () => {
     const { rows } = this.state
 
-        const newUndistributedMoney = 0
-        const newTotalRows = this.calculateTotal(rows, newUndistributedMoney)
-        const newTableTotalRows = this.calculateTableTotal(rows)
-        const newRowsWithNewPercents = this.calculatePercents(
-          rows,
-          newTotalRows
-        )
-        const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
+    const newUndistributedMoney = 0
+    const newTotalRows = this.calculateTotal(rows, newUndistributedMoney)
+    const newTableTotalRows = this.calculateTableTotal(rows)
+    const newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
+    const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
-        this.setState({
-          undistributedMoney: 0,
-          totalRows: newTotalRows,
-          totalTableRows: newTableTotalRows,
-          rows: newRowsWithNewPercents,
-          isPercentSumGood: newIsPercentSumGood,
-        })
+    this.setState({
+      undistributedMoney: 0,
+      totalRows: newTotalRows,
+      totalTableRows: newTableTotalRows,
+      rows: newRowsWithNewPercents,
+      isPercentSumGood: newIsPercentSumGood,
+    })
   }
 
   onDistribute = () => {
@@ -424,15 +420,14 @@ export default class PortfolioTableRebalance extends React.Component<
       const newTableTotal = this.calculateTableTotal(rows)
       const newRows = this.calculatePercents(rows, newTotal)
 
-        this.setState({
-          undistributedMoney: newUndistributedMoney,
-          selectedActive,
-          rows: newRows,
-          totalRows: newTotal,
-          totalTableRows: newTableTotal,
-          isPercentSumGood: this.checkPercentSum(rows),
-        })
-
+      this.setState({
+        undistributedMoney: newUndistributedMoney,
+        selectedActive,
+        rows: newRows,
+        totalRows: newTotal,
+        totalTableRows: newTableTotal,
+        isPercentSumGood: this.checkPercentSum(rows),
+      })
     }
   }
 
@@ -456,7 +451,7 @@ export default class PortfolioTableRebalance extends React.Component<
     }
   }
 
-  checkPercentSum = (data : IRow[]) => {
+  checkPercentSum = (data: IRow[]) => {
     const sumOfAllPercents = data.reduce(
       (sum, row) => (sum += +row!.portfolioPerc),
       0
@@ -481,9 +476,9 @@ export default class PortfolioTableRebalance extends React.Component<
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        portfolioPerc: percentInput
+        portfolioPerc: percentInput,
       },
-      ...clonedRows.slice(idx + 1, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
     this.setState({
@@ -511,9 +506,9 @@ export default class PortfolioTableRebalance extends React.Component<
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        portfolioPerc: percentInput
+        portfolioPerc: percentInput,
       },
-      ...clonedRows.slice(idx + 1, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
     this.setState({
@@ -540,9 +535,9 @@ export default class PortfolioTableRebalance extends React.Component<
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        portfolioPerc: percentInput
+        portfolioPerc: percentInput,
       },
-      ...clonedRows.slice(idx + 1, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
     const newCalculatedRowsWithPercents = this.calculatePriceByPercents(
@@ -596,9 +591,9 @@ export default class PortfolioTableRebalance extends React.Component<
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        currency: nameCurrencyInput
+        currency: nameCurrencyInput,
       },
-      ...clonedRows.slice(idx + 1, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
     this.setState({
@@ -617,9 +612,9 @@ export default class PortfolioTableRebalance extends React.Component<
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        symbol: symbolCurrencyInput
+        symbol: symbolCurrencyInput,
       },
-      ...clonedRows.slice(idx + 1, clonedRows.length)
+      ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
     this.setState({
@@ -631,35 +626,34 @@ export default class PortfolioTableRebalance extends React.Component<
     if (+this.state.addMoneyInputValue === 0) {
       return
     }
-    console.log('addmoneypressed');
+    console.log('addmoneypressed')
 
-      let { rows, addMoneyInputValue, undistributedMoney } = this.state
+    let { rows, addMoneyInputValue, undistributedMoney } = this.state
 
+    const newUndistributedMoney =
+      undistributedMoney + Number(addMoneyInputValue)
 
-      const newUndistributedMoney = undistributedMoney +  Number(addMoneyInputValue)
+    const newTotal = this.calculateTotal(rows, newUndistributedMoney)
+    const newTableTotal = this.calculateTableTotal(rows)
 
+    const newRows = this.calculatePercents(rows, newTotal)
+    const checkedPercentsIsGood = this.checkPercentSum(newRows)
 
-          const newTotal = this.calculateTotal(rows, newUndistributedMoney)
-          const newTableTotal = this.calculateTableTotal(rows)
-
-          const newRows = this.calculatePercents(rows, newTotal)
-          const checkedPercentsIsGood = this.checkPercentSum(newRows)
-
-          this.setState({
-            undistributedMoney: newUndistributedMoney,
-            addMoneyInputValue: 0,
-            rows: newRows,
-            totalRows: newTotal,
-            totalTableRows: newTableTotal,
-            isPercentSumGood: checkedPercentsIsGood,
-          })
+    this.setState({
+      undistributedMoney: newUndistributedMoney,
+      addMoneyInputValue: 0,
+      rows: newRows,
+      totalRows: newTotal,
+      totalTableRows: newTableTotal,
+      isPercentSumGood: checkedPercentsIsGood,
+    })
   }
 
   onSortTable = (key: Args, chooseRows: string) => {
-    let currentRowsForSort : IRow[]
-    let currentRowsForSortText : string
-    let currentSort : { key: string; arg: 'ASC' | 'DESC' } | null
-    let currentSortText : string
+    let currentRowsForSort: IRow[]
+    let currentRowsForSortText: string
+    let currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
+    let currentSortText: string
     const {
       staticRows,
       rows,
@@ -685,11 +679,9 @@ export default class PortfolioTableRebalance extends React.Component<
       currentSortText = 'currentSortForDynamic'
     }
 
-
     const stringKey = key === 'currency' || key === 'symbol'
 
     const newData = currentRowsForSort.slice().sort((a: IRow, b: IRow) => {
-
       if (currentSort && currentSort.key === key) {
         if (currentSort.arg === 'ASC') {
           this.setState({ [currentSortText]: { key, arg: 'DESC' } })
@@ -735,7 +727,7 @@ export default class PortfolioTableRebalance extends React.Component<
       totalPercents,
       totalTableRows,
       rows,
-      staticRows
+      staticRows,
     } = this.state
     const saveButtonColor =
       isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
@@ -803,9 +795,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     ]
 
                     return (
-                      <PTR
-                        key={`${currency}${symbol}${idx}`}
-                      >
+                      <PTR key={`${currency}${symbol}${idx}`}>
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
                             const color =
@@ -814,10 +804,7 @@ export default class PortfolioTableRebalance extends React.Component<
                                 : '#f44336'
 
                             return (
-                              <PTDC
-                                key={`${col}${index}`}
-                                style={{ color }}
-                              >
+                              <PTDC key={`${col}${index}`} style={{ color }}>
                                 {col}
                               </PTDC>
                             )
@@ -831,13 +818,7 @@ export default class PortfolioTableRebalance extends React.Component<
                             )
                           }
 
-                          return (
-                            <PTDC
-                              key={`${col}${index}`}
-                            >
-                              {col}
-                            </PTDC>
-                          )
+                          return <PTDC key={`${col}${index}`}>{col}</PTDC>
                         })}
                       </PTR>
                     )
@@ -987,8 +968,10 @@ export default class PortfolioTableRebalance extends React.Component<
                         )}
 
                         {cols.map((col, idx) => {
-                          const isNewCoinName = row.editable && idx === 0 && isEditModeEnabled
-                          const isNewCoinSymbol = row.editable && idx === 1 && isEditModeEnabled
+                          const isNewCoinName =
+                            row.editable && idx === 0 && isEditModeEnabled
+                          const isNewCoinSymbol =
+                            row.editable && idx === 1 && isEditModeEnabled
 
                           if (isNewCoinName) {
                             return (
@@ -1123,9 +1106,7 @@ export default class PortfolioTableRebalance extends React.Component<
                 </PTBody>
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
-                    {isEditModeEnabled && (
-                      <PTHR style={{ width: '38px' }} />
-                    )}
+                    {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                     <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>{`${totalPercents}%`}</PTHR>
@@ -1137,9 +1118,7 @@ export default class PortfolioTableRebalance extends React.Component<
                     <PTHR>-</PTHR>
                   </PTR>
                   <PTR>
-                    {isEditModeEnabled && (
-                      <PTHR style={{ width: '38px' }} />
-                    )}
+                    {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                     <PTHR>Subtotal</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
@@ -1176,7 +1155,10 @@ export default class PortfolioTableRebalance extends React.Component<
                     <UndistributedMoneyText>
                       Undistributed money: {undistributedMoney}
                     </UndistributedMoneyText>
-                    <Button disabled={undistributedMoney < 0} onClick={this.onDistribute}>
+                    <Button
+                      disabled={undistributedMoney < 0}
+                      onClick={this.onDistribute}
+                    >
                       Distribute to selected
                     </Button>
                   </UndistributedMoneyContainer>
@@ -1185,8 +1167,8 @@ export default class PortfolioTableRebalance extends React.Component<
             </ButtonsWrapper>
           </TableAndHeadingWrapper>
         </Container>
-        <PieChartsWrapper>
-          <PieChartContainer>
+        <PieChartsWrapper isEditModeEnabled={isEditModeEnabled}>
+          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
             <PieChart
               data={combineToChart(staticRows)}
               flexible={true}
@@ -1237,12 +1219,11 @@ const TableAndHeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
-  
+
   &:not(:first-child) {
-   min-height: ${(props: { isEditModeEnabled?: boolean }) =>
-  props.isEditModeEnabled ? '55vh' : ''}
+    min-height: ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? '55vh' : ''};
   }
-  
 
   &:not(:first-child) {
     padding-left: 30px;
@@ -1322,7 +1303,7 @@ const PTD = css`
 
 const PTDC = styled.td`
   ${PTD};
-   min-width: 100px;
+  min-width: 100px;
 
   &:nth-child(2) {
     min-width: 70px;
@@ -1630,10 +1611,12 @@ const Checkbox = styled.input`
 
 const PieChartsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? 'center' : 'space-between'};
   padding: 3% 0;
-  width: 100%;
   height: 25vh;
+  width: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? '50%' : '100%'};
 
   @media (max-height: 800px) {
     padding-top: 1.5%;
@@ -1649,17 +1632,18 @@ const PieChartContainer = styled.div`
   align-items: center;
   height: 100%;
   width: 33.3%;
-  margin: 0 auto;
+
+  margin: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? '0' : '0 auto'};
 
   @media (max-height: 650px) {
     display: none;
   }
-  
+
   &:not(:first-child) {
-   visibility: ${(props: { isEditModeEnabled?: boolean }) =>
-  props.isEditModeEnabled ? 'hidden' : 'visible'}
+    display: ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? 'none' : 'flex'};
   }
-  
 `
 
 const ButtonsWrapper = styled.div`
@@ -1786,7 +1770,7 @@ const Button = styled.button`
   cursor: pointer;
   text-transform: uppercase;
   margin-top: 10px;
-  
+
   &:disabled {
     cursor: not-allowed;
     background-color: gray;
