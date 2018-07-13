@@ -175,7 +175,7 @@ const PTHead = styled.thead`
   display: table;
   width: 100%;
   position: sticky;
-  top: -5px; /* trigger sticky when reaches coordonates */
+  top: 0; /* trigger sticky when reaches coordonates */
 
   &::after {
     content: ' ';
