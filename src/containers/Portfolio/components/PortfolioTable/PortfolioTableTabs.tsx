@@ -110,7 +110,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
             {/*</ToggleBtn>*/}
 
-            { (tab !== 'correlation' || tab !== 'rebalance') &&
+            { (tab !== 'correlation' && tab !== 'rebalance') &&
               (dataFromProps || isShownMocks) && (
                 <SwitchRefreshContainer>
                   <Switch
