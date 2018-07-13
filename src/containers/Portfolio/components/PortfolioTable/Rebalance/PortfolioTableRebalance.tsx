@@ -414,7 +414,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   onSaveClick = () => {
-    const { rows, totalRows, isPercentSumGood, undistributedMoney } = this.state
+    const { rows, totalRows, isPercentSumGood, undistributedMoney, staticRows } = this.state
 
     if (!isPercentSumGood) {
       return
@@ -426,6 +426,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const rowsWithNewPrice = this.calculatePriceByPercents(rows)
     const newRows = this.calculatePriceDifference(rowsWithNewPrice)
 
+    this.updateServerDataOnSave()
+
     this.setState({
       savedRows: cloneArrayElementsOneLevelDeep(newRows),
       rows: newRows,
@@ -436,6 +438,59 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       undistributedMoneySaved: undistributedMoney,
     })
   }
+
+  updateServerDataOnSave = async () => {
+
+    const { updateRebalanceMutationQuery } = this.props
+    const { staticRows, totalStaticRows } = this.state
+
+    // {
+    //   "input": {
+    //   "total": "300",
+    //     "assets": {
+    //     "input": {
+    //       "_id": {
+    //         "exchange": "superExchange",
+    //           "coin": "superCoin"
+    //       },
+    //       "percent": "100",
+    //         "amount": "1000",
+    //         "diff": "0"
+    //     }
+    //   }
+    // }
+    // }
+
+    const combinedStaticData = staticRows.map((el) => {
+
+      return {
+        _id: {
+          exchange: el.exchange,
+          coin: el.symbol
+        },
+        amount: el.price,
+        percent: el.portfolioPerc,
+        diff: el.deltaPrice
+      }
+
+    })
+
+    const variables = {
+      total: totalStaticRows,
+      assets: combinedStaticData
+    }
+
+    try {
+      await updateRebalanceMutationQuery({ variables })
+    } catch (error) {
+      console.log(error)
+    }
+
+    console.log(updateRebalanceMutationQuery);
+
+
+  }
+
   onLoadPreviousClick = () => {
     this.setState({
       rows: cloneArrayElementsOneLevelDeep(this.state.savedRows),

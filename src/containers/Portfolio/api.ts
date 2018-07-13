@@ -73,3 +73,12 @@ export const getPortfolioQuery = gql`
     }
   }
 `
+
+
+export const updateRebalanceMutation = gql`
+mutation ($input: rebalanceInput) {
+  updateRebalance(input: $input) {
+    total
+  }
+}
+`
