@@ -62,6 +62,14 @@ export const getPortfolioQuery = gql`
           }
         }
       }
+     myRebalance {
+      total
+      assets {
+        percent
+        amount
+        diff
+      }
+    }  
     }
   }
 `
