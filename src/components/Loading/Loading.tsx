@@ -1,19 +1,7 @@
 import React, { Component, Fragment } from 'react'
-import { CircularProgress } from 'material-ui/Progress'
+import { CircularProgress } from '@material-ui/core'
 import purple from 'material-ui/colors/purple'
 import styled from 'styled-components'
-
-const SpinnerContainer = styled.div`
-  margin: ${(props) => (props.margin ? props.margin : '0 auto')};
-  position: ${(props) => (props.centerAligned ? 'absolute' : 'static')};
-  top: ${(props) => (props.centerAligned ? 'calc(50% - 32px)' : null)};
-  left: ${(props) => (props.centerAligned ? 'calc(50% - 32px)' : null)};
-`
-
-const Spinner = styled(CircularProgress)`
-  display: flex;
-  align-self: center;
-`
 
 export const Loading = ({
   size = 64,
@@ -22,6 +10,13 @@ export const Loading = ({
   centerAligned = false,
 }) => (
   <SpinnerContainer margin={margin} centerAligned={centerAligned}>
-    <Spinner style={{ color }} size={size} />
+    <CircularProgress style={{ color }} size={size} />
   </SpinnerContainer>
 )
+
+const SpinnerContainer = styled.div`
+  margin: ${(props) => (props.margin ? props.margin : '0 auto')};
+  position: ${(props) => (props.centerAligned ? 'absolute' : 'static')};
+  top: ${(props) => (props.centerAligned ? 'calc(50% - 32px)' : null)};
+  left: ${(props) => (props.centerAligned ? 'calc(50% - 32px)' : null)};
+`

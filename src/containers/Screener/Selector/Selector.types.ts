@@ -8,7 +8,7 @@ export interface IState {
   timeInterval: string
   industry: undefined[] | string[]
 
-  marketCap: string
+  marketCapSlider: string
   changeInPercentage: string
   simpleMovingAverage: string
   closingPriceAverage: string
@@ -17,7 +17,6 @@ export interface IState {
   low: string
   high: string
 
-  marketCapInput: string
   changeInPercentageInput: string
   simpleMovingAverageInput: string
   closingPriceAverageInput: string

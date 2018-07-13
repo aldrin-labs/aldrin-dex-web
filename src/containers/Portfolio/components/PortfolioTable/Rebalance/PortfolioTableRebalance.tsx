@@ -10,6 +10,7 @@ import {
   onSortStrings,
   cloneArrayElementsOneLevelDeep,
 } from '@utils/PortfolioTableUtils'
+
 import PieChart from '@components/PieChart'
 import sortIcon from '@icons/arrow.svg'
 
@@ -915,6 +916,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     ]
 
                     return (
+
                       <PTR key={`${exchange}${symbol}${idx}`}>
                         {cols.map((col, index) => {
                           if (col.match(/%/g)) {
@@ -1287,8 +1289,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
             </ButtonsWrapper>
           </TableAndHeadingWrapper>
         </Container>
-        <PieChartsWrapper>
-          <PieChartContainer>
+        <PieChartsWrapper isEditModeEnabled={isEditModeEnabled}>
+          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
             <PieChart
               data={combineToChart(staticRows)}
               flexible={true}
@@ -1740,10 +1742,12 @@ const Checkbox = styled.input`
 
 const PieChartsWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? 'center' : 'space-between'};
   padding: 3% 0;
-  width: 100%;
   height: 25vh;
+  width: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? '50%' : '100%'};
 
   @media (max-height: 800px) {
     padding-top: 1.5%;
@@ -1759,15 +1763,17 @@ const PieChartContainer = styled.div`
   align-items: center;
   height: 100%;
   width: 33.3%;
-  margin: 0 auto;
+
+  margin: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? '0' : '0 auto'};
 
   @media (max-height: 650px) {
     display: none;
   }
 
   &:not(:first-child) {
-    visibility: ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? 'hidden' : 'visible'};
+    display: ${(props: { isEditModeEnabled?: boolean }) =>
+      props.isEditModeEnabled ? 'none' : 'flex'};
   }
 `
 
