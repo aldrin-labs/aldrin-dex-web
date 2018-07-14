@@ -67,22 +67,7 @@ export function getColor(
   }
 }
 
-export function getTextColor(color: string) {
-  if (color === '#C8E6C9' || color === '#E8F5E9') {
-  }
-  switch (color) {
-    case '#C8E6C9':
-      return 'black'
-      break
 
-    case '#E8F5E9':
-      return 'black'
-      break
-
-    default:
-      break
-  }
-}
 
 export function getHeatMapData(
   data: { pair: string; values: { [key: string]: string }[] }[]
