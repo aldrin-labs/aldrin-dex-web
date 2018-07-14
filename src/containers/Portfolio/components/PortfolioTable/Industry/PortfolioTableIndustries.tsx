@@ -590,7 +590,8 @@ const ChartContainer = styled.div`
   padding: 1em;
   text-align: center;
   height: 35vh;
-  margin: 2rem 1rem;
+
+  margin: 2rem auto;
   width: 900px;
 
   @media (min-width: 1950px) {
@@ -620,7 +621,8 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
-  margin: 1rem;
+
+  margin: 1rem auto;
 
   @media (max-height: 850px) {
     max-height: 30vh;
