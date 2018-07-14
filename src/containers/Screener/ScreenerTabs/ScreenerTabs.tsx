@@ -70,6 +70,11 @@ const Tab = styled.button`
   outline: none;
   box-sizing: border-box;
 
+  &:hover {
+    color: #4ed8da;
+    border-color: #4ed8da;
+  }
+
   @media (max-width: 1080px) {
     display: none;
     width: 8rem;
@@ -79,6 +84,7 @@ const Tab = styled.button`
   @media (max-width: 615px) {
     width: 5.5rem;
     padding: 0.5rem;
+  }
 `
 
 const TabContainer = styled.div`
