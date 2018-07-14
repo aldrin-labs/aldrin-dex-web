@@ -12,7 +12,10 @@ import QueryRenderer from '@components/QueryRenderer'
 import { has } from 'lodash'
 
 // import HeatMapChart from '@components/HeatMapChart'
-// import { HeatMapMocks } from './mocks'
+import {
+  // HeatMapMocks,
+  CorrelationMatrixMockData,
+} from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
@@ -51,7 +54,7 @@ class Correlation extends React.Component<IProps, IState> {
                     isFullscreenEnabled={isFullscreenEnabled || false}
                     data={
                       has(subscriptionData, 'data') && subscriptionData.data
-                        ? subscriptionData
+                        ? subscriptionData.data
                         : data
                     }
                   />
@@ -96,12 +99,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
           <Correlation
             toggleFullscreen={toggleFullscreen}
             isFullscreenEnabled={isFullscreenEnabled}
-            data={{
-              unique_id_for_redis: 1336,
-              status: 0,
-              header: ['ETH', 'BTC'],
-              values: [[0.1, 0.2], [0.2, 0.3]],
-            }}
+            data={CorrelationMatrixMockData}
             children={children}
           />
         ) : (

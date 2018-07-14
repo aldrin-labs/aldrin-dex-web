@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa/'
+import shortid from 'shortid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'
 import { IProps, IState } from './CorrelationMatrixTable.types'
@@ -36,13 +37,14 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
         columns={cols[0].length + 1}
       >
         {/* first empty cell */}
-        <Cell />
+        <HeadCell sticky={!isFullscreenEnabled} style={{ zIndex: 102 }} />
 
         {/* first row with coin names */}
         {rows.map((el, i) => (
           <HeadCell
+            sticky={!isFullscreenEnabled}
             textColor={activeRow === i ? '#4ed8da' : '#dedede'}
-            key={el.toString()}
+            key={el}
           >
             <StyledArrowDown show={activeRow === i} />
 
@@ -53,9 +55,11 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
         {/* first column with coin names */}
         {rows.map((el, i) => (
           <HeadCell
+            sticky={false}
+            isFullscreenEnabled={isFullscreenEnabled}
             textColor={activeColumn === i ? '#4ed8da' : '#dedede'}
             style={{ gridColumnStart: 1 }}
-            key={el.toString()}
+            key={el}
           >
             <StyledArrowRight show={activeColumn === i} />
             {el}
@@ -74,7 +78,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   this.onCellMouseOver(i, ind)
                 }}
                 style={{ gridColumnStart: i + 2, gridRowStart: ind + 2 }}
-                key={el.toString()}
+                key={shortid.generate()}
               >
                 <CellContent
                   color={backgroundColor}
@@ -156,7 +160,11 @@ const Cell = styled.div`
 `
 
 const HeadCell = Cell.extend`
+  z-index: 101;
+  background: #393e44;
   position: relative;
+  position: ${(props) => (props.sticky ? 'sticky' : 'relative')};
+  top: 0;
 `
 
 export default CorrelationMatrixTable
