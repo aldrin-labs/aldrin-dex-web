@@ -25,7 +25,7 @@ import { Args } from '../types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 
-import { getMyPortfolioData } from './api'
+import { getMyPortfolioData, updateRebalanceMutation } from './api'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },
@@ -90,21 +90,28 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
-    const { data, isShownMocks } = this.props
+    const { data, isShownMocks, getOnlyRebalance } = this.props
+
+    console.log('getOnlyRebalance', getOnlyRebalance);
+
     console.log('data in componentDidMount' + '', data)
 
     const userHasRebalancePortfolio =
-      data && data.myRebalance
+      data && data.myRebalance && data.myRebalance.assets
     const userHasPortfolio =
       data && data.portfolio.assets.length > 0
     let newTableData = []
 
 
     if (userHasRebalancePortfolio) {
+
+      console.log('data.myRebalance.assets', data.myRebalance.assets);
+
+
       newTableData = data.myRebalance.assets.map((el) => {
         return {
           exchange: el._id.exchange,
-          symbol: el_._id.coin,
+          symbol: el._id.coin,
           price: el.amount,
         }
       })
@@ -143,7 +150,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     console.log('data in componentWillReceiveProps', data)
 
     const userHasRebalancePortfolio =
-      data && data.myRebalance
+      data && data.myRebalance && data.myRebalance.assets
     const userHasPortfolio =
       data && data.portfolio.assets.length > 0
     let newTableData = []
@@ -152,7 +159,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newTableData = data.myRebalance.assets.map((el) => {
         return {
           exchange: el._id.exchange,
-          symbol: el_._id.coin,
+          symbol: el._id.coin,
           price: el.amount,
         }
       })
@@ -444,22 +451,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const { updateRebalanceMutationQuery } = this.props
     const { staticRows, totalStaticRows } = this.state
 
-    // {
-    //   "input": {
-    //   "total": "300",
-    //     "assets": {
-    //     "input": {
-    //       "_id": {
-    //         "exchange": "superExchange",
-    //           "coin": "superCoin"
-    //       },
-    //       "percent": "100",
-    //         "amount": "1000",
-    //         "diff": "0"
-    //     }
-    //   }
-    // }
-    // }
+
+
+    console.log(updateRebalanceMutationQuery);
 
     const combinedStaticData = staticRows.map((el) => {
 
@@ -470,23 +464,55 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         },
         amount: el.price,
         percent: el.portfolioPerc,
-        diff: el.deltaPrice
+        diff: el.deltaPrice.toString()
       }
 
     })
 
-    const variables = {
-      total: totalStaticRows,
-      assets: combinedStaticData
+    // const variablesForMutation = {
+    //   input: {
+    //     total: "100000",
+    //     assets: {
+    //       input: [
+    //         {
+    //           "_id": {
+    //             "exchange": "superExchange",
+    //             "coin": "superCoin"
+    //           },
+    //           "percent": "100",
+    //           "amount": "1000",
+    //           "diff": "0"
+    //         },
+    //         {
+    //           "_id": {
+    //             "exchange": "superExchange222",
+    //             "coin": "superCoin111"
+    //           },
+    //           "percent": "100000",
+    //           "amount": "300",
+    //           "diff": "50"
+    //         },
+    //       ]
+    //     }
+    //   }
+    // }
+
+    const variablesForMutation = {
+      input: {
+        total: "100000",
+        assets: {
+          input: combinedStaticData
+        }
+      }
     }
 
+
+
     try {
-      await updateRebalanceMutationQuery({ variables })
+      await updateRebalanceMutationQuery({ variables: variablesForMutation })
     } catch (error) {
       console.log(error)
     }
-
-    console.log(updateRebalanceMutationQuery);
 
 
   }
@@ -1387,7 +1413,7 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   connect(mapStateToProps),
-  // graphql(getMyPortfolioData)
+  // graphql(updateRebalanceMutation, {name: 'updateRebalance'})
 )(PortfolioTableRebalance)
 
 const InputTable = styled.input`

@@ -65,13 +65,32 @@ export const getPortfolioQuery = gql`
      myRebalance {
       total
       assets {
+        _id
         percent
         amount
         diff
       }
-    }  
+     }  
     }
   }
+`
+
+export const getOnlyRebalance = gql`
+query {
+  getProfile {
+    username
+  	myRebalance {
+      _id
+      total
+      assets {
+        _id
+        percent
+        amount
+        diff
+      }
+    }
+  }
+}
 `
 
 

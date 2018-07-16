@@ -60,3 +60,12 @@ query {
   }
 }
 `
+
+
+export const updateRebalanceMutation = gql`
+mutation ($input: rebalanceInput) {
+  updateRebalance(input: $input) {
+    total
+  } 
+}
+`

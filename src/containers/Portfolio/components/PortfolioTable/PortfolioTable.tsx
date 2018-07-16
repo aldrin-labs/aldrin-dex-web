@@ -82,7 +82,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
     if (tab === 'rebalance') {
       return (
-        <PortfolioTableRebalance isUSDCurrently={true} data={this.props.data} updateRebalanceMutationQuery={this.props.updateRebalanceMutationQuery}>
+        <PortfolioTableRebalance isUSDCurrently={true} data={this.props.data} updateRebalanceMutationQuery={this.props.updateRebalanceMutationQuery} getOnlyRebalance={this.props.getOnlyRebalance}>
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
