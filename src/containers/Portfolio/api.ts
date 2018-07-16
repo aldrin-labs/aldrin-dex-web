@@ -76,25 +76,6 @@ export const getPortfolioQuery = gql`
   }
 `
 
-export const getOnlyRebalance = gql`
-query {
-  getProfile {
-    username
-  	myRebalance {
-  	  id
-      _id
-      total
-      assets {
-        _id
-        percent
-        amount
-        diff
-      }
-    }
-  }
-}
-`
-
 
 export const updateRebalanceMutation = gql`
 mutation ($input: rebalanceInput) {
