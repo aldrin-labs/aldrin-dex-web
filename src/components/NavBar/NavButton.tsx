@@ -20,26 +20,26 @@ const StyledNavLink = styled(NavLink)`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   &:hover {
     color: white;
+    border-bottom: 2px solid #4ed8da;
   }
-  
+
   &.selected {
     color: white;
     font-weight: bold;
     border-bottom: 2px solid #4ed8da;
   }
-`;
+`
 
 interface INavButton {
   link: string
   title: string
 }
 
-
 export const NavButton: SFC<INavButton> = ({ link, title, ...props }) => (
-  <StyledNavLink to={link} activeClassName={'selected'} {...props} >
+  <StyledNavLink to={link} activeClassName={'selected'} {...props}>
     {title}
   </StyledNavLink>
 )

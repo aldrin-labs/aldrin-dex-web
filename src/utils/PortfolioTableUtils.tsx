@@ -2,12 +2,14 @@ import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 
-export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadings) => {
+export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadings, arrayOfDateHeadings) => {
     if (!tableData) {
       return
     }
 
     const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
+    const dateKey = arrayOfDateHeadings ? arrayOfDateHeadings.some((heading) => heading === key) : false
+
     let newCurrentSort : { key: string; arg: 'ASC' | 'DESC' } | null
 
     const newData = tableData.slice().sort((a, b) => {
@@ -19,12 +21,20 @@ export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadin
             return onSortStrings(b[key], a[key])
           }
 
+          if (dateKey) {
+            return new Date(b[key]).getTime() - new Date(a[key]).getTime();
+          }
+
           return b[key] - a[key]
         } else {
           newCurrentSort = { key, arg: 'ASC' }
 
           if (stringKey) {
             return onSortStrings(a[key], b[key])
+          }
+
+          if (dateKey) {
+            return new Date(a[key]).getTime() - new Date(b[key]).getTime();
           }
 
           return a[key] - b[key]
@@ -37,9 +47,15 @@ export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadin
         return onSortStrings(a[key], b[key])
       }
 
+      if (dateKey) {
+        return new Date(a[key]).getTime() - new Date(b[key]).getTime();
+      }
+
       return a[key] - b[key]
     })
 
+
+    console.log('dateKey: ', dateKey);
     console.log(newData)
     console.log(newCurrentSort)
     console.log('stringKey: ', stringKey)

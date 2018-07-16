@@ -1,5 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
+
 import PortfolioTableMain from './PortfolioTableMain'
 import PortfolioTableSum from '../PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
@@ -10,12 +13,10 @@ import {
 } from '../../../../../utils/PortfolioTableUtils'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import { MOCK_DATA } from '../dataMock'
-
 import { Args } from '../types'
 import { IPortfolio } from '../../../interfaces'
 import { IProps, IState } from './PortfolioTableBalances.types'
-import { compose } from 'recompose'
-import { connect } from 'react-redux'
+import TradeOrderHistoryTable from './TradeOrderHistory/TradeOrderHistoryTable'
 
 const defaultSelectedSum = {
   currency: '',
@@ -173,19 +174,17 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const unrealizedProfit = isUSDCurrently
           ? usdUnrealizedProfit
           : btcUnrealizedProfit
-          const totalProfit = isUSDCurrently
-            ? usdTotalProfit
-            : btcTotalProfit
+        const totalProfit = isUSDCurrently ? usdTotalProfit : btcTotalProfit
 
         const currentPrice = mainPrice * value
         const col = {
           currency: name || '',
           symbol,
-          percentage: calcPercentage(currentPrice * 100 / allSums),
+          percentage: calcPercentage((currentPrice * 100) / allSums),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: currentPrice || 0,
-          daily: calcPercentage(mainPrice / 100 * percentChangeDay),
+          daily: calcPercentage((mainPrice / 100) * percentChangeDay),
           dailyPerc: percentChangeDay,
           realizedPL: realizedProfit,
           realizedPLPerc: 0,
@@ -364,29 +363,39 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
         <Container isShownChart={isShownChart}>
-          <Wrapper>
-            <PTable>
-              <PortfolioTableHead
-                isUSDCurrently={isUSDCurrently}
-                isSelectAll={isSelectAll}
-                onSelectAll={this.onSelectAll}
-                onSortTable={this.onSortTable}
-                currentSort={currentSort}
-              />
-              <PortfolioTableMain
-                tableData={tableData}
-                selectedBalances={selectedBalances}
-                isUSDCurrently={isUSDCurrently}
-                onSelectBalance={this.onSelectBalance}
-              />
-              {selectedSum.currency ? (
-                <PortfolioTableSum
-                  selectedSum={selectedSum}
+          <TableAndHeadingWrapper>
+            <TableHeading>Portfolio</TableHeading>
+            <Wrapper>
+              <PTable>
+                <PortfolioTableHead
                   isUSDCurrently={isUSDCurrently}
+                  isSelectAll={isSelectAll}
+                  onSelectAll={this.onSelectAll}
+                  onSortTable={this.onSortTable}
+                  currentSort={currentSort}
                 />
-              ) : null}
-            </PTable>
-          </Wrapper>
+                <PortfolioTableMain
+                  tableData={tableData}
+                  selectedBalances={selectedBalances}
+                  isUSDCurrently={isUSDCurrently}
+                  onSelectBalance={this.onSelectBalance}
+                />
+                {selectedSum.currency ? (
+                  <PortfolioTableSum
+                    selectedSum={selectedSum}
+                    isUSDCurrently={isUSDCurrently}
+                  />
+                ) : null}
+              </PTable>
+            </Wrapper>
+          </TableAndHeadingWrapper>
+
+          <TableAndHeadingWrapper>
+            <TableHeading>Trade</TableHeading>
+            <Wrapper>
+              <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} />
+            </Wrapper>
+          </TableAndHeadingWrapper>
         </Container>
 
         <PTChartContainer>
@@ -446,11 +455,39 @@ const PTWrapper = styled.div`
   }
 `
 
+const TableAndHeadingWrapper = styled.div`
+  display: flex;
+  margin: 0 20px 5px;
+  flex-direction: column;
+  overflow-x: scroll;
+
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(45, 49, 54, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #4ed8da;
+  }
+`
+
+const TableHeading = styled.div`
+  display: flex;
+  text-transform: uppercase;
+  font-family: Roboto, sans-serif;
+  font-size: 17px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1.1px;
+  min-height: 25px;
+`
+
 const Wrapper = styled.div`
   position: relative;
-  margin: 0 20px 5px;
   overflow-y: scroll;
-  background-color: #393e44;
 
   &::-webkit-scrollbar {
     width: 12px;

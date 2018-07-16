@@ -16,7 +16,7 @@ class BitcoinPriceChartWidget extends Component {
   }
 }
 
-//provides color for side container in BitcoinPriceChart
+// provides color for side container in BitcoinPriceChart
 const WidgetWrapper = styled.div`
   &::before {
     position: absolute;

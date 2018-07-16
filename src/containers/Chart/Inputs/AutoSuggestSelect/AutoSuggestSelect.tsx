@@ -99,7 +99,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
-const Opt = connect(mapStateToProps, mapDispatchToProps)(Option)
+const Opt = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Option)
 
 function SelectWrapped(props) {
   const { classes, ...other } = props
