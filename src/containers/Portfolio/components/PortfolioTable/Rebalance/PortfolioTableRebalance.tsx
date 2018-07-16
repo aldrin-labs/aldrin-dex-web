@@ -90,14 +90,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
-    const { data, isShownMocks, getOnlyRebalance } = this.props
+    const { data, isShownMocks } = this.props
 
-    console.log('getOnlyRebalance', getOnlyRebalance);
-
-    console.log('data in componentDidMount' + '', data)
+    // console.log('data in componentDidMount' + '', data)
 
     const userHasRebalancePortfolio =
-      data && data.myRebalance && data.myRebalance.assets
+      data && data.myRebalance && data.myRebalance.assets && data.myRebalance.assets.length > 0
     const userHasPortfolio =
       data && data.portfolio.assets.length > 0
     let newTableData = []
@@ -105,18 +103,15 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio) {
 
-      console.log('data.myRebalance.assets', data.myRebalance.assets);
-
-
       newTableData = data.myRebalance.assets.map((el) => {
         return {
           exchange: el._id.exchange,
           symbol: el._id.coin,
-          price: el.amount,
+          price: el.amount['$numberDecimal'],
         }
       })
 
-      // console.log('userHasRebalancePortfolio', newTableData)
+      console.log('userHasRebalancePortfolio in didMount', newTableData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
@@ -127,6 +122,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           price: el.asset.priceUSD,
         }
       })
+
+      console.log('132323');
+
 
       // console.log(
       //   '!userHasRebalancePortfolio && userHasPortfolio',
@@ -147,10 +145,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   componentWillReceiveProps(nextProps: IProps) {
     const { data, isShownMocks } = nextProps
 
-    console.log('data in componentWillReceiveProps', data)
+    // console.log('data in componentWillReceiveProps', data)
 
     const userHasRebalancePortfolio =
-      data && data.myRebalance && data.myRebalance.assets
+      data && data.myRebalance && data.myRebalance.assets && data.myRebalance.assets.length > 0
     const userHasPortfolio =
       data && data.portfolio.assets.length > 0
     let newTableData = []
@@ -160,11 +158,11 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         return {
           exchange: el._id.exchange,
           symbol: el._id.coin,
-          price: el.amount,
+          price: el.amount['$numberDecimal'],
         }
       })
 
-      console.log('userHasRebalancePortfolio', newTableData)
+      console.log('userHasRebalancePortfolio in RecieveProps', newTableData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
@@ -176,10 +174,13 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         }
       })
 
-      console.log(
-        '!userHasRebalancePortfolio && userHasPortfolio',
-        newTableData
-      )
+      console.log('132323');
+
+
+      // console.log(
+      //   '!userHasRebalancePortfolio && userHasPortfolio',
+      //   newTableData
+      // )
     }
 
     const composeWithMocks = isShownMocks

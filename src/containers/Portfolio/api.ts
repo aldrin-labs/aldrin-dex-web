@@ -65,6 +65,7 @@ export const getPortfolioQuery = gql`
      myRebalance {
       total
       assets {
+        id
         _id
         percent
         amount
@@ -80,6 +81,7 @@ query {
   getProfile {
     username
   	myRebalance {
+  	  id
       _id
       total
       assets {
