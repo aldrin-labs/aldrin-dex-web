@@ -19,24 +19,50 @@ export default class Footer extends React.Component {
     return (
       <Container>
         <Block>
-          <Text>Cryptocurrencies Ai, 2018 •</Text>
-          <Text>Terms of Use</Text>
+          <Text>Cryptocurrencies Ai, 2018 </Text>
+          <Text>• </Text>
+          <Link href="termsofuse">
+            <Text> Terms of Use</Text>
+          </Link>
+          <Text>• </Text>
+          <Link href="privacypolicy">
+            <Text> Privacy Policy</Text>
+          </Link>
         </Block>
 
         <Block>
-          {socialIcons.map((socio) => {
-            return <SvgIcon src={socio.icon} width={30} height={30} />
-          })}
+          {socialIcons.map((socio) => (
+            <LinkWithIcon key={socio.icon} href={socio.link}>
+              <SvgIcon src={socio.icon} width={30} height={30} />
+            </LinkWithIcon>
+          ))}
         </Block>
 
         <Block>
           <Text>NIGHT MODE</Text>
-          <Switch onClick={() => {}} />
+          <Switch
+            onClick={() => {
+              console.log('soon...')
+            }}
+          />
         </Block>
       </Container>
     )
   }
 }
+
+const Link = styled.a`
+  &:visited {
+    text-decoration: none;
+  }
+  &:active {
+    text-decoration: none;
+  }
+`
+
+const LinkWithIcon = Link.extend`
+  margin: 0 1rem !important;
+`
 
 const Container = styled.div`
   display: flex;
