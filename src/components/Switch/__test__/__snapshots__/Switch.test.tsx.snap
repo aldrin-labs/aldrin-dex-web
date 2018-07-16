@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Switch render basic 1`] = `
+<file__Container>
+  <file__Label>
+    <file__Input
+      type="checkbox"
+    />
+    <file__Slider />
+  </file__Label>
+</file__Container>
+`;
+
+exports[`Switch render if isActive 1`] = `
+<file__Container>
+  <file__Desc>
+    ON
+  </file__Desc>
+  <file__Label>
+    <file__Input
+      checked={true}
+      type="checkbox"
+    />
+    <file__Slider />
+  </file__Label>
+  <file__Desc>
+    OFF
+  </file__Desc>
+</file__Container>
+`;
+
+exports[`Switch render with values 1`] = `
+<file__Container>
+  <file__Desc>
+    ON
+  </file__Desc>
+  <file__Label>
+    <file__Input
+      type="checkbox"
+    />
+    <file__Slider />
+  </file__Label>
+  <file__Desc>
+    OFF
+  </file__Desc>
+</file__Container>
+`;

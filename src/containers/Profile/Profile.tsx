@@ -11,7 +11,7 @@ interface Props {
   data: ProfileQueryQuery
 }
 
-class Profile extends React.Component<Props, {}> {
+class ProfileComponent extends React.Component<Props, {}> {
   render() {
     const { data } = this.props
     const { assetById } = data
@@ -56,7 +56,7 @@ const Smile = styled.div`
 `
 
 const DividerText = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 20px;
   font-weight: 500;
   color: #ffffff;
@@ -123,4 +123,4 @@ const options = ({ match }) => ({
   variables: { id: match ? match.params.id : '' },
 })
 
-export const ProfileWrapper = graphql(ProfileQuery, { options })(Profile)
+export default graphql(ProfileQuery, { options })(ProfileComponent)

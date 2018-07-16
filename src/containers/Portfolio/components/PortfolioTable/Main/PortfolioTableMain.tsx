@@ -1,15 +1,10 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { RowT } from '../types'
+import { roundUSDOff } from '../../../../../utils/PortfolioTableUtils'
+import { IProps } from './PortfolioTableMain.types'
+import { IRowT } from '../types'
 
-interface Props {
-  tableData: RowT[] | null
-  selectedBalances: number[] | null
-  onSelectBalance: Function
-  isUSDCurrently: boolean
-}
-
-export default class PortfolioTableMain extends React.Component<Props> {
+export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
     const { selectedBalances } = this.props
     const isSelected =
@@ -25,43 +20,11 @@ export default class PortfolioTableMain extends React.Component<Props> {
     )
   }
 
-  addZerosToEnd = (num: string): string => {
-    const reg = /(?=\.[0-9]+)\.[0-9]+/g
-    const diff = this.props.isUSDCurrently ? 3 : 9
-
-    if (reg.test(num)) {
-      const [str] = num.match(reg) || ['']
-      let tmp = str
-      const len = str.length
-      for (let i = 0; i < diff - len; i++) {
-        tmp += 0
-      }
-      const [head] = num.match(/[0-9]+\./g) || ['']
-      let woPoint = head.slice(0, -1)
-      const result = (woPoint += tmp)
-      return result || ''
-    }
-    return num
-  }
-
-  roundUSDOff = (num: number): string => {
-    const reg = this.props.isUSDCurrently
-      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-    if (String(num).match(reg)) {
-      const [price] = String(num).match(reg)
-      return price
-    } else if (num > 0) {
-      return this.addZerosToEnd(String(num))
-    } else {
-      return `${num}`
-    }
-  }
-
   render() {
     const { tableData, selectedBalances, isUSDCurrently } = this.props
-    if (!tableData) return null
-
+    if (!tableData) {
+      return null
+    }
     return (
       <PTBody
         style={
@@ -70,7 +33,7 @@ export default class PortfolioTableMain extends React.Component<Props> {
             : {}
         }
       >
-        {tableData.map((row, index) => {
+        {tableData.map((row: IRowT, index: number) => {
           const {
             currency,
             symbol,
@@ -88,7 +51,11 @@ export default class PortfolioTableMain extends React.Component<Props> {
           } = row
 
           const isSelected =
-            (selectedBalances && selectedBalances.indexOf(index) >= 0) || false
+            (selectedBalances && selectedBalances.indexOf(index) >= 0)
+
+          const isBase =
+              (isUSDCurrently && (symbol === 'USDT' || symbol === 'USD')) || (!isUSDCurrently && symbol === 'BTC')
+
 
           const mainSymbol = isUSDCurrently ? (
             <Icon className="fa fa-usd" key={`${index}usd`} />
@@ -100,17 +67,17 @@ export default class PortfolioTableMain extends React.Component<Props> {
             currency,
             symbol,
             `${percentage} %`,
-            [mainSymbol, `${this.roundUSDOff(price)}`],
+            [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
             quantity,
-            [mainSymbol, `${this.roundUSDOff(currentPrice)}`],
+            [mainSymbol, `${roundUSDOff(currentPrice, isUSDCurrently)}`],
             //            daily,
             //            `${dailyPerc} %`,
-            [mainSymbol, `${this.roundUSDOff(realizedPL)}`],
+            [mainSymbol, `${roundUSDOff(realizedPL, isUSDCurrently)}`],
             // realizedPL,
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
-            [mainSymbol, `${this.roundUSDOff(unrealizedPL)}`],
-            [mainSymbol, `${this.roundUSDOff(totalPL)}`], /// this WOULD BE TOTAL COLUMN!
+            [mainSymbol, `${roundUSDOff(unrealizedPL, isUSDCurrently)}`],
+            [mainSymbol, `${roundUSDOff(totalPL, isUSDCurrently)}`],
             //            `${unrealizedPLPerc} %`,
           ]
 
@@ -118,25 +85,27 @@ export default class PortfolioTableMain extends React.Component<Props> {
             <PTR
               key={`${currency}${symbol}${quantity}${index}`}
               isSelected={isSelected}
+              isBase={isBase}
               onClick={() => this.props.onSelectBalance(index)}
             >
-              <PTD
-                key={`${index}smt`}
-                isSelected={isSelected}
-                style={{ textAlign: 'right' }}
-              >
+              <PTD key={`${index}smt`} isSelected={isSelected}>
                 {this.renderCheckbox(index)}
               </PTD>
               {cols.map((col, idx) => {
                 let colorized = null
                 if (Array.isArray(col) && idx >= 6) {
-                  const [icon, str] = col
-                  colorized = str
+                  if (isBase) {
+                    col = "-"
+                  } else {
+                    const [icon, str] = col
+                    colorized = str
+                  }
                 }
                 return (
                   <PTD
                     key={`${currency}${symbol}${quantity}${col}${idx}`}
                     isSelected={isSelected}
+                    isBase={isBase}
                     colorized={colorized}
                   >
                     {col}
@@ -152,7 +121,8 @@ export default class PortfolioTableMain extends React.Component<Props> {
 }
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
+  display: table;
+  width: 100%;
 `
 
 const PTD = styled.td`
@@ -168,29 +138,42 @@ const PTD = styled.td`
         return '#f44336'
       }
     }
+
     return props.isSelected ? '#4ed8da' : '#fff'
   }};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-`
 
-// #3a4e4e;
+  &:nth-child(1) {
+    text-align: center;
+    padding: 1.75px 10px;
+  }
+  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
+    min-width: 100px;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+  }
+  &:nth-child(9) {
+    min-width: 110px;
+  }
+`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
+  background-color: ${(props: { isSelected?: boolean, isBase?: boolean  }) =>
+    props.isBase ? '#00ff0028' : props.isSelected ? '#2d3136' : '#393e44'};
 
   &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+    background-color: ${(props: { isSelected?: boolean, isBase?: boolean }) =>
+    props.isBase ? '#00ff0028' : props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
-  & ${PTD}:nth-child(n+ 3) {
+  & ${PTD}:nth-child(n + 4) {
     text-align: right;
   }
 `

@@ -1,12 +1,18 @@
 import * as React from 'react'
 import styled from 'styled-components'
-interface State {
-  activeChart: number
-}
+import { IProps, IState } from './TableChart.types'
 
-const chartBtns = ['1 Day', '7 Days', '1 Month', '3 Month', '1 Year', 'YTD', 'ALL PERIOD']
+const chartBtns = [
+  '1 Day',
+  '7 Days',
+  '1 Month',
+  '3 Month',
+  '1 Year',
+  'YTD',
+  'ALL PERIOD',
+]
 
-export default class extends React.Component<Props, State> {
+export default class extends React.Component<IProps, IState> {
   state = {
     activeChart: 4,
   }
@@ -16,28 +22,26 @@ export default class extends React.Component<Props, State> {
   }
 
   render() {
-    const { coin } = this.props
-    const { name = '', priceUSD = '' } = coin || {}
-    console.log(coin)
+    // const { coin } = this.props
+    // const { name = '', priceUSD = '' } = coin || {}
+    // console.log(coin)
 
     return (
       <SProfileChart>
         <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => {
-            return (
-              <ChartBtn
-                onClick={() => this.onChangeActiveChart(i)}
-                style={
-                  i === this.state.activeChart
-                    ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                    : {}
-                }
-                key={chartBtn}
-              >
-                {chartBtn}
-              </ChartBtn>
-            )
-          })}
+          {chartBtns.map((chartBtn, i) => (
+            <ChartBtn
+              onClick={() => this.onChangeActiveChart(i)}
+              style={
+                i === this.state.activeChart
+                  ? { backgroundColor: '#4ed8da', color: '#4c5055' }
+                  : {}
+              }
+              key={chartBtn}
+            >
+              {chartBtn}
+            </ChartBtn>
+          ))}
         </BtnsContainer>
 
         <Hr />
@@ -81,7 +85,7 @@ const ChartBtn = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #4ed8da;
@@ -101,57 +105,57 @@ const SProfileChart = styled.div`
   display: flex;
   flex-direction: column;
 `
-const ProfileChartHeading = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  font-weight: 500;
-  color: #ffffff;
-  margin-top: 16px;
-`
-
-const SuppliesBlock = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 16px;
-`
-
-const SupplyBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 56px;
-  margin-right: 35px;
-`
-
-const CurrentRate = styled.span`
-  font-family: Roboto;
-  font-size: 25px;
-  font-weight: 500;
-  color: #4ed8da;
-`
-
-const CommonRate = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  color: #ffffff;
-`
-
-const SupplyLowRate = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  color: #ff687a;
-`
-
-const SupplyHighRate = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  color: #65c000;
-`
-
-const SupplyDetail = styled.span`
-  opacity: 0.5;
-  font-family: Roboto;
-  font-size: 14px;
-  color: #ffffff;
-  margin-top: 4px;
-`
+// const ProfileChartHeading = styled.span`
+//   font-family: Roboto, sans-serif;
+//   font-size: 20px;
+//   font-weight: 500;
+//   color: #ffffff;
+//   margin-top: 16px;
+// `
+//
+// const SuppliesBlock = styled.div`
+//   display: flex;
+//   flex-wrap: wrap;
+//   margin-top: 16px;
+// `
+//
+// const SupplyBlock = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   min-height: 56px;
+//   margin-right: 35px;
+// `
+//
+// const CurrentRate = styled.span`
+//   font-family: Roboto, sans-serif;
+//   font-size: 25px;
+//   font-weight: 500;
+//   color: #4ed8da;
+// `
+//
+// const CommonRate = styled.span`
+//   font-family: Roboto, sans-serif;
+//   font-size: 20px;
+//   color: #ffffff;
+// `
+//
+// const SupplyLowRate = styled.span`
+//   font-family: Roboto, sans-serif;
+//   font-size: 20px;
+//   color: #ff687a;
+// `
+//
+// const SupplyHighRate = styled.span`
+//   font-family: Roboto, sans-serif;
+//   font-size: 20px;
+//   color: #65c000;
+// `
+//
+// const SupplyDetail = styled.span`
+//   opacity: 0.5;
+//   font-family: Roboto, sans-serif;
+//   font-size: 14px;
+//   color: #ffffff;
+//   margin-top: 4px;
+// `

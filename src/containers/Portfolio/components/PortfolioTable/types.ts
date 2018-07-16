@@ -1,4 +1,4 @@
-export interface RowT {
+export interface IRowT {
   currency: string
   symbol: string
   percentage: number
@@ -14,44 +14,43 @@ export interface RowT {
   [key: string]: string | number
 }
 
-export interface State {
-  tableData: RowT[] | null
-  selectedBalances: number[] | null
-  selectedSum: RowT
-  currentSort: { arg: SortArgs; key: Args } | null
+export interface IState {
+  tableData: IRowT[] | null
   isShownChart: boolean
-  activeKeys: number[] | null
-  portfolio: Portfolio | null
+  portfolio: IPortfolio | null
   isUSDCurrently: boolean
   tab: 'main' | 'industry' | 'rebalance' | 'correlation'
 }
 
-export interface Portfolio {
+export interface IPortfolio {
   name: string | null
   processing: boolean | null
-  assetIds: Array<string | null> | null
-  assets: Array<{
-    _id: string
-    assetId: string | null
-    exchangeId: string | null
-    keyId: string | null
-    value: number | null
-    realizedProfit: number | null
-    unrealizedProfit: number | null
-    totalProfit: number | null
-    asset: {
-      name: string | null
-      symbol: string | null
-      priceUSD: string | null
-    } | null
-    exchange: {
-      name: string | null
-    } | null
-    key: {
-      name: string | null
-      apiKey: string | null
-    } | null
-  } | null> | null
+  assetIds: (string | null)[] | null
+  assets:
+    | ({
+        _id: string
+        assetId: string | null
+        exchangeId: string | null
+        keyId: string | null
+        value: number | null
+        realizedProfit: number | null
+        unrealizedProfit: number | null
+        totalProfit: number | null
+        asset: {
+          name: string | null
+          symbol: string | null
+          priceUSD: string | null
+          priceBTC: string | null
+        } | null
+        exchange: {
+          name: string | null
+        } | null
+        key: {
+          name: string | null
+          apiKey: string | null
+        } | null
+      } | null)[]
+    | null
 }
 
 export enum SortArgs {
@@ -60,6 +59,7 @@ export enum SortArgs {
 }
 
 export enum Args {
+  industry = 'industry',
   currency = 'currency',
   symbol = 'symbol',
   percentage = 'percentage',

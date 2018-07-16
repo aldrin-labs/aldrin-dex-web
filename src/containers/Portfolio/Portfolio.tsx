@@ -2,8 +2,9 @@ import React from 'react'
 import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
+
 import { getPortfolioQuery } from './api'
-import { Props } from './interfaces'
+import { IProps } from './interfaces'
 import { Login } from '@containers/Login'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from './components'
@@ -14,18 +15,24 @@ const PORTFOLIO_UPDATE = gql`
   }
 `
 
-const PortfolioContainer = styled.div`
-  display: flex;
-  max-height: calc(100vh - 80px);
-`
+class PortfolioComponent extends React.Component<IProps> {
+  constructor(props, context) {
+    super(props, context)
 
-class PortfolioComponent extends React.Component<Props> {
-  state = {
-    checkboxes: null,
+    this.state = {
+      checkboxes: null,
+      isSideNavOpen: false,
+    }
+
+    this.toggleWallets = this.toggleWallets.bind(this)
   }
 
   onChangeActiveKey = (checkboxes: number[]) => {
     this.setState({ checkboxes })
+  }
+
+  toggleWallets() {
+    this.setState({ isSideNavOpen: !this.state.isSideNavOpen })
   }
 
   render() {
@@ -35,24 +42,49 @@ class PortfolioComponent extends React.Component<Props> {
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
-        {(subscriptionData) => {
-          return (
-            <PortfolioContainer>
-              {error &&
-                error.toString().match('jwt expired') && <Login isShownModal />}
-              <PortfolioSelector onChangeActive={this.onChangeActiveKey} />
-              <PortfolioTable
-                loading={loading}
-                checkboxes={checkboxes}
-                data={getProfile}
-                subscription={subscriptionData}
-              />
-            </PortfolioContainer>
-          )
-        }}
+        {(subscriptionData) => (
+          <PortfolioContainer>
+            {error &&
+              error.toString().match('jwt expired') && <Login isShownModal />}
+            <PortfolioSelector
+              toggleWallets={this.toggleWallets}
+              isSideNavOpen={this.state.isSideNavOpen}
+              onChangeActive={this.onChangeActiveKey}
+            />
+            <PortfolioTable
+              loading={loading}
+              checkboxes={checkboxes}
+              toggleWallets={this.toggleWallets}
+              data={getProfile}
+              subscription={subscriptionData}
+            />
+            <Backdrop
+              onClick={this.toggleWallets}
+              isSideNavOpen={this.state.isSideNavOpen}
+            />
+          </PortfolioContainer>
+        )}
       </Subscription>
     )
   }
 }
 
 export default graphql(getPortfolioQuery)(PortfolioComponent)
+
+const PortfolioContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  min-height: 600px;
+`
+const Backdrop = styled.div`
+  display: ${(props) => (props.isSideNavOpen ? 'block' : 'none')};
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+`

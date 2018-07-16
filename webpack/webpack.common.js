@@ -19,7 +19,7 @@ const config = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        loader: 'babel-loader?cacheDirectory=true'
       },
       {
         test: /\.(graphql|gql)$/,
@@ -32,6 +32,11 @@ const config = {
         options: {
           limit: 4096, // 4kb
         },
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        loaders: ['style-loader', 'css-loader'],
       },
     ],
   },

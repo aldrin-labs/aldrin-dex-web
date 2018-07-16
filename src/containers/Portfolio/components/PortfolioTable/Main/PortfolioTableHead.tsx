@@ -1,13 +1,11 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import {
-  Args,
-  SortArgs,
-} from '@containers/Portfolio/components/PortfolioTable/types'
+import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import sortIcon from '../../../../../icons/arrow.svg'
+import { IState, IProps } from './PortfolioTableHead.types'
 
-const usdHeadings: Array<{ name: string; value: Args }> = [
+const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'percentage' },
@@ -21,10 +19,9 @@ const usdHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Unrealized P&L', value: 'unrealizedPL' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
   { name: 'Total P&L', value: 'total' },
-
 ]
 
-const btcHeadings: Array<{ name: string; value: Args }> = [
+const btcHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'percentage' },
@@ -40,20 +37,15 @@ const btcHeadings: Array<{ name: string; value: Args }> = [
   { name: 'Total P&L', value: 'total' },
 ]
 
-interface Props {
-  isUSDCurrently: boolean
-  isSelectAll: boolean
-  onSelectAll: Function
-  onSortTable: Function
-  currentSort: { arg: SortArgs; key: Args }
-}
-
-export default class PortfolioTableHead extends React.Component<Props> {
-  state = {
+export default class PortfolioTableHead extends React.Component<
+  IProps,
+  IState
+> {
+  state: IState = {
     tableHeadings: usdHeadings,
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: IProps) {
     if (!nextProps.isUSDCurrently) {
       this.setState({ tableHeadings: btcHeadings })
     } else if (nextProps.isUSDCurrently) {
@@ -81,6 +73,7 @@ export default class PortfolioTableHead extends React.Component<Props> {
           </PTH>
           {tableHeadings.map((heading) => {
             const isSorted = currentSort && currentSort.key === heading.value
+
             return (
               <PTH
                 key={heading.name}
@@ -149,18 +142,27 @@ const Checkbox = styled.input`
 `
 
 const PTH = styled.th`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   color: #fff;
   padding: 10px;
   font-weight: 500;
-  text-align: center;
+  text-align: right;
 
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  background-color: #393e44;
+  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
+    min-width: 100px;
+  }
+  &:nth-child(2) {
+    text-align: left;
+  }
+  &:nth-child(3) {
+    min-width: 70px;
+    text-align: left;
+  }
+  &:nth-child(9) {
+    min-width: 110px;
+  }
 `
 
 const PTR = styled.tr`
@@ -169,4 +171,17 @@ const PTR = styled.tr`
     props.isSelected ? '#2d3136' : '#393e44'};
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  display: table;
+  width: 100%;
+  position: sticky;
+  top: 0; /* trigger sticky when reaches coordonates */
+
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid white;
+  }
+`

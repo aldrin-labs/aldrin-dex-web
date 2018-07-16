@@ -1,19 +1,24 @@
 import * as React from 'react'
 import styled from 'styled-components'
-//import { ProfileQueryQuery } from '../profile-annotation'
+import { IState, IProps } from './portFolioHeadUpdated.types'
+
+// import { ProfileQueryQuery } from '../profile-annotation'
 
 // interface Props {
 //   coin: ProfileQueryQuery['assetById']
 // }
 
+const chartBtns = [
+  '1 Day',
+  '7 Days',
+  '1 Month',
+  '3 Month',
+  '1 Year',
+  'YTD',
+  'ALL PERIOD',
+]
 
-interface State {
-  activeChart: number
-}
-
-const chartBtns = ['1 Day', '7 Days', '1 Month', '3 Month', '1 Year', 'YTD', 'ALL PERIOD']
-
-export default class ProfileChart extends React.Component<Props, State> {
+export default class ProfileChart extends React.Component<IProps, IState> {
   state = {
     activeChart: 4,
   }
@@ -25,7 +30,8 @@ export default class ProfileChart extends React.Component<Props, State> {
   render() {
     const { coin } = this.props
     const { name = '', priceUSD = '' } = coin || {}
-    console.log(coin)
+    // console.log(coin)
+
     return (
       <SProfileChart>
         {/*TODO: need refactoring, need real data */}
@@ -34,8 +40,6 @@ export default class ProfileChart extends React.Component<Props, State> {
             <CurrentRate>{priceUSD || '9 713,19'}</CurrentRate>
             <SupplyDetail>Current rate USD</SupplyDetail>
           </SupplyBlock>
-
-        
 
           <SupplyBlock>
             <SupplyLowRate>{'904,79'}</SupplyLowRate>
@@ -50,28 +54,23 @@ export default class ProfileChart extends React.Component<Props, State> {
             <SupplyHighRate>{'+748,77%'}</SupplyHighRate>
             <SupplyDetail>Change in year USD</SupplyDetail>
           </SupplyBlock>
-
-         
         </SuppliesBlock>
 
         <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => {
-            return (
-              <ChartBtn
-                onClick={() => this.onChangeActiveChart(i)}
-                style={
-                  i === this.state.activeChart
-                    ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                    : {}
-                }
-                key={chartBtn}
-              >
-                {chartBtn}
-              </ChartBtn>
-            )
-          })}
+          {chartBtns.map((chartBtn, i) => (
+            <ChartBtn
+              onClick={() => this.onChangeActiveChart(i)}
+              style={
+                i === this.state.activeChart
+                  ? { backgroundColor: '#4ed8da', color: '#4c5055' }
+                  : {}
+              }
+              key={chartBtn}
+            >
+              {chartBtn}
+            </ChartBtn>
+          ))}
         </BtnsContainer>
-
       </SProfileChart>
     )
   }
@@ -109,7 +108,7 @@ const ChartBtn = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   font-weight: 500;
   color: #4ed8da;
@@ -121,16 +120,15 @@ const SProfileChart = styled.div`
   padding: 0 5px;
   margin-top: 5px;
 
-
   padding-bottom: 48px;
   margin-left: 16.5px;
 
   display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
 `
 const ProfileChartHeading = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   color: #ffffff;
@@ -152,33 +150,33 @@ const SupplyBlock = styled.div`
 `
 
 const CurrentRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 22px;
   font-weight: 500;
   color: #4ed8da;
 `
 
 const CommonRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #ffffff;
 `
 
 const SupplyLowRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #ff687a;
 `
 
 const SupplyHighRate = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #65c000;
 `
 
 const SupplyDetail = styled.span`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   color: #ffffff;
   margin-top: 4px;

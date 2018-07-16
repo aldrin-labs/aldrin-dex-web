@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 
 interface Props {
-  onClick: Function
+  onClick?: Function
   values?: string[]
   isActive?: boolean
 }
@@ -10,11 +10,8 @@ interface Props {
 export default class Switch extends React.Component<Props> {
   render() {
     const { onClick, values, isActive } = this.props
-    let first
-    let second
-    if (values) {
-      ;[first, second] = values
-    }
+    const [first, second] = values || ['', '']
+
     return (
       <Container>
         {first && <Desc>{first}</Desc>}
@@ -29,9 +26,9 @@ export default class Switch extends React.Component<Props> {
 }
 
 const Desc = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1em;
-  margin: 0 10px;
+  margin: 0 15px;
   color: #fff;
   font-weight: 500;
 `
@@ -39,6 +36,14 @@ const Desc = styled.span`
 const Container = styled.div`
   display: flex;
   align-items: center;
+
+  @media (max-width: 610px) {
+    padding-bottom: 10px;
+  }
+
+  @media (max-width: 500px) {
+    padding-bottom: 20px;
+  }
 `
 
 const Slider = styled.span`

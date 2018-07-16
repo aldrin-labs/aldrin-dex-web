@@ -1,14 +1,27 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
 import styled from 'styled-components'
-import sortIcon from '../../../../../icons/arrow.svg'
+import { compose } from 'recompose'
+
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import Switch from './SwitchWithIcons'
+
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS } from './mocks'
-import { Portfolio } from '@containers/Portfolio/components/PortfolioTable/types'
+import { MOCKS, genMocks, inds } from './mocks'
+import {
+  IPortfolio,
+  Args,
+} from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
-import { connect } from 'react-redux'
-import { compose } from 'recompose'
+import sortIcon from '@icons/arrow.svg'
+import {
+  onSortStrings,
+  roundUSDOff,
+} from '../../../../../utils/PortfolioTableUtils'
+import { IState } from './PortfolioTableIndustries.types'
+
+import PieChartQuery from './PieChartQuery'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -28,70 +41,22 @@ const defaultSelectedSum = {
   industryPerf: 0,
 }
 
-interface Obj {
-  currency: string
-  symbol: string
-  industry: string
-  price: number
-  portfolioPerf: number
-  industryPerf: number
-}
+class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
-interface State {
-  selectedSum: Obj | null
-  selectedRows: number[] | null
-  industryData: Obj[] | null
-  portfolio: Portfolio | null
-  activeKeys: number[] | null
-  currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
-}
-
-const TMP_LINE_CHART_MOCKS = [
-  [
-    { x: 1, y: 137070, label: 'BTC' },
-    { x: 2, y: 134926, label: 'BTC' },
-    { x: 3, y: 138591, label: 'BTC' },
-    { x: 4, y: 140777, label: 'BTC' },
-    { x: 5, y: 150337, label: 'BTC' },
-    { x: 6, y: 151651, label: 'BTC' },
-  ],
-
-  [
-    { x: 1, y: 50534, label: 'ETH' },
-    { x: 2, y: 49769, label: 'ETH' },
-    { x: 3, y: 51829, label: 'ETH' },
-    { x: 4, y: 56188, label: 'ETH' },
-    { x: 5, y: 60951, label: 'ETH' },
-    { x: 6, y: 59985, label: 'ETH' },
-  ],
-
-  [
-    { x: 1, y: 26012, label: 'XRP' },
-    { x: 2, y: 25705, label: 'XRP' },
-    { x: 3, y: 27857, label: 'XRP' },
-    { x: 4, y: 30952, label: 'XRP' },
-    { x: 5, y: 36189, label: 'XRP' },
-    { x: 6, y: 33912, label: 'XRP' },
-  ],
-
-  [
-    { x: 1, y: 13093, label: 'BCH' },
-    { x: 2, y: 12950, label: 'BCH' },
-    { x: 3, y: 15213, label: 'BCH' },
-    { x: 4, y: 16572, label: 'BCH' },
-    { x: 5, y: 19252, label: 'BCH' },
-    { x: 6, y: 19606, label: 'BCH' },
-  ],
-]
-
-class PortfolioTableIndustries extends React.Component<IndProps, State> {
-  state: State = {
+  state: IState = {
     activeKeys: null,
     portfolio: null,
     industryData: null,
     currentSort: null,
     selectedRows: null,
     selectedSum: defaultSelectedSum,
+    activeLegend: null,
+    showChart: 'line',
+  }
+
+  componentWillMount() {
+    const lineChartMocks = genMocks(31, inds)
+    this.setState({ lineChartMocks })
   }
 
   componentDidMount() {
@@ -103,6 +68,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
       )
 
       this.setState({ activeKeys: this.props.checkboxes })
+
       return
     } else if (!data) {
       return
@@ -111,7 +77,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
 
     const composeWithMocks = {
       ...portfolio,
-      assets: portfolio.assets.concat(MOCKS),
+      assets: portfolio!.assets!.concat(MOCKS),
     }
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -124,7 +90,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
       const { portfolio } = nextProps.data
-      if (!portfolio || !portfolio.assets) return
+      if (!portfolio || !portfolio.assets) {
+        return
+      }
 
       const composeWithMocks = {
         ...portfolio,
@@ -151,61 +119,51 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     }
   }
 
-  roundUSDOff = (num: number): string => {
-    const reg = this.props.isUSDCurrently
-      ? /[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-    if (String(num).match(reg)) {
-      const [price] = String(num).match(reg)
-      return price
-    } else if (num > 0) {
-      return this.addZerosToEnd(String(num))
-    } else {
-      return `${num}`
-    }
+  toggleChart = () => {
+    this.setState((prevState: IState) => ({
+      showChart: prevState.showChart === 'line' ? 'chart' : 'line',
+    }))
   }
 
-  addZerosToEnd = (num: string): string => {
-    const reg = /(?=\.[0-9]+)\.[0-9]+/g
-    const diff = this.props.isUSDCurrently ? 3 : 9
-
-    if (reg.test(num)) {
-      const [str] = num.match(reg) || ['']
-      let tmp = str
-      const len = str.length
-      for (let i = 0; i < diff - len; i++) {
-        tmp += 0
-      }
-      const [head] = num.match(/[0-9]+\./g) || ['']
-      let woPoint = head.slice(0, -1)
-      const result = (woPoint += tmp)
-      return result || ''
-    }
-    return num
-  }
-
-  combineIndustryData = (portfolio?: Portfolio) => {
+  combineIndustryData = (portfolio?: IPortfolio) => {
     const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
-    if (!portfolio || !portfolio.assets || !activeKeys) return
+    if (!portfolio || !portfolio.assets || !activeKeys) {
+      return
+    }
     const { assets } = portfolio
 
     const industryData = assets
       .map((row) => {
-        const { asset, key = { name: '' }, exchange } = row || {}
-        if (activeKeys.indexOf(key.name) === -1) return null
-        const { symbol, priceUSD, priceBTC, industry: ind } = asset || {}
-        const { name } = exchange
+        const {
+          asset = { symbol: '', priceBTC: '', priceUSD: '', industry: '' },
+          key = { name: '' },
+          exchange = { name: '' },
+        } =
+          row || {}
+        if (activeKeys.indexOf(key!.name) === -1) {
+          return null
+        }
+        const {
+          symbol = '',
+          priceUSD = '',
+          priceBTC = '',
+          industry: ind = '',
+        } =
+          asset || {}
+        const { name = '' } = exchange
         const { name: industryName, performance } = ind || {
           name: '',
           performance: {
             usd: 0,
-            btc: 0
-          }
+            btc: 0,
+          },
         }
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        const industryPerformance = isUSDCurrently ? parseFloat(performance.usd).toFixed(2) : parseFloat(performance.btc).toFixed(2)
+        const industryPerformance = isUSDCurrently
+          ? parseFloat(performance.usd).toFixed(2)
+          : parseFloat(performance.btc).toFixed(2)
 
         const col = {
           currency: name || '-',
@@ -222,10 +180,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     this.setState({ industryData }, () =>
       this.calculateSum(this.state.selectedRows)
     )
-  }
-
-  onSortStrings = (a: string, b: string): number => {
-    return a.localeCompare(b)
   }
 
   renderCheckbox = (idx: number) => {
@@ -249,7 +203,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
 
   onSortTable = (key: Args) => {
     const { industryData, currentSort } = this.state
-    if (!industryData) return
+    if (!industryData) {
+      return
+    }
 
     const stringKey =
       key === 'currency' || key === 'symbol' || key === 'industry'
@@ -260,23 +216,26 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
           this.setState({ currentSort: { key, arg: 'DESC' } })
 
           if (stringKey) {
-            return this.onSortStrings(b[key], a[key])
+            return onSortStrings(b[key], a[key])
           }
+
           return b[key] - a[key]
         } else {
           this.setState({ currentSort: { key, arg: 'ASC' } })
 
           if (stringKey) {
-            return this.onSortStrings(a[key], b[key])
+            return onSortStrings(a[key], b[key])
           }
+
           return a[key] - b[key]
         }
       }
       this.setState({ currentSort: { key, arg: 'ASC' } })
 
       if (stringKey) {
-        return this.onSortStrings(a[key], b[key])
+        return onSortStrings(a[key], b[key])
       }
+
       return a[key] - b[key]
     })
 
@@ -301,21 +260,20 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     const { industryData } = this.state
     if (!selectedRows || !industryData) {
       this.setState({ selectedSum: defaultSelectedSum })
+
       return
     }
 
     const sum = industryData.filter((td, idx) => selectedRows.indexOf(idx) >= 0)
     const reducedSum = sum.reduce(
-      (acc, val) => {
-        return {
-          currency: val.currency,
-          symbol: val.symbol,
-          industry: val.industry,
-          price: Number(acc.price) + Number(val.price),
-          portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
-          industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
-        }
-      },
+      (acc, val) => ({
+        currency: val.currency,
+        symbol: val.symbol,
+        industry: val.industry,
+        price: Number(acc.price) + Number(val.price),
+        portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
+        industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
+      }),
       {
         currency: '',
         symbol: '',
@@ -332,24 +290,44 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) return defaultSelectedSum
+    // const { isUSDCurrently } = this.props
 
-    if (selectedRows.length === industryData.length) {
-      reducedSum.currency = 'All'
-      reducedSum.symbol = '-'
-    } else if (selectedRows.length > 1) {
-      reducedSum.currency = 'Selected'
-      reducedSum.symbol = '-'
+    if (!selectedRows || !industryData) {
+      return defaultSelectedSum
     }
 
-    reducedSum.industry = '-'
+    let newReducedSum = {}
 
-    return reducedSum
+    // const mainSymbol = isUSDCurrently ? (
+    //   <Icon className="fa fa-usd" key="usd" />
+    // ) : (
+    //   <Icon className="fa fa-btc" key="btc" />
+    // )
+
+    if (selectedRows.length === industryData.length) {
+      newReducedSum = {
+        ...reducedSum,
+        currency: 'All',
+        symbol: '-',
+        industry: '-',
+      }
+    } else if (selectedRows.length >= 1) {
+      newReducedSum = {
+        ...reducedSum,
+        currency: 'Selected',
+        symbol: '-',
+        industry: '-',
+      }
+    }
+
+    return newReducedSum
   }
 
   onSelectAll = () => {
     const { industryData } = this.state
-    if (!industryData) return
+    if (!industryData) {
+      return
+    }
     const rowQuantity = industryData.length
     let allRows: number[] | null
     const selectedRows =
@@ -362,178 +340,274 @@ class PortfolioTableIndustries extends React.Component<IndProps, State> {
     this.setState({ selectedRows: allRows }, () => this.calculateSum(allRows))
   }
 
-  genLineChart = () => {
-    const { selectedRows, industryData } = this.state
-    if (!selectedRows || !industryData) return
-    const data = industryData.filter((o, i) => selectedRows.indexOf(i) >= 0)
+  onChangeData = (data: string[]) => {
+    const lineChartMocks = genMocks(31, data)
 
-    return data.map((item, i) => {
-      return {
-        x: i + 1,
-        y: i * 2,
-        label: `${item.symbol} ${item.industry}`,
-      }
-    })
+    this.setState({ lineChartMocks })
   }
 
   render() {
-    const { isUSDCurrently } = this.props
-    const { selectedRows, selectedSum, industryData, currentSort } = this.state
+    const { isUSDCurrently, children } = this.props
+    const {
+      selectedRows,
+      selectedSum,
+      industryData,
+      currentSort,
+      activeLegend,
+    } = this.state
     const isSelectAll =
       (industryData &&
         selectedRows &&
         industryData.length === selectedRows.length) ||
       false
 
+    // const chartWidth = this.setChartWidth()
+
+    let isThereAnySelectedRows = false
+    if (selectedRows) {
+      isThereAnySelectedRows = selectedRows.length > 1 ? true : false
+    }
+
+    const tableDataHasData = industryData
+      ? !!Object.keys(industryData).length
+      : false
+
+    if (!tableDataHasData) {
+      return (
+        <PTWrapper tableData={!!tableDataHasData}>
+          {children}
+          <PTextBox>Add account for Portfolio</PTextBox>
+        </PTWrapper>
+      )
+    }
+
     return (
-      <Container>
-        <Wrapper>
-          <PTable>
-            <PTHead>
-              <PTR>
-                <PTH key="selectAll" style={{ textAlign: 'left' }}>
-                  <Checkbox
-                    type="checkbox"
-                    id="selectAll"
-                    checked={isSelectAll}
-                    onChange={this.onSelectAll}
-                  />
-                  <Label htmlFor="selectAll">
-                    <Span />
-                  </Label>
-                </PTH>
-                {tableHeadings.map((heading) => {
-                  const isSorted =
-                    currentSort && currentSort.key === heading.value
+      <PTWrapper tableData={!!tableDataHasData} innerRef={this.setWrapperRef}>
+        {children}
+        <Container>
+          <Wrapper
+            isThereAnySelectedRows={isThereAnySelectedRows}
+            innerRef={this.setChildNodeRef}
+          >
+            <PTable>
+              <PTHead>
+                <PTR>
+                  <PTH key="selectAll">
+                    <Checkbox
+                      type="checkbox"
+                      id="selectAll"
+                      checked={isSelectAll}
+                      onChange={this.onSelectAll}
+                    />
+                    <Label htmlFor="selectAll">
+                      <Span />
+                    </Label>
+                  </PTH>
+                  {tableHeadings.map((heading) => {
+                    const isSorted =
+                      currentSort && currentSort.key === heading.value
 
-                  return (
-                    <PTH
-                      key={heading.name}
-                      onClick={() => this.onSortTable(heading.value)}
-                      style={{ paddingRight: isSorted ? 0 : '16px' }}
-                    >
-                      {heading.name}
+                    return (
+                      <PTH
+                        key={heading.name}
+                        onClick={() => this.onSortTable(heading.value)}
+                        isSorted={isSorted}
+                      >
+                        {heading.name}
 
-                      {isSorted && (
-                        <SvgIcon
-                          src={sortIcon}
-                          width={12}
-                          height={12}
-                          style={{
-                            verticalAlign: 'middle',
-                            marginLeft: '4px',
-                            transform:
-                              currentSort && currentSort.arg === 'ASC'
-                                ? 'rotate(180deg)'
-                                : null,
-                          }}
-                        />
-                      )}
-                    </PTH>
-                  )
-                })}
-              </PTR>
-            </PTHead>
+                        {isSorted && (
+                          <SvgIcon
+                            src={sortIcon}
+                            width={12}
+                            height={12}
+                            style={{
+                              position: 'absolute',
+                              top: '1.2rem',
+                              verticalAlign: 'middle',
+                              marginLeft: '4px',
+                              transform:
+                                currentSort && currentSort.arg === 'ASC'
+                                  ? 'rotate(180deg)'
+                                  : null,
+                            }}
+                          />
+                        )}
+                      </PTH>
+                    )
+                  })}
+                </PTR>
+              </PTHead>
 
-            <PTBody>
-              {industryData &&
-                industryData.map((row, idx) => {
-                  const {
-                    currency,
-                    symbol,
-                    industry,
-                    price,
-                    portfolioPerf,
-                    industryPerf,
-                  } = row
+              <PTBody>
+                {industryData &&
+                  industryData.map((row, idx) => {
+                    const {
+                      currency,
+                      symbol,
+                      industry,
+                      price,
+                      portfolioPerf,
+                      industryPerf,
+                    } = row
 
-                  const mainSymbol = isUSDCurrently ? (
-                    <Icon className="fa fa-usd" key={`${idx}usd`} />
-                  ) : (
-                    <Icon className="fa fa-btc" key={`${idx}btc`} />
-                  )
+                    const mainSymbol = isUSDCurrently ? (
+                      <Icon className="fa fa-usd" key={`${idx}usd`} />
+                    ) : (
+                      <Icon className="fa fa-btc" key={`${idx}btc`} />
+                    )
 
-                  const isSelected =
-                    (selectedRows && selectedRows.indexOf(idx) >= 0) || false
+                    const isSelected =
+                      (selectedRows && selectedRows.indexOf(idx) >= 0) || false
 
-                  const cols = [
-                    currency,
-                    symbol,
-                    industry,
-                    [mainSymbol, `${this.roundUSDOff(price)}`],
-                    `${portfolioPerf}%`,
-                    `${industryPerf}%`,
-                  ]
+                    const cols = [
+                      currency,
+                      symbol,
+                      industry,
+                      [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
+                      `${portfolioPerf}%`,
+                      `${industryPerf}%`,
+                    ]
 
-                  return (
-                    <PTR
-                      key={`${currency}${symbol}`}
-                      isSelected={isSelected}
-                      onClick={() => this.onSelectBalance(idx)}
-                    >
-                      <PTD key="smt" isSelected={isSelected}>
-                        {this.renderCheckbox(idx)}
-                      </PTD>
-                      {cols &&
-                        cols.map((col, idx) => {
-                          if (col && !Array.isArray(col) && col.match(/%/g)) {
-                            const color =
-                              Number(col.replace(/%/g, '')) >= 0
-                                ? '#65c000'
-                                : '#ff687a'
+                    return (
+                      <PTRBody
+                        key={`${currency}${symbol}${idx}`}
+                        isSelected={isSelected}
+                        onClick={() => this.onSelectBalance(idx)}
+                      >
+                        <PTD key="smt" isSelected={isSelected}>
+                          {this.renderCheckbox(idx)}
+                        </PTD>
+                        {cols &&
+                          cols.map((col, innerIdx) => {
+                            if (col && !Array.isArray(col) && col.match(/%/g)) {
+                              const color =
+                                Number(col.replace(/%/g, '')) >= 0
+                                  ? '#65c000'
+                                  : '#ff687a'
+
+                              return (
+                                <PTD
+                                  key={`${col}${innerIdx}`}
+                                  style={{ color }}
+                                  isSelected={isSelected}
+                                >
+                                  {col}
+                                </PTD>
+                              )
+                            }
 
                             return (
                               <PTD
-                                key={`${col}${idx}`}
-                                style={{ color }}
+                                key={`${col}${innerIdx}`}
                                 isSelected={isSelected}
                               >
                                 {col}
                               </PTD>
                             )
-                          }
-                          return (
-                            <PTD key={`${col}${idx}`} isSelected={isSelected}>
-                              {col}
-                            </PTD>
-                          )
-                        })}
-                    </PTR>
-                  )
-                })}
-            </PTBody>
-            {selectedSum &&
-              selectedSum.currency && (
-                <PortfolioTableSum selectedSum={selectedSum} isUSDCurrently={this.props.isUSDCurrently} />
+                          })}
+                      </PTRBody>
+                    )
+                  })}
+              </PTBody>
+              {selectedSum && selectedSum.currency ? (
+                <PortfolioTableSum
+                  industry={true}
+                  selectedSum={selectedSum}
+                  isUSDCurrently={this.props.isUSDCurrently}
+                />
+              ) : null}
+            </PTable>
+          </Wrapper>
+          <ChartContainer>
+            <Heading>
+              <Switch onClick={this.toggleChart} />
+            </Heading>
+            <ChartWrapper>
+              {this.state.showChart === 'line' ? (
+                <LineChart
+                  data={this.state.lineChartMocks}
+                  activeLine={activeLegend}
+                  onChangeData={this.onChangeData}
+                />
+              ) : (
+                // <PieChart data={genAngleMocks(inds)} flexible />
+                <PieChartQuery isShownMocks={this.props.isShownMocks} />
               )}
-          </PTable>
-        </Wrapper>
-        <LineChartContainer>
-          <Heading>Industry Line Chart</Heading>
-          <LineChart data={TMP_LINE_CHART_MOCKS} />
-        </LineChartContainer>
-      </Container>
+            </ChartWrapper>
+          </ChartContainer>
+        </Container>
+      </PTWrapper>
     )
   }
 }
 
-const Heading = styled.span`
-  font-family: Roboto;
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 20px 20px;
+`
+
+const Heading = styled.div`
+  display: flex;
+  justify-content: center;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
+  color: #fff;
+  padding-bottom: 20px;
 `
 
-const LineChartContainer = styled.div`
-  background-color: #fff;
-  padding: 1em;
-  width: 30%;
-  height: 100%;
-  text-align: center;
-`
-
-const Container = styled.div`
+const PTWrapper = styled.div`
+  width: ${(props: { tableData?: boolean }) =>
+    props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
+  flex-direction: column;
+  margin: 24px;
+  border-radius: 3px;
+  background-color: #393e44;
+  box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+  height: calc(100vh - 130px);
+  overflow: auto;
+`
+
+const ChartWrapper = styled.div`
+  width: 100%;
+  height: 25vh;
+  display: flex;
+  position: relative;
+  
+  @media (max-height: 850px) {
+    height: 20vh;
+  }
+`
+
+const ChartContainer = styled.div`
+  border-radius: 3px;
+  background-color: #2d3136;
+  box-shadow: 0 2px 6px 0 #0006;
+
+  padding: 1em;
+  text-align: center;
+  height: 35vh;
+  margin: 2rem 1rem;
+  width: 900px;
+  
+  @media (min-width: 1950px) {
+    margin: 1rem;
+  }
+  
+  @media (max-height: 850px) {
+    height: 30vh;
+    margin: 0.5rem 1rem;
+  }
+  @media (max-height: 680px) {
+    display: none;
+  }
+  @media (max-width: 850px) {
+    display: none;
+  }
 `
 
 const Icon = styled.i`
@@ -542,7 +616,29 @@ const Icon = styled.i`
 
 const Wrapper = styled.div`
   overflow-y: scroll;
-  background-color: #393e44;
+  border-radius: 3px;
+  background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
+    props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
+  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
+  max-height: 40vh;
+  margin: 1rem;
+  
+  @media (max-height: 850px) {
+    max-height: 30vh;
+  }
+  
+  @media (max-height: 680px) {
+      max-height: 50vh;
+  }
+  
+  @media (max-height: 550px) {
+      max-height: 45vh;
+  }
+  
+  @media (max-height: 460px) {
+      max-height: 40vh;
+  }
+
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -559,27 +655,48 @@ const Wrapper = styled.div`
 
 const PTable = styled.table`
   table-layout: fixed;
+  width: 100%;
   border-collapse: collapse;
+  display: inline-block;
 `
 
 const PTBody = styled.tbody`
-  border-top: 1px solid #fff;
+  display: table;
+  width: 100%;
 `
 
 const PTD = styled.td`
   color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#4ed8da' : '#fff'};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-align: right;
   
-  &:first-child {
-    text-align: left;
+
+  &:nth-child(1) {
+    padding: 1.75px 10px;
+  }
+  
+  &:nth-child(n + 2) {
+    min-width: 100px;
+  }
+
+  &:nth-child(3) {
+  }
+  &:nth-child(n + 4) {
+    text-align: right;
+  }
+  
+  &:nth-child(4) {
+    min-width: 250px;
+  }
+  
+  &:nth-child(n + 6) {
+    min-width: 150px;
   }
 `
 
@@ -619,34 +736,91 @@ const Checkbox = styled.input`
 `
 
 const PTH = styled.th`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 0 10px;
+  padding: 1.75px 16px 1.75px 10px;
   font-weight: 500;
-  text-align: center;
-  vertical-align: bottom;
-  position: sticky;
-  top: 0;
-  overflow: hidden;
-  background-color: #393e44;
-  width: 50px;
+
+  &:nth-child(n + 2) {
+    min-width: 100px;
+  }
+
+  &:nth-child(1) {
+    padding: 10px;
+    text-align: left;
+  }
+
+  &:nth-child(2) {
+    text-align: left;
+  }
+  &:nth-child(3) {
+    text-align: left;
+  }
+  &:nth-child(n + 4) {
+    text-align: right;
+  }
+  &:nth-child(4) {
+    min-width: 250px;
+  }
+  &:nth-child(n + 6) {
+    min-width: 150px;
+  }
 `
 
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
     props.isSelected ? '#2d3136' : '#393e44'};
-  &:nth-child(even) {
+`
+
+const PTRBody = styled.tr`
+  cursor: pointer;
+  background-color: ${(props: { isSelected?: boolean }) =>
+    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
+
+  &:nth-child(odd) {
     background-color: ${(props: { isSelected?: boolean }) =>
       props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
+
+  &:hover {
+    background-color: rgba(70, 102, 142, 0.2);
+  }
 `
 
-const PTHead = styled.thead``
+const PTHead = styled.thead`
+  display: table;
+  position: sticky;
+  top: 0;
+  width: 100%;
 
-const mapStateToProps = (store) => ({
+  &::after {
+    content: ' ';
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-bottom: 1px solid white;
+  }
+`
+
+const PTextBox = styled.div`
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2d3136;
+`
+
+const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
 })
 

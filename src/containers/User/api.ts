@@ -27,7 +27,7 @@ export const getKeysQuery = gql`
 export const deleteExchangeKeyMutation = gql`
   mutation deleteExchangeKey($name: String, $removeTrades: Boolean) {
     deleteExchangeKey(name: $name, removeTrades: $removeTrades)
-}
+  }
 `
 
 export const addExchangeKeyMutation = gql`
@@ -45,16 +45,27 @@ export const addExchangeKeyMutation = gql`
       exchange: $exchange
       date: $date
     ) {
+      _id
       name
       apiKey
       secret
       date
+      exchangeId
+      ownerId
+      owner {
+        _id
+        username
+      }
+      exchange {
+        name
+        symbol
+      }
     }
   }
 `
 export const getExchangesListQuery = gql`
   query getExchangesList($page: Int, $perPage: Int) {
-    exchangePagination(page: $page, perPage: $perPage) {
+    exchangePagination(page: $page, perPage: 50) {
       count
       items {
         _id
@@ -67,6 +78,18 @@ export const getExchangesListQuery = gql`
           exchangeIds
           price
         }
+      }
+    }
+  }
+`
+export const getExchangesForKeysListQuery = gql`
+  query getExchangesForKeysList {
+    exchangePagination(perPage: 150) {
+      count
+      items {
+        _id
+        name
+        symbol
       }
     }
   }

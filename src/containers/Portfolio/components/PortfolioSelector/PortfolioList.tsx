@@ -1,11 +1,5 @@
-import Autorenew from 'material-ui-icons/Autorenew'
 import Checkbox from 'material-ui/Checkbox'
-import IconButton from 'material-ui/IconButton'
-import List, {
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-} from 'material-ui/List'
+import List, { ListItem, ListItemText } from 'material-ui/List'
 import Typography from 'material-ui/Typography'
 import { withTheme } from 'material-ui/styles'
 import AppBar from 'material-ui/AppBar'
@@ -15,13 +9,13 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { graphql } from 'react-apollo'
-import * as R from 'ramda'
-
-import { Loading } from '@components'
 
 import * as actions from '../../actions'
 import * as API from '../../api'
-import { LoginAlert } from '../'
+import { LoginAlert } from '../PortfolioTable/LoginAlert'
+
+import { IProps, IState } from './PortfolioList.types'
+import { Loading } from '../../../../components/Loading/Loading'
 
 const SWrapper = styled.div`
   width: 100%;
@@ -38,8 +32,8 @@ const SToolbar = styled(Toolbar)`
     props.theme ? props.theme.palette.background.paper : ''};
 `
 
-class SelectPortfolioComponent extends React.Component {
-  state = {
+class SelectPortfolioComponent extends React.Component<IProps, IState> {
+  state: IState = {
     allKeysSelected: false,
   }
 
@@ -69,7 +63,7 @@ class SelectPortfolioComponent extends React.Component {
 
   render() {
     if (this.props.keys.loading) {
-      return <Loading />
+      return <Loading centerAligned />
     }
 
     if (this.props.keys.error) {
@@ -131,7 +125,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   selectAccount: (accounts: any) => dispatch(actions.selectAccount(accounts)),
-  onLoad: (data) => dispatch(actions.onLoad(data)),
+  onLoad: (data: any) => dispatch(actions.onLoad(data)),
   selectAllKeys: (keys: any) => dispatch(actions.selectAllKeys(keys)),
 })
 

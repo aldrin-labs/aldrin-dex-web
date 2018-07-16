@@ -1,15 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-interface Props {
-  onClick?: () => void
-  active?: boolean
-  style?: Object
-  title: string
-  mRight?: boolean
-}
+import { Props } from './types'
 
-export default class Button extends React.Component<Props, {}> {
+export default class Button extends React.Component<Props> {
   onClick = (e: MouseEvent) => {
     const { onClick } = this.props
 
@@ -37,7 +31,7 @@ const Btn = styled.button`
   padding: 10px;
   border: none;
   outline: none;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   letter-spacing: 0.4px;
   text-align: center;
   font-size: 12px;

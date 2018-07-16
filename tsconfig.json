@@ -35,5 +35,5 @@
       }
     ]
   },
-  "include": ["src", "typings"]
+  "include": ["src", "typings", "custom.d.ts"]
 }

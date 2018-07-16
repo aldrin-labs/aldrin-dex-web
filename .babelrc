@@ -1,13 +1,19 @@
 {
   "presets": [
-    ["@babel/preset-env", {
-      "targets": {
-        "browsers": ["last 2 versions"]
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions"]
+        }
       }
-    }],
-    ["@babel/stage-1", {
-      "decoratorsLegacy": true
-    }],
+    ],
+    [
+      "@babel/stage-1",
+      {
+        "decoratorsLegacy": true
+      }
+    ],
     "@babel/react",
     "@babel/typescript"
   ],
@@ -15,21 +21,29 @@
     "react-hot-loader/babel",
     "styled-components",
     "graphql-tag",
-    ["@babel/plugin-transform-runtime", {
-    "helpers": false,
-    "polyfill": false,
-    "regenerator": true,
-    "moduleName": "@babel/runtime"
-  }],
-  ["module-resolver", {
-      "extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],
-      "root": ["./src"],
-      "alias": {
-        "@components": "./src/components",
-        "@containers": "./src/containers",
-        "@utils": "./src/utils",
-        "@hoc": "./src/hoc",
-        "@graphql": "./src/graphql"
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "helpers": false,
+        "polyfill": false,
+        "regenerator": true,
+        "moduleName": "@babel/runtime"
       }
-    }]]
+    ],
+    [
+      "module-resolver",
+      {
+        "extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],
+        "root": ["./src"],
+        "alias": {
+          "@components": "./src/components",
+          "@containers": "./src/containers",
+          "@utils": "./src/utils",
+          "@hoc": "./src/hoc",
+          "@graphql": "./src/graphql",
+          "@icons": "./src/icons"
+        }
+      }
+    ]
+  ]
 }

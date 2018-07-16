@@ -55,8 +55,16 @@ const formikEnhancer = withFormik({
       exchange: values.exchange.toLowerCase(),
       date: Date.now(),
     }
+
     try {
-      await addExchangeKey({ variables })
+      await addExchangeKey({
+        variables,
+        update: (proxy, { data: { addExchangeKey } }) => {
+          const proxyData = proxy.readQuery({ query: API.getKeysQuery })
+          proxyData.getProfile.keys.push(addExchangeKey)
+          proxy.writeQuery({ query: API.getKeysQuery, data: proxyData })
+        },
+      })
       console.log(variables)
 
       setSubmitting(false)
@@ -77,12 +85,13 @@ class AddExchangeKeyComponent extends React.Component {
       handleChange,
       handleBlur,
       handleSubmit,
-      handleReset,
       setFieldValue,
-      setFieldTouched,
       isSubmitting,
-      getExchangesList,
+      getExchangesForKeysList,
     } = this.props
+
+    const { loading, exchangePagination } = getExchangesForKeysList
+
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
@@ -145,21 +154,20 @@ class AddExchangeKeyComponent extends React.Component {
                 id: 'exchange',
               }}
             >
-              {console.log(values)}
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              {console.log(getExchangesList)}
-              {!getExchangesList.loading &&
-                getExchangesList.exchangePagination.items.map(
-                  ({ _id, name }) => (
-                    <MenuItem key={_id} value={name}>
-                      {name}
-                    </MenuItem>
-                  )
-                )}
+
+              {!loading &&
+                exchangePagination &&
+                exchangePagination.items.map(({ _id, name }) => (
+                  <MenuItem key={_id} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
             </Select>
           </SExchangeSelect>
+
           <Button type="submit" disabled={!dirty || isSubmitting}>
             Add key
           </Button>
@@ -203,6 +211,8 @@ const SPaper = styled(Paper)`
 
 export const AddExchangeKey = compose(
   graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
-  graphql(API.getExchangesListQuery, { name: 'getExchangesList' }),
+  graphql(API.getExchangesForKeysListQuery, {
+    name: 'getExchangesForKeysList',
+  }),
   formikEnhancer
 )(AddExchangeKeyComponent)

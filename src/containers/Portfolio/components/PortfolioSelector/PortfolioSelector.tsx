@@ -1,19 +1,22 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
+import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { getKeysQuery } from '../../api'
-import { Props, State } from './types'
+import { IProps, IState } from './PortfolioSelector.types'
 
-class PortfolioSelector extends React.Component<Props, State> {
-  state: State = {
+class PortfolioSelector extends React.Component<IProps, IState> {
+  state: IState = {
     checkedCheckboxes: null,
     checkboxes: null,
   }
 
   componentDidMount() {
-    if (!this.props.isShownMocks) return
+    if (!this.props.isShownMocks) {
+      return
+    }
 
     const checkboxes = ['Test1', 'Test2']
     const checkedCheckboxes = checkboxes.map((ck, i) => i)
@@ -27,7 +30,7 @@ class PortfolioSelector extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps(nextProps: IProps) {
     // called once
     if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
       const { keys } = nextProps.data.getProfile
@@ -62,15 +65,20 @@ class PortfolioSelector extends React.Component<Props, State> {
     const hasIndex = checkedCheckboxes.indexOf(index)
     if (hasIndex >= 0) {
       checkedCheckboxes.splice(hasIndex, 1)
-    } else checkedCheckboxes.push(index)
+    } else {
+      checkedCheckboxes.push(index)
+    }
 
     this.setState({ checkedCheckboxes }, () => {
-      if (!this.state.checkboxes) return
+      if (!this.state.checkboxes) {
+        return
+      }
       const checkboxes = this.state.checkboxes
         .map((ck, idx) => {
           if (checkedCheckboxes.indexOf(idx) >= 0) {
             return ck
           }
+
           return null
         })
         .filter(Boolean)
@@ -80,7 +88,9 @@ class PortfolioSelector extends React.Component<Props, State> {
 
   onToggleAll = () => {
     const { checkedCheckboxes, checkboxes } = this.state
-    if (!checkboxes) return
+    if (!checkboxes) {
+      return
+    }
 
     if (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) {
       this.setState({ checkedCheckboxes: null }, () => {
@@ -90,16 +100,20 @@ class PortfolioSelector extends React.Component<Props, State> {
       const allAccounts = checkboxes.map((ck, i) => i)
 
       this.setState({ checkedCheckboxes: allAccounts }, () => {
-        if (!this.state.checkboxes) return
-        const checkboxes = this.state.checkboxes
+        if (!this.state.checkboxes) {
+          return
+        }
+        const checkboxesAgain = this.state.checkboxes
+        checkboxesAgain
           .map((ck, idx) => {
             if (allAccounts.indexOf(idx) >= 0) {
               return ck
             }
+
             return null
           })
           .filter(Boolean)
-        this.props.onChangeActive(checkboxes)
+        this.props.onChangeActive(checkboxesAgain)
       })
     }
   }
@@ -107,15 +121,27 @@ class PortfolioSelector extends React.Component<Props, State> {
   render() {
     const { checkedCheckboxes, checkboxes } = this.state
 
-    if (!checkboxes) return null
+    if (!checkboxes) {
+      return null
+    }
 
     const isCheckedAll =
       (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) ||
       false
 
     return (
-      <AccountsWalletsBlock>
-        <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
+      <AccountsWalletsBlock
+        onClick={this.props.toggleWallets}
+        isSideNavOpen={this.props.isSideNavOpen}
+      >
+        <AccountsWalletsHeadingWrapper>
+          <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
+
+          <Headline isSideNavOpen={this.props.isSideNavOpen}>Accounts</Headline>
+          <CloseContainer>
+            <StyledIcon isSideNavOpen={this.props.isSideNavOpen} />
+          </CloseContainer>
+        </AccountsWalletsHeadingWrapper>
 
         <SelectAll>
           <Checkbox
@@ -123,7 +149,6 @@ class PortfolioSelector extends React.Component<Props, State> {
             id="all"
             defaultChecked={true}
             checked={isCheckedAll}
-            onChange={() => {}}
             onClick={this.onToggleAll}
           />
           <Label htmlFor="all">
@@ -134,7 +159,9 @@ class PortfolioSelector extends React.Component<Props, State> {
 
         <AccountsList>
           {checkboxes.map((checkbox, i) => {
-            if (!checkbox) return null
+            if (!checkbox) {
+              return null
+            }
             const isChecked =
               (checkedCheckboxes && checkedCheckboxes.indexOf(i) >= 0) || false
 
@@ -145,7 +172,6 @@ class PortfolioSelector extends React.Component<Props, State> {
                   id={checkbox}
                   defaultChecked={true}
                   checked={isChecked}
-                  onChange={() => {}}
                   onClick={() => this.onToggleCheckbox(i)}
                 />
                 <Label htmlFor={checkbox}>
@@ -161,6 +187,9 @@ class PortfolioSelector extends React.Component<Props, State> {
     )
   }
 }
+const CloseContainer = styled.div`
+  height: 100%;
+`
 
 const SelectAll = styled.div`
   margin-top: 32px;
@@ -171,7 +200,7 @@ const AccountName = styled.span`
   color: ${(props: { isChecked: boolean }) =>
     props.isChecked ? '#4ed8da' : '#fff'};
 
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1em;
   font-weight: 500;
   text-align: left;
@@ -216,7 +245,7 @@ const Checkbox = styled.input`
 const AccountsListItem = styled.li`
   display: flex;
   align-items: center;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1em;
   font-weight: 500;
   text-align: left;
@@ -234,13 +263,69 @@ const AccountsList = styled.ul`
 
 const AccountsWalletsBlock = styled.div`
   min-width: 200px;
-  min-height: 90vh;
   background-color: #2d3136;
   padding: 16px;
+  left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? '0' : '-11.5rem'};
+  cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? 'auto' : 'pointer'};
+  display: block;
+  position: fixed;
+  top: 0;
+  z-index: 1301;
+  height: 100vh;
+  transition: left 0.2s ease-in;
+
+  @media (max-width: 1000px) {
+    left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+      isSideNavOpen ? '0' : '-12rem'};
+  }
+
+  &:hover {
+    background-color: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+      isSideNavOpen ? '#2d3136' : '#323941'};
+  }
+`
+
+const AccountsWalletsHeadingWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const StyledIcon = styled(Arrow)`
+  font-family: Roboto, sans-serif;
+  color: #4ed8da;
+  text-align: center;
+  opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? '1' : '0'};
+  font-size: 2rem;
+  right: -0.3rem;
+  position: absolute;
+  bottom: 50%;
+  transition: opacity 0.2s linear;
+`
+
+const Headline = styled.div`
+  font-family: Roboto, sans-serif;
+  color: #4ed8da;
+  opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+    isSideNavOpen ? '0' : '1'};
+  font-size: 0.7em;
+  transform: rotate(-90deg);
+  right: -1.2rem;
+  transform-origin: right, top;
+  position: absolute;
+  bottom: 50%;
+  transition: opacity 0.4s linear;
+
+  @media (min-width: 1000px) {
+    font-size: 1rem;
+    right: -1.5rem;
+  }
 `
 
 const AccountsWalletsHeading = styled.span`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 1.25em;
   font-weight: 500;
   letter-spacing: 0.5px;

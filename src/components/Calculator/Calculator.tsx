@@ -1,26 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import compareIcon from '../../icons/compare.svg'
-import menuIcon from '../../icons/menu.svg'
-import SvgIcon from '../../components/SvgIcon/SvgIcon'
-import Button from '../../components/Elements/Button/Button'
+import Button from '@components/Elements/Button/Button'
 
-interface Rate {
-  name: string
-  rate: number
-}
-
-interface Props {
-  rates: Rate[]
-}
-
-interface State {
-  currentRate: Rate
-  firstValue: string
-  secondValue: string
-}
-
-// const shortcuts = []
+import { Props, State } from './types'
 
 export default class Calculator extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -41,7 +23,9 @@ export default class Calculator extends React.Component<Props, State> {
 
     if (flooredRate === 0) {
       const reg = /[1-9]/
-      const { index } = reg.exec(String(calculatedRate))
+      const exec = reg.exec(String(calculatedRate))
+      if (!exec) return ''
+      const { index } = exec
       return String(calculatedRate.toFixed(index))
     }
 
@@ -109,24 +93,13 @@ export default class Calculator extends React.Component<Props, State> {
   render() {
     const { rates } = this.props
     const { firstValue, secondValue, currentRate } = this.state
-    const [firstRateName, secondRateName] = currentRate.name.match(/([a-z]+)/gi)
+    const match = currentRate.name.match(/([a-z]+)/gi)
+    const [firstRateName, secondRateName] = match || ['', '']
 
     const options = ['BTC', 'USD', 'ETH', 'XRP']
 
-    const dndStyles = { cursor: '-webkit-grab' }
-
     return (
-      <CalculatorWrapper>
-        <HeadingWrapper>
-          <div>
-            <SvgIcon src={compareIcon} width={24} height={24} />
-            <Heading>Crypto Calculator</Heading>
-          </div>
-          <span className="dnd" style={dndStyles}>
-            <SvgIcon src={menuIcon} width={24} height={24} />
-          </span>
-        </HeadingWrapper>
-
+      <React.Fragment>
         <ShortcutWrapper>
           <ShortcutDesc>Shortcuts:</ShortcutDesc>
           <BtnsContainer>
@@ -183,13 +156,13 @@ export default class Calculator extends React.Component<Props, State> {
             </RateSelect>
           </ExchangeContainer>
         </ShortcutWrapper>
-      </CalculatorWrapper>
+      </React.Fragment>
     )
   }
 }
 
 const RateSelectOption = styled.option`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -201,7 +174,7 @@ const RateSelectOption = styled.option`
 `
 
 const RateSelect = styled.select`
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 20px;
   text-align: left;
@@ -226,7 +199,7 @@ const Input = styled.input`
   outline: none;
   border-right: none;
   width: 75%;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 16px;
   line-height: 24px;
   text-align: left;
@@ -246,7 +219,7 @@ const BtnsContainer = styled.div`
 
 const ShortcutDesc = styled.span`
   opacity: 0.5;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   color: #ffffff;
   margin: 8px 0;
@@ -255,31 +228,4 @@ const ShortcutDesc = styled.span`
 const ShortcutWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`
-
-const HeadingWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 5px;
-`
-
-const Heading = styled.span`
-  font-family: Roboto;
-  font-size: 20px;
-  text-align: left;
-  color: #ffffff;
-  margin-left: 8px;
-`
-
-const CalculatorWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 16px;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px 0 #00000066;
-  background-color: #292d31;
-  border: solid 0.5px #4ed8da;
 `
