@@ -22,8 +22,8 @@
       "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
       "@hoc/*": ["src/hoc/*"],
-      "@graphql/*": ["src/graphql/*"],
-      "@icons/*": ["src/icons/*"]
+      "@icons/*": ["src/icons/*"],
+      "@graphql/*": ["src/graphql/*"]
     },
     "plugins": [
       {
