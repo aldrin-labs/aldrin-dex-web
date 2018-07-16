@@ -150,6 +150,7 @@ const Wrapper = styled.div`
   max-width: 1400px;
   display: flex;
   margin: 0 auto;
+  padding: 0.5rem;
 `
 
 export const CoinMarketCapQuery = gql`
