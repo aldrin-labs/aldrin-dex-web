@@ -103,33 +103,23 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio) {
 
-      newTableData = data.myRebalance.assets.map((el) => {
-        return {
+      newTableData = data.myRebalance.assets.map((el) => ({
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: el.amount['$numberDecimal'],
-        }
-      })
+      }))
 
       console.log('userHasRebalancePortfolio in didMount', newTableData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableData = data.portfolio.assets.map((el) => {
-        return {
+      newTableData = data.portfolio.assets.map((el) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: el.asset.priceUSD,
-        }
-      })
+      }))
 
       console.log('132323');
-
-
-      // console.log(
-      //   '!userHasRebalancePortfolio && userHasPortfolio',
-      //   newTableData
-      // )
     }
 
     const composeWithMocks = isShownMocks
@@ -154,33 +144,23 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableData = []
 
     if (userHasRebalancePortfolio) {
-      newTableData = data.myRebalance.assets.map((el) => {
-        return {
+      newTableData = data.myRebalance.assets.map((el) => ({
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: el.amount['$numberDecimal'],
-        }
-      })
+      }))
 
       console.log('userHasRebalancePortfolio in RecieveProps', newTableData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableData = data.portfolio.assets.map((el) => {
-        return {
+      newTableData = data.portfolio.assets.map((el) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: el.asset.priceUSD,
-        }
-      })
+      }))
 
       console.log('132323');
-
-
-      // console.log(
-      //   '!userHasRebalancePortfolio && userHasPortfolio',
-      //   newTableData
-      // )
     }
 
     const composeWithMocks = isShownMocks
