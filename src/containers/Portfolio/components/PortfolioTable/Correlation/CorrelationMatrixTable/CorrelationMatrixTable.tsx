@@ -42,6 +42,8 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
         {/* first row with coin names */}
         {rows.map((el, i) => (
           <HeadCell
+            cols={cols[0].length}
+            isFullscreenEnabled={isFullscreenEnabled}
             sticky={!isFullscreenEnabled}
             textColor={activeRow === i ? '#4ed8da' : '#dedede'}
             key={el}
@@ -55,8 +57,9 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
         {/* first column with coin names */}
         {rows.map((el, i) => (
           <HeadCell
-            sticky={false}
+            cols={cols[0].length}
             isFullscreenEnabled={isFullscreenEnabled}
+            sticky={false}
             textColor={activeColumn === i ? '#4ed8da' : '#dedede'}
             style={{ gridColumnStart: 1 }}
             key={el}
@@ -73,6 +76,8 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
 
             return (
               <Cell
+                cols={cols[0].length}
+                isFullscreenEnabled={isFullscreenEnabled}
                 textColor={textColor}
                 onMouseOver={() => {
                   this.onCellMouseOver(i, ind)
@@ -146,7 +151,31 @@ const Cell = styled.div`
   z-index: 100;
 
   font-family: Roboto, sans-serif;
-  font-size: 1rem;
+  font-size: ${(props: { isFullscreenEnabled: boolean; cols: number }) => {
+    const { isFullscreenEnabled, cols } = props
+
+    if (!isFullscreenEnabled) {
+      return '1rem'
+    }
+
+    if (isFullscreenEnabled && cols > 1 && cols < 5) {
+      return '4rem'
+    }
+    if (isFullscreenEnabled && cols > 5 && cols <= 10) {
+      return '3rem'
+    }
+    if (isFullscreenEnabled && cols > 10 && cols <= 15) {
+      return '2rem'
+    }
+    if (isFullscreenEnabled && cols > 15 && cols <= 20) {
+      return '1rem'
+    }
+    if (isFullscreenEnabled && cols > 20) {
+      return '0.5rem'
+    }
+
+    return '1rem'
+  }};
   color: ${(props: { textColor: string }) => props.textColor};
   font-weight: 500;
   display: flex;
