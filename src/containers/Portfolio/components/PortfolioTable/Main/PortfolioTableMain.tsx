@@ -25,6 +25,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
     if (!tableData) {
       return null
     }
+
     return (
       <PTBody
         style={
@@ -51,11 +52,11 @@ export default class PortfolioTableMain extends React.Component<IProps> {
           } = row
 
           const isSelected =
-            (selectedBalances && selectedBalances.indexOf(index) >= 0)
+            selectedBalances && selectedBalances.indexOf(index) >= 0
 
           const isBase =
-              (isUSDCurrently && (symbol === 'USDT' || symbol === 'USD')) || (!isUSDCurrently && symbol === 'BTC')
-
+            (isUSDCurrently && (symbol === 'USDT' || symbol === 'USD')) ||
+            (!isUSDCurrently && symbol === 'BTC')
 
           const mainSymbol = isUSDCurrently ? (
             <Icon className="fa fa-usd" key={`${index}usd`} />
@@ -95,12 +96,13 @@ export default class PortfolioTableMain extends React.Component<IProps> {
                 let colorized = null
                 if (Array.isArray(col) && idx >= 6) {
                   if (isBase) {
-                    col = "-"
+                    col = '-'
                   } else {
                     const [icon, str] = col
                     colorized = str
                   }
                 }
+
                 return (
                   <PTD
                     key={`${currency}${symbol}${quantity}${col}${idx}`}
@@ -166,12 +168,12 @@ const PTD = styled.td`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean, isBase?: boolean  }) =>
+  background-color: ${(props: { isSelected?: boolean; isBase?: boolean }) =>
     props.isBase ? '#00ff0028' : props.isSelected ? '#2d3136' : '#393e44'};
 
   &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean, isBase?: boolean }) =>
-    props.isBase ? '#00ff0028' : props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+    background-color: ${(props: { isSelected?: boolean; isBase?: boolean }) =>
+      props.isBase ? '#00ff0028' : props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
   & ${PTD}:nth-child(n + 4) {
     text-align: right;

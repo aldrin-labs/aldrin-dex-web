@@ -107,7 +107,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             ) : null}
 
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
-              {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
+            {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
             {/*</ToggleBtn>*/}
 
             {tab !== 'correlation' &&
@@ -246,7 +246,7 @@ const Tab = styled.button`
   padding: 10px 30px;
   border-radius: 3px;
   background-color: #292d31;
-  font-family: Roboto, sans-serif;, sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
