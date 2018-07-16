@@ -107,7 +107,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             ) : null}
 
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
-              {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
+            {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
             {/*</ToggleBtn>*/}
 
             {tab !== 'correlation' &&
@@ -234,7 +234,14 @@ const StyledAccountIcon = styled(AccountIcon)`
 
 const TabContainer = styled.div`
   display: flex;
+  justify-content: center;
+  width: 100%;
   flex-flow: wrap;
+
+   @media (max-width: 1080px) {
+    justify-content: flex-start;
+
+  }
 `
 
 const Tab = styled.button`
