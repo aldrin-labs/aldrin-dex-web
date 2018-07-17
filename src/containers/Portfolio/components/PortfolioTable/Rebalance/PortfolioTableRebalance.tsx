@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { graphql } from 'react-apollo'
 
 import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
 import { mockTableData, combineToChart } from './mocks'
@@ -107,13 +106,13 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
-        price: el.amount['$numberDecimal'],
+        price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
       }))
 
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
-        price: el.asset.priceUSD,
+        price: parseFloat(el.asset.priceUSD).toFixed(2),
       }))
 
       console.log('newTableRebalancedPortfolioData in didMount', newTableRebalancedPortfolioData)
@@ -123,7 +122,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
-        price: el.asset.priceUSD,
+        price: parseFloat(el.asset.priceUSD).toFixed(2),
       }))
 
       console.log('132323')
@@ -162,7 +161,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
-        price: el.amount['$numberDecimal'],
+        price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
       }))
 
       // console.log('userHasRebalancePortfolio in RecieveProps', newTableData)
@@ -172,7 +171,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
-        price: el.asset.priceUSD,
+        price: parseFloat(el.asset.priceUSD).toFixed(2),
       }))
 
       console.log('132323')
@@ -204,6 +203,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   setTableData = (tableDataCurrentPortfolio, tableDataRebalancedPortfolio) => {
     // TODO: This should be refactored (no second set-state)
+
+
     this.setState(
       {
         rows: cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio),
@@ -263,25 +264,30 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
     })
 
+    console.log('data in caluclatePriceDiff' , data);
+
+
     return data
   }
 
   calculateTotal = (data: IRow[], undistributedMoney: number) => {
     const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
-    return (total + undistributedMoney).toFixed(4)
+    return (total + undistributedMoney)
+      .toFixed(2)
   }
 
   calculateTableTotal = (data: IRow[]) => {
     const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
-    return tableTotal.toFixed(4)
+    return tableTotal
+      .toFixed(2)
   }
 
   calculateTotalPercents = (data: IRow[]) => {
     const totalPercents = data
       .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
-      .toFixed(4)
+      // .toFixed(3)
 
     return totalPercents
   }
@@ -408,7 +414,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const { totalRows } = this.state
 
     const dataWithNewPrices = data.map((row: IRow) => {
-      let newPrice = Math.round((totalRows / 100) * row.portfolioPerc)
+      let newPrice = ((totalRows / 100) * row.portfolioPerc).toFixed(2)
 
       return {
         ...row,
@@ -581,12 +587,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         selectedActive.forEach((row, i) => {
           // TODO: Refactor when we have much more time than now
           // tslint:disable-next-line no-object-mutation
-          rows![selectedActive![i]]!.price += moneyPart
+          let roundedCurrentPrice = parseFloat(rows![selectedActive![i]]!.price)
+          rows![selectedActive![i]]!.price = roundedCurrentPrice + moneyPart
           money -= moneyPart
         })
       } else {
         // tslint:disable-next-line no-object-mutation
-        rows![selectedActive![0]]!.price += undistributedMoney
+        let roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
+        rows![selectedActive![0]]!.price = roundedPrice + undistributedMoney
         money = 0
       }
 
@@ -602,7 +610,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         rows: newRows,
         totalRows: newTotal,
         totalTableRows: newTableTotal,
-        isPercentSumGood: this.checkPercentSum(rows),
+        isPercentSumGood: this.checkPercentSum(newRows),
       })
     }
   }
@@ -632,6 +640,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       (sum, row) => (sum += +row!.portfolioPerc),
       0
     )
+
+    console.log('sumOfAllPercents: ', sumOfAllPercents, 'is good sum: ',Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0 );
+
 
     return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
   }
