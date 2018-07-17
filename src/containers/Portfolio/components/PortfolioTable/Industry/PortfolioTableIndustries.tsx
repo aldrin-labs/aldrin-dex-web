@@ -595,12 +595,12 @@ const ChartContainer = styled.div`
   width: 900px;
 
   @media (min-width: 1950px) {
-    margin: 1rem;
+    margin: 1rem auto;
   }
 
   @media (max-height: 850px) {
     height: 30vh;
-    margin: 0.5rem 1rem;
+    margin: 0.5rem auto;
   }
   @media (max-height: 680px) {
     display: none;
