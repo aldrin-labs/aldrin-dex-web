@@ -111,6 +111,8 @@ class PortfolioTableTabs extends React.Component<IProps> {
             {/*</ToggleBtn>*/}
 
             {tab !== 'correlation' &&
+              tab !== 'optimization' &&
+              tab !== 'rebalance' &&
               (dataFromProps || isShownMocks) && (
                 <SwitchRefreshContainer>
                   <Switch
