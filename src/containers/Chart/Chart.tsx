@@ -173,7 +173,7 @@ class Chart extends React.Component<IState> {
 
     let quote
     if (currencyPair) {
-      quote = currencyPair.split('/')[1]
+      quote = currencyPair.split('_')[1]
     }
 
     const { activeExchange } = this.props
@@ -225,6 +225,7 @@ class Chart extends React.Component<IState> {
               changeExchange,
               quote,
               onButtonClick: this.changeTable,
+              marketName: currencyPair
             }}
           />
 
@@ -246,8 +247,8 @@ class Chart extends React.Component<IState> {
     let base
     let quote
     if (currencyPair) {
-      base = currencyPair.split('/')[0]
-      quote = currencyPair.split('/')[1]
+      base = currencyPair.split('_')[0]
+      quote = currencyPair.split('_')[1]
     }
 
     return (
@@ -268,18 +269,18 @@ class Chart extends React.Component<IState> {
           {this.state.activeChart === 'candle' ? (
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
-            <DepthChartContainer>
-              <DepthChart
-                {...{
-                  ordersData,
-                  spreadData,
-                  base,
-                  quote,
-                  animated: false,
-                }}
-              />
-            </DepthChartContainer>
-          )}
+              <DepthChartContainer>
+                <DepthChart
+                  {...{
+                    ordersData,
+                    spreadData,
+                    base,
+                    quote,
+                    animated: false,
+                  }}
+                />
+              </DepthChartContainer>
+            )}
         </ChartsContainer>
 
         {this.renderTables()}
@@ -369,7 +370,7 @@ const TablesBlockWrapper = styled(Paper)`
 
   @media (max-width: 1080px) {
     display: ${(props: { show: boolean }) =>
-      props.variant.show ? 'block' : 'none'};
+    props.variant.show ? 'block' : 'none'};
     width: 100%;
     height: calc(100vh - 57px - 70px);
     position: relative;
