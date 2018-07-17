@@ -165,7 +165,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         price: el.amount['$numberDecimal'],
       }))
 
-      console.log('userHasRebalancePortfolio in RecieveProps', newTableData)
+      // console.log('userHasRebalancePortfolio in RecieveProps', newTableData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
