@@ -38,11 +38,11 @@ class Optimization extends Component<IProps, IState> {
     ) {
       if (this.props.isShownMocks) {
         const risk = [
-          (Math.random() * 100).toFixed(2),
-          (Math.random() * 100).toFixed(2),
-          (Math.random() * 100).toFixed(2),
-          (Math.random() * 100).toFixed(2),
-          (Math.random() * 100).toFixed(2),
+          +(Math.random() * 100).toFixed(2),
+          +(Math.random() * 100).toFixed(2),
+          +(Math.random() * 100).toFixed(2),
+          +(Math.random() * 100).toFixed(2),
+          +(Math.random() * 100).toFixed(2),
         ]
         this.setState(
           {
@@ -273,35 +273,6 @@ const MainAreaUpperPart = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-`
-
-const BtnsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 20px auto 20px auto;
-  max-height: 2rem;
-  position: relative;
-  top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
-  z-index: ${(props: { show: boolean }) => (props.show ? '1' : '-10')};
-  opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
-  transition: top 0.3s ease-in, opacity 0.3s ease-out;
-`
-
-const Btn = styled.button`
-  border-radius: 2px;
-  background-color: ${(props: { active: boolean }) =>
-    props.active ? '#4ed8da' : '#4c5055'};
-  margin-right: 16px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  color: ${(props: { active: boolean }) =>
-    props.active ? '#4c5055' : '#4ed8da'};
-  cursor: pointer;
-  transition: all 0.25s linear;
 `
 
 const MainArea = styled.div`
