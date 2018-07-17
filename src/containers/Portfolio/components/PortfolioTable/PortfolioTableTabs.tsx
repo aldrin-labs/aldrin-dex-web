@@ -107,25 +107,28 @@ class PortfolioTableTabs extends React.Component<IProps> {
               Optimization
             </Tab>
           </TabContainer>
-          {console.log(filterPercent)}
-          <FilterValues>
-            <FilterIcon />
-            <Dropdown
-              style={{ width: '100%' }}
-              value={filterPercent}
-              handleChange={filterValuesLessThen}
-              name="filterValuesInMain"
-              options={[
-                { value: 0, label: '0% <' },
-                { value: 0.1, label: '0.1% <' },
-                { value: 0.2, label: '0.2% <' },
-                { value: 0.3, label: '0.3% <' },
-                { value: 0.5, label: '0.5% <' },
-                { value: 1, label: '1% <' },
-                { value: 10, label: '10% <' },
-              ]}
-            />
-          </FilterValues>
+
+          {tab === 'main' ? (
+            <FilterValues>
+              <FilterIcon />
+              <Dropdown
+                style={{ width: '100%' }}
+                value={filterPercent}
+                handleChange={filterValuesLessThen}
+                name="filterValuesInMain"
+                options={[
+                  { value: 0, label: '0% <' },
+                  { value: 0.1, label: '0.1% <' },
+                  { value: 0.2, label: '0.2% <' },
+                  { value: 0.3, label: '0.3% <' },
+                  { value: 0.5, label: '0.5% <' },
+                  { value: 1, label: '1% <' },
+                  { value: 10, label: '10% <' },
+                ]}
+              />
+            </FilterValues>
+          ) : null}
+
           <ButtonContainer>
             {tab === 'correlation' ? (
               <StyledFullscreenButton
