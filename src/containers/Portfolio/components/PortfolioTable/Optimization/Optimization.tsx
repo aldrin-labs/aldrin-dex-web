@@ -31,7 +31,9 @@ class Optimization extends Component<IProps, IState> {
   }
 
   optimizePortfolio = () => {
-    if (!(this.state.expectedReturn === '' || this.props.data.length < 1)) {
+    if (
+      !(this.state.expectedReturn === '' || this.props.storeData.length < 1)
+    ) {
       if (this.props.isShownMocks) {
         const risk = [
           (Math.random() * 100).toFixed(2),
@@ -40,14 +42,19 @@ class Optimization extends Component<IProps, IState> {
           (Math.random() * 100).toFixed(2),
           (Math.random() * 100).toFixed(2),
         ]
-        this.setState({
-          optimizedData: this.props.data.map(({ coin }: { coin: string }) => ({
-            coin,
-            percentage: (Math.random() * 100).toFixed(2),
-          })),
-          risk,
-          rawDataBeforeOptimization: this.props.data,
-        })
+        this.setState(
+          {
+            optimizedData: this.props.storeData.map(
+              ({ coin }: { coin: string }) => ({
+                coin,
+                percentage: (Math.random() * 100).toFixed(2),
+              })
+            ),
+            risk,
+            rawDataBeforeOptimization: this.props.storeData,
+          },
+          () => console.log(this.state)
+        )
       } else {
         // send some data to backend maybe?
         // also get data from props and push it to main table
@@ -59,6 +66,24 @@ class Optimization extends Component<IProps, IState> {
         percentages: this.getPercentages(Number(this.state.expectedReturn)),
       })
     }
+  }
+
+  transfromData = (assets) => {
+    // transforming data like assets from profile to IData format
+    const allSums = assets.filter(Boolean).reduce((acc: number, curr: any) => {
+      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
+      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
+        return null
+      }
+      const price = asset.priceBTC
+
+      return acc + value * Number(price)
+    }, 0)
+
+    return assets.map((data: any) => ({
+      coin: data.asset.symbol,
+      percentage: data.asset.priceBTC * data.value * 100 / allSums,
+    }))
   }
 
   onBtnClick = (index: number) => {
@@ -110,11 +135,13 @@ class Optimization extends Component<IProps, IState> {
   }
 
   renderInput = () => {
+    // importing stuff from backend or manually bu user
     const { expectedReturn } = this.state
     const { isShownMocks, updateData, storeData } = this.props
 
     return (
       <QueryRenderer
+        transfromData={this.transfromData}
         storeData={storeData}
         component={Import}
         query={getCoinsForOptimization}
@@ -188,7 +215,7 @@ class Optimization extends Component<IProps, IState> {
       <PTWrapper>
         <Content>
           {children}
-          <UpperArea>{this.renderInput()}</UpperArea>
+          <ImportData>{this.renderInput()}</ImportData>
 
           <MainArea>
             <MainAreaUpperPart>
@@ -311,7 +338,7 @@ const Content = styled.div`
   flex: 0 0 auto;
 `
 
-const UpperArea = styled.div`
+const ImportData = styled.div`
   width: 50%;
   display: flex;
   margin: 0 auto;

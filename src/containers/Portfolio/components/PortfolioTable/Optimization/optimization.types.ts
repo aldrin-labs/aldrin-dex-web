@@ -14,7 +14,7 @@ export interface IState {
 }
 
 export interface IProps {
-  data: IData[]
+  storeData: IData[]
   isShownMocks: boolean
   updateData: Function
 }

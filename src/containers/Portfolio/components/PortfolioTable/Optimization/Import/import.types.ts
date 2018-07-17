@@ -3,6 +3,7 @@ export interface IProps {
   data?: object
   storeData: IData[]
   updateData: Function
+  transformData: Function
   expectedReturn: string
   optimizePortfolio: Function
   handleChange: Function
