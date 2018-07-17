@@ -7,10 +7,11 @@ import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/supervisor-account'
 import { Button } from '@material-ui/core'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
+import { FaFilter } from 'react-icons/lib/fa'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import Dropdown from '@components/SimpleDropDownSelector'
 import Switch from '@components/Switch/Switch'
-import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
@@ -45,7 +46,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio, isShownMocks, toggleWallets } = this.props
+    const {
+      tab,
+      portfolio,
+      isShownMocks,
+      toggleWallets,
+      filterValuesLessThen,
+    } = this.props
     const dataFromProps = this.props.data
 
     return (
@@ -97,6 +104,23 @@ class PortfolioTableTabs extends React.Component<IProps> {
             </Tab>
           </TabContainer>
 
+          <FilterValues>
+            <Dropdown
+              style={{ width: '100%' }}
+              value={0}
+              handleChange={filterValuesLessThen}
+              name="filterValuesInMain"
+              options={[
+                { value: 0, label: '0' },
+                { value: 0.1, label: '0.1' },
+                { value: 0.2, label: '0.2' },
+                { value: 0.3, label: '0.3' },
+                { value: 0.5, label: '0.5' },
+                { value: 1, label: '1' },
+              ]}
+            />
+          </FilterValues>
+
           <ButtonContainer>
             {tab === 'correlation' ? (
               <StyledFullscreenButton
@@ -105,10 +129,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
                 <FullScreenIcon />
               </StyledFullscreenButton>
             ) : null}
-
-            {/*<ToggleBtn onClick={this.onToggleChart}>*/}
-            {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
-            {/*</ToggleBtn>*/}
 
             {tab !== 'correlation' &&
               (dataFromProps || isShownMocks) && (
@@ -148,6 +168,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
     )
   }
 }
+
+const FilterValues = styled.div`
+  width: 10%;
+`
 
 const PTHeadingBlock = styled.div`
   display: flex;
@@ -238,9 +262,8 @@ const TabContainer = styled.div`
   width: 100%;
   flex-flow: wrap;
 
-   @media (max-width: 1080px) {
+  @media (max-width: 1080px) {
     justify-content: flex-start;
-
   }
 `
 
@@ -306,6 +329,8 @@ const mapStateToProps = (store) => ({
 })
 const mapDispatchToProps = (dispatch: any) => ({
   onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
+  filterValuesLessThen: (percent: number) =>
+    dispatch(filterValuesLessThen(percent)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(

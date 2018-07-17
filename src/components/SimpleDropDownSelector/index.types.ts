@@ -4,4 +4,5 @@ export interface IProps {
   name?: string
   id?: string
   value: string | number
+  style?: object | undefined
 }

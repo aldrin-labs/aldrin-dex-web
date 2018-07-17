@@ -8,10 +8,15 @@ const initialState = {
   selectedAccounts: [],
   optimizationData: [],
   correlationTableFullscreenEnabled: false,
+  filterValuesLessThen: 0,
 }
 
 export default createReducer(
   {
+    [actions.filterValuesLessThen]: (state, payload) => ({
+      ...state,
+      filterValuesLessThen: payload,
+    }),
     [actions.updateDataForOptimization]: (state, payload) => ({
       ...state,
       optimizationData: payload,
