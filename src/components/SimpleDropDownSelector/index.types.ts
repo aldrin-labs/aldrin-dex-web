@@ -3,6 +3,7 @@ export interface IProps {
   handleChange: Function
   name?: string
   id?: string
+  placeholder?: string
   value: string | number
   style?: object | undefined
 }

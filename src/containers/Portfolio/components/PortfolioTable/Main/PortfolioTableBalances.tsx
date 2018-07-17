@@ -541,6 +541,7 @@ const PTChartContainer = styled.div`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 const storeComponent = connect(mapStateToProps)(PortfolioTableBalances)

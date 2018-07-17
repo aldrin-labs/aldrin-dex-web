@@ -1,30 +1,42 @@
 import React, { Component } from 'react'
-import { Select, MenuItem } from '@material-ui/core'
+import { Select, MenuItem, InputLabel } from '@material-ui/core'
 
 import { IProps } from './index.types'
 
 class SimpleDropDownSelector extends Component<IProps> {
   render() {
-    const { options, handleChange, name, id, value, style } = this.props
+    const {
+      options,
+      handleChange,
+      name,
+      id,
+      value,
+      style,
+      placeholder,
+    } = this.props
 
     return (
-      <Select
-        style={style}
-        value={value}
-        onChange={(e) => {
-          e.preventDefault()
-          console.log(e)
-          handleChange(e)
-        }}
-        inputProps={{
-          name,
-          id,
-        }}
-      >
-        {options.map((option) => (
-          <MenuItem value={option.value}>{option.label}</MenuItem>
-        ))}
-      </Select>
+      <>
+        {placeholder ? (
+          <InputLabel htmlFor="label">{placeholder}</InputLabel>
+        ) : null}
+        <Select
+          style={style}
+          value={value}
+          onChange={(e) => {
+            e.preventDefault()
+            handleChange(e)
+          }}
+          inputProps={{
+            name,
+            id,
+          }}
+        >
+          {options.map((option) => (
+            <MenuItem value={option.value}>{option.label}</MenuItem>
+          ))}
+        </Select>
+      </>
     )
   }
 }

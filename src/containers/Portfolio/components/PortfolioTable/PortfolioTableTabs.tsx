@@ -15,7 +15,10 @@ import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
-import { toggleCorrelationTableFullscreen } from '../../actions'
+import {
+  toggleCorrelationTableFullscreen,
+  filterValuesLessThen,
+} from '../../actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -52,6 +55,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
       isShownMocks,
       toggleWallets,
       filterValuesLessThen,
+      filterPercent,
     } = this.props
     const dataFromProps = this.props.data
 
@@ -103,24 +107,25 @@ class PortfolioTableTabs extends React.Component<IProps> {
               Optimization
             </Tab>
           </TabContainer>
-
+          {console.log(filterPercent)}
           <FilterValues>
+            <FilterIcon />
             <Dropdown
               style={{ width: '100%' }}
-              value={0}
+              value={filterPercent}
               handleChange={filterValuesLessThen}
               name="filterValuesInMain"
               options={[
-                { value: 0, label: '0' },
-                { value: 0.1, label: '0.1' },
-                { value: 0.2, label: '0.2' },
-                { value: 0.3, label: '0.3' },
-                { value: 0.5, label: '0.5' },
-                { value: 1, label: '1' },
+                { value: 0, label: '0% <' },
+                { value: 0.1, label: '0.1% <' },
+                { value: 0.2, label: '0.2% <' },
+                { value: 0.3, label: '0.3% <' },
+                { value: 0.5, label: '0.5% <' },
+                { value: 1, label: '1% <' },
+                { value: 10, label: '10% <' },
               ]}
             />
           </FilterValues>
-
           <ButtonContainer>
             {tab === 'correlation' ? (
               <StyledFullscreenButton
@@ -171,6 +176,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
 const FilterValues = styled.div`
   width: 10%;
+  display: flex;
+  place-items: center;
+`
+const FilterIcon = styled(FaFilter)`
+  color: whitesmoke;
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
 `
 
 const PTHeadingBlock = styled.div`
@@ -326,6 +338,7 @@ const StyledFullscreenButton = styled(Button)`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 const mapDispatchToProps = (dispatch: any) => ({
   onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
