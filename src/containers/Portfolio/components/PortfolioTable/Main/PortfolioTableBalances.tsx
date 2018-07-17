@@ -129,11 +129,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys } = this.state
-    const { isUSDCurrently } = this.props
+    const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
-    console.log(portfolio)
     const { assets } = portfolio
 
     const allSums = assets.filter(Boolean).reduce((acc, curr) => {
@@ -180,11 +179,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const col = {
           currency: name || '',
           symbol,
-          percentage: calcPercentage((currentPrice * 100) / allSums),
+          percentage: calcPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: currentPrice || 0,
-          daily: calcPercentage((mainPrice / 100) * percentChangeDay),
+          daily: calcPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
           realizedPL: realizedProfit,
           realizedPLPerc: 0,
@@ -192,11 +191,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           unrealizedPLPerc: 0,
           totalPL: realizedProfit + unrealizedProfit,
         }
-        console.log(symbol, realizedProfit, unrealizedProfit)
 
         return col
       })
       .filter(Boolean)
+      .filter(
+        (el) =>
+          el.percentage >
+          (filterValueSmallerThenPercentage
+            ? filterValueSmallerThenPercentage
+            : 0)
+      )
+
     this.setState({ tableData }, () =>
       this.calculateSum(this.state.selectedBalances)
     )
