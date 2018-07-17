@@ -56,7 +56,7 @@ class BarChart extends Component<IProps, IState> {
     return (
       <div>
         <Container height={height}>
-          <FlexibleXYPlot xType="ordinal">
+          <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal">
             <LegendContainer value={value}>
               <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
             </LegendContainer>
