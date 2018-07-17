@@ -415,7 +415,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const rowsWithNewPrice = this.calculatePriceByPercents(rows)
     const newRows = this.calculatePriceDifference(rowsWithNewPrice)
 
-    this.updateServerDataOnSave()
 
     this.setState({
       savedRows: cloneArrayElementsOneLevelDeep(newRows),
@@ -425,16 +424,30 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       selectedActive: [],
       areAllActiveChecked: false,
       undistributedMoneySaved: undistributedMoney,
+    }, () => {
+      this.updateServerDataOnSave()
     })
   }
 
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery } = this.props
-    const { staticRows, totalStaticRows } = this.state
+    const { staticRows, totalStaticRows, rows, totalRows } = this.state
 
     console.log(updateRebalanceMutationQuery)
 
-    const combinedStaticData = staticRows.map((el) => {
+    // const combinedStaticData = staticRows.map((el) => {
+    //   return {
+    //     _id: {
+    //       exchange: el.exchange,
+    //       coin: el.symbol,
+    //     },
+    //     amount: el.price,
+    //     percent: el.portfolioPerc,
+    //     diff: el.deltaPrice.toString(),
+    //   }
+    // })
+
+    const combinedRowsData = rows.map((el) => {
       return {
         _id: {
           exchange: el.exchange,
@@ -446,39 +459,11 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       }
     })
 
-    // const variablesForMutation = {
-    //   input: {
-    //     total: "100000",
-    //     assets: {
-    //       input: [
-    //         {
-    //           "_id": {
-    //             "exchange": "superExchange",
-    //             "coin": "superCoin"
-    //           },
-    //           "percent": "100",
-    //           "amount": "1000",
-    //           "diff": "0"
-    //         },
-    //         {
-    //           "_id": {
-    //             "exchange": "superExchange222",
-    //             "coin": "superCoin111"
-    //           },
-    //           "percent": "100000",
-    //           "amount": "300",
-    //           "diff": "50"
-    //         },
-    //       ]
-    //     }
-    //   }
-    // }
-
     const variablesForMutation = {
       input: {
-        total: '100000',
+        total: totalRows.toString(),
         assets: {
-          input: combinedStaticData,
+          input: combinedRowsData,
         },
       },
     }
