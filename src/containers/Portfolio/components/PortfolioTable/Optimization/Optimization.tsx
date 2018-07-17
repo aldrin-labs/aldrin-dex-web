@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import { LinearProgress } from '@material-ui/core'
 
 import * as actions from '../../../actions'
 import { IState, IData, IProps } from './Optimization.types'
@@ -15,6 +16,7 @@ import { getCoinsForOptimization } from './api'
 
 class Optimization extends Component<IProps, IState> {
   state = {
+    loading: false,
     activePercentageButton: 0,
     risk: [],
     optimizedData: [],
@@ -207,14 +209,17 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 
+  renderLoading = () => <Loader color="secondary" />
+
   render() {
     const { children } = this.props
-    const { optimizedData, percentages, activeButton } = this.state
+    const { optimizedData, percentages, activeButton, loading } = this.state
 
     return (
       <PTWrapper>
         <Content>
           {children}
+          {loading ? this.renderLoading() : null}
           <ImportData>{this.renderInput()}</ImportData>
 
           <MainArea>
@@ -235,6 +240,10 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 }
+
+const Loader = styled(LinearProgress)`
+  margin-bottom: 0.5rem;
+`
 
 const ChartsContainer = styled.div`
   display: flex;
