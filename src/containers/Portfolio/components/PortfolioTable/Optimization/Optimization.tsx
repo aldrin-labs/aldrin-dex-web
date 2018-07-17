@@ -58,7 +58,9 @@ class Optimization extends Component<IProps, IState> {
           () => console.log(this.state)
         )
       } else {
-        // send some data to backend maybe?
+        this.setState({ loading: true })
+        // QUERRY HERE
+        // transform data to needed format
         // also get data from props and push it to main table
         // this.props.optimizedData &&
         //   this.setState({ optimizedData: this.props.optimizedData })
