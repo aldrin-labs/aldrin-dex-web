@@ -41,14 +41,10 @@ class Import extends PureComponent<IProps> {
     if (this.props.isShownMocks) {
       assets = MOCK_DATA
     } else {
-      assets = this.props.data
-
-      console.log('NoBackEnd fetch Logic here')
+      assets = this.transfromData(this.props.data.getProfile.portfolio.assets)
     }
 
-    const rawData = this.transfromData(assets)
-
-    this.props.updateData(this.sumSameCoins(rawData))
+    this.props.updateData(this.sumSameCoins(assets))
   }
 
   transfromData = (assets) => {
@@ -72,7 +68,7 @@ class Import extends PureComponent<IProps> {
     if (name) {
       this.props.updateData(
         this.sumSameCoins([
-          ...this.props.data,
+          ...this.props.storeData,
           { coin: name, percentage: value },
         ])
       )
@@ -80,7 +76,7 @@ class Import extends PureComponent<IProps> {
   }
   deleteRow = (i: number) =>
     this.props.updateData(
-      [...this.props.data].filter((el, index) => i !== index)
+      [...this.props.storeData].filter((el, index) => i !== index)
     )
 
   render() {
@@ -88,12 +84,12 @@ class Import extends PureComponent<IProps> {
       expectedReturn,
       optimizePortfolio,
       handleChange,
-      data: backendData,
+      storeData,
     } = this.props
 
-    // const data = this.transfromData(backendData.portfolio)
-
-    // console.log(backendData)
+    const data: IData[] = this.transfromData(
+      this.props.data.getProfile.portfolio.assets
+    )
 
     return (
       <>
@@ -117,12 +113,12 @@ class Import extends PureComponent<IProps> {
           </Button>
         </InputContainer>
         <TableContainer>
-          {/* <Table
+          <Table
             onPlusClick={this.addRow}
-            data={data}
+            data={storeData}
             withInput
             onClickDeleteIcon={this.deleteRow}
-          /> */}
+          />
         </TableContainer>
       </>
     )

@@ -111,10 +111,11 @@ class Optimization extends Component<IProps, IState> {
 
   renderInput = () => {
     const { expectedReturn } = this.state
-    const { isShownMocks, updateData } = this.props
+    const { isShownMocks, updateData, storeData } = this.props
 
     return (
       <QueryRenderer
+        storeData={storeData}
         component={Import}
         query={getCoinsForOptimization}
         expectedReturn={expectedReturn}
@@ -324,7 +325,7 @@ const UpperArea = styled.div`
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
-  data: store.portfolio.optimizationData,
+  storeData: store.portfolio.optimizationData,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

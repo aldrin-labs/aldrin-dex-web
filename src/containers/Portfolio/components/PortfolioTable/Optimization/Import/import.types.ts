@@ -1,6 +1,7 @@
 export interface IProps {
   isShownMocks: boolean
   data?: object
+  storeData: IData[]
   updateData: Function
   expectedReturn: string
   optimizePortfolio: Function
