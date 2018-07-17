@@ -1134,7 +1134,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     let deltaPriceString = ''
 
-                    if (deltaPrice) {
+                    if (+deltaPrice) {
                       if (deltaPrice > 0) {
                         deltaPriceString = `BUY ${symbol} ${deltaPrice} $`
                       } else {
