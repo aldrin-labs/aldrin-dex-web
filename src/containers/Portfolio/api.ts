@@ -78,6 +78,25 @@ export const getPortfolioQuery = gql`
           }
         }
       }
+     myRebalance {
+      total
+      assets {
+        id
+        _id
+        percent
+        amount
+        diff
+      }
+     }  
     }
   }
+`
+
+
+export const updateRebalanceMutation = gql`
+mutation ($input: rebalanceInput) {
+  updateRebalance(input: $input) {
+    total
+  }
+}
 `

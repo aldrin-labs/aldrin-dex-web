@@ -3,11 +3,12 @@ import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
 
-import { getPortfolioQuery } from './api'
+import { getPortfolioQuery, updateRebalanceMutation } from './api'
 import { IProps } from './interfaces'
 import { Login } from '@containers/Login'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from './components'
+import { compose } from 'recompose'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -38,8 +39,8 @@ class PortfolioComponent extends React.Component<IProps> {
 
   render() {
     const { checkboxes } = this.state
-    const { data } = this.props
-    const { getProfile, loading, error } = data
+    const { getPortfolioQueryData, updateRebalanceMutationQuery } = this.props
+    const { getProfile, loading, error } = getPortfolioQueryData
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
@@ -57,6 +58,7 @@ class PortfolioComponent extends React.Component<IProps> {
               checkboxes={checkboxes}
               toggleWallets={this.toggleWallets}
               data={getProfile}
+              updateRebalanceMutationQuery={updateRebalanceMutationQuery}
               subscription={subscriptionData}
             />
             <Backdrop
@@ -70,7 +72,12 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 }
 
-export default graphql(getPortfolioQuery)(PortfolioComponent)
+// TODO: Refactor all these queries and move it into subcomponents
+
+export default compose(
+  graphql(getPortfolioQuery, { name: 'getPortfolioQueryData' }),
+  graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery' })
+)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
