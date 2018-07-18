@@ -15,7 +15,10 @@ import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
+import Selector from './Correlation/DropDownMenu/DropDownMenu'
+
 import {
+  setCorrelationPeriod,
   toggleCorrelationTableFullscreen,
   filterValuesLessThen,
 } from '../../actions'
@@ -54,6 +57,8 @@ class PortfolioTableTabs extends React.Component<IProps> {
       portfolio,
       isShownMocks,
       toggleWallets,
+      setCorrelationPeriod,
+      correlationPeriod,
       filterValuesLessThen,
       filterPercent,
     } = this.props
@@ -131,11 +136,17 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
           <ButtonContainer>
             {tab === 'correlation' ? (
-              <StyledFullscreenButton
-                onClick={this.props.onFullscreenButtonClick}
-              >
-                <FullScreenIcon />
-              </StyledFullscreenButton>
+              <>
+                <Selector
+                  correlationPeriod={correlationPeriod}
+                  setCorrelationPeriodToStore={setCorrelationPeriod}
+                />
+                <StyledFullscreenButton
+                  onClick={this.props.onFullscreenButtonClick}
+                >
+                  <FullScreenIcon />
+                </StyledFullscreenButton>
+              </>
             ) : null}
 
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
@@ -346,12 +357,15 @@ const StyledFullscreenButton = styled(Button)`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
-  filterPercent: store.portfolio.filterValuesLessThenThat,
+  correlationPeriod: store.portfolio.correlationPeriod,
 })
+
 const mapDispatchToProps = (dispatch: any) => ({
   onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
   filterValuesLessThen: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
+  setCorrelationPeriod: (payload: any) =>
+    dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(

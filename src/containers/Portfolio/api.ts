@@ -8,11 +8,7 @@ export const CORRELATION_UPDATE = gql`
 
 export const getCorrelationQuery = gql`
   query getPortfolio($startDate: Int!, $endDate: Int!) {
-    correlationMatrixByDay(
-      expectedReturnPercent: 0.25
-      startDate: $startDate
-      endDate: $endDate
-    )
+    correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
   }
 `
 
@@ -78,25 +74,24 @@ export const getPortfolioQuery = gql`
           }
         }
       }
-     myRebalance {
-      total
-      assets {
-        id
-        _id
-        percent
-        amount
-        diff
+      myRebalance {
+        total
+        assets {
+          id
+          _id
+          percent
+          amount
+          diff
+        }
       }
-     }  
     }
   }
 `
 
-
 export const updateRebalanceMutation = gql`
-mutation ($input: rebalanceInput) {
-  updateRebalance(input: $input) {
-    total
+  mutation($input: rebalanceInput) {
+    updateRebalance(input: $input) {
+      total
+    }
   }
-}
 `

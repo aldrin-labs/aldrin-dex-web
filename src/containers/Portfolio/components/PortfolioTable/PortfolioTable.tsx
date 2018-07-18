@@ -119,7 +119,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <Optimization>
           <PortfolioTableTabs
-            data={this.props.data}
             tab={tab}
             portfolio={portfolio}
             onChangeTab={this.onChangeTab}
