@@ -1362,7 +1362,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
                     {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                    <PTHR>All</PTHR>
+                    <PTHR>Subtotal</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>{`${totalPercents}%`}</PTHR>
                     <PTHR>
@@ -1374,7 +1374,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                   </PTR>
                   <PTR>
                     {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                    <PTHR>Subtotal</PTHR>
+                    <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>
