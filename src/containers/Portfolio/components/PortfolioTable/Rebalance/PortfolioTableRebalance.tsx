@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled, { css } from 'styled-components'
+import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
@@ -24,7 +25,7 @@ import { Args } from '../types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 
-import { getMyPortfolioData, updateRebalanceMutation } from './api'
+import { getMyPortfolioData, updateRebalanceMutation, getMyRebalanceQuery } from './api'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },
@@ -89,21 +90,36 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
-    const { data, isShownMocks } = this.props
+    const { data, isShownMocks, getMyRebalance } = this.props
+
+    console.log('refetch',getMyRebalance.refetch());
+
+
+    console.log('getMyRebalance in DidMount', getMyRebalance);
+
 
     // console.log('data in componentDidMount' + '', data)
 
+    // getMyRebalance.getProfile.myRebalance
+
+    // const userHasRebalancePortfolio =
+    //   data &&
+    //   data.myRebalance &&
+    //   data.myRebalance.assets &&
+    //   data.myRebalance.assets.length > 0
     const userHasRebalancePortfolio =
-      data &&
-      data.myRebalance &&
-      data.myRebalance.assets &&
-      data.myRebalance.assets.length > 0
+      getMyRebalance &&
+      getMyRebalance.getProfile &&
+      getMyRebalance.getProfile.myRebalance &&
+      getMyRebalance.getProfile.myRebalance.assets &&
+      getMyRebalance.getProfile.myRebalance.assets.length > 0
+
     const userHasPortfolio = data && data.portfolio.assets.length > 0
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio) {
-      newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
+      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
         price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
@@ -151,22 +167,32 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    const { data, isShownMocks } = nextProps
+    const { data, isShownMocks, getMyRebalance } = nextProps
+
+    console.log('getMyRebalance in WillReceiveProps', getMyRebalance);
 
     // console.log('data in componentWillReceiveProps', data)
 
+    // getMyRebalance.getProfile.myRebalance
+
+    // const userHasRebalancePortfolio =
+    //   data &&
+    //   data.myRebalance &&
+    //   data.myRebalance.assets &&
+    //   data.myRebalance.assets.length > 0
     const userHasRebalancePortfolio =
-      data &&
-      data.myRebalance &&
-      data.myRebalance.assets &&
-      data.myRebalance.assets.length > 0
+      getMyRebalance &&
+      getMyRebalance.getProfile &&
+      getMyRebalance.getProfile.myRebalance &&
+      getMyRebalance.getProfile.myRebalance.assets &&
+      getMyRebalance.getProfile.myRebalance.assets.length > 0
+
     const userHasPortfolio = data && data.portfolio.assets.length > 0
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
-
     if (userHasRebalancePortfolio) {
-      newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
+      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
         price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
@@ -286,7 +312,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
     })
 
-    console.log('data in caluclatePriceDiff' , data);
+    // console.log('data in caluclatePriceDiff' , data);
 
 
     return data
@@ -607,8 +633,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       } else {
         // tslint:disable-next-line no-object-mutation
         let roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
-        console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
-        console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
+        // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
+        // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
 
         rows![selectedActive![0]]!.price = roundedPrice + parseFloat(undistributedMoney)
         money = 0
@@ -918,7 +944,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   render() {
     console.log('dataFromServer in render: ', this.props.data)
-    console.log('this.state.undistributedMoney: ', this.state.undistributedMoney)
+    console.log('getMyRebalance in render: ', this.props.getMyRebalance.getProfile.myRebalance.assets)
+
+    // console.log('this.state.undistributedMoney: ', this.state.undistributedMoney)
 
     //
     // const { data } = this.props
@@ -1421,8 +1449,9 @@ const mapStateToProps = (store) => ({
 })
 
 export default compose(
-  connect(mapStateToProps)
+  connect(mapStateToProps),
   // graphql(updateRebalanceMutation, {name: 'updateRebalance'})
+  graphql(getMyRebalanceQuery, {name: 'getMyRebalance'})
 )(PortfolioTableRebalance)
 
 const InputTable = styled.input`
