@@ -1046,7 +1046,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                       exchange,
                       symbol || '',
                       portfolioPerc ? `${portfolioPerc}%` : '',
-                      `${price}`,
+                      `${parseFloat(price).toLocaleString('en-US')}`,
                     ]
 
                     return (
@@ -1205,7 +1205,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                       exchange,
                       symbol || '',
                       portfolioPerc ? `${portfolioPerc}%` : '',
-                      `${price}`,
+                      `${parseFloat(price).toLocaleString('en-US')}`,
                       deltaPriceString,
                     ]
 
@@ -1367,7 +1367,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     <PTHR>{`${totalPercents}%`}</PTHR>
                     <PTHR>
                       {mainSymbol}
-                      {`${totalTableRows}`}
+                      {`${parseFloat(totalTableRows).toLocaleString('en-US')}`}
                     </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
@@ -1379,7 +1379,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     <PTHR>-</PTHR>
                     <PTHR>
                       {mainSymbol}
-                      {`${totalRows}`}
+                      {`${parseFloat(totalRows).toLocaleString('en-US')}`}
                     </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
