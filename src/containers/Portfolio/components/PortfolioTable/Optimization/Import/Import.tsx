@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
+import { ApolloConsumer } from 'react-apollo'
 
 import Table from '../Table/Table'
 import { MOCK_DATA } from '../../dataMock'
@@ -77,35 +78,39 @@ class Import extends PureComponent<IProps> {
     )
 
     return (
-      <>
-        <InputContainer>
-          <Button onClick={this.importPortfolio}>Import Portfolio</Button>
-          <Input
-            type="number"
-            placeholder="Expected return in %"
-            value={expectedReturn || ''}
-            onChange={(e) => {
-              handleChange(e)
-            }}
-          />
-          <Button
-            disabled={expectedReturn === '' || (data && data.length < 1)}
-            onClick={() => {
-              optimizePortfolio()
-            }}
-          >
-            Optimize Portfolio
-          </Button>
-        </InputContainer>
-        <TableContainer>
-          <Table
-            onPlusClick={this.addRow}
-            data={storeData}
-            withInput
-            onClickDeleteIcon={this.deleteRow}
-          />
-        </TableContainer>
-      </>
+      <ApolloConsumer>
+        {(client) => (
+          <>
+            <InputContainer>
+              <Button onClick={this.importPortfolio}>Import Portfolio</Button>
+              <Input
+                type="number"
+                placeholder="Expected return in %"
+                value={expectedReturn || ''}
+                onChange={(e) => {
+                  handleChange(e)
+                }}
+              />
+              <Button
+                disabled={expectedReturn === '' || (data && data.length < 1)}
+                onClick={() => {
+                  optimizePortfolio()
+                }}
+              >
+                Optimize Portfolio
+              </Button>
+            </InputContainer>
+            <TableContainer>
+              <Table
+                onPlusClick={this.addRow}
+                data={storeData}
+                withInput
+                onClickDeleteIcon={this.deleteRow}
+              />
+            </TableContainer>
+          </>
+        )}
+      </ApolloConsumer>
     )
   }
 }

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
+import { ApolloConsumer } from 'react-apollo'
 
 import * as actions from '../../../actions'
 import { IState, IData, IProps } from './Optimization.types'
@@ -17,7 +18,6 @@ import { getCoinsForOptimization } from './api'
 class Optimization extends Component<IProps, IState> {
   state = {
     loading: false,
-    activePercentageButton: 0,
     risk: [],
     optimizedData: [],
     rawDataBeforeOptimization: [],
@@ -58,7 +58,6 @@ class Optimization extends Component<IProps, IState> {
           () => console.log(this.state)
         )
       } else {
-        this.setState({ loading: true })
         // QUERRY HERE
         // transform data to needed format
         // also get data from props and push it to main table
@@ -204,9 +203,9 @@ class Optimization extends Component<IProps, IState> {
             charts={barChartData}
           />
         </Chart>
-        {/* <Chart>
+        <Chart>
           <EfficientFrontierChart data={efficientFrontierData} />
-        </Chart> */}
+        </Chart>
       </ChartsContainer>
     )
   }
@@ -218,27 +217,31 @@ class Optimization extends Component<IProps, IState> {
     const { optimizedData, percentages, activeButton, loading } = this.state
 
     return (
-      <PTWrapper>
-        <Content>
-          {children}
-          {loading ? this.renderLoading() : null}
-          <ImportData>{this.renderInput()}</ImportData>
+      <ApolloConsumer>
+        {(client) => (
+          <PTWrapper>
+            <Content>
+              {children}
+              {loading ? this.renderLoading() : null}
+              <ImportData>{this.renderInput()}</ImportData>
 
-          <MainArea>
-            <MainAreaUpperPart>
-              <SwitchButtons
-                onBtnClick={this.onBtnClick}
-                values={percentages}
-                show={optimizedData.length >= 1}
-                activeButton={activeButton}
-              />
+              <MainArea>
+                <MainAreaUpperPart>
+                  <SwitchButtons
+                    onBtnClick={this.onBtnClick}
+                    values={percentages}
+                    show={optimizedData.length >= 1}
+                    activeButton={activeButton}
+                  />
 
-              <Table data={optimizedData} withInput={false} />
-            </MainAreaUpperPart>
-            {this.renderCharts()}
-          </MainArea>
-        </Content>
-      </PTWrapper>
+                  <Table data={optimizedData} withInput={false} />
+                </MainAreaUpperPart>
+                {this.renderCharts()}
+              </MainArea>
+            </Content>
+          </PTWrapper>
+        )}
+      </ApolloConsumer>
     )
   }
 }

@@ -5,7 +5,6 @@ export interface IData {
 
 export interface IState {
   loading: boolean
-  activePercentageButton: number
   risk: number[]
   optimizedData: IData[]
   rawDataBeforeOptimization: IData[]
