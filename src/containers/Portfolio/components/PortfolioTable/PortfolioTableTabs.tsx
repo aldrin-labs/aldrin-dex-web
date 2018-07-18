@@ -7,14 +7,21 @@ import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/supervisor-account'
 import { Button } from '@material-ui/core'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
+import { FaFilter } from 'react-icons/lib/fa'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import Dropdown from '@components/SimpleDropDownSelector'
 import Switch from '@components/Switch/Switch'
-import filterListIcon from '@icons/filter-list.svg'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
-import { toggleCorrelationTableFullscreen } from '../../actions'
+import Selector from './Correlation/DropDownMenu/DropDownMenu'
+
+import {
+  setCorrelationPeriod,
+  toggleCorrelationTableFullscreen,
+  filterValuesLessThen,
+} from '../../actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -45,7 +52,16 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio, isShownMocks, toggleWallets } = this.props
+    const {
+      tab,
+      portfolio,
+      isShownMocks,
+      toggleWallets,
+      setCorrelationPeriod,
+      correlationPeriod,
+      filterValuesLessThen,
+      filterPercent,
+    } = this.props
     const dataFromProps = this.props.data
 
     return (
@@ -97,20 +113,48 @@ class PortfolioTableTabs extends React.Component<IProps> {
             </Tab>
           </TabContainer>
 
+          {tab === 'main' ? (
+            <FilterValues>
+              <FilterIcon />
+              <Dropdown
+                style={{ width: '100%' }}
+                value={filterPercent}
+                handleChange={filterValuesLessThen}
+                name="filterValuesInMain"
+                options={[
+                  { value: 0, label: '0% <' },
+                  { value: 0.1, label: '0.1% <' },
+                  { value: 0.2, label: '0.2% <' },
+                  { value: 0.3, label: '0.3% <' },
+                  { value: 0.5, label: '0.5% <' },
+                  { value: 1, label: '1% <' },
+                  { value: 10, label: '10% <' },
+                ]}
+              />
+            </FilterValues>
+          ) : null}
+
           <ButtonContainer>
             {tab === 'correlation' ? (
-              <StyledFullscreenButton
-                onClick={this.props.onFullscreenButtonClick}
-              >
-                <FullScreenIcon />
-              </StyledFullscreenButton>
+              <>
+                <Selector
+                  correlationPeriod={correlationPeriod}
+                  setCorrelationPeriodToStore={setCorrelationPeriod}
+                />
+                <StyledFullscreenButton
+                  onClick={this.props.onFullscreenButtonClick}
+                >
+                  <FullScreenIcon />
+                </StyledFullscreenButton>
+              </>
             ) : null}
 
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
             {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
             {/*</ToggleBtn>*/}
 
-            { (tab !== 'correlation' && tab !== 'rebalance') &&
+            {tab !== 'correlation' &&
+              tab !== 'rebalance' &&
               (dataFromProps || isShownMocks) && (
                 <SwitchRefreshContainer>
                   <Switch
@@ -148,6 +192,17 @@ class PortfolioTableTabs extends React.Component<IProps> {
     )
   }
 }
+
+const FilterValues = styled.div`
+  width: 10%;
+  display: flex;
+  place-items: center;
+`
+const FilterIcon = styled(FaFilter)`
+  color: whitesmoke;
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+`
 
 const PTHeadingBlock = styled.div`
   display: flex;
@@ -238,9 +293,8 @@ const TabContainer = styled.div`
   width: 100%;
   flex-flow: wrap;
 
-   @media (max-width: 1080px) {
+  @media (max-width: 1080px) {
     justify-content: flex-start;
-
   }
 `
 
@@ -303,9 +357,15 @@ const StyledFullscreenButton = styled(Button)`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  correlationPeriod: store.portfolio.correlationPeriod,
 })
+
 const mapDispatchToProps = (dispatch: any) => ({
   onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
+  filterValuesLessThen: (percent: number) =>
+    dispatch(filterValuesLessThen(percent)),
+  setCorrelationPeriod: (payload: any) =>
+    dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(

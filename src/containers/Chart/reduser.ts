@@ -20,6 +20,10 @@ export default createReducer(
     [actions.selectCurrencies]: (state, payload) => ({
       ...state,
       currencyPair: payload,
+      charts:
+        state.charts.length === 0
+          ? [payload]
+          : uniqWith([payload, ...state.charts], isEqual),
     }),
     [actions.addChart]: (state, payload) => {
       const fitlerSamePairs = uniqWith([...state.charts, payload], isEqual)

@@ -26,6 +26,7 @@ export default class QueryRenderer extends React.Component<Props> {
           }
 
           const Component = component
+
           return (
             <Component
               data={data}

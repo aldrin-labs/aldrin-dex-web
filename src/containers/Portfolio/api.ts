@@ -1,5 +1,17 @@
 import gql from 'graphql-tag'
 
+export const CORRELATION_UPDATE = gql`
+  subscription onCorrelationUpdated {
+    matrix
+  }
+`
+
+export const getCorrelationQuery = gql`
+  query getPortfolio($startDate: Int!, $endDate: Int!) {
+    correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
+  }
+`
+
 export const getKeysQuery = gql`
   query getKeys {
     getProfile {
@@ -62,25 +74,24 @@ export const getPortfolioQuery = gql`
           }
         }
       }
-     myRebalance {
-      total
-      assets {
-        id
-        _id
-        percent
-        amount
-        diff
+      myRebalance {
+        total
+        assets {
+          id
+          _id
+          percent
+          amount
+          diff
+        }
       }
-     }  
     }
   }
 `
 
-
 export const updateRebalanceMutation = gql`
-mutation ($input: rebalanceInput) {
-  updateRebalance(input: $input) {
-    total
+  mutation($input: rebalanceInput) {
+    updateRebalance(input: $input) {
+      total
+    }
   }
-}
 `

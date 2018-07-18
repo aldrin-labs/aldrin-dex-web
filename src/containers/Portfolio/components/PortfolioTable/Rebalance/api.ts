@@ -3,9 +3,11 @@ import gql from 'graphql-tag'
 export const getMyRebalanceQuery = gql`
 query {
   getProfile {
-  	myRebalance {
+    myRebalance {
       total
       assets {
+        id
+        _id
         percent
         amount
         diff

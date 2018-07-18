@@ -23,6 +23,7 @@ class PortfolioComponent extends React.Component<IProps> {
     this.state = {
       checkboxes: null,
       isSideNavOpen: false,
+      filter: 0.5,
     }
 
     this.toggleWallets = this.toggleWallets.bind(this)
