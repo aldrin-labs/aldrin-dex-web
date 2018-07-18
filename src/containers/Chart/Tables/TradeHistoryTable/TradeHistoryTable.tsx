@@ -13,6 +13,8 @@ import {
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 import { Loading } from '@components/Loading/Loading'
+import { Query, Subscription } from 'react-apollo'
+import gql from 'graphql-tag'
 
 export interface IProps {
   quote: string
@@ -26,8 +28,8 @@ export const MARKET_TICKERS = gql`
 `
 
 export const MARKET_QUERY = gql`
-  query marketOrders {
-    marketOrders
+  query marketTickers {
+    marketTickers
   }
 `
 
@@ -52,50 +54,51 @@ class TickersList extends React.Component {
 
     if (newProps.data && newProps.data.marketTickers && newProps.data.marketTickers.length > 0) {
       console.log(newProps);
-      const order = JSON.parse(newProps.data.marketTickers[0]);
+      const ticker = JSON.parse(newProps.data.marketTickers[0]);
+      console.log(ticker);
       this.setState((prevState, props) => {
         if (prevState.data.length > 50) { prevState.data.pop(); }
-        return ({ data: [order, ...prevState.data] })
+        return ({ data: [ticker, ...prevState.data] })
       });
     }
   }
   render() {
     return (
       <div>
-        {this.state.data.slice(0, 30).map((order, i) => (
+        {this.state.data.slice(0, 30).map((ticker, i) => (
           <Row key={i} background={'#25282c'}>
             <AnimatedCell
               animation={
-                order.status === 'fall'
+                ticker.status === 'fall'
                   ? 'fadeInRedAndBack'
                   : 'fadeInGreenAndBack'
               }
               color="#9ca2aa"
               width={'33%'}
-              value={order.size.toFixed(8)}
+              value={ticker.size.toFixed(8)}
             />
 
             <AnimatedCell
               animation={
-                order.status === 'fall' ? 'fadeInRed' : 'fadeInGreen'
+                ticker.status === 'fall' ? 'fadeInRed' : 'fadeInGreen'
               }
-              color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
+              color={ticker.status === 'fall' ? '#d77455' : '#34cb86d1'}
               width={'33%'}
-              value={Number(order.price).toFixed(2)}
+              value={Number(ticker.price).toFixed(2)}
             >
               <StyledArrow
-                direction={order.status === 'fall' ? 'down' : 'up'}
+                direction={ticker.status === 'fall' ? 'down' : 'up'}
               />
             </AnimatedCell>
             <AnimatedCell
               animation={
-                order.status === 'fall'
+                ticker.status === 'fall'
                   ? 'fadeInRedAndBack'
                   : 'fadeInGreenAndBack'
               }
               color="#9ca2aa"
               width={'33%'}
-              value={order.time}
+              value={ticker.time}
             />
           </Row>
         ))}
@@ -115,6 +118,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
     const { quote, data } = this.props
     const { tableExpanded } = this.state
 
+    console.log(this.props);
+    const symbol = this.props.currencyPair ? this.props.currencyPair : 'ETH_BTC';
+    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : 'gateio';
+    console.log('subscribe to ', symbol, exchange);
     if (!data) {
       return <Loading centerAligned />
     }
@@ -162,8 +169,6 @@ class TradeHistoryTable extends PureComponent<IProps> {
               {({ subscribeToMore, ...result }) =>
                 (
                   <TickersList
-                    roundTill={roundTill}
-                    aggregation={aggregation}
                     {...result}
                     subscribeToNewTickers={() =>
                       subscribeToMore({

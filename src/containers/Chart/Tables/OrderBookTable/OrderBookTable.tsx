@@ -33,25 +33,22 @@ class OrdersList extends React.Component {
     data: []
   }
   componentWillMount() {
-    setTimeout(() => {
-      console.log('subscribeToNewOrders');
-      this.props.subscribeToNewOrders();
-    }, 3000);
+    this.props.subscribeToNewOrders();
   }
 
   componentWillReceiveProps(newProps) {
-    console.log(newProps);
+    // console.log(newProps);
     if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length === 0) {
-      console.log(newProps);
+      // console.log(newProps);
       return this.setState((prevState, props) =>
         ({ data: [] }));
     }
 
     if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length > 0) {
-      console.log(newProps);
-      const order = JSON.parse(newProps.data.marketOrders[0]);
-      this.setState((prevState, props) => {
-        if (prevState.data.length > 50) { prevState.data.pop(); }
+      // console.log(newProps);
+      const order = newProps.data.marketOrders[0];
+      return this.setState((prevState, props) => {
+        if (prevState.data.length > 20) { prevState.data.pop(); }
         return ({ data: [order, ...prevState.data] })
       });
     }
@@ -157,8 +154,8 @@ class OrderBookTable extends PureComponent {
                       variables: { symbol, exchange },
                       updateQuery: (prev, { subscriptionData }) => {
                         if (!subscriptionData.data) { return prev; }
-                        const newOrder = subscriptionData.data.listenMarketOrders;
-                        console.log(newOrder)
+                        const newOrder = JSON.parse(subscriptionData.data.listenMarketOrders);
+                        // console.log(newOrder)
                         let obj = Object.assign({}, prev, {
                           marketOrders: [newOrder]
                         });
