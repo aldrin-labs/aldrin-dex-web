@@ -32,7 +32,7 @@ class Optimization extends Component<IProps, IState> {
     })
   }
 
-  optimizePortfolio = () => {
+  optimizePortfolio = (data: any) => {
     if (
       !(this.state.expectedReturn === '' || this.props.storeData.length < 1)
     ) {
@@ -58,11 +58,19 @@ class Optimization extends Component<IProps, IState> {
           () => console.log(this.state)
         )
       } else {
-        // QUERRY HERE
-        // transform data to needed format
-        // also get data from props and push it to main table
-        // this.props.optimizedData &&
-        //   this.setState({ optimizedData: this.props.optimizedData })
+        this.setState(
+          {
+            optimizedData: data.weighted_coins_optimized.map(
+              ({ coin, weight }: { coin: string; weight: number }) => ({
+                coin,
+                percentage: weight,
+              })
+            ),
+            risk: [],
+            rawDataBeforeOptimization: this.props.storeData,
+          },
+          () => console.log(this.state)
+        )
       }
 
       this.setState({
