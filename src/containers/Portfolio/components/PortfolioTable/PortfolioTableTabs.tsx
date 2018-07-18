@@ -11,11 +11,11 @@ import { FaFilter } from 'react-icons/lib/fa'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Dropdown from '@components/SimpleDropDownSelector'
+import Selector from './Correlation/DropDownMenu/DropDownMenu'
 import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
-import Selector from './Correlation/DropDownMenu/DropDownMenu'
 
 import {
   setCorrelationPeriod,
@@ -135,17 +135,19 @@ class PortfolioTableTabs extends React.Component<IProps> {
           ) : null}
 
           <ButtonContainer>
-            {tab === 'correlation' ? (
+            {tab === 'correlation' || tab === 'optimization' ? (
               <>
                 <Selector
                   correlationPeriod={correlationPeriod}
                   setCorrelationPeriodToStore={setCorrelationPeriod}
                 />
-                <StyledFullscreenButton
-                  onClick={this.props.onFullscreenButtonClick}
-                >
-                  <FullScreenIcon />
-                </StyledFullscreenButton>
+                {tab === 'correlation' && (
+                  <StyledFullscreenButton
+                    onClick={this.props.onFullscreenButtonClick}
+                  >
+                    <FullScreenIcon />
+                  </StyledFullscreenButton>
+                )}
               </>
             ) : null}
 
