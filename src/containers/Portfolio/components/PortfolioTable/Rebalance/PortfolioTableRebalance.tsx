@@ -112,7 +112,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
-        price: parseFloat(el.asset.priceUSD).toFixed(2),
+        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
       }))
 
       console.log('newTableRebalancedPortfolioData in didMount', newTableRebalancedPortfolioData)
@@ -122,7 +122,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
-        price: parseFloat(el.asset.priceUSD).toFixed(2),
+        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
       }))
 
       console.log('132323')
@@ -157,6 +157,15 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
 
+    // if (userHasRebalancePortfolio) {
+    //   newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
+    //     exchange: el._id.exchange,
+    //     symbol: el._id.coin,
+    //     price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+    //   }))
+    //
+    // }
+
     if (userHasRebalancePortfolio) {
       newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
@@ -164,14 +173,20 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
       }))
 
-      // console.log('userHasRebalancePortfolio in RecieveProps', newTableData)
+      newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
+        exchange: el.exchange.name,
+        symbol: el.asset.symbol,
+        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
+      }))
+
+      console.log('newTableRebalancedPortfolioData in didMount', newTableRebalancedPortfolioData)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
-        price: parseFloat(el.asset.priceUSD).toFixed(2),
+        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
       }))
 
       console.log('132323')
