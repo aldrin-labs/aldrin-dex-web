@@ -68,7 +68,7 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-color: #222529;
+  background-color: #2d3136;
   padding: 25px 0;
 `
 
