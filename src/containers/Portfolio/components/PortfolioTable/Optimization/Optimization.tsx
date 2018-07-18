@@ -204,9 +204,9 @@ class Optimization extends Component<IProps, IState> {
             charts={barChartData}
           />
         </Chart>
-        <Chart>
+        {/* <Chart>
           <EfficientFrontierChart data={efficientFrontierData} />
-        </Chart>
+        </Chart> */}
       </ChartsContainer>
     )
   }
