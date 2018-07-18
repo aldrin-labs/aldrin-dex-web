@@ -224,7 +224,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       {
         rows: cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio),
         staticRows: cloneArrayElementsOneLevelDeep(tableDataCurrentPortfolio),
-        savedRows: cloneArrayElementsOneLevelDeep(tableDataCurrentPortfolio),
+        savedRows: cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio),
       },
       () => {
         this.calculateAllTotals()
@@ -497,8 +497,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           exchange: el.exchange,
           coin: el.symbol,
         },
-        amount: el.price,
-        percent: el.portfolioPerc,
+        amount: el.price.toString(),
+        percent: el.portfolioPerc.toString(),
         diff: el.deltaPrice.toString(),
       }
     })
