@@ -221,8 +221,10 @@ class Optimization extends Component<IProps, IState> {
   renderLoading = () => <Loader color="secondary" />
 
   render() {
-    const { children } = this.props
+    const { children, startDate, endDate } = this.props
     const { optimizedData, percentages, activeButton, loading } = this.state
+
+    console.log(startDate, endDate)
 
     return (
       <ApolloConsumer>
@@ -346,6 +348,8 @@ const ImportData = styled.div`
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   storeData: store.portfolio.optimizationData,
+  startDate: store.portfolio.correlationStartDate,
+  endDate: store.portfolio.correlationEndDate,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
