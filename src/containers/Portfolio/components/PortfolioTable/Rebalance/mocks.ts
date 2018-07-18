@@ -4,7 +4,7 @@ export function combineToChart(mockData) {
     angle: parseFloat(dataItem.portfolioPerc),
     label: dataItem.symbol,
     realValue: parseFloat(dataItem.portfolioPerc),
-    labelCurrency: dataItem.currency
+    labelCurrency: dataItem.exchange
   }))
 }
 
@@ -38,53 +38,45 @@ export const PieChartMockSecond = [
   },
 ]
 
-export const tableData = [
+export const mockTableData = [
   {
-    currency: 'Bitrex',
+    exchange: 'Bitrex',
     symbol: 'ETH',
-    portfolioPerc: 28.78,
     price: 12950,
   },
   {
-    currency: 'GDAX',
+    exchange: 'GDAX',
     symbol: 'ETH',
-    portfolioPerc: 22.22,
     price: 10000,
   },
   {
-    currency: 'Binance',
+    exchange: 'Binance',
     symbol: 'LTC',
-    portfolioPerc: 4.44,
     price: 2000,
   },
   {
-    currency: 'Binance',
+    exchange: 'Binance',
     symbol: 'XRP',
-    portfolioPerc: 5.55,
     price: 5000,
   },
   {
-    currency: 'Binance',
+    exchange: 'Binance',
     symbol: 'PCI',
-    portfolioPerc: 4.44,
     price: 2000,
   },
   {
-    currency: 'Binance',
+    exchange: 'Binance',
     symbol: 'LTU',
-    portfolioPerc: 5.55,
     price: 5000,
   },
   {
-    currency: 'Binance',
+    exchange: 'Binance',
     symbol: 'PKI',
-    portfolioPerc: 4.44,
     price: 2000,
   },
   {
-    currency: 'Binance',
+    exchange: 'Binance',
     symbol: 'DKI',
-    portfolioPerc: 5.55,
     price: 5000,
   },
 ]

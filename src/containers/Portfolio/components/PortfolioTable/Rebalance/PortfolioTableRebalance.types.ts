@@ -1,5 +1,5 @@
 export interface IRow {
-  currency: string
+  exchange: string
   symbol: string
   price: number
   portfolioPerc?: number | string

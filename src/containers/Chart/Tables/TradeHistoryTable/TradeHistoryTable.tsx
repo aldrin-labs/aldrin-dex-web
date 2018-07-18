@@ -33,7 +33,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
     }
 
     return (
-      <TradeHistoryTableCollapsible>
+      <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
         <CollapseWrapper in={tableExpanded} collapsedHeight="2rem">
           <TriggerTitle
             onClick={() => {
@@ -68,8 +68,8 @@ class TradeHistoryTable extends PureComponent<IProps> {
               </HeadCell>
             </Row>
           </Head>
-          <Body height="400px">
-            {data.slice(0, 30).map((order, i) => (
+          <StyledBody>
+            {data.slice(0, 100).map((order, i) => (
               <Row key={i} background={'#25282c'}>
                 <AnimatedCell
                   animation={
@@ -106,12 +106,24 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 />
               </Row>
             ))}
-          </Body>
+          </StyledBody>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>
     )
   }
 }
+
+const StyledBody = Body.extend`
+  height: 330px;
+  transition: height 0.75s ease-in-out;
+
+  @media (min-width: 1366px) {
+    height: 40vh;
+  }
+  @media (min-width: 1920px) {
+    height: 50vh;
+  }
+`
 
 const TriggerTitle = Title.extend`
   cursor: pointer;
@@ -124,7 +136,7 @@ const CollapseWrapper = styled(Collapse)`
 const CollapsibleTable = Table.extend`
   position: absolute;
   bottom: 0;
-  max-height: calc(50% - 37px);
+  max-height: calc(70% - 37px);
   z-index: 10;
   width: 100%;
 
@@ -135,6 +147,7 @@ const CollapsibleTable = Table.extend`
 
 const TradeHistoryTableCollapsible = CollapsibleTable.extend`
   max-height: 65%;
+
   @media (max-width: 1080px) {
     bottom: 0.5rem;
   }
