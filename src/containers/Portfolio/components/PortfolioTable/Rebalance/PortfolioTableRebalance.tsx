@@ -92,7 +92,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     const { data, isShownMocks, getMyRebalance } = this.props
 
-    console.log('refetch',getMyRebalance.refetch());
+    // console.log('refetch',getMyRebalance.refetch());
 
 
     console.log('getMyRebalance in DidMount', getMyRebalance);
@@ -1452,7 +1452,11 @@ export default compose(
   connect(mapStateToProps),
   // graphql(updateRebalanceMutation, {name: 'updateRebalance'})
   graphql(getMyRebalanceQuery, {name: 'getMyRebalance'}),
-  graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery' }),
+  graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery', options: ({values}) => ({
+    refetchQueries: [{
+      query: getMyRebalanceQuery,
+    }],
+    ...values })})
 )(PortfolioTableRebalance)
 
 const InputTable = styled.input`
