@@ -25,7 +25,7 @@ import { Args } from '../types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 
-import { getMyPortfolioData, updateRebalanceMutation, getMyRebalanceQuery } from './api'
+import { updateRebalanceMutation, getMyRebalanceQuery } from './api'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },
@@ -944,7 +944,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   render() {
     console.log('dataFromServer in render: ', this.props.data)
-    console.log('getMyRebalance in render: ', this.props.getMyRebalance.getProfile.myRebalance.assets)
+    // console.log('getMyRebalance in render: ', this.props.getMyRebalance.getProfile.myRebalance.assets)
 
     // console.log('this.state.undistributedMoney: ', this.state.undistributedMoney)
 
@@ -1451,7 +1451,8 @@ const mapStateToProps = (store) => ({
 export default compose(
   connect(mapStateToProps),
   // graphql(updateRebalanceMutation, {name: 'updateRebalance'})
-  graphql(getMyRebalanceQuery, {name: 'getMyRebalance'})
+  graphql(getMyRebalanceQuery, {name: 'getMyRebalance'}),
+  graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery' }),
 )(PortfolioTableRebalance)
 
 const InputTable = styled.input`

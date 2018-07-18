@@ -65,9 +65,9 @@ query {
 
 
 export const updateRebalanceMutation = gql`
-mutation ($input: rebalanceInput) {
-  updateRebalance(input: $input) {
-    total
-  } 
-}
+  mutation($input: rebalanceInput) {
+    updateRebalance(input: $input) {
+      total
+    }
+  }
 `
