@@ -1046,7 +1046,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                       exchange,
                       symbol || '',
                       portfolioPerc ? `${portfolioPerc}%` : '',
-                      `${price}`,
+                      `${parseFloat(price).toLocaleString('en-US')}`,
                     ]
 
                     return (
@@ -1205,7 +1205,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                       exchange,
                       symbol || '',
                       portfolioPerc ? `${portfolioPerc}%` : '',
-                      `${price}`,
+                      `${parseFloat(price).toLocaleString('en-US')}`,
                       deltaPriceString,
                     ]
 
@@ -1362,24 +1362,24 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 <PTFoot isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
                     {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                    <PTHR>All</PTHR>
+                    <PTHR>Subtotal</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>{`${totalPercents}%`}</PTHR>
                     <PTHR>
                       {mainSymbol}
-                      {`${totalTableRows}`}
+                      {`${parseFloat(totalTableRows).toLocaleString('en-US')}`}
                     </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
                   </PTR>
                   <PTR>
                     {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                    <PTHR>Subtotal</PTHR>
+                    <PTHR>All</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>
                       {mainSymbol}
-                      {`${totalRows}`}
+                      {`${parseFloat(totalRows).toLocaleString('en-US')}`}
                     </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
