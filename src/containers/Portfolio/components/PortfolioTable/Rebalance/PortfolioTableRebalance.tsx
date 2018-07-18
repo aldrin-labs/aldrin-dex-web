@@ -128,11 +128,19 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       console.log('132323')
     }
 
+    const composeWithMocksCurrentPortfolio = isShownMocks
+      ? [...newTableCurrentPortfolioData, ...mockTableData]
+      : newTableCurrentPortfolioData
+
+    const composeWithMocksRebalancedPortfolio = isShownMocks
+      ? [...newTableRebalancedPortfolioData, ...mockTableData]
+      : newTableRebalancedPortfolioData
+
     if (userHasRebalancePortfolio) {
-      this.setTableData(newTableCurrentPortfolioData, newTableRebalancedPortfolioData)
+      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksRebalancedPortfolio)
     }
     else {
-      this.setTableData(newTableCurrentPortfolioData, newTableCurrentPortfolioData)
+      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksCurrentPortfolio)
     }
 
     // const composeWithMocks = isShownMocks
@@ -183,11 +191,19 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       console.log('132323')
     }
 
+    const composeWithMocksCurrentPortfolio = isShownMocks
+      ? [...newTableCurrentPortfolioData, ...mockTableData]
+      : newTableCurrentPortfolioData
+
+    const composeWithMocksRebalancedPortfolio = isShownMocks
+      ? [...newTableRebalancedPortfolioData, ...mockTableData]
+      : newTableRebalancedPortfolioData
+
     if (userHasRebalancePortfolio) {
-      this.setTableData(newTableCurrentPortfolioData, newTableRebalancedPortfolioData)
+      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksRebalancedPortfolio)
     }
     else {
-      this.setTableData(newTableCurrentPortfolioData, newTableCurrentPortfolioData)
+      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksCurrentPortfolio)
     }
 
     // const composeWithMocks = isShownMocks
@@ -469,7 +485,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     console.log(updateRebalanceMutationQuery)
 
-    const combinedRowsData = rows.map((el) => {
+    const combinedRowsData = rows.filter((el) => !el.mock).map((el) => {
+
       return {
         _id: {
           exchange: el.exchange,
@@ -480,6 +497,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         diff: el.deltaPrice.toString(),
       }
     })
+
+    console.log(combinedRowsData);
+
 
     const variablesForMutation = {
       input: {
@@ -895,6 +915,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   render() {
     console.log('dataFromServer in render: ', this.props.data)
+    console.log('this.state.undistributedMoney: ', this.state.undistributedMoney)
+
     //
     // const { data } = this.props
     // // const { getProfile, loading, error } = data

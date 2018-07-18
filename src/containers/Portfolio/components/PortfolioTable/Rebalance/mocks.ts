@@ -43,40 +43,48 @@ export const mockTableData = [
     exchange: 'Bitrex',
     symbol: 'ETH',
     price: 12950,
+    mock: true
   },
   {
     exchange: 'GDAX',
     symbol: 'ETH',
     price: 10000,
+    mock: true
   },
   {
     exchange: 'Binance',
     symbol: 'LTC',
     price: 2000,
+    mock: true
   },
   {
     exchange: 'Binance',
     symbol: 'XRP',
     price: 5000,
+    mock: true
   },
   {
     exchange: 'Binance',
     symbol: 'PCI',
     price: 2000,
+    mock: true
   },
   {
     exchange: 'Binance',
     symbol: 'LTU',
     price: 5000,
+    mock: true
   },
   {
     exchange: 'Binance',
     symbol: 'PKI',
     price: 2000,
+    mock: true
   },
   {
     exchange: 'Binance',
     symbol: 'DKI',
     price: 5000,
+    mock: true
   },
 ]
