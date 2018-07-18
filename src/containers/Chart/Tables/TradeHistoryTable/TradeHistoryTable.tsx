@@ -19,6 +19,93 @@ export interface IProps {
   data: any[]
 }
 
+export const MARKET_TICKERS = gql`
+  subscription listenMarketTickers($symbol: String!, $exchange: String!) {
+    listenMarketTickers(symbol: $symbol, exchange: $exchange)
+  }
+`
+
+export const MARKET_QUERY = gql`
+  query marketOrders {
+    marketOrders
+  }
+`
+
+class TickersList extends React.Component {
+  state = {
+    data: []
+  }
+  componentWillMount() {
+    setTimeout(() => {
+      console.log('subscribeToNewTickers');
+      this.props.subscribeToNewTickers();
+    }, 3000);
+  }
+
+  componentWillReceiveProps(newProps) {
+    console.log(newProps);
+    if (newProps.data && newProps.data.marketTickers && newProps.data.marketTickers.length === 0) {
+      console.log(newProps);
+      return this.setState((prevState, props) =>
+        ({ data: [] }));
+    }
+
+    if (newProps.data && newProps.data.marketTickers && newProps.data.marketTickers.length > 0) {
+      console.log(newProps);
+      const order = JSON.parse(newProps.data.marketTickers[0]);
+      this.setState((prevState, props) => {
+        if (prevState.data.length > 50) { prevState.data.pop(); }
+        return ({ data: [order, ...prevState.data] })
+      });
+    }
+  }
+  render() {
+    return (
+      <div>
+        {this.state.data.slice(0, 30).map((order, i) => (
+          <Row key={i} background={'#25282c'}>
+            <AnimatedCell
+              animation={
+                order.status === 'fall'
+                  ? 'fadeInRedAndBack'
+                  : 'fadeInGreenAndBack'
+              }
+              color="#9ca2aa"
+              width={'33%'}
+              value={order.size.toFixed(8)}
+            />
+
+            <AnimatedCell
+              animation={
+                order.status === 'fall' ? 'fadeInRed' : 'fadeInGreen'
+              }
+              color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
+              width={'33%'}
+              value={Number(order.price).toFixed(2)}
+            >
+              <StyledArrow
+                direction={order.status === 'fall' ? 'down' : 'up'}
+              />
+            </AnimatedCell>
+            <AnimatedCell
+              animation={
+                order.status === 'fall'
+                  ? 'fadeInRedAndBack'
+                  : 'fadeInGreenAndBack'
+              }
+              color="#9ca2aa"
+              width={'33%'}
+              value={order.time}
+            />
+          </Row>
+        ))}
+      </div>
+    );
+  };
+}
+
+
+
 class TradeHistoryTable extends PureComponent<IProps> {
   state = {
     tableExpanded: true,
@@ -69,43 +156,33 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body height="400px">
-            {data.slice(0, 30).map((order, i) => (
-              <Row key={i} background={'#25282c'}>
-                <AnimatedCell
-                  animation={
-                    order.status === 'fall'
-                      ? 'fadeInRedAndBack'
-                      : 'fadeInGreenAndBack'
-                  }
-                  color="#9ca2aa"
-                  width={'33%'}
-                  value={order.size.toFixed(8)}
-                />
-
-                <AnimatedCell
-                  animation={
-                    order.status === 'fall' ? 'fadeInRed' : 'fadeInGreen'
-                  }
-                  color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
-                  width={'33%'}
-                  value={Number(order.price).toFixed(2)}
-                >
-                  <StyledArrow
-                    direction={order.status === 'fall' ? 'down' : 'up'}
+            <Query
+              query={MARKET_QUERY}
+            >
+              {({ subscribeToMore, ...result }) =>
+                (
+                  <TickersList
+                    roundTill={roundTill}
+                    aggregation={aggregation}
+                    {...result}
+                    subscribeToNewTickers={() =>
+                      subscribeToMore({
+                        document: MARKET_TICKERS,
+                        variables: { symbol, exchange },
+                        updateQuery: (prev, { subscriptionData }) => {
+                          if (!subscriptionData.data) { return prev; }
+                          const newTicker = subscriptionData.data.listenMarketTickers;
+                          console.log(newTicker)
+                          let obj = Object.assign({}, prev, {
+                            marketTickers: [newTicker]
+                          });
+                          return obj;
+                        }
+                      })
+                    }
                   />
-                </AnimatedCell>
-                <AnimatedCell
-                  animation={
-                    order.status === 'fall'
-                      ? 'fadeInRedAndBack'
-                      : 'fadeInGreenAndBack'
-                  }
-                  color="#9ca2aa"
-                  width={'33%'}
-                  value={order.time}
-                />
-              </Row>
-            ))}
+                )}
+            </Query>
           </Body>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>
@@ -149,7 +226,7 @@ const StyledArrowSign = styled(MdArrowDropUp)`
 
   ${TriggerTitle}:hover & {
     animation: ${(props) =>
-        props.variant.tableCollapsed ? JumpUpArrow : JumpDownArrow}
+    props.variant.tableCollapsed ? JumpUpArrow : JumpDownArrow}
       0.5s linear 0.5s 2;
   }
 `
