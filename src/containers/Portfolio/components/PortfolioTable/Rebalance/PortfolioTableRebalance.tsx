@@ -301,7 +301,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   calculateTableTotal = (data: IRow[]) => {
     const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
-    return tableTotal
+    return parseFloat(tableTotal)
       .toFixed(2)
   }
 
@@ -378,7 +378,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
-    const newUndistributedMoney = undistributedMoney + currentRowMoney
+    const newUndistributedMoney = (parseFloat(undistributedMoney) + parseFloat(currentRowMoney)).toFixed(2)
 
     const newTotalRows = this.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotalRows = this.calculateTableTotal(resultRows)
@@ -593,7 +593,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   onDistribute = () => {
     let { selectedActive, rows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
-      let money = undistributedMoney
+      let money = parseFloat(undistributedMoney)
 
       if (selectedActive.length > 1) {
         let moneyPart = Math.floor(money / selectedActive.length)
@@ -607,7 +607,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       } else {
         // tslint:disable-next-line no-object-mutation
         let roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
-        rows![selectedActive![0]]!.price = roundedPrice + undistributedMoney
+        console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
+        console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
+
+        rows![selectedActive![0]]!.price = roundedPrice + parseFloat(undistributedMoney)
         money = 0
       }
 
@@ -772,7 +775,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       () => {
         // if (oldRowPrice > newRowPrice) {
         this.setState((prevState) => ({
-          undistributedMoney: prevState.undistributedMoney + oldNewPriceDiff,
+          undistributedMoney: parseFloat(prevState.undistributedMoney) + oldNewPriceDiff,
           totalTableRows: newTableTotalRows,
         }))
         // }
