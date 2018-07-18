@@ -157,15 +157,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
 
-    // if (userHasRebalancePortfolio) {
-    //   newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
-    //     exchange: el._id.exchange,
-    //     symbol: el._id.coin,
-    //     price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
-    //   }))
-    //
-    // }
-
     if (userHasRebalancePortfolio) {
       newTableRebalancedPortfolioData = data.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
@@ -288,8 +279,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   calculateTotal = (data: IRow[], undistributedMoney: number) => {
     const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
-    return (total + undistributedMoney)
-      .toFixed(2)
+    return parseFloat(total + undistributedMoney).toFixed(2)
   }
 
   calculateTableTotal = (data: IRow[]) => {
@@ -302,7 +292,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   calculateTotalPercents = (data: IRow[]) => {
     const totalPercents = data
       .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
-      // .toFixed(3)
+      .toFixed(3)
 
     return totalPercents
   }
@@ -478,18 +468,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const { staticRows, totalStaticRows, rows, totalRows } = this.state
 
     console.log(updateRebalanceMutationQuery)
-
-    // const combinedStaticData = staticRows.map((el) => {
-    //   return {
-    //     _id: {
-    //       exchange: el.exchange,
-    //       coin: el.symbol,
-    //     },
-    //     amount: el.price,
-    //     percent: el.portfolioPerc,
-    //     diff: el.deltaPrice.toString(),
-    //   }
-    // })
 
     const combinedRowsData = rows.map((el) => {
       return {
@@ -833,7 +811,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let { rows, addMoneyInputValue, undistributedMoney } = this.state
 
     const newUndistributedMoney =
-      undistributedMoney + Number(addMoneyInputValue)
+      (Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2)
 
     const newTotal = this.calculateTotal(rows, newUndistributedMoney)
     const newTableTotal = this.calculateTableTotal(rows)
