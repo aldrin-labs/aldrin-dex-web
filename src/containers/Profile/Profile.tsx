@@ -29,7 +29,6 @@ class ProfileComponent extends React.Component<Props, {}> {
               maxWidth: '900px',
               marginTop: '24px',
               borderTop: 'none',
-              marginLeft: '24px',
             }}
             height={195}
           />

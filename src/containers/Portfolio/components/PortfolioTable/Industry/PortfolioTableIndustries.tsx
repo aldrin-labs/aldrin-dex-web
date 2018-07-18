@@ -42,7 +42,6 @@ const defaultSelectedSum = {
 }
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
-
   state: IState = {
     activeKeys: null,
     portfolio: null,
@@ -577,7 +576,7 @@ const ChartWrapper = styled.div`
   height: 25vh;
   display: flex;
   position: relative;
-  
+
   @media (max-height: 850px) {
     height: 20vh;
   }
@@ -591,16 +590,17 @@ const ChartContainer = styled.div`
   padding: 1em;
   text-align: center;
   height: 35vh;
-  margin: 2rem 1rem;
+
+  margin: 2rem auto;
   width: 900px;
-  
+
   @media (min-width: 1950px) {
-    margin: 1rem;
+    margin: 1rem auto;
   }
-  
+
   @media (max-height: 850px) {
     height: 30vh;
-    margin: 0.5rem 1rem;
+    margin: 0.5rem auto;
   }
   @media (max-height: 680px) {
     display: none;
@@ -621,24 +621,24 @@ const Wrapper = styled.div`
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 40vh;
-  margin: 1rem;
-  
+
+  margin: 1rem auto;
+
   @media (max-height: 850px) {
     max-height: 30vh;
   }
-  
+
   @media (max-height: 680px) {
-      max-height: 50vh;
-  }
-  
-  @media (max-height: 550px) {
-      max-height: 45vh;
-  }
-  
-  @media (max-height: 460px) {
-      max-height: 40vh;
+    max-height: 50vh;
   }
 
+  @media (max-height: 550px) {
+    max-height: 45vh;
+  }
+
+  @media (max-height: 460px) {
+    max-height: 40vh;
+  }
 
   &::-webkit-scrollbar {
     width: 12px;
@@ -675,12 +675,11 @@ const PTD = styled.td`
   padding: 1.75px 16px 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  
 
   &:nth-child(1) {
     padding: 1.75px 10px;
   }
-  
+
   &:nth-child(n + 2) {
     min-width: 100px;
   }
@@ -690,11 +689,11 @@ const PTD = styled.td`
   &:nth-child(n + 4) {
     text-align: right;
   }
-  
+
   &:nth-child(4) {
     min-width: 250px;
   }
-  
+
   &:nth-child(n + 6) {
     min-width: 150px;
   }

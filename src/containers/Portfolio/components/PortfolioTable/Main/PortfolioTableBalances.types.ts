@@ -11,6 +11,7 @@ export interface IState {
 
 export interface IProps {
   isShownChart: boolean
+  filterValueSmallerThenPercentage: number | undefined
   isUSDCurrently: boolean
   checkboxes: number[]
   subscription: any
