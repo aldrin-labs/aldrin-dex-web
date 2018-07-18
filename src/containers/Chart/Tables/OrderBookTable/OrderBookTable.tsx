@@ -33,15 +33,27 @@ class OrdersList extends React.Component {
     data: []
   }
   componentWillMount() {
-    this.props.subscribeToNewComments();
+    setTimeout(() => {
+      console.log('subscribeToNewOrders');
+      this.props.subscribeToNewOrders();
+    }, 3000);
   }
+
   componentWillReceiveProps(newProps) {
+    console.log(newProps);
+    if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length === 0) {
+      console.log(newProps);
+      return this.setState((prevState, props) =>
+        ({ data: [] }));
+    }
+
     if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length > 0) {
+      console.log(newProps);
       const order = JSON.parse(newProps.data.marketOrders[0]);
-      this.setState((prevState, props) => ({ data: [order, ...prevState.data] }));
-      // if (!newProps.query.loading) {
-      //  this.setState({ data: newProps.query.data })
-      // }
+      this.setState((prevState, props) => {
+        if (prevState.data.length > 50) { prevState.data.pop(); }
+        return ({ data: [order, ...prevState.data] })
+      });
     }
   }
   render() {
@@ -66,7 +78,7 @@ class OrdersList extends React.Component {
               <AnimatedCell
                 value={this.props.roundTill(
                   this.props.aggregation,
-                  Number(order.price).toFixed(2)
+                  Number(order.price).toFixed(8)
                 ).toFixed(2)}
                 animation={'fadeInGreen'}
                 color="#34cb86d1"
@@ -83,9 +95,10 @@ class OrdersList extends React.Component {
 class OrderBookTable extends PureComponent {
   render() {
     const { onButtonClick, roundTill, aggregation, quote, data } = this.props
-    const symbol = this.props.symbol ? this.props.symbol : 'ETH_BTC';
-    const exchange = this.props.exchange ? this.props.exchange : 'gateio';
-
+    console.log(this.props);
+    const symbol = this.props.currencyPair ? this.props.currencyPair : 'ETH_BTC';
+    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : 'gateio';
+    console.log('subscribe to ', symbol, exchange);
     if (!data) {
       return <Loading centerAligned />
     }
@@ -138,17 +151,17 @@ class OrderBookTable extends PureComponent {
                   roundTill={roundTill}
                   aggregation={aggregation}
                   {...result}
-                  subscribeToNewComments={() =>
+                  subscribeToNewOrders={() =>
                     subscribeToMore({
                       document: MARKET_ORDERS,
                       variables: { symbol, exchange },
                       updateQuery: (prev, { subscriptionData }) => {
                         if (!subscriptionData.data) { return prev; }
-                        const newFeedItem = subscriptionData.data.listenMarketOrders;
+                        const newOrder = subscriptionData.data.listenMarketOrders;
+                        console.log(newOrder)
                         let obj = Object.assign({}, prev, {
-                          marketOrders: [newFeedItem]
+                          marketOrders: [newOrder]
                         });
-                        console.log(obj);
                         return obj;
                       }
                     })

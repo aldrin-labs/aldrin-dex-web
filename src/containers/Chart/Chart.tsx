@@ -115,7 +115,7 @@ class Chart extends React.Component<IState> {
     this.setState({ orders: newOrders })
   }
 
-  changeExchange = (i: number) => {
+  changeExchange = (i: any) => {
     this.props.selectExchange(i)
   }
 
@@ -191,6 +191,8 @@ class Chart extends React.Component<IState> {
               onButtonClick: this.changeTable,
               data: ordersData,
               roundTill: this.roundTill,
+              activeExchange,
+              currencyPair,
               aggregation,
               quote,
             }}
@@ -233,6 +235,8 @@ class Chart extends React.Component<IState> {
             {...{
               data: orderBook,
               quote,
+              activeExchange,
+              currencyPair,
             }}
           />
         </TablesBlockWrapper>
@@ -451,7 +455,7 @@ const mapStateToProps = (store: any) => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  selectExchange: (ex: number) => dispatch(actions.selectExchange(ex)),
+  selectExchange: (ex: any) => dispatch(actions.selectExchange(ex)),
   toggleView: (view: 'default' | 'onlyCharts') =>
     dispatch(actions.toggleView(view)),
   selectCurrencies: (baseQuote: string) =>

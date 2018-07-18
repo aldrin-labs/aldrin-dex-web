@@ -96,9 +96,9 @@ class ExchangesTable extends PureComponent {
               key={ind}
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                changeExchange(ind)
+                changeExchange({ index: ind, exchange: exchanges[ind] })
               }}
-              background={activeExchange === ind ? '#535b62' : '#292d31'}
+              background={activeExchange.index === ind ? '#535b62' : '#292d31'}
             >
               {Object.values(exchange).map((prop, propinx) => {
                 const keyByValue = Object.keys(exchange).find(
