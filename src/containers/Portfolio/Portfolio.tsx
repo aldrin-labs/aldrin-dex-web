@@ -2,6 +2,7 @@ import React from 'react'
 import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
+import { connect } from 'react-redux'
 
 import { getPortfolioQuery, updateRebalanceMutation } from './api'
 import { IProps } from './interfaces'
@@ -55,7 +56,7 @@ class PortfolioComponent extends React.Component<IProps> {
             />
             <PortfolioTable
               loading={loading}
-              checkboxes={checkboxes}
+              checkboxes={['bittrex', 'binanceKey']}
               toggleWallets={this.toggleWallets}
               data={getProfile}
               updateRebalanceMutationQuery={updateRebalanceMutationQuery}
@@ -74,7 +75,14 @@ class PortfolioComponent extends React.Component<IProps> {
 
 // TODO: Refactor all these queries and move it into subcomponents
 
+// const mapStateToProps = (store) => ({
+//   keys: store.portfolio.keys,
+// })
+// For fix bug you need to pass keys to portfoliotablebalances
+//  and also you need setnewkeys to redux every time keys are changed
+
 export default compose(
+  // connect(mapStateToProps),
   graphql(getPortfolioQuery, { name: 'getPortfolioQueryData' }),
   graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery' })
 )(PortfolioComponent)

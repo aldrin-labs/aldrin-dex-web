@@ -1,8 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
+import { getPortfolioQuery } from '../../../api'
+import QueryRenderer from '@components/QueryRenderer'
 import PortfolioTableMain from './PortfolioTableMain'
 import PortfolioTableSum from '../PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
@@ -45,7 +46,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    const { data, isShownMocks } = this.props
+    const {
+      data: { getProfile: data },
+      isShownMocks,
+    } = this.props
+
+    console.log(data)
 
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCK_DATA } }, () =>
@@ -122,6 +128,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   componentDidUpdate(prevProps: IProps, prevState: IState) {
     if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
+      console.log('did update')
       const { portfolio } = this.state
       this.combineTableData(portfolio)
     }
@@ -134,6 +141,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
     const { assets } = portfolio
+    console.log('combineData')
 
     const allSums = assets.filter(Boolean).reduce((acc, curr) => {
       const { value = 0, asset = { priceUSD: 0 } } = curr || {}
@@ -283,7 +291,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       tableData,
       isUSDCurrently
     )
-    // console.log('validateSum: ', validateSum)
+
     this.setState({ selectedSum: validateSum })
   }
 
@@ -355,6 +363,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       false
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
+    console.log(tableData)
 
     if (!tableDataHasData) {
       return (
@@ -539,11 +548,23 @@ const PTChartContainer = styled.div`
   }
 `
 
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioTableBalances}
+        query={getPortfolioQuery}
+        {...this.props}
+      />
+    )
+  }
+}
+
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps)(PortfolioTableBalances)
+const storeComponent = connect(mapStateToProps)(MainDataWrapper)
 
-export default compose()(storeComponent)
+export default storeComponent

@@ -12,6 +12,7 @@ const initialState = {
   correlationStartDate: 0,
   correlationEndDate: 0,
   filterValuesLessThenThat: 0,
+  keys: [],
 }
 
 export default createReducer(
@@ -19,6 +20,10 @@ export default createReducer(
     [actions.filterValuesLessThen]: (state, payload) => ({
       ...state,
       filterValuesLessThenThat: payload.target.value,
+    }),
+    [actions.setKeys]: (state, payload) => ({
+      ...state,
+      keys: payload,
     }),
     [actions.updateDataForOptimization]: (state, payload) => ({
       ...state,
