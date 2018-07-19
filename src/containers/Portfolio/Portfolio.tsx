@@ -8,6 +8,7 @@ import { IProps } from './interfaces'
 import { Login } from '@containers/Login'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from './components'
+import { compose } from 'recompose'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -22,6 +23,7 @@ class PortfolioComponent extends React.Component<IProps> {
     this.state = {
       checkboxes: null,
       isSideNavOpen: false,
+      filter: 0.5,
     }
 
     this.toggleWallets = this.toggleWallets.bind(this)
@@ -37,8 +39,8 @@ class PortfolioComponent extends React.Component<IProps> {
 
   render() {
     const { checkboxes } = this.state
-    const { data } = this.props
-    const { getProfile, loading, error } = data
+    const { getPortfolioQueryData } = this.props
+    const { getProfile, loading, error } = getPortfolioQueryData
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
@@ -69,7 +71,11 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 }
 
-export default graphql(getPortfolioQuery)(PortfolioComponent)
+// TODO: Refactor all these queries and move it into subcomponents
+
+export default compose(
+  graphql(getPortfolioQuery, { name: 'getPortfolioQueryData' }),
+)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
