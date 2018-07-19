@@ -66,13 +66,13 @@ class ExchangesTable extends PureComponent {
         <StyledHead background={'#292d31'}>
           <Row isHead background={'#292d31'}>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Name
+              Symbol
             </StyledHeadCell>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Cross{' '}
+              Name{' '}
             </StyledHeadCell>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Price
+              Type
             </StyledHeadCell>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
               {quote || 'Fiat'}

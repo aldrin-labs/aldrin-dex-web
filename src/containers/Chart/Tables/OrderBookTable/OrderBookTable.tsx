@@ -165,20 +165,20 @@ class OrdersList extends React.Component {
               <EmptyCell
                 status={'rise'}
                 colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
-                color="#9ca2aa"
+                color="#dd8b87"
                 width={'25%'}
               />
 
               <AnimatedCell
                 value={order.size}
-                color="#9ca2aa"
-                animation={'fadeInGreenAndBack'}
+                color="#dd8b87"
+                animation={'fadeInRed'}
                 width={'35%'}
               />
               <AnimatedCell
                 value={order.price}
-                animation={'fadeInGreen'}
-                color="#34cb86d1"
+                animation={'fadeInRed'}
+                color="#e0514ad1"
                 width={'30%'}
               />
             </Row>
