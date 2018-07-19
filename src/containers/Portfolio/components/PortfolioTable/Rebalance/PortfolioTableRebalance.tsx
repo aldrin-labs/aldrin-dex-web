@@ -118,7 +118,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
-    if (userHasRebalancePortfolio) {
+    if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
@@ -191,7 +191,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
-    if (userHasRebalancePortfolio) {
+    if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
