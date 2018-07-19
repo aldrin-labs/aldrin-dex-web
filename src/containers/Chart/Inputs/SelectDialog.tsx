@@ -95,7 +95,7 @@ class DialogSelect extends React.Component {
             </Button>
             <Button
               onClick={() => {
-                handleSelect([base, quote].join('_'))
+                handleSelect([base, quote].join('/'))
                 this.handleClose()
               }}
               color="primary"
