@@ -123,6 +123,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         exchange: el._id.exchange,
         symbol: el._id.coin,
         price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+        deltaPrice: el.diff['$numberDecimal']
       }))
 
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
@@ -196,6 +197,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         exchange: el._id.exchange,
         symbol: el._id.coin,
         price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+        deltaPrice: el.diff['$numberDecimal']
       }))
 
       newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
@@ -352,7 +354,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   calculateTotal = (data: IRow[], undistributedMoney: number) => {
     const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
-    return parseFloat(total + undistributedMoney).toFixed(2)
+    return (parseFloat(total) + parseFloat(undistributedMoney)).toFixed(2)
   }
 
   calculateTableTotal = (data: IRow[]) => {
@@ -413,11 +415,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       exchange: 'Exchange',
       symbol: 'Coin',
       portfolioPerc: 0.0,
+      deltaPrice: 0,
       price: 0,
       editable: true,
     }
     rows.push(newRow)
     rows = this.calculatePercents(rows, totalRows)
+    console.log('rows in onAddRowButton ', rows);
+
     this.setState({ rows, areAllActiveChecked: false })
   }
 
@@ -425,8 +430,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const { rows, undistributedMoney } = this.state
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
+    const isEditableCoin = clonedRows[idx].editable
 
-    const resultRows = [
+    const resultRows = isEditableCoin ? [
+      ...clonedRows.slice(0, idx),
+      ...clonedRows.slice(idx + 1, clonedRows.length)
+    ] : [
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
@@ -503,6 +512,19 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return dataWithNewPrices
   }
 
+  removeEditableModeInCoins = (rows) => {
+    return rows.map((el) => {
+      if (el.editable) {
+        return {
+          ...el,
+          editable: false
+        }
+      }
+
+      return el
+    })
+  }
+
   onSaveClick = () => {
     const {
       rows,
@@ -512,6 +534,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       staticRows,
     } = this.state
 
+    console.log('rows rows rows: ', rows);
+
+
     if (!isPercentSumGood) {
       return
     }
@@ -520,7 +545,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     const rowsWithNewPrice = this.calculatePriceByPercents(rows)
-    const newRows = this.calculatePriceDifference(rowsWithNewPrice)
+    const newRowsWithPriceDiff = this.calculatePriceDifference(rowsWithNewPrice)
+    const newRows = this.removeEditableModeInCoins(newRowsWithPriceDiff)
 
 
     this.setState({
