@@ -410,8 +410,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let rows = cloneArrayElementsOneLevelDeep(this.state.rows)
     let { totalRows } = this.state
     let newRow = {
-      exchange: 'Newcoin',
-      symbol: 'NEW',
+      exchange: 'Exchange',
+      symbol: 'Coin',
       portfolioPerc: 0.0,
       price: 0,
       editable: true,
