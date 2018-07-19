@@ -1086,7 +1086,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     <PTHC>-</PTHC>
                     <PTHC>
                       {mainSymbol}
-                      {`${totalStaticRows}`}
+                      {`${parseFloat(totalStaticRows).toLocaleString('en-US')}`}
                     </PTHC>
                   </PTR>
                 </PTFoot>
