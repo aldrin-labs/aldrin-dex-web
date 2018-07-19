@@ -63,10 +63,10 @@ class Optimization extends PureComponent<IProps, IState> {
             optimizedData: data.weighted_coins_optimized.map(
               ({ coin, weight }: { coin: string; weight: number }) => ({
                 coin,
-                percentage: weight,
+                percentage: Math.max(+weight * 100, 0.01),
               })
             ),
-            risk: [],
+            risk: data.risk,
             rawDataBeforeOptimization: this.props.storeData,
           },
           () => console.log(this.state)
@@ -233,27 +233,31 @@ class Optimization extends PureComponent<IProps, IState> {
     const { optimizedData, percentages, activeButton, loading } = this.state
 
     return (
-      <PTWrapper>
-        <Content>
-          {children}
-          {loading ? this.renderLoading() : null}
-          <ImportData>{this.renderInput()}</ImportData>
+      <ApolloConsumer>
+        {(client) => (
+          <PTWrapper>
+            <Content>
+              {children}
+              {loading ? this.renderLoading() : null}
+              <ImportData>{this.renderInput()}</ImportData>
 
-          <MainArea>
-            <MainAreaUpperPart>
-              <SwitchButtons
-                onBtnClick={this.onBtnClick}
-                values={percentages}
-                show={optimizedData.length >= 1}
-                activeButton={activeButton}
-              />
+              <MainArea>
+                <MainAreaUpperPart>
+                  <SwitchButtons
+                    onBtnClick={this.onBtnClick}
+                    values={percentages}
+                    show={optimizedData.length >= 1}
+                    activeButton={activeButton}
+                  />
 
-              <Table data={optimizedData} withInput={false} />
-            </MainAreaUpperPart>
-            {this.renderCharts()}
-          </MainArea>
-        </Content>
-      </PTWrapper>
+                  <Table data={optimizedData} withInput={false} />
+                </MainAreaUpperPart>
+                {this.renderCharts()}
+              </MainArea>
+            </Content>
+          </PTWrapper>
+        )}
+      </ApolloConsumer>
     )
   }
 }
