@@ -20,3 +20,18 @@ export const getCoinsForOptimization = gql`
     }
   }
 `
+export const OPTIMIZE_PORTFOLIO = gql`
+  query getPortfolio(
+    $expectedPct: Float!
+    $coinList: [String!]
+    $startDate: Int!
+    $endDate: Int!
+  ) {
+    portfolioOptimization(
+      expectedPct: $expectedPct
+      coinList: $coinList
+      startDate: $startDate
+      endDate: $endDate
+    )
+  }
+`

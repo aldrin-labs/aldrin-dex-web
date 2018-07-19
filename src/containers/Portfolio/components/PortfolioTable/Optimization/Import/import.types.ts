@@ -1,5 +1,7 @@
 export interface IProps {
   isShownMocks: boolean
+  startDate: number
+  endDate: number
   data?: object
   storeData: IData[]
   updateData: Function

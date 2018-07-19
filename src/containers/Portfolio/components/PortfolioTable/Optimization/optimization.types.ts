@@ -15,6 +15,8 @@ export interface IState {
 
 export interface IProps {
   storeData: IData[]
+  endDate: number
+  startDate: number
   isShownMocks: boolean
   updateData: Function
 }

@@ -5,6 +5,7 @@ import { ApolloConsumer } from 'react-apollo'
 import Table from '../Table/Table'
 import { MOCK_DATA } from '../../dataMock'
 import { IProps, IData } from './import.types'
+import { OPTIMIZE_PORTFOLIO } from '../api'
 
 class Import extends PureComponent<IProps> {
   sumSameCoins = (rawData: IData[]) => {
@@ -71,6 +72,8 @@ class Import extends PureComponent<IProps> {
       optimizePortfolio,
       handleChange,
       storeData,
+      startDate,
+      endDate,
     } = this.props
 
     const data: IData[] = this.props.transfromData(
@@ -93,7 +96,17 @@ class Import extends PureComponent<IProps> {
               />
               <Button
                 disabled={expectedReturn === '' || (data && data.length < 1)}
-                onClick={() => {
+                onClick={async () => {
+                  const { data: backendData } = await client.query({
+                    query: OPTIMIZE_PORTFOLIO,
+                    variables: {
+                      expectedPct: +expectedReturn / 100,
+                      coinList: storeData.map((el: IData) => el.coin),
+                      startDate,
+                      endDate,
+                    },
+                  })
+                  console.log(backendData)
                   optimizePortfolio()
                 }}
               >

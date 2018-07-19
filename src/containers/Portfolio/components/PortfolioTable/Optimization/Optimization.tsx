@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
@@ -15,7 +15,7 @@ import Import from './Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from './api'
 
-class Optimization extends Component<IProps, IState> {
+class Optimization extends PureComponent<IProps, IState> {
   state = {
     loading: false,
     risk: [],
@@ -148,13 +148,21 @@ class Optimization extends Component<IProps, IState> {
   renderInput = () => {
     // importing stuff from backend or manually bu user
     const { expectedReturn } = this.state
-    const { isShownMocks, updateData, storeData } = this.props
+    const {
+      isShownMocks,
+      updateData,
+      storeData,
+      startDate,
+      endDate,
+    } = this.props
 
     return (
       <QueryRenderer
         transfromData={this.transfromData}
         storeData={storeData}
         component={Import}
+        startDate={startDate}
+        endDate={endDate}
         query={getCoinsForOptimization}
         expectedReturn={expectedReturn}
         optimizePortfolio={this.optimizePortfolio}
@@ -223,8 +231,6 @@ class Optimization extends Component<IProps, IState> {
   render() {
     const { children, startDate, endDate } = this.props
     const { optimizedData, percentages, activeButton, loading } = this.state
-
-    console.log(startDate, endDate)
 
     return (
       <ApolloConsumer>
