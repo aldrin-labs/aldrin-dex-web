@@ -30,7 +30,10 @@ export const MARKET_QUERY = gql`
 
 class OrdersList extends React.Component {
   state = {
-    data: []
+    data: [],
+    symbol: '',
+    exchange: '',
+    unsubscribe: null
   }
 
   static getDerivedStateFromProps(newProps, state) {
@@ -39,12 +42,16 @@ class OrdersList extends React.Component {
       (newProps.variables.symbol !== state.symbol
         || newProps.variables.exchange !== state.exchange)) {
 
-      newProps.subscribeToNewOrders();
-      console.log(newProps.data);
+      if (state.unsubscribe) {
+        console.log('order unsubscribe', state.symbol, state.exchange)
+        state.unsubscribe(); // unsubscribe
+      }
+
       return ({
         data: newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x)),
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
+        unsubscribe: newProps.subscribeToNewOrders()
       })
     }
 
@@ -60,6 +67,12 @@ class OrdersList extends React.Component {
     }
 
     return null;
+  }
+
+  componentWillUnmount() {
+    if (this.state.unsubscribe) {
+      this.state.unsubscribe();
+    }
   }
 
   render() {

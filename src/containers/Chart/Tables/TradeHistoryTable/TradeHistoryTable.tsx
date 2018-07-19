@@ -95,6 +95,12 @@ class TickersList extends React.Component {
     return null;
   }
 
+  componentWillUnmount() {
+    if (this.state.unsubscribe) {
+      this.state.unsubscribe();
+    }
+  }
+
   render() {
     return (
       <div>
