@@ -801,7 +801,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       () => {
         // if (oldRowPrice > newRowPrice) {
         this.setState((prevState) => ({
-          undistributedMoney: parseFloat(prevState.undistributedMoney) + oldNewPriceDiff,
+          undistributedMoney: parseFloat(parseFloat(prevState.undistributedMoney) + oldNewPriceDiff).toFixed(2),
           totalTableRows: newTableTotalRows,
         }))
         // }
