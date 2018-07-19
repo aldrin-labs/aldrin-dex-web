@@ -92,6 +92,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     const { data, isShownMocks, getMyRebalance } = this.props
 
+
     // console.log('refetch',getMyRebalance.refetch());
 
 
@@ -1048,6 +1049,17 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     ) : (
       <Icon className="fa fa-btc" />
     )
+
+    const tableDataHasData = !staticRows.length || !rows.length
+
+    if (tableDataHasData) {
+      return (
+        <PTWrapper tableData={tableDataHasData}>
+          {children}
+          <PTextBox>Add account for Portfolio</PTextBox>
+        </PTWrapper>
+      )
+    }
 
     return (
       <PTWrapper tableData={this.state.rows}>
@@ -2142,4 +2154,19 @@ const LoaderWrapper = styled.div`
   flex-direction: column;
   margin: 24px;
   position: relative;
+`
+
+const PTextBox = styled.div`
+  font-size: 30px;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2d3136;
 `
