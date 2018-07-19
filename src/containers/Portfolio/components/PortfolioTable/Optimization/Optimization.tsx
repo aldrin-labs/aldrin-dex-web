@@ -229,35 +229,31 @@ class Optimization extends PureComponent<IProps, IState> {
   renderLoading = () => <Loader color="secondary" />
 
   render() {
-    const { children, startDate, endDate } = this.props
+    const { children } = this.props
     const { optimizedData, percentages, activeButton, loading } = this.state
 
     return (
-      <ApolloConsumer>
-        {(client) => (
-          <PTWrapper>
-            <Content>
-              {children}
-              {loading ? this.renderLoading() : null}
-              <ImportData>{this.renderInput()}</ImportData>
+      <PTWrapper>
+        <Content>
+          {children}
+          {loading ? this.renderLoading() : null}
+          <ImportData>{this.renderInput()}</ImportData>
 
-              <MainArea>
-                <MainAreaUpperPart>
-                  <SwitchButtons
-                    onBtnClick={this.onBtnClick}
-                    values={percentages}
-                    show={optimizedData.length >= 1}
-                    activeButton={activeButton}
-                  />
+          <MainArea>
+            <MainAreaUpperPart>
+              <SwitchButtons
+                onBtnClick={this.onBtnClick}
+                values={percentages}
+                show={optimizedData.length >= 1}
+                activeButton={activeButton}
+              />
 
-                  <Table data={optimizedData} withInput={false} />
-                </MainAreaUpperPart>
-                {this.renderCharts()}
-              </MainArea>
-            </Content>
-          </PTWrapper>
-        )}
-      </ApolloConsumer>
+              <Table data={optimizedData} withInput={false} />
+            </MainAreaUpperPart>
+            {this.renderCharts()}
+          </MainArea>
+        </Content>
+      </PTWrapper>
     )
   }
 }
