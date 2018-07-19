@@ -11,6 +11,7 @@ export const onLoad = createAction('ON_LOAD')
 export const selectAllKeys = createAction('SELECT_ALL_KEYS')
 export const filterValuesLessThen = createAction('FILTER_VALUES_LESS_THEN')
 export const mergeAllKeys = createAction('MERGE_ALL_KEYS')
+export const setCorrelationPeriod = createAction('SET_CORRELATION_PERIOD')
 export const updateDataForOptimization = createAction(
   'UPDATE_DATA_FOR_OPTIMIZATION'
 )

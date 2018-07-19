@@ -3,9 +3,11 @@ import gql from 'graphql-tag'
 export const getMyRebalanceQuery = gql`
 query {
   getProfile {
-  	myRebalance {
+    myRebalance {
       total
       assets {
+        id
+        _id
         percent
         amount
         diff
@@ -63,9 +65,9 @@ query {
 
 
 export const updateRebalanceMutation = gql`
-mutation ($input: rebalanceInput) {
-  updateRebalance(input: $input) {
-    total
-  } 
-}
+  mutation($input: rebalanceInput) {
+    updateRebalance(input: $input) {
+      total
+    }
+  }
 `

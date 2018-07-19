@@ -1,62 +1,130 @@
 import * as React from 'react'
+import { Subscription } from 'react-apollo'
+import {
+  Card,
+  CardContent,
+  Typography,
+  LinearProgress,
+} from '@material-ui/core'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import QueryRenderer from '@components/QueryRenderer'
+import { has } from 'lodash'
 
 // import HeatMapChart from '@components/HeatMapChart'
-// import { HeatMapMocks } from './mocks'
+import {
+  // HeatMapMocks,
+  CorrelationMatrixMockData,
+} from './mocks'
 import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
-import { optimizeMocks } from '../../../../../utils/PortfolioCorrelationUtils'
-import Selector from '@components/SimpleDropDownSelector'
 import { IProps } from './Correlation.types'
 import { toggleCorrelationTableFullscreen } from '../../../actions'
+import { getCorrelationQuery, CORRELATION_UPDATE } from '../../../api'
 
 class Correlation extends React.Component<IProps, IState> {
-  initializeArray = (length: number, start: number, step: number): number[] =>
-    Array.from({ length: Math.ceil((length - start) / step + 1) }).map(
-      (v, i) => i * step + start
-    )
+  renderPlaceholder = () => (
+    <>
+      <LinearProgress color="secondary" />
 
-  fullScreenChangeHandler = (isFullscreenEnabled: boolean) => {
-    this.props.toggleFullscreen()
-  }
+      <StyledCard>
+        <CardContent>
+          <Typography color="secondary" variant="headline">
+            Empty Here...
+          </Typography>
+        </CardContent>
+      </StyledCard>
+    </>
+  )
 
   render() {
     const { children, isFullscreenEnabled, data } = this.props
-    // const { cols, rows } = optimizeMocks()
-    // console.log(cols)
-    // console.log()
-    // console.log(data)
-    const cols = data.map((el: { coin: string; percentage: number }) => el.coin)
-    const rows = cols
 
     return (
-      <PTWrapper tableData={!!cols.length && !!rows.length}>
-        {children}
+      <Subscription subscription={CORRELATION_UPDATE}>
+        {(subscriptionData) => {
+          console.log(data)
 
-        <Wrapper>
-          <CorrelationMatrix
-            fullScreenChangeHandler={this.fullScreenChangeHandler}
-            isFullscreenEnabled={isFullscreenEnabled || false}
-            cols={cols}
-            rows={rows}
+          return (
+            <PTWrapper>
+              {children}
+              {has(data, 'values') && data.values.length !== 0 ? (
+                <>
+                  <CorrelationMatrix
+                    fullScreenChangeHandler={this.props.toggleFullscreen}
+                    isFullscreenEnabled={isFullscreenEnabled || false}
+                    data={
+                      has(subscriptionData, 'data') && subscriptionData.data
+                        ? subscriptionData.data
+                        : data
+                    }
+                  />
+
+                  {/* <HeatMapChart
+          data={getHeatMapData(HeatMapMocks)}
+          width={500}
+          height={500}
+        /> */}
+                </>
+              ) : (
+                this.renderPlaceholder()
+              )}
+            </PTWrapper>
+          )
+        }}
+      </Subscription>
+    )
+  }
+}
+
+class CorrelationWrapper extends React.Component<IProps, IState> {
+  state = {
+    startDate: 0,
+    endDate: 0,
+    period: '',
+  }
+
+  render() {
+    const {
+      isShownMocks,
+      startDate,
+      endDate,
+      children,
+      isFullscreenEnabled,
+      toggleFullscreen,
+    } = this.props
+
+    return (
+      <Wrapper>
+        {isShownMocks ? (
+          <Correlation
+            toggleFullscreen={toggleFullscreen}
+            isFullscreenEnabled={isFullscreenEnabled}
+            data={CorrelationMatrixMockData}
+            children={children}
           />
-
-          {/* <HeatMapChart
-            data={getHeatMapData(HeatMapMocks)}
-            width={500}
-            height={500}
-          /> */}
-        </Wrapper>
-      </PTWrapper>
+        ) : (
+          <QueryRenderer
+            component={Correlation}
+            query={getCorrelationQuery}
+            variables={{
+              startDate,
+              endDate,
+            }}
+            {...this.props}
+          />
+        )}
+      </Wrapper>
     )
   }
 }
 
 const PTWrapper = styled.div`
   min-width: 70vw;
+  width: 100%;
+  min-height: 75vh;
   display: flex;
   flex-direction: column;
-  margin: 1.5rem;
+
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
@@ -64,22 +132,36 @@ const PTWrapper = styled.div`
   height: auto;
 `
 
+const StyledCard = styled(Card)`
+  && {
+    width: 20%;
+    height: 20%;
+    margin: auto;
+    background: #292d31;
+  }
+`
+
 const Wrapper = styled.div`
-  height: 80%;
-  padding: 1rem;
+  height: calc(100vh - 130px);
+  width: calc(100% - 2rem);
+  margin: 1.5rem;
   display: flex;
   flex-wrap: wrap;
 `
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
-  data: store.portfolio.optimizationData,
   isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
+  startDate: store.portfolio.correlationStartDate,
+  endDate: store.portfolio.correlationEndDate,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
 })
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Correlation)
+
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  CorrelationWrapper
+)
 
 export default storeComponent
