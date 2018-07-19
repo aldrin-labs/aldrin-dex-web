@@ -197,15 +197,6 @@ class Chart extends React.Component<IState> {
             }}
           />
 
-          <SpreadTable
-            {...{
-              roundTill: this.roundTill,
-              data: spreadData,
-              aggregation,
-              quote,
-            }}
-          />
-
           <Aggregation
             {...{
               aggregation: this.state.aggregation,
