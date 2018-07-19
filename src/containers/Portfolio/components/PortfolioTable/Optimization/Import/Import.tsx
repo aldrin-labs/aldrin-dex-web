@@ -106,7 +106,6 @@ class Import extends PureComponent<IProps> {
                       endDate,
                     },
                   })
-                  console.log(backendData)
                   optimizePortfolio({
                     unique_id_for_redis: 13371337,
                     status: 0,

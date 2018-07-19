@@ -13,7 +13,7 @@ import Table from './Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 import Import from './Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
-import { getCoinsForOptimization } from './api'
+import { OPTIMIZE_PORTFOLIO, getCoinsForOptimization } from './api'
 
 class Optimization extends PureComponent<IProps, IState> {
   state = {
@@ -97,8 +97,31 @@ class Optimization extends PureComponent<IProps, IState> {
     }))
   }
 
-  onBtnClick = (index: number) => {
-    this.optimizePortfolio()
+  onBtnClick = async (index: number, client: any) => {
+    const { storeData, startDate, endDate } = this.props
+    const { data } = await client.query({
+      query: OPTIMIZE_PORTFOLIO,
+      variables: {
+        expectedPct: +this.state.expectedReturn / 100,
+        coinList: storeData.map((el: IData) => el.coin),
+        startDate,
+        endDate,
+      },
+    })
+
+    console.log(data)
+
+    this.optimizePortfolio({
+      unique_id_for_redis: 13371337,
+      status: 0,
+      risk: 0.007535511832039238,
+      weighted_coins_optimized: [
+        { coin: 'ETH', weight: 0.9999131302523898 },
+        { coin: 'WAVES', weight: 4.495550135559263e-5 },
+        { coin: 'DOGE', weight: 4.191424625451731e-5 },
+      ],
+      returns: 1.0000819674491543,
+    })
     this.setState({ activeButton: index })
   }
 
@@ -244,6 +267,7 @@ class Optimization extends PureComponent<IProps, IState> {
               <MainArea>
                 <MainAreaUpperPart>
                   <SwitchButtons
+                    btnClickProps={client}
                     onBtnClick={this.onBtnClick}
                     values={percentages}
                     show={optimizedData.length >= 1}

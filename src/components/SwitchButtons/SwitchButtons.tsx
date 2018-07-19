@@ -6,13 +6,14 @@ export interface IProps {
   values: number[]
   onBtnClick: Function
   activeButton: number
+  btnClickProps?: any
 }
 const SwitchButtons = (props: IProps) => (
   <BtnsContainer show={props.show}>
     {props.values.map((percentage, i) => (
       <Btn
         onClick={() => {
-          props.onBtnClick(i)
+          props.onBtnClick(i, props.btnClickProps)
         }}
         active={i === props.activeButton}
         key={percentage}
