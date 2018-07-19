@@ -5,7 +5,7 @@ import * as actions from './actions'
 
 const initialState = {
   activeExchange: null,
-  currencyPair: null,
+  currencyPair: 'ETH_BTC',
   warningMessageOpened: false,
   charts: [],
   view: 'default',

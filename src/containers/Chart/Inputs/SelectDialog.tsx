@@ -34,8 +34,8 @@ const styles = (theme) => ({
 class DialogSelect extends React.Component {
   state = {
     open: false,
-    base: '',
-    quote: '',
+    base: 'BTC',
+    quote: 'ETH',
   }
 
   handleChange = (name) => (value) => {
@@ -95,7 +95,7 @@ class DialogSelect extends React.Component {
             </Button>
             <Button
               onClick={() => {
-                handleSelect([base, quote].join('/'))
+                handleSelect([base, quote].join('_'))
                 this.handleClose()
               }}
               color="primary"

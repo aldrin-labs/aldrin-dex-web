@@ -43,7 +43,6 @@ class Chart extends React.Component<IState> {
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
     activeChart: 'candle',
-    currencyPairRaw: '',
     ordersData: [],
     spreadData: [],
     exchanges: [],
@@ -294,12 +293,6 @@ class Chart extends React.Component<IState> {
 
   renderOnlyCharts = () => <OnlyCharts />
 
-  handleChange = (name) => (value) => {
-    this.setState({
-      [name]: value,
-    })
-  }
-
   renderToggler = () => {
     const { toggleView, view } = this.props
 
@@ -318,8 +311,7 @@ class Chart extends React.Component<IState> {
   }
 
   render() {
-    const { currencyPairRaw } = this.state
-    const { view } = this.props
+    const { view, currencyPair } = this.props
 
     const toggler = this.renderToggler()
 
@@ -327,9 +319,8 @@ class Chart extends React.Component<IState> {
       <MainContainer>
         <TogglerContainer>
           <AutoSuggestSelect
-            handleChange={this.handleChange}
-            value={currencyPairRaw}
-            id={'currencyPairRaw'}
+            value={currencyPair}
+            id={'currencyPair'}
             view={view}
           />
 
