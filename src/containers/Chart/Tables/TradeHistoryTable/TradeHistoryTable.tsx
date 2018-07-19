@@ -37,7 +37,8 @@ class TickersList extends React.Component {
   state = {
     data: [],
     symbol: '',
-    exchange: ''
+    exchange: '',
+    unsubscribe: null
   }
 
   static getDerivedStateFromProps(newProps, state) {
@@ -46,7 +47,11 @@ class TickersList extends React.Component {
       let tickers = []
       for (let i = 0; i < tickersData.length; ++i) {
         const tickerData = JSON.parse(tickersData[i]);
-        const fall = i > 0 ? tickers[i - 1].price > tickerData[3] : false;
+        if (tickerData[1] !== newProps.variables.exchange || tickerData[2] !== newProps.variables.symbol) {
+          continue;
+        }
+
+        const fall = tickers.length > 0 ? tickers[tickers.length - 1].price > tickerData[3] : false;
         const ticker = {
           size: tickerData[4],
           price: tickerData[3],
@@ -55,11 +60,15 @@ class TickersList extends React.Component {
         };
         tickers.push(ticker);
       }
-      newProps.subscribeToNewTickers();
+      if (state.unsubscribe) {
+        console.log('unsubscribe', state.symbol, state.exchange)
+        state.unsubscribe(); // unsubscribe
+      }
       return ({
         data: tickers,
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
+        unsubscribe: newProps.subscribeToNewTickers()
       })
     }
 
@@ -79,6 +88,7 @@ class TickersList extends React.Component {
         data: [ticker, ...state.data],
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
+        unsubscribe: state.unsubscribe
       })
     }
 
