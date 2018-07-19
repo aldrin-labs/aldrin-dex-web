@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Button } from '@material-ui/core'
+import { Query, Subscription } from 'react-apollo'
 
 import {
   Table,
@@ -13,11 +14,97 @@ import {
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 import { Loading } from '@components/Loading/Loading'
+import gql from 'graphql-tag'
+
+export const MARKET_ORDERS = gql`
+  subscription listenMarketOrders($symbol: String!, $exchange: String!) {
+    listenMarketOrders(symbol: $symbol, exchange: $exchange)
+  }
+`
+
+export const MARKET_QUERY = gql`
+  query marketOrders($symbol: String!, $exchange: String!) {
+    marketOrders(symbol: $symbol, exchange: $exchange)
+  }
+`
+
+class OrdersList extends React.Component {
+  state = {
+    data: []
+  }
+
+  static getDerivedStateFromProps(newProps, state) {
+
+    if (newProps.data.marketOrders &&
+      (newProps.variables.symbol !== state.symbol
+        || newProps.variables.exchange !== state.exchange)) {
+
+      newProps.subscribeToNewOrders();
+      console.log(newProps.data);
+      return ({
+        data: newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x)),
+        symbol: newProps.variables.symbol,
+        exchange: newProps.variables.exchange,
+      })
+    }
+
+    if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length > 0) {
+      const order = newProps.data.marketOrders[0];
+      if (state.data.length > 20) { state.data.pop(); }
+
+      return ({
+        data: [order, ...state.data],
+        symbol: newProps.variables.symbol,
+        exchange: newProps.variables.exchange,
+      })
+    }
+
+    return null;
+  }
+
+  render() {
+    return (
+      <div>
+        {
+          this.state.data.map((order, i) => (
+            <Row key={i} background={'#292d31'}>
+              <EmptyCell
+                status={'rise'}
+                colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
+                color="#9ca2aa"
+                width={'25%'}
+              />
+
+              <AnimatedCell
+                value={Number(order.size).toFixed(8)}
+                color="#9ca2aa"
+                animation={'fadeInGreenAndBack'}
+                width={'35%'}
+              />
+              <AnimatedCell
+                value={this.props.roundTill(
+                  this.props.aggregation,
+                  Number(order.price).toFixed(8)
+                ).toFixed(2)}
+                animation={'fadeInGreen'}
+                color="#34cb86d1"
+                width={'30%'}
+              />
+            </Row>
+          ))
+        }
+      </div>
+    );
+  };
+}
 
 class OrderBookTable extends PureComponent {
   render() {
     const { onButtonClick, roundTill, aggregation, quote, data } = this.props
-
+    console.log(this.props);
+    const symbol = this.props.currencyPair ? this.props.currencyPair : '';
+    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : '';
+    console.log('subscribe to ', symbol, exchange);
     if (!data) {
       return <Loading centerAligned />
     }
@@ -61,32 +148,33 @@ class OrderBookTable extends PureComponent {
           </Row>
         </Head>
         <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
-          {data.map((order, i) => (
-            <Row key={i} background={'#292d31'}>
-              <EmptyCell
-                status={'rise'}
-                colored={order.percentageOfChange.toString()}
-                color="#9ca2aa"
-                width={'25%'}
-              />
-
-              <AnimatedCell
-                value={Number(order.size).toFixed(8)}
-                color="#9ca2aa"
-                animation={'fadeInGreenAndBack'}
-                width={'35%'}
-              />
-              <AnimatedCell
-                value={roundTill(
-                  aggregation,
-                  Number(order.price).toFixed(2)
-                ).toFixed(2)}
-                animation={'fadeInGreen'}
-                color="#34cb86d1"
-                width={'30%'}
-              />
-            </Row>
-          ))}
+          <Query
+            query={MARKET_QUERY}
+            variables={{ symbol, exchange }}
+          >
+            {({ subscribeToMore, ...result }) =>
+              (
+                <OrdersList
+                  roundTill={roundTill}
+                  aggregation={aggregation}
+                  {...result}
+                  subscribeToNewOrders={() =>
+                    subscribeToMore({
+                      document: MARKET_ORDERS,
+                      variables: { symbol, exchange },
+                      updateQuery: (prev, { subscriptionData }) => {
+                        if (!subscriptionData.data) { return prev; }
+                        const newOrder = JSON.parse(subscriptionData.data.listenMarketOrders);
+                        let obj = Object.assign({}, prev, {
+                          marketOrders: [newOrder]
+                        });
+                        return obj;
+                      }
+                    })
+                  }
+                />
+              )}
+          </Query>
         </Body>
       </Table>
     )
@@ -97,39 +185,40 @@ const SwitchTablesButton = styled(Button)`
   && {
     display: none;
 
-    @media (max-width: 1080px) {
-      display: block;
-    }
+    @media(max - width: 1080px) {
+  display: block;
+}
   }
 `
 
 const fadeInGreen = keyframes`
-0% {
+0 % {
   color: #9ca2aa;
 }
-50% {
+50 % {
   color: #34cb86d1;
 }
-100% {
+100 % {
   color: #9ca2aa;
 }
-`
+  `
 const fadeInRed = keyframes`
-0% {
+0 % {
   color: #9ca2aa;
 }
-50% {
+50 % {
   color: #d77455;
 
 }
-100% {
+100 % {
   color: #9ca2aa;
 
 }
-`
+  `
 
 const Cell = styled(RowCell)`
-  animation: ${(props: { animated?: string; width: string; color: string }) => {
+animation: ${
+  (props: { animated?: string; width: string; color: string }) => {
     if (props.animated === 'none') {
       return ''
     }
@@ -143,24 +232,27 @@ const Cell = styled(RowCell)`
     }
 
     return ''
-  }};
+  }
+  };
 `
 
 const EmptyCell = Cell.extend`
-  position: relative;
+position: relative;
 
-  &:before {
-    transition: all 0.5s linear;
-    position: absolute;
-    z-index: 100;
-    top: 0;
-    left: 0;
-    width: ${(props: { colored?: string }) => Number(props.colored) / 4}%;
-    height: 100%;
-    content: '';
-    background-color: ${(props: { status?: string; colored?: string }) =>
-      props.status === 'fall' ? '#d77455' : '#34cb86d1'};
-  }
+  &: before {
+  transition: all 0.5s linear;
+  position: absolute;
+  z - index: 100;
+  top: 0;
+  left: 0;
+  width: ${ (props: { colored?: string }) => Number(props.colored) / 4}%;
+  height: 100 %;
+  content: '';
+  background - color: ${
+  (props: { status?: string; colored?: string }) =>
+    props.status === 'fall' ? '#d77455' : '#34cb86d1'
+  };
+}
 `
 
 export default OrderBookTable
