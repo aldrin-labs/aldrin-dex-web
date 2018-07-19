@@ -106,17 +106,7 @@ class Import extends PureComponent<IProps> {
                       endDate,
                     },
                   })
-                  optimizePortfolio({
-                    unique_id_for_redis: 13371337,
-                    status: 0,
-                    risk: 0.007535511832039238,
-                    weighted_coins_optimized: [
-                      { coin: 'ETH', weight: 0.9999131302523898 },
-                      { coin: 'WAVES', weight: 4.495550135559263e-5 },
-                      { coin: 'DOGE', weight: 4.191424625451731e-5 },
-                    ],
-                    returns: 1.0000819674491543,
-                  })
+                  optimizePortfolio(backendData)
                 }}
               >
                 Optimize Portfolio

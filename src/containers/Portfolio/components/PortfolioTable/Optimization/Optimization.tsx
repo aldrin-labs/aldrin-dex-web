@@ -60,6 +60,7 @@ class Optimization extends PureComponent<IProps, IState> {
       } else {
         this.setState(
           {
+            loading: false,
             optimizedData: data.weighted_coins_optimized.map(
               ({ coin, weight }: { coin: string; weight: number }) => ({
                 coin,
@@ -98,6 +99,7 @@ class Optimization extends PureComponent<IProps, IState> {
   }
 
   onBtnClick = async (index: number, client: any) => {
+    this.setState({ loading: true })
     const { storeData, startDate, endDate } = this.props
     const { data } = await client.query({
       query: OPTIMIZE_PORTFOLIO,
@@ -109,19 +111,7 @@ class Optimization extends PureComponent<IProps, IState> {
       },
     })
 
-    console.log(data)
-
-    this.optimizePortfolio({
-      unique_id_for_redis: 13371337,
-      status: 0,
-      risk: 0.007535511832039238,
-      weighted_coins_optimized: [
-        { coin: 'ETH', weight: 0.9999131302523898 },
-        { coin: 'WAVES', weight: 4.495550135559263e-5 },
-        { coin: 'DOGE', weight: 4.191424625451731e-5 },
-      ],
-      returns: 1.0000819674491543,
-    })
+    this.optimizePortfolio(data)
     this.setState({ activeButton: index })
   }
 
