@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Collapse } from '@material-ui/core'
 import { MdArrowUpward, MdArrowDropUp } from 'react-icons/lib/md/'
-import throttle from 'react-throttle-render'
 
 import {
   Table,
@@ -134,9 +133,6 @@ class TickersList extends React.Component {
   };
 }
 
-
-const ThrottledTickersList = throttle(50)(TickersList)
-
 class TradeHistoryTable extends PureComponent<IProps> {
   state = {
     tableExpanded: true,
@@ -146,8 +142,8 @@ class TradeHistoryTable extends PureComponent<IProps> {
     const { quote, data } = this.props
     const { tableExpanded } = this.state
 
-    const symbol = this.props.currencyPair ? this.props.currencyPair : 'ETH_BTC';
-    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : 'gateio';
+    const symbol = this.props.currencyPair ? this.props.currencyPair : '';
+    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : '';
     console.log('subscribe to ', symbol, exchange);
     if (!data) {
       return <Loading centerAligned />

@@ -23,8 +23,8 @@ export const MARKET_ORDERS = gql`
 `
 
 export const MARKET_QUERY = gql`
-  query marketOrders {
-    marketOrders
+  query marketOrders($symbol: String!, $exchange: String!) {
+    marketOrders(symbol: $symbol, exchange: $exchange)
   }
 `
 
@@ -32,27 +32,36 @@ class OrdersList extends React.Component {
   state = {
     data: []
   }
-  componentWillMount() {
-    this.props.subscribeToNewOrders();
-  }
 
-  componentWillReceiveProps(newProps) {
-    // console.log(newProps);
-    if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length === 0) {
-      // console.log(newProps);
-      return this.setState((prevState, props) =>
-        ({ data: [] }));
+  static getDerivedStateFromProps(newProps, state) {
+
+    if (newProps.data.marketOrders &&
+      (newProps.variables.symbol !== state.symbol
+        || newProps.variables.exchange !== state.exchange)) {
+
+      newProps.subscribeToNewOrders();
+      console.log(newProps.data);
+      return ({
+        data: newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x)),
+        symbol: newProps.variables.symbol,
+        exchange: newProps.variables.exchange,
+      })
     }
 
     if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length > 0) {
-      // console.log(newProps);
       const order = newProps.data.marketOrders[0];
-      return this.setState((prevState, props) => {
-        if (prevState.data.length > 20) { prevState.data.pop(); }
-        return ({ data: [order, ...prevState.data] })
-      });
+      if (state.data.length > 20) { state.data.pop(); }
+
+      return ({
+        data: [order, ...state.data],
+        symbol: newProps.variables.symbol,
+        exchange: newProps.variables.exchange,
+      })
     }
+
+    return null;
   }
+
   render() {
     return (
       <div>
@@ -93,8 +102,8 @@ class OrderBookTable extends PureComponent {
   render() {
     const { onButtonClick, roundTill, aggregation, quote, data } = this.props
     console.log(this.props);
-    const symbol = this.props.currencyPair ? this.props.currencyPair : 'ETH_BTC';
-    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : 'gateio';
+    const symbol = this.props.currencyPair ? this.props.currencyPair : '';
+    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : '';
     console.log('subscribe to ', symbol, exchange);
     if (!data) {
       return <Loading centerAligned />
@@ -141,6 +150,7 @@ class OrderBookTable extends PureComponent {
         <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
           <Query
             query={MARKET_QUERY}
+            variables={{ symbol, exchange }}
           >
             {({ subscribeToMore, ...result }) =>
               (
@@ -155,7 +165,6 @@ class OrderBookTable extends PureComponent {
                       updateQuery: (prev, { subscriptionData }) => {
                         if (!subscriptionData.data) { return prev; }
                         const newOrder = JSON.parse(subscriptionData.data.listenMarketOrders);
-                        // console.log(newOrder)
                         let obj = Object.assign({}, prev, {
                           marketOrders: [newOrder]
                         });
