@@ -30,7 +30,11 @@ export const MARKET_QUERY = gql`
 
 class OrdersList extends React.Component {
   state = {
-    data: []
+    bids: [],
+    asks: [],
+    symbol: '',
+    exchange: '',
+    unsubscribe: null
   }
 
   static getDerivedStateFromProps(newProps, state) {
@@ -39,21 +43,51 @@ class OrdersList extends React.Component {
       (newProps.variables.symbol !== state.symbol
         || newProps.variables.exchange !== state.exchange)) {
 
-      newProps.subscribeToNewOrders();
-      console.log(newProps.data);
+      if (state.unsubscribe) {
+        console.log('order unsubscribe', state.symbol, state.exchange)
+        state.unsubscribe(); // unsubscribe
+      }
+      // newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x)), TODO: fix back when we have orderbook history on backend
       return ({
-        data: newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x)),
+        bids: [],
+        asks: [],
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
+        unsubscribe: newProps.subscribeToNewOrders()
       })
     }
 
     if (newProps.data && newProps.data.marketOrders && newProps.data.marketOrders.length > 0) {
-      const order = newProps.data.marketOrders[0];
-      if (state.data.length > 20) { state.data.pop(); }
+      const orderData = newProps.data.marketOrders[0];
+      let order = {
+        price: Number(orderData.price).toFixed(8),
+        size: Number(orderData.size).toFixed(8),
+        side: orderData.side
+      }
+
+      if (order.size === "0") { return null; }
+
+      if (order.side === "bid") {
+        const ind = state.bids.findIndex(i => i.price === order.price);
+        if (ind > -1) {
+          state.bids.splice(ind, 1);
+        }
+      }
+      if (order.side === "ask") {
+        const ind = state.asks.findIndex(i => i.price === order.price);
+        if (ind > -1) {
+          state.asks.splice(ind, 1);
+        }
+      }
+
+      if (state.bids.length > 15) { state.bids.pop(); }
+      if (state.asks.length > 15) { state.asks.pop(); }
 
       return ({
-        data: [order, ...state.data],
+        bids: order.side === 'bid' ? [order, ...state.bids]
+          .sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.bids,
+        asks: order.side === 'ask' ? [order, ...state.asks]
+          .sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.asks,
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
       })
@@ -62,11 +96,17 @@ class OrdersList extends React.Component {
     return null;
   }
 
+  componentWillUnmount() {
+    if (this.state.unsubscribe) {
+      this.state.unsubscribe();
+    }
+  }
+
   render() {
     return (
       <div>
         {
-          this.state.data.map((order, i) => (
+          this.state.bids.map((order, i) => (
             <Row key={i} background={'#292d31'}>
               <EmptyCell
                 status={'rise'}
@@ -76,16 +116,67 @@ class OrdersList extends React.Component {
               />
 
               <AnimatedCell
-                value={Number(order.size).toFixed(8)}
+                value={order.size}
                 color="#9ca2aa"
                 animation={'fadeInGreenAndBack'}
                 width={'35%'}
               />
               <AnimatedCell
-                value={this.props.roundTill(
-                  this.props.aggregation,
-                  Number(order.price).toFixed(8)
-                ).toFixed(2)}
+                value={order.price}
+                animation={'fadeInGreen'}
+                color="#34cb86d1"
+                width={'30%'}
+              />
+            </Row>
+          ))
+        }
+        <Head
+          background={'#292d31'}
+          style={{ cursor: 'pointer', height: '1.625rem' }}
+        >
+          <Row isHead background={'#292d31'}>
+
+            <HeadCell
+              style={{
+                position: 'relative',
+                left: '5%',
+              }}
+              color="#9ca2aa"
+              width={'35%'}
+            >
+              {'Fiat'} spread{' '}
+            </HeadCell>
+            <HeadCell
+              style={{
+                position: 'relative',
+                left: '13%',
+              }}
+              color="#9ca2aa"
+              width={'14%'}
+            >
+              {0.01}
+            </HeadCell>
+          </Row>
+        </Head>
+
+        {
+          this.state.asks.map((order, i) => (
+            <Row key={i} background={'#292d31'}>
+              <EmptyCell
+                status={'rise'}
+                colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
+                color="#9ca2aa"
+                width={'25%'}
+              />
+
+              <AnimatedCell
+                value={order.size}
+                color="#9ca2aa"
+                animation={'fadeInGreenAndBack'}
+                width={'35%'}
+              />
+              <AnimatedCell
+                value={order.price}
                 animation={'fadeInGreen'}
                 color="#34cb86d1"
                 width={'30%'}

@@ -47,8 +47,8 @@ class ExchangesTable extends PureComponent {
     if (!exchanges || !data) {
       return <Loading centerAligned />
     }
-    if (data) {
-      exchanges = data.marketByName[0].exchanges;
+    if (data && data.marketByName) {
+      exchanges = data.marketByName.length > 0 ? data.marketByName[0].exchanges : [];
     }
 
     return (

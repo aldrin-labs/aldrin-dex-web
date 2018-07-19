@@ -111,7 +111,7 @@ const Container = styled.div`
 `
 
 const ChartTooltip = styled.span`
-  font-family: Roboto, sans-serif;, sans-serif;
+  font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;

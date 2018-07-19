@@ -4,8 +4,8 @@ export interface IData {
 }
 
 export interface IState {
-  activePercentageButton: number
-  risk: string[]
+  loading: boolean
+  risk: number[]
   optimizedData: IData[]
   rawDataBeforeOptimization: IData[]
   expectedReturn: string
@@ -14,7 +14,9 @@ export interface IState {
 }
 
 export interface IProps {
-  data: IData[]
+  storeData: IData[]
+  endDate: number
+  startDate: number
   isShownMocks: boolean
   updateData: Function
 }

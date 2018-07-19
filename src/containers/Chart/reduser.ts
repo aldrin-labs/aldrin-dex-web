@@ -4,8 +4,8 @@ import { uniqWith, isEqual } from 'lodash'
 import * as actions from './actions'
 
 const initialState = {
-  activeExchange: null,
-  currencyPair: null,
+  activeExchange: { index: 0, exchange: { symbol: '' } },
+  currencyPair: 'ETH_BTC',
   warningMessageOpened: false,
   charts: [],
   view: 'default',

@@ -169,7 +169,7 @@ function SelectWrapped(props) {
 
 class IntegrationReactSelect extends React.Component {
   render() {
-    const { classes, handleChange, id, value, data } = this.props
+    const { classes, id, value, data } = this.props
     if (!suggestions || !data) {
       return <Loading centerAligned />
     }
@@ -190,7 +190,7 @@ class IntegrationReactSelect extends React.Component {
           fullWidth
           inputComponent={SelectWrapped}
           value={value}
-          onChange={handleChange(id)}
+          onChange={() => { }}
           placeholder="Add currency pair"
           id={id}
           inputProps={{
