@@ -118,7 +118,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
-    if (userHasRebalancePortfolio) {
+    if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
@@ -191,7 +191,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
-    if (userHasRebalancePortfolio) {
+    if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
         exchange: el._id.exchange,
         symbol: el._id.coin,
@@ -312,6 +312,37 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
     })
 
+    // if (data.length > staticRows.length) {
+    //   data = data.map((el) => {
+    //     if (el.editable) {
+    //       console.log('editable');
+    //
+    //       const newDelta = (parseFloat((el.price)) - (parseFloat(el.deltaPrice) ? parseFloat(el.deltaPrice) : 0)).toFixed(2)
+    //       console.log('newDelta: ', newDelta);
+    //       console.log('price: ', el.price);
+    //       console.log('deltaPrice: ', el.deltaPrice);
+    //
+    //
+    //       return {
+    //         ...el,
+    //         deltaPrice: newDelta
+    //       }
+    //     }
+    //
+    //     return el
+    //   })
+    //
+    //   console.log('daata for new coins', data);
+    //
+    // }
+
+
+
+    // console.log('data length', data.length);
+    // console.log('staticRows length', staticRows.length);
+
+
+
     // console.log('data in caluclatePriceDiff' , data);
 
 
@@ -379,8 +410,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let rows = cloneArrayElementsOneLevelDeep(this.state.rows)
     let { totalRows } = this.state
     let newRow = {
-      exchange: 'Newcoin',
-      symbol: 'NEW',
+      exchange: 'Exchange',
+      symbol: 'Coin',
       portfolioPerc: 0.0,
       price: 0,
       editable: true,
@@ -801,7 +832,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       () => {
         // if (oldRowPrice > newRowPrice) {
         this.setState((prevState) => ({
-          undistributedMoney: parseFloat(prevState.undistributedMoney) + oldNewPriceDiff,
+          undistributedMoney: parseFloat(parseFloat(prevState.undistributedMoney) + oldNewPriceDiff).toFixed(2),
           totalTableRows: newTableTotalRows,
         }))
         // }
@@ -860,7 +891,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let { rows, addMoneyInputValue, undistributedMoney } = this.state
 
     const newUndistributedMoney =
-      (Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2)
+      parseFloat((Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2))
 
     const newTotal = this.calculateTotal(rows, newUndistributedMoney)
     const newTableTotal = this.calculateTableTotal(rows)
@@ -1086,7 +1117,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     <PTHC>-</PTHC>
                     <PTHC>
                       {mainSymbol}
-                      {`${totalStaticRows}`}
+                      {`${parseFloat(totalStaticRows).toLocaleString('en-US')}`}
                     </PTHC>
                   </PTR>
                 </PTFoot>
