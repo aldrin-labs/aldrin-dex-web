@@ -66,12 +66,28 @@ class OrdersList extends React.Component {
       }
 
       if (order.size === "0") { return null; }
+
+      if (order.side === "bid") {
+        const ind = state.bids.findIndex(i => i.price === order.price);
+        if (ind > -1) {
+          state.bids.splice(ind, 1);
+        }
+      }
+      if (order.side === "ask") {
+        const ind = state.asks.findIndex(i => i.price === order.price);
+        if (ind > -1) {
+          state.asks.splice(ind, 1);
+        }
+      }
+
       if (state.bids.length > 15) { state.bids.pop(); }
       if (state.asks.length > 15) { state.asks.pop(); }
 
       return ({
-        bids: order.side === 'bid' ? [order, ...state.bids].sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.bids,
-        asks: order.side === 'ask' ? [order, ...state.asks].sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.asks,
+        bids: order.side === 'bid' ? [order, ...state.bids]
+          .sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.bids,
+        asks: order.side === 'ask' ? [order, ...state.asks]
+          .sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.asks,
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
       })
