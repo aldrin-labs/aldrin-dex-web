@@ -11,9 +11,22 @@ import Select from 'react-select-for-charting-page'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
 import * as actions from '../../actions'
-import { Loading } from '@components/Loading/Loading'
 
-const suggestions = [
+
+import QueryRenderer from '@components/QueryRenderer'
+import { Loading } from '@components/Loading/Loading'
+import gql from 'graphql-tag'
+
+
+export const MarketsQuery = gql`
+  query MarketsQuery {
+	    liveMarkets {
+        name
+      }
+}
+`
+
+let suggestions = [
   { label: 'BTC/USD' },
   { label: 'XRP/USD' },
   { label: 'LTC/USD' },
@@ -154,6 +167,46 @@ function SelectWrapped(props) {
   )
 }
 
+class IntegrationReactSelect extends React.Component {
+  render() {
+    const { classes, id, value, data } = this.props
+    if (!suggestions || !data) {
+      return <Loading centerAligned />
+    }
+
+    if (data) {
+      suggestions = data.liveMarkets.map((suggestion: any) => ({
+        value: suggestion.name,
+        label: suggestion.name,
+      }))
+    }
+
+    return (
+      <div className={classes.root}>
+        <Input
+          classes={{
+            underline: classes.cssUnderline,
+          }}
+          fullWidth
+          inputComponent={SelectWrapped}
+          value={value}
+          onChange={() => { }}
+          placeholder="Add currency pair"
+          id={id}
+          inputProps={{
+            classes,
+            name: id,
+            instanceId: id,
+            simpleValue: true,
+            options: suggestions,
+          }}
+        />
+      </div>
+    )
+  }
+}
+
+
 const ITEM_HEIGHT = 48
 
 const styles = (theme) => ({
@@ -275,36 +328,17 @@ const styles = (theme) => ({
   },
 })
 
-class IntegrationReactSelect extends React.Component {
-  render() {
-    const { classes, handleChange, id, value } = this.props
-    if (!suggestions) {
-      return <Loading centerAligned />
-    }
 
-    return (
-      <div className={classes.root}>
-        <Input
-          classes={{
-            underline: classes.cssUnderline,
-          }}
-          fullWidth
-          inputComponent={SelectWrapped}
-          value={value}
-          onChange={handleChange(id)}
-          placeholder="Add currency pair"
-          id={id}
-          inputProps={{
-            classes,
-            name: id,
-            instanceId: id,
-            simpleValue: true,
-            options: suggestions,
-          }}
-        />
-      </div>
-    )
-  }
+const queryRender = function (props: any) {
+  console.log(props);
+  return (
+    <QueryRenderer
+      component={IntegrationReactSelect}
+      query={MarketsQuery}
+      {...props}
+    />
+  )
 }
 
-export default withStyles(styles)(IntegrationReactSelect)
+
+export default withStyles(styles)(queryRender)

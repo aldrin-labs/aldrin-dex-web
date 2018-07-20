@@ -6,7 +6,28 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { tradeOrderHistoryTableData } from './mocks'
 import { onSortTableFull } from '@utils/PortfolioTableUtils'
 import { IProps, IState, ICurrentSort, ITradeOrderHistoryTableData } from './TradeOrderHistoryTable.types'
+import { Loading } from '@components/Loading/Loading'
 
+import QueryRenderer from '@components/QueryRenderer'
+
+import gql from 'graphql-tag'
+
+
+export const MyTradesQuery = gql`
+  query MyTrades {
+    myTrades {
+    exchangeId
+    exchange {
+      name
+    }
+    amount
+    cost
+    datetime
+    symbol
+    side
+  }
+}
+`
 const tradeOrderHistoryTableHeadings = [
   { name: 'Exchange', value: 'exchange' },
   { name: 'Amount', value: 'amount' },
@@ -23,7 +44,7 @@ const arrayOfDateHeadings = ['datetime']
 // TODO: Should be replaced to the state
 let staticRows = tradeOrderHistoryTableData
 
-export default class TradeOrderHistoryTable extends React.Component<
+class TradeOrderHistoryTable extends React.Component<
   IProps,
   IState
   > {
@@ -38,9 +59,9 @@ export default class TradeOrderHistoryTable extends React.Component<
       newData,
       newCurrentSort,
     }: {
-      newData: ITradeOrderHistoryTableData
-      newCurrentSort: ICurrentSort
-    } = onSortTableFull(key, staticRows, currentSort, arrayOfStringHeadings, arrayOfDateHeadings)
+        newData: ITradeOrderHistoryTableData
+        newCurrentSort: ICurrentSort
+      } = onSortTableFull(key, staticRows, currentSort, arrayOfStringHeadings, arrayOfDateHeadings)
 
     // TODO: Should be refactored and included into setState
     staticRows = newData
@@ -52,97 +73,117 @@ export default class TradeOrderHistoryTable extends React.Component<
 
   render() {
     const { currentSort } = this.state
-    const { isUSDCurrently } = this.props
+    const { isUSDCurrently, data } = this.props
+    if (!data) {
+      return <Loading centerAligned />
+    }
+    if (data) {
+      console.log(data);
+      staticRows = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
+      console.log(staticRows);
+    }
 
     return (
-          <Wrapper>
-            <Table>
-              <PTHead>
-                <PTR>
-                  {tradeOrderHistoryTableHeadings.map((heading) => {
-                    const isSorted =
-                      currentSort && currentSort.key === heading.value
+      <Wrapper>
+        <Table>
+          <PTHead>
+            <PTR>
+              {tradeOrderHistoryTableHeadings.map((heading) => {
+                const isSorted =
+                  currentSort && currentSort.key === heading.value
 
-                    return (
-                      <PTHC
-                        key={heading.name}
-                        onClick={() => this.onSortTable(heading.value)}
-                      >
-                        {heading.name}
+                return (
+                  <PTHC
+                    key={heading.name}
+                    onClick={() => this.onSortTable(heading.value)}
+                  >
+                    {heading.name}
 
-                        {isSorted && (
-                          <SvgIcon
-                            src={sortIcon}
-                            width={12}
-                            height={12}
-                            style={{
-                              verticalAlign: 'middle',
-                              marginLeft: '4px',
-                              transform:
-                                currentSort && currentSort.arg === 'ASC'
-                                  ? 'rotate(180deg)'
-                                  : null,
-                            }}
-                          />
-                        )}
-                      </PTHC>
-                    )
+                    {isSorted && (
+                      <SvgIcon
+                        src={sortIcon}
+                        width={12}
+                        height={12}
+                        style={{
+                          verticalAlign: 'middle',
+                          marginLeft: '4px',
+                          transform:
+                            currentSort && currentSort.arg === 'ASC'
+                              ? 'rotate(180deg)'
+                              : null,
+                        }}
+                      />
+                    )}
+                  </PTHC>
+                )
+              })}
+            </PTR>
+          </PTHead>
+
+          <PTBody>
+            {staticRows.map((row, idx) => {
+              const {
+                exchange,
+                amount,
+                datetime,
+                symbol,
+                side,
+              } = row
+
+              const mainSymbol = symbol.includes("/USDT") ? (
+                <Icon className="fa fa-usd" key={`${idx}usd`} />
+              ) : (
+                  <Icon className="fa fa-btc" key={`${idx}btc`} />
+                )
+
+              const cost = Number(row.cost).toFixed(symbol.includes("/USDT") ? 2 : 8);
+
+              const cols = [
+                exchange,
+                amount,
+                [mainSymbol, cost],
+                datetime,
+                symbol,
+                side,
+              ]
+
+              return (
+                <PTR key={`${symbol}${datetime}${idx}`}>
+                  {cols.map((col, index) => {
+                    if (String(col).match(/sell|buy/g)) {
+                      const color = col === 'sell'
+                        ? '#4caf50'
+                        : '#f44336'
+
+                      return (
+                        <PTDC key={`${col}${index}`} style={{ color }}>
+                          {col}
+                        </PTDC>
+                      )
+                    }
+
+
+                    return <PTDC key={`${col}${index}`}>{col}</PTDC>
                   })}
                 </PTR>
-              </PTHead>
-
-              <PTBody>
-                {staticRows.map((row, idx) => {
-                  const {
-                    exchange,
-                    amount,
-                    cost,
-                    datetime,
-                    symbol,
-                    side,
-                  } = row
-
-                  const mainSymbol = isUSDCurrently ? (
-                    <Icon className="fa fa-usd" key={`${idx}usd`} />
-                  ) : (
-                    <Icon className="fa fa-btc" key={`${idx}btc`} />
-                  )
-
-                  const cols = [
-                    exchange,
-                    amount,
-                    [mainSymbol, cost],
-                    datetime,
-                    symbol,
-                    side,
-                  ]
-
-                  return (
-                    <PTR key={`${symbol}${datetime}${idx}`}>
-                      {cols.map((col, index) => {
-                        if (String(col).match(/sell|buy/g)) {
-                          const color = col === 'sell'
-                              ? '#4caf50'
-                              : '#f44336'
-
-                          return (
-                            <PTDC key={`${col}${index}`} style={{ color }}>
-                              {col}
-                            </PTDC>
-                          )
-                        }
-
-
-                        return <PTDC key={`${col}${index}`}>{col}</PTDC>
-                      })}
-                    </PTR>
-                  )
-                })}
-              </PTBody>
-            </Table>
-          </Wrapper>
+              )
+            })}
+          </PTBody>
+        </Table>
+      </Wrapper>
     )
   }
+}
+
+
+export default function (props: any) {
+  return (
+    <QueryRenderer
+      component={TradeOrderHistoryTable}
+      query={MyTradesQuery}
+      {...props}
+    />
+  )
 }
 
 
@@ -218,17 +259,17 @@ const PTHead = styled.thead`
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3136' : '#393e44'};
+    props.isSelected ? '#2d3136' : '#393e44'};
 
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+    props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
 
 const PTD = css`
   color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#4ed8da' : '#fff'};
+    props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
   font-size: 12px;

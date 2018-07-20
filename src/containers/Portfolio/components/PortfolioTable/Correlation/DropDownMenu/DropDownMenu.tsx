@@ -9,7 +9,7 @@ class DropDownMenu extends Component {
       endDate: this.daysFromNow(-10),
     }),
     lastDay: () => ({
-      startDate: this.daysFromNow(-10),
+      startDate: this.daysFromNow(-9),
       endDate: this.daysFromNow(-10),
     }),
     lastMonth: () => ({

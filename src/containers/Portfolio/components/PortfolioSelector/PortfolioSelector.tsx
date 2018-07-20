@@ -4,55 +4,62 @@ import styled from 'styled-components'
 import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import { has } from 'lodash'
+
+import { setKeys } from '../../actions'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
+import QueryRenderer from '@components/QueryRenderer'
 
 class PortfolioSelector extends React.Component<IProps, IState> {
-  state: IState = {
-    checkedCheckboxes: null,
-    checkboxes: null,
+  state = {
+    checkboxes: [],
+    checkedCheckboxes: [],
   }
+  // componentWillReceiveProps(nextProps: IProps) {
+  //   // called once
+  //   if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
+  //     const { keys } = nextProps.data.getProfile
+  //     const checkboxes =
+  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
+  //     if (
+  //       nextProps.isShownMocks &&
+  //       checkboxes.indexOf('Test1') === -1 &&
+  //       checkboxes.indexOf('Test2') === -1
+  //     ) {
+  //       checkboxes.push('Test1', 'Test2')
+  //     }
+  //     const { keys } = nextProps.data.getProfile
+  //     const checkboxes =
+  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
+  //     const checkedCheckboxes = checkboxes.map((ck, i) => i)
+
+  //     if (checkboxes) {
+  //       this.setState({ checkboxes, checkedCheckboxes }, () => {
+  //         const { onChangeActive } = this.props
+
+  //         onChangeActive(checkboxes)
+  //       })
+  //     }
+  //   }
+  // }
 
   componentDidMount() {
-    if (!this.props.isShownMocks) {
-      return
+    console.log('object')
+    console.log(this.props.data)
+    if (!has(this.props.data.getProfile, 'keys')) {
+      return null
     }
 
-    const checkboxes = ['Test1', 'Test2']
+    const { keys } = this.props.data.getProfile
+    const checkboxes =
+      (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
     const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
-    if (checkboxes) {
-      this.setState({ checkboxes, checkedCheckboxes }, () => {
-        const { onChangeActive } = this.props
+    this.props.setKeys(checkboxes)
 
-        onChangeActive(checkboxes)
-      })
-    }
-  }
-
-  componentWillReceiveProps(nextProps: IProps) {
-    // called once
-    if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
-      const { keys } = nextProps.data.getProfile
-      const checkboxes =
-        (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-      if (
-        nextProps.isShownMocks &&
-        checkboxes.indexOf('Test1') === -1 &&
-        checkboxes.indexOf('Test2') === -1
-      ) {
-        checkboxes.push('Test1', 'Test2')
-      }
-      const checkedCheckboxes = checkboxes.map((ck, i) => i)
-
-      if (checkboxes) {
-        this.setState({ checkboxes, checkedCheckboxes }, () => {
-          const { onChangeActive } = this.props
-
-          onChangeActive(checkboxes)
-        })
-      }
-    }
+    this.setState({ checkboxes, checkedCheckboxes })
+    return true
   }
 
   onToggleCheckbox = (index: number) => {
@@ -333,8 +340,28 @@ const AccountsWalletsHeading = styled.span`
   color: #ffffff;
 `
 
-const mapStateToProps = (store) => ({ isShownMocks: store.user.isShownMocks })
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+})
 
-const storeComponent = connect(mapStateToProps)(PortfolioSelector)
+const mapDispatchToProps = (dispatch: any) => ({
+  setKeys: (keys: string[]) => dispatch(setKeys(keys)),
+})
 
-export default compose(graphql(getKeysQuery))(storeComponent)
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioSelector}
+        query={getKeysQuery}
+        {...this.props}
+      />
+    )
+  }
+}
+
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  MainDataWrapper
+)
+
+export default compose()(storeComponent)

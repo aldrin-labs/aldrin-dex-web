@@ -18,7 +18,7 @@ const FormatErrorToUser = (errorMessage: string) => {
     case 'GraphQL error: You must supply a JWT for authorization!':
       console.log(errorMessage)
 
-      return 'You not authorized, click Log In and then refresh the page.'
+      return 'You are not authorized, click Log In and then refresh the page.'
       break
 
     default:
