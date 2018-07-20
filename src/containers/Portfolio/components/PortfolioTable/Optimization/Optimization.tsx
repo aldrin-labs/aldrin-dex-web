@@ -61,7 +61,7 @@ class Optimization extends PureComponent<IProps, IState> {
         this.setState(
           {
             loading: false,
-            optimizedData: data.weighted_coins_optimized.map(
+            optimizedData: data['weighted_coins_optimized'].map(
               ({ coin, weight }: { coin: string; weight: number }) => ({
                 coin,
                 percentage: Math.max(+weight * 100, 0.01),
@@ -100,19 +100,20 @@ class Optimization extends PureComponent<IProps, IState> {
 
   onBtnClick = async (index: number, client: any) => {
     this.setState({ loading: true })
+    this.setState({ activeButton: index })
+
     const { storeData, startDate, endDate } = this.props
     const { data } = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {
-        expectedPct: +this.state.expectedReturn / 100,
+        expectedPct: +this.state.percentages[index] / 100,
         coinList: storeData.map((el: IData) => el.coin),
         startDate,
         endDate,
       },
     })
 
-    this.optimizePortfolio(data)
-    this.setState({ activeButton: index })
+    this.optimizePortfolio(JSON.parse(data.portfolioOptimization))
   }
 
   getPercentages = (percentage: number) => {

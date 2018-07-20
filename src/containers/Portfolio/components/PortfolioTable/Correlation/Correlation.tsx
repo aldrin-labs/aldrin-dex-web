@@ -47,16 +47,12 @@ class Correlation extends React.Component<IProps, IState> {
           return (
             <PTWrapper>
               {children}
-              {has(data, 'values') && data.values.length !== 0 ? (
+              {data ? (
                 <>
                   <CorrelationMatrix
                     fullScreenChangeHandler={this.props.toggleFullscreen}
                     isFullscreenEnabled={isFullscreenEnabled || false}
-                    data={
-                      has(subscriptionData, 'data') && subscriptionData.data
-                        ? subscriptionData.data
-                        : data
-                    }
+                    data={data}
                   />
 
                   {/* <HeatMapChart
@@ -107,8 +103,8 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             component={Correlation}
             query={getCorrelationQuery}
             variables={{
-              startDate,
-              endDate,
+              startDate: 1529193643,
+              endDate: 1529218843,
             }}
             {...this.props}
           />
