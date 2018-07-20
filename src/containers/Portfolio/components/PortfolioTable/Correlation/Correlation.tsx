@@ -42,12 +42,12 @@ class Correlation extends React.Component<IProps, IState> {
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
-          console.log(data)
+          console.log('data in correlation' ,data)
 
           return (
             <PTWrapper>
               {children}
-              {data ? (
+              {has(data, 'values') && data.values.length !== 0 ? (
                 <>
                   <CorrelationMatrix
                     fullScreenChangeHandler={this.props.toggleFullscreen}
