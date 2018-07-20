@@ -51,8 +51,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       isShownMocks,
     } = this.props
 
-    console.log(data)
-
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCK_DATA } }, () =>
         this.combineTableData({ assets: MOCK_DATA })
@@ -128,7 +126,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   componentDidUpdate(prevProps: IProps, prevState: IState) {
     if (prevProps.isUSDCurrently !== this.props.isUSDCurrently) {
-      console.log('did update')
       const { portfolio } = this.state
       this.combineTableData(portfolio)
     }
@@ -141,7 +138,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
     const { assets } = portfolio
-    console.log('combineData')
 
     const allSums = assets.filter(Boolean).reduce((acc, curr) => {
       const { value = 0, asset = { priceUSD: 0 } } = curr || {}
@@ -363,7 +359,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       false
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
-    console.log(tableData)
 
     if (!tableDataHasData) {
       return (
