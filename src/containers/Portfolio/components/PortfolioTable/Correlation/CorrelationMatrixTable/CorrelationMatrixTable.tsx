@@ -71,7 +71,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
 
         {/* content */}
         {cols.map((col, ind) =>
-          col.map((el: number, i: number) => {
+          col.map((el: string, i: number) => {
             const { backgroundColor, textColor } = getColor(el)
 
             return (
@@ -89,7 +89,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   color={backgroundColor}
                   active={i === activeRow && ind === activeColumn}
                 >
-                  {el.toFixed(2)}
+                  {Number(el).toFixed(2)}
                 </CellContent>
               </Cell>
             )

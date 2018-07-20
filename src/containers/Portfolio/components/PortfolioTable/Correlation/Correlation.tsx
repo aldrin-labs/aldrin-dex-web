@@ -37,7 +37,13 @@ class Correlation extends React.Component<IProps, IState> {
   )
 
   render() {
-    const { children, isFullscreenEnabled, data } = this.props
+    const { children, isFullscreenEnabled } = this.props
+    let data = {}
+    if (typeof this.props.data.correlationMatrixByDay === 'string') {
+      data = JSON.parse(this.props.data.correlationMatrixByDay)
+    } else {
+      data = this.props.data.correlationMatrixByDay
+    }
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
@@ -53,9 +59,10 @@ class Correlation extends React.Component<IProps, IState> {
                     fullScreenChangeHandler={this.props.toggleFullscreen}
                     isFullscreenEnabled={isFullscreenEnabled || false}
                     data={
-                      has(subscriptionData, 'data') && subscriptionData.data
-                        ? subscriptionData.data
-                        : data
+                      // has(subscriptionData, 'data') && subscriptionData.data
+                      //   ? subscriptionData.data
+                      //   : data
+                      data
                     }
                   />
 
@@ -99,7 +106,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
           <Correlation
             toggleFullscreen={toggleFullscreen}
             isFullscreenEnabled={isFullscreenEnabled}
-            data={CorrelationMatrixMockData}
+            data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
             children={children}
           />
         ) : (
@@ -107,8 +114,8 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             component={Correlation}
             query={getCorrelationQuery}
             variables={{
-              startDate,
-              endDate,
+              startDate: 1529193643,
+              endDate: 1529218843,
             }}
             {...this.props}
           />
