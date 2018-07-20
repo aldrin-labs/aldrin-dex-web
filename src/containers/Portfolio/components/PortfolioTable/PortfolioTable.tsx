@@ -80,7 +80,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <PortfolioTableRebalance
           isUSDCurrently={true}
-          data={this.props.data}
         >
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
