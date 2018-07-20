@@ -18,10 +18,10 @@ class Import extends PureComponent<IProps> {
           (el, inx) =>
             inx === index
               ? Object.assign(el, {
-                  coin: el.coin,
-                  percentage:
-                    Number(asset.percentage) + Number(data[index].percentage),
-                })
+                coin: el.coin,
+                percentage:
+                  Number(asset.percentage) + Number(data[index].percentage),
+              })
               : el
         )
       } else {
@@ -100,10 +100,10 @@ class Import extends PureComponent<IProps> {
                   const { data: backendData } = await client.query({
                     query: OPTIMIZE_PORTFOLIO,
                     variables: {
-                      expectedPct: +expectedReturn / 100,
-                      coinList: storeData.map((el: IData) => el.coin),
-                      startDate: 1529193643,
-                      endDate: 1529204443,
+                      expectedPct: 0.15,
+                      coinList: ["BTC", "ETH", "LTC"],
+                      startDate: 1531441380,
+                      endDate: 1531873380,
                     },
                   })
 

@@ -101,15 +101,15 @@ class Optimization extends PureComponent<IProps, IState> {
   onBtnClick = async (index: number, client: any) => {
     this.setState({ loading: true })
     this.setState({ activeButton: index })
-
+    console.log('onBtnClick');
     const { storeData, startDate, endDate } = this.props
     const { data } = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {
         expectedPct: +this.state.percentages[index] / 100,
-        coinList: storeData.map((el: IData) => el.coin),
-        startDate,
-        endDate,
+        coinList: ["ETH", "LTC", "BCH"],
+        startDate: 1531441380,
+        endDate: 1531873380,
       },
     })
 

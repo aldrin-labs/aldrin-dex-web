@@ -39,7 +39,7 @@ class Correlation extends React.Component<IProps, IState> {
   render() {
     const { children, isFullscreenEnabled } = this.props
     let data = {}
-    if (typeof this.props.data.correlationMatrixByDay === 'string') {
+    if (typeof this.props.data.correlationMatrixByDay === 'string' && this.props.data.correlationMatrixByDay.length > 0) {
       data = JSON.parse(this.props.data.correlationMatrixByDay)
     } else {
       data = this.props.data.correlationMatrixByDay
@@ -73,8 +73,8 @@ class Correlation extends React.Component<IProps, IState> {
         /> */}
                 </>
               ) : (
-                this.renderPlaceholder()
-              )}
+                  this.renderPlaceholder()
+                )}
             </PTWrapper>
           )
         }}
@@ -110,16 +110,16 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             children={children}
           />
         ) : (
-          <QueryRenderer
-            component={Correlation}
-            query={getCorrelationQuery}
-            variables={{
-              startDate: 1529193643,
-              endDate: 1529218843,
-            }}
-            {...this.props}
-          />
-        )}
+            <QueryRenderer
+              component={Correlation}
+              query={getCorrelationQuery}
+              variables={{
+                startDate: 1531441380,
+                endDate: 1531873380,
+              }}
+              {...this.props}
+            />
+          )}
       </Wrapper>
     )
   }
