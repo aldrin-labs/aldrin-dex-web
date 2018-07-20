@@ -75,15 +75,15 @@ class PortfolioComponent extends React.Component<IProps> {
 
 // TODO: Refactor all these queries and move it into subcomponents
 
-// const mapStateToProps = (store) => ({
-//   keys: store.portfolio.keys,
-// })
+const mapStateToProps = (store) => ({
+  keys: store.portfolio.keys,
+})
 // For fix bug you need to pass keys to portfoliotablebalances
 //  and also you need setnewkeys to redux every time keys are changed
-//
+//  you need to remove all console logs and comments
 
 export default compose(
-  // connect(mapStateToProps),
+  connect(mapStateToProps),
   graphql(getPortfolioQuery, { name: 'getPortfolioQueryData' }),
   graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery' })
 )(PortfolioComponent)
