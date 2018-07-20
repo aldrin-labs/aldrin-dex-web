@@ -3,13 +3,13 @@ import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
 import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 import { getPortfolioQuery, updateRebalanceMutation } from './api'
 import { IProps } from './interfaces'
-import { Login } from '@containers/Login'
+import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from './components'
-import { compose } from 'recompose'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -51,8 +51,6 @@ class PortfolioComponent extends React.Component<IProps> {
       <Subscription subscription={PORTFOLIO_UPDATE}>
         {(subscriptionData) => (
           <PortfolioContainer>
-            {error &&
-              error.toString().match('jwt expired') && <Login isShownModal />}
             {login ? (
               <>
                 <PortfolioSelector
@@ -69,7 +67,9 @@ class PortfolioComponent extends React.Component<IProps> {
                   subscription={subscriptionData}
                 />
               </>
-            ) : null}
+            ) : (
+              <YouNeedToLoginMessage showModalAfterDelay={1500} />
+            )}
 
             <Backdrop
               onClick={this.toggleWallets}
@@ -88,9 +88,6 @@ const mapStateToProps = (store) => ({
   keys: store.portfolio.keys,
   login: store.login.loginStatus,
 })
-// For fix bug you need to pass keys to portfoliotablebalances
-//  and also you need setnewkeys to redux every time keys are changed
-//  you need to remove all console logs and comments
 
 export default compose(
   connect(mapStateToProps),
