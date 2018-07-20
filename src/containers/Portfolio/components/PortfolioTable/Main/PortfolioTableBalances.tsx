@@ -134,6 +134,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys } = this.state
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
+    console.log(filterValueSmallerThenPercentage)
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }

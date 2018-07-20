@@ -194,7 +194,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 }
 
 const FilterValues = styled.div`
-  width: 10%;
+  width: 15%;
   display: flex;
   place-items: center;
 `
@@ -358,6 +358,7 @@ const StyledFullscreenButton = styled(Button)`
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
   correlationPeriod: store.portfolio.correlationPeriod,
+  filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
