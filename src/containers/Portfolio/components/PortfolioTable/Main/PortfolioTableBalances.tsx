@@ -1,8 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
+import { getPortfolioQuery } from '../../../api'
+import QueryRenderer from '@components/QueryRenderer'
 import PortfolioTableMain from './PortfolioTableMain'
 import PortfolioTableSum from '../PortfolioTableSum'
 import PortfolioTableHead from './PortfolioTableHead'
@@ -45,7 +46,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    const { data, isShownMocks } = this.props
+    const {
+      data: { getProfile: data },
+      isShownMocks,
+    } = this.props
 
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCK_DATA } }, () =>
@@ -76,7 +80,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.data) {
-      const { portfolio } = nextProps.data
+      const { portfolio } = nextProps.data.getProfile
 
       if (!portfolio || portfolio === null) {
         return
@@ -130,6 +134,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys } = this.state
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
+    console.log(filterValueSmallerThenPercentage)
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
@@ -283,7 +288,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       tableData,
       isUSDCurrently
     )
-    // console.log('validateSum: ', validateSum)
+
     this.setState({ selectedSum: validateSum })
   }
 
@@ -539,11 +544,23 @@ const PTChartContainer = styled.div`
   }
 `
 
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioTableBalances}
+        query={getPortfolioQuery}
+        {...this.props}
+      />
+    )
+  }
+}
+
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps)(PortfolioTableBalances)
+const storeComponent = connect(mapStateToProps)(MainDataWrapper)
 
-export default compose()(storeComponent)
+export default storeComponent

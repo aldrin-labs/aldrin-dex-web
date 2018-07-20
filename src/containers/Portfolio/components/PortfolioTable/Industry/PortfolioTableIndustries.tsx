@@ -20,8 +20,9 @@ import {
   roundUSDOff,
 } from '../../../../../utils/PortfolioTableUtils'
 import { IState } from './PortfolioTableIndustries.types'
-
+import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from './PieChartQuery'
+import { getPortfolioQuery } from '../../../api'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -59,7 +60,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   componentDidMount() {
-    const { data, isShownMocks } = this.props
+    const {
+      data: { getProfile: data },
+      isShownMocks,
+    } = this.props
 
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCKS } }, () =>
@@ -819,10 +823,22 @@ const PTextBox = styled.div`
   background-color: #2d3136;
 `
 
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioTableIndustries}
+        query={getPortfolioQuery}
+        {...this.props}
+      />
+    )
+  }
+}
+
 const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
 })
 
-const storeComponent = connect(mapStateToProps)(PortfolioTableIndustries)
+const storeComponent = connect(mapStateToProps)(MainDataWrapper)
 
 export default compose()(storeComponent)
