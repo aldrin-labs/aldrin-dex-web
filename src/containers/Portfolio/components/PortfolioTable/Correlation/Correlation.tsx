@@ -53,7 +53,7 @@ class Correlation extends React.Component<IProps, IState> {
           return (
             <PTWrapper>
               {children}
-              {has(data, 'values') && data.values.length !== 0 ? (
+              {data ? (
                 <>
                   <CorrelationMatrix
                     fullScreenChangeHandler={this.props.toggleFullscreen}
