@@ -102,11 +102,14 @@ class Import extends PureComponent<IProps> {
                     variables: {
                       expectedPct: +expectedReturn / 100,
                       coinList: storeData.map((el: IData) => el.coin),
-                      startDate,
-                      endDate,
+                      startDate: 1529193643,
+                      endDate: 1529204443,
                     },
                   })
-                  optimizePortfolio(backendData)
+
+                  optimizePortfolio(
+                    JSON.parse(backendData.portfolioOptimization)
+                  )
                 }}
               >
                 Optimize Portfolio
