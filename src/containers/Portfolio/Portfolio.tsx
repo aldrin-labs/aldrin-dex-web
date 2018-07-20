@@ -80,6 +80,7 @@ class PortfolioComponent extends React.Component<IProps> {
 // })
 // For fix bug you need to pass keys to portfoliotablebalances
 //  and also you need setnewkeys to redux every time keys are changed
+//
 
 export default compose(
   // connect(mapStateToProps),

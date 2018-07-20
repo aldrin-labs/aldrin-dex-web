@@ -64,14 +64,14 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <PortfolioTableIndustries
           checkboxes={this.props.checkboxes}
-          data={this.props.data}
+          // data={this.props.data}
           isUSDCurrently={isUSDCurrently}
         >
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
             portfolio={portfolio}
-            data={this.props.data}
+            // data={this.props.data}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
