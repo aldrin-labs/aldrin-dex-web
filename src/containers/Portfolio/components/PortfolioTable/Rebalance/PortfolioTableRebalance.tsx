@@ -25,7 +25,7 @@ import { Args } from '../types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 
-import { updateRebalanceMutation, getMyRebalanceQuery } from './api'
+import { updateRebalanceMutation, getMyRebalanceQuery, getMyPortfolioQuery } from './api'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },
@@ -90,13 +90,16 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
-    const { data, isShownMocks, getMyRebalance } = this.props
+    const { data, isShownMocks, getMyRebalance, getMyPortfolio } = this.props
 
 
     // console.log('refetch',getMyRebalance.refetch());
 
 
     console.log('getMyRebalance in DidMount', getMyRebalance);
+
+    console.log(' getMyPortfolio in DidMount',getMyPortfolio );
+
 
 
     // console.log('data in componentDidMount' + '', data)
@@ -115,7 +118,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       getMyRebalance.getProfile.myRebalance.assets &&
       getMyRebalance.getProfile.myRebalance.assets.length > 0
 
-    const userHasPortfolio = data && data.portfolio.assets.length > 0
+    // const userHasPortfolio = data && data.portfolio.assets.length > 0
+    const userHasPortfolio = getMyPortfolio.getProfile.portfolio && getMyPortfolio.getProfile.portfolio.assets.length > 0
+
+    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio);
+    console.log('userHasPortfolio', userHasPortfolio);
+
+
+
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
@@ -127,7 +137,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         deltaPrice: el.diff['$numberDecimal']
       }))
 
-      newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
         price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
@@ -137,7 +147,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
         price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
@@ -169,9 +179,11 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    const { data, isShownMocks, getMyRebalance } = nextProps
+    const { data, isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
 
+    console.log(' getMyPortfolio in WillReceiveProps',getMyPortfolio );
     console.log('getMyRebalance in WillReceiveProps', getMyRebalance);
+
 
     // console.log('data in componentWillReceiveProps', data)
 
@@ -189,7 +201,13 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       getMyRebalance.getProfile.myRebalance.assets &&
       getMyRebalance.getProfile.myRebalance.assets.length > 0
 
-    const userHasPortfolio = data && data.portfolio.assets.length > 0
+    // const userHasPortfolio = data && data.portfolio.assets.length > 0
+    const userHasPortfolio = getMyPortfolio.getProfile.portfolio && getMyPortfolio.getProfile.portfolio.assets.length > 0
+
+
+    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio);
+    console.log('userHasPortfolio', userHasPortfolio);
+
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
@@ -201,7 +219,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         deltaPrice: el.diff['$numberDecimal']
       }))
 
-      newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
         price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
@@ -211,7 +229,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = data.portfolio.assets.map((el) => ({
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
         exchange: el.exchange.name,
         symbol: el.asset.symbol,
         price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
@@ -1519,7 +1537,7 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   connect(mapStateToProps),
-  // graphql(updateRebalanceMutation, {name: 'updateRebalance'})
+  graphql(getMyPortfolioQuery, {name: 'getMyPortfolio'}),
   graphql(getMyRebalanceQuery, {name: 'getMyRebalance'}),
   graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery', options: ({values}) => ({
     refetchQueries: [{
