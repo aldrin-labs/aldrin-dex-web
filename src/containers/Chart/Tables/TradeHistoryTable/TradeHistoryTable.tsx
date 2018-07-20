@@ -13,10 +13,143 @@ import {
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 import { Loading } from '@components/Loading/Loading'
+import { Query, Subscription } from 'react-apollo'
+import gql from 'graphql-tag'
 
 export interface IProps {
   quote: string
   data: any[]
+}
+
+export const MARKET_TICKERS = gql`
+  subscription listenMarketTickers($symbol: String!, $exchange: String!) {
+    listenMarketTickers(symbol: $symbol, exchange: $exchange)
+  }
+`
+
+export const MARKET_QUERY = gql`
+  query marketTickers($symbol: String!, $exchange: String!) {
+    marketTickers(symbol: $symbol, exchange: $exchange)
+  }
+`
+
+class TickersList extends React.Component {
+  state = {
+    data: [],
+    symbol: '',
+    exchange: '',
+    unsubscribe: null
+  }
+
+  static getDerivedStateFromProps(newProps, state) {
+    if (newProps.data.marketTickers && (newProps.variables.symbol !== state.symbol || newProps.variables.exchange !== state.exchange)) {
+      const tickersData = newProps.data.marketTickers;
+      let tickers = []
+      for (let i = 0; i < tickersData.length; ++i) {
+        const tickerData = JSON.parse(tickersData[i]);
+        if (tickerData[1] !== newProps.variables.exchange || tickerData[2] !== newProps.variables.symbol) {
+          continue;
+        }
+
+        const fall = tickers.length > 0 ? tickers[tickers.length - 1].price > tickerData[3] : false;
+        const ticker = {
+          size: tickerData[4],
+          price: tickerData[3],
+          time: tickerData[7],
+          fall
+        };
+        tickers.push(ticker);
+      }
+      if (state.unsubscribe) {
+        console.log('unsubscribe', state.symbol, state.exchange)
+        state.unsubscribe(); // unsubscribe
+      }
+      return ({
+        data: tickers,
+        symbol: newProps.variables.symbol,
+        exchange: newProps.variables.exchange,
+        unsubscribe: newProps.subscribeToNewTickers()
+      })
+    }
+
+    if (newProps.data && newProps.data.marketTickers && newProps.data.marketTickers.length > 0) {
+      const tickerData = JSON.parse(newProps.data.marketTickers[0]);
+      if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
+        return null;
+      }
+      const fall = state.data.length > 0 ? state.data[0].price > tickerData[3] : false;
+      const ticker = {
+        size: tickerData[4],
+        price: tickerData[3],
+        time: new Date(tickerData[7]).toLocaleTimeString(),
+        fall
+      }
+
+      if (state.data.length > 50) { state.data.pop(); }
+
+      return ({
+        data: [ticker, ...state.data],
+        symbol: newProps.variables.symbol,
+        exchange: newProps.variables.exchange,
+        unsubscribe: state.unsubscribe
+      })
+    }
+
+    return null;
+  }
+
+  componentWillUnmount() {
+    if (this.state.unsubscribe) {
+      this.state.unsubscribe();
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        {this.state.data.slice(0, 30).map((ticker, i) => {
+          //          console.log(ticker);
+          return (
+            <Row key={i} background={'#25282c'}>
+              <AnimatedCell
+                animation={
+                  ticker.status === 'fall'
+                    ? 'fadeInRedAndBack'
+                    : 'fadeInGreenAndBack'
+                }
+                color="#9ca2aa"
+                width={'33%'}
+                value={ticker.size}
+              />
+
+              <AnimatedCell
+                animation={
+                  ticker.fall ? 'fadeInRed' : 'fadeInGreen'
+                }
+                color={ticker.fall ? '#d77455' : '#34cb86d1'}
+                width={'33%'}
+                value={ticker.price}
+              >
+                <StyledArrow
+                  direction={ticker.fall ? 'down' : 'up'}
+                />
+              </AnimatedCell>
+              <AnimatedCell
+                animation={
+                  ticker.fall
+                    ? 'fadeInRedAndBack'
+                    : 'fadeInGreenAndBack'
+                }
+                color="#9ca2aa"
+                width={'33%'}
+                value={ticker.time}
+              />
+            </Row>
+          )
+        })}
+      </div>
+    );
+  };
 }
 
 class TradeHistoryTable extends PureComponent<IProps> {
@@ -28,6 +161,9 @@ class TradeHistoryTable extends PureComponent<IProps> {
     const { quote, data } = this.props
     const { tableExpanded } = this.state
 
+    const symbol = this.props.currencyPair ? this.props.currencyPair : '';
+    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : '';
+    console.log('subscribe to ', symbol, exchange);
     if (!data) {
       return <Loading centerAligned />
     }
@@ -68,47 +204,35 @@ class TradeHistoryTable extends PureComponent<IProps> {
               </HeadCell>
             </Row>
           </Head>
-          <StyledBody>
-            {data.slice(0, 100).map((order, i) => (
-              <Row key={i} background={'#25282c'}>
-                <AnimatedCell
-                  animation={
-                    order.status === 'fall'
-                      ? 'fadeInRedAndBack'
-                      : 'fadeInGreenAndBack'
-                  }
-                  color="#9ca2aa"
-                  width={'33%'}
-                  value={order.size.toFixed(8)}
-                />
-
-                <AnimatedCell
-                  animation={
-                    order.status === 'fall' ? 'fadeInRed' : 'fadeInGreen'
-                  }
-                  color={order.status === 'fall' ? '#d77455' : '#34cb86d1'}
-                  width={'33%'}
-                  value={Number(order.price).toFixed(2)}
-                >
-                  <StyledArrow
-                    direction={order.status === 'fall' ? 'down' : 'up'}
+          <Body height="400px">
+            <Query
+              query={MARKET_QUERY}
+              variables={{ symbol, exchange }}
+            >
+              {({ subscribeToMore, ...result }) =>
+                (
+                  <TickersList
+                    {...result}
+                    subscribeToNewTickers={() =>
+                      subscribeToMore({
+                        document: MARKET_TICKERS,
+                        variables: { symbol, exchange },
+                        updateQuery: (prev, { subscriptionData }) => {
+                          if (!subscriptionData.data) { return prev; }
+                          const newTicker = subscriptionData.data.listenMarketTickers;
+                          let obj = Object.assign({}, prev, {
+                            marketTickers: [newTicker]
+                          });
+                          return obj;
+                        }
+                      })
+                    }
                   />
-                </AnimatedCell>
-                <AnimatedCell
-                  animation={
-                    order.status === 'fall'
-                      ? 'fadeInRedAndBack'
-                      : 'fadeInGreenAndBack'
-                  }
-                  color="#9ca2aa"
-                  width={'33%'}
-                  value={order.time}
-                />
-              </Row>
-            ))}
-          </StyledBody>
+                )}
+            </Query>
+          </Body>
         </CollapseWrapper>
-      </TradeHistoryTableCollapsible>
+      </TradeHistoryTableCollapsible >
     )
   }
 }
@@ -162,7 +286,7 @@ const StyledArrowSign = styled(MdArrowDropUp)`
 
   ${TriggerTitle}:hover & {
     animation: ${(props) =>
-        props.variant.tableCollapsed ? JumpUpArrow : JumpDownArrow}
+    props.variant.tableCollapsed ? JumpUpArrow : JumpDownArrow}
       0.5s linear 0.5s 2;
   }
 `

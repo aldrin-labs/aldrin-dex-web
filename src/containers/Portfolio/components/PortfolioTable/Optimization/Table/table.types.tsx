@@ -1,4 +1,8 @@
-import { IData } from './optimizationTypes'
+export interface IData {
+  coin: string
+  percentage: number | string
+}
+
 export interface IProps {
   withInput: boolean
   onClickDeleteIcon?: Function

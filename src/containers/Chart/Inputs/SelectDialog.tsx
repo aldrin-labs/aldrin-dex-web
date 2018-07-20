@@ -34,8 +34,8 @@ const styles = (theme) => ({
 class DialogSelect extends React.Component {
   state = {
     open: false,
-    base: '',
-    quote: '',
+    base: 'BTC',
+    quote: 'ETH',
   }
 
   handleChange = (name) => (value) => {

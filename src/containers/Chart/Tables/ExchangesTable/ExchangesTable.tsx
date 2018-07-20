@@ -13,20 +13,42 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
+import QueryRenderer from '@components/QueryRenderer'
 import { Loading } from '@components/Loading/Loading'
+import gql from 'graphql-tag'
+
+
+export const ExchangeQuery = gql`
+  query ExchangeQuery($marketName: String!) {
+    marketByName(name: $marketName){
+    name
+    exchangeIds
+    exchanges {
+      symbol
+      name
+    }
+  }
+}
+`
 
 class ExchangesTable extends PureComponent {
   render() {
+
     const {
-      exchanges,
       activeExchange,
       changeExchange,
       quote,
       onButtonClick,
+      data
     } = this.props
 
-    if (!exchanges) {
+    let exchanges = this.props.exchanges;
+
+    if (!exchanges || !data) {
       return <Loading centerAligned />
+    }
+    if (data && data.marketByName) {
+      exchanges = data.marketByName.length > 0 ? data.marketByName[0].exchanges : [];
     }
 
     return (
@@ -44,13 +66,13 @@ class ExchangesTable extends PureComponent {
         <StyledHead background={'#292d31'}>
           <Row isHead background={'#292d31'}>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Name
+              Symbol
             </StyledHeadCell>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Cross{' '}
+              Name{' '}
             </StyledHeadCell>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Price
+              Type
             </StyledHeadCell>
             <StyledHeadCell color="#9ca2aa" width={'20%'}>
               {quote || 'Fiat'}
@@ -74,9 +96,9 @@ class ExchangesTable extends PureComponent {
               key={ind}
               style={{ cursor: 'pointer' }}
               onClick={() => {
-                changeExchange(ind)
+                changeExchange({ index: ind, exchange: exchanges[ind] })
               }}
-              background={activeExchange === ind ? '#535b62' : '#292d31'}
+              background={activeExchange.index === ind ? '#535b62' : '#292d31'}
             >
               {Object.values(exchange).map((prop, propinx) => {
                 const keyByValue = Object.keys(exchange).find(
@@ -152,4 +174,14 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-export default ExchangesTable
+
+export default function (props: any) {
+  return (
+    <QueryRenderer
+      component={ExchangesTable}
+      query={ExchangeQuery}
+      variables={{ marketName: props.marketName }}
+      {...props}
+    />
+  )
+}

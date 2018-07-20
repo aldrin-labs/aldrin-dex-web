@@ -58,12 +58,12 @@ class Charts extends Component<IChartProps, IChartState> {
     const { currencyPair, removeChart, index } = this.props
     const { ordersData, spreadData } = this.state
 
-    const [base, quote] = currencyPair.split('/')
+    const [quote, base] = currencyPair.split('_')
 
     return (
       <>
         <ChartsSwitcher>
-          <ExchangePair>{`${base}/${quote}`}</ExchangePair>
+          <ExchangePair>{`${quote}/${base}`}</ExchangePair>
           <Switch
             onClick={() => {
               this.setState((prevState) => ({
@@ -81,22 +81,21 @@ class Charts extends Component<IChartProps, IChartState> {
             <MdClear />
           </Button>
         </ChartsSwitcher>
-        {console.log(`/?symbol=${base}/${quote}`)}
         {this.state.activeChart === 'candle' ? (
-          <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
+          <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
         ) : (
-          <DepthChartContainer>
-            <DepthChart
-              {...{
-                ordersData,
-                spreadData,
-                base,
-                quote,
-                animated: false,
-              }}
-            />
-          </DepthChartContainer>
-        )}
+            <DepthChartContainer>
+              <DepthChart
+                {...{
+                  ordersData,
+                  spreadData,
+                  base,
+                  quote,
+                  animated: false,
+                }}
+              />
+            </DepthChartContainer>
+          )}
       </>
     )
   }
@@ -183,23 +182,23 @@ const ChartContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(
     ${(props: { chartsCount?: number }) => {
-      if (props.chartsCount && props.chartsCount <= 3) {
-        return `${props.chartsCount}, ${100 / props.chartsCount}%`
-      } else {
-        return '4, 25%'
-      }
-    }}
+    if (props.chartsCount && props.chartsCount <= 3) {
+      return `${props.chartsCount}, ${100 / props.chartsCount}%`
+    } else {
+      return '4, 25%'
+    }
+  }}
   );
   grid-template-rows: repeat(
     ${(props: { chartsCount?: number }) => {
-      if (props.chartsCount && props.chartsCount > 4) {
-        return '2, 41.5vh'
-      } else if (props.chartsCount === 3 || props.chartsCount === 4) {
-        return '1, 60vh'
-      } else {
-        return '1, 80vh'
-      }
-    }}
+    if (props.chartsCount && props.chartsCount > 4) {
+      return '2, 41.5vh'
+    } else if (props.chartsCount === 3 || props.chartsCount === 4) {
+      return '1, 60vh'
+    } else {
+      return '1, 80vh'
+    }
+  }}
   );
 `
 

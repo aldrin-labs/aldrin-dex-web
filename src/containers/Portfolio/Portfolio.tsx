@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import { getPortfolioQuery, updateRebalanceMutation } from './api'
+import { getPortfolioQuery } from './api'
 import { IProps } from './interfaces'
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
@@ -91,8 +91,7 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   connect(mapStateToProps),
-  graphql(getPortfolioQuery, { name: 'getPortfolioQueryData' }),
-  graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery' })
+  graphql(getPortfolioQuery, { name: 'getPortfolioQueryData' })
 )(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
