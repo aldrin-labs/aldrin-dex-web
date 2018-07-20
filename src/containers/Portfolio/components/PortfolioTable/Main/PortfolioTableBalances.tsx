@@ -80,7 +80,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.data) {
-      const { portfolio } = nextProps.data
+      const { portfolio } = nextProps.data.getProfile
 
       if (!portfolio || portfolio === null) {
         return
