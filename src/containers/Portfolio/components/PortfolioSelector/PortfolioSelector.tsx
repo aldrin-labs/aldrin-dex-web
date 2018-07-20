@@ -9,8 +9,13 @@ import { has } from 'lodash'
 import { setKeys } from '../../actions'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
+import QueryRenderer from '@components/QueryRenderer'
 
 class PortfolioSelector extends React.Component<IProps, IState> {
+  state = {
+    checkboxes: [],
+    checkedCheckboxes: [],
+  }
   // componentWillReceiveProps(nextProps: IProps) {
   //   // called once
   //   if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
@@ -38,6 +43,24 @@ class PortfolioSelector extends React.Component<IProps, IState> {
   //     }
   //   }
   // }
+
+  componentDidMount() {
+    console.log('object')
+    console.log(this.props.data)
+    if (!has(this.props.data.getProfile, 'keys')) {
+      return null
+    }
+
+    const { keys } = this.props.data.getProfile
+    const checkboxes =
+      (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
+    const checkedCheckboxes = checkboxes.map((ck, i) => i)
+
+    this.props.setKeys(checkboxes)
+
+    this.setState({ checkboxes, checkedCheckboxes })
+    return true
+  }
 
   onToggleCheckbox = (index: number) => {
     const { onChangeActive } = this.props
@@ -103,21 +126,11 @@ class PortfolioSelector extends React.Component<IProps, IState> {
   }
 
   render() {
-    if (!has(this.props.data.getProfile, 'keys')) {
-      return null
-    }
-
-    const { keys } = this.props.data.getProfile
-
-    const checkboxes =
-      (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-    const checkedCheckboxes = checkboxes.map((ck, i) => i)
+    const { checkedCheckboxes, checkboxes } = this.state
 
     if (!checkboxes) {
       return null
     }
-
-    // this.props.setKeys(checkboxes)
 
     const isCheckedAll =
       (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) ||
@@ -335,8 +348,20 @@ const mapDispatchToProps = (dispatch: any) => ({
   setKeys: (keys: string[]) => dispatch(setKeys(keys)),
 })
 
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioSelector}
+        query={getKeysQuery}
+        {...this.props}
+      />
+    )
+  }
+}
+
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  PortfolioSelector
+  MainDataWrapper
 )
 
-export default compose(graphql(getKeysQuery))(storeComponent)
+export default compose()(storeComponent)

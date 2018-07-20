@@ -39,8 +39,12 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 
   render() {
-    const { checkboxes } = this.state
-    const { getPortfolioQueryData, updateRebalanceMutationQuery } = this.props
+    const {
+      getPortfolioQueryData,
+      updateRebalanceMutationQuery,
+      keys,
+      login,
+    } = this.props
     const { getProfile, loading, error } = getPortfolioQueryData
 
     return (
@@ -49,19 +53,24 @@ class PortfolioComponent extends React.Component<IProps> {
           <PortfolioContainer>
             {error &&
               error.toString().match('jwt expired') && <Login isShownModal />}
-            <PortfolioSelector
-              toggleWallets={this.toggleWallets}
-              isSideNavOpen={this.state.isSideNavOpen}
-              onChangeActive={this.onChangeActiveKey}
-            />
-            <PortfolioTable
-              loading={loading}
-              checkboxes={['bittrex', 'binanceKey']}
-              toggleWallets={this.toggleWallets}
-              data={getProfile}
-              updateRebalanceMutationQuery={updateRebalanceMutationQuery}
-              subscription={subscriptionData}
-            />
+            {login ? (
+              <>
+                <PortfolioSelector
+                  toggleWallets={this.toggleWallets}
+                  isSideNavOpen={this.state.isSideNavOpen}
+                  onChangeActive={this.onChangeActiveKey}
+                />
+                <PortfolioTable
+                  loading={loading}
+                  checkboxes={keys}
+                  toggleWallets={this.toggleWallets}
+                  data={getProfile}
+                  updateRebalanceMutationQuery={updateRebalanceMutationQuery}
+                  subscription={subscriptionData}
+                />
+              </>
+            ) : null}
+
             <Backdrop
               onClick={this.toggleWallets}
               isSideNavOpen={this.state.isSideNavOpen}
@@ -77,6 +86,7 @@ class PortfolioComponent extends React.Component<IProps> {
 
 const mapStateToProps = (store) => ({
   keys: store.portfolio.keys,
+  login: store.login.loginStatus,
 })
 // For fix bug you need to pass keys to portfoliotablebalances
 //  and also you need setnewkeys to redux every time keys are changed
