@@ -13,7 +13,7 @@ const config = {
   output: {
     filename: 'bundle.[hash].js',
   },
-  devtool: 'eval-source-map',
+  devtool: 'cheap-module-eval-source-map',
   module: {},
   plugins: [
     new ErrorOverlayPlugin(),
