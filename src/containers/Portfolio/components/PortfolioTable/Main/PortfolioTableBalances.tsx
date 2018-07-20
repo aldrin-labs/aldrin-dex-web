@@ -208,7 +208,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             : 0)
       )
 
-    this.setState({ tableData }, () =>
+    const selectAllLinesInTable = tableData.map((_, i) => i)
+
+    this.setState({ tableData, selectedBalances: selectAllLinesInTable }, () =>
       this.calculateSum(this.state.selectedBalances)
     )
   }
