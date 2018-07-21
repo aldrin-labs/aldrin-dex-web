@@ -55,14 +55,12 @@ class PortfolioTableTabs extends React.Component<IProps> {
     const {
       tab,
       portfolio,
-      isShownMocks,
       toggleWallets,
       setCorrelationPeriod,
       correlationPeriod,
       filterValuesLessThen,
       filterPercent,
     } = this.props
-    const dataFromProps = this.props.data
 
     return (
       <React.Fragment>
@@ -158,7 +156,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             {tab !== 'correlation' &&
               tab !== 'optimization' &&
               tab !== 'rebalance' &&
-              (dataFromProps || isShownMocks) && (
+            (
                 <SwitchRefreshContainer>
                   <Switch
                     onClick={this.onToggleUSDBTC}
@@ -359,7 +357,6 @@ const StyledFullscreenButton = styled(Button)`
 `
 
 const mapStateToProps = (store) => ({
-  isShownMocks: store.user.isShownMocks,
   correlationPeriod: store.portfolio.correlationPeriod,
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })

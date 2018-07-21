@@ -96,7 +96,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     // console.log('refetch',getMyRebalance.refetch());
 
 
-    console.log('getMyRebalance in DidMount', getMyRebalance);
+    console.log(' getMyRebalance in DidMount', getMyRebalance);
 
     console.log(' getMyPortfolio in DidMount',getMyPortfolio );
 
