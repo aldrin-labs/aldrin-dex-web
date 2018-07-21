@@ -13,7 +13,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   state: IState = {
     tableData: null,
     isShownChart: true,
-    portfolio: null,
     isUSDCurrently: true,
     tab: 'main',
   }
@@ -26,16 +25,12 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
   }
 
-  onChangeTab = (kind: 'main' | 'industry' | 'rebalance') => {
+  onChangeTab = (kind: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization') => {
     this.setState({ tab: kind })
   }
 
   render() {
-    const { tab, portfolio, isShownChart, isUSDCurrently } = this.state
-
-    if (this.props.loading) {
-      return <Loading centerAligned />
-    }
+    const { tab, isShownChart, isUSDCurrently } = this.state
 
     if (tab === 'main') {
       return (
@@ -49,7 +44,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -67,7 +61,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -84,7 +77,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -97,10 +89,8 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <Correlation>
           <PortfolioTableTabs
-            data={this.props.data}
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -114,7 +104,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
         <Optimization>
           <PortfolioTableTabs
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleUSDBTC={this.onToggleUSDBTC}
           />
