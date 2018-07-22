@@ -9,6 +9,10 @@ export interface IProps {
   expectedReturn: string
   optimizePortfolio: Function
   handleChange: Function
+  onBtnClick: Function
+  percentages: number[]
+  activeButton: number
+  showSwitchButtons: boolean
 }
 
 export interface IData {

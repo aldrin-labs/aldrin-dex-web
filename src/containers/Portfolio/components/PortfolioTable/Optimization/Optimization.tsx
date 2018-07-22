@@ -10,7 +10,6 @@ import { IState, IData, IProps } from './Optimization.types'
 import BarChart from '@components/BarChart/BarChart'
 import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
 import Table from './Table/Table'
-import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 import Import from './Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { OPTIMIZE_PORTFOLIO, getCoinsForOptimization } from './api'
@@ -161,7 +160,7 @@ class Optimization extends PureComponent<IProps, IState> {
 
   renderInput = () => {
     // importing stuff from backend or manually bu user
-    const { expectedReturn } = this.state
+    const { expectedReturn, percentages, activeButton, optimizedData } = this.state
     const {
       isShownMocks,
       updateData,
@@ -172,17 +171,23 @@ class Optimization extends PureComponent<IProps, IState> {
 
     return (
       <QueryRenderer
-        transfromData={this.transfromData}
+      component={Import}
+      query={getCoinsForOptimization}
+        
+      transfromData={this.transfromData}
         storeData={storeData}
-        component={Import}
         startDate={startDate}
         endDate={endDate}
-        query={getCoinsForOptimization}
         expectedReturn={expectedReturn}
         optimizePortfolio={this.optimizePortfolio}
-        isShownMocks={false}
+        isShownMocks={isShownMocks}
         updateData={updateData}
         handleChange={this.handleChange}
+        // buttons props
+        onBtnClick={this.onBtnClick}
+        percentages={percentages}
+        activeButton={activeButton}
+        showSwitchButtons={optimizedData.length >= 1}
       />
     )
   }
@@ -244,7 +249,7 @@ class Optimization extends PureComponent<IProps, IState> {
 
   render() {
     const { children } = this.props
-    const { optimizedData, percentages, activeButton, loading } = this.state
+    const { optimizedData,  loading } = this.state
 
     return (
       <ApolloConsumer>
@@ -257,13 +262,7 @@ class Optimization extends PureComponent<IProps, IState> {
 
               <MainArea>
                 <MainAreaUpperPart>
-                  <SwitchButtons
-                    btnClickProps={client}
-                    onBtnClick={this.onBtnClick}
-                    values={percentages}
-                    show={optimizedData.length >= 1}
-                    activeButton={activeButton}
-                  />
+           
 
                   <Table data={optimizedData} withInput={false} />
                 </MainAreaUpperPart>

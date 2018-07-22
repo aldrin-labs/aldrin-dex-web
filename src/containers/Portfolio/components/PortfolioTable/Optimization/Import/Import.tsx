@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 
 import Table from '../Table/Table'
+import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 import { MOCK_DATA } from '../../dataMock'
 import { IProps, IData } from './import.types'
 import { OPTIMIZE_PORTFOLIO } from '../api'
@@ -74,6 +75,10 @@ class Import extends PureComponent<IProps> {
       storeData,
       startDate,
       endDate,
+      onBtnClick,
+      percentages,
+      activeButton,
+      showSwitchButtons // optimizedData.length >= 1
     } = this.props
 
     const data: IData[] = this.props.transfromData(
@@ -101,7 +106,7 @@ class Import extends PureComponent<IProps> {
                     query: OPTIMIZE_PORTFOLIO,
                     variables: {
                       expectedPct: 0.15,
-                      coinList: ["BTC", "ETH", "LTC"],
+                      coinList: ["BTC", "ETH", "LTC"], // storeData.map(data: IData=> data.coin)
                       startDate: 1531441380,
                       endDate: 1531873380,
                     },
@@ -115,6 +120,13 @@ class Import extends PureComponent<IProps> {
                 Optimize Portfolio
               </Button>
             </InputContainer>
+            <SwitchButtons
+                    btnClickProps={client}
+                    onBtnClick={onBtnClick}
+                    values={percentages}
+                    show={showSwitchButtons}
+                    activeButton={activeButton}
+                  />
             <TableContainer>
               <Table
                 onPlusClick={this.addRow}
