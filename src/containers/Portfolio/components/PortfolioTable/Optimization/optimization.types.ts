@@ -21,4 +21,6 @@ export interface IProps {
   startDate: number
   isShownMocks: boolean
   updateData: Function
+  setPeriod: Function
+  optimizationPeriod: string
 }

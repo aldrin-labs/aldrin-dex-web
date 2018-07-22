@@ -90,6 +90,8 @@ class Import extends PureComponent<IProps> {
       optimizedData,
       startDate,
       endDate,
+      optimizationPeriod,
+      setPeriod,
       onBtnClick,
       percentages,
       activeButton,
@@ -114,7 +116,10 @@ class Import extends PureComponent<IProps> {
         {(client) => (
           <>
             <InputContainer>
-              <SelectDates period="lastDay" />
+              <SelectDates
+                setPeriodToStore={setPeriod}
+                period={optimizationPeriod}
+              />
               <Input
                 type="number"
                 placeholder="Expected return in %"

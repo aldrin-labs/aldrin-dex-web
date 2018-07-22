@@ -179,12 +179,16 @@ class Optimization extends PureComponent<IProps, IState> {
       storeData,
       startDate,
       endDate,
+      setPeriod,
+      optimizationPeriod,
     } = this.props
 
     return (
       <QueryRenderer
         component={Import}
+        optimizationPeriod={optimizationPeriod}
         query={getCoinsForOptimization}
+        setPeriod={setPeriod}
         optimizedData={optimizedData}
         transformData={this.transformData}
         storeData={storeData}
@@ -379,12 +383,14 @@ const ImportData = styled.div`
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   storeData: store.portfolio.optimizationData,
-  startDate: store.portfolio.correlationStartDate,
-  endDate: store.portfolio.correlationEndDate,
+  startDate: store.portfolio.optimizationStartDate,
+  endDate: store.portfolio.optimizationEndDate,
+  optimizationPeriod: store.portfolio.optimizationPeriod,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateData: (data: any) => dispatch(actions.updateDataForOptimization(data)),
+  setPeriod: (payload: any) => dispatch(actions.setOptimizationPeriod(payload)),
 })
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
   Optimization

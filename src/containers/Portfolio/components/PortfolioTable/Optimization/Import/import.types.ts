@@ -1,4 +1,5 @@
 export interface IProps {
+  optimizationPeriod: string
   isShownMocks: boolean
   startDate: number
   endDate: number
@@ -6,6 +7,7 @@ export interface IProps {
   optimizedData: IData[]
   storeData: IData[]
   updateData: Function
+  setPeriod: Function
   optimizedToState: Function
   transformData: Function
   expectedReturn: string
