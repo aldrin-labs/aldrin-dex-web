@@ -28,8 +28,8 @@ const BtnsContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin: 20px 0 20px 0;
-  max-height: 2rem;
+  width: 80%;
+  margin: 1rem 0 1rem 0;
   position: relative;
   top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
   z-index: ${(props: { show: boolean }) => (props.show ? '1' : '-10')};
@@ -46,7 +46,7 @@ const Btn = styled.button`
   border: none;
   outline: none;
   font-family: Roboto, sans-serif;
-  font-size: 12px;
+  font-size: 1rem;
   font-weight: 500;
   color: ${(props: { active: boolean }) =>
     props.active ? '#4c5055' : '#4ed8da'};

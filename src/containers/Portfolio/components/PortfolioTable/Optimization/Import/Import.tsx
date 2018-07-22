@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
+import { MdReplay } from 'react-icons/lib/md/'
+import { Button as ButtonMUI } from '@material-ui/core'
 
 import Table from '../Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
@@ -92,14 +94,6 @@ class Import extends PureComponent<IProps> {
         {(client) => (
           <>
             <InputContainer>
-              <SwitchButtons
-                btnClickProps={client}
-                onBtnClick={onBtnClick}
-                values={percentages}
-                show={showSwitchButtons}
-                activeButton={activeButton}
-              />
-              <Button onClick={this.importPortfolio}>Import Portfolio</Button>
               <Input
                 type="number"
                 placeholder="Expected return in %"
@@ -108,7 +102,10 @@ class Import extends PureComponent<IProps> {
                   handleChange(e)
                 }}
               />
-              <Button
+              <ButtonMUI
+                style={{ marginTop: '1rem' }}
+                color={'secondary'}
+                variant={'outlined'}
                 disabled={expectedReturn === '' || (data && data.length < 1)}
                 onClick={async () => {
                   const { data: backendData } = await client.query({
@@ -127,10 +124,30 @@ class Import extends PureComponent<IProps> {
                 }}
               >
                 Optimize Portfolio
-              </Button>
+              </ButtonMUI>
             </InputContainer>
 
             <TableContainer>
+              <SwitchButtonsWrapper>
+                <SwitchButtons
+                  btnClickProps={client}
+                  onBtnClick={onBtnClick}
+                  values={percentages}
+                  show={true} // showSwitchButtons
+                  activeButton={activeButton}
+                />
+                <ButtonMUI
+                  disabled
+                  color="primary"
+                  style={{
+                    alignSelf: 'center',
+                  }}
+                  variant="fab"
+                  onClick={this.importPortfolio}
+                >
+                  <MdReplay />
+                </ButtonMUI>
+              </SwitchButtonsWrapper>
               <Table
                 onPlusClick={this.addRow}
                 data={storeData}
@@ -139,6 +156,7 @@ class Import extends PureComponent<IProps> {
                 onClickDeleteAllIcon={this.deleteAllRows}
               />
             </TableContainer>
+            <HelperForCentering />
           </>
         )}
       </ApolloConsumer>
@@ -146,12 +164,23 @@ class Import extends PureComponent<IProps> {
   }
 }
 
+const SwitchButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const HelperForCentering = styled.div`
+  width: 224px;
+  min-width: 100px;
+  opacity: 0;
+`
+
 const InputContainer = styled.div`
   margin: auto 2rem auto 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 300px;
+  min-width: 100px;
 
   @media (max-width: 1080px) {
     margin: auto;
@@ -163,31 +192,10 @@ const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
   place-content: flex-end;
-
+  width: 50%;
+  max-width: 50rem;
   @media (max-width: 600px) {
     margin-top: 1rem;
-  }
-`
-
-const Button = styled.div`
-  border-radius: 2px;
-  background-color: #4c5055;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-family: Roboto, sans-serif;
-  letter-spacing: 0.4px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 500;
-  color: #4ed8da;
-  cursor: ${(props: { disabled?: boolean }) =>
-    props.disabled ? 'not-allowed' : 'pointer'};
-  text-transform: uppercase;
-  margin-top: 10px;
-
-  &:nth-child(1) {
-    margin: 0;
   }
 `
 

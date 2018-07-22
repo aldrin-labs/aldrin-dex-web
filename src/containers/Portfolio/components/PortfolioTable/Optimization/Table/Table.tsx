@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
-import ClearAll from 'react-icons/lib/md/clear-all'
 import AddIcon from 'react-icons/lib/md/add'
 
 import { IProps, IState } from './Table.types'
@@ -48,14 +47,7 @@ class Table extends Component<IProps, IState> {
 
             <Col>
               {data.map((item, i) => (
-                <Item key={i}>
-                  {`${Number(item.percentage).toFixed(2)}%`}{' '}
-                  <StyledDeleteIcon
-                    onClick={() => {
-                      onClickDeleteIcon && onClickDeleteIcon(i)
-                    }}
-                  />
-                </Item>
+                <Item key={i}>{`${Number(item.percentage).toFixed(2)}%`} </Item>
               ))}
             </Col>
             <Col>
@@ -83,29 +75,23 @@ class Table extends Component<IProps, IState> {
             <Item
               style={{
                 background: 'rgb(45, 49, 54)',
+                // because of nth-child(even)
+              }}
+            />
+            <Item
+              style={{
+                background: 'rgb(45, 49, 54)',
                 display: 'flex',
-                justifyContent: 'space-evenly',
+                justifyContent: 'flex-end',
                 // because of nth-child(even)
               }}
             >
-              {/* <Input
-                placeholder="portfolio percentage"
-                type="number"
-                value={this.state.value || ''}
-                onChange={this.handleChangeValue}
-              /> */}
               <AddStyled
-                show={!!this.state.name}
+                show={true}
                 onClick={() => {
                   onPlusClick && onPlusClick(this.state.name, this.state.value)
                   this.setState({ name: '' })
                   this.setState({ value: '' })
-                }}
-              />
-              <StyledClearAll
-                show={data.length > 1}
-                onClick={() => {
-                  onClickDeleteAllIcon && onClickDeleteAllIcon()
                 }}
               />
             </Item>
@@ -177,7 +163,7 @@ const Item = styled.div`
   justify-content: center;
   padding: 0.5rem;
   font-family: Roboto, sans-serif;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   font-weight: normal;
   text-align: center;
   display: flex;
@@ -197,30 +183,11 @@ const Item = styled.div`
 
 const HeadItem = Item.extend`
   font-weight: 500;
+  font-size: 1.5rem;
 
   &:nth-child(even) {
     background: rgb(45, 49, 54);
   }
-`
-const StyledDeleteIcon = styled(DeleteIcon)`
-  opacity: 0;
-  cursor: pointer;
-  position: absolute;
-  right: 0.5rem;
-  font-size: 1rem;
-  transition: opacity 0.3s ease-in;
-
-  ${Item}:hover & {
-    opacity: 1;
-  }
-`
-
-const StyledClearAll = styled(ClearAll)`
-  opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
-  cursor: pointer;
-
-  font-size: 2rem;
-  transition: opacity 0.25s ease-in;
 `
 
 const Head = styled.div`
@@ -280,6 +247,19 @@ const Body = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
+  }
+`
+
+const StyledDeleteIcon = styled(DeleteIcon)`
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+  right: 0.5rem;
+  font-size: 2rem;
+  transition: opacity 0.3s ease-in;
+
+  ${Body}:hover & {
+    opacity: 1;
   }
 `
 
