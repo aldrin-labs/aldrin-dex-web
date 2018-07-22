@@ -1,8 +1,14 @@
 import React, { Component } from 'react'
 
 import Selector from '@components/SimpleDropDownSelector'
+import { setCorrelationPeriod } from '@containers/Portfolio/actions'
 
-class DropDownMenu extends Component {
+export interface IProps {
+  period: string
+  setPeriodToStore: Function
+}
+
+class DropDownMenu extends Component<IProps> {
   optionsMap: { [id: string]: any } = {
     lastWeek: () => ({
       startDate: this.daysFromNow(-17),
@@ -30,7 +36,7 @@ class DropDownMenu extends Component {
 
   handleChange = (event) => {
     const { startDate, endDate } = this.optionsMap[event.target.value]()
-    this.props.setCorrelationPeriodToStore({
+    this.props.setPeriodToStore({
       correlationPeriod: event.target.value,
       correlationStartDate: startDate,
       correlationEndDate: endDate,
@@ -38,7 +44,7 @@ class DropDownMenu extends Component {
   }
 
   render() {
-    const { correlationPeriod } = this.props
+    const { period } = this.props
 
     return (
       <Selector
@@ -48,7 +54,7 @@ class DropDownMenu extends Component {
         }}
         name="correlationPeriod"
         id="correlationPeriod"
-        value={correlationPeriod}
+        value={period}
         handleChange={this.handleChange}
         options={[
           { value: 'lastDay', label: 'Last 24h' },
