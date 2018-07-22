@@ -7,8 +7,12 @@ import { Button as ButtonMUI } from '@material-ui/core'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
-import { IProps, IData } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/import.types'
+import {
+  IProps,
+  IData,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/import.types'
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
+import SelectDates from '@components/SelectTimeRangeDropdown'
 
 class Import extends PureComponent<IProps> {
   sumSameCoins = (rawData: IData[]) => {
@@ -94,6 +98,7 @@ class Import extends PureComponent<IProps> {
         {(client) => (
           <>
             <InputContainer>
+              <SelectDates period="lastDay" />
               <Input
                 type="number"
                 placeholder="Expected return in %"
@@ -133,7 +138,7 @@ class Import extends PureComponent<IProps> {
                   btnClickProps={client}
                   onBtnClick={onBtnClick}
                   values={percentages}
-                  show={true} // showSwitchButtons
+                  show={showSwitchButtons}
                   activeButton={activeButton}
                 />
                 <ButtonMUI

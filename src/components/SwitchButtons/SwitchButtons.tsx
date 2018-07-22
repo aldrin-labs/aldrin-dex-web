@@ -27,8 +27,9 @@ const SwitchButtons = (props: IProps) => (
 const BtnsContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   width: 80%;
+  overflow: hidden;
   margin: 1rem 0 1rem 0;
   position: relative;
   top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
