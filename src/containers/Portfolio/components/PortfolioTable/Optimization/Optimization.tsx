@@ -13,7 +13,6 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
 import BarChart from '@components/BarChart/BarChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
-import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import {
@@ -86,7 +85,7 @@ class Optimization extends PureComponent<IProps, IState> {
     }
   }
 
-  transfromData = (assets) => {
+  transformData = (assets) => {
     // transforming data like assets from profile to IData format
     const allSums = assets.filter(Boolean).reduce((acc: number, curr: any) => {
       const { value = 0, asset = { priceUSD: 0 } } = curr || {}
@@ -181,11 +180,13 @@ class Optimization extends PureComponent<IProps, IState> {
       endDate,
     } = this.props
 
+    console.log(percentages)
+
     return (
       <QueryRenderer
         component={Import}
         query={getCoinsForOptimization}
-        transfromData={this.transfromData}
+        transformData={this.transformData}
         storeData={storeData}
         startDate={startDate}
         endDate={endDate}

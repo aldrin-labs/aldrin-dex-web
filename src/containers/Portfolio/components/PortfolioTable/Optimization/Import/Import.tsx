@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import { MdReplay } from 'react-icons/lib/md'
 import { Button as ButtonMUI } from '@material-ui/core'
+import { isEqual } from 'lodash'
 
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
@@ -15,6 +16,23 @@ import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTa
 import SelectDates from '@components/SelectTimeRangeDropdown'
 
 class Import extends PureComponent<IProps> {
+  componentDidMount() {
+    this.importPortfolio()
+  }
+
+  importPortfolio = () => {
+    let assets
+    if (this.props.isShownMocks) {
+      assets = MOCK_DATA
+    } else {
+      assets =
+        this.props.data &&
+        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+    }
+
+    this.props.updateData(this.sumSameCoins(assets))
+  }
+
   sumSameCoins = (rawData: IData[]) => {
     let data: IData[] = []
 
@@ -43,19 +61,6 @@ class Import extends PureComponent<IProps> {
     })
 
     return result
-  }
-
-  importPortfolio = () => {
-    let assets
-    if (this.props.isShownMocks) {
-      assets = MOCK_DATA
-    } else {
-      assets = this.props.transfromData(
-        this.props.data.getProfile.portfolio.assets
-      )
-    }
-
-    this.props.updateData(this.sumSameCoins(assets))
   }
 
   addRow = (name: string, value: number) => {
@@ -89,9 +94,18 @@ class Import extends PureComponent<IProps> {
       showSwitchButtons, // optimizedData.length >= 1
     } = this.props
 
-    const data: IData[] = this.props.transfromData(
-      this.props.data.getProfile.portfolio.assets
-    )
+    let assets: IData[]
+    if (this.props.isShownMocks) {
+      assets = MOCK_DATA
+    } else {
+      assets =
+        this.props.data &&
+        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+    }
+
+    const data: IData[] =
+      this.props.data &&
+      this.props.transformData(this.props.data.getProfile.portfolio.assets)
 
     return (
       <ApolloConsumer>
@@ -138,11 +152,11 @@ class Import extends PureComponent<IProps> {
                   btnClickProps={client}
                   onBtnClick={onBtnClick}
                   values={percentages}
-                  show={showSwitchButtons}
+                  show={true}
                   activeButton={activeButton}
                 />
                 <ButtonMUI
-                  disabled
+                  disabled={isEqual(this.sumSameCoins(assets), storeData)}
                   color="primary"
                   style={{
                     alignSelf: 'center',

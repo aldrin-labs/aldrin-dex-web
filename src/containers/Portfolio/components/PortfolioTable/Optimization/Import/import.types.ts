@@ -2,7 +2,7 @@ export interface IProps {
   isShownMocks: boolean
   startDate: number
   endDate: number
-  data?: object
+  data?: { getProfile: object }
   storeData: IData[]
   updateData: Function
   transformData: Function

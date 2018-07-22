@@ -231,7 +231,7 @@ const Col = styled.div`
 `
 
 const Body = styled.div`
-  width: 95%;
+  width: 98%;
   border-radius: 2px;
   display: flex;
   font-size: 0.8rem;
