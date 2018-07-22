@@ -19,10 +19,10 @@ class Import extends PureComponent<IProps> {
           (el, inx) =>
             inx === index
               ? Object.assign(el, {
-                coin: el.coin,
-                percentage:
-                  Number(asset.percentage) + Number(data[index].percentage),
-              })
+                  coin: el.coin,
+                  percentage:
+                    Number(asset.percentage) + Number(data[index].percentage),
+                })
               : el
         )
       } else {
@@ -78,7 +78,7 @@ class Import extends PureComponent<IProps> {
       onBtnClick,
       percentages,
       activeButton,
-      showSwitchButtons // optimizedData.length >= 1
+      showSwitchButtons, // optimizedData.length >= 1
     } = this.props
 
     const data: IData[] = this.props.transfromData(
@@ -90,6 +90,13 @@ class Import extends PureComponent<IProps> {
         {(client) => (
           <>
             <InputContainer>
+              <SwitchButtons
+                btnClickProps={client}
+                onBtnClick={onBtnClick}
+                values={percentages}
+                show={showSwitchButtons}
+                activeButton={activeButton}
+              />
               <Button onClick={this.importPortfolio}>Import Portfolio</Button>
               <Input
                 type="number"
@@ -106,7 +113,7 @@ class Import extends PureComponent<IProps> {
                     query: OPTIMIZE_PORTFOLIO,
                     variables: {
                       expectedPct: 0.15,
-                      coinList: ["BTC", "ETH", "LTC"], // storeData.map(data: IData=> data.coin)
+                      coinList: ['BTC', 'ETH', 'LTC'], // storeData.map(data: IData=> data.coin)
                       startDate: 1531441380,
                       endDate: 1531873380,
                     },
@@ -120,13 +127,7 @@ class Import extends PureComponent<IProps> {
                 Optimize Portfolio
               </Button>
             </InputContainer>
-            <SwitchButtons
-                    btnClickProps={client}
-                    onBtnClick={onBtnClick}
-                    values={percentages}
-                    show={showSwitchButtons}
-                    activeButton={activeButton}
-                  />
+
             <TableContainer>
               <Table
                 onPlusClick={this.addRow}
@@ -147,6 +148,7 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 300px;
 
   @media (max-width: 1080px) {
     margin: auto;

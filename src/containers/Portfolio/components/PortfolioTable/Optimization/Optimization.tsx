@@ -354,7 +354,7 @@ const Content = styled.div`
 `
 
 const ImportData = styled.div`
-  width: 50%;
+  width: 80%;
   display: flex;
   margin: 0 auto;
 

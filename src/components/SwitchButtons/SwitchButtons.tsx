@@ -26,8 +26,9 @@ const SwitchButtons = (props: IProps) => (
 
 const BtnsContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
-  margin: 20px auto 20px auto;
+  margin: 20px 0 20px 0;
   max-height: 2rem;
   position: relative;
   top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
@@ -51,6 +52,10 @@ const Btn = styled.button`
     props.active ? '#4c5055' : '#4ed8da'};
   cursor: pointer;
   transition: all 0.25s linear;
+
+  &:nth-last-child(1) {
+    margin-right: 0;
+  }
 `
 
 export default SwitchButtons

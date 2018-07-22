@@ -34,10 +34,16 @@ class Table extends Component<IProps, IState> {
           <Head>
             <HeadItem>Coin</HeadItem>
             <HeadItem>Portfolio%</HeadItem>
+            <HeadItem>Optimized%</HeadItem>
           </Head>
           <Body>
             <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
 
+            <Col>
+              {data.map((item, i) => (
+                <Item key={i}>{`${Number(item.percentage).toFixed(2)}%`} </Item>
+              ))}
+            </Col>
             <Col>
               {data.map((item, i) => (
                 <Item key={i}>
