@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { ProfileQueryQuery } from '../profile-annotation'
+import { ProfileQueryQuery } from '@containers/Profile/profile-annotation'
 
 interface Props {
   coin: ProfileQueryQuery['assetById']

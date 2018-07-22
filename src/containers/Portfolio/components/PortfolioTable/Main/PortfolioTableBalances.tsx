@@ -2,22 +2,22 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 
-import { getPortfolioQuery } from '../../../api'
+import { getPortfolioQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
-import PortfolioTableMain from './PortfolioTableMain'
-import PortfolioTableSum from '../PortfolioTableSum'
-import PortfolioTableHead from './PortfolioTableHead'
+import PortfolioTableMain from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain'
+import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
+import PortfolioTableHead from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead'
 import {
   onValidateSum,
   onSortStrings,
   calcPercentage,
-} from '../../../../../utils/PortfolioTableUtils'
+} from '@utils/PortfolioTableUtils'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
-import { MOCK_DATA } from '../dataMock'
-import { Args } from '../types'
-import { IPortfolio } from '../../../interfaces'
-import { IProps, IState } from './PortfolioTableBalances.types'
-import TradeOrderHistoryTable from './TradeOrderHistory/TradeOrderHistoryTable'
+import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
+import { IPortfolio } from '@containers/Portfolio/interfaces'
+import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
+import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
 
 const defaultSelectedSum = {
   currency: '',

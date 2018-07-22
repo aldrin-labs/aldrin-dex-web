@@ -1,7 +1,7 @@
 import { createReducer } from 'redux-act'
 import { uniqWith, isEqual } from 'lodash'
 
-import * as actions from './actions'
+import * as actions from '@containers/Chart/actions'
 
 const initialState = {
   activeExchange: { index: 0, exchange: { symbol: '' } },

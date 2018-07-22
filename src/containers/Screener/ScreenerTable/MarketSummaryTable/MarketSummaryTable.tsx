@@ -5,12 +5,12 @@ import {
   IState,
   ICurrentSort,
   IMarketSummaryTableData,
-} from './MarketSummaryTable.types'
+} from '@containers/Screener/ScreenerTable/MarketSummaryTable/MarketSummaryTable.types'
 import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '../../../../components/SvgIcon/SvgIcon'
-import { tableData } from './mocks'
-import { onSortTableFull, getArrayContainsOnlyOnePropertyType, combineDataToSelect } from '../../../../utils/PortfolioTableUtils'
-import SuperSearch from './SuperSearch'
+import SvgIcon from '@components/SvgIcon/SvgIcon'
+import { tableData } from '@containers/Screener/ScreenerTable/MarketSummaryTable/mocks'
+import { onSortTableFull, getArrayContainsOnlyOnePropertyType, combineDataToSelect } from '@utils/PortfolioTableUtils'
+import SuperSearch from '@containers/Screener/ScreenerTable/MarketSummaryTable/SuperSearch'
 
 // TODO: Think about this
 let staticRows = tableData

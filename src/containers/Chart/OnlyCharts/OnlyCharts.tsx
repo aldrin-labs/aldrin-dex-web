@@ -4,13 +4,13 @@ import { Paper, Button } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { MdClear } from 'react-icons/lib/md'
 
-import * as actions from '../actions'
+import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import Switch from '@components/Switch/Switch'
-import DepthChart from '../DepthChart/DepthChart'
+import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 
-import { getFakeDepthChartData } from '../mocks'
+import { getFakeDepthChartData } from '@containers/Chart/mocks'
 
 interface IChartProps {
   currencyPair: string

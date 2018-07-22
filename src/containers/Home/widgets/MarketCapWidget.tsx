@@ -4,7 +4,7 @@ import Button from '@components/Elements/Button/Button'
 import { Link } from 'react-router-dom'
 import AreaChart from '@components/AreaChart'
 import Widget from '@components/Widget'
-import { intervalsData } from './marketCapMocks'
+import { intervalsData } from '@containers/Home/widgets/marketCapMocks'
 import { yearData } from '@containers/Profile/components/chartMocks'
 
 export const intervals = ['YTD', '1D', '7D', '1M', '1Y']

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { IState, IProps } from './portFolioHeadUpdated.types'
+import { IState, IProps } from '@containers/Portfolio/components/PortfolioTable/portFolioHeadUpdated.types'
 
 // import { ProfileQueryQuery } from '../profile-annotation'
 

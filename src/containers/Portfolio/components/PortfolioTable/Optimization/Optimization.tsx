@@ -5,15 +5,21 @@ import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
 import { ApolloConsumer } from 'react-apollo'
 
-import * as actions from '../../../actions'
-import { IState, IData, IProps } from './Optimization.types'
+import * as actions from '@containers/Portfolio/actions'
+import {
+  IState,
+  IData,
+  IProps,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
 import BarChart from '@components/BarChart/BarChart'
-import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
-import Table from './Table/Table'
-import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
-import Import from './Import/Import'
+import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
+import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
+import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
-import { OPTIMIZE_PORTFOLIO, getCoinsForOptimization } from './api'
+import {
+  OPTIMIZE_PORTFOLIO,
+  getCoinsForOptimization,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 
 class Optimization extends PureComponent<IProps, IState> {
   state = {
@@ -101,13 +107,13 @@ class Optimization extends PureComponent<IProps, IState> {
   onBtnClick = async (index: number, client: any) => {
     this.setState({ loading: true })
     this.setState({ activeButton: index })
-    console.log('onBtnClick');
+    console.log('onBtnClick')
     const { storeData, startDate, endDate } = this.props
     const { data } = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {
         expectedPct: +this.state.percentages[index] / 100,
-        coinList: ["ETH", "LTC", "BCH"],
+        coinList: ['ETH', 'LTC', 'BCH'],
         startDate: 1531441380,
         endDate: 1531873380,
       },

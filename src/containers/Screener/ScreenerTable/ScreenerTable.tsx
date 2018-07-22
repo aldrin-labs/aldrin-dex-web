@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { IProps } from './ScreenerTable.types'
-import MarketSummaryTable from './MarketSummaryTable/MarketSummaryTable'
+import { IProps } from '@containers/Screener/ScreenerTable/ScreenerTable.types'
+import MarketSummaryTable from '@containers/Screener/ScreenerTable/MarketSummaryTable/MarketSummaryTable'
 
 export default class ScreenerTable extends React.Component<IProps> {
   render() {

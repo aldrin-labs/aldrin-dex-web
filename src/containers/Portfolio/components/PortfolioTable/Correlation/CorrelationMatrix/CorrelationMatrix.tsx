@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import FullScreen from 'react-fullscreen-crossbrowser'
 
-import Table from '../CorrelationMatrixTable/CorrelationMatrixTable'
-import { IProps } from './CorrelationMatrix.types'
+import Table from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix.types'
 
 class CorrelationMatrix extends PureComponent<IProps> {
   constructor(props: IProps) {

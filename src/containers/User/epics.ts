@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable'
-import * as actions from './actions'
+import * as actions from '@containers/User/actions'
 
 export const testEpic = (action$: any) =>
   action$.ofType(actions.addExchangeKey.getType())

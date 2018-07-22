@@ -4,11 +4,11 @@ import styled from 'styled-components'
 import { compose } from 'recompose'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Switch from './SwitchWithIcons'
+import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
 
 import LineChart from '@components/LineChart'
-import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, genMocks, inds } from './mocks'
+import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
+import { MOCKS, genMocks, inds } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 import {
   IPortfolio,
   Args,
@@ -18,11 +18,11 @@ import sortIcon from '@icons/arrow.svg'
 import {
   onSortStrings,
   roundUSDOff,
-} from '../../../../../utils/PortfolioTableUtils'
-import { IState } from './PortfolioTableIndustries.types'
+} from '@utils/PortfolioTableUtils'
+import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
-import PieChartQuery from './PieChartQuery'
-import { getPortfolioQuery } from '../../../api'
+import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
+import { getPortfolioQuery } from '@containers/Portfolio/api'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },

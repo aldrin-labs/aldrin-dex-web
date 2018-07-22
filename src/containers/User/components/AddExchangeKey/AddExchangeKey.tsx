@@ -13,7 +13,7 @@ import Select from 'material-ui/Select'
 import { MenuItem } from 'material-ui/Menu'
 import { InputLabel } from 'material-ui/Input'
 
-import * as API from '../../api'
+import * as API from '@containers/User/api'
 
 const MIN_CHAR = 3
 

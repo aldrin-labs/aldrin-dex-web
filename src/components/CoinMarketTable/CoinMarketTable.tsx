@@ -3,10 +3,10 @@ import { History } from 'history'
 import styled from 'styled-components'
 import { Button as Btn } from '@material-ui/core'
 
-import Button from '../Elements/Button/Button'
+import Button from '@components/Elements/Button/Button'
 import QueryRenderer from '@components/QueryRenderer'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
-import { HomeQuery } from './api'
+import { HomeQuery } from '@components/CoinMarketTable/api'
 
 const kindBtns = ['All coins', 'Coins', 'Tokens']
 

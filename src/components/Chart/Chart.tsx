@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CHARTS_API_URL } from '../../utils/config'
+import { CHARTS_API_URL } from '@utils/config'
 
 const Wrapper = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import { getPortfolioQuery } from './annotations'
+import { getPortfolioQuery } from '@containers/Portfolio/annotations'
 
 export interface IProps {
   data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }

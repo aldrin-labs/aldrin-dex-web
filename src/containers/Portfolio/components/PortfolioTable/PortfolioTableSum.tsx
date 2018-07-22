@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
-import { IProps } from './PortfolioTableSum.types'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum.types'
 
 export default class PortfolioTableSum extends React.Component<IProps> {
   onFloorN = (x: string | number, n: number) => {

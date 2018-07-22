@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
-import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa/'
+import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa'
 import shortid from 'shortid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'
-import { IProps, IState } from './CorrelationMatrixTable.types'
+import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable.types'
 class CorrelationMatrixTable extends PureComponent<IProps, IState> {
   state: IState = {
     activeRow: null,

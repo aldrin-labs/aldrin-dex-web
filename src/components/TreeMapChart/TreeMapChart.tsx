@@ -2,8 +2,8 @@ import * as React from 'react'
 import { Treemap, makeVisFlexible, FlexibleXYPlot } from 'react-vis'
 import styled from 'styled-components'
 
-import { myData } from './mocks'
-import { State } from './types'
+import { myData } from '@components/TreeMapChart/mocks'
+import { State } from '@components/TreeMapChart/types'
 
 const FlexibleTreeMapChart = makeVisFlexible(Treemap)
 

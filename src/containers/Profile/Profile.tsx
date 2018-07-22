@@ -2,10 +2,10 @@ import * as React from 'react'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 import styled from 'styled-components'
-import ProfileHeading from './components/ProfileHeading'
-import ProfileLinks from './components/ProfileLinks'
-import ProfileChart from './components/ProfileChart'
-import { ProfileQueryQuery } from './profile-annotation'
+import ProfileHeading from '@containers/Profile/components/ProfileHeading'
+import ProfileLinks from '@containers/Profile/components/ProfileLinks'
+import ProfileChart from '@containers/Profile/components/ProfileChart'
+import { ProfileQueryQuery } from '@containers/Profile/profile-annotation'
 
 interface Props {
   data: ProfileQueryQuery

@@ -5,10 +5,10 @@ import gql from 'graphql-tag'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import { IProps } from './interfaces'
+import { IProps } from '@containers/Portfolio/interfaces'
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
-import { PortfolioTable } from './components'
+import { PortfolioTable } from '@containers/Portfolio/components'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {

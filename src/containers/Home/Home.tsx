@@ -3,11 +3,11 @@ import styled from 'styled-components'
 // import ResponsiveReactGridLayout from 'react-grid-layout'
 import { History } from 'history'
 
-import CalculatorWidget from './widgets/CalculatorWidget'
-import DominanceWidget from './widgets/DominanceWidget'
-import BitcoinPriceChartWidget from './widgets/BitcoinPriceChartWidget'
-import TreeMapWidget from './widgets/TreeMapWidget'
-import MarketCapWidget from './widgets/MarketCapWidget'
+import CalculatorWidget from '@containers/Home/widgets/CalculatorWidget'
+import DominanceWidget from '@containers/Home/widgets/DominanceWidget'
+import BitcoinPriceChartWidget from '@containers/Home/widgets/BitcoinPriceChartWidget'
+import TreeMapWidget from '@containers/Home/widgets/TreeMapWidget'
+import MarketCapWidget from '@containers/Home/widgets/MarketCapWidget'
 import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import {
   lgLayout,
@@ -16,7 +16,7 @@ import {
   smxLayout,
   xsLayout,
   xxsLayout,
-} from './layouts'
+} from '@containers/Home/layouts'
 
 import { Responsive, WidthProvider } from 'react-grid-layout'
 //

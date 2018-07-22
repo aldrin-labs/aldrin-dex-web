@@ -1,13 +1,13 @@
 import * as React from 'react'
-import { IState } from './types'
-import { ITableProps } from '../../interfaces'
-import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
-import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
-import PortfolioTableBalances from './Main/PortfolioTableBalances'
-import Optimization from './Optimization/Optimization'
-import Correlation from './Correlation/Correlation'
+import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
+import { ITableProps } from '@containers/Portfolio/interfaces'
+import PortfolioTableIndustries from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'
+import PortfolioTableRebalance from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance'
+import PortfolioTableBalances from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import Optimization from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization'
+import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
 import { Loading } from '@components/Loading/Loading'
-import PortfolioTableTabs from './PortfolioTableTabs'
+import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
 export class PortfolioTable extends React.Component<ITableProps, IState> {
   state: IState = {

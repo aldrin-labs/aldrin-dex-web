@@ -1,4 +1,4 @@
-import { IRowT } from '../types'
+import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 
 export interface IProps {
   tableData: IRowT[] | null
