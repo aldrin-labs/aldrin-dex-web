@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
-import { ApolloConsumer } from 'react-apollo'
 
 import * as actions from '@containers/Portfolio/actions'
 import {
@@ -107,7 +106,7 @@ class Optimization extends PureComponent<IProps, IState> {
     }))
   }
 
-  onBtnClick = async (index: number, client: any) => {
+  onBtnClick = async (index: number) => {
     this.setState({ loading: true })
     this.setState({ activeButton: index })
     console.log('onBtnClick')
@@ -268,22 +267,18 @@ class Optimization extends PureComponent<IProps, IState> {
     const { loading } = this.state
 
     return (
-      <ApolloConsumer>
-        {(client) => (
-          <PTWrapper>
-            <Content>
-              {children}
-              {loading ? this.renderLoading() : null}
-              <ImportData>{this.renderInput()}</ImportData>
+      <PTWrapper>
+        <Content>
+          {children}
+          {loading ? this.renderLoading() : null}
+          <ImportData>{this.renderInput()}</ImportData>
 
-              <MainArea>
-                <MainAreaUpperPart />
-                {this.renderCharts()}
-              </MainArea>
-            </Content>
-          </PTWrapper>
-        )}
-      </ApolloConsumer>
+          <MainArea>
+            <MainAreaUpperPart />
+            {this.renderCharts()}
+          </MainArea>
+        </Content>
+      </PTWrapper>
     )
   }
 }
