@@ -3,8 +3,10 @@ export interface IProps {
   startDate: number
   endDate: number
   data?: { getProfile: object }
+  optimizedData: IData[]
   storeData: IData[]
   updateData: Function
+  optimizedToState: Function
   transformData: Function
   expectedReturn: string
   optimizePortfolio: Function

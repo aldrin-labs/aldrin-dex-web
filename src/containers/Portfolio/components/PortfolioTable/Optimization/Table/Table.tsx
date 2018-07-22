@@ -35,7 +35,7 @@ class Table extends Component<IProps, IState> {
       data,
       onClickDeleteIcon,
       onPlusClick,
-      onClickDeleteAllIcon,
+      optimizedData,
     } = this.props
     if (withInput) {
       return (
@@ -46,25 +46,46 @@ class Table extends Component<IProps, IState> {
             <HeadItem>Optimized%</HeadItem>
           </Head>
           <Body>
-            <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+            <Col>
+              {data.map((item, i) => <Item key={item.coin}>{item.coin}</Item>)}
+            </Col>
 
             <Col>
               {data.map((item, i) => (
-                <Item key={i}>{`${Number(item.percentage).toFixed(2)}%`} </Item>
-              ))}
-            </Col>
-            <Col>
-              {data.map((item, i) => (
-                <Item key={i}>
+                <Item key={item.coin}>
                   {`${Number(item.percentage).toFixed(2)}%`}{' '}
-                  <StyledDeleteIcon
-                    onClick={() => {
-                      onClickDeleteIcon && onClickDeleteIcon(i)
-                    }}
-                  />
                 </Item>
               ))}
             </Col>
+
+            {/*  optimizedData */}
+            {optimizedData.length >= 1 ? (
+              <Col>
+                {optimizedData.map((item, i) => (
+                  <Item key={item.coin}>
+                    {`${Number(item.percentage).toFixed(2)}%`}{' '}
+                    <StyledDeleteIcon
+                      onClick={() => {
+                        onClickDeleteIcon && onClickDeleteIcon(i)
+                      }}
+                    />
+                  </Item>
+                ))}
+              </Col>
+            ) : (
+              <Col>
+                {data.map((item, i) => (
+                  <Item key={i}>
+                    {'-'}{' '}
+                    <StyledDeleteIcon
+                      onClick={() => {
+                        onClickDeleteIcon && onClickDeleteIcon(i)
+                      }}
+                    />{' '}
+                  </Item>
+                ))}
+              </Col>
+            )}
           </Body>
           <TableInput>
             <Item>

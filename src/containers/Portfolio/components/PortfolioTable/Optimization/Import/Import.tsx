@@ -84,8 +84,10 @@ class Import extends PureComponent<IProps> {
     const {
       expectedReturn,
       optimizePortfolio,
+      optimizedToState,
       handleChange,
-      storeData,
+      storeData, // data from redux (data from portfolio and mannualy added)
+      optimizedData,
       startDate,
       endDate,
       onBtnClick,
@@ -137,8 +139,16 @@ class Import extends PureComponent<IProps> {
                     },
                   })
 
+                  const backendDataParsed = JSON.parse(
+                    backendData.portfolioOptimization
+                  ).weights_list
+
+                  optimizedToState(backendDataParsed)
                   optimizePortfolio(
-                    JSON.parse(backendData.portfolioOptimization)
+                    backendDataParsed.find(
+                      (obj: any) =>
+                        obj.percentage_expected_returns === +expectedReturn
+                    )
                   )
                 }}
               >
@@ -152,7 +162,7 @@ class Import extends PureComponent<IProps> {
                   btnClickProps={client}
                   onBtnClick={onBtnClick}
                   values={percentages}
-                  show={true}
+                  show={showSwitchButtons}
                   activeButton={activeButton}
                 />
                 <ButtonMUI
@@ -170,6 +180,7 @@ class Import extends PureComponent<IProps> {
               <Table
                 onPlusClick={this.addRow}
                 data={storeData}
+                optimizedData={optimizedData}
                 withInput
                 onClickDeleteIcon={this.deleteRow}
                 onClickDeleteAllIcon={this.deleteAllRows}

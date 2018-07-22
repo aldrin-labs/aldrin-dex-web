@@ -29,7 +29,11 @@ class Optimization extends PureComponent<IProps, IState> {
     expectedReturn: '',
     activeButton: 2,
     percentages: [0],
+    rawOptimizedData: [],
   }
+
+  optimizedToState = (data: object[]) =>
+    this.setState({ rawOptimizedData: data })
 
   handleChange = (event: any) => {
     this.setState({
@@ -180,12 +184,11 @@ class Optimization extends PureComponent<IProps, IState> {
       endDate,
     } = this.props
 
-    console.log(percentages)
-
     return (
       <QueryRenderer
         component={Import}
         query={getCoinsForOptimization}
+        optimizedData={optimizedData}
         transformData={this.transformData}
         storeData={storeData}
         startDate={startDate}
@@ -195,6 +198,7 @@ class Optimization extends PureComponent<IProps, IState> {
         isShownMocks={isShownMocks}
         updateData={updateData}
         handleChange={this.handleChange}
+        optimizedToState={this.optimizedToState}
         // buttons props
         onBtnClick={this.onBtnClick}
         percentages={percentages}

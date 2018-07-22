@@ -11,6 +11,7 @@ export interface IState {
   expectedReturn: string
   activeButton: number
   percentages: number[]
+  rawOptimizedData: object[]
 }
 
 export interface IProps {
