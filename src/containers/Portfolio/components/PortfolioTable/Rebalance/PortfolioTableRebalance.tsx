@@ -320,6 +320,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   calculatePriceDifference = (data: IRow[]) => {
     let { staticRows } = this.state
+
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
         if (
@@ -333,38 +334,38 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
     })
 
-    // if (data.length > staticRows.length) {
-    //   data = data.map((el) => {
-    //     if (el.editable) {
-    //       console.log('editable');
-    //
-    //       const newDelta = (parseFloat((el.price)) - (parseFloat(el.deltaPrice) ? parseFloat(el.deltaPrice) : 0)).toFixed(2)
-    //       console.log('newDelta: ', newDelta);
-    //       console.log('price: ', el.price);
-    //       console.log('deltaPrice: ', el.deltaPrice);
-    //
-    //
-    //       return {
-    //         ...el,
-    //         deltaPrice: newDelta
-    //       }
-    //     }
-    //
-    //     return el
-    //   })
-    //
-    //   console.log('daata for new coins', data);
-    //
-    // }
+    console.log('data.length > staticRows.length', data.length > staticRows.length);
+
+    // TODO: Refactor this (delete newCoinsData and replace it)
+    if (data.length > staticRows.length) {
+      let arrayOfNewCoinIndexes = []
+      const newCoinsData = data
+        .filter((el, i) => {
+          if (!staticRows.some((element) => element.exchange === el.exchange && element.symbol === el.symbol)) {
+            arrayOfNewCoinIndexes.push(i)
+
+            return true
+          }
+      })
+
+      data = data.map((row, i) => {
+        if (arrayOfNewCoinIndexes.includes(i)) {
+
+          return {
+            ...row,
+            deltaPrice: (row.price - 0).toFixed(2)
+          }
+        }
+
+        return row
+      })
+    }
 
 
 
-    // console.log('data length', data.length);
-    // console.log('staticRows length', staticRows.length);
-
-
-
-    // console.log('data in caluclatePriceDiff' , data);
+    console.log('data length', data.length);
+    console.log('staticRows length', staticRows.length);
+    console.log('data in caluclatePriceDiff' , data);
 
 
     return data
