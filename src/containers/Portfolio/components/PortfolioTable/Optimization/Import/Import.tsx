@@ -67,6 +67,8 @@ class Import extends PureComponent<IProps> {
       [...this.props.storeData].filter((el, index) => i !== index)
     )
 
+  deleteAllRows = () => this.props.updateData([])
+
   render() {
     const {
       expectedReturn,
@@ -134,6 +136,7 @@ class Import extends PureComponent<IProps> {
                 data={storeData}
                 withInput
                 onClickDeleteIcon={this.deleteRow}
+                onClickDeleteAllIcon={this.deleteAllRows}
               />
             </TableContainer>
           </>
@@ -157,6 +160,10 @@ const InputContainer = styled.div`
 `
 
 const TableContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  place-content: flex-end;
+
   @media (max-width: 600px) {
     margin-top: 1rem;
   }
