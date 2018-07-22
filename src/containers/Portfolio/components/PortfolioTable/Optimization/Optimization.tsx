@@ -110,18 +110,14 @@ class Optimization extends PureComponent<IProps, IState> {
     this.setState({ loading: true })
     this.setState({ activeButton: index })
     console.log('onBtnClick')
-    const { storeData, startDate, endDate } = this.props
-    const { data } = await client.query({
-      query: OPTIMIZE_PORTFOLIO,
-      variables: {
-        expectedPct: +this.state.percentages[index] / 100,
-        coinList: ['ETH', 'LTC', 'BCH'],
-        startDate: 1531441380,
-        endDate: 1531873380,
-      },
-    })
+    const { rawOptimizedData, percentages } = this.state
+    const percentage = percentages[index]
 
-    this.optimizePortfolio(JSON.parse(data.portfolioOptimization))
+    const data = rawOptimizedData.find(
+      (el: any) => el.percentage_expected_returns === percentage
+    )
+
+    data && this.optimizePortfolio(data)
   }
 
   getPercentages = (percentage: number) => {
