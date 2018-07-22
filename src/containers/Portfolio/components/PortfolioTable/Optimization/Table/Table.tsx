@@ -3,7 +3,10 @@ import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
 
-import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
+import {
+  IProps,
+  IState,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
 
 class Table extends Component<IProps, IState> {
   state = {
@@ -184,6 +187,7 @@ const Item = styled.div`
 const HeadItem = Item.extend`
   font-weight: 500;
   font-size: 1.5rem;
+  top: -1px;
 
   &:nth-child(even) {
     background: rgb(45, 49, 54);
