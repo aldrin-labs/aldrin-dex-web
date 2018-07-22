@@ -6,6 +6,7 @@ export interface IData {
 export interface IProps {
   withInput: boolean
   onClickDeleteIcon?: Function
+  onClickDeleteAllIcon?: Function
   onPlusClick?: Function
   data: IData[]
 }
