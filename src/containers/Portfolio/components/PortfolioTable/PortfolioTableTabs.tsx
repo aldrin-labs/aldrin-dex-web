@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/supervisor-account'
 import { Button } from '@material-ui/core'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
-import { FaFilter } from 'react-icons/lib/fa'
+import { FaFilter, FaClockO } from 'react-icons/lib/fa'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Dropdown from '@components/SimpleDropDownSelector'
@@ -135,10 +135,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <ButtonContainer>
             {tab === 'correlation' || tab === 'optimization' ? (
               <>
-                <Selector
-                  correlationPeriod={correlationPeriod}
-                  setCorrelationPeriodToStore={setCorrelationPeriod}
-                />
+                <SelectorWrapper>
+                  <TimeIcon />
+                  <Selector
+                    correlationPeriod={correlationPeriod}
+                    setCorrelationPeriodToStore={setCorrelationPeriod}
+                  />
+                </SelectorWrapper>
                 {tab === 'correlation' && (
                   <StyledFullscreenButton
                     onClick={this.props.onFullscreenButtonClick}
@@ -155,8 +158,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
             {tab !== 'correlation' &&
               tab !== 'optimization' &&
-              tab !== 'rebalance' &&
-            (
+              tab !== 'rebalance' && (
                 <SwitchRefreshContainer>
                   <Switch
                     onClick={this.onToggleUSDBTC}
@@ -205,6 +207,12 @@ const FilterIcon = styled(FaFilter)`
   margin: 0 0.5rem;
 `
 
+const TimeIcon = styled(FaClockO)`
+  color: whitesmoke;
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+`
+
 const PTHeadingBlock = styled.div`
   display: flex;
   position: sticky;
@@ -242,6 +250,12 @@ const PTHeadingBlock = styled.div`
       margin-bottom: 15px;
     }
   }
+`
+const SelectorWrapper = styled.div`
+  display: flex;
+  place-items: center;
+  margin: auto 0;
+  height: 2rem;
 `
 
 const ButtonContainer = styled.div`
