@@ -157,7 +157,6 @@ const InputContainer = styled.div`
 `
 
 const TableContainer = styled.div`
-  margin: auto;
   @media (max-width: 600px) {
     margin-top: 1rem;
   }

@@ -100,13 +100,13 @@ class Optimization extends PureComponent<IProps, IState> {
   onBtnClick = async (index: number, client: any) => {
     this.setState({ loading: true })
     this.setState({ activeButton: index })
-    console.log('onBtnClick');
+    console.log('onBtnClick')
     const { storeData, startDate, endDate } = this.props
     const { data } = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {
         expectedPct: +this.state.percentages[index] / 100,
-        coinList: ["ETH", "LTC", "BCH"],
+        coinList: ['ETH', 'LTC', 'BCH'],
         startDate: 1531441380,
         endDate: 1531873380,
       },
@@ -160,7 +160,12 @@ class Optimization extends PureComponent<IProps, IState> {
 
   renderInput = () => {
     // importing stuff from backend or manually bu user
-    const { expectedReturn, percentages, activeButton, optimizedData } = this.state
+    const {
+      expectedReturn,
+      percentages,
+      activeButton,
+      optimizedData,
+    } = this.state
     const {
       isShownMocks,
       updateData,
@@ -171,10 +176,9 @@ class Optimization extends PureComponent<IProps, IState> {
 
     return (
       <QueryRenderer
-      component={Import}
-      query={getCoinsForOptimization}
-        
-      transfromData={this.transfromData}
+        component={Import}
+        query={getCoinsForOptimization}
+        transfromData={this.transfromData}
         storeData={storeData}
         startDate={startDate}
         endDate={endDate}
@@ -249,7 +253,7 @@ class Optimization extends PureComponent<IProps, IState> {
 
   render() {
     const { children } = this.props
-    const { optimizedData,  loading } = this.state
+    const { optimizedData, loading } = this.state
 
     return (
       <ApolloConsumer>
@@ -261,11 +265,7 @@ class Optimization extends PureComponent<IProps, IState> {
               <ImportData>{this.renderInput()}</ImportData>
 
               <MainArea>
-                <MainAreaUpperPart>
-           
-
-                  <Table data={optimizedData} withInput={false} />
-                </MainAreaUpperPart>
+                <MainAreaUpperPart />
                 {this.renderCharts()}
               </MainArea>
             </Content>
@@ -356,6 +356,7 @@ const Content = styled.div`
 const ImportData = styled.div`
   width: 80%;
   display: flex;
+  justify-content: center;
   margin: 0 auto;
 
   @media (max-width: 1080px) {

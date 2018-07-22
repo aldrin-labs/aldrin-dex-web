@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
+import ClearAll from 'react-icons/lib/md/clear-all'
 import AddIcon from 'react-icons/lib/md/add'
 
 import { IProps, IState } from './Table.types'
@@ -82,6 +83,8 @@ class Table extends Component<IProps, IState> {
             <Item
               style={{
                 background: 'rgb(45, 49, 54)',
+                display: 'flex',
+                justifyContent: 'space-evenly',
                 // because of nth-child(even)
               }}
             >
@@ -91,17 +94,18 @@ class Table extends Component<IProps, IState> {
                 value={this.state.value || ''}
                 onChange={this.handleChangeValue}
               /> */}
-              <StyledDeleteIcon
-                onClick={() => {
-                  onClickDeleteAllIcon && onClickDeleteAllIcon()
-                }}
-              />
               <AddStyled
                 show={!!this.state.name}
                 onClick={() => {
                   onPlusClick && onPlusClick(this.state.name, this.state.value)
                   this.setState({ name: '' })
                   this.setState({ value: '' })
+                }}
+              />
+              <StyledClearAll
+                show={data.length > 1}
+                onClick={() => {
+                  onClickDeleteAllIcon && onClickDeleteAllIcon()
                 }}
               />
             </Item>
@@ -209,6 +213,14 @@ const StyledDeleteIcon = styled(DeleteIcon)`
   ${Item}:hover & {
     opacity: 1;
   }
+`
+
+const StyledClearAll = styled(ClearAll)`
+  opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
+  cursor: pointer;
+
+  font-size: 2rem;
+  transition: opacity 0.25s ease-in;
 `
 
 const Head = styled.div`
