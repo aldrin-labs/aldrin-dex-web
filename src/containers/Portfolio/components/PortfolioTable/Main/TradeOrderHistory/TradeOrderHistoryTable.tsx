@@ -3,9 +3,9 @@ import styled, { css } from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 
-import { tradeOrderHistoryTableData } from './mocks'
+import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
 import { onSortTableFull } from '@utils/PortfolioTableUtils'
-import { IProps, IState, ICurrentSort, ITradeOrderHistoryTableData } from './TradeOrderHistoryTable.types'
+import { IProps, IState, ICurrentSort, ITradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable.types'
 import { Loading } from '@components/Loading/Loading'
 
 import QueryRenderer from '@components/QueryRenderer'

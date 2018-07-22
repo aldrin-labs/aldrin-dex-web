@@ -1,1 +1,1 @@
-export { AddExchangeKey } from './AddExchangeKey'
+export { AddExchangeKey } from '@containers/User/components/AddExchangeKey/AddExchangeKey'

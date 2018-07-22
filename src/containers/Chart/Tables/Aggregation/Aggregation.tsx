@@ -1,5 +1,5 @@
 import React from 'react'
-import { MdAddCircleOutline } from 'react-icons/lib/md/'
+import { MdAddCircleOutline } from 'react-icons/lib/md'
 import styled from 'styled-components'
 
 import { Row, Table, Head, Cell, HeadCell } from '@components/Table/Table'

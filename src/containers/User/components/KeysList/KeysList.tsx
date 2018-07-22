@@ -11,8 +11,8 @@ import Table, {
 import Paper from 'material-ui/Paper'
 import { Loading } from '@components/Loading'
 
-import { getKeysQuery } from '../../api'
-import { DeleteKeyDialog } from './'
+import { getKeysQuery } from '@containers/User/api'
+import { DeleteKeyDialog } from '@containers/User/components/KeysList'
 import QueryRenderer from '@components/QueryRenderer'
 
 class KeysListComponent extends React.Component {

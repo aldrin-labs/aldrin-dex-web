@@ -1,14 +1,14 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
-import { MdReplay } from 'react-icons/lib/md/'
+import { MdReplay } from 'react-icons/lib/md'
 import { Button as ButtonMUI } from '@material-ui/core'
 
-import Table from '../Table/Table'
+import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
-import { MOCK_DATA } from '../../dataMock'
-import { IProps, IData } from './import.types'
-import { OPTIMIZE_PORTFOLIO } from '../api'
+import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+import { IProps, IData } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/import.types'
+import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 
 class Import extends PureComponent<IProps> {
   sumSameCoins = (rawData: IData[]) => {

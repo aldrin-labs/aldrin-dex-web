@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { withErrorFallback } from '@hoc/withErrorFallback'
 
-import { KeysList, AddExchangeKey } from './components'
+import { KeysList, AddExchangeKey } from '@containers/User/components'
 import Switch from '@components/Switch/Switch'
 
 class UserContainer extends React.Component {

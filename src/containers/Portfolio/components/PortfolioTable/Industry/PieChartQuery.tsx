@@ -4,9 +4,9 @@ import QueryRenderer from '@components/QueryRenderer'
 import PieChart from '@components/PieChart'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
-import { PortfolioPieChart } from './api'
-import { PortfolioPieChartQuery } from './annotations'
-import { MOCKS } from './mocks'
+import { PortfolioPieChart } from '@containers/Portfolio/components/PortfolioTable/Industry/api'
+import { PortfolioPieChartQuery } from '@containers/Portfolio/components/PortfolioTable/Industry/annotations'
+import { MOCKS } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 
 export interface Props {
   data: PortfolioPieChartQuery

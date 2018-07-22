@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { IProps, IState } from './ScreenerSearch.types'
+import { IProps, IState } from '@containers/Screener/ScreenerSearch/ScreenerSearch.types'
 import Input from 'material-ui/Input'
 
 export default class ScreenerSearch extends React.Component<IProps, IState> {

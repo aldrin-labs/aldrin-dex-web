@@ -4,8 +4,8 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
-import { IProps, IState, IRow } from './PortfolioTableRebalance.types'
-import { mockTableData, combineToChart } from './mocks'
+import { IProps, IState, IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
+import { mockTableData, combineToChart } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
   onSortStrings,
   cloneArrayElementsOneLevelDeep,
@@ -21,11 +21,11 @@ import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
-import { Args } from '../types'
+import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 
-import { updateRebalanceMutation, getMyRebalanceQuery, getMyPortfolioQuery } from './api'
+import { updateRebalanceMutation, getMyRebalanceQuery, getMyPortfolioQuery } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },

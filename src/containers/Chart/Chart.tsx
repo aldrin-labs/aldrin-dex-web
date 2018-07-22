@@ -9,14 +9,14 @@ import {
   Aggregation,
   TradeHistoryTable,
   ExchangesTable,
-} from './Tables/Tables'
-import * as actions from './actions'
+} from '@containers/Chart/Tables/Tables'
+import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
-import OnlyCharts from './OnlyCharts/OnlyCharts'
-import { exchanges, orders, getFakeDepthChartData, orderBook } from './mocks'
+import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
+import { exchanges, orders, getFakeDepthChartData, orderBook } from '@containers/Chart/mocks'
 import Switch from '@components/Switch/Switch'
-import DepthChart from './DepthChart/DepthChart'
-import AutoSuggestSelect from './Inputs/AutoSuggestSelect/AutoSuggestSelect'
+import DepthChart from '@containers/Chart/DepthChart/DepthChart'
+import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 
 interface IState {
   view: 'onlyCharts' | 'default'

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Select, MenuItem, InputLabel } from '@material-ui/core'
 
-import { IProps } from './index.types'
+import { IProps } from '@components/SimpleDropDownSelector/index.types'
 
 class SimpleDropDownSelector extends Component<IProps> {
   render() {

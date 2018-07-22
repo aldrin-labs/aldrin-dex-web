@@ -1,4 +1,4 @@
-import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
+import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 

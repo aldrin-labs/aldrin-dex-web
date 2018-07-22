@@ -5,14 +5,14 @@ import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
 import { ApolloConsumer } from 'react-apollo'
 
-import * as actions from '../../../actions'
-import { IState, IData, IProps } from './Optimization.types'
+import * as actions from '@containers/Portfolio/actions'
+import { IState, IData, IProps } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
 import BarChart from '@components/BarChart/BarChart'
-import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
-import Table from './Table/Table'
-import Import from './Import/Import'
+import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
+import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
+import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
-import { OPTIMIZE_PORTFOLIO, getCoinsForOptimization } from './api'
+import { OPTIMIZE_PORTFOLIO, getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 
 class Optimization extends PureComponent<IProps, IState> {
   state = {

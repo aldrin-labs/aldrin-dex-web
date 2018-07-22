@@ -1,1 +1,1 @@
-export { Chart } from './chart'
+export { Chart } from '@containers/Portfolio/components/zoomableChart/chart'

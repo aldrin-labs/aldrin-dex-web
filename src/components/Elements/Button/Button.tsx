@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { Props } from './types'
+import { Props } from '@components/Elements/Button/types'
 
 export default class Button extends React.Component<Props> {
   onClick = (e: MouseEvent) => {

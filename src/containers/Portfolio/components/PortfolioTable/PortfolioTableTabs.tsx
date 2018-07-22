@@ -13,13 +13,13 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Dropdown from '@components/SimpleDropDownSelector'
 import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
-import { IProps } from './PortfolioTableTabs.types'
-import Menu from './ThreeDotsMenu'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
+import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
 
 import {
   toggleCorrelationTableFullscreen,
   filterValuesLessThen,
-} from '../../actions'
+} from '@containers/Portfolio/actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {

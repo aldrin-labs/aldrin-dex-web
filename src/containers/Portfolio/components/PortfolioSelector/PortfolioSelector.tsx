@@ -8,7 +8,7 @@ import { has } from 'lodash'
 
 import { setKeys } from '../../actions'
 import { getKeysQuery } from '../../api'
-import { IProps, IState } from './PortfolioSelector.types'
+import { IProps, IState } from '@components/PortfolioSelector/PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 
 class PortfolioSelector extends React.Component<IProps, IState> {

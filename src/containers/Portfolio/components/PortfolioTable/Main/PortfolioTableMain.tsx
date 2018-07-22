@@ -1,8 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { roundUSDOff } from '../../../../../utils/PortfolioTableUtils'
-import { IProps } from './PortfolioTableMain.types'
-import { IRowT } from '../types'
+import { roundUSDOff } from '@utils/PortfolioTableUtils'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain.types'
+import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 
 export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {

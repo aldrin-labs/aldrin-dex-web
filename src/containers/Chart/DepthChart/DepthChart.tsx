@@ -12,7 +12,7 @@ import {
 } from 'react-vis'
 import { CircularProgress, Divider } from '@material-ui/core'
 import { Loading } from '@components/Loading/Loading'
-import { abbrNum } from './depthChartUtil'
+import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 
 const axisStyle = {
   ticks: {

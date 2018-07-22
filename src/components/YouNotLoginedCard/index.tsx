@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { Card, CardContent, Typography } from '@material-ui/core'
-import { MdLock } from 'react-icons/lib/md/'
+import { MdLock } from 'react-icons/lib/md'
 
 import { Login } from '@containers/Login'
-import { IProps, IState } from './index.types'
+import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
 
 class LoginCard extends PureComponent<IProps, IState> {
   state = {

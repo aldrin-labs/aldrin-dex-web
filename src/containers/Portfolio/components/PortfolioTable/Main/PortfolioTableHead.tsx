@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import sortIcon from '../../../../../icons/arrow.svg'
-import { IState, IProps } from './PortfolioTableHead.types'
+import { IState, IProps } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead.types'
 
 const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
