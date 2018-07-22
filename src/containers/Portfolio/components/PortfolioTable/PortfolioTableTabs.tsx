@@ -7,18 +7,16 @@ import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/supervisor-account'
 import { Button } from '@material-ui/core'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
-import { FaFilter, FaClockO } from 'react-icons/lib/fa'
+import { FaFilter } from 'react-icons/lib/fa'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Dropdown from '@components/SimpleDropDownSelector'
-import Selector from './Correlation/DropDownMenu/DropDownMenu'
 import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from './PortfolioTableTabs.types'
 import Menu from './ThreeDotsMenu'
 
 import {
-  setCorrelationPeriod,
   toggleCorrelationTableFullscreen,
   filterValuesLessThen,
 } from '../../actions'
@@ -56,8 +54,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
       tab,
       portfolio,
       toggleWallets,
-      setCorrelationPeriod,
-      correlationPeriod,
+
       filterValuesLessThen,
       filterPercent,
     } = this.props
@@ -135,13 +132,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <ButtonContainer>
             {tab === 'correlation' || tab === 'optimization' ? (
               <>
-                <SelectorWrapper>
-                  <TimeIcon />
-                  <Selector
-                    correlationPeriod={correlationPeriod}
-                    setCorrelationPeriodToStore={setCorrelationPeriod}
-                  />
-                </SelectorWrapper>
+                <SelectorWrapper />
                 {tab === 'correlation' && (
                   <StyledFullscreenButton
                     onClick={this.props.onFullscreenButtonClick}
@@ -202,12 +193,6 @@ const FilterValues = styled.div`
   place-items: center;
 `
 const FilterIcon = styled(FaFilter)`
-  color: whitesmoke;
-  font-size: 1.5rem;
-  margin: 0 0.5rem;
-`
-
-const TimeIcon = styled(FaClockO)`
   color: whitesmoke;
   font-size: 1.5rem;
   margin: 0 0.5rem;
@@ -371,7 +356,6 @@ const StyledFullscreenButton = styled(Button)`
 `
 
 const mapStateToProps = (store) => ({
-  correlationPeriod: store.portfolio.correlationPeriod,
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
@@ -379,8 +363,6 @@ const mapDispatchToProps = (dispatch: any) => ({
   onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
   filterValuesLessThen: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
-  setCorrelationPeriod: (payload: any) =>
-    dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
