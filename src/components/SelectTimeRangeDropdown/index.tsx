@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
 
 import Selector from '@components/SimpleDropDownSelector'
-import { setCorrelationPeriod } from '@containers/Portfolio/actions'
-
-export interface IProps {
-  period: string
-  setPeriodToStore: Function
-}
+import { IProps } from './index.types'
 
 class DropDownMenu extends Component<IProps> {
+  // days are minus ten from now I dunno why
   optionsMap: { [id: string]: any } = {
     lastWeek: () => ({
       startDate: this.daysFromNow(-17),
