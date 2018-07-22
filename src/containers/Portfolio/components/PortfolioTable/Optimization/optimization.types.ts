@@ -6,6 +6,7 @@ export interface IData {
 export interface IState {
   loading: boolean
   risk: number[]
+  returns: number[]
   optimizedData: IData[]
   rawDataBeforeOptimization: IData[]
   expectedReturn: string

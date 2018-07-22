@@ -14,15 +14,13 @@ import BarChart from '@components/BarChart/BarChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
-import {
-  OPTIMIZE_PORTFOLIO,
-  getCoinsForOptimization,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
+import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 
 class Optimization extends PureComponent<IProps, IState> {
   state = {
     loading: false,
     risk: [],
+    returns: [0],
     optimizedData: [],
     rawDataBeforeOptimization: [],
     expectedReturn: '',
@@ -45,6 +43,7 @@ class Optimization extends PureComponent<IProps, IState> {
       !(this.state.expectedReturn === '' || this.props.storeData.length < 1)
     ) {
       if (this.props.isShownMocks) {
+        //  this part outdated
         const risk = [
           +(Math.random() * 100).toFixed(2),
           +(Math.random() * 100).toFixed(2),
@@ -75,7 +74,10 @@ class Optimization extends PureComponent<IProps, IState> {
                 percentage: Math.max(+weight * 100, 0.01),
               })
             ),
-            risk: data.risk,
+            risk: this.state.rawOptimizedData.map((el: any) => el.risk * 100),
+            returns: this.state.rawOptimizedData.map(
+              (el: any) => el.returns * 100
+            ),
             rawDataBeforeOptimization: this.props.storeData,
           },
           () => console.log(this.state)
@@ -210,6 +212,7 @@ class Optimization extends PureComponent<IProps, IState> {
       rawDataBeforeOptimization,
       activeButton,
       risk,
+      returns,
     } = this.state
 
     const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
@@ -239,6 +242,10 @@ class Optimization extends PureComponent<IProps, IState> {
       risk,
       activeButton,
     }
+
+    // console.log(efficientFrontierData.percentages)
+    // console.log(this.state.percentages)
+    // console.log(this.state.returns)
 
     return (
       <ChartsContainer>
