@@ -5,8 +5,6 @@ import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/supervisor-account'
-import { Button } from '@material-ui/core'
-import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 import { FaFilter } from 'react-icons/lib/fa'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
@@ -130,18 +128,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
           ) : null}
 
           <ButtonContainer>
-            {tab === 'correlation' || tab === 'optimization' ? (
-              <>
-                {tab === 'correlation' && (
-                  <StyledFullscreenButton
-                    onClick={this.props.onFullscreenButtonClick}
-                  >
-                    <FullScreenIcon />
-                  </StyledFullscreenButton>
-                )}
-              </>
-            ) : null}
-
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
             {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
             {/*</ToggleBtn>*/}
@@ -337,23 +323,11 @@ const SwitchRefreshContainer = styled.div`
   }
 `
 
-const StyledFullscreenButton = styled(Button)`
-  z-index: 100;
-  color: #fff;
-
-  && {
-    font-size: 2rem;
-    margin: auto 1rem;
-    width: 2rem;
-  }
-`
-
 const mapStateToProps = (store) => ({
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
   filterValuesLessThen: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
 })

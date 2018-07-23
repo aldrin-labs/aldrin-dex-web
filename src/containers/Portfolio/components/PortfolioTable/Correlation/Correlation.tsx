@@ -19,7 +19,10 @@ import {
 import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import { toggleCorrelationTableFullscreen } from '@containers/Portfolio/actions'
-import { getCorrelationQuery, CORRELATION_UPDATE } from '@containers/Portfolio/api'
+import {
+  getCorrelationQuery,
+  CORRELATION_UPDATE,
+} from '@containers/Portfolio/api'
 
 class Correlation extends React.Component<IProps, IState> {
   renderPlaceholder = () => (
@@ -39,7 +42,10 @@ class Correlation extends React.Component<IProps, IState> {
   render() {
     const { children, isFullscreenEnabled } = this.props
     let data = {}
-    if (typeof this.props.data.correlationMatrixByDay === 'string' && this.props.data.correlationMatrixByDay.length > 0) {
+    if (
+      typeof this.props.data.correlationMatrixByDay === 'string' &&
+      this.props.data.correlationMatrixByDay.length > 0
+    ) {
       data = JSON.parse(this.props.data.correlationMatrixByDay)
     } else {
       data = this.props.data.correlationMatrixByDay
@@ -73,8 +79,8 @@ class Correlation extends React.Component<IProps, IState> {
         /> */}
                 </>
               ) : (
-                  this.renderPlaceholder()
-                )}
+                this.renderPlaceholder()
+              )}
             </PTWrapper>
           )
         }}
@@ -110,16 +116,16 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             children={children}
           />
         ) : (
-            <QueryRenderer
-              component={Correlation}
-              query={getCorrelationQuery}
-              variables={{
-                startDate: 1531441380,
-                endDate: 1531873380,
-              }}
-              {...this.props}
-            />
-          )}
+          <QueryRenderer
+            component={Correlation}
+            query={getCorrelationQuery}
+            variables={{
+              startDate: 1531441380,
+              endDate: 1531873380,
+            }}
+            {...this.props}
+          />
+        )}
       </Wrapper>
     )
   }
