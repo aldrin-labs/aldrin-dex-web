@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
+import { isEqual } from 'lodash'
 
 import * as actions from '@containers/Portfolio/actions'
 import {
@@ -233,6 +234,7 @@ class Optimization extends PureComponent<IProps, IState> {
       risk,
       returns,
     } = this.state
+    const { storeData } = this.props
 
     const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
       x: el.coin,
@@ -256,10 +258,25 @@ class Optimization extends PureComponent<IProps, IState> {
       },
     ]
 
-    const efficientFrontierData = {
+    let efficientFrontierData = {
       percentages: returns,
       risk,
       activeButton,
+    }
+
+    let showBarChartPlaceholder = false
+    if (
+      !isEqual(
+        storeData.map((el: IData) => el.coin).sort(),
+        optimizedData.map((el: IData) => el.coin).sort()
+      )
+    ) {
+      showBarChartPlaceholder = true
+      efficientFrontierData = {
+        percentages: [],
+        risk: [],
+        activeButton,
+      }
     }
 
     return (
@@ -267,7 +284,9 @@ class Optimization extends PureComponent<IProps, IState> {
         <Chart>
           <BarChart
             height={300}
-            showPlaceholder={optimizedData.length < 1}
+            showPlaceholder={
+              optimizedData.length < 1 || showBarChartPlaceholder
+            }
             charts={barChartData}
           />
         </Chart>
