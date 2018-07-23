@@ -18,13 +18,16 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
 import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
-import { toggleCorrelationTableFullscreen } from '@containers/Portfolio/actions'
+import {
+  toggleCorrelationTableFullscreen,
+  setCorrelationPeriod,
+} from '@containers/Portfolio/actions'
 import {
   getCorrelationQuery,
   CORRELATION_UPDATE,
 } from '@containers/Portfolio/api'
 
-class Correlation extends React.Component<IProps, IState> {
+class Correlation extends React.Component<IProps> {
   renderPlaceholder = () => (
     <>
       <LinearProgress color="secondary" />
@@ -40,7 +43,12 @@ class Correlation extends React.Component<IProps, IState> {
   )
 
   render() {
-    const { children, isFullscreenEnabled } = this.props
+    const {
+      children,
+      isFullscreenEnabled,
+      period,
+      setCorrelationPeriod,
+    } = this.props
     let data = {}
     if (
       typeof this.props.data.correlationMatrixByDay === 'string' &&
@@ -70,6 +78,8 @@ class Correlation extends React.Component<IProps, IState> {
                       //   : data
                       data
                     }
+                    period={period}
+                    setCorrelationPeriod={setCorrelationPeriod}
                   />
 
                   {/* <HeatMapChart
@@ -167,10 +177,13 @@ const mapStateToProps = (store: any) => ({
   isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
+  period: store.portfolio.correlationPeriod,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
+  setCorrelationPeriod: (payload: object) =>
+    dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(

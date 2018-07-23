@@ -14,7 +14,16 @@ class CorrelationMatrix extends PureComponent<IProps> {
   }
 
   render() {
-    const { isFullscreenEnabled, data, fullScreenChangeHandler } = this.props
+    const {
+      isFullscreenEnabled,
+      data,
+      fullScreenChangeHandler,
+      setCorrelationPeriod,
+      period,
+    } = this.props
+
+    console.log(setCorrelationPeriod)
+    console.log(period)
 
     return (
       <ScrolledWrapper>
@@ -51,7 +60,8 @@ class CorrelationMatrix extends PureComponent<IProps> {
                   maxWidth: '10rem',
                   marginTop: '2rem',
                 }}
-                period="lastDay"
+                setPeriodToStore={setCorrelationPeriod}
+                period={period}
               />
             </ButtonsWrapper>
             <Table
