@@ -47,6 +47,7 @@ class DropDownMenu extends Component<IProps> {
         style={{
           alignSelf: 'center',
           height: '100%',
+          width: '100%',
           ...style,
         }}
         name="correlationPeriod"

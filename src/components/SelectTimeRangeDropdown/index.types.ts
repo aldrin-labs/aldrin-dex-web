@@ -1,5 +1,5 @@
 export interface IProps {
-  period: string
   style?: object
+  period: 'lastWeek' | 'lastDay' | 'lastMonth'
   setPeriodToStore: Function
 }

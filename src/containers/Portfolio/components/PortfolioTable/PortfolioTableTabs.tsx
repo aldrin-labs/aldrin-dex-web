@@ -221,6 +221,12 @@ const PTHeadingBlock = styled.div`
     }
   }
 `
+const SelectorWrapper = styled.div`
+  display: flex;
+  place-items: center;
+  margin: auto 0;
+  height: 2rem;
+`
 
 const ButtonContainer = styled.div`
   display: flex;

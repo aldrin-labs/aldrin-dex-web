@@ -3,7 +3,10 @@ import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
 
-import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
+import {
+  IProps,
+  IState,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
 
 class Table extends Component<IProps, IState> {
   state = {
@@ -27,33 +30,67 @@ class Table extends Component<IProps, IState> {
   }
 
   render() {
-    const { withInput, data, onClickDeleteIcon, onPlusClick } = this.props
+    const {
+      withInput,
+      data,
+      onClickDeleteIcon,
+      onPlusClick,
+      optimizedData,
+    } = this.props
     if (withInput) {
       return (
         <StyledTable>
           <Head>
             <HeadItem>Coin</HeadItem>
             <HeadItem>Portfolio%</HeadItem>
+            <HeadItem>Optimized%</HeadItem>
           </Head>
           <Body>
-            <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+            <Col>
+              {data.map((item, i) => <Item key={item.coin}>{item.coin}</Item>)}
+            </Col>
 
             <Col>
               {data.map((item, i) => (
-                <Item key={i}>
+                <Item key={item.coin}>
                   {`${Number(item.percentage).toFixed(2)}%`}{' '}
-                  <StyledDeleteIcon
-                    onClick={() => {
-                      onClickDeleteIcon && onClickDeleteIcon(i)
-                    }}
-                  />
                 </Item>
               ))}
             </Col>
+
+            {/*  optimizedData */}
+            {optimizedData.length >= 1 ? (
+              <Col>
+                {optimizedData.map((item, i) => (
+                  <Item key={item.coin}>
+                    {`${Number(item.percentage).toFixed(2)}%`}{' '}
+                    <StyledDeleteIcon
+                      onClick={() => {
+                        onClickDeleteIcon && onClickDeleteIcon(i)
+                      }}
+                    />
+                  </Item>
+                ))}
+              </Col>
+            ) : (
+              <Col>
+                {data.map((item, i) => (
+                  <Item key={i}>
+                    {'-'}{' '}
+                    <StyledDeleteIcon
+                      onClick={() => {
+                        onClickDeleteIcon && onClickDeleteIcon(i)
+                      }}
+                    />{' '}
+                  </Item>
+                ))}
+              </Col>
+            )}
           </Body>
           <TableInput>
             <Item>
               <Input
+                placeholder="Coin"
                 type="text"
                 value={this.state.name || ''}
                 onChange={this.handleChangeName}
@@ -64,14 +101,17 @@ class Table extends Component<IProps, IState> {
                 background: 'rgb(45, 49, 54)',
                 // because of nth-child(even)
               }}
+            />
+            <Item
+              style={{
+                background: 'rgb(45, 49, 54)',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                // because of nth-child(even)
+              }}
             >
-              <Input
-                type="number"
-                value={this.state.value || ''}
-                onChange={this.handleChangeValue}
-              />
               <AddStyled
-                show={!!this.state.name}
+                show={true}
                 onClick={() => {
                   onPlusClick && onPlusClick(this.state.name, this.state.value)
                   this.setState({ name: '' })
@@ -147,7 +187,7 @@ const Item = styled.div`
   justify-content: center;
   padding: 0.5rem;
   font-family: Roboto, sans-serif;
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   font-weight: normal;
   text-align: center;
   display: flex;
@@ -167,29 +207,20 @@ const Item = styled.div`
 
 const HeadItem = Item.extend`
   font-weight: 500;
+  font-size: 1.5rem;
+  top: -1px;
 
   &:nth-child(even) {
     background: rgb(45, 49, 54);
   }
 `
-const StyledDeleteIcon = styled(DeleteIcon)`
-  opacity: 0;
-  cursor: pointer;
-  position: absolute;
-  right: 0.5rem;
-  font-size: 1rem;
-  transition: opacity 0.3s ease-in;
-
-  ${Item}:hover & {
-    opacity: 1;
-  }
-`
 
 const Head = styled.div`
   display: flex;
+  width: 95%;
   flex-direction: row;
   justify-content: center;
-  width: 192px;
+  max-width: 50rem;
   margin: 0.5rem;
   border-bottom: 1px solid white;
 `
@@ -199,7 +230,7 @@ const TableInput = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 192px;
+  width: 95%;
 `
 const StyledTable = styled.div`
   display: flex;
@@ -221,13 +252,13 @@ const Col = styled.div`
 `
 
 const Body = styled.div`
-  width: 100%;
+  width: 98%;
   border-radius: 2px;
   display: flex;
   font-size: 0.8rem;
   margin: 0.5rem;
   line-height: 1.5;
-  max-width: 200px;
+  max-width: 50rem;
   max-height: 200px;
   overflow: auto;
 
@@ -241,6 +272,19 @@ const Body = styled.div`
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
+  }
+`
+
+const StyledDeleteIcon = styled(DeleteIcon)`
+  opacity: 0;
+  cursor: pointer;
+  position: absolute;
+  right: 0.5rem;
+  font-size: 2rem;
+  transition: opacity 0.3s ease-in;
+
+  ${Body}:hover & {
+    opacity: 1;
   }
 `
 
