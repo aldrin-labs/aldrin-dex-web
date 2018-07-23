@@ -149,15 +149,6 @@ class PortfolioChart extends React.Component<Props, State> {
                             }}
                         />
                     </FlexibleXYPlot>
-
-                    {lastDrawLocation ? (
-                        <ul style={{ listStyle: 'none' }}>
-                            <li><b>Top:</b> {lastDrawLocation.top}</li>
-                            <li><b>Right:</b> {lastDrawLocation.right}</li>
-                            <li><b>Bottom:</b> {lastDrawLocation.bottom}</li>
-                            <li><b>Left:</b> {lastDrawLocation.left}</li>
-                        </ul>
-                    ) : <span>N/A</span>}
                 </Chart>
 
                 <Hr marginTopHr={marginTopHr} />
@@ -264,7 +255,6 @@ export default class GQLChart extends React.Component {
                     if (result.data && result.data.getPriceHistory && result.data.getPriceHistory.prices && result.data.getPriceHistory.prices.length > 0) {
                         const Yvalues = result.data.getPriceHistory.prices.map(x => x);
                         data = result.data.getPriceHistory.dates.map((date, i) => ({ x: Number(date), y: Yvalues[i] }));
-                        console.log(data[0]);
                     }
                     return (
                         <PortfolioChart
