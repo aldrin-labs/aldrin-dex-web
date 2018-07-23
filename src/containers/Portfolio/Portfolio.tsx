@@ -38,10 +38,7 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 
   render() {
-    const {
-      keys,
-      login,
-    } = this.props
+    const { keys, login } = this.props
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
@@ -82,9 +79,7 @@ const mapStateToProps = (store) => ({
   login: store.login.loginStatus,
 })
 
-export default compose(
-  connect(mapStateToProps)
-)(PortfolioComponent)
+export default compose(connect(mapStateToProps))(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
@@ -101,5 +96,5 @@ const Backdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 1000;
 `
