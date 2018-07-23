@@ -11,6 +11,7 @@ import {
   cloneArrayElementsOneLevelDeep,
 } from '@utils/PortfolioTableUtils'
 
+import SelectReact, { components } from 'react-select'
 import PieChart from '@components/PieChart'
 import sortIcon from '@icons/arrow.svg'
 
@@ -24,6 +25,9 @@ import ClearIcon from 'material-ui-icons/Clear'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
+import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
+import {exchangeOptions, coinsOptions} from './mocks'
+
 
 import { updateRebalanceMutation, getMyRebalanceQuery, getMyPortfolioQuery } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
 
@@ -320,6 +324,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   calculatePriceDifference = (data: IRow[]) => {
     let { staticRows } = this.state
+
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
         if (
@@ -333,38 +338,38 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
     })
 
-    // if (data.length > staticRows.length) {
-    //   data = data.map((el) => {
-    //     if (el.editable) {
-    //       console.log('editable');
-    //
-    //       const newDelta = (parseFloat((el.price)) - (parseFloat(el.deltaPrice) ? parseFloat(el.deltaPrice) : 0)).toFixed(2)
-    //       console.log('newDelta: ', newDelta);
-    //       console.log('price: ', el.price);
-    //       console.log('deltaPrice: ', el.deltaPrice);
-    //
-    //
-    //       return {
-    //         ...el,
-    //         deltaPrice: newDelta
-    //       }
-    //     }
-    //
-    //     return el
-    //   })
-    //
-    //   console.log('daata for new coins', data);
-    //
-    // }
+    console.log('data.length > staticRows.length', data.length > staticRows.length);
+
+    // TODO: Refactor this (delete newCoinsData and replace it)
+    if (data.length > staticRows.length) {
+      let arrayOfNewCoinIndexes = []
+      const newCoinsData = data
+        .filter((el, i) => {
+          if (!staticRows.some((element) => element.exchange === el.exchange && element.symbol === el.symbol)) {
+            arrayOfNewCoinIndexes.push(i)
+
+            return true
+          }
+      })
+
+      data = data.map((row, i) => {
+        if (arrayOfNewCoinIndexes.includes(i)) {
+
+          return {
+            ...row,
+            deltaPrice: (row.price - 0).toFixed(2)
+          }
+        }
+
+        return row
+      })
+    }
 
 
 
-    // console.log('data length', data.length);
-    // console.log('staticRows length', staticRows.length);
-
-
-
-    // console.log('data in caluclatePriceDiff' , data);
+    console.log('data length', data.length);
+    console.log('staticRows length', staticRows.length);
+    console.log('data in caluclatePriceDiff' , data);
 
 
     return data
@@ -884,6 +889,71 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       }
     )
   }
+  // TODO: Should be one function
+  handleSelectChangeWithoutInputExchange(
+    idx: number,
+    optionSelected: { label: string; value: string } | null
+  ) {
+    const { rows } = this.state
+    const value = optionSelected ? optionSelected.value : ''
+    const clonedRows = rows.map((a) => ({ ...a }))
+
+
+    console.log('handleSelectChange idx: ', idx);
+
+    console.log('handleSelectChange value: ', value);
+
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        exchange: value,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    this.setState({
+      rows: resultRows,
+    }, () => {
+      console.log('this.state.rows', this.state.rows);
+
+    })
+
+  }
+
+  // TODO: Should be one function
+  handleSelectChangeWithoutInputCoin(
+    idx: number,
+    optionSelected: { label: string; value: string } | null
+  ) {
+    const { rows } = this.state
+    const value = optionSelected ? optionSelected.value : ''
+    const clonedRows = rows.map((a) => ({ ...a }))
+
+
+    console.log('handleSelectChange idx: ', idx);
+
+    console.log('handleSelectChange value: ', value);
+
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        symbol: value,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    this.setState({
+      rows: resultRows,
+    }, () => {
+      console.log('this.state.rows', this.state.rows);
+
+    })
+
+  }
 
   onEditCoinName = (e: any, idx: number) => {
     const { rows } = this.state
@@ -1017,6 +1087,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     this.setState({ [currentRowsForSortText]: newData })
   }
+
 
   render() {
     console.log('dataFromServer in render: ', this.props.data)
@@ -1170,7 +1241,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                   <PTR>
                     <PTHC>All</PTHC>
                     <PTHC>-</PTHC>
-                    <PTHC>-</PTHC>
+                    <PTHC>100%</PTHC>
                     <PTHC>
                       {mainSymbol}
                       {`${parseFloat(totalStaticRows).toLocaleString('en-US')}`}
@@ -1278,12 +1349,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     let deltaPriceString = ''
 
+                    // parseFloat(price).toLocaleString('en-US')
+
                     if (+deltaPrice) {
                       if (deltaPrice > 0) {
-                        deltaPriceString = `BUY ${symbol} ${deltaPrice} $`
+                        deltaPriceString = `BUY ${symbol} ${parseFloat(deltaPrice).toLocaleString('en-US')} $`
                       } else {
-                        deltaPriceString = `SELL ${symbol} ${Math.abs(
-                          deltaPrice
+                        deltaPriceString = `SELL ${symbol} ${parseFloat(Math.abs(
+                          deltaPrice).toLocaleString('en-US')
                         )} $`
                       }
                     }
@@ -1317,14 +1390,25 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                           if (isNewCoinName) {
                             return (
-                              <PTDR key={`NameCoin${idx}`}>
-                                <InputTable
-                                  key={`inputNameCoin${rowIndex}`}
-                                  isPercentSumGood={true}
-                                  value={this.state.rows[rowIndex].exchange}
-                                  onChange={(e) =>
-                                    this.onEditCoinName(e, rowIndex)
-                                  }
+                              <PTDR key={`NameExchange${idx}`} containSelect>
+                                {/*<InputTable*/}
+                                  {/*key={`inputNameCoin${rowIndex}`}*/}
+                                  {/*isPercentSumGood={true}*/}
+                                  {/*value={this.state.rows[rowIndex].exchange}*/}
+                                  {/*onChange={(e) =>*/}
+                                    {/*this.onEditCoinName(e, rowIndex)*/}
+                                  {/*}*/}
+                                {/*/>*/}
+                                <SelectR
+                                  key={`inputNameExchange${rowIndex}`}
+                                  styles={customStyles}
+                                  isClearable
+                                  isSearchable
+                                  options={exchangeOptions}
+                                  components={{ DropdownIndicator }}
+                                  onChange={this.handleSelectChangeWithoutInputExchange.bind(
+                                    this, rowIndex
+                                  )}
                                 />
                               </PTDR>
                             )
@@ -1332,14 +1416,25 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                           if (isNewCoinSymbol) {
                             return (
-                              <PTDR key={`CoinSymbol${idx}`}>
-                                <InputTable
+                              <PTDR key={`CoinSymbol${idx}`} containSelect>
+                                {/*<InputTable*/}
+                                  {/*key={`inputCoinSymbol${rowIndex}`}*/}
+                                  {/*isPercentSumGood={true}*/}
+                                  {/*value={this.state.rows[rowIndex].symbol}*/}
+                                  {/*onChange={(e) =>*/}
+                                    {/*this.onEditCoinSymbol(e, rowIndex)*/}
+                                  {/*}*/}
+                                {/*/>*/}
+                                <SelectR
                                   key={`inputCoinSymbol${rowIndex}`}
-                                  isPercentSumGood={true}
-                                  value={this.state.rows[rowIndex].symbol}
-                                  onChange={(e) =>
-                                    this.onEditCoinSymbol(e, rowIndex)
-                                  }
+                                  styles={customStyles}
+                                  isClearable
+                                  isSearchable
+                                  options={coinsOptions}
+                                  components={{ DropdownIndicator }}
+                                  onChange={this.handleSelectChangeWithoutInputCoin.bind(
+                                    this, rowIndex
+                                  )}
                                 />
                               </PTDR>
                             )
@@ -1495,7 +1590,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 {
                   <UndistributedMoneyContainer>
                     <UndistributedMoneyText>
-                      Undistributed money: {undistributedMoney}
+                      Undistributed money: {parseFloat(undistributedMoney).toLocaleString('en-US')}
                     </UndistributedMoneyText>
                     <Button
                       disabled={undistributedMoney < 0}
@@ -1649,7 +1744,6 @@ const PTD = css`
   font-size: 12px;
   line-height: 24px;
   padding: 1.75px 16px 1.75px 10px;
-  overflow: hidden;
   white-space: nowrap;
 
   & svg {
@@ -1661,6 +1755,8 @@ const PTD = css`
 const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
+  overflow: hidden;
+
 
   &:nth-child(2) {
     min-width: 70px;
@@ -1694,7 +1790,9 @@ const PTDC = styled.td`
 `
 
 const PTDREditMode = css`
-  ${PTD} &:nth-child(1) {
+  ${PTD};
+     
+  &:nth-child(1) {
     padding: 1.75px 10px;
   }
 
@@ -1702,7 +1800,7 @@ const PTDREditMode = css`
     min-width: 100px;
   }
   &:nth-child(3) {
-    min-width: 70px;
+    min-width: 100px;
   }
   &:nth-child(4) {
     text-align: right;
@@ -1760,6 +1858,10 @@ const PTDRNoEditMode = css`
 `
 const PTDR = styled.td`
   ${PTD};
+  
+  overflow: ${(props: { containSelect?: boolean }) =>
+  props.containSelect ? 'visible' : 'hidden'};
+  
 `
 
 const PTBody = styled.tbody`
@@ -1833,7 +1935,7 @@ const PTHREditMode = css`
   }
 
   &:nth-child(3) {
-    min-width: 70px;
+    min-width: 100px;
   }
 
   &:nth-child(4),
@@ -2188,3 +2290,146 @@ const PTextBox = styled.div`
   align-items: center;
   background-color: #2d3136;
 `
+
+
+const SelectR = styled(SelectReact)`
+  max-width: 100px;
+  font-family: Roboto;
+  font-size: 12px;
+  border-bottom: 1px solid #c1c1c1;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-bottom: 1px solid #fff;
+  }
+
+  & + & {
+    margin-left: 25px;
+  }
+`
+
+const customStyles = {
+  control: () => {
+    return {
+      position: 'relative',
+      boxSizing: 'border-box',
+      cursor: 'default',
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      outline: '0',
+      transition: 'all 100ms',
+      backgroundColor: 'transparent',
+      minHeight: '0.8em',
+      border: 'none',
+    }
+  },
+  menu: (base, state) => ({
+    ...base,
+    backgroundColor: '#424242',
+    minWidth: '150px',
+    maxHeight: '200px',
+    height: '200px',
+    top: '-100px',
+    right: '-80px',
+  }),
+  // TODO: Delete maxheight or height
+  menuList: (base, state) => ({
+    ...base,
+    maxHeight: '200px',
+    height: '200px',
+  }),
+  option: (base, state) => ({
+    ...base,
+    color: '#fff',
+    fontSize: '1.5em',
+    fontFamily: 'Roboto',
+    backgroundColor: state.isSelected
+      ? 'rgba(255, 255, 255, 0.2)'
+      : state.isFocused
+        ? 'rgba(255, 255, 255, 0.1)'
+        : '#424242',
+    [':active']: null,
+  }),
+  clearIndicator: (base, state) => {
+    return {
+      [':hover']: {
+        color: '#fff',
+      },
+      display: 'flex',
+      width: '20px',
+      boxSizing: 'border-box',
+      color: 'hsl(0, 0%, 80%)',
+      padding: '2px',
+      transition: 'color 150ms',
+    }
+  },
+  dropdownIndicator: (base, state) => ({
+    [':hover']: {
+      color: '#fff',
+    },
+    display: 'flex',
+    width: '20px',
+    boxSizing: 'border-box',
+    color: 'hsl(0, 0%, 80%)',
+    padding: '2px',
+    transition: 'color 150ms',
+  }),
+  valueContainer: (base, state) => ({
+    ...base,
+    paddingLeft: 0,
+  }),
+  singleValue: (base, state) => ({
+    ...base,
+    color: '#fff',
+    marginLeft: '0',
+  }),
+  placeholder: (base, state) => ({
+    ...base,
+    marginLeft: 0,
+  }),
+  input: (base, state) => ({
+    ...base,
+    color: '#fff',
+  }),
+  multiValue: (base, state) => ({
+    ...base,
+    [':hover']: {
+      borderColor: '#4ed8da',
+    },
+
+    color: '#fff',
+    borderRadius: '3px',
+    fontWeight: 'bold',
+    backgroundColor: '#2a2d32',
+  }),
+  multiValueLabel: (base, state) => ({
+    ...base,
+    color: '#fff',
+  }),
+  multiValueRemove: (base, state) => ({
+    ...base,
+    [':hover']: {
+      color: '#fff',
+      backgroundColor: '#4ed8da',
+    },
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+}
+
+const DropdownIndicator = (props) =>
+  components.DropdownIndicator && (
+    <components.DropdownIndicator {...props}>
+      <SvgIcon
+        src={dropDownIcon}
+        width={19}
+        height={19}
+        style={{
+          verticalAlign: 'middle',
+        }}
+      />
+    </components.DropdownIndicator>
+  )
