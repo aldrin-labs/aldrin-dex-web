@@ -24,6 +24,7 @@ const axisStyle = {
     fontSize: '12px',
     fontWeight: 100,
   },
+  title: { fontWeight: 600, fontFamily: 'Roboto', fill: '#4ed8dab8' },
 }
 
 class EfficientFrontierChart extends Component<IProps, IState> {
@@ -46,18 +47,19 @@ class EfficientFrontierChart extends Component<IProps, IState> {
 
     if (percentages.length > 1) {
       data = percentages.map((percentage, i) => ({
-        x: +Number(risk[i]).toFixed(2),
-        y: +Number(percentage).toFixed(2),
+        x: +Number(risk[i]).toFixed(6),
+        y: +Number(percentage).toFixed(6),
       }))
 
-      highlightedDotData.push(
-        data.find((asset) => asset.y === percentages[activeButton])
-      )
+      highlightedDotData.push(data[activeButton])
     }
+
+    console.log(highlightedDotData)
+    console.log(data)
 
     return (
       <Container>
-        <FlexibleXYPlot>
+        <FlexibleXYPlot margin={{ left: 80 }}>
           {highlightedDotData.length < 1 ? (
             <LineMarkSeries
               animation="gentle"
@@ -114,6 +116,7 @@ const Container = styled.div`
 `
 
 const ChartTooltip = styled.span`
+  white-space: nowrap;
   font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;

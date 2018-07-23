@@ -242,14 +242,14 @@ class Optimization extends PureComponent<IProps, IState> {
     ]
 
     const efficientFrontierData = {
-      percentages,
+      percentages: returns,
       risk,
       activeButton,
     }
 
     // console.log(efficientFrontierData.percentages)
-    // console.log(this.state.percentages)
-    // console.log(this.state.returns)
+    console.log(this.state.percentages)
+    console.log(this.state.returns)
 
     return (
       <ChartsContainer>
