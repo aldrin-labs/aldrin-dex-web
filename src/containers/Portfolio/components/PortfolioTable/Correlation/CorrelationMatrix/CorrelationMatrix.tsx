@@ -41,6 +41,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
                   : '25% 1fr',
               gridTemplateRows: '100%',
               alignItems: 'center',
+              background: '#393e44',
               // justifyItems: 'center',
             }}
             className="full-screenable-node"

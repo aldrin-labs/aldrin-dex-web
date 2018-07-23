@@ -107,7 +107,7 @@ const CenterText = styled.span``
 
 const StyledArrowRight = styled(FaAngleRight)`
   opacity: ${(props: { show?: boolean }) => (props.show ? '1' : '0')};
-  left: 0.25rem;
+  left: 0rem;
   color: #4ed8da;
   position: absolute;
   transition: opacity 0.25s ease-out;
@@ -121,18 +121,19 @@ const StyledArrowDown = styled(FaAngleDown)`
 `
 
 const GridTable = styled.div`
-  width: ${(props) => (props.isFullscreenEnabled ? '100%' : '63.5%')};
+  width: ${(props) => (props.isFullscreenEnabled ? 'auto' : '63.5%')};
+  margin: ${(props) => (props.isFullscreenEnabled ? '0 auto' : '')};
   height: 100%;
   display: grid;
   background: ${(props) =>
     props.isFullscreenEnabled ? '#393e44' : 'transparent'};
   grid-template-rows: ${(props) =>
     props.isFullscreenEnabled
-      ? `repeat(${props.rows + 1}, ${100 / (props.rows + 1)}vh)`
+      ? `repeat(${props.rows}, ${100 / props.rows}vh)`
       : `repeat(${props.rows}, 1fr)`};
   grid-template-columns: ${(props) =>
     props.isFullscreenEnabled
-      ? `repeat(${props.columns + 1}, ${100 / (props.columns + 1)}vw)`
+      ? `repeat(${props.columns}, ${100 / props.columns}vh)`
       : `repeat(${props.columns}, 1fr)`};
 `
 
@@ -207,6 +208,7 @@ const HeadCell = Cell.extend`
   background: #393e44;
   position: relative;
   position: ${(props) => (props.sticky ? 'sticky' : 'relative')};
+
   top: 0;
 `
 
