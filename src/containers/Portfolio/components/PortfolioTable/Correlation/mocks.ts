@@ -69,7 +69,7 @@ const mocks = {
       'FKeE',
       'FDeD',
       'SDeF',
-      'FSD',
+      'FS3D',
     ],
     values: [
       [1, 0.2, 0.3, 0.5431, 0.3, 0.1, 0.2, 0.3, 0.31, 0.3, 0.63, 1, 1, 1, 1, 1],
@@ -201,7 +201,7 @@ const mocks = {
         1,
       ],
       [-0.981, 0.2, 0.3, 0.141, 0.3, 0.1, 0.2, 0.3, 1, 1, 0.63, 1, 1, 1, 1, 1],
-      [0.1, -0.112, 0.3, 0.41, 0.3, 0.1, 0.2, 0.3, 1, 0.3, 1, 1, 1, 1, 1, 1],
+
       [
         0.1,
         0.2,
@@ -280,4 +280,4 @@ const mocks = {
   },
 }
 
-export const CorrelationMatrixMockData = mocks['5']
+export const CorrelationMatrixMockData = mocks['15']

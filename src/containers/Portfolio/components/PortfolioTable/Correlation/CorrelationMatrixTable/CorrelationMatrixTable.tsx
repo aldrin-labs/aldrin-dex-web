@@ -149,7 +149,7 @@ const CellContent = styled.div`
     props.active ? '2px solid #4ed8da' : '1px solid #292d31'};
   transition: border 0.25s ease-in-out;
 `
-
+/* tslint:disable */
 const Cell = styled.div`
   z-index: 100;
 
@@ -157,8 +157,17 @@ const Cell = styled.div`
   font-size: ${(props: { isFullscreenEnabled: boolean; cols: number }) => {
     const { isFullscreenEnabled, cols } = props
 
+    if (!isFullscreenEnabled && cols > 1 && cols < 5) {
+      return '2rem'
+    }
+    if (!isFullscreenEnabled && cols >= 5 && cols < 10) {
+      return '1.5rem'
+    }
+    if (!isFullscreenEnabled && cols >= 10 && cols < 16) {
+      return '0.7rem'
+    }
     if (!isFullscreenEnabled) {
-      return '1rem'
+      return '0.4rem'
     }
 
     if (isFullscreenEnabled && cols > 1 && cols < 5) {
