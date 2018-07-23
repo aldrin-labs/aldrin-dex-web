@@ -5,6 +5,8 @@ export interface IData {
 
 export interface IState {
   loading: boolean
+  openWarning: boolean
+  warningMessage: string
   risk: number[]
   returns: number[]
   optimizedData: IData[]

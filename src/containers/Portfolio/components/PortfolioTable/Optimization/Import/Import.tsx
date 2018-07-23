@@ -96,6 +96,7 @@ class Import extends PureComponent<IProps> {
       percentages,
       activeButton,
       showSwitchButtons, // optimizedData.length >= 1
+      showWarning,
     } = this.props
 
     let assets: IData[]
@@ -153,6 +154,10 @@ class Import extends PureComponent<IProps> {
                   })
                   console.log('Data')
                   console.log(backendData)
+
+                  if (backendData.portfolioOptimization === '') {
+                    showWarning('You get empty response! Try again!')
+                  }
 
                   const backendDataParsed = JSON.parse(
                     backendData.portfolioOptimization

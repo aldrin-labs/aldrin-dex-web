@@ -7,6 +7,7 @@ export interface IProps {
   optimizedData: IData[]
   storeData: IData[]
   updateData: Function
+  showWarning: Function
   setPeriod: Function
   optimizedToState: Function
   transformData: Function

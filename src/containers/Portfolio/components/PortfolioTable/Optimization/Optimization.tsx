@@ -15,6 +15,7 @@ import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTa
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
+import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
 
 class Optimization extends PureComponent<IProps, IState> {
   state = {
@@ -27,6 +28,8 @@ class Optimization extends PureComponent<IProps, IState> {
     activeButton: 2,
     percentages: [0],
     rawOptimizedData: [],
+    openWarning: false,
+    warningMessage: '',
   }
 
   optimizedToState = (data: object[]) =>
@@ -165,6 +168,18 @@ class Optimization extends PureComponent<IProps, IState> {
     return percetageArray
   }
 
+  showWarning = (message: string) => {
+    this.setState({ openWarning: true, warningMessage: message })
+
+    setTimeout(() => {
+      this.hideWarning()
+    }, 3000)
+  }
+
+  hideWarning = () => {
+    this.setState({ openWarning: false })
+  }
+
   renderInput = () => {
     // importing stuff from backend or manually bu user
     const {
@@ -187,6 +202,7 @@ class Optimization extends PureComponent<IProps, IState> {
       <QueryRenderer
         component={Import}
         optimizationPeriod={optimizationPeriod}
+        showWarning={this.showWarning}
         query={getCoinsForOptimization}
         setPeriod={setPeriod}
         optimizedData={optimizedData}
@@ -211,7 +227,6 @@ class Optimization extends PureComponent<IProps, IState> {
 
   renderCharts = () => {
     const {
-      percentages,
       optimizedData,
       rawDataBeforeOptimization,
       activeButton,
@@ -267,7 +282,7 @@ class Optimization extends PureComponent<IProps, IState> {
 
   render() {
     const { children } = this.props
-    const { loading } = this.state
+    const { loading, openWarning, warningMessage } = this.state
 
     return (
       <PTWrapper>
@@ -280,6 +295,11 @@ class Optimization extends PureComponent<IProps, IState> {
             <MainAreaUpperPart />
             {this.renderCharts()}
           </MainArea>
+          <Warning
+            open={openWarning}
+            messageText={warningMessage}
+            onCloseClick={this.hideWarning}
+          />
         </Content>
       </PTWrapper>
     )
