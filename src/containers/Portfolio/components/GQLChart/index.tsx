@@ -65,9 +65,13 @@ class PortfolioChart extends React.Component<Props, State> {
         this.setState({ crosshairValues: [] })
     }
 
+    _formatDate = (date) => {
+
+    }
+
     render() {
         const { crosshairValues } = this.state
-        const { coin, style, height, marginTopHr, lastDrawLocation } = this.props
+        const { coin, style, height, marginTopHr, lastDrawLocation, days } = this.props
         const { name = '', priceUSD = '' } = coin || {}
 
         const axisStyle = {
@@ -82,41 +86,6 @@ class PortfolioChart extends React.Component<Props, State> {
 
         return (
             <SProfileChart style={style}>
-                {/*TODO: need refactoring, need real data */}
-                {this.showSupplies && (
-                    <SuppliesBlock>
-                        <SupplyBlock>
-                            <CurrentRate>{priceUSD || '9 713,19'}</CurrentRate>
-                            <SupplyDetail>Current rate USD</SupplyDetail>
-                        </SupplyBlock>
-
-                        <SupplyBlock>
-                            <CommonRate>{'5,808 B'}</CommonRate>
-                            <SupplyDetail>Volume 24h USD</SupplyDetail>
-                        </SupplyBlock>
-
-                        <SupplyBlock>
-                            <CommonRate>{'164,3 B'}</CommonRate>
-                            <SupplyDetail>Market Cap #1 USD</SupplyDetail>
-                        </SupplyBlock>
-
-                        <SupplyBlock>
-                            <SupplyLowRate>{'904,79'}</SupplyLowRate>
-                            <SupplyDetail>Low: 25 Mar 2017</SupplyDetail>
-                        </SupplyBlock>
-
-                        <SupplyBlock>
-                            <SupplyHighRate>{'20078,10'}</SupplyHighRate>
-                            <SupplyDetail>High: 17 Dec 2017</SupplyDetail>
-                        </SupplyBlock>
-
-                        <SupplyBlock>
-                            <SupplyHighRate>{'+748,77%'}</SupplyHighRate>
-                            <SupplyDetail>Change in year USD</SupplyDetail>
-                        </SupplyBlock>
-                    </SuppliesBlock>
-                )}
-
                 <Chart
                     style={{
                         height
@@ -132,21 +101,22 @@ class PortfolioChart extends React.Component<Props, State> {
                             ]
                         }
                     >
-                        <XAxis
-                            hideLine
-                            tickFormat={(v: number) => new Date(v * 1000).toDateString()}
-                            tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
-                            labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
-                            style={axisStyle}
-                        />
                         <VerticalGridLines
                             style={{ stroke: 'rgba(134, 134, 134, 0.5)' }}
                             tickTotal={12}
-                            tickFormat={(v: number) => `$${v}`}
+                            tickFormat={(v: number) => '`$${v}`'}
                             tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
                             labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
                         />
-                        <YAxis hideTicks hideLine />
+
+                        <XAxis
+                            style={axisStyle}
+                            tickFormat={(v: number) => new Date(v * 1000).toUTCString().substring(5, 11)}
+                        />
+                        <YAxis
+                            style={axisStyle}
+                            tickFormat={(v: number) => `$${v}`}
+                        />
                         <AreaSeries
                             onNearestX={this._onNearestX}
                             data={this.props.data}
