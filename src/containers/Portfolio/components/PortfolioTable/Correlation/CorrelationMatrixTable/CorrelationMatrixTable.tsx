@@ -121,7 +121,7 @@ const StyledArrowDown = styled(FaAngleDown)`
 `
 
 const GridTable = styled.div`
-  width: 63.5%;
+  width: ${(props) => (props.isFullscreenEnabled ? '100%' : '63.5%')};
   height: 100%;
   display: grid;
   background: ${(props) =>

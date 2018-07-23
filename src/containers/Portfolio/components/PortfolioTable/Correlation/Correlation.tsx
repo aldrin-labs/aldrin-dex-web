@@ -31,14 +31,6 @@ class Correlation extends React.Component<IProps> {
   renderPlaceholder = () => (
     <>
       <LinearProgress color="secondary" />
-
-      <StyledCard>
-        <CardContent>
-          <Typography color="secondary" variant="headline">
-            Empty Here...
-          </Typography>
-        </CardContent>
-      </StyledCard>
     </>
   )
 
@@ -47,7 +39,7 @@ class Correlation extends React.Component<IProps> {
       children,
       isFullscreenEnabled,
       period,
-      setCorrelationPeriod,
+      setCorrelationPeriodToStore,
     } = this.props
     let data = {}
     if (
@@ -62,7 +54,7 @@ class Correlation extends React.Component<IProps> {
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
-          console.log(data)
+          console.log(data && data !== '')
 
           return (
             <PTWrapper>
@@ -79,7 +71,7 @@ class Correlation extends React.Component<IProps> {
                       data
                     }
                     period={period}
-                    setCorrelationPeriod={setCorrelationPeriod}
+                    setCorrelationPeriod={setCorrelationPeriodToStore}
                   />
 
                   {/* <HeatMapChart
@@ -91,6 +83,15 @@ class Correlation extends React.Component<IProps> {
               ) : (
                 this.renderPlaceholder()
               )}
+              {data === '' ? (
+                <StyledCard>
+                  <CardContent>
+                    <Typography color="secondary" variant="headline">
+                      Empty Response...
+                    </Typography>
+                  </CardContent>
+                </StyledCard>
+              ) : null}
             </PTWrapper>
           )
         }}
@@ -99,13 +100,7 @@ class Correlation extends React.Component<IProps> {
   }
 }
 
-class CorrelationWrapper extends React.Component<IProps, IState> {
-  state = {
-    startDate: 0,
-    endDate: 0,
-    period: '',
-  }
-
+class CorrelationWrapper extends React.Component<IProps> {
   render() {
     const {
       isShownMocks,
@@ -114,7 +109,10 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
       children,
       isFullscreenEnabled,
       toggleFullscreen,
+      setCorrelationPeriodToStore,
     } = this.props
+
+    console.log(setCorrelationPeriodToStore)
 
     return (
       <Wrapper>
@@ -130,7 +128,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             component={Correlation}
             query={getCorrelationQuery}
             variables={{
-              startDate: 1531441380,
+              startDate: 1, // 1531441380
               endDate: 1531873380,
             }}
             {...this.props}
@@ -182,7 +180,7 @@ const mapStateToProps = (store: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
-  setCorrelationPeriod: (payload: object) =>
+  setCorrelationPeriodToStore: (payload: object) =>
     dispatch(setCorrelationPeriod(payload)),
 })
 

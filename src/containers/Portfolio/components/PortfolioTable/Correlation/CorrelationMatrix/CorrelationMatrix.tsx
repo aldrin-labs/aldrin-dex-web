@@ -34,34 +34,40 @@ class CorrelationMatrix extends PureComponent<IProps> {
           <FullscreenNode
             style={{
               display: 'grid',
-              gridTemplateColumns:
-                data.values.length < 10 ? '20% 1fr' : '25% 1fr',
+              gridTemplateColumns: isFullscreenEnabled
+                ? '1fr'
+                : data.values.length < 10
+                  ? '20% 1fr'
+                  : '25% 1fr',
               gridTemplateRows: '100%',
               alignItems: 'center',
               // justifyItems: 'center',
             }}
             className="full-screenable-node"
           >
-            <ButtonsWrapper>
-              <StyledFullscreenButton
-                color="primary"
-                variant="outlined"
-                onClick={() => {
-                  this.props.fullScreenChangeHandler()
-                }}
-              >
-                <FullScreenIcon />
-              </StyledFullscreenButton>
-              <SelectTimeRange
-                style={{
-                  height: 'auto',
-                  maxWidth: '10rem',
-                  marginTop: '2rem',
-                }}
-                setPeriodToStore={setCorrelationPeriod}
-                period={period}
-              />
-            </ButtonsWrapper>
+            {isFullscreenEnabled ? null : (
+              <ButtonsWrapper>
+                <StyledFullscreenButton
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    this.props.fullScreenChangeHandler()
+                  }}
+                >
+                  <FullScreenIcon />
+                </StyledFullscreenButton>
+                <SelectTimeRange
+                  style={{
+                    height: 'auto',
+                    maxWidth: '10rem',
+                    marginTop: '2rem',
+                  }}
+                  setPeriodToStore={setCorrelationPeriod}
+                  period={period}
+                />
+              </ButtonsWrapper>
+            )}
+
             <Table
               {...{
                 isFullscreenEnabled,
