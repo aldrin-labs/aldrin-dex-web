@@ -94,7 +94,7 @@ class Import extends PureComponent<IProps> {
     console.log(backendData)
 
     if (backendData.portfolioOptimization === '') {
-      showWarning('You get empty response! Try again!')
+      showWarning('You get empty response! 🙈')
 
       return
     }
