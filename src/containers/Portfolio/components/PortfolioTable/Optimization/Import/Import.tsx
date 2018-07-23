@@ -172,7 +172,7 @@ class Import extends PureComponent<IProps> {
                 />
                 <ButtonMUI
                   disabled={isEqual(this.sumSameCoins(assets), storeData)}
-                  color="primary"
+                  color="secondary"
                   style={{
                     alignSelf: 'center',
                   }}
