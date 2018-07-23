@@ -92,7 +92,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   color={backgroundColor}
                   active={i === activeRow && ind === activeColumn}
                 >
-                  {Number(el).toFixed(2)}
+                  <CenterText>{Number(el).toFixed(2)}</CenterText>
                 </CellContent>
               </Cell>
             )
@@ -103,9 +103,11 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
   }
 }
 
+const CenterText = styled.span``
+
 const StyledArrowRight = styled(FaAngleRight)`
   opacity: ${(props: { show?: boolean }) => (props.show ? '1' : '0')};
-  left: 0;
+  left: -0.75rem;
   color: #4ed8da;
   position: absolute;
   transition: opacity 0.25s ease-out;
@@ -135,6 +137,9 @@ const GridTable = styled.div`
 `
 
 const CellContent = styled.div`
+  display: flex;
+  place-content: center;
+  place-items: center;
   background-color: ${(props: { color?: string }) => {
     if (props.color) {
       return props.color
