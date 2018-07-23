@@ -63,6 +63,78 @@ class Import extends PureComponent<IProps> {
     return result
   }
 
+  onOptimizeButtonClick = async (
+    client: any,
+    startDate: number,
+    endDate: number,
+    storeData: IData[],
+    expectedReturn: string,
+    showWarning: Function,
+    optimizePortfolio: Function,
+    optimizedToState: Function
+  ) => {
+    const { data: backendData } = await client.query({
+      query: OPTIMIZE_PORTFOLIO,
+      variables: {
+        expectedPct: Number(expectedReturn),
+        coinList: storeData.map((el: IData) => el.coin),
+        startDate,
+        endDate,
+      },
+    })
+
+    console.log('Variables')
+    console.log({
+      expectedPct: Number(expectedReturn),
+      coinList: storeData.map((el: IData) => el.coin),
+      startDate,
+      endDate,
+    })
+    console.log('Data')
+    console.log(backendData)
+
+    if (backendData.portfolioOptimization === '') {
+      showWarning('You get empty response! Try again!')
+
+      return
+    }
+
+    const backendDataParsed = JSON.parse(backendData.portfolioOptimization)
+      .weights_list
+
+    optimizedToState(backendDataParsed)
+
+    if (
+      backendDataParsed.find(
+        (obj: any) => obj.percentage_expected_returns === +expectedReturn
+      ) === undefined
+    ) {
+      showWarning('expectedReturn error')
+
+      return
+    }
+
+    const isReturnedCoinsTheSameThatInputed = isEqual(
+      backendDataParsed
+        .find((obj: any) => obj.percentage_expected_returns === +expectedReturn)
+        .weighted_coins_optimized.map((el: IData) => el.coin)
+        .sort(),
+      storeData.map((el) => el.coin).sort()
+    )
+
+    if (!isReturnedCoinsTheSameThatInputed) {
+      showWarning('Output coins not the same as input coins!')
+
+      return
+    }
+
+    optimizePortfolio(
+      backendDataParsed.find(
+        (obj: any) => obj.percentage_expected_returns === +expectedReturn
+      )
+    )
+  }
+
   addRow = (name: string, value: number) => {
     if (name) {
       this.props.updateData(
@@ -134,61 +206,16 @@ class Import extends PureComponent<IProps> {
                 color={'secondary'}
                 variant={'outlined'}
                 disabled={expectedReturn === '' || (data && data.length < 1)}
-                onClick={async () => {
-                  const { data: backendData } = await client.query({
-                    query: OPTIMIZE_PORTFOLIO,
-                    variables: {
-                      expectedPct: Number(expectedReturn),
-                      coinList: storeData.map((el: IData) => el.coin),
-                      startDate,
-                      endDate,
-                    },
-                  })
-
-                  console.log('Variables')
-                  console.log({
-                    expectedPct: Number(expectedReturn),
-                    coinList: storeData.map((el: IData) => el.coin),
+                onClick={() => {
+                  this.onOptimizeButtonClick(
+                    client,
                     startDate,
                     endDate,
-                  })
-                  console.log('Data')
-                  console.log(backendData)
-
-                  if (backendData.portfolioOptimization === '') {
-                    showWarning('You get empty response! Try again!')
-
-                    return
-                  }
-
-                  const backendDataParsed = JSON.parse(
-                    backendData.portfolioOptimization
-                  ).weights_list
-
-                  optimizedToState(backendDataParsed)
-
-                  const isReturnedCoinsTheSameThatInputed = isEqual(
-                    backendDataParsed
-                      .find(
-                        (obj: any) =>
-                          obj.percentage_expected_returns === +expectedReturn
-                      )
-                      .weighted_coins_optimized.map((el: IData) => el.coin)
-                      .sort(),
-                    storeData.map((el) => el.coin).sort()
-                  )
-
-                  if (!isReturnedCoinsTheSameThatInputed) {
-                    showWarning('Output coins not the same as input coins!')
-
-                    return
-                  }
-
-                  optimizePortfolio(
-                    backendDataParsed.find(
-                      (obj: any) =>
-                        obj.percentage_expected_returns === +expectedReturn
-                    )
+                    storeData,
+                    expectedReturn,
+                    showWarning,
+                    optimizePortfolio,
+                    optimizedToState
                   )
                 }}
               >
