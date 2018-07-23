@@ -34,7 +34,8 @@ class CorrelationMatrix extends PureComponent<IProps> {
           <FullscreenNode
             style={{
               display: 'grid',
-              gridTemplateColumns: '15% 1fr',
+              gridTemplateColumns:
+                data.values.length < 10 ? '20% 1fr' : '25% 1fr',
               gridTemplateRows: '100%',
               alignItems: 'center',
               // justifyItems: 'center',
