@@ -59,7 +59,8 @@ class Table extends Component<IProps, IState> {
             </Col>
 
             {/*  optimizedData */}
-            {optimizedData.length >= 1 ? (
+            {optimizedData.length >= 1 &&
+            optimizedData.length === data.length ? (
               <Col>
                 {optimizedData.map((item, i) => (
                   <Item key={item.coin}>
