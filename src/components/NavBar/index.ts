@@ -1,2 +1,2 @@
-export { NavBar } from './NavBar'
-export { NavBarMobile } from './NavBarMobile'
+export { NavBar } from '@components/NavBar/NavBar'
+export { NavBarMobile } from '@components/NavBar/NavBarMobile'

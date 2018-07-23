@@ -8,9 +8,9 @@ import {
   FlexibleXYPlot,
   Crosshair,
 } from 'react-vis'
-import Highlight from '../../containers/Profile/components/Highlight'
-import { Props, State } from '../../containers/Profile/components/annotations'
-import { yearData } from '../../containers/Profile/components/chartMocks'
+import Highlight from '@containers/Profile/components/Highlight'
+import { Props, State } from '@containers/Profile/components/annotations'
+import { yearData } from '@containers/Profile/components/chartMocks'
 
 function calculateMonths(v: number) {
   switch (v) {

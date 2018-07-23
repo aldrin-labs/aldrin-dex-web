@@ -1,13 +1,38 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
+import { MdReplay } from 'react-icons/lib/md'
+import { Button as ButtonMUI } from '@material-ui/core'
+import { isEqual } from 'lodash'
 
-import Table from '../Table/Table'
-import { MOCK_DATA } from '../../dataMock'
-import { IProps, IData } from './import.types'
-import { OPTIMIZE_PORTFOLIO } from '../api'
+import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
+import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
+import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+import {
+  IProps,
+  IData,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/import.types'
+import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
+import SelectDates from '@components/SelectTimeRangeDropdown'
 
 class Import extends PureComponent<IProps> {
+  componentDidMount() {
+    this.importPortfolio()
+  }
+
+  importPortfolio = () => {
+    let assets
+    if (this.props.isShownMocks) {
+      assets = MOCK_DATA
+    } else {
+      assets =
+        this.props.data &&
+        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+    }
+
+    this.props.updateData(this.sumSameCoins(assets))
+  }
+
   sumSameCoins = (rawData: IData[]) => {
     let data: IData[] = []
 
@@ -18,10 +43,10 @@ class Import extends PureComponent<IProps> {
           (el, inx) =>
             inx === index
               ? Object.assign(el, {
-                coin: el.coin,
-                percentage:
-                  Number(asset.percentage) + Number(data[index].percentage),
-              })
+                  coin: el.coin,
+                  percentage:
+                    Number(asset.percentage) + Number(data[index].percentage),
+                })
               : el
         )
       } else {
@@ -36,19 +61,6 @@ class Import extends PureComponent<IProps> {
     })
 
     return result
-  }
-
-  importPortfolio = () => {
-    let assets
-    if (this.props.isShownMocks) {
-      assets = MOCK_DATA
-    } else {
-      assets = this.props.transfromData(
-        this.props.data.getProfile.portfolio.assets
-      )
-    }
-
-    this.props.updateData(this.sumSameCoins(assets))
   }
 
   addRow = (name: string, value: number) => {
@@ -66,26 +78,48 @@ class Import extends PureComponent<IProps> {
       [...this.props.storeData].filter((el, index) => i !== index)
     )
 
+  deleteAllRows = () => this.props.updateData([])
+
   render() {
     const {
       expectedReturn,
       optimizePortfolio,
+      optimizedToState,
       handleChange,
-      storeData,
+      storeData, // data from redux (data from portfolio and mannualy added)
+      optimizedData,
       startDate,
       endDate,
+      optimizationPeriod,
+      setPeriod,
+      onBtnClick,
+      percentages,
+      activeButton,
+      showSwitchButtons, // optimizedData.length >= 1
     } = this.props
 
-    const data: IData[] = this.props.transfromData(
-      this.props.data.getProfile.portfolio.assets
-    )
+    let assets: IData[]
+    if (this.props.isShownMocks) {
+      assets = MOCK_DATA
+    } else {
+      assets =
+        this.props.data &&
+        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+    }
+
+    const data: IData[] =
+      this.props.data &&
+      this.props.transformData(this.props.data.getProfile.portfolio.assets)
 
     return (
       <ApolloConsumer>
         {(client) => (
           <>
             <InputContainer>
-              <Button onClick={this.importPortfolio}>Import Portfolio</Button>
+              <SelectDates
+                setPeriodToStore={setPeriod}
+                period={optimizationPeriod}
+              />
               <Input
                 type="number"
                 placeholder="Expected return in %"
@@ -94,35 +128,70 @@ class Import extends PureComponent<IProps> {
                   handleChange(e)
                 }}
               />
-              <Button
+              <ButtonMUI
+                style={{ marginTop: '1rem' }}
+                color={'secondary'}
+                variant={'outlined'}
                 disabled={expectedReturn === '' || (data && data.length < 1)}
                 onClick={async () => {
                   const { data: backendData } = await client.query({
                     query: OPTIMIZE_PORTFOLIO,
                     variables: {
                       expectedPct: 0.15,
-                      coinList: ["BTC", "ETH", "LTC"],
+                      coinList: ['BTC', 'ETH', 'LTC'], // storeData.map(data: IData=> data.coin)
                       startDate: 1531441380,
                       endDate: 1531873380,
                     },
                   })
 
+                  const backendDataParsed = JSON.parse(
+                    backendData.portfolioOptimization
+                  ).weights_list
+
+                  optimizedToState(backendDataParsed)
                   optimizePortfolio(
-                    JSON.parse(backendData.portfolioOptimization)
+                    backendDataParsed.find(
+                      (obj: any) =>
+                        obj.percentage_expected_returns === +expectedReturn
+                    )
                   )
                 }}
               >
                 Optimize Portfolio
-              </Button>
+              </ButtonMUI>
             </InputContainer>
+
             <TableContainer>
+              <SwitchButtonsWrapper>
+                <SwitchButtons
+                  btnClickProps={client}
+                  onBtnClick={onBtnClick}
+                  values={percentages}
+                  show={showSwitchButtons}
+                  activeButton={activeButton}
+                />
+                <ButtonMUI
+                  disabled={isEqual(this.sumSameCoins(assets), storeData)}
+                  color="primary"
+                  style={{
+                    alignSelf: 'center',
+                  }}
+                  variant="fab"
+                  onClick={this.importPortfolio}
+                >
+                  <MdReplay />
+                </ButtonMUI>
+              </SwitchButtonsWrapper>
               <Table
                 onPlusClick={this.addRow}
                 data={storeData}
+                optimizedData={optimizedData}
                 withInput
                 onClickDeleteIcon={this.deleteRow}
+                onClickDeleteAllIcon={this.deleteAllRows}
               />
             </TableContainer>
+            <HelperForCentering />
           </>
         )}
       </ApolloConsumer>
@@ -130,11 +199,23 @@ class Import extends PureComponent<IProps> {
   }
 }
 
+const SwitchButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+const HelperForCentering = styled.div`
+  width: 224px;
+  min-width: 100px;
+  opacity: 0;
+`
+
 const InputContainer = styled.div`
   margin: auto 2rem auto 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-width: 100px;
 
   @media (max-width: 1080px) {
     margin: auto;
@@ -143,31 +224,13 @@ const InputContainer = styled.div`
 `
 
 const TableContainer = styled.div`
-  margin: auto;
+  display: flex;
+  flex-direction: column;
+  place-content: flex-end;
+  width: 50%;
+  max-width: 50rem;
   @media (max-width: 600px) {
     margin-top: 1rem;
-  }
-`
-
-const Button = styled.div`
-  border-radius: 2px;
-  background-color: #4c5055;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-family: Roboto, sans-serif;
-  letter-spacing: 0.4px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 500;
-  color: #4ed8da;
-  cursor: ${(props: { disabled?: boolean }) =>
-    props.disabled ? 'not-allowed' : 'pointer'};
-  text-transform: uppercase;
-  margin-top: 10px;
-
-  &:nth-child(1) {
-    margin: 0;
   }
 `
 

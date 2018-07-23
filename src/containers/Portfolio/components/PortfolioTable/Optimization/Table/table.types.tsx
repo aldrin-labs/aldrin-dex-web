@@ -8,6 +8,7 @@ export interface IProps {
   onClickDeleteIcon?: Function
   onPlusClick?: Function
   data: IData[]
+  optimizedData: IData[]
 }
 export interface IState {
   name: string

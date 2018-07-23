@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { IProps, IState } from './TableChart.types'
+import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/TableChart.types'
 
 const chartBtns = [
   '1 Day',

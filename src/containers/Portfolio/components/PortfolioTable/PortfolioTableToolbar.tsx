@@ -10,7 +10,7 @@ import Toolbar from 'material-ui/Toolbar'
 import Tooltip from 'material-ui/Tooltip'
 import Typography from 'material-ui/Typography'
 
-import PortfolioTableTabs from './PortfolioTableTabs'
+import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
 const toolbarStyles = (theme) => ({
   root: {

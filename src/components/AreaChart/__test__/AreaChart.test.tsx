@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { shallow, mount } from 'enzyme'
-import AreaChart from '../index'
+import AreaChart from '@components/AreaChart'
 
 describe('Switch', () => {
   it('render()', () => {

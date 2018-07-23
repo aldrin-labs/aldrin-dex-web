@@ -1,4 +1,4 @@
-import { SortArgs, Args } from '../types'
+import { SortArgs, Args } from '@containers/Portfolio/components/PortfolioTable/types'
 
 export interface IProps {
   isUSDCurrently: boolean

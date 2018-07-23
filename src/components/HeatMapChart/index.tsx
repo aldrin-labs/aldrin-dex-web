@@ -2,7 +2,7 @@ import * as React from 'react'
 // import styled from 'styled-components'
 import { HeatmapSeries, XYPlot, XAxis, YAxis } from 'react-vis'
 
-import { Props } from './annotations'
+import { Props } from '@components/HeatMapChart/annotations'
 
 export default class HeatMapChart extends React.Component<Props> {
   render() {

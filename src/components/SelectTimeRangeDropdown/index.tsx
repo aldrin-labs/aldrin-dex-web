@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 
 import Selector from '@components/SimpleDropDownSelector'
+import { IProps } from './index.types'
 
-class DropDownMenu extends Component {
+class DropDownMenu extends Component<IProps> {
+  // days are minus ten from now I dunno why
   optionsMap: { [id: string]: any } = {
     lastWeek: () => ({
       startDate: this.daysFromNow(-17),
@@ -30,7 +32,7 @@ class DropDownMenu extends Component {
 
   handleChange = (event) => {
     const { startDate, endDate } = this.optionsMap[event.target.value]()
-    this.props.setCorrelationPeriodToStore({
+    this.props.setPeriodToStore({
       correlationPeriod: event.target.value,
       correlationStartDate: startDate,
       correlationEndDate: endDate,
@@ -38,17 +40,18 @@ class DropDownMenu extends Component {
   }
 
   render() {
-    const { correlationPeriod } = this.props
+    const { period } = this.props
 
     return (
       <Selector
         style={{
           alignSelf: 'center',
           height: '100%',
+          width: '100%',
         }}
         name="correlationPeriod"
         id="correlationPeriod"
-        value={correlationPeriod}
+        value={period}
         handleChange={this.handleChange}
         options={[
           { value: 'lastDay', label: 'Last 24h' },

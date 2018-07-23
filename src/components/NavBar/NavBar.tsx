@@ -1,7 +1,7 @@
 import React, { SFC } from 'react'
 import styled from 'styled-components'
 
-import { NavButton } from './NavButton'
+import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
 
 export const NavBar: SFC<{}> = () => (

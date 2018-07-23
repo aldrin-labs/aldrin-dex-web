@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { User } from './User'
+import { User } from '@containers/User/User'
 
 export default function UserRoutes({ match, location }) {
   return (

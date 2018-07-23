@@ -11,17 +11,15 @@ import { FaFilter } from 'react-icons/lib/fa'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Dropdown from '@components/SimpleDropDownSelector'
-import Selector from './Correlation/DropDownMenu/DropDownMenu'
 import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
-import { IProps } from './PortfolioTableTabs.types'
-import Menu from './ThreeDotsMenu'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
+import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
 
 import {
-  setCorrelationPeriod,
   toggleCorrelationTableFullscreen,
   filterValuesLessThen,
-} from '../../actions'
+} from '@containers/Portfolio/actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -56,8 +54,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
       tab,
       portfolio,
       toggleWallets,
-      setCorrelationPeriod,
-      correlationPeriod,
+
       filterValuesLessThen,
       filterPercent,
     } = this.props
@@ -135,10 +132,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <ButtonContainer>
             {tab === 'correlation' || tab === 'optimization' ? (
               <>
-                <Selector
-                  correlationPeriod={correlationPeriod}
-                  setCorrelationPeriodToStore={setCorrelationPeriod}
-                />
+                <SelectorWrapper />
                 {tab === 'correlation' && (
                   <StyledFullscreenButton
                     onClick={this.props.onFullscreenButtonClick}
@@ -155,8 +149,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
             {tab !== 'correlation' &&
               tab !== 'optimization' &&
-              tab !== 'rebalance' &&
-            (
+              tab !== 'rebalance' && (
                 <SwitchRefreshContainer>
                   <Switch
                     onClick={this.onToggleUSDBTC}
@@ -242,6 +235,12 @@ const PTHeadingBlock = styled.div`
       margin-bottom: 15px;
     }
   }
+`
+const SelectorWrapper = styled.div`
+  display: flex;
+  place-items: center;
+  margin: auto 0;
+  height: 2rem;
 `
 
 const ButtonContainer = styled.div`
@@ -357,7 +356,6 @@ const StyledFullscreenButton = styled(Button)`
 `
 
 const mapStateToProps = (store) => ({
-  correlationPeriod: store.portfolio.correlationPeriod,
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
@@ -365,8 +363,6 @@ const mapDispatchToProps = (dispatch: any) => ({
   onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
   filterValuesLessThen: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
-  setCorrelationPeriod: (payload: any) =>
-    dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(

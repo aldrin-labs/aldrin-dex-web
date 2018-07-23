@@ -1,2 +1,2 @@
-export { KeysList } from './KeysList'
-export { AddExchangeKey } from './AddExchangeKey'
+export { KeysList } from '@containers/User/components/KeysList'
+export { AddExchangeKey } from '@containers/User/components/AddExchangeKey'

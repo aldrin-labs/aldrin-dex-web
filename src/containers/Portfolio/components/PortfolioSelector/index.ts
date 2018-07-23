@@ -1,2 +1,2 @@
-export { PortfolioList } from './PortfolioList'
-export { PortfolioSelector } from './PortfolioSelector'
+export { PortfolioList } from '@components/PortfolioSelector/PortfolioList'
+export { PortfolioSelector } from '@components/PortfolioSelector/PortfolioSelector'

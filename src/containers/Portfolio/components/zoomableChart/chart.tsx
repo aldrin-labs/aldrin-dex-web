@@ -13,7 +13,7 @@ import {
   DiscreteColorLegend,
 } from 'react-vis'
 
-import { Highlight } from './heig'
+import { Highlight } from '@containers/Portfolio/components/zoomableChart/heig'
 
 const totalValues = 100
 

@@ -1,1 +1,1 @@
-export { PortfolioTable } from './PortfolioTable'
+export { PortfolioTable } from '@containers/Portfolio/components/PortfolioTable'

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { ProfileQueryQuery } from '../profile-annotation'
+import { ProfileQueryQuery } from '@containers/Profile/profile-annotation'
 import website from '../../../icons/website.svg'
 import explorer from '../../../icons/explorer.svg'
 import code from '../../../icons/code.svg'

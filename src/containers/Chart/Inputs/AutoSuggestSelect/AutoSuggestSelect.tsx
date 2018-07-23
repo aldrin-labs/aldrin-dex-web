@@ -10,7 +10,7 @@ import Chip from '@material-ui/core/Chip'
 import Select from 'react-select-for-charting-page'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
-import * as actions from '../../actions'
+import * as actions from '@containers/Chart/actions'
 
 
 import QueryRenderer from '@components/QueryRenderer'

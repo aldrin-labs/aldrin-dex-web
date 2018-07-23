@@ -9,7 +9,7 @@ import {
   DiscreteColorLegend,
 } from 'react-vis'
 
-import { IProps, IState, Items, IValue, IChart } from './BarChart.types'
+import { IProps, IState, Items, IValue, IChart } from '@components/BarChart/BarChart.types'
 
 const axisStyle = {
   ticks: {

@@ -1,7 +1,7 @@
 import { ActionsObservable, combineEpics, Epic } from 'redux-observable'
 import 'rxjs'
 
-import { test, testNext } from './actions'
+import { test, testNext } from '@containers/Screener/actions'
 
 export const testEpic = (action$: any) =>
   action$.ofType(testNext)

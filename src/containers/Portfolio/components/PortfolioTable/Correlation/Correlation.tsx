@@ -15,11 +15,11 @@ import { has } from 'lodash'
 import {
   // HeatMapMocks,
   CorrelationMatrixMockData,
-} from './mocks'
-import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
-import { IProps } from './Correlation.types'
-import { toggleCorrelationTableFullscreen } from '../../../actions'
-import { getCorrelationQuery, CORRELATION_UPDATE } from '../../../api'
+} from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
+import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
+import { toggleCorrelationTableFullscreen } from '@containers/Portfolio/actions'
+import { getCorrelationQuery, CORRELATION_UPDATE } from '@containers/Portfolio/api'
 
 class Correlation extends React.Component<IProps, IState> {
   renderPlaceholder = () => (

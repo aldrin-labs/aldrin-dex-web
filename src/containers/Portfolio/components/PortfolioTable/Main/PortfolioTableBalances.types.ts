@@ -1,4 +1,4 @@
-import { IRowT, SortArgs, Args, IPortfolio } from '../types'
+import { IRowT, SortArgs, Args, IPortfolio } from '@containers/Portfolio/components/PortfolioTable/types'
 
 export interface IState {
   tableData: IRowT | null

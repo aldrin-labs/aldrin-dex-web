@@ -14,7 +14,7 @@ import Dialog, {
 } from 'material-ui/Dialog'
 import Typography from 'material-ui/Typography'
 
-import { deleteExchangeKeyMutation, getKeysQuery } from '../../api'
+import { deleteExchangeKeyMutation, getKeysQuery } from '@containers/User/api'
 
 const DeleteKeyDialogComponent = ({
   handleClickOpen,

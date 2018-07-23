@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { shallow, mount } from 'enzyme'
-import Switch from '../Switch'
+import Switch from '@components/Switch/Switch'
 
 describe('Switch', () => {
   describe('render', () => {

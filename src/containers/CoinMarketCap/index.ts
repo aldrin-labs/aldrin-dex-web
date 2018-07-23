@@ -1,1 +1,1 @@
-export { default as CoinMarketCap } from './CoinMarketCap'
+export { default as CoinMarketCap } from '@containers/CoinMarketCap/CoinMarketCap'
