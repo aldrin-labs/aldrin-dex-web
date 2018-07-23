@@ -22,9 +22,6 @@ class CorrelationMatrix extends PureComponent<IProps> {
       period,
     } = this.props
 
-    console.log(setCorrelationPeriod)
-    console.log(period)
-
     return (
       <ScrolledWrapper>
         <FullScreen
@@ -37,7 +34,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
           <FullscreenNode
             style={{
               display: 'grid',
-              gridTemplateColumns: '25% 1fr',
+              gridTemplateColumns: '15% 1fr',
               gridTemplateRows: '100%',
               alignItems: 'center',
               // justifyItems: 'center',

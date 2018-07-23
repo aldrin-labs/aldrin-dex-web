@@ -14,10 +14,7 @@ import gridLoader from '@icons/grid.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
 import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
 
-import {
-  toggleCorrelationTableFullscreen,
-  filterValuesLessThen,
-} from '@containers/Portfolio/actions'
+import { filterValuesLessThen } from '@containers/Portfolio/actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -185,13 +182,14 @@ const FilterIcon = styled(FaFilter)`
 
 const PTHeadingBlock = styled.div`
   display: flex;
+
   position: sticky;
   top: 0;
   background-color: #393e44;
   z-index: 99;
 
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 17px;
   min-height: 100px;
@@ -273,10 +271,11 @@ const StyledAccountIcon = styled(AccountIcon)`
 `
 
 const TabContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  flex-flow: wrap;
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
 
   @media (max-width: 1080px) {
     justify-content: flex-start;
