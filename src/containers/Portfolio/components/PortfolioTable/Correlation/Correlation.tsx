@@ -31,6 +31,13 @@ class Correlation extends React.Component<IProps> {
   renderPlaceholder = () => (
     <>
       <LinearProgress color="secondary" />
+      <StyledCard>
+        <CardContent>
+          <Typography color="secondary" variant="headline">
+            🤔 Empty Response...
+          </Typography>
+        </CardContent>
+      </StyledCard>
     </>
   )
 
@@ -83,15 +90,6 @@ class Correlation extends React.Component<IProps> {
               ) : (
                 this.renderPlaceholder()
               )}
-              {data === '' ? (
-                <StyledCard>
-                  <CardContent>
-                    <Typography color="secondary" variant="headline">
-                      🤔 Empty Response...
-                    </Typography>
-                  </CardContent>
-                </StyledCard>
-              ) : null}
             </PTWrapper>
           )
         }}
