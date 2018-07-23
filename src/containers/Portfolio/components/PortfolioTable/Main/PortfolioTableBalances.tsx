@@ -441,6 +441,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
 const Container = styled.div`
   display: flex;
+  justify-content: center;
   height: ${(props: { isShownChart: boolean }) =>
     props.isShownChart ? '40vh' : ''};
 

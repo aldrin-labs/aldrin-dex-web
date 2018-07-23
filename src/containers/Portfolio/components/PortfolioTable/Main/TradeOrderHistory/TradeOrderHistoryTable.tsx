@@ -42,7 +42,7 @@ const arrayOfStringHeadings = ['exchange', 'symbol', 'side']
 const arrayOfDateHeadings = ['datetime']
 
 // TODO: Should be replaced to the state
-let staticRows = tradeOrderHistoryTableData
+// let staticRows = tradeOrderHistoryTableData
 
 class TradeOrderHistoryTable extends React.Component<
   IProps,
@@ -50,10 +50,32 @@ class TradeOrderHistoryTable extends React.Component<
   > {
   state: IState = {
     currentSort: null,
+    rows: []
+  }
+  componentDidMount() {
+    const { isUSDCurrently, data } = this.props
+
+    if (data) {
+      const dataFromServer = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
+      this.setState({
+        rows: dataFromServer
+      })
+    }
+  }
+
+  componentWillReceiveProps() {
+    const { isUSDCurrently, data } = this.props
+
+    if (data) {
+      const dataFromServer = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
+      this.setState({
+        rows: dataFromServer
+      })
+    }
   }
 
   onSortTable = (key: string) => {
-    const { currentSort } = this.state
+    const { currentSort, rows } = this.state
 
     const {
       newData,
@@ -61,26 +83,33 @@ class TradeOrderHistoryTable extends React.Component<
     }: {
         newData: ITradeOrderHistoryTableData
         newCurrentSort: ICurrentSort
-      } = onSortTableFull(key, staticRows, currentSort, arrayOfStringHeadings, arrayOfDateHeadings)
+      } = onSortTableFull(key, rows, currentSort, arrayOfStringHeadings, arrayOfDateHeadings)
 
     // TODO: Should be refactored and included into setState
-    staticRows = newData
+    // staticRows = newData
 
     this.setState({
       currentSort: newCurrentSort,
+      rows: newData
     })
   }
 
   render() {
-    const { currentSort } = this.state
-    const { isUSDCurrently, data } = this.props
+    const { currentSort, rows } = this.state
+    const { data } = this.props
+
+    // const { isUSDCurrently, data } = this.props
+    // if (!data) {
+    //   return <Loading centerAligned />
+    // }
+    // if (data) {
+    //   console.log(data);
+    //   staticRows = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
+    //   console.log(staticRows);
+    // }
+
     if (!data) {
       return <Loading centerAligned />
-    }
-    if (data) {
-      console.log(data);
-      staticRows = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
-      console.log(staticRows);
     }
 
     return (
@@ -121,7 +150,7 @@ class TradeOrderHistoryTable extends React.Component<
           </PTHead>
 
           <PTBody>
-            {staticRows.map((row, idx) => {
+            {rows.map((row, idx) => {
               const {
                 exchange,
                 amount,
@@ -142,7 +171,7 @@ class TradeOrderHistoryTable extends React.Component<
                 exchange,
                 amount,
                 [mainSymbol, cost],
-                datetime,
+                new Date(datetime).toLocaleString('en-US'),
                 symbol,
                 side,
               ]
