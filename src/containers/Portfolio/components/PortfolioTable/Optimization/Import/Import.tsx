@@ -123,7 +123,7 @@ class Import extends PureComponent<IProps> {
               />
               <Input
                 type="number"
-                placeholder="Expected return (1 is 1%)"
+                placeholder="Expected return in %"
                 value={expectedReturn || ''}
                 onChange={(e) => {
                   handleChange(e)
