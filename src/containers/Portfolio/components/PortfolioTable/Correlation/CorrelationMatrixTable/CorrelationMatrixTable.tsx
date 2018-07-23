@@ -116,19 +116,19 @@ const StyledArrowDown = styled(FaAngleDown)`
 `
 
 const GridTable = styled.div`
-  max-width: 100%;
-  max-height: 100%;
+  width: 44%;
+  height: 100%;
   display: grid;
   background: ${(props) =>
     props.isFullscreenEnabled ? '#393e44' : 'transparent'};
   grid-template-rows: ${(props) =>
     props.isFullscreenEnabled
       ? `repeat(${props.rows}, ${100 / props.rows}vh)`
-      : `repeat(${props.rows}, 4rem)`};
+      : `repeat(${props.rows}, 1fr)`};
   grid-template-columns: ${(props) =>
     props.isFullscreenEnabled
       ? `repeat(${props.columns}, ${100 / props.columns}vw)`
-      : `repeat(${props.columns}, 4rem)`};
+      : `repeat(${props.columns}, 1fr)`};
 `
 
 const CellContent = styled.div`
