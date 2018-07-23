@@ -111,7 +111,7 @@ class Optimization extends PureComponent<IProps, IState> {
   onBtnClick = async (index: number) => {
     this.setState({ loading: true })
     this.setState({ activeButton: index })
-    console.log('onBtnClick')
+
     const { rawOptimizedData, percentages } = this.state
     const percentage = percentages[index]
 
@@ -246,10 +246,6 @@ class Optimization extends PureComponent<IProps, IState> {
       risk,
       activeButton,
     }
-
-    // console.log(efficientFrontierData.percentages)
-    console.log(this.state.percentages)
-    console.log(this.state.returns)
 
     return (
       <ChartsContainer>

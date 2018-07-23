@@ -54,9 +54,6 @@ class EfficientFrontierChart extends Component<IProps, IState> {
       highlightedDotData.push(data[activeButton])
     }
 
-    console.log(highlightedDotData)
-    console.log(data)
-
     return (
       <Container>
         <FlexibleXYPlot margin={{ left: 80 }}>
