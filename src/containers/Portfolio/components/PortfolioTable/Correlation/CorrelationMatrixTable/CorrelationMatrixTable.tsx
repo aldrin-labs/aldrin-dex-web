@@ -4,7 +4,10 @@ import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa'
 import shortid from 'shortid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'
-import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable.types'
+import {
+  IProps,
+  IState,
+} from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable.types'
 class CorrelationMatrixTable extends PureComponent<IProps, IState> {
   state: IState = {
     activeRow: null,
@@ -116,7 +119,7 @@ const StyledArrowDown = styled(FaAngleDown)`
 `
 
 const GridTable = styled.div`
-  width: 44%;
+  width: 59%;
   height: 100%;
   display: grid;
   background: ${(props) =>

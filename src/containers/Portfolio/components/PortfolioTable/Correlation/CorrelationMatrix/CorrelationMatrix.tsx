@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import FullScreen from 'react-fullscreen-crossbrowser'
 
+import SelectTimeRange from '@components/SelectTimeRangeDropdown'
 import Table from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix.types'
 
@@ -25,13 +26,17 @@ class CorrelationMatrix extends PureComponent<IProps> {
           <FullscreenNode
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr',
+              gridTemplateColumns: '25% 1fr',
               gridTemplateRows: '100%',
               alignItems: 'center',
-              justifyItems: 'center',
+              // justifyItems: 'center',
             }}
             className="full-screenable-node"
           >
+            <SelectTimeRange
+              style={{ height: 'auto', maxWidth: '10rem', margin: '0 auto' }}
+              period="lastDay"
+            />
             <Table
               {...{
                 isFullscreenEnabled,

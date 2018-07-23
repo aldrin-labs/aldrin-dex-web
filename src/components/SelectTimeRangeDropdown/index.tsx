@@ -40,13 +40,14 @@ class DropDownMenu extends Component<IProps> {
   }
 
   render() {
-    const { period } = this.props
+    const { period, style } = this.props
 
     return (
       <Selector
         style={{
           alignSelf: 'center',
           height: '100%',
+          ...style,
         }}
         name="correlationPeriod"
         id="correlationPeriod"
