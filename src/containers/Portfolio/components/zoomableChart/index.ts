@@ -1,1 +1,0 @@
-export { Chart } from '@containers/Portfolio/components/zoomableChart/chart'
