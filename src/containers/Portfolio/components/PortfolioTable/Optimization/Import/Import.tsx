@@ -122,7 +122,7 @@ class Import extends PureComponent<IProps> {
               />
               <Input
                 type="number"
-                placeholder="Expected return in %"
+                placeholder="Expected return (1 is 1%)"
                 value={expectedReturn || ''}
                 onChange={(e) => {
                   handleChange(e)
@@ -137,12 +137,22 @@ class Import extends PureComponent<IProps> {
                   const { data: backendData } = await client.query({
                     query: OPTIMIZE_PORTFOLIO,
                     variables: {
-                      expectedPct: 0.15,
-                      coinList: ['BTC', 'ETH', 'LTC'], // storeData.map(data: IData=> data.coin)
-                      startDate: 1531441380,
-                      endDate: 1531873380,
+                      expectedPct: Number(expectedReturn),
+                      coinList: storeData.map((el: IData) => el.coin),
+                      startDate,
+                      endDate,
                     },
                   })
+
+                  console.log('Variables')
+                  console.log({
+                    expectedPct: Number(expectedReturn),
+                    coinList: storeData.map((el: IData) => el.coin),
+                    startDate,
+                    endDate,
+                  })
+                  console.log('Data')
+                  console.log(backendData)
 
                   const backendDataParsed = JSON.parse(
                     backendData.portfolioOptimization
