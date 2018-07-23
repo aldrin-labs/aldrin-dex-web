@@ -166,6 +166,24 @@ class Import extends PureComponent<IProps> {
                   ).weights_list
 
                   optimizedToState(backendDataParsed)
+
+                  const isReturnedCoinsTheSameThatInputed = isEqual(
+                    backendDataParsed
+                      .find(
+                        (obj: any) =>
+                          obj.percentage_expected_returns === +expectedReturn
+                      )
+                      .weighted_coins_optimized.map((el: IData) => el.coin)
+                      .sort(),
+                    storeData.map((el) => el.coin).sort()
+                  )
+
+                  if (!isReturnedCoinsTheSameThatInputed) {
+                    showWarning('Output coins not the same as input coins!')
+
+                    return
+                  }
+
                   optimizePortfolio(
                     backendDataParsed.find(
                       (obj: any) =>
