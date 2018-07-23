@@ -157,6 +157,8 @@ class Import extends PureComponent<IProps> {
 
                   if (backendData.portfolioOptimization === '') {
                     showWarning('You get empty response! Try again!')
+
+                    return
                   }
 
                   const backendDataParsed = JSON.parse(
