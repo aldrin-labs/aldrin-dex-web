@@ -12,7 +12,8 @@ import {
   onSortStrings,
   calcPercentage,
 } from '@utils/PortfolioTableUtils'
-import ProfileChart from '@containers/Profile/components/ProfileChart'
+
+import Chart from '@containers/Portfolio/components/GQLChart'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
@@ -66,9 +67,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const composeWithMocks = isShownMocks
       ? {
-          ...portfolio,
-          assets: portfolio.assets.concat(MOCK_DATA),
-        }
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
+      }
       : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -88,9 +89,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
       const composeWithMocks = nextProps.isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio!.assets!.concat(MOCK_DATA),
-          }
+          ...portfolio,
+          assets: portfolio!.assets!.concat(MOCK_DATA),
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -104,9 +105,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
       const composeWithMocks = nextProps.isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio.assets.concat(MOCK_DATA),
-          }
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -244,9 +245,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = tableData.filter(
-      (td: IRowT, idx: number) => selectedRows.indexOf(idx) >= 0
-    )
+    const sum = selectedRows.map(idx => tableData[idx]);
     const reducedSum = sum.reduce(
       (acc: any, val: IRowT) => ({
         currency: val.currency,
@@ -412,7 +411,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         </Container>
 
         <PTChartContainer>
-          <ProfileChart
+          <Chart
             style={{
               marginLeft: 0,
               borderTop: '1px solid #fff',
@@ -420,6 +419,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             }}
             height="20vh"
             marginTopHr="10px"
+            coins={this.state.selectedBalances.length > 0 ?
+              this.state.selectedBalances.map(idx => this.state.tableData[idx])
+              :
+              []
+            }
           />
         </PTChartContainer>
       </PTWrapper>
@@ -434,11 +438,11 @@ const Container = styled.div`
 
   @media (max-height: 650px) {
     height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '45vh' : ''};
+    props.isShownChart ? '45vh' : ''};
   }
   @media (max-width: 450px) {
     height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '50vh' : ''};
+    props.isShownChart ? '50vh' : ''};
   }
 `
 
