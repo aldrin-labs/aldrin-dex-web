@@ -107,7 +107,7 @@ const CenterText = styled.span``
 
 const StyledArrowRight = styled(FaAngleRight)`
   opacity: ${(props: { show?: boolean }) => (props.show ? '1' : '0')};
-  left: -0.75rem;
+  left: 0.25rem;
   color: #4ed8da;
   position: absolute;
   transition: opacity 0.25s ease-out;
@@ -128,11 +128,11 @@ const GridTable = styled.div`
     props.isFullscreenEnabled ? '#393e44' : 'transparent'};
   grid-template-rows: ${(props) =>
     props.isFullscreenEnabled
-      ? `repeat(${props.rows}, ${100 / props.rows}vh)`
+      ? `repeat(${props.rows + 1}, ${100 / (props.rows + 1)}vh)`
       : `repeat(${props.rows}, 1fr)`};
   grid-template-columns: ${(props) =>
     props.isFullscreenEnabled
-      ? `repeat(${props.columns}, ${100 / props.columns}vw)`
+      ? `repeat(${props.columns + 1}, ${100 / (props.columns + 1)}vw)`
       : `repeat(${props.columns}, 1fr)`};
 `
 
@@ -175,11 +175,8 @@ const Cell = styled.div`
       return '0.4rem'
     }
 
-    if (isFullscreenEnabled && cols > 1 && cols < 5) {
-      return '4rem'
-    }
-    if (isFullscreenEnabled && cols > 5 && cols <= 10) {
-      return '3rem'
+    if (isFullscreenEnabled && cols > 1 && cols <= 10) {
+      return '2.5rem'
     }
     if (isFullscreenEnabled && cols > 10 && cols <= 15) {
       return '2rem'

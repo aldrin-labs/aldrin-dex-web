@@ -61,7 +61,7 @@ class Correlation extends React.Component<IProps> {
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
-          console.log(data && data !== '')
+          console.log(data)
 
           return (
             <PTWrapper>
@@ -110,8 +110,6 @@ class CorrelationWrapper extends React.Component<IProps> {
       setCorrelationPeriodToStore,
     } = this.props
 
-    console.log(setCorrelationPeriodToStore)
-
     return (
       <Wrapper>
         {isShownMocks ? (
@@ -126,7 +124,7 @@ class CorrelationWrapper extends React.Component<IProps> {
             component={Correlation}
             query={getCorrelationQuery}
             variables={{
-              startDate: 1, // 1531441380
+              startDate: 1531441380, //
               endDate: 1531873380,
             }}
             {...this.props}
