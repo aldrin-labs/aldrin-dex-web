@@ -87,7 +87,7 @@ class Correlation extends React.Component<IProps> {
                 <StyledCard>
                   <CardContent>
                     <Typography color="secondary" variant="headline">
-                      Empty Response...
+                      🤔 Empty Response...
                     </Typography>
                   </CardContent>
                 </StyledCard>
