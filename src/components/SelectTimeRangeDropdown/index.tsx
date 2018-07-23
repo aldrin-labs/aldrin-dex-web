@@ -18,6 +18,18 @@ class DropDownMenu extends Component<IProps> {
       startDate: this.daysFromNow(-41),
       endDate: this.daysFromNow(-10),
     }),
+    threeMonths: () => ({
+      startDate: this.daysFromNow(-102),
+      endDate: this.daysFromNow(-10),
+    }),
+    sixMonths: () => ({
+      startDate: this.daysFromNow(-194),
+      endDate: this.daysFromNow(-10),
+    }),
+    lastYear: () => ({
+      startDate: this.daysFromNow(-366),
+      endDate: this.daysFromNow(-10),
+    }),
   }
 
   formatTimestamp = (timestamp: number) => Math.round(timestamp / 1000)
@@ -58,6 +70,9 @@ class DropDownMenu extends Component<IProps> {
           { value: 'lastDay', label: 'Last 24h' },
           { value: 'lastWeek', label: 'Last week' },
           { value: 'lastMonth', label: 'Last Month' },
+          { value: 'threeMonths', label: 'Last 3 Months' },
+          { value: 'sixMonths', label: 'Last 6 Months' },
+          { value: 'lastYear', label: 'Last Year' },
         ]}
       />
     )
