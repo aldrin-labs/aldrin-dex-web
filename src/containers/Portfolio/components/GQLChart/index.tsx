@@ -291,7 +291,7 @@ export default class GQLChart extends React.Component {
 
           return (
             <PortfolioChart
-              data={data}
+              data={this.props.isShownMocks ? yearData : data}
               onChangeDateRange={(area) => this.onChangeDateRange(area)}
               updateDays={(days) => this.updateDays(days)}
               lastDrawLocation={this.state.lastDrawLocation}

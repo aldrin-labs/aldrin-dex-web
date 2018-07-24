@@ -415,6 +415,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
         <PTChartContainer>
           <Chart
+            isShownMocks={this.props.isShownMocks}
             style={{
               marginLeft: 0,
               borderTop: '1px solid #fff',
