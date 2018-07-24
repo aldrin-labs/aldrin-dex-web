@@ -23,7 +23,7 @@ class Import extends PureComponent<IProps> {
   importPortfolio = () => {
     let assets
     if (this.props.isShownMocks) {
-      assets = MOCK_DATA
+      assets = this.props.transformData(MOCK_DATA)
     } else {
       assets =
         this.props.data &&
@@ -73,6 +73,11 @@ class Import extends PureComponent<IProps> {
     optimizePortfolio: Function,
     optimizedToState: Function
   ) => {
+    if (this.props.isShownMocks) {
+      optimizePortfolio()
+
+      return
+    }
     const { data: backendData } = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {

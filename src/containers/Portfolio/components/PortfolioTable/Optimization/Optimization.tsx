@@ -57,6 +57,7 @@ class Optimization extends PureComponent<IProps, IState> {
         ]
         this.setState(
           {
+            loading: false,
             optimizedData: this.props.storeData.map(
               ({ coin }: { coin: string }) => ({
                 coin,
@@ -64,6 +65,7 @@ class Optimization extends PureComponent<IProps, IState> {
               })
             ),
             risk,
+            returns: this.getPercentages(Number(this.state.expectedReturn)),
             rawDataBeforeOptimization: this.props.storeData,
           },
           () => console.log(this.state)
