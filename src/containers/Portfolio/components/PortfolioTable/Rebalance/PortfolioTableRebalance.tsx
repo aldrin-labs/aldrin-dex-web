@@ -1353,11 +1353,11 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     if (+deltaPrice) {
                       if (deltaPrice > 0) {
-                        deltaPriceString = `BUY ${symbol} ${parseFloat(deltaPrice).toLocaleString('en-US')} $`
+                        deltaPriceString = `BUY ${symbol}  $ ${parseFloat(deltaPrice).toLocaleString('en-US')}`
                       } else {
-                        deltaPriceString = `SELL ${symbol} ${parseFloat(Math.abs(
+                        deltaPriceString = `SELL ${symbol}  $ ${parseFloat(Math.abs(
                           deltaPrice).toLocaleString('en-US')
-                        )} $`
+                        )}`
                       }
                     }
 
