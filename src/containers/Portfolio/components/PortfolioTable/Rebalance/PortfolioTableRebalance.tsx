@@ -1157,7 +1157,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
             <Wrapper>
-              <Table>
+              <Table style={{width: '564px'}}>
                 <PTHead>
                   <PTR>
                     {tableHeadingsCurrentPortfolio.map((heading) => {
@@ -1714,7 +1714,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   height: 45vh; //45vh
   padding: 0 20px 20px;
 `
@@ -1723,7 +1723,7 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
-  width: 45vw;
+  //width: 45vw;
 `
 
 const TableHeading = styled.div`
