@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import FullScreen from 'react-fullscreen-crossbrowser'
-import { Button } from '@material-ui/core'
+import { Button, Card, CardContent, Typography } from '@material-ui/core'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 
 import SelectTimeRange from '@components/SelectTimeRangeDropdown'
@@ -12,6 +12,21 @@ class CorrelationMatrix extends PureComponent<IProps> {
   constructor(props: IProps) {
     super(props)
   }
+
+  renderPlaceholder = () => (
+    <>
+      <StyledCard>
+        <CardContent>
+          <Typography gutterBottom align="center" variant="display3">
+            🤔
+          </Typography>
+          <Typography color="secondary" variant="headline">
+            Empty Response...
+          </Typography>
+        </CardContent>
+      </StyledCard>
+    </>
+  )
 
   render() {
     const {
@@ -32,18 +47,28 @@ class CorrelationMatrix extends PureComponent<IProps> {
           enabled={isFullscreenEnabled}
         >
           <FullscreenNode
-            style={{
-              display: 'grid',
-              gridTemplateColumns: isFullscreenEnabled
-                ? '1fr'
-                : data.values.length < 10
-                  ? '20% 1fr'
-                  : '25% 1fr',
-              gridTemplateRows: '100%',
-              alignItems: 'center',
-              background: '#393e44',
-              // justifyItems: 'center',
-            }}
+            style={
+              data
+                ? {
+                    display: 'grid',
+                    gridTemplateColumns: isFullscreenEnabled
+                      ? '1fr'
+                      : data.values.length < 10
+                        ? '20% 1fr'
+                        : '25% 1fr',
+                    gridTemplateRows: '100%',
+                    alignItems: 'center',
+                    background: '#393e44',
+                    // justifyItems: 'center',
+                  }
+                : {
+                    display: 'grid',
+                    gridTemplateColumns: '20% 1fr',
+                    gridTemplateRows: '100%',
+                    alignItems: 'center',
+                    background: '#393e44',
+                  }
+            }
             className="full-screenable-node"
           >
             {isFullscreenEnabled ? null : (
@@ -69,12 +94,16 @@ class CorrelationMatrix extends PureComponent<IProps> {
               </ButtonsWrapper>
             )}
 
-            <Table
-              {...{
-                isFullscreenEnabled,
-                data,
-              }}
-            />
+            {data ? (
+              <Table
+                {...{
+                  isFullscreenEnabled,
+                  data,
+                }}
+              />
+            ) : (
+              this.renderPlaceholder()
+            )}
           </FullscreenNode>
         </FullScreen>
       </ScrolledWrapper>
@@ -100,6 +129,13 @@ const StyledFullscreenButton = styled(Button)`
 
 const FullscreenNode = styled.div`
   height: 100%;
+`
+
+const StyledCard = styled(Card)`
+  && {
+    margin: auto;
+    background: #292d31;
+  }
 `
 
 const ScrolledWrapper = styled.div`

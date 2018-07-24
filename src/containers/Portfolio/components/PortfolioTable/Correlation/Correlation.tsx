@@ -1,15 +1,8 @@
 import * as React from 'react'
 import { Subscription } from 'react-apollo'
-import {
-  Card,
-  CardContent,
-  Typography,
-  LinearProgress,
-} from '@material-ui/core'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import QueryRenderer from '@components/QueryRenderer'
-import { has } from 'lodash'
 
 // import HeatMapChart from '@components/HeatMapChart'
 import {
@@ -28,19 +21,6 @@ import {
 } from '@containers/Portfolio/api'
 
 class Correlation extends React.Component<IProps> {
-  renderPlaceholder = () => (
-    <>
-      <LinearProgress color="secondary" />
-      <StyledCard>
-        <CardContent>
-          <Typography color="secondary" variant="headline">
-            🤔 Empty Response...
-          </Typography>
-        </CardContent>
-      </StyledCard>
-    </>
-  )
-
   render() {
     const {
       children,
@@ -66,30 +46,18 @@ class Correlation extends React.Component<IProps> {
           return (
             <PTWrapper>
               {children}
-              {data ? (
-                <>
-                  <CorrelationMatrix
-                    fullScreenChangeHandler={this.props.toggleFullscreen}
-                    isFullscreenEnabled={isFullscreenEnabled || false}
-                    data={
-                      // has(subscriptionData, 'data') && subscriptionData.data
-                      //   ? subscriptionData.data
-                      //   : data
-                      data
-                    }
-                    period={period}
-                    setCorrelationPeriod={setCorrelationPeriodToStore}
-                  />
-
-                  {/* <HeatMapChart
-          data={getHeatMapData(HeatMapMocks)}
-          width={500}
-          height={500}
-        /> */}
-                </>
-              ) : (
-                this.renderPlaceholder()
-              )}
+              <CorrelationMatrix
+                fullScreenChangeHandler={this.props.toggleFullscreen}
+                isFullscreenEnabled={isFullscreenEnabled || false}
+                data={
+                  // has(subscriptionData, 'data') && subscriptionData.data
+                  //   ? subscriptionData.data
+                  //   : data
+                  data
+                }
+                period={period}
+                setCorrelationPeriod={setCorrelationPeriodToStore}
+              />
             </PTWrapper>
           )
         }}
@@ -147,15 +115,6 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: auto;
-`
-
-const StyledCard = styled(Card)`
-  && {
-    width: 20%;
-    height: 20%;
-    margin: auto;
-    background: #292d31;
-  }
 `
 
 const Wrapper = styled.div`
