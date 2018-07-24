@@ -150,7 +150,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
         isSideNavOpen={this.props.isSideNavOpen}
       >
         <AccountsWalletsHeadingWrapper>
-          <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
+          <Name>Api keys</Name>
 
           <Headline isSideNavOpen={this.props.isSideNavOpen}>Accounts</Headline>
           <CloseContainer>
@@ -223,7 +223,9 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 }
 
 const Name = styled.h1`
+  width: 100%;
   text-align: center;
+  letter-spacing: 1px;
   background: #292d31;
   border-radius: 2.5rem;
   padding: 0.5rem 0;
@@ -357,7 +359,7 @@ const StyledIcon = styled(Arrow)`
   font-size: 2rem;
   right: -0.3rem;
   position: absolute;
-  bottom: 50%;
+  bottom: 47%;
   transition: opacity 0.2s linear;
 `
 
@@ -378,15 +380,6 @@ const Headline = styled.div`
     font-size: 1rem;
     right: -1.5rem;
   }
-`
-
-const AccountsWalletsHeading = styled.span`
-  font-family: Roboto, sans-serif;
-  font-size: 1.25em;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-align: center;
-  color: #ffffff;
 `
 
 const mapStateToProps = (store) => ({
