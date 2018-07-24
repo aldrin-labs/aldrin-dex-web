@@ -17,7 +17,10 @@ import Chart from '@containers/Portfolio/components/GQLChart'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
-import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
+import {
+  IProps,
+  IState,
+} from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
 
 const defaultSelectedSum = {
@@ -67,9 +70,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const composeWithMocks = isShownMocks
       ? {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-      }
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+        }
       : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -89,9 +92,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
       const composeWithMocks = nextProps.isShownMocks
         ? {
-          ...portfolio,
-          assets: portfolio!.assets!.concat(MOCK_DATA),
-        }
+            ...portfolio,
+            assets: portfolio!.assets!.concat(MOCK_DATA),
+          }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -105,9 +108,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
       const composeWithMocks = nextProps.isShownMocks
         ? {
-          ...portfolio,
-          assets: portfolio.assets.concat(MOCK_DATA),
-        }
+            ...portfolio,
+            assets: portfolio.assets.concat(MOCK_DATA),
+          }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -245,7 +248,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = selectedRows.map(idx => tableData[idx]);
+    const sum = selectedRows.map((idx) => tableData[idx])
     const reducedSum = sum.reduce(
       (acc: any, val: IRowT) => ({
         currency: val.currency,
@@ -419,10 +422,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             }}
             height="20vh"
             marginTopHr="10px"
-            coins={this.state.selectedBalances.length > 0 ?
-              this.state.selectedBalances.map(idx => this.state.tableData[idx])
-              :
-              []
+            coins={
+              this.state.selectedBalances.length > 0
+                ? this.state.selectedBalances.map(
+                    (idx) => this.state.tableData[idx]
+                  )
+                : []
             }
           />
         </PTChartContainer>
@@ -438,11 +443,11 @@ const Container = styled.div`
 
   @media (max-height: 650px) {
     height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '45vh' : ''};
+      props.isShownChart ? '45vh' : ''};
   }
   @media (max-width: 450px) {
     height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '50vh' : ''};
+      props.isShownChart ? '50vh' : ''};
   }
 `
 
@@ -473,6 +478,7 @@ const PTWrapper = styled.div`
 `
 
 const TableAndHeadingWrapper = styled.div`
+  min-width: 20%;
   display: flex;
   margin: 0 20px 5px;
   flex-direction: column;
@@ -503,6 +509,8 @@ const TableHeading = styled.div`
 `
 
 const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow-y: scroll;
 
