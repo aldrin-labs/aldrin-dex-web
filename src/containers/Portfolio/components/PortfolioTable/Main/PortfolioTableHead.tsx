@@ -78,7 +78,7 @@ export default class PortfolioTableHead extends React.Component<
               <PTH
                 key={heading.name}
                 onClick={() => onSortTable(heading.value)}
-                style={{ paddingRight: isSorted ? 0 : '16px' }}
+                // style={{ paddingRight: isSorted ? 0 : '16px' }}
               >
                 {heading.name}
 
@@ -147,22 +147,46 @@ const PTH = styled.th`
   line-height: 24px;
   color: #fff;
   padding: 10px;
+  padding-right: 0;
   font-weight: 500;
   text-align: right;
+  min-width: 100px;
+  
 
-  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
-    min-width: 100px;
+
+  //&:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
+  //  min-width: 100px;
+  //}
+  &:nth-child(1) {
+    min-width: 30px;
+    padding-right: 10px;
   }
+  
   &:nth-child(2) {
+    min-width: 80px;
     text-align: left;
   }
   &:nth-child(3) {
-    min-width: 70px;
+    min-width: 50px;
     text-align: left;
   }
+  &:nth-child(4) {
+    min-width: 85px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 93px;
+  }
+  
   &:nth-child(9) {
     min-width: 110px;
   }
+  
+  &:nth-child(10) {
+    min-width: 90px;
+    padding-right: 10px;
+  }
+ 
 `
 
 const PTR = styled.tr`
