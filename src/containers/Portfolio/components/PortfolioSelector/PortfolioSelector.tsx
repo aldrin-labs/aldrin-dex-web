@@ -1,14 +1,16 @@
 import * as React from 'react'
-import { graphql } from 'react-apollo'
+import { FaFilter } from 'react-icons/lib/fa'
 import styled from 'styled-components'
 import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { has } from 'lodash'
 
-import { setKeys } from '../../actions'
+import Dropdown from '@components/SimpleDropDownSelector'
+
+import { setKeys, filterValuesLessThen } from '../../actions'
 import { getKeysQuery } from '../../api'
-import { IProps, IState } from '@components/PortfolioSelector/PortfolioSelector.types'
+import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 
 class PortfolioSelector extends React.Component<IProps, IState> {
@@ -59,6 +61,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
     this.props.setKeys(checkboxes)
 
     this.setState({ checkboxes, checkedCheckboxes })
+
     return true
   }
 
@@ -127,6 +130,11 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
   render() {
     const { checkedCheckboxes, checkboxes } = this.state
+    const {
+      filterValuesLessThenThat,
+      filterPercent,
+      isSideNavOpen,
+    } = this.props
 
     if (!checkboxes) {
       return null
@@ -138,7 +146,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
     return (
       <AccountsWalletsBlock
-        onClick={this.props.toggleWallets}
+        onClick={isSideNavOpen ? null : this.props.toggleWallets}
         isSideNavOpen={this.props.isSideNavOpen}
       >
         <AccountsWalletsHeadingWrapper>
@@ -190,10 +198,51 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             )
           })}
         </AccountsList>
+        <Name>Dust</Name>
+        <FilterValues>
+          <FilterIcon />
+          <Dropdown
+            style={{ width: '100%' }}
+            value={filterPercent}
+            handleChange={filterValuesLessThenThat}
+            name="filterValuesInMain"
+            options={[
+              { value: 0, label: '0% <' },
+              { value: 0.1, label: '0.1% <' },
+              { value: 0.2, label: '0.2% <' },
+              { value: 0.3, label: '0.3% <' },
+              { value: 0.5, label: '0.5% <' },
+              { value: 1, label: '1% <' },
+              { value: 10, label: '10% <' },
+            ]}
+          />
+        </FilterValues>
       </AccountsWalletsBlock>
     )
   }
 }
+
+const Name = styled.h1`
+  text-align: center;
+  background: #292d31;
+  border-radius: 2.5rem;
+  padding: 0.5rem 0;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  color: #4ed8da;
+`
+
+const FilterValues = styled.div`
+  width: 100%;
+  display: flex;
+  place-items: center;
+`
+const FilterIcon = styled(FaFilter)`
+  color: whitesmoke;
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+`
+
 const CloseContainer = styled.div`
   height: 100%;
 `
@@ -279,7 +328,7 @@ const AccountsWalletsBlock = styled.div`
   display: block;
   position: fixed;
   top: 0;
-  z-index: 1301;
+  z-index: 1300;
   height: 100vh;
   transition: left 0.2s ease-in;
 
@@ -342,10 +391,13 @@ const AccountsWalletsHeading = styled.span`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   setKeys: (keys: string[]) => dispatch(setKeys(keys)),
+  filterValuesLessThenThat: (percent: number) =>
+    dispatch(filterValuesLessThen(percent)),
 })
 
 class MainDataWrapper extends React.Component {

@@ -33,7 +33,11 @@ class SimpleDropDownSelector extends Component<IProps> {
           }}
         >
           {options.map((option) => (
-            <MenuItem key={option.label} value={option.value}>
+            <MenuItem
+              style={{ zIndex: 1500 }}
+              key={option.label}
+              value={option.value}
+            >
               {option.label}
             </MenuItem>
           ))}
