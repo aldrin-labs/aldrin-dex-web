@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { RadialChart } from 'react-vis'
-import PieChart from '@components/PieChart'
+import PieChart from '../index'
 
 const data = [{ angle: 30, label: 'First' }, { angle: 50, label: 'Second' }]
 
