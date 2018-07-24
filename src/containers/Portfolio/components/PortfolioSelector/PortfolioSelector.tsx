@@ -152,7 +152,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
         <AccountsWalletsHeadingWrapper>
           <Name>Api keys</Name>
 
-          <Headline isSideNavOpen={this.props.isSideNavOpen}>Accounts</Headline>
+          <Headline isSideNavOpen={this.props.isSideNavOpen}>Settings</Headline>
           <CloseContainer>
             <StyledIcon isSideNavOpen={this.props.isSideNavOpen} />
           </CloseContainer>
