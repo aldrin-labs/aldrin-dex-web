@@ -1088,33 +1088,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     this.setState({ [currentRowsForSortText]: newData })
   }
 
-
   render() {
     console.log('dataFromServer in render: ', this.props.data)
-    // console.log('getMyRebalance in render: ', this.props.getMyRebalance.getProfile.myRebalance.assets)
-
-    // console.log('this.state.undistributedMoney: ', this.state.undistributedMoney)
-
-    //
-    // const { data } = this.props
-    // // const { getProfile, loading, error } = data
-    //
-    // if (loading) {
-    //   return (
-    //     <LoaderWrapper>
-    //       <SvgIcon
-    //         src={spinLoader}
-    //         width={48}
-    //         height={48}
-    //         style={{
-    //           position: 'absolute',
-    //           left: 'calc(50% - 48px)',
-    //           top: 'calc(50% - 48px)',
-    //         }}
-    //       />
-    //     </LoaderWrapper>
-    //   )
-    // }
+    console.log('RENDER');
 
     const { children, isUSDCurrently } = this.props
     const {
