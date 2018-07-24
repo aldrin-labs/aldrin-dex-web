@@ -94,21 +94,45 @@ const PTDIndustry = css`
 `
 
 const PTDOther = css`
-  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
-    min-width: 100px;
-  }
+  min-width: 100px;
+  //font-size: 13px;
+  font-size: 12px;
+  padding: 10px 0 10px 10px;
+
+
   &:nth-child(1) {
     padding: 10px;
+    min-width: 30px;
   }
+  
   &:nth-child(2) {
     text-align: left;
+    min-width: 80px;
   }
+  
   &:nth-child(3) {
-    min-width: 70px;
     text-align: left;
+    min-width: 50px;
   }
+  
+  &:nth-child(4) {
+    min-width: 85px;
+  }
+  
+  &:nth-child(5) {
+    //min-width: 110px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 93px;
+  }
+  
   &:nth-child(9) {
     min-width: 110px;
+  }
+  &:nth-child(10) {
+    min-width: 90px;
+    padding-right: 10px;
   }
 `
 
