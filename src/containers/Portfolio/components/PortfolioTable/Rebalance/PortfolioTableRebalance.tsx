@@ -1088,33 +1088,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     this.setState({ [currentRowsForSortText]: newData })
   }
 
-
   render() {
     console.log('dataFromServer in render: ', this.props.data)
-    // console.log('getMyRebalance in render: ', this.props.getMyRebalance.getProfile.myRebalance.assets)
-
-    // console.log('this.state.undistributedMoney: ', this.state.undistributedMoney)
-
-    //
-    // const { data } = this.props
-    // // const { getProfile, loading, error } = data
-    //
-    // if (loading) {
-    //   return (
-    //     <LoaderWrapper>
-    //       <SvgIcon
-    //         src={spinLoader}
-    //         width={48}
-    //         height={48}
-    //         style={{
-    //           position: 'absolute',
-    //           left: 'calc(50% - 48px)',
-    //           top: 'calc(50% - 48px)',
-    //         }}
-    //       />
-    //     </LoaderWrapper>
-    //   )
-    // }
+    console.log('RENDER');
 
     const { children, isUSDCurrently } = this.props
     const {
@@ -1157,7 +1133,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
             <Wrapper>
-              <Table>
+              <Table style={{width: '564px'}}>
                 <PTHead>
                   <PTR>
                     {tableHeadingsCurrentPortfolio.map((heading) => {
@@ -1714,7 +1690,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   height: 45vh; //45vh
   padding: 0 20px 20px;
 `
@@ -1723,7 +1699,7 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
-  width: 45vw;
+  //width: 45vw;
 `
 
 const TableHeading = styled.div`
