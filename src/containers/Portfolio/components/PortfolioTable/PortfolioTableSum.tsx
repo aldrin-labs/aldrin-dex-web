@@ -95,6 +95,8 @@ const PTDIndustry = css`
 
 const PTDOther = css`
   min-width: 100px;
+  //font-size: 13px;
+  font-size: 12px;
   padding: 10px 0 10px 10px;
 
 
@@ -115,6 +117,10 @@ const PTDOther = css`
   
   &:nth-child(4) {
     min-width: 85px;
+  }
+  
+  &:nth-child(5) {
+    min-width: 110px;
   }
   
   &:nth-child(7) {
