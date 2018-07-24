@@ -265,18 +265,25 @@ const PTHC = styled.th`
   ${PTH};
   min-width: 100px;
   padding-right: 0;
+  
+  &:nth-child(1) {
+    min-width: 80px;
+  }
 
   &:nth-child(2) {
-    min-width: 80px;
+    min-width: 70px;
   }
   
   &:nth-child(4) {
-    min-width: 170px;
-    padding-right: 10px;
+    min-width: 150px;
+  }
+  
+  &:nth-child(5) {
+    min-width: 80px;
   }
  
   &:nth-child(6) {
-    min-width: 60px;
+    min-width: 50px;
   }
 `
 
@@ -316,19 +323,27 @@ const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
   padding-right: 0;
+  text-overflow: ellipsis;
+  
+  &:nth-child(1) {
+    min-width: 80px;
+  }
 
   &:nth-child(2) {
-    min-width: 80px;
+    min-width: 70px;
   }
   
   &:nth-child(4) {
-    min-width: 170px;
-    text-overflow: ellipsis;
-    padding-right: 10px;
+    min-width: 150px;
+    //padding-right: 10px;
+  }
+  
+  &:nth-child(5) {
+    min-width: 80px;
   }
   
   &:nth-child(6) {
-    min-width: 60px;
+    min-width: 50px;
   }
 `
 
