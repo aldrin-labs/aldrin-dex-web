@@ -249,12 +249,12 @@ class Optimization extends PureComponent<IProps, IState> {
       {
         data: formatedData,
         title: 'Original',
-        color: '#4fd8da',
+        color: '#2496c8',
       },
       {
         data: formatedOptimizedData,
         title: 'Optimized',
-        color: '#4fa1da',
+        color: '#1869a8',
       },
     ]
 
