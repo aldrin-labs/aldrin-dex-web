@@ -78,7 +78,8 @@ class Import extends PureComponent<IProps> {
 
       return
     }
-    const { data: backendData } = await client.query({
+
+    const fakeBackendData = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {
         expectedPct: Number(expectedReturn) / 100,
@@ -86,58 +87,76 @@ class Import extends PureComponent<IProps> {
         startDate,
         endDate,
       },
+      fetchPolicy: 'network-only',
     })
+    this.props.toggleLoading()
 
-    console.log('Variables')
-    console.log({
-      expectedPct: Number(expectedReturn),
-      coinList: storeData.map((el: IData) => el.coin),
-      startDate,
-      endDate,
-    })
-    console.log('Data')
-    console.log(backendData)
+    setTimeout(async () => {
+      const { data: backendData } = await client.query({
+        query: OPTIMIZE_PORTFOLIO,
+        variables: {
+          expectedPct: Number(expectedReturn) / 100,
+          coinList: storeData.map((el: IData) => el.coin),
+          startDate,
+          endDate,
+        },
+        fetchPolicy: 'network-only',
+      })
 
-    if (backendData.portfolioOptimization === '') {
-      showWarning('You get empty response! 🙈')
+      this.props.toggleLoading()
+      console.log('Variables')
+      console.log({
+        expectedPct: Number(expectedReturn),
+        coinList: storeData.map((el: IData) => el.coin),
+        startDate,
+        endDate,
+      })
+      console.log('Data')
+      console.log(backendData)
 
-      return
-    }
+      if (backendData.portfolioOptimization === '') {
+        showWarning('You get empty response! 🙈')
 
-    const backendDataParsed = JSON.parse(backendData.portfolioOptimization)
-      .weights_list
+        return
+      }
 
-    optimizedToState(backendDataParsed)
+      const backendDataParsed = JSON.parse(backendData.portfolioOptimization)
+        .weights_list
 
-    if (
-      backendDataParsed.find(
-        (obj: any) => obj.percentage_expected_returns === +expectedReturn
-      ) === undefined
-    ) {
-      showWarning('expectedReturn error')
+      optimizedToState(backendDataParsed)
 
-      return
-    }
+      if (
+        backendDataParsed.find(
+          (obj: any) => obj.percentage_expected_returns === +expectedReturn
+        ) === undefined
+      ) {
+        showWarning('expectedReturn error')
 
-    const isReturnedCoinsTheSameThatInputed = isEqual(
-      backendDataParsed
-        .find((obj: any) => obj.percentage_expected_returns === +expectedReturn)
-        .weighted_coins_optimized.map((el: IData) => el.coin)
-        .sort(),
-      storeData.map((el) => el.coin).sort()
-    )
+        return
+      }
 
-    if (!isReturnedCoinsTheSameThatInputed) {
-      showWarning('Output coins not the same as input coins!')
-
-      return
-    }
-
-    optimizePortfolio(
-      backendDataParsed.find(
-        (obj: any) => obj.percentage_expected_returns === +expectedReturn
+      const isReturnedCoinsTheSameThatInputed = isEqual(
+        backendDataParsed
+          .find(
+            (obj: any) => obj.percentage_expected_returns === +expectedReturn
+          )
+          .weighted_coins_optimized.map((el: IData) => el.coin)
+          .sort(),
+        storeData.map((el) => el.coin).sort()
       )
-    )
+
+      if (!isReturnedCoinsTheSameThatInputed) {
+        showWarning('Output coins not the same as input coins!')
+
+        return
+      }
+
+      optimizePortfolio(
+        backendDataParsed.find(
+          (obj: any) => obj.percentage_expected_returns === +expectedReturn
+        )
+      )
+    }, 2000)
   }
 
   addRow = (name: string, value: number) => {

@@ -184,6 +184,9 @@ class Optimization extends PureComponent<IProps, IState> {
     this.setState({ openWarning: false })
   }
 
+  toggleLoading = () =>
+    this.setState((prevState) => ({ loading: !prevState.loading }))
+
   renderInput = () => {
     // importing stuff from backend or manually bu user
     const {
@@ -205,9 +208,10 @@ class Optimization extends PureComponent<IProps, IState> {
     return (
       <QueryRenderer
         component={Import}
+        query={getCoinsForOptimization}
         optimizationPeriod={optimizationPeriod}
         showWarning={this.showWarning}
-        query={getCoinsForOptimization}
+        toggleLoading={this.toggleLoading}
         setPeriod={setPeriod}
         optimizedData={optimizedData}
         transformData={this.transformData}
