@@ -18,18 +18,23 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
 import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
-import { toggleCorrelationTableFullscreen } from '@containers/Portfolio/actions'
-import { getCorrelationQuery, CORRELATION_UPDATE } from '@containers/Portfolio/api'
+import {
+  toggleCorrelationTableFullscreen,
+  setCorrelationPeriod,
+} from '@containers/Portfolio/actions'
+import {
+  getCorrelationQuery,
+  CORRELATION_UPDATE,
+} from '@containers/Portfolio/api'
 
-class Correlation extends React.Component<IProps, IState> {
+class Correlation extends React.Component<IProps> {
   renderPlaceholder = () => (
     <>
       <LinearProgress color="secondary" />
-
       <StyledCard>
         <CardContent>
           <Typography color="secondary" variant="headline">
-            Empty Here...
+            🤔 Empty Response...
           </Typography>
         </CardContent>
       </StyledCard>
@@ -37,9 +42,17 @@ class Correlation extends React.Component<IProps, IState> {
   )
 
   render() {
-    const { children, isFullscreenEnabled } = this.props
+    const {
+      children,
+      isFullscreenEnabled,
+      period,
+      setCorrelationPeriodToStore,
+    } = this.props
     let data = {}
-    if (typeof this.props.data.correlationMatrixByDay === 'string' && this.props.data.correlationMatrixByDay.length > 0) {
+    if (
+      typeof this.props.data.correlationMatrixByDay === 'string' &&
+      this.props.data.correlationMatrixByDay.length > 0
+    ) {
       data = JSON.parse(this.props.data.correlationMatrixByDay)
     } else {
       data = this.props.data.correlationMatrixByDay
@@ -64,6 +77,8 @@ class Correlation extends React.Component<IProps, IState> {
                       //   : data
                       data
                     }
+                    period={period}
+                    setCorrelationPeriod={setCorrelationPeriodToStore}
                   />
 
                   {/* <HeatMapChart
@@ -73,8 +88,8 @@ class Correlation extends React.Component<IProps, IState> {
         /> */}
                 </>
               ) : (
-                  this.renderPlaceholder()
-                )}
+                this.renderPlaceholder()
+              )}
             </PTWrapper>
           )
         }}
@@ -83,13 +98,7 @@ class Correlation extends React.Component<IProps, IState> {
   }
 }
 
-class CorrelationWrapper extends React.Component<IProps, IState> {
-  state = {
-    startDate: 0,
-    endDate: 0,
-    period: '',
-  }
-
+class CorrelationWrapper extends React.Component<IProps> {
   render() {
     const {
       isShownMocks,
@@ -98,6 +107,7 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
       children,
       isFullscreenEnabled,
       toggleFullscreen,
+      setCorrelationPeriodToStore,
     } = this.props
 
     return (
@@ -110,16 +120,16 @@ class CorrelationWrapper extends React.Component<IProps, IState> {
             children={children}
           />
         ) : (
-            <QueryRenderer
-              component={Correlation}
-              query={getCorrelationQuery}
-              variables={{
-                startDate: 1531441380,
-                endDate: 1531873380,
-              }}
-              {...this.props}
-            />
-          )}
+          <QueryRenderer
+            component={Correlation}
+            query={getCorrelationQuery}
+            variables={{
+              startDate: 1531441380, //
+              endDate: 1531873380,
+            }}
+            {...this.props}
+          />
+        )}
       </Wrapper>
     )
   }
@@ -161,10 +171,13 @@ const mapStateToProps = (store: any) => ({
   isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
+  period: store.portfolio.correlationPeriod,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
+  setCorrelationPeriodToStore: (payload: object) =>
+    dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(

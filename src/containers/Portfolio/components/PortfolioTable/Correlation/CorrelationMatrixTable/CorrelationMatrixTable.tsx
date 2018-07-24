@@ -4,7 +4,10 @@ import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa'
 import shortid from 'shortid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'
-import { IProps, IState } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable.types'
+import {
+  IProps,
+  IState,
+} from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable.types'
 class CorrelationMatrixTable extends PureComponent<IProps, IState> {
   state: IState = {
     activeRow: null,
@@ -89,7 +92,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   color={backgroundColor}
                   active={i === activeRow && ind === activeColumn}
                 >
-                  {Number(el).toFixed(2)}
+                  <CenterText>{Number(el).toFixed(2)}</CenterText>
                 </CellContent>
               </Cell>
             )
@@ -100,9 +103,11 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
   }
 }
 
+const CenterText = styled.span``
+
 const StyledArrowRight = styled(FaAngleRight)`
   opacity: ${(props: { show?: boolean }) => (props.show ? '1' : '0')};
-  left: 0;
+  left: 0rem;
   color: #4ed8da;
   position: absolute;
   transition: opacity 0.25s ease-out;
@@ -116,22 +121,28 @@ const StyledArrowDown = styled(FaAngleDown)`
 `
 
 const GridTable = styled.div`
-  max-width: 100%;
-  max-height: 100%;
+  width: ${(props) => (props.isFullscreenEnabled ? 'auto' : '63.5%')};
+  margin: ${(props) => (props.isFullscreenEnabled ? '0 auto' : '')};
+  position: relative;
+  right: ${(props) => (props.isFullscreenEnabled ? '5vh' : '0')};
+  height: 100%;
   display: grid;
   background: ${(props) =>
     props.isFullscreenEnabled ? '#393e44' : 'transparent'};
   grid-template-rows: ${(props) =>
     props.isFullscreenEnabled
       ? `repeat(${props.rows}, ${100 / props.rows}vh)`
-      : `repeat(${props.rows}, 4rem)`};
+      : `repeat(${props.rows}, 1fr)`};
   grid-template-columns: ${(props) =>
     props.isFullscreenEnabled
-      ? `repeat(${props.columns}, ${100 / props.columns}vw)`
-      : `repeat(${props.columns}, 4rem)`};
+      ? `repeat(${props.columns}, ${100 / props.columns}vh)`
+      : `repeat(${props.columns}, 1fr)`};
 `
 
 const CellContent = styled.div`
+  display: flex;
+  place-content: center;
+  place-items: center;
   background-color: ${(props: { color?: string }) => {
     if (props.color) {
       return props.color
@@ -146,7 +157,7 @@ const CellContent = styled.div`
     props.active ? '2px solid #4ed8da' : '1px solid #292d31'};
   transition: border 0.25s ease-in-out;
 `
-
+/* tslint:disable */
 const Cell = styled.div`
   z-index: 100;
 
@@ -154,15 +165,21 @@ const Cell = styled.div`
   font-size: ${(props: { isFullscreenEnabled: boolean; cols: number }) => {
     const { isFullscreenEnabled, cols } = props
 
+    if (!isFullscreenEnabled && cols > 1 && cols < 5) {
+      return '2rem'
+    }
+    if (!isFullscreenEnabled && cols >= 5 && cols < 10) {
+      return '1.5rem'
+    }
+    if (!isFullscreenEnabled && cols >= 10 && cols < 16) {
+      return '0.7rem'
+    }
     if (!isFullscreenEnabled) {
-      return '1rem'
+      return '0.4rem'
     }
 
-    if (isFullscreenEnabled && cols > 1 && cols < 5) {
-      return '4rem'
-    }
-    if (isFullscreenEnabled && cols > 5 && cols <= 10) {
-      return '3rem'
+    if (isFullscreenEnabled && cols > 1 && cols <= 10) {
+      return '2.5rem'
     }
     if (isFullscreenEnabled && cols > 10 && cols <= 15) {
       return '2rem'
@@ -193,6 +210,7 @@ const HeadCell = Cell.extend`
   background: #393e44;
   position: relative;
   position: ${(props) => (props.sticky ? 'sticky' : 'relative')};
+
   top: 0;
 `
 

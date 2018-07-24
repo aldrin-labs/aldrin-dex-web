@@ -1,7 +1,10 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import FullScreen from 'react-fullscreen-crossbrowser'
+import { Button } from '@material-ui/core'
+import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 
+import SelectTimeRange from '@components/SelectTimeRangeDropdown'
 import Table from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix.types'
 
@@ -11,7 +14,13 @@ class CorrelationMatrix extends PureComponent<IProps> {
   }
 
   render() {
-    const { isFullscreenEnabled, data, fullScreenChangeHandler } = this.props
+    const {
+      isFullscreenEnabled,
+      data,
+      fullScreenChangeHandler,
+      setCorrelationPeriod,
+      period,
+    } = this.props
 
     return (
       <ScrolledWrapper>
@@ -25,13 +34,41 @@ class CorrelationMatrix extends PureComponent<IProps> {
           <FullscreenNode
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr',
+              gridTemplateColumns: isFullscreenEnabled
+                ? '1fr'
+                : data.values.length < 10
+                  ? '20% 1fr'
+                  : '25% 1fr',
               gridTemplateRows: '100%',
               alignItems: 'center',
-              justifyItems: 'center',
+              background: '#393e44',
+              // justifyItems: 'center',
             }}
             className="full-screenable-node"
           >
+            {isFullscreenEnabled ? null : (
+              <ButtonsWrapper>
+                <StyledFullscreenButton
+                  color="primary"
+                  variant="outlined"
+                  onClick={() => {
+                    this.props.fullScreenChangeHandler()
+                  }}
+                >
+                  <FullScreenIcon />
+                </StyledFullscreenButton>
+                <SelectTimeRange
+                  style={{
+                    height: 'auto',
+                    maxWidth: '10rem',
+                    marginTop: '2rem',
+                  }}
+                  setPeriodToStore={setCorrelationPeriod}
+                  period={period}
+                />
+              </ButtonsWrapper>
+            )}
+
             <Table
               {...{
                 isFullscreenEnabled,
@@ -44,6 +81,22 @@ class CorrelationMatrix extends PureComponent<IProps> {
     )
   }
 }
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+`
+
+const StyledFullscreenButton = styled(Button)`
+  z-index: 100;
+  color: #fff;
+
+  && {
+    font-size: 2rem;
+    margin: auto 1rem;
+  }
+`
 
 const FullscreenNode = styled.div`
   height: 100%;
