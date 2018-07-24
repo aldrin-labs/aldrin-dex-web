@@ -12,7 +12,7 @@ import {
   onSortStrings,
   calcPercentage,
 } from '@utils/PortfolioTableUtils'
-
+import * as actions from '../../../actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
@@ -416,6 +416,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         <PTChartContainer>
           <Chart
             isShownMocks={this.props.isShownMocks}
+            setActiveChart={this.props.setActiveChart}
+            activeChart={this.props.activeChart}
             style={{
               marginLeft: 0,
               borderTop: '1px solid #fff',
@@ -573,11 +575,18 @@ class MainDataWrapper extends React.Component {
   }
 }
 
+const mapDispatchToProps = (dispatch: any) => ({
+  setActiveChart: (ex: any) => dispatch(actions.setActiveChart(ex)),
+})
+
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  activeChart: store.portfolio.activeChart,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps)(MainDataWrapper)
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  MainDataWrapper
+)
 
 export default storeComponent

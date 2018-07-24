@@ -5,6 +5,7 @@ export const toggleCorrelationTableFullscreen = createAction(
 )
 export const getPortfolio = createAction('GET_PORTFOLIO')
 export const addExchangeKey = createAction('ADD_EXCHANGE_KEY')
+export const setActiveChart = createAction('SET_ACTIVE_CHART')
 export const selectAccount = createAction('SELECT_ACCOUNT')
 export const updateSelectedAccounts = createAction('UPDATE_SELECTED_ACCOUNTS')
 export const onLoad = createAction('ON_LOAD')

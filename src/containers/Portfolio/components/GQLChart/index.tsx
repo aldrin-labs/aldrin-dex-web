@@ -56,7 +56,7 @@ class PortfolioChart extends React.Component<Props, State> {
   }
 
   onChangeActiveChart = (index: number) => {
-    this.setState({ activeChart: index })
+    this.props.setActiveChart(index)
     this.props.updateDays(mapLabelToDays[chartBtns[index]])
   }
 
@@ -84,6 +84,8 @@ class PortfolioChart extends React.Component<Props, State> {
       days,
     } = this.props
     const { name = '', priceUSD = '' } = coin || {}
+
+    console.log(this.state.activeChart)
 
     const axisStyle = {
       ticks: {
@@ -172,7 +174,7 @@ class PortfolioChart extends React.Component<Props, State> {
             <ChartBtn
               onClick={() => this.onChangeActiveChart(i)}
               style={
-                i === this.state.activeChart
+                i === this.props.activeChart
                   ? { backgroundColor: '#4ed8da', color: '#4c5055' }
                   : {}
               }
