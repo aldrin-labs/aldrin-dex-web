@@ -837,6 +837,7 @@ class MainDataWrapper extends React.Component {
 
 const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 const storeComponent = connect(mapStateToProps)(MainDataWrapper)
