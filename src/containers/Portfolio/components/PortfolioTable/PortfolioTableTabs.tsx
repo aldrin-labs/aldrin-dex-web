@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import AccountIcon from 'react-icons/lib/md/supervisor-account'
+import AccountIcon from 'react-icons/lib/md/settings'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
@@ -235,7 +235,7 @@ const TabContainer = styled.div`
   align-items: center;
 
   @media (max-width: 1080px) {
-    justify-content: flex-start;
+    grid-template-columns: repeat(2, 4rem);
   }
 `
 

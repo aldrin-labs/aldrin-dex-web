@@ -8,7 +8,7 @@ const initialState = {
   selectedAccounts: [],
   optimizationData: [],
   correlationTableFullscreenEnabled: false,
-  correlationPeriod: 'lastDay',
+  correlationPeriod: 'testDates',
   optimizationPeriod: 'lastDay',
   optimizationStartDate: 0,
   optimizationEndDate: 0,

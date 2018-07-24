@@ -152,7 +152,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
         <AccountsWalletsHeadingWrapper>
           <Name>Api keys</Name>
 
-          <Headline isSideNavOpen={this.props.isSideNavOpen}>Settings</Headline>
+          <Headline isSideNavOpen={this.props.isSideNavOpen}>settings</Headline>
           <CloseContainer>
             <StyledIcon isSideNavOpen={this.props.isSideNavOpen} />
           </CloseContainer>
@@ -378,7 +378,7 @@ const Headline = styled.div`
 
   @media (min-width: 1000px) {
     font-size: 1rem;
-    right: -1.5rem;
+    right: -1.2rem;
   }
 `
 
