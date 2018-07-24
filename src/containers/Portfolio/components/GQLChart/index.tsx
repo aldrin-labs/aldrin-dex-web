@@ -16,7 +16,7 @@ import { Props, State } from './annotations'
 import { yearData } from './chartMocks'
 import { Loading } from '@components/Loading/Loading'
 import { ErrorFallback } from '@components/ErrorFallback'
-
+import { abbrNum } from '../../../Chart/DepthChart/depthChartUtil'
 const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
 
 export const PRICE_HISTORY_QUERY = gql`
@@ -136,7 +136,10 @@ class PortfolioChart extends React.Component<Props, State> {
                 new Date(v * 1000).toUTCString().substring(5, 11)
               }
             />
-            <YAxis style={axisStyle} tickFormat={(v: number) => `$${v}`} />
+            <YAxis
+              style={axisStyle}
+              tickFormat={(value) => `$${abbrNum(+value.toFixed(2), 2)}`}
+            />
             <AreaSeries
               onNearestX={this._onNearestX}
               data={this.props.data}
