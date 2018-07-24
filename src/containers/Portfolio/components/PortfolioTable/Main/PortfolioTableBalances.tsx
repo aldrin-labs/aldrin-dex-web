@@ -549,6 +549,8 @@ const PTextBox = styled.div`
 `
 
 const PTChartContainer = styled.div`
+  min-height: 40%;
+  position: relative;
   @media (max-width: 500px) {
     display: none;
   }
