@@ -145,7 +145,7 @@ const PTD = styled.td`
   }};
 
   font-family: Roboto, sans-serif;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 24px;
   padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
