@@ -54,6 +54,9 @@ class PortfolioChart extends React.Component<Props, State> {
     activeChart: 4,
     crosshairValues: [],
   }
+  componentDidMount() {
+    this.props.updateDays(mapLabelToDays[chartBtns[this.props.activeChart]])
+  }
 
   onChangeActiveChart = (index: number) => {
     this.props.setActiveChart(index)
@@ -82,10 +85,10 @@ class PortfolioChart extends React.Component<Props, State> {
       marginTopHr,
       lastDrawLocation,
       days,
+      loading,
+      error,
     } = this.props
     const { name = '', priceUSD = '' } = coin || {}
-
-    console.log(this.state.activeChart)
 
     const axisStyle = {
       ticks: {
@@ -95,6 +98,11 @@ class PortfolioChart extends React.Component<Props, State> {
         fontSize: '12px',
         fontWeight: 100,
       },
+    }
+    if (loading) {
+      return <Loading centerAligned />
+    } else if (error) {
+      return <ErrorFallback error={error} />
     }
 
     return (
@@ -272,11 +280,6 @@ export default class GQLChart extends React.Component {
         }}
       >
         {({ subscribeToMore, loading, error, ...result }) => {
-          if (loading) {
-            return <Loading centerAligned />
-          } else if (error) {
-            return <ErrorFallback error={error} />
-          }
           let data = []
           if (
             result.data &&
@@ -293,6 +296,8 @@ export default class GQLChart extends React.Component {
 
           return (
             <PortfolioChart
+              loading={loading}
+              error={error}
               data={this.props.isShownMocks ? yearData : data}
               onChangeDateRange={(area) => this.onChangeDateRange(area)}
               updateDays={(days) => this.updateDays(days)}
