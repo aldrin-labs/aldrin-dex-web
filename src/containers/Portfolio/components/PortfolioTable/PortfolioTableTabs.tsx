@@ -151,6 +151,9 @@ const PTHeadingBlock = styled.div`
   padding: 17px;
   min-height: 100px;
 
+  @media (max-width: 1080px) {
+    justify-content: flex-start;
+  }
   @media (max-width: 700px) {
     &:first-child {
       align-items: flex-start;
@@ -175,12 +178,6 @@ const PTHeadingBlock = styled.div`
       margin-bottom: 15px;
     }
   }
-`
-const SelectorWrapper = styled.div`
-  display: flex;
-  place-items: center;
-  margin: auto 0;
-  height: 2rem;
 `
 
 const ButtonContainer = styled.div`

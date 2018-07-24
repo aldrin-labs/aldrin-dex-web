@@ -29,6 +29,16 @@ class Table extends Component<IProps, IState> {
     })
   }
 
+  onKeyDown = (e: any) => {
+    console.log(e.keyCode)
+    if (e.keyCode === 13) {
+      this.props.onPlusClick &&
+        this.props.onPlusClick(this.state.name, this.state.value)
+
+      this.setState({ name: '', value: '' })
+    }
+  }
+
   render() {
     const {
       withInput,
@@ -95,6 +105,7 @@ class Table extends Component<IProps, IState> {
                 type="text"
                 value={this.state.name || ''}
                 onChange={this.handleChangeName}
+                onKeyDown={this.onKeyDown}
               />
             </Item>
             <Item
