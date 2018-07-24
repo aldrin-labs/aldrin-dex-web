@@ -9,9 +9,9 @@ import telegram from '../../icons/telegram.svg'
 import twitter from '../../icons/twitter.svg'
 
 const socialIcons = [
-  { icon: github, link: '' },
-  { icon: telegram, link: '' },
-  { icon: twitter, link: '' },
+  // { icon: github, link: '' },
+  { icon: telegram, link: 'https://t.me/CryptocurrenciesAi' },
+  // { icon: twitter, link: '' },
 ]
 
 export default class Footer extends React.Component {
@@ -33,7 +33,14 @@ export default class Footer extends React.Component {
         <Block>
           {socialIcons.map((socio) => (
             <LinkWithIcon key={socio.icon} href={socio.link}>
-              <SvgIcon src={socio.icon} width={30} height={30} />
+              <SvgIcon
+                styledComponentsAdditionalStyle={
+                  'opacity: 0.5; transition: all .5s linear; &:hover{opacity:1;}'
+                }
+                src={socio.icon}
+                width={30}
+                height={30}
+              />
             </LinkWithIcon>
           ))}
         </Block>
@@ -69,7 +76,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   background-color: #2d3136;
-  padding: 25px 0;
+  padding: 0.5rem 0;
 `
 
 const Block = styled.div`

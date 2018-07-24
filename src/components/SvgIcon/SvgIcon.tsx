@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 interface Props {
   src: string
+  styledComponentsAdditionalStyle: string
   style?: Object
   width?: number
   height?: number
@@ -10,12 +11,13 @@ interface Props {
 
 export default class SvgIcon extends React.Component<Props, {}> {
   render() {
-    const { src, style } = this.props
+    const { src, style, styledComponentsAdditionalStyle } = this.props
     const width = this.props.width || 16
     const height = this.props.height || 16
 
     return (
       <WebIcon
+        styledComponentsAdditionalStyle={styledComponentsAdditionalStyle}
         src={src.replace(/"/gi, '')}
         style={{ ...style, width, height }}
       />
@@ -25,4 +27,6 @@ export default class SvgIcon extends React.Component<Props, {}> {
 
 const WebIcon = styled.img`
   object-fit: contain;
+  ${(props: { styledComponentsAdditionalStyle: string }) =>
+    props.styledComponentsAdditionalStyle};
 `
