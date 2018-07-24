@@ -113,6 +113,7 @@ class PortfolioChart extends React.Component<Props, State> {
           }}
         >
           <FlexibleXYPlot
+            margin={{ left: 50 }}
             animation
             onMouseLeave={this._onMouseLeave}
             xDomain={
