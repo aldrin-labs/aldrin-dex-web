@@ -1,7 +1,7 @@
 import React from 'react'
 import { ScaleUtils, AbstractSeries } from 'react-vis'
 
-export class Highlight extends AbstractSeries {
+export default class Highlight extends AbstractSeries {
   static displayName = 'HighlightOverlay'
   static defaultProps = {
     allow: 'x',
@@ -37,7 +37,7 @@ export class Highlight extends AbstractSeries {
     const { marginLeft, innerHeight, onBrushStart } = this.props
     const location = e.nativeEvent.offsetX - marginLeft
 
-    // TODO: Eventually support drawing as a full rectangle, if desired. Currently the code supports 'x' only
+    // TODO: I need too much time to do it correctly. Currently the code supports 'x' only
     this.setState({
       drawing: true,
       drawArea: {
@@ -132,7 +132,7 @@ export class Highlight extends AbstractSeries {
           opacity="0"
           x={0}
           y={0}
-          width={innerWidth}
+          width={innerWidth < 0 ? 0 : innerWidth}
           height={innerHeight}
         />
         <rect
@@ -149,6 +149,3 @@ export class Highlight extends AbstractSeries {
     )
   }
 }
-
-
-// export default Highlight
