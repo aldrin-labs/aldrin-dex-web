@@ -120,7 +120,7 @@ const PTDOther = css`
   }
   
   &:nth-child(5) {
-    min-width: 110px;
+    //min-width: 110px;
   }
   
   &:nth-child(7) {
