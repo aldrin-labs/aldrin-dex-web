@@ -57,7 +57,6 @@ class Optimization extends PureComponent<IProps, IState> {
         ]
         this.setState(
           {
-            loading: false,
             optimizedData: this.props.storeData.map(
               ({ coin }: { coin: string }) => ({
                 coin,
@@ -115,7 +114,9 @@ class Optimization extends PureComponent<IProps, IState> {
   }
 
   onBtnClick = async (index: number) => {
-    this.setState({ loading: true })
+    if (!this.props.isShownMocks) {
+      this.setState({ loading: true })
+    }
     this.setState({ activeButton: index })
 
     const { rawOptimizedData, percentages } = this.state
