@@ -72,6 +72,7 @@ export interface IndProps {
 
   checkboxes: number[]
   isUSDCurrently: boolean
+  filterValueSmallerThenPercentage: string
   isShownMocks?: boolean
 }
 

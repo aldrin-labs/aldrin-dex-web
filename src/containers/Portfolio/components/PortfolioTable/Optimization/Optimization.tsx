@@ -424,6 +424,7 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.optimizationStartDate,
   endDate: store.portfolio.optimizationEndDate,
   optimizationPeriod: store.portfolio.optimizationPeriod,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

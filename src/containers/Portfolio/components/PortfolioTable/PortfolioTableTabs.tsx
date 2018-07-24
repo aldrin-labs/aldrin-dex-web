@@ -4,17 +4,13 @@ import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import AccountIcon from 'react-icons/lib/md/supervisor-account'
-import { FaFilter } from 'react-icons/lib/fa'
+import AccountIcon from 'react-icons/lib/md/settings'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Dropdown from '@components/SimpleDropDownSelector'
 import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
 import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
-
-import { filterValuesLessThen } from '@containers/Portfolio/actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -45,14 +41,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const {
-      tab,
-      portfolio,
-      toggleWallets,
-
-      filterValuesLessThen,
-      filterPercent,
-    } = this.props
+    const { tab, portfolio, toggleWallets } = this.props
 
     return (
       <React.Fragment>
@@ -103,27 +92,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
             </Tab>
           </TabContainer>
 
-          {tab === 'main' ? (
-            <FilterValues>
-              <FilterIcon />
-              <Dropdown
-                style={{ width: '100%' }}
-                value={filterPercent}
-                handleChange={filterValuesLessThen}
-                name="filterValuesInMain"
-                options={[
-                  { value: 0, label: '0% <' },
-                  { value: 0.1, label: '0.1% <' },
-                  { value: 0.2, label: '0.2% <' },
-                  { value: 0.3, label: '0.3% <' },
-                  { value: 0.5, label: '0.5% <' },
-                  { value: 1, label: '1% <' },
-                  { value: 10, label: '10% <' },
-                ]}
-              />
-            </FilterValues>
-          ) : null}
-
           <ButtonContainer>
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
             {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
@@ -168,17 +136,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
     )
   }
 }
-
-const FilterValues = styled.div`
-  width: 15%;
-  display: flex;
-  place-items: center;
-`
-const FilterIcon = styled(FaFilter)`
-  color: whitesmoke;
-  font-size: 1.5rem;
-  margin: 0 0.5rem;
-`
 
 const PTHeadingBlock = styled.div`
   display: flex;
@@ -278,7 +235,7 @@ const TabContainer = styled.div`
   align-items: center;
 
   @media (max-width: 1080px) {
-    justify-content: flex-start;
+    grid-template-columns: repeat(2, 4rem);
   }
 `
 
@@ -329,16 +286,9 @@ const SwitchRefreshContainer = styled.div`
 `
 
 const mapStateToProps = (store) => ({
-  filterPercent: store.portfolio.filterValuesLessThenThat,
+  isShownMock: store.portfolio.isShownMock,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  filterValuesLessThen: (percent: number) =>
-    dispatch(filterValuesLessThen(percent)),
-})
-
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  PortfolioTableTabs
-)
+const storeComponent = connect(mapStateToProps)(PortfolioTableTabs)
 
 export default compose()(storeComponent)
