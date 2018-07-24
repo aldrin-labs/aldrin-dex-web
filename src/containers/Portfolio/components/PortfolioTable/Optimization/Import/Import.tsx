@@ -81,7 +81,7 @@ class Import extends PureComponent<IProps> {
     const { data: backendData } = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {
-        expectedPct: Number(expectedReturn),
+        expectedPct: Number(expectedReturn) / 100,
         coinList: storeData.map((el: IData) => el.coin),
         startDate,
         endDate,
