@@ -1,4 +1,11 @@
 export interface IProps {
-  period: 'lastWeek' | 'lastDay' | 'lastMonth'
+  style?: object
+  period:
+    | 'lastWeek'
+    | 'lastDay'
+    | 'lastMonth'
+    | 'threeMonths'
+    | 'sixMonths'
+    | 'lastYear'
   setPeriodToStore: Function
 }

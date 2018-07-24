@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 interface Props {
   src: string
-  styledComponentsAdditionalStyle: string
+  styledComponentsAdditionalStyle?: string
   style?: Object
   width?: number
   height?: number

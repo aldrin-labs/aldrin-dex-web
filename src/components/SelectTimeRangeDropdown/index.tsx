@@ -18,6 +18,22 @@ class DropDownMenu extends Component<IProps> {
       startDate: this.daysFromNow(-41),
       endDate: this.daysFromNow(-10),
     }),
+    threeMonths: () => ({
+      startDate: this.daysFromNow(-102),
+      endDate: this.daysFromNow(-10),
+    }),
+    sixMonths: () => ({
+      startDate: this.daysFromNow(-194),
+      endDate: this.daysFromNow(-10),
+    }),
+    lastYear: () => ({
+      startDate: this.daysFromNow(-366),
+      endDate: this.daysFromNow(-10),
+    }),
+    testDates: () => ({
+      startDate: 1531441380,
+      endDate: 1531873380,
+    }),
   }
 
   formatTimestamp = (timestamp: number) => Math.round(timestamp / 1000)
@@ -40,7 +56,7 @@ class DropDownMenu extends Component<IProps> {
   }
 
   render() {
-    const { period } = this.props
+    const { period, style } = this.props
 
     return (
       <Selector
@@ -48,6 +64,7 @@ class DropDownMenu extends Component<IProps> {
           alignSelf: 'center',
           height: '100%',
           width: '100%',
+          ...style,
         }}
         name="correlationPeriod"
         id="correlationPeriod"
@@ -55,8 +72,12 @@ class DropDownMenu extends Component<IProps> {
         handleChange={this.handleChange}
         options={[
           { value: 'lastDay', label: 'Last 24h' },
-          { value: 'lastWeek', label: 'Last week' },
+          { value: 'lastWeek', label: 'Last Week' },
           { value: 'lastMonth', label: 'Last Month' },
+          { value: 'threeMonths', label: 'Last 3 Months' },
+          { value: 'sixMonths', label: 'Last 6 Months' },
+          { value: 'lastYear', label: 'Last Year' },
+          { value: 'testDates', label: 'Test Dates' },
         ]}
       />
     )

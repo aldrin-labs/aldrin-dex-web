@@ -3,4 +3,6 @@ export interface IProps {
   toggleFullscreen: Function
   isFullscreenEnabled: boolean
   data: object
+  setCorrelationPeriodToStore: Function
+  period: string
 }

@@ -5,16 +5,12 @@ import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/supervisor-account'
-import { Button } from '@material-ui/core'
-import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
 import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
-
-import { toggleCorrelationTableFullscreen } from '@containers/Portfolio/actions'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -97,19 +93,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </TabContainer>
 
           <ButtonContainer>
-            {tab === 'correlation' || tab === 'optimization' ? (
-              <>
-                <SelectorWrapper />
-                {tab === 'correlation' && (
-                  <StyledFullscreenButton
-                    onClick={this.props.onFullscreenButtonClick}
-                  >
-                    <FullScreenIcon />
-                  </StyledFullscreenButton>
-                )}
-              </>
-            ) : null}
-
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
             {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
             {/*</ToggleBtn>*/}
@@ -156,13 +139,14 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
 const PTHeadingBlock = styled.div`
   display: flex;
+
   position: sticky;
   top: 0;
   background-color: #393e44;
   z-index: 99;
 
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 17px;
   min-height: 100px;
@@ -244,10 +228,11 @@ const StyledAccountIcon = styled(AccountIcon)`
 `
 
 const TabContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  flex-flow: wrap;
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
 
   @media (max-width: 1080px) {
     justify-content: flex-start;
@@ -300,27 +285,10 @@ const SwitchRefreshContainer = styled.div`
   }
 `
 
-const StyledFullscreenButton = styled(Button)`
-  z-index: 100;
-  color: #fff;
-
-  && {
-    font-size: 2rem;
-    margin: auto 1rem;
-    width: 2rem;
-  }
-`
-
 const mapStateToProps = (store) => ({
   isShownMock: store.portfolio.isShownMock,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
-})
-
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  PortfolioTableTabs
-)
+const storeComponent = connect(mapStateToProps)(PortfolioTableTabs)
 
 export default compose()(storeComponent)
