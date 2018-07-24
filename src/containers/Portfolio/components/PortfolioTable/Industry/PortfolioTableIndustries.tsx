@@ -8,17 +8,18 @@ import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/Swi
 
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
-import { MOCKS, genMocks, inds } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
+import {
+  MOCKS,
+  genMocks,
+  inds,
+} from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 import {
   IPortfolio,
   Args,
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
-import {
-  onSortStrings,
-  roundUSDOff,
-} from '@utils/PortfolioTableUtils'
+import { onSortStrings, roundUSDOff } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
@@ -129,7 +130,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   combineIndustryData = (portfolio?: IPortfolio) => {
-    const { isUSDCurrently } = this.props
+    const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     const { activeKeys } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
@@ -180,6 +181,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         return col
       })
       .filter(Boolean)
+    // .filter(
+    //   (el) =>
+    //     el.portfolioPerf >
+    //     (filterValueSmallerThenPercentage
+    //       ? filterValueSmallerThenPercentage
+    //       : 0)
+    // )
     this.setState({ industryData }, () =>
       this.calculateSum(this.state.selectedRows)
     )
