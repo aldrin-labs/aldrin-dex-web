@@ -5,7 +5,7 @@ import * as actions from '@containers/Chart/actions'
 
 const initialState = {
   activeExchange: { index: 0, exchange: { symbol: '' } },
-  currencyPair: 'ETH_BTC',
+  currencyPair: 'USDT_BTC',
   warningMessageOpened: false,
   charts: [],
   view: 'default',
