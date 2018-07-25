@@ -47,10 +47,10 @@ class OrdersList extends React.Component {
         console.log('order unsubscribe', state.symbol, state.exchange)
         state.unsubscribe(); // unsubscribe
       }
-      // newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x)), TODO: fix back when we have orderbook history on backend
+      const orders = newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x));
       return ({
-        bids: [],
-        asks: [],
+        bids: orders.filter(x => x.type === 'bid'),
+        asks: orders.filter(x => x.type === 'ask'),
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
         unsubscribe: newProps.subscribeToNewOrders()
@@ -65,8 +65,9 @@ class OrdersList extends React.Component {
         side: orderData.side
       }
 
-      if (order.size === "0") { return null; }
+      if (order.size === "0") { return null; } // TODO: if 0 then we should remove order from orderbook
 
+      // TODO: next here we should increase or decrease size of existing orders, not just replace them
       if (order.side === "bid") {
         const ind = state.bids.findIndex(i => i.price === order.price);
         if (ind > -1) {
@@ -144,7 +145,7 @@ class OrdersList extends React.Component {
               color="#9ca2aa"
               width={'35%'}
             >
-              {'Fiat'} spread{' '}
+              Spread{' '}
             </HeadCell>
             <HeadCell
               style={{
@@ -154,7 +155,7 @@ class OrdersList extends React.Component {
               color="#9ca2aa"
               width={'14%'}
             >
-              {0.01}
+              {this.state.asks.length > 0 && this.state.bids.length > 0 ? this.state.bids[this.state.bids.length - 1].price - this.state.asks[this.state.asks.length - 1].price : 0}
             </HeadCell>
           </Row>
         </Head>
