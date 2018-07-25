@@ -51,7 +51,7 @@ class Optimization extends PureComponent<IProps, IState> {
 
     return assets.map((data: any) => ({
       coin: data.asset.symbol,
-      percentage: percentagesOfCoinInPortfolio(data, allSum),
+      percentage: percentagesOfCoinInPortfolio(data, allSum, false),
     }))
   }
 

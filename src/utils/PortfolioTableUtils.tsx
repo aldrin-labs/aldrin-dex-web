@@ -23,8 +23,8 @@ export const percentagesOfCoinInPortfolio = (
   isUSDCurrently: boolean
 ): number =>
   isUSDCurrently
-    ? Number(asset.priceUSD * asset.value * 100 / allSum)
-    : Number(asset.priceBTC * asset.value * 100 / allSum)
+    ? Number(asset.asset.priceUSD * asset.value * 100 / allSum)
+    : Number(asset.asset.priceBTC * asset.value * 100 / allSum)
 
 export const onSortTableFull = (
   key,
