@@ -104,6 +104,7 @@ class Import extends PureComponent<IProps> {
       })
 
       this.props.toggleLoading()
+
       console.log('Variables')
       console.log({
         expectedPct: Number(expectedReturn),
@@ -125,22 +126,11 @@ class Import extends PureComponent<IProps> {
 
       optimizedToState(backendDataParsed)
 
-      if (
-        backendDataParsed.find(
-          (obj: any) => obj.percentage_expected_returns === +expectedReturn
-        ) === undefined
-      ) {
-        showWarning('expectedReturn error')
-
-        return
-      }
+      console.log(backendDataParsed)
 
       const isReturnedCoinsTheSameThatInputed = isEqual(
-        backendDataParsed
-          .find(
-            (obj: any) => obj.percentage_expected_returns === +expectedReturn
-          )
-          .weighted_coins_optimized.map((el: IData) => el.coin)
+        backendDataParsed[2].weighted_coins_optimized
+          .map((el: IData) => el.coin)
           .sort(),
         storeData.map((el) => el.coin).sort()
       )
@@ -151,11 +141,7 @@ class Import extends PureComponent<IProps> {
         // return
       }
 
-      optimizePortfolio(
-        backendDataParsed.find(
-          (obj: any) => obj.percentage_expected_returns === +expectedReturn
-        )
-      )
+      optimizePortfolio(backendDataParsed[2])
     }, 2000)
   }
 
