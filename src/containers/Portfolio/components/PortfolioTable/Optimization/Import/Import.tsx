@@ -148,7 +148,7 @@ class Import extends PureComponent<IProps> {
       if (!isReturnedCoinsTheSameThatInputed) {
         showWarning('Output coins not the same as input coins!')
 
-        return
+        // return
       }
 
       optimizePortfolio(
@@ -274,7 +274,6 @@ class Import extends PureComponent<IProps> {
                 optimizedData={optimizedData}
                 withInput
                 onClickDeleteIcon={this.deleteRow}
-                onClickDeleteAllIcon={this.deleteAllRows}
               />
             </TableContainer>
             <HelperForCentering />

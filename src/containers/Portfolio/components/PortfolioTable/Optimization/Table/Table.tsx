@@ -30,7 +30,6 @@ class Table extends Component<IProps, IState> {
   }
 
   onKeyDown = (e: any) => {
-    console.log(e.keyCode)
     if (e.keyCode === 13) {
       this.props.onPlusClick &&
         this.props.onPlusClick(this.state.name, this.state.value)
@@ -69,12 +68,15 @@ class Table extends Component<IProps, IState> {
             </Col>
 
             {/*  optimizedData */}
-            {optimizedData.length >= 1 &&
-            optimizedData.length === data.length ? (
+            {optimizedData.length >= 1 ? (
+              //  &&
+              // optimizedData.length === data.length
               <Col>
-                {optimizedData.map((item, i) => (
+                {data.map((item, i) => (
                   <Item key={item.coin}>
-                    {`${Number(item.percentage).toFixed(2)}%`}{' '}
+                    {optimizedData[i]
+                      ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
+                      : '-'}{' '}
                     <StyledDeleteIcon
                       onClick={() => {
                         onClickDeleteIcon && onClickDeleteIcon(i)

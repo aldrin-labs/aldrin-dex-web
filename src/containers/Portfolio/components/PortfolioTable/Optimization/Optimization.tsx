@@ -272,19 +272,19 @@ class Optimization extends PureComponent<IProps, IState> {
     }
 
     let showBarChartPlaceholder = false
-    if (
-      !isEqual(
-        storeData.map((el: IData) => el.coin).sort(),
-        optimizedData.map((el: IData) => el.coin).sort()
-      )
-    ) {
-      showBarChartPlaceholder = true
-      efficientFrontierData = {
-        percentages: [],
-        risk: [],
-        activeButton,
-      }
-    }
+    // if (
+    //   !isEqual(
+    //     storeData.map((el: IData) => el.coin).sort(),
+    //     optimizedData.map((el: IData) => el.coin).sort()
+    //   )
+    // ) {
+    //   showBarChartPlaceholder = true
+    //   efficientFrontierData = {
+    //     percentages: [],
+    //     risk: [],
+    //     activeButton,
+    //   }
+    // }
 
     return (
       <ChartsContainer>
