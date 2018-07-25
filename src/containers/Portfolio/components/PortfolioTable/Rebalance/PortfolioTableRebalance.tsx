@@ -1246,7 +1246,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 </PTHead>
 
                 <PTBody>
-                  {console.log(this.props.filterValueSmallerThenPercentage)}
                   {staticRows
                     .filter(
                       (row) =>
