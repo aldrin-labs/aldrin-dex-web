@@ -11,6 +11,7 @@ import {
   onValidateSum,
   onSortStrings,
   calcPercentage,
+  calcAllSumOfPortfolioAsset,
 } from '@utils/PortfolioTableUtils'
 import * as actions from '../../../actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
@@ -143,15 +144,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     }
     const { assets } = portfolio
 
-    const allSums = assets.filter(Boolean).reduce((acc, curr) => {
-      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
-        return null
-      }
-      const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
-
-      return acc + value * Number(price)
-    }, 0)
+    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
     const tableData = assets
       .map((row: InewRowT) => {

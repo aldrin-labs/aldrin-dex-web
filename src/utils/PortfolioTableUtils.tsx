@@ -2,73 +2,105 @@ import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 
-export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadings, arrayOfDateHeadings) => {
-    if (!tableData) {
-      return
+export const calcAllSumOfPortfolioAsset = (
+  assets: any,
+  isUSDCurrently: boolean
+): number =>
+  // transforming data like assets from profile to IData format
+  assets.filter(Boolean).reduce((acc: number, curr: any) => {
+    const { value = 0, asset = { priceUSD: 0 } } = curr || {}
+    if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
+      return null
+    }
+    const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+
+    return acc + value * Number(price)
+  }, 0)
+
+export const percentagesOfCoinInPortfolio = (
+  asset: any,
+  allSum: number,
+  isUSDCurrently: boolean
+): number =>
+  isUSDCurrently
+    ? Number(asset.priceUSD * asset.value * 100 / allSum)
+    : Number(asset.priceBTC * asset.value * 100 / allSum)
+
+export const onSortTableFull = (
+  key,
+  tableData,
+  currentSort,
+  arrayOfStringHeadings,
+  arrayOfDateHeadings
+) => {
+  if (!tableData) {
+    return
+  }
+
+  const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
+  const dateKey = arrayOfDateHeadings
+    ? arrayOfDateHeadings.some((heading) => heading === key)
+    : false
+
+  let newCurrentSort: { key: string; arg: 'ASC' | 'DESC' } | null
+
+  const newData = tableData.slice().sort((a, b) => {
+    if (currentSort && currentSort.key === key) {
+      if (currentSort.arg === 'ASC') {
+        newCurrentSort = { key, arg: 'DESC' }
+
+        if (stringKey) {
+          return onSortStrings(b[key], a[key])
+        }
+
+        if (dateKey) {
+          return new Date(b[key]).getTime() - new Date(a[key]).getTime()
+        }
+
+        return b[key] - a[key]
+      } else {
+        newCurrentSort = { key, arg: 'ASC' }
+
+        if (stringKey) {
+          return onSortStrings(a[key], b[key])
+        }
+
+        if (dateKey) {
+          return new Date(a[key]).getTime() - new Date(b[key]).getTime()
+        }
+
+        return a[key] - b[key]
+      }
     }
 
-    const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
-    const dateKey = arrayOfDateHeadings ? arrayOfDateHeadings.some((heading) => heading === key) : false
+    newCurrentSort = { key, arg: 'ASC' }
 
-    let newCurrentSort : { key: string; arg: 'ASC' | 'DESC' } | null
+    if (stringKey) {
+      return onSortStrings(a[key], b[key])
+    }
 
-    const newData = tableData.slice().sort((a, b) => {
-      if (currentSort && currentSort.key === key) {
-        if (currentSort.arg === 'ASC') {
-          newCurrentSort = { key, arg: 'DESC' }
+    if (dateKey) {
+      return new Date(a[key]).getTime() - new Date(b[key]).getTime()
+    }
 
-          if (stringKey) {
-            return onSortStrings(b[key], a[key])
-          }
+    return a[key] - b[key]
+  })
 
-          if (dateKey) {
-            return new Date(b[key]).getTime() - new Date(a[key]).getTime();
-          }
-
-          return b[key] - a[key]
-        } else {
-          newCurrentSort = { key, arg: 'ASC' }
-
-          if (stringKey) {
-            return onSortStrings(a[key], b[key])
-          }
-
-          if (dateKey) {
-            return new Date(a[key]).getTime() - new Date(b[key]).getTime();
-          }
-
-          return a[key] - b[key]
-        }
-      }
-
-      newCurrentSort = { key, arg: 'ASC' }
-
-      if (stringKey) {
-        return onSortStrings(a[key], b[key])
-      }
-
-      if (dateKey) {
-        return new Date(a[key]).getTime() - new Date(b[key]).getTime();
-      }
-
-      return a[key] - b[key]
-    })
-
-
-    console.log('dateKey: ', dateKey);
-    console.log(newData)
-    console.log(newCurrentSort)
-    console.log('stringKey: ', stringKey)
-
+  console.log('dateKey: ', dateKey)
+  console.log(newData)
+  console.log(newCurrentSort)
+  console.log('stringKey: ', stringKey)
 
   return {
-      newData,
-      newCurrentSort
-    }
-
+    newData,
+    newCurrentSort,
+  }
 }
 
-export const getArrayContainsOnlyOnePropertyType = (arrayOfObjects: object, prop) => {
+export const getArrayContainsOnlyOnePropertyType = (
+  arrayOfObjects: object,
+  prop
+) => {
   return arrayOfObjects.reduce((result, element) => {
     result.push(element[prop])
 
@@ -120,8 +152,8 @@ export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
 }
 
 export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
-  if (num === 0.0) return "0";
-  return new Number(num).toFixed(isUSDCurrently ? 2 : 8);
+  if (num === 0.0) return '0'
+  return new Number(num).toFixed(isUSDCurrently ? 2 : 8)
 }
 
 const Icon = styled.i`

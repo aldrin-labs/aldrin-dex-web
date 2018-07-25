@@ -17,7 +17,10 @@ import Import from '@containers/Portfolio/components/PortfolioTable/Optimization
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
-import { transformAssets as transformData } from '../../../utils'
+import {
+  calcAllSumOfPortfolioAsset,
+  percentagesOfCoinInPortfolio,
+} from '@utils/PortfolioTableUtils'
 
 class Optimization extends PureComponent<IProps, IState> {
   state = {
@@ -41,6 +44,15 @@ class Optimization extends PureComponent<IProps, IState> {
     this.setState({
       expectedReturn: event.target.value.replace(/-|%/g, ''),
     })
+  }
+
+  transformData = (assets: any[]): IData[] => {
+    const allSum = calcAllSumOfPortfolioAsset(assets, false)
+
+    return assets.map((data: any) => ({
+      coin: data.asset.symbol,
+      percentage: percentagesOfCoinInPortfolio(data, allSum),
+    }))
   }
 
   optimizePortfolio = (data: any) => {
@@ -200,7 +212,7 @@ class Optimization extends PureComponent<IProps, IState> {
         setPeriod={setPeriod}
         setActiveButtonToDefault={this.setActiveButtonToDefault}
         optimizedData={optimizedData}
-        transformData={transformData}
+        transformData={this.transformData}
         storeData={storeData}
         startDate={startDate}
         endDate={endDate}
