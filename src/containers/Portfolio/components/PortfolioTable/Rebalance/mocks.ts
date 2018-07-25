@@ -8,6 +8,18 @@ export function combineToChart(mockData) {
   }))
 }
 
+export function combineToBarChart(dataForChart) {
+
+  const newDataForBarChart = dataForChart.map((dataItem) => ({
+    x: dataItem.symbol,
+    y: parseFloat(parseFloat(dataItem.portfolioPerc).toFixed(2))
+  }))
+
+  console.log('newDataForBarChart', newDataForBarChart);
+
+  return newDataForBarChart
+}
+
 export const PieChartMockFirst = [
   {
     name: 'ETH',
