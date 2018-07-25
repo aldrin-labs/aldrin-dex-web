@@ -3,6 +3,7 @@ export interface IProps {
   isShownMocks: boolean
   startDate: number
   endDate: number
+  filterValueSmallerThenPercentage: number
   data?: { getProfile: object }
   optimizedData: IData[]
   storeData: IData[]

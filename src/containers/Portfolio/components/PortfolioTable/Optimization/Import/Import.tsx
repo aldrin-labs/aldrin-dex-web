@@ -174,6 +174,7 @@ class Import extends PureComponent<IProps> {
       setPeriod,
       onBtnClick,
       percentages,
+      filterValueSmallerThenPercentage,
       activeButton,
       showSwitchButtons, // optimizedData.length >= 1
       showWarning,
@@ -258,6 +259,9 @@ class Import extends PureComponent<IProps> {
                 optimizedData={optimizedData}
                 withInput
                 onClickDeleteIcon={this.deleteRow}
+                filterValueSmallerThenPercentage={
+                  filterValueSmallerThenPercentage
+                }
               />
             </TableContainer>
             <HelperForCentering />

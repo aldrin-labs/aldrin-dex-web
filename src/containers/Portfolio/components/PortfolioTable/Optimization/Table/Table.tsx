@@ -45,6 +45,7 @@ class Table extends Component<IProps, IState> {
       onClickDeleteIcon,
       onPlusClick,
       optimizedData,
+      filterValueSmallerThenPercentage,
     } = this.props
     if (withInput) {
       return (
@@ -56,15 +57,19 @@ class Table extends Component<IProps, IState> {
           </Head>
           <Body>
             <Col>
-              {data.map((item, i) => <Item key={item.coin}>{item.coin}</Item>)}
+              {data
+                .filter((d) => d.percentage > filterValueSmallerThenPercentage)
+                .map((item, i) => <Item key={item.coin}>{item.coin}</Item>)}
             </Col>
 
             <Col>
-              {data.map((item, i) => (
-                <Item key={item.coin}>
-                  {`${Number(item.percentage).toFixed(2)}%`}{' '}
-                </Item>
-              ))}
+              {data
+                .filter((d) => d.percentage > filterValueSmallerThenPercentage)
+                .map((item, i) => (
+                  <Item key={item.coin}>
+                    {`${Number(item.percentage).toFixed(2)}%`}{' '}
+                  </Item>
+                ))}
             </Col>
 
             {/*  optimizedData */}
@@ -72,31 +77,39 @@ class Table extends Component<IProps, IState> {
               //  &&
               // optimizedData.length === data.length
               <Col>
-                {data.map((item, i) => (
-                  <Item key={item.coin}>
-                    {optimizedData[i]
-                      ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
-                      : '-'}{' '}
-                    <StyledDeleteIcon
-                      onClick={() => {
-                        onClickDeleteIcon && onClickDeleteIcon(i)
-                      }}
-                    />
-                  </Item>
-                ))}
+                {data
+                  .filter(
+                    (d) => d.percentage > filterValueSmallerThenPercentage
+                  )
+                  .map((item, i) => (
+                    <Item key={item.coin}>
+                      {optimizedData[i]
+                        ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
+                        : '-'}{' '}
+                      <StyledDeleteIcon
+                        onClick={() => {
+                          onClickDeleteIcon && onClickDeleteIcon(i)
+                        }}
+                      />
+                    </Item>
+                  ))}
               </Col>
             ) : (
               <Col>
-                {data.map((item, i) => (
-                  <Item key={i}>
-                    {'-'}{' '}
-                    <StyledDeleteIcon
-                      onClick={() => {
-                        onClickDeleteIcon && onClickDeleteIcon(i)
-                      }}
-                    />{' '}
-                  </Item>
-                ))}
+                {data
+                  .filter(
+                    (d) => d.percentage > filterValueSmallerThenPercentage
+                  )
+                  .map((item, i) => (
+                    <Item key={i}>
+                      {'-'}{' '}
+                      <StyledDeleteIcon
+                        onClick={() => {
+                          onClickDeleteIcon && onClickDeleteIcon(i)
+                        }}
+                      />{' '}
+                    </Item>
+                  ))}
               </Col>
             )}
           </Body>

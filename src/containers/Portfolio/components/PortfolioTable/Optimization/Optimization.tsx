@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
@@ -22,7 +22,7 @@ import {
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
 
-class Optimization extends PureComponent<IProps, IState> {
+class Optimization extends Component<IProps, IState> {
   state = {
     loading: false,
     risk: [],
@@ -200,12 +200,14 @@ class Optimization extends PureComponent<IProps, IState> {
       endDate,
       setPeriod,
       optimizationPeriod,
+      filterValueSmallerThenPercentage,
     } = this.props
 
     return (
       <QueryRenderer
         component={Import}
         query={getCoinsForOptimization}
+        filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}
         optimizationPeriod={optimizationPeriod}
         showWarning={this.showWarning}
         toggleLoading={this.toggleLoading}
