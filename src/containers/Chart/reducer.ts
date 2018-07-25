@@ -4,7 +4,7 @@ import { uniqWith, isEqual } from 'lodash'
 import * as actions from '@containers/Chart/actions'
 
 const initialState = {
-  activeExchange: { index: 0, exchange: { symbol: '' } },
+  activeExchange: { index: 0, exchange: { symbol: 'binance' } },
   currencyPair: 'BTC_USDT',
   warningMessageOpened: false,
   charts: [],
