@@ -32,7 +32,7 @@ class OrdersList extends React.Component {
   state = {
     bids: [],
     asks: [],
-    symbol: 'USDT_BTC',
+    symbol: 'BTC_USDT',
     exchange: 'binance',
     unsubscribe: null
   }
