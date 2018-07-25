@@ -184,6 +184,8 @@ class Optimization extends PureComponent<IProps, IState> {
     this.setState({ openWarning: false })
   }
 
+  setActiveButtonToDefault = () => this.setState({ activeButton: 2 })
+
   toggleLoading = () =>
     this.setState((prevState) => ({ loading: !prevState.loading }))
 
@@ -213,6 +215,7 @@ class Optimization extends PureComponent<IProps, IState> {
         showWarning={this.showWarning}
         toggleLoading={this.toggleLoading}
         setPeriod={setPeriod}
+        setActiveButtonToDefault={this.setActiveButtonToDefault}
         optimizedData={optimizedData}
         transformData={this.transformData}
         storeData={storeData}

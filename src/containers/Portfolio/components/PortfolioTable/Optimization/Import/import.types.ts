@@ -9,8 +9,10 @@ export interface IProps {
   updateData: Function
   showWarning: Function
   setPeriod: Function
+  setActiveButtonToDefault: Function
   optimizedToState: Function
   transformData: Function
+  toggleLoading: Function
   expectedReturn: string
   optimizePortfolio: Function
   handleChange: Function

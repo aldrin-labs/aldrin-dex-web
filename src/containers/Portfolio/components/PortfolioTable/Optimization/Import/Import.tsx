@@ -104,7 +104,7 @@ class Import extends PureComponent<IProps> {
       })
 
       this.props.toggleLoading()
-
+      this.props.setActiveButtonToDefault()
       console.log('Variables')
       console.log({
         expectedPct: Number(expectedReturn),
@@ -125,8 +125,6 @@ class Import extends PureComponent<IProps> {
         .weights_list
 
       optimizedToState(backendDataParsed)
-
-      console.log(backendDataParsed)
 
       const isReturnedCoinsTheSameThatInputed = isEqual(
         backendDataParsed[2].weighted_coins_optimized
