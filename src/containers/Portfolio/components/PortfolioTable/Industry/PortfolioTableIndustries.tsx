@@ -432,8 +432,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             width={12}
                             height={12}
                             style={{
-                              position: 'absolute',
-                              top: '1.2rem',
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
@@ -610,7 +608,7 @@ const ChartContainer = styled.div`
   height: 35vh;
 
   //margin: 2rem auto;
-  width: 900px;
+  width: 800px;
 
   @media (max-width: 2000px) {
     height: 30vh;
@@ -640,7 +638,7 @@ const Wrapper = styled.div`
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 35vh;
   margin-right: 50px;
-  width: 900px;
+  //width: 900px;
 
   @media (max-width: 2000px) {
     margin-right: 0;
@@ -695,26 +693,32 @@ const PTD = styled.td`
   font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 100px;
 
   &:nth-child(1) {
+    min-width: 30px;
     padding: 1.75px 10px;
   }
-
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  
+  &:nth-child(2) {
+    min-width: 90px;
   }
-
+  
   &:nth-child(3) {
+    min-width: 60px;
   }
+
   &:nth-child(n + 4) {
     text-align: right;
   }
 
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
+    max-width: 200px;
   }
 
   &:nth-child(n + 6) {
@@ -762,11 +766,19 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
+  min-width: 100px;
 
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  &:nth-child(1) {
+    min-width: 30px;
+  }
+  &:nth-child(2) {
+    min-width: 90px;
+  }
+  
+  &:nth-child(3) {
+    min-width: 60px;
   }
 
   &:nth-child(1) {
@@ -784,7 +796,7 @@ const PTH = styled.th`
     text-align: right;
   }
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
   }
   &:nth-child(n + 6) {
     min-width: 150px;
