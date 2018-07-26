@@ -13,7 +13,6 @@ import {
 
 import SelectReact, { components } from 'react-select'
 import PieChart from '@components/PieChart'
-import BarChart from '@components/BarChart/BarChart'
 import sortIcon from '@icons/arrow.svg'
 
 import DeleteIcon from 'material-ui-icons/Delete'
@@ -27,7 +26,7 @@ import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
-import {exchangeOptions, coinsOptions, combineToBarChart} from './mocks'
+import {exchangeOptions, coinsOptions} from './mocks'
 
 
 import { updateRebalanceMutation, getMyRebalanceQuery, getMyPortfolioQuery } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
@@ -86,14 +85,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     totalTableSavedRows: 0,
     isPercentSumGood: true,
     totalPercents: 0,
-    leftBar: '#000000',
-    rightBar: '#fff',
-  }
-
-  onChangeColor = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
   }
 
   componentWillMount() {
@@ -1098,6 +1089,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   render() {
+    console.log('dataFromServer in render: ', this.props.data)
     console.log('RENDER');
 
     const { children, isUSDCurrently } = this.props
@@ -1123,10 +1115,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       <Icon className="fa fa-btc" />
     )
 
-
-    console.log('staticRows in render: ', staticRows);
-
-
     const tableDataHasData = !staticRows.length || !rows.length
 
     if (tableDataHasData) {
@@ -1145,7 +1133,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
             <Wrapper>
-              <Table style={{width: '520px'}}>
+              <Table style={{width: '564px'}}>
                 <PTHead>
                   <PTR>
                     {tableHeadingsCurrentPortfolio.map((heading) => {
@@ -1593,56 +1581,26 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           </TableAndHeadingWrapper>
         </Container>
         <PieChartsWrapper isEditModeEnabled={isEditModeEnabled}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
-            <input type="color" name="leftBar" onChange={this.onChangeColor} />
-            <input type="color" name="rightBar" onChange={this.onChangeColor} />
-          </div>
-          <Chart>
-            {
-              staticRows[0].portfolioPerc && (
-                <BarChart
-                  height={200}
-                  charts={[
-                    {
-                      data: combineToBarChart(staticRows),
-                      color: this.state.leftBar,
-                      title: 'Current'
-                    },
-                    {
-                      data: combineToBarChart(rows),
-                      color: this.state.rightBar,
-                      title: 'Rebalanced'
-                    }
-                  ]}
-                />
-              )
-            }
+          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
+            <PieChart
+              data={combineToChart(staticRows)}
+              flexible={true}
+              withHints={true}
+            />
+          </PieChartContainer>
 
-          </Chart>
-
+          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
+            <PieChart
+              data={combineToChart(rows)}
+              flexible={true}
+              withHints={true}
+            />
+          </PieChartContainer>
         </PieChartsWrapper>
       </PTWrapper>
     )
   }
 }
-
-const Chart = styled.div`
-  padding: 0.5rem;
-  //margin: 1rem;
-  //flex-grow: 1;
-  ////background: #393e44;
-  //
-  //@media (max-width: 1080px) {
-  //  width: 100%;
-  //  flex-basis: 100%;
-  //}
-  width: 100%;
-  //height: inherit;
-  height: calc(100% - 30px);
-`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
@@ -2089,14 +2047,18 @@ const Checkbox = styled.input`
 
 const PieChartsWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: ${(props: { isEditModeEnabled?: boolean }) =>
+    props.isEditModeEnabled ? 'center' : 'space-between'};
   padding: 3% 0;
   height: 25vh;
   width: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? '48%' : '100%'};
+    props.isEditModeEnabled ? '50%' : '100%'};
 
   @media (max-height: 800px) {
     padding-top: 1.5%;
+  }
+  @media (max-height: 650px) {
+    justify-content: center;
   }
 `
 
