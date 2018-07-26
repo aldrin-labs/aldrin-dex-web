@@ -555,7 +555,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 0 20px 20px;
+  
+  @media (max-width: 2000px) {
+    align-items: center;
+    flex-direction: column;
+  }
 `
 
 const Heading = styled.div`
@@ -603,17 +609,17 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 35vh;
 
-  margin: 2rem auto;
+  //margin: 2rem auto;
   width: 900px;
 
-  @media (min-width: 1950px) {
-    margin: 1rem auto;
-  }
-
-  @media (max-height: 850px) {
+  @media (max-width: 2000px) {
     height: 30vh;
-    margin: 0.5rem auto;
   }
+  
+  @media (max-height: 940px) {
+    height: 30vh;
+  }
+  
   @media (max-height: 680px) {
     display: none;
   }
@@ -632,12 +638,17 @@ const Wrapper = styled.div`
   background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-  max-height: 40vh;
+  max-height: 35vh;
+  margin-right: 50px;
+  width: 900px;
 
-  margin: 1rem auto;
+  @media (max-width: 2000px) {
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
 
   @media (max-height: 850px) {
-    max-height: 30vh;
+    max-height: 25vh;
   }
 
   @media (max-height: 680px) {
