@@ -185,6 +185,8 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   height: 100%;
+  position: absolute;
+  left: 0;
 
   @media (max-width: 840px) {
     margin-right: 1rem;

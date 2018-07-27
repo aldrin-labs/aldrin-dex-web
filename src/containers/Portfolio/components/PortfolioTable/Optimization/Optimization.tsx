@@ -380,8 +380,7 @@ const MainArea = styled.div`
 const PTWrapper = styled.div`
   min-height: 100%;
   overflow-y: auto;
-  width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 2rem)' : '100%'};
+  width: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
   margin: 24px;
