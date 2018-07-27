@@ -3,19 +3,7 @@ import styled, { css } from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-
-import { IProps, IState, IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
-import { mockTableData, combineToChart } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import {
-  onSortStrings,
-  cloneArrayElementsOneLevelDeep,
-} from '@utils/PortfolioTableUtils'
-
 import SelectReact, { components } from 'react-select'
-import PieChart from '@components/PieChart'
-import BarChart from '@components/BarChart/BarChart'
-import sortIcon from '@icons/arrow.svg'
-
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
@@ -23,14 +11,33 @@ import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
+
+import BarChart from '@components/BarChart/BarChart'
+import PieChart from '@components/PieChart'
+import sortIcon from '@icons/arrow.svg'
+import {
+  IProps,
+  IState,
+  IRow,
+} from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
+import {
+  mockTableData,
+  combineToChart,
+} from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
+import {
+  onSortStrings,
+  cloneArrayElementsOneLevelDeep,
+} from '@utils/PortfolioTableUtils'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
-import {exchangeOptions, coinsOptions, combineToBarChart} from './mocks'
-
-
-import { updateRebalanceMutation, getMyRebalanceQuery, getMyPortfolioQuery } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
+import { exchangeOptions, coinsOptions, combineToBarChart } from './mocks'
+import {
+  updateRebalanceMutation,
+  getMyRebalanceQuery,
+  getMyPortfolioQuery,
+} from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },
@@ -92,7 +99,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   onChangeColor = (e) => {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     })
   }
 
@@ -105,15 +112,11 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     const { data, isShownMocks, getMyRebalance, getMyPortfolio } = this.props
 
-
     // console.log('refetch',getMyRebalance.refetch());
 
+    console.log(' getMyRebalance in DidMount', getMyRebalance)
 
-    console.log(' getMyRebalance in DidMount', getMyRebalance);
-
-    console.log(' getMyPortfolio in DidMount',getMyPortfolio );
-
-
+    console.log(' getMyPortfolio in DidMount', getMyPortfolio)
 
     // console.log('data in componentDidMount' + '', data)
 
@@ -132,39 +135,52 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       getMyRebalance.getProfile.myRebalance.assets.length > 0
 
     // const userHasPortfolio = data && data.portfolio.assets.length > 0
-    const userHasPortfolio = getMyPortfolio.getProfile.portfolio && getMyPortfolio.getProfile.portfolio.assets.length > 0
+    const userHasPortfolio =
+      getMyPortfolio.getProfile.portfolio &&
+      getMyPortfolio.getProfile.portfolio.assets.length > 0
 
-    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio);
-    console.log('userHasPortfolio', userHasPortfolio);
-
-
+    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio)
+    console.log('userHasPortfolio', userHasPortfolio)
 
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
-        exchange: el._id.exchange,
-        symbol: el._id.coin,
-        price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
-        deltaPrice: el.diff['$numberDecimal']
-      }))
+      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
+        (el) => ({
+          exchange: el._id.exchange,
+          symbol: el._id.coin,
+          price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+          deltaPrice: el.diff['$numberDecimal'],
+        })
+      )
 
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
-        exchange: el.exchange.name,
-        symbol: el.asset.symbol,
-        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
-      }))
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+        (el) => ({
+          exchange: el.exchange.name,
+          symbol: el.asset.symbol,
+          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+            2
+          ),
+        })
+      )
 
-      console.log('newTableRebalancedPortfolioData in didMount', newTableRebalancedPortfolioData)
+      console.log(
+        'newTableRebalancedPortfolioData in didMount',
+        newTableRebalancedPortfolioData
+      )
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
-        exchange: el.exchange.name,
-        symbol: el.asset.symbol,
-        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
-      }))
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+        (el) => ({
+          exchange: el.exchange.name,
+          symbol: el.asset.symbol,
+          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+            2
+          ),
+        })
+      )
 
       console.log('132323')
     }
@@ -178,10 +194,15 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       : newTableRebalancedPortfolioData
 
     if (userHasRebalancePortfolio) {
-      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksRebalancedPortfolio)
-    }
-    else {
-      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksCurrentPortfolio)
+      this.setTableData(
+        composeWithMocksCurrentPortfolio,
+        composeWithMocksRebalancedPortfolio
+      )
+    } else {
+      this.setTableData(
+        composeWithMocksCurrentPortfolio,
+        composeWithMocksCurrentPortfolio
+      )
     }
 
     // const composeWithMocks = isShownMocks
@@ -194,9 +215,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   componentWillReceiveProps(nextProps: IProps) {
     const { data, isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
 
-    console.log(' getMyPortfolio in WillReceiveProps',getMyPortfolio );
-    console.log('getMyRebalance in WillReceiveProps', getMyRebalance);
-
+    console.log(' getMyPortfolio in WillReceiveProps', getMyPortfolio)
+    console.log('getMyRebalance in WillReceiveProps', getMyRebalance)
 
     // console.log('data in componentWillReceiveProps', data)
 
@@ -215,38 +235,52 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       getMyRebalance.getProfile.myRebalance.assets.length > 0
 
     // const userHasPortfolio = data && data.portfolio.assets.length > 0
-    const userHasPortfolio = getMyPortfolio.getProfile.portfolio && getMyPortfolio.getProfile.portfolio.assets.length > 0
+    const userHasPortfolio =
+      getMyPortfolio.getProfile.portfolio &&
+      getMyPortfolio.getProfile.portfolio.assets.length > 0
 
-
-    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio);
-    console.log('userHasPortfolio', userHasPortfolio);
+    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio)
+    console.log('userHasPortfolio', userHasPortfolio)
 
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map((el) => ({
-        exchange: el._id.exchange,
-        symbol: el._id.coin,
-        price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
-        deltaPrice: el.diff['$numberDecimal']
-      }))
+      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
+        (el) => ({
+          exchange: el._id.exchange,
+          symbol: el._id.coin,
+          price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+          deltaPrice: el.diff['$numberDecimal'],
+        })
+      )
 
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
-        exchange: el.exchange.name,
-        symbol: el.asset.symbol,
-        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
-      }))
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+        (el) => ({
+          exchange: el.exchange.name,
+          symbol: el.asset.symbol,
+          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+            2
+          ),
+        })
+      )
 
-      console.log('newTableRebalancedPortfolioData in didMount', newTableRebalancedPortfolioData)
+      console.log(
+        'newTableRebalancedPortfolioData in didMount',
+        newTableRebalancedPortfolioData
+      )
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map((el) => ({
-        exchange: el.exchange.name,
-        symbol: el.asset.symbol,
-        price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(2),
-      }))
+      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+        (el) => ({
+          exchange: el.exchange.name,
+          symbol: el.asset.symbol,
+          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+            2
+          ),
+        })
+      )
 
       console.log('132323')
     }
@@ -260,10 +294,15 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       : newTableRebalancedPortfolioData
 
     if (userHasRebalancePortfolio) {
-      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksRebalancedPortfolio)
-    }
-    else {
-      this.setTableData(composeWithMocksCurrentPortfolio, composeWithMocksCurrentPortfolio)
+      this.setTableData(
+        composeWithMocksCurrentPortfolio,
+        composeWithMocksRebalancedPortfolio
+      )
+    } else {
+      this.setTableData(
+        composeWithMocksCurrentPortfolio,
+        composeWithMocksCurrentPortfolio
+      )
     }
 
     // const composeWithMocks = isShownMocks
@@ -285,7 +324,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   setTableData = (tableDataCurrentPortfolio, tableDataRebalancedPortfolio) => {
     // TODO: This should be refactored (no second set-state)
-
 
     this.setState(
       {
@@ -347,26 +385,32 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
     })
 
-    console.log('data.length > staticRows.length', data.length > staticRows.length);
+    console.log(
+      'data.length > staticRows.length',
+      data.length > staticRows.length
+    )
 
     // TODO: Refactor this (delete newCoinsData and replace it)
     if (data.length > staticRows.length) {
       let arrayOfNewCoinIndexes = []
-      const newCoinsData = data
-        .filter((el, i) => {
-          if (!staticRows.some((element) => element.exchange === el.exchange && element.symbol === el.symbol)) {
-            arrayOfNewCoinIndexes.push(i)
+      const newCoinsData = data.filter((el, i) => {
+        if (
+          !staticRows.some(
+            (element) =>
+              element.exchange === el.exchange && element.symbol === el.symbol
+          )
+        ) {
+          arrayOfNewCoinIndexes.push(i)
 
-            return true
-          }
+          return true
+        }
       })
 
       data = data.map((row, i) => {
         if (arrayOfNewCoinIndexes.includes(i)) {
-
           return {
             ...row,
-            deltaPrice: (row.price - 0).toFixed(2)
+            deltaPrice: (row.price - 0).toFixed(2),
           }
         }
 
@@ -374,12 +418,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       })
     }
 
-
-
-    console.log('data length', data.length);
-    console.log('staticRows length', staticRows.length);
-    console.log('data in caluclatePriceDiff' , data);
-
+    console.log('data length', data.length)
+    console.log('staticRows length', staticRows.length)
+    console.log('data in caluclatePriceDiff', data)
 
     return data
   }
@@ -393,8 +434,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   calculateTableTotal = (data: IRow[]) => {
     const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
-    return parseFloat(tableTotal)
-      .toFixed(2)
+    return parseFloat(tableTotal).toFixed(2)
   }
 
   calculateTotalPercents = (data: IRow[]) => {
@@ -408,7 +448,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   calculatePercents = (data: IRow[], total: number) => {
     const newDataWithPercents = data.map((row) => {
       const percentCaluclation =
-        +row.price === 0 ? '0' : ((row.price * 100) / total).toFixed(4)
+        +row.price === 0 ? '0' : (row.price * 100 / total).toFixed(4)
       const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
       return {
@@ -454,7 +494,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
     rows.push(newRow)
     rows = this.calculatePercents(rows, totalRows)
-    console.log('rows in onAddRowButton ', rows);
+    console.log('rows in onAddRowButton ', rows)
 
     this.setState({ rows, areAllActiveChecked: false })
   }
@@ -465,19 +505,23 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const currentRowMoney = clonedRows[idx].price
     const isEditableCoin = clonedRows[idx].editable
 
-    const resultRows = isEditableCoin ? [
-      ...clonedRows.slice(0, idx),
-      ...clonedRows.slice(idx + 1, clonedRows.length)
-    ] : [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        price: 0,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
+    const resultRows = isEditableCoin
+      ? [
+          ...clonedRows.slice(0, idx),
+          ...clonedRows.slice(idx + 1, clonedRows.length),
+        ]
+      : [
+          ...clonedRows.slice(0, idx),
+          {
+            ...clonedRows[idx],
+            price: 0,
+          },
+          ...clonedRows.slice(idx + 1, clonedRows.length),
+        ]
 
-    const newUndistributedMoney = (parseFloat(undistributedMoney) + parseFloat(currentRowMoney)).toFixed(2)
+    const newUndistributedMoney = (
+      parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
+    ).toFixed(2)
 
     const newTotalRows = this.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotalRows = this.calculateTableTotal(resultRows)
@@ -534,7 +578,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const { totalRows } = this.state
 
     const dataWithNewPrices = data.map((row: IRow) => {
-      let newPrice = ((totalRows / 100) * row.portfolioPerc).toFixed(2)
+      let newPrice = (totalRows / 100 * row.portfolioPerc).toFixed(2)
 
       return {
         ...row,
@@ -550,7 +594,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       if (el.editable) {
         return {
           ...el,
-          editable: false
+          editable: false,
         }
       }
 
@@ -567,8 +611,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       staticRows,
     } = this.state
 
-    console.log('rows rows rows: ', rows);
-
+    console.log('rows rows rows: ', rows)
 
     if (!isPercentSumGood) {
       return
@@ -581,18 +624,20 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const newRowsWithPriceDiff = this.calculatePriceDifference(rowsWithNewPrice)
     const newRows = this.removeEditableModeInCoins(newRowsWithPriceDiff)
 
-
-    this.setState({
-      savedRows: cloneArrayElementsOneLevelDeep(newRows),
-      rows: newRows,
-      totalSavedRows: totalRows,
-      isEditModeEnabled: false,
-      selectedActive: [],
-      areAllActiveChecked: false,
-      undistributedMoneySaved: undistributedMoney,
-    }, () => {
-      this.updateServerDataOnSave()
-    })
+    this.setState(
+      {
+        savedRows: cloneArrayElementsOneLevelDeep(newRows),
+        rows: newRows,
+        totalSavedRows: totalRows,
+        isEditModeEnabled: false,
+        selectedActive: [],
+        areAllActiveChecked: false,
+        undistributedMoneySaved: undistributedMoney,
+      },
+      () => {
+        this.updateServerDataOnSave()
+      }
+    )
   }
 
   updateServerDataOnSave = async () => {
@@ -602,7 +647,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     console.log(updateRebalanceMutationQuery)
 
     const combinedRowsData = rows.filter((el) => !el.mock).map((el) => {
-
       return {
         _id: {
           exchange: el.exchange,
@@ -614,8 +658,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       }
     })
 
-    console.log(combinedRowsData);
-
+    console.log(combinedRowsData)
 
     const variablesForMutation = {
       input: {
@@ -726,7 +769,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
         // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
 
-        rows![selectedActive![0]]!.price = roundedPrice + parseFloat(undistributedMoney)
+        rows![selectedActive![0]]!.price =
+          roundedPrice + parseFloat(undistributedMoney)
         money = 0
       }
 
@@ -773,8 +817,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       0
     )
 
-    console.log('sumOfAllPercents: ', sumOfAllPercents, 'is good sum: ',Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0 );
-
+    console.log(
+      'sumOfAllPercents: ',
+      sumOfAllPercents,
+      'is good sum: ',
+      Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
+    )
 
     return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
   }
@@ -891,7 +939,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       () => {
         // if (oldRowPrice > newRowPrice) {
         this.setState((prevState) => ({
-          undistributedMoney: parseFloat(parseFloat(prevState.undistributedMoney) + oldNewPriceDiff).toFixed(2),
+          undistributedMoney: parseFloat(
+            parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
+          ).toFixed(2),
           totalTableRows: newTableTotalRows,
         }))
         // }
@@ -907,11 +957,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const value = optionSelected ? optionSelected.value : ''
     const clonedRows = rows.map((a) => ({ ...a }))
 
+    console.log('handleSelectChange idx: ', idx)
 
-    console.log('handleSelectChange idx: ', idx);
-
-    console.log('handleSelectChange value: ', value);
-
+    console.log('handleSelectChange value: ', value)
 
     const resultRows = [
       ...clonedRows.slice(0, idx),
@@ -922,13 +970,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
-    this.setState({
-      rows: resultRows,
-    }, () => {
-      console.log('this.state.rows', this.state.rows);
-
-    })
-
+    this.setState(
+      {
+        rows: resultRows,
+      },
+      () => {
+        console.log('this.state.rows', this.state.rows)
+      }
+    )
   }
 
   // TODO: Should be one function
@@ -940,11 +989,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const value = optionSelected ? optionSelected.value : ''
     const clonedRows = rows.map((a) => ({ ...a }))
 
+    console.log('handleSelectChange idx: ', idx)
 
-    console.log('handleSelectChange idx: ', idx);
-
-    console.log('handleSelectChange value: ', value);
-
+    console.log('handleSelectChange value: ', value)
 
     const resultRows = [
       ...clonedRows.slice(0, idx),
@@ -955,13 +1002,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
-    this.setState({
-      rows: resultRows,
-    }, () => {
-      console.log('this.state.rows', this.state.rows);
-
-    })
-
+    this.setState(
+      {
+        rows: resultRows,
+      },
+      () => {
+        console.log('this.state.rows', this.state.rows)
+      }
+    )
   }
 
   onEditCoinName = (e: any, idx: number) => {
@@ -1014,8 +1062,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     let { rows, addMoneyInputValue, undistributedMoney } = this.state
 
-    const newUndistributedMoney =
-      parseFloat((Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2))
+    const newUndistributedMoney = parseFloat(
+      (Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2)
+    )
 
     const newTotal = this.calculateTotal(rows, newUndistributedMoney)
     const newTableTotal = this.calculateTableTotal(rows)
@@ -1098,7 +1147,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   render() {
-    console.log('RENDER');
+    console.log('RENDER')
 
     const { children, isUSDCurrently } = this.props
     const {
@@ -1123,9 +1172,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       <Icon className="fa fa-btc" />
     )
 
-
-    console.log('staticRows in render: ', staticRows);
-
+    console.log('staticRows in render: ', staticRows)
 
     const tableDataHasData = !staticRows.length || !rows.length
 
@@ -1145,7 +1192,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
             <Wrapper>
-              <Table style={{width: '520px'}}>
+              <Table style={{ width: '520px' }}>
                 <PTHead>
                   <PTR>
                     {tableHeadingsCurrentPortfolio.map((heading) => {
@@ -1185,45 +1232,54 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 </PTHead>
 
                 <PTBody>
-                  {staticRows.map((row, idx) => {
-                    const { exchange, symbol, portfolioPerc, price } = row
-
-                    const cols = [
-                      exchange,
-                      symbol || '',
-                      portfolioPerc ? `${portfolioPerc}%` : '',
-                      `${parseFloat(price).toLocaleString('en-US')}`,
-                    ]
-
-                    return (
-                      <PTR key={`${exchange}${symbol}${idx}`}>
-                        {cols.map((col, index) => {
-                          if (col.match(/%/g)) {
-                            const color =
-                              Number(col.replace(/%/g, '')) >= 0
-                                ? '#4caf50'
-                                : '#f44336'
-
-                            return (
-                              <PTDC key={`${col}${index}`} style={{ color }}>
-                                {col}
-                              </PTDC>
-                            )
-                          }
-                          if (index === 3) {
-                            return (
-                              <PTDC key={`${col}${idx}`}>
-                                {mainSymbol}
-                                {col}
-                              </PTDC>
-                            )
-                          }
-
-                          return <PTDC key={`${col}${index}`}>{col}</PTDC>
-                        })}
-                      </PTR>
+                  {staticRows
+                    .filter(
+                      (row) =>
+                        row.portfolioPerc &&
+                        +row.portfolioPerc >
+                          (this.props.filterValueSmallerThenPercentage
+                            ? this.props.filterValueSmallerThenPercentage
+                            : 0)
                     )
-                  })}
+                    .map((row, idx) => {
+                      const { exchange, symbol, portfolioPerc, price } = row
+
+                      const cols = [
+                        exchange,
+                        symbol || '',
+                        portfolioPerc ? `${portfolioPerc}%` : '',
+                        `${parseFloat(price).toLocaleString('en-US')}`,
+                      ]
+
+                      return (
+                        <PTR key={`${exchange}${symbol}${idx}`}>
+                          {cols.map((col, index) => {
+                            if (col.match(/%/g)) {
+                              const color =
+                                Number(col.replace(/%/g, '')) >= 0
+                                  ? '#4caf50'
+                                  : '#f44336'
+
+                              return (
+                                <PTDC key={`${col}${index}`} style={{ color }}>
+                                  {col}
+                                </PTDC>
+                              )
+                            }
+                            if (index === 3) {
+                              return (
+                                <PTDC key={`${col}${idx}`}>
+                                  {mainSymbol}
+                                  {col}
+                                </PTDC>
+                              )
+                            }
+
+                            return <PTDC key={`${col}${index}`}>{col}</PTDC>
+                          })}
+                        </PTR>
+                      )
+                    })}
                 </PTBody>
                 <PTFoot>
                   <PTR>
@@ -1341,10 +1397,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     if (+deltaPrice) {
                       if (deltaPrice > 0) {
-                        deltaPriceString = `BUY ${symbol}  $ ${parseFloat(deltaPrice).toLocaleString('en-US')}`
+                        deltaPriceString = `BUY ${symbol}  $ ${parseFloat(
+                          deltaPrice
+                        ).toLocaleString('en-US')}`
                       } else {
-                        deltaPriceString = `SELL ${symbol}  $ ${parseFloat(Math.abs(
-                          deltaPrice).toLocaleString('en-US')
+                        deltaPriceString = `SELL ${symbol}  $ ${parseFloat(
+                          Math.abs(deltaPrice).toLocaleString('en-US')
                         )}`
                       }
                     }
@@ -1380,12 +1438,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                             return (
                               <PTDR key={`NameExchange${idx}`} containSelect>
                                 {/*<InputTable*/}
-                                  {/*key={`inputNameCoin${rowIndex}`}*/}
-                                  {/*isPercentSumGood={true}*/}
-                                  {/*value={this.state.rows[rowIndex].exchange}*/}
-                                  {/*onChange={(e) =>*/}
-                                    {/*this.onEditCoinName(e, rowIndex)*/}
-                                  {/*}*/}
+                                {/*key={`inputNameCoin${rowIndex}`}*/}
+                                {/*isPercentSumGood={true}*/}
+                                {/*value={this.state.rows[rowIndex].exchange}*/}
+                                {/*onChange={(e) =>*/}
+                                {/*this.onEditCoinName(e, rowIndex)*/}
+                                {/*}*/}
                                 {/*/>*/}
                                 <SelectR
                                   key={`inputNameExchange${rowIndex}`}
@@ -1395,7 +1453,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                   options={exchangeOptions}
                                   components={{ DropdownIndicator }}
                                   onChange={this.handleSelectChangeWithoutInputExchange.bind(
-                                    this, rowIndex
+                                    this,
+                                    rowIndex
                                   )}
                                 />
                               </PTDR>
@@ -1406,12 +1465,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                             return (
                               <PTDR key={`CoinSymbol${idx}`} containSelect>
                                 {/*<InputTable*/}
-                                  {/*key={`inputCoinSymbol${rowIndex}`}*/}
-                                  {/*isPercentSumGood={true}*/}
-                                  {/*value={this.state.rows[rowIndex].symbol}*/}
-                                  {/*onChange={(e) =>*/}
-                                    {/*this.onEditCoinSymbol(e, rowIndex)*/}
-                                  {/*}*/}
+                                {/*key={`inputCoinSymbol${rowIndex}`}*/}
+                                {/*isPercentSumGood={true}*/}
+                                {/*value={this.state.rows[rowIndex].symbol}*/}
+                                {/*onChange={(e) =>*/}
+                                {/*this.onEditCoinSymbol(e, rowIndex)*/}
+                                {/*}*/}
                                 {/*/>*/}
                                 <SelectR
                                   key={`inputCoinSymbol${rowIndex}`}
@@ -1421,7 +1480,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                   options={coinsOptions}
                                   components={{ DropdownIndicator }}
                                   onChange={this.handleSelectChangeWithoutInputCoin.bind(
-                                    this, rowIndex
+                                    this,
+                                    rowIndex
                                   )}
                                 />
                               </PTDR>
@@ -1578,7 +1638,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 {
                   <UndistributedMoneyContainer>
                     <UndistributedMoneyText>
-                      Undistributed money: {parseFloat(undistributedMoney).toLocaleString('en-US')}
+                      Undistributed money:{' '}
+                      {parseFloat(undistributedMoney).toLocaleString('en-US')}
                     </UndistributedMoneyText>
                     <Button
                       disabled={undistributedMoney < 0}
@@ -1593,36 +1654,34 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           </TableAndHeadingWrapper>
         </Container>
         <PieChartsWrapper isEditModeEnabled={isEditModeEnabled}>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center'
-          }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <input type="color" name="leftBar" onChange={this.onChangeColor} />
             <input type="color" name="rightBar" onChange={this.onChangeColor} />
           </div>
           <Chart>
-            {
-              staticRows[0].portfolioPerc && (
-                <BarChart
-                  height={200}
-                  charts={[
-                    {
-                      data: combineToBarChart(staticRows),
-                      color: this.state.leftBar,
-                      title: 'Current'
-                    },
-                    {
-                      data: combineToBarChart(rows),
-                      color: this.state.rightBar,
-                      title: 'Rebalanced'
-                    }
-                  ]}
-                />
-              )
-            }
-
+            {staticRows[0].portfolioPerc && (
+              <BarChart
+                height={200}
+                charts={[
+                  {
+                    data: combineToBarChart(staticRows),
+                    color: this.state.leftBar,
+                    title: 'Current',
+                  },
+                  {
+                    data: combineToBarChart(rows),
+                    color: this.state.rightBar,
+                    title: 'Rebalanced',
+                  },
+                ]}
+              />
+            )}
           </Chart>
-
         </PieChartsWrapper>
       </PTWrapper>
     )
@@ -1651,13 +1710,19 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   connect(mapStateToProps),
-  graphql(getMyPortfolioQuery, {name: 'getMyPortfolio'}),
-  graphql(getMyRebalanceQuery, {name: 'getMyRebalance'}),
-  graphql(updateRebalanceMutation, { name: 'updateRebalanceMutationQuery', options: ({values}) => ({
-    refetchQueries: [{
-      query: getMyRebalanceQuery,
-    }],
-    ...values })})
+  graphql(getMyPortfolioQuery, { name: 'getMyPortfolio' }),
+  graphql(getMyRebalanceQuery, { name: 'getMyRebalance' }),
+  graphql(updateRebalanceMutation, {
+    name: 'updateRebalanceMutationQuery',
+    options: ({ values }) => ({
+      refetchQueries: [
+        {
+          query: getMyRebalanceQuery,
+        },
+      ],
+      ...values,
+    }),
+  })
 )(PortfolioTableRebalance)
 
 const InputTable = styled.input`
@@ -1776,7 +1841,6 @@ const PTDC = styled.td`
   min-width: 100px;
   overflow: hidden;
 
-
   &:nth-child(2) {
     min-width: 70px;
     text-align: left;
@@ -1810,7 +1874,7 @@ const PTDC = styled.td`
 
 const PTDREditMode = css`
   ${PTD};
-     
+
   &:nth-child(1) {
     padding: 1.75px 10px;
   }
@@ -1877,10 +1941,9 @@ const PTDRNoEditMode = css`
 `
 const PTDR = styled.td`
   ${PTD};
-  
+
   overflow: ${(props: { containSelect?: boolean }) =>
-  props.containSelect ? 'visible' : 'hidden'};
-  
+    props.containSelect ? 'visible' : 'hidden'};
 `
 
 const PTBody = styled.tbody`
@@ -2305,7 +2368,6 @@ const PTextBox = styled.div`
   align-items: center;
   background-color: #2d3136;
 `
-
 
 const SelectR = styled(SelectReact)`
   max-width: 100px;

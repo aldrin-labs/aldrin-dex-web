@@ -5,7 +5,10 @@ import { compose } from 'recompose'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
-
+import {
+  calcPercentage,
+  calcAllSumOfPortfolioAsset,
+} from '@utils/PortfolioTableUtils'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
 import {
@@ -132,8 +135,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   combineIndustryData = (portfolio?: IPortfolio) => {
-    const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
-
+    const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
@@ -146,6 +148,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           asset = { symbol: '', priceBTC: '', priceUSD: '', industry: '' },
           key = { name: '' },
           exchange = { name: '' },
+          value = 0,
         } =
           row || {}
         if (activeKeys.indexOf(key!.name) === -1) {
@@ -172,25 +175,24 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           ? parseFloat(performance.usd ? performance.usd : 0).toFixed(2)
           : parseFloat(performance.btc ? performance.btc : 0).toFixed(2)
 
+        const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
+
+        const currentPrice = mainPrice * value
+
         const col = {
           currency: name || '-',
           symbol,
           industry: industryName || '-',
           price: mainPrice || 0,
           portfolioPerf: 0,
+          portfolioPerc: calcPercentage(currentPrice * 100 / allSums),
           industryPerf: industryPerformance || 0,
         }
 
         return col
       })
       .filter(Boolean)
-    // .filter(
-    //   (el) =>
-    //     el.portfolioPerf >
-    //     (filterValueSmallerThenPercentage
-    //       ? filterValueSmallerThenPercentage
-    //       : 0)
-    // )
+
     this.setState({ industryData }, () =>
       this.calculateSum(this.state.selectedRows)
     )
@@ -361,7 +363,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { isUSDCurrently, children } = this.props
+    const {
+      isUSDCurrently,
+      children,
+      filterValueSmallerThenPercentage,
+    } = this.props
     const {
       selectedRows,
       selectedSum,
@@ -435,8 +441,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             width={12}
                             height={12}
                             style={{
-                              position: 'absolute',
-                              top: '1.2rem',
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
@@ -454,74 +458,87 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
               <PTBody>
                 {industryData &&
-                  industryData.map((row, idx) => {
-                    const {
-                      currency,
-                      symbol,
-                      industry,
-                      price,
-                      portfolioPerf,
-                      industryPerf,
-                    } = row
-
-                    const mainSymbol = isUSDCurrently ? (
-                      <Icon className="fa fa-usd" key={`${idx}usd`} />
-                    ) : (
-                      <Icon className="fa fa-btc" key={`${idx}btc`} />
+                  industryData
+                    .filter(
+                      (el) =>
+                        el.portfolioPerc >
+                        (filterValueSmallerThenPercentage
+                          ? filterValueSmallerThenPercentage
+                          : 0)
                     )
+                    .map((row, idx) => {
+                      const {
+                        currency,
+                        symbol,
+                        industry,
+                        price,
+                        portfolioPerf,
+                        industryPerf,
+                      } = row
 
-                    const isSelected =
-                      (selectedRows && selectedRows.indexOf(idx) >= 0) || false
+                      const mainSymbol = isUSDCurrently ? (
+                        <Icon className="fa fa-usd" key={`${idx}usd`} />
+                      ) : (
+                        <Icon className="fa fa-btc" key={`${idx}btc`} />
+                      )
 
-                    const cols = [
-                      currency,
-                      symbol,
-                      industry,
-                      [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
-                      `${portfolioPerf}%`,
-                      `${industryPerf}%`,
-                    ]
+                      const isSelected =
+                        (selectedRows && selectedRows.indexOf(idx) >= 0) ||
+                        false
 
-                    return (
-                      <PTRBody
-                        key={`${currency}${symbol}${idx}`}
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectBalance(idx)}
-                      >
-                        <PTD key="smt" isSelected={isSelected}>
-                          {this.renderCheckbox(idx)}
-                        </PTD>
-                        {cols &&
-                          cols.map((col, innerIdx) => {
-                            if (col && !Array.isArray(col) && col.match(/%/g)) {
-                              const color =
-                                Number(col.replace(/%/g, '')) >= 0
-                                  ? '#65c000'
-                                  : '#ff687a'
+                      const cols = [
+                        currency,
+                        symbol,
+                        industry,
+                        [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
+                        `${portfolioPerf}%`,
+                        `${industryPerf}%`,
+                      ]
+
+                      return (
+                        <PTRBody
+                          key={`${currency}${symbol}${idx}`}
+                          isSelected={isSelected}
+                          onClick={() => this.onSelectBalance(idx)}
+                        >
+                          <PTD key="smt" isSelected={isSelected}>
+                            {this.renderCheckbox(idx)}
+                          </PTD>
+                          {cols &&
+                            cols.map((col, innerIdx) => {
+                              if (
+                                col &&
+                                !Array.isArray(col) &&
+                                col.match(/%/g)
+                              ) {
+                                const color =
+                                  Number(col.replace(/%/g, '')) >= 0
+                                    ? '#65c000'
+                                    : '#ff687a'
+
+                                return (
+                                  <PTD
+                                    key={`${col}${innerIdx}`}
+                                    style={{ color }}
+                                    isSelected={isSelected}
+                                  >
+                                    {col}
+                                  </PTD>
+                                )
+                              }
 
                               return (
                                 <PTD
                                   key={`${col}${innerIdx}`}
-                                  style={{ color }}
                                   isSelected={isSelected}
                                 >
                                   {col}
                                 </PTD>
                               )
-                            }
-
-                            return (
-                              <PTD
-                                key={`${col}${innerIdx}`}
-                                isSelected={isSelected}
-                              >
-                                {col}
-                              </PTD>
-                            )
-                          })}
-                      </PTRBody>
-                    )
-                  })}
+                            })}
+                        </PTRBody>
+                      )
+                    })}
               </PTBody>
               {selectedSum && selectedSum.currency ? (
                 <PortfolioTableSum
@@ -558,7 +575,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 0 20px 20px;
+  
+  @media (max-width: 2000px) {
+    align-items: center;
+    flex-direction: column;
+  }
 `
 
 const Heading = styled.div`
@@ -606,17 +629,17 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 35vh;
 
-  margin: 2rem auto;
-  width: 900px;
+  //margin: 2rem auto;
+  width: 800px;
 
-  @media (min-width: 1950px) {
-    margin: 1rem auto;
-  }
-
-  @media (max-height: 850px) {
+  @media (max-width: 2000px) {
     height: 30vh;
-    margin: 0.5rem auto;
   }
+  
+  @media (max-height: 940px) {
+    height: 30vh;
+  }
+  
   @media (max-height: 680px) {
     display: none;
   }
@@ -635,12 +658,17 @@ const Wrapper = styled.div`
   background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-  max-height: 40vh;
+  max-height: 35vh;
+  margin-right: 50px;
+  //width: 900px;
 
-  margin: 1rem auto;
+  @media (max-width: 2000px) {
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
 
   @media (max-height: 850px) {
-    max-height: 30vh;
+    max-height: 25vh;
   }
 
   @media (max-height: 680px) {
@@ -687,30 +715,41 @@ const PTD = styled.td`
   font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 100px;
 
   &:nth-child(1) {
+    min-width: 30px;
     padding: 1.75px 10px;
   }
-
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  
+  &:nth-child(2) {
+    min-width: 90px;
   }
-
+  
   &:nth-child(3) {
+    min-width: 60px;
   }
+
   &:nth-child(n + 4) {
     text-align: right;
   }
 
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
+    max-width: 200px;
   }
 
   &:nth-child(n + 6) {
     min-width: 150px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 160px;
+    padding-right: 16px;
   }
 `
 
@@ -754,11 +793,19 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
+  min-width: 100px;
 
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  &:nth-child(1) {
+    min-width: 30px;
+  }
+  &:nth-child(2) {
+    min-width: 90px;
+  }
+  
+  &:nth-child(3) {
+    min-width: 60px;
   }
 
   &:nth-child(1) {
@@ -769,17 +816,26 @@ const PTH = styled.th`
   &:nth-child(2) {
     text-align: left;
   }
+  
   &:nth-child(3) {
     text-align: left;
   }
+  
   &:nth-child(n + 4) {
     text-align: right;
   }
+  
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
   }
+  
   &:nth-child(n + 6) {
     min-width: 150px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 160px;
+    padding-right: 16px;
   }
 `
 

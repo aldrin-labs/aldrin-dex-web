@@ -171,11 +171,13 @@ class PortfolioChart extends React.Component<Props, State> {
               </div>
             </Crosshair>
 
-            <Highlight
-              onBrushEnd={(area) => {
-                this.props.onChangeDateRange(area)
-              }}
-            />
+            {this.props.isShownMocks ? null : (
+              <Highlight
+                onBrushEnd={(area) => {
+                  this.props.onChangeDateRange(area)
+                }}
+              />
+            )}
           </FlexibleXYPlot>
         </Chart>
 

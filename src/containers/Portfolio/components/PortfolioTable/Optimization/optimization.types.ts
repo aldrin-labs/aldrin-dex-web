@@ -24,5 +24,6 @@ export interface IProps {
   isShownMocks: boolean
   updateData: Function
   setPeriod: Function
+  filterValueSmallerThenPercentage: number
   optimizationPeriod: string
 }

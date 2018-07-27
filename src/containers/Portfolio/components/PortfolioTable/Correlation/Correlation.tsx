@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Subscription } from 'react-apollo'
+import { Subscription, Query } from 'react-apollo'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import QueryRenderer from '@components/QueryRenderer'
 
 // import HeatMapChart from '@components/HeatMapChart'
+import QueryRenderer from '@components/QueryRenderer'
 import {
   // HeatMapMocks,
   CorrelationMatrixMockData,
@@ -18,7 +18,12 @@ import {
 import {
   getCorrelationQuery,
   CORRELATION_UPDATE,
+  getPortfolioQuery,
 } from '@containers/Portfolio/api'
+import {
+  calcAllSumOfPortfolioAsset,
+  percentagesOfCoinInPortfolio,
+} from '@utils/PortfolioTableUtils'
 
 class Correlation extends React.Component<IProps> {
   render() {
@@ -27,21 +32,57 @@ class Correlation extends React.Component<IProps> {
       isFullscreenEnabled,
       period,
       setCorrelationPeriodToStore,
+      portfolio,
+      filterValueSmallerThenPercentage,
     } = this.props
-    let data = {}
+
+    let dataRaw = {}
+    let data = {} // filtered data by dust
     if (
       typeof this.props.data.correlationMatrixByDay === 'string' &&
       this.props.data.correlationMatrixByDay.length > 0
     ) {
-      data = JSON.parse(this.props.data.correlationMatrixByDay)
+      dataRaw = JSON.parse(this.props.data.correlationMatrixByDay)
     } else {
-      data = this.props.data.correlationMatrixByDay
+      dataRaw = this.props.data.correlationMatrixByDay
+    }
+
+    if (portfolio && dataRaw !== '') {
+      // filter data here
+      const allSums = calcAllSumOfPortfolioAsset(
+        portfolio.getProfile.portfolio.assets,
+        true
+      )
+
+      const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
+        .filter(
+          (d: any) =>
+            percentagesOfCoinInPortfolio(d, allSums, true) <
+            filterValueSmallerThenPercentage
+        )
+        .map((d: any) => d.asset.symbol)
+
+      const listOfIndexes = listOfCoinsToFilter.map((coin) =>
+        dataRaw.header.findIndex((d: any) => d === coin)
+      )
+
+      data = {
+        header: dataRaw.header.filter((d, i) => !listOfIndexes.includes(i)),
+        values: dataRaw.values
+          .map((row: number[]) =>
+            row.filter((d, i) => !listOfIndexes.includes(i))
+          )
+          .filter((d, i) => !listOfIndexes.includes(i)),
+      }
+    } else {
+      data = dataRaw // no filter when mock on
     }
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
           console.log(data)
+          console.log(portfolio)
 
           return (
             <PTWrapper>
@@ -75,7 +116,6 @@ class CorrelationWrapper extends React.Component<IProps> {
       children,
       isFullscreenEnabled,
       toggleFullscreen,
-      setCorrelationPeriodToStore,
     } = this.props
 
     return (
@@ -88,15 +128,19 @@ class CorrelationWrapper extends React.Component<IProps> {
             children={children}
           />
         ) : (
-          <QueryRenderer
-            component={Correlation}
-            query={getCorrelationQuery}
-            variables={{
-              startDate: 1531441380, //
-              endDate: 1531873380,
-            }}
-            {...this.props}
-          />
+          <Query query={getPortfolioQuery}>
+            {({ loading, error, data }) => (
+              <QueryRenderer
+                component={Correlation}
+                query={getCorrelationQuery}
+                variables={{
+                  startDate: 1531441380,
+                  endDate: 1531873380,
+                }}
+                {...{ portfolio: data, ...this.props }}
+              />
+            )}
+          </Query>
         )}
       </Wrapper>
     )
@@ -131,6 +175,7 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
