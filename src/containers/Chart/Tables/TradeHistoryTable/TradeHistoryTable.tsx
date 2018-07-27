@@ -36,8 +36,8 @@ export const MARKET_QUERY = gql`
 class TickersList extends React.Component {
   state = {
     data: [],
-    symbol: '',
-    exchange: '',
+    symbol: 'BTC_USDT',
+    exchange: 'binance',
     unsubscribe: null
   }
 

@@ -12,6 +12,7 @@ import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
 
+import BarChart from '@components/BarChart/BarChart'
 import PieChart from '@components/PieChart'
 import sortIcon from '@icons/arrow.svg'
 import {
@@ -31,8 +32,7 @@ import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import spinLoader from '@icons/tail-spin.svg'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
-import { exchangeOptions, coinsOptions } from './mocks'
-
+import { exchangeOptions, coinsOptions, combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
   getMyRebalanceQuery,
@@ -93,6 +93,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     totalTableSavedRows: 0,
     isPercentSumGood: true,
     totalPercents: 0,
+    leftBar: '#000000',
+    rightBar: '#fff',
+  }
+
+  onChangeColor = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
   }
 
   componentWillMount() {
@@ -1139,31 +1147,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   render() {
-    console.log('dataFromServer in render: ', this.props.data)
-    // console.log('getMyRebalance in render: ', this.props.getMyRebalance.getProfile.myRebalance.assets)
-
-    // console.log('this.state.undistributedMoney: ', this.state.undistributedMoney)
-
-    //
-    // const { data } = this.props
-    // // const { getProfile, loading, error } = data
-    //
-    // if (loading) {
-    //   return (
-    //     <LoaderWrapper>
-    //       <SvgIcon
-    //         src={spinLoader}
-    //         width={48}
-    //         height={48}
-    //         style={{
-    //           position: 'absolute',
-    //           left: 'calc(50% - 48px)',
-    //           top: 'calc(50% - 48px)',
-    //         }}
-    //       />
-    //     </LoaderWrapper>
-    //   )
-    // }
+    console.log('RENDER')
 
     const { children, isUSDCurrently } = this.props
     const {
@@ -1188,6 +1172,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       <Icon className="fa fa-btc" />
     )
 
+    console.log('staticRows in render: ', staticRows)
+
     const tableDataHasData = !staticRows.length || !rows.length
 
     if (tableDataHasData) {
@@ -1206,7 +1192,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
             <Wrapper>
-              <Table>
+              <Table style={{ width: '520px' }}>
                 <PTHead>
                   <PTR>
                     {tableHeadingsCurrentPortfolio.map((heading) => {
@@ -1668,26 +1654,54 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           </TableAndHeadingWrapper>
         </Container>
         <PieChartsWrapper isEditModeEnabled={isEditModeEnabled}>
-          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
-            <PieChart
-              data={combineToChart(staticRows)}
-              flexible={true}
-              withHints={true}
-            />
-          </PieChartContainer>
-
-          <PieChartContainer isEditModeEnabled={isEditModeEnabled}>
-            <PieChart
-              data={combineToChart(rows)}
-              flexible={true}
-              withHints={true}
-            />
-          </PieChartContainer>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <input type="color" name="leftBar" onChange={this.onChangeColor} />
+            <input type="color" name="rightBar" onChange={this.onChangeColor} />
+          </div>
+          <Chart>
+            {staticRows[0].portfolioPerc && (
+              <BarChart
+                height={200}
+                charts={[
+                  {
+                    data: combineToBarChart(staticRows),
+                    color: this.state.leftBar,
+                    title: 'Current',
+                  },
+                  {
+                    data: combineToBarChart(rows),
+                    color: this.state.rightBar,
+                    title: 'Rebalanced',
+                  },
+                ]}
+              />
+            )}
+          </Chart>
         </PieChartsWrapper>
       </PTWrapper>
     )
   }
 }
+
+const Chart = styled.div`
+  padding: 0.5rem;
+  //margin: 1rem;
+  //flex-grow: 1;
+  ////background: #393e44;
+  //
+  //@media (max-width: 1080px) {
+  //  width: 100%;
+  //  flex-basis: 100%;
+  //}
+  width: 100%;
+  //height: inherit;
+  height: calc(100% - 30px);
+`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
@@ -1783,7 +1797,7 @@ const Wrapper = styled.div`
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   height: 45vh; //45vh
   padding: 0 20px 20px;
 `
@@ -1792,7 +1806,7 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
-  width: 45vw;
+  //width: 45vw;
 `
 
 const TableHeading = styled.div`
@@ -2138,18 +2152,14 @@ const Checkbox = styled.input`
 
 const PieChartsWrapper = styled.div`
   display: flex;
-  justify-content: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? 'center' : 'space-between'};
+  flex-direction: column;
   padding: 3% 0;
   height: 25vh;
   width: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? '50%' : '100%'};
+    props.isEditModeEnabled ? '48%' : '100%'};
 
   @media (max-height: 800px) {
     padding-top: 1.5%;
-  }
-  @media (max-height: 650px) {
-    justify-content: center;
   }
 `
 

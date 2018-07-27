@@ -35,7 +35,7 @@ class DialogSelect extends React.Component {
   state = {
     open: false,
     base: 'BTC',
-    quote: 'ETH',
+    quote: 'USDT',
   }
 
   handleChange = (name) => (value) => {

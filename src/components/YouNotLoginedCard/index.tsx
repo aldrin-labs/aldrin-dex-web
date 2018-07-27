@@ -35,7 +35,7 @@ class LoginCard extends PureComponent<IProps, IState> {
               variant="title"
               gutterBottom
             >
-              You must be LogIn to view this Page
+              You must login to view this page
             </Typography>
           </CardContent>
         </StyledCard>

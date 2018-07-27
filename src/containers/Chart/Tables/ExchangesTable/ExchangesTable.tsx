@@ -17,11 +17,20 @@ import QueryRenderer from '@components/QueryRenderer'
 import { Loading } from '@components/Loading/Loading'
 import gql from 'graphql-tag'
 
+const mockExchanges = [
+  { name: "OKEx", symbol: "okex" },
+  { name: "Huobi", symbol: "huobi" },
+  { name: "Bitfinex", symbol: "bitfinex" },
+  { name: "Bitstamp", symbol: "bitstamp" },
+  { name: "Coinbase Pro", symbol: "coinbase" },
+  { name: "Huobi", symbol: "huobi" },
+  { name: "DigiFinex", symbol: "digifinex" },
+  { name: "ZB.COM", symbol: "zbcom" },
+];
 
 export const ExchangeQuery = gql`
   query ExchangeQuery($marketName: String!) {
     marketByName(name: $marketName){
-    name
     exchangeIds
     exchanges {
       symbol
@@ -48,7 +57,10 @@ class ExchangesTable extends PureComponent {
       return <Loading centerAligned />
     }
     if (data && data.marketByName) {
-      exchanges = data.marketByName.length > 0 ? data.marketByName[0].exchanges : [];
+      exchanges = data.marketByName.length > 0 ? [...(data.marketByName[0].exchanges.map(({ name, symbol }) => ({ name, symbol })))] : [];
+      console.log(mockExchanges);
+      console.log(exchanges);
+      exchanges.push(...mockExchanges);
     }
 
     return (
@@ -65,25 +77,11 @@ class ExchangesTable extends PureComponent {
         </Title>
         <StyledHead background={'#292d31'}>
           <Row isHead background={'#292d31'}>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Symbol
-            </StyledHeadCell>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
+            <StyledHeadCell color="#9ca2aa" width={'30%'}>
               Name{' '}
             </StyledHeadCell>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Type
-            </StyledHeadCell>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              {quote || 'Fiat'}
-            </StyledHeadCell>
-            <StyledHeadCell
-              style={{ lineHeight: 'inherit', paddingTop: '0.25rem' }}
-              color="#9ca2aa"
-              width={'20%'}
-            >
-              1D Vol
-              <br />(K)
+            <StyledHeadCell color="#9ca2aa" width={'60%'}>
+              Symbol
             </StyledHeadCell>
           </Row>
         </StyledHead>
@@ -117,7 +115,7 @@ class ExchangesTable extends PureComponent {
                         flexWrap: 'nowrap',
                       }}
                       color="#9ca2aa"
-                      width="20%"
+                      width="50%"
                     >
                       <FaCircle
                         style={{
