@@ -2,7 +2,6 @@ import * as React from 'react'
 import { Subscription, Query } from 'react-apollo'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { difference } from 'lodash'
 
 // import HeatMapChart from '@components/HeatMapChart'
 import QueryRenderer from '@components/QueryRenderer'
@@ -25,7 +24,6 @@ import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
-import { find } from '../../../../../../node_modules/rxjs/operators'
 
 class Correlation extends React.Component<IProps> {
   render() {
@@ -37,48 +35,48 @@ class Correlation extends React.Component<IProps> {
       portfolio,
       filterValueSmallerThenPercentage,
     } = this.props
-    let data = {}
+
+    let dataRaw = {}
+    let data = {} // filtered data by dust
     if (
       typeof this.props.data.correlationMatrixByDay === 'string' &&
       this.props.data.correlationMatrixByDay.length > 0
     ) {
-      data = JSON.parse(this.props.data.correlationMatrixByDay)
+      dataRaw = JSON.parse(this.props.data.correlationMatrixByDay)
     } else {
-      data = this.props.data.correlationMatrixByDay
+      dataRaw = this.props.data.correlationMatrixByDay
     }
-    console.log(data)
+
     if (portfolio) {
       // filter data here
-      // const allSums = calcAllSumOfPortfolioAsset(
-      //   portfolio.getProfile.portfolio.assets,
-      //   true
-      // )
-      // const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
-      //   .filter(
-      //     (d: any) =>
-      //       percentagesOfCoinInPortfolio(d, allSums, true) <
-      //       filterValueSmallerThenPercentage
-      //   )
-      //   .map((d: any) => d.asset.symbol)
-      // console.log(listOfCoinsToFilter)
-    }
-    const listOfCoinsToFilter = ['BTG', 'BTC', 'VEN']
-    const listOfIndexes = listOfCoinsToFilter.map((coin) =>
-      data.header.findIndex(
-        (d: any) =>
-          // has(listOfCoinsToFilter, d)
-
-          d === coin
+      const allSums = calcAllSumOfPortfolioAsset(
+        portfolio.getProfile.portfolio.assets,
+        true
       )
-    )
-    console.log(listOfIndexes)
 
-    data.header = data.header.filter((d, i) => !listOfIndexes.includes(i))
-    data.values = data.values.map((row: number[]) =>
-      row.filter((d, i) => !listOfIndexes.includes(i))
-    )
-    data.values = data.values.filter((d, i) => !listOfIndexes.includes(i))
-    console.log(data)
+      const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
+        .filter(
+          (d: any) =>
+            percentagesOfCoinInPortfolio(d, allSums, true) <
+            filterValueSmallerThenPercentage
+        )
+        .map((d: any) => d.asset.symbol)
+
+      const listOfIndexes = listOfCoinsToFilter.map((coin) =>
+        dataRaw.header.findIndex((d: any) => d === coin)
+      )
+
+      data = {
+        header: dataRaw.header.filter((d, i) => !listOfIndexes.includes(i)),
+        values: dataRaw.values
+          .map((row: number[]) =>
+            row.filter((d, i) => !listOfIndexes.includes(i))
+          )
+          .filter((d, i) => !listOfIndexes.includes(i)),
+      }
+    } else {
+      data = dataRaw // no filter when mock on
+    }
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
