@@ -84,6 +84,7 @@ export default compose(connect(mapStateToProps))(PortfolioComponent)
 const PortfolioContainer = styled.div`
   display: flex;
   justify-content: center;
+  flex-direction: column;
   min-height: 600px;
 `
 const Backdrop = styled.div`

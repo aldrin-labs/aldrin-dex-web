@@ -163,8 +163,7 @@ const PTWrapper = styled.div`
 
 const Wrapper = styled.div`
   height: calc(100vh - 130px);
-  width: calc(100% - 2rem);
-  margin: 1.5rem;
+
   display: flex;
   flex-wrap: wrap;
 `

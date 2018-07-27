@@ -170,9 +170,9 @@ class Optimization extends Component<IProps, IState> {
   showWarning = (message: string) => {
     this.setState({ openWarning: true, warningMessage: message })
 
-    setTimeout(() => {
-      this.hideWarning()
-    }, 3000)
+    // setTimeout(() => {
+    //   this.hideWarning()
+    // }, 3000)
   }
 
   hideWarning = () => {
@@ -380,10 +380,10 @@ const MainArea = styled.div`
 const PTWrapper = styled.div`
   min-height: 100%;
   overflow-y: auto;
-  width: calc(100% - 2rem);
+
   display: flex;
   flex-direction: column;
-  margin: 24px;
+
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
@@ -406,11 +406,14 @@ const PTWrapper = styled.div`
 
 const Content = styled.div`
   flex: 0 0 auto;
+  height: 100%;
 `
 
 const ImportData = styled.div`
   width: 80%;
   display: flex;
+  height: 50%;
+  place-items: center;
   justify-content: center;
   margin: 0 auto;
 

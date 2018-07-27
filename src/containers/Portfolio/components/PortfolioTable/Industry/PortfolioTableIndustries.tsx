@@ -573,9 +573,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  height: 100%;
   justify-content: center;
   padding: 0 20px 20px;
-  
+
   @media (max-width: 2000px) {
     align-items: center;
     flex-direction: column;
@@ -594,11 +595,9 @@ const Heading = styled.div`
 `
 
 const PTWrapper = styled.div`
-  width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 2rem)' : '100%'};
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 24px;
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
@@ -633,11 +632,11 @@ const ChartContainer = styled.div`
   @media (max-width: 2000px) {
     height: 30vh;
   }
-  
+
   @media (max-height: 940px) {
     height: 30vh;
   }
-  
+
   @media (max-height: 680px) {
     display: none;
   }
@@ -723,11 +722,11 @@ const PTD = styled.td`
     min-width: 30px;
     padding: 1.75px 10px;
   }
-  
+
   &:nth-child(2) {
     min-width: 90px;
   }
-  
+
   &:nth-child(3) {
     min-width: 60px;
   }
@@ -744,7 +743,7 @@ const PTD = styled.td`
   &:nth-child(n + 6) {
     min-width: 150px;
   }
-  
+
   &:nth-child(7) {
     min-width: 160px;
     padding-right: 16px;
@@ -801,7 +800,7 @@ const PTH = styled.th`
   &:nth-child(2) {
     min-width: 90px;
   }
-  
+
   &:nth-child(3) {
     min-width: 60px;
   }
@@ -814,23 +813,23 @@ const PTH = styled.th`
   &:nth-child(2) {
     text-align: left;
   }
-  
+
   &:nth-child(3) {
     text-align: left;
   }
-  
+
   &:nth-child(n + 4) {
     text-align: right;
   }
-  
+
   &:nth-child(4) {
     min-width: 200px;
   }
-  
+
   &:nth-child(n + 6) {
     min-width: 150px;
   }
-  
+
   &:nth-child(7) {
     min-width: 160px;
     padding-right: 16px;

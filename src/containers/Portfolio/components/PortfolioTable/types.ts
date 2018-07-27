@@ -17,9 +17,10 @@ export interface IRowT {
 export interface IState {
   tableData: IRowT[] | null
   isShownChart: boolean
-  portfolio: IPortfolio | null
+  // portfolio: IPortfolio | null
   isUSDCurrently: boolean
-  tab: 'main' | 'industry' | 'rebalance' | 'correlation'
+  index: number
+  tab: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization'
 }
 
 export interface IPortfolio {

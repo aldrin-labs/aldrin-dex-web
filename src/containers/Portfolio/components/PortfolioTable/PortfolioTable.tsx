@@ -6,11 +6,13 @@ import PortfolioTableRebalance from '@containers/Portfolio/components/PortfolioT
 import PortfolioTableBalances from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
 import Optimization from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization'
 import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
-import { Loading } from '@components/Loading/Loading'
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
+import SwipeableViews from 'react-swipeable-views'
+import styled from 'styled-components'
 
 export class PortfolioTable extends React.Component<ITableProps, IState> {
   state: IState = {
+    index: 0,
     tableData: null,
     isShownChart: true,
     isUSDCurrently: true,
@@ -25,92 +27,86 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
   }
 
-  onChangeTab = (kind: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization') => {
-    this.setState({ tab: kind })
+  onChangeTab = (
+    tab: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization'
+  ) => {
+    switch (tab) {
+      case 'main':
+        this.setState({ tab, index: 0 })
+        break
+      case 'industry':
+        this.setState({ tab, index: 1 })
+        break
+      case 'rebalance':
+        this.setState({ tab, index: 2 })
+        break
+      case 'correlation':
+        this.setState({ tab, index: 3 })
+        break
+      case 'optimization':
+        this.setState({ tab, index: 4 })
+        break
+
+      default:
+        this.setState({ tab, index: 0 })
+        break
+    }
+  }
+
+  handleChangeIndex = (index) => {
+    this.setState({
+      index,
+    })
   }
 
   render() {
-    const { tab, isShownChart, isUSDCurrently } = this.state
+    const { tab, isShownChart, isUSDCurrently, index } = this.state
 
-    if (tab === 'main') {
-      return (
-        <PortfolioTableBalances
-          isShownChart={isShownChart}
-          isUSDCurrently={isUSDCurrently}
-          subscription={this.props.subscription}
-          checkboxes={this.props.checkboxes}
-          tab={this.state.tab}
-        >
-          <PortfolioTableTabs
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
+    return (
+      <Container>
+        <PortfolioTableTabs
+          toggleWallets={this.props.toggleWallets}
+          tab={tab}
+          onChangeTab={this.onChangeTab}
+          onToggleChart={this.onToggleChart}
+          onToggleUSDBTC={this.onToggleUSDBTC}
+        />
+        <SwipeableViews index={index} onChangeIndex={this.handleChangeIndex}>
+          <PortfolioTableBalances
+            isShownChart={isShownChart}
+            isUSDCurrently={isUSDCurrently}
+            subscription={this.props.subscription}
+            checkboxes={this.props.checkboxes}
+            tab={this.state.tab}
           />
-        </PortfolioTableBalances>
-      )
-    }
 
-    if (tab === 'industry') {
-      return (
-        <PortfolioTableIndustries
-          checkboxes={this.props.checkboxes}
-          isUSDCurrently={isUSDCurrently}
-        >
-          <PortfolioTableTabs
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
+          <PortfolioTableIndustries
+            checkboxes={this.props.checkboxes}
+            isUSDCurrently={isUSDCurrently}
           />
-        </PortfolioTableIndustries>
-      )
-    }
 
-    if (tab === 'rebalance') {
-      return (
-        <PortfolioTableRebalance
-          isUSDCurrently={true}
-        >
-          <PortfolioTableTabs
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </PortfolioTableRebalance>
-      )
-    }
+          <div />
+          {/* <PortfolioTableRebalance isUSDCurrently={true}>
+            <PortfolioTableTabs
+              toggleWallets={this.props.toggleWallets}
+              tab={tab}
+              onChangeTab={this.onChangeTab}
+              onToggleChart={this.onToggleChart}
+              onToggleUSDBTC={this.onToggleUSDBTC}
+            />
+          </PortfolioTableRebalance> */}
 
-    if (tab === 'correlation') {
-      return (
-        <Correlation>
-          <PortfolioTableTabs
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </Correlation>
-      )
-    }
+          <Correlation />
 
-    if (tab === 'optimization') {
-      return (
-        <Optimization>
-          <PortfolioTableTabs
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </Optimization>
-      )
-    }
-
-    return null
+          <Optimization />
+        </SwipeableViews>
+      </Container>
+    )
   }
 }
+
+const Container = styled.div`
+  width: 95vw;
+  align-self: center;
+  margin: 1rem 0;
+`

@@ -448,11 +448,11 @@ const Container = styled.div`
 `
 
 const PTWrapper = styled.div`
-  width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 2rem)' : '100%'};
+  width: 100%;
   display: flex;
   flex-direction: column;
-  margin: 24px;
+  justify-content: space-evenly;
+
   border-radius: 3px;
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
