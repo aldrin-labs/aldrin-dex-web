@@ -82,10 +82,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
     const { portfolio } = data
 
-    const composeWithMocks = {
+    const composeWithMocks = isShownMocks ? {
       ...portfolio,
       assets: portfolio!.assets!.concat(MOCKS),
-    }
+    } : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
       this.combineIndustryData(composeWithMocks)
@@ -96,15 +96,17 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
-      const { portfolio } = nextProps.data
+      const { portfolio } = nextProps.data.getProfile
+      const { isShownMocks } = nextProps
+
       if (!portfolio || !portfolio.assets) {
         return
       }
 
-      const composeWithMocks = {
+      const composeWithMocks = isShownMocks ? {
         ...portfolio,
         assets: portfolio.assets.concat(MOCKS),
-      }
+      } : portfolio
 
       this.setState({ portfolio: composeWithMocks })
       this.combineIndustryData(composeWithMocks)
@@ -170,8 +172,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
         const industryPerformance = isUSDCurrently
-          ? parseFloat(performance.usd).toFixed(2)
-          : parseFloat(performance.btc).toFixed(2)
+          ? parseFloat(performance.usd ? performance.usd : 0).toFixed(2)
+          : parseFloat(performance.btc ? performance.btc : 0).toFixed(2)
 
         const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
