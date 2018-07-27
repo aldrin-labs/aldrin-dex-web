@@ -724,6 +724,10 @@ const PTD = styled.td`
   &:nth-child(n + 6) {
     min-width: 150px;
   }
+  
+  &:nth-child(7) {
+    padding-right: 10px;
+  }
 `
 
 const Span = styled.span``
@@ -789,17 +793,25 @@ const PTH = styled.th`
   &:nth-child(2) {
     text-align: left;
   }
+  
   &:nth-child(3) {
     text-align: left;
   }
+  
   &:nth-child(n + 4) {
     text-align: right;
   }
+  
   &:nth-child(4) {
     min-width: 200px;
   }
+  
   &:nth-child(n + 6) {
     min-width: 150px;
+  }
+  
+  &:nth-child(7) {
+    padding-right: 10px;
   }
 `
 
