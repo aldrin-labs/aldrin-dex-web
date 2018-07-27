@@ -143,6 +143,12 @@ class Import extends PureComponent<IProps> {
     }, 2000)
   }
 
+  isEqual = (assets: IData[], storeData: IData[]): boolean => {
+    const s = this.sumSameCoins(assets)
+
+    return isEqual(s, storeData)
+  }
+
   addRow = (name: string, value: number) => {
     if (name) {
       this.props.updateData(
@@ -159,6 +165,17 @@ class Import extends PureComponent<IProps> {
     )
 
   deleteAllRows = () => this.props.updateData([])
+
+  objectsAreSame = (x, y) => {
+    let objectsAreSame = true
+    for (var propertyName in x) {
+      if (x[propertyName] !== y[propertyName]) {
+        objectsAreSame = false
+        break
+      }
+    }
+    return objectsAreSame
+  }
 
   render() {
     const {
@@ -241,8 +258,9 @@ class Import extends PureComponent<IProps> {
                   show={showSwitchButtons}
                   activeButton={activeButton}
                 />
+
                 <ButtonMUI
-                  disabled={isEqual(this.sumSameCoins(assets), storeData)}
+                  disabled={this.isEqual(assets, storeData)}
                   color="secondary"
                   style={{
                     alignSelf: 'center',
