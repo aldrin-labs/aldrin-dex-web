@@ -47,7 +47,7 @@ class Correlation extends React.Component<IProps> {
       dataRaw = this.props.data.correlationMatrixByDay
     }
 
-    if (portfolio) {
+    if (portfolio && dataRaw !== '') {
       // filter data here
       const allSums = calcAllSumOfPortfolioAsset(
         portfolio.getProfile.portfolio.assets,
