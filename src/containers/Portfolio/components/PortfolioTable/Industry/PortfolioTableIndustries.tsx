@@ -432,8 +432,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             width={12}
                             height={12}
                             style={{
-                              position: 'absolute',
-                              top: '1.2rem',
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
@@ -555,7 +553,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 0 20px 20px;
+  
+  @media (max-width: 2000px) {
+    align-items: center;
+    flex-direction: column;
+  }
 `
 
 const Heading = styled.div`
@@ -603,17 +607,17 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 35vh;
 
-  margin: 2rem auto;
-  width: 900px;
+  //margin: 2rem auto;
+  width: 800px;
 
-  @media (min-width: 1950px) {
-    margin: 1rem auto;
-  }
-
-  @media (max-height: 850px) {
+  @media (max-width: 2000px) {
     height: 30vh;
-    margin: 0.5rem auto;
   }
+  
+  @media (max-height: 940px) {
+    height: 30vh;
+  }
+  
   @media (max-height: 680px) {
     display: none;
   }
@@ -632,12 +636,17 @@ const Wrapper = styled.div`
   background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-  max-height: 40vh;
+  max-height: 35vh;
+  margin-right: 50px;
+  //width: 900px;
 
-  margin: 1rem auto;
+  @media (max-width: 2000px) {
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
 
   @media (max-height: 850px) {
-    max-height: 30vh;
+    max-height: 25vh;
   }
 
   @media (max-height: 680px) {
@@ -684,30 +693,41 @@ const PTD = styled.td`
   font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  min-width: 100px;
 
   &:nth-child(1) {
+    min-width: 30px;
     padding: 1.75px 10px;
   }
-
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  
+  &:nth-child(2) {
+    min-width: 90px;
   }
-
+  
   &:nth-child(3) {
+    min-width: 60px;
   }
+
   &:nth-child(n + 4) {
     text-align: right;
   }
 
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
+    max-width: 200px;
   }
 
   &:nth-child(n + 6) {
     min-width: 150px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 160px;
+    padding-right: 16px;
   }
 `
 
@@ -751,11 +771,19 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
+  min-width: 100px;
 
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  &:nth-child(1) {
+    min-width: 30px;
+  }
+  &:nth-child(2) {
+    min-width: 90px;
+  }
+  
+  &:nth-child(3) {
+    min-width: 60px;
   }
 
   &:nth-child(1) {
@@ -766,17 +794,26 @@ const PTH = styled.th`
   &:nth-child(2) {
     text-align: left;
   }
+  
   &:nth-child(3) {
     text-align: left;
   }
+  
   &:nth-child(n + 4) {
     text-align: right;
   }
+  
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
   }
+  
   &:nth-child(n + 6) {
     min-width: 150px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 160px;
+    padding-right: 16px;
   }
 `
 

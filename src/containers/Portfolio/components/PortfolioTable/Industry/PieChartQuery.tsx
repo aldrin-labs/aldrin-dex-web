@@ -69,11 +69,33 @@ class PieChartQuery extends React.Component<Props, State> {
       return null
     })
 
+    const arrayOfColors = ['#EFC151',
+      '#E85454',
+      '#BB118D',
+      '#C79B42',
+      '#6DC56F',
+      '#EAAB89',
+      '#6084C0',
+      '#A3C571',
+      '#D75227',
+      '#0059B4',
+      '#28B587',
+      '#DED848',
+      '#AA1E29',
+      '#6B43B7',
+      '#999999',
+      '#CCCCCC',
+      '#00A89B',
+      '#7EA9D3',
+      '#F2F2F2',
+      '#282F39'
+    ];
+
     const pieData = Object.keys(obj).map((key, i) => {
       return {
         angle: obj[key],
         label: key,
-        color: i + 1,
+        color: arrayOfColors[i],
         realValue: obj[key],
       }
     })
