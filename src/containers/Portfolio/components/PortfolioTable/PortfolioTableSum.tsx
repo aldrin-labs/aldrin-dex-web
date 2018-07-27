@@ -72,24 +72,36 @@ export default class PortfolioTableSum extends React.Component<IProps> {
   }
 }
 const PTDIndustry = css`
+  padding: 10px 0 10px 10px;
   min-width: 100px;
 
   &:nth-child(1) {
+    min-width: 30px;
     padding: 1.75px 10px;
+  }
+  
+  &:nth-child(2) {
+    min-width: 90px;
   }
 
   &:nth-child(3) {
+    min-width: 60px;
   }
   &:nth-child(n + 4) {
     text-align: right;
   }
 
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
   }
 
   &:nth-child(n + 6) {
     min-width: 150px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 160px;
+    padding-right: 16px;
   }
 `
 
