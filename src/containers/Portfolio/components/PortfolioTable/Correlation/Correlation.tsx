@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Subscription, Query } from 'react-apollo'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { difference } from 'lodash'
 
 // import HeatMapChart from '@components/HeatMapChart'
 import QueryRenderer from '@components/QueryRenderer'
@@ -24,6 +25,7 @@ import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
+import { find } from '../../../../../../node_modules/rxjs/operators'
 
 class Correlation extends React.Component<IProps> {
   render() {
@@ -44,25 +46,39 @@ class Correlation extends React.Component<IProps> {
     } else {
       data = this.props.data.correlationMatrixByDay
     }
-    console.log(portfolio)
+    console.log(data)
     if (portfolio) {
       // filter data here
-      const allSums = calcAllSumOfPortfolioAsset(
-        portfolio.getProfile.portfolio.assets,
-        true
-      )
-      const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets.filter(
-        (d: any) => {
-          if (
-            percentagesOfCoinInPortfolio(d, allSums, true) <
-            filterValueSmallerThenPercentage
-          ) {
-            return d.asset.symbol
-          }
-        }
-      )
-      console.log(listOfCoinsToFilter)
+      // const allSums = calcAllSumOfPortfolioAsset(
+      //   portfolio.getProfile.portfolio.assets,
+      //   true
+      // )
+      // const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
+      //   .filter(
+      //     (d: any) =>
+      //       percentagesOfCoinInPortfolio(d, allSums, true) <
+      //       filterValueSmallerThenPercentage
+      //   )
+      //   .map((d: any) => d.asset.symbol)
+      // console.log(listOfCoinsToFilter)
     }
+    const listOfCoinsToFilter = ['BTG', 'BTC', 'VEN']
+    const listOfIndexes = listOfCoinsToFilter.map((coin) =>
+      data.header.findIndex(
+        (d: any) =>
+          // has(listOfCoinsToFilter, d)
+
+          d === coin
+      )
+    )
+    console.log(listOfIndexes)
+
+    data.header = data.header.filter((d, i) => !listOfIndexes.includes(i))
+    data.values = data.values.map((row: number[]) =>
+      row.filter((d, i) => !listOfIndexes.includes(i))
+    )
+    data.values = data.values.filter((d, i) => !listOfIndexes.includes(i))
+    console.log(data)
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
