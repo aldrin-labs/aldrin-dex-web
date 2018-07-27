@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
@@ -17,8 +17,12 @@ import Import from '@containers/Portfolio/components/PortfolioTable/Optimization
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
+import {
+  calcAllSumOfPortfolioAsset,
+  percentagesOfCoinInPortfolio,
+} from '@utils/PortfolioTableUtils'
 
-class Optimization extends PureComponent<IProps, IState> {
+class Optimization extends Component<IProps, IState> {
   state = {
     loading: false,
     risk: [],
@@ -40,6 +44,15 @@ class Optimization extends PureComponent<IProps, IState> {
     this.setState({
       expectedReturn: event.target.value.replace(/-|%/g, ''),
     })
+  }
+
+  transformData = (assets: any[]): IData[] => {
+    const allSum = calcAllSumOfPortfolioAsset(assets, true)
+
+    return assets.map((data: any) => ({
+      coin: data.asset.symbol,
+      percentage: percentagesOfCoinInPortfolio(data, allSum, true),
+    }))
   }
 
   optimizePortfolio = (data: any) => {
@@ -93,24 +106,6 @@ class Optimization extends PureComponent<IProps, IState> {
         percentages: this.getPercentages(Number(this.state.expectedReturn)),
       })
     }
-  }
-
-  transformData = (assets) => {
-    // transforming data like assets from profile to IData format
-    const allSums = assets.filter(Boolean).reduce((acc: number, curr: any) => {
-      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
-        return null
-      }
-      const price = asset.priceBTC
-
-      return acc + value * Number(price)
-    }, 0)
-
-    return assets.map((data: any) => ({
-      coin: data.asset.symbol,
-      percentage: data.asset.priceBTC * data.value * 100 / allSums,
-    }))
   }
 
   onBtnClick = async (index: number) => {
@@ -184,6 +179,8 @@ class Optimization extends PureComponent<IProps, IState> {
     this.setState({ openWarning: false })
   }
 
+  setActiveButtonToDefault = () => this.setState({ activeButton: 2 })
+
   toggleLoading = () =>
     this.setState((prevState) => ({ loading: !prevState.loading }))
 
@@ -203,16 +200,19 @@ class Optimization extends PureComponent<IProps, IState> {
       endDate,
       setPeriod,
       optimizationPeriod,
+      filterValueSmallerThenPercentage,
     } = this.props
 
     return (
       <QueryRenderer
         component={Import}
         query={getCoinsForOptimization}
+        filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}
         optimizationPeriod={optimizationPeriod}
         showWarning={this.showWarning}
         toggleLoading={this.toggleLoading}
         setPeriod={setPeriod}
+        setActiveButtonToDefault={this.setActiveButtonToDefault}
         optimizedData={optimizedData}
         transformData={this.transformData}
         storeData={storeData}
@@ -272,19 +272,19 @@ class Optimization extends PureComponent<IProps, IState> {
     }
 
     let showBarChartPlaceholder = false
-    if (
-      !isEqual(
-        storeData.map((el: IData) => el.coin).sort(),
-        optimizedData.map((el: IData) => el.coin).sort()
-      )
-    ) {
-      showBarChartPlaceholder = true
-      efficientFrontierData = {
-        percentages: [],
-        risk: [],
-        activeButton,
-      }
-    }
+    // if (
+    //   !isEqual(
+    //     storeData.map((el: IData) => el.coin).sort(),
+    //     optimizedData.map((el: IData) => el.coin).sort()
+    //   )
+    // ) {
+    //   showBarChartPlaceholder = true
+    //   efficientFrontierData = {
+    //     percentages: [],
+    //     risk: [],
+    //     activeButton,
+    //   }
+    // }
 
     return (
       <ChartsContainer>

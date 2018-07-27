@@ -104,6 +104,7 @@ class Import extends PureComponent<IProps> {
       })
 
       this.props.toggleLoading()
+      this.props.setActiveButtonToDefault()
       console.log('Variables')
       console.log({
         expectedPct: Number(expectedReturn),
@@ -125,22 +126,9 @@ class Import extends PureComponent<IProps> {
 
       optimizedToState(backendDataParsed)
 
-      if (
-        backendDataParsed.find(
-          (obj: any) => obj.percentage_expected_returns === +expectedReturn
-        ) === undefined
-      ) {
-        showWarning('expectedReturn error')
-
-        return
-      }
-
       const isReturnedCoinsTheSameThatInputed = isEqual(
-        backendDataParsed
-          .find(
-            (obj: any) => obj.percentage_expected_returns === +expectedReturn
-          )
-          .weighted_coins_optimized.map((el: IData) => el.coin)
+        backendDataParsed[2].weighted_coins_optimized
+          .map((el: IData) => el.coin)
           .sort(),
         storeData.map((el) => el.coin).sort()
       )
@@ -148,14 +136,10 @@ class Import extends PureComponent<IProps> {
       if (!isReturnedCoinsTheSameThatInputed) {
         showWarning('Output coins not the same as input coins!')
 
-        return
+        // return
       }
 
-      optimizePortfolio(
-        backendDataParsed.find(
-          (obj: any) => obj.percentage_expected_returns === +expectedReturn
-        )
-      )
+      optimizePortfolio(backendDataParsed[2])
     }, 2000)
   }
 
@@ -190,6 +174,7 @@ class Import extends PureComponent<IProps> {
       setPeriod,
       onBtnClick,
       percentages,
+      filterValueSmallerThenPercentage,
       activeButton,
       showSwitchButtons, // optimizedData.length >= 1
       showWarning,
@@ -274,7 +259,9 @@ class Import extends PureComponent<IProps> {
                 optimizedData={optimizedData}
                 withInput
                 onClickDeleteIcon={this.deleteRow}
-                onClickDeleteAllIcon={this.deleteAllRows}
+                filterValueSmallerThenPercentage={
+                  filterValueSmallerThenPercentage
+                }
               />
             </TableContainer>
             <HelperForCentering />

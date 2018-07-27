@@ -24,17 +24,17 @@ const mocks = {
     unique_id_for_redis: 1336,
     status: 0,
     header: [
-      'ETH',
+      'BTG',
       'BTC',
+      'VEN',
+      'AION',
+      'BTC',
+      'DASH',
+      'ADA',
+      'XLM',
       'KEK',
       'LOL',
       'AMF',
-      'SES',
-      'TEST',
-      'FKE',
-      'FDD',
-      'SDF',
-      'FSD',
     ],
     values: [
       [1, 0.2, 0.3, 0.5431, 0.3, 0.1, 0.2, 0.3, 0.31, 0.3, 0.63],
@@ -280,4 +280,4 @@ const mocks = {
   },
 }
 
-export const CorrelationMatrixMockData = mocks['5']
+export const CorrelationMatrixMockData = mocks['10']

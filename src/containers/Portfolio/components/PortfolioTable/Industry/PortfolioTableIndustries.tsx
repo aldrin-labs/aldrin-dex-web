@@ -5,7 +5,10 @@ import { compose } from 'recompose'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
-
+import {
+  calcPercentage,
+  calcAllSumOfPortfolioAsset,
+} from '@utils/PortfolioTableUtils'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
 import {
@@ -130,7 +133,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   combineIndustryData = (portfolio?: IPortfolio) => {
-    const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
+    const { isUSDCurrently } = this.props
     const { activeKeys } = this.state
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
@@ -143,6 +146,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           asset = { symbol: '', priceBTC: '', priceUSD: '', industry: '' },
           key = { name: '' },
           exchange = { name: '' },
+          value = 0,
         } =
           row || {}
         if (activeKeys.indexOf(key!.name) === -1) {
@@ -169,25 +173,24 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           ? parseFloat(performance.usd).toFixed(2)
           : parseFloat(performance.btc).toFixed(2)
 
+        const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
+
+        const currentPrice = mainPrice * value
+
         const col = {
           currency: name || '-',
           symbol,
           industry: industryName || '-',
           price: mainPrice || 0,
           portfolioPerf: 0,
+          portfolioPerc: calcPercentage(currentPrice * 100 / allSums),
           industryPerf: industryPerformance || 0,
         }
 
         return col
       })
       .filter(Boolean)
-    // .filter(
-    //   (el) =>
-    //     el.portfolioPerf >
-    //     (filterValueSmallerThenPercentage
-    //       ? filterValueSmallerThenPercentage
-    //       : 0)
-    // )
+
     this.setState({ industryData }, () =>
       this.calculateSum(this.state.selectedRows)
     )
@@ -358,7 +361,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { isUSDCurrently, children } = this.props
+    const {
+      isUSDCurrently,
+      children,
+      filterValueSmallerThenPercentage,
+    } = this.props
     const {
       selectedRows,
       selectedSum,
@@ -449,74 +456,87 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
               <PTBody>
                 {industryData &&
-                  industryData.map((row, idx) => {
-                    const {
-                      currency,
-                      symbol,
-                      industry,
-                      price,
-                      portfolioPerf,
-                      industryPerf,
-                    } = row
-
-                    const mainSymbol = isUSDCurrently ? (
-                      <Icon className="fa fa-usd" key={`${idx}usd`} />
-                    ) : (
-                      <Icon className="fa fa-btc" key={`${idx}btc`} />
+                  industryData
+                    .filter(
+                      (el) =>
+                        el.portfolioPerc >
+                        (filterValueSmallerThenPercentage
+                          ? filterValueSmallerThenPercentage
+                          : 0)
                     )
+                    .map((row, idx) => {
+                      const {
+                        currency,
+                        symbol,
+                        industry,
+                        price,
+                        portfolioPerf,
+                        industryPerf,
+                      } = row
 
-                    const isSelected =
-                      (selectedRows && selectedRows.indexOf(idx) >= 0) || false
+                      const mainSymbol = isUSDCurrently ? (
+                        <Icon className="fa fa-usd" key={`${idx}usd`} />
+                      ) : (
+                        <Icon className="fa fa-btc" key={`${idx}btc`} />
+                      )
 
-                    const cols = [
-                      currency,
-                      symbol,
-                      industry,
-                      [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
-                      `${portfolioPerf}%`,
-                      `${industryPerf}%`,
-                    ]
+                      const isSelected =
+                        (selectedRows && selectedRows.indexOf(idx) >= 0) ||
+                        false
 
-                    return (
-                      <PTRBody
-                        key={`${currency}${symbol}${idx}`}
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectBalance(idx)}
-                      >
-                        <PTD key="smt" isSelected={isSelected}>
-                          {this.renderCheckbox(idx)}
-                        </PTD>
-                        {cols &&
-                          cols.map((col, innerIdx) => {
-                            if (col && !Array.isArray(col) && col.match(/%/g)) {
-                              const color =
-                                Number(col.replace(/%/g, '')) >= 0
-                                  ? '#65c000'
-                                  : '#ff687a'
+                      const cols = [
+                        currency,
+                        symbol,
+                        industry,
+                        [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
+                        `${portfolioPerf}%`,
+                        `${industryPerf}%`,
+                      ]
+
+                      return (
+                        <PTRBody
+                          key={`${currency}${symbol}${idx}`}
+                          isSelected={isSelected}
+                          onClick={() => this.onSelectBalance(idx)}
+                        >
+                          <PTD key="smt" isSelected={isSelected}>
+                            {this.renderCheckbox(idx)}
+                          </PTD>
+                          {cols &&
+                            cols.map((col, innerIdx) => {
+                              if (
+                                col &&
+                                !Array.isArray(col) &&
+                                col.match(/%/g)
+                              ) {
+                                const color =
+                                  Number(col.replace(/%/g, '')) >= 0
+                                    ? '#65c000'
+                                    : '#ff687a'
+
+                                return (
+                                  <PTD
+                                    key={`${col}${innerIdx}`}
+                                    style={{ color }}
+                                    isSelected={isSelected}
+                                  >
+                                    {col}
+                                  </PTD>
+                                )
+                              }
 
                               return (
                                 <PTD
                                   key={`${col}${innerIdx}`}
-                                  style={{ color }}
                                   isSelected={isSelected}
                                 >
                                   {col}
                                 </PTD>
                               )
-                            }
-
-                            return (
-                              <PTD
-                                key={`${col}${innerIdx}`}
-                                isSelected={isSelected}
-                              >
-                                {col}
-                              </PTD>
-                            )
-                          })}
-                      </PTRBody>
-                    )
-                  })}
+                            })}
+                        </PTRBody>
+                      )
+                    })}
               </PTBody>
               {selectedSum && selectedSum.currency ? (
                 <PortfolioTableSum
