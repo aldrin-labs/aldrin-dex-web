@@ -47,11 +47,11 @@ class Optimization extends Component<IProps, IState> {
   }
 
   transformData = (assets: any[]): IData[] => {
-    const allSum = calcAllSumOfPortfolioAsset(assets, false)
+    const allSum = calcAllSumOfPortfolioAsset(assets, true)
 
     return assets.map((data: any) => ({
       coin: data.asset.symbol,
-      percentage: percentagesOfCoinInPortfolio(data, allSum, false),
+      percentage: percentagesOfCoinInPortfolio(data, allSum, true),
     }))
   }
 

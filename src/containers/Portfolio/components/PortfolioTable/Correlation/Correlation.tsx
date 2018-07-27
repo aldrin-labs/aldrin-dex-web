@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { Subscription } from 'react-apollo'
+import { Subscription, Query } from 'react-apollo'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import QueryRenderer from '@components/QueryRenderer'
 
 // import HeatMapChart from '@components/HeatMapChart'
+import QueryRenderer from '@components/QueryRenderer'
 import {
   // HeatMapMocks,
   CorrelationMatrixMockData,
@@ -18,7 +18,12 @@ import {
 import {
   getCorrelationQuery,
   CORRELATION_UPDATE,
+  getPortfolioQuery,
 } from '@containers/Portfolio/api'
+import {
+  calcAllSumOfPortfolioAsset,
+  percentagesOfCoinInPortfolio,
+} from '@utils/PortfolioTableUtils'
 
 class Correlation extends React.Component<IProps> {
   render() {
@@ -27,6 +32,8 @@ class Correlation extends React.Component<IProps> {
       isFullscreenEnabled,
       period,
       setCorrelationPeriodToStore,
+      portfolio,
+      filterValueSmallerThenPercentage,
     } = this.props
     let data = {}
     if (
@@ -37,11 +44,31 @@ class Correlation extends React.Component<IProps> {
     } else {
       data = this.props.data.correlationMatrixByDay
     }
+    console.log(portfolio)
+    if (portfolio) {
+      // filter data here
+      const allSums = calcAllSumOfPortfolioAsset(
+        portfolio.getProfile.portfolio.assets,
+        true
+      )
+      const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets.filter(
+        (d: any) => {
+          if (
+            percentagesOfCoinInPortfolio(d, allSums, true) <
+            filterValueSmallerThenPercentage
+          ) {
+            return d.asset.symbol
+          }
+        }
+      )
+      console.log(listOfCoinsToFilter)
+    }
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
         {(subscriptionData) => {
           console.log(data)
+          console.log(portfolio)
 
           return (
             <PTWrapper>
@@ -75,7 +102,6 @@ class CorrelationWrapper extends React.Component<IProps> {
       children,
       isFullscreenEnabled,
       toggleFullscreen,
-      setCorrelationPeriodToStore,
     } = this.props
 
     return (
@@ -88,15 +114,19 @@ class CorrelationWrapper extends React.Component<IProps> {
             children={children}
           />
         ) : (
-          <QueryRenderer
-            component={Correlation}
-            query={getCorrelationQuery}
-            variables={{
-              startDate: 1531441380, //
-              endDate: 1531873380,
-            }}
-            {...this.props}
-          />
+          <Query query={getPortfolioQuery}>
+            {({ loading, error, data }) => (
+              <QueryRenderer
+                component={Correlation}
+                query={getCorrelationQuery}
+                variables={{
+                  startDate: 1531441380,
+                  endDate: 1531873380,
+                }}
+                {...{ portfolio: data, ...this.props }}
+              />
+            )}
+          </Query>
         )}
       </Wrapper>
     )
@@ -131,6 +161,7 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
