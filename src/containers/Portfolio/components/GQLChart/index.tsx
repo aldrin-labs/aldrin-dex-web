@@ -92,12 +92,14 @@ class PortfolioChart extends React.Component<Props, State> {
 
     const axisStyle = {
       ticks: {
+        padding: '1rem',
         stroke: '#fff',
-        opacity: 0.5,
+        opacity: 0.75,
         fontFamily: 'Roboto',
         fontSize: '12px',
         fontWeight: 100,
       },
+      text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
     }
     if (loading) {
       return <Loading centerAligned />
