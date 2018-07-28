@@ -3,6 +3,8 @@ const commonPaths = require('./common-paths')
 const webpack = require('webpack')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
+const devtool = process.env.DEVTOOL || 'nosources-source-map'
+
 const config = {
   mode: 'production',
   entry: {
@@ -11,7 +13,7 @@ const config = {
   output: {
     filename: 'static/[name].[hash].js',
   },
-  devtool: 'source-map',
+  devtool,
   module: {
     rules: [],
   },
