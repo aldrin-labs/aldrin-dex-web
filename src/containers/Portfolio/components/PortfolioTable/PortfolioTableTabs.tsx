@@ -188,6 +188,10 @@ const ButtonContainer = styled.div`
   position: absolute;
   left: 0;
 
+  @media (max-width: 1080px) {
+    right: 1rem;
+    left: inherit;
+  }
   @media (max-width: 840px) {
     margin-right: 1rem;
   }
@@ -271,6 +275,9 @@ const Tab = styled.button`
 const SwitchRefreshContainer = styled.div`
   display: flex;
 
+  @media (max-width: 1080px) {
+    padding-top: 20px;
+  }
   @media (max-width: 710px) {
     padding-top: 10px;
   }
