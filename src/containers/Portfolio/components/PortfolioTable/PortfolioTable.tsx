@@ -24,8 +24,13 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   onToggleUSDBTC = () => {
     this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
   }
+  switchToUsd = () => {
+    this.setState({ isUSDCurrently: true })
+  }
 
-  onChangeTab = (kind: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization') => {
+  onChangeTab = (
+    kind: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization'
+  ) => {
     this.setState({ tab: kind })
   }
 
@@ -37,6 +42,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
         <PortfolioTableBalances
           isShownChart={isShownChart}
           isUSDCurrently={isUSDCurrently}
+          switchToUsd={this.switchToUsd}
           subscription={this.props.subscription}
           checkboxes={this.props.checkboxes}
           tab={this.state.tab}
@@ -57,6 +63,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
         <PortfolioTableIndustries
           checkboxes={this.props.checkboxes}
           isUSDCurrently={isUSDCurrently}
+          switchToUsd={this.switchToUsd}
         >
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
@@ -71,9 +78,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
     if (tab === 'rebalance') {
       return (
-        <PortfolioTableRebalance
-          isUSDCurrently={true}
-        >
+        <PortfolioTableRebalance isUSDCurrently={true}>
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}

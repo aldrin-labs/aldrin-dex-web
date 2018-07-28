@@ -54,7 +54,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     const {
       data: { getProfile: data },
       isShownMocks,
+      switchToUsd,
     } = this.props
+
+    switchToUsd()
 
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCK_DATA } }, () =>

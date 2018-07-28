@@ -67,8 +67,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     const {
       data: { getProfile: data },
       isShownMocks,
+      switchToUsd,
     } = this.props
-
+    switchToUsd()
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCKS } }, () =>
         this.combineIndustryData({ assets: MOCKS })
