@@ -38,7 +38,7 @@ class BarChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { showPlaceholder, charts, height } = this.props
+    const { showPlaceholder, charts, height, alwaysShowLegend } = this.props
     const { value } = this.state
 
     const ITEMS: Items[] = []
@@ -64,7 +64,9 @@ class BarChart extends Component<IProps, IState> {
       <div>
         <Container height={height}>
           <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal">
-            <LegendContainer value={value}>
+            <LegendContainer
+              value={alwaysShowLegend ? { x: '1', y: '1' } : value}
+            >
               <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
             </LegendContainer>
             {showPlaceholder ? (

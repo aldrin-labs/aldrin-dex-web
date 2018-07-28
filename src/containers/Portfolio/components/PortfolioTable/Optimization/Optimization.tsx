@@ -295,6 +295,7 @@ class Optimization extends Component<IProps, IState> {
               optimizedData.length < 1 || showBarChartPlaceholder
             }
             charts={barChartData}
+            alwaysShowLegend
           />
         </Chart>
         <Chart>

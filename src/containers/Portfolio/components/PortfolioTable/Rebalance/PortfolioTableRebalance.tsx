@@ -1667,6 +1667,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
             {staticRows[0].portfolioPerc && (
               <BarChart
                 height={200}
+                alwaysShowLegend
                 charts={[
                   {
                     data: combineToBarChart(staticRows),
