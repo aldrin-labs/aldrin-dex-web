@@ -418,6 +418,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             height="20vh"
             marginTopHr="10px"
             coins={
+              this.state.selectedBalances &&
               this.state.selectedBalances.length > 0
                 ? this.state.selectedBalances.map(
                     (idx) => this.state.tableData[idx]
