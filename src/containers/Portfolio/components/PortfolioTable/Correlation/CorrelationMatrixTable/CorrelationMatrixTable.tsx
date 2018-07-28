@@ -92,7 +92,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   color={backgroundColor}
                   active={i === activeRow && ind === activeColumn}
                 >
-                  <CenterText>{Number(el).toFixed(2)}</CenterText>
+                  <CenterText>{Number(el).toFixed(4)}</CenterText>
                 </CellContent>
               </Cell>
             )

@@ -15,7 +15,7 @@ const mocks = {
     header: ['ETH', 'BTC', 'KEK', 'LOL'],
     values: [
       [1, 0.2, 0.3, 0.2],
-      [-0.1, 1, -0.6, -0.6451],
+      [-0.01, 1, -0.0, -0.6451],
       [0.1, 0.465, 1, 0.5],
       [-0.43431, 0.145, 0.543, 1],
     ],
@@ -280,4 +280,4 @@ const mocks = {
   },
 }
 
-export const CorrelationMatrixMockData = mocks['10']
+export const CorrelationMatrixMockData = mocks['5']

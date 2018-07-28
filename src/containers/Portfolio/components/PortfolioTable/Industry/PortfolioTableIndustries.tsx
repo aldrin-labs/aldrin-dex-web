@@ -82,10 +82,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
     const { portfolio } = data
 
-    const composeWithMocks = isShownMocks ? {
-      ...portfolio,
-      assets: portfolio!.assets!.concat(MOCKS),
-    } : portfolio
+    const composeWithMocks = isShownMocks
+      ? {
+          ...portfolio,
+          assets: portfolio!.assets!.concat(MOCKS),
+        }
+      : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
       this.combineIndustryData(composeWithMocks)
@@ -103,10 +105,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         return
       }
 
-      const composeWithMocks = isShownMocks ? {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCKS),
-      } : portfolio
+      const composeWithMocks = isShownMocks
+        ? {
+            ...portfolio,
+            assets: portfolio.assets.concat(MOCKS),
+          }
+        : portfolio
 
       this.setState({ portfolio: composeWithMocks })
       this.combineIndustryData(composeWithMocks)
@@ -577,7 +581,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   padding: 0 20px 20px;
-  
+
   @media (max-width: 2000px) {
     align-items: center;
     flex-direction: column;
@@ -635,11 +639,11 @@ const ChartContainer = styled.div`
   @media (max-width: 2000px) {
     height: 30vh;
   }
-  
+
   @media (max-height: 940px) {
     height: 30vh;
   }
-  
+
   @media (max-height: 680px) {
     display: none;
   }
@@ -725,11 +729,11 @@ const PTD = styled.td`
     min-width: 30px;
     padding: 1.75px 10px;
   }
-  
+
   &:nth-child(2) {
     min-width: 90px;
   }
-  
+
   &:nth-child(3) {
     min-width: 60px;
   }
@@ -746,7 +750,7 @@ const PTD = styled.td`
   &:nth-child(n + 6) {
     min-width: 150px;
   }
-  
+
   &:nth-child(7) {
     min-width: 160px;
     padding-right: 16px;
@@ -803,7 +807,7 @@ const PTH = styled.th`
   &:nth-child(2) {
     min-width: 90px;
   }
-  
+
   &:nth-child(3) {
     min-width: 60px;
   }
@@ -816,23 +820,23 @@ const PTH = styled.th`
   &:nth-child(2) {
     text-align: left;
   }
-  
+
   &:nth-child(3) {
     text-align: left;
   }
-  
+
   &:nth-child(n + 4) {
     text-align: right;
   }
-  
+
   &:nth-child(4) {
     min-width: 200px;
   }
-  
+
   &:nth-child(n + 6) {
     min-width: 150px;
   }
-  
+
   &:nth-child(7) {
     min-width: 160px;
     padding-right: 16px;
