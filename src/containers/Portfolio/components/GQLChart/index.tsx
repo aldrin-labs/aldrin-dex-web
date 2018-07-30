@@ -143,21 +143,9 @@ class PortfolioChart extends React.Component<Props, State> {
             />
             <GradientDefs>
               <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop
-                  offset="40%"
-                  stopColor="rgb(78, 216, 218)"
-                  stopOpacity={0.2}
-                />
-                <stop
-                  offset="80%"
-                  stopColor="rgba(133, 237, 238, 0.7)"
-                  stopOpacity={0.4}
-                />
-                <stop
-                  offset="100%"
-                  stopColor="rgba(133, 237, 238, 0.7)"
-                  stopOpacity={0.5}
-                />
+                <stop offset="40%" stopColor="#267871" stopOpacity={0.2} />
+                <stop offset="80%" stopColor="#136a8a" stopOpacity={0.4} />
+                <stop offset="100%" stopColor="#136a8a" stopOpacity={0.5} />
               </linearGradient>
             </GradientDefs>
             <AreaSeries
@@ -347,7 +335,7 @@ const Chart = styled.div`
   margin-top: 24px;
   height: ${(props: { height: string }) => props.height};
 
-  @media (min-width: 1800px) {
+  @media (min-width: 1400px) {
     height: 100%;
   }
 `
@@ -369,8 +357,8 @@ const SProfileChart = styled.div`
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 1800px) {
-    height: 100%;
+  @media (min-width: 1400px) {
+    height: 90%;
   }
 `
 

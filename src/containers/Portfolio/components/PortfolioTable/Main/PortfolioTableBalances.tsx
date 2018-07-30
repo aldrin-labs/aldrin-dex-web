@@ -447,7 +447,7 @@ const GridContainer = styled.div`
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 58% 2% 40%;
 
-  @media (min-width: 1800px) {
+  @media (min-width: 1400px) {
     height: 100%;
   }
 `
