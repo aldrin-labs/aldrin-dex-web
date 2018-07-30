@@ -21,7 +21,7 @@ const usdHeadings: { name: string; value: Args }[] = [
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
   { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
-  { name: 'Total', value: 'total', additionName: 'P&L' },
+  { name: 'Total', value: 'totalPL', additionName: 'P&L' },
 ]
 
 const btcHeadings: { name: string; value: Args }[] = [
@@ -37,7 +37,7 @@ const btcHeadings: { name: string; value: Args }[] = [
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
   { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L'  },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
-  { name: 'Total', value: 'total', additionName: 'P&L'  },
+  { name: 'Total', value: 'totalPL', additionName: 'P&L'  },
 ]
 
 export default class PortfolioTableHead extends React.Component<
