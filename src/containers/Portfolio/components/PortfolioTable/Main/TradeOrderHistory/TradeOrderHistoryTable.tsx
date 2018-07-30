@@ -5,28 +5,32 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 
 import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
 import { onSortTableFull } from '@utils/PortfolioTableUtils'
-import { IProps, IState, ICurrentSort, ITradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable.types'
+import {
+  IProps,
+  IState,
+  ICurrentSort,
+  ITradeOrderHistoryTableData,
+} from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable.types'
 import { Loading } from '@components/Loading/Loading'
 
 import QueryRenderer from '@components/QueryRenderer'
 
 import gql from 'graphql-tag'
 
-
 export const MyTradesQuery = gql`
   query MyTrades {
     myTrades {
-    exchangeId
-    exchange {
-      name
+      exchangeId
+      exchange {
+        name
+      }
+      amount
+      cost
+      datetime
+      symbol
+      side
     }
-    amount
-    cost
-    datetime
-    symbol
-    side
   }
-}
 `
 const tradeOrderHistoryTableHeadings = [
   { name: 'Exchange', value: 'exchange' },
@@ -44,21 +48,21 @@ const arrayOfDateHeadings = ['datetime']
 // TODO: Should be replaced to the state
 // let staticRows = tradeOrderHistoryTableData
 
-class TradeOrderHistoryTable extends React.Component<
-  IProps,
-  IState
-  > {
+class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   state: IState = {
     currentSort: null,
-    rows: []
+    rows: [],
   }
   componentDidMount() {
     const { isUSDCurrently, data } = this.props
 
     if (data) {
-      const dataFromServer = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
+      const dataFromServer = data.myTrades.map((x) => ({
+        ...x,
+        exchange: x.exchange.name,
+      }))
       this.setState({
-        rows: dataFromServer
+        rows: dataFromServer,
       })
     }
   }
@@ -67,9 +71,12 @@ class TradeOrderHistoryTable extends React.Component<
     const { isUSDCurrently, data } = this.props
 
     if (data) {
-      const dataFromServer = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
+      const dataFromServer = data.myTrades.map((x) => ({
+        ...x,
+        exchange: x.exchange.name,
+      }))
       this.setState({
-        rows: dataFromServer
+        rows: dataFromServer,
       })
     }
   }
@@ -81,16 +88,22 @@ class TradeOrderHistoryTable extends React.Component<
       newData,
       newCurrentSort,
     }: {
-        newData: ITradeOrderHistoryTableData
-        newCurrentSort: ICurrentSort
-      } = onSortTableFull(key, rows, currentSort, arrayOfStringHeadings, arrayOfDateHeadings)
+      newData: ITradeOrderHistoryTableData
+      newCurrentSort: ICurrentSort
+    } = onSortTableFull(
+      key,
+      rows,
+      currentSort,
+      arrayOfStringHeadings,
+      arrayOfDateHeadings
+    )
 
     // TODO: Should be refactored and included into setState
     // staticRows = newData
 
     this.setState({
       currentSort: newCurrentSort,
-      rows: newData
+      rows: newData,
     })
   }
 
@@ -151,21 +164,17 @@ class TradeOrderHistoryTable extends React.Component<
 
           <PTBody>
             {rows.map((row, idx) => {
-              const {
-                exchange,
-                amount,
-                datetime,
-                symbol,
-                side,
-              } = row
+              const { exchange, amount, datetime, symbol, side } = row
 
-              const mainSymbol = symbol.includes("/USDT") ? (
+              const mainSymbol = symbol.includes('/USDT') ? (
                 <Icon className="fa fa-usd" key={`${idx}usd`} />
               ) : (
-                  <Icon className="fa fa-btc" key={`${idx}btc`} />
-                )
+                <Icon className="fa fa-btc" key={`${idx}btc`} />
+              )
 
-              const cost = Number(row.cost).toFixed(symbol.includes("/USDT") ? 2 : 8);
+              const cost = Number(row.cost).toFixed(
+                symbol.includes('/USDT') ? 2 : 8
+              )
 
               const cols = [
                 exchange,
@@ -180,9 +189,7 @@ class TradeOrderHistoryTable extends React.Component<
                 <PTR key={`${symbol}${datetime}${idx}`}>
                   {cols.map((col, index) => {
                     if (String(col).match(/sell|buy/g)) {
-                      const color = col === 'sell'
-                        ? '#4caf50'
-                        : '#f44336'
+                      const color = col === 'sell' ? '#4caf50' : '#f44336'
 
                       return (
                         <PTDC key={`${col}${index}`} style={{ color }}>
@@ -190,7 +197,6 @@ class TradeOrderHistoryTable extends React.Component<
                         </PTDC>
                       )
                     }
-
 
                     return <PTDC key={`${col}${index}`}>{col}</PTDC>
                   })}
@@ -204,8 +210,7 @@ class TradeOrderHistoryTable extends React.Component<
   }
 }
 
-
-export default function (props: any) {
+export default function(props: any) {
   return (
     <QueryRenderer
       component={TradeOrderHistoryTable}
@@ -214,7 +219,6 @@ export default function (props: any) {
     />
   )
 }
-
 
 const Wrapper = styled.div`
   &::-webkit-scrollbar {
@@ -230,6 +234,7 @@ const Wrapper = styled.div`
   }
 `
 const Table = styled.table`
+  width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
@@ -265,7 +270,7 @@ const PTHC = styled.th`
   ${PTH};
   min-width: 100px;
   padding-right: 0;
-  
+
   &:nth-child(1) {
     min-width: 80px;
   }
@@ -273,15 +278,15 @@ const PTHC = styled.th`
   &:nth-child(2) {
     min-width: 70px;
   }
-  
+
   &:nth-child(4) {
     min-width: 150px;
   }
-  
+
   &:nth-child(5) {
     min-width: 80px;
   }
- 
+
   &:nth-child(6) {
     min-width: 50px;
   }
@@ -299,7 +304,7 @@ const PTR = styled.tr`
 
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
 
@@ -324,7 +329,7 @@ const PTDC = styled.td`
   min-width: 100px;
   padding-right: 0;
   text-overflow: ellipsis;
-  
+
   &:nth-child(1) {
     min-width: 80px;
   }
@@ -332,16 +337,16 @@ const PTDC = styled.td`
   &:nth-child(2) {
     min-width: 70px;
   }
-  
+
   &:nth-child(4) {
     min-width: 150px;
     //padding-right: 10px;
   }
-  
+
   &:nth-child(5) {
     min-width: 80px;
   }
-  
+
   &:nth-child(6) {
     min-width: 50px;
   }

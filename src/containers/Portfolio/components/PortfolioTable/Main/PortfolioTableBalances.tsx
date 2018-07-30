@@ -24,6 +24,7 @@ import {
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
+import { customAquaScrollBar } from '@utils/cssUtils'
 
 const defaultSelectedSum = {
   currency: '',
@@ -373,7 +374,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
-        <Container isShownChart={isShownChart}>
+
+        <GridContainer>
           <TableAndHeadingWrapper>
             <TableHeading>Portfolio</TableHeading>
             <Wrapper>
@@ -407,50 +409,46 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} />
             </Wrapper>
           </TableAndHeadingWrapper>
-        </Container>
-        <StyledDivider light />
-        <PTChartContainer>
-          <ChartTitle color="default" variant="title">
-            Portfolio Value
-          </ChartTitle>
-          <Chart
-            isShownMocks={this.props.isShownMocks}
-            setActiveChart={this.props.setActiveChart}
-            activeChart={this.props.activeChart}
-            style={{
-              marginLeft: 0,
-              minHeight: '30vh',
-            }}
-            height="20vh"
-            marginTopHr="10px"
-            coins={
-              this.state.selectedBalances &&
-              this.state.selectedBalances.length > 0
-                ? this.state.selectedBalances.map(
-                    (idx) => this.state.tableData[idx]
-                  )
-                : []
-            }
-          />
-        </PTChartContainer>
+
+          <StyledDivider light />
+          <PTChartContainer>
+            <ChartTitle color="default" variant="title">
+              Portfolio Value
+            </ChartTitle>
+            <Chart
+              isShownMocks={this.props.isShownMocks}
+              setActiveChart={this.props.setActiveChart}
+              activeChart={this.props.activeChart}
+              style={{
+                marginLeft: 0,
+                minHeight: '30vh',
+              }}
+              height="20vh"
+              marginTopHr="10px"
+              coins={
+                this.state.selectedBalances &&
+                this.state.selectedBalances.length > 0
+                  ? this.state.selectedBalances.map(
+                      (idx) => this.state.tableData[idx]
+                    )
+                  : []
+              }
+            />
+          </PTChartContainer>
+        </GridContainer>
       </PTWrapper>
     )
   }
 }
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '40vh' : ''};
+const GridContainer = styled.div`
+  display: Grid;
+  height: 70%;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 58% 2% 40%;
 
-  @media (max-height: 650px) {
-    height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '45vh' : ''};
-  }
-  @media (max-width: 450px) {
-    height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '50vh' : ''};
+  @media (min-width: 1800px) {
+    height: 100%;
   }
 `
 
@@ -469,7 +467,7 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
-
+  overflow-y: auto;
   @media (max-width: 840px) {
     margin: 1.5rem auto;
   }
@@ -482,14 +480,16 @@ const PTWrapper = styled.div`
   @media (max-width: 425px) {
     width: calc(100% - 20px);
   }
+
+  ${customAquaScrollBar};
 `
 
 const StyledDivider = styled(Divider)`
   margin-bottom: 1rem;
+  grid-column: 1 / span 2;
 `
 
 const TableAndHeadingWrapper = styled.div`
-  min-width: 20%;
   display: flex;
   margin: 0 20px 5px;
   flex-direction: column;
@@ -539,6 +539,7 @@ const Wrapper = styled.div`
 `
 
 const PTable = styled.table`
+  width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
@@ -560,8 +561,8 @@ const PTextBox = styled.div`
 `
 
 const PTChartContainer = styled.div`
-  min-height: 40%;
   position: relative;
+  grid-column: 1 / span 2;
   @media (max-width: 500px) {
     display: none;
   }

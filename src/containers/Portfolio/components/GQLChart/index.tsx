@@ -109,11 +109,7 @@ class PortfolioChart extends React.Component<Props, State> {
 
     return (
       <SProfileChart style={style}>
-        <Chart
-          style={{
-            height,
-          }}
-        >
+        <Chart height={height}>
           <FlexibleXYPlot
             margin={{ left: 50 }}
             animation
@@ -323,6 +319,11 @@ const Chart = styled.div`
   width: 100%;
   min-height: 5em;
   margin-top: 24px;
+  height: ${(props: { height: string }) => props.height};
+
+  @media (min-width: 1800px) {
+    height: 100%;
+  }
 `
 
 const Hr = styled.hr`
@@ -366,6 +367,10 @@ const SProfileChart = styled.div`
 
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 1800px) {
+    height: 100%;
+  }
 `
 
 const SuppliesBlock = styled.div`
