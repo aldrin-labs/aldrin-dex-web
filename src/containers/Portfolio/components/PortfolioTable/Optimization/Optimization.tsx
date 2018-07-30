@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
 import { isEqual } from 'lodash'
 
+import { customAquaScrollBar } from '@utils/cssUtils'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,
@@ -392,17 +393,7 @@ const PTWrapper = styled.div`
   height: calc(100vh - 130px);
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const Content = styled.div`

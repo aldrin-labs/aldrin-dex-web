@@ -67,7 +67,7 @@ const Container = styled.div`
   padding: 0.75rem;
   margin-top: 0.5rem;
 
-  @media (min-width: 1080px) {
+  @media (min-width: 1290px) {
     display: none;
   }
 `
