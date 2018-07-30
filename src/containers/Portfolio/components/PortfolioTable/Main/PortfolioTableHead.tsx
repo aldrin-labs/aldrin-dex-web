@@ -155,6 +155,7 @@ const PTH = styled.th`
   font-weight: 500;
   text-align: right;
   min-width: 100px;
+  user-select: none;
 
   //&:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
   //  min-width: 100px;

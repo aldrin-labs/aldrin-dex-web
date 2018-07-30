@@ -151,7 +151,6 @@ const PTD = styled.td`
   padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
   min-width: 100px;
 
   &:nth-child(1) {
@@ -163,11 +162,14 @@ const PTD = styled.td`
   &:nth-child(2) {
     min-width: 80px;
     max-width: 80px;
+    text-overflow: ellipsis;
   }
   
   &:nth-child(3) {
     min-width: 50px;
     max-width: 50px;
+    text-overflow: ellipsis;
+
   }
   
   &:nth-child(4) {
