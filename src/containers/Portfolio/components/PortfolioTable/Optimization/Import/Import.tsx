@@ -150,6 +150,9 @@ class Import extends PureComponent<IProps> {
   }
 
   addRow = (name: string, value: number) => {
+    if (this.props.filterValueSmallerThenPercentage > 0) {
+      this.props.showWarning('Turn off the filter first to see new coins.')
+    }
     if (name) {
       this.props.updateData(
         this.sumSameCoins([
@@ -165,17 +168,6 @@ class Import extends PureComponent<IProps> {
     )
 
   deleteAllRows = () => this.props.updateData([])
-
-  objectsAreSame = (x, y) => {
-    let objectsAreSame = true
-    for (var propertyName in x) {
-      if (x[propertyName] !== y[propertyName]) {
-        objectsAreSame = false
-        break
-      }
-    }
-    return objectsAreSame
-  }
 
   render() {
     const {

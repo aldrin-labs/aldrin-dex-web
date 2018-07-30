@@ -207,6 +207,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             handleChange={filterValuesLessThenThat}
             name="filterValuesInMain"
             options={[
+              { value: -100.0, label: 'No Filter' },
               { value: 0, label: '0% <' },
               { value: 0.1, label: '0.1% <' },
               { value: 0.2, label: '0.2% <' },
