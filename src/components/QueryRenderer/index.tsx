@@ -8,8 +8,8 @@ import { ErrorFallback } from '@components/ErrorFallback'
 export interface IProps {
   query: DocumentNode
   component: React.ReactNode
-  placeholder: React.ReactElement<{}>
-  renderWithPlaceholder: boolean
+  placeholder?: React.ReactElement<{}>
+  renderWithPlaceholder?: boolean
   variables?: { [key: string]: any } | null
   [key: string]: any
 }
