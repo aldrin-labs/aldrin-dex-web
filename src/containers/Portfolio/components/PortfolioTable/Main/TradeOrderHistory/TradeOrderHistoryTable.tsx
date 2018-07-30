@@ -2,6 +2,7 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
+import ContentLoader from 'react-content-loader'
 
 import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
 import { onSortTableFull } from '@utils/PortfolioTableUtils'
@@ -16,6 +17,39 @@ import { Loading } from '@components/Loading/Loading'
 import QueryRenderer from '@components/QueryRenderer'
 
 import gql from 'graphql-tag'
+
+const MyLoader = (props): React.ReactElement<{}> => (
+  <>
+    <ContentLoader
+      height={160}
+      width={400}
+      speed={2}
+      primaryColor="#35748c"
+      secondaryColor="#97e3f7"
+      {...props}
+    >
+      <rect x="25" y="15" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="45" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="75" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="105" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="135" rx="5" ry="5" width="300" height="10" />
+    </ContentLoader>
+    <ContentLoader
+      height={160}
+      width={400}
+      speed={2}
+      primaryColor="#35748c"
+      secondaryColor="#97e3f7"
+      {...props}
+    >
+      <rect x="25" y="15" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="45" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="75" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="105" rx="5" ry="5" width="300" height="10" />
+      <rect x="25" y="135" rx="5" ry="5" width="300" height="10" />
+    </ContentLoader>
+  </>
+)
 
 export const MyTradesQuery = gql`
   query MyTrades {
@@ -121,9 +155,10 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     //   console.log(staticRows);
     // }
 
-    if (!data) {
-      return <Loading centerAligned />
-    }
+    // if (!data) {
+    // console.log(data)
+    // return <MyLoader />
+    // // }
 
     return (
       <Wrapper>
@@ -213,6 +248,8 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 export default function(props: any) {
   return (
     <QueryRenderer
+      renderWithPlaceholder
+      placeholder={MyLoader}
       component={TradeOrderHistoryTable}
       query={MyTradesQuery}
       {...props}
