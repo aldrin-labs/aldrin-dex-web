@@ -187,6 +187,10 @@ const PTH = styled.th`
     min-width: 95px;
     padding-right: 10px;
   }
+  
+  &:nth-child(n+8) {
+    padding-bottom: 0;
+  }
 `
 
 const PTR = styled.tr`
