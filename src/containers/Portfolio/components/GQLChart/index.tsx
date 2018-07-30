@@ -125,14 +125,14 @@ class PortfolioChart extends React.Component<Props, State> {
             }
           >
             <VerticalGridLines
-              style={{ stroke: 'rgba(134, 134, 134, 0.5)' }}
+              style={{ stroke: 'rgba(134, 134, 134, 0.2)' }}
               tickTotal={12}
               tickFormat={(v: number) => '`$${v}`'}
               tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
               labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
             />
             <HorizontalGridLines
-              style={{ stroke: 'rgba(134, 134, 134, 0.5)' }}
+              style={{ stroke: 'rgba(134, 134, 134, 0.2)' }}
             />
             <XAxis
               style={axisStyle}
