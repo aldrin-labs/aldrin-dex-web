@@ -28,7 +28,7 @@ const btcHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'percentage' },
-  { name: 'Price per coin', value: 'price' },
+  { name: 'Price', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
   { name: 'Current BTC', value: 'currentPrice' },
   //  { name: '24hr chg BTC', value: 'daily' },
