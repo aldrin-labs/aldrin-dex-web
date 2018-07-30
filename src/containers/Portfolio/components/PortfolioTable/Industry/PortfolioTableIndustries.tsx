@@ -625,7 +625,8 @@ const PTWrapper = styled.div`
 
 const ChartWrapper = styled.div`
   width: 100%;
-  height: 25vh;
+  height: 100%;
+  //height: 25vh;
   display: flex;
   position: relative;
 
@@ -643,8 +644,7 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 35vh;
 
-  //margin: 2rem auto;
-  width: 800px;
+  width: 720px;
 
   @media (max-width: 2000px) {
     height: 30vh;
