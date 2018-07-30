@@ -33,8 +33,8 @@ const tableHeadings = [
   { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
   { name: 'Current', value: 'price' },
-  { name: 'Portfolio performance', value: 'portfolioPerf' },
-  { name: 'Industry performance', value: 'industryPerf' },
+  { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
+  { name: 'Industry', value: 'industryPerf', additionName: 'performance' },
 ]
 
 const defaultSelectedSum = {
@@ -390,7 +390,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
-      isThereAnySelectedRows = selectedRows.length > 1 ? true : false
+      isThereAnySelectedRows = selectedRows.length > 1
     }
 
     const tableDataHasData = industryData
@@ -428,17 +428,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       <Span />
                     </Label>
                   </PTH>
-                  {tableHeadings.map((heading) => {
+                  {tableHeadings.map((heading, index) => {
                     const isSorted =
                       currentSort && currentSort.key === heading.value
 
                     return (
                       <PTH
-                        key={heading.name}
+                        key={`${heading.name}${index}`}
                         onClick={() => this.onSortTable(heading.value)}
                         isSorted={isSorted}
                       >
-                        {heading.name}
+
+                        {[4,5].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
 
                         {isSorted && (
                           <SvgIcon
@@ -758,12 +759,8 @@ const PTD = styled.td`
       text-overflow: ellipsis;
   }
 
-  &:nth-child(n + 6) {
-    min-width: 150px;
-  }
-
   &:nth-child(7) {
-    min-width: 160px;
+    min-width: 120px;
     padding-right: 16px;
   }
 `
@@ -811,6 +808,7 @@ const PTH = styled.th`
   padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
   min-width: 100px;
+  user-select: none;
 
   &:nth-child(1) {
     min-width: 30px;
@@ -844,12 +842,8 @@ const PTH = styled.th`
     min-width: 200px;
   }
 
-  &:nth-child(n + 6) {
-    min-width: 150px;
-  }
-
   &:nth-child(7) {
-    min-width: 160px;
+    min-width: 120px;
     padding-right: 16px;
   }
 `

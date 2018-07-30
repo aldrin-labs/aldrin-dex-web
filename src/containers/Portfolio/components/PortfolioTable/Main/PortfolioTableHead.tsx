@@ -158,9 +158,6 @@ const PTH = styled.th`
   min-width: 100px;
   user-select: none;
 
-  //&:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
-  //  min-width: 100px;
-  //}
   &:nth-child(1) {
     min-width: 30px;
     padding-right: 10px;

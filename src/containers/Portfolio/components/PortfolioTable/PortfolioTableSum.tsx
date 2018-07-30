@@ -94,13 +94,9 @@ const PTDIndustry = css`
   &:nth-child(4) {
     min-width: 200px;
   }
-
-  &:nth-child(n + 6) {
-    min-width: 150px;
-  }
   
   &:nth-child(7) {
-    min-width: 160px;
+    min-width: 120px;
     padding-right: 16px;
   }
 `
