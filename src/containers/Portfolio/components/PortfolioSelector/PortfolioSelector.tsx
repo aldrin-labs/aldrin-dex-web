@@ -370,7 +370,7 @@ const Headline = styled.div`
     isSideNavOpen ? '0' : '1'};
   font-size: 0.7em;
   transform: rotate(-90deg);
-  right: -1.2rem;
+  right: -0.6rem;
   transform-origin: right, top;
   position: absolute;
   bottom: 50%;
