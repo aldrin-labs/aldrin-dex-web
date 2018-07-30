@@ -366,7 +366,6 @@ const SProfileChart = styled.div`
 
   display: flex;
   flex-direction: column;
-  border-top: 1px solid #fff;
 `
 
 const SuppliesBlock = styled.div`

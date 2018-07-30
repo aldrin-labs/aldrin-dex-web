@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import { Typography, Divider } from '@material-ui/core'
 
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
@@ -407,15 +408,17 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             </Wrapper>
           </TableAndHeadingWrapper>
         </Container>
-
+        <StyledDivider light />
         <PTChartContainer>
+          <ChartTitle color="default" variant="title">
+            Portfolio Value
+          </ChartTitle>
           <Chart
             isShownMocks={this.props.isShownMocks}
             setActiveChart={this.props.setActiveChart}
             activeChart={this.props.activeChart}
             style={{
               marginLeft: 0,
-              borderTop: '1px solid #fff',
               minHeight: '30vh',
             }}
             height="20vh"
@@ -451,6 +454,10 @@ const Container = styled.div`
   }
 `
 
+const ChartTitle = styled(Typography)`
+  margin-left: 1.2rem;
+`
+
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
@@ -475,6 +482,10 @@ const PTWrapper = styled.div`
   @media (max-width: 425px) {
     width: calc(100% - 20px);
   }
+`
+
+const StyledDivider = styled(Divider)`
+  margin-bottom: 1rem;
 `
 
 const TableAndHeadingWrapper = styled.div`
