@@ -421,7 +421,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               activeChart={this.props.activeChart}
               style={{
                 marginLeft: 0,
-                minHeight: '30vh',
+                minHeight: '10vh',
               }}
               height="20vh"
               marginTopHr="10px"
@@ -445,7 +445,7 @@ const GridContainer = styled.div`
   display: Grid;
   height: 70%;
   grid-template-columns: 2fr 1fr;
-  grid-template-rows: 58% 2% 40%;
+  grid-template-rows: 58% 1% 40%;
 
   @media (min-width: 1400px) {
     height: 100%;

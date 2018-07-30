@@ -4,6 +4,7 @@ import {
   XAxis,
   YAxis,
   VerticalGridLines,
+  HorizontalGridLines,
   AreaSeries,
   FlexibleXYPlot,
   GradientDefs,
@@ -130,7 +131,9 @@ class PortfolioChart extends React.Component<Props, State> {
               tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
               labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
             />
-
+            <HorizontalGridLines
+              style={{ stroke: 'rgba(134, 134, 134, 0.5)' }}
+            />
             <XAxis
               style={axisStyle}
               tickFormat={(v: number) =>
