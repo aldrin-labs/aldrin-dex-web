@@ -5,7 +5,7 @@ import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/settings'
-import { Button } from '@material-ui/core'
+import { Button, IconButton } from '@material-ui/core'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
@@ -54,7 +54,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
                 toggleWallets()
               }}
             >
-              <StyledAccountIcon />
+              <AccountIcon />
             </ToggleAccountsBtn>
 
             <Tab
@@ -209,31 +209,14 @@ const ButtonContainer = styled.div`
   }
 `
 
-const Btn = css`
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  color: #fff;
-  font-size: 1em;
-  padding: 0;
-`
-
-const ToggleBtn = styled.button`
-  ${Btn};
-`
-
-const ToggleAccountsBtn = ToggleBtn.extend`
+const ToggleAccountsBtn = styled(IconButton)`
   display: block;
+  padding: 0.75rem;
+  margin-top: 15%;
 
   @media (min-width: 1290px) {
     display: none;
   }
-`
-
-const StyledAccountIcon = styled(AccountIcon)`
-  font-size: 1.5rem;
-  margin-top: 0.3rem;
 `
 
 const TabContainer = styled.div`
