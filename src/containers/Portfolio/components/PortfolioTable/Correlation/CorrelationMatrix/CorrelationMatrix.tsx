@@ -54,8 +54,8 @@ class CorrelationMatrix extends PureComponent<IProps> {
                     gridTemplateColumns: isFullscreenEnabled
                       ? '1fr'
                       : data.values.length < 10
-                        ? '20% 1fr'
-                        : '25% 1fr',
+                        ? '20% 1fr 28%'
+                        : '30% 1fr 29%',
                     gridTemplateRows: '100%',
                     alignItems: 'center',
                     background: '#393e44',
@@ -63,7 +63,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
                   }
                 : {
                     display: 'grid',
-                    gridTemplateColumns: '20% 1fr',
+                    gridTemplateColumns: '20% 1fr 20%',
                     gridTemplateRows: '100%',
                     alignItems: 'center',
                     background: '#393e44',
@@ -73,15 +73,6 @@ class CorrelationMatrix extends PureComponent<IProps> {
           >
             {isFullscreenEnabled ? null : (
               <ButtonsWrapper>
-                <StyledFullscreenButton
-                  color="primary"
-                  variant="outlined"
-                  onClick={() => {
-                    this.props.fullScreenChangeHandler()
-                  }}
-                >
-                  <FullScreenIcon />
-                </StyledFullscreenButton>
                 <SelectTimeRange
                   style={{
                     height: 'auto',
@@ -104,6 +95,17 @@ class CorrelationMatrix extends PureComponent<IProps> {
             ) : (
               this.renderPlaceholder()
             )}
+            {isFullscreenEnabled ? null : (
+              <StyledFullscreenButton
+                color="primary"
+                variant="outlined"
+                onClick={() => {
+                  this.props.fullScreenChangeHandler()
+                }}
+              >
+                <FullScreenIcon />
+              </StyledFullscreenButton>
+            )}
           </FullscreenNode>
         </FullScreen>
       </ScrolledWrapper>
@@ -114,16 +116,16 @@ class CorrelationMatrix extends PureComponent<IProps> {
 const ButtonsWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
 `
 
 const StyledFullscreenButton = styled(Button)`
   z-index: 100;
   color: #fff;
+  width: 25%;
 
   && {
     font-size: 2rem;
-    margin: auto 1rem;
+    margin: 0 auto;
   }
 `
 
