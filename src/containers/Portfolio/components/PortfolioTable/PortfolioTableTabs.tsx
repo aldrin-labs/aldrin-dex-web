@@ -5,6 +5,7 @@ import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import AccountIcon from 'react-icons/lib/md/settings'
+import { Button } from '@material-ui/core'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@components/Switch/Switch'
@@ -113,7 +114,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
                           loading || (portfolio && portfolio.processing)
 
                         return (
-                          <ToggleBtn onClick={updatePortfolio}>
+                          <RefreshButton size="small" onClick={updatePortfolio}>
                             {isLoading ? (
                               <SvgIcon
                                 src={gridLoader}
@@ -123,7 +124,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
                             ) : (
                               'Refresh'
                             )}
-                          </ToggleBtn>
+                          </RefreshButton>
                         )
                       }}
                     </Mutation>
@@ -136,6 +137,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
     )
   }
 }
+
+const RefreshButton = styled(Button)`
+  height: 1rem;
+`
 
 const PTHeadingBlock = styled.div`
   display: flex;
@@ -186,7 +191,7 @@ const ButtonContainer = styled.div`
   justify-content: space-evenly;
   height: 100%;
   position: absolute;
-  left: 0;
+  right: 0;
 
   @media (max-width: 1080px) {
     right: 1rem;
@@ -220,7 +225,7 @@ const ToggleBtn = styled.button`
 const ToggleAccountsBtn = ToggleBtn.extend`
   display: block;
 
-  @media (min-width: 1080px) {
+  @media (min-width: 1290px) {
     display: none;
   }
 `
@@ -237,7 +242,7 @@ const TabContainer = styled.div`
   grid-template-rows: 1fr;
   align-items: center;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1290px) {
     grid-template-columns: repeat(2, 4rem);
   }
 `
@@ -260,7 +265,7 @@ const Tab = styled.button`
   outline: none;
   box-sizing: border-box;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1290px) {
     display: none;
     width: 8rem;
     padding: 0.5rem;
@@ -274,6 +279,7 @@ const Tab = styled.button`
 
 const SwitchRefreshContainer = styled.div`
   display: flex;
+  align-items: center;
 
   @media (max-width: 1080px) {
     padding-top: 20px;
