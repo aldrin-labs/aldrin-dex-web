@@ -5,7 +5,6 @@ import { Paper, Button } from '@material-ui/core'
 
 import {
   OrderBookTable,
-  SpreadTable,
   Aggregation,
   TradeHistoryTable,
   ExchangesTable,

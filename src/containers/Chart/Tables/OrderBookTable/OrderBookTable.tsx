@@ -32,8 +32,8 @@ class OrdersList extends React.Component {
   state = {
     bids: [],
     asks: [],
-    symbol: 'BTC_USDT',
-    exchange: 'binance',
+    symbol: '',
+    exchange: '',
     unsubscribe: null
   }
 
@@ -47,10 +47,12 @@ class OrdersList extends React.Component {
         console.log('order unsubscribe', state.symbol, state.exchange)
         state.unsubscribe(); // unsubscribe
       }
-      // newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x)), TODO: fix back when we have orderbook history on backend
+      const orders = newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x));
+      let asks = orders.filter(x => x.type === 'ask').sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0));
+      asks = asks.slice(asks.length - 30, asks.length);
       return ({
-        bids: [],
-        asks: [],
+        asks,
+        bids: orders.filter(x => x.type === 'bid').sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)).slice(0, 30),
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
         unsubscribe: newProps.subscribeToNewOrders()
@@ -65,29 +67,42 @@ class OrdersList extends React.Component {
         side: orderData.side
       }
 
-      if (order.size === "0") { return null; }
-
+      // TODO: next here we should increase or decrease size of existing orders, not just replace them
       if (order.side === "bid") {
         const ind = state.bids.findIndex(i => i.price === order.price);
         if (ind > -1) {
-          state.bids.splice(ind, 1);
+          if (order.size !== "0") {
+            state.bids.splice(ind, 1, order);
+          }
+          else {
+            state.bids.splice(ind, 1);
+          }
+          order = null;
         }
       }
-      if (order.side === "ask") {
+      if (order !== null && order.side === "ask") {
         const ind = state.asks.findIndex(i => i.price === order.price);
         if (ind > -1) {
-          state.asks.splice(ind, 1);
+          if (order.size !== "0") {
+            state.asks.splice(ind, 1, order);
+          }
+          else {
+            state.asks.splice(ind, 1);
+          }
+          order = null;
         }
       }
+      if (order !== null) {
+        state.bids = order.side === 'bid' ? [order, ...state.bids].sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.bids;
+        state.asks = order.side === 'ask' ? [order, ...state.asks].sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.asks;
+      }
 
-      if (state.bids.length > 15) { state.bids.pop(); }
-      if (state.asks.length > 15) { state.asks.pop(); }
+      if (state.bids.length > 30) { state.bids.pop(); }
+      if (state.asks.length > 30) { state.asks.pop(); }
 
       return ({
-        bids: order.side === 'bid' ? [order, ...state.bids]
-          .sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.bids,
-        asks: order.side === 'ask' ? [order, ...state.asks]
-          .sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)) : state.asks,
+        bids: [...state.bids],
+        asks: [...state.asks],
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
       })
@@ -103,33 +118,40 @@ class OrdersList extends React.Component {
   }
 
   render() {
+    const spread = this.state.asks.length > 0 && this.state.bids.length > 0 ?
+      this.state.asks[this.state.asks.length - 1].price - this.state.bids[0].price
+      :
+      0;
     return (
       <div>
-        {
-          this.state.bids.map((order, i) => (
-            <Row key={i} background={'#292d31'}>
-              <EmptyCell
-                status={'rise'}
-                colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
-                color="#9ca2aa"
-                width={'25%'}
-              />
 
-              <AnimatedCell
-                value={order.size}
-                color="#9ca2aa"
-                animation={'fadeInGreenAndBack'}
-                width={'35%'}
-              />
-              <AnimatedCell
-                value={order.price}
-                animation={'fadeInGreen'}
-                color="#34cb86d1"
-                width={'30%'}
-              />
-            </Row>
-          ))
-        }
+        <Body height="450px">
+          {
+            this.state.asks.map((order, i) => (
+              <Row key={i} background={'#292d31'}>
+                <EmptyCell
+                  status={'rise'}
+                  colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
+                  color="#dd8b87"
+                  width={'25%'}
+                />
+
+                <AnimatedCell
+                  value={order.size}
+                  color="#dd8b87"
+                  animation={'fadeInRed'}
+                  width={'35%'}
+                />
+                <AnimatedCell
+                  value={order.price}
+                  animation={'fadeInRed'}
+                  color="#e0514ad1"
+                  width={'30%'}
+                />
+              </Row>
+            ))
+          }
+        </Body>
         <Head
           background={'#292d31'}
           style={{ cursor: 'pointer', height: '1.625rem' }}
@@ -144,7 +166,7 @@ class OrdersList extends React.Component {
               color="#9ca2aa"
               width={'35%'}
             >
-              {'Fiat'} spread{' '}
+              Spread{' '}
             </HeadCell>
             <HeadCell
               style={{
@@ -154,36 +176,37 @@ class OrdersList extends React.Component {
               color="#9ca2aa"
               width={'14%'}
             >
-              {0.01}
+              {spread}
             </HeadCell>
           </Row>
         </Head>
+        <Body height="550px">
+          {
+            this.state.bids.map((order, i) => (
+              <Row key={i} background={'#292d31'}>
+                <EmptyCell
+                  status={'rise'}
+                  colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
+                  color="#9ca2aa"
+                  width={'25%'}
+                />
 
-        {
-          this.state.asks.map((order, i) => (
-            <Row key={i} background={'#292d31'}>
-              <EmptyCell
-                status={'rise'}
-                colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
-                color="#dd8b87"
-                width={'25%'}
-              />
-
-              <AnimatedCell
-                value={order.size}
-                color="#dd8b87"
-                animation={'fadeInRed'}
-                width={'35%'}
-              />
-              <AnimatedCell
-                value={order.price}
-                animation={'fadeInRed'}
-                color="#e0514ad1"
-                width={'30%'}
-              />
-            </Row>
-          ))
-        }
+                <AnimatedCell
+                  value={order.size}
+                  color="#9ca2aa"
+                  animation={'fadeInGreenAndBack'}
+                  width={'35%'}
+                />
+                <AnimatedCell
+                  value={order.price}
+                  animation={'fadeInGreen'}
+                  color="#34cb86d1"
+                  width={'30%'}
+                />
+              </Row>
+            ))
+          }
+        </Body>
       </div>
     );
   };
@@ -195,10 +218,10 @@ class OrderBookTable extends PureComponent {
     console.log(this.props);
     const symbol = this.props.currencyPair ? this.props.currencyPair : '';
     const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : '';
-    console.log('subscribe to ', symbol, exchange);
     if (!data) {
       return <Loading centerAligned />
     }
+    console.log('render subscribe to ', symbol, exchange);
 
     return (
       <Table>
@@ -255,6 +278,7 @@ class OrderBookTable extends PureComponent {
                       variables: { symbol, exchange },
                       updateQuery: (prev, { subscriptionData }) => {
                         if (!subscriptionData.data) { return prev; }
+
                         const newOrder = JSON.parse(subscriptionData.data.listenMarketOrders);
                         let obj = Object.assign({}, prev, {
                           marketOrders: [newOrder]
@@ -264,7 +288,8 @@ class OrderBookTable extends PureComponent {
                     })
                   }
                 />
-              )}
+              )
+            }
           </Query>
         </Body>
       </Table>

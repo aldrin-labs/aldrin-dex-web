@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import { compose } from 'recompose'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
@@ -556,7 +556,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
           <ChartContainer>
-            <Heading>
+            <Heading pieChart={this.state.showChart === 'chart'}>
               <Switch onClick={this.toggleChart} />
             </Heading>
             <ChartWrapper>
@@ -590,15 +590,23 @@ const Container = styled.div`
   }
 `
 
+const HeadingForPieChart = css`
+  position: absolute;
+  z-index: 2;
+  right: 16px;
+`
+
 const Heading = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
   color: #fff;
-  padding-bottom: 20px;
+  
+    ${(props: { pieChart?: boolean }) =>
+  props.pieChart ? HeadingForPieChart : ''};
 `
 
 const PTWrapper = styled.div`
@@ -621,16 +629,16 @@ const ChartWrapper = styled.div`
   display: flex;
   position: relative;
 
-  @media (max-height: 850px) {
-    height: 20vh;
-  }
+  //@media (max-height: 850px) {
+  //  height: 20vh;
+  //}
 `
 
 const ChartContainer = styled.div`
   border-radius: 3px;
   background-color: #2d3136;
   box-shadow: 0 2px 6px 0 #0006;
-
+  position: relative;
   padding: 1em;
   text-align: center;
   height: 35vh;

@@ -1452,6 +1452,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                   isClearable
                                   isSearchable
                                   options={exchangeOptions}
+                                  menuPortalTarget={document.body}
                                   components={{ DropdownIndicator }}
                                   onChange={this.handleSelectChangeWithoutInputExchange.bind(
                                     this,
@@ -1479,6 +1480,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                   isClearable
                                   isSearchable
                                   options={coinsOptions}
+                                  menuPortalTarget={document.body}
                                   components={{ DropdownIndicator }}
                                   onChange={this.handleSelectChangeWithoutInputCoin.bind(
                                     this,
@@ -1789,6 +1791,7 @@ const Table = styled.table`
   border-collapse: collapse;
   display: inline-block;
   //width: 45vw;
+  overflow: hidden;
 `
 
 const TableHeading = styled.div`
@@ -2390,8 +2393,6 @@ const customStyles = {
     minWidth: '150px',
     maxHeight: '200px',
     height: '200px',
-    top: '-100px',
-    right: '-80px',
   }),
   // TODO: Delete maxheight or height
   menuList: (base, state) => ({
