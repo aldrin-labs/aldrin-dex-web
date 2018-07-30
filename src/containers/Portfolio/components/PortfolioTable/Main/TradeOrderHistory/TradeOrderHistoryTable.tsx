@@ -6,6 +6,7 @@ import ContentLoader from 'react-content-loader'
 
 import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
 import { onSortTableFull } from '@utils/PortfolioTableUtils'
+import { customAquaScrollBar } from '@utils/cssUtils'
 import {
   IProps,
   IState,
@@ -258,17 +259,7 @@ export default function(props: any) {
 }
 
 const Wrapper = styled.div`
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 const Table = styled.table`
   width: 100%;

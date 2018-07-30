@@ -495,17 +495,7 @@ const TableAndHeadingWrapper = styled.div`
   flex-direction: column;
   overflow-x: scroll;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const TableHeading = styled.div`
@@ -525,17 +515,7 @@ const Wrapper = styled.div`
   position: relative;
   overflow-y: scroll;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const PTable = styled.table`

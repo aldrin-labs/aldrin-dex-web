@@ -12,18 +12,16 @@ import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
 import * as actions from '@containers/Chart/actions'
 
-
 import QueryRenderer from '@components/QueryRenderer'
 import { Loading } from '@components/Loading/Loading'
 import gql from 'graphql-tag'
 
-
 export const MarketsQuery = gql`
   query MarketsQuery {
-	    liveMarkets {
-        name
-      }
-}
+    liveMarkets {
+      name
+    }
+  }
 `
 
 let suggestions = [
@@ -112,10 +110,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
-const Opt = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Option)
+const Opt = connect(mapStateToProps, mapDispatchToProps)(Option)
 
 function SelectWrapped(props) {
   const { classes, ...other } = props
@@ -190,7 +185,7 @@ class IntegrationReactSelect extends React.Component {
           fullWidth
           inputComponent={SelectWrapped}
           value={value}
-          onChange={() => { }}
+          onChange={() => {}}
           placeholder="Add currency pair"
           id={id}
           inputProps={{
@@ -205,7 +200,6 @@ class IntegrationReactSelect extends React.Component {
     )
   }
 }
-
 
 const ITEM_HEIGHT = 48
 
@@ -237,7 +231,7 @@ const styles = (theme) => ({
         boxShadow: 'none',
       },
     },
-    '::-webkit-scrollbar': { width: 12 },
+    '::-webkit-scrollbar': { width: 3 },
     '::-webkit-scrollbar-track': { background: 'rgba(45, 49, 54, 0.1)' },
     '::-webkit-scrollbar-thumb': {
       background: '#4ed8da',
@@ -328,9 +322,8 @@ const styles = (theme) => ({
   },
 })
 
-
-const queryRender = function (props: any) {
-  console.log(props);
+const queryRender = function(props: any) {
+  console.log(props)
   return (
     <QueryRenderer
       component={IntegrationReactSelect}
@@ -339,6 +332,5 @@ const queryRender = function (props: any) {
     />
   )
 }
-
 
 export default withStyles(styles)(queryRender)

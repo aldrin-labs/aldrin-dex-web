@@ -7,6 +7,7 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
+import { customAquaScrollBar } from '@utils/cssUtils'
 
 class Table extends Component<IProps, IState> {
   state = {
@@ -289,17 +290,7 @@ const Body = styled.div`
   max-height: 200px;
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const StyledDeleteIcon = styled(DeleteIcon)`
