@@ -442,6 +442,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 }
 
 const GridContainer = styled.div`
+  align-self: center;
+
   display: Grid;
   height: 70%;
   grid-template-columns: 2fr 1fr;
@@ -449,6 +451,15 @@ const GridContainer = styled.div`
 
   @media (min-width: 1400px) {
     height: 100%;
+  }
+  @media (min-width: 1800px) {
+    justify-content: center;
+
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 58% 1% 40%;
+  }
+  @media (min-width: 3000px) {
+    align-items: center;
   }
 `
 
@@ -543,6 +554,7 @@ const PTextBox = styled.div`
 const PTChartContainer = styled.div`
   position: relative;
   grid-column: 1 / span 2;
+  height: 100%;
   @media (max-width: 500px) {
     display: none;
   }
