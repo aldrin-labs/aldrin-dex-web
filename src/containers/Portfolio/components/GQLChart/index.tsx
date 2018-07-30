@@ -6,10 +6,12 @@ import {
   VerticalGridLines,
   AreaSeries,
   FlexibleXYPlot,
+  GradientDefs,
   Crosshair,
 } from 'react-vis'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
+import { Button } from '@material-ui/core'
 
 import Highlight from './Highlight'
 import { Props, State } from './annotations'
@@ -139,11 +141,31 @@ class PortfolioChart extends React.Component<Props, State> {
               style={axisStyle}
               tickFormat={(value) => `$${abbrNum(+value.toFixed(2), 2)}`}
             />
+            <GradientDefs>
+              <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop
+                  offset="40%"
+                  stopColor="rgb(78, 216, 218)"
+                  stopOpacity={0.2}
+                />
+                <stop
+                  offset="80%"
+                  stopColor="rgba(133, 237, 238, 0.7)"
+                  stopOpacity={0.4}
+                />
+                <stop
+                  offset="100%"
+                  stopColor="rgba(133, 237, 238, 0.7)"
+                  stopOpacity={0.5}
+                />
+              </linearGradient>
+            </GradientDefs>
             <AreaSeries
+              color={'url(#CoolGradient)'}
               onNearestX={this._onNearestX}
               data={this.props.data}
               style={{
-                fill: 'rgba(133, 237, 238, 0.15)',
+                // fill: 'rgba(133, 237, 238, 0.15)',
                 stroke: 'rgb(78, 216, 218)',
                 strokeWidth: '1px',
               }}
@@ -179,21 +201,25 @@ class PortfolioChart extends React.Component<Props, State> {
           </FlexibleXYPlot>
         </Chart>
 
-        <Hr marginTopHr={marginTopHr} />
-
         <BtnsContainer>
           {chartBtns.map((chartBtn, i) => (
-            <ChartBtn
+            <Button
+              color="secondary"
+              size="small"
               onClick={() => this.onChangeActiveChart(i)}
               style={
                 i === this.props.activeChart
-                  ? { backgroundColor: '#4ed8da', color: '#4c5055' }
-                  : {}
+                  ? {
+                      backgroundColor: '#4ed8da',
+                      color: '#4c5055',
+                      margin: '0 0.5rem',
+                    }
+                  : { margin: '0 0.5rem' }
               }
               key={chartBtn}
             >
               {chartBtn}
-            </ChartBtn>
+            </Button>
           ))}
         </BtnsContainer>
       </SProfileChart>
@@ -326,35 +352,10 @@ const Chart = styled.div`
   }
 `
 
-const Hr = styled.hr`
-  margin: ${(props: { marginTopHr: string }) =>
-    props.marginTopHr
-      ? `${props.marginTopHr} auto 0 auto;`
-      : '45px auto 0 auto;'};
-  width: 95%;
-  height: 0.5px;
-  border-radius: 1px;
-  background-color: #ffffff;
-`
-
 const BtnsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  margin: 20px auto 20px auto;
-`
-
-const ChartBtn = styled.button`
-  border-radius: 2px;
-  background-color: #4c5055;
-  margin-right: 16px;
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-family: Roboto, sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  color: #4ed8da;
-  cursor: pointer;
+  margin: 16px auto 16px auto;
 `
 
 const SProfileChart = styled.div`
