@@ -177,7 +177,7 @@ export const onValidateSum = (
   )
 
   if (selectedBalances.length === tableData.length) {
-    clonedSum.currency = 'All'
+    clonedSum.currency = 'Total'
     clonedSum.symbol = '-'
     clonedSum.percentage = 100
   } else if (selectedBalances.length > 1) {

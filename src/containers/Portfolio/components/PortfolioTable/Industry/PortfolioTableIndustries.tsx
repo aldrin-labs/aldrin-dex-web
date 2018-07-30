@@ -328,7 +328,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
         ...reducedSum,
-        currency: 'All',
+        currency: 'Total',
         symbol: '-',
         industry: '-',
       }
