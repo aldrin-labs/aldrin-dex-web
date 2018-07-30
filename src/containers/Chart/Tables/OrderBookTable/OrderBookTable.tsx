@@ -48,10 +48,11 @@ class OrdersList extends React.Component {
         state.unsubscribe(); // unsubscribe
       }
       const orders = newProps.data.marketOrders.filter(x => !x.exchange).map(x => JSON.parse(x));
-
+      let asks = orders.filter(x => x.type === 'ask').sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0));
+      asks = asks.slice(asks.length - 30, asks.length);
       return ({
-        bids: orders.filter(x => x.type === 'bid').sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)),
-        asks: orders.filter(x => x.type === 'ask').sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)),
+        asks,
+        bids: orders.filter(x => x.type === 'bid').sort((a, b) => (a.price < b.price ? 1 : (a.price > b.price) ? -1 : 0)).slice(0, 30),
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
         unsubscribe: newProps.subscribeToNewOrders()
@@ -123,31 +124,34 @@ class OrdersList extends React.Component {
       0;
     return (
       <div>
-        {
-          this.state.asks.map((order, i) => (
-            <Row key={i} background={'#292d31'}>
-              <EmptyCell
-                status={'rise'}
-                colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
-                color="#dd8b87"
-                width={'25%'}
-              />
 
-              <AnimatedCell
-                value={order.size}
-                color="#dd8b87"
-                animation={'fadeInRed'}
-                width={'35%'}
-              />
-              <AnimatedCell
-                value={order.price}
-                animation={'fadeInRed'}
-                color="#e0514ad1"
-                width={'30%'}
-              />
-            </Row>
-          ))
-        }
+        <Body height="450px">
+          {
+            this.state.asks.map((order, i) => (
+              <Row key={i} background={'#292d31'}>
+                <EmptyCell
+                  status={'rise'}
+                  colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
+                  color="#dd8b87"
+                  width={'25%'}
+                />
+
+                <AnimatedCell
+                  value={order.size}
+                  color="#dd8b87"
+                  animation={'fadeInRed'}
+                  width={'35%'}
+                />
+                <AnimatedCell
+                  value={order.price}
+                  animation={'fadeInRed'}
+                  color="#e0514ad1"
+                  width={'30%'}
+                />
+              </Row>
+            ))
+          }
+        </Body>
         <Head
           background={'#292d31'}
           style={{ cursor: 'pointer', height: '1.625rem' }}
@@ -176,31 +180,33 @@ class OrdersList extends React.Component {
             </HeadCell>
           </Row>
         </Head>
-        {
-          this.state.bids.map((order, i) => (
-            <Row key={i} background={'#292d31'}>
-              <EmptyCell
-                status={'rise'}
-                colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
-                color="#9ca2aa"
-                width={'25%'}
-              />
+        <Body height="550px">
+          {
+            this.state.bids.map((order, i) => (
+              <Row key={i} background={'#292d31'}>
+                <EmptyCell
+                  status={'rise'}
+                  colored={order.percentageOfChange ? order.percentageOfChange.toString() : "0"}
+                  color="#9ca2aa"
+                  width={'25%'}
+                />
 
-              <AnimatedCell
-                value={order.size}
-                color="#9ca2aa"
-                animation={'fadeInGreenAndBack'}
-                width={'35%'}
-              />
-              <AnimatedCell
-                value={order.price}
-                animation={'fadeInGreen'}
-                color="#34cb86d1"
-                width={'30%'}
-              />
-            </Row>
-          ))
-        }
+                <AnimatedCell
+                  value={order.size}
+                  color="#9ca2aa"
+                  animation={'fadeInGreenAndBack'}
+                  width={'35%'}
+                />
+                <AnimatedCell
+                  value={order.price}
+                  animation={'fadeInGreen'}
+                  color="#34cb86d1"
+                  width={'30%'}
+                />
+              </Row>
+            ))
+          }
+        </Body>
       </div>
     );
   };
