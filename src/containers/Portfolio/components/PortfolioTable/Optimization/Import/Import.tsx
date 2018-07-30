@@ -134,8 +134,8 @@ class Import extends PureComponent<IProps> {
       )
 
       if (!isReturnedCoinsTheSameThatInputed) {
-        showWarning('Output coins not the same as input coins!')
-
+        // showWarning('Output coins not the same as input coins!')
+        console.log('Output coins not the same as input coins!')
         // return
       }
 
