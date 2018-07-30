@@ -14,14 +14,14 @@ const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Portfolio %', value: 'percentage' },
   { name: 'Price', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
-  { name: 'Current USD', value: 'currentPrice' },
+  { name: 'USD', value: 'currentPrice' },
   //  { name: '24hr chg USD', value: 'daily' },
   //  { name: '24hr chg USD %', value: 'dailyPerc' },
-  { name: 'Realized P&L', value: 'realizedPL' },
+  { name: 'Realized', value: 'realizedPL', additionName: 'P&L' },
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
-  { name: 'Unrealized P&L', value: 'unrealizedPL' },
+  { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
-  { name: 'Total P&L', value: 'total' },
+  { name: 'Total', value: 'total', additionName: 'P&L' },
 ]
 
 const btcHeadings: { name: string; value: Args }[] = [
@@ -30,14 +30,14 @@ const btcHeadings: { name: string; value: Args }[] = [
   { name: 'Portfolio %', value: 'percentage' },
   { name: 'Price', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
-  { name: 'Current BTC', value: 'currentPrice' },
+  { name: 'BTC', value: 'currentPrice' },
   //  { name: '24hr chg BTC', value: 'daily' },
   //  { name: '24hr chg BTC %', value: 'dailyPerc' },
-  { name: 'Realized P&L', value: 'realizedPL' },
+  { name: 'Realized', value: 'realizedPL', additionName: 'P&L' },
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
-  { name: 'Unrealized P&L', value: 'unrealizedPL' },
+  { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L'  },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
-  { name: 'Total P&L', value: 'total' },
+  { name: 'Total', value: 'total', additionName: 'P&L'  },
 ]
 
 export default class PortfolioTableHead extends React.Component<
@@ -74,7 +74,7 @@ export default class PortfolioTableHead extends React.Component<
               <Span />
             </Label>
           </PTH>
-          {tableHeadings.map((heading) => {
+          {tableHeadings.map((heading, index) => {
             const isSorted = currentSort && currentSort.key === heading.value
 
             return (
@@ -83,7 +83,8 @@ export default class PortfolioTableHead extends React.Component<
                 onClick={() => onSortTable(heading.value)}
                 // style={{ paddingRight: isSorted ? 0 : '16px' }}
               >
-                {heading.name}
+                {/*{index === 6 && heading.name + 100}*/}
+                {[6,7,8].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
 
                 {isSorted && (
                   <SvgIcon
@@ -182,11 +183,11 @@ const PTH = styled.th`
   }
 
   &:nth-child(9) {
-    min-width: 110px;
+    min-width: 95px;
   }
 
   &:nth-child(10) {
-    min-width: 90px;
+    min-width: 95px;
     padding-right: 10px;
   }
 `

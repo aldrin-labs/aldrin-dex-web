@@ -140,10 +140,11 @@ const PTDOther = css`
   }
   
   &:nth-child(9) {
-    min-width: 110px;
+    min-width: 95px;
   }
+  
   &:nth-child(10) {
-    min-width: 90px;
+    min-width: 95px;
     padding-right: 10px;
   }
 `
