@@ -150,7 +150,8 @@ class Import extends PureComponent<IProps> {
   }
 
   addRow = (name: string, value: number) => {
-    if (this.props.filterValueSmallerThenPercentage > 0) {
+    console.log(this.props.filterValueSmallerThenPercentage)
+    if (this.props.filterValueSmallerThenPercentage >= 0) {
       this.props.showWarning('Turn off the filter first to see new coins.')
     }
     if (name) {
