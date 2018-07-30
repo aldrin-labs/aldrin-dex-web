@@ -93,8 +93,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     totalTableSavedRows: 0,
     isPercentSumGood: true,
     totalPercents: 0,
-    leftBar: '#000000',
-    rightBar: '#fff',
+    leftBar: '#2496c8',
+    rightBar: '#1869a8',
   }
 
   onChangeColor = (e) => {
@@ -1660,8 +1660,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
               justifyContent: 'center',
             }}
           >
-            <input type="color" name="leftBar" onChange={this.onChangeColor} />
-            <input type="color" name="rightBar" onChange={this.onChangeColor} />
+            <input type="color" name="leftBar" onChange={this.onChangeColor} value={this.state.leftBar} />
+            <input type="color" name="rightBar" onChange={this.onChangeColor} value={this.state.rightBar} />
           </div>
           <Chart>
             {staticRows[0].portfolioPerc && (
