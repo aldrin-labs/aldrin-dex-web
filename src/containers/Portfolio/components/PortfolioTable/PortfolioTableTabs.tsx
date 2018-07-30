@@ -156,7 +156,7 @@ const PTHeadingBlock = styled.div`
   padding: 17px;
   min-height: 100px;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1290px) {
     justify-content: flex-start;
   }
   @media (max-width: 700px) {
