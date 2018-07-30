@@ -140,6 +140,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
 const RefreshButton = styled(Button)`
   height: 1rem;
+  margin-right: 0.25rem;
 `
 
 const PTHeadingBlock = styled.div`
