@@ -244,7 +244,7 @@ class Optimization extends Component<IProps, IState> {
     } = this.state
     const { storeData } = this.props
 
-    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
+    const formatedData = storeData.map((el: IData, i) => ({
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
     }))
@@ -292,9 +292,7 @@ class Optimization extends Component<IProps, IState> {
         <Chart>
           <BarChart
             height={300}
-            showPlaceholder={
-              optimizedData.length < 1 || showBarChartPlaceholder
-            }
+            showPlaceholder={false}
             charts={barChartData}
             alwaysShowLegend
           />
