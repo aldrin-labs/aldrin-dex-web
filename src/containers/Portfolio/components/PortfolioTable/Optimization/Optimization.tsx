@@ -292,7 +292,7 @@ class Optimization extends Component<IProps, IState> {
         <Chart>
           <BarChart
             height={300}
-            showPlaceholder={false}
+            showPlaceholder={formatedData.length === 0}
             charts={barChartData}
             alwaysShowLegend
           />
