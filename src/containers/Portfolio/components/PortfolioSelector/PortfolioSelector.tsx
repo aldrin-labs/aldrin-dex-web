@@ -207,6 +207,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             handleChange={filterValuesLessThenThat}
             name="filterValuesInMain"
             options={[
+              { value: -100.0, label: 'No Filter' },
               { value: 0, label: '0% <' },
               { value: 0.1, label: '0.1% <' },
               { value: 0.2, label: '0.2% <' },
@@ -323,7 +324,7 @@ const AccountsWalletsBlock = styled.div`
   min-width: 200px;
   background-color: #2d3136;
   padding: 16px;
-  left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+  right: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '0' : '-11.5rem'};
   cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? 'auto' : 'pointer'};
@@ -332,12 +333,7 @@ const AccountsWalletsBlock = styled.div`
   top: 0;
   z-index: 1300;
   height: 100vh;
-  transition: left 0.2s ease-in;
-
-  @media (max-width: 1000px) {
-    left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-      isSideNavOpen ? '0' : '-12rem'};
-  }
+  transition: right 0.2s ease-in;
 
   &:hover {
     background-color: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
@@ -357,7 +353,8 @@ const StyledIcon = styled(Arrow)`
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '1' : '0'};
   font-size: 2rem;
-  right: -0.3rem;
+  right: 10.7rem;
+
   position: absolute;
   bottom: 47%;
   transition: opacity 0.2s linear;
@@ -370,7 +367,7 @@ const Headline = styled.div`
     isSideNavOpen ? '0' : '1'};
   font-size: 0.7em;
   transform: rotate(-90deg);
-  right: -1.2rem;
+  left: -0.6rem;
   transform-origin: right, top;
   position: absolute;
   bottom: 50%;
@@ -378,7 +375,7 @@ const Headline = styled.div`
 
   @media (min-width: 1000px) {
     font-size: 1rem;
-    right: -1.2rem;
+    right: 10.8rem;
   }
 `
 

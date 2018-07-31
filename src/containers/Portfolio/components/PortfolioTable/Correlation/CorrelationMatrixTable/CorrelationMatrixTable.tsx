@@ -77,6 +77,12 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
           col.map((el: string, i: number) => {
             const { backgroundColor, textColor } = getColor(el)
 
+            let value = +el
+
+            if (value < 0 && value > -0.01) {
+              value = 0
+            }
+
             return (
               <Cell
                 cols={cols[0].length}
@@ -92,7 +98,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   color={backgroundColor}
                   active={i === activeRow && ind === activeColumn}
                 >
-                  <CenterText>{Number(el).toFixed(4)}</CenterText>
+                  <CenterText>{value.toFixed(2)}</CenterText>
                 </CellContent>
               </Cell>
             )
@@ -121,7 +127,7 @@ const StyledArrowDown = styled(FaAngleDown)`
 `
 
 const GridTable = styled.div`
-  width: ${(props) => (props.isFullscreenEnabled ? 'auto' : '63.5%')};
+  width: ${(props) => (props.isFullscreenEnabled ? 'auto' : '100%')};
   margin: ${(props) => (props.isFullscreenEnabled ? '0 auto' : '')};
   position: relative;
   right: ${(props) => (props.isFullscreenEnabled ? '5vh' : '0')};

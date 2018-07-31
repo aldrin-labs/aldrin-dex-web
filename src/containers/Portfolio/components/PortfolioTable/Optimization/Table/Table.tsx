@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
+import { Typography, Card, CardContent } from '@material-ui/core'
 
 import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
+import { customAquaScrollBar } from '@utils/cssUtils'
 
 class Table extends Component<IProps, IState> {
   state = {
@@ -51,15 +53,51 @@ class Table extends Component<IProps, IState> {
       return (
         <StyledTable>
           <Head>
-            <HeadItem>Coin</HeadItem>
-            <HeadItem>Portfolio%</HeadItem>
-            <HeadItem>Optimized%</HeadItem>
+            <HeadItem>
+              <Typography variant="title" align="center">
+                {' '}
+                Coin
+              </Typography>
+            </HeadItem>
+            <HeadItem>
+              <Typography variant="title" align="center">
+                Portfolio%
+              </Typography>
+            </HeadItem>
+            <HeadItem>
+              <Typography variant="title" align="center">
+                Optimized%
+              </Typography>
+            </HeadItem>
           </Head>
           <Body>
+            {data.length === 0 ? (
+              <StyledCard>
+                <CardContent>
+                  <Typography
+                    variant="display2"
+                    align="center"
+                    color="secondary"
+                  >
+                    No Coins.
+                  </Typography>
+                  <Typography variant="headline" align="center" color="primary">
+                    Add something to optimize.
+                  </Typography>
+                </CardContent>
+              </StyledCard>
+            ) : null}
+
             <Col>
               {data
                 .filter((d) => d.percentage > filterValueSmallerThenPercentage)
-                .map((item, i) => <Item key={item.coin}>{item.coin}</Item>)}
+                .map((item, i) => (
+                  <Item key={item.coin}>
+                    <Typography variant="body1" align="center">
+                      {item.coin}
+                    </Typography>
+                  </Item>
+                ))}
             </Col>
 
             <Col>
@@ -67,7 +105,9 @@ class Table extends Component<IProps, IState> {
                 .filter((d) => d.percentage > filterValueSmallerThenPercentage)
                 .map((item, i) => (
                   <Item key={item.coin}>
-                    {`${Number(item.percentage).toFixed(2)}%`}{' '}
+                    <Typography variant="body1" align="center">
+                      {`${Number(item.percentage).toFixed(2)}%`}{' '}
+                    </Typography>
                   </Item>
                 ))}
             </Col>
@@ -83,9 +123,12 @@ class Table extends Component<IProps, IState> {
                   )
                   .map((item, i) => (
                     <Item key={item.coin}>
-                      {optimizedData[i]
-                        ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
-                        : '-'}{' '}
+                      <Typography variant="body1" align="center">
+                        {optimizedData[i]
+                          ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
+                          : '-'}{' '}
+                      </Typography>
+
                       <StyledDeleteIcon
                         onClick={() => {
                           onClickDeleteIcon && onClickDeleteIcon(i)
@@ -102,7 +145,9 @@ class Table extends Component<IProps, IState> {
                   )
                   .map((item, i) => (
                     <Item key={i}>
-                      {'-'}{' '}
+                      <Typography variant="body1" align="center">
+                        {'-'}{' '}
+                      </Typography>
                       <StyledDeleteIcon
                         onClick={() => {
                           onClickDeleteIcon && onClickDeleteIcon(i)
@@ -185,6 +230,11 @@ const AddStyled = styled(AddIcon)`
   }
 `
 
+const StyledCard = styled(Card)`
+  height: 190px;
+  width: 100%;
+`
+
 const Input = styled.input`
   box-sizing: border-box;
   background: transparent;
@@ -233,8 +283,6 @@ const Item = styled.div`
 `
 
 const HeadItem = Item.extend`
-  font-weight: 500;
-  font-size: 1.5rem;
   top: -1px;
 
   &:nth-child(even) {
@@ -289,17 +337,7 @@ const Body = styled.div`
   max-height: 200px;
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const StyledDeleteIcon = styled(DeleteIcon)`
@@ -307,7 +345,7 @@ const StyledDeleteIcon = styled(DeleteIcon)`
   cursor: pointer;
   position: absolute;
   right: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   transition: opacity 0.3s ease-in;
 
   ${Body}:hover & {

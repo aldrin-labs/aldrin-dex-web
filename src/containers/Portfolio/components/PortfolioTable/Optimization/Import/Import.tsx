@@ -134,8 +134,8 @@ class Import extends PureComponent<IProps> {
       )
 
       if (!isReturnedCoinsTheSameThatInputed) {
-        showWarning('Output coins not the same as input coins!')
-
+        // showWarning('Output coins not the same as input coins!')
+        console.log('Output coins not the same as input coins!')
         // return
       }
 
@@ -150,6 +150,10 @@ class Import extends PureComponent<IProps> {
   }
 
   addRow = (name: string, value: number) => {
+    console.log(this.props.filterValueSmallerThenPercentage)
+    if (this.props.filterValueSmallerThenPercentage >= 0) {
+      this.props.showWarning('Turn off the filter first to see new coins.')
+    }
     if (name) {
       this.props.updateData(
         this.sumSameCoins([
@@ -165,17 +169,6 @@ class Import extends PureComponent<IProps> {
     )
 
   deleteAllRows = () => this.props.updateData([])
-
-  objectsAreSame = (x, y) => {
-    let objectsAreSame = true
-    for (var propertyName in x) {
-      if (x[propertyName] !== y[propertyName]) {
-        objectsAreSame = false
-        break
-      }
-    }
-    return objectsAreSame
-  }
 
   render() {
     const {

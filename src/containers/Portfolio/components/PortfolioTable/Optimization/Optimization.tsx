@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
 import { isEqual } from 'lodash'
 
+import { customAquaScrollBar } from '@utils/cssUtils'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,
@@ -243,7 +244,7 @@ class Optimization extends Component<IProps, IState> {
     } = this.state
     const { storeData } = this.props
 
-    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
+    const formatedData = storeData.map((el: IData, i) => ({
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
     }))
@@ -291,9 +292,7 @@ class Optimization extends Component<IProps, IState> {
         <Chart>
           <BarChart
             height={300}
-            showPlaceholder={
-              optimizedData.length < 1 || showBarChartPlaceholder
-            }
+            showPlaceholder={formatedData.length === 0}
             charts={barChartData}
             alwaysShowLegend
           />
@@ -392,17 +391,7 @@ const PTWrapper = styled.div`
   height: calc(100vh - 130px);
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const Content = styled.div`

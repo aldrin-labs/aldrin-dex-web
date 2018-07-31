@@ -3,6 +3,7 @@ import { History } from 'history'
 import styled from 'styled-components'
 import { Button as Btn } from '@material-ui/core'
 
+import { customAquaScrollBar } from '@utils/cssUtils'
 import Button from '@components/Elements/Button/Button'
 import QueryRenderer from '@components/QueryRenderer'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
@@ -202,17 +203,7 @@ const ScrolledWrapper = styled.div`
   background-color: #393e44;
   margin-bottom: 50px;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const MaterialBtn = styled(Btn)`

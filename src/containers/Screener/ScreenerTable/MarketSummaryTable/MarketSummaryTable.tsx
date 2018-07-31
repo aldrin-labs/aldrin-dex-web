@@ -9,17 +9,23 @@ import {
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { tableData } from '@containers/Screener/ScreenerTable/MarketSummaryTable/mocks'
-import { onSortTableFull, getArrayContainsOnlyOnePropertyType, combineDataToSelect } from '@utils/PortfolioTableUtils'
+import {
+  onSortTableFull,
+  getArrayContainsOnlyOnePropertyType,
+  combineDataToSelect,
+} from '@utils/PortfolioTableUtils'
+import { customAquaScrollBar } from '@utils/cssUtils'
 import SuperSearch from '@containers/Screener/ScreenerTable/MarketSummaryTable/SuperSearch'
 
 // TODO: Think about this
 let staticRows = tableData
 
 // TODO: Think more about this
-const arrayOfTickerValues = getArrayContainsOnlyOnePropertyType(tableData,'ticker')
+const arrayOfTickerValues = getArrayContainsOnlyOnePropertyType(
+  tableData,
+  'ticker'
+)
 const combinedTickerValues = combineDataToSelect(arrayOfTickerValues)
-
-
 
 const tableHeadingsCurrentScreenerTable = [
   { name: 'Rank', value: 'rank' },
@@ -79,162 +85,156 @@ export default class MarketSummaryTable extends React.Component<
 
     const btcSymbol = <Icon className="fa fa-btc" />
 
-    console.log('searchArrayText in markeESUMMARY', searchArrayText);
-
+    console.log('searchArrayText in markeESUMMARY', searchArrayText)
 
     return (
       <TableAndSearchWrapper>
-        <SuperSearch combinedTickerValues={combinedTickerValues} onChangeSearchArrayText={this.props.onChangeSearchArrayText}
+        <SuperSearch
+          combinedTickerValues={combinedTickerValues}
+          onChangeSearchArrayText={this.props.onChangeSearchArrayText}
         />
         <Container>
-        <Wrapper>
-          <Table>
-            <PTHead>
-              <PTR>
-                {tableHeadingsCurrentScreenerTable.map((heading) => {
-                  const isSorted =
-                    currentSort && currentSort.key === heading.value
+          <Wrapper>
+            <Table>
+              <PTHead>
+                <PTR>
+                  {tableHeadingsCurrentScreenerTable.map((heading) => {
+                    const isSorted =
+                      currentSort && currentSort.key === heading.value
+
+                    return (
+                      <PTHC
+                        key={heading.name}
+                        onClick={() => this.onSortTable(heading.value)}
+                      >
+                        {heading.name}
+
+                        {isSorted && (
+                          <SvgIcon
+                            src={sortIcon}
+                            width={12}
+                            height={12}
+                            style={{
+                              verticalAlign: 'middle',
+                              marginLeft: '4px',
+                              transform:
+                                currentSort && currentSort.arg === 'ASC'
+                                  ? 'rotate(180deg)'
+                                  : null,
+                            }}
+                          />
+                        )}
+                      </PTHC>
+                    )
+                  })}
+                </PTR>
+              </PTHead>
+
+              <PTBody>
+                {staticRows.map((row, idx) => {
+                  const {
+                    rank,
+                    ticker,
+                    tickerFull,
+                    priceUSD,
+                    priceBTC,
+                    marketCap,
+                    volume24,
+                    one1hrUSD,
+                    one1hrBTC,
+                    twentyFour24hrUSD,
+                    twentyFour24hrBTC,
+                    seven7daysUSD,
+                    seven7daysBTC,
+                    chgATH,
+                  } = row
+
+                  const cols = [
+                    rank,
+                    ticker,
+                    tickerFull,
+                    priceUSD,
+                    priceBTC,
+                    marketCap,
+                    volume24,
+                    `${one1hrUSD}%`,
+                    `${one1hrBTC}%`,
+                    `${twentyFour24hrUSD}%`,
+                    `${twentyFour24hrBTC}%`,
+                    `${seven7daysUSD}%`,
+                    `${seven7daysBTC}%`,
+                    `${chgATH}%`,
+                  ]
+
+                  if (
+                    searchText &&
+                    ticker
+                      .toLocaleLowerCase()
+                      .indexOf(searchText.toLocaleLowerCase()) === -1
+                  ) {
+                    return
+                  }
+
+                  const searchExpression = searchArray.some((elem) => {
+                    return elem === ticker
+                  })
+
+                  console.log('searchExpress', searchExpression)
+                  console.log('searchArray', searchArray)
+
+                  if (!searchExpression && searchArrayText) {
+                    return
+                  }
 
                   return (
-                    <PTHC
-                      key={heading.name}
-                      onClick={() => this.onSortTable(heading.value)}
-                    >
-                      {heading.name}
+                    <PTR key={`${rank}${ticker}${idx}`}>
+                      {cols.map((col, index) => {
+                        if (String(col).match(/%/g)) {
+                          const color =
+                            Number(col.replace(/%/g, '')) >= 0
+                              ? '#4caf50'
+                              : '#f44336'
 
-                      {isSorted && (
-                        <SvgIcon
-                          src={sortIcon}
-                          width={12}
-                          height={12}
-                          style={{
-                            verticalAlign: 'middle',
-                            marginLeft: '4px',
-                            transform:
-                              currentSort && currentSort.arg === 'ASC'
-                                ? 'rotate(180deg)'
-                                : null,
-                          }}
-                        />
-                      )}
-                    </PTHC>
+                          return (
+                            <PTDC key={`${col}${index}`} style={{ color }}>
+                              {col}
+                            </PTDC>
+                          )
+                        }
+
+                        if (index === 3 || index === 5 || index === 6) {
+                          return (
+                            <PTDC key={`${col}${idx}`}>
+                              {usdSymbol}
+                              {col}
+                            </PTDC>
+                          )
+                        }
+
+                        if (index === 4) {
+                          return (
+                            <PTDC key={`${col}${idx}`}>
+                              {btcSymbol}
+                              {col}
+                            </PTDC>
+                          )
+                        }
+
+                        return <PTDC key={`${col}${index}`}>{col}</PTDC>
+                      })}
+                    </PTR>
                   )
                 })}
-              </PTR>
-            </PTHead>
-
-            <PTBody>
-              {staticRows.map((row, idx) => {
-                const {
-                  rank,
-                  ticker,
-                  tickerFull,
-                  priceUSD,
-                  priceBTC,
-                  marketCap,
-                  volume24,
-                  one1hrUSD,
-                  one1hrBTC,
-                  twentyFour24hrUSD,
-                  twentyFour24hrBTC,
-                  seven7daysUSD,
-                  seven7daysBTC,
-                  chgATH,
-                } = row
-
-                const cols = [
-                  rank,
-                  ticker,
-                  tickerFull,
-                  priceUSD,
-                  priceBTC,
-                  marketCap,
-                  volume24,
-                  `${one1hrUSD}%`,
-                  `${one1hrBTC}%`,
-                  `${twentyFour24hrUSD}%`,
-                  `${twentyFour24hrBTC}%`,
-                  `${seven7daysUSD}%`,
-                  `${seven7daysBTC}%`,
-                  `${chgATH}%`,
-                ]
-
-                if (
-                  searchText &&
-                  ticker
-                    .toLocaleLowerCase()
-                    .indexOf(searchText.toLocaleLowerCase()) === -1
-                ) {
-                  return
-                }
-
-
-                const searchExpression = searchArray.some((elem)=> {
-                  return elem === ticker
-                })
-
-                console.log('searchExpress', searchExpression);
-                console.log('searchArray', searchArray);
-
-
-
-                if (!searchExpression && searchArrayText) {
-                  return
-                }
-
-
-                return (
-                  <PTR key={`${rank}${ticker}${idx}`}>
-                    {cols.map((col, index) => {
-                      if (String(col).match(/%/g)) {
-                        const color =
-                          Number(col.replace(/%/g, '')) >= 0
-                            ? '#4caf50'
-                            : '#f44336'
-
-                        return (
-                          <PTDC key={`${col}${index}`} style={{ color }}>
-                            {col}
-                          </PTDC>
-                        )
-                      }
-
-                      if (index === 3 || index === 5 || index === 6) {
-                        return (
-                          <PTDC key={`${col}${idx}`}>
-                            {usdSymbol}
-                            {col}
-                          </PTDC>
-                        )
-                      }
-
-                      if (index === 4) {
-                        return (
-                          <PTDC key={`${col}${idx}`}>
-                            {btcSymbol}
-                            {col}
-                          </PTDC>
-                        )
-                      }
-
-                      return <PTDC key={`${col}${index}`}>{col}</PTDC>
-                    })}
-                  </PTR>
-                )
-              })}
-            </PTBody>
-          </Table>
-        </Wrapper>
-      </Container>
+              </PTBody>
+            </Table>
+          </Wrapper>
+        </Container>
       </TableAndSearchWrapper>
-
     )
   }
 }
 
-const TableAndSearchWrapper = styled.div`
-
-`
+const TableAndSearchWrapper = styled.div``
 
 const Container = styled.div`
   display: flex;
@@ -247,17 +247,7 @@ const Wrapper = styled.div`
   overflow-y: scroll;
   height: 50vh;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 const Table = styled.table`
   table-layout: fixed;
@@ -299,22 +289,22 @@ const PTHC = styled.th`
   &:nth-child(1) {
     min-width: 70px;
   }
-  
+
   &:nth-child(2) {
     min-width: 76px;
   }
-  
+
   &:nth-child(3) {
     padding-right: 10px;
   }
- 
-  
+
   &:nth-child(n + 8) {
     min-width: 94px;
     padding-right: 0;
   }
-  
-  &:nth-child(12), &:nth-child(13) {
+
+  &:nth-child(12),
+  &:nth-child(13) {
     min-width: 100px;
   }
 `
@@ -362,18 +352,19 @@ const PTDC = styled.td`
   &:nth-child(2) {
     min-width: 76px;
   }
-  
+
   &:nth-child(3) {
     max-width: 100px;
     text-overflow: ellipsis;
     padding-right: 10px;
   }
-  
+
   &:nth-child(n + 8) {
     min-width: 94px;
   }
-  
-    &:nth-child(12), &:nth-child(13) {
+
+  &:nth-child(12),
+  &:nth-child(13) {
     min-width: 100px;
   }
 `

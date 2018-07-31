@@ -22,6 +22,7 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
+import { customAquaScrollBar } from '@utils/cssUtils'
 import { onSortStrings, roundUSDOff } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
@@ -330,7 +331,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
         ...reducedSum,
-        currency: 'All',
+        currency: 'Total',
         symbol: '-',
         industry: '-',
         price: [mainSymbol, reducedSum.price],
@@ -712,17 +713,7 @@ const Wrapper = styled.div`
     max-height: 40vh;
   }
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const PTable = styled.table`

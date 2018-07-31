@@ -14,6 +14,7 @@ import ClearIcon from 'material-ui-icons/Clear'
 
 import BarChart from '@components/BarChart/BarChart'
 import PieChart from '@components/PieChart'
+import { customAquaScrollBar } from '@utils/cssUtils'
 import sortIcon from '@icons/arrow.svg'
 import {
   IProps,
@@ -93,8 +94,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     totalTableSavedRows: 0,
     isPercentSumGood: true,
     totalPercents: 0,
-    leftBar: '#000000',
-    rightBar: '#fff',
+    leftBar: '#2496c8',
+    rightBar: '#1869a8',
   }
 
   onChangeColor = (e) => {
@@ -1662,8 +1663,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
               justifyContent: 'center',
             }}
           >
-            <input type="color" name="leftBar" onChange={this.onChangeColor} />
-            <input type="color" name="rightBar" onChange={this.onChangeColor} />
+            <input type="color" name="leftBar" onChange={this.onChangeColor} value={this.state.leftBar} />
+            <input type="color" name="rightBar" onChange={this.onChangeColor} value={this.state.rightBar} />
           </div>
           <Chart>
             {staticRows[0].portfolioPerc && (
@@ -1768,34 +1769,14 @@ const TableAndHeadingWrapper = styled.div`
     padding-left: 30px;
   }
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const Wrapper = styled.div`
   overflow-y: scroll;
   padding-right: 2px;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const Container = styled.div`
