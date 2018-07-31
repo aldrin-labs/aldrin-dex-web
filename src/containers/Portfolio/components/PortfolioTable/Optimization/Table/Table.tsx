@@ -79,7 +79,10 @@ class Table extends Component<IProps, IState> {
                     align="center"
                     color="secondary"
                   >
-                    No Coins. Add something to optimize.
+                    No Coins.
+                  </Typography>
+                  <Typography variant="headline" align="center" color="primary">
+                    Add something to optimize.
                   </Typography>
                 </CardContent>
               </StyledCard>
@@ -229,6 +232,7 @@ const AddStyled = styled(AddIcon)`
 
 const StyledCard = styled(Card)`
   height: 190px;
+  width: 100%;
 `
 
 const Input = styled.input`
