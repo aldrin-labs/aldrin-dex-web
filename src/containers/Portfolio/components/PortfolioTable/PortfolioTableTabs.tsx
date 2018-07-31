@@ -102,7 +102,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               tab !== 'optimization' &&
               tab !== 'rebalance' && (
                 <SwitchRefreshContainer>
-                  <MoveRightFix>
+                  <MoveRightFix fix={tab === 'main'}>
                     <Switch
                       onClick={this.onToggleUSDBTC}
                       values={['USD', 'BTC']}
@@ -147,7 +147,7 @@ const RefreshButton = styled(Button)`
 
 const MoveRightFix = styled.div`
   position: relative;
-  left: 6px;
+  left: ${(props: { fix: boolean }) => (props.fix ? '6px' : 0)};
 `
 
 const PTHeadingBlock = styled.div`
