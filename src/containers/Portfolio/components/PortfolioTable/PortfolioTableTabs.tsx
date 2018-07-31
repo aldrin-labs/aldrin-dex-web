@@ -102,10 +102,12 @@ class PortfolioTableTabs extends React.Component<IProps> {
               tab !== 'optimization' &&
               tab !== 'rebalance' && (
                 <SwitchRefreshContainer>
-                  <Switch
-                    onClick={this.onToggleUSDBTC}
-                    values={['USD', 'BTC']}
-                  />
+                  <MoveRightFix fix={tab === 'main'}>
+                    <Switch
+                      onClick={this.onToggleUSDBTC}
+                      values={['USD', 'BTC']}
+                    />
+                  </MoveRightFix>
 
                   {tab === 'main' && (
                     <Mutation mutation={UPDATE_PORTFOLIO}>
@@ -141,6 +143,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
 const RefreshButton = styled(Button)`
   height: 1rem;
   margin-right: 0.25rem;
+`
+
+const MoveRightFix = styled.div`
+  position: relative;
+  left: ${(props: { fix: boolean }) => (props.fix ? '6px' : 0)};
 `
 
 const PTHeadingBlock = styled.div`
