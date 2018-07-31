@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import DeleteIcon from 'react-icons/lib/md/delete-forever'
 import AddIcon from 'react-icons/lib/md/add'
-import { Typography } from '@material-ui/core'
+import { Typography, Card, CardContent } from '@material-ui/core'
 
 import {
   IProps,
@@ -71,6 +71,20 @@ class Table extends Component<IProps, IState> {
             </HeadItem>
           </Head>
           <Body>
+            {data.length === 0 ? (
+              <StyledCard>
+                <CardContent>
+                  <Typography
+                    variant="display2"
+                    align="center"
+                    color="secondary"
+                  >
+                    No Coins. Add something to optimize.
+                  </Typography>
+                </CardContent>
+              </StyledCard>
+            ) : null}
+
             <Col>
               {data
                 .filter((d) => d.percentage > filterValueSmallerThenPercentage)
@@ -213,6 +227,10 @@ const AddStyled = styled(AddIcon)`
   }
 `
 
+const StyledCard = styled(Card)`
+  height: 190px;
+`
+
 const Input = styled.input`
   box-sizing: border-box;
   background: transparent;
@@ -323,7 +341,7 @@ const StyledDeleteIcon = styled(DeleteIcon)`
   cursor: pointer;
   position: absolute;
   right: 0.5rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   transition: opacity 0.3s ease-in;
 
   ${Body}:hover & {
