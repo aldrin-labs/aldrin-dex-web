@@ -174,6 +174,10 @@ const PTH = styled.th`
   &:nth-child(4) {
     min-width: 85px;
   }
+  
+  &:nth-child(6) {
+      min-width: 90px;
+  }
 
   &:nth-child(7) {
     min-width: 93px;
@@ -184,7 +188,7 @@ const PTH = styled.th`
   }
 
   &:nth-child(10) {
-    min-width: 95px;
+    min-width: 101px;
     padding-right: 10px;
   }
   

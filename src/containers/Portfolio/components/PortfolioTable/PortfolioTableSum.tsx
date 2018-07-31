@@ -15,7 +15,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
       return '0'
     }
 
-    return parseFloat(x.toFixed(numberOfDigitsAfterPoint)).toLocaleString('en-US')
+    return numberOfDigitsAfterPoint === 8 ? x.toFixed(numberOfDigitsAfterPoint) : parseFloat(x.toFixed(numberOfDigitsAfterPoint)).toLocaleString('en-US')
 
 
   }
@@ -23,6 +23,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
   render() {
     const { selectedSum, industry, isUSDCurrently } = this.props
     const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
+
 
     return (
       <PTBody style={{ borderBottom: 'none' }}>
@@ -123,6 +124,10 @@ const PTDOther = css`
     //min-width: 110px;
   }
   
+  &:nth-child(6) {
+      min-width: 90px;
+  }
+  
   &:nth-child(7) {
     min-width: 93px;
   }
@@ -132,7 +137,7 @@ const PTDOther = css`
   }
   
   &:nth-child(10) {
-    min-width: 95px;
+    min-width: 101px;
     padding-right: 10px;
   }
 `
