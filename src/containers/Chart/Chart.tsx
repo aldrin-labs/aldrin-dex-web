@@ -216,7 +216,6 @@ class Chart extends React.Component<IState> {
         >
           <ExchangesTable
             {...{
-              exchanges,
               activeExchange,
               changeExchange,
               quote,
@@ -225,14 +224,14 @@ class Chart extends React.Component<IState> {
             }}
           />
 
-          <TradeHistoryTable
+          {/* <TradeHistoryTable
             {...{
               data: orderBook,
               quote,
               activeExchange,
               currencyPair,
             }}
-          />
+          /> */}
         </TablesBlockWrapper>
       </TablesContainer>
     )

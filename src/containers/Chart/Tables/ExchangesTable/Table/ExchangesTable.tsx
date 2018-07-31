@@ -13,55 +13,17 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
-import QueryRenderer from '@components/QueryRenderer'
 import { Loading } from '@components/Loading/Loading'
-import gql from 'graphql-tag'
-
-const mockExchanges = [
-  { name: "OKEx", symbol: "okex" },
-  { name: "Huobi", symbol: "huobi" },
-  { name: "Bitfinex", symbol: "bitfinex" },
-  { name: "Bitstamp", symbol: "bitstamp" },
-  { name: "Coinbase Pro", symbol: "coinbase" },
-  { name: "Huobi", symbol: "huobi" },
-  { name: "DigiFinex", symbol: "digifinex" },
-  { name: "ZB.COM", symbol: "zbcom" },
-];
-
-export const ExchangeQuery = gql`
-  query ExchangeQuery($marketName: String!) {
-    marketByName(name: $marketName){
-    exchangeIds
-    exchanges {
-      symbol
-      name
-    }
-  }
-}
-`
 
 class ExchangesTable extends PureComponent {
   render() {
-
     const {
       activeExchange,
       changeExchange,
       quote,
       onButtonClick,
-      data
+      exchanges,
     } = this.props
-
-    let exchanges = this.props.exchanges;
-
-    if (!exchanges || !data) {
-      return <Loading centerAligned />
-    }
-    if (data && data.marketByName) {
-      exchanges = data.marketByName.length > 0 ? [...(data.marketByName[0].exchanges.map(({ name, symbol }) => ({ name, symbol })))] : [];
-      console.log(mockExchanges);
-      console.log(exchanges);
-      exchanges.push(...mockExchanges);
-    }
 
     return (
       <StyledTable>
@@ -172,14 +134,4 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-
-export default function (props: any) {
-  return (
-    <QueryRenderer
-      component={ExchangesTable}
-      query={ExchangeQuery}
-      variables={{ marketName: props.marketName }}
-      {...props}
-    />
-  )
-}
+export default ExchangesTable
