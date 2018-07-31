@@ -26,6 +26,8 @@ class ExchangesTable extends PureComponent {
       theme,
     } = this.props
 
+    console.log(JSON.stringify(theme.palette))
+
     return (
       <StyledTable>
         <Title background={theme.palette.primary.dark}>
@@ -37,21 +39,23 @@ class ExchangesTable extends PureComponent {
             variant="outlined"
             color="primary"
           >
-            ORDER
+            <Typography color="textSecondary" variant="headline" align="left">
+              ORDER
+            </Typography>
           </SwitchTablesButton>
         </Title>
         <StyledHead background={theme.palette.background.default}>
           <Row
             isHead
             background={theme.palette.background.default}
-            hoverBackground={theme.palette.background.paper}
+            hoverBackground={theme.palette.action.hover}
           >
             <StyledHeadCell width={'50%'}>
-              <FullWidthBlock>
-                <Typography variant="title" color="default">
+              <FullWidthBlockMovedLeft>
+                <Typography variant="title" color="default" align="left">
                   Name{' '}
                 </Typography>
-              </FullWidthBlock>
+              </FullWidthBlockMovedLeft>
             </StyledHeadCell>
             <StyledHeadCell width={'50%'}>
               <Typography variant="title" color="default" align="left">
@@ -73,10 +77,10 @@ class ExchangesTable extends PureComponent {
               }}
               background={
                 activeExchange.index === ind
-                  ? '#535b62'
+                  ? theme.palette.action.selected
                   : theme.palette.background.default
               }
-              hoverBackground={theme.palette.background.paper}
+              hoverBackground={theme.palette.action.hover}
             >
               {Object.values(exchange).map((prop, propinx) => {
                 const keyByValue = Object.keys(exchange).find(
@@ -137,9 +141,14 @@ class ExchangesTable extends PureComponent {
   }
 }
 
+const FullWidthBlockMovedLeft = FullWidthBlock.extend`
+  position: relative;
+  left: calc(6.4px + 19.3px);
+`
+
 const StyledHeadCell = styled(HeadCell)`
   line-height: 37px;
-  padding: 0;
+  padding: 0.25rem;
 `
 
 const StyledTable = styled(Table)`
