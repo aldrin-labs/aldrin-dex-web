@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 
 import { Cell as RowCell } from '@components/Table/Table'
@@ -14,7 +14,7 @@ export interface IProps {
     | 'fadeInGreen'
 }
 
-class AnimatedCell extends Component<IProps> {
+class AnimatedCell extends PureComponent<IProps> {
   state = {
     animated: true,
   }
