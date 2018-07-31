@@ -12,7 +12,12 @@ import {
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
-import { exchanges, orders, getFakeDepthChartData, orderBook } from '@containers/Chart/mocks'
+import {
+  exchanges,
+  orders,
+  getFakeDepthChartData,
+  orderBook,
+} from '@containers/Chart/mocks'
 import Switch from '@components/Switch/Switch'
 import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
@@ -216,7 +221,7 @@ class Chart extends React.Component<IState> {
               changeExchange,
               quote,
               onButtonClick: this.changeTable,
-              marketName: currencyPair
+              marketName: currencyPair,
             }}
           />
 
@@ -262,18 +267,18 @@ class Chart extends React.Component<IState> {
           {this.state.activeChart === 'candle' ? (
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
-              <DepthChartContainer>
-                <DepthChart
-                  {...{
-                    ordersData,
-                    spreadData,
-                    base,
-                    quote,
-                    animated: false,
-                  }}
-                />
-              </DepthChartContainer>
-            )}
+            <DepthChartContainer>
+              <DepthChart
+                {...{
+                  ordersData,
+                  spreadData,
+                  base,
+                  quote,
+                  animated: false,
+                }}
+              />
+            </DepthChartContainer>
+          )}
         </ChartsContainer>
 
         {this.renderTables()}
@@ -358,8 +363,8 @@ const TablesBlockWrapper = styled(Paper)`
   }
 
   @media (max-width: 1080px) {
-    display: ${(props: { show: boolean }) =>
-    props.variant.show ? 'block' : 'none'};
+    display: ${(props: { variant: { show: boolean } }) =>
+      props.variant.show ? 'block' : 'none'};
     width: 100%;
     height: calc(100vh - 57px - 70px);
     position: relative;
