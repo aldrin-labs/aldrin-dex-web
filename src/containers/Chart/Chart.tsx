@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Paper, Button } from '@material-ui/core'
+import { withTheme } from '@material-ui/core/styles'
 
 import {
   OrderBookTable,
@@ -179,12 +180,14 @@ class Chart extends React.Component<IState> {
       quote = currencyPair.split('_')[1]
     }
 
-    const { activeExchange } = this.props
+    const { activeExchange, theme } = this.props
     const { changeExchange } = this
 
     return (
       <TablesContainer>
         <TablesBlockWrapper
+          background={theme.palette.background.default}
+          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'ORDER',
           }}
@@ -210,6 +213,8 @@ class Chart extends React.Component<IState> {
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
+          background={theme.palette.background.default}
+          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'TRADE',
           }}
@@ -353,11 +358,12 @@ const TablesBlockWrapper = styled(Paper)`
   min-width: 150px;
   width: 50%;
   position: relative;
-  border-right: 1px solid #30353a;
+  border-right: 1px solid
+    ${(props: { rightBorderColor?: string }) => props.rightBorderColor};
 
   && {
     overflow: hidden;
-    background-color: #292d31;
+    background-color: ${(props: { background: string }) => props.background};
     box-shadow: none !important;
   }
 
@@ -450,6 +456,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
 })
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Chart)
+const ThemeWrapper = (props) => <Chart {...props} />
+const ThemedChart = withTheme()(ThemeWrapper)
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(ThemedChart)
 
 export default storeComponent

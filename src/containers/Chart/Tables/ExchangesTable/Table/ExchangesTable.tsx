@@ -26,8 +26,6 @@ class ExchangesTable extends PureComponent {
       theme,
     } = this.props
 
-    console.log(JSON.stringify(theme.palette))
-
     return (
       <StyledTable>
         <Title background={theme.palette.primary.dark}>
