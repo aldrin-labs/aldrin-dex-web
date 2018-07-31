@@ -64,12 +64,15 @@ export default class PortfolioTableMain extends React.Component<IProps> {
             <Icon className="fa fa-btc" key={`${index}btc`} />
           )
 
+          // TODO: Should be replaced with function in utils
+          const quantityFormatted = quantity.toString().replace(/\d(?=(\d{3})+\.)/g, '$&,')
+
           const cols = [
             currency,
             symbol,
             `${percentage} %`,
             [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
-            quantity,
+            quantityFormatted,
             [mainSymbol, `${roundUSDOff(currentPrice, isUSDCurrently)}`],
             //            daily,
             //            `${dailyPerc} %`,
@@ -151,7 +154,6 @@ const PTD = styled.td`
   padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
   min-width: 100px;
 
   &:nth-child(1) {
@@ -163,30 +165,37 @@ const PTD = styled.td`
   &:nth-child(2) {
     min-width: 80px;
     max-width: 80px;
+    text-overflow: ellipsis;
   }
 
   &:nth-child(3) {
     min-width: 50px;
     max-width: 50px;
+    text-overflow: ellipsis;
+
   }
 
   &:nth-child(4) {
     min-width: 85px;
     max-width: 85px;
   }
-
+  
+  &:nth-child(6) {
+    min-width: 90px;
+  }
+  
   &:nth-child(7) {
     min-width: 93px;
     max-width: 93px;
   }
 
   &:nth-child(9) {
-    min-width: 110px;
+    min-width: 95px;
   }
 
   &:nth-child(10) {
-    max-width: 90px;
-    min-width: 90px;
+    max-width: 101px;
+    min-width: 101px;
     padding-right: 10px;
   }
 `

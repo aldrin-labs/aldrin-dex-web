@@ -214,7 +214,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
               const cols = [
                 exchange,
-                amount,
+                parseFloat(amount).toLocaleString('en-US'),
                 [mainSymbol, cost],
                 new Date(datetime).toLocaleString('en-US'),
                 symbol,
@@ -356,18 +356,21 @@ const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
   padding-right: 0;
-  text-overflow: ellipsis;
-
+  
   &:nth-child(1) {
     min-width: 80px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(2) {
     min-width: 70px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(4) {
     min-width: 150px;
+      text-overflow: ellipsis;
+
     //padding-right: 10px;
   }
 

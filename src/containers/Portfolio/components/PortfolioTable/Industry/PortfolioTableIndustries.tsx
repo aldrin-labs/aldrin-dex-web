@@ -34,8 +34,8 @@ const tableHeadings = [
   { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
   { name: 'Current', value: 'price' },
-  { name: 'Portfolio performance', value: 'portfolioPerf' },
-  { name: 'Industry performance', value: 'industryPerf' },
+  { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
+  { name: 'Industry', value: 'industryPerf', additionName: 'performance' },
 ]
 
 const defaultSelectedSum = {
@@ -312,19 +312,21 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    // const { isUSDCurrently } = this.props
+    const { isUSDCurrently } = this.props
 
     if (!selectedRows || !industryData) {
       return defaultSelectedSum
     }
 
     let newReducedSum = {}
+    // TODO: SHOULD BE REFACTORED below
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" key="usd" />
+    ) : (
+      <Icon className="fa fa-btc" key="btc" />
+    )
+    // TODO: SHOULD BE REFACTORED above
 
-    // const mainSymbol = isUSDCurrently ? (
-    //   <Icon className="fa fa-usd" key="usd" />
-    // ) : (
-    //   <Icon className="fa fa-btc" key="btc" />
-    // )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
@@ -332,6 +334,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Total',
         symbol: '-',
         industry: '-',
+        price: [mainSymbol, reducedSum.price],
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf: `${reducedSum.industryPerf.toFixed(2)}%`,
       }
     } else if (selectedRows.length >= 1) {
       newReducedSum = {
@@ -339,6 +344,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Selected',
         symbol: '-',
         industry: '-',
+        price: [mainSymbol, reducedSum.price],
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf: `${reducedSum.industryPerf.toFixed(2)}%`,
       }
     }
 
@@ -387,11 +395,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    // const chartWidth = this.setChartWidth()
+
+    console.log('isUSDCurrently ', isUSDCurrently);
+
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
-      isThereAnySelectedRows = selectedRows.length > 1 ? true : false
+      isThereAnySelectedRows = selectedRows.length > 1
     }
 
     const tableDataHasData = industryData
@@ -429,17 +439,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       <Span />
                     </Label>
                   </PTH>
-                  {tableHeadings.map((heading) => {
+                  {tableHeadings.map((heading, index) => {
                     const isSorted =
                       currentSort && currentSort.key === heading.value
 
                     return (
                       <PTH
-                        key={heading.name}
+                        key={`${heading.name}${index}`}
                         onClick={() => this.onSortTable(heading.value)}
                         isSorted={isSorted}
                       >
-                        {heading.name}
+
+                        {[4,5].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
 
                         {isSorted && (
                           <SvgIcon
@@ -492,14 +503,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         (selectedRows && selectedRows.indexOf(idx) >= 0) ||
                         false
 
+                      const priceFormattedBTC = roundUSDOff(price, isUSDCurrently)
+                      const priceFormattedUSD = parseFloat(roundUSDOff(price, isUSDCurrently)).toLocaleString('en-US')
+                      const formattedPrice = isUSDCurrently ? priceFormattedUSD : priceFormattedBTC
+
                       const cols = [
                         currency,
                         symbol,
                         industry,
-                        [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
+                        [mainSymbol, formattedPrice],
                         `${portfolioPerf}%`,
                         `${industryPerf}%`,
                       ]
+
 
                       return (
                         <PTRBody
@@ -625,7 +641,8 @@ const PTWrapper = styled.div`
 
 const ChartWrapper = styled.div`
   width: 100%;
-  height: 25vh;
+  height: 100%;
+  //height: 25vh;
   display: flex;
   position: relative;
 
@@ -643,8 +660,7 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 35vh;
 
-  //margin: 2rem auto;
-  width: 800px;
+  width: 720px;
 
   @media (max-width: 2000px) {
     height: 30vh;
@@ -722,7 +738,6 @@ const PTD = styled.td`
   padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
   min-width: 100px;
 
   &:nth-child(1) {
@@ -732,10 +747,12 @@ const PTD = styled.td`
 
   &:nth-child(2) {
     min-width: 90px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(3) {
     min-width: 60px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(n + 4) {
@@ -745,14 +762,11 @@ const PTD = styled.td`
   &:nth-child(4) {
     min-width: 200px;
     max-width: 200px;
-  }
-
-  &:nth-child(n + 6) {
-    min-width: 150px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(7) {
-    min-width: 160px;
+    min-width: 120px;
     padding-right: 16px;
   }
 `
@@ -800,6 +814,7 @@ const PTH = styled.th`
   padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
   min-width: 100px;
+  user-select: none;
 
   &:nth-child(1) {
     min-width: 30px;
@@ -833,12 +848,8 @@ const PTH = styled.th`
     min-width: 200px;
   }
 
-  &:nth-child(n + 6) {
-    min-width: 150px;
-  }
-
   &:nth-child(7) {
-    min-width: 160px;
+    min-width: 120px;
     padding-right: 16px;
   }
 `

@@ -3,35 +3,27 @@ import styled, { css } from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum.types'
+import {sampleData} from './dataMock'
 
 export default class PortfolioTableSum extends React.Component<IProps> {
-  onFloorN = (x: string | number, n: number) => {
+  onFloorN = (x: string | number, numberOfDigitsAfterPoint: number) => {
     if (typeof x === 'string') {
       return x
     }
-    let mult = Math.pow(10, n)
-    let multAfterCalculation = Math.floor(x * mult) / mult
 
-    const reg = this.props.isUSDCurrently
-      ? /-?[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /-?[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-
-    if (multAfterCalculation.toString().match(reg)) {
-      const sum = multAfterCalculation.toString().match(reg)
-      if (!sum) {
-        return null
-      }
-
-      return sum[0]
-    } else if (multAfterCalculation) {
-      return multAfterCalculation
-    } else {
+    if (x === 0) {
       return '0'
     }
+
+    return numberOfDigitsAfterPoint === 8 ? x.toFixed(numberOfDigitsAfterPoint) : parseFloat(x.toFixed(numberOfDigitsAfterPoint)).toLocaleString('en-US')
+
+
   }
 
   render() {
-    const { selectedSum, industry } = this.props
+    const { selectedSum, industry, isUSDCurrently } = this.props
+    const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
+
 
     return (
       <PTBody style={{ borderBottom: 'none' }}>
@@ -41,6 +33,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
               <SvgIcon src={selectedIcon} width={18} height={18} />
             </PTD>
           )}
+          {console.log(Object.keys(selectedSum))}
           {Object.keys(selectedSum).map((key) => {
             let res = selectedSum[key]
             if (Array.isArray(res)) {
@@ -49,14 +42,14 @@ export default class PortfolioTableSum extends React.Component<IProps> {
               return (
                 <PTD key={key}>
                   {icon}
-                  {this.onFloorN(currency, 3)}
+                  {this.onFloorN(currency, numberOfDigitsAfterPoint)}
                 </PTD>
               )
             }
             if (!Number.isNaN(selectedSum[key])) {
               res = this.onFloorN(
                 selectedSum[key],
-                this.props.isUSDCurrently ? 2 : 8
+                numberOfDigitsAfterPoint
               )
             }
 
@@ -94,13 +87,9 @@ const PTDIndustry = css`
   &:nth-child(4) {
     min-width: 200px;
   }
-
-  &:nth-child(n + 6) {
-    min-width: 150px;
-  }
   
   &:nth-child(7) {
-    min-width: 160px;
+    min-width: 120px;
     padding-right: 16px;
   }
 `
@@ -135,15 +124,20 @@ const PTDOther = css`
     //min-width: 110px;
   }
   
+  &:nth-child(6) {
+      min-width: 90px;
+  }
+  
   &:nth-child(7) {
     min-width: 93px;
   }
   
   &:nth-child(9) {
-    min-width: 110px;
+    min-width: 95px;
   }
+  
   &:nth-child(10) {
-    min-width: 90px;
+    min-width: 101px;
     padding-right: 10px;
   }
 `

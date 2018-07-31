@@ -152,14 +152,16 @@ export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
 }
 
 export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
-  if (num === 0.0) return '0'
-  return new Number(num).toFixed(isUSDCurrently ? 2 : 8)
+  if (num === 0) return '0'
+
+  return parseFloat(num).toFixed(isUSDCurrently ? 2 : 8).toLocaleString('en-US')
 }
 
 const Icon = styled.i`
   padding-right: 5px;
 `
 
+// TODO: SHOULD BE REFACTORED
 export const onValidateSum = (
   reducedSum: RowT,
   selectedBalances: RowT,
