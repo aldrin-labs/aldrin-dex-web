@@ -16,6 +16,7 @@ import * as API from '@containers/Login/api'
 import { LoginMenu } from '@containers/Login/components'
 
 const SWrapper = styled.div`
+  z-index: 100000;
   align-items: center;
   display: flex;
   flex-direction: column;
