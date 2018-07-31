@@ -156,40 +156,39 @@ const PTD = styled.td`
 
   &:nth-child(1) {
     text-align: center;
-    padding: 1.75px 10px;
+    padding: 1.75px 10px 1.75px 8px;
     min-width: 30px;
   }
-  
+
   &:nth-child(2) {
     min-width: 80px;
     max-width: 80px;
   }
-  
+
   &:nth-child(3) {
     min-width: 50px;
     max-width: 50px;
   }
-  
+
   &:nth-child(4) {
     min-width: 85px;
     max-width: 85px;
   }
-  
+
   &:nth-child(7) {
     min-width: 93px;
     max-width: 93px;
   }
-  
+
   &:nth-child(9) {
     min-width: 110px;
   }
-  
+
   &:nth-child(10) {
     max-width: 90px;
     min-width: 90px;
     padding-right: 10px;
   }
-  
 `
 
 const PTR = styled.tr`
