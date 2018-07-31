@@ -311,19 +311,21 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    // const { isUSDCurrently } = this.props
+    const { isUSDCurrently } = this.props
 
     if (!selectedRows || !industryData) {
       return defaultSelectedSum
     }
 
     let newReducedSum = {}
+    // TODO: SHOULD BE REFACTORED below
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" key="usd" />
+    ) : (
+      <Icon className="fa fa-btc" key="btc" />
+    )
+    // TODO: SHOULD BE REFACTORED above
 
-    // const mainSymbol = isUSDCurrently ? (
-    //   <Icon className="fa fa-usd" key="usd" />
-    // ) : (
-    //   <Icon className="fa fa-btc" key="btc" />
-    // )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
@@ -331,6 +333,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'All',
         symbol: '-',
         industry: '-',
+        price: [mainSymbol, reducedSum.price],
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf: `${reducedSum.industryPerf.toFixed(2)}%`,
       }
     } else if (selectedRows.length >= 1) {
       newReducedSum = {
@@ -338,6 +343,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Selected',
         symbol: '-',
         industry: '-',
+        price: [mainSymbol, reducedSum.price],
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf: `${reducedSum.industryPerf.toFixed(2)}%`,
       }
     }
 
@@ -386,7 +394,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    // const chartWidth = this.setChartWidth()
+
+    console.log('isUSDCurrently ', isUSDCurrently);
+
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
@@ -492,14 +502,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         (selectedRows && selectedRows.indexOf(idx) >= 0) ||
                         false
 
+                      const priceFormattedBTC = roundUSDOff(price, isUSDCurrently)
+                      const priceFormattedUSD = parseFloat(roundUSDOff(price, isUSDCurrently)).toLocaleString('en-US')
+                      const formattedPrice = isUSDCurrently ? priceFormattedUSD : priceFormattedBTC
+
                       const cols = [
                         currency,
                         symbol,
                         industry,
-                        [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
+                        [mainSymbol, formattedPrice],
                         `${portfolioPerf}%`,
                         `${industryPerf}%`,
                       ]
+
 
                       return (
                         <PTRBody
