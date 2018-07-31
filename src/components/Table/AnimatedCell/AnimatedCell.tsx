@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
+import { Typography } from '@material-ui/core'
 
 import { Cell as RowCell } from '@components/Table/Table'
 
@@ -45,7 +46,9 @@ class AnimatedCell extends PureComponent<IProps> {
 
     return (
       <Cell animated={animated ? animation : 'none'} {...{ color, width }}>
-        {value}
+        <Typography variant="body1" color="default">
+          {value}
+        </Typography>
         {children}
       </Cell>
     )
