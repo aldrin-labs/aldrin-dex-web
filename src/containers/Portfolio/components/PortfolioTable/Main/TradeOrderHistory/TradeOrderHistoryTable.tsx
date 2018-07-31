@@ -169,7 +169,7 @@ class TradeOrderHistoryTable extends React.Component<
 
               const cols = [
                 exchange,
-                amount,
+                parseFloat(amount).toLocaleString('en-US'),
                 [mainSymbol, cost],
                 new Date(datetime).toLocaleString('en-US'),
                 symbol,

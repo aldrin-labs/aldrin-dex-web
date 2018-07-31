@@ -161,6 +161,7 @@ const Icon = styled.i`
   padding-right: 5px;
 `
 
+// TODO: SHOULD BE REFACTORED
 export const onValidateSum = (
   reducedSum: RowT,
   selectedBalances: RowT,
