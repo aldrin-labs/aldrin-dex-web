@@ -94,6 +94,7 @@ const PTDIndustry = css`
   }
   
   &:nth-last-child(1) {
+    min-width: 112px;
     padding-right: 10px;
   }
 `

@@ -817,6 +817,7 @@ const PTD = styled.td`
   }
   
   &:nth-last-child(1) {
+    min-width: 112px;
     padding-right: 16px;
   }
 `
@@ -903,6 +904,7 @@ const PTH = styled.th`
   }
   
   &:nth-last-child(1) {
+    min-width: 112px;
     padding-right: 16px;
   }
 `
