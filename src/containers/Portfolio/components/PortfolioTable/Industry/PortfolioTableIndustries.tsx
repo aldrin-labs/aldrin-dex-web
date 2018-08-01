@@ -6,7 +6,7 @@ import { compose } from 'recompose'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
 import {
-  calcPercentage,
+  roundPercentage,
   calcAllSumOfPortfolioAsset,
 } from '@utils/PortfolioTableUtils'
 import LineChart from '@components/LineChart'
@@ -191,7 +191,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           industry: industryName || '-',
           price: mainPrice || 0,
           portfolioPerf: 0,
-          portfolioPerc: calcPercentage(currentPrice * 100 / allSums),
+          portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
           industryPerf: industryPerformance || 0,
         }
 
