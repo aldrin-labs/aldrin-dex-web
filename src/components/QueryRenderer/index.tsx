@@ -20,6 +20,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       query,
       component,
       variables,
+      subscriptionArgs,
       renderWithPlaceholder,
       placeholder: Placeholder,
       ...rest
@@ -27,7 +28,16 @@ export default class QueryRenderer extends React.Component<IProps> {
 
     return (
       <Query query={query} variables={variables}>
-        {({ loading, error, data, refetch, networkStatus, fetchMore }) => {
+        {({
+          loading,
+          error,
+          data,
+          refetch,
+          networkStatus,
+          fetchMore,
+          subscribeToMore,
+          ...result
+        }) => {
           if (loading && renderWithPlaceholder) {
             return (
               <>
@@ -46,13 +56,23 @@ export default class QueryRenderer extends React.Component<IProps> {
 
           const Component = component
 
-          return (
+          return subscriptionArgs ? (
             <Component
               data={data}
               refetch={refetch}
               fetchMore={fetchMore}
+              subscribeToMore={() =>
+                subscribeToMore({
+                  document: subscriptionArgs.subscription,
+                  variables: { ...subscriptionArgs.variables },
+                  updateQuery: subscriptionArgs.updateQueryFunction,
+                })
+              }
+              {...result}
               {...rest}
             />
+          ) : (
+            <Component data={data} fetchMore={fetchMore} {...rest} />
           )
         }}
       </Query>

@@ -11,3 +11,15 @@ export const ExchangeQuery = gql`
     }
   }
 `
+
+export const MARKET_TICKERS = gql`
+  subscription listenMarketTickers($symbol: String!, $exchange: String!) {
+    listenMarketTickers(symbol: $symbol, exchange: $exchange)
+  }
+`
+
+export const MARKET_QUERY = gql`
+  query marketTickers($symbol: String!, $exchange: String!) {
+    marketTickers(symbol: $symbol, exchange: $exchange)
+  }
+`

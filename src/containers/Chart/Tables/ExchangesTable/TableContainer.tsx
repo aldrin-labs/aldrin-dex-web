@@ -26,8 +26,6 @@ const transformDataToExchangesTable = ({ data, ...props }) => {
           ]
         : []
 
-    console.log(data)
-
     return <ExchangesTable exchanges={exchanges} {...props} />
   }
 

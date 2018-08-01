@@ -21,18 +21,6 @@ export interface IProps {
   data: any[]
 }
 
-export const MARKET_TICKERS = gql`
-  subscription listenMarketTickers($symbol: String!, $exchange: String!) {
-    listenMarketTickers(symbol: $symbol, exchange: $exchange)
-  }
-`
-
-export const MARKET_QUERY = gql`
-  query marketTickers($symbol: String!, $exchange: String!) {
-    marketTickers(symbol: $symbol, exchange: $exchange)
-  }
-`
-
 class TickersList extends React.Component {
   state = {
     data: [],
@@ -168,16 +156,16 @@ class TradeHistoryTable extends PureComponent<IProps> {
     tableExpanded: true,
   }
 
+  componentDidMount() {
+    this.props.subscribeToMore && this.props.subscribeToMore()
+  }
+
   render() {
-    const { quote, data } = this.props
+    const { quote, data, ...result } = this.props
     const { tableExpanded } = this.state
 
-    const symbol = this.props.currencyPair ? this.props.currencyPair : ''
-    const exchange =
-      this.props.activeExchange && this.props.activeExchange.exchange
-        ? this.props.activeExchange.exchange.symbol
-        : ''
-    console.log('subscribe to ', symbol, exchange)
+    console.log(result)
+    console.log(data)
     if (!data) {
       return <Loading centerAligned />
     }
@@ -219,7 +207,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body height="400px">
-            <Query query={MARKET_QUERY} variables={{ symbol, exchange }}>
+            {/* <Query query={MARKET_QUERY} variables={{ symbol, exchange }}>
               {({ subscribeToMore, ...result }) => (
                 <TickersList
                   {...result}
@@ -242,7 +230,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                   }
                 />
               )}
-            </Query>
+            </Query> */}
           </Body>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>

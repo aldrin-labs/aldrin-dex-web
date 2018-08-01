@@ -242,7 +242,6 @@ class Chart extends React.Component<IState> {
 
           <TradeHistoryTable
             {...{
-              data: orderBook,
               quote,
               activeExchange,
               currencyPair,
