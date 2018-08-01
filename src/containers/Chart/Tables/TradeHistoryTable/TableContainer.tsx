@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
+
 import Table from './Table/TradeHistoryTable'
+import { maximumItemsInArray } from '@utils/chartPageUtils'
 
 class TableContainer extends Component {
   state = {
@@ -39,7 +41,7 @@ class TableContainer extends Component {
       console.log([ticker, ...state.data])
 
       return {
-        data: [ticker, ...state.data],
+        data: maximumItemsInArray([ticker, ...state.data], 50),
       }
     }
 
