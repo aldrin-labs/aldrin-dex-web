@@ -21,7 +21,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       component,
       variables,
       renderWithPlaceholder,
-      placeholder,
+      placeholder: Placeholder,
       ...rest
     } = this.props
 
@@ -29,7 +29,15 @@ export default class QueryRenderer extends React.Component<IProps> {
       <Query query={query} variables={variables}>
         {({ loading, error, data, refetch, networkStatus, fetchMore }) => {
           if (loading && renderWithPlaceholder) {
-            return <>{placeholder && placeholder()}</>
+            return (
+              <>
+                {Placeholder && (
+                  <div style={{ margin: '0 auto' }}>
+                    <Placeholder />{' '}
+                  </div>
+                )}
+              </>
+            )
           } else if (loading) {
             return <Loading centerAligned />
           } else if (error) {

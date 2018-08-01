@@ -249,8 +249,8 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 export default function(props: any) {
   return (
     <QueryRenderer
-      renderWithPlaceholder
-      placeholder={MyLoader}
+      // renderWithPlaceholder
+      // placeholder={MyLoader}
       component={TradeOrderHistoryTable}
       query={MyTradesQuery}
       {...props}

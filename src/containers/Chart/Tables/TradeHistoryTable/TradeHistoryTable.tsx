@@ -38,75 +38,92 @@ class TickersList extends React.Component {
     data: [],
     symbol: '',
     exchange: '',
-    unsubscribe: null
+    unsubscribe: null,
   }
 
   static getDerivedStateFromProps(newProps, state) {
-    if (newProps.data.marketTickers && (newProps.variables.symbol !== state.symbol || newProps.variables.exchange !== state.exchange)) {
-      const tickersData = newProps.data.marketTickers;
+    if (
+      newProps.data.marketTickers &&
+      (newProps.variables.symbol !== state.symbol ||
+        newProps.variables.exchange !== state.exchange)
+    ) {
+      const tickersData = newProps.data.marketTickers
       let tickers = []
       for (let i = 0; i < tickersData.length; ++i) {
-        const tickerData = JSON.parse(tickersData[i]);
-        if (tickerData[1] !== newProps.variables.exchange || tickerData[2] !== newProps.variables.symbol) {
-          continue;
+        const tickerData = JSON.parse(tickersData[i])
+        if (
+          tickerData[1] !== newProps.variables.exchange ||
+          tickerData[2] !== newProps.variables.symbol
+        ) {
+          continue
         }
 
-        const fall = tickers.length > 0 ? tickers[tickers.length - 1].price > tickerData[3] : false;
+        const fall =
+          tickers.length > 0
+            ? tickers[tickers.length - 1].price > tickerData[3]
+            : false
         const ticker = {
           size: tickerData[4],
           price: tickerData[3],
           time: tickerData[7],
-          fall
-        };
-        tickers.push(ticker);
+          fall,
+        }
+        tickers.push(ticker)
       }
       if (state.unsubscribe) {
         console.log('unsubscribe', state.symbol, state.exchange)
-        state.unsubscribe(); // unsubscribe
+        state.unsubscribe() // unsubscribe
       }
-      return ({
+      return {
         data: tickers,
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
-        unsubscribe: newProps.subscribeToNewTickers()
-      })
+        unsubscribe: newProps.subscribeToNewTickers(),
+      }
     }
 
-    if (newProps.data && newProps.data.marketTickers && newProps.data.marketTickers.length > 0) {
-      const tickerData = JSON.parse(newProps.data.marketTickers[0]);
+    if (
+      newProps.data &&
+      newProps.data.marketTickers &&
+      newProps.data.marketTickers.length > 0
+    ) {
+      const tickerData = JSON.parse(newProps.data.marketTickers[0])
       if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
-        return null;
+        return null
       }
-      const fall = state.data.length > 0 ? state.data[0].price > tickerData[3] : false;
+      const fall =
+        state.data.length > 0 ? state.data[0].price > tickerData[3] : false
       const ticker = {
         size: tickerData[4],
         price: tickerData[3],
         time: new Date(tickerData[7]).toLocaleTimeString(),
-        fall
+        fall,
       }
 
-      if (state.data.length > 50) { state.data.pop(); }
+      if (state.data.length > 50) {
+        state.data.pop()
+      }
 
-      return ({
+      return {
         data: [ticker, ...state.data],
         symbol: newProps.variables.symbol,
         exchange: newProps.variables.exchange,
-        unsubscribe: state.unsubscribe
-      })
+        unsubscribe: state.unsubscribe,
+      }
     }
 
-    return null;
+    return null
   }
 
   componentWillUnmount() {
     if (this.state.unsubscribe) {
-      this.state.unsubscribe();
+      this.state.unsubscribe()
     }
   }
 
   render() {
     return (
-      <div>
+      <>
         {this.state.data.slice(0, 30).map((ticker, i) => {
           //          console.log(ticker);
           return (
@@ -123,22 +140,16 @@ class TickersList extends React.Component {
               />
 
               <AnimatedCell
-                animation={
-                  ticker.fall ? 'fadeInRed' : 'fadeInGreen'
-                }
+                animation={ticker.fall ? 'fadeInRed' : 'fadeInGreen'}
                 color={ticker.fall ? '#d77455' : '#34cb86d1'}
                 width={'33%'}
                 value={ticker.price}
               >
-                <StyledArrow
-                  direction={ticker.fall ? 'down' : 'up'}
-                />
+                <StyledArrow direction={ticker.fall ? 'down' : 'up'} />
               </AnimatedCell>
               <AnimatedCell
                 animation={
-                  ticker.fall
-                    ? 'fadeInRedAndBack'
-                    : 'fadeInGreenAndBack'
+                  ticker.fall ? 'fadeInRedAndBack' : 'fadeInGreenAndBack'
                 }
                 color="#9ca2aa"
                 width={'33%'}
@@ -147,9 +158,9 @@ class TickersList extends React.Component {
             </Row>
           )
         })}
-      </div>
-    );
-  };
+      </>
+    )
+  }
 }
 
 class TradeHistoryTable extends PureComponent<IProps> {
@@ -161,9 +172,12 @@ class TradeHistoryTable extends PureComponent<IProps> {
     const { quote, data } = this.props
     const { tableExpanded } = this.state
 
-    const symbol = this.props.currencyPair ? this.props.currencyPair : '';
-    const exchange = (this.props.activeExchange && this.props.activeExchange.exchange) ? this.props.activeExchange.exchange.symbol : '';
-    console.log('subscribe to ', symbol, exchange);
+    const symbol = this.props.currencyPair ? this.props.currencyPair : ''
+    const exchange =
+      this.props.activeExchange && this.props.activeExchange.exchange
+        ? this.props.activeExchange.exchange.symbol
+        : ''
+    console.log('subscribe to ', symbol, exchange)
     if (!data) {
       return <Loading centerAligned />
     }
@@ -205,34 +219,33 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body height="400px">
-            <Query
-              query={MARKET_QUERY}
-              variables={{ symbol, exchange }}
-            >
-              {({ subscribeToMore, ...result }) =>
-                (
-                  <TickersList
-                    {...result}
-                    subscribeToNewTickers={() =>
-                      subscribeToMore({
-                        document: MARKET_TICKERS,
-                        variables: { symbol, exchange },
-                        updateQuery: (prev, { subscriptionData }) => {
-                          if (!subscriptionData.data) { return prev; }
-                          const newTicker = subscriptionData.data.listenMarketTickers;
-                          let obj = Object.assign({}, prev, {
-                            marketTickers: [newTicker]
-                          });
-                          return obj;
+            <Query query={MARKET_QUERY} variables={{ symbol, exchange }}>
+              {({ subscribeToMore, ...result }) => (
+                <TickersList
+                  {...result}
+                  subscribeToNewTickers={() =>
+                    subscribeToMore({
+                      document: MARKET_TICKERS,
+                      variables: { symbol, exchange },
+                      updateQuery: (prev, { subscriptionData }) => {
+                        if (!subscriptionData.data) {
+                          return prev
                         }
-                      })
-                    }
-                  />
-                )}
+                        const newTicker =
+                          subscriptionData.data.listenMarketTickers
+                        let obj = Object.assign({}, prev, {
+                          marketTickers: [newTicker],
+                        })
+                        return obj
+                      },
+                    })
+                  }
+                />
+              )}
             </Query>
           </Body>
         </CollapseWrapper>
-      </TradeHistoryTableCollapsible >
+      </TradeHistoryTableCollapsible>
     )
   }
 }
@@ -286,7 +299,7 @@ const StyledArrowSign = styled(MdArrowDropUp)`
 
   ${TriggerTitle}:hover & {
     animation: ${(props) =>
-    props.variant.tableCollapsed ? JumpUpArrow : JumpDownArrow}
+        props.variant.tableCollapsed ? JumpUpArrow : JumpDownArrow}
       0.5s linear 0.5s 2;
   }
 `

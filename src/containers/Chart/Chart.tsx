@@ -10,6 +10,7 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
+import TablePlaceholder from '@components/TablePlaceholderLoader'
 import { ExchangeQuery } from './api'
 import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
@@ -227,6 +228,8 @@ class Chart extends React.Component<IState> {
             component={ExchangesTable}
             query={ExchangeQuery}
             variables={{ marketName: currencyPair }}
+            renderWithPlaceholder
+            placeholder={TablePlaceholder}
             {...{
               activeExchange,
               changeExchange,
@@ -237,14 +240,14 @@ class Chart extends React.Component<IState> {
             {...this.props}
           />
 
-          {/* <TradeHistoryTable
+          <TradeHistoryTable
             {...{
               data: orderBook,
               quote,
               activeExchange,
               currencyPair,
             }}
-          /> */}
+          />
         </TablesBlockWrapper>
       </TablesContainer>
     )
