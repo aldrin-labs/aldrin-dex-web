@@ -528,6 +528,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         symbol,
                         industry,
                         price,
+                        portfolioPerc,
                         portfolioPerf,
                         industryPerf1Week,
                         industryPerf1Month,
@@ -553,7 +554,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         currency,
                         symbol,
                         industry,
-                        [mainSymbol, formattedPrice],
+                        // [mainSymbol, formattedPrice],
+                        `${portfolioPerc}%`,
                         `${portfolioPerf}%`,
                         `${industryPerf1Week}%`,
                         `${industryPerf1Month}%`,
@@ -705,7 +707,7 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 35vh;
 
-  width: 720px;
+  width: 1031px;
 
   @media (max-width: 2000px) {
     height: 30vh;
