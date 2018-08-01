@@ -77,6 +77,10 @@ const PTDIndustry = css`
     min-width: 120px;
     padding-right: 16px;
   }
+  
+  &:nth-last-child(1) {
+    padding-right: 10px;
+  }
 `
 
 const PTDOther = css`
@@ -123,8 +127,8 @@ const PTDOther = css`
   
   &:nth-child(10) {
     min-width: 101px;
-    padding-right: 10px;
   }
+ 
 `
 
 const PTD = styled.td`

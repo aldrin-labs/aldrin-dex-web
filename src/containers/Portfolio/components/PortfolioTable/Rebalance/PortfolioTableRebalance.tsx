@@ -1791,7 +1791,7 @@ const Table = styled.table`
   border-collapse: collapse;
   display: inline-block;
   //width: 45vw;
-  overflow: hidden;
+  //overflow: hidden;
 `
 
 const TableHeading = styled.div`
