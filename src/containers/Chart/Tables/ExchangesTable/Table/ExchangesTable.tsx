@@ -105,7 +105,6 @@ class ExchangesTable extends PureComponent {
                           flexBasis: '20%',
                           color:
                             exchange.status || theme.palette.secondary.main,
-                          marginRight: '0.25rem',
                         }}
                       />
                       <Typography noWrap variant="body1" color="default">
@@ -141,12 +140,12 @@ class ExchangesTable extends PureComponent {
 
 const FullWidthBlockMovedLeft = FullWidthBlock.extend`
   position: relative;
-  left: calc(6.4px + 19.3px);
+  left: 20%;
 `
 
 const StyledHeadCell = styled(HeadCell)`
   line-height: 37px;
-  padding: 0.25rem;
+  padding: 0.25rem 0.4rem;
 `
 
 const StyledTable = styled(Table)`
