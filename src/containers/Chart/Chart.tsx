@@ -10,6 +10,8 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
+import { ExchangeQuery } from './api'
+import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
@@ -180,6 +182,8 @@ class Chart extends React.Component<IState> {
       quote = currencyPair.split('_')[1]
     }
 
+    console.log(currencyPair)
+
     const { activeExchange, theme } = this.props
     const { changeExchange } = this
 
@@ -219,14 +223,18 @@ class Chart extends React.Component<IState> {
             show: showTableOnMobile === 'TRADE',
           }}
         >
-          <ExchangesTable
+          <QueryRenderer
+            component={ExchangesTable}
+            query={ExchangeQuery}
+            variables={{ marketName: currencyPair }}
             {...{
               activeExchange,
               changeExchange,
               quote,
+              theme,
               onButtonClick: this.changeTable,
-              marketName: currencyPair,
             }}
+            {...this.props}
           />
 
           {/* <TradeHistoryTable

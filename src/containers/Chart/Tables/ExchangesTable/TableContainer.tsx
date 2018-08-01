@@ -1,7 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import { ExchangeQuery } from '../../api'
-import QueryRenderer from '@components/QueryRenderer'
 import ExchangesTable from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable'
 
 const mockExchanges = [
@@ -15,7 +13,7 @@ const mockExchanges = [
   { name: 'ZB.COM', symbol: 'zbcom' },
 ]
 
-const transformDataToExchanges = ({ data, ...props }) => {
+const transformDataToExchangesTable = ({ data, ...props }) => {
   if (data && data.marketByName) {
     const exchanges =
       data.marketByName.length > 0
@@ -36,17 +34,4 @@ const transformDataToExchanges = ({ data, ...props }) => {
   return null
 }
 
-class TableContainer extends Component {
-  render() {
-    return (
-      <QueryRenderer
-        component={transformDataToExchanges}
-        query={ExchangeQuery}
-        variables={{ marketName: this.props.marketName }}
-        {...this.props}
-      />
-    )
-  }
-}
-
-export default TableContainer
+export default transformDataToExchangesTable

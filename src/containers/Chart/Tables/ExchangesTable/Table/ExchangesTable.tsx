@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import { FaCircle } from 'react-icons/lib/fa'
 import { Button, Typography } from '@material-ui/core'
 import styled from 'styled-components'
-import { withTheme } from '@material-ui/core/styles'
 
 import {
   Table,
@@ -25,7 +24,7 @@ class ExchangesTable extends PureComponent<IProps> {
       exchanges,
       theme,
     } = this.props
-    console.log(activeExchange)
+
     return (
       <StyledTable>
         <Title background={theme.palette.primary.dark}>
@@ -166,6 +165,4 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-const ThemeWrapper = (props) => <ExchangesTable {...props} />
-
-export default withTheme()(ThemeWrapper)
+export default ExchangesTable
