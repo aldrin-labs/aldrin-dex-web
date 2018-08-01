@@ -23,7 +23,7 @@ import {
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
 import { customAquaScrollBar } from '@utils/cssUtils'
-import { onSortStrings, roundUSDOff } from '@utils/PortfolioTableUtils'
+import { onSortStrings, roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
@@ -503,8 +503,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         (selectedRows && selectedRows.indexOf(idx) >= 0) ||
                         false
 
-                      const priceFormattedBTC = roundUSDOff(price, isUSDCurrently)
-                      const priceFormattedUSD = parseFloat(roundUSDOff(price, isUSDCurrently)).toLocaleString('en-US')
+                      const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
+
+                      const priceFormattedBTC = roundAndFormatNumber(parseFloat(price), numberOfDigitsAfterPoint)
+                      const priceFormattedUSD = roundAndFormatNumber(parseFloat(price), numberOfDigitsAfterPoint)
                       const formattedPrice = isUSDCurrently ? priceFormattedUSD : priceFormattedBTC
 
                       const cols = [

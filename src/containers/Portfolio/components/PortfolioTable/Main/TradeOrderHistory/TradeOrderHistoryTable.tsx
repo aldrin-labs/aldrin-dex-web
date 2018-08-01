@@ -5,7 +5,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import ContentLoader from 'react-content-loader'
 
 import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
-import { onSortTableFull } from '@utils/PortfolioTableUtils'
+import {onSortTableFull, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
 import { customAquaScrollBar } from '@utils/cssUtils'
 import {
   IProps,
@@ -214,7 +214,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
               const cols = [
                 exchange,
-                parseFloat(amount).toLocaleString('en-US'),
+                roundAndFormatNumber(parseFloat(amount)),
                 [mainSymbol, cost],
                 new Date(datetime).toLocaleString('en-US'),
                 symbol,

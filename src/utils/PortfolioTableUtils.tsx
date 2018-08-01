@@ -127,11 +127,19 @@ export const onSortStrings = (a: string, b: string): number => {
 
 export const roundPercentage = (num: number) => num.toFixed(2)
 
-export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
-  if (num === 0) return '0'
+export const formatNumberToUSFormat = (numberToFormat: number) => numberToFormat.toString().replace(/\d(?=(\d{3})+\.)/g, '$&,')
 
-  return parseFloat(num).toFixed(isUSDCurrently ? 2 : 8).toLocaleString('en-US')
+export const checkForString = (numberOrString: number | string) => typeof numberOrString === 'string'
+
+export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number) => {
+
+  if (x === 0) {
+    return '0'
+  }
+
+  return formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
 }
+
 
 const Icon = styled.i`
   padding-right: 5px;
