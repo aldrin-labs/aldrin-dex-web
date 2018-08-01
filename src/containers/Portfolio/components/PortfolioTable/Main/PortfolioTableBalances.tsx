@@ -11,7 +11,7 @@ import PortfolioTableHead from '@containers/Portfolio/components/PortfolioTable/
 import {
   onValidateSum,
   onSortStrings,
-  calcPercentage,
+  roundPercentage,
   calcAllSumOfPortfolioAsset,
 } from '@utils/PortfolioTableUtils'
 import * as actions from '../../../actions'
@@ -185,11 +185,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const col = {
           currency: name || '',
           symbol,
-          percentage: calcPercentage(currentPrice * 100 / allSums),
+          percentage: roundPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: currentPrice || 0,
-          daily: calcPercentage(mainPrice / 100 * percentChangeDay),
+          daily: roundPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
           realizedPL: realizedProfit,
           realizedPLPerc: 0,

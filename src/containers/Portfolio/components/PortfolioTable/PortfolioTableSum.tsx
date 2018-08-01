@@ -4,26 +4,12 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum.types'
 import {sampleData} from './dataMock'
+import {checkForString, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
 
 export default class PortfolioTableSum extends React.Component<IProps> {
-  onFloorN = (x: string | number, numberOfDigitsAfterPoint: number) => {
-    if (typeof x === 'string') {
-      return x
-    }
-
-    if (x === 0) {
-      return '0'
-    }
-
-    return numberOfDigitsAfterPoint === 8 ? x.toFixed(numberOfDigitsAfterPoint) : parseFloat(x.toFixed(numberOfDigitsAfterPoint)).toLocaleString('en-US')
-
-
-  }
-
   render() {
     const { selectedSum, industry, isUSDCurrently } = this.props
     const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
-
 
     return (
       <PTBody style={{ borderBottom: 'none' }}>
@@ -39,18 +25,17 @@ export default class PortfolioTableSum extends React.Component<IProps> {
             if (Array.isArray(res)) {
               const [icon, currency] = res
 
+              const formattedCurrency = checkForString(currency) ? currency : roundAndFormatNumber(parseFloat(currency),numberOfDigitsAfterPoint)
+
               return (
                 <PTD key={key}>
                   {icon}
-                  {this.onFloorN(currency, numberOfDigitsAfterPoint)}
+                  {formattedCurrency}
                 </PTD>
               )
             }
             if (!Number.isNaN(selectedSum[key])) {
-              res = this.onFloorN(
-                selectedSum[key],
-                numberOfDigitsAfterPoint
-              )
+              res = checkForString(selectedSum[key]) ? selectedSum[key] : roundAndFormatNumber(parseFloat(selectedSum[key]),numberOfDigitsAfterPoint)
             }
 
             return (
