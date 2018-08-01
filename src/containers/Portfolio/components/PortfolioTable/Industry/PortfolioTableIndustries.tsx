@@ -35,7 +35,11 @@ const tableHeadings = [
   { name: 'Industry', value: 'industry' },
   { name: 'Current', value: 'price' },
   { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
-  { name: 'Industry', value: 'industryPerf', additionName: 'performance' },
+  { name: 'Industry 1 week', value: 'industryPerf1Week', additionName: 'performance' },
+  { name: 'Industry 1 month', value: 'industryPerf1Month', additionName: 'performance' },
+  { name: 'Industry 3 month', value: 'industryPerf3Months', additionName: 'performance' },
+  { name: 'Industry 1 year', value: 'industryPerf1Year', additionName: 'performance' },
+
 ]
 
 const defaultSelectedSum = {
@@ -44,7 +48,10 @@ const defaultSelectedSum = {
   industry: '',
   price: 0,
   portfolioPerf: 0,
-  industryPerf: 0,
+  industryPerf1Week: 0,
+  industryPerf1Month: 0,
+  industryPerf3Months: 0,
+  industryPerf1Year: 0,
 }
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
@@ -171,15 +178,31 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         const { name: industryName, performance } = ind || {
           name: '',
           performance: {
-            usd: 0,
-            btc: 0,
+            usdWeek: 0,
+            usdMonth: 0,
+            usd3Months: 0,
+            usdYear: 0,
+            btcWeek: 0,
+            btcMonth: 0,
+            btc3Months: 0,
+            btcYear: 0
           },
         }
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        const industryPerformance = isUSDCurrently
-          ? parseFloat(performance.usd ? performance.usd : 0).toFixed(2)
-          : parseFloat(performance.btc ? performance.btc : 0).toFixed(2)
+
+        const industryPerformance = isUSDCurrently ? {
+          oneWeek: performance.usdWeek,
+          oneMonth: performance.usdMonth,
+          threeMonth: performance.usd3Months,
+          oneYear: performance.usdYear,
+        } :
+          {
+            oneWeek: performance.btcWeek,
+            oneMonth: performance.btcMonth,
+            threeMonth: performance.btc3Months,
+            oneYear: performance.btcYear,
+          }
 
         const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
@@ -192,7 +215,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           price: mainPrice || 0,
           portfolioPerf: 0,
           portfolioPerc: calcPercentage(currentPrice * 100 / allSums),
-          industryPerf: industryPerformance || 0,
+          industryPerf1Week: calcPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
+          industryPerf1Month: calcPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
+          industryPerf3Months: calcPercentage(parseFloat(industryPerformance.threeMonth)) || 0,
+          industryPerf1Year: calcPercentage(parseFloat(industryPerformance.oneYear)) || 0,
         }
 
         return col
@@ -294,7 +320,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industry: val.industry,
         price: Number(acc.price) + Number(val.price),
         portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
-        industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
+        industryPerf1Week: Number(acc.industryPerf1Week) + Number(val.industryPerf1Week),
+        industryPerf1Month: Number(acc.industryPerf1Month) + Number(val.industryPerf1Month),
+        industryPerf3Months: Number(acc.industryPerf3Months) + Number(val.industryPerf3Months),
+        industryPerf1Year: Number(acc.industryPerf1Year) + Number(val.industryPerf1Year),
       }),
       {
         currency: '',
@@ -302,7 +331,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industry: '',
         price: 0,
         portfolioPerf: 0,
-        industryPerf: 0,
+        industryPerf1Week: 0,
+        industryPerf1Month: 0,
+        industryPerf3Months: 0,
+        industryPerf1Year: 0,
       }
     )
     const validateSum = this.onValidateSum(reducedSum)
@@ -336,7 +368,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industry: '-',
         price: [mainSymbol, reducedSum.price],
         portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
-        industryPerf: `${reducedSum.industryPerf.toFixed(2)}%`,
+        industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
+        industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
+        industryPerf3Months: `${reducedSum.industryPerf3Months.toFixed(2)}%`,
+        industryPerf1Year: `${reducedSum.industryPerf1Year.toFixed(2)}%`,
       }
     } else if (selectedRows.length >= 1) {
       newReducedSum = {
@@ -346,7 +381,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industry: '-',
         price: [mainSymbol, reducedSum.price],
         portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
-        industryPerf: `${reducedSum.industryPerf.toFixed(2)}%`,
+        industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
+        industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
+        industryPerf3Months: `${reducedSum.industryPerf3Months.toFixed(2)}%`,
+        industryPerf1Year: `${reducedSum.industryPerf1Year.toFixed(2)}%`,
+
       }
     }
 
@@ -450,7 +489,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         isSorted={isSorted}
                       >
 
-                        {[4,5].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
+                        {[4,5,6,7,8].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
 
                         {isSorted && (
                           <SvgIcon
@@ -490,7 +529,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         industry,
                         price,
                         portfolioPerf,
-                        industryPerf,
+                        industryPerf1Week,
+                        industryPerf1Month,
+                        industryPerf3Months,
+                        industryPerf1Year,
                       } = row
 
                       const mainSymbol = isUSDCurrently ? (
@@ -513,7 +555,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         industry,
                         [mainSymbol, formattedPrice],
                         `${portfolioPerf}%`,
-                        `${industryPerf}%`,
+                        `${industryPerf1Week}%`,
+                        `${industryPerf1Month}%`,
+                        `${industryPerf3Months}%`,
+                        `${industryPerf1Year}%`,
                       ]
 
 
@@ -765,8 +810,11 @@ const PTD = styled.td`
       text-overflow: ellipsis;
   }
 
-  &:nth-child(7) {
-    min-width: 120px;
+  &:nth-child(n + 7) {
+    min-width: 110px;
+  }
+  
+  &:nth-last-child(1) {
     padding-right: 16px;
   }
 `
@@ -848,8 +896,11 @@ const PTH = styled.th`
     min-width: 200px;
   }
 
-  &:nth-child(7) {
-    min-width: 120px;
+  &:nth-child(n+7) {
+    min-width: 110px;
+  }
+  
+  &:nth-last-child(1) {
     padding-right: 16px;
   }
 `

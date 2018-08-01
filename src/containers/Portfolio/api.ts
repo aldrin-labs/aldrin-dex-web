@@ -60,8 +60,14 @@ export const getPortfolioQuery = gql`
             industry {
               name
               performance {
-                usd
-                btc
+                usdWeek
+                usdMonth
+                usd3Months
+                usdYear
+                btcWeek
+                btcMonth
+                btc3Months
+                btcYear
               }
             }
           }
