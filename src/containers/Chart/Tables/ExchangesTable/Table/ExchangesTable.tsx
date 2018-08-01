@@ -14,13 +14,13 @@ import {
   HeadCell,
   FullWidthBlock,
 } from '@components/Table/Table'
+import { IProps } from './ExchangesTable.types'
 
-class ExchangesTable extends PureComponent {
+class ExchangesTable extends PureComponent<IProps> {
   render() {
     const {
       activeExchange,
       changeExchange,
-      quote,
       onButtonClick,
       exchanges,
       theme,
