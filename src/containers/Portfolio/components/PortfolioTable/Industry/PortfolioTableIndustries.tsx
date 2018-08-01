@@ -214,11 +214,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           industry: industryName || '-',
           price: mainPrice || 0,
           portfolioPerf: 0,
-          portfolioPerc: calcPercentage(currentPrice * 100 / allSums),
-          industryPerf1Week: calcPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
-          industryPerf1Month: calcPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
-          industryPerf3Months: calcPercentage(parseFloat(industryPerformance.threeMonth)) || 0,
-          industryPerf1Year: calcPercentage(parseFloat(industryPerformance.oneYear)) || 0,
+          portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
+          industryPerf1Week: roundPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
+          industryPerf1Month: roundPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
+          industryPerf3Months: roundPercentage(parseFloat(industryPerformance.threeMonth)) || 0,
+          industryPerf1Year: roundPercentage(parseFloat(industryPerformance.oneYear)) || 0,
         }
 
         return col
