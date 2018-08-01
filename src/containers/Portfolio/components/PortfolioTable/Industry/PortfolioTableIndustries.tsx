@@ -648,10 +648,13 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   padding: 0 20px 20px;
-
-  @media (max-width: 2000px) {
-    align-items: center;
+  
+  @media (min-width: 1600px) and (max-width: 2200px) {
     flex-direction: column;
+  }
+
+  @media (max-width: 2200px) {
+    align-items: center;
   }
 `
 
@@ -711,7 +714,7 @@ const ChartContainer = styled.div`
 
   width: 1031px;
 
-  @media (max-width: 2000px) {
+  @media (max-width: 2200px) {
     height: 30vh;
   }
 
@@ -739,9 +742,8 @@ const Wrapper = styled.div`
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 35vh;
   margin-right: 50px;
-  //width: 900px;
 
-  @media (max-width: 2000px) {
+  @media (max-width: 2200px) {
     margin-right: 0;
     margin-bottom: 30px;
   }
