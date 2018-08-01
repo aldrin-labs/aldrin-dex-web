@@ -24,64 +24,9 @@ export interface ITicker {
   fall: boolean
 }
 
-// class TickersList extends React.Component {
-//   state = {
-//     data: [],
-//     symbol: '',
-//     exchange: '',
-//     unsubscribe: null,
-//   }
-
-//   componentWillUnmount() {
-//     if (this.state.unsubscribe) {
-//       this.state.unsubscribe()
-//     }
-//   }
-
-//   render() {
-//     return (
-//       <>
-//         {this.state.data.slice(0, 30).map((ticker, i) => {
-//           //          console.log(ticker);
-//           return (
-
-//           )
-//         })}
-//       </>
-//     )
-//   }
-// }
-
 class TradeHistoryTable extends PureComponent<IProps> {
   state = {
     tableExpanded: true,
-    data: [],
-  }
-  static getDerivedStateFromProps(newProps: IProps, state) {
-    if (
-      newProps.data &&
-      newProps.data.marketTickers &&
-      newProps.data.marketTickers.length > 0
-    ) {
-      const tickerData = JSON.parse(newProps.data.marketTickers[0])
-      if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
-        return null
-      }
-      const fall =
-        state.data.length > 0 ? state.data[0].price > tickerData[3] : false
-      const ticker = {
-        size: tickerData[4],
-        price: tickerData[3],
-        time: new Date(tickerData[7]).toLocaleTimeString(),
-        fall,
-      }
-
-      return {
-        data: [ticker, ...state.data],
-      }
-    }
-
-    return null
   }
 
   componentDidMount() {
@@ -89,11 +34,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
   }
 
   render() {
-    const { quote, data, ...result } = this.props
-    const { tableExpanded, data: stateData } = this.state
+    const { quote, data } = this.props
+    const { tableExpanded } = this.state
 
     console.log(data)
-    console.log(stateData)
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
@@ -132,7 +76,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body height="400px">
-            {stateData.map((ticker: ITicker) => (
+            {data.map((ticker: ITicker) => (
               <Row key={ticker.time} background={'#25282c'}>
                 <AnimatedCell
                   animation={
@@ -169,18 +113,6 @@ class TradeHistoryTable extends PureComponent<IProps> {
     )
   }
 }
-
-const StyledBody = Body.extend`
-  height: 330px;
-  transition: height 0.75s ease-in-out;
-
-  @media (min-width: 1366px) {
-    height: 40vh;
-  }
-  @media (min-width: 1920px) {
-    height: 50vh;
-  }
-`
 
 const TriggerTitle = Title.extend`
   cursor: pointer;

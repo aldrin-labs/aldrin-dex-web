@@ -23,3 +23,18 @@ export const MARKET_QUERY = gql`
     marketTickers(symbol: $symbol, exchange: $exchange)
   }
 `
+
+export const updateTradeHistoryQuerryFunction = (
+  prev,
+  { subscriptionData }
+) => {
+  if (!subscriptionData.data) {
+    return prev
+  }
+  const newTicker = subscriptionData.data.listenMarketTickers
+  let obj = Object.assign({}, prev, {
+    marketTickers: [newTicker],
+  })
+
+  return obj
+}

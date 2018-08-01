@@ -11,7 +11,12 @@ import {
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
 import TablePlaceholder from '@components/TablePlaceholderLoader'
-import { ExchangeQuery } from './api'
+import {
+  ExchangeQuery,
+  MARKET_TICKERS,
+  MARKET_QUERY,
+  updateTradeHistoryQuerryFunction,
+} from './api'
 import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
@@ -188,6 +193,12 @@ class Chart extends React.Component<IState> {
     const { activeExchange, theme } = this.props
     const { changeExchange } = this
 
+    const symbol = currencyPair || ''
+    const exchange =
+      activeExchange && activeExchange.exchange
+        ? activeExchange.exchange.symbol
+        : ''
+
     return (
       <TablesContainer>
         <TablesBlockWrapper
@@ -240,12 +251,21 @@ class Chart extends React.Component<IState> {
             {...this.props}
           />
 
-          <TradeHistoryTable
+          <QueryRenderer
+            component={TradeHistoryTable}
+            query={MARKET_QUERY}
+            variables={{ symbol, exchange }}
+            subscriptionArgs={{
+              subscription: MARKET_TICKERS,
+              variables: { symbol, exchange },
+              updateQueryFunction: updateTradeHistoryQuerryFunction,
+            }}
             {...{
               quote,
               activeExchange,
               currencyPair,
             }}
+            {...this.props}
           />
         </TablesBlockWrapper>
       </TablesContainer>

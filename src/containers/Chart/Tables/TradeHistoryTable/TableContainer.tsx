@@ -1,39 +1,42 @@
 import React, { Component } from 'react'
 import Table from './Table/TradeHistoryTable'
-import QueryRenderer from '@components/QueryRenderer'
-import { MARKET_QUERY, MARKET_TICKERS } from '../../api'
 
 class TableContainer extends Component {
+  state = {
+    data: [],
+  }
+
+  static getDerivedStateFromProps(newProps, state) {
+    if (
+      newProps.data &&
+      newProps.data.marketTickers &&
+      newProps.data.marketTickers.length > 0
+    ) {
+      const tickerData = JSON.parse(newProps.data.marketTickers[0])
+      if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
+        return null
+      }
+      const fall =
+        state.data.length > 0 ? state.data[0].price > tickerData[3] : false
+      const ticker = {
+        size: tickerData[4],
+        price: tickerData[3],
+        time: new Date(tickerData[7]).toLocaleTimeString(),
+        fall,
+      }
+
+      return {
+        data: [ticker, ...state.data],
+      }
+    }
+
+    return null
+  }
+
   render() {
-    const symbol = this.props.currencyPair ? this.props.currencyPair : ''
-    const exchange =
-      this.props.activeExchange && this.props.activeExchange.exchange
-        ? this.props.activeExchange.exchange.symbol
-        : ''
+    const { data, ...rest } = this.props
 
-    return (
-      <QueryRenderer
-        component={Table}
-        query={MARKET_QUERY}
-        variables={{ symbol, exchange }}
-        subscriptionArgs={{
-          subscription: MARKET_TICKERS,
-          variables: { symbol, exchange },
-          updateQueryFunction: (prev, { subscriptionData }) => {
-            if (!subscriptionData.data) {
-              return prev
-            }
-            const newTicker = subscriptionData.data.listenMarketTickers
-            let obj = Object.assign({}, prev, {
-              marketTickers: [newTicker],
-            })
-
-            return obj
-          },
-        }}
-        {...this.props}
-      />
-    )
+    return <Table data={this.state.data} {...rest} />
   }
 }
 
