@@ -8,6 +8,17 @@ class TableContainer extends Component {
 
   static getDerivedStateFromProps(newProps, state) {
     if (
+      !(
+        newProps.data &&
+        newProps.data.marketTickers &&
+        newProps.data.marketTickers.length > 0 &&
+        newProps.data.marketTickers.length !== state.data
+      )
+    ) {
+      //  if data is actually not a new data
+      return
+    }
+    if (
       newProps.data &&
       newProps.data.marketTickers &&
       newProps.data.marketTickers.length > 0
@@ -24,6 +35,8 @@ class TableContainer extends Component {
         time: new Date(tickerData[7]).toLocaleTimeString(),
         fall,
       }
+
+      console.log([ticker, ...state.data])
 
       return {
         data: [ticker, ...state.data],

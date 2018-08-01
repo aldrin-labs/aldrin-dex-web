@@ -37,8 +37,6 @@ class TradeHistoryTable extends PureComponent<IProps> {
     const { quote, data } = this.props
     const { tableExpanded } = this.state
 
-    console.log(data)
-
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
         <CollapseWrapper in={tableExpanded} collapsedHeight="2rem">
@@ -76,8 +74,8 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body height="400px">
-            {data.map((ticker: ITicker) => (
-              <Row key={ticker.time} background={'#25282c'}>
+            {data.map((ticker: ITicker, i: number) => (
+              <Row key={i} background={'#25282c'}>
                 <AnimatedCell
                   animation={
                     ticker.fall === true
