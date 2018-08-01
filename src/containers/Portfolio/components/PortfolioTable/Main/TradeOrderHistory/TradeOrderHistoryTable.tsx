@@ -5,7 +5,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import ContentLoader from 'react-content-loader'
 
 import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
-import { onSortTableFull } from '@utils/PortfolioTableUtils'
+import {onSortTableFull, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
 import { customAquaScrollBar } from '@utils/cssUtils'
 import {
   IProps,
@@ -80,9 +80,6 @@ const arrayOfStringHeadings = ['exchange', 'symbol', 'side']
 
 const arrayOfDateHeadings = ['datetime']
 
-// TODO: Should be replaced to the state
-// let staticRows = tradeOrderHistoryTableData
-
 class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   state: IState = {
     currentSort: null,
@@ -132,9 +129,6 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
       arrayOfStringHeadings,
       arrayOfDateHeadings
     )
-
-    // TODO: Should be refactored and included into setState
-    // staticRows = newData
 
     this.setState({
       currentSort: newCurrentSort,
@@ -214,7 +208,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
               const cols = [
                 exchange,
-                parseFloat(amount).toLocaleString('en-US'),
+                roundAndFormatNumber(parseFloat(amount)),
                 [mainSymbol, cost],
                 new Date(datetime).toLocaleString('en-US'),
                 symbol,

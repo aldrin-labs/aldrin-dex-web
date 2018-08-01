@@ -72,8 +72,6 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 }
 
-// TODO: Refactor all these queries and move it into subcomponents
-
 const mapStateToProps = (store) => ({
   keys: store.portfolio.keys,
   login: store.login.loginStatus,

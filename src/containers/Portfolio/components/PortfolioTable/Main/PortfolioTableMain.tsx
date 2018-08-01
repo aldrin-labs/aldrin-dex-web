@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { roundUSDOff } from '@utils/PortfolioTableUtils'
+import {formatNumberToUSFormat, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain.types'
 import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 
@@ -64,24 +64,25 @@ export default class PortfolioTableMain extends React.Component<IProps> {
             <Icon className="fa fa-btc" key={`${index}btc`} />
           )
 
-          // TODO: Should be replaced with function in utils
-          const quantityFormatted = quantity.toString().replace(/\d(?=(\d{3})+\.)/g, '$&,')
+          const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
+
+          const quantityFormatted = formatNumberToUSFormat(quantity)
 
           const cols = [
             currency,
             symbol,
             `${percentage} %`,
-            [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(price), numberOfDigitsAfterPoint)}`],
             quantityFormatted,
-            [mainSymbol, `${roundUSDOff(currentPrice, isUSDCurrently)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(currentPrice), numberOfDigitsAfterPoint)}`],
             //            daily,
             //            `${dailyPerc} %`,
-            [mainSymbol, `${roundUSDOff(realizedPL, isUSDCurrently)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(realizedPL), numberOfDigitsAfterPoint)}`],
             // realizedPL,
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
-            [mainSymbol, `${roundUSDOff(unrealizedPL, isUSDCurrently)}`],
-            [mainSymbol, `${roundUSDOff(totalPL, isUSDCurrently)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(unrealizedPL), numberOfDigitsAfterPoint)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(totalPL), numberOfDigitsAfterPoint)}`],
             //            `${unrealizedPLPerc} %`,
           ]
 
