@@ -255,6 +255,8 @@ class Chart extends React.Component<IState> {
             component={TradeHistoryTable}
             query={MARKET_QUERY}
             variables={{ symbol, exchange }}
+            renderWithPlaceholder
+            placeholder={() => <TablePlaceholder margin={'60% 0px 0px'} />}
             subscriptionArgs={{
               subscription: MARKET_TICKERS,
               variables: { symbol, exchange },

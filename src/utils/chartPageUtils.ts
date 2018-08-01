@@ -4,7 +4,7 @@ export const maximumItemsInArray = (
   removeLast: number
 ) => {
   if (data.length > count) {
-    return data.slice(0, removeLast)
+    return data.slice(0, data.length - removeLast - 1)
   }
 
   return data
