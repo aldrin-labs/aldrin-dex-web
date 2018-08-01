@@ -80,9 +80,6 @@ const arrayOfStringHeadings = ['exchange', 'symbol', 'side']
 
 const arrayOfDateHeadings = ['datetime']
 
-// TODO: Should be replaced to the state
-// let staticRows = tradeOrderHistoryTableData
-
 class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   state: IState = {
     currentSort: null,
@@ -132,9 +129,6 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
       arrayOfStringHeadings,
       arrayOfDateHeadings
     )
-
-    // TODO: Should be refactored and included into setState
-    // staticRows = newData
 
     this.setState({
       currentSort: newCurrentSort,
