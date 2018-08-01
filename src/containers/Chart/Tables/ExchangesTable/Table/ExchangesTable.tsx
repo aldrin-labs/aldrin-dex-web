@@ -25,7 +25,7 @@ class ExchangesTable extends PureComponent<IProps> {
       exchanges,
       theme,
     } = this.props
-
+    console.log(activeExchange)
     return (
       <StyledTable>
         <Title background={theme.palette.primary.dark}>
