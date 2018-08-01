@@ -12,64 +12,52 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
-import { Loading } from '@components/Loading/Loading'
-import { Query, Subscription } from 'react-apollo'
-import gql from 'graphql-tag'
 
 export interface IProps {
   quote: string
   data: any[]
 }
+export interface ITicker {
+  size: string
+  price: string
+  time: string
+  fall: boolean
+}
 
-class TickersList extends React.Component {
+// class TickersList extends React.Component {
+//   state = {
+//     data: [],
+//     symbol: '',
+//     exchange: '',
+//     unsubscribe: null,
+//   }
+
+//   componentWillUnmount() {
+//     if (this.state.unsubscribe) {
+//       this.state.unsubscribe()
+//     }
+//   }
+
+//   render() {
+//     return (
+//       <>
+//         {this.state.data.slice(0, 30).map((ticker, i) => {
+//           //          console.log(ticker);
+//           return (
+
+//           )
+//         })}
+//       </>
+//     )
+//   }
+// }
+
+class TradeHistoryTable extends PureComponent<IProps> {
   state = {
+    tableExpanded: true,
     data: [],
-    symbol: '',
-    exchange: '',
-    unsubscribe: null,
   }
-
-  static getDerivedStateFromProps(newProps, state) {
-    if (
-      newProps.data.marketTickers &&
-      (newProps.variables.symbol !== state.symbol ||
-        newProps.variables.exchange !== state.exchange)
-    ) {
-      const tickersData = newProps.data.marketTickers
-      let tickers = []
-      for (let i = 0; i < tickersData.length; ++i) {
-        const tickerData = JSON.parse(tickersData[i])
-        if (
-          tickerData[1] !== newProps.variables.exchange ||
-          tickerData[2] !== newProps.variables.symbol
-        ) {
-          continue
-        }
-
-        const fall =
-          tickers.length > 0
-            ? tickers[tickers.length - 1].price > tickerData[3]
-            : false
-        const ticker = {
-          size: tickerData[4],
-          price: tickerData[3],
-          time: tickerData[7],
-          fall,
-        }
-        tickers.push(ticker)
-      }
-      if (state.unsubscribe) {
-        console.log('unsubscribe', state.symbol, state.exchange)
-        state.unsubscribe() // unsubscribe
-      }
-      return {
-        data: tickers,
-        symbol: newProps.variables.symbol,
-        exchange: newProps.variables.exchange,
-        unsubscribe: newProps.subscribeToNewTickers(),
-      }
-    }
-
+  static getDerivedStateFromProps(newProps: IProps, state) {
     if (
       newProps.data &&
       newProps.data.marketTickers &&
@@ -88,72 +76,12 @@ class TickersList extends React.Component {
         fall,
       }
 
-      if (state.data.length > 50) {
-        state.data.pop()
-      }
-
       return {
         data: [ticker, ...state.data],
-        symbol: newProps.variables.symbol,
-        exchange: newProps.variables.exchange,
-        unsubscribe: state.unsubscribe,
       }
     }
 
     return null
-  }
-
-  componentWillUnmount() {
-    if (this.state.unsubscribe) {
-      this.state.unsubscribe()
-    }
-  }
-
-  render() {
-    return (
-      <>
-        {this.state.data.slice(0, 30).map((ticker, i) => {
-          //          console.log(ticker);
-          return (
-            <Row key={i} background={'#25282c'}>
-              <AnimatedCell
-                animation={
-                  ticker.status === 'fall'
-                    ? 'fadeInRedAndBack'
-                    : 'fadeInGreenAndBack'
-                }
-                color="#9ca2aa"
-                width={'33%'}
-                value={ticker.size}
-              />
-
-              <AnimatedCell
-                animation={ticker.fall ? 'fadeInRed' : 'fadeInGreen'}
-                color={ticker.fall ? '#d77455' : '#34cb86d1'}
-                width={'33%'}
-                value={ticker.price}
-              >
-                <StyledArrow direction={ticker.fall ? 'down' : 'up'} />
-              </AnimatedCell>
-              <AnimatedCell
-                animation={
-                  ticker.fall ? 'fadeInRedAndBack' : 'fadeInGreenAndBack'
-                }
-                color="#9ca2aa"
-                width={'33%'}
-                value={ticker.time}
-              />
-            </Row>
-          )
-        })}
-      </>
-    )
-  }
-}
-
-class TradeHistoryTable extends PureComponent<IProps> {
-  state = {
-    tableExpanded: true,
   }
 
   componentDidMount() {
@@ -162,13 +90,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
 
   render() {
     const { quote, data, ...result } = this.props
-    const { tableExpanded } = this.state
+    const { tableExpanded, data: stateData } = this.state
 
-    console.log(result)
     console.log(data)
-    if (!data) {
-      return <Loading centerAligned />
-    }
+    console.log(stateData)
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
@@ -207,30 +132,37 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body height="400px">
-            {/* <Query query={MARKET_QUERY} variables={{ symbol, exchange }}>
-              {({ subscribeToMore, ...result }) => (
-                <TickersList
-                  {...result}
-                  subscribeToNewTickers={() =>
-                    subscribeToMore({
-                      document: MARKET_TICKERS,
-                      variables: { symbol, exchange },
-                      updateQuery: (prev, { subscriptionData }) => {
-                        if (!subscriptionData.data) {
-                          return prev
-                        }
-                        const newTicker =
-                          subscriptionData.data.listenMarketTickers
-                        let obj = Object.assign({}, prev, {
-                          marketTickers: [newTicker],
-                        })
-                        return obj
-                      },
-                    })
+            {stateData.map((ticker: ITicker) => (
+              <Row key={ticker.time} background={'#25282c'}>
+                <AnimatedCell
+                  animation={
+                    ticker.fall === true
+                      ? 'fadeInRedAndBack'
+                      : 'fadeInGreenAndBack'
                   }
+                  color="#9ca2aa"
+                  width={'33%'}
+                  value={ticker.size}
                 />
-              )}
-            </Query> */}
+
+                <AnimatedCell
+                  animation={ticker.fall ? 'fadeInRed' : 'fadeInGreen'}
+                  color={ticker.fall ? '#d77455' : '#34cb86d1'}
+                  width={'33%'}
+                  value={ticker.price}
+                >
+                  <StyledArrow direction={ticker.fall ? 'down' : 'up'} />
+                </AnimatedCell>
+                <AnimatedCell
+                  animation={
+                    ticker.fall ? 'fadeInRedAndBack' : 'fadeInGreenAndBack'
+                  }
+                  color="#9ca2aa"
+                  width={'33%'}
+                  value={ticker.time}
+                />
+              </Row>
+            ))}
           </Body>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>
