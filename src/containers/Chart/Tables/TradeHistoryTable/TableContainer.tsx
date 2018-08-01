@@ -41,7 +41,7 @@ class TableContainer extends Component {
       console.log([ticker, ...state.data])
 
       return {
-        data: maximumItemsInArray([ticker, ...state.data], 50),
+        data: maximumItemsInArray([ticker, ...state.data], 50, 10),
       }
     }
 
