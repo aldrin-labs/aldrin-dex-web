@@ -8,7 +8,7 @@ const mockExchanges = [
   { name: 'Bitfinex', symbol: 'bitfinex' },
   { name: 'Bitstamp', symbol: 'bitstamp' },
   { name: 'Coinbase Pro', symbol: 'coinbase' },
-  { name: 'Huobi', symbol: 'huobi' },
+  // { name: 'Huobi', symbol: 'huobi' },
   { name: 'DigiFinex', symbol: 'digifinex' },
   { name: 'ZB.COM', symbol: 'zbcom' },
 ]
