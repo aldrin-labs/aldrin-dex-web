@@ -84,7 +84,6 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   background-color: ${(props) => props.background};
-  padding: 0.5rem 0;
 `
 
 const Block = styled.div`
