@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Collapse, Typography } from '@material-ui/core'
 import { MdArrowUpward, MdArrowDropUp } from 'react-icons/lib/md'
+import { red, green } from '@material-ui/core/colors'
 
 import {
   Table,
@@ -12,17 +13,7 @@ import {
   HeadCell,
   Cell,
 } from '@components/Table/Table'
-
-export interface IProps {
-  quote: string
-  data: any[]
-}
-export interface ITicker {
-  size: string
-  price: string
-  time: string
-  fall: boolean
-}
+import { IProps, ITicker } from './TradeHistoryTable.types'
 
 class TradeHistoryTable extends PureComponent<IProps> {
   state = {
@@ -97,52 +88,65 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body style={{ background: background.default }} height="400px">
-            {data.map((ticker: ITicker, i: number) => (
-              <Row
-                hoverBackground={action.hover}
-                key={i}
-                background={background.default}
-                style={{ height: '27px' }}
-              >
-                <Cell width={'33%'}>
-                  <Typography
-                    noWrap
-                    variant="body1"
-                    color="default"
-                    align="left"
-                  >
-                    {ticker.size}
-                  </Typography>
-                </Cell>
-                <Cell width={'33%'} style={{ display: 'flex' }}>
-                  <Typography
-                    noWrap
-                    variant="body1"
-                    color="default"
-                    align="left"
-                  >
-                    {ticker.price}
-                  </Typography>
-                  <StyledArrow direction={ticker.fall ? 'down' : 'up'} />
-                </Cell>
-                <Cell width={'33%'}>
-                  <Typography
-                    noWrap
-                    variant="body1"
-                    color="default"
-                    align="left"
-                  >
-                    {ticker.time}
-                  </Typography>
-                </Cell>
-              </Row>
-            ))}
+            {data.map((ticker: ITicker, i: number) => {
+              const color: string = ticker.fall ? red[400] : green[500]
+
+              return (
+                <Row
+                  hoverBackground={action.hover}
+                  key={i}
+                  background={background.default}
+                  style={{ height: '27px' }}
+                >
+                  <Cell width={'33%'}>
+                    <StyledTypography
+                      textColor={color}
+                      noWrap
+                      variant="body1"
+                      align="left"
+                    >
+                      {ticker.size}
+                    </StyledTypography>
+                  </Cell>
+                  <Cell width={'33%'} style={{ display: 'flex' }}>
+                    <StyledTypography
+                      textColor={color}
+                      noWrap
+                      variant="body1"
+                      align="left"
+                    >
+                      {ticker.price}
+                    </StyledTypography>
+                    <StyledArrow
+                      color={color}
+                      direction={ticker.fall ? 'down' : 'up'}
+                    />
+                  </Cell>
+                  <Cell width={'33%'}>
+                    <StyledTypography
+                      textColor={color}
+                      noWrap
+                      variant="body1"
+                      align="left"
+                    >
+                      {ticker.time}
+                    </StyledTypography>
+                  </Cell>
+                </Row>
+              )
+            })}
           </Body>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>
     )
   }
 }
+
+const StyledTypography = styled(Typography)`
+  && {
+    color: ${(props: { textColor: string }) => props.textColor};
+  }
+`
 
 const TriggerTitle = Title.extend`
   cursor: pointer;
@@ -218,11 +222,12 @@ const JumpUpArrow = keyframes`
 
 const StyledArrow = styled(MdArrowUpward)`
   min-width: 20%;
+  color: ${(props: { direction: string; color: string }) => props.color};
 
   position: absolute;
   right: 0;
   top: calc(50% - 8px);
-  transform: ${(props: { direction: string }) =>
+  transform: ${(props: { direction: string; color: string }) =>
     props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
 `
 
