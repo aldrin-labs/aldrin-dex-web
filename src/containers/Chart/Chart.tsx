@@ -222,6 +222,7 @@ class Chart extends React.Component<IState> {
 
           <Aggregation
             {...{
+              theme,
               aggregation: this.state.aggregation,
               onButtonClick: this.setAggregation,
             }}
