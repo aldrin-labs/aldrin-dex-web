@@ -39,6 +39,19 @@ export const updateTradeHistoryQuerryFunction = (
   return obj
 }
 
+// OrderBook
+export const MARKET_ORDERS = gql`
+  subscription listenMarketOrders($symbol: String!, $exchange: String!) {
+    listenMarketOrders(symbol: $symbol, exchange: $exchange)
+  }
+`
+
+export const ORDERS_MARKET_QUERY = gql`
+  query marketOrders($symbol: String!, $exchange: String!) {
+    marketOrders(symbol: $symbol, exchange: $exchange)
+  }
+`
+
 export const updateOrderBookQuerryFunction = (prev, { subscriptionData }) => {
   if (!subscriptionData.data) {
     return prev
@@ -48,5 +61,6 @@ export const updateOrderBookQuerryFunction = (prev, { subscriptionData }) => {
   let obj = Object.assign({}, prev, {
     marketOrders: [newOrder],
   })
+
   return obj
 }

@@ -16,6 +16,9 @@ import {
   MARKET_TICKERS,
   MARKET_QUERY,
   updateTradeHistoryQuerryFunction,
+  ORDERS_MARKET_QUERY,
+  MARKET_ORDERS,
+  updateOrderBookQuerryFunction,
 } from './api'
 import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
@@ -208,7 +211,7 @@ class Chart extends React.Component<IState> {
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          <OrderBookTable
+          {/* <OrderBookTable
             {...{
               onButtonClick: this.changeTable,
               roundTill: this.roundTill,
@@ -218,6 +221,27 @@ class Chart extends React.Component<IState> {
               quote,
               symbol,
               exchange,
+            }}
+          /> */}
+          <QueryRenderer
+            component={OrderBookTable}
+            query={ORDERS_MARKET_QUERY}
+            variables={{ symbol, exchange }}
+            subscriptionArgs={{
+              subscription: MARKET_ORDERS,
+              variables: { symbol, exchange },
+              updateQueryFunction: updateOrderBookQuerryFunction,
+            }}
+            {...{
+              onButtonClick: this.changeTable,
+              roundTill: this.roundTill,
+              activeExchange,
+              currencyPair,
+              aggregation,
+              quote,
+              symbol,
+              exchange,
+              ...this.props,
             }}
           />
 

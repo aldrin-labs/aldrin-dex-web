@@ -28,7 +28,6 @@ class TableContainer extends Component {
       newProps.data.marketTickers.length > 0
     ) {
       const tickerData = JSON.parse(newProps.data.marketTickers[0])
-      // console.log(tickerData)
       if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
         return null
       }
@@ -40,8 +39,6 @@ class TableContainer extends Component {
         time: new Date(tickerData[7]).toLocaleTimeString(),
         fall,
       }
-
-      // console.log([ticker, ...state.data])
 
       return {
         data: maximumItemsInArray([ticker, ...state.data], 50, 10),

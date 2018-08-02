@@ -16,18 +16,6 @@ import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 import { Loading } from '@components/Loading/Loading'
 import gql from 'graphql-tag'
 
-export const MARKET_ORDERS = gql`
-  subscription listenMarketOrders($symbol: String!, $exchange: String!) {
-    listenMarketOrders(symbol: $symbol, exchange: $exchange)
-  }
-`
-
-export const MARKET_QUERY = gql`
-  query marketOrders($symbol: String!, $exchange: String!) {
-    marketOrders(symbol: $symbol, exchange: $exchange)
-  }
-`
-
 class OrdersList extends React.Component {
   state = {
     bids: [],
