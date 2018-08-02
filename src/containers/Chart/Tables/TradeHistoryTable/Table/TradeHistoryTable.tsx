@@ -64,12 +64,12 @@ class TradeHistoryTable extends PureComponent<IProps> {
               style={{ height: '100%' }}
             >
               <HeadCell color="#9ca2aa" width={'33%'}>
-                <Typography variant="subheading" color="default" align="left">
+                <Typography variant="title" color="default" align="left">
                   Size
                 </Typography>
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'36%'}>
-                <Typography variant="subheading" color="default" align="left">
+                <Typography noWrap variant="title" color="default" align="left">
                   Price {quote || 'Fiat'}
                 </Typography>
               </HeadCell>
@@ -78,7 +78,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 color="#9ca2aa"
                 width={'30%'}
               >
-                <Typography variant="subheading" color="default" align="left">
+                <Typography variant="title" color="default" align="left">
                   Time
                 </Typography>
               </HeadCell>

@@ -51,8 +51,6 @@ class TableContainer extends Component {
     return null
   }
 
-  unsubscribe = () => {}
-
   componentDidMount() {
     if (this.props.subscribeToMore) {
       //  unsubscribe from old exchange when you first time change exchange
