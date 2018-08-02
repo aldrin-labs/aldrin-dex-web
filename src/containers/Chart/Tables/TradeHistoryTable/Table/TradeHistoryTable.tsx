@@ -39,7 +39,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
-        <CollapseWrapper in={tableExpanded} collapsedHeight="2rem">
+        <CollapseWrapper in={tableExpanded} collapsedHeight="2.5rem">
           <TriggerTitle
             background={dark}
             onClick={() => {
@@ -68,10 +68,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
             >
               <HeadCell color="#9ca2aa" width={'33%'}>
                 <Typography variant="subheading" color="default" align="left">
-                  Trade size
+                  Size
                 </Typography>
               </HeadCell>
-              <HeadCell color="#9ca2aa" width={'33%'}>
+              <HeadCell color="#9ca2aa" width={'36%'}>
                 <Typography variant="subheading" color="default" align="left">
                   Price {quote || 'Fiat'}
                 </Typography>
@@ -79,7 +79,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
               <HeadCell
                 style={{ lineHeight: '32px' }}
                 color="#9ca2aa"
-                width={'33%'}
+                width={'30%'}
               >
                 <Typography variant="subheading" color="default" align="left">
                   Time
@@ -89,7 +89,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
           </Head>
           <Body style={{ background: background.default }} height="400px">
             {data.map((ticker: ITicker, i: number) => {
-              const color: string = ticker.fall ? red[400] : green[500]
+              let color: string = ticker.fall ? red[400] : green[500]
+              setTimeout(() => {
+                color = '#000'
+              }, 100)
 
               return (
                 <Row
@@ -108,7 +111,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                       {ticker.size}
                     </StyledTypography>
                   </Cell>
-                  <Cell width={'33%'} style={{ display: 'flex' }}>
+                  <Cell width={'36%'} style={{ display: 'flex' }}>
                     <StyledTypography
                       textColor={color}
                       noWrap
@@ -122,7 +125,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                       direction={ticker.fall ? 'down' : 'up'}
                     />
                   </Cell>
-                  <Cell width={'33%'}>
+                  <Cell width={'31%'}>
                     <StyledTypography
                       textColor={color}
                       noWrap
@@ -160,7 +163,7 @@ const CollapseWrapper = styled(Collapse)`
 
 const CollapsibleTable = Table.extend`
   position: absolute;
-  bottom: 0.5rem;
+  bottom: 0;
   max-height: calc(70% - 37px);
   z-index: 10;
   width: 100%;
@@ -184,7 +187,7 @@ const StyledArrowSign = styled(MdArrowDropUp)`
     props.variant.up ? 'rotate(0deg)' : 'rotate(180deg)'};
 
   position: absolute;
-  right: 1rem;
+  left: 0.25rem;
   color: white;
   bottom: 30%;
   transition: all 0.5s ease;
