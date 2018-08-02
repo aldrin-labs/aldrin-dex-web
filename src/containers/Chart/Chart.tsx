@@ -267,6 +267,8 @@ class Chart extends React.Component<IState> {
               activeExchange,
               theme,
               currencyPair,
+              symbol,
+              exchange,
               ...this.props,
             }}
           />

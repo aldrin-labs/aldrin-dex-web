@@ -14,14 +14,11 @@ import {
   Cell,
 } from '@components/Table/Table'
 import { IProps, ITicker } from './TradeHistoryTable.types'
+import { Loading } from '@components/Loading'
 
 class TradeHistoryTable extends PureComponent<IProps> {
   state = {
     tableExpanded: true,
-  }
-
-  componentDidMount() {
-    this.props.subscribeToMore && this.props.subscribeToMore()
   }
 
   render() {

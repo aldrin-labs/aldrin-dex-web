@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 import Table from './Table/TradeHistoryTable'
 import { maximumItemsInArray } from '@utils/chartPageUtils'
 
+let unsubscribe: Function | undefined
+
 class TableContainer extends Component {
   state = {
     data: [],
@@ -26,6 +28,7 @@ class TableContainer extends Component {
       newProps.data.marketTickers.length > 0
     ) {
       const tickerData = JSON.parse(newProps.data.marketTickers[0])
+      // console.log(tickerData)
       if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
         return null
       }
@@ -38,7 +41,7 @@ class TableContainer extends Component {
         fall,
       }
 
-      console.log([ticker, ...state.data])
+      // console.log([ticker, ...state.data])
 
       return {
         data: maximumItemsInArray([ticker, ...state.data], 50, 10),
@@ -48,8 +51,32 @@ class TableContainer extends Component {
     return null
   }
 
+  unsubscribe = () => {}
+
+  componentDidMount() {
+    if (this.props.subscribeToMore) {
+      //  unsubscribe from old exchange when you first time change exchange
+      unsubscribe && unsubscribe()
+
+      unsubscribe = this.props.subscribeToMore()
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.activeExchange.index !== this.props.activeExchange.index) {
+      // when change exchange delete all data and...
+      this.setState({ data: [] })
+
+      //  unsubscribe from old exchange
+      unsubscribe && unsubscribe()
+
+      //  subscribe to new exchange and create new unsub link
+      unsubscribe = this.props.subscribeToMore()
+    }
+  }
+
   render() {
-    const { data, ...rest } = this.props
+    const { data, exchange, ...rest } = this.props
 
     return <Table data={this.state.data} {...rest} />
   }
