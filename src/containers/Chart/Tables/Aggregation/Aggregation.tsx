@@ -22,7 +22,7 @@ const Aggregation = (props) => {
               position: 'relative',
               left: '5%',
             }}
-            width={'25%'}
+            width={'30%'}
           >
             <Typography color="primary" variant="caption">
               Aggregation

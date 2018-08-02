@@ -208,7 +208,7 @@ class Chart extends React.Component<IState> {
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          {/* <OrderBookTable
+          <OrderBookTable
             {...{
               onButtonClick: this.changeTable,
               data: ordersData,
@@ -218,7 +218,7 @@ class Chart extends React.Component<IState> {
               aggregation,
               quote,
             }}
-          /> */}
+          />
 
           <Aggregation
             {...{
