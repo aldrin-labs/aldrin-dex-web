@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Typography } from '@material-ui/core'
 
@@ -15,7 +15,7 @@ export interface IProps {
     | 'fadeInGreen'
 }
 
-class AnimatedCell extends PureComponent<IProps> {
+class AnimatedCell extends Component<IProps> {
   state = {
     animated: true,
   }
@@ -45,7 +45,7 @@ class AnimatedCell extends PureComponent<IProps> {
     const { animated } = this.state
 
     return (
-      <Cell animated={animated ? animation : 'none'} {...{ color, width }}>
+      <Cell animated={'none'} {...{ color, width }}>
         <Typography variant="body1" color="default">
           {value}
         </Typography>

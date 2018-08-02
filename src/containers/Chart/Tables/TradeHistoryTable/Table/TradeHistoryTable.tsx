@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Collapse } from '@material-ui/core'
+import { Collapse, Typography } from '@material-ui/core'
 import { MdArrowUpward, MdArrowDropUp } from 'react-icons/lib/md'
 
 import {
@@ -10,8 +10,8 @@ import {
   Body,
   Head,
   HeadCell,
+  Cell,
 } from '@components/Table/Table'
-import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
 export interface IProps {
   quote: string
@@ -34,20 +34,33 @@ class TradeHistoryTable extends PureComponent<IProps> {
   }
 
   render() {
-    const { quote, data } = this.props
+    const {
+      quote,
+      data,
+      theme: { palette },
+    } = this.props
     const { tableExpanded } = this.state
+    const {
+      background,
+      action,
+      primary: { dark },
+    } = palette
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
         <CollapseWrapper in={tableExpanded} collapsedHeight="2rem">
           <TriggerTitle
+            background={dark}
             onClick={() => {
               this.setState((prevState) => ({
                 tableExpanded: !prevState.tableExpanded,
               }))
             }}
           >
-            Trade history
+            <Typography color="textSecondary" variant="headline" align="center">
+              Trade history
+            </Typography>
+
             <StyledArrowSign
               variant={{
                 tableCollapsed: !tableExpanded,
@@ -56,53 +69,72 @@ class TradeHistoryTable extends PureComponent<IProps> {
               style={{ marginRight: '0.5rem' }}
             />
           </TriggerTitle>
-          <Head background={'#25282c'}>
-            <Row background={'#25282c'} isHead style={{ height: '100%' }}>
+          <Head background={background.default}>
+            <Row
+              background={background.default}
+              isHead
+              style={{ height: '100%' }}
+            >
               <HeadCell color="#9ca2aa" width={'33%'}>
-                Trade <br /> size
+                <Typography variant="subheading" color="default" align="left">
+                  Trade size
+                </Typography>
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'33%'}>
-                Price<br /> ({quote || 'Fiat'})
+                <Typography variant="subheading" color="default" align="left">
+                  Price {quote || 'Fiat'}
+                </Typography>
               </HeadCell>
               <HeadCell
                 style={{ lineHeight: '32px' }}
                 color="#9ca2aa"
                 width={'33%'}
               >
-                Time
+                <Typography variant="subheading" color="default" align="left">
+                  Time
+                </Typography>
               </HeadCell>
             </Row>
           </Head>
-          <Body height="400px">
+          <Body style={{ background: background.default }} height="400px">
             {data.map((ticker: ITicker, i: number) => (
-              <Row key={i} background={'#25282c'}>
-                <AnimatedCell
-                  animation={
-                    ticker.fall === true
-                      ? 'fadeInRedAndBack'
-                      : 'fadeInGreenAndBack'
-                  }
-                  color="#9ca2aa"
-                  width={'33%'}
-                  value={ticker.size}
-                />
-
-                <AnimatedCell
-                  animation={ticker.fall ? 'fadeInRed' : 'fadeInGreen'}
-                  color={ticker.fall ? '#d77455' : '#34cb86d1'}
-                  width={'33%'}
-                  value={ticker.price}
-                >
+              <Row
+                hoverBackground={action.hover}
+                key={i}
+                background={background.default}
+                style={{ height: '27px' }}
+              >
+                <Cell width={'33%'}>
+                  <Typography
+                    noWrap
+                    variant="body1"
+                    color="default"
+                    align="left"
+                  >
+                    {ticker.size}
+                  </Typography>
+                </Cell>
+                <Cell width={'33%'} style={{ display: 'flex' }}>
+                  <Typography
+                    noWrap
+                    variant="body1"
+                    color="default"
+                    align="left"
+                  >
+                    {ticker.price}
+                  </Typography>
                   <StyledArrow direction={ticker.fall ? 'down' : 'up'} />
-                </AnimatedCell>
-                <AnimatedCell
-                  animation={
-                    ticker.fall ? 'fadeInRedAndBack' : 'fadeInGreenAndBack'
-                  }
-                  color="#9ca2aa"
-                  width={'33%'}
-                  value={ticker.time}
-                />
+                </Cell>
+                <Cell width={'33%'}>
+                  <Typography
+                    noWrap
+                    variant="body1"
+                    color="default"
+                    align="left"
+                  >
+                    {ticker.time}
+                  </Typography>
+                </Cell>
               </Row>
             ))}
           </Body>
@@ -114,6 +146,8 @@ class TradeHistoryTable extends PureComponent<IProps> {
 
 const TriggerTitle = Title.extend`
   cursor: pointer;
+  position: relative;
+  padding: 0.5rem;
 `
 
 const CollapseWrapper = styled(Collapse)`
@@ -122,7 +156,7 @@ const CollapseWrapper = styled(Collapse)`
 
 const CollapsibleTable = Table.extend`
   position: absolute;
-  bottom: 0;
+  bottom: 0.5rem;
   max-height: calc(70% - 37px);
   z-index: 10;
   width: 100%;
@@ -144,7 +178,11 @@ const StyledArrowSign = styled(MdArrowDropUp)`
   font-size: 1rem;
   transform: ${(props) =>
     props.variant.up ? 'rotate(0deg)' : 'rotate(180deg)'};
-  position: relative;
+
+  position: absolute;
+  right: 1rem;
+  color: white;
+  bottom: 30%;
   transition: all 0.5s ease;
 
   ${TriggerTitle}:hover & {
@@ -156,29 +194,31 @@ const StyledArrowSign = styled(MdArrowDropUp)`
 
 const JumpDownArrow = keyframes`
 0% {
-  top: 0px;
+  bottom: 30%;
 }
 50% {
- top: 0.25rem;
+  bottom: 10%;
 }
 100% {
-  top: 0px;
+  bottom: 30%;
+
 }
 `
 const JumpUpArrow = keyframes`
 0% {
-  bottom: 0px;
+  bottom: 30%;
 }
 50% {
- bottom: 0.25rem;
+  bottom: 50%;
 }
 100% {
-  bottom: 0px;
+  bottom: 30%;
 }
 `
 
 const StyledArrow = styled(MdArrowUpward)`
   min-width: 20%;
+
   position: absolute;
   right: 0;
   top: calc(50% - 8px);

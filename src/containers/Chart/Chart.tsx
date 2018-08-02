@@ -247,8 +247,8 @@ class Chart extends React.Component<IState> {
               quote,
               theme,
               onButtonClick: this.changeTable,
+              ...this.props,
             }}
-            {...this.props}
           />
 
           <QueryRenderer
@@ -256,7 +256,7 @@ class Chart extends React.Component<IState> {
             query={MARKET_QUERY}
             variables={{ symbol, exchange }}
             renderWithPlaceholder
-            placeholder={() => <TablePlaceholder margin={'60% 0px 0px'} />}
+            placeholder={() => <TablePlaceholder margin={'20% 0px 0px'} />}
             subscriptionArgs={{
               subscription: MARKET_TICKERS,
               variables: { symbol, exchange },
@@ -265,9 +265,10 @@ class Chart extends React.Component<IState> {
             {...{
               quote,
               activeExchange,
+              theme,
               currencyPair,
+              ...this.props,
             }}
-            {...this.props}
           />
         </TablesBlockWrapper>
       </TablesContainer>

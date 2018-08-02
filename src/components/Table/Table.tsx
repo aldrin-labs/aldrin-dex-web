@@ -63,6 +63,7 @@ export const Row = styled.div`
 `
 
 export const Cell = styled.div`
+  position: relative;
   overflow: hidden;
   list-style: none;
   padding: 0.25rem 0.4rem;
