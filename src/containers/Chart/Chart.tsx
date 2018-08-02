@@ -30,7 +30,7 @@ import {
 import Switch from '@components/Switch/Switch'
 import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-
+//  TODO Refactor into component with 500 lines of code maximum
 interface IState {
   view: 'onlyCharts' | 'default'
   exchangeTableCollapsed: boolean
@@ -211,12 +211,13 @@ class Chart extends React.Component<IState> {
           <OrderBookTable
             {...{
               onButtonClick: this.changeTable,
-              data: ordersData,
               roundTill: this.roundTill,
               activeExchange,
               currencyPair,
               aggregation,
               quote,
+              symbol,
+              exchange,
             }}
           />
 

@@ -38,3 +38,15 @@ export const updateTradeHistoryQuerryFunction = (
 
   return obj
 }
+
+export const updateOrderBookQuerryFunction = (prev, { subscriptionData }) => {
+  if (!subscriptionData.data) {
+    return prev
+  }
+
+  const newOrder = JSON.parse(subscriptionData.data.listenMarketOrders)
+  let obj = Object.assign({}, prev, {
+    marketOrders: [newOrder],
+  })
+  return obj
+}
