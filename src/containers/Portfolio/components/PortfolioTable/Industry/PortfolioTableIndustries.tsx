@@ -63,7 +63,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     selectedRows: null,
     selectedSum: defaultSelectedSum,
     activeLegend: null,
-    showChart: 'line',
+    showChart: 'chart',
   }
 
   componentWillMount() {
@@ -622,7 +622,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           </Wrapper>
           <ChartContainer>
             <Heading pieChart={this.state.showChart === 'chart'}>
-              <Switch onClick={this.toggleChart} />
+              <Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />
             </Heading>
             <ChartWrapper>
               {this.state.showChart === 'line' ? (
