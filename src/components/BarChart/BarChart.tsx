@@ -117,7 +117,7 @@ const LegendContainer = styled.div`
 
 const Container = styled.div`
   height: ${(props: { height: number }) =>
-    props.height ? props.height : 100}px;
+    props.height ? `${props.height}px` : `100%`};
   width: 100%;
 `
 
