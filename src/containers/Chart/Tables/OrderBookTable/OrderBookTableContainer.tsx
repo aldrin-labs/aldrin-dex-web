@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import Table from './Table/OrderBookTable'
+import Table from './Tables/OrderBookTable'
+import SpreadTable from './Tables/SpreadTable'
 import { maximumItemsInArray } from '@utils/chartPageUtils'
 
 let unsubscribe: Function | undefined
@@ -133,11 +134,18 @@ class OrderBookTableContainer extends Component {
 
     return (
       //   <div />
-      <Table
-        {...this.props}
-        data={this.props.data.marketOrders.map((order) => JSON.parse(order))}
-        {...rest}
-      />
+      <>
+        <Table
+          {...this.props}
+          data={this.props.data.marketOrders.map((order) => JSON.parse(order))}
+          {...rest}
+        />
+        <SpreadTable
+          {...this.props}
+          data={this.props.data.marketOrders.map((order) => JSON.parse(order))}
+          {...rest}
+        />
+      </>
     )
   }
 }

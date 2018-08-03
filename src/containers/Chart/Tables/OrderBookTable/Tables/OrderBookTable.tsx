@@ -257,12 +257,13 @@ class OrderBookTable extends PureComponent {
         </Title>
         <Head background={background.default}>
           <Row isHead background={background.default}>
-            <HeadCell width={'50%'}>
+            <EmptyCell width={'10%'} />
+            <HeadCell width={'45%'}>
               <Typography variant="title" color="default" align="left">
                 Size
               </Typography>
             </HeadCell>
-            <HeadCell width={'50%'}>
+            <HeadCell width={'45%'}>
               <Typography variant="title" noWrap color="default" align="left">
                 Price {quote || 'Fiat'}
               </Typography>
@@ -276,12 +277,13 @@ class OrderBookTable extends PureComponent {
               key={i}
               background={background.default}
             >
-              <Cell width={'50%'}>
+              <EmptyCell status={'rise'} colored={'10'} width={'10%'} />
+              <Cell width={'45%'}>
                 <Typography color="default" noWrap variant="body1" align="left">
                   {order.size}
                 </Typography>
               </Cell>
-              <Cell width={'50%'}>
+              <Cell width={'45%'}>
                 <Typography color="default" noWrap variant="body1" align="left">
                   {order.price}
                 </Typography>
@@ -304,31 +306,6 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-const fadeInGreen = keyframes`
-0 % {
-  color: #9ca2aa;
-}
-50 % {
-  color: #34cb86d1;
-}
-100 % {
-  color: #9ca2aa;
-}
-  `
-const fadeInRed = keyframes`
-0 % {
-  color: #9ca2aa;
-}
-50 % {
-  color: #d77455;
-
-}
-100 % {
-  color: #9ca2aa;
-
-}
-  `
-
 const EmptyCell = Cell.extend`
   position: relative;
 
@@ -338,8 +315,8 @@ const EmptyCell = Cell.extend`
     z-index: 100;
     top: 0;
     left: 0;
-    width: ${(props: { colored?: string }) => Number(props.colored) / 4}%;
-    height: 100 %;
+    width: ${(props: { colored?: string }) => Number(props.colored)}%;
+    height: 100%;
     content: '';
     background-color: ${(props: { status?: string; colored?: string }) =>
       props.status === 'fall' ? '#d77455' : '#34cb86d1'};
