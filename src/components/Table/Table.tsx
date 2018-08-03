@@ -56,7 +56,7 @@ export const Row = styled.div`
   &:hover {
     background: ${(props: {
       isHead?: boolean
-      hoverBackground: string
+      hoverBackground?: string
       background: string
     }) => (props.isHead ? props.background : props.hoverBackground)};
   }

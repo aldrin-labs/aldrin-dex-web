@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Paper, Button } from '@material-ui/core'
+import { Paper, Button, Typography, Fade } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
 
 import {
@@ -30,7 +30,6 @@ import {
   getFakeDepthChartData,
   orderBook,
 } from '@containers/Chart/mocks'
-import Switch from '@components/Switch/Switch'
 import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 //  TODO Refactor into component with 500 lines of code maximum
@@ -304,8 +303,11 @@ class Chart extends React.Component<IState> {
   }
 
   renderDefaultView = () => {
-    const { ordersData, spreadData } = this.state
-    const { currencyPair } = this.props
+    const { ordersData, spreadData, activeChart } = this.state
+    const {
+      currencyPair,
+      theme: { palette },
+    } = this.props
 
     let base
     let quote
@@ -317,32 +319,49 @@ class Chart extends React.Component<IState> {
     return (
       <Container>
         <ChartsContainer>
-          <ChartsSwitcher>
-            {base && quote && <ExchangePair>{`${base}/${quote}`}</ExchangePair>}
-            <Switch
-              onClick={() => {
-                this.setState((prevState) => ({
-                  activeChart:
-                    prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                }))
-              }}
-              values={['Chart', 'Depth']}
-            />
+          <ChartsSwitcher
+            divider={palette.divider}
+            background={palette.primary.main}
+          >
+            {base &&
+              quote && (
+                <ExchangePair background={palette.primary.dark}>
+                  <Typography variant="subheading" color="secondary">
+                    {`${base}/${quote}`}
+                  </Typography>
+                </ExchangePair>
+              )}
+            <SwitchButtonWrapper>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => {
+                  this.setState((prevState) => ({
+                    activeChart:
+                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                  }))
+                }}
+              >
+                {activeChart === 'candle' ? 'show depth' : 'show chart'}
+              </Button>
+            </SwitchButtonWrapper>
           </ChartsSwitcher>
-          {this.state.activeChart === 'candle' ? (
+          {activeChart === 'candle' ? (
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
-            <DepthChartContainer>
-              <DepthChart
-                {...{
-                  ordersData,
-                  spreadData,
-                  base,
-                  quote,
-                  animated: false,
-                }}
-              />
-            </DepthChartContainer>
+            <Fade timeout={1000} in={activeChart === 'depth'}>
+              <DepthChartContainer>
+                <DepthChart
+                  {...{
+                    ordersData,
+                    spreadData,
+                    base,
+                    quote,
+                    animated: false,
+                  }}
+                />
+              </DepthChartContainer>
+            </Fade>
           )}
         </ChartsContainer>
 
@@ -405,10 +424,15 @@ const DepthChartContainer = styled.div`
   width: 100%;
 `
 
+const SwitchButtonWrapper = styled.div`
+  margin: 1rem;
+`
+
 const ExchangePair = styled.div`
   margin: 0 0.5rem;
-  background: #2e353fd9;
-  line-height: 36px;
+  background: ${(props: { background: string }) => props.background};
+  display: flex;
+  place-items: center;
   white-space: nowrap;
   border-radius: 3px;
   height: 100%;
@@ -470,9 +494,9 @@ const ChartsSwitcher = styled.div`
   justify-content: flex-end;
   width: 100%;
   height: 38px;
-  background: rgb(53, 61, 70);
+  background: ${(props) => props.background};
   color: white;
-  border-bottom: 1px solid #818d9ae6;
+  border-bottom: 1px solid ${(props) => props.divider};
 `
 
 // end of FlexTable

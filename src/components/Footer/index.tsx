@@ -16,21 +16,21 @@ const socialIcons = [
 ]
 
 const Footer = ({ theme: { palette } }) => (
-  <Container background={palette.primary['900']}>
+  <Container background={palette.primary.dark}>
     <Block>
-      <Typography variant="caption" color="primary">
+      <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
       </Typography>
       <Typography variant="title" color="secondary">
         •
       </Typography>
-      <Button size="small" color="primary">
+      <Button size="small" color="default">
         Terms of Use
       </Button>
       <Typography variant="title" color="secondary">
         •
       </Typography>
-      <Button size="small" color="primary">
+      <Button size="small" color="default">
         Privacy Policy
       </Button>
     </Block>
@@ -51,7 +51,7 @@ const Footer = ({ theme: { palette } }) => (
     </Block>
 
     <Block>
-      <Typography variant="caption" color="default">
+      <Typography variant="caption" color="secondary">
         NIGHT MODE
       </Typography>
       <Switch

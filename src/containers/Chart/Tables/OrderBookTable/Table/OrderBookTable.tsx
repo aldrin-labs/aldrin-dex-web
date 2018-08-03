@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Button } from '@material-ui/core'
-import { Query, Subscription } from 'react-apollo'
+import { Button, Typography } from '@material-ui/core'
 
 import {
   Table,
@@ -9,12 +8,11 @@ import {
   Title,
   Body,
   Head,
-  Cell as RowCell,
+  Cell,
   HeadCell,
 } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 import { Loading } from '@components/Loading/Loading'
-import gql from 'graphql-tag'
 
 class OrdersList extends React.Component {
   state = {
@@ -228,13 +226,27 @@ class OrdersList extends React.Component {
 
 class OrderBookTable extends PureComponent {
   render() {
-    const { onButtonClick, roundTill, aggregation, quote, data } = this.props
+    const {
+      onButtonClick,
+      roundTill,
+      aggregation,
+      quote,
+      data,
+      theme: { palette },
+    } = this.props
+    const {
+      background,
+      action,
+      primary: { dark },
+    } = palette
     console.log(this.props.data)
 
     return (
       <Table>
-        <Title>
-          Order Book
+        <Title background={dark}>
+          <Typography color="textSecondary" variant="headline" align="center">
+            Order Book
+          </Typography>
           <SwitchTablesButton
             onClick={onButtonClick}
             variant="outlined"
@@ -243,61 +255,39 @@ class OrderBookTable extends PureComponent {
             HISTORY
           </SwitchTablesButton>
         </Title>
-        <Head background={'#292d31'}>
-          <Row isHead background={'#292d31'}>
-            <EmptyCell color="#9ca2aa" width={'20%'} />
-            <HeadCell
-              style={{
-                position: 'relative',
-                left: '5%',
-              }}
-              color="#9ca2aa"
-              width={'35%'}
-            >
-              Market <br /> Size
+        <Head background={background.default}>
+          <Row isHead background={background.default}>
+            <HeadCell width={'50%'}>
+              <Typography variant="title" color="default" align="left">
+                Size
+              </Typography>
             </HeadCell>
-            <HeadCell
-              color="#9ca2aa"
-              style={{
-                position: 'relative',
-                left: '12%',
-                overflow: 'visible',
-              }}
-              width={'16%'}
-            >
-              Price<br />({quote || 'Fiat'})
+            <HeadCell width={'50%'}>
+              <Typography variant="title" noWrap color="default" align="left">
+                Price {quote || 'Fiat'}
+              </Typography>
             </HeadCell>
           </Row>
         </Head>
         <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
-          {/* <Query query={MARKET_QUERY} variables={{ symbol, exchange }}>
-            {({ subscribeToMore, ...result }) => (
-              <OrdersList
-                roundTill={roundTill}
-                aggregation={aggregation}
-                {...result}
-                subscribeToNewOrders={() =>
-                  subscribeToMore({
-                    document: MARKET_ORDERS,
-                    variables: { symbol, exchange },
-                    updateQuery: (prev, { subscriptionData }) => {
-                      if (!subscriptionData.data) {
-                        return prev
-                      }
-
-                      const newOrder = JSON.parse(
-                        subscriptionData.data.listenMarketOrders
-                      )
-                      let obj = Object.assign({}, prev, {
-                        marketOrders: [newOrder],
-                      })
-                      return obj
-                    },
-                  })
-                }
-              />
-            )}
-          </Query> */}
+          {data.map((order, i) => (
+            <Row
+              hoverBackground={action.hover}
+              key={i}
+              background={background.default}
+            >
+              <Cell width={'50%'}>
+                <Typography color="default" noWrap variant="body1" align="left">
+                  {order.size}
+                </Typography>
+              </Cell>
+              <Cell width={'50%'}>
+                <Typography color="default" noWrap variant="body1" align="left">
+                  {order.price}
+                </Typography>
+              </Cell>
+            </Row>
+          ))}
         </Body>
       </Table>
     )
@@ -338,24 +328,6 @@ const fadeInRed = keyframes`
 
 }
   `
-
-const Cell = styled(RowCell)`
-  animation: ${(props: { animated?: string; width: string; color: string }) => {
-    if (props.animated === 'none') {
-      return ''
-    }
-
-    if (props.animated === 'green') {
-      return `${fadeInGreen} 1.5s ease`
-    }
-
-    if (props.animated === 'red') {
-      return `${fadeInRed} 1.5s ease`
-    }
-
-    return ''
-  }};
-`
 
 const EmptyCell = Cell.extend`
   position: relative;

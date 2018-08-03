@@ -10,7 +10,7 @@ class OrderBookTableContainer extends Component {
     bids: [],
   }
 
-  // transoforming data
+  // transforming data
   static getDerivedStateFromProps(newProps, state) {
     if (newProps.data.marketOrders) {
       console.log(1)
@@ -127,17 +127,17 @@ class OrderBookTableContainer extends Component {
   render() {
     const { data, ...rest } = this.props
     const { bids, asks } = this.state
-    console.log(data)
+    console.log(this.props.data.marketOrders.map((order) => JSON.parse(order)))
     // console.log(bids)
     // console.log(asks)
 
     return (
-      <div />
-      //   <Table
-      //     {...this.props}
-      //     // data={this.state.data}
-      //     {...rest}
-      //   />
+      //   <div />
+      <Table
+        {...this.props}
+        data={this.props.data.marketOrders.map((order) => JSON.parse(order))}
+        {...rest}
+      />
     )
   }
 }

@@ -33,6 +33,9 @@ class TradeHistoryTable extends PureComponent<IProps> {
       action,
       primary: { dark },
     } = palette
+    if (!data) {
+      return <Loading centerAligned />
+    }
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
