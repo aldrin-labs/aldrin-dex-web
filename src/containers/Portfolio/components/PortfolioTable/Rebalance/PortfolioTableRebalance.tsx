@@ -1694,7 +1694,7 @@ const Content = styled.div`
   overflow: auto;
   height: 100%;
   
-  @media (min-height: 800px) {
+  @media (min-height: 1080px) {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -1719,14 +1719,20 @@ const ChartWrapper = styled.div`
     padding-bottom: 1.5%;
   }
   
-  @media (max-height: 900px) {
-    height: 15vh;
-    padding-bottom: 1.5%;
-  }
+  //@media (max-height: 900px) {
+  //  height: 15vh;
+  //  padding-bottom: 1.5%;
+  //}
+  //
+  //@media (max-height: 800px) {
+  //  height: 30vh;
+  //  margin-top: 10%;
+  //}
   
-  @media (max-height: 800px) {
-    height: 30vh;
-    margin-top: 10%;
+  @media (max-height: 1080px) {
+    height: 400px;
+    margin-top: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? '180px' : '40px'}
   }
 `
 
