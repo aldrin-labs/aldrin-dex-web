@@ -46,7 +46,7 @@ const defaultSelectedSum = {
   currency: '',
   symbol: '',
   industry: '',
-  price: 0,
+  portfolioPerc: 0,
   portfolioPerf: 0,
   industryPerf1Week: 0,
   industryPerf1Month: 0,
@@ -212,7 +212,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           currency: name || '-',
           symbol,
           industry: industryName || '-',
-          price: mainPrice || 0,
           portfolioPerf: 0,
           portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
           industryPerf1Week: roundPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
@@ -318,7 +317,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: val.currency,
         symbol: val.symbol,
         industry: val.industry,
-        price: Number(acc.price) + Number(val.price),
+        portfolioPerc: Number(acc.portfolioPerc) + Number(val.portfolioPerc),
         portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
         industryPerf1Week: Number(acc.industryPerf1Week) + Number(val.industryPerf1Week),
         industryPerf1Month: Number(acc.industryPerf1Month) + Number(val.industryPerf1Month),
@@ -329,7 +328,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: '',
         symbol: '',
         industry: '',
-        price: 0,
+        portfolioPerc: 0,
         portfolioPerf: 0,
         industryPerf1Week: 0,
         industryPerf1Month: 0,
@@ -366,7 +365,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Total',
         symbol: '-',
         industry: '-',
-        price: [mainSymbol, reducedSum.price],
+        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
         portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
         industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
         industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
@@ -379,7 +378,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Selected',
         symbol: '-',
         industry: '-',
-        price: [mainSymbol, reducedSum.price],
+        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
         portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
         industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
         industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
@@ -527,7 +526,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         currency,
                         symbol,
                         industry,
-                        price,
                         portfolioPerc,
                         portfolioPerf,
                         industryPerf1Week,
@@ -546,17 +544,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         (selectedRows && selectedRows.indexOf(idx) >= 0) ||
                         false
 
-                      const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
-
-                      const priceFormattedBTC = roundAndFormatNumber(parseFloat(price), numberOfDigitsAfterPoint)
-                      const priceFormattedUSD = roundAndFormatNumber(parseFloat(price), numberOfDigitsAfterPoint)
-                      const formattedPrice = isUSDCurrently ? priceFormattedUSD : priceFormattedBTC
-
                       const cols = [
                         currency,
                         symbol,
                         industry,
-                        // [mainSymbol, formattedPrice],
                         `${portfolioPerc}%`,
                         `${portfolioPerf}%`,
                         `${industryPerf1Week}%`,
