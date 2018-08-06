@@ -98,12 +98,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     rightBar: '#1869a8',
   }
 
-  onChangeColor = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    })
-  }
-
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
@@ -458,7 +452,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   onAddRowButtonClick = () => {
-    const rows = cloneArrayElementsOneLevelDeep(this.state.rows)
+    const clonedRows = cloneArrayElementsOneLevelDeep(this.state.rows)
     const { totalRows } = this.state
     const newRow = {
       exchange: 'Exchange',
@@ -468,12 +462,13 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       price: 0,
       editable: true,
     }
-    rows.push(newRow)
-    rows = this.calculatePercents(rows, totalRows)
+    clonedRows.push(newRow)
+    const rows = this.calculatePercents(clonedRows, totalRows)
     console.log('rows in onAddRowButton ', rows)
 
     this.setState({ rows, areAllActiveChecked: false })
   }
+
 
   onDeleteRowClick = (idx: number) => {
     const { rows, undistributedMoney } = this.state
@@ -617,7 +612,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery } = this.props
-    const { staticRows, totalStaticRows, rows, totalRows } = this.state
+    const { rows, totalRows } = this.state
 
     console.log(updateRebalanceMutationQuery)
 
@@ -1102,6 +1097,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
 
     this.setState({ [currentRowsForSortText]: newData })
+  }
+
+  onChangeColor = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    })
   }
 
   render() {
