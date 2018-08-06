@@ -67,7 +67,7 @@ class SpreadTable extends PureComponent {
               </HeadCell>
             </TriggerRow>
           </Head>
-          <Body style={{ background: background.default }} height="254px">
+          <Body style={{ background: background.default }} height="40vh">
             {data.length === 0 && tableExpanded ? (
               <Loading centerAligned />
             ) : (

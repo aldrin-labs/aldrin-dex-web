@@ -115,12 +115,8 @@ class OrderBookTableContainer extends PureComponent {
       ...rest
     } = this.props
     const { bids, asks } = this.state
-    // console.log(this.props.currencyPair)
-    // console.log(bids)
-    // console.log(asks)
 
     return (
-      // <div />
       <>
         <Table data={bids} {...rest} />
         <SpreadTable data={asks} {...rest} />
