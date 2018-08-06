@@ -70,7 +70,7 @@ class OrderBookTable extends PureComponent {
                   key={i}
                   background={background.default}
                 >
-                  <EmptyCell status={'rise'} colored={'10'} width={'10%'} />
+                  <EmptyCell colored={'10'} width={'10%'} />
                   <Cell width={'45%'}>
                     <StyledTypography
                       textColor={red[400]}
@@ -132,8 +132,7 @@ const EmptyCell = Cell.extend`
     width: ${(props: { colored?: string }) => Number(props.colored)}%;
     height: 100%;
     content: '';
-    background-color: ${(props: { status?: string; colored?: string }) =>
-      props.status === 'fall' ? '#d77455' : '#34cb86d1'};
+    background-color: ${red[400]};
   }
 `
 

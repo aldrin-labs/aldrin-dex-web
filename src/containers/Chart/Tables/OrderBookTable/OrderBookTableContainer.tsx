@@ -26,6 +26,11 @@ class OrderBookTableContainer extends PureComponent {
         side: orderData.side,
       }
 
+      // removing size 0 orders
+      if (+order.size === 0) {
+        return
+      }
+
       // TODO: next here we should increase or decrease size of existing orders, not just replace them
       if (order.side === 'bid') {
         const ind = state.bids.findIndex((i) => i.price === order.price)

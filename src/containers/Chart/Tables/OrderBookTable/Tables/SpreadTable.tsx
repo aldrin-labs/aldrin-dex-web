@@ -77,7 +77,7 @@ class SpreadTable extends PureComponent {
                     hoverBackground={action.hover}
                     background={background.default}
                   >
-                    <EmptyCell status={'fall'} colored={'15'} width={'10%'} />
+                    <EmptyCell colored={'15'} width={'10%'} />
 
                     <Cell width={'45%'}>
                       <StyledTypography
@@ -129,8 +129,7 @@ const EmptyCell = Cell.extend`
     width: ${(props: { colored?: string }) => Number(props.colored)}%;
     height: 100%;
     content: '';
-    background-color: ${(props: { status?: string; colored?: string }) =>
-      props.status === 'fall' ? '#d77455' : '#34cb86d1'};
+    background-color: ${green[500]};
     transition: all 0.5s linear;
   }
 `
