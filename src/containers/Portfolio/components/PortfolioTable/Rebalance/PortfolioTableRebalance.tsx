@@ -104,30 +104,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  componentWillMount() {
-    // this.calculateAllTotals()
-  }
-
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
-    const { data, isShownMocks, getMyRebalance, getMyPortfolio } = this.props
-
-    // console.log('refetch',getMyRebalance.refetch());
-
-    console.log(' getMyRebalance in DidMount', getMyRebalance)
-
-    console.log(' getMyPortfolio in DidMount', getMyPortfolio)
+    const { isShownMocks, getMyRebalance, getMyPortfolio } = this.props
 
     // console.log('data in componentDidMount' + '', data)
-
-    // getMyRebalance.getProfile.myRebalance
-
-    // const userHasRebalancePortfolio =
-    //   data &&
-    //   data.myRebalance &&
-    //   data.myRebalance.assets &&
-    //   data.myRebalance.assets.length > 0
     const userHasRebalancePortfolio =
       getMyRebalance &&
       getMyRebalance.getProfile &&
@@ -221,13 +203,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     // console.log('data in componentWillReceiveProps', data)
 
-    // getMyRebalance.getProfile.myRebalance
-
-    // const userHasRebalancePortfolio =
-    //   data &&
-    //   data.myRebalance &&
-    //   data.myRebalance.assets &&
-    //   data.myRebalance.assets.length > 0
     const userHasRebalancePortfolio =
       getMyRebalance &&
       getMyRebalance.getProfile &&
@@ -609,7 +584,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       totalRows,
       isPercentSumGood,
       undistributedMoney,
-      staticRows,
     } = this.state
 
     console.log('rows rows rows: ', rows)
@@ -727,7 +701,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   escFunction = (e: any) => {
-    if (e.keyCode === 27) {
+    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
       this.onEditModeEnable()
     }
   }
@@ -818,13 +792,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       0
     )
 
-    console.log(
-      'sumOfAllPercents: ',
-      sumOfAllPercents,
-      'is good sum: ',
-      Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
-    )
-
     return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
   }
 
@@ -837,8 +804,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     const clonedRows = rows!.map((a) => ({ ...a }))
-
-    // clonedRows[idx].portfolioPerc = percentInput
 
     const resultRows = [
       ...clonedRows.slice(0, idx),
@@ -1395,8 +1360,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     let deltaPriceString = ''
 
-                    // parseFloat(price).toLocaleString('en-US')
-
                     if (+deltaPrice) {
                       if (deltaPrice > 0) {
                         deltaPriceString = `BUY ${symbol}  $ ${parseFloat(
@@ -1420,7 +1383,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     return (
                       <PTR key={`${rowIndex}`} isSelected={isSelected}>
                         {isEditModeEnabled && (
-                          // !!undistributedMoney &&
                           <PTDR
                             key="smt"
                             isSelected={isSelected}
@@ -1439,16 +1401,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                           if (isNewCoinName) {
                             return (
                               <PTDR key={`NameExchange${idx}`} containSelect>
-                                {/*<InputTable*/}
-                                {/*key={`inputNameCoin${rowIndex}`}*/}
-                                {/*isPercentSumGood={true}*/}
-                                {/*value={this.state.rows[rowIndex].exchange}*/}
-                                {/*onChange={(e) =>*/}
-                                {/*this.onEditCoinName(e, rowIndex)*/}
-                                {/*}*/}
-                                {/*/>*/}
                                 <SelectR
                                   key={`inputNameExchange${rowIndex}`}
+                                  classNamePrefix='custom-select-box'
                                   styles={customStyles}
                                   isClearable
                                   isSearchable
@@ -1467,16 +1422,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                           if (isNewCoinSymbol) {
                             return (
                               <PTDR key={`CoinSymbol${idx}`} containSelect>
-                                {/*<InputTable*/}
-                                {/*key={`inputCoinSymbol${rowIndex}`}*/}
-                                {/*isPercentSumGood={true}*/}
-                                {/*value={this.state.rows[rowIndex].symbol}*/}
-                                {/*onChange={(e) =>*/}
-                                {/*this.onEditCoinSymbol(e, rowIndex)*/}
-                                {/*}*/}
-                                {/*/>*/}
                                 <SelectR
                                   key={`inputCoinSymbol${rowIndex}`}
+                                  classNamePrefix='custom-select-box'
                                   styles={customStyles}
                                   isClearable
                                   isSearchable
@@ -1718,17 +1666,7 @@ const ChartWrapper = styled.div`
     height: 20vh;
     padding-bottom: 1.5%;
   }
-  
-  //@media (max-height: 900px) {
-  //  height: 15vh;
-  //  padding-bottom: 1.5%;
-  //}
-  //
-  //@media (max-height: 800px) {
-  //  height: 30vh;
-  //  margin-top: 10%;
-  //}
-  
+
   @media (max-height: 1080px) {
     height: 400px;
     margin-top: ${(props: { isEditModeEnabled?: boolean }) =>
@@ -2062,16 +2000,6 @@ const PTHR = styled.th`
   ${PTH};
 `
 
-// const PTFR = styled.th`
-//   ${PTH};
-//   min-width: 100px;
-//
-//   &:nth-child(2) {
-//     text-align: left;
-//     min-width: 70px;
-//   }
-// `
-
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
@@ -2099,6 +2027,8 @@ const PT = css`
   display: table;
   width: 100%;
   position: sticky;
+  z-index: 1;
+
 
   &::after {
     content: ' ';
@@ -2112,8 +2042,7 @@ const PT = css`
 const PTHead = styled.thead`
   ${PT};
   top: 0;
-
-
+  
   & ${PTHR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
       props.isEditModeEnabled ? PTHREditMode : PTHRNoEditMode}
@@ -2171,26 +2100,6 @@ const Checkbox = styled.input`
     background-size: 14px;
   }
 `
-
-// const PieChartContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-//   height: 100%;
-//   width: 33.3%;
-//
-//   margin: ${(props: { isEditModeEnabled?: boolean }) =>
-//     props.isEditModeEnabled ? '0' : '0 auto'};
-//
-//   @media (max-height: 650px) {
-//     display: none;
-//   }
-//
-//   &:not(:first-child) {
-//     display: ${(props: { isEditModeEnabled?: boolean }) =>
-//       props.isEditModeEnabled ? 'none' : 'flex'};
-//   }
-//`
 
 const ButtonsWrapper = styled.div`
   display: ${(props: { isEditModeEnabled?: boolean }) =>
@@ -2389,7 +2298,6 @@ const SelectR = styled(SelectReact)`
 const customStyles = {
   control: () => {
     return {
-      position: 'relative',
       boxSizing: 'border-box',
       cursor: 'default',
       display: 'flex',
@@ -2414,7 +2322,6 @@ const customStyles = {
   menuList: (base, state) => ({
     ...base,
     maxHeight: '200px',
-    height: '200px',
   }),
   option: (base, state) => ({
     ...base,
@@ -2428,7 +2335,7 @@ const customStyles = {
         : '#424242',
     [':active']: null,
   }),
-  clearIndicator: (base, state) => {
+  clearIndicator: () => {
     return {
       [':hover']: {
         color: '#fff',
@@ -2509,10 +2416,6 @@ const DropdownIndicator = (props) =>
       />
     </components.DropdownIndicator>
   )
-
-
-
-
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
