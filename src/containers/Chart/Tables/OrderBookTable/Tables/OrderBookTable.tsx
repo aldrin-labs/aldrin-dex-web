@@ -13,6 +13,7 @@ import {
   HeadCell,
 } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
+import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 
 class OrderBookTable extends PureComponent {
   render() {
@@ -71,7 +72,10 @@ class OrderBookTable extends PureComponent {
                   background={background.default}
                 >
                   <EmptyCell
-                    colored={order.percentageFromAllOrders.toString()}
+                    colored={calculatePercentagesOfOrderSize(
+                      order.size,
+                      data
+                    ).toString()}
                     width={'10%'}
                   />
                   <Cell width={'45%'}>

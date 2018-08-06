@@ -1,9 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import {
-  maximumItemsInArray,
-  calculatePercentagesOfOrderSize,
-} from '@utils/chartPageUtils'
+import { maximumItemsInArray } from '@utils/chartPageUtils'
 import Table from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
 
@@ -27,11 +24,6 @@ class OrderBookTableContainer extends PureComponent {
         price: Number(orderData.price).toFixed(8),
         size: Number(orderData.size).toFixed(8),
         side: orderData.side,
-        percentageFromAllOrders: calculatePercentagesOfOrderSize(
-          orderData.size,
-          state.bids,
-          state.asks
-        ),
       }
 
       // removing  orders with 0 size

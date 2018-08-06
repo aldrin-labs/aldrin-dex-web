@@ -4,6 +4,7 @@ import { MdArrowDropUp } from 'react-icons/lib/md/'
 import { Collapse, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 
+import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 
@@ -78,7 +79,10 @@ class SpreadTable extends PureComponent {
                     background={background.default}
                   >
                     <EmptyCell
-                      colored={order.percentageFromAllOrders.toString()}
+                      colored={calculatePercentagesOfOrderSize(
+                        order.size,
+                        data
+                      ).toString()}
                       width={'10%'}
                     />
 

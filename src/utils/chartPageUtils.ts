@@ -12,15 +12,11 @@ export const maximumItemsInArray = (
 
 export const calculatePercentagesOfOrderSize = (
   size: number,
-  bids: any[],
-  asks: any[]
+  bids: any[]
 ): number =>
   Math.ceil(
     +Number(size).toFixed(8) /
-      bids
-        .concat(asks)
-        .map((order) => +order.size)
-        .reduce((a, b) => a + b, 0) *
+      bids.map((order) => +order.size).reduce((a, b) => a + b, 0) *
       100
   )
 
