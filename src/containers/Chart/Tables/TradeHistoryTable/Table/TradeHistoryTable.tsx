@@ -33,9 +33,6 @@ class TradeHistoryTable extends PureComponent<IProps> {
       action,
       primary: { dark },
     } = palette
-    if (!data) {
-      return <Loading centerAligned />
-    }
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
@@ -91,56 +88,62 @@ class TradeHistoryTable extends PureComponent<IProps> {
             </Row>
           </Head>
           <Body style={{ background: background.default }} height="400px">
-            {data.map((ticker: ITicker, i: number) => {
-              let color: string = ticker.fall ? red[400] : green[500]
-              setTimeout(() => {
-                color = '#000'
-              }, 100)
+            {data.length === 0 && tableExpanded ? (
+              <Loading centerAligned />
+            ) : (
+              <>
+                {data.map((ticker: ITicker, i: number) => {
+                  let color: string = ticker.fall ? red[400] : green[500]
+                  setTimeout(() => {
+                    color = '#000'
+                  }, 100)
 
-              return (
-                <Row
-                  hoverBackground={action.hover}
-                  key={i}
-                  background={background.default}
-                  style={{ height: '27px' }}
-                >
-                  <Cell width={'33%'}>
-                    <StyledTypography
-                      textColor={color}
-                      noWrap
-                      variant="body1"
-                      align="left"
+                  return (
+                    <Row
+                      hoverBackground={action.hover}
+                      key={i}
+                      background={background.default}
+                      style={{ height: '27px' }}
                     >
-                      {ticker.size}
-                    </StyledTypography>
-                  </Cell>
-                  <Cell width={'36%'} style={{ display: 'flex' }}>
-                    <StyledTypography
-                      textColor={color}
-                      noWrap
-                      variant="body1"
-                      align="left"
-                    >
-                      {ticker.price}
-                    </StyledTypography>
-                    <StyledArrow
-                      color={color}
-                      direction={ticker.fall ? 'down' : 'up'}
-                    />
-                  </Cell>
-                  <Cell width={'31%'}>
-                    <StyledTypography
-                      textColor={color}
-                      noWrap
-                      variant="body1"
-                      align="left"
-                    >
-                      {ticker.time}
-                    </StyledTypography>
-                  </Cell>
-                </Row>
-              )
-            })}
+                      <Cell width={'33%'}>
+                        <StyledTypography
+                          textColor={color}
+                          noWrap
+                          variant="body1"
+                          align="left"
+                        >
+                          {ticker.size}
+                        </StyledTypography>
+                      </Cell>
+                      <Cell width={'36%'} style={{ display: 'flex' }}>
+                        <StyledTypography
+                          textColor={color}
+                          noWrap
+                          variant="body1"
+                          align="left"
+                        >
+                          {ticker.price}
+                        </StyledTypography>
+                        <StyledArrow
+                          color={color}
+                          direction={ticker.fall ? 'down' : 'up'}
+                        />
+                      </Cell>
+                      <Cell width={'31%'}>
+                        <StyledTypography
+                          textColor={color}
+                          noWrap
+                          variant="body1"
+                          align="left"
+                        >
+                          {ticker.time}
+                        </StyledTypography>
+                      </Cell>
+                    </Row>
+                  )
+                })}
+              </>
+            )}
           </Body>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>
@@ -151,6 +154,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
 const StyledTypography = styled(Typography)`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
+    font-variant-numeric: lining-nums tabular-nums;
   }
 `
 

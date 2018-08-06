@@ -12,6 +12,7 @@ import {
   Cell,
   HeadCell,
 } from '@components/Table/Table'
+import { Loading } from '@components/Loading'
 
 class OrderBookTable extends PureComponent {
   render() {
@@ -28,7 +29,6 @@ class OrderBookTable extends PureComponent {
       action,
       primary: { dark },
     } = palette
-    // console.log(this.props.data)
 
     return (
       <Table>
@@ -60,37 +60,43 @@ class OrderBookTable extends PureComponent {
           </Row>
         </Head>
         <Body height={'calc(100vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
-          {data.map((order, i) => (
-            <Row
-              hoverBackground={action.hover}
-              key={i}
-              background={background.default}
-            >
-              <EmptyCell status={'rise'} colored={'10'} width={'10%'} />
-              <Cell width={'45%'}>
-                <StyledTypography
-                  textColor={red[400]}
-                  color="default"
-                  noWrap
-                  variant="body1"
-                  align="left"
+          {data.length === 0 ? (
+            <Loading centerAligned />
+          ) : (
+            <>
+              {data.map((order, i) => (
+                <Row
+                  hoverBackground={action.hover}
+                  key={i}
+                  background={background.default}
                 >
-                  {order.size}
-                </StyledTypography>
-              </Cell>
-              <Cell width={'45%'}>
-                <StyledTypography
-                  textColor={red[400]}
-                  color="default"
-                  noWrap
-                  variant="body1"
-                  align="left"
-                >
-                  {order.price}
-                </StyledTypography>
-              </Cell>
-            </Row>
-          ))}
+                  <EmptyCell status={'rise'} colored={'10'} width={'10%'} />
+                  <Cell width={'45%'}>
+                    <StyledTypography
+                      textColor={red[400]}
+                      color="default"
+                      noWrap
+                      variant="body1"
+                      align="left"
+                    >
+                      {order.size}
+                    </StyledTypography>
+                  </Cell>
+                  <Cell width={'45%'}>
+                    <StyledTypography
+                      textColor={red[400]}
+                      color="default"
+                      noWrap
+                      variant="body1"
+                      align="left"
+                    >
+                      {order.price}
+                    </StyledTypography>
+                  </Cell>
+                </Row>
+              ))}
+            </>
+          )}
         </Body>
       </Table>
     )
@@ -100,6 +106,7 @@ class OrderBookTable extends PureComponent {
 const StyledTypography = styled(Typography)`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
+    font-variant-numeric: lining-nums tabular-nums;
   }
 `
 

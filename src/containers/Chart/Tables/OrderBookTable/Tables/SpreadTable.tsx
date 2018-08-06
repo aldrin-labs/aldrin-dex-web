@@ -5,6 +5,7 @@ import { Collapse, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
+import { Loading } from '@components/Loading'
 
 class SpreadTable extends PureComponent {
   state = {
@@ -66,38 +67,44 @@ class SpreadTable extends PureComponent {
             </TriggerRow>
           </Head>
           <Body style={{ background: background.default }} height="254px">
-            {data.map((order, i) => (
-              <Row
-                key={i}
-                hoverBackground={action.hover}
-                background={background.default}
-              >
-                <EmptyCell status={'fall'} colored={'15'} width={'10%'} />
+            {data.length === 0 && tableExpanded ? (
+              <Loading centerAligned />
+            ) : (
+              <>
+                {data.map((order, i) => (
+                  <Row
+                    key={i}
+                    hoverBackground={action.hover}
+                    background={background.default}
+                  >
+                    <EmptyCell status={'fall'} colored={'15'} width={'10%'} />
 
-                <Cell width={'45%'}>
-                  <StyledTypography
-                    textColor={green[500]}
-                    color="default"
-                    noWrap
-                    variant="body1"
-                    align="left"
-                  >
-                    {order.size}
-                  </StyledTypography>
-                </Cell>
-                <Cell width={'45%'}>
-                  <StyledTypography
-                    textColor={green[500]}
-                    color="default"
-                    noWrap
-                    variant="body1"
-                    align="left"
-                  >
-                    {order.price}
-                  </StyledTypography>
-                </Cell>
-              </Row>
-            ))}
+                    <Cell width={'45%'}>
+                      <StyledTypography
+                        textColor={green[500]}
+                        color="default"
+                        noWrap
+                        variant="body1"
+                        align="left"
+                      >
+                        {order.size}
+                      </StyledTypography>
+                    </Cell>
+                    <Cell width={'45%'}>
+                      <StyledTypography
+                        textColor={green[500]}
+                        color="default"
+                        noWrap
+                        variant="body1"
+                        align="left"
+                      >
+                        {order.price}
+                      </StyledTypography>
+                    </Cell>
+                  </Row>
+                ))}
+              </>
+            )}
           </Body>
         </CollapseWrapper>
       </SpreadreadTableWrapper>
@@ -107,6 +114,7 @@ class SpreadTable extends PureComponent {
 const StyledTypography = styled(Typography)`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
+    font-variant-numeric: lining-nums tabular-nums;
   }
 `
 
