@@ -458,9 +458,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   onAddRowButtonClick = () => {
-    let rows = cloneArrayElementsOneLevelDeep(this.state.rows)
-    let { totalRows } = this.state
-    let newRow = {
+    const rows = cloneArrayElementsOneLevelDeep(this.state.rows)
+    const { totalRows } = this.state
+    const newRow = {
       exchange: 'Exchange',
       symbol: 'Coin',
       portfolioPerc: 0.0,
@@ -651,14 +651,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  onLoadPreviousClick = () => {
-    this.setState({
-      rows: cloneArrayElementsOneLevelDeep(this.state.savedRows),
-      totalRows: this.state.totalSavedRows,
-      totalTableRows: this.state.totalTableSavedRows,
-      undistributedMoney: this.state.undistributedMoneySaved,
-    })
-  }
   onReset = () => {
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
@@ -1277,12 +1269,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 </ActionButton>
                 <ActionButton onClick={this.onSaveClick}>
                   <SaveIcon style={{ color: saveButtonColor }} />
-                </ActionButton>
-                <ActionButton
-                  onClick={this.onLoadPreviousClick}
-                  style={{ display: 'none' }}
-                >
-                  <UndoIcon />
                 </ActionButton>
               </ActionButtonsContainer>
             </TableHeading>
@@ -2318,7 +2304,6 @@ const customStyles = {
     maxHeight: '200px',
     height: '200px',
   }),
-  // TODO: Delete maxheight or height
   menuList: (base, state) => ({
     ...base,
     maxHeight: '200px',
