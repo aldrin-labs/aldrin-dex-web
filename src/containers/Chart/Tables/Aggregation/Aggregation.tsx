@@ -16,25 +16,13 @@ const Aggregation = (props) => {
     <AggregationWrapper>
       <AggHead background={palette.background.paper}>
         <Row background={palette.background.paper} isHead>
-          <Cell width={'25%'} />
-          <HeadCell
-            style={{
-              position: 'relative',
-              left: '5%',
-            }}
-            width={'30%'}
-          >
+          <Cell width={'10%'} />
+          <HeadCell width={'45%'}>
             <Typography color="primary" variant="caption">
               Aggregation
             </Typography>
           </HeadCell>
-          <HeadCell
-            style={{
-              position: 'relative',
-              left: '13%',
-            }}
-            width={'25%'}
-          >
+          <HeadCell width={'20%'}>
             <Typography color="secondary" variant="caption">
               {aggregation.toFixed(2)}
             </Typography>

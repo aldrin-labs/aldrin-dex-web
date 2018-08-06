@@ -66,12 +66,14 @@ export const Cell = styled.div`
   position: relative;
   overflow: hidden;
   list-style: none;
-  padding: 0.25rem 0.4rem;
+  padding: 0rem 0.4rem;
   font-weight: 600;
   font-size: 0.75rem;
   flex-basis: ${(props: { width: string }) => props.width};
   text-align: center;
   vertical-align: middle;
+  display: flex;
+  place-items: center;
 `
 
 export const HeadCell = Cell.extend`

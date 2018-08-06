@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
 import { Collapse, Typography } from '@material-ui/core'
+import { green } from '@material-ui/core/colors'
 
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
-import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
 
 class SpreadTable extends PureComponent {
   state = {
@@ -38,11 +38,11 @@ class SpreadTable extends PureComponent {
         <CollapseWrapper in={tableExpanded} collapsedHeight="1.5rem">
           <Head
             onClick={this.onHeadClick}
-            background={'#292d31'}
+            background={dark}
             style={{ cursor: 'pointer', height: '1.625rem' }}
           >
-            <TriggerRow isHead background={'#292d31'}>
-              <HeadCell width={'20%'}>
+            <TriggerRow isHead background={dark}>
+              <HeadCell width={'10%'}>
                 <StyledArrowSign
                   variant={{
                     tableExpanded: !tableExpanded,
@@ -53,24 +53,12 @@ class SpreadTable extends PureComponent {
                   }}
                 />
               </HeadCell>
-              <HeadCell
-                style={{
-                  position: 'relative',
-                  left: '5%',
-                }}
-                width={'35%'}
-              >
+              <HeadCell width={'45%'}>
                 <Typography variant="body2" align="left">
                   {quote || 'Fiat'} spread{' '}
                 </Typography>
               </HeadCell>
-              <HeadCell
-                style={{
-                  position: 'relative',
-                  left: '13%',
-                }}
-                width={'14%'}
-              >
+              <HeadCell width={'45%'}>
                 <Typography variant="body2" align="left">
                   {spread || 0.01}
                 </Typography>
@@ -87,24 +75,26 @@ class SpreadTable extends PureComponent {
                 <EmptyCell status={'fall'} colored={'15'} width={'10%'} />
 
                 <Cell width={'45%'}>
-                  <Typography
+                  <StyledTypography
+                    textColor={green[500]}
                     color="default"
                     noWrap
                     variant="body1"
                     align="left"
                   >
                     {order.size}
-                  </Typography>
+                  </StyledTypography>
                 </Cell>
                 <Cell width={'45%'}>
-                  <Typography
+                  <StyledTypography
+                    textColor={green[500]}
                     color="default"
                     noWrap
                     variant="body1"
                     align="left"
                   >
                     {order.price}
-                  </Typography>
+                  </StyledTypography>
                 </Cell>
               </Row>
             ))}
@@ -114,6 +104,11 @@ class SpreadTable extends PureComponent {
     )
   }
 }
+const StyledTypography = styled(Typography)`
+  && {
+    color: ${(props: { textColor: string }) => props.textColor};
+  }
+`
 
 const EmptyCell = Cell.extend`
   position: relative;

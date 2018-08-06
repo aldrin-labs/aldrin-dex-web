@@ -9,3 +9,16 @@ export const maximumItemsInArray = (
 
   return data
 }
+
+export const testJSON = (text: any) => {
+  if (typeof text !== 'string') {
+    return false
+  }
+  try {
+    JSON.parse(text)
+
+    return true
+  } catch (error) {
+    return false
+  }
+}
