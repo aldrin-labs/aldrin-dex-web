@@ -965,48 +965,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     )
   }
 
-  onEditCoinName = (e: any, idx: number) => {
-    const { rows } = this.state
-    let nameCurrencyInput = e.target.value
-
-    const clonedRows = rows.map((a) => ({ ...a }))
-    // clonedRows[idx].exchange = nameCurrencyInput
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        exchange: nameCurrencyInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    this.setState({
-      rows: resultRows,
-    })
-  }
-
-  onEditCoinSymbol = (e: any, idx: number) => {
-    const { rows } = this.state
-    let symbolCurrencyInput = e.target.value
-
-    const clonedRows = rows.map((a) => ({ ...a }))
-    // clonedRows[idx].symbol = symbolCurrencyInput
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        symbol: symbolCurrencyInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    this.setState({
-      rows: resultRows,
-    })
-  }
-
   onAddMoneyButtonPressed = () => {
     if (+this.state.addMoneyInputValue === 0) {
       return
