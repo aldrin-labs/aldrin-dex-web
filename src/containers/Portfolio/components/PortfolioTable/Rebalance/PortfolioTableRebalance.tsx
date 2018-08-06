@@ -1691,7 +1691,7 @@ const TableHeading = styled.div`
   color: white;
   font-weight: bold;
   letter-spacing: 1.1px;
-  min-height: 25px;
+  min-height: 30px;
 `
 
 const PTD = css`

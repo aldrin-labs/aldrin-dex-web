@@ -12,7 +12,7 @@ export function combineToBarChart(dataForChart) {
 
   const newDataForBarChart = dataForChart.map((dataItem) => ({
     x: dataItem.symbol,
-    y: parseFloat(parseFloat(dataItem.portfolioPerc).toFixed(2))
+    y: parseFloat(parseFloat(dataItem.portfolioPerc).toFixed(2)) || 0
   }))
 
   console.log('newDataForBarChart', newDataForBarChart);
