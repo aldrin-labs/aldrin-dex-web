@@ -58,7 +58,10 @@ class TableContainer extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.activeExchange.index !== this.props.activeExchange.index) {
+    if (
+      prevProps.activeExchange.index !== this.props.activeExchange.index ||
+      prevProps.currencyPair !== this.props.currencyPair
+    ) {
       // when change exchange delete all data and...
       this.setState({ data: [] })
 

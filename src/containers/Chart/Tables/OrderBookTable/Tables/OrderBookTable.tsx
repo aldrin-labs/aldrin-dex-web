@@ -70,7 +70,10 @@ class OrderBookTable extends PureComponent {
                   key={i}
                   background={background.default}
                 >
-                  <EmptyCell colored={'10'} width={'10%'} />
+                  <EmptyCell
+                    colored={order.percentageFromAllOrders.toString()}
+                    width={'10%'}
+                  />
                   <Cell width={'45%'}>
                     <StyledTypography
                       textColor={red[400]}

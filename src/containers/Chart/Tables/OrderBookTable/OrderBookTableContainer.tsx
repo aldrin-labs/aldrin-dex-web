@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react'
 
-import { maximumItemsInArray } from '@utils/chartPageUtils'
+import {
+  maximumItemsInArray,
+  calculatePercentagesOfOrderSize,
+} from '@utils/chartPageUtils'
 import Table from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
 
@@ -24,9 +27,14 @@ class OrderBookTableContainer extends PureComponent {
         price: Number(orderData.price).toFixed(8),
         size: Number(orderData.size).toFixed(8),
         side: orderData.side,
+        percentageFromAllOrders: calculatePercentagesOfOrderSize(
+          orderData.size,
+          state.bids,
+          state.asks
+        ),
       }
 
-      // removing size 0 orders
+      // removing  orders with 0 size
       if (+order.size === 0) {
         return
       }
@@ -88,7 +96,10 @@ class OrderBookTableContainer extends PureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.activeExchange.index !== this.props.activeExchange.index) {
+    if (
+      prevProps.activeExchange.index !== this.props.activeExchange.index ||
+      prevProps.currencyPair !== this.props.currencyPair
+    ) {
       // when change exchange delete all data and...
       this.setState({ asks: [], bids: [] })
 
@@ -112,10 +123,9 @@ class OrderBookTableContainer extends PureComponent {
       ...rest
     } = this.props
     const { bids, asks } = this.state
-    // console.log(this.props.data.marketOrders)
+    // console.log(this.props.currencyPair)
     // console.log(bids)
     // console.log(asks)
-    // testJSON()
 
     return (
       // <div />

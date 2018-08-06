@@ -226,6 +226,8 @@ class Chart extends React.Component<IState> {
             component={OrderBookTable}
             query={ORDERS_MARKET_QUERY}
             variables={{ symbol, exchange }}
+            renderWithPlaceholder
+            placeholder={TablePlaceholder}
             subscriptionArgs={{
               subscription: MARKET_ORDERS,
               variables: { symbol, exchange },

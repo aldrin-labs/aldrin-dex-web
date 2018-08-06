@@ -10,6 +10,20 @@ export const maximumItemsInArray = (
   return data
 }
 
+export const calculatePercentagesOfOrderSize = (
+  size: number,
+  bids: any[],
+  asks: any[]
+): number =>
+  Math.ceil(
+    +Number(size).toFixed(8) /
+      bids
+        .concat(asks)
+        .map((order) => +order.size)
+        .reduce((a, b) => a + b, 0) *
+      100
+  )
+
 export const testJSON = (text: any) => {
   if (typeof text !== 'string') {
     return false

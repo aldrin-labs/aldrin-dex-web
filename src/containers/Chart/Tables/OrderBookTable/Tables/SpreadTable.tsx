@@ -77,7 +77,10 @@ class SpreadTable extends PureComponent {
                     hoverBackground={action.hover}
                     background={background.default}
                   >
-                    <EmptyCell colored={'15'} width={'10%'} />
+                    <EmptyCell
+                      colored={order.percentageFromAllOrders.toString()}
+                      width={'10%'}
+                    />
 
                     <Cell width={'45%'}>
                       <StyledTypography

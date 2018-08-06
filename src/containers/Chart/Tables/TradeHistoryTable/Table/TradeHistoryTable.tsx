@@ -103,7 +103,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                       hoverBackground={action.hover}
                       key={i}
                       background={background.default}
-                      style={{ height: '27px' }}
+                      // style={{ height: '27px' }}
                     >
                       <Cell width={'33%'}>
                         <StyledTypography
