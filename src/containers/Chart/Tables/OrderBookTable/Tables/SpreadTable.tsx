@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
-import { Collapse } from '@material-ui/core'
+import { Collapse, Typography } from '@material-ui/core'
 
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
@@ -19,7 +19,19 @@ class SpreadTable extends PureComponent {
 
   render() {
     const { tableExpanded } = this.state
-    const { roundTill, aggregation, spread, quote, data } = this.props
+    const {
+      roundTill,
+      aggregation,
+      spread,
+      theme: { palette },
+      quote,
+      data,
+    } = this.props
+    const {
+      background,
+      action,
+      primary: { dark },
+    } = palette
 
     return (
       <SpreadreadTableWrapper>
@@ -30,11 +42,14 @@ class SpreadTable extends PureComponent {
             style={{ cursor: 'pointer', height: '1.625rem' }}
           >
             <TriggerRow isHead background={'#292d31'}>
-              <HeadCell color="#9ca2aa" width={'20%'}>
+              <HeadCell width={'20%'}>
                 <StyledArrowSign
                   variant={{
                     tableExpanded: !tableExpanded,
                     up: !tableExpanded,
+                  }}
+                  style={{
+                    color: palette.primary['contrastText'],
                   }}
                 />
               </HeadCell>
@@ -43,48 +58,54 @@ class SpreadTable extends PureComponent {
                   position: 'relative',
                   left: '5%',
                 }}
-                color="#9ca2aa"
                 width={'35%'}
               >
-                {quote || 'Fiat'} spread{' '}
+                <Typography variant="body2" align="left">
+                  {quote || 'Fiat'} spread{' '}
+                </Typography>
               </HeadCell>
               <HeadCell
                 style={{
                   position: 'relative',
                   left: '13%',
                 }}
-                color="#9ca2aa"
                 width={'14%'}
               >
-                {spread || 0.01}
+                <Typography variant="body2" align="left">
+                  {spread || 0.01}
+                </Typography>
               </HeadCell>
             </TriggerRow>
           </Head>
-          <Body height="254px">
+          <Body style={{ background: background.default }} height="254px">
             {data.map((order, i) => (
-              <Row key={i} background={'#25282c'}>
-                {/* <EmptyCell
-                  status={'fall'}
-                  colored={order.percentageOfChange.toString()}
-                  color="#9ca2aa"
-                  width={'25%'}
-                /> */}
-                <AnimatedCell
-                  animation={'fadeInRedAndBack'}
-                  color="#9ca2aa"
-                  width={'35%'}
-                  value={Number(order.size).toFixed(8)}
-                />
+              <Row
+                key={i}
+                hoverBackground={action.hover}
+                background={background.default}
+              >
+                <EmptyCell status={'fall'} colored={'15'} width={'10%'} />
 
-                <AnimatedCell
-                  value={roundTill(
-                    aggregation,
-                    Number(order.price).toFixed(2)
-                  ).toFixed(2)}
-                  animation={'fadeInRed'}
-                  color="#d77455"
-                  width={'30%'}
-                />
+                <Cell width={'45%'}>
+                  <Typography
+                    color="default"
+                    noWrap
+                    variant="body1"
+                    align="left"
+                  >
+                    {order.size}
+                  </Typography>
+                </Cell>
+                <Cell width={'45%'}>
+                  <Typography
+                    color="default"
+                    noWrap
+                    variant="body1"
+                    align="left"
+                  >
+                    {order.price}
+                  </Typography>
+                </Cell>
               </Row>
             ))}
           </Body>
@@ -102,7 +123,7 @@ const EmptyCell = Cell.extend`
     z-index: 100;
     top: 0;
     left: 0;
-    width: ${(props: { colored?: string }) => Number(props.colored) / 4}%;
+    width: ${(props: { colored?: string }) => Number(props.colored)}%;
     height: 100%;
     content: '';
     background-color: ${(props: { status?: string; colored?: string }) =>

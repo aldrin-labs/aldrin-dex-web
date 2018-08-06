@@ -244,7 +244,7 @@ class OrderBookTable extends PureComponent {
     return (
       <Table>
         <Title background={dark}>
-          <Typography color="textSecondary" variant="headline" align="center">
+          <Typography color="default" variant="headline" align="center">
             Order Book
           </Typography>
           <SwitchTablesButton

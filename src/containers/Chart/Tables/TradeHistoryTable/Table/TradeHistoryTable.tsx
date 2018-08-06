@@ -48,7 +48,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
               }))
             }}
           >
-            <Typography color="textSecondary" variant="headline" align="center">
+            <Typography color="default" variant="headline" align="center">
               Trade history
             </Typography>
 
@@ -57,7 +57,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
                 tableCollapsed: !tableExpanded,
                 up: !tableExpanded,
               }}
-              style={{ marginRight: '0.5rem' }}
+              style={{
+                marginRight: '0.5rem',
+                color: palette.primary['contrastText'],
+              }}
             />
           </TriggerTitle>
           <Head background={background.default}>
@@ -188,7 +191,7 @@ const StyledArrowSign = styled(MdArrowDropUp)`
 
   position: absolute;
   left: 0.25rem;
-  color: white;
+
   bottom: 30%;
   transition: all 0.5s ease;
 

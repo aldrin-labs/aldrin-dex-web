@@ -28,7 +28,7 @@ class ExchangesTable extends PureComponent<IProps> {
     return (
       <StyledTable>
         <Title background={theme.palette.primary.dark}>
-          <Typography color="textSecondary" variant="headline" align="center">
+          <Typography color="default" variant="headline" align="center">
             Exchanges
           </Typography>
           <SwitchTablesButton
