@@ -901,9 +901,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       }
     )
   }
-  // TODO: Should be one function
-  handleSelectChangeWithoutInputExchange(
+
+  handleSelectChange(
     idx: number,
+    name: string,
     optionSelected: { label: string; value: string } | null
   ) {
     const { rows } = this.state
@@ -918,39 +919,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        exchange: value,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    this.setState(
-      {
-        rows: resultRows,
-      },
-      () => {
-        console.log('this.state.rows', this.state.rows)
-      }
-    )
-  }
-
-  // TODO: Should be one function
-  handleSelectChangeWithoutInputCoin(
-    idx: number,
-    optionSelected: { label: string; value: string } | null
-  ) {
-    const { rows } = this.state
-    const value = optionSelected ? optionSelected.value : ''
-    const clonedRows = rows.map((a) => ({ ...a }))
-
-    console.log('handleSelectChange idx: ', idx)
-
-    console.log('handleSelectChange value: ', value)
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        symbol: value,
+        [name]: value,
       },
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
@@ -1355,9 +1324,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                   options={exchangeOptions}
                                   menuPortalTarget={document.body}
                                   components={{ DropdownIndicator }}
-                                  onChange={this.handleSelectChangeWithoutInputExchange.bind(
+                                  onChange={this.handleSelectChange.bind(
                                     this,
-                                    rowIndex
+                                    rowIndex,
+                                    'exchange'
                                   )}
                                 />
                               </PTDR>
@@ -1376,9 +1346,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                   options={coinsOptions}
                                   menuPortalTarget={document.body}
                                   components={{ DropdownIndicator }}
-                                  onChange={this.handleSelectChangeWithoutInputCoin.bind(
+                                  onChange={this.handleSelectChange.bind(
                                     this,
-                                    rowIndex
+                                    rowIndex,
+                                    'symbol'
                                   )}
                                 />
                               </PTDR>
