@@ -1571,10 +1571,8 @@ const ChartWrapper = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  //padding: 3% 0;
   height: 25vh;
   padding: 20px;
-  //height: 100%;
   justify-content: center;
   align-items: center;
     
@@ -1675,7 +1673,7 @@ const Wrapper = styled.div`
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  height: 45vh; //45vh
+  height: 45vh;
   padding: 0 20px 20px;
 `
 
