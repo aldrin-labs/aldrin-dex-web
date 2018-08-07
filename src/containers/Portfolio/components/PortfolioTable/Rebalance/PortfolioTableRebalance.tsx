@@ -1189,6 +1189,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={this.state.rows}>
         {children}
+        <Content>
         <Container>
           <TableAndHeadingWrapper>
             <TableHeading>Current portfolio</TableHeading>
@@ -1656,20 +1657,15 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
             </ButtonsWrapper>
           </TableAndHeadingWrapper>
         </Container>
-        <PieChartsWrapper isEditModeEnabled={isEditModeEnabled}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
+        <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
+          <ChartColorPickerContainer>
             <input type="color" name="leftBar" onChange={this.onChangeColor} value={this.state.leftBar} />
             <input type="color" name="rightBar" onChange={this.onChangeColor} value={this.state.rightBar} />
-          </div>
+          </ChartColorPickerContainer>
+          <ChartContainer>
           <Chart>
             {staticRows[0].portfolioPerc && (
               <BarChart
-                height={200}
                 alwaysShowLegend
                 charts={[
                   {
@@ -1686,48 +1682,91 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
               />
             )}
           </Chart>
-        </PieChartsWrapper>
+          </ChartContainer>
+        </ChartWrapper>
+        </Content>
       </PTWrapper>
     )
   }
 }
 
-const Chart = styled.div`
-  padding: 0.5rem;
-  //margin: 1rem;
-  //flex-grow: 1;
-  ////background: #393e44;
-  //
-  //@media (max-width: 1080px) {
-  //  width: 100%;
-  //  flex-basis: 100%;
-  //}
-  width: 100%;
-  //height: inherit;
-  height: calc(100% - 30px);
+const Content = styled.div`
+  overflow: auto;
+  height: 100%;
+  
+  @media (min-height: 1080px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  ${customAquaScrollBar};
 `
 
-const mapStateToProps = (store) => ({
-  isShownMocks: store.user.isShownMocks,
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
-})
+const ChartWrapper = styled.div`
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  //padding: 3% 0;
+  height: 25vh;
+  padding: 20px;
+  //height: 100%;
+  justify-content: center;
+  align-items: center;
+    
+  @media (max-height: 1200px) {
+    height: 20vh;
+    padding-bottom: 1.5%;
+  }
+  
+  //@media (max-height: 900px) {
+  //  height: 15vh;
+  //  padding-bottom: 1.5%;
+  //}
+  //
+  //@media (max-height: 800px) {
+  //  height: 30vh;
+  //  margin-top: 10%;
+  //}
+  
+  @media (max-height: 1080px) {
+    height: 400px;
+    margin-top: ${(props: { isEditModeEnabled?: boolean }) =>
+  props.isEditModeEnabled ? '180px' : '40px'}
+  }
+`
 
-export default compose(
-  connect(mapStateToProps),
-  graphql(getMyPortfolioQuery, { name: 'getMyPortfolio' }),
-  graphql(getMyRebalanceQuery, { name: 'getMyRebalance' }),
-  graphql(updateRebalanceMutation, {
-    name: 'updateRebalanceMutationQuery',
-    options: ({ values }) => ({
-      refetchQueries: [
-        {
-          query: getMyRebalanceQuery,
-        },
-      ],
-      ...values,
-    }),
-  })
-)(PortfolioTableRebalance)
+const ChartContainer = styled.div`
+    width: 1120px;
+    height: inherit;
+    background: #292d31;
+    border-radius: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    padding: 15px;
+    
+    @media (max-width: 1150px) {
+      width: 100%;
+    }
+`
+
+const Chart = styled.div`
+  width: calc(100% - 15px);
+  height: 100%;
+  
+  & > div {
+    height: inherit;
+  }
+`
+
+const ChartColorPickerContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  z-index: 2;
+`
 
 const InputTable = styled.input`
   max-width: 60px;
@@ -1766,7 +1805,7 @@ const TableAndHeadingWrapper = styled.div`
   }
 
   &:not(:first-child) {
-    padding-left: 30px;
+    padding-left: 60px;
   }
 
   ${customAquaScrollBar};
@@ -1790,8 +1829,6 @@ const Table = styled.table`
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
-  //width: 45vw;
-  overflow: hidden;
 `
 
 const TableHeading = styled.div`
@@ -2135,38 +2172,25 @@ const Checkbox = styled.input`
   }
 `
 
-const PieChartsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 3% 0;
-  height: 25vh;
-  width: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? '48%' : '100%'};
-
-  @media (max-height: 800px) {
-    padding-top: 1.5%;
-  }
-`
-
-const PieChartContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  width: 33.3%;
-
-  margin: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? '0' : '0 auto'};
-
-  @media (max-height: 650px) {
-    display: none;
-  }
-
-  &:not(:first-child) {
-    display: ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? 'none' : 'flex'};
-  }
-`
+// const PieChartContainer = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   height: 100%;
+//   width: 33.3%;
+//
+//   margin: ${(props: { isEditModeEnabled?: boolean }) =>
+//     props.isEditModeEnabled ? '0' : '0 auto'};
+//
+//   @media (max-height: 650px) {
+//     display: none;
+//   }
+//
+//   &:not(:first-child) {
+//     display: ${(props: { isEditModeEnabled?: boolean }) =>
+//       props.isEditModeEnabled ? 'none' : 'flex'};
+//   }
+//`
 
 const ButtonsWrapper = styled.div`
   display: ${(props: { isEditModeEnabled?: boolean }) =>
@@ -2331,14 +2355,6 @@ const EditIconWrapper = styled.div`
   }
 `
 
-const LoaderWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin: 24px;
-  position: relative;
-`
-
 const PTextBox = styled.div`
   font-size: 30px;
   color: white;
@@ -2493,3 +2509,29 @@ const DropdownIndicator = (props) =>
       />
     </components.DropdownIndicator>
   )
+
+
+
+
+
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
+})
+
+export default compose(
+  connect(mapStateToProps),
+  graphql(getMyPortfolioQuery, { name: 'getMyPortfolio' }),
+  graphql(getMyRebalanceQuery, { name: 'getMyRebalance' }),
+  graphql(updateRebalanceMutation, {
+    name: 'updateRebalanceMutationQuery',
+    options: ({ values }) => ({
+      refetchQueries: [
+        {
+          query: getMyRebalanceQuery,
+        },
+      ],
+      ...values,
+    }),
+  })
+)(PortfolioTableRebalance)

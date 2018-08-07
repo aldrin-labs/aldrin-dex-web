@@ -6,7 +6,7 @@ import { compose } from 'recompose'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
 import {
-  calcPercentage,
+  roundPercentage,
   calcAllSumOfPortfolioAsset,
 } from '@utils/PortfolioTableUtils'
 import LineChart from '@components/LineChart'
@@ -23,7 +23,7 @@ import {
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
 import { customAquaScrollBar } from '@utils/cssUtils'
-import { onSortStrings, roundUSDOff } from '@utils/PortfolioTableUtils'
+import { onSortStrings, roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
@@ -34,17 +34,24 @@ const tableHeadings = [
   { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
   { name: 'Current', value: 'price' },
-  { name: 'Portfolio performance', value: 'portfolioPerf' },
-  { name: 'Industry performance', value: 'industryPerf' },
+  { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
+  { name: 'Industry 1 week', value: 'industryPerf1Week', additionName: 'performance' },
+  { name: 'Industry 1 month', value: 'industryPerf1Month', additionName: 'performance' },
+  { name: 'Industry 3 month', value: 'industryPerf3Months', additionName: 'performance' },
+  { name: 'Industry 1 year', value: 'industryPerf1Year', additionName: 'performance' },
+
 ]
 
 const defaultSelectedSum = {
   currency: '',
   symbol: '',
   industry: '',
-  price: 0,
+  portfolioPerc: 0,
   portfolioPerf: 0,
-  industryPerf: 0,
+  industryPerf1Week: 0,
+  industryPerf1Month: 0,
+  industryPerf3Months: 0,
+  industryPerf1Year: 0,
 }
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
@@ -56,7 +63,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     selectedRows: null,
     selectedSum: defaultSelectedSum,
     activeLegend: null,
-    showChart: 'line',
+    showChart: 'chart',
   }
 
   componentWillMount() {
@@ -171,15 +178,31 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         const { name: industryName, performance } = ind || {
           name: '',
           performance: {
-            usd: 0,
-            btc: 0,
+            usdWeek: 0,
+            usdMonth: 0,
+            usd3Months: 0,
+            usdYear: 0,
+            btcWeek: 0,
+            btcMonth: 0,
+            btc3Months: 0,
+            btcYear: 0
           },
         }
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        const industryPerformance = isUSDCurrently
-          ? parseFloat(performance.usd ? performance.usd : 0).toFixed(2)
-          : parseFloat(performance.btc ? performance.btc : 0).toFixed(2)
+
+        const industryPerformance = isUSDCurrently ? {
+          oneWeek: performance.usdWeek,
+          oneMonth: performance.usdMonth,
+          threeMonth: performance.usd3Months,
+          oneYear: performance.usdYear,
+        } :
+          {
+            oneWeek: performance.btcWeek,
+            oneMonth: performance.btcMonth,
+            threeMonth: performance.btc3Months,
+            oneYear: performance.btcYear,
+          }
 
         const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
@@ -189,10 +212,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           currency: name || '-',
           symbol,
           industry: industryName || '-',
-          price: mainPrice || 0,
           portfolioPerf: 0,
-          portfolioPerc: calcPercentage(currentPrice * 100 / allSums),
-          industryPerf: industryPerformance || 0,
+          portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
+          industryPerf1Week: roundPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
+          industryPerf1Month: roundPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
+          industryPerf3Months: roundPercentage(parseFloat(industryPerformance.threeMonth)) || 0,
+          industryPerf1Year: roundPercentage(parseFloat(industryPerformance.oneYear)) || 0,
         }
 
         return col
@@ -292,17 +317,23 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: val.currency,
         symbol: val.symbol,
         industry: val.industry,
-        price: Number(acc.price) + Number(val.price),
+        portfolioPerc: Number(acc.portfolioPerc) + Number(val.portfolioPerc),
         portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
-        industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
+        industryPerf1Week: Number(acc.industryPerf1Week) + Number(val.industryPerf1Week),
+        industryPerf1Month: Number(acc.industryPerf1Month) + Number(val.industryPerf1Month),
+        industryPerf3Months: Number(acc.industryPerf3Months) + Number(val.industryPerf3Months),
+        industryPerf1Year: Number(acc.industryPerf1Year) + Number(val.industryPerf1Year),
       }),
       {
         currency: '',
         symbol: '',
         industry: '',
-        price: 0,
+        portfolioPerc: 0,
         portfolioPerf: 0,
-        industryPerf: 0,
+        industryPerf1Week: 0,
+        industryPerf1Month: 0,
+        industryPerf3Months: 0,
+        industryPerf1Year: 0,
       }
     )
     const validateSum = this.onValidateSum(reducedSum)
@@ -312,19 +343,21 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    // const { isUSDCurrently } = this.props
+    const { isUSDCurrently } = this.props
 
     if (!selectedRows || !industryData) {
       return defaultSelectedSum
     }
 
     let newReducedSum = {}
+    // TODO: SHOULD BE REFACTORED below
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" key="usd" />
+    ) : (
+      <Icon className="fa fa-btc" key="btc" />
+    )
+    // TODO: SHOULD BE REFACTORED above
 
-    // const mainSymbol = isUSDCurrently ? (
-    //   <Icon className="fa fa-usd" key="usd" />
-    // ) : (
-    //   <Icon className="fa fa-btc" key="btc" />
-    // )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
@@ -332,6 +365,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Total',
         symbol: '-',
         industry: '-',
+        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
+        industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
+        industryPerf3Months: `${reducedSum.industryPerf3Months.toFixed(2)}%`,
+        industryPerf1Year: `${reducedSum.industryPerf1Year.toFixed(2)}%`,
       }
     } else if (selectedRows.length >= 1) {
       newReducedSum = {
@@ -339,6 +378,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Selected',
         symbol: '-',
         industry: '-',
+        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
+        industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
+        industryPerf3Months: `${reducedSum.industryPerf3Months.toFixed(2)}%`,
+        industryPerf1Year: `${reducedSum.industryPerf1Year.toFixed(2)}%`,
+
       }
     }
 
@@ -387,11 +433,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    // const chartWidth = this.setChartWidth()
+
+    console.log('isUSDCurrently ', isUSDCurrently);
+
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
-      isThereAnySelectedRows = selectedRows.length > 1 ? true : false
+      isThereAnySelectedRows = selectedRows.length > 1
     }
 
     const tableDataHasData = industryData
@@ -429,17 +477,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       <Span />
                     </Label>
                   </PTH>
-                  {tableHeadings.map((heading) => {
+                  {tableHeadings.map((heading, index) => {
                     const isSorted =
                       currentSort && currentSort.key === heading.value
 
                     return (
                       <PTH
-                        key={heading.name}
+                        key={`${heading.name}${index}`}
                         onClick={() => this.onSortTable(heading.value)}
                         isSorted={isSorted}
                       >
-                        {heading.name}
+
+                        {[4,5,6,7,8].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
 
                         {isSorted && (
                           <SvgIcon
@@ -477,9 +526,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         currency,
                         symbol,
                         industry,
-                        price,
+                        portfolioPerc,
                         portfolioPerf,
-                        industryPerf,
+                        industryPerf1Week,
+                        industryPerf1Month,
+                        industryPerf3Months,
+                        industryPerf1Year,
                       } = row
 
                       const mainSymbol = isUSDCurrently ? (
@@ -496,10 +548,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         currency,
                         symbol,
                         industry,
-                        [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
+                        `${portfolioPerc}%`,
                         `${portfolioPerf}%`,
-                        `${industryPerf}%`,
+                        `${industryPerf1Week}%`,
+                        `${industryPerf1Month}%`,
+                        `${industryPerf3Months}%`,
+                        `${industryPerf1Year}%`,
                       ]
+
 
                       return (
                         <PTRBody
@@ -557,7 +613,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           </Wrapper>
           <ChartContainer>
             <Heading pieChart={this.state.showChart === 'chart'}>
-              <Switch onClick={this.toggleChart} />
+              <Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />
             </Heading>
             <ChartWrapper>
               {this.state.showChart === 'line' ? (
@@ -583,10 +639,13 @@ const Container = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   padding: 0 20px 20px;
-
-  @media (max-width: 2000px) {
-    align-items: center;
+  
+  @media (min-width: 1600px) and (max-width: 2200px) {
     flex-direction: column;
+  }
+
+  @media (max-width: 2200px) {
+    align-items: center;
   }
 `
 
@@ -625,7 +684,8 @@ const PTWrapper = styled.div`
 
 const ChartWrapper = styled.div`
   width: 100%;
-  height: 25vh;
+  height: 100%;
+  //height: 25vh;
   display: flex;
   position: relative;
 
@@ -643,10 +703,9 @@ const ChartContainer = styled.div`
   text-align: center;
   height: 35vh;
 
-  //margin: 2rem auto;
-  width: 800px;
+  width: 1031px;
 
-  @media (max-width: 2000px) {
+  @media (max-width: 2200px) {
     height: 30vh;
   }
 
@@ -674,9 +733,8 @@ const Wrapper = styled.div`
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 35vh;
   margin-right: 50px;
-  //width: 900px;
 
-  @media (max-width: 2000px) {
+  @media (max-width: 2200px) {
     margin-right: 0;
     margin-bottom: 30px;
   }
@@ -722,7 +780,6 @@ const PTD = styled.td`
   padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
-  text-overflow: ellipsis;
   min-width: 100px;
 
   &:nth-child(1) {
@@ -732,10 +789,12 @@ const PTD = styled.td`
 
   &:nth-child(2) {
     min-width: 90px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(3) {
     min-width: 60px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(n + 4) {
@@ -745,14 +804,15 @@ const PTD = styled.td`
   &:nth-child(4) {
     min-width: 200px;
     max-width: 200px;
+      text-overflow: ellipsis;
   }
 
-  &:nth-child(n + 6) {
-    min-width: 150px;
+  &:nth-child(n + 7) {
+    min-width: 110px;
   }
-
-  &:nth-child(7) {
-    min-width: 160px;
+  
+  &:nth-last-child(1) {
+    min-width: 112px;
     padding-right: 16px;
   }
 `
@@ -800,6 +860,7 @@ const PTH = styled.th`
   padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
   min-width: 100px;
+  user-select: none;
 
   &:nth-child(1) {
     min-width: 30px;
@@ -833,12 +894,12 @@ const PTH = styled.th`
     min-width: 200px;
   }
 
-  &:nth-child(n + 6) {
-    min-width: 150px;
+  &:nth-child(n+7) {
+    min-width: 110px;
   }
-
-  &:nth-child(7) {
-    min-width: 160px;
+  
+  &:nth-last-child(1) {
+    min-width: 112px;
     padding-right: 16px;
   }
 `

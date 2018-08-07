@@ -125,41 +125,27 @@ export const onSortStrings = (a: string, b: string): number => {
   return a.localeCompare(b)
 }
 
-export const onFloorN = (x: number, n: number) => {
-  let mult = Math.pow(10, n)
-  return Math.floor(x * mult) / mult
-}
+export const roundPercentage = (num: number) => num.toFixed(2)
 
-export const calcPercentage = (num: number) => onFloorN(num, 2)
+export const formatNumberToUSFormat = (numberToFormat: number) => numberToFormat.toString().replace(/\d(?=(\d{3})+\.)/g, '$&,')
 
-export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
-  const reg = /(?=\.[0-9]+)\.[0-9]+/g
-  const diff = isUSDCurrently ? 3 : 9
+export const checkForString = (numberOrString: number | string) => typeof numberOrString === 'string'
 
-  if (reg.test(num)) {
-    const [str] = num.match(reg) || ['']
-    let tmp = str
-    const len = str.length
-    for (let i = 0; i < diff - len; i++) {
-      tmp += 0
-    }
-    const [head] = num.match(/[0-9]+\./g) || ['']
-    let woPoint = head.slice(0, -1)
-    const result = (woPoint += tmp)
-    return result || ''
+export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number) => {
+
+  if (x === 0) {
+    return '0'
   }
-  return num
+
+  return formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
 }
 
-export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
-  if (num === 0.0) return '0'
-  return new Number(num).toFixed(isUSDCurrently ? 2 : 8)
-}
 
 const Icon = styled.i`
   padding-right: 5px;
 `
 
+// TODO: SHOULD BE REFACTORED
 export const onValidateSum = (
   reducedSum: RowT,
   selectedBalances: RowT,
@@ -184,7 +170,7 @@ export const onValidateSum = (
     clonedSum.currency = 'Selected'
     clonedSum.symbol = '-'
   }
-  clonedSum.percentage = `${calcPercentage(clonedSum.percentage)}%`
+  clonedSum.percentage = `${roundPercentage(clonedSum.percentage)}%`
   clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
   clonedSum.realizedPL = [mainSymbol, clonedSum.realizedPL]
   clonedSum.unrealizedPL = [mainSymbol, clonedSum.unrealizedPL]
