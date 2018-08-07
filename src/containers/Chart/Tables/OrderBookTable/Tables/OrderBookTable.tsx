@@ -1,7 +1,8 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Button, Typography } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
+import { isEqual, difference } from 'lodash'
 
 import {
   Table,
@@ -15,7 +16,14 @@ import {
 import { Loading } from '@components/Loading'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 
-class OrderBookTable extends PureComponent {
+class OrderBookTable extends Component {
+  shouldComponentUpdate(nextProps) {
+    const shouldUpdate = difference(nextProps.data, this.props.data).length > 0
+    console.log(shouldUpdate)
+
+    return shouldUpdate
+  }
+
   render() {
     const {
       onButtonClick,

@@ -1,16 +1,24 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
 import { Collapse, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
+import { isEqual, difference } from 'lodash'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 
-class SpreadTable extends PureComponent {
+class SpreadTable extends Component {
   state = {
     tableExpanded: true,
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const shouldUpdate = difference(nextProps.data, this.props.data).length > 0
+    console.log(shouldUpdate)
+
+    return shouldUpdate
   }
 
   onHeadClick = () => {

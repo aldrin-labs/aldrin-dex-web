@@ -74,7 +74,17 @@ class TableContainer extends Component {
   }
 
   render() {
-    const { data, exchange, ...rest } = this.props
+    const {
+      data,
+      exchange, //  useless functions
+      fetchMore,
+      refetch,
+      startPolling,
+      stopPolling,
+      subscribeToMore,
+      updateQuery,
+      ...rest
+    } = this.props
 
     return <Table data={this.state.data} {...rest} />
   }
