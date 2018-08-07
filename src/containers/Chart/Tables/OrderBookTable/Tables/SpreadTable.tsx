@@ -16,12 +16,13 @@ class SpreadTable extends Component {
     index: null,
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate =
       difference(nextProps.data, this.props.data).length > 0 ||
       nextProps.activeExchange.index !== this.props.activeExchange.index ||
       nextProps.currencyPair !== this.props.currencyPair ||
-      (this.props.data.length > 0 && nextProps.data.length === 0)
+      (this.props.data.length > 0 && nextProps.data.length === 0) ||
+      nextState.tableExpanded !== this.state.tableExpanded
 
     return shouldUpdate
   }

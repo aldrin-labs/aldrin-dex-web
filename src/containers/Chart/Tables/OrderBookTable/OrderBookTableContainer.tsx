@@ -116,12 +116,10 @@ class OrderBookTableContainer extends Component {
     } = this.props
     const { bids, asks } = this.state
 
-    console.log({ bids, asks })
-
     return (
       <>
-        <Table data={bids} {...rest} />
-        <SpreadTable data={asks} {...rest} />
+        <Table data={asks} {...rest} />
+        <SpreadTable data={bids} {...rest} />
       </>
     )
   }
