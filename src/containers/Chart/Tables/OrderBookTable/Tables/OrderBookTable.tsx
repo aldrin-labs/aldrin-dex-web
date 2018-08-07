@@ -22,7 +22,11 @@ class OrderBookTable extends Component {
     index: null,
   }
   shouldComponentUpdate(nextProps) {
-    const shouldUpdate = difference(nextProps.data, this.props.data).length > 0
+    const shouldUpdate =
+      difference(nextProps.data, this.props.data).length > 0 ||
+      nextProps.activeExchange.index !== this.props.activeExchange.index ||
+      nextProps.currencyPair !== this.props.currencyPair ||
+      (this.props.data.length > 0 && nextProps.data.length === 0)
 
     return shouldUpdate
   }

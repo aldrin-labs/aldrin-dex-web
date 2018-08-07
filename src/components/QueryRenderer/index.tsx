@@ -26,8 +26,6 @@ export default class QueryRenderer extends React.PureComponent<IProps> {
       ...rest
     } = this.props
 
-    console.log(subscriptionArgs)
-
     return (
       <Query query={query} variables={variables}>
         {({

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 
 import { maximumItemsInArray } from '@utils/chartPageUtils'
 import Table from './Tables/OrderBookTable'
@@ -6,7 +6,7 @@ import SpreadTable from './Tables/SpreadTable'
 
 let unsubscribe: Function | undefined
 
-class OrderBookTableContainer extends PureComponent {
+class OrderBookTableContainer extends Component {
   state = {
     asks: [],
     bids: [],
@@ -115,6 +115,8 @@ class OrderBookTableContainer extends PureComponent {
       ...rest
     } = this.props
     const { bids, asks } = this.state
+
+    console.log({ bids, asks })
 
     return (
       <>
