@@ -138,7 +138,11 @@ export const onSortStrings = (a: string, b: string): number =>
 
 export const roundPercentage = (num: number) => num.toFixed(2)
 
-export const formatNumberToUSFormat = (numberToFormat: number) => numberToFormat.toString().replace(/\d(?=(\d{3})+\.)/g, '$&,')
+export const formatNumberToUSFormat = (numberToFormat: number | string) => {
+  const stringNumber = numberToFormat.toString()
+
+  return stringNumber.match(/\./g) ? stringNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,') : stringNumber.replace(/\d(?=(\d{3})+$)/g, '$&,')
+}
 
 export const checkForString = (numberOrString: number | string) => typeof numberOrString === 'string'
 
