@@ -69,8 +69,8 @@ class OrderBookTableContainer extends PureComponent {
             : state.asks
 
         return {
-          bids: maximumItemsInArray([...bids], 50, 10),
-          asks: maximumItemsInArray([...asks], 50, 10),
+          bids: maximumItemsInArray([...bids], 60, 10),
+          asks: maximumItemsInArray([...asks], 60, 10),
         }
       }
     }

@@ -3,22 +3,35 @@ import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
 import { Collapse, Typography } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
-import { isEqual, difference } from 'lodash'
+import { difference } from 'lodash'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
+import { fromLightGreenToDeffaultGreen } from '../../../../../styles/keyframes'
 
 class SpreadTable extends Component {
   state = {
     tableExpanded: true,
+    index: null,
   }
 
-  shouldComponentUpdate(nextProps) {
-    const shouldUpdate = difference(nextProps.data, this.props.data).length > 0
-    console.log(shouldUpdate)
+  shouldComponentUpdate(nextProps, nextState) {
+    const shouldUpdate =
+      difference(nextProps.data, this.props.data).length > 0 ||
+      this.state.tableExpanded !== nextState.tableExpanded
 
     return shouldUpdate
+  }
+
+  componentDidUpdate(prevProps) {
+    const index =
+      this.props.data &&
+      this.props.data.findIndex(
+        (el) => el === difference(this.props.data, prevProps.data)[0]
+      )
+
+    this.setState({ index })
   }
 
   onHeadClick = () => {
@@ -37,6 +50,7 @@ class SpreadTable extends Component {
       quote,
       data,
     } = this.props
+    const { index } = this.state
     const {
       background,
       action,
@@ -97,6 +111,7 @@ class SpreadTable extends Component {
                     <Cell width={'45%'}>
                       <StyledTypography
                         textColor={green[500]}
+                        anime={i === index}
                         color="default"
                         noWrap
                         variant="body1"
@@ -108,6 +123,7 @@ class SpreadTable extends Component {
                     <Cell width={'45%'}>
                       <StyledTypography
                         textColor={green[500]}
+                        anime={i === index}
                         color="default"
                         noWrap
                         variant="body1"
@@ -130,6 +146,18 @@ const StyledTypography = styled(Typography)`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
+    transition: transform 3000ms ease-in-out;
+    ${(props: { anime: boolean }) =>
+      props.anime
+        ? `animation-name: ${fromLightGreenToDeffaultGreen};
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-play-state: running;`
+        : ''};
   }
 `
 

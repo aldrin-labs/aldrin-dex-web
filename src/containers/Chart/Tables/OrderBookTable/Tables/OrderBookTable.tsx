@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Button, Typography } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
-import { isEqual, difference } from 'lodash'
+import { difference } from 'lodash'
 
 import {
   Table,
@@ -15,13 +15,26 @@ import {
 } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
+import { fromLightRedToDeffaultRed } from '../../../../../styles/keyframes'
 
 class OrderBookTable extends Component {
+  state = {
+    index: null,
+  }
   shouldComponentUpdate(nextProps) {
     const shouldUpdate = difference(nextProps.data, this.props.data).length > 0
-    console.log(shouldUpdate)
 
     return shouldUpdate
+  }
+
+  componentDidUpdate(prevProps) {
+    const index =
+      this.props.data &&
+      this.props.data.findIndex(
+        (el) => el === difference(this.props.data, prevProps.data)[0]
+      )
+
+    this.setState({ index })
   }
 
   render() {
@@ -33,6 +46,7 @@ class OrderBookTable extends Component {
       data,
       theme: { palette },
     } = this.props
+    const { index } = this.state
     const {
       background,
       action,
@@ -88,6 +102,7 @@ class OrderBookTable extends Component {
                   />
                   <Cell width={'45%'}>
                     <StyledTypography
+                      anime={i === index}
                       textColor={red[400]}
                       color="default"
                       noWrap
@@ -99,6 +114,7 @@ class OrderBookTable extends Component {
                   </Cell>
                   <Cell width={'45%'}>
                     <StyledTypography
+                      anime={i === index}
                       textColor={red[400]}
                       color="default"
                       noWrap
@@ -122,6 +138,11 @@ const StyledTypography = styled(Typography)`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
+    transition: transform 3000ms ease-in-out;
+    ${(props: { anime: boolean }) =>
+      props.anime
+        ? `animation: ${fromLightRedToDeffaultRed} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
+        : ''};
   }
 `
 
