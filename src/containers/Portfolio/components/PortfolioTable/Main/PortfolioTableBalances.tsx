@@ -173,7 +173,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
         const currentPrice = mainPrice * walletAsset.balance
         const col = {
-          currency: (baseAsset.symbol + ' ' + address) || '',
+          currency: (baseAsset.symbol + ' ' + name) || '',
           symbol: walletAsset.asset.symbol,
           percentage: roundPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
