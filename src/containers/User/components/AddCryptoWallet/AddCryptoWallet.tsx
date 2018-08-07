@@ -48,6 +48,7 @@ const formikEnhancer = withFormik({
     const variables = {
       address: values.address,
       assetName: values.asset,
+      name: values.name,
       //      date: Date.now(),
     }
 

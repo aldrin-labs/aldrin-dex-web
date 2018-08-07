@@ -120,7 +120,7 @@ export const getCryptoWalletsQuery = gql`
 
 export const addCryptoWalletMutation = gql`
   mutation addCryptoWallet(
-    $name: String
+    $name: String!
     $assetName: String!
     $address: String!
   ) {
