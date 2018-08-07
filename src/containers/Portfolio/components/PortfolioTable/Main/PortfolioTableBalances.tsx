@@ -76,9 +76,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const composeWithMocks = isShownMocks
       ? {
-          ...portfolio,
-          assets: portfolio.assets.concat(MOCK_DATA),
-        }
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
+      }
       : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -98,9 +98,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
       const composeWithMocks = nextProps.isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio!.assets!.concat(MOCK_DATA),
-          }
+          ...portfolio,
+          assets: portfolio!.assets!.concat(MOCK_DATA),
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -114,9 +114,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
       const composeWithMocks = nextProps.isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio.assets.concat(MOCK_DATA),
-          }
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -427,10 +427,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               marginTopHr="10px"
               coins={
                 this.state.selectedBalances &&
-                this.state.selectedBalances.length > 0
+                  this.state.selectedBalances.length > 0
                   ? this.state.selectedBalances.map(
-                      (idx) => this.state.tableData[idx]
-                    )
+                    (idx) => this.state.tableData[idx]
+                  )
                   : []
               }
             />
