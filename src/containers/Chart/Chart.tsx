@@ -24,61 +24,20 @@ import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
-import {
-  exchanges,
-  orders,
-  getFakeDepthChartData,
-  orderBook,
-} from '@containers/Chart/mocks'
+import { orders } from '@containers/Chart/mocks'
 import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-//  TODO Refactor into component with 500 lines of code maximum
-interface IState {
-  view: 'onlyCharts' | 'default'
-  exchangeTableCollapsed: boolean
-  orders: number[][]
-  aggregation: number
-  data: any
 
-  searchSymbol: string
-  showTableOnMobile: string
-  mCharts: string
-  activeChart: string
-  currentSort?: {
-    arg: 'ASC' | 'DESC'
-    index: number
-  }
-}
-
-class Chart extends React.Component<IState> {
-  state: IState = {
+class Chart extends React.Component {
+  state = {
     view: 'default',
     orders,
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
     activeChart: 'candle',
-    ordersData: [],
-    spreadData: [],
     exchanges: [],
     tradeHistory: [],
-  }
-
-  componentDidMount() {
-    const { isShownMocks } = this.props
-    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
-
-    if (isShownMocks) {
-      this.setState({
-        ordersData: orderBookFakeData,
-        exchanges,
-        spreadData: usdSpreadFakeData,
-        usdSpreadFakeData,
-        orderBookFakeData,
-      })
-    } else {
-      // fetchData
-    }
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -175,14 +134,7 @@ class Chart extends React.Component<IState> {
   }
 
   renderTables: any = () => {
-    const {
-      aggregation,
-      showTableOnMobile,
-
-      tradeHistory,
-      ordersData,
-      spreadData,
-    } = this.state
+    const { aggregation, showTableOnMobile } = this.state
     const { currencyPair } = this.props
 
     let quote
@@ -210,18 +162,6 @@ class Chart extends React.Component<IState> {
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          {/* <OrderBookTable
-            {...{
-              onButtonClick: this.changeTable,
-              roundTill: this.roundTill,
-              activeExchange,
-              currencyPair,
-              aggregation,
-              quote,
-              symbol,
-              exchange,
-            }}
-          /> */}
           <QueryRenderer
             component={OrderBookTable}
             query={ORDERS_MARKET_QUERY}
