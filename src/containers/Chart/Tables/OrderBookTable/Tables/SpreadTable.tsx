@@ -149,14 +149,7 @@ const StyledTypography = styled(Typography)`
     transition: transform 3000ms ease-in-out;
     ${(props: { anime: boolean }) =>
       props.anime
-        ? `animation-name: ${fromLightGreenToDeffaultGreen};
-  animation-duration: 300ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
-  animation-delay: 0s;
-  animation-iteration-count: 1;
-  animation-direction: normal;
-  animation-fill-mode: forwards;
-  animation-play-state: running;`
+        ? `animation: ${fromLightRedToDeffaultRed} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
         : ''};
   }
 `
