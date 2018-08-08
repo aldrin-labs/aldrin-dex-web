@@ -265,14 +265,14 @@ class Chart extends React.Component {
             {base &&
               quote && (
                 <ExchangePair background={palette.primary.dark}>
-                  <Typography variant="subheading" color="secondary">
+                  <Typography variant="subheading" color="default">
                     {`${base}/${quote}`}
                   </Typography>
                 </ExchangePair>
               )}
             <SwitchButtonWrapper>
               <Button
-                variant="outlined"
+                variant="text"
                 color="secondary"
                 onClick={() => {
                   this.setState((prevState) => ({
@@ -315,12 +315,24 @@ class Chart extends React.Component {
 
     if (view === 'default') {
       return (
-        <Toggler onClick={() => toggleView('onlyCharts')}>Multi Charts</Toggler>
+        <Toggler
+          variant="outlined"
+          color="secondary"
+          onClick={() => toggleView('onlyCharts')}
+        >
+          Multi Charts
+        </Toggler>
       )
     }
     if (view === 'onlyCharts') {
       return (
-        <Toggler onClick={() => toggleView('default')}>Single Chart</Toggler>
+        <Toggler
+          variant="outlined"
+          color="secondary"
+          onClick={() => toggleView('default')}
+        >
+          Single Chart
+        </Toggler>
       )
     }
 
