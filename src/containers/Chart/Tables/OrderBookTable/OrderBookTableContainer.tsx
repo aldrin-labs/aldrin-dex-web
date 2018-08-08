@@ -14,6 +14,21 @@ class OrderBookTableContainer extends Component {
 
   // transforming data
   static getDerivedStateFromProps(newProps, state) {
+    if (newProps.data.marketOrders.length > 1) {
+      console.log(
+        newProps.data.marketOrders
+          .map((o) => JSON.parse(o))
+          .filter((o) => o.type === 'bid')
+      )
+      newProps.setOrders({
+        bids: newProps.data.marketOrders
+          .map((o) => JSON.parse(o))
+          .filter((o) => o.type === 'bid'),
+        asks: newProps.data.marketOrders
+          .map((o) => JSON.parse(o))
+          .filter((o) => o.type === 'ask'),
+      })
+    }
     if (
       newProps.data &&
       newProps.data.marketOrders &&
@@ -67,11 +82,6 @@ class OrderBookTableContainer extends Component {
                 (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
               )
             : state.asks
-
-        newProps.setOrders({
-          bids: [...bids],
-          asks: [...asks],
-        })
 
         return {
           bids: maximumItemsInArray([...bids], 60, 10),

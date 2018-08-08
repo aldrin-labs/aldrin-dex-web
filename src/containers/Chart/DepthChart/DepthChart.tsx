@@ -40,15 +40,26 @@ class DepthChart extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const transformedAsksData = props.asks.map((el) => ({
-      x: el.price,
-      y: el.size,
-    }))
-    const transformedBidsData = props.bids.map((el) => ({
-      x: el.price,
-      y: el.size,
-    }))
+    let totalVolumeAsks = 0
+    const transformedAsksData = props.asks.map((el) => {
+      totalVolumeAsks = totalVolumeAsks + el.size
 
+      return {
+        x: el.price,
+        y: totalVolumeAsks,
+      }
+    })
+    let totalVolumeBids = 0
+    const transformedBidsData = props.bids.map((el) => {
+      totalVolumeBids = totalVolumeBids + el.size
+
+      return {
+        x: el.price,
+        y: totalVolumeBids,
+      }
+    })
+    console.log(transformedBidsData)
+    console.log(transformedAsksData)
     const maximumYinDataSet =
       transformedBidsData &&
       maxBy(transformedBidsData, (el) => el.y) &&
@@ -58,8 +69,7 @@ class DepthChart extends Component {
             maxBy(transformedAsksData, (el) => el.y).y
           )
         : 0
-    console.log(transformedBidsData)
-    console.log(transformedAsksData)
+
     return {
       transformedBidsData,
       transformedAsksData,
@@ -201,7 +211,7 @@ class DepthChart extends Component {
               {
                 x0:
                   ordersData.length > 1 &&
-                  ordersData[ordersData.length - 1].x - 0.01,
+                  ordersData[ordersData.length - 1].x - 0.000001,
                 x: ordersData.length > 1 && ordersData[ordersData.length - 1].x,
                 y: this.state.MAX_DOMAIN_PLOT / 2,
               },
@@ -211,29 +221,29 @@ class DepthChart extends Component {
           <AreaSeries
             onNearestX={this.onNearestOrderX}
             style={{
-              fill: 'rgba(27, 94, 32, 0.43)',
-              stroke: 'rgba(76, 175, 80, 0.74)',
-              strokeWidth: '3px',
-            }}
-            animation={animated}
-            key="chart"
-            data={spreadData}
-            color="rgba(91, 96, 102, 0.7)"
-          />
-          <AreaSeries
-            onNearestX={this.onNearestSpreadX}
-            style={{
               fill: 'rgba(191, 54, 12, 0.3)',
               stroke: '#FF5722b0',
               strokeWidth: '3px',
             }}
             animation={animated}
-            key="chardt"
+            key="chart"
             data={ordersData}
             color="rgba(91, 96, 102, 0.7)"
           />
+          <AreaSeries
+            onNearestX={this.onNearestSpreadX}
+            style={{
+              fill: 'rgba(27, 94, 32, 0.43)',
+              stroke: 'rgba(76, 175, 80, 0.74)',
+              strokeWidth: '3px',
+            }}
+            animation={animated}
+            key="chardt"
+            data={spreadData}
+            color="rgba(91, 96, 102, 0.7)"
+          />
 
-          {/* <Crosshair values={crosshairValuesForSpread}>
+          <Crosshair values={crosshairValuesForSpread}>
             <CrosshairContent>
               {crosshairValuesForSpread.length >= 1 ? (
                 <>
@@ -292,7 +302,7 @@ class DepthChart extends Component {
                 <CircularProgress color="primary" />
               )}
             </CrosshairContent>
-          </Crosshair> */}
+          </Crosshair>
         </FlexibleXYPlot>
       </Container>
     )
