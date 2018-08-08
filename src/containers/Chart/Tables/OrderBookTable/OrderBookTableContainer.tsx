@@ -15,11 +15,6 @@ class OrderBookTableContainer extends Component {
   // transforming data
   static getDerivedStateFromProps(newProps, state) {
     if (newProps.data.marketOrders.length > 1) {
-      console.log(
-        newProps.data.marketOrders
-          .map((o) => JSON.parse(o))
-          .filter((o) => o.type === 'bid')
-      )
       newProps.setOrders({
         bids: newProps.data.marketOrders
           .map((o) => JSON.parse(o))

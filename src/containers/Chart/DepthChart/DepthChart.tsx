@@ -15,7 +15,6 @@ import { CircularProgress, Divider } from '@material-ui/core'
 
 import { Loading } from '@components/Loading/Loading'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
-import { maximumItemsInArray } from '@utils/chartPageUtils'
 
 const axisStyle = {
   ticks: {
@@ -60,20 +59,20 @@ class DepthChart extends Component {
     })
     // console.log(transformedBidsData)
     // console.log(transformedAsksData)
-    // const maximumYinDataSet =
-    //   transformedBidsData &&
-    //   maxBy(transformedBidsData, (el) => el.y) &&
-    //   maxBy(transformedBidsData, (el) => el.y).y
-    //     ? Math.max(
-    //         maxBy(transformedBidsData, (el) => el.y).y,
-    //         maxBy(transformedAsksData, (el) => el.y).y
-    //       )
-    //     : 0
+    const maximumYinDataSet =
+      transformedBidsData &&
+      maxBy(transformedBidsData, (el) => el.y) &&
+      maxBy(transformedBidsData, (el) => el.y).y
+        ? Math.max(
+            maxBy(transformedBidsData, (el) => el.y).y,
+            maxBy(transformedAsksData, (el) => el.y).y
+          )
+        : 0
 
     return {
       transformedBidsData,
       transformedAsksData,
-      // MAX_DOMAIN_PLOT: maximumYinDataSet < 50000 ? maximumYinDataSet : 50000,
+      MAX_DOMAIN_PLOT: maximumYinDataSet < 50000 ? maximumYinDataSet : 50000,
     }
   }
 
@@ -111,7 +110,7 @@ class DepthChart extends Component {
   }
 
   onNearestSpreadX = (value, { index }) => {
-    const { transformedAsksData, transformedBidsData } = this.state
+    const { transformedBidsData } = this.state
     this.setState({
       crosshairValuesForSpread: transformedBidsData
         .map((d, i) => {
@@ -170,7 +169,7 @@ class DepthChart extends Component {
         <FlexibleXYPlot
           margin={{ right: 48 }}
           onMouseLeave={this.onMouseLeave}
-          // yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
+          yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
         >
           <MidPriceContainer>
             <Button onClick={() => this.scale('increase', 1.5)}>
