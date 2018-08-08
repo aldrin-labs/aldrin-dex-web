@@ -58,22 +58,22 @@ class DepthChart extends Component {
         y: totalVolumeBids,
       }
     })
-    console.log(transformedBidsData)
-    console.log(transformedAsksData)
-    const maximumYinDataSet =
-      transformedBidsData &&
-      maxBy(transformedBidsData, (el) => el.y) &&
-      maxBy(transformedBidsData, (el) => el.y).y
-        ? Math.max(
-            maxBy(transformedBidsData, (el) => el.y).y,
-            maxBy(transformedAsksData, (el) => el.y).y
-          )
-        : 0
+    // console.log(transformedBidsData)
+    // console.log(transformedAsksData)
+    // const maximumYinDataSet =
+    //   transformedBidsData &&
+    //   maxBy(transformedBidsData, (el) => el.y) &&
+    //   maxBy(transformedBidsData, (el) => el.y).y
+    //     ? Math.max(
+    //         maxBy(transformedBidsData, (el) => el.y).y,
+    //         maxBy(transformedAsksData, (el) => el.y).y
+    //       )
+    //     : 0
 
     return {
       transformedBidsData,
       transformedAsksData,
-      MAX_DOMAIN_PLOT: maximumYinDataSet < 50000 ? maximumYinDataSet : 50000,
+      // MAX_DOMAIN_PLOT: maximumYinDataSet < 50000 ? maximumYinDataSet : 50000,
     }
   }
 
@@ -95,7 +95,7 @@ class DepthChart extends Component {
     this.setState({
       crosshairValuesForOrder: this.state.transformedAsksData
         .map((d, i) => {
-          if (index === this.state.transformedAsksData.length - 1) {
+          if (index === 0) {
             return null
           }
 
@@ -116,14 +116,14 @@ class DepthChart extends Component {
       crosshairValuesForSpread: transformedBidsData
         .map((d, i) => {
           if (
-            index === transformedBidsData.length - 1 &&
-            this.state.nearestOrderXIndex === transformedAsksData.length - 1 &&
+            index === 0 &&
+            this.state.nearestOrderXIndex === 0 &&
             i === index
           ) {
             return d
           }
 
-          if (index === transformedBidsData.length - 1) {
+          if (index === 0) {
             return null
           }
 
@@ -153,6 +153,7 @@ class DepthChart extends Component {
     } = this.state
     const { base, quote, animated, asks, bids } = this.props
     // hack for showing only one crosshair at once
+
     if (
       crosshairValuesForSpread.length >= 1 &&
       crosshairValuesForOrder.length >= 1
@@ -169,7 +170,7 @@ class DepthChart extends Component {
         <FlexibleXYPlot
           margin={{ right: 48 }}
           onMouseLeave={this.onMouseLeave}
-          yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
+          // yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
         >
           <MidPriceContainer>
             <Button onClick={() => this.scale('increase', 1.5)}>
@@ -186,7 +187,7 @@ class DepthChart extends Component {
             </Button>
           </MidPriceContainer>
           <XAxis
-            tickFormat={(value) => abbrNum(+value.toFixed(2), 2)}
+            tickFormat={(value) => abbrNum(+value.toFixed(4), 4)}
             style={axisStyle}
           />
           <YAxis
@@ -251,11 +252,11 @@ class DepthChart extends Component {
                     {`${crosshairValuesForSpread[0].y.toFixed(2)} `}
                     {base || 'Fiat'}
                   </h4>
-                  <Br light />
+                  {/* <Br light /> */}
                   <CrosshairBottomWrapper>
                     <div>
-                      Can be bought {crosshairValuesForSpread[0].x.toFixed(2)}{' '}
-                      {quote || 'CC'}
+                      Can be bought {crosshairValuesForSpread[0].x.toFixed(8)}{' '}
+                      {base || 'Fiat'}
                     </div>
                     <RotatedBr />
                     <div>
@@ -263,8 +264,8 @@ class DepthChart extends Component {
                       {(
                         crosshairValuesForSpread[0].y *
                         crosshairValuesForSpread[0].x
-                      ).toFixed(2)}{' '}
-                      {base || 'Fiat'}
+                      ).toFixed(8)}{' '}
+                      {quote || 'CC'}
                     </div>
                   </CrosshairBottomWrapper>
                 </>
@@ -281,11 +282,11 @@ class DepthChart extends Component {
                     {`${crosshairValuesForOrder[0].y.toFixed(2)} `}{' '}
                     {base || 'Fiat'}
                   </h4>
-                  <Br light />
+                  {/* <Br light /> */}
                   <CrosshairBottomWrapper>
                     <div>
-                      Can be sold {crosshairValuesForOrder[0].x.toFixed(2)}{' '}
-                      {quote || 'CC'}
+                      Can be sold {crosshairValuesForOrder[0].x.toFixed(8)}{' '}
+                      {base || 'Fiat'}
                     </div>
                     <RotatedBr />
                     <div>
@@ -293,8 +294,8 @@ class DepthChart extends Component {
                       {(
                         crosshairValuesForOrder[0].y *
                         crosshairValuesForOrder[0].x
-                      ).toFixed(2)}{' '}
-                      {base || 'Fiat'}
+                      ).toFixed(8)}{' '}
+                      {quote || 'CC'}
                     </div>
                   </CrosshairBottomWrapper>
                 </>
