@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import SelectReact, { components } from 'react-select'
-import { OptionProps}  from 'react-select/lib/types'
+import {CommonProps, OptionProps} from 'react-select/lib/types'
 
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
@@ -19,7 +19,7 @@ import sortIcon from '@icons/arrow.svg'
 import {
   IProps,
   IState,
-  IRow, ISortArgs,
+  IRow, ISortArgs, IShapeOfRebalancePortfolioRow, IShapeOfCurrentPortolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
 import {
   mockTableData,
@@ -121,7 +121,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
-        (el) => ({
+        (el: IShapeOfRebalancePortfolioRow) => ({
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
@@ -130,7 +130,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       )
 
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -147,7 +147,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -206,7 +206,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
-        (el) => ({
+        (el: IShapeOfRebalancePortfolioRow) => ({
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
@@ -215,7 +215,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       )
 
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -232,7 +232,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -427,8 +427,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     return (
       <React.Fragment>
-        <Checkbox type="checkbox" id={idx} checked={isSelected} />
-        <Label htmlFor={idx} onClick={(e) => e.preventDefault()}>
+        <Checkbox type="checkbox" id={`${idx}`} checked={isSelected} />
+        <Label htmlFor={`${idx}`} onClick={(e) => e.preventDefault()}>
           <Span />
         </Label>
       </React.Fragment>
@@ -600,7 +600,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     console.log(updateRebalanceMutationQuery)
 
-    const combinedRowsData = rows.map((el) => ({
+    const combinedRowsData = rows.map((el: IRow) => ({
       _id: {
           exchange: el.exchange,
           coin: el.symbol,
@@ -860,6 +860,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     // NOT READY FOR NOW
     // TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
+    // TODO: MOVE ALL parsefloat from this
     let oldRowPrice = rows[idx].price
     let newRowPrice = newCalculatedRowsWithPercents[idx].price
     let oldNewPriceDiff = oldRowPrice - newRowPrice
@@ -873,10 +874,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       () => {
         // if (oldRowPrice > newRowPrice) {
         this.setState((prevState) => ({
-          undistributedMoney: parseFloat(
+          undistributedMoney: parseFloat(parseFloat(
             parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
-          ).toFixed(2),
-          totalTableRows: newTableTotalRows,
+          ).toFixed(2)),
+          totalTableRows: parseFloat(newTableTotalRows),
         }))
         // }
       }
@@ -1254,7 +1255,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     let deltaPriceString = ''
 
-                    if (+deltaPrice) {
+                    if (deltaPrice) {
                       if (deltaPrice > 0) {
                         deltaPriceString = `BUY ${symbol}  $ ${formatNumberToUSFormat(
                           deltaPrice
@@ -2289,7 +2290,7 @@ const customStyles = {
   }),
 }
 
-const DropdownIndicator = (props) =>
+const DropdownIndicator = (props: CommonProps<OptionType>) =>
   components.DropdownIndicator && (
     <components.DropdownIndicator {...props}>
       <SvgIcon
@@ -2303,7 +2304,7 @@ const DropdownIndicator = (props) =>
     </components.DropdownIndicator>
   )
 
-const mapStateToProps = (store) => ({
+const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
