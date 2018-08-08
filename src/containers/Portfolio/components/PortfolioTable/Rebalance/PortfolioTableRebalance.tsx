@@ -12,7 +12,6 @@ import SaveIcon from 'material-ui-icons/Save'
 import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
-
 import BarChart from '@components/BarChart/BarChart'
 import { customAquaScrollBar } from '@utils/cssUtils'
 import sortIcon from '@icons/arrow.svg'
@@ -669,7 +668,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  escFunction = (e: React.KeyboardEvent) => {
+  escFunction = (e: React.KeyboardEvent<document>) => {
     if (e.keyCode === 27 && this.state.isEditModeEnabled) {
       this.onEditModeEnable()
     }
@@ -735,7 +734,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  onAddMoneyInputChange = (e: React.ChangeEvent) => {
+  onAddMoneyInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputAddMoney = e.target.value
 
     if (!/^(!?(-?[0-9]+\.?[0-9]+)|(-?[0-9]\.?)|)$/.test(inputAddMoney)) {
@@ -746,7 +745,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     this.setState({ addMoneyInputValue: inputAddMoney })
   }
-  onFocusAddMoneyInput = (e: React.FocusEvent) => {
+  onFocusAddMoneyInput = (e: React.FocusEvent<HTMLInputElement>) => {
     let inputAddMoney = e.target.value
 
     if (inputAddMoney === 0 || inputAddMoney === '0') {
@@ -764,7 +763,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
   }
 
-  onFocusPercentInput = (e: React.FocusEvent, idx: number) => {
+  onFocusPercentInput = (e: React.FocusEvent<HTMLInputElement>, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -788,7 +787,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onBlurPercentInput = (e: React.FocusEvent, idx: number) => {
+  onBlurPercentInput = (e: React.FocusEvent<HTMLInputElement>, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -818,7 +817,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onPercentInputChange = (e: React.ChangeEvent, idx: number) => {
+  onPercentInputChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -1008,7 +1007,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     this.setState({ [currentRowsForSortText]: newData })
   }
 
-  onChangeColor = (e: React.ChangeEvent) => {
+  onChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       [e.target.name]: e.target.value,
     })
@@ -1805,7 +1804,8 @@ const PTBody = styled.tbody`
   
   & ${PTDR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode}
+  props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode}
+    }
 `
 
 const PTH = css`
