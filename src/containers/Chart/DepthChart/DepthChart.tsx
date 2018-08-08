@@ -231,6 +231,7 @@ class DepthChart extends Component {
             color="rgba(91, 96, 102, 0.7)"
           /> */}
           <AreaSeries
+            curve={'curveStep'}
             onNearestX={this.onNearestOrderX}
             style={{
               fill: hexToRgbAWithOpacity(red['A100'], 0.25),
@@ -242,6 +243,7 @@ class DepthChart extends Component {
             data={ordersData}
           />
           <AreaSeries
+            curve={'curveStep'}
             onNearestX={this.onNearestSpreadX}
             style={{
               fill: hexToRgbAWithOpacity(green['A200'], 0.25),
