@@ -181,7 +181,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    const { data, isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
+    const { isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
 
     console.log(' getMyPortfolio in WillReceiveProps', getMyPortfolio)
     console.log(' getMyRebalance in WillReceiveProps', getMyRebalance)
@@ -669,7 +669,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  escFunction = (e: any) => {
+  escFunction = (e: React.KeyboardEvent) => {
     if (e.keyCode === 27 && this.state.isEditModeEnabled) {
       this.onEditModeEnable()
     }
@@ -735,7 +735,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  onAddMoneyInputChange = (e: any) => {
+  onAddMoneyInputChange = (e: React.ChangeEvent) => {
     const inputAddMoney = e.target.value
 
     if (!/^(!?(-?[0-9]+\.?[0-9]+)|(-?[0-9]\.?)|)$/.test(inputAddMoney)) {
@@ -746,7 +746,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     this.setState({ addMoneyInputValue: inputAddMoney })
   }
-  onFocusAddMoneyInput = (e: any) => {
+  onFocusAddMoneyInput = (e: React.FocusEvent) => {
     let inputAddMoney = e.target.value
 
     if (inputAddMoney === 0 || inputAddMoney === '0') {
@@ -764,7 +764,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
   }
 
-  onFocusPercentInput = (e: any, idx: number) => {
+  onFocusPercentInput = (e: React.FocusEvent, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -788,7 +788,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onBlurPercentInput = (e: any, idx: number) => {
+  onBlurPercentInput = (e: React.FocusEvent, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -818,7 +818,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onPercentInputChange = (e: any, idx: number) => {
+  onPercentInputChange = (e: React.ChangeEvent, idx: number) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -1007,7 +1007,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     this.setState({ [currentRowsForSortText]: newData })
   }
 
-  onChangeColor = (e) => {
+  onChangeColor = (e: React.ChangeEvent) => {
     this.setState({
       [e.target.name]: e.target.value,
     })
@@ -1186,7 +1186,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 <PTHead isEditModeEnabled={isEditModeEnabled}>
                   <PTR>
                     {isEditModeEnabled && (
-                      // !!undistributedMoney &&
                       <PTHR key="selectAll" style={{ textAlign: 'left' }}>
                         <Checkbox
                           onChange={this.onSelectAllActive}
@@ -1295,7 +1294,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                           if (isNewCoinName) {
                             return (
-                              <PTDR key={`NameExchange${idx}`} containSelect>
+                              <PTDR key={`NameExchange${idx}`}>
                                 <SelectR
                                   key={`inputNameExchange${rowIndex}`}
                                   classNamePrefix='custom-select-box'
@@ -1317,7 +1316,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                           if (isNewCoinSymbol) {
                             return (
-                              <PTDR key={`CoinSymbol${idx}`} containSelect>
+                              <PTDR key={`CoinSymbol${idx}`}>
                                 <SelectR
                                   key={`inputCoinSymbol${rowIndex}`}
                                   classNamePrefix='custom-select-box'
@@ -1796,9 +1795,6 @@ const PTDRNoEditMode = css`
 `
 const PTDR = styled.td`
   ${PTD};
-
-  overflow: ${(props: { containSelect?: boolean }) =>
-    props.containSelect ? 'visible' : 'hidden'};
 `
 
 const PTBody = styled.tbody`
