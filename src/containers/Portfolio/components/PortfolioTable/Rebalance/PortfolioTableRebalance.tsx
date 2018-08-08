@@ -27,7 +27,7 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
   onSortStrings,
-  cloneArrayElementsOneLevelDeep,
+  cloneArrayElementsOneLevelDeep, formatNumberToUSFormat,
 } from '@utils/PortfolioTableUtils'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
@@ -1135,7 +1135,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                         exchange,
                         symbol || '',
                         portfolioPerc ? `${portfolioPerc}%` : '',
-                        `${parseFloat(price).toLocaleString('en-US')}`,
+                        `${formatNumberToUSFormat(price)}`,
                       ]
 
                       return (
@@ -1175,7 +1175,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     <PTHC>100%</PTHC>
                     <PTHC>
                       {mainSymbol}
-                      {`${parseFloat(totalStaticRows).toLocaleString('en-US')}`}
+                      {formatNumberToUSFormat(totalStaticRows)}
                     </PTHC>
                   </PTR>
                 </PTFoot>
@@ -1276,12 +1276,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     if (+deltaPrice) {
                       if (deltaPrice > 0) {
-                        deltaPriceString = `BUY ${symbol}  $ ${parseFloat(
+                        deltaPriceString = `BUY ${symbol}  $ ${formatNumberToUSFormat(
                           deltaPrice
-                        ).toLocaleString('en-US')}`
+                        )}`
                       } else {
-                        deltaPriceString = `SELL ${symbol}  $ ${parseFloat(
-                          Math.abs(deltaPrice).toLocaleString('en-US')
+                        deltaPriceString = `SELL ${symbol}  $ ${formatNumberToUSFormat(
+                          Math.abs(deltaPrice)
                         )}`
                       }
                     }
@@ -1290,7 +1290,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                       exchange,
                       symbol || '',
                       portfolioPerc ? `${portfolioPerc}%` : '',
-                      `${parseFloat(price).toLocaleString('en-US')}`,
+                      `${formatNumberToUSFormat(price)}`,
                       deltaPriceString,
                     ]
 
@@ -1465,7 +1465,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     <PTHR>{`${totalPercents}%`}</PTHR>
                     <PTHR>
                       {mainSymbol}
-                      {`${parseFloat(totalTableRows).toLocaleString('en-US')}`}
+                      {formatNumberToUSFormat(totalTableRows)}
                     </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
@@ -1477,7 +1477,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                     <PTHR>-</PTHR>
                     <PTHR>
                       {mainSymbol}
-                      {`${parseFloat(totalRows).toLocaleString('en-US')}`}
+                      {formatNumberToUSFormat(totalRows)}
                     </PTHR>
                     <PTHR>-</PTHR>
                     <PTHR>-</PTHR>
@@ -1507,7 +1507,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                   <UndistributedMoneyContainer>
                     <UndistributedMoneyText>
                       Undistributed money:{' '}
-                      {parseFloat(undistributedMoney).toLocaleString('en-US')}
+                      {formatNumberToUSFormat(undistributedMoney)}
                     </UndistributedMoneyText>
                     <Button
                       disabled={undistributedMoney < 0}
