@@ -245,11 +245,8 @@ class Chart extends React.Component {
 
   renderDefaultView = () => {
     const { ordersData, spreadData, activeChart } = this.state
-    const {
-      activeExchange,
-      currencyPair,
-      theme: { palette },
-    } = this.props
+    const { activeExchange, currencyPair, theme } = this.props
+    const { palette } = theme
 
     let base
     let quote
@@ -295,6 +292,7 @@ class Chart extends React.Component {
               <DepthChartContainer>
                 <DepthChart
                   {...{
+                    theme,
                     base,
                     quote,
                     animated: false,
