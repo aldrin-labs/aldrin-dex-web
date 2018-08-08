@@ -142,8 +142,6 @@ class Chart extends React.Component {
       quote = currencyPair.split('_')[1]
     }
 
-    console.log(currencyPair)
-
     const { activeExchange, theme } = this.props
     const { changeExchange } = this
 
@@ -247,9 +245,16 @@ class Chart extends React.Component {
   renderDefaultView = () => {
     const { ordersData, spreadData, activeChart } = this.state
     const {
+      activeExchange,
       currencyPair,
       theme: { palette },
     } = this.props
+
+    const symbol = currencyPair || ''
+    const exchange =
+      activeExchange && activeExchange.exchange
+        ? activeExchange.exchange.symbol
+        : ''
 
     let base
     let quote
@@ -293,10 +298,16 @@ class Chart extends React.Component {
           ) : (
             <Fade timeout={1000} in={activeChart === 'depth'}>
               <DepthChartContainer>
-                <DepthChart
+                <QueryRenderer
+                  component={DepthChart}
+                  query={ORDERS_MARKET_QUERY}
+                  variables={{ symbol, exchange }}
+                  // subscriptionArgs={{
+                  //   subscription: MARKET_ORDERS,
+                  //   variables: { symbol, exchange },
+                  //   updateQueryFunction: updateOrderBookQuerryFunction,
+                  // }}
                   {...{
-                    ordersData,
-                    spreadData,
                     base,
                     quote,
                     animated: false,

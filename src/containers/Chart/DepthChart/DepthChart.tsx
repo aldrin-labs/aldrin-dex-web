@@ -11,8 +11,10 @@ import {
   Crosshair,
 } from 'react-vis'
 import { CircularProgress, Divider } from '@material-ui/core'
+
 import { Loading } from '@components/Loading/Loading'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
+import { maximumItemsInArray } from '@utils/chartPageUtils'
 
 const axisStyle = {
   ticks: {
@@ -32,40 +34,110 @@ class DepthChart extends Component {
     crosshairValuesForSpread: [],
     crosshairValuesForOrder: [],
     nearestOrderXIndex: null,
-    transformedOrdersData: [],
-    transformedSpreadData: [],
+    transformedAsksData: [],
+    transformedBidsData: [],
+    asks: [],
+    bids: [],
   }
 
-  static getDerivedStateFromProps(props) {
-    const { ordersData, spreadData } = props
+  static getDerivedStateFromProps(props, state) {
+    console.log(props)
+    if (
+      props.data &&
+      props.data.marketOrders &&
+      props.data.marketOrders.length > 0
+    ) {
+      const orderData = props.data.marketOrders[0]
+      let order = {
+        price: Number(orderData.price).toFixed(8),
+        size: Number(orderData.size).toFixed(8),
+        side: orderData.side,
+      }
 
-    if (!ordersData || !spreadData) {
-      return null
+      // removing  orders with 0 size
+      if (+order.size === 0) {
+        return
+      }
+
+      // TODO: next here we should increase or decrease size of existing orders, not just replace them
+      if (order.side === 'bid') {
+        const ind = state.bids.findIndex((i) => i.price === order.price)
+        if (ind > -1) {
+          if (order.size !== '0') {
+            state.bids.splice(ind, 1, order)
+          } else {
+            state.bids.splice(ind, 1)
+          }
+          order = null
+        }
+      }
+      if (order !== null && order.side === 'ask') {
+        const ind = state.asks.findIndex((i) => i.price === order.price)
+        if (ind > -1) {
+          if (order.size !== '0') {
+            state.asks.splice(ind, 1, order)
+          } else {
+            state.asks.splice(ind, 1)
+          }
+          order = null
+        }
+      }
+      if (order !== null) {
+        const bids =
+          order.side === 'bid'
+            ? [order, ...state.bids].sort(
+                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
+              )
+            : state.bids
+        const asks =
+          order.side === 'ask'
+            ? [order, ...state.asks].sort(
+                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
+              )
+            : state.asks
+
+        const transformedAsksData = maximumItemsInArray(
+          [...asks],
+          1000,
+          10
+        ).map((el) => ({
+          x: el.price,
+          y: el.size,
+        }))
+        const transformedBidsData = maximumItemsInArray(
+          [...bids],
+          1000,
+          10
+        ).map((el) => ({
+          x: el.price,
+          y: el.size,
+        }))
+
+        console.log(transformedAsksData)
+        console.log(transformedBidsData)
+
+        // const maximumYinDataSet =
+        //   transformedBidsData &&
+        //   maxBy(transformedBidsData, (el) => el.y) &&
+        //   maxBy(transformedBidsData, (el) => el.y).y
+        //     ? Math.max(
+        //         maxBy(transformedBidsData, (el) => el.y).y,
+        //         maxBy(transformedAsksData, (el) => el.y).y
+        //       )
+        //     : 0
+
+        return {
+          transformedBidsData,
+          transformedAsksData,
+          asks,
+          bids,
+          MAX_DOMAIN_PLOT: 300,
+          // maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
+        }
+      }
     }
 
-    if (ordersData.length < 1 || spreadData.length < 1) {
-      return null
-    }
-    const transformedOrdersData = ordersData.map((el) => ({
-      x: el.price,
-      y: el.size,
-    }))
-    const transformedSpreadData = spreadData.map((el) => ({
-      x: el.price,
-      y: el.size,
-    }))
-
-    const maximumYinDataSet = Math.max(
-      maxBy(transformedSpreadData, (el) => el.y).y,
-      maxBy(transformedOrdersData, (el) => el.y).y
-    )
-
-    return {
-      MAX_DOMAIN_PLOT:
-        maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
-      transformedSpreadData,
-      transformedOrdersData,
-    }
+    return null
   }
 
   scale = (type: 'increase' | 'decrease', scale: number) => {
@@ -84,9 +156,9 @@ class DepthChart extends Component {
 
   onNearestOrderX = (value, { index }) => {
     this.setState({
-      crosshairValuesForOrder: this.state.transformedOrdersData
+      crosshairValuesForOrder: this.state.transformedAsksData
         .map((d, i) => {
-          if (index === this.state.transformedOrdersData.length - 1) {
+          if (index === this.state.transformedAsksData.length - 1) {
             return null
           }
 
@@ -102,20 +174,19 @@ class DepthChart extends Component {
   }
 
   onNearestSpreadX = (value, { index }) => {
-    const { transformedOrdersData, transformedSpreadData } = this.state
+    const { transformedAsksData, transformedBidsData } = this.state
     this.setState({
-      crosshairValuesForSpread: transformedSpreadData
+      crosshairValuesForSpread: transformedBidsData
         .map((d, i) => {
           if (
-            index === transformedSpreadData.length - 1 &&
-            this.state.nearestOrderXIndex ===
-              transformedOrdersData.length - 1 &&
+            index === transformedBidsData.length - 1 &&
+            this.state.nearestOrderXIndex === transformedAsksData.length - 1 &&
             i === index
           ) {
             return d
           }
 
-          if (index === transformedSpreadData.length - 1) {
+          if (index === transformedBidsData.length - 1) {
             return null
           }
 
@@ -140,8 +211,8 @@ class DepthChart extends Component {
     let {
       crosshairValuesForSpread,
       crosshairValuesForOrder,
-      transformedOrdersData: ordersData,
-      transformedSpreadData: spreadData,
+      transformedAsksData: ordersData,
+      transformedBidsData: spreadData,
     } = this.state
     const { base, quote, animated } = this.props
 
@@ -197,7 +268,7 @@ class DepthChart extends Component {
             animation="stiff"
             style={axisStyle}
           />
-          <VerticalRectSeries
+          {/* <VerticalRectSeries
             animation="gentle"
             key="charst"
             data={[
@@ -210,7 +281,7 @@ class DepthChart extends Component {
               },
             ]}
             color="rgba(91, 96, 102, 0.7)"
-          />
+          /> */}
           <AreaSeries
             onNearestX={this.onNearestOrderX}
             style={{
@@ -220,7 +291,7 @@ class DepthChart extends Component {
             }}
             animation={animated}
             key="chart"
-            data={ordersData}
+            data={spreadData}
             color="rgba(91, 96, 102, 0.7)"
           />
           <AreaSeries
@@ -232,11 +303,11 @@ class DepthChart extends Component {
             }}
             animation={animated}
             key="chardt"
-            data={spreadData}
+            data={ordersData}
             color="rgba(91, 96, 102, 0.7)"
           />
 
-          <Crosshair values={crosshairValuesForSpread}>
+          {/* <Crosshair values={crosshairValuesForSpread}>
             <CrosshairContent>
               {crosshairValuesForSpread.length >= 1 ? (
                 <>
@@ -295,7 +366,7 @@ class DepthChart extends Component {
                 <CircularProgress color="primary" />
               )}
             </CrosshairContent>
-          </Crosshair>
+          </Crosshair> */}
         </FlexibleXYPlot>
       </Container>
     )
