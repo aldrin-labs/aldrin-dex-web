@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
 import { maxBy } from 'lodash'
+import { connect } from 'react-redux'
 import {
   FlexibleXYPlot,
   VerticalRectSeries,
@@ -36,108 +37,39 @@ class DepthChart extends Component {
     nearestOrderXIndex: null,
     transformedAsksData: [],
     transformedBidsData: [],
-    asks: [],
-    bids: [],
   }
 
   static getDerivedStateFromProps(props, state) {
     console.log(props)
-    if (
-      props.data &&
-      props.data.marketOrders &&
-      props.data.marketOrders.length > 0
-    ) {
-      const orderData = props.data.marketOrders[0]
-      let order = {
-        price: Number(orderData.price).toFixed(8),
-        size: Number(orderData.size).toFixed(8),
-        side: orderData.side,
-      }
 
-      // removing  orders with 0 size
-      if (+order.size === 0) {
-        return
-      }
+    const transformedAsksData = props.asks.map((el) => ({
+      x: el.price,
+      y: el.size,
+    }))
+    const transformedBidsData = props.bids.map((el) => ({
+      x: el.price,
+      y: el.size,
+    }))
 
-      // TODO: next here we should increase or decrease size of existing orders, not just replace them
-      if (order.side === 'bid') {
-        const ind = state.bids.findIndex((i) => i.price === order.price)
-        if (ind > -1) {
-          if (order.size !== '0') {
-            state.bids.splice(ind, 1, order)
-          } else {
-            state.bids.splice(ind, 1)
-          }
-          order = null
-        }
-      }
-      if (order !== null && order.side === 'ask') {
-        const ind = state.asks.findIndex((i) => i.price === order.price)
-        if (ind > -1) {
-          if (order.size !== '0') {
-            state.asks.splice(ind, 1, order)
-          } else {
-            state.asks.splice(ind, 1)
-          }
-          order = null
-        }
-      }
-      if (order !== null) {
-        const bids =
-          order.side === 'bid'
-            ? [order, ...state.bids].sort(
-                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
-              )
-            : state.bids
-        const asks =
-          order.side === 'ask'
-            ? [order, ...state.asks].sort(
-                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
-              )
-            : state.asks
+    console.log(transformedAsksData)
+    console.log(transformedBidsData)
 
-        const transformedAsksData = maximumItemsInArray(
-          [...asks],
-          1000,
-          10
-        ).map((el) => ({
-          x: el.price,
-          y: el.size,
-        }))
-        const transformedBidsData = maximumItemsInArray(
-          [...bids],
-          1000,
-          10
-        ).map((el) => ({
-          x: el.price,
-          y: el.size,
-        }))
+    // const maximumYinDataSet =
+    //   transformedBidsData &&
+    //   maxBy(transformedBidsData, (el) => el.y) &&
+    //   maxBy(transformedBidsData, (el) => el.y).y
+    //     ? Math.max(
+    //         maxBy(transformedBidsData, (el) => el.y).y,
+    //         maxBy(transformedAsksData, (el) => el.y).y
+    //       )
+    //     : 0
 
-        console.log(transformedAsksData)
-        console.log(transformedBidsData)
-
-        // const maximumYinDataSet =
-        //   transformedBidsData &&
-        //   maxBy(transformedBidsData, (el) => el.y) &&
-        //   maxBy(transformedBidsData, (el) => el.y).y
-        //     ? Math.max(
-        //         maxBy(transformedBidsData, (el) => el.y).y,
-        //         maxBy(transformedAsksData, (el) => el.y).y
-        //       )
-        //     : 0
-
-        return {
-          transformedBidsData,
-          transformedAsksData,
-          asks,
-          bids,
-          MAX_DOMAIN_PLOT: 300,
-          // maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
-        }
-      }
+    return {
+      transformedBidsData,
+      transformedAsksData,
+      MAX_DOMAIN_PLOT: 300,
+      // maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
     }
-
-    return null
   }
 
   scale = (type: 'increase' | 'decrease', scale: number) => {
@@ -214,8 +146,7 @@ class DepthChart extends Component {
       transformedAsksData: ordersData,
       transformedBidsData: spreadData,
     } = this.state
-    const { base, quote, animated } = this.props
-
+    const { base, quote, animated, asks, bids } = this.props
     // hack for showing only one crosshair at once
     if (
       crosshairValuesForSpread.length >= 1 &&
@@ -443,4 +374,9 @@ const MidPriceColumnWrapper = styled.div`
   flex-direction: column;
 `
 
-export default DepthChart
+const mapStateToProps = (store: any) => ({
+  asks: store.chart.asks,
+  bids: store.chart.bids,
+})
+
+export default connect(mapStateToProps)(DepthChart)

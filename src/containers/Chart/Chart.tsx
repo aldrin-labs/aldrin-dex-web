@@ -178,6 +178,7 @@ class Chart extends React.Component {
               currencyPair,
               aggregation,
               quote,
+              setOrders: this.props.setOrders,
               symbol,
               exchange,
               ...this.props,
@@ -298,15 +299,7 @@ class Chart extends React.Component {
           ) : (
             <Fade timeout={1000} in={activeChart === 'depth'}>
               <DepthChartContainer>
-                <QueryRenderer
-                  component={DepthChart}
-                  query={ORDERS_MARKET_QUERY}
-                  variables={{ symbol, exchange }}
-                  // subscriptionArgs={{
-                  //   subscription: MARKET_ORDERS,
-                  //   variables: { symbol, exchange },
-                  //   updateQueryFunction: updateOrderBookQuerryFunction,
-                  // }}
+                <DepthChart
                   {...{
                     base,
                     quote,
@@ -483,6 +476,7 @@ const Container = styled.div`
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
   view: store.chart.view,
+
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
 })
@@ -493,6 +487,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actions.toggleView(view)),
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
+  setOrders: (payload) => dispatch(actions.setOrders(payload)),
 })
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)

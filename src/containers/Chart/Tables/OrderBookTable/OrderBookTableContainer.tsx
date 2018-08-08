@@ -68,6 +68,11 @@ class OrderBookTableContainer extends Component {
               )
             : state.asks
 
+        newProps.setOrders({
+          bids: maximumItemsInArray([...bids], 1000, 10),
+          asks: maximumItemsInArray([...asks], 1000, 10),
+        })
+
         return {
           bids: maximumItemsInArray([...bids], 60, 10),
           asks: maximumItemsInArray([...asks], 60, 10),
