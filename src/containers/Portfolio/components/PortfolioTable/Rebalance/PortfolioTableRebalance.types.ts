@@ -1,3 +1,11 @@
+export enum ISortArgs {
+  exchange = 'exchange',
+  symbol = 'symbol',
+  portfolioPerc = 'portfolioPerc',
+  price = 'price',
+  trade = 'trade',
+}
+
 export interface IRow {
   exchange: string
   symbol: string
@@ -10,6 +18,8 @@ export interface IRow {
 export interface IProps {
   children: object
   isUSDCurrently: boolean
+  isShownMocks: boolean
+  filterValueSmallerThenPercentage: number
 }
 
 export interface IState {
@@ -18,7 +28,7 @@ export interface IState {
   rows: IRow[]
   staticRows: IRow[]
   savedRows: IRow[]
-  addMoneyInputValue: number | null
+  addMoneyInputValue: number | string
   currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
   currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
@@ -32,4 +42,6 @@ export interface IState {
   totalTableSavedRows: number
   isPercentSumGood: boolean
   totalPercents: number | string
+  leftBar: string
+  rightBar: string
 }

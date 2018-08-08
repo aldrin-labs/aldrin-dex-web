@@ -1,37 +1,34 @@
-import * as React from 'react'
+import React, { CSSProperties } from 'react'
 import styled, { css } from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import SelectReact, { components } from 'react-select'
+import { OptionProps}  from 'react-select/lib/types'
+
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
-import UndoIcon from 'material-ui-icons/Undo'
 import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
 
 import BarChart from '@components/BarChart/BarChart'
-import PieChart from '@components/PieChart'
 import { customAquaScrollBar } from '@utils/cssUtils'
 import sortIcon from '@icons/arrow.svg'
 import {
   IProps,
   IState,
-  IRow,
+  IRow, ISortArgs,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
 import {
   mockTableData,
-  combineToChart,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
   onSortStrings,
   cloneArrayElementsOneLevelDeep, formatNumberToUSFormat,
 } from '@utils/PortfolioTableUtils'
-import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import spinLoader from '@icons/tail-spin.svg'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import { exchangeOptions, coinsOptions, combineToBarChart } from './mocks'
 import {
@@ -181,21 +178,13 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
-
-    // const composeWithMocks = isShownMocks
-    //   ? [...newTableData, ...mockTableData]
-    //   : newTableData
-    //
-    // this.setTableData(composeWithMocks)
   }
 
   componentWillReceiveProps(nextProps: IProps) {
     const { data, isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
 
     console.log(' getMyPortfolio in WillReceiveProps', getMyPortfolio)
-    console.log('getMyRebalance in WillReceiveProps', getMyRebalance)
-
-    // console.log('data in componentWillReceiveProps', data)
+    console.log(' getMyRebalance in WillReceiveProps', getMyRebalance)
 
     const userHasRebalancePortfolio =
       getMyRebalance &&
@@ -275,11 +264,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       )
     }
 
-    // const composeWithMocks = isShownMocks
-    //   ? [...newTableData, ...mockTableData]
-    //   : newTableData
-
-    // this.setTableData(composeWithMocks)
 
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
       if (nextProps.isUSDCurrently) {
@@ -560,8 +544,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return dataWithNewPrices
   }
 
-  removeEditableModeInCoins = (rows) => {
-    return rows.map((el) => {
+  removeEditableModeInCoins = (rows: IRow[]) => {
+    return rows.map((el: IRow) => {
       if (el.editable) {
         return {
           ...el,
@@ -616,17 +600,15 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     console.log(updateRebalanceMutationQuery)
 
-    const combinedRowsData = rows.filter((el) => !el.mock).map((el) => {
-      return {
-        _id: {
+    const combinedRowsData = rows.map((el) => ({
+      _id: {
           exchange: el.exchange,
           coin: el.symbol,
         },
         amount: el.price.toString(),
         percent: el.portfolioPerc.toString(),
         diff: el.deltaPrice.toString(),
-      }
-    })
+    }))
 
     console.log(combinedRowsData)
 
@@ -872,7 +854,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       newCalculatedRowsWithPercents
     )
 
-    // const newTotalRows = this.calculateTotal(newCalculatedRowsWithPercents)
     const newTableTotalRows = this.calculateTableTotal(
       newCalculatedRowsWithPercents
     )
@@ -962,7 +943,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onSortTable = (key: Args, chooseRows: string) => {
+  onSortTable = (key: ISortArgs, chooseRows: string) => {
     let currentRowsForSort: IRow[]
     let currentRowsForSortText: string
     let currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
@@ -2210,8 +2191,7 @@ const SelectR = styled(SelectReact)`
 `
 
 const customStyles = {
-  control: () => {
-    return {
+  control: () => ({
       boxSizing: 'border-box',
       cursor: 'default',
       display: 'flex',
@@ -2223,45 +2203,31 @@ const customStyles = {
       backgroundColor: 'transparent',
       minHeight: '0.8em',
       border: 'none',
-    }
-  },
-  menu: (base, state) => ({
+  }),
+  menu: (base: CSSProperties) => ({
     ...base,
     backgroundColor: '#424242',
     minWidth: '150px',
     maxHeight: '200px',
     height: '200px',
   }),
-  menuList: (base, state) => ({
+  menuList: (base: CSSProperties) => ({
     ...base,
     maxHeight: '200px',
   }),
-  option: (base, state) => ({
-    ...base,
-    color: '#fff',
-    fontSize: '1.5em',
-    fontFamily: 'Roboto',
-    backgroundColor: state.isSelected
-      ? 'rgba(255, 255, 255, 0.2)'
-      : state.isFocused
-        ? 'rgba(255, 255, 255, 0.1)'
-        : '#424242',
-    [':active']: null,
+  option: (base: CSSProperties, state: OptionProps) => ({
+      ...base,
+      color: '#fff',
+      fontSize: '1.5em',
+      fontFamily: 'Roboto',
+      backgroundColor: state.isSelected
+        ? 'rgba(255, 255, 255, 0.2)'
+        : state.isFocused
+          ? 'rgba(255, 255, 255, 0.1)'
+          : '#424242',
+      [':active']: null,
   }),
-  clearIndicator: () => {
-    return {
-      [':hover']: {
-        color: '#fff',
-      },
-      display: 'flex',
-      width: '20px',
-      boxSizing: 'border-box',
-      color: 'hsl(0, 0%, 80%)',
-      padding: '2px',
-      transition: 'color 150ms',
-    }
-  },
-  dropdownIndicator: (base, state) => ({
+  clearIndicator: () => ({
     [':hover']: {
       color: '#fff',
     },
@@ -2272,24 +2238,35 @@ const customStyles = {
     padding: '2px',
     transition: 'color 150ms',
   }),
-  valueContainer: (base, state) => ({
+  dropdownIndicator: () => ({
+    [':hover']: {
+      color: '#fff',
+    },
+    display: 'flex',
+    width: '20px',
+    boxSizing: 'border-box',
+    color: 'hsl(0, 0%, 80%)',
+    padding: '2px',
+    transition: 'color 150ms',
+  }),
+  valueContainer: (base: CSSProperties) => ({
     ...base,
     paddingLeft: 0,
   }),
-  singleValue: (base, state) => ({
+  singleValue: (base: CSSProperties) => ({
     ...base,
     color: '#fff',
     marginLeft: '0',
   }),
-  placeholder: (base, state) => ({
+  placeholder: (base: CSSProperties) => ({
     ...base,
     marginLeft: 0,
   }),
-  input: (base, state) => ({
+  input: (base: CSSProperties) => ({
     ...base,
     color: '#fff',
   }),
-  multiValue: (base, state) => ({
+  multiValue: (base: CSSProperties) => ({
     ...base,
     [':hover']: {
       borderColor: '#4ed8da',
@@ -2300,11 +2277,11 @@ const customStyles = {
     fontWeight: 'bold',
     backgroundColor: '#2a2d32',
   }),
-  multiValueLabel: (base, state) => ({
+  multiValueLabel: (base: CSSProperties) => ({
     ...base,
     color: '#fff',
   }),
-  multiValueRemove: (base, state) => ({
+  multiValueRemove: (base: CSSProperties) => ({
     ...base,
     [':hover']: {
       color: '#fff',
