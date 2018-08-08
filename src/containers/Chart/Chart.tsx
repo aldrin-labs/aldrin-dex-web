@@ -251,12 +251,6 @@ class Chart extends React.Component {
       theme: { palette },
     } = this.props
 
-    const symbol = currencyPair || ''
-    const exchange =
-      activeExchange && activeExchange.exchange
-        ? activeExchange.exchange.symbol
-        : ''
-
     let base
     let quote
     if (currencyPair) {

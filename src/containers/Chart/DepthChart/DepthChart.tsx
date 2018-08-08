@@ -40,8 +40,6 @@ class DepthChart extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log(props)
-
     const transformedAsksData = props.asks.map((el) => ({
       x: el.price,
       y: el.size,
@@ -51,24 +49,21 @@ class DepthChart extends Component {
       y: el.size,
     }))
 
-    console.log(transformedAsksData)
+    const maximumYinDataSet =
+      transformedBidsData &&
+      maxBy(transformedBidsData, (el) => el.y) &&
+      maxBy(transformedBidsData, (el) => el.y).y
+        ? Math.max(
+            maxBy(transformedBidsData, (el) => el.y).y,
+            maxBy(transformedAsksData, (el) => el.y).y
+          )
+        : 0
     console.log(transformedBidsData)
-
-    // const maximumYinDataSet =
-    //   transformedBidsData &&
-    //   maxBy(transformedBidsData, (el) => el.y) &&
-    //   maxBy(transformedBidsData, (el) => el.y).y
-    //     ? Math.max(
-    //         maxBy(transformedBidsData, (el) => el.y).y,
-    //         maxBy(transformedAsksData, (el) => el.y).y
-    //       )
-    //     : 0
-
+    console.log(transformedAsksData)
     return {
       transformedBidsData,
       transformedAsksData,
-      MAX_DOMAIN_PLOT: 300,
-      // maximumYinDataSet < 50000 ? maximumYinDataSet / 2 : 50000,
+      MAX_DOMAIN_PLOT: maximumYinDataSet < 50000 ? maximumYinDataSet : 50000,
     }
   }
 
