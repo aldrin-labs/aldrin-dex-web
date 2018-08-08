@@ -1,10 +1,4 @@
-export enum ISortArgs {
-  exchange = 'exchange',
-  symbol = 'symbol',
-  portfolioPerc = 'portfolioPerc',
-  price = 'price',
-  trade = 'trade',
-}
+export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'trade';
 
 export interface IRow {
   exchange: string
@@ -59,5 +53,6 @@ export interface IShapeOfCurrentPortolioRow {
   exchange: { name: string }
   asset: { symbol: string; priceUSD: string }
 }
+
 
 

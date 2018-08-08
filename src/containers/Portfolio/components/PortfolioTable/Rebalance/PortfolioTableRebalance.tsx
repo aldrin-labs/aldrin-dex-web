@@ -276,7 +276,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  setTableData = (tableDataCurrentPortfolio, tableDataRebalancedPortfolio) => {
+  setTableData = (tableDataCurrentPortfolio: IRow[], tableDataRebalancedPortfolio: IRow[]) => {
     // TODO: This should be refactored (no second set-state)
 
     this.setState(
@@ -944,7 +944,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onSortTable = (key: ISortArgs, chooseRows: string) => {
+  onSortTable = (key: string, chooseRows: string) => {
     let currentRowsForSort: IRow[]
     let currentRowsForSortText: string
     let currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
@@ -1054,7 +1054,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={this.state.rows}>
+      <PTWrapper tableData={true}>
         {children}
         <Content>
         <Container>
@@ -2290,7 +2290,7 @@ const customStyles = {
   }),
 }
 
-const DropdownIndicator = (props: CommonProps<OptionType>) =>
+const DropdownIndicator = (props: CommonProps) =>
   components.DropdownIndicator && (
     <components.DropdownIndicator {...props}>
       <SvgIcon
