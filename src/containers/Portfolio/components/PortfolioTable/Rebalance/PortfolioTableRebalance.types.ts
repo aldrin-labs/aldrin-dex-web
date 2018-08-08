@@ -45,3 +45,19 @@ export interface IState {
   leftBar: string
   rightBar: string
 }
+
+export interface IShapeOfRebalancePortfolioRow {
+  id: string
+  _id: { exchange: string; coin: string }
+  percent: { $numberDecimal: string }
+  amount: { $numberDecimal: string }
+  diff: { $numberDecimal: string }
+}
+
+export interface IShapeOfCurrentPortolioRow {
+  value: number
+  exchange: { name: string }
+  asset: { symbol: string; priceUSD: string }
+}
+
+
