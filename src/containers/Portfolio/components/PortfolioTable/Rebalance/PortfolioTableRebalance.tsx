@@ -18,7 +18,7 @@ import sortIcon from '@icons/arrow.svg'
 import {
   IProps,
   IState,
-  IRow, ISortArgs, IShapeOfRebalancePortfolioRow, IShapeOfCurrentPortolioRow,
+  IRow, IShapeOfRebalancePortfolioRow, IShapeOfCurrentPortolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
 import {
   mockTableData,
@@ -276,49 +276,52 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   setTableData = (tableDataCurrentPortfolio: IRow[], tableDataRebalancedPortfolio: IRow[]) => {
-    // TODO: This should be refactored (no second set-state)
+    const { undistributedMoney } = this.state
+    const rows = cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio)
+    const staticRows = cloneArrayElementsOneLevelDeep(tableDataCurrentPortfolio)
+    const savedRows = cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio)
 
-    this.setState(
-      {
-        rows: cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio),
-        staticRows: cloneArrayElementsOneLevelDeep(tableDataCurrentPortfolio),
-        savedRows: cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio),
-      },
-      () => {
-        this.calculateAllTotals()
-      }
-    )
-  }
+    this.calculateAllTotals(staticRows, rows, savedRows, undistributedMoney)
 
-  calculateAllTotals = () => {
-    const { staticRows, rows, savedRows, undistributedMoney } = this.state
-
-    this.setState(
-      {
-        totalStaticRows: this.calculateTotal(staticRows, 0),
-        totalRows: this.calculateTotal(rows, undistributedMoney),
-        totalSavedRows: this.calculateTotal(savedRows, undistributedMoney),
-        totalTableRows: this.calculateTableTotal(rows),
-        totalTableStaticRows: this.calculateTableTotal(staticRows),
-        totalTableSavedRows: this.calculateTableTotal(savedRows),
-      },
-      () => {
-        this.calculateAllPercents()
-      }
-    )
-  }
-
-  calculateAllPercents = () => {
     this.setState({
-      staticRows: this.calculatePercents(
-        this.state.staticRows,
-        this.state.totalStaticRows
-      ),
-      rows: this.calculatePercents(this.state.rows, this.state.totalRows),
-      savedRows: this.calculatePercents(
-        this.state.savedRows,
-        this.state.totalSavedRows
-      ),
+      rows,
+      staticRows,
+      savedRows
+    })
+  }
+
+  calculateAllTotals = (staticRows: IRow[], rows: IRow[], savedRows: IRow[], undistributedMoney: number) => {
+    const totalStaticRows = this.calculateTotal(staticRows, 0)
+    const totalRows = this.calculateTotal(rows, undistributedMoney)
+    const totalSavedRows = this.calculateTotal(savedRows, undistributedMoney)
+    const totalTableStaticRows = this.calculateTableTotal(staticRows)
+    const totalTableRows = this.calculateTableTotal(rows)
+    const totalTableSavedRows = this.calculateTableTotal(savedRows)
+
+    this.calculateAllPercents(
+      staticRows,
+      totalStaticRows,
+      rows,
+      totalRows,
+      savedRows,
+      totalSavedRows
+    )
+
+    this.setState({
+      totalStaticRows,
+      totalRows,
+      totalSavedRows,
+      totalTableStaticRows,
+      totalTableRows,
+      totalTableSavedRows
+    })
+  }
+
+  calculateAllPercents = (staticRows: IRow[], totalStaticRows: number, rows: IRow[], totalRows: number, savedRows: IRow[], totalSavedRows: number) => {
+    this.setState({
+      staticRows: this.calculatePercents(staticRows, totalStaticRows),
+      rows: this.calculatePercents(rows, totalRows),
+      savedRows: this.calculatePercents(savedRows, totalSavedRows)
     })
   }
 
