@@ -35,20 +35,7 @@ import {
   getMyRebalanceQuery,
   getMyPortfolioQuery,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
-
-const usdHeadingForCurrent = [
-  { name: 'Exchange', value: 'exchange' },
-  { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'USD', value: 'price' },
-]
-
-const btcHeadingForCurrent = [
-  { name: 'Exchange', value: 'exchange' },
-  { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'BTC', value: 'price' },
-]
+import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable'
 
 const usdHeadingForRebalanced = [
   { name: 'Exchange', value: 'exchange' },
@@ -66,7 +53,7 @@ const btcHeadingForRebalanced = [
   { name: 'Trade', value: 'deltaPrice' },
 ]
 
-let tableHeadingsCurrentPortfolio = usdHeadingForCurrent
+// let tableHeadingsCurrentPortfolio = usdHeadingForCurrent
 let tableHeadingsRebalancedPortfolio = usdHeadingForRebalanced
 
 class PortfolioTableRebalance extends React.Component<IProps, IState> {
@@ -272,10 +259,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
       if (nextProps.isUSDCurrently) {
-        tableHeadingsCurrentPortfolio = usdHeadingForCurrent
+        // tableHeadingsCurrentPortfolio = usdHeadingForCurrent
         tableHeadingsRebalancedPortfolio = usdHeadingForRebalanced
       } else {
-        tableHeadingsCurrentPortfolio = btcHeadingForCurrent
+        // tableHeadingsCurrentPortfolio = btcHeadingForCurrent
         tableHeadingsRebalancedPortfolio = btcHeadingForRebalanced
       }
     }
@@ -1022,7 +1009,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   render() {
     console.log('RENDER')
 
-    const { children, isUSDCurrently } = this.props
+    const { children, isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     const {
       selectedActive,
       currentSortForStatic,
@@ -1063,112 +1050,14 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         {children}
         <Content>
         <Container>
-          <TableAndHeadingWrapper>
-            <TableHeading>Current portfolio</TableHeading>
-            <Wrapper>
-              <Table style={{ width: '520px' }}>
-                <PTHead>
-                  <PTR>
-                    {tableHeadingsCurrentPortfolio.map((heading) => {
-                      const isSorted =
-                        currentSortForStatic &&
-                        currentSortForStatic.key === heading.value
-
-                      return (
-                        <PTHC
-                          key={heading.name}
-                          onClick={() =>
-                            this.onSortTable(heading.value, 'static')
-                          }
-                        >
-                          {heading.name}
-
-                          {isSorted && (
-                            <SvgIcon
-                              src={sortIcon}
-                              width={12}
-                              height={12}
-                              style={{
-                                verticalAlign: 'middle',
-                                marginLeft: '4px',
-                                transform:
-                                  currentSortForStatic &&
-                                  currentSortForStatic.arg === 'ASC'
-                                    ? 'rotate(180deg)'
-                                    : null,
-                              }}
-                            />
-                          )}
-                        </PTHC>
-                      )
-                    })}
-                  </PTR>
-                </PTHead>
-
-                <PTBody>
-                  {staticRows
-                    .filter(
-                      (row) =>
-                        row.portfolioPerc &&
-                        +row.portfolioPerc >
-                          (this.props.filterValueSmallerThenPercentage
-                            ? this.props.filterValueSmallerThenPercentage
-                            : 0)
-                    )
-                    .map((row, idx) => {
-                      const { exchange, symbol, portfolioPerc, price } = row
-
-                      const cols = [
-                        exchange,
-                        symbol || '',
-                        portfolioPerc ? `${portfolioPerc}%` : '',
-                        `${formatNumberToUSFormat(price)}`,
-                      ]
-
-                      return (
-                        <PTR key={`${exchange}${symbol}${idx}`}>
-                          {cols.map((col, index) => {
-                            if (col.match(/%/g)) {
-                              const color =
-                                Number(col.replace(/%/g, '')) >= 0
-                                  ? '#4caf50'
-                                  : '#f44336'
-
-                              return (
-                                <PTDC key={`${col}${index}`} style={{ color }}>
-                                  {col}
-                                </PTDC>
-                              )
-                            }
-                            if (index === 3) {
-                              return (
-                                <PTDC key={`${col}${idx}`}>
-                                  {mainSymbol}
-                                  {col}
-                                </PTDC>
-                              )
-                            }
-
-                            return <PTDC key={`${col}${index}`}>{col}</PTDC>
-                          })}
-                        </PTR>
-                      )
-                    })}
-                </PTBody>
-                <PTFoot>
-                  <PTR>
-                    <PTHC>All</PTHC>
-                    <PTHC>-</PTHC>
-                    <PTHC>100%</PTHC>
-                    <PTHC>
-                      {mainSymbol}
-                      {formatNumberToUSFormat(totalStaticRows)}
-                    </PTHC>
-                  </PTR>
-                </PTFoot>
-              </Table>
-            </Wrapper>
-          </TableAndHeadingWrapper>
+          <CurrentPortfolioTable
+            currentSortForStatic={currentSortForStatic}
+            totalStaticRows={totalStaticRows}
+            staticRows={staticRows}
+            onSortTable={this.onSortTable}
+            filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}
+            isUSDCurrently={isUSDCurrently}
+          />
           <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
             <TableHeading>
               Rebalanced portfolio
@@ -1695,43 +1584,6 @@ const PTD = css`
     height: 15px;
   }
 `
-
-const PTDC = styled.td`
-  ${PTD};
-  min-width: 100px;
-  overflow: hidden;
-
-  &:nth-child(2) {
-    min-width: 70px;
-    text-align: left;
-  }
-  &:nth-child(3) {
-    text-align: right;
-  }
-  &:nth-child(4) {
-    text-align: right;
-    min-width: 100px;
-    &:hover {
-      & svg {
-        color: #ffffff;
-      }
-    }
-  }
-  &:nth-child(5) {
-    text-align: right;
-    min-width: 100px;
-  }
-  &:nth-child(6) {
-    text-align: left;
-    min-width: 150px;
-  }
-  &:nth-child(7) {
-    padding: 1.75px 5px;
-    min-width: 30px;
-    text-align: left;
-  }
-`
-
 const PTDREditMode = css`
   ${PTD};
 
@@ -1825,19 +1677,6 @@ const PTH = css`
   padding: 10px 16px 10px 10px;
 `
 
-const PTHC = styled.th`
-  ${PTH};
-  min-width: 100px;
-
-  &:nth-child(2) {
-    min-width: 70px;
-    text-align: left;
-  }
-  &:nth-child(3),
-  &:nth-child(4) {
-    text-align: right;
-  }
-`
 const PTHRNoEditMode = css`
   min-width: 100px;
   &:nth-child(1) {
