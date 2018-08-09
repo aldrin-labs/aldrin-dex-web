@@ -14,7 +14,7 @@ export interface IProps {
   [key: string]: any
 }
 
-export default class QueryRenderer extends React.PureComponent<IProps> {
+export default class QueryRenderer extends React.Component<IProps> {
   render() {
     const {
       query,
