@@ -55,7 +55,7 @@ const usdHeadingForRebalanced = [
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'USD', value: 'price' },
-  { name: 'Trade', value: 'trade' },
+  { name: 'Trade', value: 'deltaPrice' },
 ]
 
 const btcHeadingForRebalanced = [
@@ -63,7 +63,7 @@ const btcHeadingForRebalanced = [
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'BTC', value: 'price' },
-  { name: 'Trade', value: 'trade' },
+  { name: 'Trade', value: 'deltaPrice' },
 ]
 
 let tableHeadingsCurrentPortfolio = usdHeadingForCurrent
@@ -282,12 +282,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const savedRows = cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio)
 
     this.calculateAllTotals(staticRows, rows, savedRows, undistributedMoney)
-
-    this.setState({
-      rows,
-      staticRows,
-      savedRows
-    })
   }
 
   calculateAllTotals = (staticRows: IRow[], rows: IRow[], savedRows: IRow[], undistributedMoney: number) => {
@@ -318,15 +312,16 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   calculateAllPercents = (staticRows: IRow[], totalStaticRows: number, rows: IRow[], totalRows: number, savedRows: IRow[], totalSavedRows: number) => {
+
     this.setState({
-      staticRows: this.calculatePercents(staticRows, totalStaticRows),
-      rows: this.calculatePercents(rows, totalRows),
-      savedRows: this.calculatePercents(savedRows, totalSavedRows)
+      staticRows: this.calculatePercents(staticRows, totalStaticRows, staticRows),
+      rows: this.calculatePercents(rows, totalRows, staticRows),
+      savedRows: this.calculatePercents(savedRows, totalSavedRows, staticRows)
     })
   }
 
-  calculatePriceDifference = (data: IRow[]) => {
-    let { staticRows } = this.state
+  calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
+    // let { staticRows } = this.state
 
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
@@ -348,19 +343,17 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     // TODO: Refactor this (delete newCoinsData and replace it)
     if (data.length > staticRows.length) {
-      let arrayOfNewCoinIndexes = []
-      const newCoinsData = data.filter((el, i) => {
+      const arrayOfNewCoinIndexes = data.reduce((newCoinsIndexesArray, el, i) => {
         if (
           !staticRows.some(
             (element) =>
               element.exchange === el.exchange && element.symbol === el.symbol
           )
         ) {
-          arrayOfNewCoinIndexes.push(i)
-
-          return true
+          return newCoinsIndexesArray.concat(i)
         }
-      })
+        return newCoinsIndexesArray
+      },[])
 
       data = data.map((row, i) => {
         if (arrayOfNewCoinIndexes.includes(i)) {
@@ -401,7 +394,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return totalPercents
   }
 
-  calculatePercents = (data: IRow[], total: number) => {
+  calculatePercents = (data: IRow[], total: number, staticRows: IRow[]) => {
     const newDataWithPercents = data.map((row) => {
       const percentCaluclation =
         +row.price === 0 ? '0' : (row.price * 100 / total).toFixed(4)
@@ -413,13 +406,16 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       }
     })
 
+    console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents);
+
+
     const totalPercents = this.calculateTotalPercents(newDataWithPercents)
 
     this.setState({
       totalPercents,
     })
 
-    return this.calculatePriceDifference(newDataWithPercents)
+    return this.calculatePriceDifference(newDataWithPercents, staticRows)
   }
 
   renderActiveCheckbox = (idx: number) => {
@@ -439,7 +435,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
   onAddRowButtonClick = () => {
     const clonedRows = cloneArrayElementsOneLevelDeep(this.state.rows)
-    const { totalRows } = this.state
+    const { totalRows, staticRows } = this.state
     const newRow = {
       exchange: 'Exchange',
       symbol: 'Coin',
@@ -449,7 +445,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       editable: true,
     }
     clonedRows.push(newRow)
-    const rows = this.calculatePercents(clonedRows, totalRows)
+    const rows = this.calculatePercents(clonedRows, totalRows, staticRows)
     console.log('rows in onAddRowButton ', rows)
 
     this.setState({ rows, areAllActiveChecked: false })
@@ -457,7 +453,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
 
   onDeleteRowClick = (idx: number) => {
-    const { rows, undistributedMoney } = this.state
+    const { rows, undistributedMoney, staticRows } = this.state
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
     const isEditableCoin = clonedRows[idx].editable
@@ -484,7 +480,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const newTableTotalRows = this.calculateTableTotal(resultRows)
     const newRowsWithNewPercents = this.calculatePercents(
       resultRows,
-      newTotalRows
+      newTotalRows,
+      staticRows
     )
     const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
@@ -565,6 +562,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       totalRows,
       isPercentSumGood,
       undistributedMoney,
+      staticRows
     } = this.state
 
     console.log('rows rows rows: ', rows)
@@ -577,7 +575,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     const rowsWithNewPrice = this.calculatePriceByPercents(rows)
-    const newRowsWithPriceDiff = this.calculatePriceDifference(rowsWithNewPrice)
+    const newRowsWithPriceDiff = this.calculatePriceDifference(rowsWithNewPrice, staticRows)
     const newRows = this.removeEditableModeInCoins(newRowsWithPriceDiff)
 
     this.setState(
@@ -678,12 +676,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   onDeleteUndistributedMoney = () => {
-    const { rows } = this.state
+    const { rows, staticRows } = this.state
 
     const newUndistributedMoney = 0
     const newTotalRows = this.calculateTotal(rows, newUndistributedMoney)
     const newTableTotalRows = this.calculateTableTotal(rows)
-    const newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows)
+    const newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows, staticRows)
     const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
     this.setState({
@@ -696,7 +694,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   onDistribute = () => {
-    let { selectedActive, rows, undistributedMoney } = this.state
+    let { selectedActive, rows, staticRows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
       let money = parseFloat(undistributedMoney)
 
@@ -724,7 +722,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
       const newTotal = this.calculateTotal(rows, newUndistributedMoney)
       const newTableTotal = this.calculateTableTotal(rows)
-      const newRows = this.calculatePercents(rows, newTotal)
+      const newRows = this.calculatePercents(rows, newTotal, staticRows)
 
       this.setState({
         undistributedMoney: newUndistributedMoney,
@@ -821,7 +819,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   onPercentInputChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
-    const { rows } = this.state
+    const { rows, staticRows } = this.state
     let percentInput = e.target.value
 
     if (
@@ -853,7 +851,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     )
 
     const rowWithNewPriceDiff = this.calculatePriceDifference(
-      newCalculatedRowsWithPercents
+      newCalculatedRowsWithPercents, staticRows
     )
 
     const newTableTotalRows = this.calculateTableTotal(
@@ -924,7 +922,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
     console.log('addmoneypressed')
 
-    let { rows, addMoneyInputValue, undistributedMoney } = this.state
+    let { rows, staticRows, addMoneyInputValue, undistributedMoney } = this.state
 
     const newUndistributedMoney = parseFloat(
       (Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2)
@@ -933,7 +931,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const newTotal = this.calculateTotal(rows, newUndistributedMoney)
     const newTableTotal = this.calculateTableTotal(rows)
 
-    const newRows = this.calculatePercents(rows, newTotal)
+    const newRows = this.calculatePercents(rows, newTotal, staticRows)
     const checkedPercentsIsGood = this.checkPercentSum(newRows)
 
     this.setState({
@@ -1257,7 +1255,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
                     let deltaPriceString = ''
 
-                    if (deltaPrice) {
+                    if (deltaPrice && +deltaPrice) {
                       if (deltaPrice > 0) {
                         deltaPriceString = `BUY ${symbol}  $ ${formatNumberToUSFormat(
                           deltaPrice
