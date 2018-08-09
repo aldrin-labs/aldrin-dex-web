@@ -9,10 +9,17 @@ const initialState = {
   warningMessageOpened: false,
   charts: [],
   view: 'default',
+  asks: [],
+  bids: [],
 }
 
 export default createReducer(
   {
+    [actions.setOrders]: (state, payload) => ({
+      ...state,
+      asks: payload.asks,
+      bids: payload.bids,
+    }),
     [actions.selectExchange]: (state, payload) => ({
       ...state,
       activeExchange: payload,

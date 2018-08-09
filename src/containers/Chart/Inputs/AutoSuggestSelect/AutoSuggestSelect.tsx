@@ -47,7 +47,7 @@ let suggestions = [
   label: suggestion.label,
 }))
 
-class Option extends React.Component {
+class Option extends React.PureComponent {
   handleClick = (event) => {
     const {
       onSelect,
@@ -162,7 +162,7 @@ function SelectWrapped(props) {
   )
 }
 
-class IntegrationReactSelect extends React.Component {
+class IntegrationReactSelect extends React.PureComponent {
   render() {
     const { classes, id, value, data } = this.props
     if (!suggestions || !data) {

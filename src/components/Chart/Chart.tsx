@@ -11,7 +11,6 @@ const Wrapper = styled.div`
 
 export const SingleChart = ({ additionalUrl }: { additionalUrl: string }) => (
   <Wrapper>
-    {console.log(additionalUrl)}
     <iframe src={`https://${CHARTS_API_URL}${additionalUrl}`} height={'100%'} />
   </Wrapper>
 )

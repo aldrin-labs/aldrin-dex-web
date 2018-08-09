@@ -40,6 +40,7 @@
           "@containers": "./src/containers",
           "@utils": "./src/utils",
           "@hoc": "./src/hoc",
+          "@styles": "./src/styles",
           "@graphql": "./src/graphql",
           "@icons": "./src/icons"
         }
