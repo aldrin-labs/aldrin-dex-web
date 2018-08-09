@@ -5,7 +5,7 @@ export interface IProps {
   currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
   totalStaticRows: string | number
   staticRows: IRow[]
-  filterValueSmallerThenPercentage: Function
+  filterValueSmallerThenPercentage: number
   onSortTable: Function
 }
 

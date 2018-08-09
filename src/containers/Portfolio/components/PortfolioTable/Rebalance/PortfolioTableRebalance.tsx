@@ -344,6 +344,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         ) {
           return newCoinsIndexesArray.concat(i)
         }
+
         return newCoinsIndexesArray
       },[])
 
@@ -1861,7 +1862,7 @@ const Input = styled.input`
   font-size: 16px;
   line-height: 24px;
   text-align: left;
-  padding: 10px 0 0px;
+  padding: 10px 0 0;
   color: rgb(255, 255, 255);
 `
 
