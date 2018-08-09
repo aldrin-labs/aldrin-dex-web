@@ -14,7 +14,7 @@ import {
   roundPercentage,
   calcAllSumOfPortfolioAsset,
 } from '@utils/PortfolioTableUtils'
-import * as actions from '../../../actions'
+import * as actions from '@containers/Portfolio/actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
@@ -49,6 +49,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     selectedSum: defaultSelectedSum,
     currentSort: null,
     activeKeys: null,
+    activeWallets: null,
     portfolio: null,
   }
 
@@ -78,6 +79,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       ? {
         ...portfolio,
         assets: portfolio.assets.concat(MOCK_DATA),
+        cryptoWallets: portfolio.cryptoWallets.concat([])
       }
       : portfolio
 
@@ -100,6 +102,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         ? {
           ...portfolio,
           assets: portfolio!.assets!.concat(MOCK_DATA),
+          cryptoWallets: portfolio!.cryptoWallets!.concat([])
         }
         : portfolio
 
@@ -116,6 +119,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         ? {
           ...portfolio,
           assets: portfolio.assets.concat(MOCK_DATA),
+          cryptoWallets: portfolio.cryptoWallets.concat([])
         }
         : portfolio
 
@@ -142,16 +146,54 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   combineTableData = (portfolio?: IPortfolio | null) => {
-    const { activeKeys } = this.state
+    const { activeKeys, activeCryptoWallets } = this.state
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
-    const { assets } = portfolio
+    const { assets, cryptoWallets } = portfolio
+    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
+    const walletData = cryptoWallets.map((row: InewRowT) => {
 
-    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
+      const {
+        baseAsset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
+        name = '',
+        address = '',
+        assets = [],
+      } =
+        row || {}
+      // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
+      //   return null
+      // }
+      const { symbol, priceUSD, priceBTC } = baseAsset || {}
+      // console.log(row);
+      // console.log(baseAsset);
+      return assets.map((walletAsset: any) => {
+        const mainPrice = isUSDCurrently ? walletAsset.asset.priceUSD : walletAsset.asset.priceBTC
 
-    const tableData = assets
+        const currentPrice = mainPrice * walletAsset.balance
+        const col = {
+          currency: (baseAsset.symbol + ' ' + name) || '',
+          symbol: walletAsset.asset.symbol,
+          percentage: roundPercentage(currentPrice * 100 / allSums),
+          price: mainPrice || 0,
+          quantity: Number((walletAsset.balance).toFixed(5)) || 0,
+          daily: 0,
+          dailyPerc: 0,
+          currentPrice: currentPrice || 0,
+          realizedPL: 0,
+          realizedPLPerc: 0,
+          unrealizedPL: 0,
+          unrealizedPLPerc: 0,
+          totalPL: 0,
+        }
+
+        return col
+      })
+    }).reduce((a: any, b: any) => a.concat(b), []);
+
+
+    const tableData = [assets
       .map((row: InewRowT) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
@@ -199,7 +241,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         }
 
         return col
-      })
+      }), walletData].reduce((a: any, b: any) => a.concat(b), [])
       .filter(Boolean)
       .filter(
         (el) =>
