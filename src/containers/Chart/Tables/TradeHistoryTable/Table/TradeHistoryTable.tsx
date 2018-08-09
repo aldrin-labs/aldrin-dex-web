@@ -162,6 +162,11 @@ const TriggerTitle = Title.extend`
   cursor: pointer;
   position: relative;
   padding: 0.5rem;
+  transition: opacity 0.75s ease-in-out;
+
+  &:hover {
+    opacity: 0.85;
+  }
 `
 
 const CollapseWrapper = styled(Collapse)`
