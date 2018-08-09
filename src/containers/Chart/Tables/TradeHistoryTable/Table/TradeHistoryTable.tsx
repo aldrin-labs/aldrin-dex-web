@@ -211,7 +211,7 @@ const JumpDownArrow = keyframes`
   bottom: 15%;
 }
 50% {
-  bottom: 10%;
+  bottom: -10%;
 }
 100% {
   bottom: 15%;
