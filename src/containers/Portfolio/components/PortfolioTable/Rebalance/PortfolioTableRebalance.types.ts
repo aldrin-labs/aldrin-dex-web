@@ -1,10 +1,12 @@
 export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'trade';
 
+// TODO: We should have one type for price & portfolioPerc in IRow
+
 export interface IRow {
   exchange: string
   symbol: string
-  price: number
-  portfolioPerc?: number | string
+  price: number | string
+  portfolioPerc: number | string | null
   deltaPrice?: number
   editable?: boolean
 }
@@ -54,5 +56,6 @@ export interface IShapeOfCurrentPortolioRow {
   asset: { symbol: string; priceUSD: string }
 }
 
+export interface IGetMyRebalanceQuery {
 
-
+}

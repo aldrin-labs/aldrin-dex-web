@@ -124,6 +124,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+          portfolioPerc: null,
           deltaPrice: el.diff['$numberDecimal'],
         })
       )
@@ -135,6 +136,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
             2
           ),
+          portfolioPerc: null
         })
       )
 
@@ -152,6 +154,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
             2
           ),
+          portfolioPerc: null,
         })
       )
 
@@ -209,6 +212,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+          portfolioPerc: null,
           deltaPrice: el.diff['$numberDecimal'],
         })
       )
@@ -220,6 +224,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
             2
           ),
+          portfolioPerc: null,
         })
       )
 
@@ -237,6 +242,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
             2
           ),
+          portfolioPerc: null,
         })
       )
 
@@ -341,7 +347,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       data.length > staticRows.length
     )
 
-    // TODO: Refactor this (delete newCoinsData and replace it)
     if (data.length > staticRows.length) {
       const arrayOfNewCoinIndexes = data.reduce((newCoinsIndexesArray, el, i) => {
         if (
@@ -2291,7 +2296,8 @@ const customStyles = {
   }),
 }
 
-const DropdownIndicator = (props: CommonProps) =>
+// TODO: replace any with CommonProps from @types/react-select
+const DropdownIndicator = (props: any) =>
   components.DropdownIndicator && (
     <components.DropdownIndicator {...props}>
       <SvgIcon
