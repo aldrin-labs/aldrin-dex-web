@@ -1,14 +1,10 @@
 import React, { Component } from 'react'
-import { max, min } from 'lodash'
 
-import { maximumItemsInArray } from '@utils/chartPageUtils'
+import { maximumItemsInArray, findSpread } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
 
 let unsubscribe: Function | undefined
-
-const findSpread = (asks: any[], bids: any[]): number =>
-  max(asks.map((ask) => ask.price)) - min(bids.map((bid) => bid.price))
 
 class OrderBookTableContainer extends Component {
   state = {
