@@ -35,40 +35,45 @@ class DepthChart extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
+    // console.log(props)
     let totalVolumeAsks = 0
-    const transformedAsksData = props.asks.map((el) => {
-      totalVolumeAsks = totalVolumeAsks + el.size
+    let transformedAsksData = props.asks.map((el) => {
+      totalVolumeAsks = totalVolumeAsks + +el.size
 
       return {
-        x: el.price,
+        x: +el.price,
         y: totalVolumeAsks,
       }
     })
     let totalVolumeBids = 0
-    const transformedBidsData = props.bids.map((el) => {
-      totalVolumeBids = totalVolumeBids + el.size
+    let transformedBidsData = props.bids.map((el) => {
+      totalVolumeBids = totalVolumeBids + +el.size
 
       return {
-        x: el.price,
+        x: +el.price,
         y: totalVolumeBids,
       }
     })
+
+    if (transformedBidsData.length > transformedAsksData.length) {
+      transformedBidsData = transformedBidsData.slice(
+        0,
+        transformedAsksData.length - 1
+      )
+    } else if (transformedBidsData.length < transformedAsksData.length) {
+      transformedAsksData = transformedAsksData.slice(
+        0,
+        transformedAsksData.length - 1
+      )
+    }
+
     // console.log(transformedBidsData)
     // console.log(transformedAsksData)
-    const maximumYinDataSet =
-      transformedBidsData &&
-      maxBy(transformedBidsData, (el) => el.y) &&
-      maxBy(transformedBidsData, (el) => el.y).y
-        ? Math.max(
-            maxBy(transformedBidsData, (el) => el.y).y,
-            maxBy(transformedAsksData, (el) => el.y).y
-          )
-        : 0
 
     return {
       transformedBidsData,
       transformedAsksData,
-      MAX_DOMAIN_PLOT: maximumYinDataSet < 50000 ? maximumYinDataSet : 50000,
+      MAX_DOMAIN_PLOT: totalVolumeAsks,
     }
   }
 
@@ -187,7 +192,7 @@ class DepthChart extends Component {
 
             <MidPriceColumnWrapper>
               <Typography variant="subheading">
-                {this.props.midMarketPrice || '6.224.352'}
+                {this.props.midMarketPrice || 'soon'}
               </Typography>
               <Typography variant="caption">Mid Market Price</Typography>
             </MidPriceColumnWrapper>
@@ -255,7 +260,7 @@ class DepthChart extends Component {
             data={spreadData}
           />
 
-          <Crosshair values={crosshairValuesForSpread}>
+          {/* <Crosshair values={crosshairValuesForSpread}>
             <CrosshairContent
               background={palette.primary.main}
               textColor={palette.text.primary}
@@ -322,7 +327,7 @@ class DepthChart extends Component {
                 <CircularProgress color="primary" />
               )}
             </CrosshairContent>
-          </Crosshair>
+          </Crosshair> */}
         </FlexibleXYPlot>
       </Container>
     )

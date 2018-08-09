@@ -1,28 +1,46 @@
 import React, { Component } from 'react'
+import { max, min } from 'lodash'
 
 import { maximumItemsInArray } from '@utils/chartPageUtils'
-import Table from './Tables/OrderBookTable'
+import OrderBookTable from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
 
 let unsubscribe: Function | undefined
+
+const findSpread = (asks: any[], bids: any[]): number =>
+  max(asks.map((ask) => ask.price)) - min(bids.map((bid) => bid.price))
 
 class OrderBookTableContainer extends Component {
   state = {
     asks: [],
     bids: [],
+    spread: null,
+    i: 0,
   }
 
   // transforming data
   static getDerivedStateFromProps(newProps, state) {
+    let iterator = state.i
     if (newProps.data.marketOrders.length > 1) {
+      const bids = newProps.data.marketOrders
+        .map((o) => JSON.parse(o))
+        .filter((o) => o.type === 'bid')
+      const asks = newProps.data.marketOrders
+        .map((o) => JSON.parse(o))
+        .filter((o) => o.type === 'ask')
+
       newProps.setOrders({
-        bids: newProps.data.marketOrders
-          .map((o) => JSON.parse(o))
-          .filter((o) => o.type === 'bid'),
-        asks: newProps.data.marketOrders
-          .map((o) => JSON.parse(o))
-          .filter((o) => o.type === 'ask'),
+        bids,
+        asks,
       })
+
+      const spread = findSpread(asks, bids)
+
+      return {
+        bids,
+        asks,
+        spread,
+      }
     }
     if (
       newProps.data &&
@@ -33,7 +51,7 @@ class OrderBookTableContainer extends Component {
       let order = {
         price: Number(orderData.price).toFixed(8),
         size: Number(orderData.size).toFixed(8),
-        side: orderData.side,
+        type: orderData.side,
       }
 
       // removing  orders with 0 size
@@ -42,7 +60,7 @@ class OrderBookTableContainer extends Component {
       }
 
       // TODO: next here we should increase or decrease size of existing orders, not just replace them
-      if (order.side === 'bid') {
+      if (order.type === 'bid') {
         const ind = state.bids.findIndex((i) => i.price === order.price)
         if (ind > -1) {
           if (order.size !== '0') {
@@ -53,7 +71,7 @@ class OrderBookTableContainer extends Component {
           order = null
         }
       }
-      if (order !== null && order.side === 'ask') {
+      if (order !== null && order.type === 'ask') {
         const ind = state.asks.findIndex((i) => i.price === order.price)
         if (ind > -1) {
           if (order.size !== '0') {
@@ -66,21 +84,36 @@ class OrderBookTableContainer extends Component {
       }
       if (order !== null) {
         const bids =
-          order.side === 'bid'
+          order.type === 'bid'
             ? [order, ...state.bids].sort(
                 (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
               )
             : state.bids
         const asks =
-          order.side === 'ask'
+          order.type === 'ask'
             ? [order, ...state.asks].sort(
                 (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
               )
             : state.asks
 
+        // update depth chart every 100 iterations
+        if (iterator === 100) {
+          newProps.setOrders({
+            bids,
+            asks,
+          })
+          iterator = 0
+        } else {
+          iterator += 1
+        }
+
+        const spread = findSpread(asks, bids)
+
         return {
+          spread,
           bids: maximumItemsInArray([...bids], 60, 10),
           asks: maximumItemsInArray([...asks], 60, 10),
+          i: iterator,
         }
       }
     }
@@ -124,12 +157,12 @@ class OrderBookTableContainer extends Component {
       updateQuery,
       ...rest
     } = this.props
-    const { bids, asks } = this.state
+    const { bids, asks, spread } = this.state
 
     return (
       <>
-        <Table data={asks} {...rest} />
-        <SpreadTable data={bids} {...rest} />
+        <OrderBookTable data={asks} {...rest} />
+        <SpreadTable data={bids} spread={spread} {...rest} />
       </>
     )
   }
