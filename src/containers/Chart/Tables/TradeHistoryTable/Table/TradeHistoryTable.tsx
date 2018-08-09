@@ -56,7 +56,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
               }}
               style={{
                 marginRight: '0.5rem',
-                color: palette.primary['contrastText'],
+                color: palette.secondary['light'],
               }}
             />
           </TriggerTitle>
@@ -189,14 +189,14 @@ const TradeHistoryTableCollapsible = CollapsibleTable.extend`
 `
 
 const StyledArrowSign = styled(MdArrowDropUp)`
-  font-size: 1rem;
+  font-size: 2rem;
   transform: ${(props) =>
     props.variant.up ? 'rotate(0deg)' : 'rotate(180deg)'};
 
   position: absolute;
   left: 0.25rem;
 
-  bottom: 30%;
+  bottom: 15%;
   transition: all 0.5s ease;
 
   ${TriggerTitle}:hover & {
@@ -208,25 +208,25 @@ const StyledArrowSign = styled(MdArrowDropUp)`
 
 const JumpDownArrow = keyframes`
 0% {
-  bottom: 30%;
+  bottom: 15%;
 }
 50% {
   bottom: 10%;
 }
 100% {
-  bottom: 30%;
+  bottom: 15%;
 
 }
 `
 const JumpUpArrow = keyframes`
 0% {
-  bottom: 30%;
+  bottom: 15%;
 }
 50% {
   bottom: 50%;
 }
 100% {
-  bottom: 30%;
+  bottom: 15%;
 }
 `
 

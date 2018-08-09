@@ -76,7 +76,7 @@ class SpreadTable extends Component {
                     up: !tableExpanded,
                   }}
                   style={{
-                    color: palette.primary['contrastText'],
+                    color: palette.secondary['light'],
                   }}
                 />
               </HeadCell>
@@ -194,7 +194,7 @@ const CollapsibleTable = Table.extend`
 `
 
 const StyledArrowSign = styled(MdArrowDropUp)`
-  font-size: 1rem;
+  font-size: 2rem;
   transform: ${(props) =>
     props.variant.up ? 'rotate(0deg)' : 'rotate(180deg)'};
   position: relative;
