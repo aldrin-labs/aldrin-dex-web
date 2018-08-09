@@ -4,7 +4,9 @@ import styled, { css } from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { customAquaScrollBar } from '@utils/cssUtils'
-import {formatNumberToUSFormat} from '../../../../../../utils/PortfolioTableUtils'
+import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
+import { IRow } from '../PortfolioTableRebalance.types'
+import { IProps, IState } from './CurrentPortfolioTable.types'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },
@@ -22,7 +24,7 @@ const btcHeadingForCurrent = [
 
 
 
-export default class CurrentPortfolioTable extends React.Component {
+export default class CurrentPortfolioTable extends React.Component<IProps, IState> {
 
   render() {
     const {
@@ -30,6 +32,8 @@ export default class CurrentPortfolioTable extends React.Component {
       currentSortForStatic,
       totalStaticRows,
       staticRows,
+      filterValueSmallerThenPercentage,
+      onSortTable
     } = this.props
 
     const mainSymbol = isUSDCurrently ? (
@@ -57,7 +61,7 @@ export default class CurrentPortfolioTable extends React.Component {
                 <PTHC
                   key={heading.name}
                   onClick={() =>
-                    this.props.onSortTable(heading.value, 'static')
+                    onSortTable(heading.value, 'static')
                   }
                 >
                   {heading.name}
@@ -87,14 +91,14 @@ export default class CurrentPortfolioTable extends React.Component {
         <PTBody>
           {staticRows
             .filter(
-              (row) =>
+              (row: IRow) =>
                 row.portfolioPerc &&
                 +row.portfolioPerc >
-                (this.props.filterValueSmallerThenPercentage
-                  ? this.props.filterValueSmallerThenPercentage
+                (filterValueSmallerThenPercentage
+                  ? filterValueSmallerThenPercentage
                   : 0)
             )
-            .map((row, idx) => {
+            .map((row: IRow, idx: number) => {
               const { exchange, symbol, portfolioPerc, price } = row
 
               const cols = [
