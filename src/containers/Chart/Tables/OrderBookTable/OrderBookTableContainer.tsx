@@ -3,30 +3,13 @@ import React, { Component } from 'react'
 import {
   maximumItemsInArray,
   findSpread,
-  testJSON,
+  getNumberOfDigitsAfterDecimal,
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
 
 let unsubscribe: Function | undefined
 
-const getNumberOfDigitsAfterDecimal = (
-  orders: any[],
-  column: 'size' | 'price'
-) => {
-  let numberOfDigitsAfterDecimal = 2
-  for (const order of orders) {
-    if (order[column] > 1) {
-      numberOfDigitsAfterDecimal = 2
-    } else {
-      numberOfDigitsAfterDecimal = 8
-
-      break
-    }
-  }
-
-  return numberOfDigitsAfterDecimal
-}
 class OrderBookTableContainer extends Component {
   state = {
     asks: [],

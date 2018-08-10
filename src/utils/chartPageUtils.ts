@@ -15,6 +15,24 @@ export const maximumItemsInArray = (
   return data
 }
 
+export const getNumberOfDigitsAfterDecimal = (
+  orders: any[],
+  column: 'size' | 'price'
+) => {
+  let numberOfDigitsAfterDecimal = 2
+  for (const order of orders) {
+    if (order[column] > 1) {
+      numberOfDigitsAfterDecimal = 2
+    } else {
+      numberOfDigitsAfterDecimal = 8
+
+      break
+    }
+  }
+
+  return numberOfDigitsAfterDecimal
+}
+
 export const calculatePercentagesOfOrderSize = (
   size: number,
   bids: any[]
