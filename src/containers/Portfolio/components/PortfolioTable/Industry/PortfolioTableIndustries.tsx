@@ -153,9 +153,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
-    const { assets, coinPerformance = [{ usd: '', btc: '' }] } = portfolio
+    const { assets, coinPerformance = [{ usd: '', btc: '', coin: '' }] } = portfolio
 
-    console.log('assets length: ', assets.length, 'coinPerf length: ', coinPerformance.length);
+    // console.log('assets length: ', assets.length, 'coinPerf length: ', coinPerformance.length);
 
 
     const industryData = assets
@@ -206,9 +206,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             threeMonth: performance.btc3Months,
             oneYear: performance.btcYear,
           }
-        // TODO: MUST BE REWORKED (because it's just hard-fix for first row without data in btc asset)
-        const portfolioPerf = i === 0 ? 0 : isUSDCurrently ? coinPerformance[i - 1].usd : coinPerformance[i - 1].btc
-        // console.log('raw portfolioPerf', portfolioPerf, 'coinPerformance', coinPerformance);
+        // TODO: HAVE TO BE REWORKED (because it's just fix for first row without data in btc asset)
+        const isElementHavePerformance = coinPerformance.find((element) => element.coin === symbol)
+        const portfolioPerf = isElementHavePerformance ?
+          isUSDCurrently ? isElementHavePerformance.usd : isElementHavePerformance.btc : null
         const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
         const currentPrice = mainPrice * value
@@ -217,8 +218,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           currency: name || '-',
           symbol,
           industry: industryName || '-',
-          portfolioPerf: roundPercentage(parseFloat(portfolioPerf)) || 0,
-          // portfolioPerf: 0,
+          portfolioPerf: portfolioPerf !== null ? roundPercentage(parseFloat(portfolioPerf)) : null,
           portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
           industryPerf1Week: roundPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
           industryPerf1Month: roundPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
@@ -550,12 +550,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         (selectedRows && selectedRows.indexOf(idx) >= 0) ||
                         false
 
+                      const formattedPortfolioPerf = portfolioPerf === null ? '-' : `${portfolioPerf}%`
+
                       const cols = [
                         currency,
                         symbol,
                         industry,
                         `${portfolioPerc}%`,
-                        `${portfolioPerf}%`,
+                         formattedPortfolioPerf,
                         `${industryPerf1Week}%`,
                         `${industryPerf1Month}%`,
                         `${industryPerf3Months}%`,
