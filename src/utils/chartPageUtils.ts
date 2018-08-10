@@ -1,7 +1,5 @@
-import { max, min } from 'lodash'
-
 export const findSpread = (asks: any[], bids: any[]): number =>
-  max(asks.map((ask) => ask.price)) - min(bids.map((bid) => bid.price))
+  +asks[asks.length - 1].price - +bids[0].price
 
 export const maximumItemsInArray = (
   data: any[],

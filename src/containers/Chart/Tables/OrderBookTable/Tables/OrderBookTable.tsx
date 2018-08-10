@@ -179,7 +179,6 @@ const EmptyCell = Cell.extend`
   position: relative;
 
   &: before {
-    transition: all 0.5s linear;
     position: absolute;
     z-index: 100;
     top: 0;
