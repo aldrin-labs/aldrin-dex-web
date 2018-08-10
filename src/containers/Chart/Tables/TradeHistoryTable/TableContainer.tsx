@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import Table from './Table/TradeHistoryTable'
+import TradeHistoryTable from './Table/TradeHistoryTable'
 import { maximumItemsInArray } from '@utils/chartPageUtils'
 
 let unsubscribe: Function | undefined
@@ -11,6 +11,8 @@ class TableContainer extends Component {
   }
 
   static getDerivedStateFromProps(newProps, state) {
+    console.log(newProps.data)
+
     if (
       !(
         newProps.data &&
@@ -41,7 +43,7 @@ class TableContainer extends Component {
       }
 
       return {
-        data: maximumItemsInArray([ticker, ...state.data], 100, 10),
+        data: maximumItemsInArray([ticker, ...state.data], 100, 40),
       }
     }
 
@@ -76,7 +78,7 @@ class TableContainer extends Component {
   render() {
     const {
       data,
-      exchange, //  useless functions
+      exchange, //  useless functions that we wont pass to table
       fetchMore,
       refetch,
       startPolling,
@@ -86,7 +88,7 @@ class TableContainer extends Component {
       ...rest
     } = this.props
 
-    return <Table data={this.state.data} {...rest} />
+    return <TradeHistoryTable data={this.state.data} {...rest} />
   }
 }
 
