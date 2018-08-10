@@ -851,28 +851,21 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     )
 
     // NOT READY FOR NOW
-    // TODO: SHOULD BE another function and NO SECOND SETSTATE!!!
     // TODO: MOVE ALL parsefloat from this
     let oldRowPrice = rows[idx].price
     let newRowPrice = newCalculatedRowsWithPercents[idx].price
     let oldNewPriceDiff = oldRowPrice - newRowPrice
 
-    this.setState(
-      {
+    this.setState((prevState) => ({
         rows: rowWithNewPriceDiff,
         isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
         totalPercents,
-      },
-      () => {
-        // if (oldRowPrice > newRowPrice) {
-        this.setState((prevState) => ({
-          undistributedMoney: parseFloat(parseFloat(
-            parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
-          ).toFixed(2)),
-          totalTableRows: parseFloat(newTableTotalRows),
-        }))
-        // }
-      }
+        undistributedMoney: parseFloat(parseFloat(
+          parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
+        ).toFixed(2)),
+        totalTableRows: parseFloat(newTableTotalRows),
+
+      })
     )
   }
 
