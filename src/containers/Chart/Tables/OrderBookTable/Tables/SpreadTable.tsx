@@ -9,6 +9,7 @@ import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 import { fromLightGreenToDeffaultGreen } from '../../../../../styles/keyframes'
+import { TypographyFullWidth } from '@utils/cssUtils'
 
 class SpreadTable extends Component {
   state = {
@@ -123,7 +124,9 @@ class SpreadTable extends Component {
                           variant="body1"
                           align="right"
                         >
-                          {order.size.toFixed(digitsAfterDecimalForBidsSize)}
+                          {Number(order.size).toFixed(
+                            digitsAfterDecimalForBidsSize
+                          )}
                         </StyledTypography>
                       </Cell>
                       <Cell width={'45%'}>
@@ -135,7 +138,9 @@ class SpreadTable extends Component {
                           variant="body1"
                           align="right"
                         >
-                          {order.price.toFixed(digitsAfterDecimalForBidsPrice)}
+                          {Number(order.price).toFixed(
+                            digitsAfterDecimalForBidsPrice
+                          )}
                         </StyledTypography>
                       </Cell>
                     </Row>
@@ -149,10 +154,6 @@ class SpreadTable extends Component {
     )
   }
 }
-const TypographyFullWidth = styled(Typography)`
-  width: 100%;
-  flex-grow: 1;
-`
 
 const StyledTypography = TypographyFullWidth.extend`
   && {

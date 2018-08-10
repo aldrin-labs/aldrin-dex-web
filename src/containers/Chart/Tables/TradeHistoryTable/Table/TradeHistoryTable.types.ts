@@ -4,7 +4,7 @@ export interface IProps {
   theme: Object
 }
 export interface ITicker {
-  size: string
+  size: number
   price: string
   time: string
   fall: boolean

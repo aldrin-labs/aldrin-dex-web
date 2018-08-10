@@ -4,6 +4,7 @@ import { Button, Typography } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { difference } from 'lodash'
 
+import { TypographyFullWidth } from '@utils/cssUtils'
 import {
   Table,
   Row,
@@ -82,7 +83,7 @@ class OrderBookTable extends Component {
                 color="default"
                 align="right"
               >
-                Size
+                Trade Size
               </TypographyFullWidth>
             </HeadCell>
             <HeadCell width={'45%'}>
@@ -124,7 +125,9 @@ class OrderBookTable extends Component {
                       variant="body1"
                       align="right"
                     >
-                      {order.size.toFixed(digitsAfterDecimalForAsksSize)}
+                      {Number(order.size).toFixed(
+                        digitsAfterDecimalForAsksSize
+                      )}
                     </StyledTypography>
                   </Cell>
                   <Cell width={'45%'}>
@@ -136,7 +139,9 @@ class OrderBookTable extends Component {
                       variant="body1"
                       align="right"
                     >
-                      {order.price.toFixed(digitsAfterDecimalForAsksPrice)}
+                      {Number(order.price).toFixed(
+                        digitsAfterDecimalForAsksPrice
+                      )}
                     </StyledTypography>
                   </Cell>
                 </Row>
@@ -148,11 +153,6 @@ class OrderBookTable extends Component {
     )
   }
 }
-
-const TypographyFullWidth = styled(Typography)`
-  width: 100%;
-  flex-grow: 1;
-`
 
 const StyledTypography = TypographyFullWidth.extend`
   && {

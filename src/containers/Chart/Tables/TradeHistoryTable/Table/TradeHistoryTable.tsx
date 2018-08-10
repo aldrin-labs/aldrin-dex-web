@@ -15,6 +15,7 @@ import {
 } from '@components/Table/Table'
 import { IProps, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@components/Loading'
+import { TypographyFullWidth } from '@utils/cssUtils'
 
 class TradeHistoryTable extends PureComponent<IProps> {
   state = {
@@ -68,7 +69,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
             >
               <HeadCell color="#9ca2aa" width={'33%'}>
                 <Typography variant="subheading" color="default" align="left">
-                  Size
+                  Trade Size
                 </Typography>
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'36%'}>
@@ -117,7 +118,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                           variant="body1"
                           align="left"
                         >
-                          {ticker.size}
+                          {Number(ticker.size).toFixed(4)}
                         </StyledTypography>
                       </Cell>
                       <Cell width={'36%'} style={{ display: 'flex' }}>

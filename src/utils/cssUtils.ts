@@ -1,3 +1,6 @@
+import styled from 'styled-components'
+import { Typography } from '@material-ui/core'
+
 export const customAquaScrollBar = `
 &::-webkit-scrollbar {
     width: 3px;
@@ -11,3 +14,8 @@ export const customAquaScrollBar = `
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
   }`
+
+export const TypographyFullWidth = styled(Typography)`
+  width: 100%;
+  flex-grow: 1;
+`
