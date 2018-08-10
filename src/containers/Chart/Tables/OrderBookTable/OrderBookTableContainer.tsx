@@ -105,10 +105,11 @@ class OrderBookTableContainer extends Component {
         const { asks, bids } = sortOrders(state, order)
 
         // update depth chart every 100 iterations
+        console.log(iterator)
         if (iterator === 100) {
           newProps.setOrders({
             bids,
-            asks: asks.slice().reverse(),
+            asks: asks.slice(),
           })
           iterator = 0
         } else {
