@@ -8,7 +8,7 @@ import { difference } from 'lodash'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { fromLightGreenToDeffaultGreen } from '../../../../../styles/keyframes'
+import { opacityAnimation } from '../../../../../styles/keyframes'
 import { TypographyFullWidth } from '@utils/cssUtils'
 
 class SpreadTable extends Component {
@@ -161,7 +161,7 @@ const StyledTypography = TypographyFullWidth.extend`
     font-variant-numeric: lining-nums tabular-nums;
     ${(props: { anime: boolean }) =>
       props.anime
-        ? `animation: ${fromLightGreenToDeffaultGreen} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
+        ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
         : ''};
   }
 `

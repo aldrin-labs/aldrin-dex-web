@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Collapse, Typography } from '@material-ui/core'
+import { Collapse } from '@material-ui/core'
 import { MdArrowUpward, MdArrowDropUp } from 'react-icons/lib/md'
 import { red, green } from '@material-ui/core/colors'
 
@@ -46,9 +46,13 @@ class TradeHistoryTable extends PureComponent<IProps> {
               }))
             }}
           >
-            <Typography color="default" variant="subheading" align="center">
+            <TypographyFullWidth
+              color="default"
+              variant="subheading"
+              align="center"
+            >
               Trade history
-            </Typography>
+            </TypographyFullWidth>
 
             <StyledArrowSign
               variant={{
@@ -64,32 +68,41 @@ class TradeHistoryTable extends PureComponent<IProps> {
           <Head background={background.default}>
             <Row
               background={background.default}
-              isHead
+              isHead={true}
               style={{ height: '100%' }}
             >
               <HeadCell color="#9ca2aa" width={'33%'}>
-                <Typography variant="subheading" color="default" align="left">
+                <TypographyFullWidth
+                  variant="subheading"
+                  color="default"
+                  align="right"
+                  noWrap={true}
+                >
                   Trade Size
-                </Typography>
+                </TypographyFullWidth>
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'36%'}>
-                <Typography
+                <TypographyFullWidth
                   noWrap
                   variant="subheading"
                   color="default"
                   align="left"
                 >
                   Price {quote || 'Fiat'}
-                </Typography>
+                </TypographyFullWidth>
               </HeadCell>
               <HeadCell
                 style={{ lineHeight: '32px' }}
                 color="#9ca2aa"
                 width={'30%'}
               >
-                <Typography variant="subheading" color="default" align="left">
+                <TypographyFullWidth
+                  variant="subheading"
+                  color="default"
+                  align="right"
+                >
                   Time
-                </Typography>
+                </TypographyFullWidth>
               </HeadCell>
             </Row>
           </Head>
@@ -112,19 +125,18 @@ class TradeHistoryTable extends PureComponent<IProps> {
                       // style={{ height: '27px' }}
                     >
                       <Cell width={'33%'}>
-                        <StyledTypography
-                          textColor={color}
-                          noWrap
+                        <TypographyFullWidth
+                          noWrap={true}
                           variant="body1"
-                          align="left"
+                          align="right"
                         >
                           {Number(ticker.size).toFixed(4)}
-                        </StyledTypography>
+                        </TypographyFullWidth>
                       </Cell>
                       <Cell width={'36%'} style={{ display: 'flex' }}>
                         <StyledTypography
                           textColor={color}
-                          noWrap
+                          noWrap={true}
                           variant="body1"
                           align="left"
                         >
@@ -136,14 +148,14 @@ class TradeHistoryTable extends PureComponent<IProps> {
                         />
                       </Cell>
                       <Cell width={'31%'}>
-                        <StyledTypography
-                          textColor={color}
-                          noWrap
+                        <TypographyFullWidth
+                          color="primary"
+                          noWrap={true}
                           variant="body1"
-                          align="left"
+                          align="right"
                         >
                           {ticker.time}
-                        </StyledTypography>
+                        </TypographyFullWidth>
                       </Cell>
                     </Row>
                   )
@@ -157,7 +169,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
   }
 }
 
-const StyledTypography = styled(Typography)`
+const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;

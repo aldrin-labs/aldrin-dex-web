@@ -16,7 +16,7 @@ import {
 } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
-import { fromLightRedToDeffaultRed } from '../../../../../styles/keyframes'
+import { opacityAnimation } from '../../../../../styles/keyframes'
 
 class OrderBookTable extends Component {
   state = {
@@ -160,7 +160,7 @@ const StyledTypography = TypographyFullWidth.extend`
     font-variant-numeric: lining-nums tabular-nums;
     ${(props: { anime: boolean }) =>
       props.anime
-        ? `animation: ${fromLightRedToDeffaultRed} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
+        ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
         : ''};
   }
 `
