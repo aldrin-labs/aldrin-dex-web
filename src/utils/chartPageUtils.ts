@@ -37,3 +37,46 @@ export const testJSON = (text: any) => {
     return false
   }
 }
+
+export const replaceOrdersWithSamePrice = (state: any, order: any) => {
+  // TODO: next here we should increase or decrease size of existing orders, not just replace them
+  if (order.side === 'bid') {
+    const ind = state.bids.findIndex((i) => i.price === order.price)
+    if (ind > -1) {
+      if (order.size !== '0') {
+        state.bids.splice(ind, 1, order)
+      } else {
+        state.bids.splice(ind, 1)
+      }
+      order = null
+    }
+  }
+  if (order !== null && order.side === 'ask') {
+    const ind = state.asks.findIndex((i) => i.price === order.price)
+    if (ind > -1) {
+      if (order.size !== '0') {
+        state.asks.splice(ind, 1, order)
+      } else {
+        state.asks.splice(ind, 1)
+      }
+      order = null
+    }
+  }
+}
+
+export const sortOrders = (state: any, order: any) => {
+  const bids =
+    order.side === 'bid'
+      ? [order, ...state.bids].sort(
+          (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
+        )
+      : state.bids
+  const asks =
+    order.side === 'ask'
+      ? [order, ...state.asks].sort(
+          (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
+        )
+      : state.asks
+
+  return { asks, bids }
+}
