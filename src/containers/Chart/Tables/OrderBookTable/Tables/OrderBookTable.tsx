@@ -18,10 +18,12 @@ import { Loading } from '@components/Loading'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { opacityAnimation } from '../../../../../styles/keyframes'
 
+let index: number | null = null
 class OrderBookTable extends Component {
   state = {
     index: null,
   }
+
   shouldComponentUpdate(nextProps) {
     const shouldUpdate =
       difference(nextProps.data, this.props.data).length > 0 ||
@@ -33,13 +35,11 @@ class OrderBookTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const index =
+    index =
       this.props.data &&
       this.props.data.findIndex(
         (el) => el === difference(this.props.data, prevProps.data)[0]
       )
-
-    this.setState({ index })
   }
 
   render() {
@@ -53,7 +53,7 @@ class OrderBookTable extends Component {
       data,
       theme: { palette },
     } = this.props
-    const { index } = this.state
+
     const {
       background,
       action,
@@ -75,7 +75,7 @@ class OrderBookTable extends Component {
           </SwitchTablesButton>
         </Title>
         <Head background={background.default}>
-          <Row isHead background={background.default}>
+          <Row isHead={true} background={background.default}>
             <EmptyCell width={'10%'} />
             <HeadCell width={'45%'}>
               <TypographyFullWidth
@@ -89,7 +89,7 @@ class OrderBookTable extends Component {
             <HeadCell width={'45%'}>
               <TypographyFullWidth
                 variant="subheading"
-                noWrap
+                noWrap={true}
                 color="default"
                 align="right"
               >
@@ -100,7 +100,7 @@ class OrderBookTable extends Component {
         </Head>
         <Body height={'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
           {data.length === 0 ? (
-            <Loading centerAligned />
+            <Loading centerAligned={true} />
           ) : (
             <>
               {data.map((order, i) => (
@@ -121,7 +121,7 @@ class OrderBookTable extends Component {
                       anime={i === index}
                       textColor={red[400]}
                       color="default"
-                      noWrap
+                      noWrap={true}
                       variant="body1"
                       align="right"
                     >
@@ -135,7 +135,7 @@ class OrderBookTable extends Component {
                       anime={i === index}
                       textColor={red[400]}
                       color="default"
-                      noWrap
+                      noWrap={true}
                       variant="body1"
                       align="right"
                     >

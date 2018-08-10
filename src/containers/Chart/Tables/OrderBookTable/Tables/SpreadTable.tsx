@@ -11,6 +11,9 @@ import { Loading } from '@components/Loading'
 import { opacityAnimation } from '../../../../../styles/keyframes'
 import { TypographyFullWidth } from '@utils/cssUtils'
 
+let index: number | null = null
+//  index for animations, no need to keep it in state couse it realted to css
+//  and there is no needs for rerendering
 class SpreadTable extends Component {
   state = {
     tableExpanded: true,
@@ -29,13 +32,11 @@ class SpreadTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const index =
+    index =
       this.props.data &&
       this.props.data.findIndex(
         (el) => el === difference(this.props.data, prevProps.data)[0]
       )
-
-    this.setState({ index })
   }
 
   onHeadClick = () => {
@@ -56,7 +57,6 @@ class SpreadTable extends Component {
       digitsAfterDecimalForBidsSize,
       digitsAfterDecimalForBidsPrice,
     } = this.props
-    const { index } = this.state
     const {
       background,
       action,
