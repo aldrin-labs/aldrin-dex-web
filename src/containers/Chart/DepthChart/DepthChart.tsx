@@ -10,7 +10,12 @@ import {
   AreaSeries,
   Crosshair,
 } from 'react-vis'
-import { Divider, Typography, IconButton } from '@material-ui/core'
+import {
+  Divider,
+  Typography,
+  IconButton,
+  CircularProgress,
+} from '@material-ui/core'
 import { red, green } from '@material-ui/core/colors'
 
 import { Loading } from '@components/Loading/Loading'
@@ -49,20 +54,18 @@ class DepthChart extends Component {
       }
     })
 
+    //  if arrays of dada not equal crosshair not worhing correctly
     if (transformedBidsData.length > transformedAsksData.length) {
       transformedBidsData = transformedBidsData.slice(
         0,
-        transformedAsksData.length - 1
+        transformedAsksData.length
       )
     } else if (transformedBidsData.length < transformedAsksData.length) {
       transformedAsksData = transformedAsksData.slice(
         0,
-        transformedAsksData.length - 1
+        transformedBidsData.length
       )
     }
-
-    // console.log(transformedBidsData)
-    // console.log(transformedAsksData)
 
     return {
       transformedBidsData,
@@ -215,20 +218,20 @@ class DepthChart extends Component {
             animation="stiff"
             style={axisStyle}
           />
-          {/* <VerticalRectSeries
+          <VerticalRectSeries
             animation="gentle"
             key="charst"
             data={[
               {
                 x0:
                   ordersData.length > 1 &&
-                  ordersData[ordersData.length - 1].x - 0.000001,
+                  ordersData[ordersData.length - 1].x - 0.0001,
                 x: ordersData.length > 1 && ordersData[ordersData.length - 1].x,
                 y: this.state.MAX_DOMAIN_PLOT / 2,
               },
             ]}
             color="rgba(91, 96, 102, 0.7)"
-          /> */}
+          />
           <AreaSeries
             curve={'curveStep'}
             onNearestX={this.onNearestOrderX}
@@ -254,7 +257,7 @@ class DepthChart extends Component {
             data={spreadData}
           />
 
-          {/* <Crosshair values={crosshairValuesForSpread}>
+          <Crosshair values={crosshairValuesForSpread}>
             <CrosshairContent
               background={palette.primary.main}
               textColor={palette.text.primary}
@@ -321,7 +324,7 @@ class DepthChart extends Component {
                 <CircularProgress color="primary" />
               )}
             </CrosshairContent>
-          </Crosshair> */}
+          </Crosshair>
         </FlexibleXYPlot>
       </Container>
     )
