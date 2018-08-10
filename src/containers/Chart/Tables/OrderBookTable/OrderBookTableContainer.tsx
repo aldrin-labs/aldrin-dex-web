@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 
-import OrderBookTable from './Tables/OrderBookTable'
 import {
   maximumItemsInArray,
-  sortOrders,
-  replaceOrdersWithSamePrice,
   findSpread,
+  testJSON,
 } from '@utils/chartPageUtils'
+import OrderBookTable from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
 
 let unsubscribe: Function | undefined
@@ -88,7 +87,7 @@ class OrderBookTableContainer extends Component {
       newProps.data.marketOrders.length > 0
     ) {
       const orderData = newProps.data.marketOrders[0]
-      const order = {
+      let order = {
         price: Number(orderData.price).toFixed(8),
         size: Number(orderData.size).toFixed(8),
         type: orderData.side,
@@ -99,17 +98,48 @@ class OrderBookTableContainer extends Component {
         return
       }
 
-      replaceOrdersWithSamePrice(state, order)
-
+      // TODO: next here we should increase or decrease size of existing orders, not just replace them
+      if (order.type === 'bid') {
+        const ind = state.bids.findIndex((i) => i.price === order.price)
+        if (ind > -1) {
+          if (order.size !== '0') {
+            state.bids.splice(ind, 1, order)
+          } else {
+            state.bids.splice(ind, 1)
+          }
+          order = null
+        }
+      }
+      if (order !== null && order.type === 'ask') {
+        const ind = state.asks.findIndex((i) => i.price === order.price)
+        if (ind > -1) {
+          if (order.size !== '0') {
+            state.asks.splice(ind, 1, order)
+          } else {
+            state.asks.splice(ind, 1)
+          }
+          order = null
+        }
+      }
       if (order !== null) {
-        const { asks, bids } = sortOrders(state, order)
+        const bids =
+          order.type === 'bid'
+            ? [order, ...state.bids].sort(
+                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
+              )
+            : state.bids
+        const asks =
+          order.type === 'ask'
+            ? [order, ...state.asks].sort(
+                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
+              )
+            : state.asks
 
         // update depth chart every 100 iterations
-        // console.log(iterator)
         if (iterator === 100) {
           newProps.setOrders({
             bids,
-            asks: asks.slice(),
+            asks: asks.slice().reverse(),
           })
           iterator = 0
         } else {
