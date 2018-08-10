@@ -85,7 +85,7 @@ export const HeadCell = Cell.extend`
 `
 
 export const Head = styled.div`
-  height: 40px;
+  height: 2rem;
   width: 100%;
   background-color: ${(props: { background: string }) => props.background};
   border-bottom: 1px solid #818d9ae6;

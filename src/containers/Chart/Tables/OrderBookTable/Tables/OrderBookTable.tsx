@@ -62,7 +62,7 @@ class OrderBookTable extends Component {
     return (
       <Table>
         <Title background={dark}>
-          <Typography color="default" variant="headline" align="center">
+          <Typography color="default" variant="subheading" align="center">
             Order Book
           </Typography>
           <SwitchTablesButton
@@ -78,7 +78,7 @@ class OrderBookTable extends Component {
             <EmptyCell width={'10%'} />
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                variant="title"
+                variant="subheading"
                 color="default"
                 align="right"
               >
@@ -87,7 +87,7 @@ class OrderBookTable extends Component {
             </HeadCell>
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                variant="title"
+                variant="subheading"
                 noWrap
                 color="default"
                 align="right"
