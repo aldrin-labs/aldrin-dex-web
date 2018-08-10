@@ -82,15 +82,16 @@ export const replaceOrdersWithSamePrice = (state: any, order: any) => {
   }
 }
 
+//  not working :/
 export const sortOrders = (state: any, order: any) => {
   const bids =
-    order.side === 'bid'
+    order.type === 'bid'
       ? [order, ...state.bids].sort(
           (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
         )
       : state.bids
   const asks =
-    order.side === 'ask'
+    order.type === 'ask'
       ? [order, ...state.asks].sort(
           (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
         )

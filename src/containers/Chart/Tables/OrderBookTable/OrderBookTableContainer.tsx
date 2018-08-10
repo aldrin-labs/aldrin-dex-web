@@ -4,6 +4,7 @@ import {
   maximumItemsInArray,
   findSpread,
   getNumberOfDigitsAfterDecimal,
+  replaceOrdersWithSamePrice,
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
@@ -81,30 +82,9 @@ class OrderBookTableContainer extends Component {
         return
       }
 
-      // TODO: next here we should increase or decrease size of existing orders, not just replace them
-      if (order.type === 'bid') {
-        const ind = state.bids.findIndex((i) => i.price === order.price)
-        if (ind > -1) {
-          if (order.size !== '0') {
-            state.bids.splice(ind, 1, order)
-          } else {
-            state.bids.splice(ind, 1)
-          }
-          order = null
-        }
-      }
-      if (order !== null && order.type === 'ask') {
-        const ind = state.asks.findIndex((i) => i.price === order.price)
-        if (ind > -1) {
-          if (order.size !== '0') {
-            state.asks.splice(ind, 1, order)
-          } else {
-            state.asks.splice(ind, 1)
-          }
-          order = null
-        }
-      }
+      replaceOrdersWithSamePrice(state, order)
       if (order !== null) {
+        //  sort orders
         const bids =
           order.type === 'bid'
             ? [order, ...state.bids].sort(
