@@ -6,16 +6,36 @@ import SpreadTable from './Tables/SpreadTable'
 
 let unsubscribe: Function | undefined
 
+const getNumberOfDigitsAfterDecimal = (
+  orders: any[],
+  column: 'size' | 'price'
+) => {
+  let numberOfDigitsAfterDecimal = 2
+  for (const order of orders) {
+    if (order[column] > 1) {
+      numberOfDigitsAfterDecimal = 2
+    } else {
+      numberOfDigitsAfterDecimal = 8
+
+      break
+    }
+  }
+
+  return numberOfDigitsAfterDecimal
+}
 class OrderBookTableContainer extends Component {
   state = {
     asks: [],
     bids: [],
     spread: null,
+    digitsAfterDecimalForAsksPrice: 0,
+    digitsAfterDecimalForAsksSize: 0,
     i: 0,
   }
 
   // transforming data
   static getDerivedStateFromProps(newProps, state) {
+    // when get data from querry
     let iterator = state.i
     if (newProps.data.marketOrders.length > 1) {
       const bids = newProps.data.marketOrders
@@ -36,8 +56,27 @@ class OrderBookTableContainer extends Component {
         bids,
         asks,
         spread,
+        i: 0,
+        digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
+          asks,
+          'price'
+        ),
+        digitsAfterDecimalForAsksSize: getNumberOfDigitsAfterDecimal(
+          asks,
+          'size'
+        ),
+        digitsAfterDecimalForBidsPrice: getNumberOfDigitsAfterDecimal(
+          bids,
+          'price'
+        ),
+        digitsAfterDecimalForBidsSize: getNumberOfDigitsAfterDecimal(
+          bids,
+          'size'
+        ),
       }
     }
+
+    // when get data from subscr
     if (
       newProps.data &&
       newProps.data.marketOrders &&
@@ -110,6 +149,22 @@ class OrderBookTableContainer extends Component {
           bids: maximumItemsInArray([...bids], 60, 10),
           asks: maximumItemsInArray([...asks], 60, 10),
           i: iterator,
+          digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
+            asks,
+            'price'
+          ),
+          digitsAfterDecimalForAsksSize: getNumberOfDigitsAfterDecimal(
+            asks,
+            'size'
+          ),
+          digitsAfterDecimalForBidsPrice: getNumberOfDigitsAfterDecimal(
+            bids,
+            'price'
+          ),
+          digitsAfterDecimalForBidsSize: getNumberOfDigitsAfterDecimal(
+            bids,
+            'size'
+          ),
         }
       }
     }
@@ -153,12 +208,34 @@ class OrderBookTableContainer extends Component {
       updateQuery,
       ...rest
     } = this.props
-    const { bids, asks, spread } = this.state
+    const {
+      bids,
+      asks,
+      spread,
+      digitsAfterDecimalForAsksPrice,
+      digitsAfterDecimalForAsksSize,
+      digitsAfterDecimalForBidsPrice,
+      digitsAfterDecimalForBidsSize,
+    } = this.state
+
+    console.log(digitsAfterDecimalForBidsSize)
+    console.log(digitsAfterDecimalForBidsPrice)
 
     return (
       <>
-        <OrderBookTable data={asks} {...rest} />
-        <SpreadTable data={bids} spread={spread} {...rest} />
+        <OrderBookTable
+          digitsAfterDecimalForAsksSize={digitsAfterDecimalForAsksSize}
+          digitsAfterDecimalForAsksPrice={digitsAfterDecimalForAsksPrice}
+          data={asks}
+          {...rest}
+        />
+        <SpreadTable
+          digitsAfterDecimalForBidsSize={digitsAfterDecimalForBidsSize}
+          digitsAfterDecimalForBidsPrice={digitsAfterDecimalForBidsPrice}
+          data={bids}
+          spread={spread}
+          {...rest}
+        />
       </>
     )
   }

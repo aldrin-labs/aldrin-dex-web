@@ -80,6 +80,7 @@ export const HeadCell = Cell.extend`
   font-weight: 400;
   font-size: 0.75rem;
   white-space: nowrap;
+  display: flex;
   width: 7%;
 `
 

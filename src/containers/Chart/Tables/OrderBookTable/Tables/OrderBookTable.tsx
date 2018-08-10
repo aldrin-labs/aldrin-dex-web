@@ -46,6 +46,8 @@ class OrderBookTable extends Component {
       onButtonClick,
       roundTill,
       aggregation,
+      digitsAfterDecimalForAsksSize,
+      digitsAfterDecimalForAsksPrice,
       quote,
       data,
       theme: { palette },
@@ -75,14 +77,23 @@ class OrderBookTable extends Component {
           <Row isHead background={background.default}>
             <EmptyCell width={'10%'} />
             <HeadCell width={'45%'}>
-              <Typography variant="title" color="default" align="left">
+              <TypographyFullWidth
+                variant="title"
+                color="default"
+                align="right"
+              >
                 Size
-              </Typography>
+              </TypographyFullWidth>
             </HeadCell>
             <HeadCell width={'45%'}>
-              <Typography variant="title" noWrap color="default" align="left">
+              <TypographyFullWidth
+                variant="title"
+                noWrap
+                color="default"
+                align="right"
+              >
                 Price {quote || 'Fiat'}
-              </Typography>
+              </TypographyFullWidth>
             </HeadCell>
           </Row>
         </Head>
@@ -111,9 +122,9 @@ class OrderBookTable extends Component {
                       color="default"
                       noWrap
                       variant="body1"
-                      align="left"
+                      align="right"
                     >
-                      {order.size}
+                      {order.size.toFixed(digitsAfterDecimalForAsksSize)}
                     </StyledTypography>
                   </Cell>
                   <Cell width={'45%'}>
@@ -123,9 +134,9 @@ class OrderBookTable extends Component {
                       color="default"
                       noWrap
                       variant="body1"
-                      align="left"
+                      align="right"
                     >
-                      {order.price}
+                      {order.price.toFixed(digitsAfterDecimalForAsksPrice)}
                     </StyledTypography>
                   </Cell>
                 </Row>
@@ -138,7 +149,12 @@ class OrderBookTable extends Component {
   }
 }
 
-const StyledTypography = styled(Typography)`
+const TypographyFullWidth = styled(Typography)`
+  width: 100%;
+  flex-grow: 1;
+`
+
+const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;

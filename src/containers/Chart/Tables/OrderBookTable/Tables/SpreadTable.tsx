@@ -52,6 +52,8 @@ class SpreadTable extends Component {
       theme: { palette },
       quote,
       data,
+      digitsAfterDecimalForBidsSize,
+      digitsAfterDecimalForBidsPrice,
     } = this.props
     const { index } = this.state
     const {
@@ -81,62 +83,64 @@ class SpreadTable extends Component {
                 />
               </HeadCell>
               <HeadCell width={'45%'}>
-                <Typography variant="body2" align="left">
+                <TypographyFullWidth variant="body2" align="right">
                   {quote || 'Fiat'} spread{' '}
-                </Typography>
+                </TypographyFullWidth>
               </HeadCell>
               <HeadCell width={'45%'}>
-                <Typography variant="body2" align="left">
+                <TypographyFullWidth variant="body2" align="right">
                   {spread.toFixed(2) || 0.01}
-                </Typography>
+                </TypographyFullWidth>
               </HeadCell>
             </TriggerRow>
           </Head>
           <Body style={{ background: background.default }} height="40vh">
             {data.length === 0 && tableExpanded ? (
-              <Loading centerAligned />
+              <Loading centerAligned={true} />
             ) : (
               <>
-                {data.map((order, i) => (
-                  <Row
-                    key={i}
-                    hoverBackground={action.hover}
-                    background={background.default}
-                  >
-                    <EmptyCell
-                      colored={calculatePercentagesOfOrderSize(
-                        order.size,
-                        data
-                      ).toString()}
-                      width={'10%'}
-                    />
+                {data.map(
+                  (order: { size: number; price: number }, i: number) => (
+                    <Row
+                      key={i}
+                      hoverBackground={action.hover}
+                      background={background.default}
+                    >
+                      <EmptyCell
+                        colored={calculatePercentagesOfOrderSize(
+                          order.size,
+                          data
+                        ).toString()}
+                        width={'10%'}
+                      />
 
-                    <Cell width={'45%'}>
-                      <StyledTypography
-                        textColor={green[500]}
-                        anime={i === index}
-                        color="default"
-                        noWrap
-                        variant="body1"
-                        align="left"
-                      >
-                        {order.size}
-                      </StyledTypography>
-                    </Cell>
-                    <Cell width={'45%'}>
-                      <StyledTypography
-                        textColor={green[500]}
-                        anime={i === index}
-                        color="default"
-                        noWrap
-                        variant="body1"
-                        align="left"
-                      >
-                        {order.price}
-                      </StyledTypography>
-                    </Cell>
-                  </Row>
-                ))}
+                      <Cell width={'45%'}>
+                        <StyledTypography
+                          textColor={green[500]}
+                          anime={i === index}
+                          color="default"
+                          noWrap
+                          variant="body1"
+                          align="right"
+                        >
+                          {order.size.toFixed(digitsAfterDecimalForBidsSize)}
+                        </StyledTypography>
+                      </Cell>
+                      <Cell width={'45%'}>
+                        <StyledTypography
+                          textColor={green[500]}
+                          anime={i === index}
+                          color="default"
+                          noWrap
+                          variant="body1"
+                          align="right"
+                        >
+                          {order.price.toFixed(digitsAfterDecimalForBidsPrice)}
+                        </StyledTypography>
+                      </Cell>
+                    </Row>
+                  )
+                )}
               </>
             )}
           </Body>
@@ -145,7 +149,12 @@ class SpreadTable extends Component {
     )
   }
 }
-const StyledTypography = styled(Typography)`
+const TypographyFullWidth = styled(Typography)`
+  width: 100%;
+  flex-grow: 1;
+`
+
+const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
