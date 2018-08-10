@@ -40,8 +40,7 @@ class OrderBookTableContainer extends Component {
   // transforming data
   static getDerivedStateFromProps(newProps, state) {
     // when get data from querry
-    let iterator = state.ic
-    console.log(newProps.data)
+    let iterator = state.i
     if (newProps.data.marketOrders.length > 1) {
       const bids = newProps.data.marketOrders
         .map((o) => JSON.parse(o))
