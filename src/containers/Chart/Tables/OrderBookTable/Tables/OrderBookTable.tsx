@@ -98,7 +98,7 @@ class OrderBookTable extends Component {
             </HeadCell>
           </Row>
         </Head>
-        <Body height={'calc(98vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
+        <Body height={'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
           {data.length === 0 ? (
             <Loading centerAligned />
           ) : (
