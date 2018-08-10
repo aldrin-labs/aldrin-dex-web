@@ -178,7 +178,6 @@ const EmptyCell = Cell.extend`
     height: 100%;
     content: '';
     background-color: ${green[500]};
-    transition: all 0.5s linear;
   }
 `
 

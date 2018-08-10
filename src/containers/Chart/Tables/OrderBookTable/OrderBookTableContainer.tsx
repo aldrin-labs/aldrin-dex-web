@@ -132,15 +132,15 @@ class OrderBookTableContainer extends Component {
             : state.asks
 
         // update depth chart every 100 iterations
-        // if (iterator === 1000) {
-        //   newProps.setOrders({
-        //     bids,
-        //     asks,
-        //   })
-        //   iterator = 0
-        // } else {
-        //   iterator += 1
-        // }
+        if (iterator === 100) {
+          newProps.setOrders({
+            bids,
+            asks: asks.slice().reverse(),
+          })
+          iterator = 0
+        } else {
+          iterator += 1
+        }
 
         const spread = findSpread(asks, bids)
 

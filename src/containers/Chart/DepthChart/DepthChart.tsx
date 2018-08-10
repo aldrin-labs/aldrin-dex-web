@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
-import { maxBy } from 'lodash'
 import { connect } from 'react-redux'
 import {
   FlexibleXYPlot,
@@ -11,12 +10,7 @@ import {
   AreaSeries,
   Crosshair,
 } from 'react-vis'
-import {
-  CircularProgress,
-  Divider,
-  Typography,
-  IconButton,
-} from '@material-ui/core'
+import { Divider, Typography, IconButton } from '@material-ui/core'
 import { red, green } from '@material-ui/core/colors'
 
 import { Loading } from '@components/Loading/Loading'
