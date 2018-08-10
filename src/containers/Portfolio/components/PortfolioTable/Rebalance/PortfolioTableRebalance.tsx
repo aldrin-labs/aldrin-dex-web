@@ -1,10 +1,10 @@
-import React, { CSSProperties } from 'react'
+import React, {CSSProperties, SyntheticEvent} from 'react'
 import styled, { css } from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import SelectReact, { components } from 'react-select'
-import {CommonProps, OptionProps} from 'react-select/lib/types'
+import { OptionProps } from 'react-select/lib/types'
 
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
@@ -120,7 +120,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
             2
           ),
           portfolioPerc: null
@@ -138,7 +138,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
             2
           ),
           portfolioPerc: null,
@@ -208,7 +208,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
             2
           ),
           portfolioPerc: null,
@@ -226,7 +226,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
             2
           ),
           portfolioPerc: null,
@@ -277,7 +277,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     this.calculateAllTotals(staticRows, rows, savedRows, undistributedMoney)
   }
 
-  calculateAllTotals = (staticRows: IRow[], rows: IRow[], savedRows: IRow[], undistributedMoney: number) => {
+  calculateAllTotals = (staticRows: IRow[], rows: IRow[], savedRows: IRow[], undistributedMoney: number | string) => {
     const totalStaticRows = this.calculateTotal(staticRows, 0)
     const totalRows = this.calculateTotal(rows, undistributedMoney)
     const totalSavedRows = this.calculateTotal(savedRows, undistributedMoney)
@@ -314,7 +314,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   }
 
   calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
-    // let { staticRows } = this.state
 
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
@@ -324,7 +323,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         ) {
           // TODO: Refactor when we have much more time than now
           // tslint:disable-next-line no-object-mutation
-          data[i].deltaPrice = (data[i].price - staticRows[j].price).toFixed(2)
+          data[i].deltaPrice = (parseFloat(data[i].price) - parseFloat(staticRows[j].price)).toFixed(2)
         }
       })
     })
@@ -335,7 +334,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     )
 
     if (data.length > staticRows.length) {
-      const arrayOfNewCoinIndexes = data.reduce((newCoinsIndexesArray, el, i) => {
+      const arrayOfNewCoinIndexes : number[] = data.reduce((newCoinsIndexesArray, el, i) => {
         if (
           !staticRows.some(
             (element) =>
@@ -536,8 +535,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return dataWithNewPrices
   }
 
-  removeEditableModeInCoins = (rows: IRow[]) => {
-    return rows.map((el: IRow) => {
+  removeEditableModeInCoins = (rows: IRow[]) => (
+    rows.map((el: IRow) => {
       if (el.editable) {
         return {
           ...el,
@@ -547,7 +546,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
       return el
     })
-  }
+  )
 
   onSaveClick = () => {
     const {
@@ -662,7 +661,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  escFunction = (e: React.KeyboardEvent<document>) => {
+  escFunction = (e: SyntheticEvent) => {
     if (e.keyCode === 27 && this.state.isEditModeEnabled) {
       this.onEditModeEnable()
     }

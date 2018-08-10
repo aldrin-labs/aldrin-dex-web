@@ -1,13 +1,13 @@
 export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'trade';
 
-// TODO: We should have one type for price & portfolioPerc in IRow
+// TODO: We should have one type for price & portfolioPerc, deltaPrice in IRow
 
 export interface IRow {
   exchange: string
   symbol: string
   price: number | string
   portfolioPerc: number | string | null
-  deltaPrice?: number
+  deltaPrice?: number | string
   editable?: boolean
 }
 
@@ -28,14 +28,14 @@ export interface IState {
   currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
   currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
-  undistributedMoney: number
-  undistributedMoneySaved: number
-  totalRows: number
-  totalStaticRows: number
-  totalSavedRows: number
-  totalTableRows: number
-  totalTableStaticRows: number
-  totalTableSavedRows: number
+  undistributedMoney: number | string
+  undistributedMoneySaved: number | string
+  totalRows: number | string
+  totalStaticRows: number | string
+  totalSavedRows: number | string
+  totalTableRows: number | string
+  totalTableStaticRows: number | string
+  totalTableSavedRows: number | string
   isPercentSumGood: boolean
   totalPercents: number | string
   leftBar: string
@@ -51,7 +51,7 @@ export interface IShapeOfRebalancePortfolioRow {
 }
 
 export interface IShapeOfCurrentPortolioRow {
-  value: number
+  value: number | string
   exchange: { name: string }
   asset: { symbol: string; priceUSD: string }
 }
