@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 
-import { maximumItemsInArray, findSpread } from '@utils/chartPageUtils'
+import {
+  maximumItemsInArray,
+  findSpread,
+  testJSON,
+} from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
 
@@ -36,7 +40,8 @@ class OrderBookTableContainer extends Component {
   // transforming data
   static getDerivedStateFromProps(newProps, state) {
     // when get data from querry
-    let iterator = state.i
+    let iterator = state.ic
+    console.log(newProps.data)
     if (newProps.data.marketOrders.length > 1) {
       const bids = newProps.data.marketOrders
         .map((o) => JSON.parse(o))

@@ -163,6 +163,7 @@ class Chart extends React.Component {
           <QueryRenderer
             component={OrderBookTable}
             query={ORDERS_MARKET_QUERY}
+            fetchPolicy="network-only"
             variables={{ symbol, exchange }}
             renderWithPlaceholder
             placeholder={TablePlaceholder}

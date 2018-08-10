@@ -7,6 +7,13 @@ import { ErrorFallback } from '@components/ErrorFallback'
 
 export interface IProps {
   query: DocumentNode
+  fetchPolicy:
+    | 'cache-first'
+    | 'cache-and-network'
+    | 'network-only'
+    | 'cache-only'
+    | 'no-cache'
+    | 'standby'
   component: React.ReactNode
   placeholder?: React.ReactElement<{}>
   renderWithPlaceholder?: boolean
@@ -23,11 +30,16 @@ export default class QueryRenderer extends React.PureComponent<IProps> {
       subscriptionArgs,
       renderWithPlaceholder,
       placeholder: Placeholder,
+      fetchPolicy,
       ...rest
     } = this.props
 
     return (
-      <Query query={query} variables={variables}>
+      <Query
+        query={query}
+        variables={variables}
+        fetchPolicy={fetchPolicy ? fetchPolicy : 'cache-first'}
+      >
         {({
           loading,
           error,

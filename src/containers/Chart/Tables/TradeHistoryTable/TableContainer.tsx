@@ -11,8 +11,6 @@ class TableContainer extends Component {
   }
 
   static getDerivedStateFromProps(newProps, state) {
-    console.log(newProps.data)
-
     if (
       !(
         newProps.data &&
