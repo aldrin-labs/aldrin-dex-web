@@ -218,7 +218,7 @@ class DepthChart extends Component {
             animation="stiff"
             style={axisStyle}
           />
-          <VerticalRectSeries
+          {/* <VerticalRectSeries
             animation="gentle"
             key="charst"
             data={[
@@ -231,7 +231,7 @@ class DepthChart extends Component {
               },
             ]}
             color="rgba(91, 96, 102, 0.7)"
-          />
+          /> */}
           <AreaSeries
             curve={'curveStep'}
             onNearestX={this.onNearestOrderX}
