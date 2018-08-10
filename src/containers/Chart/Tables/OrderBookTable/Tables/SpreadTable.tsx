@@ -1,15 +1,19 @@
 import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
-import { Collapse, Typography } from '@material-ui/core'
+import { Collapse } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 import { difference } from 'lodash'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { fromLightGreenToDeffaultGreen } from '../../../../../styles/keyframes'
+import { opacityAnimation } from '../../../../../styles/keyframes'
+import { TypographyFullWidth } from '@utils/cssUtils'
 
+let index: number | null = null
+//  index for animations, no need to keep it in state couse it realted to css
+//  and there is no needs for rerendering
 class SpreadTable extends Component {
   state = {
     tableExpanded: true,
@@ -28,13 +32,11 @@ class SpreadTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const index =
+    index =
       this.props.data &&
       this.props.data.findIndex(
         (el) => el === difference(this.props.data, prevProps.data)[0]
       )
-
-    this.setState({ index })
   }
 
   onHeadClick = () => {
@@ -52,8 +54,9 @@ class SpreadTable extends Component {
       theme: { palette },
       quote,
       data,
+      digitsAfterDecimalForBidsSize,
+      digitsAfterDecimalForBidsPrice,
     } = this.props
-    const { index } = this.state
     const {
       background,
       action,
@@ -81,62 +84,68 @@ class SpreadTable extends Component {
                 />
               </HeadCell>
               <HeadCell width={'45%'}>
-                <Typography variant="body2" align="left">
+                <TypographyFullWidth variant="body2" align="right">
                   {quote || 'Fiat'} spread{' '}
-                </Typography>
+                </TypographyFullWidth>
               </HeadCell>
               <HeadCell width={'45%'}>
-                <Typography variant="body2" align="left">
-                  {spread || 0.01}
-                </Typography>
+                <TypographyFullWidth variant="body2" align="right">
+                  {spread.toFixed(2) || 0.01}
+                </TypographyFullWidth>
               </HeadCell>
             </TriggerRow>
           </Head>
           <Body style={{ background: background.default }} height="40vh">
             {data.length === 0 && tableExpanded ? (
-              <Loading centerAligned />
+              <Loading centerAligned={true} />
             ) : (
               <>
-                {data.map((order, i) => (
-                  <Row
-                    key={i}
-                    hoverBackground={action.hover}
-                    background={background.default}
-                  >
-                    <EmptyCell
-                      colored={calculatePercentagesOfOrderSize(
-                        order.size,
-                        data
-                      ).toString()}
-                      width={'10%'}
-                    />
+                {data.map(
+                  (order: { size: number; price: number }, i: number) => (
+                    <Row
+                      key={i}
+                      hoverBackground={action.hover}
+                      background={background.default}
+                    >
+                      <EmptyCell
+                        colored={calculatePercentagesOfOrderSize(
+                          order.size,
+                          data
+                        ).toString()}
+                        width={'10%'}
+                      />
 
-                    <Cell width={'45%'}>
-                      <StyledTypography
-                        textColor={green[500]}
-                        anime={i === index}
-                        color="default"
-                        noWrap
-                        variant="body1"
-                        align="left"
-                      >
-                        {order.size}
-                      </StyledTypography>
-                    </Cell>
-                    <Cell width={'45%'}>
-                      <StyledTypography
-                        textColor={green[500]}
-                        anime={i === index}
-                        color="default"
-                        noWrap
-                        variant="body1"
-                        align="left"
-                      >
-                        {order.price}
-                      </StyledTypography>
-                    </Cell>
-                  </Row>
-                ))}
+                      <Cell width={'45%'}>
+                        <StyledTypography
+                          textColor={green[500]}
+                          anime={i === index}
+                          color="default"
+                          noWrap={true}
+                          variant="body1"
+                          align="right"
+                        >
+                          {Number(order.size).toFixed(
+                            digitsAfterDecimalForBidsSize
+                          )}
+                        </StyledTypography>
+                      </Cell>
+                      <Cell width={'45%'}>
+                        <StyledTypography
+                          textColor={green[500]}
+                          anime={i === index}
+                          color="default"
+                          noWrap
+                          variant="body1"
+                          align="right"
+                        >
+                          {Number(order.price).toFixed(
+                            digitsAfterDecimalForBidsPrice
+                          )}
+                        </StyledTypography>
+                      </Cell>
+                    </Row>
+                  )
+                )}
               </>
             )}
           </Body>
@@ -145,13 +154,14 @@ class SpreadTable extends Component {
     )
   }
 }
-const StyledTypography = styled(Typography)`
+
+const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
-    ${(props: { anime: boolean }) =>
+    ${(props: { anime?: boolean }) =>
       props.anime
-        ? `animation: ${fromLightGreenToDeffaultGreen} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
+        ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
         : ''};
   }
 `
@@ -168,7 +178,6 @@ const EmptyCell = Cell.extend`
     height: 100%;
     content: '';
     background-color: ${green[500]};
-    transition: all 0.5s linear;
   }
 `
 

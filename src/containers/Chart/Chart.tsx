@@ -142,8 +142,6 @@ class Chart extends React.Component {
       quote = currencyPair.split('_')[1]
     }
 
-    console.log(currencyPair)
-
     const { activeExchange, theme } = this.props
     const { changeExchange } = this
 
@@ -165,6 +163,7 @@ class Chart extends React.Component {
           <QueryRenderer
             component={OrderBookTable}
             query={ORDERS_MARKET_QUERY}
+            fetchPolicy="network-only"
             variables={{ symbol, exchange }}
             renderWithPlaceholder
             placeholder={TablePlaceholder}
@@ -180,6 +179,7 @@ class Chart extends React.Component {
               currencyPair,
               aggregation,
               quote,
+              setOrders: this.props.setOrders,
               symbol,
               exchange,
               ...this.props,
@@ -246,10 +246,8 @@ class Chart extends React.Component {
 
   renderDefaultView = () => {
     const { ordersData, spreadData, activeChart } = this.state
-    const {
-      currencyPair,
-      theme: { palette },
-    } = this.props
+    const { activeExchange, currencyPair, theme } = this.props
+    const { palette } = theme
 
     let base
     let quote
@@ -268,14 +266,14 @@ class Chart extends React.Component {
             {base &&
               quote && (
                 <ExchangePair background={palette.primary.dark}>
-                  <Typography variant="subheading" color="secondary">
+                  <Typography variant="subheading" color="default">
                     {`${base}/${quote}`}
                   </Typography>
                 </ExchangePair>
               )}
             <SwitchButtonWrapper>
               <Button
-                variant="outlined"
+                variant="text"
                 color="secondary"
                 onClick={() => {
                   this.setState((prevState) => ({
@@ -295,8 +293,7 @@ class Chart extends React.Component {
               <DepthChartContainer>
                 <DepthChart
                   {...{
-                    ordersData,
-                    spreadData,
+                    theme,
                     base,
                     quote,
                     animated: false,
@@ -319,12 +316,24 @@ class Chart extends React.Component {
 
     if (view === 'default') {
       return (
-        <Toggler onClick={() => toggleView('onlyCharts')}>Multi Charts</Toggler>
+        <Toggler
+          variant="outlined"
+          color="secondary"
+          onClick={() => toggleView('onlyCharts')}
+        >
+          Multi Charts
+        </Toggler>
       )
     }
     if (view === 'onlyCharts') {
       return (
-        <Toggler onClick={() => toggleView('default')}>Single Chart</Toggler>
+        <Toggler
+          variant="outlined"
+          color="secondary"
+          onClick={() => toggleView('default')}
+        >
+          Single Chart
+        </Toggler>
       )
     }
 
@@ -472,6 +481,7 @@ const Container = styled.div`
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
   view: store.chart.view,
+
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
 })
@@ -482,6 +492,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actions.toggleView(view)),
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
+  setOrders: (payload) => dispatch(actions.setOrders(payload)),
 })
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)

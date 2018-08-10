@@ -1,3 +1,8 @@
+export const findSpread = (asks: any[], bids: any[]): number =>
+  asks[asks.length - 1] && bids[0]
+    ? +asks[asks.length - 1].price - +bids[0].price
+    : 0
+
 export const maximumItemsInArray = (
   data: any[],
   count: number,
@@ -8,6 +13,24 @@ export const maximumItemsInArray = (
   }
 
   return data
+}
+
+export const getNumberOfDigitsAfterDecimal = (
+  orders: any[],
+  column: 'size' | 'price'
+) => {
+  let numberOfDigitsAfterDecimal = 2
+  for (const order of orders) {
+    if (order[column] > 1) {
+      numberOfDigitsAfterDecimal = 2
+    } else {
+      numberOfDigitsAfterDecimal = 8
+
+      break
+    }
+  }
+
+  return numberOfDigitsAfterDecimal
 }
 
 export const calculatePercentagesOfOrderSize = (
@@ -59,15 +82,16 @@ export const replaceOrdersWithSamePrice = (state: any, order: any) => {
   }
 }
 
+//  not working :/
 export const sortOrders = (state: any, order: any) => {
   const bids =
-    order.side === 'bid'
+    order.type === 'bid'
       ? [order, ...state.bids].sort(
           (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
         )
       : state.bids
   const asks =
-    order.side === 'ask'
+    order.type === 'ask'
       ? [order, ...state.asks].sort(
           (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
         )

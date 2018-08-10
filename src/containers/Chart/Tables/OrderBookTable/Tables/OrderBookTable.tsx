@@ -4,6 +4,7 @@ import { Button, Typography } from '@material-ui/core'
 import { red } from '@material-ui/core/colors'
 import { difference } from 'lodash'
 
+import { TypographyFullWidth } from '@utils/cssUtils'
 import {
   Table,
   Row,
@@ -15,12 +16,14 @@ import {
 } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
-import { fromLightRedToDeffaultRed } from '../../../../../styles/keyframes'
+import { opacityAnimation } from '../../../../../styles/keyframes'
 
+let index: number | null = null
 class OrderBookTable extends Component {
   state = {
     index: null,
   }
+
   shouldComponentUpdate(nextProps) {
     const shouldUpdate =
       difference(nextProps.data, this.props.data).length > 0 ||
@@ -32,13 +35,11 @@ class OrderBookTable extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const index =
+    index =
       this.props.data &&
       this.props.data.findIndex(
         (el) => el === difference(this.props.data, prevProps.data)[0]
       )
-
-    this.setState({ index })
   }
 
   render() {
@@ -46,11 +47,13 @@ class OrderBookTable extends Component {
       onButtonClick,
       roundTill,
       aggregation,
+      digitsAfterDecimalForAsksSize,
+      digitsAfterDecimalForAsksPrice,
       quote,
       data,
       theme: { palette },
     } = this.props
-    const { index } = this.state
+
     const {
       background,
       action,
@@ -60,7 +63,7 @@ class OrderBookTable extends Component {
     return (
       <Table>
         <Title background={dark}>
-          <Typography color="default" variant="headline" align="center">
+          <Typography color="default" variant="subheading" align="center">
             Order Book
           </Typography>
           <SwitchTablesButton
@@ -72,23 +75,32 @@ class OrderBookTable extends Component {
           </SwitchTablesButton>
         </Title>
         <Head background={background.default}>
-          <Row isHead background={background.default}>
+          <Row isHead={true} background={background.default}>
             <EmptyCell width={'10%'} />
             <HeadCell width={'45%'}>
-              <Typography variant="title" color="default" align="left">
-                Size
-              </Typography>
+              <TypographyFullWidth
+                variant="subheading"
+                color="default"
+                align="right"
+              >
+                Trade Size
+              </TypographyFullWidth>
             </HeadCell>
             <HeadCell width={'45%'}>
-              <Typography variant="title" noWrap color="default" align="left">
+              <TypographyFullWidth
+                variant="subheading"
+                noWrap={true}
+                color="default"
+                align="right"
+              >
                 Price {quote || 'Fiat'}
-              </Typography>
+              </TypographyFullWidth>
             </HeadCell>
           </Row>
         </Head>
-        <Body height={'calc(98vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
+        <Body height={'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
           {data.length === 0 ? (
-            <Loading centerAligned />
+            <Loading centerAligned={true} />
           ) : (
             <>
               {data.map((order, i) => (
@@ -109,11 +121,13 @@ class OrderBookTable extends Component {
                       anime={i === index}
                       textColor={red[400]}
                       color="default"
-                      noWrap
+                      noWrap={true}
                       variant="body1"
-                      align="left"
+                      align="right"
                     >
-                      {order.size}
+                      {Number(order.size).toFixed(
+                        digitsAfterDecimalForAsksSize
+                      )}
                     </StyledTypography>
                   </Cell>
                   <Cell width={'45%'}>
@@ -121,11 +135,13 @@ class OrderBookTable extends Component {
                       anime={i === index}
                       textColor={red[400]}
                       color="default"
-                      noWrap
+                      noWrap={true}
                       variant="body1"
-                      align="left"
+                      align="right"
                     >
-                      {order.price}
+                      {Number(order.price).toFixed(
+                        digitsAfterDecimalForAsksPrice
+                      )}
                     </StyledTypography>
                   </Cell>
                 </Row>
@@ -138,13 +154,13 @@ class OrderBookTable extends Component {
   }
 }
 
-const StyledTypography = styled(Typography)`
+const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
     ${(props: { anime: boolean }) =>
       props.anime
-        ? `animation: ${fromLightRedToDeffaultRed} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
+        ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
         : ''};
   }
 `
@@ -163,7 +179,6 @@ const EmptyCell = Cell.extend`
   position: relative;
 
   &: before {
-    transition: all 0.5s linear;
     position: absolute;
     z-index: 100;
     top: 0;
