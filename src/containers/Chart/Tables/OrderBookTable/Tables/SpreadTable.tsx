@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { MdArrowDropUp } from 'react-icons/lib/md/'
-import { Collapse, Typography } from '@material-ui/core'
+import { Collapse } from '@material-ui/core'
 import { green } from '@material-ui/core/colors'
 import { difference } from 'lodash'
 
@@ -120,7 +120,7 @@ class SpreadTable extends Component {
                           textColor={green[500]}
                           anime={i === index}
                           color="default"
-                          noWrap
+                          noWrap={true}
                           variant="body1"
                           align="right"
                         >
@@ -159,7 +159,7 @@ const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
-    ${(props: { anime: boolean }) =>
+    ${(props: { anime?: boolean }) =>
       props.anime
         ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
         : ''};

@@ -111,55 +111,48 @@ class TradeHistoryTable extends PureComponent<IProps> {
               <Loading centerAligned />
             ) : (
               <>
-                {data.map((ticker: ITicker, i: number) => {
-                  let color: string = ticker.fall ? red[400] : green[500]
-                  setTimeout(() => {
-                    color = '#000'
-                  }, 100)
-
-                  return (
-                    <Row
-                      hoverBackground={action.hover}
-                      key={i}
-                      background={background.default}
-                      // style={{ height: '27px' }}
-                    >
-                      <Cell width={'33%'}>
-                        <TypographyFullWidth
-                          noWrap={true}
-                          variant="body1"
-                          align="right"
-                        >
-                          {Number(ticker.size).toFixed(4)}
-                        </TypographyFullWidth>
-                      </Cell>
-                      <Cell width={'36%'} style={{ display: 'flex' }}>
-                        <StyledTypography
-                          textColor={color}
-                          noWrap={true}
-                          variant="body1"
-                          align="left"
-                        >
-                          {ticker.price}
-                        </StyledTypography>
-                        <StyledArrow
-                          color={color}
-                          direction={ticker.fall ? 'down' : 'up'}
-                        />
-                      </Cell>
-                      <Cell width={'31%'}>
-                        <TypographyFullWidth
-                          color="primary"
-                          noWrap={true}
-                          variant="body1"
-                          align="right"
-                        >
-                          {ticker.time}
-                        </TypographyFullWidth>
-                      </Cell>
-                    </Row>
-                  )
-                })}
+                {data.map((ticker: ITicker, i: number) => (
+                  <Row
+                    hoverBackground={action.hover}
+                    key={i}
+                    background={background.default}
+                    // style={{ height: '27px' }}
+                  >
+                    <Cell width={'33%'}>
+                      <TypographyFullWidth
+                        noWrap={true}
+                        variant="body1"
+                        align="right"
+                      >
+                        {Number(ticker.size).toFixed(4)}
+                      </TypographyFullWidth>
+                    </Cell>
+                    <Cell width={'36%'} style={{ display: 'flex' }}>
+                      <StyledTypography
+                        textColor={ticker.fall ? red[400] : green[500]}
+                        noWrap={true}
+                        variant="body1"
+                        align="left"
+                      >
+                        {ticker.price}
+                      </StyledTypography>
+                      <StyledArrow
+                        color={ticker.fall ? red[400] : green[500]}
+                        direction={ticker.fall ? 'down' : 'up'}
+                      />
+                    </Cell>
+                    <Cell width={'31%'}>
+                      <TypographyFullWidth
+                        color="primary"
+                        noWrap={true}
+                        variant="body1"
+                        align="right"
+                      >
+                        {ticker.time}
+                      </TypographyFullWidth>
+                    </Cell>
+                  </Row>
+                ))}
               </>
             )}
           </Body>

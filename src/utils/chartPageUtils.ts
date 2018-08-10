@@ -1,5 +1,7 @@
 export const findSpread = (asks: any[], bids: any[]): number =>
-  +asks[asks.length - 1].price - +bids[0].price
+  asks[asks.length - 1] && bids[0]
+    ? +asks[asks.length - 1].price - +bids[0].price
+    : 0
 
 export const maximumItemsInArray = (
   data: any[],
