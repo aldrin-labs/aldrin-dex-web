@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import SelectReact, { components } from 'react-select'
-import { OptionProps } from 'react-select/lib/types'
+import {OptionProps} from 'react-select/lib/types'
 
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
@@ -366,7 +366,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return data
   }
 
-  calculateTotal = (data: IRow[], undistributedMoney: number) => {
+  calculateTotal = (data: IRow[], undistributedMoney: number | string) => {
     const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
     return (parseFloat(total) + parseFloat(undistributedMoney)).toFixed(2)
