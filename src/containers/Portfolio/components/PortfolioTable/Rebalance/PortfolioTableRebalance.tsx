@@ -1,10 +1,10 @@
-import React, {CSSProperties, SyntheticEvent} from 'react'
+import React, { CSSProperties, SyntheticEvent } from 'react'
 import styled, { css } from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import SelectReact, { components } from 'react-select'
-import {OptionProps} from 'react-select/lib/types'
+import { OptionProps } from 'react-select/lib/types'
 
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
@@ -18,14 +18,15 @@ import sortIcon from '@icons/arrow.svg'
 import {
   IProps,
   IState,
-  IRow, IShapeOfRebalancePortfolioRow, IShapeOfCurrentPortolioRow,
+  IRow,
+  IShapeOfRebalancePortfolioRow,
+  IShapeOfCurrentPortolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
-import {
-  mockTableData,
-} from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
+import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
   onSortStrings,
-  cloneArrayElementsOneLevelDeep, formatNumberToUSFormat,
+  cloneArrayElementsOneLevelDeep,
+  formatNumberToUSFormat,
 } from '@utils/PortfolioTableUtils'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
@@ -120,10 +121,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
-            2
-          ),
-          portfolioPerc: null
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
+          portfolioPerc: null,
         })
       )
 
@@ -138,9 +137,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
-            2
-          ),
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
           portfolioPerc: null,
         })
       )
@@ -208,9 +205,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
-            2
-          ),
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
           portfolioPerc: null,
         })
       )
@@ -226,9 +221,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(
-            2
-          ),
+          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
           portfolioPerc: null,
         })
       )
@@ -256,7 +249,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       )
     }
 
-
     if (nextProps.isUSDCurrently !== this.props.isUSDCurrently) {
       if (nextProps.isUSDCurrently) {
         // tableHeadingsCurrentPortfolio = usdHeadingForCurrent
@@ -268,16 +260,26 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
   }
 
-  setTableData = (tableDataCurrentPortfolio: IRow[], tableDataRebalancedPortfolio: IRow[]) => {
+  setTableData = (
+    tableDataCurrentPortfolio: IRow[],
+    tableDataRebalancedPortfolio: IRow[]
+  ) => {
     const { undistributedMoney } = this.state
     const rows = cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio)
     const staticRows = cloneArrayElementsOneLevelDeep(tableDataCurrentPortfolio)
-    const savedRows = cloneArrayElementsOneLevelDeep(tableDataRebalancedPortfolio)
+    const savedRows = cloneArrayElementsOneLevelDeep(
+      tableDataRebalancedPortfolio
+    )
 
     this.calculateAllTotals(staticRows, rows, savedRows, undistributedMoney)
   }
 
-  calculateAllTotals = (staticRows: IRow[], rows: IRow[], savedRows: IRow[], undistributedMoney: number | string) => {
+  calculateAllTotals = (
+    staticRows: IRow[],
+    rows: IRow[],
+    savedRows: IRow[],
+    undistributedMoney: number | string
+  ) => {
     const totalStaticRows = this.calculateTotal(staticRows, 0)
     const totalRows = this.calculateTotal(rows, undistributedMoney)
     const totalSavedRows = this.calculateTotal(savedRows, undistributedMoney)
@@ -300,21 +302,30 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       totalSavedRows,
       totalTableStaticRows,
       totalTableRows,
-      totalTableSavedRows
+      totalTableSavedRows,
     })
   }
 
-  calculateAllPercents = (staticRows: IRow[], totalStaticRows: number, rows: IRow[], totalRows: number, savedRows: IRow[], totalSavedRows: number) => {
-
+  calculateAllPercents = (
+    staticRows: IRow[],
+    totalStaticRows: number,
+    rows: IRow[],
+    totalRows: number,
+    savedRows: IRow[],
+    totalSavedRows: number
+  ) => {
     this.setState({
-      staticRows: this.calculatePercents(staticRows, totalStaticRows, staticRows),
+      staticRows: this.calculatePercents(
+        staticRows,
+        totalStaticRows,
+        staticRows
+      ),
       rows: this.calculatePercents(rows, totalRows, staticRows),
-      savedRows: this.calculatePercents(savedRows, totalSavedRows, staticRows)
+      savedRows: this.calculatePercents(savedRows, totalSavedRows, staticRows),
     })
   }
 
   calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
-
     data.forEach((row, i) => {
       staticRows.forEach((staticRow, j) => {
         if (
@@ -323,7 +334,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         ) {
           // TODO: Refactor when we have much more time than now
           // tslint:disable-next-line no-object-mutation
-          data[i].deltaPrice = (parseFloat(data[i].price) - parseFloat(staticRows[j].price)).toFixed(2)
+          data[i].deltaPrice = (
+            parseFloat(data[i].price) - parseFloat(staticRows[j].price)
+          ).toFixed(2)
         }
       })
     })
@@ -334,18 +347,21 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     )
 
     if (data.length > staticRows.length) {
-      const arrayOfNewCoinIndexes : number[] = data.reduce((newCoinsIndexesArray, el, i) => {
-        if (
-          !staticRows.some(
-            (element) =>
-              element.exchange === el.exchange && element.symbol === el.symbol
-          )
-        ) {
-          return newCoinsIndexesArray.concat(i)
-        }
+      const arrayOfNewCoinIndexes: number[] = data.reduce(
+        (newCoinsIndexesArray, el, i) => {
+          if (
+            !staticRows.some(
+              (element) =>
+                element.exchange === el.exchange && element.symbol === el.symbol
+            )
+          ) {
+            return newCoinsIndexesArray.concat(i)
+          }
 
-        return newCoinsIndexesArray
-      },[])
+          return newCoinsIndexesArray
+        },
+        []
+      )
 
       data = data.map((row, i) => {
         if (arrayOfNewCoinIndexes.includes(i)) {
@@ -389,7 +405,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   calculatePercents = (data: IRow[], total: number, staticRows: IRow[]) => {
     const newDataWithPercents = data.map((row) => {
       const percentCaluclation =
-        +row.price === 0 ? '0' : (row.price * 100 / total).toFixed(4)
+        +row.price === 0 ? '0' : ((row.price * 100) / total).toFixed(4)
       const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
       return {
@@ -398,8 +414,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       }
     })
 
-    console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents);
-
+    console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
 
     const totalPercents = this.calculateTotalPercents(newDataWithPercents)
 
@@ -442,7 +457,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     this.setState({ rows, areAllActiveChecked: false })
   }
-
 
   onDeleteRowClick = (idx: number) => {
     const { rows, undistributedMoney, staticRows } = this.state
@@ -524,7 +538,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const { totalRows } = this.state
 
     const dataWithNewPrices = data.map((row: IRow) => {
-      let newPrice = (totalRows / 100 * row.portfolioPerc).toFixed(2)
+      let newPrice = ((totalRows / 100) * row.portfolioPerc).toFixed(2)
 
       return {
         ...row,
@@ -535,7 +549,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return dataWithNewPrices
   }
 
-  removeEditableModeInCoins = (rows: IRow[]) => (
+  removeEditableModeInCoins = (rows: IRow[]) =>
     rows.map((el: IRow) => {
       if (el.editable) {
         return {
@@ -546,7 +560,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
       return el
     })
-  )
 
   onSaveClick = () => {
     const {
@@ -554,7 +567,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       totalRows,
       isPercentSumGood,
       undistributedMoney,
-      staticRows
+      staticRows,
     } = this.state
 
     console.log('rows rows rows: ', rows)
@@ -567,7 +580,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     const rowsWithNewPrice = this.calculatePriceByPercents(rows)
-    const newRowsWithPriceDiff = this.calculatePriceDifference(rowsWithNewPrice, staticRows)
+    const newRowsWithPriceDiff = this.calculatePriceDifference(
+      rowsWithNewPrice,
+      staticRows
+    )
     const newRows = this.removeEditableModeInCoins(newRowsWithPriceDiff)
 
     this.setState(
@@ -594,12 +610,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: {
-          exchange: el.exchange,
-          coin: el.symbol,
-        },
-        amount: el.price.toString(),
-        percent: el.portfolioPerc.toString(),
-        diff: el.deltaPrice.toString(),
+        exchange: el.exchange,
+        coin: el.symbol,
+      },
+      amount: el.price.toString(),
+      percent: el.portfolioPerc.toString(),
+      diff: el.deltaPrice.toString(),
     }))
 
     console.log(combinedRowsData)
@@ -673,7 +689,11 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const newUndistributedMoney = 0
     const newTotalRows = this.calculateTotal(rows, newUndistributedMoney)
     const newTableTotalRows = this.calculateTableTotal(rows)
-    const newRowsWithNewPercents = this.calculatePercents(rows, newTotalRows, staticRows)
+    const newRowsWithNewPercents = this.calculatePercents(
+      rows,
+      newTotalRows,
+      staticRows
+    )
     const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
     this.setState({
@@ -756,7 +776,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
   }
 
-  onFocusPercentInput = (e: React.FocusEvent<HTMLInputElement>, idx: number) => {
+  onFocusPercentInput = (
+    e: React.FocusEvent<HTMLInputElement>,
+    idx: number
+  ) => {
     const { rows } = this.state
     let percentInput = e.target.value
 
@@ -810,7 +833,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onPercentInputChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
+  onPercentInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
     const { rows, staticRows } = this.state
     let percentInput = e.target.value
 
@@ -843,7 +869,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     )
 
     const rowWithNewPriceDiff = this.calculatePriceDifference(
-      newCalculatedRowsWithPercents, staticRows
+      newCalculatedRowsWithPercents,
+      staticRows
     )
 
     const newTableTotalRows = this.calculateTableTotal(
@@ -857,16 +884,16 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let oldNewPriceDiff = oldRowPrice - newRowPrice
 
     this.setState((prevState) => ({
-        rows: rowWithNewPriceDiff,
-        isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
-        totalPercents,
-        undistributedMoney: parseFloat(parseFloat(
+      rows: rowWithNewPriceDiff,
+      isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
+      totalPercents,
+      undistributedMoney: parseFloat(
+        parseFloat(
           parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
-        ).toFixed(2)),
-        totalTableRows: parseFloat(newTableTotalRows),
-
-      })
-    )
+        ).toFixed(2)
+      ),
+      totalTableRows: parseFloat(newTableTotalRows),
+    }))
   }
 
   handleSelectChange(
@@ -907,7 +934,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
     console.log('addmoneypressed')
 
-    let { rows, staticRows, addMoneyInputValue, undistributedMoney } = this.state
+    let {
+      rows,
+      staticRows,
+      addMoneyInputValue,
+      undistributedMoney,
+    } = this.state
 
     const newUndistributedMoney = parseFloat(
       (Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2)
@@ -1002,7 +1034,11 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
   render() {
     console.log('RENDER')
 
-    const { children, isUSDCurrently, filterValueSmallerThenPercentage } = this.props
+    const {
+      children,
+      isUSDCurrently,
+      filterValueSmallerThenPercentage,
+    } = this.props
     const {
       selectedActive,
       currentSortForStatic,
@@ -1042,380 +1078,394 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       <PTWrapper tableData={true}>
         {children}
         <Content>
-        <Container>
-          <CurrentPortfolioTable
-            currentSortForStatic={currentSortForStatic}
-            totalStaticRows={totalStaticRows}
-            staticRows={staticRows}
-            onSortTable={this.onSortTable}
-            filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}
-            isUSDCurrently={isUSDCurrently}
-          />
-          <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
-            <TableHeading>
-              Rebalanced portfolio
-              <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
-                <EditIconWrapper
-                  onClick={this.onEditModeEnable}
-                  isEditModeEnabled={isEditModeEnabled}
-                >
-                  {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
-                </EditIconWrapper>
-                <ActionButton onClick={this.onReset}>
-                  <Replay />
-                </ActionButton>
-                <ActionButton onClick={this.onSaveClick}>
-                  <SaveIcon style={{ color: saveButtonColor }} />
-                </ActionButton>
-              </ActionButtonsContainer>
-            </TableHeading>
-            <Wrapper>
-              <Table>
-                <PTHead isEditModeEnabled={isEditModeEnabled}>
-                  <PTR>
-                    {isEditModeEnabled && (
-                      <PTHR key="selectAll" style={{ textAlign: 'left' }}>
-                        <Checkbox
-                          onChange={this.onSelectAllActive}
-                          checked={this.state.areAllActiveChecked}
-                          type="checkbox"
-                          id="selectAllActive"
-                        />
-                        <Label htmlFor="selectAllActive">
-                          <Span />
-                        </Label>
-                      </PTHR>
-                    )}
+          <Container>
+            <CurrentPortfolioTable
+              currentSortForStatic={currentSortForStatic}
+              totalStaticRows={totalStaticRows}
+              staticRows={staticRows}
+              onSortTable={this.onSortTable}
+              filterValueSmallerThenPercentage={
+                filterValueSmallerThenPercentage
+              }
+              isUSDCurrently={isUSDCurrently}
+            />
+            <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
+              <TableHeading>
+                Rebalanced portfolio
+                <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
+                  <EditIconWrapper
+                    onClick={this.onEditModeEnable}
+                    isEditModeEnabled={isEditModeEnabled}
+                  >
+                    {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
+                  </EditIconWrapper>
+                  <ActionButton onClick={this.onReset}>
+                    <Replay />
+                  </ActionButton>
+                  <ActionButton onClick={this.onSaveClick}>
+                    <SaveIcon style={{ color: saveButtonColor }} />
+                  </ActionButton>
+                </ActionButtonsContainer>
+              </TableHeading>
+              <Wrapper>
+                <Table>
+                  <PTHead isEditModeEnabled={isEditModeEnabled}>
+                    <PTR>
+                      {isEditModeEnabled && (
+                        <PTHR key="selectAll" style={{ textAlign: 'left' }}>
+                          <Checkbox
+                            onChange={this.onSelectAllActive}
+                            checked={this.state.areAllActiveChecked}
+                            type="checkbox"
+                            id="selectAllActive"
+                          />
+                          <Label htmlFor="selectAllActive">
+                            <Span />
+                          </Label>
+                        </PTHR>
+                      )}
 
-                    {tableHeadingsRebalancedPortfolio.map((heading) => {
-                      const isSorted =
-                        currentSortForDynamic &&
-                        currentSortForDynamic.key === heading.value
+                      {tableHeadingsRebalancedPortfolio.map((heading) => {
+                        const isSorted =
+                          currentSortForDynamic &&
+                          currentSortForDynamic.key === heading.value
+
+                        return (
+                          <PTHR
+                            key={heading.name}
+                            onClick={() =>
+                              this.onSortTable(heading.value, 'dynamic')
+                            }
+                          >
+                            {heading.name}
+
+                            {isSorted && (
+                              <SvgIcon
+                                src={sortIcon}
+                                width={12}
+                                height={12}
+                                style={{
+                                  verticalAlign: 'middle',
+                                  marginLeft: '4px',
+                                  transform:
+                                    currentSortForDynamic &&
+                                    currentSortForDynamic.arg === 'ASC'
+                                      ? 'rotate(180deg)'
+                                      : null,
+                                }}
+                              />
+                            )}
+                          </PTHR>
+                        )
+                      })}
+
+                      {isEditModeEnabled && <PTHR />}
+                    </PTR>
+                  </PTHead>
+
+                  <PTBody isEditModeEnabled={isEditModeEnabled}>
+                    {rows.map((row, rowIndex) => {
+                      const {
+                        exchange,
+                        symbol,
+                        portfolioPerc,
+                        price,
+                        deltaPrice,
+                      } = row
+
+                      const isSelected =
+                        (selectedActive &&
+                          selectedActive.indexOf(rowIndex) >= 0) ||
+                        false
+
+                      let deltaPriceString = ''
+
+                      if (deltaPrice && +deltaPrice) {
+                        if (deltaPrice > 0) {
+                          deltaPriceString = `BUY ${symbol}  $ ${formatNumberToUSFormat(
+                            deltaPrice
+                          )}`
+                        } else {
+                          deltaPriceString = `SELL ${symbol}  $ ${formatNumberToUSFormat(
+                            Math.abs(deltaPrice)
+                          )}`
+                        }
+                      }
+
+                      const cols = [
+                        exchange,
+                        symbol || '',
+                        portfolioPerc ? `${portfolioPerc}%` : '',
+                        `${formatNumberToUSFormat(price)}`,
+                        deltaPriceString,
+                      ]
 
                       return (
-                        <PTHR
-                          key={heading.name}
-                          onClick={() =>
-                            this.onSortTable(heading.value, 'dynamic')
-                          }
-                        >
-                          {heading.name}
-
-                          {isSorted && (
-                            <SvgIcon
-                              src={sortIcon}
-                              width={12}
-                              height={12}
-                              style={{
-                                verticalAlign: 'middle',
-                                marginLeft: '4px',
-                                transform:
-                                  currentSortForDynamic &&
-                                  currentSortForDynamic.arg === 'ASC'
-                                    ? 'rotate(180deg)'
-                                    : null,
-                              }}
-                            />
+                        <PTR key={`${rowIndex}`} isSelected={isSelected}>
+                          {isEditModeEnabled && (
+                            <PTDR
+                              key="smt"
+                              isSelected={isSelected}
+                              onClick={() =>
+                                this.onSelectActiveBalance(rowIndex)
+                              }
+                            >
+                              {this.renderActiveCheckbox(rowIndex)}
+                            </PTDR>
                           )}
-                        </PTHR>
-                      )
-                    })}
 
-                    {isEditModeEnabled && <PTHR />}
-                  </PTR>
-                </PTHead>
+                          {cols.map((col, idx) => {
+                            const isNewCoinName =
+                              row.editable && idx === 0 && isEditModeEnabled
+                            const isNewCoinSymbol =
+                              row.editable && idx === 1 && isEditModeEnabled
 
-                <PTBody isEditModeEnabled={isEditModeEnabled}>
-                  {rows.map((row, rowIndex) => {
-                    const {
-                      exchange,
-                      symbol,
-                      portfolioPerc,
-                      price,
-                      deltaPrice,
-                    } = row
-
-                    const isSelected =
-                      (selectedActive &&
-                        selectedActive.indexOf(rowIndex) >= 0) ||
-                      false
-
-                    let deltaPriceString = ''
-
-                    if (deltaPrice && +deltaPrice) {
-                      if (deltaPrice > 0) {
-                        deltaPriceString = `BUY ${symbol}  $ ${formatNumberToUSFormat(
-                          deltaPrice
-                        )}`
-                      } else {
-                        deltaPriceString = `SELL ${symbol}  $ ${formatNumberToUSFormat(
-                          Math.abs(deltaPrice)
-                        )}`
-                      }
-                    }
-
-                    const cols = [
-                      exchange,
-                      symbol || '',
-                      portfolioPerc ? `${portfolioPerc}%` : '',
-                      `${formatNumberToUSFormat(price)}`,
-                      deltaPriceString,
-                    ]
-
-                    return (
-                      <PTR key={`${rowIndex}`} isSelected={isSelected}>
-                        {isEditModeEnabled && (
-                          <PTDR
-                            key="smt"
-                            isSelected={isSelected}
-                            onClick={() => this.onSelectActiveBalance(rowIndex)}
-                          >
-                            {this.renderActiveCheckbox(rowIndex)}
-                          </PTDR>
-                        )}
-
-                        {cols.map((col, idx) => {
-                          const isNewCoinName =
-                            row.editable && idx === 0 && isEditModeEnabled
-                          const isNewCoinSymbol =
-                            row.editable && idx === 1 && isEditModeEnabled
-
-                          if (isNewCoinName) {
-                            return (
-                              <PTDR key={`NameExchange${idx}`}>
-                                <SelectR
-                                  key={`inputNameExchange${rowIndex}`}
-                                  classNamePrefix='custom-select-box'
-                                  styles={customStyles}
-                                  isClearable
-                                  isSearchable
-                                  options={exchangeOptions}
-                                  menuPortalTarget={document.body}
-                                  components={{ DropdownIndicator }}
-                                  onChange={this.handleSelectChange.bind(
-                                    this,
-                                    rowIndex,
-                                    'exchange'
-                                  )}
-                                />
-                              </PTDR>
-                            )
-                          }
-
-                          if (isNewCoinSymbol) {
-                            return (
-                              <PTDR key={`CoinSymbol${idx}`}>
-                                <SelectR
-                                  key={`inputCoinSymbol${rowIndex}`}
-                                  classNamePrefix='custom-select-box'
-                                  styles={customStyles}
-                                  isClearable
-                                  isSearchable
-                                  options={coinsOptions}
-                                  menuPortalTarget={document.body}
-                                  components={{ DropdownIndicator }}
-                                  onChange={this.handleSelectChange.bind(
-                                    this,
-                                    rowIndex,
-                                    'symbol'
-                                  )}
-                                />
-                              </PTDR>
-                            )
-                          }
-
-                          if (idx === 2) {
-                            const color =
-                              Number(col.replace(/%/g, '')) >= 0
-                                ? '#4caf50'
-                                : '#f44336'
-                            if (!this.state.isEditModeEnabled) {
+                            if (isNewCoinName) {
                               return (
-                                <PTDR key={`${col}${idx}`} style={{ color }}>
-                                  {col}
-                                </PTDR>
-                              )
-                            } else {
-                              return (
-                                <PTDR key={`percentageInCont${idx}`}>
-                                  <InputTable
-                                    key={`inputPercentage${rowIndex}`}
-                                    tabIndex={rowIndex + 1}
-                                    isPercentSumGood={isPercentSumGood}
-                                    value={
-                                      this.state.rows[rowIndex].portfolioPerc
-                                    }
-                                    onChange={(e) =>
-                                      this.onPercentInputChange(e, rowIndex)
-                                    }
-                                    onBlur={(e) =>
-                                      this.onBlurPercentInput(e, rowIndex)
-                                    }
-                                    onFocus={(e) =>
-                                      this.onFocusPercentInput(e, rowIndex)
-                                    }
+                                <PTDR key={`NameExchange${idx}`}>
+                                  <SelectR
+                                    key={`inputNameExchange${rowIndex}`}
+                                    classNamePrefix="custom-select-box"
+                                    styles={customStyles}
+                                    isClearable
+                                    isSearchable
+                                    options={exchangeOptions}
+                                    menuPortalTarget={document.body}
+                                    components={{ DropdownIndicator }}
+                                    onChange={this.handleSelectChange.bind(
+                                      this,
+                                      rowIndex,
+                                      'exchange'
+                                    )}
                                   />
                                 </PTDR>
                               )
                             }
-                          }
-                          if (col.match(/BUY/g)) {
-                            const color = '#4caf50'
 
-                            return (
-                              <PTDR
-                                key={`buy${idx}${col}${rowIndex}`}
-                                style={{ color }}
-                              >
-                                {col}
-                              </PTDR>
-                            )
-                          }
-                          if (col.match(/SELL/g)) {
-                            const color = '#f44336'
+                            if (isNewCoinSymbol) {
+                              return (
+                                <PTDR key={`CoinSymbol${idx}`}>
+                                  <SelectR
+                                    key={`inputCoinSymbol${rowIndex}`}
+                                    classNamePrefix="custom-select-box"
+                                    styles={customStyles}
+                                    isClearable
+                                    isSearchable
+                                    options={coinsOptions}
+                                    menuPortalTarget={document.body}
+                                    components={{ DropdownIndicator }}
+                                    onChange={this.handleSelectChange.bind(
+                                      this,
+                                      rowIndex,
+                                      'symbol'
+                                    )}
+                                  />
+                                </PTDR>
+                              )
+                            }
 
-                            return (
-                              <PTDR
-                                key={`sell${idx}${col}${rowIndex}`}
-                                style={{ color }}
-                              >
-                                {col}
-                              </PTDR>
-                            )
-                          }
+                            if (idx === 2) {
+                              const color =
+                                Number(col.replace(/%/g, '')) >= 0
+                                  ? '#4caf50'
+                                  : '#f44336'
+                              if (!this.state.isEditModeEnabled) {
+                                return (
+                                  <PTDR key={`${col}${idx}`} style={{ color }}>
+                                    {col}
+                                  </PTDR>
+                                )
+                              } else {
+                                return (
+                                  <PTDR key={`percentageInCont${idx}`}>
+                                    <InputTable
+                                      key={`inputPercentage${rowIndex}`}
+                                      tabIndex={rowIndex + 1}
+                                      isPercentSumGood={isPercentSumGood}
+                                      value={
+                                        this.state.rows[rowIndex].portfolioPerc
+                                      }
+                                      onChange={(e) =>
+                                        this.onPercentInputChange(e, rowIndex)
+                                      }
+                                      onBlur={(e) =>
+                                        this.onBlurPercentInput(e, rowIndex)
+                                      }
+                                      onFocus={(e) =>
+                                        this.onFocusPercentInput(e, rowIndex)
+                                      }
+                                    />
+                                  </PTDR>
+                                )
+                              }
+                            }
+                            if (col.match(/BUY/g)) {
+                              const color = '#4caf50'
 
-                          if (idx === 3) {
-                            return (
-                              <PTDR key={`${col}${idx}`}>
-                                {mainSymbol}
-                                {col}
-                              </PTDR>
-                            )
-                          }
+                              return (
+                                <PTDR
+                                  key={`buy${idx}${col}${rowIndex}`}
+                                  style={{ color }}
+                                >
+                                  {col}
+                                </PTDR>
+                              )
+                            }
+                            if (col.match(/SELL/g)) {
+                              const color = '#f44336'
 
-                          return <PTDR key={`${col}${idx}`}>{col}</PTDR>
-                        })}
+                              return (
+                                <PTDR
+                                  key={`sell${idx}${col}${rowIndex}`}
+                                  style={{ color }}
+                                >
+                                  {col}
+                                </PTDR>
+                              )
+                            }
+
+                            if (idx === 3) {
+                              return (
+                                <PTDR key={`${col}${idx}`}>
+                                  {mainSymbol}
+                                  {col}
+                                </PTDR>
+                              )
+                            }
+
+                            return <PTDR key={`${col}${idx}`}>{col}</PTDR>
+                          })}
+                          <PTDR>
+                            <TableButton
+                              isDeleteColor={false}
+                              onClick={() => this.onDeleteRowClick(rowIndex)}
+                            >
+                              <DeleteIcon />
+                            </TableButton>
+                          </PTDR>
+                        </PTR>
+                      )
+                    })}
+                    {isEditModeEnabled && (
+                      <PTR>
+                        <PTDR />
+                        <PTDR />
+                        <PTDR />
+                        <PTDR />
+                        <PTDR />
+                        <PTDR />
                         <PTDR>
                           <TableButton
-                            isDeleteColor={false}
-                            onClick={() => this.onDeleteRowClick(rowIndex)}
+                            isDeleteColor={true}
+                            onClick={this.onAddRowButtonClick}
                           >
-                            <DeleteIcon />
+                            <AddIcon />
                           </TableButton>
                         </PTDR>
                       </PTR>
-                    )
-                  })}
-                  {isEditModeEnabled && (
+                    )}
+                  </PTBody>
+                  <PTFoot isEditModeEnabled={isEditModeEnabled}>
                     <PTR>
-                      <PTDR />
-                      <PTDR />
-                      <PTDR />
-                      <PTDR />
-                      <PTDR />
-                      <PTDR />
-                      <PTDR>
-                        <TableButton
-                          isDeleteColor={true}
-                          onClick={this.onAddRowButtonClick}
-                        >
-                          <AddIcon />
-                        </TableButton>
-                      </PTDR>
+                      {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
+                      <PTHR>Subtotal</PTHR>
+                      <PTHR>-</PTHR>
+                      <PTHR>{`${totalPercents}%`}</PTHR>
+                      <PTHR>
+                        {mainSymbol}
+                        {formatNumberToUSFormat(totalTableRows)}
+                      </PTHR>
+                      <PTHR>-</PTHR>
+                      <PTHR>-</PTHR>
                     </PTR>
-                  )}
-                </PTBody>
-                <PTFoot isEditModeEnabled={isEditModeEnabled}>
-                  <PTR>
-                    {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                    <PTHR>Subtotal</PTHR>
-                    <PTHR>-</PTHR>
-                    <PTHR>{`${totalPercents}%`}</PTHR>
-                    <PTHR>
-                      {mainSymbol}
-                      {formatNumberToUSFormat(totalTableRows)}
-                    </PTHR>
-                    <PTHR>-</PTHR>
-                    <PTHR>-</PTHR>
-                  </PTR>
-                  <PTR>
-                    {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                    <PTHR>All</PTHR>
-                    <PTHR>-</PTHR>
-                    <PTHR>-</PTHR>
-                    <PTHR>
-                      {mainSymbol}
-                      {formatNumberToUSFormat(totalRows)}
-                    </PTHR>
-                    <PTHR>-</PTHR>
-                    <PTHR>-</PTHR>
-                  </PTR>
-                </PTFoot>
-              </Table>
-            </Wrapper>
-            <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
-              <ButtonsInnerWrapper>
-                <AddMoneyContainer>
-                  <Input
-                    type="number"
-                    value={this.state.addMoneyInputValue}
-                    onChange={this.onAddMoneyInputChange}
-                    onFocus={this.onFocusAddMoneyInput}
-                  />
-                  <Button onClick={this.onAddMoneyButtonPressed}>
-                    Add money
-                  </Button>
-                </AddMoneyContainer>
-                <AddMoneyContainer>
-                  <Button onClick={this.onDeleteUndistributedMoney}>
-                    Delete undistributed
-                  </Button>
-                </AddMoneyContainer>
-                {
-                  <UndistributedMoneyContainer>
-                    <UndistributedMoneyText>
-                      Undistributed money:{' '}
-                      {formatNumberToUSFormat(undistributedMoney)}
-                    </UndistributedMoneyText>
-                    <Button
-                      disabled={undistributedMoney < 0}
-                      onClick={this.onDistribute}
-                    >
-                      Distribute to selected
+                    <PTR>
+                      {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
+                      <PTHR>All</PTHR>
+                      <PTHR>-</PTHR>
+                      <PTHR>-</PTHR>
+                      <PTHR>
+                        {mainSymbol}
+                        {formatNumberToUSFormat(totalRows)}
+                      </PTHR>
+                      <PTHR>-</PTHR>
+                      <PTHR>-</PTHR>
+                    </PTR>
+                  </PTFoot>
+                </Table>
+              </Wrapper>
+              <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
+                <ButtonsInnerWrapper>
+                  <AddMoneyContainer>
+                    <Input
+                      type="number"
+                      value={this.state.addMoneyInputValue}
+                      onChange={this.onAddMoneyInputChange}
+                      onFocus={this.onFocusAddMoneyInput}
+                    />
+                    <Button onClick={this.onAddMoneyButtonPressed}>
+                      Add money
                     </Button>
-                  </UndistributedMoneyContainer>
-                }
-              </ButtonsInnerWrapper>
-            </ButtonsWrapper>
-          </TableAndHeadingWrapper>
-        </Container>
-        <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-          <ChartColorPickerContainer>
-            <input type="color" name="leftBar" onChange={this.onChangeColor} value={this.state.leftBar} />
-            <input type="color" name="rightBar" onChange={this.onChangeColor} value={this.state.rightBar} />
-          </ChartColorPickerContainer>
-          <ChartContainer>
-          <Chart>
-            {staticRows[0].portfolioPerc && (
-              <BarChart
-                alwaysShowLegend
-                charts={[
+                  </AddMoneyContainer>
+                  <AddMoneyContainer>
+                    <Button onClick={this.onDeleteUndistributedMoney}>
+                      Delete undistributed
+                    </Button>
+                  </AddMoneyContainer>
                   {
-                    data: combineToBarChart(staticRows),
-                    color: this.state.leftBar,
-                    title: 'Current',
-                  },
-                  {
-                    data: combineToBarChart(rows),
-                    color: this.state.rightBar,
-                    title: 'Rebalanced',
-                  },
-                ]}
+                    <UndistributedMoneyContainer>
+                      <UndistributedMoneyText>
+                        Undistributed money:{' '}
+                        {formatNumberToUSFormat(undistributedMoney)}
+                      </UndistributedMoneyText>
+                      <Button
+                        disabled={undistributedMoney < 0}
+                        onClick={this.onDistribute}
+                      >
+                        Distribute to selected
+                      </Button>
+                    </UndistributedMoneyContainer>
+                  }
+                </ButtonsInnerWrapper>
+              </ButtonsWrapper>
+            </TableAndHeadingWrapper>
+          </Container>
+          <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
+            <ChartColorPickerContainer>
+              <input
+                type="color"
+                name="leftBar"
+                onChange={this.onChangeColor}
+                value={this.state.leftBar}
               />
-            )}
-          </Chart>
-          </ChartContainer>
-        </ChartWrapper>
+              <input
+                type="color"
+                name="rightBar"
+                onChange={this.onChangeColor}
+                value={this.state.rightBar}
+              />
+            </ChartColorPickerContainer>
+            <ChartContainer>
+              <Chart>
+                {staticRows[0].portfolioPerc && (
+                  <BarChart
+                    alwaysShowLegend
+                    charts={[
+                      {
+                        data: combineToBarChart(staticRows),
+                        color: this.state.leftBar,
+                        title: 'Current',
+                      },
+                      {
+                        data: combineToBarChart(rows),
+                        color: this.state.rightBar,
+                        title: 'Rebalanced',
+                      },
+                    ]}
+                  />
+                )}
+              </Chart>
+            </ChartContainer>
+          </ChartWrapper>
         </Content>
       </PTWrapper>
     )
@@ -1425,13 +1475,13 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 const Content = styled.div`
   overflow: auto;
   height: 100%;
-  
+
   @media (min-height: 1080px) {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  
+
   ${customAquaScrollBar};
 `
 
@@ -1443,7 +1493,7 @@ const ChartWrapper = styled.div`
   padding: 20px;
   justify-content: center;
   align-items: center;
-    
+
   @media (max-height: 1200px) {
     height: 20vh;
     padding-bottom: 1.5%;
@@ -1452,29 +1502,29 @@ const ChartWrapper = styled.div`
   @media (max-height: 1080px) {
     height: 400px;
     margin-top: ${(props: { isEditModeEnabled?: boolean }) =>
-  props.isEditModeEnabled ? '180px' : '40px'}
+      props.isEditModeEnabled ? '180px' : '40px'};
   }
 `
 
 const ChartContainer = styled.div`
-    width: 1120px;
-    height: inherit;
-    background: #292d31;
-    border-radius: 20px;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    padding: 15px;
-    
-    @media (max-width: 1150px) {
-      width: 100%;
-    }
+  width: 1120px;
+  height: inherit;
+  background: #292d31;
+  border-radius: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+
+  @media (max-width: 1150px) {
+    width: 100%;
+  }
 `
 
 const Chart = styled.div`
   width: calc(100% - 15px);
   height: 100%;
-  
+
   & > div {
     height: inherit;
   }
@@ -1652,11 +1702,11 @@ const PTBody = styled.tbody`
   display: table;
   width: 100%;
   border-bottom: 1px solid #fff;
-  
+
   & ${PTDR} {
     ${(props: { isEditModeEnabled?: boolean }) =>
-  props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode}
-    }
+      props.isEditModeEnabled ? PTDREditMode : PTDRNoEditMode};
+  }
 `
 
 const PTH = css`
@@ -1758,7 +1808,6 @@ const PT = css`
   width: 100%;
   position: sticky;
   z-index: 1;
-
 
   &::after {
     content: ' ';
@@ -2027,17 +2076,17 @@ const SelectR = styled(SelectReact)`
 
 const customStyles = {
   control: () => ({
-      boxSizing: 'border-box',
-      cursor: 'default',
-      display: 'flex',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      outline: '0',
-      transition: 'all 100ms',
-      backgroundColor: 'transparent',
-      minHeight: '0.8em',
-      border: 'none',
+    boxSizing: 'border-box',
+    cursor: 'default',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    outline: '0',
+    transition: 'all 100ms',
+    backgroundColor: 'transparent',
+    minHeight: '0.8em',
+    border: 'none',
   }),
   menu: (base: CSSProperties) => ({
     ...base,
@@ -2051,16 +2100,16 @@ const customStyles = {
     maxHeight: '200px',
   }),
   option: (base: CSSProperties, state: OptionProps) => ({
-      ...base,
-      color: '#fff',
-      fontSize: '1.5em',
-      fontFamily: 'Roboto',
-      backgroundColor: state.isSelected
-        ? 'rgba(255, 255, 255, 0.2)'
-        : state.isFocused
-          ? 'rgba(255, 255, 255, 0.1)'
-          : '#424242',
-      [':active']: null,
+    ...base,
+    color: '#fff',
+    fontSize: '1.5em',
+    fontFamily: 'Roboto',
+    backgroundColor: state.isSelected
+      ? 'rgba(255, 255, 255, 0.2)'
+      : state.isFocused
+        ? 'rgba(255, 255, 255, 0.1)'
+        : '#424242',
+    [':active']: null,
   }),
   clearIndicator: () => ({
     [':hover']: {
