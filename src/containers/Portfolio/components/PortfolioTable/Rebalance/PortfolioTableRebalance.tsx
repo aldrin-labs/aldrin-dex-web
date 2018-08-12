@@ -97,7 +97,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     // const userHasPortfolio = data && data.portfolio.assets.length > 0
     const userHasPortfolio =
+      getMyPortfolio &&
+      getMyPortfolio.getProfile &&
       getMyPortfolio.getProfile.portfolio &&
+      getMyPortfolio.getProfile.portfolio.assets &&
       getMyPortfolio.getProfile.portfolio.assets.length > 0
 
     console.log('userHasRebalancePortfolio', userHasRebalancePortfolio)
@@ -107,7 +110,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
+      newTableRebalancedPortfolioData = getMyRebalance!.getProfile!.myRebalance!.assets!.map(
         (el: IShapeOfRebalancePortfolioRow) => ({
           exchange: el._id.exchange,
           symbol: el._id.coin,
@@ -117,7 +120,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         })
       )
 
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
@@ -133,7 +136,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
@@ -181,7 +184,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     // const userHasPortfolio = data && data.portfolio.assets.length > 0
     const userHasPortfolio =
+      getMyPortfolio &&
+      getMyPortfolio.getProfile &&
       getMyPortfolio.getProfile.portfolio &&
+      getMyPortfolio.getProfile.portfolio.assets &&
       getMyPortfolio.getProfile.portfolio.assets.length > 0
 
     console.log('userHasRebalancePortfolio', userHasRebalancePortfolio)
@@ -191,7 +197,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
+      newTableRebalancedPortfolioData = getMyRebalance!.getProfile!.myRebalance!.assets!.map(
         (el: IShapeOfRebalancePortfolioRow) => ({
           exchange: el._id.exchange,
           symbol: el._id.coin,
@@ -201,7 +207,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         })
       )
 
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
@@ -217,7 +223,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
+      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
         (el: IShapeOfCurrentPortolioRow) => ({
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
@@ -278,7 +284,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     staticRows: IRow[],
     rows: IRow[],
     savedRows: IRow[],
-    undistributedMoney: number | string
+    undistributedMoney: string
   ) => {
     const totalStaticRows = this.calculateTotal(staticRows, 0)
     const totalRows = this.calculateTotal(rows, undistributedMoney)
@@ -382,7 +388,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     return data
   }
 
-  calculateTotal = (data: IRow[], undistributedMoney: number | string) => {
+  calculateTotal = (data: IRow[], undistributedMoney: string) => {
     const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
     return (parseFloat(total) + parseFloat(undistributedMoney)).toFixed(2)
@@ -1187,7 +1193,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                           )}`
                         } else {
                           deltaPriceString = `SELL ${symbol}  $ ${formatNumberToUSFormat(
-                            Math.abs(deltaPrice)
+                            Math.abs(parseFloat(deltaPrice))
                           )}`
                         }
                       }
@@ -2117,7 +2123,7 @@ const customStyles = {
     },
     display: 'flex',
     width: '20px',
-    boxSizing: 'border-box',
+    boxSizing: "border-box",
     color: 'hsl(0, 0%, 80%)',
     padding: '2px',
     transition: 'color 150ms',
