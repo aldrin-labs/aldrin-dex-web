@@ -10,7 +10,7 @@ import {
   IState,
   IRow,
   IShapeOfRebalancePortfolioRow,
-  IShapeOfCurrentPortolioRow,
+  IShapeOfCurrentPortolioRow, IGetMyPortfolioQuery, IGetMyRebalanceQuery,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
@@ -56,93 +56,16 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     const { isShownMocks, getMyRebalance, getMyPortfolio } = this.props
 
-    // console.log('data in componentDidMount' + '', data)
-    const userHasRebalancePortfolio =
-      getMyRebalance &&
-      getMyRebalance.getProfile &&
-      getMyRebalance.getProfile.myRebalance &&
-      getMyRebalance.getProfile.myRebalance.assets &&
-      getMyRebalance.getProfile.myRebalance.assets.length > 0
-
-    // const userHasPortfolio = data && data.portfolio.assets.length > 0
-    const userHasPortfolio =
-      getMyPortfolio &&
-      getMyPortfolio.getProfile &&
-      getMyPortfolio.getProfile.portfolio &&
-      getMyPortfolio.getProfile.portfolio.assets &&
-      getMyPortfolio.getProfile.portfolio.assets.length > 0
-
-    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio)
-    console.log('userHasPortfolio', userHasPortfolio)
-
-    let newTableRebalancedPortfolioData = []
-    let newTableCurrentPortfolioData = []
-
-    if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyRebalance!.getProfile!.myRebalance!.assets!.map(
-        (el: IShapeOfRebalancePortfolioRow) => ({
-          exchange: el._id.exchange,
-          symbol: el._id.coin,
-          price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
-          portfolioPerc: null,
-          deltaPrice: el.diff['$numberDecimal'],
-        })
-      )
-
-      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
-        (el: IShapeOfCurrentPortolioRow) => ({
-          exchange: el.exchange.name,
-          symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
-          portfolioPerc: null,
-        })
-      )
-
-      console.log(
-        'newTableRebalancedPortfolioData in didMount',
-        newTableRebalancedPortfolioData
-      )
-    }
-
-    if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
-        (el: IShapeOfCurrentPortolioRow) => ({
-          exchange: el.exchange.name,
-          symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
-          portfolioPerc: null,
-        })
-      )
-
-      console.log('132323')
-    }
-
-    const composeWithMocksCurrentPortfolio = isShownMocks
-      ? [...newTableCurrentPortfolioData, ...mockTableData]
-      : newTableCurrentPortfolioData
-
-    const composeWithMocksRebalancedPortfolio = isShownMocks
-      ? [...newTableRebalancedPortfolioData, ...mockTableData]
-      : newTableRebalancedPortfolioData
-
-    if (userHasRebalancePortfolio) {
-      this.setTableData(
-        composeWithMocksCurrentPortfolio,
-        composeWithMocksRebalancedPortfolio
-      )
-    } else {
-      this.setTableData(
-        composeWithMocksCurrentPortfolio,
-        composeWithMocksCurrentPortfolio
-      )
-    }
+    this.combineRebalanceData(isShownMocks, getMyRebalance, getMyPortfolio)
   }
 
   componentWillReceiveProps(nextProps: IProps) {
     const { isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
 
-    console.log(' getMyPortfolio in WillReceiveProps', getMyPortfolio)
-    console.log(' getMyRebalance in WillReceiveProps', getMyRebalance)
+    this.combineRebalanceData(isShownMocks, getMyRebalance, getMyPortfolio)
+  }
+
+  combineRebalanceData = (isShownMocks: boolean, getMyRebalance: IGetMyRebalanceQuery, getMyPortfolio: IGetMyPortfolioQuery) => {
 
     const userHasRebalancePortfolio =
       getMyRebalance &&
@@ -151,16 +74,12 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       getMyRebalance.getProfile.myRebalance.assets &&
       getMyRebalance.getProfile.myRebalance.assets.length > 0
 
-    // const userHasPortfolio = data && data.portfolio.assets.length > 0
     const userHasPortfolio =
       getMyPortfolio &&
       getMyPortfolio.getProfile &&
       getMyPortfolio.getProfile.portfolio &&
       getMyPortfolio.getProfile.portfolio.assets &&
       getMyPortfolio.getProfile.portfolio.assets.length > 0
-
-    console.log('userHasRebalancePortfolio', userHasRebalancePortfolio)
-    console.log('userHasPortfolio', userHasPortfolio)
 
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
@@ -184,11 +103,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           portfolioPerc: null,
         })
       )
-
-      console.log(
-        'newTableRebalancedPortfolioData in didMount',
-        newTableRebalancedPortfolioData
-      )
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
@@ -200,8 +114,6 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
           portfolioPerc: null,
         })
       )
-
-      console.log('132323')
     }
 
     const composeWithMocksCurrentPortfolio = isShownMocks
@@ -223,6 +135,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
+
   }
 
   setTableData = (
