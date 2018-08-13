@@ -40,6 +40,15 @@ class Chart extends React.Component {
     tradeHistory: [],
   }
 
+  static getDerivedStateFromProps(nextProps: any) {
+    const [base, quote] = nextProps.currencyPair.split('_')
+    document.title = `${base} to ${quote} | CCAI`
+  }
+
+  componentWillUnmount() {
+    document.title = 'Cryptocurrencies AI'
+  }
+
   roundTill = (n: number, initial: string): number => {
     //  need testing. Not working on all numbers
     // sorry have not much time
@@ -483,7 +492,6 @@ const Container = styled.div`
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
   view: store.chart.view,
-
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
 })
