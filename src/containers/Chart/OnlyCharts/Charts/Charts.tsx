@@ -4,7 +4,7 @@ import { MdClear } from 'react-icons/lib/md'
 import styled from 'styled-components'
 
 import { SingleChart } from '@components/Chart'
-import DepthChart from '@containers/Chart/DepthChart/DepthChart'
+import DepthChartContainer from '../DepthChartContainer/DepthChartContainer'
 import { getFakeDepthChartData } from '@containers/Chart/mocks'
 import { IChartProps, IChartState } from './Charts.types'
 
@@ -33,14 +33,10 @@ export default class Charts extends Component<IChartProps, IChartState> {
   }
 
   render() {
+    const { currencyPair, removeChart, index, theme } = this.props
     const {
-      currencyPair,
-      removeChart,
-      index,
-      theme: {
-        palette: { primary },
-      },
-    } = this.props
+      palette: { primary },
+    } = theme
     const { ordersData, spreadData, activeChart } = this.state
 
     const [quote, base] = currencyPair.split('_')
@@ -79,17 +75,16 @@ export default class Charts extends Component<IChartProps, IChartState> {
         {activeChart === 'candle' ? (
           <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
         ) : (
-          <DepthChartContainer>
-            <DepthChart
+          <DepthChartStyledWrapper>
+            <DepthChartContainer
               {...{
-                ordersData,
-                spreadData,
                 base,
+                theme,
                 quote,
                 animated: false,
               }}
             />
-          </DepthChartContainer>
+          </DepthChartStyledWrapper>
         )}
       </>
     )
@@ -101,7 +96,7 @@ const StyledTypography = styled(Typography)`
   margin-left: 0.25rem;
 `
 
-const DepthChartContainer = styled.div`
+const DepthChartStyledWrapper = styled.div`
   height: calc(100% - 37px);
   width: 100%;
 `
