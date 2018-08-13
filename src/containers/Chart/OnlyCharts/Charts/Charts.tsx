@@ -5,14 +5,11 @@ import styled from 'styled-components'
 
 import { SingleChart } from '@components/Chart'
 import DepthChartContainer from '../DepthChartContainer/DepthChartContainer'
-import { getFakeDepthChartData } from '@containers/Chart/mocks'
 import { IChartProps, IChartState } from './Charts.types'
 
 export default class Charts extends Component<IChartProps, IChartState> {
   state: IChartState = {
     activeChart: 'candle',
-    ordersData: [],
-    spreadData: [],
   }
 
   componentDidUpdate(prevProps) {
@@ -23,27 +20,21 @@ export default class Charts extends Component<IChartProps, IChartState> {
     }
   }
 
-  componentDidMount() {
-    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
-    this.setState({
-      ordersData: orderBookFakeData,
-      spreadData: usdSpreadFakeData,
-    })
-    // fetch data
-  }
-
   render() {
     const { currencyPair, removeChart, index, theme } = this.props
     const {
       palette: { primary },
     } = theme
-    const { ordersData, spreadData, activeChart } = this.state
+    const { activeChart } = this.state
 
     const [quote, base] = currencyPair.split('_')
 
     return (
       <>
-        <ChartsSwitcher background={primary.main}>
+        <ChartsSwitcher
+          divider={theme.palette.divider}
+          background={primary.main}
+        >
           {' '}
           <StyledTypography color="default" variant="body1">
             {`${quote}/${base}`}
@@ -109,7 +100,7 @@ const ChartsSwitcher = styled.div`
   justify-content: flex-end;
   width: 100%;
   height: 38px;
-  background: ${(props: { background: string }) => props.background};
+  background: ${(props: { background?: string }) => props.background};
   color: white;
-  border-bottom: 1px solid #818d9ae6;
+  border-bottom: 1px solid ${(props: { divider?: string }) => props.divider};
 `
