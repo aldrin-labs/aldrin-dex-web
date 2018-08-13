@@ -18,6 +18,7 @@ class TransformDataToDepthChartComponent extends Component {
   }
   render() {
     const { asks, bids } = this.state
+    console.log(this.state)
     return <DepthChart {...{ asks, bids, ...this.props }} />
   }
 }

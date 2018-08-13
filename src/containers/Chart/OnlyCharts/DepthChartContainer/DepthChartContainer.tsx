@@ -17,6 +17,7 @@ class DepthChartContainer extends Component {
     return (
       <QueryRenderer
         component={TransformDataToDepthChartComponent}
+        pollInterval={10000}
         query={ORDERS_MARKET_QUERY}
         fetchPolicy="cache-and-network"
         variables={{ symbol, exchange }}
