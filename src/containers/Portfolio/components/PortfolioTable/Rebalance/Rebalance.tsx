@@ -26,7 +26,7 @@ import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 
 
-class PortfolioTableRebalance extends React.Component<IProps, IState> {
+class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
     selectedActive: null,
     areAllActiveChecked: false,
@@ -1114,4 +1114,4 @@ export default compose(
       ...values,
     }),
   })
-)(PortfolioTableRebalance)
+)(Rebalance)
