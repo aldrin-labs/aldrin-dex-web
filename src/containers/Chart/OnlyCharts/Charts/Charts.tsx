@@ -32,8 +32,8 @@ export default class Charts extends Component<IChartProps, IChartState> {
     return (
       <>
         <ChartsSwitcher
-          divider={theme.palette.divider}
           background={primary.main}
+          divider={theme.palette.divider}
         >
           {' '}
           <StyledTypography color="default" variant="body1">
@@ -88,6 +88,7 @@ const StyledTypography = styled(Typography)`
 `
 
 const DepthChartStyledWrapper = styled.div`
+  position: relative;
   height: calc(100% - 37px);
   width: 100%;
 `
@@ -100,7 +101,9 @@ const ChartsSwitcher = styled.div`
   justify-content: flex-end;
   width: 100%;
   height: 38px;
-  background: ${(props: { background?: string }) => props.background};
+  background: ${(props: { background?: string; divider?: string }) =>
+    props.background};
   color: white;
-  border-bottom: 1px solid ${(props: { divider?: string }) => props.divider};
+  border-bottom: 1px solid
+    ${(props: { divider?: string; background?: string }) => props.divider};
 `
