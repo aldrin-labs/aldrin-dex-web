@@ -148,7 +148,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   return (
                     <PTHR
                       key={heading.name}
-                      onClick={() => onSortTable(heading.value, 'dynamic')}
+                      onClick={() => onSortTable(heading.value, 'currentSortForDynamic')}
                     >
                       {heading.name}
 

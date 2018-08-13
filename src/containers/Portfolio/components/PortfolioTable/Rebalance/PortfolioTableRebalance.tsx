@@ -10,12 +10,11 @@ import {
   IState,
   IRow,
   IShapeOfRebalancePortfolioRow,
-  IShapeOfCurrentPortolioRow, IGetMyPortfolioQuery, IGetMyRebalanceQuery,
+  IShapeOfCurrentPortolioRow, IGetMyPortfolioQuery, IGetMyRebalanceQuery,  ICurrentSort,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
-  onSortStrings,
-  cloneArrayElementsOneLevelDeep,
+  cloneArrayElementsOneLevelDeep, onSortTableFull,
 } from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
@@ -25,6 +24,7 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
 import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
+
 
 class PortfolioTableRebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -63,6 +63,10 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const { isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
 
     this.combineRebalanceData(isShownMocks, getMyRebalance, getMyPortfolio)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.escFunction)
   }
 
   combineRebalanceData = (isShownMocks: boolean, getMyRebalance: IGetMyRebalanceQuery, getMyPortfolio: IGetMyPortfolioQuery) => {
@@ -823,68 +827,31 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onSortTable = (key: string, chooseRows: string) => {
-    let currentRowsForSort: IRow[]
-    let currentRowsForSortText: string
-    let currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
-    let currentSortText: string
+  onSortTable = (key: string, tableForSort: string) => {
+    if (!this.state.staticRows && tableForSort === 'currentSortForStatic') {
+      return
+    }
+    if (!this.state.rows && tableForSort === 'currentSortForDynamic') {
+      return
+    }
+
+    const arrayOfStringHeadings = ['exchange', 'symbol']
+    const currentSort = this.state[tableForSort]
+    const rowsForSortText = tableForSort === 'currentSortForStatic' ? 'staticRows' : 'rows'
+    const currentRowsForSort = this.state[rowsForSortText]
+
     const {
-      staticRows,
-      rows,
-      currentSortForStatic,
-      currentSortForDynamic,
-    } = this.state
-    if (!staticRows && chooseRows === 'static') {
-      return
-    }
-    if (!rows && chooseRows === 'dynamic') {
-      return
-    }
+      newData,
+      newCurrentSort,
+    }: {
+      newData: IRow[]
+      newCurrentSort: ICurrentSort
+    } = onSortTableFull(key, currentRowsForSort, currentSort, arrayOfStringHeadings)
 
-    if (chooseRows === 'static') {
-      currentRowsForSort = staticRows
-      currentRowsForSortText = 'staticRows'
-      currentSort = currentSortForStatic
-      currentSortText = 'currentSortForStatic'
-    } else {
-      currentRowsForSort = rows
-      currentRowsForSortText = 'rows'
-      currentSort = currentSortForDynamic
-      currentSortText = 'currentSortForDynamic'
-    }
-
-    const stringKey = key === 'exchange' || key === 'symbol'
-
-    const newData = currentRowsForSort.slice().sort((a: IRow, b: IRow) => {
-      if (currentSort && currentSort.key === key) {
-        if (currentSort.arg === 'ASC') {
-          this.setState({ [currentSortText]: { key, arg: 'DESC' } })
-
-          if (stringKey) {
-            return onSortStrings(b[key], a[key])
-          }
-
-          return b[key] - a[key]
-        } else {
-          this.setState({ [currentSortText]: { key, arg: 'ASC' } })
-
-          if (stringKey) {
-            return onSortStrings(a[key], b[key])
-          }
-
-          return a[key] - b[key]
-        }
-      }
-      this.setState({ [currentSortText]: { key, arg: 'ASC' } })
-
-      if (stringKey) {
-        return onSortStrings(a[key], b[key])
-      }
-
-      return a[key] - b[key]
+    this.setState({
+      [rowsForSortText]: newData,
+      [tableForSort]: newCurrentSort
     })
-
-    this.setState({ [currentRowsForSortText]: newData })
   }
 
   onChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {

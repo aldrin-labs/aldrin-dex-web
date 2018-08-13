@@ -45,6 +45,11 @@ export interface IState {
   rightBar: string
 }
 
+export interface ICurrentSort {
+  key: string
+  arg: 'ASC' | 'DESC'
+}
+
 export interface IShapeOfRebalancePortfolioRow {
   id: string
   _id: { exchange: string; coin: string }

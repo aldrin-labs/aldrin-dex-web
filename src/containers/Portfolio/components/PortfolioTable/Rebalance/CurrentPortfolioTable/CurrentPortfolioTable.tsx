@@ -61,7 +61,7 @@ export default class CurrentPortfolioTable extends React.Component<IProps, IStat
                 <PTHC
                   key={heading.name}
                   onClick={() =>
-                    onSortTable(heading.value, 'static')
+                    onSortTable(heading.value, 'currentSortForStatic')
                   }
                 >
                   {heading.name}
