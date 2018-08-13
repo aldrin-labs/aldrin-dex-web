@@ -11,7 +11,7 @@ import {
   IRow,
   IShapeOfRebalancePortfolioRow,
   IShapeOfCurrentPortolioRow, IGetMyPortfolioQuery, IGetMyRebalanceQuery,  ICurrentSort,
-} from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
+} from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
   cloneArrayElementsOneLevelDeep, onSortTableFull,
@@ -654,7 +654,7 @@ class Rebalance extends React.Component<IProps, IState> {
       percentInput = ''
     }
 
-    const clonedRows = rows!.map((a) => ({ ...a }))
+    const clonedRows = rows!.map((a: IRow) => ({ ...a }))
 
     const resultRows = [
       ...clonedRows.slice(0, idx),
@@ -715,7 +715,7 @@ class Rebalance extends React.Component<IProps, IState> {
       return
     }
 
-    const clonedRows = rows.map((a) => ({ ...a }))
+    const clonedRows = rows.map((a: IRow) => ({ ...a }))
     // clonedRows[idx].portfolioPerc = percentInput
 
     const resultRows = [
@@ -748,7 +748,7 @@ class Rebalance extends React.Component<IProps, IState> {
     // TODO: MOVE ALL parsefloat from this
     let oldRowPrice = rows[idx].price
     let newRowPrice = newCalculatedRowsWithPercents[idx].price
-    let oldNewPriceDiff = oldRowPrice - newRowPrice
+    let oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
 
     this.setState((prevState) => ({
       rows: rowWithNewPriceDiff,
@@ -770,7 +770,7 @@ class Rebalance extends React.Component<IProps, IState> {
   ) {
     const { rows } = this.state
     const value = optionSelected ? optionSelected.value : ''
-    const clonedRows = rows.map((a) => ({ ...a }))
+    const clonedRows = rows.map((a: IRow) => ({ ...a }))
 
     console.log('handleSelectChange idx: ', idx)
 
@@ -836,7 +836,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     const arrayOfStringHeadings = ['exchange', 'symbol']
-    const currentSort = this.state[tableForSort]
+    const currentSort : ICurrentSort = (this.state as any)[tableForSort]
     const rowsForSortText = tableForSort === 'currentSortForStatic' ? 'staticRows' : 'rows'
     const currentRowsForSort = this.state[rowsForSortText]
 
@@ -850,7 +850,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     this.setState({
       [rowsForSortText]: newData,
-      [tableForSort]: newCurrentSort
+      // [tableForSort]: newCurrentSort
     })
   }
 
@@ -870,6 +870,7 @@ class Rebalance extends React.Component<IProps, IState> {
     } = this.props
     const {
       selectedActive,
+      areAllActiveChecked,
       currentSortForStatic,
       currentSortForDynamic,
       totalStaticRows,
@@ -922,6 +923,7 @@ class Rebalance extends React.Component<IProps, IState> {
                   rows,
                   currentSortForDynamic,
                   selectedActive,
+                  areAllActiveChecked,
                   totalRows,
                   totalPercents,
                   totalTableRows,
