@@ -31,6 +31,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       renderWithPlaceholder,
       placeholder: Placeholder,
       fetchPolicy,
+      pollInterval,
       ...rest
     } = this.props
 
@@ -38,6 +39,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       <Query
         query={query}
         variables={variables}
+        pollInterval={pollInterval}
         fetchPolicy={fetchPolicy ? fetchPolicy : 'cache-first'}
       >
         {({
@@ -84,7 +86,12 @@ export default class QueryRenderer extends React.Component<IProps> {
               {...rest}
             />
           ) : (
-            <Component data={data} fetchMore={fetchMore} {...rest} />
+            <Component
+              data={data}
+              fetchMore={fetchMore}
+              refetch={refetch}
+              {...rest}
+            />
           )
         }}
       </Query>
