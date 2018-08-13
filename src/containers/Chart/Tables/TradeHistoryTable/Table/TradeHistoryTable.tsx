@@ -24,6 +24,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
 
   render() {
     const {
+      numbersAfterDecimalForPrice,
       quote,
       data,
       theme: { palette },
@@ -83,10 +84,10 @@ class TradeHistoryTable extends PureComponent<IProps> {
               </HeadCell>
               <HeadCell color="#9ca2aa" width={'36%'}>
                 <TypographyFullWidth
-                  noWrap
+                  noWrap={true}
                   variant="subheading"
                   color="default"
-                  align="left"
+                  align="right"
                 >
                   Price {quote || 'Fiat'}
                 </TypographyFullWidth>
@@ -108,7 +109,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
           </Head>
           <Body style={{ background: background.default }} height="42vh">
             {data.length === 0 && tableExpanded ? (
-              <Loading centerAligned />
+              <Loading centerAligned={true} />
             ) : (
               <>
                 {data.map((ticker: ITicker, i: number) => (
@@ -132,9 +133,11 @@ class TradeHistoryTable extends PureComponent<IProps> {
                         textColor={ticker.fall ? red[400] : green[500]}
                         noWrap={true}
                         variant="body1"
-                        align="left"
+                        align="right"
                       >
-                        {ticker.price}
+                        {Number(ticker.price).toFixed(
+                          numbersAfterDecimalForPrice
+                        )}
                       </StyledTypography>
                       <StyledArrow
                         color={ticker.fall ? red[400] : green[500]}
@@ -251,7 +254,7 @@ const StyledArrow = styled(MdArrowUpward)`
   color: ${(props: { direction: string; color: string }) => props.color};
 
   position: absolute;
-  right: 0;
+  left: 0.25rem;
   top: calc(50% - 8px);
   transform: ${(props: { direction: string; color: string }) =>
     props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
