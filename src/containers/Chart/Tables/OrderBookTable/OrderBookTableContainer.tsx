@@ -194,9 +194,13 @@ class OrderBookTableContainer extends Component {
           {...rest}
         />
         <SpreadTable
+          data={bids}
           digitsAfterDecimalForBidsSize={digitsAfterDecimalForBidsSize}
           digitsAfterDecimalForBidsPrice={digitsAfterDecimalForBidsPrice}
-          data={bids}
+          digitsAfterDecimalForSpread={Math.max(
+            digitsAfterDecimalForBidsPrice,
+            digitsAfterDecimalForBidsSize
+          )}
           spread={spread}
           {...rest}
         />
