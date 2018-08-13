@@ -199,7 +199,7 @@ class OrderBookTableContainer extends Component {
           digitsAfterDecimalForBidsPrice={digitsAfterDecimalForBidsPrice}
           digitsAfterDecimalForSpread={Math.max(
             digitsAfterDecimalForBidsPrice,
-            digitsAfterDecimalForBidsSize
+            digitsAfterDecimalForAsksPrice
           )}
           spread={spread}
           {...rest}
