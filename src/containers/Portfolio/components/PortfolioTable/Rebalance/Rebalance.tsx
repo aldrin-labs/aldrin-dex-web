@@ -850,7 +850,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     this.setState({
       [rowsForSortText]: newData,
-      // [tableForSort]: newCurrentSort
+      [tableForSort]: newCurrentSort
     })
   }
 
