@@ -3,38 +3,41 @@ import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import sortIcon from '../../../../../icons/arrow.svg'
-import { IState, IProps } from './PortfolioTableHead.types'
+import {
+  IState,
+  IProps,
+} from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead.types'
 
 const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'percentage' },
-  { name: 'Price per coin', value: 'price' },
+  { name: 'Price', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
-  { name: 'Current USD', value: 'currentPrice' },
+  { name: 'USD', value: 'currentPrice' },
   //  { name: '24hr chg USD', value: 'daily' },
   //  { name: '24hr chg USD %', value: 'dailyPerc' },
-  { name: 'Realized P&L', value: 'realizedPL' },
+  { name: 'Realized', value: 'realizedPL', additionName: 'P&L' },
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
-  { name: 'Unrealized P&L', value: 'unrealizedPL' },
+  { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
-  { name: 'Total P&L', value: 'total' },
+  { name: 'Total', value: 'totalPL', additionName: 'P&L' },
 ]
 
 const btcHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'percentage' },
-  { name: 'Price per coin', value: 'price' },
+  { name: 'Price', value: 'price' },
   { name: 'Quantity', value: 'quantity' },
-  { name: 'Current BTC', value: 'currentPrice' },
+  { name: 'BTC', value: 'currentPrice' },
   //  { name: '24hr chg BTC', value: 'daily' },
   //  { name: '24hr chg BTC %', value: 'dailyPerc' },
-  { name: 'Realized P&L', value: 'realizedPL' },
+  { name: 'Realized', value: 'realizedPL', additionName: 'P&L' },
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
-  { name: 'Unrealized P&L', value: 'unrealizedPL' },
+  { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L'  },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
-  { name: 'Total P&L', value: 'total' },
+  { name: 'Total', value: 'totalPL', additionName: 'P&L'  },
 ]
 
 export default class PortfolioTableHead extends React.Component<
@@ -71,16 +74,17 @@ export default class PortfolioTableHead extends React.Component<
               <Span />
             </Label>
           </PTH>
-          {tableHeadings.map((heading) => {
+          {tableHeadings.map((heading, index) => {
             const isSorted = currentSort && currentSort.key === heading.value
 
             return (
               <PTH
                 key={heading.name}
                 onClick={() => onSortTable(heading.value)}
-                style={{ paddingRight: isSorted ? 0 : '16px' }}
+                // style={{ paddingRight: isSorted ? 0 : '16px' }}
               >
-                {heading.name}
+                {/*{index === 6 && heading.name + 100}*/}
+                {[6,7,8].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
 
                 {isSorted && (
                   <SvgIcon
@@ -144,24 +148,52 @@ const Checkbox = styled.input`
 const PTH = styled.th`
   font-family: Roboto, sans-serif;
   font-size: 12px;
+
   line-height: 24px;
   color: #fff;
   padding: 10px;
+  padding-right: 0;
   font-weight: 500;
   text-align: right;
+  min-width: 100px;
+  user-select: none;
 
-  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
-    min-width: 100px;
+  &:nth-child(1) {
+    min-width: 30px;
+    padding-right: 10px;
   }
+
   &:nth-child(2) {
+    min-width: 80px;
     text-align: left;
   }
   &:nth-child(3) {
-    min-width: 70px;
+    min-width: 50px;
     text-align: left;
   }
+  &:nth-child(4) {
+    min-width: 85px;
+  }
+  
+  &:nth-child(6) {
+      min-width: 90px;
+  }
+
+  &:nth-child(7) {
+    min-width: 93px;
+  }
+
   &:nth-child(9) {
-    min-width: 110px;
+    min-width: 95px;
+  }
+
+  &:nth-child(10) {
+    min-width: 101px;
+    padding-right: 10px;
+  }
+  
+  &:nth-child(n+8) {
+    padding-bottom: 0;
   }
 `
 

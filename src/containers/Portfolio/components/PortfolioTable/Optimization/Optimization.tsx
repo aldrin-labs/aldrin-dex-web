@@ -1,30 +1,45 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
-import { ApolloConsumer } from 'react-apollo'
+import { isEqual } from 'lodash'
 
-import * as actions from '../../../actions'
-import { IState, IData, IProps } from './Optimization.types'
+import { customAquaScrollBar } from '@utils/cssUtils'
+import * as actions from '@containers/Portfolio/actions'
+import {
+  IState,
+  IData,
+  IProps,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
 import BarChart from '@components/BarChart/BarChart'
-import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
-import Table from './Table/Table'
-import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
-import Import from './Import/Import'
+import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
+import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
-import { OPTIMIZE_PORTFOLIO, getCoinsForOptimization } from './api'
+import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
+import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
+import {
+  calcAllSumOfPortfolioAsset,
+  percentagesOfCoinInPortfolio,
+} from '@utils/PortfolioTableUtils'
 
-class Optimization extends PureComponent<IProps, IState> {
+class Optimization extends Component<IProps, IState> {
   state = {
     loading: false,
     risk: [],
+    returns: [0],
     optimizedData: [],
     rawDataBeforeOptimization: [],
     expectedReturn: '',
     activeButton: 2,
     percentages: [0],
+    rawOptimizedData: [],
+    openWarning: false,
+    warningMessage: '',
   }
+
+  optimizedToState = (data: object[]) =>
+    this.setState({ rawOptimizedData: data })
 
   handleChange = (event: any) => {
     this.setState({
@@ -32,11 +47,21 @@ class Optimization extends PureComponent<IProps, IState> {
     })
   }
 
+  transformData = (assets: any[]): IData[] => {
+    const allSum = calcAllSumOfPortfolioAsset(assets, true)
+
+    return assets.map((data: any) => ({
+      coin: data.asset.symbol,
+      percentage: percentagesOfCoinInPortfolio(data, allSum, true),
+    }))
+  }
+
   optimizePortfolio = (data: any) => {
     if (
       !(this.state.expectedReturn === '' || this.props.storeData.length < 1)
     ) {
       if (this.props.isShownMocks) {
+        //  this part outdated
         const risk = [
           +(Math.random() * 100).toFixed(2),
           +(Math.random() * 100).toFixed(2),
@@ -53,6 +78,7 @@ class Optimization extends PureComponent<IProps, IState> {
               })
             ),
             risk,
+            returns: this.getPercentages(Number(this.state.expectedReturn)),
             rawDataBeforeOptimization: this.props.storeData,
           },
           () => console.log(this.state)
@@ -61,13 +87,16 @@ class Optimization extends PureComponent<IProps, IState> {
         this.setState(
           {
             loading: false,
-            optimizedData: data.weighted_coins_optimized.map(
+            optimizedData: data['weighted_coins_optimized'].map(
               ({ coin, weight }: { coin: string; weight: number }) => ({
                 coin,
                 percentage: Math.max(+weight * 100, 0.01),
               })
             ),
-            risk: data.risk,
+            risk: this.state.rawOptimizedData.map((el: any) => el.risk * 100),
+            returns: this.state.rawOptimizedData.map(
+              (el: any) => el.returns * 100
+            ),
             rawDataBeforeOptimization: this.props.storeData,
           },
           () => console.log(this.state)
@@ -80,39 +109,20 @@ class Optimization extends PureComponent<IProps, IState> {
     }
   }
 
-  transfromData = (assets) => {
-    // transforming data like assets from profile to IData format
-    const allSums = assets.filter(Boolean).reduce((acc: number, curr: any) => {
-      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
-        return null
-      }
-      const price = asset.priceBTC
-
-      return acc + value * Number(price)
-    }, 0)
-
-    return assets.map((data: any) => ({
-      coin: data.asset.symbol,
-      percentage: data.asset.priceBTC * data.value * 100 / allSums,
-    }))
-  }
-
-  onBtnClick = async (index: number, client: any) => {
-    this.setState({ loading: true })
-    const { storeData, startDate, endDate } = this.props
-    const { data } = await client.query({
-      query: OPTIMIZE_PORTFOLIO,
-      variables: {
-        expectedPct: +this.state.expectedReturn / 100,
-        coinList: storeData.map((el: IData) => el.coin),
-        startDate,
-        endDate,
-      },
-    })
-
-    this.optimizePortfolio(data)
+  onBtnClick = async (index: number) => {
+    if (!this.props.isShownMocks) {
+      this.setState({ loading: true })
+    }
     this.setState({ activeButton: index })
+
+    const { rawOptimizedData, percentages } = this.state
+    const percentage = percentages[index]
+
+    const data = rawOptimizedData.find(
+      (el: any) => el.percentage_expected_returns === percentage
+    )
+
+    data && this.optimizePortfolio(data)
   }
 
   getPercentages = (percentage: number) => {
@@ -158,44 +168,83 @@ class Optimization extends PureComponent<IProps, IState> {
     return percetageArray
   }
 
+  showWarning = (message: string) => {
+    this.setState({ openWarning: true, warningMessage: message })
+
+    setTimeout(() => {
+      this.hideWarning()
+    }, 3000)
+  }
+
+  hideWarning = () => {
+    this.setState({ openWarning: false })
+  }
+
+  setActiveButtonToDefault = () => this.setState({ activeButton: 2 })
+
+  toggleLoading = () =>
+    this.setState((prevState) => ({ loading: !prevState.loading }))
+
   renderInput = () => {
     // importing stuff from backend or manually bu user
-    const { expectedReturn } = this.state
+    const {
+      expectedReturn,
+      percentages,
+      activeButton,
+      optimizedData,
+    } = this.state
     const {
       isShownMocks,
       updateData,
       storeData,
       startDate,
       endDate,
+      setPeriod,
+      optimizationPeriod,
+      filterValueSmallerThenPercentage,
     } = this.props
 
     return (
       <QueryRenderer
-        transfromData={this.transfromData}
-        storeData={storeData}
         component={Import}
+        query={getCoinsForOptimization}
+        filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}
+        optimizationPeriod={optimizationPeriod}
+        showWarning={this.showWarning}
+        toggleLoading={this.toggleLoading}
+        setPeriod={setPeriod}
+        setActiveButtonToDefault={this.setActiveButtonToDefault}
+        optimizedData={optimizedData}
+        transformData={this.transformData}
+        storeData={storeData}
         startDate={startDate}
         endDate={endDate}
-        query={getCoinsForOptimization}
         expectedReturn={expectedReturn}
         optimizePortfolio={this.optimizePortfolio}
-        isShownMocks={false}
+        isShownMocks={isShownMocks}
         updateData={updateData}
         handleChange={this.handleChange}
+        optimizedToState={this.optimizedToState}
+        // buttons props
+        onBtnClick={this.onBtnClick}
+        percentages={percentages}
+        activeButton={activeButton}
+        showSwitchButtons={optimizedData.length >= 1}
       />
     )
   }
 
   renderCharts = () => {
     const {
-      percentages,
       optimizedData,
       rawDataBeforeOptimization,
       activeButton,
       risk,
+      returns,
     } = this.state
+    const { storeData } = this.props
 
-    const formatedData = rawDataBeforeOptimization.map((el: IData, i) => ({
+    const formatedData = storeData.map((el: IData, i) => ({
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
     }))
@@ -208,28 +257,44 @@ class Optimization extends PureComponent<IProps, IState> {
       {
         data: formatedData,
         title: 'Original',
-        color: '#4fd8da',
+        color: '#2496c8',
       },
       {
         data: formatedOptimizedData,
         title: 'Optimized',
-        color: '#4fa1da',
+        color: '#1869a8',
       },
     ]
 
-    const efficientFrontierData = {
-      percentages,
+    let efficientFrontierData = {
+      percentages: returns,
       risk,
       activeButton,
     }
+
+    let showBarChartPlaceholder = false
+    // if (
+    //   !isEqual(
+    //     storeData.map((el: IData) => el.coin).sort(),
+    //     optimizedData.map((el: IData) => el.coin).sort()
+    //   )
+    // ) {
+    //   showBarChartPlaceholder = true
+    //   efficientFrontierData = {
+    //     percentages: [],
+    //     risk: [],
+    //     activeButton,
+    //   }
+    // }
 
     return (
       <ChartsContainer>
         <Chart>
           <BarChart
             height={300}
-            showPlaceholder={optimizedData.length < 1}
+            showPlaceholder={formatedData.length === 0}
             charts={barChartData}
+            alwaysShowLegend
           />
         </Chart>
         <Chart>
@@ -243,35 +308,26 @@ class Optimization extends PureComponent<IProps, IState> {
 
   render() {
     const { children } = this.props
-    const { optimizedData, percentages, activeButton, loading } = this.state
+    const { loading, openWarning, warningMessage } = this.state
 
     return (
-      <ApolloConsumer>
-        {(client) => (
-          <PTWrapper>
-            <Content>
-              {children}
-              {loading ? this.renderLoading() : null}
-              <ImportData>{this.renderInput()}</ImportData>
+      <PTWrapper>
+        <Content>
+          {children}
+          {loading ? this.renderLoading() : null}
+          <ImportData>{this.renderInput()}</ImportData>
 
-              <MainArea>
-                <MainAreaUpperPart>
-                  <SwitchButtons
-                    btnClickProps={client}
-                    onBtnClick={this.onBtnClick}
-                    values={percentages}
-                    show={optimizedData.length >= 1}
-                    activeButton={activeButton}
-                  />
-
-                  <Table data={optimizedData} withInput={false} />
-                </MainAreaUpperPart>
-                {this.renderCharts()}
-              </MainArea>
-            </Content>
-          </PTWrapper>
-        )}
-      </ApolloConsumer>
+          <MainArea>
+            <MainAreaUpperPart />
+            {this.renderCharts()}
+          </MainArea>
+          <Warning
+            open={openWarning}
+            messageText={warningMessage}
+            onCloseClick={this.hideWarning}
+          />
+        </Content>
+      </PTWrapper>
     )
   }
 }
@@ -324,8 +380,7 @@ const MainArea = styled.div`
 const PTWrapper = styled.div`
   min-height: 100%;
   overflow-y: auto;
-  width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 2rem)' : '100%'};
+  width: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -336,17 +391,7 @@ const PTWrapper = styled.div`
   height: calc(100vh - 130px);
   overflow: auto;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const Content = styled.div`
@@ -354,8 +399,9 @@ const Content = styled.div`
 `
 
 const ImportData = styled.div`
-  width: 50%;
+  width: 80%;
   display: flex;
+  justify-content: center;
   margin: 0 auto;
 
   @media (max-width: 1080px) {
@@ -368,12 +414,15 @@ const ImportData = styled.div`
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   storeData: store.portfolio.optimizationData,
-  startDate: store.portfolio.correlationStartDate,
-  endDate: store.portfolio.correlationEndDate,
+  startDate: store.portfolio.optimizationStartDate,
+  endDate: store.portfolio.optimizationEndDate,
+  optimizationPeriod: store.portfolio.optimizationPeriod,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateData: (data: any) => dispatch(actions.updateDataForOptimization(data)),
+  setPeriod: (payload: any) => dispatch(actions.setOptimizationPeriod(payload)),
 })
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
   Optimization

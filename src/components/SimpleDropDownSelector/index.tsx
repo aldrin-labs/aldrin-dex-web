@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Select, MenuItem, InputLabel } from '@material-ui/core'
 
-import { IProps } from './index.types'
+import { IProps } from '@components/SimpleDropDownSelector/index.types'
 
 class SimpleDropDownSelector extends Component<IProps> {
   render() {
@@ -33,7 +33,11 @@ class SimpleDropDownSelector extends Component<IProps> {
           }}
         >
           {options.map((option) => (
-            <MenuItem key={option.label} value={option.value}>
+            <MenuItem
+              style={{ zIndex: 1500 }}
+              key={option.label}
+              value={option.value}
+            >
               {option.label}
             </MenuItem>
           ))}

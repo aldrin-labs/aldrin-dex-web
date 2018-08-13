@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 
-import { Props, State } from './Legends.types'
+import { Props, State } from '@components/Legends/Legends.types'
 
 export default class Legends extends React.Component<Props, State> {
   state: State = {

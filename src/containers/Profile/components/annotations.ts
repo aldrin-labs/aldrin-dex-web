@@ -1,4 +1,4 @@
-import { ProfileQueryQuery } from '../profile-annotation'
+import { ProfileQueryQuery } from '@containers/Profile/profile-annotation'
 
 export interface Props {
   coin?: ProfileQueryQuery['assetById']

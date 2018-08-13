@@ -10,7 +10,7 @@ import {
   Crosshair,
 } from 'react-vis'
 
-import { Props, State } from './LineChart.types'
+import { Props, State } from '@components/LineChart/LineChart.types'
 import {
   colors,
   inds,

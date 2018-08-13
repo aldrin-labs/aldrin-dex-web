@@ -1,19 +1,18 @@
 import * as React from 'react'
-import { IState } from './types'
-import { ITableProps } from '../../interfaces'
-import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
-import PortfolioTableRebalance from './Rebalance/PortfolioTableRebalance'
-import PortfolioTableBalances from './Main/PortfolioTableBalances'
-import Optimization from './Optimization/Optimization'
-import Correlation from './Correlation/Correlation'
+import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
+import { ITableProps } from '@containers/Portfolio/interfaces'
+import PortfolioTableIndustries from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'
+import PortfolioTableRebalance from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance'
+import PortfolioTableBalances from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import Optimization from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization'
+import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
 import { Loading } from '@components/Loading/Loading'
-import PortfolioTableTabs from './PortfolioTableTabs'
+import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
 export class PortfolioTable extends React.Component<ITableProps, IState> {
   state: IState = {
     tableData: null,
     isShownChart: true,
-    portfolio: null,
     isUSDCurrently: true,
     tab: 'main',
   }
@@ -25,33 +24,32 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   onToggleUSDBTC = () => {
     this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
   }
+  switchToUsd = () => {
+    this.setState({ isUSDCurrently: true })
+  }
 
-  onChangeTab = (kind: 'main' | 'industry' | 'rebalance') => {
+  onChangeTab = (
+    kind: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization'
+  ) => {
     this.setState({ tab: kind })
   }
 
   render() {
-    const { tab, portfolio, isShownChart, isUSDCurrently } = this.state
-
-    if (this.props.loading) {
-      return <Loading centerAligned />
-    }
+    const { tab, isShownChart, isUSDCurrently } = this.state
 
     if (tab === 'main') {
       return (
         <PortfolioTableBalances
           isShownChart={isShownChart}
           isUSDCurrently={isUSDCurrently}
+          switchToUsd={this.switchToUsd}
           subscription={this.props.subscription}
-          data={this.props.data}
           checkboxes={this.props.checkboxes}
           tab={this.state.tab}
         >
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
-            data={this.props.data}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -64,14 +62,12 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <PortfolioTableIndustries
           checkboxes={this.props.checkboxes}
-          data={this.props.data}
           isUSDCurrently={isUSDCurrently}
+          switchToUsd={this.switchToUsd}
         >
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
-            data={this.props.data}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -82,14 +78,10 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
     if (tab === 'rebalance') {
       return (
-        <PortfolioTableRebalance
-          isUSDCurrently={true}
-          data={this.props.data}
-        >
+        <PortfolioTableRebalance isUSDCurrently={true}>
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -102,10 +94,8 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       return (
         <Correlation>
           <PortfolioTableTabs
-            data={this.props.data}
             toggleWallets={this.props.toggleWallets}
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
@@ -119,7 +109,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
         <Optimization>
           <PortfolioTableTabs
             tab={tab}
-            portfolio={portfolio}
             onChangeTab={this.onChangeTab}
             onToggleUSDBTC={this.onToggleUSDBTC}
           />

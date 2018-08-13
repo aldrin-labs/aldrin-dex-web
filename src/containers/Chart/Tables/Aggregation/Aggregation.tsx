@@ -1,48 +1,43 @@
 import React from 'react'
-import { MdAddCircleOutline } from 'react-icons/lib/md/'
+import { MdAddCircleOutline } from 'react-icons/lib/md'
 import styled from 'styled-components'
+import { Typography } from '@material-ui/core'
 
 import { Row, Table, Head, Cell, HeadCell } from '@components/Table/Table'
 
 const Aggregation = (props) => {
-  const { aggregation, onButtonClick } = props
+  const {
+    aggregation,
+    onButtonClick,
+    theme: { palette },
+  } = props
 
   return (
     <AggregationWrapper>
-      <AggHead background={'#292d31'}>
-        <Row background={'#292d31'} isHead>
-          <Cell color="#9ca2aa" width={'25%'} />
-          <HeadCell
-            style={{
-              position: 'relative',
-              left: '5%',
-            }}
-            color="#9ca2aa"
-            width={'25%'}
-          >
-            Aggregation
+      <AggHead background={palette.background.paper}>
+        <Row background={palette.background.paper} isHead>
+          <Cell width={'10%'} />
+          <HeadCell width={'45%'}>
+            <Typography color="primary" variant="caption">
+              Aggregation
+            </Typography>
           </HeadCell>
-          <HeadCell
-            style={{
-              position: 'relative',
-              left: '13%',
-            }}
-            color="#9ca2aa"
-            width={'25%'}
-          >
-            {aggregation.toFixed(2)}
+          <HeadCell width={'20%'}>
+            <Typography color="secondary" variant="caption">
+              {aggregation.toFixed(2)}
+            </Typography>
           </HeadCell>
           <HeadCell
             style={{
               zIndex: 1000,
             }}
-            color="#9ca2aa"
             width={'25%'}
           >
             <Button>
               <MdAddCircleOutline
                 onClick={onButtonClick}
                 style={{
+                  color: palette.primary['light'],
                   fontSize: '0.75rem',
                   cursor: 'pointer',
                   position: 'relative',

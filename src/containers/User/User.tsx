@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { withErrorFallback } from '@hoc/withErrorFallback'
 
-import { KeysList, AddExchangeKey } from './components'
+import { KeysList, AddExchangeKey, CryptoWalletsList, AddCryptoWallet } from '@containers/User/components'
 import Switch from '@components/Switch/Switch'
 
 class UserContainer extends React.Component {
@@ -27,6 +27,10 @@ class UserContainer extends React.Component {
           <KeysList />
         </UserWrap>
 
+        <UserWrap>
+          <AddCryptoWallet />
+          <CryptoWalletsList />
+        </UserWrap>
         <AdminCP>
           <Heading>Show mocks</Heading>
           <Switch

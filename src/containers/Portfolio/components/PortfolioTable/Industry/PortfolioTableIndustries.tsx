@@ -1,44 +1,57 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
+import styled, {css} from 'styled-components'
 import { compose } from 'recompose'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Switch from './SwitchWithIcons'
-
+import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
+import {
+  roundPercentage,
+  calcAllSumOfPortfolioAsset,
+} from '@utils/PortfolioTableUtils'
 import LineChart from '@components/LineChart'
-import PortfolioTableSum from '../PortfolioTableSum'
-import { MOCKS, genMocks, inds } from './mocks'
+import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
+import {
+  MOCKS,
+  genMocks,
+  inds,
+} from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 import {
   IPortfolio,
   Args,
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
-import {
-  onSortStrings,
-  roundUSDOff,
-} from '../../../../../utils/PortfolioTableUtils'
-import { IState } from './PortfolioTableIndustries.types'
-
-import PieChartQuery from './PieChartQuery'
+import { customAquaScrollBar } from '@utils/cssUtils'
+import { onSortStrings, roundAndFormatNumber } from '@utils/PortfolioTableUtils'
+import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
+import QueryRenderer from '@components/QueryRenderer'
+import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
+import { getPortfolioQuery } from '@containers/Portfolio/api'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
-  { name: 'Current', value: 'price' },
-  { name: 'Portfolio performance', value: 'portfolioPerf' },
-  { name: 'Industry performance', value: 'industryPerf' },
+  { name: 'Current', value: 'portfolioPerc' },
+  { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
+  { name: 'Industry 1 week', value: 'industryPerf1Week', additionName: 'performance' },
+  { name: 'Industry 1 month', value: 'industryPerf1Month', additionName: 'performance' },
+  { name: 'Industry 3 month', value: 'industryPerf3Months', additionName: 'performance' },
+  { name: 'Industry 1 year', value: 'industryPerf1Year', additionName: 'performance' },
+
 ]
 
 const defaultSelectedSum = {
   currency: '',
   symbol: '',
   industry: '',
-  price: 0,
+  portfolioPerc: 0,
   portfolioPerf: 0,
-  industryPerf: 0,
+  industryPerf1Week: 0,
+  industryPerf1Month: 0,
+  industryPerf3Months: 0,
+  industryPerf1Year: 0,
 }
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
@@ -50,7 +63,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     selectedRows: null,
     selectedSum: defaultSelectedSum,
     activeLegend: null,
-    showChart: 'line',
+    showChart: 'chart',
   }
 
   componentWillMount() {
@@ -59,8 +72,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   componentDidMount() {
-    const { data, isShownMocks } = this.props
-
+    const {
+      data: { getProfile: data },
+      isShownMocks,
+      switchToUsd,
+    } = this.props
+    switchToUsd()
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCKS } }, () =>
         this.combineIndustryData({ assets: MOCKS })
@@ -74,10 +91,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
     const { portfolio } = data
 
-    const composeWithMocks = {
-      ...portfolio,
-      assets: portfolio!.assets!.concat(MOCKS),
-    }
+    const composeWithMocks = isShownMocks
+      ? {
+          ...portfolio,
+          assets: portfolio!.assets!.concat(MOCKS),
+        }
+      : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
       this.combineIndustryData(composeWithMocks)
@@ -88,15 +107,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
-      const { portfolio } = nextProps.data
+      const { portfolio } = nextProps.data.getProfile
+      const { isShownMocks } = nextProps
+
       if (!portfolio || !portfolio.assets) {
         return
       }
 
-      const composeWithMocks = {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCKS),
-      }
+      const composeWithMocks = isShownMocks
+        ? {
+            ...portfolio,
+            assets: portfolio.assets.concat(MOCKS),
+          }
+        : portfolio
 
       this.setState({ portfolio: composeWithMocks })
       this.combineIndustryData(composeWithMocks)
@@ -130,14 +153,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
-    const { assets } = portfolio
+    const { assets, coinPerformance = [{ usd: '', btc: '', coin: '' }] } = portfolio
+
+    // console.log('assets length: ', assets.length, 'coinPerf length: ', coinPerformance.length);
+
 
     const industryData = assets
-      .map((row) => {
+      .map((row, i) => {
         const {
           asset = { symbol: '', priceBTC: '', priceUSD: '', industry: '' },
           key = { name: '' },
           exchange = { name: '' },
+          value = 0,
         } =
           row || {}
         if (activeKeys.indexOf(key!.name) === -1) {
@@ -154,28 +181,55 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         const { name: industryName, performance } = ind || {
           name: '',
           performance: {
-            usd: 0,
-            btc: 0,
+            usdWeek: 0,
+            usdMonth: 0,
+            usd3Months: 0,
+            usdYear: 0,
+            btcWeek: 0,
+            btcMonth: 0,
+            btc3Months: 0,
+            btcYear: 0
           },
         }
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        const industryPerformance = isUSDCurrently
-          ? parseFloat(performance.usd).toFixed(2)
-          : parseFloat(performance.btc).toFixed(2)
+
+        const industryPerformance = isUSDCurrently ? {
+          oneWeek: performance.usdWeek,
+          oneMonth: performance.usdMonth,
+          threeMonth: performance.usd3Months,
+          oneYear: performance.usdYear,
+        } :
+          {
+            oneWeek: performance.btcWeek,
+            oneMonth: performance.btcMonth,
+            threeMonth: performance.btc3Months,
+            oneYear: performance.btcYear,
+          }
+        // TODO: HAVE TO BE REWORKED (because it's just fix for first row without data in btc asset)
+        const isElementHavePerformance = coinPerformance.find((element) => element.coin === symbol)
+        const portfolioPerf = isElementHavePerformance ?
+          isUSDCurrently ? isElementHavePerformance.usd : isElementHavePerformance.btc : null
+        const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
+
+        const currentPrice = mainPrice * value
 
         const col = {
           currency: name || '-',
           symbol,
           industry: industryName || '-',
-          price: mainPrice || 0,
-          portfolioPerf: 0,
-          industryPerf: industryPerformance || 0,
+          portfolioPerf: portfolioPerf !== null ? roundPercentage(parseFloat(portfolioPerf)) : null,
+          portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
+          industryPerf1Week: roundPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
+          industryPerf1Month: roundPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
+          industryPerf3Months: roundPercentage(parseFloat(industryPerformance.threeMonth)) || 0,
+          industryPerf1Year: roundPercentage(parseFloat(industryPerformance.oneYear)) || 0,
         }
 
         return col
       })
       .filter(Boolean)
+
     this.setState({ industryData }, () =>
       this.calculateSum(this.state.selectedRows)
     )
@@ -269,17 +323,23 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: val.currency,
         symbol: val.symbol,
         industry: val.industry,
-        price: Number(acc.price) + Number(val.price),
+        portfolioPerc: Number(acc.portfolioPerc) + Number(val.portfolioPerc),
         portfolioPerf: Number(acc.portfolioPerf) + Number(val.portfolioPerf),
-        industryPerf: Number(acc.industryPerf) + Number(val.industryPerf),
+        industryPerf1Week: Number(acc.industryPerf1Week) + Number(val.industryPerf1Week),
+        industryPerf1Month: Number(acc.industryPerf1Month) + Number(val.industryPerf1Month),
+        industryPerf3Months: Number(acc.industryPerf3Months) + Number(val.industryPerf3Months),
+        industryPerf1Year: Number(acc.industryPerf1Year) + Number(val.industryPerf1Year),
       }),
       {
         currency: '',
         symbol: '',
         industry: '',
-        price: 0,
+        portfolioPerc: 0,
         portfolioPerf: 0,
-        industryPerf: 0,
+        industryPerf1Week: 0,
+        industryPerf1Month: 0,
+        industryPerf3Months: 0,
+        industryPerf1Year: 0,
       }
     )
     const validateSum = this.onValidateSum(reducedSum)
@@ -289,26 +349,34 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   onValidateSum = (reducedSum: { [key: string]: string | number }) => {
     const { selectedRows, industryData } = this.state
-    // const { isUSDCurrently } = this.props
+    const { isUSDCurrently } = this.props
 
     if (!selectedRows || !industryData) {
       return defaultSelectedSum
     }
 
     let newReducedSum = {}
+    // TODO: SHOULD BE REFACTORED below
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" key="usd" />
+    ) : (
+      <Icon className="fa fa-btc" key="btc" />
+    )
+    // TODO: SHOULD BE REFACTORED above
 
-    // const mainSymbol = isUSDCurrently ? (
-    //   <Icon className="fa fa-usd" key="usd" />
-    // ) : (
-    //   <Icon className="fa fa-btc" key="btc" />
-    // )
 
     if (selectedRows.length === industryData.length) {
       newReducedSum = {
         ...reducedSum,
-        currency: 'All',
+        currency: 'Total',
         symbol: '-',
         industry: '-',
+        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
+        industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
+        industryPerf3Months: `${reducedSum.industryPerf3Months.toFixed(2)}%`,
+        industryPerf1Year: `${reducedSum.industryPerf1Year.toFixed(2)}%`,
       }
     } else if (selectedRows.length >= 1) {
       newReducedSum = {
@@ -316,6 +384,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Selected',
         symbol: '-',
         industry: '-',
+        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
+        portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
+        industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
+        industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
+        industryPerf3Months: `${reducedSum.industryPerf3Months.toFixed(2)}%`,
+        industryPerf1Year: `${reducedSum.industryPerf1Year.toFixed(2)}%`,
+
       }
     }
 
@@ -346,7 +421,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { isUSDCurrently, children } = this.props
+    const {
+      isUSDCurrently,
+      children,
+      filterValueSmallerThenPercentage,
+    } = this.props
     const {
       selectedRows,
       selectedSum,
@@ -360,11 +439,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    // const chartWidth = this.setChartWidth()
+
+    console.log('isUSDCurrently ', isUSDCurrently);
+
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
-      isThereAnySelectedRows = selectedRows.length > 1 ? true : false
+      isThereAnySelectedRows = selectedRows.length > 1
     }
 
     const tableDataHasData = industryData
@@ -402,17 +483,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       <Span />
                     </Label>
                   </PTH>
-                  {tableHeadings.map((heading) => {
+                  {tableHeadings.map((heading, index) => {
                     const isSorted =
                       currentSort && currentSort.key === heading.value
 
                     return (
                       <PTH
-                        key={heading.name}
+                        key={`${heading.name}${index}`}
                         onClick={() => this.onSortTable(heading.value)}
                         isSorted={isSorted}
                       >
-                        {heading.name}
+
+                        {[4,5,6,7,8].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
 
                         {isSorted && (
                           <SvgIcon
@@ -420,8 +502,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             width={12}
                             height={12}
                             style={{
-                              position: 'absolute',
-                              top: '1.2rem',
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
@@ -439,74 +519,96 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
               <PTBody>
                 {industryData &&
-                  industryData.map((row, idx) => {
-                    const {
-                      currency,
-                      symbol,
-                      industry,
-                      price,
-                      portfolioPerf,
-                      industryPerf,
-                    } = row
-
-                    const mainSymbol = isUSDCurrently ? (
-                      <Icon className="fa fa-usd" key={`${idx}usd`} />
-                    ) : (
-                      <Icon className="fa fa-btc" key={`${idx}btc`} />
+                  industryData
+                    .filter(
+                      (el) =>
+                        el.portfolioPerc >
+                        (filterValueSmallerThenPercentage
+                          ? filterValueSmallerThenPercentage
+                          : 0)
                     )
+                    .map((row, idx) => {
+                      const {
+                        currency,
+                        symbol,
+                        industry,
+                        portfolioPerc,
+                        portfolioPerf,
+                        industryPerf1Week,
+                        industryPerf1Month,
+                        industryPerf3Months,
+                        industryPerf1Year,
+                      } = row
 
-                    const isSelected =
-                      (selectedRows && selectedRows.indexOf(idx) >= 0) || false
+                      const mainSymbol = isUSDCurrently ? (
+                        <Icon className="fa fa-usd" key={`${idx}usd`} />
+                      ) : (
+                        <Icon className="fa fa-btc" key={`${idx}btc`} />
+                      )
 
-                    const cols = [
-                      currency,
-                      symbol,
-                      industry,
-                      [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
-                      `${portfolioPerf}%`,
-                      `${industryPerf}%`,
-                    ]
+                      const isSelected =
+                        (selectedRows && selectedRows.indexOf(idx) >= 0) ||
+                        false
 
-                    return (
-                      <PTRBody
-                        key={`${currency}${symbol}${idx}`}
-                        isSelected={isSelected}
-                        onClick={() => this.onSelectBalance(idx)}
-                      >
-                        <PTD key="smt" isSelected={isSelected}>
-                          {this.renderCheckbox(idx)}
-                        </PTD>
-                        {cols &&
-                          cols.map((col, innerIdx) => {
-                            if (col && !Array.isArray(col) && col.match(/%/g)) {
-                              const color =
-                                Number(col.replace(/%/g, '')) >= 0
-                                  ? '#65c000'
-                                  : '#ff687a'
+                      const formattedPortfolioPerf = portfolioPerf === null ? '-' : `${portfolioPerf}%`
+
+                      const cols = [
+                        currency,
+                        symbol,
+                        industry,
+                        `${portfolioPerc}%`,
+                         formattedPortfolioPerf,
+                        `${industryPerf1Week}%`,
+                        `${industryPerf1Month}%`,
+                        `${industryPerf3Months}%`,
+                        `${industryPerf1Year}%`,
+                      ]
+
+
+                      return (
+                        <PTRBody
+                          key={`${currency}${symbol}${idx}`}
+                          isSelected={isSelected}
+                          onClick={() => this.onSelectBalance(idx)}
+                        >
+                          <PTD key="smt" isSelected={isSelected}>
+                            {this.renderCheckbox(idx)}
+                          </PTD>
+                          {cols &&
+                            cols.map((col, innerIdx) => {
+                              if (
+                                col &&
+                                !Array.isArray(col) &&
+                                col.match(/%/g)
+                              ) {
+                                const color =
+                                  Number(col.replace(/%/g, '')) >= 0
+                                    ? '#65c000'
+                                    : '#ff687a'
+
+                                return (
+                                  <PTD
+                                    key={`${col}${innerIdx}`}
+                                    style={{ color }}
+                                    isSelected={isSelected}
+                                  >
+                                    {col}
+                                  </PTD>
+                                )
+                              }
 
                               return (
                                 <PTD
                                   key={`${col}${innerIdx}`}
-                                  style={{ color }}
                                   isSelected={isSelected}
                                 >
                                   {col}
                                 </PTD>
                               )
-                            }
-
-                            return (
-                              <PTD
-                                key={`${col}${innerIdx}`}
-                                isSelected={isSelected}
-                              >
-                                {col}
-                              </PTD>
-                            )
-                          })}
-                      </PTRBody>
-                    )
-                  })}
+                            })}
+                        </PTRBody>
+                      )
+                    })}
               </PTBody>
               {selectedSum && selectedSum.currency ? (
                 <PortfolioTableSum
@@ -518,8 +620,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
           <ChartContainer>
-            <Heading>
-              <Switch onClick={this.toggleChart} />
+            <Heading pieChart={this.state.showChart === 'chart'}>
+              <Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />
             </Heading>
             <ChartWrapper>
               {this.state.showChart === 'line' ? (
@@ -543,18 +645,35 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   padding: 0 20px 20px;
+  
+  @media (min-width: 1600px) and (max-width: 2200px) {
+    flex-direction: column;
+  }
+
+  @media (max-width: 2200px) {
+    align-items: center;
+  }
+`
+
+const HeadingForPieChart = css`
+  position: absolute;
+  z-index: 2;
+  right: 16px;
 `
 
 const Heading = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
   text-align: center;
   color: #fff;
-  padding-bottom: 20px;
+  
+    ${(props: { pieChart?: boolean }) =>
+  props.pieChart ? HeadingForPieChart : ''};
 `
 
 const PTWrapper = styled.div`
@@ -573,35 +692,35 @@ const PTWrapper = styled.div`
 
 const ChartWrapper = styled.div`
   width: 100%;
-  height: 25vh;
+  height: 100%;
+  //height: 25vh;
   display: flex;
   position: relative;
 
-  @media (max-height: 850px) {
-    height: 20vh;
-  }
+  //@media (max-height: 850px) {
+  //  height: 20vh;
+  //}
 `
 
 const ChartContainer = styled.div`
   border-radius: 3px;
   background-color: #2d3136;
   box-shadow: 0 2px 6px 0 #0006;
-
+  position: relative;
   padding: 1em;
   text-align: center;
   height: 35vh;
 
-  margin: 2rem auto;
-  width: 900px;
+  width: 1031px;
 
-  @media (min-width: 1950px) {
-    margin: 1rem auto;
-  }
-
-  @media (max-height: 850px) {
+  @media (max-width: 2200px) {
     height: 30vh;
-    margin: 0.5rem auto;
   }
+
+  @media (max-height: 940px) {
+    height: 30vh;
+  }
+
   @media (max-height: 680px) {
     display: none;
   }
@@ -620,12 +739,16 @@ const Wrapper = styled.div`
   background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
     props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
   box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
-  max-height: 40vh;
+  max-height: 35vh;
+  margin-right: 50px;
 
-  margin: 1rem auto;
+  @media (max-width: 2200px) {
+    margin-right: 0;
+    margin-bottom: 30px;
+  }
 
   @media (max-height: 850px) {
-    max-height: 30vh;
+    max-height: 25vh;
   }
 
   @media (max-height: 680px) {
@@ -640,17 +763,7 @@ const Wrapper = styled.div`
     max-height: 40vh;
   }
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const PTable = styled.table`
@@ -672,30 +785,43 @@ const PTD = styled.td`
   font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  min-width: 100px;
 
   &:nth-child(1) {
+    min-width: 30px;
     padding: 1.75px 10px;
   }
 
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  &:nth-child(2) {
+    min-width: 90px;
+      text-overflow: ellipsis;
   }
 
   &:nth-child(3) {
+    min-width: 60px;
+      text-overflow: ellipsis;
   }
+
   &:nth-child(n + 4) {
     text-align: right;
   }
 
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
+    max-width: 200px;
+      text-overflow: ellipsis;
   }
 
-  &:nth-child(n + 6) {
-    min-width: 150px;
+  &:nth-child(n + 7) {
+    min-width: 110px;
+  }
+  
+  &:nth-last-child(1) {
+    min-width: 112px;
+    padding-right: 16px;
   }
 `
 
@@ -739,11 +865,20 @@ const PTH = styled.th`
   font-size: 12px;
   line-height: 24px;
   color: #fff;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
+  min-width: 100px;
+  user-select: none;
 
-  &:nth-child(n + 2) {
-    min-width: 100px;
+  &:nth-child(1) {
+    min-width: 30px;
+  }
+  &:nth-child(2) {
+    min-width: 90px;
+  }
+
+  &:nth-child(3) {
+    min-width: 60px;
   }
 
   &:nth-child(1) {
@@ -754,17 +889,26 @@ const PTH = styled.th`
   &:nth-child(2) {
     text-align: left;
   }
+
   &:nth-child(3) {
     text-align: left;
   }
+
   &:nth-child(n + 4) {
     text-align: right;
   }
+
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
   }
-  &:nth-child(n + 6) {
-    min-width: 150px;
+
+  &:nth-child(n+7) {
+    min-width: 110px;
+  }
+  
+  &:nth-last-child(1) {
+    min-width: 112px;
+    padding-right: 16px;
   }
 `
 
@@ -819,10 +963,23 @@ const PTextBox = styled.div`
   background-color: #2d3136;
 `
 
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioTableIndustries}
+        query={getPortfolioQuery}
+        {...this.props}
+      />
+    )
+  }
+}
+
 const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
+  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps)(PortfolioTableIndustries)
+const storeComponent = connect(mapStateToProps)(MainDataWrapper)
 
 export default compose()(storeComponent)

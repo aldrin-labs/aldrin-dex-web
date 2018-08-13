@@ -7,10 +7,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --env.env=dev",
+    "dev:fast": "cross-env DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
-    "build": "cross-env NODE_ENV=production cross-env API_ENDPOINT=develop.api.cryptocurrencies.ai cross-env CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack -p --env.env=prod --env.API_ENDPOINT=develop.api.cryptocurrencies.ai --env.CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai",
+    "build": "cross-env DEVTOOL=source-map cross-env NODE_ENV=production cross-env API_ENDPOINT=develop.api.cryptocurrencies.ai cross-env CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack -p --env.env=prod",
     "buildMaster": "cross-env NODE_ENV=production webpack -p --env.env=prod",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
     "test": "jest",
@@ -82,6 +83,7 @@
     "re-reselect": "^1.0.1",
     "react": "^16.4.1",
     "react-apollo": "^2.1.0-beta.3",
+    "react-content-loader": "^3.1.2",
     "react-dom": "^16.3.2",
     "react-emojione": "^5.0.0",
     "react-fullscreen-crossbrowser": "^1.0.9",
@@ -114,6 +116,7 @@
     "styled-components": "3.3.3",
     "subscriptions-transport-ws": "^0.9.6",
     "tslib": "^1.9.2",
+    "tslint-config-airbnb": "^5.9.2",
     "why-did-you-update": "^0.1.1",
     "yup": "^0.24.1"
   },

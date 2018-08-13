@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Profile from './Profile'
+import Profile from '@containers/Profile/Profile'
 
 export default function ProfileRoutes({ match, location }) {
   return (

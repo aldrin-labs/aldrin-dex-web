@@ -3,14 +3,21 @@ import styled from 'styled-components'
 
 import Checkbox from 'material-ui/Checkbox'
 import Paper from 'material-ui/Paper'
-import Table, { TableBody, TableCell, TableFooter, TablePagination, TableRow } from 'material-ui/Table'
+import Table, {
+  TableBody,
+  TableCell,
+  TableFooter,
+  TablePagination,
+  TableRow,
+} from 'material-ui/Table'
 
-import { ProfileTableHead } from './ProfileTableHead'
-import { ProfileTableToolbar } from './ProfileTableToolbar'
+import { ProfileTableHead } from '@containers/Profile/ProfileTableHead'
+import { ProfileTableToolbar } from '@containers/Profile/ProfileTableToolbar'
 
 let counter = 0
 function createData(name, accountType, exchange, key, info) {
   counter += 1
+
   return { id: counter, name, accountType, exchange, key, info }
 }
 const SPaper = styled(Paper)`
@@ -35,9 +42,27 @@ export class ProfileTable extends Component {
       orderBy: 'name',
       selected: [],
       data: [
-        createData('Bitcointest', 'exchange', 'Cryptopia', 'dwadwad34fsfw2', 'hello'),
-        createData('Dogeforfree', 'exchange', 'Cryptopia', 'dawdfdfgvd4543fgfds', 'hi'),
-        createData('EliteCoinIlluminatiConfirmApiKey', 'exchange', 'Cryptopia', 'sdsacgew42423', ':lol:'),
+        createData(
+          'Bitcointest',
+          'exchange',
+          'Cryptopia',
+          'dwadwad34fsfw2',
+          'hello'
+        ),
+        createData(
+          'Dogeforfree',
+          'exchange',
+          'Cryptopia',
+          'dawdfdfgvd4543fgfds',
+          'hi'
+        ),
+        createData(
+          'EliteCoinIlluminatiConfirmApiKey',
+          'exchange',
+          'Cryptopia',
+          'sdsacgew42423',
+          ':lol:'
+        ),
       ].sort((a, b) => (a.name < b.name ? -1 : 1)),
       page: 0,
       rowsPerPage: 10,
@@ -62,7 +87,7 @@ export class ProfileTable extends Component {
 
   handleSelectAllClick = (event, checked) => {
     if (checked) {
-      this.setState({ selected: this.state.data.map(n => n.id) })
+      this.setState({ selected: this.state.data.map((n) => n.id) })
       return
     }
     this.setState({ selected: [] })
@@ -80,7 +105,10 @@ export class ProfileTable extends Component {
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1))
     } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1))
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      )
     }
 
     this.setState({ selected: newSelected })
@@ -90,15 +118,16 @@ export class ProfileTable extends Component {
     this.setState({ page })
   }
 
-  handleChangeRowsPerPage = event => {
+  handleChangeRowsPerPage = (event) => {
     this.setState({ rowsPerPage: event.target.value })
   }
 
-  isSelected = id => this.state.selected.indexOf(id) !== -1
+  isSelected = (id) => this.state.selected.indexOf(id) !== -1
 
   render() {
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
+    const emptyRows =
+      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage)
 
     return (
       <SPaper>
@@ -114,29 +143,31 @@ export class ProfileTable extends Component {
               rowCount={data.length}
             />
             <TableBody>
-              {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(n => {
-                const isSelected = this.isSelected(n.id)
-                return (
-                  <TableRow
-                    hover
-                    onClick={event => this.handleClick(event, n.id)}
-                    role="checkbox"
-                    aria-checked={isSelected}
-                    tabIndex={-1}
-                    key={n.id}
-                    selected={isSelected}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox checked={isSelected} />
-                    </TableCell>
-                    <TableCell padding="none">{n.name}</TableCell>
-                    <TableCell numeric>{n.accountType}</TableCell>
-                    <TableCell numeric>{n.exchange}</TableCell>
-                    <TableCell numeric>{n.key}</TableCell>
-                    <TableCell numeric>{n.info}</TableCell>
-                  </TableRow>
-                )
-              })}
+              {data
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((n) => {
+                  const isSelected = this.isSelected(n.id)
+                  return (
+                    <TableRow
+                      hover
+                      onClick={(event) => this.handleClick(event, n.id)}
+                      role="checkbox"
+                      aria-checked={isSelected}
+                      tabIndex={-1}
+                      key={n.id}
+                      selected={isSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={isSelected} />
+                      </TableCell>
+                      <TableCell padding="none">{n.name}</TableCell>
+                      <TableCell numeric>{n.accountType}</TableCell>
+                      <TableCell numeric>{n.exchange}</TableCell>
+                      <TableCell numeric>{n.key}</TableCell>
+                      <TableCell numeric>{n.info}</TableCell>
+                    </TableRow>
+                  )
+                })}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />

@@ -1,7 +1,7 @@
 import React, { SFC } from 'react'
 import styled from 'styled-components'
 
-import { NavButtonMobile } from './NavButtonMobile'
+import { NavButtonMobile } from '@components/NavBar/NavButtonMobile'
 
 export const NavBarMobile: SFC<{}> = () => (
   <NavMobileContainer>

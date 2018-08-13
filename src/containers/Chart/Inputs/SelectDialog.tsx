@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
-import AutoSuggestSelect from './AutoSuggestSelect/AutoSuggestSelect'
+import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 
 const styles = (theme) => ({
   root: {
@@ -35,7 +35,7 @@ class DialogSelect extends React.Component {
   state = {
     open: false,
     base: 'BTC',
-    quote: 'ETH',
+    quote: 'USDT',
   }
 
   handleChange = (name) => (value) => {

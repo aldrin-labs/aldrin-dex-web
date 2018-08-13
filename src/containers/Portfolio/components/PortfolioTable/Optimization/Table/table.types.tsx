@@ -5,9 +5,11 @@ export interface IData {
 
 export interface IProps {
   withInput: boolean
+  filterValueSmallerThenPercentage: number
   onClickDeleteIcon?: Function
   onPlusClick?: Function
   data: IData[]
+  optimizedData: IData[]
 }
 export interface IState {
   name: string

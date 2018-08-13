@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { CHARTS_API_URL } from '../../utils/config'
+import { CHARTS_API_URL } from '@utils/config'
 
 const Wrapper = styled.div`
   display: flex;
@@ -11,7 +11,6 @@ const Wrapper = styled.div`
 
 export const SingleChart = ({ additionalUrl }: { additionalUrl: string }) => (
   <Wrapper>
-    {console.log(additionalUrl)}
     <iframe src={`https://${CHARTS_API_URL}${additionalUrl}`} height={'100%'} />
   </Wrapper>
 )

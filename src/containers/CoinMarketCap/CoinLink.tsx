@@ -2,7 +2,7 @@ import React, { SFC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 
-import * as T from './types'
+import * as T from '@containers/CoinMarketCap/types'
 
 const SCoinLink = styled(Link)`
   color: inherit;

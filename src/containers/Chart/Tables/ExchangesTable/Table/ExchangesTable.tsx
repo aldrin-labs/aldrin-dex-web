@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { FaCircle } from 'react-icons/lib/fa'
-import { Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 import styled from 'styled-components'
 
 import {
@@ -11,79 +11,53 @@ import {
   Head,
   Cell,
   HeadCell,
+  FullWidthBlock,
 } from '@components/Table/Table'
-import AnimatedCell from '@components/Table/AnimatedCell/AnimatedCell'
-import QueryRenderer from '@components/QueryRenderer'
-import { Loading } from '@components/Loading/Loading'
-import gql from 'graphql-tag'
+import { IProps } from './ExchangesTable.types'
 
-
-export const ExchangeQuery = gql`
-  query ExchangeQuery($marketName: String!) {
-    marketByName(name: $marketName){
-    name
-    exchangeIds
-    exchanges {
-      symbol
-      name
-    }
-  }
-}
-`
-
-class ExchangesTable extends PureComponent {
+class ExchangesTable extends PureComponent<IProps> {
   render() {
-
     const {
       activeExchange,
       changeExchange,
-      quote,
       onButtonClick,
-      data
+      exchanges,
+      theme,
     } = this.props
-
-    let exchanges = this.props.exchanges;
-
-    if (!exchanges || !data) {
-      return <Loading centerAligned />
-    }
-    if (data && data.marketByName) {
-      exchanges = data.marketByName.length > 0 ? data.marketByName[0].exchanges : [];
-    }
 
     return (
       <StyledTable>
-        <Title>
-          Exchanges
+        <Title background={theme.palette.primary.dark}>
+          <Typography color="default" variant="headline" align="center">
+            Exchanges
+          </Typography>
           <SwitchTablesButton
             onClick={onButtonClick}
             variant="outlined"
             color="primary"
           >
-            ORDER
+            <Typography color="textSecondary" variant="headline" align="left">
+              ORDER
+            </Typography>
           </SwitchTablesButton>
         </Title>
-        <StyledHead background={'#292d31'}>
-          <Row isHead background={'#292d31'}>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Symbol
+        <StyledHead background={theme.palette.background.default}>
+          <Row
+            isHead
+            background={theme.palette.background.default}
+            hoverBackground={theme.palette.action.hover}
+          >
+            <StyledHeadCell width={'50%'}>
+              <FullWidthBlockMovedLeft>
+                <Typography variant="title" color="default" align="left">
+                  Name{' '}
+                </Typography>
+              </FullWidthBlockMovedLeft>
             </StyledHeadCell>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Name{' '}
-            </StyledHeadCell>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              Type
-            </StyledHeadCell>
-            <StyledHeadCell color="#9ca2aa" width={'20%'}>
-              {quote || 'Fiat'}
-            </StyledHeadCell>
-            <StyledHeadCell
-              style={{ lineHeight: 'inherit', paddingTop: '0.25rem' }}
-              color="#9ca2aa"
-              width={'20%'}
-            >
-              1D Vol
-              <br />(K)
+            <StyledHeadCell width={'50%'}>
+              <Typography variant="title" color="default" align="left">
+                Symbol{' '}
+              </Typography>
             </StyledHeadCell>
           </Row>
         </StyledHead>
@@ -98,7 +72,12 @@ class ExchangesTable extends PureComponent {
               onClick={() => {
                 changeExchange({ index: ind, exchange: exchanges[ind] })
               }}
-              background={activeExchange.index === ind ? '#535b62' : '#292d31'}
+              background={
+                activeExchange.index === ind
+                  ? theme.palette.action.selected
+                  : theme.palette.background.default
+              }
+              hoverBackground={theme.palette.action.hover}
             >
               {Object.values(exchange).map((prop, propinx) => {
                 const keyByValue = Object.keys(exchange).find(
@@ -116,30 +95,37 @@ class ExchangesTable extends PureComponent {
                         display: 'flex',
                         flexWrap: 'nowrap',
                       }}
-                      color="#9ca2aa"
-                      width="20%"
+                      width="50%"
                     >
                       <FaCircle
                         style={{
                           fontSize: '0.5rem',
                           minWidth: '20%',
                           flexBasis: '20%',
-                          color: exchange.status,
-                          marginRight: '0.25rem',
+                          color:
+                            exchange.status || theme.palette.secondary.main,
                         }}
                       />
-                      {prop}
+                      <Typography noWrap variant="body1" color="default">
+                        {prop}
+                      </Typography>
                     </Cell>
                   )
                 } else {
                   return (
-                    <AnimatedCell
-                      value={prop}
-                      animation={'fadeInGreenAndBack'}
-                      key={keyByValue}
-                      color="#9ca2aa"
-                      width="20%"
-                    />
+                    <Cell
+                      key={propinx}
+                      style={{
+                        alignItems: 'center',
+                        display: 'flex',
+                        flexWrap: 'nowrap',
+                      }}
+                      width="50%"
+                    >
+                      <Typography variant="body1" color="default">
+                        {prop}
+                      </Typography>
+                    </Cell>
                   )
                 }
               })}
@@ -151,9 +137,14 @@ class ExchangesTable extends PureComponent {
   }
 }
 
+const FullWidthBlockMovedLeft = FullWidthBlock.extend`
+  position: relative;
+  left: 20%;
+`
+
 const StyledHeadCell = styled(HeadCell)`
   line-height: 37px;
-  padding: 0;
+  padding: 0.25rem 0.4rem;
 `
 
 const StyledTable = styled(Table)`
@@ -174,14 +165,4 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-
-export default function (props: any) {
-  return (
-    <QueryRenderer
-      component={ExchangesTable}
-      query={ExchangeQuery}
-      variables={{ marketName: props.marketName }}
-      {...props}
-    />
-  )
-}
+export default ExchangesTable

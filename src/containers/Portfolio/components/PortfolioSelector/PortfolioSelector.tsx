@@ -1,58 +1,68 @@
 import * as React from 'react'
-import { graphql } from 'react-apollo'
+import { FaFilter } from 'react-icons/lib/fa'
 import styled from 'styled-components'
 import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import { has } from 'lodash'
+
+import Dropdown from '@components/SimpleDropDownSelector'
+
+import { setKeys, filterValuesLessThen } from '../../actions'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
+import QueryRenderer from '@components/QueryRenderer'
 
 class PortfolioSelector extends React.Component<IProps, IState> {
-  state: IState = {
-    checkedCheckboxes: null,
-    checkboxes: null,
+  state = {
+    checkboxes: [],
+    checkedCheckboxes: [],
   }
+  // componentWillReceiveProps(nextProps: IProps) {
+  //   // called once
+  //   if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
+  //     const { keys } = nextProps.data.getProfile
+  //     const checkboxes =
+  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
+  //     if (
+  //       nextProps.isShownMocks &&
+  //       checkboxes.indexOf('Test1') === -1 &&
+  //       checkboxes.indexOf('Test2') === -1
+  //     ) {
+  //       checkboxes.push('Test1', 'Test2')
+  //     }
+  //     const { keys } = nextProps.data.getProfile
+  //     const checkboxes =
+  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
+  //     const checkedCheckboxes = checkboxes.map((ck, i) => i)
+
+  //     if (checkboxes) {
+  //       this.setState({ checkboxes, checkedCheckboxes }, () => {
+  //         const { onChangeActive } = this.props
+
+  //         onChangeActive(checkboxes)
+  //       })
+  //     }
+  //   }
+  // }
 
   componentDidMount() {
-    if (!this.props.isShownMocks) {
-      return
+    console.log('object')
+    console.log(this.props.data)
+    if (!has(this.props.data.getProfile, 'keys')) {
+      return null
     }
 
-    const checkboxes = ['Test1', 'Test2']
+    const { keys } = this.props.data.getProfile
+    const checkboxes =
+      (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
     const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
-    if (checkboxes) {
-      this.setState({ checkboxes, checkedCheckboxes }, () => {
-        const { onChangeActive } = this.props
+    this.props.setKeys(checkboxes)
 
-        onChangeActive(checkboxes)
-      })
-    }
-  }
+    this.setState({ checkboxes, checkedCheckboxes })
 
-  componentWillReceiveProps(nextProps: IProps) {
-    // called once
-    if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
-      const { keys } = nextProps.data.getProfile
-      const checkboxes =
-        (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-      if (
-        nextProps.isShownMocks &&
-        checkboxes.indexOf('Test1') === -1 &&
-        checkboxes.indexOf('Test2') === -1
-      ) {
-        checkboxes.push('Test1', 'Test2')
-      }
-      const checkedCheckboxes = checkboxes.map((ck, i) => i)
-
-      if (checkboxes) {
-        this.setState({ checkboxes, checkedCheckboxes }, () => {
-          const { onChangeActive } = this.props
-
-          onChangeActive(checkboxes)
-        })
-      }
-    }
+    return true
   }
 
   onToggleCheckbox = (index: number) => {
@@ -120,6 +130,11 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
   render() {
     const { checkedCheckboxes, checkboxes } = this.state
+    const {
+      filterValuesLessThenThat,
+      filterPercent,
+      isSideNavOpen,
+    } = this.props
 
     if (!checkboxes) {
       return null
@@ -131,13 +146,13 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
     return (
       <AccountsWalletsBlock
-        onClick={this.props.toggleWallets}
+        onClick={isSideNavOpen ? null : this.props.toggleWallets}
         isSideNavOpen={this.props.isSideNavOpen}
       >
         <AccountsWalletsHeadingWrapper>
-          <AccountsWalletsHeading>Api keys</AccountsWalletsHeading>
+          <Name>Api keys</Name>
 
-          <Headline isSideNavOpen={this.props.isSideNavOpen}>Accounts</Headline>
+          <Headline isSideNavOpen={this.props.isSideNavOpen}>settings</Headline>
           <CloseContainer>
             <StyledIcon isSideNavOpen={this.props.isSideNavOpen} />
           </CloseContainer>
@@ -183,10 +198,54 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             )
           })}
         </AccountsList>
+        <Name>Dust</Name>
+        <FilterValues>
+          <FilterIcon />
+          <Dropdown
+            style={{ width: '100%' }}
+            value={filterPercent}
+            handleChange={filterValuesLessThenThat}
+            name="filterValuesInMain"
+            options={[
+              { value: -100.0, label: 'No Filter' },
+              { value: 0, label: '0% <' },
+              { value: 0.1, label: '0.1% <' },
+              { value: 0.2, label: '0.2% <' },
+              { value: 0.3, label: '0.3% <' },
+              { value: 0.5, label: '0.5% <' },
+              { value: 1, label: '1% <' },
+              { value: 10, label: '10% <' },
+            ]}
+          />
+        </FilterValues>
       </AccountsWalletsBlock>
     )
   }
 }
+
+const Name = styled.h1`
+  width: 100%;
+  text-align: center;
+  letter-spacing: 1px;
+  background: #292d31;
+  border-radius: 2.5rem;
+  padding: 0.5rem 0;
+  text-align: center;
+  font-family: Roboto, sans-serif;
+  color: #4ed8da;
+`
+
+const FilterValues = styled.div`
+  width: 100%;
+  display: flex;
+  place-items: center;
+`
+const FilterIcon = styled(FaFilter)`
+  color: whitesmoke;
+  font-size: 1.5rem;
+  margin: 0 0.5rem;
+`
+
 const CloseContainer = styled.div`
   height: 100%;
 `
@@ -265,21 +324,16 @@ const AccountsWalletsBlock = styled.div`
   min-width: 200px;
   background-color: #2d3136;
   padding: 16px;
-  left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+  right: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '0' : '-11.5rem'};
   cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? 'auto' : 'pointer'};
   display: block;
   position: fixed;
   top: 0;
-  z-index: 1301;
+  z-index: 1300;
   height: 100vh;
-  transition: left 0.2s ease-in;
-
-  @media (max-width: 1000px) {
-    left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-      isSideNavOpen ? '0' : '-12rem'};
-  }
+  transition: right 0.2s ease-in;
 
   &:hover {
     background-color: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
@@ -299,9 +353,10 @@ const StyledIcon = styled(Arrow)`
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '1' : '0'};
   font-size: 2rem;
-  right: -0.3rem;
+  right: 10.7rem;
+
   position: absolute;
-  bottom: 50%;
+  bottom: 47%;
   transition: opacity 0.2s linear;
 `
 
@@ -312,7 +367,7 @@ const Headline = styled.div`
     isSideNavOpen ? '0' : '1'};
   font-size: 0.7em;
   transform: rotate(-90deg);
-  right: -1.2rem;
+  left: -0.6rem;
   transform-origin: right, top;
   position: absolute;
   bottom: 50%;
@@ -320,21 +375,35 @@ const Headline = styled.div`
 
   @media (min-width: 1000px) {
     font-size: 1rem;
-    right: -1.5rem;
+    right: 10.8rem;
   }
 `
 
-const AccountsWalletsHeading = styled.span`
-  font-family: Roboto, sans-serif;
-  font-size: 1.25em;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  text-align: center;
-  color: #ffffff;
-`
+const mapStateToProps = (store) => ({
+  isShownMocks: store.user.isShownMocks,
+  filterPercent: store.portfolio.filterValuesLessThenThat,
+})
 
-const mapStateToProps = (store) => ({ isShownMocks: store.user.isShownMocks })
+const mapDispatchToProps = (dispatch: any) => ({
+  setKeys: (keys: string[]) => dispatch(setKeys(keys)),
+  filterValuesLessThenThat: (percent: number) =>
+    dispatch(filterValuesLessThen(percent)),
+})
 
-const storeComponent = connect(mapStateToProps)(PortfolioSelector)
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioSelector}
+        query={getKeysQuery}
+        {...this.props}
+      />
+    )
+  }
+}
 
-export default compose(graphql(getKeysQuery))(storeComponent)
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  MainDataWrapper
+)
+
+export default compose()(storeComponent)

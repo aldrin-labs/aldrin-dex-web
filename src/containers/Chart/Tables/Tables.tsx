@@ -1,13 +1,6 @@
-import SpreadTable from './SpreadTable/SpreadTable'
-import OrderBookTable from './OrderBookTable/OrderBookTable'
-import Aggregation from './Aggregation/Aggregation'
-import TradeHistoryTable from './TradeHistoryTable/TradeHistoryTable'
-import ExchangesTable from './ExchangesTable/ExchangesTable'
+import OrderBookTable from '@containers/Chart/Tables/OrderBookTable/OrderBookTableContainer'
+import Aggregation from '@containers/Chart/Tables/Aggregation/Aggregation'
+import TradeHistoryTable from '@containers/Chart/Tables/TradeHistoryTable/TableContainer'
+import ExchangesTable from '@containers/Chart/Tables/ExchangesTable/TableContainer'
 
-export {
-  Aggregation,
-  OrderBookTable,
-  SpreadTable,
-  ExchangesTable,
-  TradeHistoryTable,
-}
+export { Aggregation, OrderBookTable, ExchangesTable, TradeHistoryTable }

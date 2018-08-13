@@ -1,4 +1,4 @@
-import { getPortfolioQuery } from './annotations'
+import { getPortfolioQuery } from '@containers/Portfolio/annotations'
 
 export interface IProps {
   data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }
@@ -72,6 +72,7 @@ export interface IndProps {
 
   checkboxes: number[]
   isUSDCurrently: boolean
+  filterValueSmallerThenPercentage: string
   isShownMocks?: boolean
 }
 

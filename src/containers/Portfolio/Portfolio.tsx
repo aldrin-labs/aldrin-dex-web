@@ -2,13 +2,13 @@ import React from 'react'
 import { Subscription, graphql } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
-
-import { getPortfolioQuery } from './api'
-import { IProps } from './interfaces'
-import { Login } from '@containers/Login'
-import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
-import { PortfolioTable } from './components'
+import { connect } from 'react-redux'
 import { compose } from 'recompose'
+
+import { IProps } from '@containers/Portfolio/interfaces'
+import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
+import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
+import { PortfolioTable } from '@containers/Portfolio/components'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -38,28 +38,29 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 
   render() {
-    const { checkboxes } = this.state
-    const { getPortfolioQueryData } = this.props
-    const { getProfile, loading, error } = getPortfolioQueryData
+    const { keys, login } = this.props
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
         {(subscriptionData) => (
           <PortfolioContainer>
-            {error &&
-              error.toString().match('jwt expired') && <Login isShownModal />}
-            <PortfolioSelector
-              toggleWallets={this.toggleWallets}
-              isSideNavOpen={this.state.isSideNavOpen}
-              onChangeActive={this.onChangeActiveKey}
-            />
-            <PortfolioTable
-              loading={loading}
-              checkboxes={checkboxes}
-              toggleWallets={this.toggleWallets}
-              data={getProfile}
-              subscription={subscriptionData}
-            />
+            {login ? (
+              <>
+                <PortfolioSelector
+                  toggleWallets={this.toggleWallets}
+                  isSideNavOpen={this.state.isSideNavOpen}
+                  onChangeActive={this.onChangeActiveKey}
+                />
+                <PortfolioTable
+                  checkboxes={keys}
+                  toggleWallets={this.toggleWallets}
+                  subscription={subscriptionData}
+                />
+              </>
+            ) : (
+              <YouNeedToLoginMessage showModalAfterDelay={1500} />
+            )}
+
             <Backdrop
               onClick={this.toggleWallets}
               isSideNavOpen={this.state.isSideNavOpen}
@@ -71,11 +72,12 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 }
 
-// TODO: Refactor all these queries and move it into subcomponents
+const mapStateToProps = (store) => ({
+  keys: store.portfolio.keys,
+  login: store.login.loginStatus,
+})
 
-export default compose(
-  graphql(getPortfolioQuery, { name: 'getPortfolioQueryData' }),
-)(PortfolioComponent)
+export default compose(connect(mapStateToProps))(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
@@ -92,5 +94,5 @@ const Backdrop = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 100;
+  z-index: 1000;
 `

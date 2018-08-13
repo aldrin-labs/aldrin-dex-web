@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
 const port = process.env.PORT || 3000
+const devtool = process.env.DEVTOOL || 'cheap-module-source-map'
 
 const config = {
   mode: 'development',
@@ -13,7 +14,7 @@ const config = {
   output: {
     filename: 'bundle.[hash].js',
   },
-  devtool: 'eval-source-map',
+  devtool,
   module: {},
   plugins: [
     new ErrorOverlayPlugin(),

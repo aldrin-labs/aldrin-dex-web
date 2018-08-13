@@ -15,9 +15,9 @@ import Table, {
 } from 'material-ui/Table'
 
 // TODO: add types
-import * as T from './types'
+import * as T from '@components/CoinsList/types'
 
-import { CoinLink, ShowMoreLink } from './CoinLink'
+import { CoinLink, ShowMoreLink } from '@components/CoinsList/CoinLink'
 
 const CoinsListPaper = styled(Paper)`
   width: 100%;

@@ -45,7 +45,7 @@ export function getColor(
   } else if (n >= 0 && n < 0.1) {
     return { backgroundColor: '#173317', textColor: 'white' }
   } else if (n >= -0.1 && n < 0) {
-    return { backgroundColor: '#0f220f', textColor: 'white' }
+    return { backgroundColor: '#700a05', textColor: 'white' }
   } else if (n >= -0.2 && n < -0.1) {
     return { backgroundColor: '#561500', textColor: 'white' }
   } else if (n >= -0.3 && n < -0.2) {
@@ -66,8 +66,6 @@ export function getColor(
     return { backgroundColor: '#ff5722', textColor: 'black' }
   }
 }
-
-
 
 export function getHeatMapData(
   data: { pair: string; values: { [key: string]: string }[] }[]

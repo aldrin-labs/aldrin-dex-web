@@ -2,36 +2,14 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import selectedIcon from '../../../../icons/selected.svg'
-import { IProps } from './PortfolioTableSum.types'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum.types'
+import {sampleData} from './dataMock'
+import {checkForString, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
 
 export default class PortfolioTableSum extends React.Component<IProps> {
-  onFloorN = (x: string | number, n: number) => {
-    if (typeof x === 'string') {
-      return x
-    }
-    let mult = Math.pow(10, n)
-    let multAfterCalculation = Math.floor(x * mult) / mult
-
-    const reg = this.props.isUSDCurrently
-      ? /-?[0-9]+(?=\.[0-9]+)\.[0-9]{2}/g
-      : /-?[0-9]+(?=\.[0-9]+)\.[0-9]{8}/g
-
-    if (multAfterCalculation.toString().match(reg)) {
-      const sum = multAfterCalculation.toString().match(reg)
-      if (!sum) {
-        return null
-      }
-
-      return sum[0]
-    } else if (multAfterCalculation) {
-      return multAfterCalculation
-    } else {
-      return '0'
-    }
-  }
-
   render() {
-    const { selectedSum, industry } = this.props
+    const { selectedSum, industry, isUSDCurrently } = this.props
+    const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
 
     return (
       <PTBody style={{ borderBottom: 'none' }}>
@@ -41,23 +19,23 @@ export default class PortfolioTableSum extends React.Component<IProps> {
               <SvgIcon src={selectedIcon} width={18} height={18} />
             </PTD>
           )}
+          {console.log(Object.keys(selectedSum))}
           {Object.keys(selectedSum).map((key) => {
             let res = selectedSum[key]
             if (Array.isArray(res)) {
               const [icon, currency] = res
 
+              const formattedCurrency = checkForString(currency) ? currency : roundAndFormatNumber(parseFloat(currency),numberOfDigitsAfterPoint)
+
               return (
                 <PTD key={key}>
                   {icon}
-                  {this.onFloorN(currency, 3)}
+                  {formattedCurrency}
                 </PTD>
               )
             }
             if (!Number.isNaN(selectedSum[key])) {
-              res = this.onFloorN(
-                selectedSum[key],
-                this.props.isUSDCurrently ? 2 : 8
-              )
+              res = checkForString(selectedSum[key]) ? selectedSum[key] : roundAndFormatNumber(parseFloat(selectedSum[key]),numberOfDigitsAfterPoint)
             }
 
             return (
@@ -72,44 +50,86 @@ export default class PortfolioTableSum extends React.Component<IProps> {
   }
 }
 const PTDIndustry = css`
+  padding: 10px 0 10px 10px;
   min-width: 100px;
 
   &:nth-child(1) {
+    min-width: 30px;
     padding: 1.75px 10px;
+  }
+  
+  &:nth-child(2) {
+    min-width: 90px;
   }
 
   &:nth-child(3) {
+    min-width: 60px;
   }
   &:nth-child(n + 4) {
     text-align: right;
   }
 
   &:nth-child(4) {
-    min-width: 250px;
+    min-width: 200px;
   }
-
-  &:nth-child(n + 6) {
-    min-width: 150px;
+  
+  &:nth-child(7) {
+    min-width: 120px;
+    padding-right: 16px;
+  }
+  
+  &:nth-last-child(1) {
+    min-width: 112px;
+    padding-right: 10px;
   }
 `
 
 const PTDOther = css`
-  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
-    min-width: 100px;
-  }
+  min-width: 100px;
+  //font-size: 13px;
+  font-size: 12px;
+  padding: 10px 0 10px 10px;
+
+
   &:nth-child(1) {
     padding: 10px;
+    min-width: 30px;
   }
+  
   &:nth-child(2) {
     text-align: left;
+    min-width: 80px;
   }
+  
   &:nth-child(3) {
-    min-width: 70px;
     text-align: left;
+    min-width: 50px;
   }
+  
+  &:nth-child(4) {
+    min-width: 85px;
+  }
+  
+  &:nth-child(5) {
+    //min-width: 110px;
+  }
+  
+  &:nth-child(6) {
+      min-width: 90px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 93px;
+  }
+  
   &:nth-child(9) {
-    min-width: 110px;
+    min-width: 95px;
   }
+  
+  &:nth-child(10) {
+    min-width: 101px;
+  }
+ 
 `
 
 const PTD = styled.td`

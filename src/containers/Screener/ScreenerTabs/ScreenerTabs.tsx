@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { IProps } from './ScreenerTabs.types'
+import { IProps } from '@containers/Screener/ScreenerTabs/ScreenerTabs.types'
 
 const ScreenerTabs = ({ ...props }: IProps) => {
   const onClickTab = (clickedTab: string) => {

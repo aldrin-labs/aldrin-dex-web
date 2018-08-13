@@ -94,3 +94,68 @@ export const getExchangesForKeysListQuery = gql`
     }
   }
 `
+
+export const getCryptoWalletsQuery = gql`
+  query getCryptoWallets {
+    getProfile {
+      cryptoWallets {
+        _id
+        name
+        address
+        baseAssetId
+        baseAsset {
+          _id
+          symbol
+          name
+        }
+        ownerId
+        owner {
+          _id
+          username
+        }
+      }
+    }
+  }
+`
+
+export const addCryptoWalletMutation = gql`
+  mutation addCryptoWallet(
+    $name: String!
+    $assetName: String!
+    $address: String!
+  ) {
+    addCryptoWallet(
+      name: $name
+      assetName: $assetName
+      address: $address
+    ) {
+      _id
+      name
+      address
+      ownerId
+      owner {
+        _id
+        username
+      }
+      baseAsset {
+        name
+        symbol
+      }
+    }
+  }
+`
+
+export const deleteCryptoWalletMutation = gql`
+  mutation deleteCryptoWallet($assetName: String!, $address: String!) {
+    deleteCryptoWallet(assetName: $assetName, address: $address)
+  }
+`
+
+export const searchSupportedNetworksQuery = gql`
+  query searchSupportedNetworks {
+    searchSupportedNetworks(limit: 100, search: "et") {
+      name
+      symbol
+    }
+  }
+`

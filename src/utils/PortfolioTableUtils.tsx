@@ -1,133 +1,162 @@
-import { RowT } from '../containers/Portfolio/components/PortfolioTable/types'
+import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import styled from 'styled-components'
 import React from 'react'
 
-export const onSortTableFull = (key, tableData, currentSort, arrayOfStringHeadings, arrayOfDateHeadings) => {
-    if (!tableData) {
-      return
+export const calcAllSumOfPortfolioAsset = (
+  assets: any,
+  isUSDCurrently: boolean,
+  cryptoWallets: any = null,
+): number => {
+  // transforming data like assets from profile to IData format
+  const sum = assets.filter(Boolean).reduce((acc: number, curr: any) => {
+    const { value = 0, asset = { priceUSD: 0 } } = curr || {}
+    if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
+      return null
     }
+    const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
 
-    const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
-    const dateKey = arrayOfDateHeadings ? arrayOfDateHeadings.some((heading) => heading === key) : false
-
-    let newCurrentSort : { key: string; arg: 'ASC' | 'DESC' } | null
-
-    const newData = tableData.slice().sort((a, b) => {
-      if (currentSort && currentSort.key === key) {
-        if (currentSort.arg === 'ASC') {
-          newCurrentSort = { key, arg: 'DESC' }
-
-          if (stringKey) {
-            return onSortStrings(b[key], a[key])
-          }
-
-          if (dateKey) {
-            return new Date(b[key]).getTime() - new Date(a[key]).getTime();
-          }
-
-          return b[key] - a[key]
-        } else {
-          newCurrentSort = { key, arg: 'ASC' }
-
-          if (stringKey) {
-            return onSortStrings(a[key], b[key])
-          }
-
-          if (dateKey) {
-            return new Date(a[key]).getTime() - new Date(b[key]).getTime();
-          }
-
-          return a[key] - b[key]
+    return acc + value * Number(price)
+  }, 0);
+  if (cryptoWallets) {
+    return cryptoWallets.reduce((acc: number, curr: any) =>
+      curr.assets.reduce((acc: number, curr: any) => {
+        const { balance = 0, asset = { priceUSD: 0 } } = curr || {}
+        if (!balance || !asset || !asset.priceUSD || !asset.priceBTC) {
+          return null
         }
-      }
+        const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
 
-      newCurrentSort = { key, arg: 'ASC' }
+        return acc + balance * Number(price)
+      }, 0), sum)
+  }
 
-      if (stringKey) {
-        return onSortStrings(a[key], b[key])
-      }
-
-      if (dateKey) {
-        return new Date(a[key]).getTime() - new Date(b[key]).getTime();
-      }
-
-      return a[key] - b[key]
-    })
-
-
-    console.log('dateKey: ', dateKey);
-    console.log(newData)
-    console.log(newCurrentSort)
-    console.log('stringKey: ', stringKey)
-
-
-  return {
-      newData,
-      newCurrentSort
-    }
-
+  return sum;
 }
 
-export const getArrayContainsOnlyOnePropertyType = (arrayOfObjects: object, prop) => {
-  return arrayOfObjects.reduce((result, element) => {
+export const percentagesOfCoinInPortfolio = (
+  asset: any,
+  allSum: number,
+  isUSDCurrently: boolean
+): number =>
+  isUSDCurrently
+    ? Number(asset.asset.priceUSD * asset.value * 100 / allSum)
+    : Number(asset.asset.priceBTC * asset.value * 100 / allSum)
+
+export const onSortTableFull = (
+  key,
+  tableData,
+  currentSort,
+  arrayOfStringHeadings,
+  arrayOfDateHeadings
+) => {
+  if (!tableData) {
+    return
+  }
+
+  const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
+  const dateKey = arrayOfDateHeadings
+    ? arrayOfDateHeadings.some((heading) => heading === key)
+    : false
+
+  let newCurrentSort: { key: string; arg: 'ASC' | 'DESC' } | null
+
+  const newData = tableData.slice().sort((a, b) => {
+    if (currentSort && currentSort.key === key) {
+      if (currentSort.arg === 'ASC') {
+        newCurrentSort = { key, arg: 'DESC' }
+
+        if (stringKey) {
+          return onSortStrings(b[key], a[key])
+        }
+
+        if (dateKey) {
+          return new Date(b[key]).getTime() - new Date(a[key]).getTime()
+        }
+
+        return b[key] - a[key]
+      } else {
+        newCurrentSort = { key, arg: 'ASC' }
+
+        if (stringKey) {
+          return onSortStrings(a[key], b[key])
+        }
+
+        if (dateKey) {
+          return new Date(a[key]).getTime() - new Date(b[key]).getTime()
+        }
+
+        return a[key] - b[key]
+      }
+    }
+
+    newCurrentSort = { key, arg: 'ASC' }
+
+    if (stringKey) {
+      return onSortStrings(a[key], b[key])
+    }
+
+    if (dateKey) {
+      return new Date(a[key]).getTime() - new Date(b[key]).getTime()
+    }
+
+    return a[key] - b[key]
+  })
+
+  console.log('dateKey: ', dateKey)
+  console.log(newData)
+  console.log(newCurrentSort)
+  console.log('stringKey: ', stringKey)
+
+  return {
+    newData,
+    newCurrentSort,
+  }
+}
+
+export const getArrayContainsOnlyOnePropertyType = (
+  arrayOfObjects: object,
+  prop
+) =>
+  arrayOfObjects.reduce((result, element) => {
     result.push(element[prop])
 
     return result
   }, [])
-}
 
-export const combineDataToSelect = (arrayOfOneType: object) => {
-  return arrayOfOneType.map((elem) => {
-    return {
+export const combineDataToSelect = (arrayOfOneType: object) =>
+  arrayOfOneType.map((elem) =>
+    ({
       value: elem,
       label: elem,
-    }
-  })
-}
+    }))
 
-export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) => {
-  return arrayOfObjects.map((a) => Object.assign({}, a))
-}
+export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) =>
+  arrayOfObjects.map((a) => Object.assign({}, a))
 
-export const onSortStrings = (a: string, b: string): number => {
-  return a.localeCompare(b)
-}
+export const onSortStrings = (a: string, b: string): number =>
+  a.localeCompare(b)
 
-export const onFloorN = (x: number, n: number) => {
-  let mult = Math.pow(10, n)
-  return Math.floor(x * mult) / mult
-}
+export const roundPercentage = (num: number) => num.toFixed(2)
 
-export const calcPercentage = (num: number) => onFloorN(num, 2)
+export const formatNumberToUSFormat = (numberToFormat: number) => numberToFormat.toString().replace(/\d(?=(\d{3})+\.)/g, '$&,')
 
-export const addZerosToEnd = (num: string, isUSDCurrently: boolean): string => {
-  const reg = /(?=\.[0-9]+)\.[0-9]+/g
-  const diff = isUSDCurrently ? 3 : 9
+export const checkForString = (numberOrString: number | string) => typeof numberOrString === 'string'
 
-  if (reg.test(num)) {
-    const [str] = num.match(reg) || ['']
-    let tmp = str
-    const len = str.length
-    for (let i = 0; i < diff - len; i++) {
-      tmp += 0
-    }
-    const [head] = num.match(/[0-9]+\./g) || ['']
-    let woPoint = head.slice(0, -1)
-    const result = (woPoint += tmp)
-    return result || ''
+export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number) => {
+
+  if (x === 0) {
+    return '0'
   }
-  return num
+
+  return formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
 }
 
-export const roundUSDOff = (num: number, isUSDCurrently: boolean): string => {
-  if (num === 0.0) return "0";
-  return new Number(num).toFixed(isUSDCurrently ? 2 : 8);
-}
 
 const Icon = styled.i`
   padding-right: 5px;
 `
 
+// TODO: SHOULD BE REFACTORED
 export const onValidateSum = (
   reducedSum: RowT,
   selectedBalances: RowT,
@@ -135,24 +164,24 @@ export const onValidateSum = (
   isUSDCurrently: boolean
 ) => {
   // const { selectedBalances, tableData, isUSDCurrently } = this.state
-  if (!selectedBalances || !tableData) return null
+  if (!selectedBalances || !tableData) { return null }
   const clonedSum = { ...reducedSum }
 
   const mainSymbol = isUSDCurrently ? (
     <Icon className="fa fa-usd" key="usd" />
   ) : (
-    <Icon className="fa fa-btc" key="btc" />
-  )
+      <Icon className="fa fa-btc" key="btc" />
+    )
 
   if (selectedBalances.length === tableData.length) {
-    clonedSum.currency = 'All'
+    clonedSum.currency = 'Total'
     clonedSum.symbol = '-'
     clonedSum.percentage = 100
   } else if (selectedBalances.length > 1) {
     clonedSum.currency = 'Selected'
     clonedSum.symbol = '-'
   }
-  clonedSum.percentage = `${calcPercentage(clonedSum.percentage)}%`
+  clonedSum.percentage = `${roundPercentage(clonedSum.percentage)}%`
   clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
   clonedSum.realizedPL = [mainSymbol, clonedSum.realizedPL]
   clonedSum.unrealizedPL = [mainSymbol, clonedSum.unrealizedPL]

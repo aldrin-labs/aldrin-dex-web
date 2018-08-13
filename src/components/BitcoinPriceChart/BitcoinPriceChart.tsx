@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import Chart from './Chart'
-import BarChart from './BarChart'
+import Chart from '@components/BitcoinPriceChart/Chart'
+import BarChart from '@components/BitcoinPriceChart/BarChart'
 import { Link } from 'react-router-dom'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import bounce from '@icons/bounce.svg'
 import diez from '@icons/diez.svg'
 import time from '@icons/time.svg'
-import { firstDataSet, secondDataSet, thirdDataSet } from './barChartDataMock'
+import { firstDataSet, secondDataSet, thirdDataSet } from '@components/BitcoinPriceChart/barChartDataMock'
 
 class BitcoinPriceChart extends Component {
   render() {

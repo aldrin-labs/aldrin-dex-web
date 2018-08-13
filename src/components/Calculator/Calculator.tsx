@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import Button from '@components/Elements/Button/Button'
 
-import { Props, State } from './types'
+import { Props, State } from '@components/Calculator/types'
 
 export default class Calculator extends React.Component<Props, State> {
   constructor(props: Props) {

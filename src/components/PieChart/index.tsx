@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { RadialChart, Hint, makeVisFlexible } from 'react-vis'
 
-import { Props, State, PiePiece } from './PieChart.types'
+import { Props, State, PiePiece } from '@components/PieChart/PieChart.types'
 
 const FlexibleRadialChart = makeVisFlexible(RadialChart)
 
@@ -11,7 +11,7 @@ export default class PieChart extends React.Component<Props, State> {
     super(props)
 
     this.state = {
-      data: props.data,
+      data: [],
       value: null,
     }
   }
@@ -36,7 +36,9 @@ export default class PieChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { value, data } = this.state
+    const { value } = this.state
+    const { data } = this.props
+
     const { width, height, radius, innerRadius, flexible, withHints } = this.props
     const hasCustomColors = data.some((a) => !!a.color || !!a.style)
     const colorIsNumber = data.every((a) => typeof a.color === 'number')
@@ -46,7 +48,7 @@ export default class PieChart extends React.Component<Props, State> {
         data={data}
         animation
         innerRadius={innerRadius || 0}
-        colorType="linear"
+        colorType={hasCustomColors ? 'literal' : 'linear'}
         onValueMouseOver={this.onValueMouseOver}
         onSeriesMouseOut={this.onSeriesMouseOut}
       >

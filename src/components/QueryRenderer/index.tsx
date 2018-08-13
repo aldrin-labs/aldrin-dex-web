@@ -5,21 +5,62 @@ import { DocumentNode } from 'graphql'
 import { Loading } from '@components/Loading'
 import { ErrorFallback } from '@components/ErrorFallback'
 
-export interface Props {
+export interface IProps {
   query: DocumentNode
+  fetchPolicy:
+    | 'cache-first'
+    | 'cache-and-network'
+    | 'network-only'
+    | 'cache-only'
+    | 'no-cache'
+    | 'standby'
   component: React.ReactNode
+  placeholder?: React.ReactElement<{}>
+  renderWithPlaceholder?: boolean
   variables?: { [key: string]: any } | null
   [key: string]: any
 }
 
-export default class QueryRenderer extends React.Component<Props> {
+export default class QueryRenderer extends React.Component<IProps> {
   render() {
-    const { query, component, variables, ...rest } = this.props
+    const {
+      query,
+      component,
+      variables,
+      subscriptionArgs,
+      renderWithPlaceholder,
+      placeholder: Placeholder,
+      fetchPolicy,
+      ...rest
+    } = this.props
 
     return (
-      <Query query={query} variables={variables}>
-        {({ loading, error, data, refetch, networkStatus, fetchMore }) => {
-          if (loading) {
+      <Query
+        query={query}
+        variables={variables}
+        fetchPolicy={fetchPolicy ? fetchPolicy : 'cache-first'}
+      >
+        {({
+          loading,
+          error,
+          data,
+          refetch,
+          networkStatus,
+          fetchMore,
+          subscribeToMore,
+          ...result
+        }) => {
+          if (loading && renderWithPlaceholder) {
+            return (
+              <>
+                {Placeholder && (
+                  <div style={{ margin: '0 auto' }}>
+                    <Placeholder />{' '}
+                  </div>
+                )}
+              </>
+            )
+          } else if (loading) {
             return <Loading centerAligned />
           } else if (error) {
             return <ErrorFallback error={error} />
@@ -27,13 +68,23 @@ export default class QueryRenderer extends React.Component<Props> {
 
           const Component = component
 
-          return (
+          return subscriptionArgs ? (
             <Component
               data={data}
               refetch={refetch}
               fetchMore={fetchMore}
+              subscribeToMore={() =>
+                subscribeToMore({
+                  document: subscriptionArgs.subscription,
+                  variables: { ...subscriptionArgs.variables },
+                  updateQuery: subscriptionArgs.updateQueryFunction,
+                })
+              }
+              {...result}
               {...rest}
             />
+          ) : (
+            <Component data={data} fetchMore={fetchMore} {...rest} />
           )
         }}
       </Query>

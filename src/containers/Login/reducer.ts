@@ -1,6 +1,6 @@
 import { createReducer } from 'redux-act'
 
-import * as actions from './actions'
+import * as actions from '@containers/Login/actions'
 
 const initialState = {
   user: null,

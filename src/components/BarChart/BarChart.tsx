@@ -9,17 +9,24 @@ import {
   DiscreteColorLegend,
 } from 'react-vis'
 
-import { IProps, IState, Items, IValue, IChart } from './BarChart.types'
+import {
+  IProps,
+  IState,
+  Items,
+  IValue,
+  IChart,
+} from '@components/BarChart/BarChart.types'
 
 const axisStyle = {
   ticks: {
     padding: '1rem',
     stroke: '#fff',
-    opacity: 0.5,
+    opacity: 0.75,
     fontFamily: 'Roboto',
     fontSize: '12px',
     fontWeight: 100,
   },
+  text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
 }
 class BarChart extends Component<IProps, IState> {
   state = {
@@ -31,7 +38,7 @@ class BarChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { showPlaceholder, charts, height } = this.props
+    const { showPlaceholder, charts, height, alwaysShowLegend } = this.props
     const { value } = this.state
 
     const ITEMS: Items[] = []
@@ -57,7 +64,9 @@ class BarChart extends Component<IProps, IState> {
       <div>
         <Container height={height}>
           <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal">
-            <LegendContainer value={value}>
+            <LegendContainer
+              value={alwaysShowLegend ? { x: '1', y: '1' } : value}
+            >
               <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
             </LegendContainer>
             {showPlaceholder ? (
@@ -108,7 +117,7 @@ const LegendContainer = styled.div`
 
 const Container = styled.div`
   height: ${(props: { height: number }) =>
-    props.height ? props.height : 100}px;
+    props.height ? `${props.height}px` : `100%`};
   width: 100%;
 `
 

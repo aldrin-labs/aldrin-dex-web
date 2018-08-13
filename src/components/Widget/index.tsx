@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import menuIcon from '@icons/menu.svg'
 
-import { Props } from './types'
+import { Props } from '@components/Widget/types'
 
 export default class Widget extends React.Component<Props> {
   render() {

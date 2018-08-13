@@ -4,24 +4,14 @@ import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import AccountIcon from 'react-icons/lib/md/supervisor-account'
-import { Button } from '@material-ui/core'
-import FullScreenIcon from 'react-icons/lib/md/fullscreen'
-import { FaFilter } from 'react-icons/lib/fa'
+import AccountIcon from 'react-icons/lib/md/settings'
+import { Button, IconButton } from '@material-ui/core'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Dropdown from '@components/SimpleDropDownSelector'
-import Selector from './Correlation/DropDownMenu/DropDownMenu'
 import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
-import { IProps } from './PortfolioTableTabs.types'
-import Menu from './ThreeDotsMenu'
-
-import {
-  setCorrelationPeriod,
-  toggleCorrelationTableFullscreen,
-  filterValuesLessThen,
-} from '../../actions'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
+import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
 
 const UPDATE_PORTFOLIO = gql`
   mutation updatePortfolio {
@@ -52,17 +42,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const {
-      tab,
-      portfolio,
-      isShownMocks,
-      toggleWallets,
-      setCorrelationPeriod,
-      correlationPeriod,
-      filterValuesLessThen,
-      filterPercent,
-    } = this.props
-    const dataFromProps = this.props.data
+    const { tab, portfolio, toggleWallets } = this.props
 
     return (
       <React.Fragment>
@@ -74,7 +54,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
                 toggleWallets()
               }}
             >
-              <StyledAccountIcon />
+              <AccountIcon />
             </ToggleAccountsBtn>
 
             <Tab
@@ -113,57 +93,21 @@ class PortfolioTableTabs extends React.Component<IProps> {
             </Tab>
           </TabContainer>
 
-          {tab === 'main' ? (
-            <FilterValues>
-              <FilterIcon />
-              <Dropdown
-                style={{ width: '100%' }}
-                value={filterPercent}
-                handleChange={filterValuesLessThen}
-                name="filterValuesInMain"
-                options={[
-                  { value: 0, label: '0% <' },
-                  { value: 0.1, label: '0.1% <' },
-                  { value: 0.2, label: '0.2% <' },
-                  { value: 0.3, label: '0.3% <' },
-                  { value: 0.5, label: '0.5% <' },
-                  { value: 1, label: '1% <' },
-                  { value: 10, label: '10% <' },
-                ]}
-              />
-            </FilterValues>
-          ) : null}
-
           <ButtonContainer>
-            {tab === 'correlation' || tab === 'optimization' ? (
-              <>
-                <Selector
-                  correlationPeriod={correlationPeriod}
-                  setCorrelationPeriodToStore={setCorrelationPeriod}
-                />
-                {tab === 'correlation' && (
-                  <StyledFullscreenButton
-                    onClick={this.props.onFullscreenButtonClick}
-                  >
-                    <FullScreenIcon />
-                  </StyledFullscreenButton>
-                )}
-              </>
-            ) : null}
-
             {/*<ToggleBtn onClick={this.onToggleChart}>*/}
             {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
             {/*</ToggleBtn>*/}
 
             {tab !== 'correlation' &&
               tab !== 'optimization' &&
-              tab !== 'rebalance' &&
-              (dataFromProps || isShownMocks) && (
+              tab !== 'rebalance' && (
                 <SwitchRefreshContainer>
-                  <Switch
-                    onClick={this.onToggleUSDBTC}
-                    values={['USD', 'BTC']}
-                  />
+                  <MoveRightFix fix={tab === 'main'}>
+                    <Switch
+                      onClick={this.onToggleUSDBTC}
+                      values={['USD', 'BTC']}
+                    />
+                  </MoveRightFix>
 
                   {tab === 'main' && (
                     <Mutation mutation={UPDATE_PORTFOLIO}>
@@ -172,7 +116,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
                           loading || (portfolio && portfolio.processing)
 
                         return (
-                          <ToggleBtn onClick={updatePortfolio}>
+                          <RefreshButton size="small" onClick={updatePortfolio}>
                             {isLoading ? (
                               <SvgIcon
                                 src={gridLoader}
@@ -182,7 +126,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
                             ) : (
                               'Refresh'
                             )}
-                          </ToggleBtn>
+                          </RefreshButton>
                         )
                       }}
                     </Mutation>
@@ -196,30 +140,33 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 }
 
-const FilterValues = styled.div`
-  width: 10%;
-  display: flex;
-  place-items: center;
+const RefreshButton = styled(Button)`
+  height: 1rem;
+  margin-right: 0.25rem;
 `
-const FilterIcon = styled(FaFilter)`
-  color: whitesmoke;
-  font-size: 1.5rem;
-  margin: 0 0.5rem;
+
+const MoveRightFix = styled.div`
+  position: relative;
+  left: ${(props: { fix: boolean }) => (props.fix ? '6px' : 0)};
 `
 
 const PTHeadingBlock = styled.div`
   display: flex;
+
   position: sticky;
   top: 0;
   background-color: #393e44;
   z-index: 99;
 
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 17px;
   min-height: 100px;
 
+  @media (max-width: 1290px) {
+    justify-content: flex-start;
+  }
   @media (max-width: 700px) {
     &:first-child {
       align-items: flex-start;
@@ -251,7 +198,13 @@ const ButtonContainer = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   height: 100%;
+  position: absolute;
+  right: 0;
 
+  @media (max-width: 1080px) {
+    right: 1rem;
+    left: inherit;
+  }
   @media (max-width: 840px) {
     margin-right: 1rem;
   }
@@ -263,41 +216,25 @@ const ButtonContainer = styled.div`
   }
 `
 
-const Btn = css`
-  background: transparent;
-  border: none;
-  outline: none;
-  cursor: pointer;
-  color: #fff;
-  font-size: 1em;
-  padding: 0;
-`
-
-const ToggleBtn = styled.button`
-  ${Btn};
-`
-
-const ToggleAccountsBtn = ToggleBtn.extend`
+const ToggleAccountsBtn = styled(IconButton)`
   display: block;
+  padding: 0.75rem;
+  margin-top: 15%;
 
-  @media (min-width: 1080px) {
+  @media (min-width: 1290px) {
     display: none;
   }
 `
 
-const StyledAccountIcon = styled(AccountIcon)`
-  font-size: 1.5rem;
-  margin-top: 0.3rem;
-`
-
 const TabContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  flex-flow: wrap;
+  width: 70%;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
 
-  @media (max-width: 1080px) {
-    justify-content: flex-start;
+  @media (max-width: 1290px) {
+    grid-template-columns: repeat(2, 4rem);
   }
 `
 
@@ -319,7 +256,7 @@ const Tab = styled.button`
   outline: none;
   box-sizing: border-box;
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1290px) {
     display: none;
     width: 8rem;
     padding: 0.5rem;
@@ -333,7 +270,11 @@ const Tab = styled.button`
 
 const SwitchRefreshContainer = styled.div`
   display: flex;
+  align-items: center;
 
+  @media (max-width: 1080px) {
+    padding-top: 20px;
+  }
   @media (max-width: 710px) {
     padding-top: 10px;
   }
@@ -347,32 +288,10 @@ const SwitchRefreshContainer = styled.div`
   }
 `
 
-const StyledFullscreenButton = styled(Button)`
-  z-index: 100;
-  color: #fff;
-
-  && {
-    font-size: 2rem;
-    margin: auto 1rem;
-    width: 2rem;
-  }
-`
-
 const mapStateToProps = (store) => ({
-  isShownMocks: store.user.isShownMocks,
-  correlationPeriod: store.portfolio.correlationPeriod,
+  isShownMock: store.portfolio.isShownMock,
 })
 
-const mapDispatchToProps = (dispatch: any) => ({
-  onFullscreenButtonClick: () => dispatch(toggleCorrelationTableFullscreen()),
-  filterValuesLessThen: (percent: number) =>
-    dispatch(filterValuesLessThen(percent)),
-  setCorrelationPeriod: (payload: any) =>
-    dispatch(setCorrelationPeriod(payload)),
-})
-
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  PortfolioTableTabs
-)
+const storeComponent = connect(mapStateToProps)(PortfolioTableTabs)
 
 export default compose()(storeComponent)

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable'
-import * as actions from './actions'
+import * as actions from '@containers/Login/actions'
 
 function storeLogin(profile: any) {
   return {

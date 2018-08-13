@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled, { keyframes } from 'styled-components'
+import { Typography } from '@material-ui/core'
 
 import { Cell as RowCell } from '@components/Table/Table'
 
@@ -44,8 +45,10 @@ class AnimatedCell extends Component<IProps> {
     const { animated } = this.state
 
     return (
-      <Cell animated={animated ? animation : 'none'} {...{ color, width }}>
-        {value}
+      <Cell animated={'none'} {...{ color, width }}>
+        <Typography variant="body1" color="default">
+          {value}
+        </Typography>
         {children}
       </Cell>
     )

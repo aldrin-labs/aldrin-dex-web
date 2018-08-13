@@ -1,22 +1,30 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import { Typography, Divider } from '@material-ui/core'
 
-import PortfolioTableMain from './PortfolioTableMain'
-import PortfolioTableSum from '../PortfolioTableSum'
-import PortfolioTableHead from './PortfolioTableHead'
+import { getPortfolioQuery } from '@containers/Portfolio/api'
+import QueryRenderer from '@components/QueryRenderer'
+import PortfolioTableMain from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain'
+import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
+import PortfolioTableHead from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead'
 import {
   onValidateSum,
   onSortStrings,
-  calcPercentage,
-} from '../../../../../utils/PortfolioTableUtils'
-import ProfileChart from '@containers/Profile/components/ProfileChart'
-import { MOCK_DATA } from '../dataMock'
-import { Args } from '../types'
-import { IPortfolio } from '../../../interfaces'
-import { IProps, IState } from './PortfolioTableBalances.types'
-import TradeOrderHistoryTable from './TradeOrderHistory/TradeOrderHistoryTable'
+  roundPercentage,
+  calcAllSumOfPortfolioAsset,
+} from '@utils/PortfolioTableUtils'
+import * as actions from '@containers/Portfolio/actions'
+import Chart from '@containers/Portfolio/components/GQLChart'
+import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
+import { IPortfolio } from '@containers/Portfolio/interfaces'
+import {
+  IProps,
+  IState,
+} from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
+import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
+import { customAquaScrollBar } from '@utils/cssUtils'
 
 const defaultSelectedSum = {
   currency: '',
@@ -41,11 +49,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     selectedSum: defaultSelectedSum,
     currentSort: null,
     activeKeys: null,
+    activeWallets: null,
     portfolio: null,
   }
 
   componentDidMount() {
-    const { data, isShownMocks } = this.props
+    const {
+      data: { getProfile: data },
+      isShownMocks,
+      switchToUsd,
+    } = this.props
+
+    switchToUsd()
 
     if (!data && isShownMocks) {
       this.setState({ portfolio: { assets: MOCK_DATA } }, () =>
@@ -62,9 +77,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const composeWithMocks = isShownMocks
       ? {
-          ...portfolio,
-          assets: portfolio.assets.concat(MOCK_DATA),
-        }
+        ...portfolio,
+        assets: portfolio.assets.concat(MOCK_DATA),
+        cryptoWallets: portfolio.cryptoWallets.concat([])
+      }
       : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -76,7 +92,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.data) {
-      const { portfolio } = nextProps.data
+      const { portfolio } = nextProps.data.getProfile
 
       if (!portfolio || portfolio === null) {
         return
@@ -84,9 +100,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
       const composeWithMocks = nextProps.isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio!.assets!.concat(MOCK_DATA),
-          }
+          ...portfolio,
+          assets: portfolio!.assets!.concat(MOCK_DATA),
+          cryptoWallets: portfolio!.cryptoWallets!.concat([])
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -100,9 +117,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
       const composeWithMocks = nextProps.isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio.assets.concat(MOCK_DATA),
-          }
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+          cryptoWallets: portfolio.cryptoWallets.concat([])
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -128,24 +146,54 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   combineTableData = (portfolio?: IPortfolio | null) => {
-    const { activeKeys } = this.state
+    const { activeKeys, activeCryptoWallets } = this.state
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
-    const { assets } = portfolio
+    const { assets, cryptoWallets } = portfolio
+    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
+    const walletData = cryptoWallets.map((row: InewRowT) => {
 
-    const allSums = assets.filter(Boolean).reduce((acc, curr) => {
-      const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-      if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
-        return null
-      }
-      const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+      const {
+        baseAsset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
+        name = '',
+        address = '',
+        assets = [],
+      } =
+        row || {}
+      // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
+      //   return null
+      // }
+      const { symbol, priceUSD, priceBTC } = baseAsset || {}
+      // console.log(row);
+      // console.log(baseAsset);
+      return assets.map((walletAsset: any) => {
+        const mainPrice = isUSDCurrently ? walletAsset.asset.priceUSD : walletAsset.asset.priceBTC
 
-      return acc + value * Number(price)
-    }, 0)
+        const currentPrice = mainPrice * walletAsset.balance
+        const col = {
+          currency: (baseAsset.symbol + ' ' + name) || '',
+          symbol: walletAsset.asset.symbol,
+          percentage: roundPercentage(currentPrice * 100 / allSums),
+          price: mainPrice || 0,
+          quantity: Number((walletAsset.balance).toFixed(5)) || 0,
+          daily: 0,
+          dailyPerc: 0,
+          currentPrice: currentPrice || 0,
+          realizedPL: 0,
+          realizedPLPerc: 0,
+          unrealizedPL: 0,
+          unrealizedPLPerc: 0,
+          totalPL: 0,
+        }
 
-    const tableData = assets
+        return col
+      })
+    }).reduce((a: any, b: any) => a.concat(b), []);
+
+
+    const tableData = [assets
       .map((row: InewRowT) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
@@ -179,11 +227,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const col = {
           currency: name || '',
           symbol,
-          percentage: calcPercentage(currentPrice * 100 / allSums),
+          percentage: roundPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
           quantity: value || 0,
           currentPrice: currentPrice || 0,
-          daily: calcPercentage(mainPrice / 100 * percentChangeDay),
+          daily: roundPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
           realizedPL: realizedProfit,
           realizedPLPerc: 0,
@@ -193,7 +241,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         }
 
         return col
-      })
+      }), walletData].reduce((a: any, b: any) => a.concat(b), [])
       .filter(Boolean)
       .filter(
         (el) =>
@@ -203,7 +251,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             : 0)
       )
 
-    this.setState({ tableData }, () =>
+    const selectAllLinesInTable = tableData.map((_, i) => i)
+
+    this.setState({ tableData, selectedBalances: selectAllLinesInTable }, () =>
       this.calculateSum(this.state.selectedBalances)
     )
   }
@@ -237,9 +287,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = tableData.filter(
-      (td: IRowT, idx: number) => selectedRows.indexOf(idx) >= 0
-    )
+    const sum = selectedRows.map((idx) => tableData[idx])
     const reducedSum = sum.reduce(
       (acc: any, val: IRowT) => ({
         currency: val.currency,
@@ -283,7 +331,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       tableData,
       isUSDCurrently
     )
-    // console.log('validateSum: ', validateSum)
+
     this.setState({ selectedSum: validateSum })
   }
 
@@ -368,7 +416,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
-        <Container isShownChart={isShownChart}>
+
+        <GridContainer>
           <TableAndHeadingWrapper>
             <TableHeading>Portfolio</TableHeading>
             <Wrapper>
@@ -397,42 +446,67 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           </TableAndHeadingWrapper>
 
           <TableAndHeadingWrapper>
-            <TableHeading>Trade</TableHeading>
+            <TableHeading>Trade history</TableHeading>
             <Wrapper>
               <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} />
             </Wrapper>
           </TableAndHeadingWrapper>
-        </Container>
 
-        <PTChartContainer>
-          <ProfileChart
-            style={{
-              marginLeft: 0,
-              borderTop: '1px solid #fff',
-              minHeight: '30vh',
-            }}
-            height="20vh"
-            marginTopHr="10px"
-          />
-        </PTChartContainer>
+          <StyledDivider light />
+          <PTChartContainer>
+            <ChartTitle color="default" variant="title">
+              Portfolio Value
+            </ChartTitle>
+            <Chart
+              isShownMocks={this.props.isShownMocks}
+              setActiveChart={this.props.setActiveChart}
+              activeChart={this.props.activeChart}
+              style={{
+                marginLeft: 0,
+                minHeight: '10vh',
+              }}
+              height="20vh"
+              marginTopHr="10px"
+              coins={
+                this.state.selectedBalances &&
+                  this.state.selectedBalances.length > 0
+                  ? this.state.selectedBalances.map(
+                    (idx) => this.state.tableData[idx]
+                  )
+                  : []
+              }
+            />
+          </PTChartContainer>
+        </GridContainer>
       </PTWrapper>
     )
   }
 }
 
-const Container = styled.div`
-  display: flex;
-  height: ${(props: { isShownChart: boolean }) =>
-    props.isShownChart ? '40vh' : ''};
+const GridContainer = styled.div`
+  align-self: center;
 
-  @media (max-height: 650px) {
-    height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '45vh' : ''};
+  display: Grid;
+  height: 70%;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 58% 1% 40%;
+
+  @media (min-width: 1400px) {
+    height: 100%;
   }
-  @media (max-width: 450px) {
-    height: ${(props: { isShownChart: boolean }) =>
-      props.isShownChart ? '50vh' : ''};
+  @media (min-width: 1800px) {
+    justify-content: center;
+
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 58% 1% 40%;
   }
+  @media (min-width: 3000px) {
+    align-items: center;
+  }
+`
+
+const ChartTitle = styled(Typography)`
+  margin-left: 1.2rem;
 `
 
 const PTWrapper = styled.div`
@@ -446,7 +520,7 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
-
+  overflow-y: auto;
   @media (max-width: 840px) {
     margin: 1.5rem auto;
   }
@@ -459,6 +533,13 @@ const PTWrapper = styled.div`
   @media (max-width: 425px) {
     width: calc(100% - 20px);
   }
+
+  ${customAquaScrollBar};
+`
+
+const StyledDivider = styled(Divider)`
+  margin-bottom: 1rem;
+  grid-column: 1 / span 2;
 `
 
 const TableAndHeadingWrapper = styled.div`
@@ -467,17 +548,7 @@ const TableAndHeadingWrapper = styled.div`
   flex-direction: column;
   overflow-x: scroll;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const TableHeading = styled.div`
@@ -492,23 +563,16 @@ const TableHeading = styled.div`
 `
 
 const Wrapper = styled.div`
+  width: 100%;
+  height: 100%;
   position: relative;
   overflow-y: scroll;
 
-  &::-webkit-scrollbar {
-    width: 12px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
-  }
+  ${customAquaScrollBar};
 `
 
 const PTable = styled.table`
+  width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
   display: inline-block;
@@ -530,6 +594,9 @@ const PTextBox = styled.div`
 `
 
 const PTChartContainer = styled.div`
+  position: relative;
+  grid-column: 1 / span 2;
+  height: 100%;
   @media (max-width: 500px) {
     display: none;
   }
@@ -539,11 +606,30 @@ const PTChartContainer = styled.div`
   }
 `
 
+class MainDataWrapper extends React.Component {
+  render() {
+    return (
+      <QueryRenderer
+        component={PortfolioTableBalances}
+        query={getPortfolioQuery}
+        {...this.props}
+      />
+    )
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => ({
+  setActiveChart: (ex: any) => dispatch(actions.setActiveChart(ex)),
+})
+
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  activeChart: store.portfolio.activeChart,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps)(PortfolioTableBalances)
+const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+  MainDataWrapper
+)
 
-export default compose()(storeComponent)
+export default storeComponent

@@ -27,7 +27,7 @@ const history = createHistory()
 
 const HomeRoutes = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "home" */ './containers/Home/routes'),
+    import(/* webpackChunkName: "home" */ '@containers/Home/routes'),
   delay: 300,
   loading: LoadableLoading,
   modules: ['home'],
@@ -36,7 +36,7 @@ const HomeRoutes = Loadable({
 
 const ProfileRoutes = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "profile" */ './containers/Profile/routes'),
+    import(/* webpackChunkName: "profile" */ '@containers/Profile/routes'),
   delay: 300,
   loading: LoadableLoading,
   modules: ['profile'],
@@ -45,7 +45,7 @@ const ProfileRoutes = Loadable({
 
 const PortfolioRoutes = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "portfolio" */ './containers/Portfolio/routes'),
+    import(/* webpackChunkName: "portfolio" */ '@containers/Portfolio/routes'),
   delay: 300,
   loading: LoadableLoading,
   modules: ['portfolio'],
@@ -54,7 +54,7 @@ const PortfolioRoutes = Loadable({
 
 const MarketRoutes = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "market" */ './containers/CoinMarketCap/routes'),
+    import(/* webpackChunkName: "market" */ '@containers/CoinMarketCap/routes'),
   delay: 300,
   loading: LoadableLoading,
   modules: ['market'],
@@ -63,7 +63,7 @@ const MarketRoutes = Loadable({
 
 const ChartRoutes = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "chart" */ './containers/Chart/routes'),
+    import(/* webpackChunkName: "chart" */ '@containers/Chart/routes'),
   delay: 300,
   loading: LoadableLoading,
   modules: ['chart'],
@@ -72,7 +72,7 @@ const ChartRoutes = Loadable({
 
 const ScreenerRoutes = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "screener" */ './containers/Screener/routes'),
+    import(/* webpackChunkName: "screener" */ '@containers/Screener/routes'),
   delay: 300,
   loading: LoadableLoading,
   modules: ['screener'],
@@ -81,7 +81,7 @@ const ScreenerRoutes = Loadable({
 
 const UserRoutes = Loadable({
   loader: () =>
-    import(/* webpackChunkName: "user" */ './containers/User/routes'),
+    import(/* webpackChunkName: "user" */ '@containers/User/routes'),
   delay: 300,
   loading: LoadableLoading,
   modules: ['user'],

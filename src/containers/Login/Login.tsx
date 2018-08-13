@@ -8,14 +8,15 @@ import jwtDecode from 'jwt-decode'
 
 import Button from 'material-ui/Button'
 
-import { withErrorFallback } from '@hoc/index'
+import { withErrorFallback } from '../../hoc'
 
-import { Props, State } from './interfaces'
-import * as actions from './actions'
-import * as API from './api'
-import { LoginMenu } from './components'
+import { Props, State } from '@containers/Login/interfaces'
+import * as actions from '@containers/Login/actions'
+import * as API from '@containers/Login/api'
+import { LoginMenu } from '@containers/Login/components'
 
 const SWrapper = styled.div`
+  z-index: 100000;
   align-items: center;
   display: flex;
   flex-direction: column;

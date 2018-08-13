@@ -26,9 +26,11 @@ const SwitchButtons = (props: IProps) => (
 
 const BtnsContainer = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  margin: 20px auto 20px auto;
-  max-height: 2rem;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 80%;
+  overflow: hidden;
+  margin: 1rem 0 1rem 0;
   position: relative;
   top: ${(props: { show: boolean }) => (props.show ? '0' : '-100px')};
   z-index: ${(props: { show: boolean }) => (props.show ? '1' : '-10')};
@@ -45,12 +47,16 @@ const Btn = styled.button`
   border: none;
   outline: none;
   font-family: Roboto, sans-serif;
-  font-size: 12px;
+  font-size: 1rem;
   font-weight: 500;
   color: ${(props: { active: boolean }) =>
     props.active ? '#4c5055' : '#4ed8da'};
   cursor: pointer;
   transition: all 0.25s linear;
+
+  &:nth-last-child(1) {
+    margin-right: 0;
+  }
 `
 
 export default SwitchButtons

@@ -1,1 +1,1 @@
-export { LoginMenu } from './LoginMenu'
+export { LoginMenu } from '@containers/Login/components/LoginMenu/LoginMenu'

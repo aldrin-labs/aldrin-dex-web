@@ -6,7 +6,7 @@ import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
-import { API_URL } from './config'
+import { API_URL } from '@utils/config'
 
 const cache = new InMemoryCache()
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })

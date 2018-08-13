@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { blueGrey, cyan } from '@material-ui/core/colors'
 
 // https://material-ui.com/customization/css-in-js/#other-html-element
 import JssProvider from 'react-jss/lib/JssProvider'
@@ -23,18 +24,8 @@ import { NavBar } from '@components/NavBar/NavBar'
 const theme = createMuiTheme({
   palette: {
     type: 'dark',
-    primary: {
-      light: '#FAFAFA',
-      main: '#757575',
-      dark: '#607D8B',
-      contrastText: '#000',
-    },
-    secondary: {
-      light: '#B2EBF2',
-      main: '#4ed8da',
-      dark: '#3aa1a3',
-      contrastText: '#000',
-    },
+    primary: blueGrey,
+    secondary: cyan,
   },
 })
 
@@ -57,5 +48,5 @@ export const App = ({ children }: any) => (
 )
 
 const AppGridLayout = styled.div`
-  min-height: calc(100vh - 83px);
+  min-height: calc(100vh - 50px);
 `

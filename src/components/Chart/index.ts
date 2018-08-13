@@ -1,1 +1,1 @@
-export { SingleChart } from './Chart'
+export { SingleChart } from '@components/Chart/Chart'

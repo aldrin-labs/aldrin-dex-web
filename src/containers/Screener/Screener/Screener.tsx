@@ -2,11 +2,11 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import Selector from '../Selector/Selector'
-import ScreenerTabs from '../ScreenerTabs/ScreenerTabs'
+import Selector from '@containers/Screener/Selector/Selector'
+import ScreenerTabs from '@containers/Screener/ScreenerTabs/ScreenerTabs'
 import ScreenerTable from '../ScreenerTable/ScreenerTable.tsx'
-import ScreenerSearch from '../ScreenerSearch/ScreenerSearch'
-import { IProps, IState } from './Screener.types'
+import ScreenerSearch from '@containers/Screener/ScreenerSearch/ScreenerSearch'
+import { IProps, IState } from '@containers/Screener/Screener/Screener.types'
 
 class ScreenerBase extends React.Component<IProps, IState> {
   state: IState = {

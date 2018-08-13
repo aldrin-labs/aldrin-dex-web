@@ -1,8 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { roundUSDOff } from '../../../../../utils/PortfolioTableUtils'
-import { IProps } from './PortfolioTableMain.types'
-import { IRowT } from '../types'
+import {formatNumberToUSFormat, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
+import { IProps } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain.types'
+import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 
 export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
@@ -64,21 +64,25 @@ export default class PortfolioTableMain extends React.Component<IProps> {
             <Icon className="fa fa-btc" key={`${index}btc`} />
           )
 
+          const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
+
+          const quantityFormatted = formatNumberToUSFormat(quantity)
+
           const cols = [
             currency,
             symbol,
             `${percentage} %`,
-            [mainSymbol, `${roundUSDOff(price, isUSDCurrently)}`],
-            quantity,
-            [mainSymbol, `${roundUSDOff(currentPrice, isUSDCurrently)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(price), numberOfDigitsAfterPoint)}`],
+            quantityFormatted,
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(currentPrice), numberOfDigitsAfterPoint)}`],
             //            daily,
             //            `${dailyPerc} %`,
-            [mainSymbol, `${roundUSDOff(realizedPL, isUSDCurrently)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(realizedPL), numberOfDigitsAfterPoint)}`],
             // realizedPL,
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
-            [mainSymbol, `${roundUSDOff(unrealizedPL, isUSDCurrently)}`],
-            [mainSymbol, `${roundUSDOff(totalPL, isUSDCurrently)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(unrealizedPL), numberOfDigitsAfterPoint)}`],
+            [mainSymbol, `${roundAndFormatNumber(parseFloat(totalPL), numberOfDigitsAfterPoint)}`],
             //            `${unrealizedPLPerc} %`,
           ]
 
@@ -145,24 +149,55 @@ const PTD = styled.td`
   }};
 
   font-family: Roboto, sans-serif;
+  //font-size: 13px;
   font-size: 12px;
   line-height: 24px;
-  padding: 1.75px 16px 1.75px 10px;
+  padding: 1.75px 0 1.75px 10px;
   overflow: hidden;
   white-space: nowrap;
+  min-width: 100px;
 
   &:nth-child(1) {
     text-align: center;
-    padding: 1.75px 10px;
+    padding: 1.75px 10px 1.75px 8px;
+    min-width: 30px;
   }
-  &:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(9)) {
-    min-width: 100px;
+
+  &:nth-child(2) {
+    min-width: 80px;
+    max-width: 80px;
+    text-overflow: ellipsis;
   }
+
   &:nth-child(3) {
-    min-width: 70px;
+    min-width: 50px;
+    max-width: 50px;
+    text-overflow: ellipsis;
+
   }
+
+  &:nth-child(4) {
+    min-width: 85px;
+    max-width: 85px;
+  }
+  
+  &:nth-child(6) {
+    min-width: 90px;
+  }
+  
+  &:nth-child(7) {
+    min-width: 93px;
+    max-width: 93px;
+  }
+
   &:nth-child(9) {
-    min-width: 110px;
+    min-width: 95px;
+  }
+
+  &:nth-child(10) {
+    max-width: 101px;
+    min-width: 101px;
+    padding-right: 10px;
   }
 `
 
