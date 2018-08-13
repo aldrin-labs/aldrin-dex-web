@@ -544,7 +544,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  escFunction = (e: SyntheticEvent) => {
+  escFunction = (e: KeyboardEvent): void => {
     if (e.keyCode === 27 && this.state.isEditModeEnabled) {
       this.onEditModeEnable()
     }
@@ -852,6 +852,7 @@ class Rebalance extends React.Component<IProps, IState> {
       [rowsForSortText]: newData,
       [tableForSort]: newCurrentSort
     })
+
   }
 
   onChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
