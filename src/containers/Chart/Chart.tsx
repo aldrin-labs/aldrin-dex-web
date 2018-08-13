@@ -25,9 +25,8 @@ import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import { orders } from '@containers/Chart/mocks'
-import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-
+import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 class Chart extends React.Component {
   state = {
     view: 'default',
@@ -291,7 +290,7 @@ class Chart extends React.Component {
           ) : (
             <Fade timeout={1000} in={activeChart === 'depth'}>
               <DepthChartContainer>
-                <DepthChart
+                <MainDepthChart
                   {...{
                     theme,
                     base,

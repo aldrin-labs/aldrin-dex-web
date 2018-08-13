@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
-import { connect } from 'react-redux'
 import {
   FlexibleXYPlot,
   VerticalRectSeries,
@@ -392,9 +391,4 @@ const MidPriceColumnWrapper = styled.div`
   flex-direction: column;
 `
 
-const mapStateToProps = (store: any) => ({
-  asks: store.chart.asks,
-  bids: store.chart.bids,
-})
-
-export default connect(mapStateToProps)(DepthChart)
+export default DepthChart
