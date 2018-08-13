@@ -1023,27 +1023,34 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
         <Content>
           <Container>
             <CurrentPortfolioTable
-              currentSortForStatic={currentSortForStatic}
-              totalStaticRows={totalStaticRows}
-              staticRows={staticRows}
-              onSortTable={this.onSortTable}
-              filterValueSmallerThenPercentage={
-                filterValueSmallerThenPercentage
+              {
+                ...{
+                  currentSortForStatic,
+                  staticRows,
+                  totalStaticRows,
+                  filterValueSmallerThenPercentage,
+                  isUSDCurrently,
+                }
               }
-              isUSDCurrently={isUSDCurrently}
+              onSortTable={this.onSortTable}
+
             />
             <RebalancedPortfolioTable
-              isEditModeEnabled={isEditModeEnabled}
-              rows={rows}
-              currentSortForDynamic={currentSortForDynamic}
-              selectedActive={selectedActive}
-              totalRows={totalRows}
-              totalPercents={totalPercents}
-              totalTableRows={totalTableRows}
-              isPercentSumGood={isPercentSumGood}
-              undistributedMoney={undistributedMoney}
-              isUSDCurrently={isUSDCurrently}
-              addMoneyInputValue={addMoneyInputValue}
+              {
+                ...{
+                  isEditModeEnabled,
+                  rows,
+                  currentSortForDynamic,
+                  selectedActive,
+                  totalRows,
+                  totalPercents,
+                  totalTableRows,
+                  isPercentSumGood,
+                  undistributedMoney,
+                  isUSDCurrently,
+                  addMoneyInputValue,
+                }
+              }
               onSortTable={this.onSortTable}
               onAddRowButtonClick={this.onAddRowButtonClick}
               onDeleteRowClick={this.onDeleteRowClick}
