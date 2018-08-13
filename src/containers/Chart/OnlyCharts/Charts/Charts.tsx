@@ -1,0 +1,120 @@
+import React, { Component } from 'react'
+import { Button, Switch, Typography } from '@material-ui/core'
+import { MdClear } from 'react-icons/lib/md'
+import styled from 'styled-components'
+
+import { SingleChart } from '@components/Chart'
+import DepthChart from '@containers/Chart/DepthChart/DepthChart'
+import { getFakeDepthChartData } from '@containers/Chart/mocks'
+import { IChartProps, IChartState } from './Charts.types'
+
+export default class Charts extends Component<IChartProps, IChartState> {
+  state: IChartState = {
+    activeChart: 'candle',
+    ordersData: [],
+    spreadData: [],
+  }
+
+  componentDidUpdate(prevProps) {
+    // we need this hack to update depth chart Width when width of his container changes
+    if (prevProps.chartsCount !== this.props.chartsCount) {
+      const ordersDataContainer = this.state.ordersData
+      this.setState({ ordersData: ordersDataContainer })
+    }
+  }
+
+  componentDidMount() {
+    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
+    this.setState({
+      ordersData: orderBookFakeData,
+      spreadData: usdSpreadFakeData,
+    })
+    // fetch data
+  }
+
+  render() {
+    const {
+      currencyPair,
+      removeChart,
+      index,
+      theme: {
+        palette: { primary },
+      },
+    } = this.props
+    const { ordersData, spreadData, activeChart } = this.state
+
+    const [quote, base] = currencyPair.split('_')
+
+    return (
+      <>
+        <ChartsSwitcher background={primary.main}>
+          {' '}
+          <StyledTypography color="default" variant="body1">
+            {`${quote}/${base}`}
+          </StyledTypography>
+          <Typography color="default" variant="caption">
+            Depth
+          </Typography>
+          <Switch
+            color="default"
+            checked={activeChart === 'candle'}
+            onClick={() => {
+              this.setState((prevState) => ({
+                activeChart:
+                  prevState.activeChart === 'candle' ? 'depth' : 'candle',
+              }))
+            }}
+          />
+          <Typography color="default" variant="caption">
+            Chart
+          </Typography>
+          <Button
+            onClick={() => {
+              removeChart(index)
+            }}
+          >
+            <MdClear />
+          </Button>
+        </ChartsSwitcher>
+        {activeChart === 'candle' ? (
+          <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
+        ) : (
+          <DepthChartContainer>
+            <DepthChart
+              {...{
+                ordersData,
+                spreadData,
+                base,
+                quote,
+                animated: false,
+              }}
+            />
+          </DepthChartContainer>
+        )}
+      </>
+    )
+  }
+}
+
+const StyledTypography = styled(Typography)`
+  margin-right: auto;
+  margin-left: 0.25rem;
+`
+
+const DepthChartContainer = styled.div`
+  height: calc(100% - 37px);
+  width: 100%;
+`
+
+const ChartsSwitcher = styled.div`
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 38px;
+  background: ${(props: { background: string }) => props.background};
+  color: white;
+  border-bottom: 1px solid #818d9ae6;
+`

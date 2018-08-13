@@ -309,7 +309,7 @@ class Chart extends React.Component {
     )
   }
 
-  renderOnlyCharts = () => <OnlyCharts />
+  renderOnlyCharts = () => <OnlyCharts {...{ theme: this.props.theme }} />
 
   renderToggler = () => {
     const { toggleView, view } = this.props
