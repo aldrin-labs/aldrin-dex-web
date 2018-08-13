@@ -10,7 +10,7 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
-import TablePlaceholder from '@components/TablePlaceholderLoader'
+import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import {
   ExchangeQuery,
   MARKET_TICKERS,
@@ -166,7 +166,7 @@ class Chart extends React.Component {
             fetchPolicy="network-only"
             variables={{ symbol, exchange }}
             renderWithPlaceholder
-            placeholder={TablePlaceholder}
+            placeholder={TablePlaceholderLoader}
             subscriptionArgs={{
               subscription: MARKET_ORDERS,
               variables: { symbol, exchange },
@@ -207,7 +207,7 @@ class Chart extends React.Component {
             query={ExchangeQuery}
             variables={{ marketName: currencyPair }}
             renderWithPlaceholder
-            placeholder={TablePlaceholder}
+            placeholder={TablePlaceholderLoader}
             {...{
               activeExchange,
               changeExchange,
@@ -223,7 +223,9 @@ class Chart extends React.Component {
             query={MARKET_QUERY}
             variables={{ symbol, exchange }}
             renderWithPlaceholder
-            placeholder={() => <TablePlaceholder margin={'20% 0px 0px'} />}
+            placeholder={() => (
+              <TablePlaceholderLoader margin={'20% 0px 0px'} />
+            )}
             subscriptionArgs={{
               subscription: MARKET_TICKERS,
               variables: { symbol, exchange },
