@@ -1,4 +1,4 @@
-import { IRow } from '../PortfolioTableRebalance.types'
+import { IRow } from '../Rebalance.types'
 
 export interface IProps {
   rows: IRow[]

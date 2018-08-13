@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
@@ -230,7 +230,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     if (data.length > staticRows.length) {
       const arrayOfNewCoinIndexes: number[] = data.reduce(
-        (newCoinsIndexesArray, el, i) => {
+        (newCoinsIndexesArray: number[], el, i) => {
           if (
             !staticRows.some(
               (element) =>
@@ -273,7 +273,7 @@ class Rebalance extends React.Component<IProps, IState> {
   calculateTableTotal = (data: IRow[]) => {
     const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
-    return parseFloat(tableTotal).toFixed(2)
+    return tableTotal.toFixed(2)
   }
 
   calculateTotalPercents = (data: IRow[]) => {

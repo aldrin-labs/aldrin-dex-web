@@ -5,7 +5,7 @@ import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { customAquaScrollBar } from '@utils/cssUtils'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
-import { IRow } from '../PortfolioTableRebalance.types'
+import { IRow } from '../Rebalance.types'
 import { IProps, IState } from './CurrentPortfolioTable.types'
 
 const usdHeadingForCurrent = [

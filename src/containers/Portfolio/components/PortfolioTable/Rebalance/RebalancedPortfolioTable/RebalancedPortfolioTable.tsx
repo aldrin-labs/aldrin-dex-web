@@ -15,7 +15,6 @@ import { customAquaScrollBar } from '@utils/cssUtils'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { OptionProps } from 'react-select/lib/types'
-// import { CSSProperties } from 'react'
 import SelectReact, { components } from 'react-select'
 
 const usdHeadingForRebalanced = [
