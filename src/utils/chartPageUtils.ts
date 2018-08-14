@@ -21,7 +21,7 @@ export const getNumberOfDigitsAfterDecimal = (
 ) => {
   let numberOfDigitsAfterDecimal = 2
   for (const order of orders) {
-    if (order[column] > 1) {
+    if (+order[column] > 1) {
       numberOfDigitsAfterDecimal = 2
     } else {
       numberOfDigitsAfterDecimal = 8
