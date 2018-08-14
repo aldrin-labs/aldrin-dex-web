@@ -147,7 +147,15 @@ class DepthChart extends Component {
       transformedAsksData: ordersData,
       transformedBidsData: spreadData,
     } = this.state
-    const { base, quote, animated, asks, bids, theme } = this.props
+    const {
+      base,
+      quote,
+      animated,
+      asks,
+      bids,
+      xAxisTickTotal,
+      theme,
+    } = this.props
     const { palette } = theme
     const axisStyle = {
       ticks: {
@@ -198,7 +206,7 @@ class DepthChart extends Component {
             </IconButton>
           </MidPriceContainer>
           <XAxis
-            tickTotal={10}
+            tickTotal={xAxisTickTotal || 10}
             tickFormat={(value) => abbrNum(+value.toFixed(4), 4)}
             style={axisStyle}
           />

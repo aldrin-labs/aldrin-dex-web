@@ -26,7 +26,7 @@ class TransformDataToDepthChartComponent extends Component {
   render() {
     const { asks, bids } = this.state
 
-    return <DepthChart {...{ asks, bids, ...this.props }} />
+    return <DepthChart xAxisTickTotal={5} {...{ asks, bids, ...this.props }} />
   }
 }
 
