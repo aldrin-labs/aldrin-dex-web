@@ -29,9 +29,11 @@ class OrderBookTableContainer extends Component {
       const bids = newProps.data.marketOrders
         .map((o) => JSON.parse(o))
         .filter((o) => o.type === 'bid')
+        .sort((a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0))
       const asks = newProps.data.marketOrders
         .map((o) => JSON.parse(o))
         .filter((o) => o.type === 'ask')
+        .sort((a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0))
 
       newProps.setOrders({
         bids,
@@ -71,7 +73,7 @@ class OrderBookTableContainer extends Component {
       newProps.data.marketOrders.length > 0
     ) {
       const orderData = newProps.data.marketOrders[0]
-      let order = {
+      const order = {
         price: Number(orderData.price).toFixed(8),
         size: Number(orderData.size).toFixed(8),
         type: orderData.side,
