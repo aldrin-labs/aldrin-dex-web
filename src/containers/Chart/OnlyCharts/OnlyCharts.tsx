@@ -5,7 +5,7 @@ import { Paper } from '@material-ui/core'
 
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
-import Charts from '@containers/Chart/OnlyCharts/Charts/Charts'
+import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
 
 class OnlyCharts extends Component<Props, {}> {
   onSelectChart = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -27,7 +27,7 @@ class OnlyCharts extends Component<Props, {}> {
       <ChartContainer chartsCount={charts.length}>
         {charts.map((chart: string, i: number) => (
           <Wrapper key={chart}>
-            <Charts
+            <IndividualChart
               theme={theme}
               removeChart={removeChart}
               index={i}
