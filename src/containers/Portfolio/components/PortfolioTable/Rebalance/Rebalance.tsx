@@ -587,11 +587,10 @@ class Rebalance extends React.Component<IProps, IState> {
           money -= moneyPart
         })
       } else {
-        // tslint:disable-next-line no-object-mutation
         let roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
         // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
         // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
-
+        // tslint:disable-next-line no-object-mutation
         rows![selectedActive![0]]!.price =
           roundedPrice + parseFloat(undistributedMoney)
         money = 0
@@ -948,6 +947,7 @@ class Rebalance extends React.Component<IProps, IState> {
               onReset={this.onReset}
               onDistribute={this.onDistribute}
               onEditModeEnable={this.onEditModeEnable}
+              self={this}
             />
           </Container>
           <ChartWrapper isEditModeEnabled={isEditModeEnabled}>

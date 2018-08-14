@@ -82,7 +82,8 @@ export default class RebalancedPortfolioTable extends React.Component<
       onSaveClick,
       onReset,
       onDistribute,
-      onEditModeEnable
+      onEditModeEnable,
+      self,
     } = this.props
 
     const saveButtonColor =
@@ -242,7 +243,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               menuPortalTarget={document.body}
                               components={{ DropdownIndicator }}
                               onChange={handleSelectChange.bind(
-                                this,
+                                self,
                                 rowIndex,
                                 'exchange'
                               )}
@@ -264,7 +265,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               menuPortalTarget={document.body}
                               components={{ DropdownIndicator }}
                               onChange={handleSelectChange.bind(
-                                this,
+                                self,
                                 rowIndex,
                                 'symbol'
                               )}
