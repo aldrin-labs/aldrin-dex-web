@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Switch, Typography } from '@material-ui/core'
+import { Button, Switch, Typography, Grow } from '@material-ui/core'
 import { MdClear } from 'react-icons/lib/md'
 import styled from 'styled-components'
 
@@ -63,20 +63,22 @@ export default class Charts extends Component<IChartProps, IChartState> {
             <MdClear />
           </Button>
         </ChartsSwitcher>
-        {activeChart === 'candle' ? (
-          <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
-        ) : (
-          <DepthChartStyledWrapper>
-            <DepthChartContainer
-              {...{
-                base,
-                theme,
-                quote,
-                animated: false,
-              }}
-            />
-          </DepthChartStyledWrapper>
-        )}
+        <Grow in={true} mountOnEnter={true} unmountOnExit={true}>
+          {activeChart === 'candle' ? (
+            <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
+          ) : (
+            <DepthChartStyledWrapper>
+              <DepthChartContainer
+                {...{
+                  base,
+                  theme,
+                  quote,
+                  animated: false,
+                }}
+              />
+            </DepthChartStyledWrapper>
+          )}
+        </Grow>
       </>
     )
   }
