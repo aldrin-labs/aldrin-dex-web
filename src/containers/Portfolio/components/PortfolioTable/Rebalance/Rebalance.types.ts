@@ -31,8 +31,8 @@ export interface IState {
   currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
   currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
-  undistributedMoney: number | string
-  undistributedMoneySaved: number | string
+  undistributedMoney:  string
+  undistributedMoneySaved: string
   totalRows: number | string
   totalStaticRows: number | string
   totalSavedRows: number | string

@@ -37,14 +37,14 @@ class Rebalance extends React.Component<IProps, IState> {
     currentSortForStatic: null,
     currentSortForDynamic: null,
     isEditModeEnabled: false,
-    undistributedMoney: 0,
-    undistributedMoneySaved: 0,
-    totalRows: 0,
-    totalStaticRows: 0,
-    totalSavedRows: 0,
-    totalTableRows: 0,
-    totalTableStaticRows: 0,
-    totalTableSavedRows: 0,
+    undistributedMoney: '0',
+    undistributedMoneySaved: '0',
+    totalRows: '0',
+    totalStaticRows: '0',
+    totalSavedRows: '0',
+    totalTableRows: '0',
+    totalTableStaticRows: '0',
+    totalTableSavedRows: '0',
     isPercentSumGood: true,
     totalPercents: 0,
     leftBar: '#2496c8',
@@ -340,7 +340,7 @@ class Rebalance extends React.Component<IProps, IState> {
           ...clonedRows.slice(0, idx),
           {
             ...clonedRows[idx],
-            price: 0,
+            price: '0',
           },
           ...clonedRows.slice(idx + 1, clonedRows.length),
         ]
@@ -405,7 +405,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const { totalRows } = this.state
 
     const dataWithNewPrices = data.map((row: IRow) => {
-      let newPrice = ((parseFloat(totalRows) / 100) * parseFloat(row.portfolioPerc)).toFixed(2)
+      let newPrice = ((parseFloat(totalRows) / 100) * (+row.portfolioPerc)).toFixed(2)
 
       return {
         ...row,
@@ -442,7 +442,7 @@ class Rebalance extends React.Component<IProps, IState> {
     if (!isPercentSumGood) {
       return
     }
-    if (undistributedMoney < 0) {
+    if (+undistributedMoney < 0) {
       return
     }
 
@@ -512,7 +512,7 @@ class Rebalance extends React.Component<IProps, IState> {
       rows: clonedStaticRows,
       totalRows: this.state.totalStaticRows,
       totalTableRows: this.state.totalTableStaticRows,
-      undistributedMoney: 0,
+      undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: this.checkPercentSum(clonedStaticRows),
@@ -564,7 +564,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const newIsPercentSumGood = this.checkPercentSum(newRowsWithNewPercents)
 
     this.setState({
-      undistributedMoney: 0,
+      undistributedMoney: '0',
       totalRows: newTotalRows,
       totalTableRows: newTableTotalRows,
       rows: newRowsWithNewPercents,
@@ -597,7 +597,8 @@ class Rebalance extends React.Component<IProps, IState> {
         money = 0
       }
 
-      const newUndistributedMoney = money
+      // toFixed(2) for undistributed money is just an experiment
+      const newUndistributedMoney = money.toFixed(2)
 
       const newTotal = this.calculateTotal(rows, newUndistributedMoney)
       const newTableTotal = this.calculateTableTotal(rows)
@@ -754,11 +755,7 @@ class Rebalance extends React.Component<IProps, IState> {
       rows: rowWithNewPriceDiff,
       isPercentSumGood: this.checkPercentSum(newCalculatedRowsWithPercents),
       totalPercents,
-      undistributedMoney: parseFloat(
-        parseFloat(
-          parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
-        ).toFixed(2)
-      ),
+      undistributedMoney: (parseFloat(prevState.undistributedMoney) + oldNewPriceDiff).toFixed(2),
       totalTableRows: parseFloat(newTableTotalRows),
     }))
   }
