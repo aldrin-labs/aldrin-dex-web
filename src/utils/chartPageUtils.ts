@@ -43,7 +43,7 @@ export const calculatePercentagesOfOrderSize = (
       100
   )
 
-export const testJSON = (text: any) => {
+export const testJSON = (text: any): boolean => {
   if (typeof text !== 'string') {
     return false
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import DepthChart from '@containers/Chart/DepthChart/DepthChart'
+import { testJSON } from '@utils/chartPageUtils'
 
 class TransformDataToDepthChartComponent extends Component {
   state = {
@@ -13,10 +14,10 @@ class TransformDataToDepthChartComponent extends Component {
 
     if (newProps.data.marketOrders) {
       bids = newProps.data.marketOrders
-        .map((o) => JSON.parse(o))
+        .map((o) => testJSON(o) && JSON.parse(o))
         .filter((o) => o.type === 'bid')
       asks = newProps.data.marketOrders
-        .map((o) => JSON.parse(o))
+        .map((o) => testJSON(o) && JSON.parse(o))
         .filter((o) => o.type === 'ask')
     }
 
