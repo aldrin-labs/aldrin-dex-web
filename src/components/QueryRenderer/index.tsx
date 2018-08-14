@@ -7,7 +7,9 @@ import { ErrorFallback } from '@components/ErrorFallback'
 
 export interface IProps {
   query: DocumentNode
-  fetchPolicy:
+  pollInterval?: number
+  withOutSpinner?: boolean
+  fetchPolicy?:
     | 'cache-first'
     | 'cache-and-network'
     | 'network-only'
@@ -32,6 +34,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       placeholder: Placeholder,
       fetchPolicy,
       pollInterval,
+      withOutSpinner,
       ...rest
     } = this.props
 
@@ -62,7 +65,7 @@ export default class QueryRenderer extends React.Component<IProps> {
                 )}
               </>
             )
-          } else if (loading) {
+          } else if (loading && !withOutSpinner) {
             return <Loading centerAligned />
           } else if (error) {
             return <ErrorFallback error={error} />
