@@ -20,6 +20,7 @@ class OrderBookTableContainer extends Component {
     digitsAfterDecimalForAsksPrice: 0,
     digitsAfterDecimalForAsksSize: 0,
     i: 0,
+    spreadTableExpanded: true,
   }
 
   // transforming data
@@ -161,6 +162,12 @@ class OrderBookTableContainer extends Component {
       unsubscribe = this.props.subscribeToMore()
     }
   }
+
+  onHeadClick = () => {
+    this.setState((prevState) => ({
+      spreadTableExpanded: !prevState.spreadTableExpanded,
+    }))
+  }
   render() {
     const {
       data,
@@ -181,6 +188,7 @@ class OrderBookTableContainer extends Component {
       digitsAfterDecimalForAsksSize,
       digitsAfterDecimalForBidsPrice,
       digitsAfterDecimalForBidsSize,
+      spreadTableExpanded,
     } = this.state
 
     return (
@@ -189,12 +197,15 @@ class OrderBookTableContainer extends Component {
           digitsAfterDecimalForAsksSize={digitsAfterDecimalForAsksSize}
           digitsAfterDecimalForAsksPrice={digitsAfterDecimalForAsksPrice}
           data={asks}
+          tableExpanded={spreadTableExpanded}
           {...rest}
         />
         <SpreadTable
           digitsAfterDecimalForBidsSize={digitsAfterDecimalForBidsSize}
           digitsAfterDecimalForBidsPrice={digitsAfterDecimalForBidsPrice}
           data={bids}
+          onHeadClick={this.onHeadClick}
+          tableExpanded={spreadTableExpanded}
           spread={spread}
           {...rest}
         />

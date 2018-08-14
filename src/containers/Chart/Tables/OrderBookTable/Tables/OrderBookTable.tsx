@@ -29,7 +29,8 @@ class OrderBookTable extends Component {
       difference(nextProps.data, this.props.data).length > 0 ||
       nextProps.activeExchange.index !== this.props.activeExchange.index ||
       nextProps.currencyPair !== this.props.currencyPair ||
-      (this.props.data.length > 0 && nextProps.data.length === 0)
+      (this.props.data.length > 0 && nextProps.data.length === 0) ||
+      nextProps.tableExpanded !== this.props.tableExpanded
 
     return shouldUpdate
   }
@@ -52,6 +53,7 @@ class OrderBookTable extends Component {
       quote,
       data,
       theme: { palette },
+      tableExpanded,
     } = this.props
 
     const {
@@ -98,7 +100,13 @@ class OrderBookTable extends Component {
             </HeadCell>
           </Row>
         </Head>
-        <Body height={'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'}>
+        <Body
+          height={
+            tableExpanded
+              ? 'calc(64vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+              : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+          }
+        >
           {data.length === 0 ? (
             <Loading centerAligned={true} />
           ) : (

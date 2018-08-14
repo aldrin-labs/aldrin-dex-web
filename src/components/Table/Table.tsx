@@ -37,6 +37,7 @@ export const Body = styled.div`
   width: 100%;
   height: ${(props: { height?: string }) => props.height};
   overflow-y: auto;
+  transition: height 0.25s ease-out;
 
   &::-webkit-scrollbar {
     width: 0px;
