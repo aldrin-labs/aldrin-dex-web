@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
+
+import { IProps, IState } from './TransformDataToDepthChartComponent.types'
 import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import { testJSON } from '@utils/chartPageUtils'
 
-class TransformDataToDepthChartComponent extends Component {
+class TransformDataToDepthChartComponent extends Component<IProps, IState> {
   state = {
     asks: [],
     bids: [],
   }
 
-  static getDerivedStateFromProps(newProps) {
+  static getDerivedStateFromProps(newProps: IProps) {
     let asks = [],
       bids = []
 
@@ -26,7 +28,6 @@ class TransformDataToDepthChartComponent extends Component {
 
   render() {
     const { asks, bids } = this.state
-
     return <DepthChart xAxisTickTotal={5} {...{ asks, bids, ...this.props }} />
   }
 }

@@ -61,20 +61,19 @@ const ChartContainer = styled.div`
     ${(props: { chartsCount?: number }) => {
       if (props.chartsCount && props.chartsCount <= 3) {
         return `${props.chartsCount}, ${100 / props.chartsCount}%`
-      } else {
-        return '4, 25%'
       }
+      return '4, 25%'
     }}
   );
   grid-template-rows: repeat(
     ${(props: { chartsCount?: number }) => {
       if (props.chartsCount && props.chartsCount > 4) {
         return '2, 41.5vh'
-      } else if (props.chartsCount === 3 || props.chartsCount === 4) {
-        return '1, 60vh'
-      } else {
-        return '1, 80vh'
       }
+      if (props.chartsCount === 3 || props.chartsCount === 4) {
+        return '1, 60vh'
+      }
+      return '1, 80vh'
     }}
   );
 `

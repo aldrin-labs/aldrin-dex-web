@@ -480,7 +480,6 @@ const Container = styled.div`
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
   view: store.chart.view,
-
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
 })

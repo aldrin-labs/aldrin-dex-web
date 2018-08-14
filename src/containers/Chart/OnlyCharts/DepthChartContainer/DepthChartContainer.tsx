@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { ORDERS_MARKET_QUERY } from '@containers/Chart/api'
-import TransformDataToDepthChartComponent from './TransformDataToDepthChartComponent'
+import TransformDataToDepthChartComponent from './TransformDataToDepthChartComponent/TransformDataToDepthChartComponent'
+import { IProps } from './DepthChartContainer.types'
 
-class DepthChartContainer extends Component {
+class DepthChartContainer extends Component<IProps> {
   render() {
-    const { currencyPair, activeExchange, base, quote } = this.props
+    const { activeExchange, base, quote } = this.props
     const symbol = `${quote}_${base}` || ''
     const exchange =
       activeExchange && activeExchange.exchange
@@ -30,7 +31,6 @@ class DepthChartContainer extends Component {
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
-  currencyPair: store.chart.currencyPair,
 })
 
 export default connect(mapStateToProps)(DepthChartContainer)
