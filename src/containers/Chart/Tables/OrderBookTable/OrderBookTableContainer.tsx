@@ -41,7 +41,7 @@ class OrderBookTableContainer extends Component {
 
       newProps.setOrders({
         bids,
-        asks,
+        asks: asks.slice().reverse(),
       })
 
       const spread = findSpread(asks, bids)
