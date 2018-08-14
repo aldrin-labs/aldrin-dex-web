@@ -18,7 +18,13 @@ class OnlyCharts extends Component<Props, {}> {
     } = this.props
 
     return (
-      <Slide direction="up" in={true} mountOnEnter={true} unmountOnExit={true}>
+      <Slide
+        direction="left"
+        timeout={500}
+        in={true}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
         <ChartContainer anime={false} chartsCount={charts.length}>
           {charts.map((chart: string, i: number) => (
             <Charts
