@@ -5,7 +5,7 @@ export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'tra
 export interface IRow {
   exchange: string
   symbol: string
-  price: number | string
+  price: string
   portfolioPerc: number | string | null
   deltaPrice?: number | string
   editable?: boolean

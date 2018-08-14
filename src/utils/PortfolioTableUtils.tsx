@@ -27,15 +27,12 @@ export const percentagesOfCoinInPortfolio = (
     : Number(asset.asset.priceBTC * asset.value * 100 / allSum)
 
 export const onSortTableFull = (
-  key: string,
-  tableData: any,
-  currentSort: { key: string; arg: 'ASC' | 'DESC' },
+  key,
+  tableData,
+  currentSort,
   arrayOfStringHeadings: string[] = [],
   arrayOfDateHeadings:  string[] = [],
 ) => {
-  if (!tableData) {
-    return
-  }
 
   const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
   const dateKey = arrayOfDateHeadings

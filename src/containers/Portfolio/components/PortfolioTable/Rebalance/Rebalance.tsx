@@ -249,7 +249,7 @@ class Rebalance extends React.Component<IProps, IState> {
         if (arrayOfNewCoinIndexes.includes(i)) {
           return {
             ...row,
-            deltaPrice: (row.price - 0).toFixed(2),
+            deltaPrice: (parseFloat(row.price) - 0).toFixed(2),
           }
         }
 
@@ -845,7 +845,7 @@ class Rebalance extends React.Component<IProps, IState> {
       newCurrentSort,
     }: {
       newData: IRow[]
-      newCurrentSort: ICurrentSort
+      newCurrentSort: ICurrentSort | null
     } = onSortTableFull(key, currentRowsForSort, currentSort, arrayOfStringHeadings)
 
     this.setState({
