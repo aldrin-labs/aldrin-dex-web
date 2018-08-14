@@ -23,8 +23,10 @@ export const NavBar: SFC<{}> = () => (
 
 // TODO: fix z-index for drawer
 const Nav = styled.div`
-  width: 100%;
+  width: 100vw;
+  position: relative;
   display: flex;
+  justify-content: space-between;
   height: 80px;
   align-items: center;
   background-color: #2d3136;
@@ -48,8 +50,10 @@ const Logo = styled.img`
 `
 
 const SNav = styled.nav`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  width: 60%;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
