@@ -759,11 +759,11 @@ class Rebalance extends React.Component<IProps, IState> {
     }))
   }
 
-  handleSelectChange(
+  handleSelectChange = (
     idx: number,
     name: string,
     optionSelected: { label: string; value: string } | null
-  ) {
+  ) => {
     const { rows } = this.state
     const value = optionSelected ? optionSelected.value : ''
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
@@ -947,7 +947,6 @@ class Rebalance extends React.Component<IProps, IState> {
               onReset={this.onReset}
               onDistribute={this.onDistribute}
               onEditModeEnable={this.onEditModeEnable}
-              self={this}
             />
           </Container>
           <ChartWrapper isEditModeEnabled={isEditModeEnabled}>

@@ -30,7 +30,6 @@ export interface IProps {
   onReset: Function
   onDistribute: Function
   onEditModeEnable: Function
-  self: object
 }
 
 export interface IState {
