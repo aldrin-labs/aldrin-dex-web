@@ -90,7 +90,7 @@ class SpreadTable extends Component {
               </HeadCell>
               <HeadCell width={'45%'}>
                 <TypographyFullWidth variant="body2" align="right">
-                  {spread.toFixed(2) || 0.01}
+                  {spread}
                 </TypographyFullWidth>
               </HeadCell>
             </TriggerRow>
