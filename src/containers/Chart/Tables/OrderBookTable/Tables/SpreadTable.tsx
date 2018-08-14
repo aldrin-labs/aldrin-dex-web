@@ -89,7 +89,12 @@ class SpreadTable extends Component {
                 </TypographyFullWidth>
               </HeadCell>
               <HeadCell width={'45%'}>
-                <TypographyFullWidth variant="body2" align="right">
+                <TypographyFullWidth
+                  variant="body2"
+                  align="right"
+                  color="secondary"
+                  noWrap={true}
+                >
                   {spread}
                 </TypographyFullWidth>
               </HeadCell>
