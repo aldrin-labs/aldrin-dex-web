@@ -8,3 +8,6 @@ export const opacityAnimation = keyframes`
     opacity: 1;
   }
 `
+
+export const slideInAnimation = keyframes`
+`

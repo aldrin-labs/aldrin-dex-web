@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Paper, Button, Typography, Fade } from '@material-ui/core'
+import { Paper, Button, Typography, Fade, Slide } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
 
 import {
@@ -25,9 +25,8 @@ import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import { orders } from '@containers/Chart/mocks'
-import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-
+import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 class Chart extends React.Component {
   state = {
     view: 'default',
@@ -268,59 +267,69 @@ class Chart extends React.Component {
     }
 
     return (
-      <Container>
-        <ChartsContainer>
-          <ChartsSwitcher
-            divider={palette.divider}
-            background={palette.primary.main}
-          >
-            {base &&
-              quote && (
-                <ExchangePair background={palette.primary.dark}>
-                  <Typography variant="subheading" color="default">
-                    {`${base}/${quote}`}
-                  </Typography>
-                </ExchangePair>
-              )}
-            <SwitchButtonWrapper>
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={() => {
-                  this.setState((prevState) => ({
-                    activeChart:
-                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                  }))
-                }}
-              >
-                {activeChart === 'candle' ? 'show depth' : 'show chart'}
-              </Button>
-            </SwitchButtonWrapper>
-          </ChartsSwitcher>
-          {activeChart === 'candle' ? (
-            <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
-          ) : (
-            <Fade timeout={1000} in={activeChart === 'depth'}>
-              <DepthChartContainer>
-                <DepthChart
-                  {...{
-                    theme,
-                    base,
-                    quote,
-                    animated: false,
+      <Slide
+        timeout={{
+          enter: 500,
+        }}
+        direction={'right'}
+        in={true}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <Container>
+          <ChartsContainer>
+            <ChartsSwitcher
+              divider={palette.divider}
+              background={palette.primary.main}
+            >
+              {base &&
+                quote && (
+                  <ExchangePair background={palette.primary.dark}>
+                    <Typography variant="subheading" color="default">
+                      {`${base}/${quote}`}
+                    </Typography>
+                  </ExchangePair>
+                )}
+              <SwitchButtonWrapper>
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      activeChart:
+                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                    }))
                   }}
-                />
-              </DepthChartContainer>
-            </Fade>
-          )}
-        </ChartsContainer>
+                >
+                  {activeChart === 'candle' ? 'show depth' : 'show chart'}
+                </Button>
+              </SwitchButtonWrapper>
+            </ChartsSwitcher>
+            {activeChart === 'candle' ? (
+              <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
+            ) : (
+              <Fade timeout={1000} in={activeChart === 'depth'}>
+                <DepthChartContainer>
+                  <MainDepthChart
+                    {...{
+                      theme,
+                      base,
+                      quote,
+                      animated: false,
+                    }}
+                  />
+                </DepthChartContainer>
+              </Fade>
+            )}
+          </ChartsContainer>
 
-        {this.renderTables()}
-      </Container>
+          {this.renderTables()}
+        </Container>
+      </Slide>
     )
   }
 
-  renderOnlyCharts = () => <OnlyCharts />
+  renderOnlyCharts = () => <OnlyCharts {...{ theme: this.props.theme }} />
 
   renderToggler = () => {
     const { toggleView, view } = this.props
