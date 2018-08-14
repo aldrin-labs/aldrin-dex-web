@@ -10,7 +10,7 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
-import TablePlaceholder from '@components/TablePlaceholderLoader'
+import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import {
   ExchangeQuery,
   MARKET_TICKERS,
@@ -38,6 +38,15 @@ class Chart extends React.Component {
     activeChart: 'candle',
     exchanges: [],
     tradeHistory: [],
+  }
+
+  static getDerivedStateFromProps(nextProps: any) {
+    const [base, quote] = nextProps.currencyPair.split('_')
+    document.title = `${base} to ${quote} | CCAI`
+  }
+
+  componentWillUnmount() {
+    document.title = 'Cryptocurrencies AI'
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -166,7 +175,7 @@ class Chart extends React.Component {
             fetchPolicy="network-only"
             variables={{ symbol, exchange }}
             renderWithPlaceholder
-            placeholder={TablePlaceholder}
+            placeholder={TablePlaceholderLoader}
             subscriptionArgs={{
               subscription: MARKET_ORDERS,
               variables: { symbol, exchange },
@@ -207,7 +216,7 @@ class Chart extends React.Component {
             query={ExchangeQuery}
             variables={{ marketName: currencyPair }}
             renderWithPlaceholder
-            placeholder={TablePlaceholder}
+            placeholder={TablePlaceholderLoader}
             {...{
               activeExchange,
               changeExchange,
@@ -223,7 +232,9 @@ class Chart extends React.Component {
             query={MARKET_QUERY}
             variables={{ symbol, exchange }}
             renderWithPlaceholder
-            placeholder={() => <TablePlaceholder margin={'20% 0px 0px'} />}
+            placeholder={() => (
+              <TablePlaceholderLoader margin={'20% 0px 0px'} />
+            )}
             subscriptionArgs={{
               subscription: MARKET_TICKERS,
               variables: { symbol, exchange },
@@ -481,7 +492,6 @@ const Container = styled.div`
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
   view: store.chart.view,
-
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
 })
