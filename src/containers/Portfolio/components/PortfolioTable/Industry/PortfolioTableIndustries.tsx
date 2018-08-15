@@ -155,8 +155,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
     const { assets, coinPerformance = [{ usd: '', btc: '', coin: '' }] } = portfolio
 
-    // console.log('assets length: ', assets.length, 'coinPerf length: ', coinPerformance.length);
-
+    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
     const industryData = assets
       .map((row, i) => {
@@ -191,9 +190,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             btcYear: 0
           },
         }
-
-        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-
         const industryPerformance = isUSDCurrently ? {
           oneWeek: performance.usdWeek,
           oneMonth: performance.usdMonth,
@@ -210,9 +206,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         const isElementHavePerformance = coinPerformance.find((element) => element.coin === symbol)
         const portfolioPerf = isElementHavePerformance ?
           isUSDCurrently ? isElementHavePerformance.usd : isElementHavePerformance.btc : null
-        const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
+        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
         const currentPrice = mainPrice * value
+
 
         const col = {
           currency: name || '-',
@@ -632,7 +629,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 />
               ) : (
                 // <PieChart data={genAngleMocks(inds)} flexible />
-                <PieChartQuery isShownMocks={this.props.isShownMocks} />
+                <PieChartQuery isUSDCurrently={isUSDCurrently} isShownMocks={this.props.isShownMocks} />
               )}
             </ChartWrapper>
           </ChartContainer>
