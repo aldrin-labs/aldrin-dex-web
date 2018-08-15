@@ -28,7 +28,7 @@ class ExchangesTable extends PureComponent<IProps> {
     return (
       <StyledTable>
         <Title background={theme.palette.primary.dark}>
-          <Typography color="default" variant="headline" align="center">
+          <Typography color="default" variant="subheading" align="center">
             Exchanges
           </Typography>
           <SwitchTablesButton
@@ -41,26 +41,26 @@ class ExchangesTable extends PureComponent<IProps> {
             </Typography>
           </SwitchTablesButton>
         </Title>
-        <StyledHead background={theme.palette.background.default}>
+        <Head background={theme.palette.background.default}>
           <Row
-            isHead
+            isHead={true}
             background={theme.palette.background.default}
             hoverBackground={theme.palette.action.hover}
           >
             <StyledHeadCell width={'50%'}>
               <FullWidthBlockMovedLeft>
-                <Typography variant="title" color="default" align="left">
+                <Typography variant="subheading" color="default" align="left">
                   Name{' '}
                 </Typography>
               </FullWidthBlockMovedLeft>
             </StyledHeadCell>
             <StyledHeadCell width={'50%'}>
-              <Typography variant="title" color="default" align="left">
+              <Typography variant="subheading" color="default" align="left">
                 Symbol{' '}
               </Typography>
             </StyledHeadCell>
           </Row>
-        </StyledHead>
+        </Head>
         <Body
           style={{ width: '105%' }}
           height={'calc(100vh - 59px - 80px - 39px - 37px - 30px)'}
@@ -86,7 +86,8 @@ class ExchangesTable extends PureComponent<IProps> {
 
                 if (keyByValue === 'status') {
                   return
-                } else if (keyByValue === 'name') {
+                }
+                if (keyByValue === 'name') {
                   return (
                     <Cell
                       key={propinx}
@@ -106,28 +107,28 @@ class ExchangesTable extends PureComponent<IProps> {
                             exchange.status || theme.palette.secondary.main,
                         }}
                       />
-                      <Typography noWrap variant="body1" color="default">
-                        {prop}
-                      </Typography>
-                    </Cell>
-                  )
-                } else {
-                  return (
-                    <Cell
-                      key={propinx}
-                      style={{
-                        alignItems: 'center',
-                        display: 'flex',
-                        flexWrap: 'nowrap',
-                      }}
-                      width="50%"
-                    >
-                      <Typography variant="body1" color="default">
+                      <Typography noWrap={true} variant="body1" color="default">
                         {prop}
                       </Typography>
                     </Cell>
                   )
                 }
+
+                return (
+                  <Cell
+                    key={propinx}
+                    style={{
+                      alignItems: 'center',
+                      display: 'flex',
+                      flexWrap: 'nowrap',
+                    }}
+                    width="50%"
+                  >
+                    <Typography variant="body1" color="default">
+                      {prop}
+                    </Typography>
+                  </Cell>
+                )
               })}
             </Row>
           ))}
@@ -149,10 +150,6 @@ const StyledHeadCell = styled(HeadCell)`
 
 const StyledTable = styled(Table)`
   overflow-x: hidden;
-`
-
-const StyledHead = styled(Head)`
-  height: 40px;
 `
 
 const SwitchTablesButton = styled(Button)`
