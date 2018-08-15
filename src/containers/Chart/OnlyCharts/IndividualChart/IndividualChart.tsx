@@ -4,8 +4,11 @@ import { MdClear } from 'react-icons/lib/md'
 import styled from 'styled-components'
 
 import { SingleChart } from '@components/Chart'
-import DepthChartContainer from '../DepthChartContainer/DepthChartContainer'
-import { IChartProps, IChartState } from './Charts.types'
+import {
+  IChartProps,
+  IChartState,
+} from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart.types'
+import DepthChartContainer from '@containers/Chart/OnlyCharts/DepthChartContainer/DepthChartContainer'
 
 export default class Charts extends Component<IChartProps, IChartState> {
   state: IChartState = {
