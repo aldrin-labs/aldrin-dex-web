@@ -12,7 +12,7 @@ export const NavBar: SFC<{}> = () => (
       {/*<NavButton link="/market" title="Coin Market" />*/}
       {/*<NavButton link="/profile" title="Profile" />*/}
       <NavButton link="/portfolio" title="Portfolio" />
-      <NavButton link="/screener" title="Screener" />
+      {/*<NavButton link="/screener" title="Screener" />*/}
       <NavButton link="/chart" title="Chart" />
     </SNav>
     <LoginWrapper>

@@ -10,7 +10,7 @@ export const NavBarMobile: SFC<{}> = () => (
       {/*<NavButtonMobile link="/market" title="Coin Market" />*/}
       {/*<NavButtonMobile link="/profile" title="Profile" />*/}
       <NavButtonMobile link="/portfolio" title="Portfolio" />
-      <NavButtonMobile link="/screener" title="Screener" />
+      {/*<NavButtonMobile link="/screener" title="Screener" />*/}
       <NavButtonMobile link="/chart" title="Chart" />
     </NavButtonsContainer>
   </NavMobileContainer>
