@@ -21,7 +21,7 @@ export const getNumberOfDigitsAfterDecimal = (
 ) => {
   let numberOfDigitsAfterDecimal = 2
   for (const order of orders) {
-    if (order[column] > 1) {
+    if (+order[column] > 1) {
       numberOfDigitsAfterDecimal = 2
     } else {
       numberOfDigitsAfterDecimal = 8
@@ -82,20 +82,7 @@ export const replaceOrdersWithSamePrice = (state: any, order: any) => {
   }
 }
 
-//  not working :/
-export const sortOrders = (state: any, order: any) => {
-  const bids =
-    order.type === 'bid'
-      ? [order, ...state.bids].sort(
-          (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
-        )
-      : state.bids
-  const asks =
-    order.type === 'ask'
-      ? [order, ...state.asks].sort(
-          (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
-        )
-      : state.asks
-
-  return { asks, bids }
-}
+export const sortOrders = (orders: any[]) =>
+  orders
+    .slice()
+    .sort((a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0))

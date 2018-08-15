@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Switch, Typography } from '@material-ui/core'
+import { Button, Switch, Typography, Grow, Paper } from '@material-ui/core'
 import { MdClear } from 'react-icons/lib/md'
 import styled from 'styled-components'
 
@@ -13,6 +13,7 @@ import DepthChartContainer from '@containers/Chart/OnlyCharts/DepthChartContaine
 export default class Charts extends Component<IChartProps, IChartState> {
   state: IChartState = {
     activeChart: 'candle',
+    show: true,
   }
 
   componentDidUpdate(prevProps) {
@@ -28,62 +29,72 @@ export default class Charts extends Component<IChartProps, IChartState> {
     const {
       palette: { primary },
     } = theme
-    const { activeChart } = this.state
+    const { activeChart, show } = this.state
 
     const [quote, base] = currencyPair.split('_')
 
     return (
-      <>
-        <ChartsSwitcher
-          background={primary.main}
-          divider={theme.palette.divider}
-        >
-          {' '}
-          <StyledTypography color="default" variant="body1">
-            {`${quote}/${base}`}
-          </StyledTypography>
-          <Typography color="default" variant="caption">
-            Depth
-          </Typography>
-          <Switch
-            color="default"
-            checked={activeChart === 'candle'}
-            onClick={() => {
-              this.setState((prevState) => ({
-                activeChart:
-                  prevState.activeChart === 'candle' ? 'depth' : 'candle',
-              }))
-            }}
-          />
-          <Typography color="default" variant="caption">
-            Chart
-          </Typography>
-          <Button
-            onClick={() => {
-              removeChart(index)
-            }}
+      <Grow in={show} mountOnEnter={true} unmountOnExit={true}>
+        <Wrapper>
+          <ChartsSwitcher
+            background={primary.main}
+            divider={theme.palette.divider}
           >
-            <MdClear />
-          </Button>
-        </ChartsSwitcher>
-        {activeChart === 'candle' ? (
-          <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
-        ) : (
-          <DepthChartStyledWrapper>
-            <DepthChartContainer
-              {...{
-                base,
-                theme,
-                quote,
-                animated: false,
+            {' '}
+            <StyledTypography color="default" variant="body1">
+              {`${quote}/${base}`}
+            </StyledTypography>
+            <Typography color="default" variant="caption">
+              Depth
+            </Typography>
+            <Switch
+              color="default"
+              checked={activeChart === 'candle'}
+              onClick={() => {
+                this.setState((prevState) => ({
+                  activeChart:
+                    prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                }))
               }}
             />
-          </DepthChartStyledWrapper>
-        )}
-      </>
+            <Typography color="default" variant="caption">
+              Chart
+            </Typography>
+            <Button
+              onClick={() => {
+                this.setState({ show: false })
+                setTimeout(() => {
+                  removeChart(index)
+                }, 200)
+              }}
+            >
+              <MdClear />
+            </Button>
+          </ChartsSwitcher>
+          {activeChart === 'candle' ? (
+            <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
+          ) : (
+            <DepthChartStyledWrapper>
+              <DepthChartContainer
+                {...{
+                  base,
+                  theme,
+                  quote,
+                  animated: false,
+                }}
+              />
+            </DepthChartStyledWrapper>
+          )}
+        </Wrapper>
+      </Grow>
     )
   }
 }
+
+const Wrapper = styled(Paper)`
+  display: flex;
+  flex-direction: column;
+`
 
 const StyledTypography = styled(Typography)`
   margin-right: auto;

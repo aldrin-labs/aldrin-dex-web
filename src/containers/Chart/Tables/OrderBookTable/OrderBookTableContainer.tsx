@@ -5,6 +5,7 @@ import {
   findSpread,
   getNumberOfDigitsAfterDecimal,
   replaceOrdersWithSamePrice,
+  sortOrders,
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/OrderBookTable'
 import SpreadTable from './Tables/SpreadTable'
@@ -26,16 +27,21 @@ class OrderBookTableContainer extends Component {
     // when get data from querry
     let iterator = state.i
     if (newProps.data.marketOrders.length > 1) {
-      const bids = newProps.data.marketOrders
-        .map((o) => JSON.parse(o))
-        .filter((o) => o.type === 'bid')
-      const asks = newProps.data.marketOrders
-        .map((o) => JSON.parse(o))
-        .filter((o) => o.type === 'ask')
+      const bids = sortOrders(
+        newProps.data.marketOrders
+          .map((o) => JSON.parse(o))
+          .filter((o) => o.type === 'bid')
+      )
+
+      const asks = sortOrders(
+        newProps.data.marketOrders
+          .map((o) => JSON.parse(o))
+          .filter((o) => o.type === 'ask')
+      )
 
       newProps.setOrders({
         bids,
-        asks,
+        asks: asks.slice().reverse(),
       })
 
       const spread = findSpread(asks, bids)
@@ -71,7 +77,7 @@ class OrderBookTableContainer extends Component {
       newProps.data.marketOrders.length > 0
     ) {
       const orderData = newProps.data.marketOrders[0]
-      let order = {
+      const order = {
         price: Number(orderData.price).toFixed(8),
         size: Number(orderData.size).toFixed(8),
         type: orderData.side,
@@ -86,17 +92,9 @@ class OrderBookTableContainer extends Component {
       if (order !== null) {
         //  sort orders
         const bids =
-          order.type === 'bid'
-            ? [order, ...state.bids].sort(
-                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
-              )
-            : state.bids
+          order.type === 'bid' ? sortOrders([order, ...state.bids]) : state.bids
         const asks =
-          order.type === 'ask'
-            ? [order, ...state.asks].sort(
-                (a, b) => (a.price < b.price ? 1 : a.price > b.price ? -1 : 0)
-              )
-            : state.asks
+          order.type === 'ask' ? sortOrders([order, ...state.asks]) : state.asks
 
         // update depth chart every 100 iterations
         if (iterator === 100) {

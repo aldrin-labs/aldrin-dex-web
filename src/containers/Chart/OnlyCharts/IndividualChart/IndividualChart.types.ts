@@ -7,4 +7,5 @@ export interface IChartProps {
 }
 export interface IChartState {
   activeChart: 'candle' | 'depth'
+  show: boolean
 }

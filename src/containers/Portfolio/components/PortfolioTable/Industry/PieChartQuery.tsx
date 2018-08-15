@@ -88,7 +88,7 @@ class PieChartQuery extends React.Component<Props, State> {
       '#00A89B',
       '#7EA9D3',
       '#F2F2F2',
-      '#282F39'
+      '#282F39',
     ];
 
     const pieData = Object.keys(obj).map((key, i) => {

@@ -1,19 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Paper } from '@material-ui/core'
+import { Slide } from '@material-ui/core'
 
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
 
 class OnlyCharts extends Component<Props, {}> {
-  onSelectChart = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target
-
-    this.setState({ choosedChart: value })
-  }
-
   render() {
     const {
       charts,
@@ -24,24 +18,31 @@ class OnlyCharts extends Component<Props, {}> {
     } = this.props
 
     return (
-      <ChartContainer chartsCount={charts.length}>
-        {charts.map((chart: string, i: number) => (
-          <Wrapper key={chart}>
+      <Slide
+        direction="left"
+        timeout={500}
+        in={true}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <ChartContainer anime={false} chartsCount={charts.length}>
+          {charts.map((chart: string, i: number) => (
             <IndividualChart
+              key={chart}
               theme={theme}
               removeChart={removeChart}
               index={i}
               chartsCount={charts.length}
               currencyPair={chart}
             />
-          </Wrapper>
-        ))}
-        <WarningMessageSnack
-          open={openedWarning}
-          onCloseClick={removeWarningMessage}
-          messageText={'You can create up to 8 charts.'}
-        />
-      </ChartContainer>
+          ))}
+          <WarningMessageSnack
+            open={openedWarning}
+            onCloseClick={removeWarningMessage}
+            messageText={'You can create up to 8 charts.'}
+          />
+        </ChartContainer>
+      </Slide>
     )
   }
 }
@@ -78,10 +79,6 @@ const ChartContainer = styled.div`
   );
 `
 
-const Wrapper = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-`
 const mapStateToProps = (store: any) => ({
   charts: store.chart.charts,
   currencyPair: store.chart.currencyPair,

@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
 import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
-import { Route, Switch } from 'react-router'
+import { Route, Switch, Redirect } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import Loadable from 'react-loadable'
@@ -97,10 +97,11 @@ const render = () =>
             <ConnectedRouter history={history}>
               <App>
                 <Switch>
-                  <Route exact path="/" component={HomeRoutes} />
-                  <Route exact path="/profile" component={ProfileRoutes} />
+                  <Redirect from="/" to="/portfolio" exact />
+                  {/*<Route exact path="/" component={HomeRoutes} />*/}
+                  {/*<Route exact path="/profile" component={ProfileRoutes} />*/}
                   <Route exact path="/portfolio" component={PortfolioRoutes} />
-                  <Route exact path="/market" component={MarketRoutes} />
+                  {/*<Route exact path="/market" component={MarketRoutes} />*/}
                   <Route exact path="/chart" component={ChartRoutes} />
                   <Route exact path="/screener" component={ScreenerRoutes} />
                   <Route exact path="/user" component={UserRoutes} />

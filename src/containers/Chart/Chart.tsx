@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Paper, Button, Typography, Fade } from '@material-ui/core'
+import { Paper, Button, Typography, Fade, Slide } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
 
 import {
@@ -10,7 +10,7 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
-import TablePlaceholder from '@components/TablePlaceholderLoader'
+import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import {
   ExchangeQuery,
   MARKET_TICKERS,
@@ -37,6 +37,15 @@ class Chart extends React.Component {
     activeChart: 'candle',
     exchanges: [],
     tradeHistory: [],
+  }
+
+  static getDerivedStateFromProps(nextProps: any) {
+    const [base, quote] = nextProps.currencyPair.split('_')
+    document.title = `${base} to ${quote} | CCAI`
+  }
+
+  componentWillUnmount() {
+    document.title = 'Cryptocurrencies AI'
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -165,7 +174,7 @@ class Chart extends React.Component {
             fetchPolicy="network-only"
             variables={{ symbol, exchange }}
             renderWithPlaceholder
-            placeholder={TablePlaceholder}
+            placeholder={TablePlaceholderLoader}
             subscriptionArgs={{
               subscription: MARKET_ORDERS,
               variables: { symbol, exchange },
@@ -206,7 +215,7 @@ class Chart extends React.Component {
             query={ExchangeQuery}
             variables={{ marketName: currencyPair }}
             renderWithPlaceholder
-            placeholder={TablePlaceholder}
+            placeholder={TablePlaceholderLoader}
             {...{
               activeExchange,
               changeExchange,
@@ -222,7 +231,9 @@ class Chart extends React.Component {
             query={MARKET_QUERY}
             variables={{ symbol, exchange }}
             renderWithPlaceholder
-            placeholder={() => <TablePlaceholder margin={'20% 0px 0px'} />}
+            placeholder={() => (
+              <TablePlaceholderLoader margin={'20% 0px 0px'} />
+            )}
             subscriptionArgs={{
               subscription: MARKET_TICKERS,
               variables: { symbol, exchange },
@@ -256,55 +267,65 @@ class Chart extends React.Component {
     }
 
     return (
-      <Container>
-        <ChartsContainer>
-          <ChartsSwitcher
-            divider={palette.divider}
-            background={palette.primary.main}
-          >
-            {base &&
-              quote && (
-                <ExchangePair background={palette.primary.dark}>
-                  <Typography variant="subheading" color="default">
-                    {`${base}/${quote}`}
-                  </Typography>
-                </ExchangePair>
-              )}
-            <SwitchButtonWrapper>
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={() => {
-                  this.setState((prevState) => ({
-                    activeChart:
-                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                  }))
-                }}
-              >
-                {activeChart === 'candle' ? 'show depth' : 'show chart'}
-              </Button>
-            </SwitchButtonWrapper>
-          </ChartsSwitcher>
-          {activeChart === 'candle' ? (
-            <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
-          ) : (
-            <Fade timeout={1000} in={activeChart === 'depth'}>
-              <DepthChartContainer>
-                <MainDepthChart
-                  {...{
-                    theme,
-                    base,
-                    quote,
-                    animated: false,
+      <Slide
+        timeout={{
+          enter: 500,
+        }}
+        direction={'right'}
+        in={true}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <Container>
+          <ChartsContainer>
+            <ChartsSwitcher
+              divider={palette.divider}
+              background={palette.primary.main}
+            >
+              {base &&
+                quote && (
+                  <ExchangePair background={palette.primary.dark}>
+                    <Typography variant="subheading" color="default">
+                      {`${base}/${quote}`}
+                    </Typography>
+                  </ExchangePair>
+                )}
+              <SwitchButtonWrapper>
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      activeChart:
+                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                    }))
                   }}
-                />
-              </DepthChartContainer>
-            </Fade>
-          )}
-        </ChartsContainer>
+                >
+                  {activeChart === 'candle' ? 'show depth' : 'show chart'}
+                </Button>
+              </SwitchButtonWrapper>
+            </ChartsSwitcher>
+            {activeChart === 'candle' ? (
+              <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
+            ) : (
+              <Fade timeout={1000} in={activeChart === 'depth'}>
+                <DepthChartContainer>
+                  <MainDepthChart
+                    {...{
+                      theme,
+                      base,
+                      quote,
+                      animated: false,
+                    }}
+                  />
+                </DepthChartContainer>
+              </Fade>
+            )}
+          </ChartsContainer>
 
-        {this.renderTables()}
-      </Container>
+          {this.renderTables()}
+        </Container>
+      </Slide>
     )
   }
 
