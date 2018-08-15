@@ -8,7 +8,7 @@ import { difference } from 'lodash'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { opacityAnimation } from '../../../../../styles/keyframes'
+import { opacityAnimation } from '@styles/keyframes'
 import { TypographyFullWidth } from '@utils/cssUtils'
 
 let index: number | null = null

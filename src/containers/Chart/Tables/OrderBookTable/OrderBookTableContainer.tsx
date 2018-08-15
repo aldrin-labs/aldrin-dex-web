@@ -7,8 +7,8 @@ import {
   replaceOrdersWithSamePrice,
   sortOrders,
 } from '@utils/chartPageUtils'
-import OrderBookTable from './Tables/OrderBookTable'
-import SpreadTable from './Tables/SpreadTable'
+import OrderBookTable from './Tables/Asks/OrderBookTable'
+import SpreadTable from './Tables/Bids/SpreadTable'
 
 let unsubscribe: Function | undefined
 
