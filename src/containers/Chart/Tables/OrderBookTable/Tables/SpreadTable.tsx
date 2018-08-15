@@ -48,6 +48,7 @@ class SpreadTable extends Component {
   render() {
     const { tableExpanded } = this.state
     const {
+      digitsAfterDecimalForSpread,
       roundTill,
       aggregation,
       spread,
@@ -90,12 +91,13 @@ class SpreadTable extends Component {
               </HeadCell>
               <HeadCell width={'45%'}>
                 <TypographyFullWidth
-                  variant="caption"
-                  align="left"
+                  variant="body2"
+                  align="right"
                   color="secondary"
-                  noWrap={true}
                 >
-                  {spread}
+                  {spread.toFixed(digitsAfterDecimalForSpread) <= 0
+                    ? '~ 0'
+                    : spread.toFixed(digitsAfterDecimalForSpread)}
                 </TypographyFullWidth>
               </HeadCell>
             </TriggerRow>
