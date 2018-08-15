@@ -217,10 +217,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           industry: industryName || '-',
           portfolioPerf: portfolioPerf !== null ? roundPercentage(parseFloat(portfolioPerf)) : null,
           portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
-          industryPerf1Week: roundPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
-          industryPerf1Month: roundPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
-          industryPerf3Months: roundPercentage(parseFloat(industryPerformance.threeMonth)) || 0,
-          industryPerf1Year: roundPercentage(parseFloat(industryPerformance.oneYear)) || 0,
+          industryPerf1Week: industryPerformance.oneWeek !== null ? roundPercentage(parseFloat(industryPerformance.oneWeek)) : null,
+          industryPerf1Month: industryPerformance.oneMonth !== null ? roundPercentage(parseFloat(industryPerformance.oneMonth)) : null,
+          industryPerf3Months: industryPerformance.threeMonth !== null ? roundPercentage(parseFloat(industryPerformance.threeMonth)) : null,
+          industryPerf1Year: industryPerformance.oneYear !== null ? roundPercentage(parseFloat(industryPerformance.oneYear)) : null,
         }
 
         return col
@@ -548,17 +548,22 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         false
 
                       const formattedPortfolioPerf = portfolioPerf === null ? '-' : `${portfolioPerf}%`
+                      const formattedIndustryPerf1Week = industryPerf1Week === null ? '-' : `${industryPerf1Week}%`
+                      const formattedIndustryPerf1Month = industryPerf1Month === null ? '-' : `${industryPerf1Month}%`
+                      const formattedIndustry3Months = industryPerf3Months === null ? '-' : `${industryPerf3Months}%`
+                      const formattedIndustryPerf1Year = industryPerf1Year === null ? '-' : `${industryPerf1Year}%`
+
 
                       const cols = [
                         currency,
                         symbol,
                         industry,
                         `${portfolioPerc}%`,
-                         formattedPortfolioPerf,
-                        `${industryPerf1Week}%`,
-                        `${industryPerf1Month}%`,
-                        `${industryPerf3Months}%`,
-                        `${industryPerf1Year}%`,
+                        formattedPortfolioPerf,
+                        formattedIndustryPerf1Week,
+                        formattedIndustryPerf1Month,
+                        formattedIndustry3Months,
+                        formattedIndustryPerf1Year,
                       ]
 
 
