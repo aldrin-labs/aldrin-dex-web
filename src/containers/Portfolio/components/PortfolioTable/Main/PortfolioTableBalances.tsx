@@ -194,7 +194,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
 
     const tableData = [assets
-      .map((row: InewRowT) => {
+      .map((row: InewRowT, i) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
           value = 0,
@@ -225,6 +225,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
         const currentPrice = mainPrice * value
         const col = {
+          id: i,
           currency: name || '',
           symbol,
           percentage: roundPercentage(currentPrice * 100 / allSums),
