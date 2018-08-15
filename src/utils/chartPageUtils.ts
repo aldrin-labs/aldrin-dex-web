@@ -1,3 +1,5 @@
+import { IOrder } from '@containers/Chart/Chart.types'
+
 export const findSpread = (asks: any[], bids: any[]): number =>
   asks[asks.length - 1] && bids[0]
     ? +asks[asks.length - 1].price - +bids[0].price
@@ -55,6 +57,10 @@ export const testJSON = (text: any): boolean => {
     return false
   }
 }
+
+//  must delete bids that has price more then last ask
+export const BidsPriceFiltering = (asks: IOrder[], bids: IOrder[]) =>
+  bids.filter((bid) => +bid.price < +asks[asks.length - 1].price)
 
 export const replaceOrdersWithSamePrice = (state: any, order: any) => {
   // TODO: next here we should increase or decrease size of existing orders, not just replace them

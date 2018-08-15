@@ -6,6 +6,7 @@ import {
   getNumberOfDigitsAfterDecimal,
   replaceOrdersWithSamePrice,
   sortOrders,
+  BidsPriceFiltering,
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
@@ -28,7 +29,7 @@ class OrderBookTableContainer extends Component {
     // when get data from querry
     let iterator = state.i
     if (newProps.data.marketOrders.length > 1) {
-      const bids = sortOrders(
+      let bids = sortOrders(
         newProps.data.marketOrders
           .map((o) => JSON.parse(o))
           .filter((o) => o.type === 'bid')
@@ -40,13 +41,14 @@ class OrderBookTableContainer extends Component {
           .filter((o) => o.type === 'ask')
       )
 
+      bids = BidsPriceFiltering(asks, bids)
+
       newProps.setOrders({
         bids,
         asks: asks.slice().reverse(),
       })
 
       const spread = findSpread(asks, bids)
-
       return {
         bids,
         asks,
@@ -92,11 +94,11 @@ class OrderBookTableContainer extends Component {
       replaceOrdersWithSamePrice(state, order)
       if (order !== null) {
         //  sort orders
-        const bids =
+        let bids =
           order.type === 'bid' ? sortOrders([order, ...state.bids]) : state.bids
         const asks =
           order.type === 'ask' ? sortOrders([order, ...state.asks]) : state.asks
-
+        bids = BidsPriceFiltering(asks, bids)
         // update depth chart every 100 iterations
         if (iterator === 100) {
           newProps.setOrders({
