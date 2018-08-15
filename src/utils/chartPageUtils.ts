@@ -64,10 +64,10 @@ export const BidsPriceFiltering = (asks: IOrder[], bids: IOrder[]) =>
 
 export const replaceOrdersWithSamePrice = (state: any, order: any) => {
   // TODO: next here we should increase or decrease size of existing orders, not just replace them
-  if (order.side === 'bid') {
-    const ind = state.bids.findIndex((i) => i.price === order.price)
+  if (order.type === 'bid') {
+    const ind = state.bids.findIndex((i) => +i.price === +order.price)
     if (ind > -1) {
-      if (order.size !== '0') {
+      if (+order.size !== 0) {
         state.bids.splice(ind, 1, order)
       } else {
         state.bids.splice(ind, 1)
@@ -75,10 +75,10 @@ export const replaceOrdersWithSamePrice = (state: any, order: any) => {
       order = null
     }
   }
-  if (order !== null && order.side === 'ask') {
-    const ind = state.asks.findIndex((i) => i.price === order.price)
+  if (order !== null && order.type === 'ask') {
+    const ind = state.asks.findIndex((i) => +i.price === +order.price)
     if (ind > -1) {
-      if (order.size !== '0') {
+      if (+order.size !== 0) {
         state.asks.splice(ind, 1, order)
       } else {
         state.asks.splice(ind, 1)
@@ -86,6 +86,8 @@ export const replaceOrdersWithSamePrice = (state: any, order: any) => {
       order = null
     }
   }
+
+  return state
 }
 
 export const sortOrders = (orders: any[]) =>

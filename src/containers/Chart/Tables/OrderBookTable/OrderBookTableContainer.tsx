@@ -49,6 +49,7 @@ class OrderBookTableContainer extends Component {
       })
 
       const spread = findSpread(asks, bids)
+
       return {
         bids,
         asks,
@@ -91,7 +92,6 @@ class OrderBookTableContainer extends Component {
         return
       }
 
-      replaceOrdersWithSamePrice(state, order)
       if (order !== null) {
         //  sort orders
         let bids =
