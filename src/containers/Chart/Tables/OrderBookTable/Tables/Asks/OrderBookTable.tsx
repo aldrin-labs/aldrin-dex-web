@@ -40,7 +40,7 @@ class OrderBookTable extends Component {
       digitsAfterDecimalForAsksPrice,
       quote,
       data,
-      theme: { palette },
+      theme: { palette, breakpoints },
       tableExpanded,
     } = this.props
 
@@ -93,6 +93,7 @@ class OrderBookTable extends Component {
           {...{
             background,
             action,
+            breakpoints,
             index,
             ...this.props,
           }}

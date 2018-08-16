@@ -5,6 +5,7 @@ export interface IProps {
   action: any
   activeExchange: { exchange: IExchange; index: number }
   background: any
+  breakpoints: any
   index: number
   tableExpanded: boolean
   digitsAfterDecimalForAsksSize: number

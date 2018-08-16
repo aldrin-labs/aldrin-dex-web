@@ -18,20 +18,24 @@ class ClassBody extends Component<IProps> {
       digitsAfterDecimalForAsksSize,
       tableExpanded,
       action,
+      breakpoints,
       index,
       background,
       ...props
     } = this.props
 
     return (
-      <Body
+      <StyledBody
         {...props}
+        breakpoints={breakpoints.values}
+        tableExpanded={tableExpanded}
         height={
           tableExpanded
-            ? 'calc(64vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+            ? 'calc(63vh - 59px - 80px - 39px - 37px - 24px - 26px)'
             : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'
         }
       >
+        {console.log(breakpoints)}
         {data.length === 0 ? (
           <Loading centerAligned={true} />
         ) : (
@@ -79,10 +83,33 @@ class ClassBody extends Component<IProps> {
             ))}
           </>
         )}
-      </Body>
+      </StyledBody>
     )
   }
 }
+
+const StyledBody = Body.extend`
+  @media (min-width: ${(props: {
+      breakpoints?: any
+      height?: string
+      tableExpanded?: boolean
+    }) => `${props.breakpoints.lg}px`}) {
+    height: ${(props) =>
+      props.tableExpanded
+        ? 'calc(61vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+        : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'};
+  }
+  @media (min-width: ${(props: {
+      breakpoints?: any
+      height?: string
+      tableExpanded?: boolean
+    }) => `${props.breakpoints.xl}px`}) {
+    height: ${(props) =>
+      props.tableExpanded
+        ? 'calc(59vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+        : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'};
+  }
+`
 
 const StyledTypography = TypographyFullWidth.extend`
   && {
