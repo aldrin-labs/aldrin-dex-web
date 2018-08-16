@@ -115,7 +115,7 @@ const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
-    ${(props: { anime: boolean }) =>
+    ${(props: { anime: boolean; textColor: string }) =>
       props.anime
         ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
         : ''};
