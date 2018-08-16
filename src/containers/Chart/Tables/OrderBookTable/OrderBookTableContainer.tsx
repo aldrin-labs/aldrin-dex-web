@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
+import { uniqBy } from 'lodash'
 
 import {
   maximumItemsInArray,
   findSpread,
   getNumberOfDigitsAfterDecimal,
-  replaceOrdersWithSamePrice,
   sortOrders,
-  BidsPriceFiltering,
+  bidsPriceFiltering,
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
@@ -41,7 +41,7 @@ class OrderBookTableContainer extends Component {
           .filter((o) => o.type === 'ask')
       )
 
-      bids = BidsPriceFiltering(asks, bids)
+      bids = bidsPriceFiltering(asks, bids)
 
       newProps.setOrders({
         bids,
@@ -82,8 +82,8 @@ class OrderBookTableContainer extends Component {
     ) {
       const orderData = newProps.data.marketOrders[0]
       const order = {
-        price: Number(orderData.price).toFixed(8),
-        size: Number(orderData.size).toFixed(8),
+        price: Number(Number(orderData.price).toFixed(8)),
+        size: Number(Number(orderData.size).toFixed(8)),
         type: orderData.side,
       }
 
@@ -92,48 +92,51 @@ class OrderBookTableContainer extends Component {
         return
       }
 
-      if (order !== null) {
-        //  sort orders
-        let bids =
-          order.type === 'bid' ? sortOrders([order, ...state.bids]) : state.bids
-        const asks =
-          order.type === 'ask' ? sortOrders([order, ...state.asks]) : state.asks
-        bids = BidsPriceFiltering(asks, bids)
-        // update depth chart every 100 iterations
-        if (iterator === 100) {
-          newProps.setOrders({
-            bids,
-            asks: asks.slice().reverse(),
-          })
-          iterator = 0
-        } else {
-          iterator += 1
-        }
+      let bids =
+        order.type === 'bid'
+          ? sortOrders(uniqBy([order, ...state.bids], 'price'))
+          : state.bids
 
-        const spread = findSpread(asks, bids)
+      const asks =
+        order.type === 'ask'
+          ? sortOrders(uniqBy([order, ...state.asks], 'price'))
+          : state.asks
+      bids = bidsPriceFiltering(asks, bids)
 
-        return {
-          spread,
-          bids: maximumItemsInArray([...bids], 60, 10),
-          asks: maximumItemsInArray([...asks], 60, 10),
-          i: iterator,
-          digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
-            asks,
-            'price'
-          ),
-          digitsAfterDecimalForAsksSize: getNumberOfDigitsAfterDecimal(
-            asks,
-            'size'
-          ),
-          digitsAfterDecimalForBidsPrice: getNumberOfDigitsAfterDecimal(
-            bids,
-            'price'
-          ),
-          digitsAfterDecimalForBidsSize: getNumberOfDigitsAfterDecimal(
-            bids,
-            'size'
-          ),
-        }
+      // update depth chart every 100 iterations
+      if (iterator === 100) {
+        newProps.setOrders({
+          bids,
+          asks: asks.slice().reverse(),
+        })
+        iterator = 0
+      } else {
+        iterator += 1
+      }
+
+      const spread = findSpread(asks, bids)
+
+      return {
+        spread,
+        bids: maximumItemsInArray([...bids], 60, 10),
+        asks: maximumItemsInArray([...asks], 60, 10),
+        i: iterator,
+        digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
+          asks,
+          'price'
+        ),
+        digitsAfterDecimalForAsksSize: getNumberOfDigitsAfterDecimal(
+          asks,
+          'size'
+        ),
+        digitsAfterDecimalForBidsPrice: getNumberOfDigitsAfterDecimal(
+          bids,
+          'price'
+        ),
+        digitsAfterDecimalForBidsSize: getNumberOfDigitsAfterDecimal(
+          bids,
+          'size'
+        ),
       }
     }
 
