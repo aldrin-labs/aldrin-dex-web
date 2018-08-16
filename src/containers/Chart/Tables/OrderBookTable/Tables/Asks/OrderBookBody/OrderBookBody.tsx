@@ -33,7 +33,6 @@ class ClassBody extends Component<IProps> {
             : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'
         }
       >
-        {console.log(breakpoints)}
         {data.length === 0 ? (
           <Loading centerAligned={true} />
         ) : (
