@@ -5,7 +5,7 @@ import { Slide } from '@material-ui/core'
 
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
-import Charts from '@containers/Chart/OnlyCharts/Charts/Charts'
+import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
 
 class OnlyCharts extends Component<Props, {}> {
   render() {
@@ -27,7 +27,7 @@ class OnlyCharts extends Component<Props, {}> {
       >
         <ChartContainer anime={false} chartsCount={charts.length}>
           {charts.map((chart: string, i: number) => (
-            <Charts
+            <IndividualChart
               key={chart}
               theme={theme}
               removeChart={removeChart}

@@ -15,10 +15,6 @@ let index: number | null = null
 //  index for animations, no need to keep it in state couse it realted to css
 //  and there is no needs for rerendering
 class SpreadTable extends Component {
-  state = {
-    index: null,
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate =
       difference(nextProps.data, this.props.data).length > 0 ||
@@ -40,6 +36,7 @@ class SpreadTable extends Component {
 
   render() {
     const {
+      digitsAfterDecimalForSpread,
       roundTill,
       aggregation,
       spread,
@@ -64,7 +61,7 @@ class SpreadTable extends Component {
             background={dark}
             style={{ cursor: 'pointer', height: '1.625rem' }}
           >
-            <TriggerRow isHead background={dark}>
+            <TriggerRow isHead={true} background={dark}>
               <HeadCell width={'10%'}>
                 <StyledArrowSign
                   variant={{
@@ -83,12 +80,13 @@ class SpreadTable extends Component {
               </HeadCell>
               <HeadCell width={'45%'}>
                 <TypographyFullWidth
-                  variant="caption"
-                  align="left"
+                  variant="body2"
+                  align="right"
                   color="secondary"
-                  noWrap={true}
                 >
-                  {spread}
+                  {spread.toFixed(digitsAfterDecimalForSpread) <= 0
+                    ? '~ 0'
+                    : spread.toFixed(digitsAfterDecimalForSpread)}
                 </TypographyFullWidth>
               </HeadCell>
             </TriggerRow>
