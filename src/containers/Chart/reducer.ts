@@ -33,11 +33,11 @@ export default createReducer(
           : uniqWith([payload, ...state.charts], isEqual),
     }),
     [actions.addChart]: (state, payload) => {
-      const fitlerSamePairs = uniqWith([...state.charts, payload], isEqual)
+      // const fitlerSamePairs = uniqWith([...state.charts, payload], isEqual)
 
       return {
         ...state,
-        charts: fitlerSamePairs,
+        charts: [...state.charts, payload],
       }
     },
     [actions.removeChart]: (state, index) => ({

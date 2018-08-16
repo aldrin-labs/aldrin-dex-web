@@ -369,7 +369,7 @@ class Chart extends React.Component {
       <MainContainer>
         <TogglerContainer>
           <AutoSuggestSelect
-            value={currencyPair}
+            value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
           />
