@@ -1,5 +1,6 @@
 import { createReducer } from 'redux-act'
 import { uniqWith, isEqual } from 'lodash'
+import nanoid from 'nanoid'
 
 import * as actions from '@containers/Chart/actions'
 
@@ -37,7 +38,7 @@ export default createReducer(
 
       return {
         ...state,
-        charts: [...state.charts, payload],
+        charts: [...state.charts, { pair: payload, id: nanoid() }],
       }
     },
     [actions.removeChart]: (state, index) => ({

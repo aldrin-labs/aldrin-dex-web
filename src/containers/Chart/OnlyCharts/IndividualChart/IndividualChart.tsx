@@ -16,14 +16,6 @@ export default class Charts extends Component<IChartProps, IChartState> {
     show: true,
   }
 
-  componentDidUpdate(prevProps) {
-    // we need this hack to update depth chart Width when width of his container changes
-    if (prevProps.chartsCount !== this.props.chartsCount) {
-      const ordersDataContainer = this.state.ordersData
-      this.setState({ ordersData: ordersDataContainer })
-    }
-  }
-
   render() {
     const { currencyPair, removeChart, index, theme } = this.props
     const {
@@ -34,7 +26,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
     const [quote, base] = currencyPair.split('_')
 
     return (
-      <Grow in={show} mountOnEnter={true} unmountOnExit={true}>
+      <Grow in={show}>
         <Wrapper>
           <ChartsSwitcher
             background={primary.main}
