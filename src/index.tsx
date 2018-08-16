@@ -103,7 +103,7 @@ const render = () =>
                   <Route exact path="/portfolio" component={PortfolioRoutes} />
                   {/*<Route exact path="/market" component={MarketRoutes} />*/}
                   <Route exact path="/chart" component={ChartRoutes} />
-                  <Route exact path="/screener" component={ScreenerRoutes} />
+                  {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                   <Route exact path="/user" component={UserRoutes} />
                   <Route path="*" component={NotFound} />
                 </Switch>
