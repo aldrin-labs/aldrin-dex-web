@@ -67,10 +67,10 @@ class PieChartQuery extends React.Component<Props, State> {
       const mainPrice = isUSDCurrently ? priceUSD : priceBTC
       const currentPrice = mainPrice * value
 
-      if (name === null && !obj.other) {
-        obj['other'] = +(roundPercentage(currentPrice * 100 / allSums))
-      } else if (name === null && obj.other) {
-        obj['other'] += +(roundPercentage(currentPrice * 100 / allSums))
+      if (name === null && !obj.Other) {
+        obj['Other'] = +(roundPercentage(currentPrice * 100 / allSums))
+      } else if (name === null && obj.Other) {
+        obj['Other'] += +(roundPercentage(currentPrice * 100 / allSums))
       } else if (!obj[name] && !!value) {
         obj[name] = +(roundPercentage(currentPrice * 100 / allSums))
       } else if (!!obj[name] && !!value) {
@@ -100,6 +100,8 @@ class PieChartQuery extends React.Component<Props, State> {
       '#282F39',
     ];
 
+    const labelsStyleObject = {fill: 'white'}
+
     const pieData = Object.keys(obj).map((key, i) => {
       return {
         angle: obj[key],
@@ -109,7 +111,7 @@ class PieChartQuery extends React.Component<Props, State> {
       }
     })
 
-    return <PieChart data={pieData} flexible />
+    return <PieChart data={pieData} flexible showLabels labelsRadiusMultiplier={2} labelsStyle={labelsStyleObject} />
   }
 }
 
