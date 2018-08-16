@@ -63,7 +63,6 @@
     "apollo-link-ws": "^1.0.7",
     "apollo-utilities": "^1.0.10",
     "auth0-lock": "^11.4.0",
-    "autoscroll-react": "^3.2.0",
     "css-loader": "^1.0.0",
     "d3-time-format": "^2.1.1",
     "date-fns": "^1.29.0",

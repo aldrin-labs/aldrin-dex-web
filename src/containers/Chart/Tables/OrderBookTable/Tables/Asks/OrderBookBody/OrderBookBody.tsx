@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import autoscrollReact from 'autoscroll-react'
 import { red } from '@material-ui/core/colors'
 
 import { Row, Body, Cell } from '@components/Table/Table'
@@ -11,6 +10,11 @@ import { EmptyCell } from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/S
 import { IProps } from './OrderBookBody.types'
 
 class ClassBody extends Component<IProps> {
+  componentDidMount() {
+    //  scroll down to bottom of table
+    const objDiv = document.getElementById('body')
+    objDiv.scrollTop = objDiv.scrollHeight
+  }
   render() {
     const {
       data,
@@ -20,12 +24,11 @@ class ClassBody extends Component<IProps> {
       action,
       index,
       background,
-      ...props
     } = this.props
 
     return (
       <StyledBody
-        {...props}
+        id="body"
         tableExpanded={tableExpanded}
         height={
           tableExpanded
@@ -111,4 +114,4 @@ const StyledTypography = TypographyFullWidth.extend`
   }
 `
 
-export default autoscrollReact(ClassBody)
+export default ClassBody
