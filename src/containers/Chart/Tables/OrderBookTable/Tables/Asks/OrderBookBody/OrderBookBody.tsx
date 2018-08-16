@@ -18,7 +18,6 @@ class ClassBody extends Component<IProps> {
       digitsAfterDecimalForAsksSize,
       tableExpanded,
       action,
-      breakpoints,
       index,
       background,
       ...props
@@ -27,7 +26,6 @@ class ClassBody extends Component<IProps> {
     return (
       <StyledBody
         {...props}
-        breakpoints={breakpoints.values}
         tableExpanded={tableExpanded}
         height={
           tableExpanded
@@ -89,8 +87,7 @@ class ClassBody extends Component<IProps> {
 }
 
 const StyledBody = Body.extend`
-  @media (max-width: ${(props: { breakpoints?: any }) =>
-      `${props.breakpoints.xl}px`}) {
+  @media (max-width: 1920px) {
     height: ${(props) =>
       props.tableExpanded
         ? 'calc(62.5vh - 59px - 80px - 39px - 37px - 24px - 26px)'
