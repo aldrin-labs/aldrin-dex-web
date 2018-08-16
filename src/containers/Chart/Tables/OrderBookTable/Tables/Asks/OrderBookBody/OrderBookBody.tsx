@@ -31,7 +31,7 @@ class ClassBody extends Component<IProps> {
         tableExpanded={tableExpanded}
         height={
           tableExpanded
-            ? 'calc(63vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+            ? 'calc(60vh - 59px - 80px - 39px - 37px - 24px - 26px)'
             : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'
         }
       >
@@ -89,24 +89,17 @@ class ClassBody extends Component<IProps> {
 }
 
 const StyledBody = Body.extend`
-  @media (min-width: ${(props: {
-      breakpoints?: any
-      height?: string
-      tableExpanded?: boolean
-    }) => `${props.breakpoints.lg}px`}) {
+  @media (max-width: ${(props: { breakpoints?: any }) =>
+      `${props.breakpoints.xl}px`}) {
     height: ${(props) =>
       props.tableExpanded
-        ? 'calc(61vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+        ? 'calc(62.5vh - 59px - 80px - 39px - 37px - 24px - 26px)'
         : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'};
   }
-  @media (min-width: ${(props: {
-      breakpoints?: any
-      height?: string
-      tableExpanded?: boolean
-    }) => `${props.breakpoints.xl}px`}) {
+  @media (max-width: 1920px) and (min-width: 1700px) {
     height: ${(props) =>
       props.tableExpanded
-        ? 'calc(59vh - 59px - 80px - 39px - 37px - 24px - 26px)'
+        ? 'calc(60.5vh - 59px - 80px - 39px - 37px - 24px - 26px)'
         : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'};
   }
 `
