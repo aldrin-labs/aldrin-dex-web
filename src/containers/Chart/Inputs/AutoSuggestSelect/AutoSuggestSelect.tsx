@@ -326,7 +326,6 @@ const styles = (theme) => ({
 const queryRender = function(props: any) {
   return (
     <QueryRenderer
-      renderWithPlaceholder={true}
       centerAlign={false}
       placeholder={() => <TextInputLoader style={{ width: 100, margin: 0 }} />}
       component={IntegrationReactSelect}

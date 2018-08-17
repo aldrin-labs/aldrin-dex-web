@@ -173,7 +173,6 @@ class Chart extends React.Component {
             query={ORDERS_MARKET_QUERY}
             fetchPolicy="network-only"
             variables={{ symbol, exchange }}
-            renderWithPlaceholder
             placeholder={TablePlaceholderLoader}
             subscriptionArgs={{
               subscription: MARKET_ORDERS,
@@ -214,7 +213,6 @@ class Chart extends React.Component {
             component={ExchangesTable}
             query={ExchangeQuery}
             variables={{ marketName: currencyPair }}
-            renderWithPlaceholder
             placeholder={TablePlaceholderLoader}
             {...{
               activeExchange,
@@ -230,7 +228,6 @@ class Chart extends React.Component {
             component={TradeHistoryTable}
             query={MARKET_QUERY}
             variables={{ symbol, exchange }}
-            renderWithPlaceholder
             placeholder={() => (
               <TablePlaceholderLoader margin={'20% 0px 0px'} />
             )}
