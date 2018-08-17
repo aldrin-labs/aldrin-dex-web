@@ -1,7 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Typography, Divider } from '@material-ui/core'
+import { compose } from 'recompose'
+import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
+import { Typography, Divider, Button } from '@material-ui/core'
+import AddIcon from 'material-ui-icons/Add'
+import { Link } from 'react-router-dom'
 
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
@@ -25,6 +30,10 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
 import { customAquaScrollBar } from '@utils/cssUtils'
+import { withRouter } from 'react-router'
+
+const MyLinkToUserSettings = props => <Link to="/user" {...props} />
+
 
 const defaultSelectedSum = {
   currency: '',
@@ -394,7 +403,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { isShownChart, isUSDCurrently, children } = this.props
+    const { isShownChart, isUSDCurrently, children, classes } = this.props
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
     const isSelectAll =
@@ -408,8 +417,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!tableDataHasData) {
       return (
         <PTWrapper tableData={tableDataHasData}>
-          {children}
-          <PTextBox>Add account for Portfolio</PTextBox>
+          <PTextBox>
+            <Typography className={classes.modalHeading} variant="display1">Add an exchange or wallet</Typography>
+            <SButton component={MyLinkToUserSettings} className={classes.button}>
+                <Typography className={classes.buttonText}>Add</Typography>
+                <AddIcon className={classes.iconSmall}/>
+              </SButton>
+          </PTextBox>
         </PTWrapper>
       )
     }
@@ -580,15 +594,17 @@ const PTable = styled.table`
 `
 
 const PTextBox = styled.div`
-  font-size: 30px;
-  color: white;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 300px;
+  width: 50vw;
+  height: 50vh;
+  min-width: 400px;
+  min-height: 350px;
+  padding: 0.5rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   background-color: #2d3136;
@@ -606,6 +622,50 @@ const PTChartContainer = styled.div`
     display: none;
   }
 `
+
+const SButton = styled(Button)`
+    border-color: transparent;
+    border-radius: 3px;
+    background-color: #292d31;
+    font-family: Roboto,sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    box-sizing: border-box;
+    border: 1px solid;
+    
+    &&:hover {
+      border-color: #4ed8da;
+      background-color: #292d31;
+    }
+    
+    && > span {
+      display: flex;
+      justify-content: space-between;
+    }
+`
+
+const styles = theme => ({
+  button: {
+    paddingRight: 11,
+  },
+  modalHeading: {
+    textAlign: 'center',
+    marginBottom: '3rem',
+    color: '#fff',
+  },
+  // buttonSpan: {
+  //   display: 'flex',
+  //   justifyContent: 'space-between',
+  // },
+  buttonText: {
+    fontWeight: 500,
+  },
+  iconSmall: {
+    fontSize: 18,
+  },
+});
+
+
 
 class MainDataWrapper extends React.Component {
   render() {
@@ -629,8 +689,12 @@ const mapStateToProps = (store) => ({
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  MainDataWrapper
-)
+// const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+//   MainDataWrapper
+// )
 
-export default storeComponent
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+  withStyles(styles)
+)(MainDataWrapper)
