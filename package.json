@@ -1,17 +1,19 @@
 {
   "name": "web",
   "repository": "git@gitlab.com:crypto_project/frontend/web.git",
-  "author": "Bogdan Volyk <dekultism@gmail.com>",
+  "author": "CCAI-team",
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "dev": "webpack-dev-server --env.env=dev",
-    "dev:fast": "cross-env DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
+    "dev:fast":
+      "cross-env DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
-    "build": "cross-env DEVTOOL=source-map cross-env NODE_ENV=production cross-env API_ENDPOINT=develop.api.cryptocurrencies.ai cross-env CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack -p --env.env=prod",
+    "build":
+      "cross-env DEVTOOL=source-map cross-env NODE_ENV=production cross-env API_ENDPOINT=develop.api.cryptocurrencies.ai cross-env CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack -p --env.env=prod",
     "buildMaster": "cross-env NODE_ENV=production webpack -p --env.env=prod",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
     "test": "jest",
@@ -22,21 +24,10 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
   "jest": {
-    "setupFiles": [
-      "./jest.setup.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleDirectories": [
-      "./node_modules",
-      "./src"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ],
+    "setupFiles": ["./jest.setup.js"],
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
+    "moduleDirectories": ["./node_modules", "./src"],
+    "moduleFileExtensions": ["js", "ts", "tsx"],
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "typescript-babel-jest",
       "\\.(gql|graphql)$": "jest-transform-graphql"
@@ -111,7 +102,6 @@
     "redux-persist": "^5.9.1",
     "reselect": "^3.0.1",
     "rxjs": "^5.5.7",
-    "shortid": "^2.2.12",
     "style-loader": "^0.21.0",
     "styled-components": "3.3.3",
     "subscriptions-transport-ws": "^0.9.6",

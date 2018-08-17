@@ -1,4 +1,5 @@
 export interface IRow {
+  id: number
   exchange: string
   symbol: string
   price: number
