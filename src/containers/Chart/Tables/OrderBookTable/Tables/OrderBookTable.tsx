@@ -16,7 +16,12 @@ import {
 } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
-import { opacityAnimation } from '../../../../../styles/keyframes'
+import {
+  StyledTypography,
+  EmptyCell,
+  RowWithVolumeChart,
+} from '@containers/Chart/Tables/SharedStyles'
+import { hexToRgbAWithOpacity } from '../../../../../styles/helpers'
 
 let index: number | null = null
 class OrderBookTable extends Component {
@@ -104,46 +109,46 @@ class OrderBookTable extends Component {
           ) : (
             <>
               {data.map((order, i) => (
-                <Row
-                  hoverBackground={action.hover}
-                  key={i}
-                  background={background.default}
-                >
-                  <EmptyCell
+                <Row background={'transparent'} key={order.price}>
+                  <RowWithVolumeChart
+                    volumeColor={hexToRgbAWithOpacity(red[400], 0.25)}
                     colored={calculatePercentagesOfOrderSize(
                       order.size,
                       data
                     ).toString()}
-                    width={'10%'}
-                  />
-                  <Cell width={'45%'}>
-                    <StyledTypography
-                      anime={i === index}
-                      textColor={red[400]}
-                      color="default"
-                      noWrap={true}
-                      variant="body1"
-                      align="right"
-                    >
-                      {Number(order.size).toFixed(
-                        digitsAfterDecimalForAsksSize
-                      )}
-                    </StyledTypography>
-                  </Cell>
-                  <Cell width={'45%'}>
-                    <StyledTypography
-                      anime={i === index}
-                      textColor={red[400]}
-                      color="default"
-                      noWrap={true}
-                      variant="body1"
-                      align="right"
-                    >
-                      {Number(order.price).toFixed(
-                        digitsAfterDecimalForAsksPrice
-                      )}
-                    </StyledTypography>
-                  </Cell>
+                    hoverBackground={action.hover}
+                    background={background.default}
+                  >
+                    <EmptyCell width={'10%'} />
+                    <Cell width={'45%'}>
+                      <StyledTypography
+                        anime={i === index}
+                        textColor={red[400]}
+                        color="default"
+                        noWrap={true}
+                        variant="body1"
+                        align="right"
+                      >
+                        {Number(order.size).toFixed(
+                          digitsAfterDecimalForAsksSize
+                        )}
+                      </StyledTypography>
+                    </Cell>
+                    <Cell width={'45%'}>
+                      <StyledTypography
+                        anime={i === index}
+                        textColor={red[400]}
+                        color="default"
+                        noWrap={true}
+                        variant="body1"
+                        align="right"
+                      >
+                        {Number(order.price).toFixed(
+                          digitsAfterDecimalForAsksPrice
+                        )}
+                      </StyledTypography>
+                    </Cell>
+                  </RowWithVolumeChart>
                 </Row>
               ))}
             </>
@@ -154,17 +159,6 @@ class OrderBookTable extends Component {
   }
 }
 
-const StyledTypography = TypographyFullWidth.extend`
-  && {
-    color: ${(props: { textColor: string }) => props.textColor};
-    font-variant-numeric: lining-nums tabular-nums;
-    ${(props: { anime: boolean }) =>
-      props.anime
-        ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
-        : ''};
-  }
-`
-
 const SwitchTablesButton = styled(Button)`
   && {
     display: none;
@@ -172,21 +166,6 @@ const SwitchTablesButton = styled(Button)`
     @media (max - width: 1080px) {
       display: block;
     }
-  }
-`
-
-const EmptyCell = Cell.extend`
-  position: relative;
-
-  &: before {
-    position: absolute;
-    z-index: 100;
-    top: 0;
-    left: 0;
-    width: ${(props: { colored?: string }) => Number(props.colored)}%;
-    height: 100%;
-    content: '';
-    background-color: ${red[400]};
   }
 `
 

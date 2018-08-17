@@ -45,7 +45,7 @@ export const Body = styled.div`
 
 export const Row = styled.div`
   width: 100%;
-
+  position: relative;
   display: flex;
 
   transition: background 0.25s ease;
