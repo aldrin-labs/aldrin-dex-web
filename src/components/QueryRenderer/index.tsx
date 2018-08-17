@@ -56,7 +56,7 @@ export default class QueryRenderer extends React.Component<IProps> {
           subscribeToMore,
           ...result
         }) => {
-          if (true) {
+          if (loading && renderWithPlaceholder) {
             return (
               <>
                 {Placeholder && (
