@@ -35,6 +35,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       fetchPolicy,
       pollInterval,
       withOutSpinner,
+      centerAlign = true,
       ...rest
     } = this.props
 
@@ -55,18 +56,18 @@ export default class QueryRenderer extends React.Component<IProps> {
           subscribeToMore,
           ...result
         }) => {
-          if (loading && renderWithPlaceholder) {
+          if (true) {
             return (
               <>
                 {Placeholder && (
-                  <div style={{ margin: '0 auto' }}>
+                  <div style={centerAlign ? { margin: '0 auto' } : {}}>
                     <Placeholder />{' '}
                   </div>
                 )}
               </>
             )
           } else if (loading && !withOutSpinner) {
-            return <Loading centerAligned />
+            return <Loading centerAligned={true} />
           } else if (error) {
             return <ErrorFallback error={error} />
           }
