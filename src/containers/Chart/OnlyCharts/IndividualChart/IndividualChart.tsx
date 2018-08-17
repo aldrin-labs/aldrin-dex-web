@@ -31,7 +31,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
     const [quote, base] = currencyPair.split('_')
 
     return (
-      <Grow in={show}>
+      <Grow in={show} mountOnEnter={true} unmountOnExit={true}>
         <Wrapper>
           <ChartsSwitcher
             background={primary.main}
