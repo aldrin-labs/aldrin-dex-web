@@ -4,8 +4,12 @@ import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import ContentLoader from 'react-content-loader'
 
+import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
-import {formatNumberToUSFormat, onSortTableFull} from '@utils/PortfolioTableUtils'
+import {
+  formatNumberToUSFormat,
+  onSortTableFull,
+} from '@utils/PortfolioTableUtils'
 import { customAquaScrollBar } from '@utils/cssUtils'
 import {
   IProps,
@@ -17,39 +21,6 @@ import {
 import QueryRenderer from '@components/QueryRenderer'
 
 import gql from 'graphql-tag'
-
-const MyLoader = (props): React.ReactElement<{}> => (
-  <>
-    <ContentLoader
-      height={160}
-      width={400}
-      speed={2}
-      primaryColor="#35748c"
-      secondaryColor="#97e3f7"
-      {...props}
-    >
-      <rect x="25" y="15" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="45" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="75" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="105" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="135" rx="5" ry="5" width="300" height="10" />
-    </ContentLoader>
-    <ContentLoader
-      height={160}
-      width={400}
-      speed={2}
-      primaryColor="#35748c"
-      secondaryColor="#97e3f7"
-      {...props}
-    >
-      <rect x="25" y="15" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="45" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="75" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="105" rx="5" ry="5" width="300" height="10" />
-      <rect x="25" y="135" rx="5" ry="5" width="300" height="10" />
-    </ContentLoader>
-  </>
-)
 
 export const MyTradesQuery = gql`
   query MyTrades {
@@ -242,8 +213,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 export default function(props: any) {
   return (
     <QueryRenderer
-      // renderWithPlaceholder
-      // placeholder={MyLoader}
+      placeholder={TablePlaceholderLoader}
       component={TradeOrderHistoryTable}
       query={MyTradesQuery}
       {...props}
@@ -349,20 +319,20 @@ const PTDC = styled.td`
   ${PTD};
   min-width: 100px;
   padding-right: 0;
-  
+
   &:nth-child(1) {
     min-width: 80px;
-      text-overflow: ellipsis;
+    text-overflow: ellipsis;
   }
 
   &:nth-child(2) {
     min-width: 70px;
-      text-overflow: ellipsis;
+    text-overflow: ellipsis;
   }
 
   &:nth-child(4) {
     min-width: 150px;
-      text-overflow: ellipsis;
+    text-overflow: ellipsis;
 
     //padding-right: 10px;
   }
