@@ -134,8 +134,8 @@ class CorrelationWrapper extends React.Component<IProps> {
                 component={Correlation}
                 query={getCorrelationQuery}
                 variables={{
-                  startDate: 1531441380,
-                  endDate: 1531873380,
+                  startDate,
+                  endDate,
                 }}
                 {...{ portfolio: data, ...this.props }}
               />
