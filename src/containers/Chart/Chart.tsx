@@ -42,6 +42,8 @@ class Chart extends React.Component {
   static getDerivedStateFromProps(nextProps: any) {
     const [base, quote] = nextProps.currencyPair.split('_')
     document.title = `${base} to ${quote} | CCAI`
+
+    return null
   }
 
   componentWillUnmount() {
