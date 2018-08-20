@@ -33,17 +33,20 @@ export const Title = styled.div`
   }
 `
 
-export const Body = styled.div`
+export const Body = styled.ul`
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: ${(props: { height?: string }) => props.height};
   overflow-y: auto;
+  transition: height 0.25s ease-out;
 
   &::-webkit-scrollbar {
     width: 0px;
   }
 `
 
-export const Row = styled.div`
+export const Row = styled.li`
   width: 100%;
 
   display: flex;
@@ -84,7 +87,9 @@ export const HeadCell = Cell.extend`
   width: 7%;
 `
 
-export const Head = styled.div`
+export const Head = styled.ul`
+  margin: 0;
+  padding: 0;
   height: 2rem;
   width: 100%;
   background-color: ${(props: { background: string }) => props.background};
