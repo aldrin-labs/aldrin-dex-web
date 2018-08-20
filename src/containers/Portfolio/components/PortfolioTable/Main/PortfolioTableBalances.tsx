@@ -151,7 +151,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
+    // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
+    // performance loss by mapping elements that do not pass our requirements
     const { assets, cryptoWallets } = portfolio
+    const exchangeAssetsLength = assets.length ? assets.length + 1 : 0
     const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
     const walletData = cryptoWallets.map((row: InewRowT) => {
 
@@ -166,13 +169,15 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       //   return null
       // }
       const { symbol, priceUSD, priceBTC } = baseAsset || {}
+
       // console.log(row);
       // console.log(baseAsset);
-      return assets.map((walletAsset: any) => {
+      return assets.map((walletAsset: any, i) => {
         const mainPrice = isUSDCurrently ? walletAsset.asset.priceUSD : walletAsset.asset.priceBTC
 
         const currentPrice = mainPrice * walletAsset.balance
         const col = {
+          id: i + exchangeAssetsLength,
           currency: (baseAsset.symbol + ' ' + name) || '',
           symbol: walletAsset.asset.symbol,
           percentage: roundPercentage(currentPrice * 100 / allSums),
@@ -252,7 +257,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             : 0)
       )
 
-    const selectAllLinesInTable = tableData.map((_, i) => i)
+
+    const selectAllLinesInTable = tableData.map((el) => el.id )
 
     this.setState({ tableData, selectedBalances: selectAllLinesInTable }, () =>
       this.calculateSum(this.state.selectedBalances)
@@ -268,7 +274,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
-      const allRows = tableData.map((ck: IRowT, idx: number) => idx)
+      const allRows = tableData.map((ck: IRowT, idx: number) => ck.id)
 
       this.setState({ selectedBalances: allRows }, () =>
         this.calculateSum(allRows)
@@ -288,7 +294,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = selectedRows.map((idx) => tableData[idx])
+    const sum = tableData.filter((elem) => selectedRows.indexOf(elem.id) !== -1 )
+
     const reducedSum = sum.reduce(
       (acc: any, val: IRowT) => ({
         currency: val.currency,
@@ -472,7 +479,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 this.state.selectedBalances &&
                   this.state.selectedBalances.length > 0
                   ? this.state.selectedBalances.map(
-                    (idx) => this.state.tableData[idx]
+                    (id, i) => this.state.tableData[i]
                   )
                   : []
               }
