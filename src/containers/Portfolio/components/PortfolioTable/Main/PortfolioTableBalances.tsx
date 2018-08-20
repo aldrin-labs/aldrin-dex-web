@@ -154,6 +154,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
     // performance loss by mapping elements that do not pass our requirements
     const { assets, cryptoWallets } = portfolio
+    // checking that asset is array and have length more then 0
     const exchangeAssetsLength = assets.length ? assets.length + 1 : 0
     const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
     const walletData = cryptoWallets.map((row: InewRowT) => {
