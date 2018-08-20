@@ -18,33 +18,6 @@ class PortfolioSelector extends React.Component<IProps, IState> {
     checkboxes: [],
     checkedCheckboxes: [],
   }
-  // componentWillReceiveProps(nextProps: IProps) {
-  //   // called once
-  //   if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
-  //     const { keys } = nextProps.data.getProfile
-  //     const checkboxes =
-  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-  //     if (
-  //       nextProps.isShownMocks &&
-  //       checkboxes.indexOf('Test1') === -1 &&
-  //       checkboxes.indexOf('Test2') === -1
-  //     ) {
-  //       checkboxes.push('Test1', 'Test2')
-  //     }
-  //     const { keys } = nextProps.data.getProfile
-  //     const checkboxes =
-  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-  //     const checkedCheckboxes = checkboxes.map((ck, i) => i)
-
-  //     if (checkboxes) {
-  //       this.setState({ checkboxes, checkedCheckboxes }, () => {
-  //         const { onChangeActive } = this.props
-
-  //         onChangeActive(checkboxes)
-  //       })
-  //     }
-  //   }
-  // }
 
   componentDidMount() {
     console.log('object')
