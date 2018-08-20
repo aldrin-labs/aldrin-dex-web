@@ -159,53 +159,48 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
+    // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
+    // performance loss by mapping elements that do not pass our requirements
     const { assets, cryptoWallets } = portfolio
-    const allSums = calcAllSumOfPortfolioAsset(
-      assets,
-      isUSDCurrently,
-      cryptoWallets
-    )
-    const walletData = cryptoWallets
-      .map((row: InewRowT) => {
-        const {
-          baseAsset = {
-            symbol: '',
-            priceUSD: 0,
-            priceBTC: 0,
-            percentChangeDay: 0,
-          },
-          name = '',
-          address = '',
-          assets = [],
-        } =
-          row || {}
-        // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
-        //   return null
-        // }
-        const { symbol, priceUSD, priceBTC } = baseAsset || {}
-        // console.log(row);
-        // console.log(baseAsset);
-        return assets.map((walletAsset: any) => {
-          const mainPrice = isUSDCurrently
-            ? walletAsset.asset.priceUSD
-            : walletAsset.asset.priceBTC
+    // checking that asset is array and have length more then 0
+    const exchangeAssetsLength = assets.length ? assets.length + 1 : 0
+    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
+    const walletData = cryptoWallets.map((row: InewRowT) => {
 
-          const currentPrice = mainPrice * walletAsset.balance
-          const col = {
-            currency: baseAsset.symbol + ' ' + name || '',
-            symbol: walletAsset.asset.symbol,
-            percentage: roundPercentage(currentPrice * 100 / allSums),
-            price: mainPrice || 0,
-            quantity: Number(walletAsset.balance.toFixed(5)) || 0,
-            daily: 0,
-            dailyPerc: 0,
-            currentPrice: currentPrice || 0,
-            realizedPL: 0,
-            realizedPLPerc: 0,
-            unrealizedPL: 0,
-            unrealizedPLPerc: 0,
-            totalPL: 0,
-          }
+      const {
+        baseAsset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
+        name = '',
+        address = '',
+        assets = [],
+      } =
+        row || {}
+      // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
+      //   return null
+      // }
+      const { symbol, priceUSD, priceBTC } = baseAsset || {}
+
+      // console.log(row);
+      // console.log(baseAsset);
+      return assets.map((walletAsset: any, i) => {
+        const mainPrice = isUSDCurrently ? walletAsset.asset.priceUSD : walletAsset.asset.priceBTC
+
+        const currentPrice = mainPrice * walletAsset.balance
+        const col = {
+          id: i + exchangeAssetsLength,
+          currency: (baseAsset.symbol + ' ' + name) || '',
+          symbol: walletAsset.asset.symbol,
+          percentage: roundPercentage(currentPrice * 100 / allSums),
+          price: mainPrice || 0,
+          quantity: Number((walletAsset.balance).toFixed(5)) || 0,
+          daily: 0,
+          dailyPerc: 0,
+          currentPrice: currentPrice || 0,
+          realizedPL: 0,
+          realizedPLPerc: 0,
+          unrealizedPL: 0,
+          unrealizedPLPerc: 0,
+          totalPL: 0,
+        }
 
           return col
         })
@@ -274,7 +269,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             : 0)
       )
 
-    const selectAllLinesInTable = tableData.map((_, i) => i)
+
+    const selectAllLinesInTable = tableData.map((el) => el.id )
 
     this.setState({ tableData, selectedBalances: selectAllLinesInTable }, () =>
       this.calculateSum(this.state.selectedBalances)
@@ -290,7 +286,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
-      const allRows = tableData.map((ck: IRowT, idx: number) => idx)
+      const allRows = tableData.map((ck: IRowT, idx: number) => ck.id)
 
       this.setState({ selectedBalances: allRows }, () =>
         this.calculateSum(allRows)
@@ -310,7 +306,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = selectedRows.map((idx) => tableData[idx])
+    const sum = tableData.filter((elem) => selectedRows.indexOf(elem.id) !== -1 )
+
     const reducedSum = sum.reduce(
       (acc: any, val: IRowT) => ({
         currency: val.currency,
@@ -510,8 +507,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 this.state.selectedBalances &&
                 this.state.selectedBalances.length > 0
                   ? this.state.selectedBalances.map(
-                      (idx) => this.state.tableData[idx]
-                    )
+                    (id, i) => this.state.tableData[i]
+                  )
                   : []
               }
             />
