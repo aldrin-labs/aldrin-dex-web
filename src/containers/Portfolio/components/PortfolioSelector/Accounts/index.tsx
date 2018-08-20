@@ -2,6 +2,7 @@ import React from 'react'
 import { Typography } from '@material-ui/core'
 import { has } from 'lodash'
 
+import { IProps } from './index.types'
 import {
   AccountsWalletsHeadingWrapper,
   Headline,
@@ -16,9 +17,8 @@ import {
   AccountsListItem,
 } from '@containers/Portfolio/components/PortfolioSelector/styles'
 
-export default class Accounts extends React.PureComponent {
+export default class Accounts extends React.PureComponent<IProps> {
   componentDidMount() {
-    console.log(this.props.data)
     if (!has(this.props.data.getProfile, 'keys')) {
       return null
     }
@@ -43,6 +43,7 @@ export default class Accounts extends React.PureComponent {
       checkedCheckboxes,
       onToggleCheckbox,
     } = this.props
+
     return (
       <>
         <AccountsWalletsHeadingWrapper>
