@@ -1,5 +1,5 @@
 //  https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
-export const hexToRgbAWithOpacity = (hex, opacity) => {
+export const hexToRgbAWithOpacity = (hex, opacity):string => {
   var c
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
     c = hex.substring(1).split('')

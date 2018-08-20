@@ -26,7 +26,7 @@ export const RowWithVolumeChart = Row.extend`
     width: ${(props: { colored?: string }) => Number(props.colored)}%;
     height: 100%;
     content: '';
-    background: ${(props: { volumeColor?: string; colored?: string }) =>
+    background-color: ${(props: { volumeColor: string }) =>
       props.volumeColor};
   }
 `
