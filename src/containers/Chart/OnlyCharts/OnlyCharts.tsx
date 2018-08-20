@@ -26,14 +26,14 @@ class OnlyCharts extends Component<Props, {}> {
         unmountOnExit={true}
       >
         <ChartContainer anime={false} chartsCount={charts.length}>
-          {charts.map((chart: string, i: number) => (
+          {charts.map((chart: { pair: string; id: string }, i: number) => (
             <IndividualChart
-              key={chart}
+              key={chart.id}
               theme={theme}
               removeChart={removeChart}
               index={i}
               chartsCount={charts.length}
-              currencyPair={chart}
+              currencyPair={chart.pair}
             />
           ))}
           <WarningMessageSnack

@@ -9,19 +9,12 @@ import {
   IChartState,
 } from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart.types'
 import DepthChartContainer from '@containers/Chart/OnlyCharts/DepthChartContainer/DepthChartContainer'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 export default class Charts extends Component<IChartProps, IChartState> {
   state: IChartState = {
     activeChart: 'candle',
     show: true,
-  }
-
-  componentDidUpdate(prevProps) {
-    // we need this hack to update depth chart Width when width of his container changes
-    if (prevProps.chartsCount !== this.props.chartsCount) {
-      const ordersDataContainer = this.state.ordersData
-      this.setState({ ordersData: ordersDataContainer })
-    }
   }
 
   render() {
@@ -30,6 +23,10 @@ export default class Charts extends Component<IChartProps, IChartState> {
       palette: { primary },
     } = theme
     const { activeChart, show } = this.state
+
+    if (!Array.isArray(currencyPair)) {
+      return <CustomError error="Clean local Storage!" />
+    }
 
     const [quote, base] = currencyPair.split('_')
 

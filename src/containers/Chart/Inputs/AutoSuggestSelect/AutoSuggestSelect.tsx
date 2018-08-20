@@ -187,7 +187,7 @@ class IntegrationReactSelect extends React.PureComponent {
           inputComponent={SelectWrapped}
           value={value}
           onChange={() => {}}
-          placeholder="Add currency pair"
+          placeholder="Add chart"
           id={id}
           inputProps={{
             classes,
@@ -323,7 +323,7 @@ const styles = (theme) => ({
   },
 })
 
-const queryRender = function(props: any) {
+const queryRender = (props: any) => {
   return (
     <QueryRenderer
       centerAlign={false}
