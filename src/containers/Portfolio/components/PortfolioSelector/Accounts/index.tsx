@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography } from '@material-ui/core'
+import { Divider, Checkbox } from '@material-ui/core'
 import { has } from 'lodash'
 
 import { IProps } from './index.types'
@@ -9,13 +9,11 @@ import {
   CloseContainer,
   StyledIcon,
   SelectAll,
-  Checkbox,
-  Label,
-  Span,
   AccountName,
   AccountsList,
   AccountsListItem,
 } from '@containers/Portfolio/components/PortfolioSelector/styles'
+import { TypographyFullWidth } from '@utils/cssUtils'
 
 export default class Accounts extends React.PureComponent<IProps> {
   componentDidMount() {
@@ -47,9 +45,15 @@ export default class Accounts extends React.PureComponent<IProps> {
     return (
       <>
         <AccountsWalletsHeadingWrapper>
-          <Typography color="secondary" variant="title">
-            Api keys
-          </Typography>
+          {/* <KeyIcon /> */}
+          <TypographyFullWidth
+            gutterBottom={true}
+            align="center"
+            color="secondary"
+            variant="title"
+          >
+            🔑 Api keys
+          </TypographyFullWidth>
 
           <Headline isSideNavOpen={isSideNavOpen}>settings</Headline>
           <CloseContainer>
@@ -61,14 +65,16 @@ export default class Accounts extends React.PureComponent<IProps> {
           <Checkbox
             type="checkbox"
             id="all"
-            defaultChecked={true}
             checked={isCheckedAll}
             onClick={onToggleAll}
           />
-          <Label htmlFor="all">
-            <Span />
-          </Label>
-          <AccountName isChecked={isCheckedAll}>Select All</AccountName>
+
+          <AccountName
+            variant="body2"
+            color={isCheckedAll ? 'secondary' : 'textSecondary'}
+          >
+            Select All
+          </AccountName>
         </SelectAll>
 
         <AccountsList>
@@ -84,19 +90,22 @@ export default class Accounts extends React.PureComponent<IProps> {
                 <Checkbox
                   type="checkbox"
                   id={checkbox}
-                  defaultChecked={true}
                   checked={isChecked}
                   onClick={() => onToggleCheckbox(i)}
                 />
-                <Label htmlFor={checkbox}>
-                  <Span />
-                </Label>
 
-                <AccountName isChecked={isChecked}>{checkbox}</AccountName>
+                <AccountName
+                  align="left"
+                  variant="body2"
+                  color={isChecked ? 'secondary' : 'textSecondary'}
+                >
+                  {checkbox}
+                </AccountName>
               </AccountsListItem>
             )
           })}
         </AccountsList>
+        <Divider />
       </>
     )
   }

@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
+import { TypographyFullWidth } from '@utils/cssUtils'
 
 export const AccountsListItem = styled.li`
   display: flex;
@@ -9,15 +10,14 @@ export const AccountsListItem = styled.li`
   font-weight: 500;
   text-align: left;
   color: #4ed8da;
-  margin-bottom: 24px;
 `
 
 export const AccountsList = styled.ul`
   list-style: none;
-  margin-top: 34px;
   display: flex;
   flex-direction: column;
   padding-left: 8px;
+  margin: 0;
 `
 
 export const AccountsWalletsHeadingWrapper = styled.div`
@@ -39,59 +39,19 @@ export const StyledIcon = styled(Arrow)`
   transition: opacity 0.2s linear;
 `
 
-export const Span = styled.span``
-
-export const Label = styled.label``
-
-export const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 22px;
-    height: 22px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  & :checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
-  }
-`
-
 export const CloseContainer = styled.div`
   height: 100%;
 `
 
 export const SelectAll = styled.div`
-  margin-top: 32px;
-  padding-left: 8px;
+  margin-top: 1rem;
+  padding-left: 0.5rem;
+  display: flex;
 `
 
-export const AccountName = styled.span`
-  color: ${(props: { isChecked: boolean }) =>
-    props.isChecked ? '#4ed8da' : '#fff'};
-
-  font-family: Roboto, sans-serif;
-  font-size: 1em;
-  font-weight: 500;
-  text-align: left;
-  margin-left: 24px;
+export const AccountName = TypographyFullWidth.extend`
+  height: 50%;
+  margin: auto;
 `
 
 export const Headline = styled.div`
