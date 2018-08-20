@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { blueGrey, cyan } from '@material-ui/core/colors'
+import { withRouter } from 'react-router-dom'
 
 // https://material-ui.com/customization/css-in-js/#other-html-element
 import JssProvider from 'react-jss/lib/JssProvider'
@@ -21,21 +22,22 @@ import Footer from '@components/Footer'
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
 
+let theme = {}
+if (process.browser) {
+  window.theme = theme
+}
+
 const AppRaw = ({ children, themeMode }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
       theme={() => {
-        const theme = createMuiTheme({
+        theme = createMuiTheme({
           palette: {
             type: themeMode,
             primary: blueGrey,
             secondary: cyan,
           },
         })
-
-        if (process.browser) {
-          window.theme = theme
-        }
 
         return theme
       }}
@@ -59,4 +61,4 @@ const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
 })
 
-export const App = connect(mapStateToProps)(AppRaw)
+export const App = withRouter(connect(mapStateToProps)(AppRaw))
