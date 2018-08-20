@@ -372,7 +372,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Total',
         symbol: '-',
         industry: '-',
-        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
+        portfolioPerc: `100.00%`,
         portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
         industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
         industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
