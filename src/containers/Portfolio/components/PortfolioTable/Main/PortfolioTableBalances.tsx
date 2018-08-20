@@ -77,10 +77,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const composeWithMocks = isShownMocks
       ? {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-        cryptoWallets: portfolio.cryptoWallets.concat([])
-      }
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+          cryptoWallets: portfolio.cryptoWallets.concat([]),
+        }
       : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -100,10 +100,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
       const composeWithMocks = nextProps.isShownMocks
         ? {
-          ...portfolio,
-          assets: portfolio!.assets!.concat(MOCK_DATA),
-          cryptoWallets: portfolio!.cryptoWallets!.concat([])
-        }
+            ...portfolio,
+            assets: portfolio!.assets!.concat(MOCK_DATA),
+            cryptoWallets: portfolio!.cryptoWallets!.concat([]),
+          }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -117,10 +117,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
       const composeWithMocks = nextProps.isShownMocks
         ? {
-          ...portfolio,
-          assets: portfolio.assets.concat(MOCK_DATA),
-          cryptoWallets: portfolio.cryptoWallets.concat([])
-        }
+            ...portfolio,
+            assets: portfolio.assets.concat(MOCK_DATA),
+            cryptoWallets: portfolio.cryptoWallets.concat([]),
+          }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -152,49 +152,60 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
     const { assets, cryptoWallets } = portfolio
-    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
-    const walletData = cryptoWallets.map((row: InewRowT) => {
+    const allSums = calcAllSumOfPortfolioAsset(
+      assets,
+      isUSDCurrently,
+      cryptoWallets
+    )
+    const walletData = cryptoWallets
+      .map((row: InewRowT) => {
+        const {
+          baseAsset = {
+            symbol: '',
+            priceUSD: 0,
+            priceBTC: 0,
+            percentChangeDay: 0,
+          },
+          name = '',
+          address = '',
+          assets = [],
+        } =
+          row || {}
+        // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
+        //   return null
+        // }
+        const { symbol, priceUSD, priceBTC } = baseAsset || {}
+        // console.log(row);
+        // console.log(baseAsset);
+        return assets.map((walletAsset: any) => {
+          const mainPrice = isUSDCurrently
+            ? walletAsset.asset.priceUSD
+            : walletAsset.asset.priceBTC
 
-      const {
-        baseAsset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
-        name = '',
-        address = '',
-        assets = [],
-      } =
-        row || {}
-      // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
-      //   return null
-      // }
-      const { symbol, priceUSD, priceBTC } = baseAsset || {}
-      // console.log(row);
-      // console.log(baseAsset);
-      return assets.map((walletAsset: any) => {
-        const mainPrice = isUSDCurrently ? walletAsset.asset.priceUSD : walletAsset.asset.priceBTC
+          const currentPrice = mainPrice * walletAsset.balance
+          const col = {
+            currency: baseAsset.symbol + ' ' + name || '',
+            symbol: walletAsset.asset.symbol,
+            percentage: roundPercentage(currentPrice * 100 / allSums),
+            price: mainPrice || 0,
+            quantity: Number(walletAsset.balance.toFixed(5)) || 0,
+            daily: 0,
+            dailyPerc: 0,
+            currentPrice: currentPrice || 0,
+            realizedPL: 0,
+            realizedPLPerc: 0,
+            unrealizedPL: 0,
+            unrealizedPLPerc: 0,
+            totalPL: 0,
+          }
 
-        const currentPrice = mainPrice * walletAsset.balance
-        const col = {
-          currency: (baseAsset.symbol + ' ' + name) || '',
-          symbol: walletAsset.asset.symbol,
-          percentage: roundPercentage(currentPrice * 100 / allSums),
-          price: mainPrice || 0,
-          quantity: Number((walletAsset.balance).toFixed(5)) || 0,
-          daily: 0,
-          dailyPerc: 0,
-          currentPrice: currentPrice || 0,
-          realizedPL: 0,
-          realizedPLPerc: 0,
-          unrealizedPL: 0,
-          unrealizedPLPerc: 0,
-          totalPL: 0,
-        }
-
-        return col
+          return col
+        })
       })
-    }).reduce((a: any, b: any) => a.concat(b), []);
+      .reduce((a: any, b: any) => a.concat(b), [])
 
-
-    const tableData = [assets
-      .map((row: InewRowT, i) => {
+    const tableData = [
+      assets.map((row: InewRowT, i) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
           value = 0,
@@ -242,7 +253,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         }
 
         return col
-      }), walletData].reduce((a: any, b: any) => a.concat(b), [])
+      }),
+      walletData,
+    ]
+      .reduce((a: any, b: any) => a.concat(b), [])
       .filter(Boolean)
       .filter(
         (el) =>
@@ -449,7 +463,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           <TableAndHeadingWrapper>
             <TableHeading>Trade history</TableHeading>
             <Wrapper>
-              <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} />
+              {/* <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} /> */}
             </Wrapper>
           </TableAndHeadingWrapper>
 
@@ -458,7 +472,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             <ChartTitle color="default" variant="title">
               Portfolio Value
             </ChartTitle>
-            <Chart
+            {/* <Chart
               isShownMocks={this.props.isShownMocks}
               setActiveChart={this.props.setActiveChart}
               activeChart={this.props.activeChart}
@@ -470,13 +484,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               marginTopHr="10px"
               coins={
                 this.state.selectedBalances &&
-                  this.state.selectedBalances.length > 0
+                this.state.selectedBalances.length > 0
                   ? this.state.selectedBalances.map(
-                    (idx) => this.state.tableData[idx]
-                  )
+                      (idx) => this.state.tableData[idx]
+                    )
                   : []
               }
-            />
+            /> */}
           </PTChartContainer>
         </GridContainer>
       </PTWrapper>
