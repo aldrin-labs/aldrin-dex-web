@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { withStyles } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import { Typography, Divider, Button } from '@material-ui/core'
 import AddIcon from 'material-ui-icons/Add'
@@ -416,8 +416,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { isShownChart, isUSDCurrently, children, classes } = this.props
+    const { isShownChart, isUSDCurrently, children, theme } = this.props
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
+
+    console.log('theme: ', theme);
+
 
     const isSelectAll =
       (tableData &&
@@ -430,16 +433,19 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!tableDataHasData) {
       return (
         <PTWrapper tableData={tableDataHasData}>
-          <PTextBox>
-            <Typography className={classes.modalHeading} variant="display1">
+          <PTextBox
+          backgroundColor={theme.palette.grey.A400}
+          >
+            <STypography variant="display1">
               Add an exchange or wallet
-            </Typography>
+            </STypography>
             <SButton
               component={MyLinkToUserSettings}
-              className={classes.button}
+              backgroundColor={theme.palette.grey.A400}
+              borderColor={theme.palette.secondary.light}
             >
-              <Typography className={classes.buttonText}>Add</Typography>
-              <AddIcon className={classes.iconSmall} />
+              <STypographyButtonText> Add </STypographyButtonText>
+              <SAddIcon />
             </SButton>
           </PTextBox>
         </PTWrapper>
@@ -625,7 +631,7 @@ const PTextBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #2d3136;
+  background-color: ${(props: { backgroundColor: string }) => props.backgroundColor};
 `
 
 const PTChartContainer = styled.div`
@@ -642,9 +648,10 @@ const PTChartContainer = styled.div`
 `
 
 const SButton = styled(Button)`
+  padding-right: 11px;
   border-color: transparent;
   border-radius: 3px;
-  background-color: #292d31;
+  background-color: transparent;
   font-family: Roboto, sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -652,8 +659,8 @@ const SButton = styled(Button)`
   border: 1px solid;
 
   &&:hover {
-    border-color: #4ed8da;
-    background-color: #292d31;
+    border-color: ${(props: { borderColor: string }) => props.borderColor};
+    background-color: ${(props: { backgroundColor: string }) => props.backgroundColor};
   }
 
   && > span {
@@ -662,26 +669,19 @@ const SButton = styled(Button)`
   }
 `
 
-const styles = (theme) => ({
-  button: {
-    paddingRight: 11,
-  },
-  modalHeading: {
-    textAlign: 'center',
-    marginBottom: '3rem',
-    color: '#fff',
-  },
-  // buttonSpan: {
-  //   display: 'flex',
-  //   justifyContent: 'space-between',
-  // },
-  buttonText: {
-    fontWeight: 500,
-  },
-  iconSmall: {
-    fontSize: 18,
-  },
-})
+const STypography = styled(Typography)`
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #fff;
+`
+
+const STypographyButtonText = styled(Typography)`
+  font-weight: 500;
+`
+
+const SAddIcon = styled(AddIcon)`
+  font-size: 18px;
+`
 
 class MainDataWrapper extends React.Component {
   render() {
@@ -712,5 +712,5 @@ const mapStateToProps = (store) => ({
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
-  withStyles(styles)
+  withTheme()
 )(MainDataWrapper)
