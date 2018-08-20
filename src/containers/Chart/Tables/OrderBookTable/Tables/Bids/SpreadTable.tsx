@@ -8,25 +8,20 @@ import { difference } from 'lodash'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { opacityAnimation } from '../../../../../styles/keyframes'
+import { opacityAnimation } from '@styles/keyframes'
 import { TypographyFullWidth } from '@utils/cssUtils'
 
 let index: number | null = null
 //  index for animations, no need to keep it in state couse it realted to css
 //  and there is no needs for rerendering
 class SpreadTable extends Component {
-  state = {
-    tableExpanded: true,
-    index: null,
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate =
       difference(nextProps.data, this.props.data).length > 0 ||
       nextProps.activeExchange.index !== this.props.activeExchange.index ||
       nextProps.currencyPair !== this.props.currencyPair ||
       (this.props.data.length > 0 && nextProps.data.length === 0) ||
-      nextState.tableExpanded !== this.state.tableExpanded
+      nextProps.tableExpanded !== this.props.tableExpanded
 
     return shouldUpdate
   }
@@ -39,14 +34,7 @@ class SpreadTable extends Component {
       )
   }
 
-  onHeadClick = () => {
-    this.setState((prevState) => ({
-      tableExpanded: !prevState.tableExpanded,
-    }))
-  }
-
   render() {
-    const { tableExpanded } = this.state
     const {
       digitsAfterDecimalForSpread,
       roundTill,
@@ -57,6 +45,7 @@ class SpreadTable extends Component {
       data,
       digitsAfterDecimalForBidsSize,
       digitsAfterDecimalForBidsPrice,
+      tableExpanded,
     } = this.props
     const {
       background,
@@ -68,11 +57,11 @@ class SpreadTable extends Component {
       <SpreadreadTableWrapper>
         <CollapseWrapper in={tableExpanded} collapsedHeight="1.5rem">
           <Head
-            onClick={this.onHeadClick}
+            onClick={this.props.onHeadClick}
             background={dark}
             style={{ cursor: 'pointer', height: '1.625rem' }}
           >
-            <TriggerRow isHead background={dark}>
+            <TriggerRow isHead={true} background={dark}>
               <HeadCell width={'10%'}>
                 <StyledArrowSign
                   variant={{
