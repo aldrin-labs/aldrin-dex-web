@@ -48,7 +48,7 @@ export const Body = styled.ul`
 
 export const Row = styled.li`
   width: 100%;
-
+  position: relative;
   display: flex;
 
   transition: background 0.25s ease;
