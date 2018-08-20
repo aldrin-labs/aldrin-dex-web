@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import Input from '@material-ui/core/Input'
 import MenuItem from '@material-ui/core/MenuItem'
 import Chip from '@material-ui/core/Chip'
+import TextInputLoader from '@components/Placeholders/TextInputLoader'
 import Select from 'react-select-for-charting-page'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
@@ -186,7 +187,7 @@ class IntegrationReactSelect extends React.PureComponent {
           inputComponent={SelectWrapped}
           value={value}
           onChange={() => {}}
-          placeholder="Add currency pair"
+          placeholder="Add chart"
           id={id}
           inputProps={{
             classes,
@@ -322,10 +323,11 @@ const styles = (theme) => ({
   },
 })
 
-const queryRender = function(props: any) {
-  console.log(props)
+const queryRender = (props: any) => {
   return (
     <QueryRenderer
+      centerAlign={false}
+      placeholder={() => <TextInputLoader style={{ width: 100, margin: 0 }} />}
       component={IntegrationReactSelect}
       query={MarketsQuery}
       {...props}

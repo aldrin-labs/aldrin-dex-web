@@ -23,7 +23,7 @@ export const NavBar: SFC<{}> = () => (
 
 // TODO: fix z-index for drawer
 const Nav = styled.div`
-  width: 100vw;
+  width: 100%;
   position: relative;
   display: flex;
   justify-content: space-between;

@@ -7,7 +7,7 @@ const MyLoader = (props) => (
     <ContentLoader
       height={160}
       width={300}
-      speed={5}
+      speed={1}
       primaryColor={props.theme.palette.primary.main}
       secondaryColor={props.theme.palette.secondary.main}
       {...props}
