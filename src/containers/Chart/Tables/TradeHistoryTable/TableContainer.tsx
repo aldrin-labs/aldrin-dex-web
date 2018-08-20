@@ -43,6 +43,11 @@ class TableContainer extends Component {
         time: new Date(tickerData[7]).toLocaleTimeString(),
       }
 
+      // temporary fix you should remove it when backend will be fixed
+      if (+ticker.size === 35.4 && ticker.time === '16:30:37') {
+        return
+      }
+
       return {
         data: maximumItemsInArray([ticker, ...state.data], 100, 40),
         numbersAfterDecimalForPrice: getNumberOfDigitsAfterDecimal(
