@@ -182,11 +182,7 @@ class DepthChart extends Component {
 
     return (
       <Container>
-        <FlexibleXYPlot
-          margin={{ right: 48 }}
-          onMouseLeave={this.onMouseLeave}
-          yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
-        >
+        <ScaleWrapper>
           <MidPriceContainer
             background={hexToRgbAWithOpacity(palette.primary.light, 0.1)}
           >
@@ -205,6 +201,12 @@ class DepthChart extends Component {
               <MdAddCircleOutline />
             </IconButton>
           </MidPriceContainer>
+        </ScaleWrapper>
+        <FlexibleXYPlot
+          margin={{ right: 48 }}
+          onMouseLeave={this.onMouseLeave}
+          yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
+        >
           <XAxis
             tickTotal={xAxisTickTotal || 10}
             tickFormat={(value) => abbrNum(+value.toFixed(4), 4)}
@@ -379,16 +381,21 @@ const CrosshairBottomWrapper = styled.div`
   font-size: 0.75rem;
 `
 
+const ScaleWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 1rem;
+`
+
 const MidPriceContainer = styled.div`
   background: ${(props: { background?: string }) => props.background};
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25%;
-  position: absolute;
-  top: 1rem;
-  left: 35%;
+  width: 11rem;
+  position: relative;
+  margin: 0 auto;
 `
 
 const MidPriceColumnWrapper = styled.div`
