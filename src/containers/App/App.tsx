@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 import { blueGrey, cyan } from '@material-ui/core/colors'
+import { withRouter } from 'react-router-dom'
 
 // https://material-ui.com/customization/css-in-js/#other-html-element
 import JssProvider from 'react-jss/lib/JssProvider'
@@ -20,22 +22,26 @@ import Footer from '@components/Footer'
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
 
-// TODO: 2 themes
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: blueGrey,
-    secondary: cyan,
-  },
-})
-
+let theme = {}
 if (process.browser) {
   window.theme = theme
 }
 
-export const App = ({ children }: any) => (
+const AppRaw = ({ children, themeMode }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider
+      theme={() => {
+        theme = createMuiTheme({
+          palette: {
+            type: themeMode,
+            primary: blueGrey,
+            secondary: cyan,
+          },
+        })
+
+        return theme
+      }}
+    >
       <CssBaseline />
       <AppGridLayout>
         <NavBar />
@@ -50,3 +56,9 @@ export const App = ({ children }: any) => (
 const AppGridLayout = styled.div`
   min-height: calc(100vh - 50px);
 `
+
+const mapStateToProps = (store: any) => ({
+  themeMode: store.ui.theme,
+})
+
+export const App = withRouter(connect(mapStateToProps)(AppRaw))
