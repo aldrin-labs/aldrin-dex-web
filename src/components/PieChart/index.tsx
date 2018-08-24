@@ -39,7 +39,7 @@ export default class PieChart extends React.Component<Props, State> {
     const { value } = this.state
     const { data } = this.props
 
-    const { width, height, radius, innerRadius, flexible, withHints } = this.props
+    const { width, height, radius, innerRadius, flexible, withHints, showLabels, labelsRadiusMultiplier, labelsStyle } = this.props
     const hasCustomColors = data.some((a) => !!a.color || !!a.style)
     const colorIsNumber = data.every((a) => typeof a.color === 'number')
 
@@ -51,6 +51,9 @@ export default class PieChart extends React.Component<Props, State> {
         colorType={hasCustomColors ? 'literal' : 'linear'}
         onValueMouseOver={this.onValueMouseOver}
         onSeriesMouseOut={this.onSeriesMouseOut}
+        showLabels={showLabels}
+        labelsRadiusMultiplier={labelsRadiusMultiplier || 1.1}
+        labelsStyle={labelsStyle || {}}
       >
         {value && !!withHints && (
           <Hint value={value}>
@@ -75,6 +78,9 @@ export default class PieChart extends React.Component<Props, State> {
         colorType={hasCustomColors ? 'literal' : 'linear'}
         onValueMouseOver={(v: PiePiece) => this.setState({ value: v })}
         onSeriesMouseOut={() => this.setState({ value: null })}
+        showLabels={showLabels}
+        labelsRadiusMultiplier={labelsRadiusMultiplier || 1.1}
+        labelsStyle={labelsStyle || {}}
       >
 
         {value && !!withHints && (
