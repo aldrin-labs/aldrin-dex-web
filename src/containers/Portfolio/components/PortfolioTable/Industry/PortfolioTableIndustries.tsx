@@ -33,7 +33,7 @@ const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
-  { name: 'Current', value: 'portfolioPerc' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
   { name: 'Industry 1 week', value: 'industryPerf1Week', additionName: 'performance' },
   { name: 'Industry 1 month', value: 'industryPerf1Month', additionName: 'performance' },
@@ -583,7 +583,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                               if (
                                 col &&
                                 !Array.isArray(col) &&
-                                col.match(/%/g)
+                                col.match(/%/g) &&
+                                innerIdx !== 3
                               ) {
                                 const color =
                                   Number(col.replace(/%/g, '')) >= 0
