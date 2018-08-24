@@ -111,7 +111,10 @@ class PieChartQuery extends React.Component<Props, State> {
       }
     })
 
-    return <PieChart data={pieData} flexible showLabels labelsRadiusMultiplier={2} labelsStyle={labelsStyleObject} />
+    return <PieChart data={pieData} flexible />
+
+    // TODO: FOR FUTURE
+    // return <PieChart data={pieData} flexible showLabels labelsRadiusMultiplier={2} labelsStyle={labelsStyleObject} />
   }
 }
 
