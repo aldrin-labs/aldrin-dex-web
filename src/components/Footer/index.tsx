@@ -3,7 +3,10 @@ import styled from 'styled-components'
 import { withTheme } from '@material-ui/core/styles'
 import { Typography, Button } from '@material-ui/core'
 import Switch from '@material-ui/core/Switch'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 
+import { changeThemeMode } from '@containers/App/actions'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import github from '../../icons/github.svg'
 import telegram from '../../icons/telegram.svg'
@@ -15,7 +18,7 @@ const socialIcons = [
   // { icon: twitter, link: '' },
 ]
 
-const Footer = ({ theme: { palette } }) => (
+const Footer = ({ theme: { palette }, changeModeTheme, themeMode }) => (
   <Container background={palette.primary.dark}>
     <Block>
       <Typography variant="caption" color="default">
@@ -55,9 +58,9 @@ const Footer = ({ theme: { palette } }) => (
         NIGHT MODE
       </Typography>
       <Switch
-        checked={true}
+        checked={themeMode === 'dark'}
         onChange={() => {
-          console.log('soon')
+          changeModeTheme()
         }}
         value="theme"
         color="secondary"
@@ -95,13 +98,15 @@ const Block = styled.div`
   }
 `
 
-const Text = styled.span`
-  opacity: 0.5;
-  font-family: Roboto;
-  font-size: 1.225em;
-  font-weight: 500;
-  text-align: left;
-  color: #fff;
-`
+const mapStateToProps = (store: any) => ({
+  themeMode: store.ui.theme,
+})
 
-export default withTheme()(Footer)
+const mapDispatchToProps = (dispatch: any) => ({
+  changeModeTheme: () => dispatch(changeThemeMode()),
+})
+
+export default compose(
+  withTheme(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Footer)

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa'
-import shortid from 'shortid'
+import nanoid from 'nanoid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'
 import {
@@ -92,7 +92,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   this.onCellMouseOver(i, ind)
                 }}
                 style={{ gridColumnStart: i + 2, gridRowStart: ind + 2 }}
-                key={shortid.generate()}
+                key={nanoid()}
               >
                 <CellContent
                   color={backgroundColor}

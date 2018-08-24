@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 
 import TradeHistoryTable from './Table/TradeHistoryTable'
-import { maximumItemsInArray } from '@utils/chartPageUtils'
+import {
+  maximumItemsInArray,
+  getNumberOfDigitsAfterDecimal,
+} from '@utils/chartPageUtils'
 
 let unsubscribe: Function | undefined
 
@@ -34,14 +37,23 @@ class TableContainer extends Component {
       const fall =
         state.data.length > 0 ? state.data[0].price > tickerData[3] : false
       const ticker = {
+        fall,
         size: tickerData[4],
         price: tickerData[3],
         time: new Date(tickerData[7]).toLocaleTimeString(),
-        fall,
+      }
+
+      // temporary fix you should remove it when backend will be fixed
+      if (+ticker.size === 35.4 && ticker.time === '16:30:37') {
+        return
       }
 
       return {
         data: maximumItemsInArray([ticker, ...state.data], 100, 40),
+        numbersAfterDecimalForPrice: getNumberOfDigitsAfterDecimal(
+          [ticker, ...state.data],
+          'price'
+        ),
       }
     }
 
@@ -86,7 +98,13 @@ class TableContainer extends Component {
       ...rest
     } = this.props
 
-    return <TradeHistoryTable data={this.state.data} {...rest} />
+    return (
+      <TradeHistoryTable
+        data={this.state.data}
+        numbersAfterDecimalForPrice={this.state.numbersAfterDecimalForPrice}
+        {...rest}
+      />
+    )
   }
 }
 

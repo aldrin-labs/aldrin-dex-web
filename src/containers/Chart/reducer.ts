@@ -1,5 +1,6 @@
 import { createReducer } from 'redux-act'
 import { uniqWith, isEqual } from 'lodash'
+import nanoid from 'nanoid'
 
 import * as actions from '@containers/Chart/actions'
 
@@ -33,11 +34,11 @@ export default createReducer(
           : uniqWith([payload, ...state.charts], isEqual),
     }),
     [actions.addChart]: (state, payload) => {
-      const fitlerSamePairs = uniqWith([...state.charts, payload], isEqual)
+      // const fitlerSamePairs = uniqWith([...state.charts, payload], isEqual)
 
       return {
         ...state,
-        charts: fitlerSamePairs,
+        charts: [...state.charts, { pair: payload, id: nanoid() }],
       }
     },
     [actions.removeChart]: (state, index) => ({

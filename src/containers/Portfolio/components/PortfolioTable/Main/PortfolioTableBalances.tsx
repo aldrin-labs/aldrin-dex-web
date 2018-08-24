@@ -1,7 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Typography, Divider } from '@material-ui/core'
+import { compose } from 'recompose'
+import { withTheme } from '@material-ui/core/styles'
+import classNames from 'classnames'
+import { Typography, Divider, Button } from '@material-ui/core'
+import AddIcon from 'material-ui-icons/Add'
+import { Link } from 'react-router-dom'
 
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
@@ -25,6 +30,9 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
 import { customAquaScrollBar } from '@utils/cssUtils'
+import { withRouter } from 'react-router'
+
+const MyLinkToUserSettings = (props) => <Link to="/user" {...props} />
 
 const defaultSelectedSum = {
   currency: '',
@@ -77,10 +85,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const composeWithMocks = isShownMocks
       ? {
-        ...portfolio,
-        assets: portfolio.assets.concat(MOCK_DATA),
-        cryptoWallets: portfolio.cryptoWallets.concat([])
-      }
+          ...portfolio,
+          assets: portfolio.assets.concat(MOCK_DATA),
+          cryptoWallets: portfolio.cryptoWallets.concat([]),
+        }
       : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -92,6 +100,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.data) {
+      if (!nextProps.data.getProfile) return
+
       const { portfolio } = nextProps.data.getProfile
 
       if (!portfolio || portfolio === null) {
@@ -100,10 +110,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
       const composeWithMocks = nextProps.isShownMocks
         ? {
-          ...portfolio,
-          assets: portfolio!.assets!.concat(MOCK_DATA),
-          cryptoWallets: portfolio!.cryptoWallets!.concat([])
-        }
+            ...portfolio,
+            assets: portfolio!.assets!.concat(MOCK_DATA),
+            cryptoWallets: portfolio!.cryptoWallets!.concat([]),
+          }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -117,10 +127,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       )
       const composeWithMocks = nextProps.isShownMocks
         ? {
-          ...portfolio,
-          assets: portfolio.assets.concat(MOCK_DATA),
-          cryptoWallets: portfolio.cryptoWallets.concat([])
-        }
+            ...portfolio,
+            assets: portfolio.assets.concat(MOCK_DATA),
+            cryptoWallets: portfolio.cryptoWallets.concat([]),
+          }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -151,7 +161,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
+    // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
+    // performance loss by mapping elements that do not pass our requirements
     const { assets, cryptoWallets } = portfolio
+    // checking that asset is array and have length more then 0
+    const exchangeAssetsLength = assets.length ? assets.length + 1 : 0
     const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
     const walletData = cryptoWallets.map((row: InewRowT) => {
 
@@ -166,13 +180,15 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       //   return null
       // }
       const { symbol, priceUSD, priceBTC } = baseAsset || {}
+
       // console.log(row);
       // console.log(baseAsset);
-      return assets.map((walletAsset: any) => {
+      return assets.map((walletAsset: any, i) => {
         const mainPrice = isUSDCurrently ? walletAsset.asset.priceUSD : walletAsset.asset.priceBTC
 
         const currentPrice = mainPrice * walletAsset.balance
         const col = {
+          id: i + exchangeAssetsLength,
           currency: (baseAsset.symbol + ' ' + name) || '',
           symbol: walletAsset.asset.symbol,
           percentage: roundPercentage(currentPrice * 100 / allSums),
@@ -188,13 +204,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           totalPL: 0,
         }
 
-        return col
+          return col
+        })
       })
-    }).reduce((a: any, b: any) => a.concat(b), []);
+      .reduce((a: any, b: any) => a.concat(b), [])
 
-
-    const tableData = [assets
-      .map((row: InewRowT) => {
+    const tableData = [
+      assets.map((row: InewRowT, i) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
           value = 0,
@@ -225,6 +241,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
         const currentPrice = mainPrice * value
         const col = {
+          id: i,
           currency: name || '',
           symbol,
           percentage: roundPercentage(currentPrice * 100 / allSums),
@@ -241,7 +258,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         }
 
         return col
-      }), walletData].reduce((a: any, b: any) => a.concat(b), [])
+      }),
+      walletData,
+    ]
+      .reduce((a: any, b: any) => a.concat(b), [])
       .filter(Boolean)
       .filter(
         (el) =>
@@ -251,7 +271,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             : 0)
       )
 
-    const selectAllLinesInTable = tableData.map((_, i) => i)
+
+    const selectAllLinesInTable = tableData.map((el) => el.id )
 
     this.setState({ tableData, selectedBalances: selectAllLinesInTable }, () =>
       this.calculateSum(this.state.selectedBalances)
@@ -267,7 +288,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (selectedBalances && selectedBalances.length === tableData.length) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     } else {
-      const allRows = tableData.map((ck: IRowT, idx: number) => idx)
+      const allRows = tableData.map((ck: IRowT, idx: number) => ck.id)
 
       this.setState({ selectedBalances: allRows }, () =>
         this.calculateSum(allRows)
@@ -287,7 +308,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = selectedRows.map((idx) => tableData[idx])
+    const sum = tableData.filter((elem) => selectedRows.indexOf(elem.id) !== -1 )
+
     const reducedSum = sum.reduce(
       (acc: any, val: IRowT) => ({
         currency: val.currency,
@@ -393,8 +415,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { isShownChart, isUSDCurrently, children } = this.props
+    const { isShownChart, isUSDCurrently, children, theme } = this.props
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
+
+    console.log('theme: ', theme);
+
 
     const isSelectAll =
       (tableData &&
@@ -407,8 +432,21 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!tableDataHasData) {
       return (
         <PTWrapper tableData={tableDataHasData}>
-          {children}
-          <PTextBox>Add account for Portfolio</PTextBox>
+          <PTextBox
+          backgroundColor={theme.palette.grey.A400}
+          >
+            <STypography variant="display1">
+              Add an exchange or wallet
+            </STypography>
+            <SButton
+              component={MyLinkToUserSettings}
+              backgroundColor={theme.palette.grey.A400}
+              borderColor={theme.palette.secondary.light}
+            >
+              <STypographyButtonText> Add </STypographyButtonText>
+              <SAddIcon />
+            </SButton>
+          </PTextBox>
         </PTWrapper>
       )
     }
@@ -469,9 +507,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               marginTopHr="10px"
               coins={
                 this.state.selectedBalances &&
-                  this.state.selectedBalances.length > 0
+                this.state.selectedBalances.length > 0
                   ? this.state.selectedBalances.map(
-                    (idx) => this.state.tableData[idx]
+                    (id, i) => this.state.tableData[i]
                   )
                   : []
               }
@@ -579,18 +617,20 @@ const PTable = styled.table`
 `
 
 const PTextBox = styled.div`
-  font-size: 30px;
-  color: white;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 300px;
+  width: 50vw;
+  height: 50vh;
+  min-width: 400px;
+  min-height: 350px;
+  padding: 0.5rem;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #2d3136;
+  background-color: ${(props: { backgroundColor: string }) => props.backgroundColor};
 `
 
 const PTChartContainer = styled.div`
@@ -604,6 +644,42 @@ const PTChartContainer = styled.div`
   @media (max-height: 650px) {
     display: none;
   }
+`
+
+const SButton = styled(Button)`
+  padding-right: 11px;
+  border-color: transparent;
+  border-radius: 3px;
+  background-color: transparent;
+  font-family: Roboto, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  box-sizing: border-box;
+  border: 1px solid;
+
+  &&:hover {
+    border-color: ${(props: { borderColor: string }) => props.borderColor};
+    background-color: ${(props: { backgroundColor: string }) => props.backgroundColor};
+  }
+
+  && > span {
+    display: flex;
+    justify-content: space-between;
+  }
+`
+
+const STypography = styled(Typography)`
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #fff;
+`
+
+const STypographyButtonText = styled(Typography)`
+  font-weight: 500;
+`
+
+const SAddIcon = styled(AddIcon)`
+  font-size: 18px;
 `
 
 class MainDataWrapper extends React.Component {
@@ -628,8 +704,12 @@ const mapStateToProps = (store) => ({
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  MainDataWrapper
-)
+// const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
+//   MainDataWrapper
+// )
 
-export default storeComponent
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps),
+  withTheme()
+)(MainDataWrapper)

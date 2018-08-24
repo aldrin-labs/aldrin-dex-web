@@ -8,25 +8,25 @@ import { difference } from 'lodash'
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { opacityAnimation } from '../../../../../styles/keyframes'
 import { TypographyFullWidth } from '@utils/cssUtils'
+import { hexToRgbAWithOpacity } from '@styles/helpers'
+import {
+  EmptyCell,
+  StyledTypography,
+  RowWithVolumeChart,
+} from '@containers/Chart/Tables/SharedStyles'
 
 let index: number | null = null
 //  index for animations, no need to keep it in state couse it realted to css
 //  and there is no needs for rerendering
 class SpreadTable extends Component {
-  state = {
-    tableExpanded: true,
-    index: null,
-  }
-
   shouldComponentUpdate(nextProps, nextState) {
     const shouldUpdate =
       difference(nextProps.data, this.props.data).length > 0 ||
       nextProps.activeExchange.index !== this.props.activeExchange.index ||
       nextProps.currencyPair !== this.props.currencyPair ||
       (this.props.data.length > 0 && nextProps.data.length === 0) ||
-      nextState.tableExpanded !== this.state.tableExpanded
+      nextProps.tableExpanded !== this.props.tableExpanded
 
     return shouldUpdate
   }
@@ -39,15 +39,9 @@ class SpreadTable extends Component {
       )
   }
 
-  onHeadClick = () => {
-    this.setState((prevState) => ({
-      tableExpanded: !prevState.tableExpanded,
-    }))
-  }
-
   render() {
-    const { tableExpanded } = this.state
     const {
+      digitsAfterDecimalForSpread,
       roundTill,
       aggregation,
       spread,
@@ -56,6 +50,7 @@ class SpreadTable extends Component {
       data,
       digitsAfterDecimalForBidsSize,
       digitsAfterDecimalForBidsPrice,
+      tableExpanded,
     } = this.props
     const {
       background,
@@ -67,11 +62,11 @@ class SpreadTable extends Component {
       <SpreadreadTableWrapper>
         <CollapseWrapper in={tableExpanded} collapsedHeight="1.5rem">
           <Head
-            onClick={this.onHeadClick}
+            onClick={this.props.onHeadClick}
             background={dark}
             style={{ cursor: 'pointer', height: '1.625rem' }}
           >
-            <TriggerRow isHead background={dark}>
+            <TriggerRow isHead={true} background={dark}>
               <HeadCell width={'10%'}>
                 <StyledArrowSign
                   variant={{
@@ -89,8 +84,14 @@ class SpreadTable extends Component {
                 </TypographyFullWidth>
               </HeadCell>
               <HeadCell width={'45%'}>
-                <TypographyFullWidth variant="body2" align="right">
-                  {spread.toFixed(2) || 0.01}
+                <TypographyFullWidth
+                  variant="body2"
+                  align="right"
+                  color="secondary"
+                >
+                  {spread.toFixed(digitsAfterDecimalForSpread) <= 0
+                    ? '~ 0'
+                    : spread.toFixed(digitsAfterDecimalForSpread)}
                 </TypographyFullWidth>
               </HeadCell>
             </TriggerRow>
@@ -102,47 +103,47 @@ class SpreadTable extends Component {
               <>
                 {data.map(
                   (order: { size: number; price: number }, i: number) => (
-                    <Row
-                      key={i}
-                      hoverBackground={action.hover}
-                      background={background.default}
-                    >
-                      <EmptyCell
+                    <Row background={'transparent'} key={order.price}>
+                      <RowWithVolumeChart
+                        volumeColor={hexToRgbAWithOpacity(green[500], 0.25)}
                         colored={calculatePercentagesOfOrderSize(
                           order.size,
                           data
                         ).toString()}
-                        width={'10%'}
-                      />
+                        hoverBackground={action.hover}
+                        background={background.default}
+                      >
+                        <EmptyCell width={'10%'} />
 
-                      <Cell width={'45%'}>
-                        <StyledTypography
-                          textColor={green[500]}
-                          anime={i === index}
-                          color="default"
-                          noWrap={true}
-                          variant="body1"
-                          align="right"
-                        >
-                          {Number(order.size).toFixed(
-                            digitsAfterDecimalForBidsSize
-                          )}
-                        </StyledTypography>
-                      </Cell>
-                      <Cell width={'45%'}>
-                        <StyledTypography
-                          textColor={green[500]}
-                          anime={i === index}
-                          color="default"
-                          noWrap
-                          variant="body1"
-                          align="right"
-                        >
-                          {Number(order.price).toFixed(
-                            digitsAfterDecimalForBidsPrice
-                          )}
-                        </StyledTypography>
-                      </Cell>
+                        <Cell width={'45%'}>
+                          <StyledTypography
+                            textColor={green[500]}
+                            anime={i === index}
+                            color="default"
+                            noWrap={true}
+                            variant="body1"
+                            align="right"
+                          >
+                            {Number(order.size).toFixed(
+                              digitsAfterDecimalForBidsSize
+                            )}
+                          </StyledTypography>
+                        </Cell>
+                        <Cell width={'45%'}>
+                          <StyledTypography
+                            textColor={green[500]}
+                            anime={i === index}
+                            color="default"
+                            noWrap={true}
+                            variant="body1"
+                            align="right"
+                          >
+                            {Number(order.price).toFixed(
+                              digitsAfterDecimalForBidsPrice
+                            )}
+                          </StyledTypography>
+                        </Cell>
+                      </RowWithVolumeChart>
                     </Row>
                   )
                 )}
@@ -154,32 +155,6 @@ class SpreadTable extends Component {
     )
   }
 }
-
-const StyledTypography = TypographyFullWidth.extend`
-  && {
-    color: ${(props: { textColor: string }) => props.textColor};
-    font-variant-numeric: lining-nums tabular-nums;
-    ${(props: { anime?: boolean }) =>
-      props.anime
-        ? `animation: ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal none running;`
-        : ''};
-  }
-`
-
-const EmptyCell = Cell.extend`
-  position: relative;
-
-  &:before {
-    position: absolute;
-    z-index: 100;
-    top: 0;
-    left: 0;
-    width: ${(props: { colored?: string }) => Number(props.colored)}%;
-    height: 100%;
-    content: '';
-    background-color: ${green[500]};
-  }
-`
 
 const TriggerRow = Row.extend`
   display: flex;

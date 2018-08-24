@@ -16,6 +16,7 @@ export interface IProps {
   checkboxes: number[]
   subscription: any
   tab: string
+  classes: { [key: string]: string }
   data: {
     portfolioId: string | null
     portfolio: {

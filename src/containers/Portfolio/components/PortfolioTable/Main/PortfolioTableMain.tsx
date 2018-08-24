@@ -36,6 +36,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
       >
         {tableData.map((row: IRowT, index: number) => {
           const {
+            id,
             currency,
             symbol,
             percentage,
@@ -52,7 +53,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
           } = row
 
           const isSelected =
-            selectedBalances && selectedBalances.indexOf(index) >= 0
+            selectedBalances && selectedBalances.indexOf(id) !== -1
 
           const isBase =
             (isUSDCurrently && (symbol === 'USDT' || symbol === 'USD')) ||
@@ -91,10 +92,10 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               key={`${currency}${symbol}${quantity}${index}`}
               isSelected={isSelected}
               isBase={isBase}
-              onClick={() => this.props.onSelectBalance(index)}
+              onClick={() => this.props.onSelectBalance(id)}
             >
               <PTD key={`${index}smt`} isSelected={isSelected}>
-                {this.renderCheckbox(index)}
+                {this.renderCheckbox(id)}
               </PTD>
               {cols.map((col, idx) => {
                 let colorized = null

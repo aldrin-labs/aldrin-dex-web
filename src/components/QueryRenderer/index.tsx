@@ -7,7 +7,9 @@ import { ErrorFallback } from '@components/ErrorFallback'
 
 export interface IProps {
   query: DocumentNode
-  fetchPolicy:
+  pollInterval?: number
+  withOutSpinner?: boolean
+  fetchPolicy?:
     | 'cache-first'
     | 'cache-and-network'
     | 'network-only'
@@ -16,7 +18,6 @@ export interface IProps {
     | 'standby'
   component: React.ReactNode
   placeholder?: React.ReactElement<{}>
-  renderWithPlaceholder?: boolean
   variables?: { [key: string]: any } | null
   [key: string]: any
 }
@@ -28,9 +29,11 @@ export default class QueryRenderer extends React.Component<IProps> {
       component,
       variables,
       subscriptionArgs,
-      renderWithPlaceholder,
       placeholder: Placeholder,
       fetchPolicy,
+      pollInterval,
+      withOutSpinner,
+      centerAlign = true,
       ...rest
     } = this.props
 
@@ -38,6 +41,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       <Query
         query={query}
         variables={variables}
+        pollInterval={pollInterval}
         fetchPolicy={fetchPolicy ? fetchPolicy : 'cache-first'}
       >
         {({
@@ -50,18 +54,18 @@ export default class QueryRenderer extends React.Component<IProps> {
           subscribeToMore,
           ...result
         }) => {
-          if (loading && renderWithPlaceholder) {
+          if (loading && Placeholder) {
             return (
               <>
                 {Placeholder && (
-                  <div style={{ margin: '0 auto' }}>
+                  <div style={centerAlign ? { margin: '0 auto' } : {}}>
                     <Placeholder />{' '}
                   </div>
                 )}
               </>
             )
-          } else if (loading) {
-            return <Loading centerAligned />
+          } else if (loading && !withOutSpinner) {
+            return <Loading centerAligned={true} />
           } else if (error) {
             return <ErrorFallback error={error} />
           }
@@ -84,7 +88,12 @@ export default class QueryRenderer extends React.Component<IProps> {
               {...rest}
             />
           ) : (
-            <Component data={data} fetchMore={fetchMore} {...rest} />
+            <Component
+              data={data}
+              fetchMore={fetchMore}
+              refetch={refetch}
+              {...rest}
+            />
           )
         }}
       </Query>

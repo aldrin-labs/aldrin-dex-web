@@ -148,7 +148,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
-        (el) => ({
+        (el, i) => ({
+          id: i,
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
@@ -157,7 +158,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       )
 
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el, i) => ({
+          id: i,
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -174,7 +176,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el, i) => ({
+          id: i,
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -248,7 +251,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance.getProfile.myRebalance.assets.map(
-        (el) => ({
+        (el, i) => ({
+          id: i,
           exchange: el._id.exchange,
           symbol: el._id.coin,
           price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
@@ -257,7 +261,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
       )
 
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el, i) => ({
+          id: i,
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -274,7 +279,8 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = getMyPortfolio.getProfile.portfolio.assets.map(
-        (el) => ({
+        (el, i) => ({
+          id: i,
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
           price: (parseFloat(el.asset.priceUSD) * parseFloat(el.value)).toFixed(
@@ -545,7 +551,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
     const selectedActive =
       (this.state.selectedActive && this.state.selectedActive.slice()) || []
     const hasIndex = selectedActive.indexOf(idx)
-    if (hasIndex >= 0) {
+    if (hasIndex !== -1) {
       selectedActive.splice(hasIndex, 1)
     } else {
       selectedActive.push(idx)
@@ -1381,6 +1387,7 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                 <PTBody isEditModeEnabled={isEditModeEnabled}>
                   {rows.map((row, rowIndex) => {
                     const {
+                      id,
                       exchange,
                       symbol,
                       portfolioPerc,
@@ -1424,9 +1431,9 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                           <PTDR
                             key="smt"
                             isSelected={isSelected}
-                            onClick={() => this.onSelectActiveBalance(rowIndex)}
+                            onClick={() => this.onSelectActiveBalance(id)}
                           >
-                            {this.renderActiveCheckbox(rowIndex)}
+                            {this.renderActiveCheckbox(id)}
                           </PTDR>
                         )}
 

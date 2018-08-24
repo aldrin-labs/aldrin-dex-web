@@ -215,6 +215,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         const currentPrice = mainPrice * value
 
         const col = {
+          id: i,
           currency: name || '-',
           symbol,
           industry: industryName || '-',
@@ -300,7 +301,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       (this.state.selectedRows && this.state.selectedRows.slice()) || []
 
     const hasIndex = selectedRows.indexOf(idx)
-    if (hasIndex >= 0) {
+    if (hasIndex !== -1) {
       selectedRows.splice(hasIndex, 1)
     } else {
       selectedRows.push(idx)
@@ -371,7 +372,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Total',
         symbol: '-',
         industry: '-',
-        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
+        portfolioPerc: `100.00%`,
         portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
         industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
         industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
@@ -529,6 +530,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                     )
                     .map((row, idx) => {
                       const {
+                        id,
                         currency,
                         symbol,
                         industry,
@@ -547,7 +549,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       )
 
                       const isSelected =
-                        (selectedRows && selectedRows.indexOf(idx) >= 0) ||
+                        (selectedRows && selectedRows.indexOf(id) !== -1) ||
                         false
 
                       const formattedPortfolioPerf = portfolioPerf === null ? '-' : `${portfolioPerf}%`
@@ -569,10 +571,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         <PTRBody
                           key={`${currency}${symbol}${idx}`}
                           isSelected={isSelected}
-                          onClick={() => this.onSelectBalance(idx)}
+                          onClick={() => this.onSelectBalance(id)}
                         >
                           <PTD key="smt" isSelected={isSelected}>
-                            {this.renderCheckbox(idx)}
+                            {this.renderCheckbox(id)}
                           </PTD>
                           {cols &&
                             cols.map((col, innerIdx) => {
