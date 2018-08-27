@@ -21,10 +21,10 @@ export const getNumberOfDigitsAfterDecimal = (
   orders: any[],
   column: 'size' | 'price'
 ) => {
-  let numberOfDigitsAfterDecimal = 2
+  let numberOfDigitsAfterDecimal = 4
   for (const order of orders) {
     if (+order[column] > 1) {
-      numberOfDigitsAfterDecimal = 2
+      numberOfDigitsAfterDecimal = 4
     } else {
       numberOfDigitsAfterDecimal = 8
 
