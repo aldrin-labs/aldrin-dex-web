@@ -9,7 +9,7 @@ import { IProps } from './DepthChartContainer.types'
 class DepthChartContainer extends Component<IProps> {
   render() {
     const { activeExchange, base, quote } = this.props
-    const symbol = `${quote}_${base}` || ''
+    const symbol = `${base}_${quote}` || ''
     const exchange =
       activeExchange && activeExchange.exchange
         ? activeExchange.exchange.symbol
