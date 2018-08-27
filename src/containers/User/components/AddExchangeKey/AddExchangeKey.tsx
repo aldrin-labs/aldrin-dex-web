@@ -160,7 +160,7 @@ class AddExchangeKeyComponent extends React.Component {
 
               {!loading &&
                 exchangePagination &&
-                exchangePagination.items.map(({ _id, name }) => (
+                exchangePagination.items.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (
                   <MenuItem key={_id} value={name}>
                     {name}
                   </MenuItem>

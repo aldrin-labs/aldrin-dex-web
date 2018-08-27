@@ -139,7 +139,7 @@ class AddCryptoWalletComponent extends React.Component {
 
               {!loading &&
                 searchSupportedNetworks &&
-                searchSupportedNetworks.map(({ _id, name }) => (
+                searchSupportedNetworks.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (
                   <MenuItem key={_id} value={name}>
                     {name}
                   </MenuItem>
