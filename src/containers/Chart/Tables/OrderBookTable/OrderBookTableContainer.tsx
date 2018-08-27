@@ -5,7 +5,7 @@ import {
   maximumItemsInArray,
   findSpread,
   getNumberOfDigitsAfterDecimal,
-  sortOrders,
+  sortAndFilterOrders,
   bidsPriceFiltering,
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
@@ -29,13 +29,13 @@ class OrderBookTableContainer extends Component {
     // when get data from querry
     let iterator = state.i
     if (newProps.data.marketOrders.length > 1) {
-      let bids = sortOrders(
+      let bids = sortAndFilterOrders(
         newProps.data.marketOrders
           .map((o) => JSON.parse(o))
           .filter((o) => o.type === 'bid')
       )
 
-      const asks = sortOrders(
+      const asks = sortAndFilterOrders(
         newProps.data.marketOrders
           .map((o) => JSON.parse(o))
           .filter((o) => o.type === 'ask')
@@ -87,19 +87,14 @@ class OrderBookTableContainer extends Component {
         type: orderData.side,
       }
 
-      // removing  orders with 0 size
-      if (+order.size === 0) {
-        return
-      }
-
       let bids =
         order.type === 'bid'
-          ? sortOrders(uniqBy([order, ...state.bids], 'price'))
+          ? sortAndFilterOrders(uniqBy([order, ...state.bids], 'price'))
           : state.bids
 
       const asks =
         order.type === 'ask'
-          ? sortOrders(uniqBy([order, ...state.asks], 'price'))
+          ? sortAndFilterOrders(uniqBy([order, ...state.asks], 'price'))
           : state.asks
       bids = bidsPriceFiltering(asks, bids)
 

@@ -62,7 +62,13 @@ export const testJSON = (text: any): boolean => {
 export const bidsPriceFiltering = (asks: IOrder[], bids: IOrder[]) =>
   bids.filter((bid) => +bid.price < +asks[asks.length - 1].price)
 
-export const sortOrders = (orders: any[]) =>
+export const sortAndFilterOrders = (orders: any[]) =>
   orders
     .slice()
     .sort((a, b) => (+a.price < +b.price ? 1 : +a.price > +b.price ? -1 : 0))
+    .filter((order) => {
+      // removing  orders with 0 size
+      if (+order.size !== 0) {
+        return order
+      }
+    })
