@@ -8,10 +8,13 @@ export const findSpread = (asks: any[], bids: any[]): number =>
 export const maximumItemsInArray = (
   data: any[],
   count: number,
-  removeLast: number
+  removeLast: number,
+  removeFromStart: boolean = false
 ) => {
   if (data.length > count) {
-    return data.slice(0, data.length - removeLast - 1)
+    return removeFromStart
+      ? data.slice(data.length - removeLast, data.length - 1)
+      : data.slice(0, data.length - removeLast - 1)
   }
 
   return data

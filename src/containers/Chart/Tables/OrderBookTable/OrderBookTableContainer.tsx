@@ -113,7 +113,7 @@ class OrderBookTableContainer extends Component {
       return {
         spread,
         bids: maximumItemsInArray([...bids], 1000, 100),
-        asks: maximumItemsInArray([...asks], 1000, 100),
+        asks: maximumItemsInArray([...asks], 1000, 10, true),
         i: iterator,
         digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
           asks,
