@@ -26,16 +26,29 @@ class OnlyCharts extends Component<Props, {}> {
         unmountOnExit={true}
       >
         <ChartContainer anime={false} chartsCount={charts.length}>
-          {charts.map((chart: { pair: string; id: string }, i: number) => (
-            <IndividualChart
-              key={chart.id}
-              theme={theme}
-              removeChart={removeChart}
-              index={i}
-              chartsCount={charts.length}
-              currencyPair={chart.pair}
-            />
-          ))}
+          {charts.map(
+            (chart: { pair: string; id: string } | string, i: number) =>
+              // fallback for old values that were strings and now there must be objects
+              typeof chart === 'string' ? (
+                <IndividualChart
+                  key={i}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart}
+                />
+              ) : (
+                <IndividualChart
+                  key={chart.id}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart.pair}
+                />
+              )
+          )}
           <WarningMessageSnack
             open={openedWarning}
             onCloseClick={removeWarningMessage}

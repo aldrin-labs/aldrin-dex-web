@@ -96,7 +96,7 @@ class OrderBookTableContainer extends Component {
           ? sortAndFilterOrders(uniqBy([order, ...state.asks], 'price'))
           : state.asks
       bids = bidsPriceFiltering(asks, bids)
-
+      //  you must remove zero orders here after merge new order to otderbook
       // update depth chart every 100 iterations
       if (iterator === 100) {
         newProps.setOrders({
