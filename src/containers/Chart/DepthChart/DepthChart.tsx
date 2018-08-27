@@ -28,6 +28,7 @@ class DepthChart extends Component {
     crosshairValuesForSpread: [],
     crosshairValuesForOrder: [],
     nearestOrderXIndex: null,
+    nearestSpreadXIndex: null,
     transformedAsksData: [],
     transformedBidsData: [],
   }
@@ -91,6 +92,13 @@ class DepthChart extends Component {
     this.setState({
       crosshairValuesForOrder: this.state.transformedAsksData
         .map((d, i) => {
+          if (
+            index === 0 &&
+            this.state.nearestSpreadXIndex === 0 &&
+            i === index
+          ) {
+            return d
+          }
           if (index === 0) {
             return null
           }
@@ -130,6 +138,7 @@ class DepthChart extends Component {
           return null
         })
         .filter(Boolean),
+      nearestSpreadXIndex: index,
     })
   }
 
@@ -174,6 +183,7 @@ class DepthChart extends Component {
       crosshairValuesForOrder.length >= 1
     ) {
       crosshairValuesForSpread = []
+      crosshairValuesForOrder = []
     }
 
     if (!ordersData || !spreadData) {
@@ -274,13 +284,13 @@ class DepthChart extends Component {
               {crosshairValuesForSpread.length >= 1 ? (
                 <>
                   <Typography variant="title" color="secondary">
-                    {`${crosshairValuesForSpread[0].y.toFixed(2)} `}
+                    {`${crosshairValuesForSpread[0].x.toFixed(8)} `}
                     {base || 'Fiat'}
                   </Typography>
                   <Br light={true} />
                   <CrosshairBottomWrapper>
                     <Typography variant="body1">
-                      Can be bought {crosshairValuesForSpread[0].x.toFixed(8)}{' '}
+                      Can be bought {crosshairValuesForSpread[0].y.toFixed(2)}{' '}
                       {base || 'Fiat'}
                     </Typography>
                     <RotatedBr />
@@ -307,14 +317,14 @@ class DepthChart extends Component {
               {crosshairValuesForOrder.length >= 1 ? (
                 <>
                   <Typography variant="title" color="secondary">
-                    {`${crosshairValuesForOrder[0].y.toFixed(2)} `}{' '}
+                    {`${crosshairValuesForOrder[0].x.toFixed(8)} `}{' '}
                     {base || 'Fiat'}
                   </Typography>
 
                   <Br light={true} />
                   <CrosshairBottomWrapper>
                     <Typography variant="body1">
-                      Can be sold {crosshairValuesForOrder[0].x.toFixed(8)}{' '}
+                      Can be sold {crosshairValuesForOrder[0].y.toFixed(2)}{' '}
                       {base || 'Fiat'}
                     </Typography>
                     <RotatedBr />
