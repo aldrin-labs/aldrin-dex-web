@@ -98,8 +98,6 @@ class AddExchangeKeyComponent extends React.Component {
 
     const { loading, exchangePagination } = getExchangesForKeysList
 
-    console.log('values in exchangeKey: ', values);
-
     const exchangeOptions = !loading && exchangePagination && exchangePagination.items
       .slice()
       .sort((a, b) => a.name.localeCompare(b.name))

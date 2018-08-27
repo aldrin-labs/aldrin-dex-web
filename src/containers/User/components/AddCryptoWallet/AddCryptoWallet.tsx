@@ -91,8 +91,6 @@ class AddCryptoWalletComponent extends React.Component {
       isSubmitting,
     } = this.props
 
-    console.log('values in wallets: ', values);
-
     const { loading, searchSupportedNetworks } = this.props.searchSupportedNetworks
 
     const exchangeOptions = !loading && searchSupportedNetworks && searchSupportedNetworks
