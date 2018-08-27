@@ -14,6 +14,7 @@ import { MenuItem } from 'material-ui/Menu'
 import { InputLabel } from 'material-ui/Input'
 
 import * as API from '@containers/User/api'
+import ReactSelectComponent from '@components/ReactSelectComponent'
 
 const MIN_CHAR = 3
 
@@ -76,6 +77,11 @@ const formikEnhancer = withFormik({
 })
 
 class AddExchangeKeyComponent extends React.Component {
+  handleSelectChangePrepareForFormik = (name: string, optionSelected: { label: string; value: string }) => {
+    const { setFieldValue } = this.props
+    const value = optionSelected ? optionSelected.value : ''
+    setFieldValue(name, value);
+  }
   render() {
     const {
       values,
@@ -91,6 +97,16 @@ class AddExchangeKeyComponent extends React.Component {
     } = this.props
 
     const { loading, exchangePagination } = getExchangesForKeysList
+
+    console.log('values in exchangeKey: ', values);
+
+    const exchangeOptions = !loading && exchangePagination && exchangePagination.items
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map(({ name }) => ({
+        label: name,
+        value: name,
+      }))
 
     return (
       <SPaper>
@@ -146,26 +162,34 @@ class AddExchangeKeyComponent extends React.Component {
           />
           <SExchangeSelect>
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
-            <Select
-              value={values.exchange}
-              onChange={handleChange}
-              inputProps={{
-                name: 'exchange',
-                id: 'exchange',
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
 
-              {!loading &&
-                exchangePagination &&
-                exchangePagination.items.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (
-                  <MenuItem key={_id} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-            </Select>
+            {/*<Select*/}
+              {/*value={values.exchange}*/}
+              {/*onChange={handleChange}*/}
+              {/*inputProps={{*/}
+                {/*name: 'exchange',*/}
+                {/*id: 'exchange',*/}
+              {/*}}*/}
+            {/*>*/}
+              {/*<MenuItem value="">*/}
+                {/*<em>None</em>*/}
+              {/*</MenuItem>*/}
+
+              {/*{!loading &&*/}
+                {/*exchangePagination &&*/}
+                {/*exchangePagination.items.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (*/}
+                  {/*<MenuItem key={_id} value={name}>*/}
+                    {/*{name}*/}
+                  {/*</MenuItem>*/}
+                {/*))}*/}
+            {/*</Select>*/}
+            <SelectR
+              isClearable
+              placeholder=""
+              options={exchangeOptions || []}
+              onChange={this.handleSelectChangePrepareForFormik.bind(this, 'exchange')}
+            />
+
           </SExchangeSelect>
 
           <Button type="submit" disabled={!dirty || isSubmitting}>
@@ -207,6 +231,18 @@ const SPaper = styled(Paper)`
   min-height: 500px;
   padding: 15px;
   width: 300px;
+`
+
+// TODO: Replace it with one in styles.js
+const SelectR = styled(ReactSelectComponent)`
+  font-family: Roboto;
+  font-size: 16px;
+  border-bottom: 1px solid #c1c1c1;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-bottom: 2px solid #fff;
+  }
 `
 
 export const AddExchangeKey = compose(

@@ -14,6 +14,7 @@ import { MenuItem } from 'material-ui/Menu'
 import { InputLabel } from 'material-ui/Input'
 
 import * as API from '@containers/User/api'
+import ReactSelectComponent from '@components/ReactSelectComponent'
 
 const MIN_CHAR = 3
 
@@ -72,6 +73,11 @@ const formikEnhancer = withFormik({
 })
 
 class AddCryptoWalletComponent extends React.Component {
+  handleSelectChangePrepareForFormik = (name: string, optionSelected: { label: string; value: string }) => {
+    const { setFieldValue } = this.props
+    const value = optionSelected ? optionSelected.value : ''
+    setFieldValue(name, value);
+  }
   render() {
     const {
       values,
@@ -85,7 +91,17 @@ class AddCryptoWalletComponent extends React.Component {
       isSubmitting,
     } = this.props
 
+    console.log('values in wallets: ', values);
+
     const { loading, searchSupportedNetworks } = this.props.searchSupportedNetworks
+
+    const exchangeOptions = !loading && searchSupportedNetworks && searchSupportedNetworks
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map(({ name }) => ({
+        label: name,
+        value: name,
+      }))
 
     return (
       <SPaper>
@@ -124,27 +140,33 @@ class AddCryptoWalletComponent extends React.Component {
             }
           />
           <SSelect>
-            <InputLabel htmlFor="asset"></InputLabel>
-            <Select
-              value={values.asset}
-              onChange={handleChange}
-              inputProps={{
-                name: 'asset',
-                id: 'asset',
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
+            <InputLabel htmlFor="asset">Wallet</InputLabel>
+            {/*<Select*/}
+              {/*value={values.asset}*/}
+              {/*onChange={handleChange}*/}
+              {/*inputProps={{*/}
+                {/*name: 'asset',*/}
+                {/*id: 'asset',*/}
+              {/*}}*/}
+            {/*>*/}
+              {/*<MenuItem value="">*/}
+                {/*<em>None</em>*/}
+              {/*</MenuItem>*/}
 
-              {!loading &&
-                searchSupportedNetworks &&
-                searchSupportedNetworks.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (
-                  <MenuItem key={_id} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-            </Select>
+              {/*{!loading &&*/}
+                {/*searchSupportedNetworks &&*/}
+                {/*searchSupportedNetworks.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (*/}
+                  {/*<MenuItem key={_id} value={name}>*/}
+                    {/*{name}*/}
+                  {/*</MenuItem>*/}
+                {/*))}*/}
+            {/*</Select>*/}
+            <SelectR
+              isClearable
+              placeholder=""
+              options={exchangeOptions || []}
+              onChange={this.handleSelectChangePrepareForFormik.bind(this, 'asset')}
+            />
           </SSelect>
 
           <Button type="submit" disabled={!dirty || isSubmitting}>
@@ -186,6 +208,17 @@ const SPaper = styled(Paper)`
   min-height: 500px;
   padding: 15px;
   width: 300px;
+`
+// TODO: Replace it with one in styles.js
+const SelectR = styled(ReactSelectComponent)`
+  font-family: Roboto;
+  font-size: 16px;
+  border-bottom: 1px solid #c1c1c1;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-bottom: 2px solid #fff;
+  }
 `
 
 export const AddCryptoWallet = compose(
