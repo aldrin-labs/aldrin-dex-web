@@ -147,6 +147,8 @@ export default class ReactSelectComponent extends React.Component<IProps> {
 
     return (
       <SelectReact
+        className="custom-select-box"
+        classNamePrefix="custom-select-box"
         styles={customStyles}
         components={{ DropdownIndicator }}
         {...otherProps}
