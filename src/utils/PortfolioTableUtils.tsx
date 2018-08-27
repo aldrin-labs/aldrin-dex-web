@@ -138,17 +138,22 @@ export const onSortStrings = (a: string, b: string): number =>
 
 export const roundPercentage = (num: number) => num.toFixed(2)
 
+// formatNumberToUSFormat - this function takes number or string, then it converts it to string anyway, and then decide
+// — if our number has dot "." (is it number with fractional part or not) and then place commas by one of two regexes,
+// depending on is our number has float part or not, and return us-formatted number (e.g. 1,000 etc.)
+
 export const formatNumberToUSFormat = (numberToFormat: number | string) => {
   const stringNumber = numberToFormat.toString()
 
-  return stringNumber.match(/\./g) ? stringNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,') : stringNumber.replace(/\d(?=(\d{3})+$)/g, '$&,')
+  return stringNumber.match(/\./g) ? stringNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,') :
+    stringNumber.replace(/\d(?=(\d{3})+$)/g, '$&,')
 }
 
 export const checkForString = (numberOrString: number | string) => typeof numberOrString === 'string'
 
 export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number) => {
 
-  if (x === 0) {
+  if (x === 0 || +x.toFixed(numberOfDigitsAfterPoint) === 0) {
     return '0'
   }
 

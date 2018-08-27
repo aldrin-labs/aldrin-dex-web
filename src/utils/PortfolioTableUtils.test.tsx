@@ -1,5 +1,4 @@
-import * as React from 'react'
-import {formatNumberToUSFormat} from './PortfolioTableUtils'
+import { formatNumberToUSFormat } from './PortfolioTableUtils'
 
 describe('Format number to US format function', () => {
   it('for number 1000', () => {
