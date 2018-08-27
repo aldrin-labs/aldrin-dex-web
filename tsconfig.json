@@ -21,6 +21,7 @@
       "@components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
+      "@styles/*": ["src/styles/*"],
       "@hoc/*": ["src/hoc/*"],
       "@icons/*": ["src/icons/*"],
       "@graphql/*": ["src/graphql/*"]
