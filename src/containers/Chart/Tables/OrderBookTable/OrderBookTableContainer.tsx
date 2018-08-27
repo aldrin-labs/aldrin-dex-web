@@ -189,11 +189,11 @@ class OrderBookTableContainer extends Component {
         <OrderBookTable
           digitsAfterDecimalForAsksSize={digitsAfterDecimalForAsksSize}
           digitsAfterDecimalForAsksPrice={digitsAfterDecimalForAsksPrice}
-          data={asks.slice(asks.length - 50, asks.length)}
+          data={asks.slice(asks.length - 100, asks.length)}
           {...rest}
         />
         <SpreadTable
-          data={bids.slice(0, 50)}
+          data={bids.slice(0, 100)}
           digitsAfterDecimalForBidsSize={digitsAfterDecimalForBidsSize}
           digitsAfterDecimalForBidsPrice={digitsAfterDecimalForBidsPrice}
           digitsAfterDecimalForSpread={Math.max(
