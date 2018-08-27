@@ -258,12 +258,10 @@ class Chart extends React.Component {
     const { activeExchange, currencyPair, theme } = this.props
     const { palette } = theme
 
-    let base
-    let quote
-    if (currencyPair) {
-      base = currencyPair.split('_')[0]
-      quote = currencyPair.split('_')[1]
+    if (!currencyPair) {
+      return
     }
+    const [base, quote] = currencyPair.split('_')
 
     return (
       <Slide
