@@ -107,6 +107,9 @@ const AsksTable = Table.extend`
   flex-direction: column;
   justify-content: flex-start;
   display: flex;
+  @media (min-width: 1920px) {
+    flex-wrap: nowrap;
+  }
 `
 
 const SwitchTablesButton = styled(Button)`
