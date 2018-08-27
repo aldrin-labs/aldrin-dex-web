@@ -20,22 +20,14 @@ class ClassBody extends Component<IProps> {
       data,
       digitsAfterDecimalForAsksPrice,
       digitsAfterDecimalForAsksSize,
-      tableExpanded,
+
       action,
       index,
       background,
     } = this.props
 
     return (
-      <StyledBody
-        id="body"
-        tableExpanded={tableExpanded}
-        height={
-          tableExpanded
-            ? 'calc(60vh - 59px - 80px - 39px - 37px - 24px - 26px)'
-            : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'
-        }
-      >
+      <StyledBody id="body" height={'calc(100% - 44px - 32px)'}>
         {data.length === 0 ? (
           <Loading centerAligned={true} />
         ) : (
@@ -89,7 +81,7 @@ class ClassBody extends Component<IProps> {
 }
 
 const StyledBody = Body.extend`
-  @media (max-width: 1920px) {
+  /* @media (max-width: 1920px) {
     height: ${(props) =>
       props.tableExpanded
         ? 'calc(62.5vh - 59px - 80px - 39px - 37px - 24px - 26px)'
@@ -100,7 +92,7 @@ const StyledBody = Body.extend`
       props.tableExpanded
         ? 'calc(60.5vh - 59px - 80px - 39px - 37px - 24px - 26px)'
         : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'};
-  }
+  } */
 `
 
 const StyledTypography = TypographyFullWidth.extend`
