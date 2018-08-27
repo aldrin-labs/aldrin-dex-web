@@ -55,10 +55,7 @@ class SpreadTable extends Component {
 
     return (
       <SpreadreadTableWrapper>
-        <Head
-          background={dark}
-          style={{ cursor: 'pointer', height: '1.625rem' }}
-        >
+        <Head background={dark} style={{ height: '1.625rem' }}>
           <TriggerRow isHead={true} background={dark}>
             <EmptyCell width="10%" />
             <HeadCell width={'45%'}>

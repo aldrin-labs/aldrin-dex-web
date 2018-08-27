@@ -5,9 +5,8 @@ import { difference } from 'lodash'
 
 import { TypographyFullWidth } from '@utils/cssUtils'
 import { Table, Row, Title, Head, HeadCell } from '@components/Table/Table'
-import { EmptyCell } from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/SharedStyles'
-
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
+import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
 
 let index: number | null = null
 
