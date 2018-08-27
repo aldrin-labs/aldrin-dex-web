@@ -24,7 +24,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
     } = theme
     const { activeChart, show } = this.state
 
-    if (!Array.isArray(currencyPair)) {
+    if (currencyPair === undefined) {
       return <CustomError error="Clean local Storage!" />
     }
 
