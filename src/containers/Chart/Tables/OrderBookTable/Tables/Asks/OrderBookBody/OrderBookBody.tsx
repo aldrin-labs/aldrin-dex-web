@@ -27,7 +27,7 @@ class ClassBody extends Component<IProps> {
     } = this.props
 
     return (
-      <StyledBody id="body" height={'calc(100% - 44px - 32px)'}>
+      <Body id="body" height={'calc(100% - 44px - 32px)'}>
         {data.length === 0 ? (
           <Loading centerAligned={true} />
         ) : (
@@ -75,25 +75,10 @@ class ClassBody extends Component<IProps> {
             ))}
           </>
         )}
-      </StyledBody>
+      </Body>
     )
   }
 }
-
-const StyledBody = Body.extend`
-  /* @media (max-width: 1920px) {
-    height: ${(props) =>
-      props.tableExpanded
-        ? 'calc(62.5vh - 59px - 80px - 39px - 37px - 24px - 26px)'
-        : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'};
-  }
-  @media (max-width: 1920px) and (min-width: 1700px) {
-    height: ${(props) =>
-      props.tableExpanded
-        ? 'calc(60.5vh - 59px - 80px - 39px - 37px - 24px - 26px)'
-        : 'calc(99vh - 59px - 80px - 39px - 37px - 24px - 26px)'};
-  } */
-`
 
 const StyledTypography = TypographyFullWidth.extend`
   && {
