@@ -10,7 +10,7 @@ import {
   RowWithVolumeChart,
   StyledTypography,
 } from '@containers/Chart/Tables/SharedStyles'
-import { hexToRgbAWithOpacity } from '../../../../../../../styles/helpers'
+import { hexToRgbAWithOpacity } from '@styles/helpers'
 
 class ClassBody extends Component<IProps> {
   componentDidMount() {
