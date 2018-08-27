@@ -94,7 +94,8 @@ class OrderBookTableContainer extends Component {
 
       let bids =
         order.type === 'bid'
-          ? sortOrders(uniqBy([order, ...state.bids], 'price'))
+          ? // couse new order comes first, uniqBy will delete old orders with same price
+            sortOrders(uniqBy([order, ...state.bids], 'price'))
           : state.bids
 
       const asks =
@@ -102,7 +103,7 @@ class OrderBookTableContainer extends Component {
           ? sortOrders(uniqBy([order, ...state.asks], 'price'))
           : state.asks
       bids = bidsPriceFiltering(asks, bids)
-
+      //  you must remove zero orders here after merge new order to otderbook
       // update depth chart every 100 iterations
       if (iterator === 100) {
         newProps.setOrders({
