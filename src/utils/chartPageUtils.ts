@@ -8,10 +8,13 @@ export const findSpread = (asks: any[], bids: any[]): number =>
 export const maximumItemsInArray = (
   data: any[],
   count: number,
-  removeLast: number
+  removeLast: number,
+  removeFromStart: boolean = false
 ) => {
   if (data.length > count) {
-    return data.slice(0, data.length - removeLast - 1)
+    return removeFromStart
+      ? data.slice(data.length - removeLast, data.length - 1)
+      : data.slice(0, data.length - removeLast - 1)
   }
 
   return data
@@ -21,10 +24,10 @@ export const getNumberOfDigitsAfterDecimal = (
   orders: any[],
   column: 'size' | 'price'
 ) => {
-  let numberOfDigitsAfterDecimal = 2
+  let numberOfDigitsAfterDecimal = 4
   for (const order of orders) {
     if (+order[column] > 1) {
-      numberOfDigitsAfterDecimal = 2
+      numberOfDigitsAfterDecimal = 4
     } else {
       numberOfDigitsAfterDecimal = 8
 
@@ -62,7 +65,13 @@ export const testJSON = (text: any): boolean => {
 export const bidsPriceFiltering = (asks: IOrder[], bids: IOrder[]) =>
   bids.filter((bid) => +bid.price < +asks[asks.length - 1].price)
 
-export const sortOrders = (orders: any[]) =>
+export const sortAndFilterOrders = (orders: any[]) =>
   orders
     .slice()
     .sort((a, b) => (+a.price < +b.price ? 1 : +a.price > +b.price ? -1 : 0))
+    .filter((order) => {
+      // removing  orders with 0 size
+      if (+order.size !== 0) {
+        return order
+      }
+    })

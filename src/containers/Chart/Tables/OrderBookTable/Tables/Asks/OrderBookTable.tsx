@@ -50,7 +50,7 @@ class OrderBookTable extends Component {
     } = palette
 
     return (
-      <Table>
+      <AsksTable>
         <Title background={dark}>
           <Typography color="default" variant="subheading" align="center">
             Order Book
@@ -96,10 +96,20 @@ class OrderBookTable extends Component {
             ...this.props,
           }}
         />
-      </Table>
+      </AsksTable>
     )
   }
 }
+
+const AsksTable = Table.extend`
+  height: 50%;
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex;
+  @media (min-width: 1920px) {
+    flex-wrap: nowrap;
+  }
+`
 
 const SwitchTablesButton = styled(Button)`
   && {

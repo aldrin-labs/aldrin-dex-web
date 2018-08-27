@@ -45,7 +45,7 @@ class TableContainer extends Component {
 
       // temporary fix you should remove it when backend will be fixed
       if (+ticker.size === 35.4 && ticker.time === '16:30:37') {
-        return
+        return null
       }
 
       return {
