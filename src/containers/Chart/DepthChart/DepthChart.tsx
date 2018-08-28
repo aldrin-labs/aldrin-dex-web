@@ -143,10 +143,10 @@ class DepthChart extends Component {
   }
 
   onMouseLeave = () => {
-    this.setState({
-      crosshairValuesForSpread: [],
-      crosshairValuesForOrder: [],
-    })
+    // this.setState({
+    //   crosshairValuesForSpread: [],
+    //   crosshairValuesForOrder: [],
+    // })
   }
 
   render() {
@@ -192,31 +192,31 @@ class DepthChart extends Component {
 
     return (
       <Container>
-        <ScaleWrapper>
-          <MidPriceContainer
-            background={hexToRgbAWithOpacity(palette.primary.light, 0.1)}
-          >
-            <IconButton onClick={() => this.scale('increase', 1.5)}>
-              <MdRemoveCircleOutline />
-            </IconButton>
-
-            <MidPriceColumnWrapper>
-              <Typography variant="subheading">
-                {this.props.midMarketPrice || 'soon'}
-              </Typography>
-              <Typography variant="caption">Mid Market Price</Typography>
-            </MidPriceColumnWrapper>
-
-            <IconButton onClick={() => this.scale('decrease', 1.5)}>
-              <MdAddCircleOutline />
-            </IconButton>
-          </MidPriceContainer>
-        </ScaleWrapper>
         <FlexibleXYPlot
           margin={{ right: 48 }}
           onMouseLeave={this.onMouseLeave}
           yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
         >
+          <ScaleWrapper>
+            <MidPriceContainer
+              background={hexToRgbAWithOpacity(palette.primary.light, 0.1)}
+            >
+              <IconButton onClick={() => this.scale('increase', 1.5)}>
+                <MdRemoveCircleOutline />
+              </IconButton>
+
+              <MidPriceColumnWrapper>
+                <Typography variant="subheading">
+                  {this.props.midMarketPrice || 'soon'}
+                </Typography>
+                <Typography variant="caption">Mid Market Price</Typography>
+              </MidPriceColumnWrapper>
+
+              <IconButton onClick={() => this.scale('decrease', 1.5)}>
+                <MdAddCircleOutline />
+              </IconButton>
+            </MidPriceContainer>
+          </ScaleWrapper>
           <XAxis
             tickTotal={xAxisTickTotal || 10}
             tickFormat={(value) => abbrNum(+value.toFixed(4), 4)}
@@ -365,6 +365,7 @@ const CrosshairContent = styled.div`
   font-size: 1rem;
   border-radius: 5px;
   min-width: 15rem;
+  z-index: 1;
 `
 
 const Br = styled(Divider)`
