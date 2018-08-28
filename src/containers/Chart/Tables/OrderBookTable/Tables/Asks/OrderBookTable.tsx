@@ -5,9 +5,8 @@ import { difference } from 'lodash'
 
 import { TypographyFullWidth } from '@utils/cssUtils'
 import { Table, Row, Title, Head, HeadCell } from '@components/Table/Table'
-import { EmptyCell } from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/SharedStyles'
-
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
+import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
 
 let index: number | null = null
 
@@ -51,7 +50,7 @@ class OrderBookTable extends Component {
     } = palette
 
     return (
-      <Table>
+      <AsksTable>
         <Title background={dark}>
           <Typography color="default" variant="subheading" align="center">
             Order Book
@@ -97,10 +96,20 @@ class OrderBookTable extends Component {
             ...this.props,
           }}
         />
-      </Table>
+      </AsksTable>
     )
   }
 }
+
+const AsksTable = Table.extend`
+  height: 50%;
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex;
+  @media (min-width: 1920px) {
+    flex-wrap: nowrap;
+  }
+`
 
 const SwitchTablesButton = styled(Button)`
   && {

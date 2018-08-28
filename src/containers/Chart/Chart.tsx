@@ -258,12 +258,10 @@ class Chart extends React.Component {
     const { activeExchange, currencyPair, theme } = this.props
     const { palette } = theme
 
-    let base
-    let quote
-    if (currencyPair) {
-      base = currencyPair.split('_')[0]
-      quote = currencyPair.split('_')[1]
+    if (!currencyPair) {
+      return
     }
+    const [base, quote] = currencyPair.split('_')
 
     return (
       <Slide
@@ -328,7 +326,11 @@ class Chart extends React.Component {
     )
   }
 
-  renderOnlyCharts = () => <OnlyCharts {...{ theme: this.props.theme }} />
+  renderOnlyCharts = () => (
+    <OnlyCharts
+      {...{ theme: this.props.theme, mainPair: this.props.currencyPair }}
+    />
+  )
 
   renderToggler = () => {
     const { toggleView, view } = this.props
@@ -469,8 +471,6 @@ const ChartsSwitcher = styled.div`
   border-bottom: 1px solid ${(props) => props.divider};
 `
 
-// end of FlexTable
-
 const TogglerContainer = styled.div`
   display: flex;
   width: 100%;
@@ -514,6 +514,5 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(ThemedChart)
 
-export default storeComponent
+export default connect(mapStateToProps, mapDispatchToProps)(ThemedChart)

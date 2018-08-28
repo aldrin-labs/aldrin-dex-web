@@ -12,6 +12,7 @@ class OnlyCharts extends Component<Props, {}> {
     const {
       charts,
       removeChart,
+      mainPair,
       openedWarning,
       removeWarningMessage,
       theme,
@@ -25,17 +26,41 @@ class OnlyCharts extends Component<Props, {}> {
         mountOnEnter={true}
         unmountOnExit={true}
       >
-        <ChartContainer anime={false} chartsCount={charts.length}>
-          {charts.map((chart: { pair: string; id: string }, i: number) => (
+        <ChartContainer anime={false} chartsCount={charts.length || 1}>
+          {console.log(charts)}
+          {charts.length === 0 ? (
             <IndividualChart
-              key={chart.id}
               theme={theme}
               removeChart={removeChart}
-              index={i}
-              chartsCount={charts.length}
-              currencyPair={chart.pair}
+              index={0}
+              chartsCount={0}
+              currencyPair={mainPair}
             />
-          ))}
+          ) : (
+            charts.map(
+              (chart: { pair: string; id: string } | string, i: number) =>
+                // fallback for old values that were strings and now there must be objects
+                typeof chart === 'string' ? (
+                  <IndividualChart
+                    key={i}
+                    theme={theme}
+                    removeChart={removeChart}
+                    index={i}
+                    chartsCount={charts.length}
+                    currencyPair={chart}
+                  />
+                ) : (
+                  <IndividualChart
+                    key={chart.id}
+                    theme={theme}
+                    removeChart={removeChart}
+                    index={i}
+                    chartsCount={charts.length}
+                    currencyPair={chart.pair}
+                  />
+                )
+            )
+          )}
           <WarningMessageSnack
             open={openedWarning}
             onCloseClick={removeWarningMessage}
