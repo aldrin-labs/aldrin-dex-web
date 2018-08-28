@@ -9,12 +9,10 @@ import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
-import Select from 'material-ui/Select'
-import { MenuItem } from 'material-ui/Menu'
 import { InputLabel } from 'material-ui/Input'
 
 import * as API from '@containers/User/api'
-import ReactSelectComponent from '@components/ReactSelectComponent'
+import SelectExchangeList from '@components/SelectExchangeList/SelectExchangeList'
 
 const MIN_CHAR = 3
 
@@ -96,16 +94,6 @@ class AddExchangeKeyComponent extends React.Component {
       getExchangesForKeysList,
     } = this.props
 
-    const { loading, exchangePagination } = getExchangesForKeysList
-
-    const exchangeOptions = !loading && exchangePagination && exchangePagination.items
-      .slice()
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .map(({ name }) => ({
-        label: name,
-        value: name,
-      }))
-
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
@@ -160,31 +148,8 @@ class AddExchangeKeyComponent extends React.Component {
           />
           <SExchangeSelect>
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
-
-            {/*<Select*/}
-              {/*value={values.exchange}*/}
-              {/*onChange={handleChange}*/}
-              {/*inputProps={{*/}
-                {/*name: 'exchange',*/}
-                {/*id: 'exchange',*/}
-              {/*}}*/}
-            {/*>*/}
-              {/*<MenuItem value="">*/}
-                {/*<em>None</em>*/}
-              {/*</MenuItem>*/}
-
-              {/*{!loading &&*/}
-                {/*exchangePagination &&*/}
-                {/*exchangePagination.items.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (*/}
-                  {/*<MenuItem key={_id} value={name}>*/}
-                    {/*{name}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-            {/*</Select>*/}
-            <SelectR
+            <SelectExchangeList
               isClearable
-              placeholder=""
-              options={exchangeOptions || []}
               onChange={this.handleSelectChangePrepareForFormik.bind(this, 'exchange')}
             />
 
@@ -231,22 +196,7 @@ const SPaper = styled(Paper)`
   width: 300px;
 `
 
-// TODO: Replace it with one in styles.js
-const SelectR = styled(ReactSelectComponent)`
-  font-family: Roboto;
-  font-size: 16px;
-  border-bottom: 1px solid #c1c1c1;
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    border-bottom: 2px solid #fff;
-  }
-`
-
 export const AddExchangeKey = compose(
   graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
-  graphql(API.getExchangesForKeysListQuery, {
-    name: 'getExchangesForKeysList',
-  }),
   formikEnhancer
 )(AddExchangeKeyComponent)

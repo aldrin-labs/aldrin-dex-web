@@ -9,12 +9,10 @@ import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
-import Select from 'material-ui/Select'
-import { MenuItem } from 'material-ui/Menu'
 import { InputLabel } from 'material-ui/Input'
+import SelectWalletList from '@components/SelectWalletList/SelectWalletList'
 
 import * as API from '@containers/User/api'
-import ReactSelectComponent from '@components/ReactSelectComponent'
 
 const MIN_CHAR = 3
 
@@ -91,16 +89,6 @@ class AddCryptoWalletComponent extends React.Component {
       isSubmitting,
     } = this.props
 
-    const { loading, searchSupportedNetworks } = this.props.searchSupportedNetworks
-
-    const exchangeOptions = !loading && searchSupportedNetworks && searchSupportedNetworks
-      .slice()
-      .sort((a, b) => a.name.localeCompare(b.name))
-      .map(({ name }) => ({
-        label: name,
-        value: name,
-      }))
-
     return (
       <SPaper>
         <Typography variant="title">Add new crypto wallet</Typography>
@@ -139,30 +127,8 @@ class AddCryptoWalletComponent extends React.Component {
           />
           <SSelect>
             <InputLabel htmlFor="asset">Wallet</InputLabel>
-            {/*<Select*/}
-              {/*value={values.asset}*/}
-              {/*onChange={handleChange}*/}
-              {/*inputProps={{*/}
-                {/*name: 'asset',*/}
-                {/*id: 'asset',*/}
-              {/*}}*/}
-            {/*>*/}
-              {/*<MenuItem value="">*/}
-                {/*<em>None</em>*/}
-              {/*</MenuItem>*/}
-
-              {/*{!loading &&*/}
-                {/*searchSupportedNetworks &&*/}
-                {/*searchSupportedNetworks.slice().sort((a,b) => a.name.localeCompare(b.name)).map(({ _id, name }) => (*/}
-                  {/*<MenuItem key={_id} value={name}>*/}
-                    {/*{name}*/}
-                  {/*</MenuItem>*/}
-                {/*))}*/}
-            {/*</Select>*/}
-            <SelectR
+            <SelectWalletList
               isClearable
-              placeholder=""
-              options={exchangeOptions || []}
               onChange={this.handleSelectChangePrepareForFormik.bind(this, 'asset')}
             />
           </SSelect>
@@ -207,22 +173,8 @@ const SPaper = styled(Paper)`
   padding: 15px;
   width: 300px;
 `
-// TODO: Replace it with one in styles.js
-const SelectR = styled(ReactSelectComponent)`
-  font-family: Roboto;
-  font-size: 16px;
-  border-bottom: 1px solid #c1c1c1;
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    border-bottom: 2px solid #fff;
-  }
-`
 
 export const AddCryptoWallet = compose(
   graphql(API.addCryptoWalletMutation, { name: 'addCryptoWallet' }),
-  graphql(API.searchSupportedNetworksQuery, {
-    name: 'searchSupportedNetworks',
-  }),
   formikEnhancer
 )(AddCryptoWalletComponent)
