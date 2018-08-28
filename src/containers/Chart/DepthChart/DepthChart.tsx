@@ -143,10 +143,10 @@ class DepthChart extends Component {
   }
 
   onMouseLeave = () => {
-    // this.setState({
-    //   crosshairValuesForSpread: [],
-    //   crosshairValuesForOrder: [],
-    // })
+    this.setState({
+      crosshairValuesForSpread: [],
+      crosshairValuesForOrder: [],
+    })
   }
 
   render() {
