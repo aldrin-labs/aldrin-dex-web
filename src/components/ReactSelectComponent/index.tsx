@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import SelectReact, { components } from 'react-select'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
-import {
-  IProps } from '@containers/Portfolio/components/PortfolioTable/Rebalance/PortfolioTableRebalance.types'
+import { IProps } from './index.types'
 
 export default class ReactSelectComponent extends React.Component<IProps> {
   render() {
@@ -44,17 +43,17 @@ export default class ReactSelectComponent extends React.Component<IProps> {
           ...controlStyles,
         }
       },
-      menu: (base, state) => ({
+      menu: (base: CSSProperties) => ({
         ...base,
         backgroundColor: '#424242',
         minWidth: '250px',
         ...menuStyles,
       }),
-      menuList: (base, state) => ({
+      menuList: (base: CSSProperties) => ({
         ...base,
         ...menuListStyles,
       }),
-      option: (base, state) => ({
+      option: (base: CSSProperties, state) => ({
         ...base,
         color: '#fff',
         fontSize: '1.5em',
@@ -65,9 +64,9 @@ export default class ReactSelectComponent extends React.Component<IProps> {
             ? 'rgba(255, 255, 255, 0.1)'
             : '#424242',
         [':active']: null,
-        optionStyles,
+        ...optionStyles,
       }),
-      clearIndicator: (base, state) => {
+      clearIndicator: (base: CSSProperties) => {
         return {
           [':hover']: {
             color: '#fff',
@@ -81,7 +80,7 @@ export default class ReactSelectComponent extends React.Component<IProps> {
           ...clearIndicatorStyles,
         }
       },
-      dropdownIndicator: (base, state) => ({
+      dropdownIndicator: (base: CSSProperties) => ({
         [':hover']: {
           color: '#fff',
         },
@@ -93,28 +92,28 @@ export default class ReactSelectComponent extends React.Component<IProps> {
         transition: 'color 150ms',
         ...dropdownIndicatorStyles,
       }),
-      valueContainer: (base, state) => ({
+      valueContainer: (base: CSSProperties) => ({
         ...base,
         paddingLeft: 0,
         ...valueContainerStyles,
       }),
-      singleValue: (base, state) => ({
+      singleValue: (base: CSSProperties) => ({
         ...base,
         color: '#fff',
         marginLeft: '0',
         ...singleValueStyles,
       }),
-      placeholder: (base, state) => ({
+      placeholder: (base: CSSProperties) => ({
         ...base,
         marginLeft: 0,
         ...placeholderStyles,
       }),
-      input: (base, state) => ({
+      input: (base: CSSProperties) => ({
         ...base,
         color: '#fff',
         ...inputStyles,
       }),
-      multiValue: (base, state) => ({
+      multiValue: (base: CSSProperties) => ({
         ...base,
         [':hover']: {
           borderColor: '#4ed8da',
@@ -126,12 +125,12 @@ export default class ReactSelectComponent extends React.Component<IProps> {
         backgroundColor: '#2a2d32',
         ...multiValueStyles,
       }),
-      multiValueLabel: (base, state) => ({
+      multiValueLabel: (base: CSSProperties) => ({
         ...base,
         color: '#fff',
         ...multiValueLabelStyles,
       }),
-      multiValueRemove: (base, state) => ({
+      multiValueRemove: (base: CSSProperties) => ({
         ...base,
         [':hover']: {
           color: '#fff',
@@ -141,7 +140,7 @@ export default class ReactSelectComponent extends React.Component<IProps> {
       }),
       indicatorSeparator: () => ({
         display: 'none',
-        ...indicatorSeparatorStyles
+        ...indicatorSeparatorStyles,
       }),
     }
 
