@@ -1,5 +1,7 @@
 import React, { CSSProperties } from 'react'
 import SelectReact, { components } from 'react-select'
+import { OptionProps } from 'react-select/lib/types'
+
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
@@ -53,7 +55,7 @@ export default class ReactSelectComponent extends React.Component<IProps> {
         ...base,
         ...menuListStyles,
       }),
-      option: (base: CSSProperties, state) => ({
+      option: (base: CSSProperties, state: OptionProps) => ({
         ...base,
         color: '#fff',
         fontSize: '1.5em',
