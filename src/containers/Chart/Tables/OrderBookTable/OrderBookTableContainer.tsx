@@ -112,8 +112,8 @@ class OrderBookTableContainer extends Component {
 
       return {
         spread,
-        bids: maximumItemsInArray([...bids], 1000, 100),
-        asks: maximumItemsInArray([...asks], 1000, 10, true),
+        bids: maximumItemsInArray([...bids], 100, 10),
+        asks: maximumItemsInArray([...asks], 100, 10, true),
         i: iterator,
         digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
           asks,
@@ -189,11 +189,11 @@ class OrderBookTableContainer extends Component {
         <OrderBookTable
           digitsAfterDecimalForAsksSize={digitsAfterDecimalForAsksSize}
           digitsAfterDecimalForAsksPrice={digitsAfterDecimalForAsksPrice}
-          data={asks.slice(asks.length - 100, asks.length)}
+          data={asks}
           {...rest}
         />
         <SpreadTable
-          data={bids.slice(0, 100)}
+          data={bids}
           digitsAfterDecimalForBidsSize={digitsAfterDecimalForBidsSize}
           digitsAfterDecimalForBidsPrice={digitsAfterDecimalForBidsPrice}
           digitsAfterDecimalForSpread={Math.max(
