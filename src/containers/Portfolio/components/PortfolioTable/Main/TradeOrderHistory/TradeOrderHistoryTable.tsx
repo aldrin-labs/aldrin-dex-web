@@ -10,7 +10,7 @@ import {
   formatNumberToUSFormat,
   onSortTableFull,
 } from '@utils/PortfolioTableUtils'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import {
   IProps,
   IState,

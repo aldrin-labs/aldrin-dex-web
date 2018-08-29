@@ -14,7 +14,7 @@ import ClearIcon from 'material-ui-icons/Clear'
 
 import BarChart from '@components/BarChart/BarChart'
 import PieChart from '@components/PieChart'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import sortIcon from '@icons/arrow.svg'
 import {
   IProps,
