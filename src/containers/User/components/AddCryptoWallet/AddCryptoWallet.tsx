@@ -160,6 +160,7 @@ const SSelect = styled.div`
   flex-direction: column;
   margin: 30px 5px 5px 5px;
   width: 80%;
+  min-height: 50px;
 `
 
 const SPaper = styled(Paper)`
