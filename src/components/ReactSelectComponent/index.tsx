@@ -6,10 +6,14 @@ import { OptionProps } from 'react-select/lib/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import { IProps } from './index.types'
+import { withTheme } from '@material-ui/core/styles'
+import { hexToRgbAWithOpacity } from '@styles/helpers'
 
-export default class ReactSelectComponent extends React.Component<IProps> {
+
+class ReactSelectComponent extends React.Component<IProps> {
   render() {
     const {
+      theme,
       controlStyles,
       menuStyles,
       menuListStyles,
@@ -47,51 +51,53 @@ export default class ReactSelectComponent extends React.Component<IProps> {
       },
       menu: (base: CSSProperties) => ({
         ...base,
-        backgroundColor: '#424242',
+        backgroundColor: theme.palette.grey[800],
         minWidth: '250px',
         ...menuStyles,
       }),
       menuList: (base: CSSProperties) => ({
         ...base,
+        ['::-webkit-scrollbar']: {
+          width: '3px',
+          height: '6px',
+        },
+        ['::-webkit-scrollbar-track']: {
+          background: 'rgba(45, 49, 54, 0.1)',
+        },
+        ['::-webkit-scrollbar-thumb']: {
+          background: theme.palette.secondary.main,
+        },
         ...menuListStyles,
       }),
       option: (base: CSSProperties, state: OptionProps) => ({
         ...base,
-        color: '#fff',
+        color: theme.palette.primary.contrastText,
         fontSize: '1.5em',
         fontFamily: 'Roboto',
         backgroundColor: state.isSelected
-          ? 'rgba(255, 255, 255, 0.2)'
+          ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.2)
           : state.isFocused
-            ? 'rgba(255, 255, 255, 0.1)'
-            : '#424242',
+            ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.1)
+            : theme.palette.grey[800],
         [':active']: null,
         ...optionStyles,
       }),
       clearIndicator: (base: CSSProperties) => {
         return {
-          [':hover']: {
-            color: '#fff',
-          },
           display: 'flex',
           width: '20px',
           boxSizing: 'border-box',
-          color: 'hsl(0, 0%, 80%)',
+          color: theme.palette.primary.contrastText,
           padding: '2px',
           transition: 'color 150ms',
           ...clearIndicatorStyles,
         }
       },
       dropdownIndicator: (base: CSSProperties) => ({
-        [':hover']: {
-          color: '#fff',
-        },
         display: 'flex',
         width: '19px',
         boxSizing: 'border-box',
-        color: 'hsl(0, 0%, 80%)',
         padding: '2px',
-        transition: 'color 150ms',
         ...dropdownIndicatorStyles,
       }),
       valueContainer: (base: CSSProperties) => ({
@@ -101,7 +107,7 @@ export default class ReactSelectComponent extends React.Component<IProps> {
       }),
       singleValue: (base: CSSProperties) => ({
         ...base,
-        color: '#fff',
+        color: theme.palette.primary.contrastText,
         marginLeft: '0',
         ...singleValueStyles,
       }),
@@ -112,31 +118,30 @@ export default class ReactSelectComponent extends React.Component<IProps> {
       }),
       input: (base: CSSProperties) => ({
         ...base,
-        color: '#fff',
+        color: theme.palette.primary.contrastText,
         ...inputStyles,
       }),
       multiValue: (base: CSSProperties) => ({
         ...base,
         [':hover']: {
-          borderColor: '#4ed8da',
+          borderColor: theme.palette.secondary.main,
         },
-
-        color: '#fff',
+        color: theme.palette.primary.contrastText,
         borderRadius: '3px',
         fontWeight: 'bold',
-        backgroundColor: '#2a2d32',
+        backgroundColor: theme.palette.grey[900],
         ...multiValueStyles,
       }),
       multiValueLabel: (base: CSSProperties) => ({
         ...base,
-        color: '#fff',
+        color: theme.palette.primary.contrastText,
         ...multiValueLabelStyles,
       }),
       multiValueRemove: (base: CSSProperties) => ({
         ...base,
         [':hover']: {
-          color: '#fff',
-          backgroundColor: '#4ed8da',
+          color: theme.palette.primary.contrastText,
+          backgroundColor: theme.palette.secondary.main,
           ...multiValueRemoveStyles,
         },
       }),
@@ -173,3 +178,6 @@ const DropdownIndicator = (props: object) => (
     </components.DropdownIndicator>
   )
 )
+
+
+export default withTheme()(ReactSelectComponent)
