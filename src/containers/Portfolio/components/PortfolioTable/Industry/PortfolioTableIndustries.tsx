@@ -625,9 +625,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
           <ChartContainer>
-            <Heading pieChart={this.state.showChart === 'chart'}>
-              <Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />
-            </Heading>
+            {/*<Heading pieChart={this.state.showChart === 'chart'}>*/}
+              {/*<Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />*/}
+            {/*</Heading>*/}
             <ChartWrapper isPieChartCurrent={this.state.showChart === 'chart'}>
               {this.state.showChart === 'line' ? (
                 <LineChart
