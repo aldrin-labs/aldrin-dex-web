@@ -29,7 +29,7 @@ import {
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
 
 const MyLinkToUserSettings = (props) => <Link to="/user" {...props} />

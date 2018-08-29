@@ -1,4 +1,4 @@
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import { css } from 'styled-components'
 import styled from 'styled-components'
 

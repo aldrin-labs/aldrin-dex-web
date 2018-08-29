@@ -8,7 +8,7 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 
 class Table extends Component<IProps, IState> {
   state = {
