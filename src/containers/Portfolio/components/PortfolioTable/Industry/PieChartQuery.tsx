@@ -7,7 +7,10 @@ import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { PortfolioPieChart } from '@containers/Portfolio/components/PortfolioTable/Industry/api'
 import { PortfolioPieChartQuery } from '@containers/Portfolio/components/PortfolioTable/Industry/annotations'
 import { MOCKS } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
-import { calcAllSumOfPortfolioAsset, roundPercentage } from '@utils/PortfolioTableUtils'
+import {
+  calcAllSumOfPortfolioAsset,
+  roundPercentage,
+} from '@utils/PortfolioTableUtils'
 
 export interface Props {
   data: PortfolioPieChartQuery
@@ -53,7 +56,6 @@ class PieChartQuery extends React.Component<Props, State> {
     const { assets } = portfolio
     if (!assets) return <CustomError error="!assets" />
 
-
     const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
     const obj: { [key: string]: number } = {}
@@ -68,17 +70,18 @@ class PieChartQuery extends React.Component<Props, State> {
       const currentPrice = mainPrice * value
 
       if (name === null && !obj.Other) {
-        obj['Other'] = +(roundPercentage(currentPrice * 100 / allSums))
+        obj['Other'] = +roundPercentage(currentPrice * 100 / allSums)
       } else if (name === null && obj.Other) {
-        obj['Other'] += +(roundPercentage(currentPrice * 100 / allSums))
+        obj['Other'] += +roundPercentage(currentPrice * 100 / allSums)
       } else if (!obj[name] && !!value) {
-        obj[name] = +(roundPercentage(currentPrice * 100 / allSums))
+        obj[name] = +roundPercentage(currentPrice * 100 / allSums)
       } else if (!!obj[name] && !!value) {
-        obj[name] += +(roundPercentage(currentPrice * 100 / allSums))
+        obj[name] += +roundPercentage(currentPrice * 100 / allSums)
       }
     })
 
-    const arrayOfColors = ['#EFC151',
+    const arrayOfColors = [
+      '#EFC151',
       '#E85454',
       '#BB118D',
       '#C79B42',
@@ -98,23 +101,23 @@ class PieChartQuery extends React.Component<Props, State> {
       '#7EA9D3',
       '#F2F2F2',
       '#282F39',
-    ];
+    ]
 
-    const labelsStyleObject = {fill: 'white'}
+    const labelsStyleObject = { fill: 'white' }
 
     const pieData = Object.keys(obj).map((key, i) => {
       return {
         angle: obj[key],
         label: key,
+        title: key,
         color: arrayOfColors[i],
         realValue: `${roundPercentage(obj[key])}%`,
       }
     })
 
-    return <PieChart data={pieData} flexible />
+    return <PieChart data={pieData} flexible colorLegend />
 
-    // TODO: FOR FUTURE
-    // return <PieChart data={pieData} flexible showLabels labelsRadiusMultiplier={2} labelsStyle={labelsStyleObject} />
+    // return <PieChart data={pieData} flexible colorLegend labelsRadiusMultiplier={1} labelsStyle={labelsStyleObject} />
   }
 }
 
