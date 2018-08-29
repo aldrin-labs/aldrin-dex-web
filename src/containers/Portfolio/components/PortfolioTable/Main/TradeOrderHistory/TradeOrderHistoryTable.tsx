@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled, { css } from 'styled-components'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import ContentLoader from 'react-content-loader'
 
 import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
@@ -41,9 +40,9 @@ const tradeOrderHistoryTableHeadings = [
   { name: 'Exchange', value: 'exchange' },
   { name: 'Amount', value: 'amount' },
   { name: 'Cost', value: 'cost' },
-  { name: 'Datetime', value: 'datetime' },
   { name: 'Symbol', value: 'symbol' },
   { name: 'Side', value: 'side' },
+  { name: 'Datetime', value: 'datetime' },
 ]
 
 const arrayOfStringHeadings = ['exchange', 'symbol', 'side']
@@ -108,22 +107,6 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
   render() {
     const { currentSort, rows } = this.state
-    const { data } = this.props
-
-    // const { isUSDCurrently, data } = this.props
-    // if (!data) {
-    //   return <Loading centerAligned />
-    // }
-    // if (data) {
-    //   console.log(data);
-    //   staticRows = data.myTrades.map(x => ({ ...x, exchange: x.exchange.name }))
-    //   console.log(staticRows);
-    // }
-
-    // if (!data) {
-    // console.log(data)
-    // return <MyLoader />
-    // // }
 
     return (
       <Wrapper>
@@ -180,9 +163,9 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
                 exchange,
                 formatNumberToUSFormat(parseFloat(amount)),
                 [mainSymbol, cost],
-                new Date(datetime).toLocaleString('en-US'),
                 symbol,
                 side,
+                new Date(datetime).toLocaleString('en-US'),
               ]
 
               return (
@@ -271,15 +254,15 @@ const PTHC = styled.th`
   }
 
   &:nth-child(4) {
-    min-width: 150px;
-  }
-
-  &:nth-child(5) {
     min-width: 80px;
   }
 
-  &:nth-child(6) {
+  &:nth-child(5) {
     min-width: 50px;
+  }
+  
+  &:nth-child(6) {
+    min-width: 150px;
   }
 `
 
@@ -331,18 +314,16 @@ const PTDC = styled.td`
   }
 
   &:nth-child(4) {
-    min-width: 150px;
-    text-overflow: ellipsis;
-
-    //padding-right: 10px;
-  }
-
-  &:nth-child(5) {
     min-width: 80px;
   }
 
-  &:nth-child(6) {
+  &:nth-child(5) {
     min-width: 50px;
+  }
+  
+  &:nth-child(6) {
+    min-width: 150px;
+    text-overflow: ellipsis;
   }
 `
 
