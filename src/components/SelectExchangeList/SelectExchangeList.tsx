@@ -4,7 +4,7 @@ import QueryRenderer from '@components/QueryRenderer'
 import { SelectR } from '@utils/cssUtils'
 
 const SelectExchangeList = ({ data, ...otherPropsForSelect }) => {
-  console.log(otherPropsForSelect)
+  // console.log(otherPropsForSelect)
 
   const exchangeOptions =
     data.exchangePagination &&
