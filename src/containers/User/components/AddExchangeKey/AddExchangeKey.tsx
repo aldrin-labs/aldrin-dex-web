@@ -13,6 +13,7 @@ import { InputLabel } from 'material-ui/Input'
 
 import * as API from '@containers/User/api'
 import SelectExchangeList from '@components/SelectExchangeList/SelectExchangeList'
+import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 
 const MIN_CHAR = 3
 
@@ -75,11 +76,6 @@ const formikEnhancer = withFormik({
 })
 
 class AddExchangeKeyComponent extends React.Component {
-  handleSelectChangePrepareForFormik = (name: string, optionSelected: { label: string; value: string }) => {
-    const { setFieldValue } = this.props
-    const value = optionSelected ? optionSelected.value : ''
-    setFieldValue(name, value);
-  }
   render() {
     const {
       values,
@@ -150,7 +146,7 @@ class AddExchangeKeyComponent extends React.Component {
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
             <SelectExchangeList
               isClearable
-              onChange={this.handleSelectChangePrepareForFormik.bind(this, 'exchange')}
+              onChange={handleSelectChangePrepareForFormik.bind(this, 'exchange')}
             />
 
           </SExchangeSelect>

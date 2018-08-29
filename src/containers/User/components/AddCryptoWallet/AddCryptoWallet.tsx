@@ -11,6 +11,7 @@ import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
 import { InputLabel } from 'material-ui/Input'
 import SelectWalletList from '@components/SelectWalletList/SelectWalletList'
+import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 
 import * as API from '@containers/User/api'
 
@@ -71,11 +72,6 @@ const formikEnhancer = withFormik({
 })
 
 class AddCryptoWalletComponent extends React.Component {
-  handleSelectChangePrepareForFormik = (name: string, optionSelected: { label: string; value: string }) => {
-    const { setFieldValue } = this.props
-    const value = optionSelected ? optionSelected.value : ''
-    setFieldValue(name, value);
-  }
   render() {
     const {
       values,
@@ -129,7 +125,7 @@ class AddCryptoWalletComponent extends React.Component {
             <InputLabel htmlFor="asset">Wallet</InputLabel>
             <SelectWalletList
               isClearable
-              onChange={this.handleSelectChangePrepareForFormik.bind(this, 'asset')}
+              onChange={handleSelectChangePrepareForFormik.bind(this, 'asset')}
             />
           </SSelect>
 
