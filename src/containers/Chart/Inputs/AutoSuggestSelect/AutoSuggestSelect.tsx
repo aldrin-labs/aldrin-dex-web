@@ -8,6 +8,7 @@ import Input from '@material-ui/core/Input'
 import MenuItem from '@material-ui/core/MenuItem'
 import Chip from '@material-ui/core/Chip'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
+// TODO: this is old react-select v1 and should be replaced in future
 import Select from 'react-select-for-charting-page'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
@@ -131,6 +132,7 @@ function SelectWrapped(props) {
       onInputKeyDown={onInputKeyDown}
       optionComponent={Opt}
       noResultsText={<Typography>{'No results found'}</Typography>}
+      clearable={false}
       arrowRenderer={(arrowProps) =>
         arrowProps.isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />
       }
