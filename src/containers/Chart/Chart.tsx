@@ -470,9 +470,10 @@ const ChartsSwitcher = styled.div`
   justify-content: flex-end;
   width: 100%;
   height: 38px;
-  background: ${(props) => props.background};
+  background: ${(props: { background: string }) => props.background};
   color: white;
-  border-bottom: 1px solid ${(props) => props.divider};
+  border-bottom: 1px solid
+    ${(props: { divider: string; background: string }) => props.divider};
 `
 
 const TogglerContainer = styled.div`
