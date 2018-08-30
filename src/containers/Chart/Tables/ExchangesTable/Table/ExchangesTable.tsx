@@ -97,6 +97,10 @@ class ExchangesTable extends PureComponent<IProps> {
               activeExchange.index === ind
                 ? theme.palette.action.selected
                 : theme.palette.background.default
+            const exchangeText =
+              activeExchange.index !== ind
+                ? theme.palette.getContrastText(background)
+                : theme.palette.secondary.dark
             return (
               <Row
                 key={ind}
@@ -138,7 +142,7 @@ class ExchangesTable extends PureComponent<IProps> {
                         <TypographyWithCustomColor
                           noWrap={true}
                           variant="body1"
-                          textColor={theme.palette.getContrastText(background)}
+                          textColor={exchangeText}
                         >
                           {prop}
                         </TypographyWithCustomColor>
@@ -158,7 +162,7 @@ class ExchangesTable extends PureComponent<IProps> {
                     >
                       <TypographyWithCustomColor
                         variant="body1"
-                        textColor={theme.palette.getContrastText(background)}
+                        textColor={exchangeText}
                       >
                         {prop}
                       </TypographyWithCustomColor>
