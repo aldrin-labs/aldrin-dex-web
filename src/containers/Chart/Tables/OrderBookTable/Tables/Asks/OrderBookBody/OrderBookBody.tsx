@@ -1,22 +1,27 @@
 import React, { Component } from 'react'
 import { red } from '@material-ui/core/colors'
 
-import { Row, Body, Cell } from '@components/Table/Table'
+import { Row, Cell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
+import {
+  calculatePercentagesOfOrderSize,
+  ScrollToBottom,
+} from '@utils/chartPageUtils'
 import { IProps } from './OrderBookBody.types'
 import {
   EmptyCell,
   RowWithVolumeChart,
   StyledTypography,
+  NotScrollableBody,
 } from '@containers/Chart/Tables/SharedStyles'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
 
 class ClassBody extends Component<IProps> {
   componentDidMount() {
-    //  scroll down to bottom of table
-    const objDiv = document.getElementById('body')
-    objDiv.scrollTop = objDiv.scrollHeight
+    ScrollToBottom()
+  }
+  componentDidUpdate() {
+    ScrollToBottom()
   }
   render() {
     const {
@@ -30,7 +35,7 @@ class ClassBody extends Component<IProps> {
     } = this.props
 
     return (
-      <Body id="body" height={'calc(100% - 44px - 32px)'}>
+      <NotScrollableBody id="body" height={'calc(100% - 44px - 32px)'}>
         {data.length === 0 ? (
           <Loading centerAligned={true} />
         ) : (
@@ -85,7 +90,7 @@ class ClassBody extends Component<IProps> {
             )}
           </>
         )}
-      </Body>
+      </NotScrollableBody>
     )
   }
 }

@@ -3,7 +3,7 @@ import { green } from '@material-ui/core/colors'
 import { difference } from 'lodash'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
-import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
+import { Table, Row, Head, Cell, HeadCell } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 import { TypographyFullWidth } from '@utils/cssUtils'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
@@ -11,6 +11,7 @@ import {
   EmptyCell,
   StyledTypography,
   RowWithVolumeChart,
+  NotScrollableBody,
 } from '@containers/Chart/Tables/SharedStyles'
 
 let index: number | null = null
@@ -76,7 +77,7 @@ class SpreadTable extends Component {
             </HeadCell>
           </TriggerRow>
         </Head>
-        <Body
+        <NotScrollableBody
           style={{ background: background.default }}
           height="calc(100% - 26px)"
         >
@@ -130,7 +131,7 @@ class SpreadTable extends Component {
               ))}
             </>
           )}
-        </Body>
+        </NotScrollableBody>
       </SpreadreadTableWrapper>
     )
   }
