@@ -43,6 +43,7 @@ export default class PieChart extends React.Component<Props, State> {
     const hasCustomColors = data.some((a) => !!a.color || !!a.style)
     const colorIsNumber = data.every((a) => typeof a.color === 'number')
 
+
     const FLRadialChart = () => (
       <FlexibleRadialChart
         data={data}
