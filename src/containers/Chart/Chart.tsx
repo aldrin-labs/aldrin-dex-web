@@ -27,6 +27,7 @@ import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
+import { TypographyWithCustomColor } from '@styles/components'
 class Chart extends React.Component {
   state = {
     view: 'default',
@@ -282,9 +283,12 @@ class Chart extends React.Component {
               {base &&
                 quote && (
                   <ExchangePair background={palette.primary.dark}>
-                    <Typography variant="subheading" color="default">
+                    <TypographyWithCustomColor
+                      textColor={palette.getContrastText(palette.primary.dark)}
+                      variant="subheading"
+                    >
                       {`${base}/${quote}`}
-                    </Typography>
+                    </TypographyWithCustomColor>
                   </ExchangePair>
                 )}
               <SwitchButtonWrapper>

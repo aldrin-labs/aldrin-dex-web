@@ -14,6 +14,7 @@ import {
   FullWidthBlock,
 } from '@components/Table/Table'
 import { IProps } from './ExchangesTable.types'
+import { TypographyWithCustomColor } from '@styles/components'
 
 class ExchangesTable extends PureComponent<IProps> {
   render() {
@@ -28,17 +29,29 @@ class ExchangesTable extends PureComponent<IProps> {
     return (
       <StyledTable>
         <Title background={theme.palette.primary.dark}>
-          <Typography color="default" variant="subheading" align="center">
+          <TypographyWithCustomColor
+            textColor={theme.palette.getContrastText(
+              theme.palette.primary.dark
+            )}
+            variant="subheading"
+            align="center"
+          >
             Exchanges
-          </Typography>
+          </TypographyWithCustomColor>
           <SwitchTablesButton
             onClick={onButtonClick}
             variant="outlined"
             color="primary"
           >
-            <Typography color="textSecondary" variant="headline" align="left">
+            <TypographyWithCustomColor
+              textColor={theme.palette.getContrastText(
+                theme.palette.primary.dark
+              )}
+              variant="headline"
+              align="left"
+            >
               ORDER
-            </Typography>
+            </TypographyWithCustomColor>
           </SwitchTablesButton>
         </Title>
         <Head background={theme.palette.background.default}>
@@ -49,15 +62,29 @@ class ExchangesTable extends PureComponent<IProps> {
           >
             <StyledHeadCell width={'50%'}>
               <FullWidthBlockMovedLeft>
-                <Typography variant="subheading" color="default" align="left">
+                <TypographyWithCustomColor
+                  textColor={theme.palette.getContrastText(
+                    theme.palette.background.default
+                  )}
+                  variant="subheading"
+                  color="default"
+                  align="left"
+                >
                   Name{' '}
-                </Typography>
+                </TypographyWithCustomColor>
               </FullWidthBlockMovedLeft>
             </StyledHeadCell>
             <StyledHeadCell width={'50%'}>
-              <Typography variant="subheading" color="default" align="left">
+              <TypographyWithCustomColor
+                textColor={theme.palette.getContrastText(
+                  theme.palette.background.default
+                )}
+                variant="subheading"
+                color="default"
+                align="left"
+              >
                 Symbol{' '}
-              </Typography>
+              </TypographyWithCustomColor>
             </StyledHeadCell>
           </Row>
         </Head>
@@ -65,29 +92,60 @@ class ExchangesTable extends PureComponent<IProps> {
           style={{ width: '105%' }}
           height={'calc(100vh - 59px - 80px - 39px - 37px - 30px)'}
         >
-          {exchanges.map((exchange, ind) => (
-            <Row
-              key={ind}
-              style={{ cursor: 'pointer' }}
-              onClick={() => {
-                changeExchange({ index: ind, exchange: exchanges[ind] })
-              }}
-              background={
-                activeExchange.index === ind
-                  ? theme.palette.action.selected
-                  : theme.palette.background.default
-              }
-              hoverBackground={theme.palette.action.hover}
-            >
-              {Object.values(exchange).map((prop, propinx) => {
-                const keyByValue = Object.keys(exchange).find(
-                  (key) => exchange[key] === prop
-                )
+          {exchanges.map((exchange, ind) => {
+            const background =
+              activeExchange.index === ind
+                ? theme.palette.action.selected
+                : theme.palette.background.default
+            return (
+              <Row
+                key={ind}
+                style={{ cursor: 'pointer' }}
+                onClick={() => {
+                  changeExchange({ index: ind, exchange: exchanges[ind] })
+                }}
+                background={background}
+                hoverBackground={theme.palette.action.hover}
+              >
+                {Object.values(exchange).map((prop, propinx) => {
+                  const keyByValue = Object.keys(exchange).find(
+                    (key) => exchange[key] === prop
+                  )
 
-                if (keyByValue === 'status') {
-                  return
-                }
-                if (keyByValue === 'name') {
+                  if (keyByValue === 'status') {
+                    return
+                  }
+                  if (keyByValue === 'name') {
+                    return (
+                      <Cell
+                        key={propinx}
+                        style={{
+                          alignItems: 'center',
+                          display: 'flex',
+                          flexWrap: 'nowrap',
+                        }}
+                        width="50%"
+                      >
+                        <FaCircle
+                          style={{
+                            fontSize: '0.5rem',
+                            minWidth: '20%',
+                            flexBasis: '20%',
+                            color:
+                              exchange.status || theme.palette.secondary.main,
+                          }}
+                        />
+                        <TypographyWithCustomColor
+                          noWrap={true}
+                          variant="body1"
+                          textColor={theme.palette.getContrastText(background)}
+                        >
+                          {prop}
+                        </TypographyWithCustomColor>
+                      </Cell>
+                    )
+                  }
+
                   return (
                     <Cell
                       key={propinx}
@@ -98,40 +156,18 @@ class ExchangesTable extends PureComponent<IProps> {
                       }}
                       width="50%"
                     >
-                      <FaCircle
-                        style={{
-                          fontSize: '0.5rem',
-                          minWidth: '20%',
-                          flexBasis: '20%',
-                          color:
-                            exchange.status || theme.palette.secondary.main,
-                        }}
-                      />
-                      <Typography noWrap={true} variant="body1" color="default">
+                      <TypographyWithCustomColor
+                        variant="body1"
+                        textColor={theme.palette.getContrastText(background)}
+                      >
                         {prop}
-                      </Typography>
+                      </TypographyWithCustomColor>
                     </Cell>
                   )
-                }
-
-                return (
-                  <Cell
-                    key={propinx}
-                    style={{
-                      alignItems: 'center',
-                      display: 'flex',
-                      flexWrap: 'nowrap',
-                    }}
-                    width="50%"
-                  >
-                    <Typography variant="body1" color="default">
-                      {prop}
-                    </Typography>
-                  </Cell>
-                )
-              })}
-            </Row>
-          ))}
+                })}
+              </Row>
+            )
+          })}
         </Body>
       </StyledTable>
     )

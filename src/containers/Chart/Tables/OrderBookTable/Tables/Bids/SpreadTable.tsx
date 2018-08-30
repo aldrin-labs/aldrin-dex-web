@@ -59,12 +59,17 @@ class SpreadTable extends Component {
           <TriggerRow isHead={true} background={dark}>
             <EmptyCell width="10%" />
             <HeadCell width={'45%'}>
-              <TypographyFullWidth variant="body2" align="right">
+              <TypographyFullWidth
+                textColor={palette.getContrastText(dark)}
+                variant="body2"
+                align="right"
+              >
                 {quote || 'Fiat'} spread{' '}
               </TypographyFullWidth>
             </HeadCell>
             <HeadCell width={'45%'}>
               <TypographyFullWidth
+                textColor={palette.getContrastText(dark)}
                 variant="body2"
                 align="right"
                 color="secondary"

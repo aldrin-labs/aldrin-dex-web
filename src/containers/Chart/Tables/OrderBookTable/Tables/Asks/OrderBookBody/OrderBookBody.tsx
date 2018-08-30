@@ -23,7 +23,6 @@ class ClassBody extends Component<IProps> {
       data,
       digitsAfterDecimalForAsksPrice,
       digitsAfterDecimalForAsksSize,
-
       action,
       index,
       background,

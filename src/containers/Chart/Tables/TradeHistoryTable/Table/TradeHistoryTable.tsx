@@ -48,7 +48,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
             }}
           >
             <TypographyFullWidth
-              color="default"
+              textColor={palette.getContrastText(dark)}
               variant="subheading"
               align="center"
             >
@@ -74,8 +74,8 @@ class TradeHistoryTable extends PureComponent<IProps> {
             >
               <HeadCell color="#9ca2aa" width={'33%'}>
                 <TypographyFullWidth
+                  textColor={palette.getContrastText(background.default)}
                   variant="subheading"
-                  color="default"
                   align="right"
                   noWrap={true}
                 >
@@ -85,8 +85,8 @@ class TradeHistoryTable extends PureComponent<IProps> {
               <HeadCell color="#9ca2aa" width={'36%'}>
                 <TypographyFullWidth
                   noWrap={true}
+                  textColor={palette.getContrastText(background.default)}
                   variant="subheading"
-                  color="default"
                   align="right"
                 >
                   Price {quote || 'Fiat'}
@@ -99,7 +99,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
               >
                 <TypographyFullWidth
                   variant="subheading"
-                  color="default"
+                  textColor={palette.getContrastText(background.default)}
                   align="right"
                 >
                   Time
