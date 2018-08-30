@@ -1,5 +1,5 @@
-import React from 'react'
 import styled from 'styled-components'
+import { customAquaScrollBar } from '@utils/cssUtils'
 
 export const Table = styled.div`
   font-family: Roboto, sans-serif;
@@ -39,11 +39,10 @@ export const Body = styled.ul`
   width: 100%;
   height: ${(props: { height?: string }) => props.height};
   overflow-y: auto;
+  overflow-x: hidden;
   transition: height 0.25s ease-out;
 
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
+  ${customAquaScrollBar};
 `
 
 export const Row = styled.li`
