@@ -19,7 +19,11 @@ const socialIcons = [
 ]
 
 const Footer = ({ theme: { palette }, changeModeTheme, themeMode }) => (
-  <Container background={palette.primary.dark}>
+  <Container
+    background={
+      themeMode === 'dark' ? palette.primary.dark : palette.primary.light
+    }
+  >
     <Block>
       <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
@@ -86,7 +90,8 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-color: ${(props) => props.background};
+  background: ${(props: { background: string }) => props.background};
+  transition: background 0.25s ease-in-out;
 `
 
 const Block = styled.div`
