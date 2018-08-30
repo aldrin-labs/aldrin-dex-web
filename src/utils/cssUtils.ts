@@ -1,8 +1,9 @@
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
+import ReactSelectComponent from '@components/ReactSelectComponent'
 
 export const customAquaScrollBar = `
-&::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     width: 3px;
     height: 6px;
   }
@@ -18,4 +19,14 @@ export const customAquaScrollBar = `
 export const TypographyFullWidth = styled(Typography)`
   width: 100%;
   flex-grow: 1;
+`
+export const SelectR = styled(ReactSelectComponent)`
+  font-family: Roboto;
+  font-size: 16px;
+  border-bottom: 1px solid #c1c1c1;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-bottom: 2px solid #fff;
+  }
 `

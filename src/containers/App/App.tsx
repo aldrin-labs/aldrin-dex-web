@@ -35,7 +35,10 @@ const AppRaw = ({ children, themeMode }: any) => (
           palette: {
             type: themeMode,
             primary: blueGrey,
-            secondary: cyan,
+            secondary: {
+              ...cyan,
+              main: '#4ed8da'
+            },
           },
         })
 
