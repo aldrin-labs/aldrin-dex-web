@@ -9,11 +9,11 @@ import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
-import Select from 'material-ui/Select'
-import { MenuItem } from 'material-ui/Menu'
 import { InputLabel } from 'material-ui/Input'
 
 import * as API from '@containers/User/api'
+import SelectExchangeList from '@components/SelectExchangeList/SelectExchangeList'
+import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 
 const MIN_CHAR = 3
 
@@ -90,8 +90,6 @@ class AddExchangeKeyComponent extends React.Component {
       getExchangesForKeysList,
     } = this.props
 
-    const { loading, exchangePagination } = getExchangesForKeysList
-
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
@@ -146,26 +144,11 @@ class AddExchangeKeyComponent extends React.Component {
           />
           <SExchangeSelect>
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
-            <Select
-              value={values.exchange}
-              onChange={handleChange}
-              inputProps={{
-                name: 'exchange',
-                id: 'exchange',
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
+            <SelectExchangeList
+              isClearable
+              onChange={handleSelectChangePrepareForFormik.bind(this, 'exchange')}
+            />
 
-              {!loading &&
-                exchangePagination &&
-                exchangePagination.items.map(({ _id, name }) => (
-                  <MenuItem key={_id} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-            </Select>
           </SExchangeSelect>
 
           <Button type="submit" disabled={!dirty || isSubmitting}>
@@ -195,6 +178,7 @@ const SExchangeSelect = styled.div`
   flex-direction: column;
   margin: 30px 5px 5px 5px;
   width: 80%;
+  min-height: 50px;
 `
 
 const SPaper = styled(Paper)`
@@ -211,8 +195,5 @@ const SPaper = styled(Paper)`
 
 export const AddExchangeKey = compose(
   graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
-  graphql(API.getExchangesForKeysListQuery, {
-    name: 'getExchangesForKeysList',
-  }),
   formikEnhancer
 )(AddExchangeKeyComponent)

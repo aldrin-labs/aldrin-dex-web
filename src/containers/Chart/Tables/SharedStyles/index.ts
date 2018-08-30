@@ -1,9 +1,13 @@
 import { opacityAnimation } from '@styles/keyframes'
-import { Cell, Row } from '@components/Table/Table'
 import { TypographyFullWidth } from '@styles/cssUtils'
+import { Cell, Row, Body } from '@components/Table/Table'
 
 export const EmptyCell = Cell.extend`
   position: relative;
+`
+
+export const NotScrollableBody = Body.extend`
+  overflow-y: hidden;
 `
 
 export const StyledTypography = TypographyFullWidth.extend`

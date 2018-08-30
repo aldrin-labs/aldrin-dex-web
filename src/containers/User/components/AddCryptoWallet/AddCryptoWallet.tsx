@@ -9,9 +9,9 @@ import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import Typography from 'material-ui/Typography'
 import Paper from 'material-ui/Paper'
-import Select from 'material-ui/Select'
-import { MenuItem } from 'material-ui/Menu'
 import { InputLabel } from 'material-ui/Input'
+import SelectWalletList from '@components/SelectWalletList/SelectWalletList'
+import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 
 import * as API from '@containers/User/api'
 
@@ -85,8 +85,6 @@ class AddCryptoWalletComponent extends React.Component {
       isSubmitting,
     } = this.props
 
-    const { loading, searchSupportedNetworks } = this.props.searchSupportedNetworks
-
     return (
       <SPaper>
         <Typography variant="title">Add new crypto wallet</Typography>
@@ -124,27 +122,11 @@ class AddCryptoWalletComponent extends React.Component {
             }
           />
           <SSelect>
-            <InputLabel htmlFor="asset"></InputLabel>
-            <Select
-              value={values.asset}
-              onChange={handleChange}
-              inputProps={{
-                name: 'asset',
-                id: 'asset',
-              }}
-            >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
-
-              {!loading &&
-                searchSupportedNetworks &&
-                searchSupportedNetworks.map(({ _id, name }) => (
-                  <MenuItem key={_id} value={name}>
-                    {name}
-                  </MenuItem>
-                ))}
-            </Select>
+            <InputLabel htmlFor="asset">Wallet</InputLabel>
+            <SelectWalletList
+              isClearable
+              onChange={handleSelectChangePrepareForFormik.bind(this, 'asset')}
+            />
           </SSelect>
 
           <Button type="submit" disabled={!dirty || isSubmitting}>
@@ -174,6 +156,7 @@ const SSelect = styled.div`
   flex-direction: column;
   margin: 30px 5px 5px 5px;
   width: 80%;
+  min-height: 50px;
 `
 
 const SPaper = styled(Paper)`
@@ -190,8 +173,5 @@ const SPaper = styled(Paper)`
 
 export const AddCryptoWallet = compose(
   graphql(API.addCryptoWalletMutation, { name: 'addCryptoWallet' }),
-  graphql(API.searchSupportedNetworksQuery, {
-    name: 'searchSupportedNetworks',
-  }),
   formikEnhancer
 )(AddCryptoWalletComponent)

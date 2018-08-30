@@ -47,6 +47,7 @@ class CryptoWalletsListComponent extends React.Component {
               <CryptoWalletTableCell>Name</CryptoWalletTableCell>
               <CryptoWalletTableCell numeric>Blockchain / Network</CryptoWalletTableCell>
               <CryptoWalletTableCell numeric>Address</CryptoWalletTableCell>
+              <CryptoWalletTableCell numeric>Date</CryptoWalletTableCell>
               <CryptoWalletTableCell numeric>Delete key</CryptoWalletTableCell>
             </TableRow>
           </TableHead>

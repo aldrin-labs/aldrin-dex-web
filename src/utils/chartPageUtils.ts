@@ -75,3 +75,8 @@ export const sortAndFilterOrders = (orders: any[]) =>
         return order
       }
     })
+export const ScrollToBottom = () => {
+  //  scroll down to bottom of asks table
+  const objDiv = document.getElementById('body')
+  objDiv.scrollTop = objDiv.scrollHeight
+}
