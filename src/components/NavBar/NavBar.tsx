@@ -64,4 +64,7 @@ const SNav = styled.nav`
   }
 `
 
-const LoginWrapper = styled.div``
+const LoginWrapper = styled.div`
+  width: 10%;
+  margin-right: 3%;
+`

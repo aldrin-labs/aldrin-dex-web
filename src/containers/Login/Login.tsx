@@ -19,8 +19,8 @@ const SWrapper = styled.div`
   z-index: 100000;
   align-items: center;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 100%;
+  justify-content: space-between;
 `
 
 class LoginQuery extends React.Component<Props, State> {
