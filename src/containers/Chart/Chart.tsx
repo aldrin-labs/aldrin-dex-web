@@ -338,31 +338,17 @@ class Chart extends React.Component {
 
   renderToggler = () => {
     const { toggleView, view } = this.props
+    const defaultView = view === 'default'
 
-    if (view === 'default') {
-      return (
-        <Toggler
-          variant="outlined"
-          color="secondary"
-          onClick={() => toggleView('onlyCharts')}
-        >
-          Multi Charts
-        </Toggler>
-      )
-    }
-    if (view === 'onlyCharts') {
-      return (
-        <Toggler
-          variant="outlined"
-          color="secondary"
-          onClick={() => toggleView('default')}
-        >
-          Single Chart
-        </Toggler>
-      )
-    }
-
-    return null
+    return (
+      <Toggler
+        variant="raised"
+        color="primary"
+        onClick={() => toggleView(defaultView ? 'onlyCharts' : 'default')}
+      >
+        {defaultView ? 'Multi Charts' : ' Single Chart'}
+      </Toggler>
+    )
   }
 
   render() {
