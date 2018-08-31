@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { red } from '@material-ui/core/colors'
 
-import { Row, Cell } from '@components/Table/Table'
+import { Row, Cell, Body } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
 import {
   calculatePercentagesOfOrderSize,
@@ -12,16 +12,24 @@ import {
   EmptyCell,
   RowWithVolumeChart,
   StyledTypography,
-  NotScrollableBody,
 } from '@containers/Chart/Tables/SharedStyles'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
 
+let objDiv: HTMLElement | null
+
 class ClassBody extends Component<IProps> {
   componentDidMount() {
-    ScrollToBottom()
+    objDiv = document.getElementById('body')
+    ScrollToBottom(objDiv)
   }
+
   componentDidUpdate() {
-    ScrollToBottom()
+    if (
+      objDiv &&
+      objDiv.scrollHeight - objDiv.scrollTop - objDiv.clientHeight < 45
+    ) {
+      ScrollToBottom(objDiv)
+    }
   }
   render() {
     const {
@@ -34,7 +42,7 @@ class ClassBody extends Component<IProps> {
     } = this.props
 
     return (
-      <NotScrollableBody id="body" height={'calc(100% - 44px - 32px)'}>
+      <Body id="body" height={'calc(100% - 44px - 32px)'}>
         {data.length === 0 ? (
           <Loading centerAligned={true} />
         ) : (
@@ -89,7 +97,7 @@ class ClassBody extends Component<IProps> {
             )}
           </>
         )}
-      </NotScrollableBody>
+      </Body>
     )
   }
 }
