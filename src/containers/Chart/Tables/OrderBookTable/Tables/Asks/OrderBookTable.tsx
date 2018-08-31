@@ -7,7 +7,7 @@ import { TypographyFullWidth } from '@utils/cssUtils'
 import { Table, Row, Title, Head, HeadCell } from '@components/Table/Table'
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
 import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
-import { TypographyWithCustomColor } from '@styles/components'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 
 let index: number | null = null
 

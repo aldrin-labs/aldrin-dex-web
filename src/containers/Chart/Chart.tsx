@@ -27,7 +27,8 @@ import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
-import { TypographyWithCustomColor } from '@styles/components'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+
 class Chart extends React.Component {
   state = {
     view: 'default',
