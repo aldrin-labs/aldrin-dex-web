@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react'
 
 import { Row, Title, Body, Head } from '@components/Table/Table'
 import { IProps } from './ExchangesTable.types'
-import { TypographyWithCustomColor } from '@utils/cssUtils'
-
 import {
   StyledTable,
   SwitchTablesButton,
@@ -12,6 +10,7 @@ import {
   FlexCell,
   Icon,
 } from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.styles'
+import { TypographyWithCustomColor } from '@styles/Components/TypographyWithCustomColor'
 
 class ExchangesTable extends PureComponent<IProps> {
   render() {
