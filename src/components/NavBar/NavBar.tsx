@@ -1,5 +1,6 @@
 import React, { SFC } from 'react'
 import styled from 'styled-components'
+import { withRouter } from 'react-router-dom'
 
 import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
@@ -13,6 +14,7 @@ const NavBarRaw: SFC<WithTheme> = ({
   theme: {
     palette: { primary, type },
   },
+  location: { pathname },
 }) => (
   <Nav background={primary[type]}>
     <Logo src="https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png" />
@@ -20,9 +22,13 @@ const NavBarRaw: SFC<WithTheme> = ({
       {/*<NavButton link="/" title="Home" exact />*/}
       {/*<NavButton link="/market" title="Coin Market" />*/}
       {/*<NavButton link="/profile" title="Profile" />*/}
-      <NavButton link="/portfolio" title="Portfolio" />
+      <NavButton
+        active={pathname === '/portfolio'}
+        link="/portfolio"
+        title="Portfolio"
+      />
       {/*<NavButton link="/screener" title="Screener" />*/}
-      <NavButton link="/chart" title="Chart" />
+      <NavButton active={pathname === '/chart'} link="/chart" title="Chart" />
     </SNav>
     <LoginWrapper>
       <Login />
@@ -30,7 +36,7 @@ const NavBarRaw: SFC<WithTheme> = ({
   </Nav>
 )
 
-export const NavBar = withTheme()(NavBarRaw)
+export const NavBar = withRouter(withTheme()(NavBarRaw))
 
 // TODO: fix z-index for drawer
 const Nav = styled.div`
@@ -61,6 +67,7 @@ const Logo = styled.img`
 `
 
 const SNav = styled.nav`
+  height: 100%;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
