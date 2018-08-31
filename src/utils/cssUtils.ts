@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
+import { TypographyWithCustomColor } from '@styles/components'
 import ReactSelectComponent from '@components/ReactSelectComponent'
 
 export const customAquaScrollBar = `
@@ -16,7 +17,7 @@ export const customAquaScrollBar = `
     background: #4ed8da;
   }`
 
-export const TypographyFullWidth = styled(Typography)`
+export const TypographyFullWidth = styled(TypographyWithCustomColor)`
   width: 100%;
   flex-grow: 1;
 `
