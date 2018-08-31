@@ -7,7 +7,7 @@ import { customAquaScrollBar } from '@utils/cssUtils'
 
 const FlexibleRadialChart = makeVisFlexible(RadialChart)
 
-export default class PieChart extends React.Component<Props, State> {пше
+export default class PieChart extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
