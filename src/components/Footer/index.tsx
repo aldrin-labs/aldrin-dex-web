@@ -11,6 +11,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import github from '../../icons/github.svg'
 import telegram from '../../icons/telegram.svg'
 import twitter from '../../icons/twitter.svg'
+import Props from './index.types'
 
 const socialIcons = [
   // { icon: github, link: '' },
@@ -18,7 +19,7 @@ const socialIcons = [
   // { icon: twitter, link: '' },
 ]
 
-const Footer = ({ theme: { palette }, changeModeTheme, themeMode }) => (
+const Footer = ({ theme: { palette }, changeModeTheme, themeMode }: Props) => (
   <Container
     background={
       themeMode === 'dark' ? palette.primary.dark : palette.primary.light
