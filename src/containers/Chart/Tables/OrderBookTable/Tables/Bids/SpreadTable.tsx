@@ -76,10 +76,7 @@ class SpreadTable extends Component {
             </HeadCell>
           </TriggerRow>
         </Head>
-        <Body
-          style={{ background: background.default }}
-          height="calc(100% - 26px)"
-        >
+        <Body background={background.default} height="calc(100% - 26px)">
           {data.length === 0 ? (
             <Loading centerAligned={true} />
           ) : (

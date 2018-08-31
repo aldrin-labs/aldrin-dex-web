@@ -107,7 +107,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
               </HeadCell>
             </Row>
           </Head>
-          <Body style={{ background: background.default }} height="42vh">
+          <Body background={background.default} height="42vh">
             {data.length === 0 && tableExpanded ? (
               <Loading centerAligned={true} />
             ) : (

@@ -41,8 +41,9 @@ export const Body = styled.ul`
   overflow-y: auto;
   overflow-x: hidden;
   transition: height 0.25s ease-out;
-
-  ${customAquaScrollBar};
+  background: ${(props: { background?: string; height?: string }) =>
+      props.background ? props.background : 'transparent'}
+    ${customAquaScrollBar};
 `
 
 export const Row = styled.li`
