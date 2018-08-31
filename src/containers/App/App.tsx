@@ -32,16 +32,18 @@ const AppRaw = ({ children, themeMode }: any) => (
     <MuiThemeProvider
       theme={() =>
         // ToDo  removes this
-        createMuiTheme({
-          palette: {
-            type: themeMode,
-            primary: blueGrey,
-            secondary: {
-              ...cyan,
-              main: '#4ed8da'
+        {
+          return createMuiTheme({
+            palette: {
+              type: themeMode,
+              primary: blueGrey,
+              secondary: {
+                ...cyan,
+                main: '#4ed8da',
+              },
             },
-          },
-        })
+          })
+        }
       }
     >
       <CssBaseline />
