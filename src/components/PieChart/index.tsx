@@ -2,7 +2,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { RadialChart, Hint, makeVisFlexible } from 'react-vis'
 
-import { Props, State, PiePiece } from '@components/PieChart/PieChart.types'
+import { Props, State, PiePiece } from './PieChart.types'
+import { customAquaScrollBar } from '@utils/cssUtils'
 
 const FlexibleRadialChart = makeVisFlexible(RadialChart)
 
