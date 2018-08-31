@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import { Button } from '@material-ui/core'
 import { difference } from 'lodash'
 
-import { TypographyFullWidth } from '@utils/cssUtils'
+import { TypographyFullWidth, TypographyWithCustomColor } from '@utils/cssUtils'
 import { Table, Row, Title, Head, HeadCell } from '@components/Table/Table'
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
 import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
-import { TypographyWithCustomColor } from '@styles/components'
 
 let index: number | null = null
 

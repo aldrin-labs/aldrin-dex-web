@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
-import { FaCircle } from 'react-icons/lib/fa'
 
 import { Row, Title, Body, Head } from '@components/Table/Table'
 import { IProps } from './ExchangesTable.types'
-import { TypographyWithCustomColor } from '@styles/components'
+import { TypographyWithCustomColor } from '@utils/cssUtils'
+
 import {
   StyledTable,
   SwitchTablesButton,

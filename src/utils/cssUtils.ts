@@ -1,7 +1,11 @@
 import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
-import { TypographyWithCustomColor } from '@styles/components'
+
 import ReactSelectComponent from '@components/ReactSelectComponent'
+
+export const TypographyWithCustomColor = styled(Typography)`
+  color: ${(props: { textColor?: string }) => props.textColor};
+`
 
 export const customAquaScrollBar = `
   &::-webkit-scrollbar {
