@@ -50,17 +50,17 @@ class SpreadTable extends Component {
     const {
       background,
       action,
-      primary: { dark },
+      primary: { main },
     } = palette
 
     return (
       <SpreadreadTableWrapper>
-        <Head background={dark} style={{ height: '1.625rem' }}>
-          <TriggerRow isHead={true} background={dark}>
+        <Head background={main} style={{ height: '1.625rem' }}>
+          <TriggerRow isHead={true} background={main}>
             <EmptyCell width="10%" />
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                textColor={palette.getContrastText(dark)}
+                textColor={palette.getContrastText(main)}
                 variant="body2"
                 align="right"
               >
@@ -69,7 +69,7 @@ class SpreadTable extends Component {
             </HeadCell>
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                textColor={palette.getContrastText(dark)}
+                textColor={palette.getContrastText(main)}
                 variant="body2"
                 align="right"
                 color="secondary"

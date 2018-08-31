@@ -33,14 +33,14 @@ class TradeHistoryTable extends PureComponent<IProps> {
     const {
       background,
       action,
-      primary: { dark },
+      primary: { main },
     } = palette
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
         <CollapseWrapper in={tableExpanded} collapsedHeight="2.5rem">
           <TriggerTitle
-            background={dark}
+            background={main}
             onClick={() => {
               this.setState((prevState) => ({
                 tableExpanded: !prevState.tableExpanded,
@@ -48,7 +48,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
             }}
           >
             <TypographyFullWidth
-              textColor={palette.getContrastText(dark)}
+              textColor={palette.getContrastText(main)}
               variant="subheading"
               align="center"
             >

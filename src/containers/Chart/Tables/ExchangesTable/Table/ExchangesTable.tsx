@@ -1,20 +1,17 @@
 import React, { PureComponent } from 'react'
 import { FaCircle } from 'react-icons/lib/fa'
-import { Button, Typography } from '@material-ui/core'
-import styled from 'styled-components'
 
-import {
-  Table,
-  Row,
-  Title,
-  Body,
-  Head,
-  Cell,
-  HeadCell,
-  FullWidthBlock,
-} from '@components/Table/Table'
+import { Row, Title, Body, Head } from '@components/Table/Table'
 import { IProps } from './ExchangesTable.types'
 import { TypographyWithCustomColor } from '@styles/components'
+import {
+  StyledTable,
+  SwitchTablesButton,
+  StyledHeadCell,
+  FullWidthBlockMovedLeft,
+  FlexCell,
+  Icon,
+} from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.styles'
 
 class ExchangesTable extends PureComponent<IProps> {
   render() {
@@ -28,10 +25,10 @@ class ExchangesTable extends PureComponent<IProps> {
 
     return (
       <StyledTable>
-        <Title background={theme.palette.primary.dark}>
+        <Title background={theme.palette.primary.main}>
           <TypographyWithCustomColor
             textColor={theme.palette.getContrastText(
-              theme.palette.primary.dark
+              theme.palette.primary.main
             )}
             variant="subheading"
             align="center"
@@ -45,7 +42,7 @@ class ExchangesTable extends PureComponent<IProps> {
           >
             <TypographyWithCustomColor
               textColor={theme.palette.getContrastText(
-                theme.palette.primary.dark
+                theme.palette.primary.main
               )}
               variant="headline"
               align="left"
@@ -100,7 +97,7 @@ class ExchangesTable extends PureComponent<IProps> {
             const exchangeText =
               activeExchange.index !== ind
                 ? theme.palette.getContrastText(background)
-                : theme.palette.secondary.dark
+                : theme.palette.secondary.main
             return (
               <Row
                 key={ind}
@@ -121,23 +118,11 @@ class ExchangesTable extends PureComponent<IProps> {
                   }
                   if (keyByValue === 'name') {
                     return (
-                      <Cell
-                        key={propinx}
-                        style={{
-                          alignItems: 'center',
-                          display: 'flex',
-                          flexWrap: 'nowrap',
-                        }}
-                        width="50%"
-                      >
-                        <FaCircle
-                          style={{
-                            fontSize: '0.5rem',
-                            minWidth: '20%',
-                            flexBasis: '20%',
-                            color:
-                              exchange.status || theme.palette.secondary.main,
-                          }}
+                      <FlexCell key={propinx} width="50%">
+                        <Icon
+                          color={
+                            exchange.status || theme.palette.secondary.main
+                          }
                         />
                         <TypographyWithCustomColor
                           noWrap={true}
@@ -146,27 +131,19 @@ class ExchangesTable extends PureComponent<IProps> {
                         >
                           {prop}
                         </TypographyWithCustomColor>
-                      </Cell>
+                      </FlexCell>
                     )
                   }
 
                   return (
-                    <Cell
-                      key={propinx}
-                      style={{
-                        alignItems: 'center',
-                        display: 'flex',
-                        flexWrap: 'nowrap',
-                      }}
-                      width="50%"
-                    >
+                    <FlexCell key={propinx} width="50%">
                       <TypographyWithCustomColor
                         variant="body1"
                         textColor={exchangeText}
                       >
                         {prop}
                       </TypographyWithCustomColor>
-                    </Cell>
+                    </FlexCell>
                   )
                 })}
               </Row>
@@ -177,29 +154,5 @@ class ExchangesTable extends PureComponent<IProps> {
     )
   }
 }
-
-const FullWidthBlockMovedLeft = FullWidthBlock.extend`
-  position: relative;
-  left: 20%;
-`
-
-const StyledHeadCell = styled(HeadCell)`
-  line-height: 37px;
-  padding: 0.25rem 0.4rem;
-`
-
-const StyledTable = styled(Table)`
-  overflow-x: hidden;
-`
-
-const SwitchTablesButton = styled(Button)`
-  && {
-    display: none;
-
-    @media (max-width: 1080px) {
-      display: block;
-    }
-  }
-`
 
 export default ExchangesTable
