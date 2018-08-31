@@ -27,6 +27,8 @@ import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+
 class Chart extends React.Component {
   state = {
     view: 'default',
@@ -282,9 +284,12 @@ class Chart extends React.Component {
               {base &&
                 quote && (
                   <ExchangePair background={palette.primary.dark}>
-                    <Typography variant="subheading" color="default">
+                    <TypographyWithCustomColor
+                      textColor={palette.getContrastText(palette.primary.dark)}
+                      variant="subheading"
+                    >
                       {`${base}/${quote}`}
-                    </Typography>
+                    </TypographyWithCustomColor>
                   </ExchangePair>
                 )}
               <SwitchButtonWrapper>
@@ -334,31 +339,17 @@ class Chart extends React.Component {
 
   renderToggler = () => {
     const { toggleView, view } = this.props
+    const defaultView = view === 'default'
 
-    if (view === 'default') {
-      return (
-        <Toggler
-          variant="outlined"
-          color="secondary"
-          onClick={() => toggleView('onlyCharts')}
-        >
-          Multi Charts
-        </Toggler>
-      )
-    }
-    if (view === 'onlyCharts') {
-      return (
-        <Toggler
-          variant="outlined"
-          color="secondary"
-          onClick={() => toggleView('default')}
-        >
-          Single Chart
-        </Toggler>
-      )
-    }
-
-    return null
+    return (
+      <Toggler
+        variant="raised"
+        color="primary"
+        onClick={() => toggleView(defaultView ? 'onlyCharts' : 'default')}
+      >
+        {defaultView ? 'Multi Charts' : ' Single Chart'}
+      </Toggler>
+    )
   }
 
   render() {
@@ -466,9 +457,10 @@ const ChartsSwitcher = styled.div`
   justify-content: flex-end;
   width: 100%;
   height: 38px;
-  background: ${(props) => props.background};
+  background: ${(props: { background: string }) => props.background};
   color: white;
-  border-bottom: 1px solid ${(props) => props.divider};
+  border-bottom: 1px solid
+    ${(props: { divider: string; background: string }) => props.divider};
 `
 
 const TogglerContainer = styled.div`

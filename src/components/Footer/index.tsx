@@ -11,6 +11,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import github from '../../icons/github.svg'
 import telegram from '../../icons/telegram.svg'
 import twitter from '../../icons/twitter.svg'
+import Props from './index.types'
 
 const socialIcons = [
   // { icon: github, link: '' },
@@ -18,8 +19,12 @@ const socialIcons = [
   // { icon: twitter, link: '' },
 ]
 
-const Footer = ({ theme: { palette }, changeModeTheme, themeMode }) => (
-  <Container background={palette.primary.dark}>
+const Footer = ({ theme: { palette }, changeModeTheme, themeMode }: Props) => (
+  <Container
+    background={
+      themeMode === 'dark' ? palette.primary.dark : palette.primary.light
+    }
+  >
     <Block>
       <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
@@ -86,7 +91,8 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-color: ${(props) => props.background};
+  background: ${(props: { background: string }) => props.background};
+  transition: background 0.25s ease-in-out;
 `
 
 const Block = styled.div`
