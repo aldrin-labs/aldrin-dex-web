@@ -3,9 +3,18 @@ import styled from 'styled-components'
 
 import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
+import { withTheme, Theme, WithTheme } from '@material-ui/core/styles'
 
-export const NavBar: SFC<{}> = () => (
-  <Nav>
+export interface Props {
+  theme: Theme
+}
+// ToDo add grid
+const NavBarRaw: SFC<WithTheme> = ({
+  theme: {
+    palette: { primary, type },
+  },
+}) => (
+  <Nav background={primary[type]}>
     <Logo src="https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png" />
     <SNav>
       {/*<NavButton link="/" title="Home" exact />*/}
@@ -21,6 +30,8 @@ export const NavBar: SFC<{}> = () => (
   </Nav>
 )
 
+export const NavBar = withTheme()(NavBarRaw)
+
 // TODO: fix z-index for drawer
 const Nav = styled.div`
   width: 100%;
@@ -29,7 +40,7 @@ const Nav = styled.div`
   justify-content: space-between;
   height: 80px;
   align-items: center;
-  background-color: #2d3136;
+  background-color: ${(props: { background: string }) => props.background};
   z-index: 1;
 
   @media (max-width: 840px) {

@@ -30,17 +30,16 @@ if (process.browser) {
 const AppRaw = ({ children, themeMode }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
-      theme={() => {
-        theme = createMuiTheme({
+      theme={() =>
+        // ToDo  removes this
+        createMuiTheme({
           palette: {
             type: themeMode,
-            primary: blueGrey,
+            primary: { ...blueGrey },
             secondary: cyan,
           },
         })
-
-        return theme
-      }}
+      }
     >
       <CssBaseline />
       <AppGridLayout>
