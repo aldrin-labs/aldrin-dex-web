@@ -35,8 +35,11 @@ const AppRaw = ({ children, themeMode }: any) => (
         createMuiTheme({
           palette: {
             type: themeMode,
-            primary: { ...blueGrey },
-            secondary: cyan,
+            primary: blueGrey,
+            secondary: {
+              ...cyan,
+              main: '#4ed8da'
+            },
           },
         })
       }
