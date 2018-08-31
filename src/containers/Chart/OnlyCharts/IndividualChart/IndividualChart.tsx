@@ -10,6 +10,7 @@ import {
 } from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart.types'
 import DepthChartContainer from '@containers/Chart/OnlyCharts/DepthChartContainer/DepthChartContainer'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 
 export default class Charts extends Component<IChartProps, IChartState> {
   state: IChartState = {
@@ -19,9 +20,8 @@ export default class Charts extends Component<IChartProps, IChartState> {
 
   render() {
     const { currencyPair, removeChart, index, theme } = this.props
-    const {
-      palette: { primary },
-    } = theme
+    const { palette } = theme
+    const { primary } = palette
     const { activeChart, show } = this.state
 
     if (currencyPair === undefined) {
@@ -29,6 +29,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
     }
 
     const [base, quote] = currencyPair.split('_')
+    const textColor = palette.getContrastText(primary.main)
 
     return (
       <Grow in={show} mountOnEnter={true} unmountOnExit={true}>
@@ -38,12 +39,12 @@ export default class Charts extends Component<IChartProps, IChartState> {
             divider={theme.palette.divider}
           >
             {' '}
-            <StyledTypography color="default" variant="body1">
+            <StyledTypography textColor={textColor} variant="body1">
               {`${base}/${quote}`}
             </StyledTypography>
-            <Typography color="default" variant="caption">
+            <TypographyWithCustomColor textColor={textColor} variant="caption">
               Depth
-            </Typography>
+            </TypographyWithCustomColor>
             <Switch
               color="default"
               checked={activeChart === 'candle'}
@@ -54,9 +55,9 @@ export default class Charts extends Component<IChartProps, IChartState> {
                 }))
               }}
             />
-            <Typography color="default" variant="caption">
+            <TypographyWithCustomColor textColor={textColor} variant="caption">
               Chart
-            </Typography>
+            </TypographyWithCustomColor>
             <Button
               onClick={() => {
                 this.setState({ show: false })
@@ -93,7 +94,7 @@ const Wrapper = styled(Paper)`
   flex-direction: column;
 `
 
-const StyledTypography = styled(Typography)`
+const StyledTypography = styled(TypographyWithCustomColor)`
   margin-right: auto;
   margin-left: 0.25rem;
 `

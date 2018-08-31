@@ -1,17 +1,7 @@
 import React from 'react'
 
 import ExchangesTable from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable'
-
-const mockExchanges = [
-  { name: 'OKEx', symbol: 'okex' },
-  { name: 'Huobi', symbol: 'huobi' },
-  { name: 'Bitfinex', symbol: 'bitfinex' },
-  { name: 'Bitstamp', symbol: 'bitstamp' },
-  { name: 'Coinbase Pro', symbol: 'coinbase' },
-  // { name: 'Huobi', symbol: 'huobi' },
-  { name: 'DigiFinex', symbol: 'digifinex' },
-  { name: 'ZB.COM', symbol: 'zbcom' },
-]
+import { mockExchanges } from '@containers/Chart/Tables/ExchangesTable/mockExchanges'
 
 const transformDataToExchangesTable = ({ data, ...props }) => {
   if (data && data.marketByName) {
