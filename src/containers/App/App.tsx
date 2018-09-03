@@ -41,6 +41,10 @@ const AppRaw = ({ children, themeMode }: any) => (
                 ...cyan,
                 main: '#4ed8da',
               },
+              navbar: {
+                light: '#fff',
+                dark: 'rgb(45, 49, 54)',
+              },
             },
           })
         }
