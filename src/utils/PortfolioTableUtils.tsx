@@ -1,6 +1,6 @@
 import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
-import styled from 'styled-components'
 import React from 'react'
+import { Icon } from '@utils/cssUtils'
 
 export const calcAllSumOfPortfolioAsset = (
   assets: any,
@@ -157,10 +157,6 @@ export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number
   return formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
 }
 
-
-const Icon = styled.i`
-  padding-right: 5px;
-`
 
 // TODO: SHOULD BE REFACTORED
 export const onValidateSum = (

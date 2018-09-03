@@ -16,6 +16,8 @@ import {
 } from '@utils/PortfolioTableUtils'
 import { customAquaScrollBar } from '@utils/cssUtils'
 import SuperSearch from '@containers/Screener/ScreenerTable/MarketSummaryTable/SuperSearch'
+import { Icon } from '@utils/cssUtils'
+
 
 // TODO: Think about this
 let staticRows = tableData
@@ -373,7 +375,4 @@ const PTBody = styled.tbody`
   display: table;
   width: 100%;
   border-bottom: 1px solid #fff;
-`
-const Icon = styled.i`
-  padding-right: 5px;
 `

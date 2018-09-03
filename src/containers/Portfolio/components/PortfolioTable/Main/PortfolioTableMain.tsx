@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {formatNumberToUSFormat, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain.types'
 import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
+import { Icon } from '@utils/cssUtils'
 
 export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
@@ -249,8 +250,4 @@ const Checkbox = styled.input`
     background-position: center;
     background-size: 12px;
   }
-`
-
-const Icon = styled.i`
-  padding-right: 5px;
 `

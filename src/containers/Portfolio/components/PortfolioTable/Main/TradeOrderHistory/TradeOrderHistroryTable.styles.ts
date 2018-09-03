@@ -1,6 +1,7 @@
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { Icon, customAquaScrollBar } from '@utils/cssUtils'
 import { css } from 'styled-components'
 import styled from 'styled-components'
+
 
 export {Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody, Icon}
 
@@ -131,8 +132,4 @@ const PTBody = styled.tbody`
   display: table;
   width: 100%;
   border-bottom: 1px solid #fff;
-`
-
-const Icon = styled.i`
-  padding-right: 5px;
 `

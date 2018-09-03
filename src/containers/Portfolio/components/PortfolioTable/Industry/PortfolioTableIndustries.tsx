@@ -28,6 +28,8 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
+import { Icon } from '@utils/cssUtils'
+
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -732,10 +734,6 @@ const ChartContainer = styled.div`
   @media (max-width: 850px) {
     display: none;
   }
-`
-
-const Icon = styled.i`
-  padding-right: 5px;
 `
 
 const Wrapper = styled.div`
