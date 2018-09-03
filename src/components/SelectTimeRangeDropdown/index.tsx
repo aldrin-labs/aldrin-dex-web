@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { daysFromNow } from '@utils/dateUtils'
 import Selector from '@components/SimpleDropDownSelector'
 import { IProps } from './index.types'
 
@@ -7,43 +8,33 @@ class DropDownMenu extends Component<IProps> {
   // days are minus ten from now I dunno why
   optionsMap: { [id: string]: any } = {
     lastWeek: () => ({
-      startDate: this.daysFromNow(-17),
-      endDate: this.daysFromNow(-10),
+      startDate: daysFromNow(7),
+      endDate: daysFromNow(0),
     }),
     lastDay: () => ({
-      startDate: this.daysFromNow(-9),
-      endDate: this.daysFromNow(-10),
+      startDate: daysFromNow(-1),
+      endDate: daysFromNow(0),
     }),
     lastMonth: () => ({
-      startDate: this.daysFromNow(-41),
-      endDate: this.daysFromNow(-10),
+      startDate: daysFromNow(-31),
+      endDate: daysFromNow(0),
     }),
     threeMonths: () => ({
-      startDate: this.daysFromNow(-102),
-      endDate: this.daysFromNow(-10),
+      startDate: daysFromNow(-92),
+      endDate: daysFromNow(0),
     }),
     sixMonths: () => ({
-      startDate: this.daysFromNow(-194),
-      endDate: this.daysFromNow(-10),
+      startDate: daysFromNow(-184),
+      endDate: daysFromNow(0),
     }),
     lastYear: () => ({
-      startDate: this.daysFromNow(-366),
-      endDate: this.daysFromNow(-10),
+      startDate: daysFromNow(-356),
+      endDate: daysFromNow(0),
     }),
     testDates: () => ({
       startDate: 1531441380,
       endDate: 1531873380,
     }),
-  }
-
-  formatTimestamp = (timestamp: number) => Math.round(timestamp / 1000)
-
-  daysFromNow = (days: number) => {
-    let date = new Date()
-    date.setDate(date.getDate() + days)
-    date.setHours(0, 0, 0, 0)
-
-    return this.formatTimestamp(date.getTime())
   }
 
   handleChange = (event) => {
