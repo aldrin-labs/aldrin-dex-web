@@ -22,18 +22,13 @@ import Footer from '@components/Footer'
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
 
-let theme = {}
-if (process.browser) {
-  window.theme = theme
-}
-
 const AppRaw = ({ children, themeMode }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
       theme={() =>
         // ToDo  removes this
         {
-          return createMuiTheme({
+          const theme = createMuiTheme({
             palette: {
               type: themeMode,
               primary: blueGrey,
@@ -41,12 +36,21 @@ const AppRaw = ({ children, themeMode }: any) => (
                 ...cyan,
                 main: '#4ed8da',
               },
+              background: {
+                default: themeMode === 'light' ? '#fafafa' : '#303030',
+                paper: themeMode === 'light' ? '#fff' : '#393e44',
+              },
               navbar: {
                 light: '#fff',
                 dark: 'rgb(45, 49, 54)',
               },
             },
           })
+
+          if (process.browser) {
+            window.theme = theme
+          }
+          return theme
         }
       }
     >
