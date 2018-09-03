@@ -255,12 +255,20 @@ export default class RebalancedPortfolioTable extends React.Component<
                             <SelectR
                               key={`inputNameExchange${rowIndex}`}
                               classNamePrefix="custom-select-box"
-                              styles={customStyles}
                               isClearable
                               isSearchable
                               options={exchangeOptions}
                               menuPortalTarget={document.body}
-                              components={{ DropdownIndicator }}
+                              menuStyles={{
+                                minWidth: '150px',
+                                height: '200px',
+                              }}
+                              menuListStyles={{
+                                height: '200px',
+                              }}
+                              clearIndicatorStyles={{
+                                padding: '2px',
+                              }}
                               onChange={() => handleSelectChange(
                                 rowIndex,
                                 'exchange'
@@ -276,12 +284,20 @@ export default class RebalancedPortfolioTable extends React.Component<
                             <SelectR
                               key={`inputCoinSymbol${rowIndex}`}
                               classNamePrefix="custom-select-box"
-                              styles={customStyles}
                               isClearable
                               isSearchable
                               options={coinsOptions}
                               menuPortalTarget={document.body}
-                              components={{ DropdownIndicator }}
+                              menuStyles={{
+                                minWidth: '150px',
+                                height: '200px',
+                              }}
+                              menuListStyles={{
+                                height: '200px',
+                              }}
+                              clearIndicatorStyles={{
+                                padding: '2px',
+                              }}
                               onChange={ () => handleSelectChange(
                                 rowIndex,
                                 'symbol'
@@ -454,122 +470,3 @@ export default class RebalancedPortfolioTable extends React.Component<
     )
   }
 }
-
-
-const customStyles = {
-  control: () => ({
-    boxSizing: 'border-box',
-    cursor: 'default',
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    outline: '0',
-    transition: 'all 100ms',
-    backgroundColor: 'transparent',
-    minHeight: '0.8em',
-    border: 'none',
-  }),
-  menu: (base: CSSProperties) => ({
-    ...base,
-    backgroundColor: '#424242',
-    minWidth: '150px',
-    maxHeight: '200px',
-    height: '200px',
-  }),
-  menuList: (base: CSSProperties) => ({
-    ...base,
-    maxHeight: '200px',
-  }),
-  option: (base: CSSProperties, state: OptionProps) => ({
-    ...base,
-    color: '#fff',
-    fontSize: '1.5em',
-    fontFamily: 'Roboto',
-    backgroundColor: state.isSelected
-      ? 'rgba(255, 255, 255, 0.2)'
-      : state.isFocused
-        ? 'rgba(255, 255, 255, 0.1)'
-        : '#424242',
-    [':active']: null,
-  }),
-  clearIndicator: () => ({
-    [':hover']: {
-      color: '#fff',
-    },
-    display: 'flex',
-    width: '20px',
-    boxSizing: 'border-box',
-    color: 'hsl(0, 0%, 80%)',
-    padding: '2px',
-    transition: 'color 150ms',
-  }),
-  dropdownIndicator: () => ({
-    [':hover']: {
-      color: '#fff',
-    },
-    display: 'flex',
-    width: '20px',
-    boxSizing: 'border-box',
-    color: 'hsl(0, 0%, 80%)',
-    padding: '2px',
-    transition: 'color 150ms',
-  }),
-  valueContainer: (base: CSSProperties) => ({
-    ...base,
-    paddingLeft: 0,
-  }),
-  singleValue: (base: CSSProperties) => ({
-    ...base,
-    color: '#fff',
-    marginLeft: '0',
-  }),
-  placeholder: (base: CSSProperties) => ({
-    ...base,
-    marginLeft: 0,
-  }),
-  input: (base: CSSProperties) => ({
-    ...base,
-    color: '#fff',
-  }),
-  multiValue: (base: CSSProperties) => ({
-    ...base,
-    [':hover']: {
-      borderColor: '#4ed8da',
-    },
-
-    color: '#fff',
-    borderRadius: '3px',
-    fontWeight: 'bold',
-    backgroundColor: '#2a2d32',
-  }),
-  multiValueLabel: (base: CSSProperties) => ({
-    ...base,
-    color: '#fff',
-  }),
-  multiValueRemove: (base: CSSProperties) => ({
-    ...base,
-    [':hover']: {
-      color: '#fff',
-      backgroundColor: '#4ed8da',
-    },
-  }),
-  indicatorSeparator: () => ({
-    display: 'none',
-  }),
-}
-
-// TODO: replace any with CommonProps from @types/react-select
-const DropdownIndicator = (props: any) =>
-  components.DropdownIndicator && (
-    <components.DropdownIndicator {...props}>
-      <SvgIcon
-        src={dropDownIcon}
-        width={19}
-        height={19}
-        style={{
-          verticalAlign: 'middle',
-        }}
-      />
-    </components.DropdownIndicator>
-  )

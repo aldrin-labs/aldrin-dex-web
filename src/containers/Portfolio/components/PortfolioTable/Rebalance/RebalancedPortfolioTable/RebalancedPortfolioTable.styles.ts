@@ -3,6 +3,7 @@ import { customAquaScrollBar } from '@utils/cssUtils'
 import SelectReact from 'react-select'
 
 import { PT, PTH, PTD, PTF } from '../sharedStyles/sharedStyles'
+import ReactSelectComponent from '@components/ReactSelectComponent'
 
 export {
   TableAndHeadingWrapper,
@@ -404,19 +405,7 @@ const EditIconWrapper = styled.div`
       props.isEditModeEnabled ? '4px' : '7px'};
   }
 `
-// TODO: MOVE IT AND USE OUR COMPONENT
-const SelectR = styled(SelectReact)`
-  max-width: 100px;
+const SelectR = styled(ReactSelectComponent)`
   font-family: Roboto;
   font-size: 12px;
-  border-bottom: 1px solid #c1c1c1;
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    border-bottom: 1px solid #fff;
-  }
-
-  & + & {
-    margin-left: 25px;
-  }
 `
