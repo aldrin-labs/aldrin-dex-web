@@ -27,6 +27,13 @@ if (process.browser) {
   window.theme = theme
 }
 
+const version = `0.1`
+const currentVersion = localStorage.getItem('version')
+if (currentVersion !== version) {
+  localStorage.clear()
+  localStorage.setItem('version', version)
+}
+
 const AppRaw = ({ children, themeMode }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
