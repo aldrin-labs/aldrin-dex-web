@@ -29,22 +29,6 @@
         "regenerator": true,
         "moduleName": "@babel/runtime"
       }
-    ],
-    [
-      "module-resolver",
-      {
-        "extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],
-        "root": ["./src"],
-        "alias": {
-          "@components": "./src/components",
-          "@containers": "./src/containers",
-          "@utils": "./src/utils",
-          "@hoc": "./src/hoc",
-          "@styles": "./src/styles",
-          "@graphql": "./src/graphql",
-          "@icons": "./src/icons"
-        }
-      }
     ]
   ]
 }
