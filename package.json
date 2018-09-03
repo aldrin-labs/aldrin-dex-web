@@ -29,8 +29,7 @@
       "enzyme-to-json/serializer"
     ],
     "moduleDirectories": [
-      "./node_modules",
-      "./src"
+      "./node_modules"
     ],
     "moduleFileExtensions": [
       "js",
