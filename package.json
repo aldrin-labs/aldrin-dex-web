@@ -24,12 +24,6 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
   "jest": {
-<<<<<<< HEAD
-    "setupFiles": ["./jest.setup.js"],
-    "snapshotSerializers": ["enzyme-to-json/serializer"],
-    "moduleDirectories": ["./node_modules", "./src"],
-    "moduleFileExtensions": ["js", "ts", "tsx"],
-=======
     "setupFiles": [
       "./jest.setup.js"
     ],
@@ -44,19 +38,13 @@
       "ts",
       "tsx"
     ],
->>>>>>> develop
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "typescript-babel-jest",
       "\\.(gql|graphql)$": "jest-transform-graphql"
     },
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleNameMapper": {
-<<<<<<< HEAD
-      ".+\\.(css|styl|less|sass|scss|svg|png|jpg|ttf|woff|woff2)$":
-        "identity-obj-proxy",
-=======
       ".+\\.(svg|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy",
->>>>>>> develop
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@containers(.*)$": "<rootDir>/src/containers$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
