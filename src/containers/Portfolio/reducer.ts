@@ -14,7 +14,7 @@ const initialState = {
   optimizationEndDate: 0,
   correlationStartDate: 0,
   correlationEndDate: 0,
-  filterValuesLessThenThat: 0,
+  filterValuesLessThenThat: -100.0,
   keys: [],
   activeChart: 4,
 }
