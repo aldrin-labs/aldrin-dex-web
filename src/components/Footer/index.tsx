@@ -1,12 +1,17 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { withTheme } from '@material-ui/core/styles'
+import { Typography, Button } from '@material-ui/core'
+import Switch from '@material-ui/core/Switch'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 
+import { changeThemeMode } from '@containers/App/actions'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Switch from '@components/Switch/Switch'
-
 import github from '../../icons/github.svg'
 import telegram from '../../icons/telegram.svg'
 import twitter from '../../icons/twitter.svg'
+import Props from './index.types'
 
 const socialIcons = [
   // { icon: github, link: '' },
@@ -14,49 +19,60 @@ const socialIcons = [
   // { icon: twitter, link: '' },
 ]
 
-export default class Footer extends React.Component {
-  render() {
-    return (
-      <Container>
-        <Block>
-          <Text>Cryptocurrencies Ai, 2018 </Text>
-          <Text>• </Text>
-          <Link href="termsofuse">
-            <Text> Terms of Use</Text>
-          </Link>
-          <Text>• </Text>
-          <Link href="privacypolicy">
-            <Text> Privacy Policy</Text>
-          </Link>
-        </Block>
+const Footer = ({ theme: { palette }, changeModeTheme, themeMode }: Props) => (
+  <Container
+    background={
+      themeMode === 'dark' ? palette.primary.dark : palette.primary.light
+    }
+  >
+    <Block>
+      <Typography variant="caption" color="default">
+        Cryptocurrencies Ai, 2018{' '}
+      </Typography>
+      <Typography variant="title" color="secondary">
+        •
+      </Typography>
+      <Button size="small" color="default">
+        Terms of Use
+      </Button>
+      <Typography variant="title" color="secondary">
+        •
+      </Typography>
+      <Button size="small" color="default">
+        Privacy Policy
+      </Button>
+    </Block>
 
-        <Block>
-          {socialIcons.map((socio) => (
-            <LinkWithIcon key={socio.icon} href={socio.link}>
-              <SvgIcon
-                styledComponentsAdditionalStyle={
-                  'opacity: 0.5; transition: all .5s linear; &:hover{opacity:1;}'
-                }
-                src={socio.icon}
-                width={30}
-                height={30}
-              />
-            </LinkWithIcon>
-          ))}
-        </Block>
-
-        <Block>
-          <Text>NIGHT MODE</Text>
-          <Switch
-            onClick={() => {
-              console.log('soon...')
-            }}
+    <Block>
+      {socialIcons.map((socio) => (
+        <LinkWithIcon key={socio.icon} href={socio.link}>
+          <SvgIcon
+            styledComponentsAdditionalStyle={
+              'opacity: 0.5; transition: all .5s linear; &:hover{opacity:1;}'
+            }
+            src={socio.icon}
+            width={30}
+            height={30}
           />
-        </Block>
-      </Container>
-    )
-  }
-}
+        </LinkWithIcon>
+      ))}
+    </Block>
+
+    <Block>
+      <Typography variant="caption" color="secondary">
+        NIGHT MODE
+      </Typography>
+      <Switch
+        checked={themeMode === 'dark'}
+        onChange={() => {
+          changeModeTheme()
+        }}
+        value="theme"
+        color="secondary"
+      />
+    </Block>
+  </Container>
+)
 
 const Link = styled.a`
   &:visited {
@@ -75,8 +91,8 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  background-color: #2d3136;
-  padding: 0.5rem 0;
+  background: ${(props: { background: string }) => props.background};
+  transition: background 0.25s ease-in-out;
 `
 
 const Block = styled.div`
@@ -88,11 +104,15 @@ const Block = styled.div`
   }
 `
 
-const Text = styled.span`
-  opacity: 0.5;
-  font-family: Roboto;
-  font-size: 1.225em;
-  font-weight: 500;
-  text-align: left;
-  color: #fff;
-`
+const mapStateToProps = (store: any) => ({
+  themeMode: store.ui.theme,
+})
+
+const mapDispatchToProps = (dispatch: any) => ({
+  changeModeTheme: () => dispatch(changeThemeMode()),
+})
+
+export default compose(
+  withTheme(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Footer)

@@ -4,10 +4,11 @@ import React from 'react'
 
 export const calcAllSumOfPortfolioAsset = (
   assets: any,
-  isUSDCurrently: boolean
-): number =>
+  isUSDCurrently: boolean,
+  cryptoWallets: any = null,
+): number => {
   // transforming data like assets from profile to IData format
-  assets.filter(Boolean).reduce((acc: number, curr: any) => {
+  const sum = assets.filter(Boolean).reduce((acc: number, curr: any) => {
     const { value = 0, asset = { priceUSD: 0 } } = curr || {}
     if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
       return null
@@ -15,7 +16,22 @@ export const calcAllSumOfPortfolioAsset = (
     const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
 
     return acc + value * Number(price)
-  }, 0)
+  }, 0);
+  if (cryptoWallets) {
+    return cryptoWallets.reduce((acc: number, curr: any) =>
+      curr.assets.reduce((acc: number, curr: any) => {
+        const { balance = 0, asset = { priceUSD: 0 } } = curr || {}
+        if (!balance || !asset || !asset.priceUSD || !asset.priceBTC) {
+          return null
+        }
+        const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+
+        return acc + balance * Number(price)
+      }, 0), sum)
+  }
+
+  return sum;
+}
 
 export const percentagesOfCoinInPortfolio = (
   asset: any,
@@ -97,44 +113,44 @@ export const onSortTableFull = (
 export const getArrayContainsOnlyOnePropertyType = (
   arrayOfObjects: object,
   prop
-) => {
-  return arrayOfObjects.reduce((result, element) => {
+) =>
+  arrayOfObjects.reduce((result, element) => {
     result.push(element[prop])
 
     return result
   }, [])
-}
 
-export const combineDataToSelect = (arrayOfOneType: object) => {
-  return arrayOfOneType.map((elem) => {
-    return {
+export const combineDataToSelect = (arrayOfOneType: object) =>
+  arrayOfOneType.map((elem) =>
+    ({
       value: elem,
       label: elem,
-    }
-  })
-}
+    }))
 
-export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) => {
-  return arrayOfObjects.map((a) => Object.assign({}, a))
-}
+export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) =>
+  arrayOfObjects.map((a) => Object.assign({}, a))
 
-export const onSortStrings = (a: string, b: string): number => {
-  return a.localeCompare(b)
-}
+export const onSortStrings = (a: string, b: string): number =>
+  a.localeCompare(b)
 
 export const roundPercentage = (num: number) => num.toFixed(2)
+
+// formatNumberToUSFormat - this function takes number or string, then it converts it to string anyway, and then decide
+// — if our number has dot "." (is it number with fractional part or not) and then place commas by one of two regexes,
+// depending on is our number has float part or not, and return us-formatted number (e.g. 1,000 etc.)
 
 export const formatNumberToUSFormat = (numberToFormat: number | string) => {
   const stringNumber = numberToFormat.toString()
 
-  return stringNumber.match(/\./g) ? stringNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,') : stringNumber.replace(/\d(?=(\d{3})+$)/g, '$&,')
+  return stringNumber.match(/\./g) ? stringNumber.replace(/\d(?=(\d{3})+\.)/g, '$&,') :
+    stringNumber.replace(/\d(?=(\d{3})+$)/g, '$&,')
 }
 
 export const checkForString = (numberOrString: number | string) => typeof numberOrString === 'string'
 
 export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number) => {
 
-  if (x === 0) {
+  if (x === 0 || +x.toFixed(numberOfDigitsAfterPoint) === 0) {
     return '0'
   }
 
@@ -154,14 +170,14 @@ export const onValidateSum = (
   isUSDCurrently: boolean
 ) => {
   // const { selectedBalances, tableData, isUSDCurrently } = this.state
-  if (!selectedBalances || !tableData) return null
+  if (!selectedBalances || !tableData) { return null }
   const clonedSum = { ...reducedSum }
 
   const mainSymbol = isUSDCurrently ? (
     <Icon className="fa fa-usd" key="usd" />
   ) : (
-    <Icon className="fa fa-btc" key="btc" />
-  )
+      <Icon className="fa fa-btc" key="btc" />
+    )
 
   if (selectedBalances.length === tableData.length) {
     clonedSum.currency = 'Total'

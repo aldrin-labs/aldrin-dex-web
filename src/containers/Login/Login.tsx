@@ -5,11 +5,9 @@ import { connect } from 'react-redux'
 import Auth0Lock from 'auth0-lock'
 import { graphql } from 'react-apollo'
 import jwtDecode from 'jwt-decode'
-
-import Button from 'material-ui/Button'
+import Button from '@material-ui/core/Button'
 
 import { withErrorFallback } from '../../hoc'
-
 import { Props, State } from '@containers/Login/interfaces'
 import * as actions from '@containers/Login/actions'
 import * as API from '@containers/Login/api'
@@ -19,8 +17,8 @@ const SWrapper = styled.div`
   z-index: 100000;
   align-items: center;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 100%;
+  justify-content: space-between;
 `
 
 class LoginQuery extends React.Component<Props, State> {
@@ -141,7 +139,15 @@ class LoginQuery extends React.Component<Props, State> {
 
     return (
       <SWrapper>
-        {!loginStatus && <Button onClick={this.showLogin}>Log in</Button>}
+        {!loginStatus && (
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={this.showLogin}
+          >
+            Log in
+          </Button>
+        )}
         {loginStatus && (
           <LoginMenu
             anchorEl={anchorEl}

@@ -1,5 +1,5 @@
-import React from 'react'
 import styled from 'styled-components'
+import { customAquaScrollBar } from '@utils/cssUtils'
 
 export const Table = styled.div`
   font-family: Roboto, sans-serif;
@@ -14,14 +14,15 @@ export const Table = styled.div`
   }
 `
 
+export const FullWidthBlock = styled.div`
+  width: 100%;
+`
+
 export const Title = styled.div`
   width: 100%;
   text-transform: uppercase;
-  color: white;
-  font-size: 14px;
-  font-weight: 700;
   padding: 10px;
-  background: #353d46;
+  background: ${(props: { background: string }) => props.background};
   text-align: center;
   vertical-align: middle;
 
@@ -32,58 +33,65 @@ export const Title = styled.div`
   }
 `
 
-export const Body = styled.div`
+export const Body = styled.ul`
+  margin: 0;
+  padding: 0;
   width: 100%;
   height: ${(props: { height?: string }) => props.height};
   overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
+  overflow-x: hidden;
+  transition: height 0.25s ease-out;
+  background: ${(props: { background?: string; height?: string }) =>
+      props.background ? props.background : 'transparent'}
+    ${customAquaScrollBar};
 `
 
-export const Row = styled.div`
+export const Row = styled.li`
   width: 100%;
-
+  position: relative;
   display: flex;
-  border-top: ${(props: { isHead?: boolean }) =>
-    props.isHead ? '1px solid #818d9ae6' : 'none'};
-  border-bottom: 1px solid #2d3136;
+
   transition: background 0.25s ease;
   background-color: ${(props: { isHead?: boolean; background: string }) =>
     props.background};
   height: ${(props: { isHead?: boolean }) => (props.isHead ? '100%' : '22px')};
 
   &:hover {
-    background: ${(props: { isHead?: boolean }) =>
-      props.isHead ? '#292d31' : '#454f59'};
+    background: ${(props: {
+      isHead?: boolean
+      hoverBackground?: string
+      background: string
+    }) => (props.isHead ? props.background : props.hoverBackground)};
   }
 `
 
 export const Cell = styled.div`
+  position: relative;
   overflow: hidden;
   list-style: none;
-  padding: 0.25rem 0.4rem;
+  padding: 0rem 0.4rem;
   font-weight: 600;
   font-size: 0.75rem;
   flex-basis: ${(props: { width: string }) => props.width};
-  color: ${(props: { color: string; width: string }) => props.color};
   text-align: center;
   vertical-align: middle;
+  display: flex;
+  place-items: center;
 `
 
 export const HeadCell = Cell.extend`
   font-weight: 400;
   font-size: 0.75rem;
   white-space: nowrap;
+  display: flex;
   width: 7%;
-  color: white;
 `
 
-export const Head = styled.div`
-  height: 40px;
+export const Head = styled.ul`
+  margin: 0;
+  padding: 0;
+  height: 2rem;
   width: 100%;
-  color: white;
   background-color: ${(props: { background: string }) => props.background};
   border-bottom: 1px solid #818d9ae6;
   position: sticky;

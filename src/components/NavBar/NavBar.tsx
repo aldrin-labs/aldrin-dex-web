@@ -3,16 +3,25 @@ import styled from 'styled-components'
 
 import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
+import { withTheme, Theme, WithTheme } from '@material-ui/core/styles'
 
-export const NavBar: SFC<{}> = () => (
-  <Nav>
+export interface Props {
+  theme: Theme
+}
+// ToDo add grid
+const NavBarRaw: SFC<WithTheme> = ({
+  theme: {
+    palette: { primary, type },
+  },
+}) => (
+  <Nav background={primary[type]}>
     <Logo src="https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png" />
     <SNav>
-      <NavButton link="/" title="Home" exact />
-      <NavButton link="/market" title="Coin Market" />
-      <NavButton link="/profile" title="Profile" />
+      {/*<NavButton link="/" title="Home" exact />*/}
+      {/*<NavButton link="/market" title="Coin Market" />*/}
+      {/*<NavButton link="/profile" title="Profile" />*/}
       <NavButton link="/portfolio" title="Portfolio" />
-      <NavButton link="/screener" title="Screener" />
+      {/*<NavButton link="/screener" title="Screener" />*/}
       <NavButton link="/chart" title="Chart" />
     </SNav>
     <LoginWrapper>
@@ -21,13 +30,17 @@ export const NavBar: SFC<{}> = () => (
   </Nav>
 )
 
+export const NavBar = withTheme()(NavBarRaw)
+
 // TODO: fix z-index for drawer
 const Nav = styled.div`
   width: 100%;
+  position: relative;
   display: flex;
+  justify-content: space-between;
   height: 80px;
   align-items: center;
-  background-color: #2d3136;
+  background-color: ${(props: { background: string }) => props.background};
   z-index: 1;
 
   @media (max-width: 840px) {
@@ -48,8 +61,10 @@ const Logo = styled.img`
 `
 
 const SNav = styled.nav`
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  width: 60%;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -60,4 +75,7 @@ const SNav = styled.nav`
   }
 `
 
-const LoginWrapper = styled.div``
+const LoginWrapper = styled.div`
+  width: 10%;
+  margin-right: 3%;
+`

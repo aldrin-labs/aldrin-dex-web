@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import IconButton from '@material-ui/core/IconButton'
+import { MdAccountBox, MdExitToApp } from 'react-icons/lib/md'
 
-import Button from 'material-ui/Button'
-import Menu, { MenuItem } from 'material-ui/Menu'
+const UserLink = (props) => <Link to="/user" {...props} />
 
 export const LoginMenu = ({
   userName,
@@ -13,39 +14,12 @@ export const LoginMenu = ({
   handleMenu,
   handleLogout,
 }) => (
-  <Fragment>
-    <Menu
-      id="menu-appbar"
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={open}
-      onClose={handleClose}
-    >
-      <MenuLink to="/portfolio">
-        <MenuItem onClick={handleClose}>Portfolio</MenuItem>
-      </MenuLink>
-      <MenuLink to="/user">
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
-      </MenuLink>
-      <MenuItem onClick={handleLogout}>Log out</MenuItem>
-    </Menu>
-    <Button onClick={handleMenu}>{userName}</Button>
-  </Fragment>
+  <>
+    <IconButton color="secondary" component={UserLink}>
+      <MdAccountBox />
+    </IconButton>
+    <IconButton color="primary" onClick={handleLogout}>
+      <MdExitToApp />
+    </IconButton>
+  </>
 )
-
-const MenuLink = styled(Link)`
-  color: inherit;
-  text-decoration: none;
-  border: none;
-
-  &:hover {
-    color: palevioletred;
-  }
-`

@@ -33,7 +33,7 @@ const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
-  { name: 'Current', value: 'price' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
   { name: 'Industry 1 week', value: 'industryPerf1Week', additionName: 'performance' },
   { name: 'Industry 1 month', value: 'industryPerf1Month', additionName: 'performance' },
@@ -153,10 +153,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
     }
-    const { assets } = portfolio
+    const { assets, coinPerformance = [{ usd: '', btc: '', coin: '' }] } = portfolio
+
+    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
 
     const industryData = assets
-      .map((row) => {
+      .map((row, i) => {
         const {
           asset = { symbol: '', priceBTC: '', priceUSD: '', industry: '' },
           key = { name: '' },
@@ -188,9 +190,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             btcYear: 0
           },
         }
-
-        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-
         const industryPerformance = isUSDCurrently ? {
           oneWeek: performance.usdWeek,
           oneMonth: performance.usdMonth,
@@ -203,21 +202,26 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             threeMonth: performance.btc3Months,
             oneYear: performance.btcYear,
           }
+        // TODO: HAVE TO BE REWORKED (because it's just fix for first row without data in btc asset)
+        const isElementHavePerformance = coinPerformance.find((element) => element.coin === symbol)
+        const portfolioPerf = isElementHavePerformance ?
+          isUSDCurrently ? isElementHavePerformance.usd : isElementHavePerformance.btc : null
 
-        const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
-
+        const mainPrice = isUSDCurrently ? priceUSD : priceBTC
         const currentPrice = mainPrice * value
 
+
         const col = {
+          id: i,
           currency: name || '-',
           symbol,
           industry: industryName || '-',
-          portfolioPerf: 0,
+          portfolioPerf: portfolioPerf !== null ? roundPercentage(parseFloat(portfolioPerf)) : null,
           portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
-          industryPerf1Week: roundPercentage(parseFloat(industryPerformance.oneWeek)) || 0,
-          industryPerf1Month: roundPercentage(parseFloat(industryPerformance.oneMonth)) || 0,
-          industryPerf3Months: roundPercentage(parseFloat(industryPerformance.threeMonth)) || 0,
-          industryPerf1Year: roundPercentage(parseFloat(industryPerformance.oneYear)) || 0,
+          industryPerf1Week: industryPerformance.oneWeek !== null ? roundPercentage(parseFloat(industryPerformance.oneWeek)) : null,
+          industryPerf1Month: industryPerformance.oneMonth !== null ? roundPercentage(parseFloat(industryPerformance.oneMonth)) : null,
+          industryPerf3Months: industryPerformance.threeMonth !== null ? roundPercentage(parseFloat(industryPerformance.threeMonth)) : null,
+          industryPerf1Year: industryPerformance.oneYear !== null ? roundPercentage(parseFloat(industryPerformance.oneYear)) : null,
         }
 
         return col
@@ -294,7 +298,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       (this.state.selectedRows && this.state.selectedRows.slice()) || []
 
     const hasIndex = selectedRows.indexOf(idx)
-    if (hasIndex >= 0) {
+    if (hasIndex !== -1) {
       selectedRows.splice(hasIndex, 1)
     } else {
       selectedRows.push(idx)
@@ -365,7 +369,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         currency: 'Total',
         symbol: '-',
         industry: '-',
-        portfolioPerc: `${reducedSum.portfolioPerc.toFixed(2)}%`,
+        portfolioPerc: `100.00%`,
         portfolioPerf: `${reducedSum.portfolioPerf.toFixed(2)}%`,
         industryPerf1Week: `${reducedSum.industryPerf1Week.toFixed(2)}%`,
         industryPerf1Month: `${reducedSum.industryPerf1Month.toFixed(2)}%`,
@@ -523,6 +527,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                     )
                     .map((row, idx) => {
                       const {
+                        id,
                         currency,
                         symbol,
                         industry,
@@ -541,19 +546,26 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       )
 
                       const isSelected =
-                        (selectedRows && selectedRows.indexOf(idx) >= 0) ||
+                        (selectedRows && selectedRows.indexOf(id) !== -1) ||
                         false
+
+                      const formattedPortfolioPerf = portfolioPerf === null ? '-' : `${portfolioPerf}%`
+                      const formattedIndustryPerf1Week = industryPerf1Week === null ? '-' : `${industryPerf1Week}%`
+                      const formattedIndustryPerf1Month = industryPerf1Month === null ? '-' : `${industryPerf1Month}%`
+                      const formattedIndustry3Months = industryPerf3Months === null ? '-' : `${industryPerf3Months}%`
+                      const formattedIndustryPerf1Year = industryPerf1Year === null ? '-' : `${industryPerf1Year}%`
+
 
                       const cols = [
                         currency,
                         symbol,
                         industry,
                         `${portfolioPerc}%`,
-                        `${portfolioPerf}%`,
-                        `${industryPerf1Week}%`,
-                        `${industryPerf1Month}%`,
-                        `${industryPerf3Months}%`,
-                        `${industryPerf1Year}%`,
+                        formattedPortfolioPerf,
+                        formattedIndustryPerf1Week,
+                        formattedIndustryPerf1Month,
+                        formattedIndustry3Months,
+                        formattedIndustryPerf1Year,
                       ]
 
 
@@ -561,17 +573,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         <PTRBody
                           key={`${currency}${symbol}${idx}`}
                           isSelected={isSelected}
-                          onClick={() => this.onSelectBalance(idx)}
+                          onClick={() => this.onSelectBalance(id)}
                         >
                           <PTD key="smt" isSelected={isSelected}>
-                            {this.renderCheckbox(idx)}
+                            {this.renderCheckbox(id)}
                           </PTD>
                           {cols &&
                             cols.map((col, innerIdx) => {
                               if (
                                 col &&
                                 !Array.isArray(col) &&
-                                col.match(/%/g)
+                                col.match(/%/g) &&
+                                innerIdx !== 3
                               ) {
                                 const color =
                                   Number(col.replace(/%/g, '')) >= 0
@@ -624,7 +637,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 />
               ) : (
                 // <PieChart data={genAngleMocks(inds)} flexible />
-                <PieChartQuery isShownMocks={this.props.isShownMocks} />
+                <PieChartQuery isUSDCurrently={isUSDCurrently} isShownMocks={this.props.isShownMocks} />
               )}
             </ChartWrapper>
           </ChartContainer>

@@ -1,180 +1,77 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Paper, Button } from '@material-ui/core'
 import { connect } from 'react-redux'
-import { MdClear } from 'react-icons/lib/md'
+import { Slide } from '@material-ui/core'
 
 import * as actions from '@containers/Chart/actions'
-import { SingleChart } from '@components/Chart'
-import Switch from '@components/Switch/Switch'
-import DepthChart from '@containers/Chart/DepthChart/DepthChart'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
-
-import { getFakeDepthChartData } from '@containers/Chart/mocks'
-
-interface IChartProps {
-  currencyPair: string
-  removeChart: Function
-  index: number
-  chartsCount: number
-}
-
-interface IExchange {
-  price: string | number
-  size: string | number
-}
-
-interface IChartState {
-  ordersData: IExchange[]
-  spreadData: IExchange[]
-  activeChart: 'candle' | 'depth'
-}
-
-class Charts extends Component<IChartProps, IChartState> {
-  state: IChartState = {
-    activeChart: 'candle',
-    ordersData: [],
-    spreadData: [],
-  }
-
-  componentDidUpdate(prevProps) {
-    // we need this hack to update depth chart Width when width of his container changes
-    if (prevProps.chartsCount !== this.props.chartsCount) {
-      const ordersDataContainer = this.state.ordersData
-      this.setState({ ordersData: ordersDataContainer })
-    }
-  }
-
-  componentDidMount() {
-    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
-    this.setState({
-      ordersData: orderBookFakeData,
-      spreadData: usdSpreadFakeData,
-    })
-    // fetch data
-  }
-
-  render() {
-    const { currencyPair, removeChart, index } = this.props
-    const { ordersData, spreadData } = this.state
-
-    const [quote, base] = currencyPair.split('_')
-
-    return (
-      <>
-        <ChartsSwitcher>
-          <ExchangePair>{`${quote}/${base}`}</ExchangePair>
-          <Switch
-            onClick={() => {
-              this.setState((prevState) => ({
-                activeChart:
-                  prevState.activeChart === 'candle' ? 'depth' : 'candle',
-              }))
-            }}
-            values={['Chart', 'Depth']}
-          />
-          <Button
-            onClick={() => {
-              removeChart(index)
-            }}
-          >
-            <MdClear />
-          </Button>
-        </ChartsSwitcher>
-        {this.state.activeChart === 'candle' ? (
-          <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
-        ) : (
-            <DepthChartContainer>
-              <DepthChart
-                {...{
-                  ordersData,
-                  spreadData,
-                  base,
-                  quote,
-                  animated: false,
-                }}
-              />
-            </DepthChartContainer>
-          )}
-      </>
-    )
-  }
-}
+import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
 
 class OnlyCharts extends Component<Props, {}> {
-  onSelectChart = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target
-
-    this.setState({ choosedChart: value })
+  componentDidMount() {
+    const { charts, addChart, mainPair } = this.props
+    if (charts.length === 0) {
+      addChart(mainPair)
+    }
   }
-
   render() {
     const {
       charts,
       removeChart,
       openedWarning,
       removeWarningMessage,
+      theme,
     } = this.props
 
     return (
-      <div>
-        <ChartContainer chartsCount={charts.length}>
-          {charts.map((chart: string, i: number) => (
-            <Wrapper key={chart}>
-              <Charts
-                removeChart={removeChart}
-                index={i}
-                chartsCount={charts.length}
-                currencyPair={chart}
-              />
-            </Wrapper>
-          ))}
+      <Slide
+        direction="left"
+        timeout={500}
+        in={true}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <ChartContainer anime={false} chartsCount={charts.length || 1}>
+          {charts.map(
+            (chart: { pair: string; id: string } | string, i: number) =>
+              // fallback for old values that were strings and now there must be objects
+              typeof chart === 'string' ? (
+                <IndividualChart
+                  key={i}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart}
+                />
+              ) : (
+                <IndividualChart
+                  key={chart.id}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart.pair}
+                />
+              )
+          )}
           <WarningMessageSnack
             open={openedWarning}
             onCloseClick={removeWarningMessage}
             messageText={'You can create up to 8 charts.'}
           />
         </ChartContainer>
-      </div>
+      </Slide>
     )
   }
 }
-
-const DepthChartContainer = styled.div`
-  height: calc(100% - 37px);
-  width: 100%;
-`
-
-const ExchangePair = styled.div`
-  margin: 0 0.5rem;
-  background: #2e353fd9;
-  line-height: 36px;
-  white-space: nowrap;
-  border-radius: 3px;
-  height: 100%;
-  padding: 0 1rem;
-`
-
-const ChartsSwitcher = styled.div`
-  border-radius: 2px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  width: 100%;
-  height: 38px;
-  background: rgb(53, 61, 70);
-  color: white;
-  border-bottom: 1px solid #818d9ae6;
-`
 
 const ChartContainer = styled.div`
   margin-top: ${(props: { chartsCount?: number }) => {
     if (props.chartsCount === 3 || props.chartsCount === 4) {
       return '10vh'
-    } else {
-      return 0
     }
+    return 0
   }};
   overflow: hidden;
   max-height: calc(100vh - 59px - 80px);
@@ -182,30 +79,25 @@ const ChartContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(
     ${(props: { chartsCount?: number }) => {
-    if (props.chartsCount && props.chartsCount <= 3) {
-      return `${props.chartsCount}, ${100 / props.chartsCount}%`
-    } else {
+      if (props.chartsCount && props.chartsCount <= 3) {
+        return `${props.chartsCount}, ${100 / props.chartsCount}%`
+      }
       return '4, 25%'
-    }
-  }}
+    }}
   );
   grid-template-rows: repeat(
     ${(props: { chartsCount?: number }) => {
-    if (props.chartsCount && props.chartsCount > 4) {
-      return '2, 41.5vh'
-    } else if (props.chartsCount === 3 || props.chartsCount === 4) {
-      return '1, 60vh'
-    } else {
+      if (props.chartsCount && props.chartsCount > 4) {
+        return '2, 41.5vh'
+      }
+      if (props.chartsCount === 3 || props.chartsCount === 4) {
+        return '1, 60vh'
+      }
       return '1, 80vh'
-    }
-  }}
+    }}
   );
 `
 
-const Wrapper = styled(Paper)`
-  display: flex;
-  flex-direction: column;
-`
 const mapStateToProps = (store: any) => ({
   charts: store.chart.charts,
   currencyPair: store.chart.currencyPair,
@@ -215,6 +107,7 @@ const mapStateToProps = (store: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   removeChart: (i: number) => dispatch(actions.removeChart(i)),
+  addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
   removeWarningMessage: () => dispatch(actions.removeWarningMessage()),
 })
 

@@ -1,7 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Paper, Button } from '@material-ui/core'
+import { Paper, Button, Typography, Fade, Slide } from '@material-ui/core'
+import { withTheme } from '@material-ui/core/styles'
 
 import {
   OrderBookTable,
@@ -9,60 +10,46 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
+import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
+import {
+  ExchangeQuery,
+  MARKET_TICKERS,
+  MARKET_QUERY,
+  updateTradeHistoryQuerryFunction,
+  ORDERS_MARKET_QUERY,
+  MARKET_ORDERS,
+  updateOrderBookQuerryFunction,
+} from './api'
+import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
-import { exchanges, orders, getFakeDepthChartData, orderBook } from '@containers/Chart/mocks'
-import Switch from '@components/Switch/Switch'
-import DepthChart from '@containers/Chart/DepthChart/DepthChart'
+import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
+import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 
-interface IState {
-  view: 'onlyCharts' | 'default'
-  exchangeTableCollapsed: boolean
-  orders: number[][]
-  aggregation: number
-  data: any
-
-  searchSymbol: string
-  showTableOnMobile: string
-  mCharts: string
-  activeChart: string
-  currentSort?: {
-    arg: 'ASC' | 'DESC'
-    index: number
-  }
-}
-
-class Chart extends React.Component<IState> {
-  state: IState = {
+class Chart extends React.Component {
+  state = {
     view: 'default',
     orders,
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
     activeChart: 'candle',
-    ordersData: [],
-    spreadData: [],
     exchanges: [],
     tradeHistory: [],
   }
 
-  componentDidMount() {
-    const { isShownMocks } = this.props
-    const { usdSpreadFakeData, orderBookFakeData } = getFakeDepthChartData()
+  static getDerivedStateFromProps(nextProps: any) {
+    const [base, quote] = nextProps.currencyPair.split('_')
+    document.title = `${base} to ${quote} | CCAI`
 
-    if (isShownMocks) {
-      this.setState({
-        ordersData: orderBookFakeData,
-        exchanges,
-        spreadData: usdSpreadFakeData,
-        usdSpreadFakeData,
-        orderBookFakeData,
-      })
-    } else {
-      // fetchData
-    }
+    return null
+  }
+
+  componentWillUnmount() {
+    document.title = 'Cryptocurrencies AI'
   }
 
   roundTill = (n: number, initial: string): number => {
@@ -159,14 +146,7 @@ class Chart extends React.Component<IState> {
   }
 
   renderTables: any = () => {
-    const {
-      aggregation,
-      showTableOnMobile,
-
-      tradeHistory,
-      ordersData,
-      spreadData,
-    } = this.state
+    const { aggregation, showTableOnMobile } = this.state
     const { currencyPair } = this.props
 
     let quote
@@ -174,30 +154,52 @@ class Chart extends React.Component<IState> {
       quote = currencyPair.split('_')[1]
     }
 
-    const { activeExchange } = this.props
+    const { activeExchange, theme } = this.props
     const { changeExchange } = this
+
+    const symbol = currencyPair || ''
+    const exchange =
+      activeExchange && activeExchange.exchange
+        ? activeExchange.exchange.symbol
+        : ''
 
     return (
       <TablesContainer>
         <TablesBlockWrapper
+          background={theme.palette.background.default}
+          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          <OrderBookTable
+          <QueryRenderer
+            component={OrderBookTable}
+            query={ORDERS_MARKET_QUERY}
+            fetchPolicy="network-only"
+            variables={{ symbol, exchange }}
+            placeholder={TablePlaceholderLoader}
+            subscriptionArgs={{
+              subscription: MARKET_ORDERS,
+              variables: { symbol, exchange },
+              updateQueryFunction: updateOrderBookQuerryFunction,
+            }}
             {...{
               onButtonClick: this.changeTable,
-              data: ordersData,
               roundTill: this.roundTill,
               activeExchange,
               currencyPair,
               aggregation,
               quote,
+              setOrders: this.props.setOrders,
+              symbol,
+              exchange,
+              ...this.props,
             }}
           />
 
           <Aggregation
             {...{
+              theme,
               aggregation: this.state.aggregation,
               onButtonClick: this.setAggregation,
             }}
@@ -205,27 +207,47 @@ class Chart extends React.Component<IState> {
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
+          background={theme.palette.background.default}
+          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'TRADE',
           }}
         >
-          <ExchangesTable
+          <QueryRenderer
+            component={ExchangesTable}
+            query={ExchangeQuery}
+            variables={{ marketName: currencyPair }}
+            placeholder={TablePlaceholderLoader}
             {...{
-              exchanges,
               activeExchange,
               changeExchange,
               quote,
+              theme,
               onButtonClick: this.changeTable,
-              marketName: currencyPair
+              ...this.props,
             }}
           />
 
-          <TradeHistoryTable
+          <QueryRenderer
+            component={TradeHistoryTable}
+            query={MARKET_QUERY}
+            variables={{ symbol, exchange }}
+            placeholder={() => (
+              <TablePlaceholderLoader margin={'20% 0px 0px'} />
+            )}
+            subscriptionArgs={{
+              subscription: MARKET_TICKERS,
+              variables: { symbol, exchange },
+              updateQueryFunction: updateTradeHistoryQuerryFunction,
+            }}
             {...{
-              data: orderBook,
               quote,
               activeExchange,
+              theme,
               currencyPair,
+              symbol,
+              exchange,
+              ...this.props,
             }}
           />
         </TablesBlockWrapper>
@@ -234,70 +256,100 @@ class Chart extends React.Component<IState> {
   }
 
   renderDefaultView = () => {
-    const { ordersData, spreadData } = this.state
-    const { currencyPair } = this.props
+    const { ordersData, spreadData, activeChart } = this.state
+    const { activeExchange, currencyPair, theme } = this.props
+    const { palette } = theme
 
-    let base
-    let quote
-    if (currencyPair) {
-      base = currencyPair.split('_')[0]
-      quote = currencyPair.split('_')[1]
+    if (!currencyPair) {
+      return
     }
+    const [base, quote] = currencyPair.split('_')
 
     return (
-      <Container>
-        <ChartsContainer>
-          <ChartsSwitcher>
-            {base && quote && <ExchangePair>{`${base}/${quote}`}</ExchangePair>}
-            <Switch
-              onClick={() => {
-                this.setState((prevState) => ({
-                  activeChart:
-                    prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                }))
-              }}
-              values={['Chart', 'Depth']}
-            />
-          </ChartsSwitcher>
-          {this.state.activeChart === 'candle' ? (
-            <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
-          ) : (
-              <DepthChartContainer>
-                <DepthChart
-                  {...{
-                    ordersData,
-                    spreadData,
-                    base,
-                    quote,
-                    animated: false,
+      <Slide
+        timeout={{
+          enter: 500,
+        }}
+        direction={'right'}
+        in={true}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <Container>
+          <ChartsContainer>
+            <ChartsSwitcher
+              divider={palette.divider}
+              background={palette.primary.main}
+            >
+              {base &&
+                quote && (
+                  <ExchangePair background={palette.primary.dark}>
+                    <TypographyWithCustomColor
+                      textColor={palette.getContrastText(palette.primary.dark)}
+                      variant="subheading"
+                    >
+                      {`${base}/${quote}`}
+                    </TypographyWithCustomColor>
+                  </ExchangePair>
+                )}
+              <SwitchButtonWrapper>
+                <Button
+                  variant="text"
+                  color="secondary"
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      activeChart:
+                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                    }))
                   }}
-                />
-              </DepthChartContainer>
+                >
+                  {activeChart === 'candle' ? 'show depth' : 'show chart'}
+                </Button>
+              </SwitchButtonWrapper>
+            </ChartsSwitcher>
+            {activeChart === 'candle' ? (
+              <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
+            ) : (
+              <Fade timeout={1000} in={activeChart === 'depth'}>
+                <DepthChartContainer>
+                  <MainDepthChart
+                    {...{
+                      theme,
+                      base,
+                      quote,
+                      animated: false,
+                    }}
+                  />
+                </DepthChartContainer>
+              </Fade>
             )}
-        </ChartsContainer>
+          </ChartsContainer>
 
-        {this.renderTables()}
-      </Container>
+          {this.renderTables()}
+        </Container>
+      </Slide>
     )
   }
 
-  renderOnlyCharts = () => <OnlyCharts />
+  renderOnlyCharts = () => (
+    <OnlyCharts
+      {...{ theme: this.props.theme, mainPair: this.props.currencyPair }}
+    />
+  )
 
   renderToggler = () => {
     const { toggleView, view } = this.props
+    const defaultView = view === 'default'
 
-    if (view === 'default') {
-      return (
-        <Toggler onClick={() => toggleView('onlyCharts')}>Multi Charts</Toggler>
-      )
-    }
-    if (view === 'onlyCharts') {
-      return (
-        <Toggler onClick={() => toggleView('default')}>Single Chart</Toggler>
-      )
-    }
-
-    return null
+    return (
+      <Toggler
+        variant="raised"
+        color="primary"
+        onClick={() => toggleView(defaultView ? 'onlyCharts' : 'default')}
+      >
+        {defaultView ? 'Multi Charts' : ' Single Chart'}
+      </Toggler>
+    )
   }
 
   render() {
@@ -309,7 +361,7 @@ class Chart extends React.Component<IState> {
       <MainContainer>
         <TogglerContainer>
           <AutoSuggestSelect
-            value={currencyPair}
+            value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
           />
@@ -335,10 +387,15 @@ const DepthChartContainer = styled.div`
   width: 100%;
 `
 
+const SwitchButtonWrapper = styled.div`
+  margin: 1rem;
+`
+
 const ExchangePair = styled.div`
   margin: 0 0.5rem;
-  background: #2e353fd9;
-  line-height: 36px;
+  background: ${(props: { background: string }) => props.background};
+  display: flex;
+  place-items: center;
   white-space: nowrap;
   border-radius: 3px;
   height: 100%;
@@ -349,17 +406,18 @@ const TablesBlockWrapper = styled(Paper)`
   min-width: 150px;
   width: 50%;
   position: relative;
-  border-right: 1px solid #30353a;
+  border-right: 1px solid
+    ${(props: { rightBorderColor?: string }) => props.rightBorderColor};
 
   && {
     overflow: hidden;
-    background-color: #292d31;
+    background-color: ${(props: { background: string }) => props.background};
     box-shadow: none !important;
   }
 
   @media (max-width: 1080px) {
-    display: ${(props: { show: boolean }) =>
-    props.variant.show ? 'block' : 'none'};
+    display: ${(props: { variant: { show: boolean } }) =>
+      props.variant.show ? 'block' : 'none'};
     width: 100%;
     height: calc(100vh - 57px - 70px);
     position: relative;
@@ -399,12 +457,11 @@ const ChartsSwitcher = styled.div`
   justify-content: flex-end;
   width: 100%;
   height: 38px;
-  background: rgb(53, 61, 70);
+  background: ${(props: { background: string }) => props.background};
   color: white;
-  border-bottom: 1px solid #818d9ae6;
+  border-bottom: 1px solid
+    ${(props: { divider: string; background: string }) => props.divider};
 `
-
-// end of FlexTable
 
 const TogglerContainer = styled.div`
   display: flex;
@@ -445,7 +502,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actions.toggleView(view)),
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
+  setOrders: (payload) => dispatch(actions.setOrders(payload)),
 })
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(Chart)
+const ThemeWrapper = (props) => <Chart {...props} />
+const ThemedChart = withTheme()(ThemeWrapper)
 
-export default storeComponent
+export default connect(mapStateToProps, mapDispatchToProps)(ThemedChart)
