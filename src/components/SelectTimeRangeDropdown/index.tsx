@@ -5,7 +5,6 @@ import Selector from '@components/SimpleDropDownSelector'
 import { IProps } from './index.types'
 
 class DropDownMenu extends Component<IProps> {
-  // days are minus ten from now I dunno why
   optionsMap: { [id: string]: any } = {
     lastWeek: () => ({
       startDate: daysFromNow(7),
