@@ -12,6 +12,8 @@ import { setKeys, filterValuesLessThen } from '../../actions'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
+import { Checkbox } from '@utils/cssUtils'
+
 
 class PortfolioSelector extends React.Component<IProps, IState> {
   state = {
@@ -269,37 +271,6 @@ const AccountName = styled.span`
 const Span = styled.span``
 
 const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 22px;
-    height: 22px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  & :checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
-  }
-`
 
 const AccountsListItem = styled.li`
   display: flex;
