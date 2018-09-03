@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
 import { isEqual } from 'lodash'
 
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,

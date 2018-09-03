@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 
 export const Table = styled.div`
   font-family: Roboto, sans-serif;
