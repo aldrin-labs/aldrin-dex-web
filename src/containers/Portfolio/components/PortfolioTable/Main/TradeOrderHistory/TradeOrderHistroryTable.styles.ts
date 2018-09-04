@@ -1,7 +1,7 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled, { css } from 'styled-components'
 
-export { Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody, Icon }
+export { Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody }
 
 const Wrapper = styled.div`
   ${customAquaScrollBar};

@@ -27,8 +27,9 @@ import {
   PTD,
   PTDC,
   PTBody,
-  Icon,
 } from './TradeOrderHistroryTable.styles'
+
+import { Icon } from '@styles/cssUtils'
 
 const tradeOrderHistoryTableHeadings = [
   { name: 'Exchange', value: 'exchange' },
