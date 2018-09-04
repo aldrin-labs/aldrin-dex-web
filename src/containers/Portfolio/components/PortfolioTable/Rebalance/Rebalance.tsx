@@ -8,11 +8,15 @@ import {
   IState,
   IRow,
   IShapeOfRebalancePortfolioRow,
-  IShapeOfCurrentPortolioRow, IGetMyPortfolioQuery, IGetMyRebalanceQuery,  ICurrentSort,
+  IShapeOfCurrentPortolioRow,
+  IGetMyPortfolioQuery,
+  IGetMyRebalanceQuery,
+  ICurrentSort,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
-  cloneArrayElementsOneLevelDeep, onSortTableFull,
+  cloneArrayElementsOneLevelDeep,
+  onSortTableFull,
 } from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
@@ -24,9 +28,16 @@ import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 
-import { Content, ChartWrapper, ChartContainer, Chart, PTWrapper, PTextBox, Container } from './Rebalance.styles'
-import ChartColorPicker
-  from '@containers/Portfolio/components/PortfolioTable/Rebalance/ChartColorPicker/ChartColorPicker'
+import {
+  Content,
+  ChartWrapper,
+  ChartContainer,
+  Chart,
+  PTWrapper,
+  PTextBox,
+  Container,
+} from './Rebalance.styles'
+import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -71,8 +82,11 @@ class Rebalance extends React.Component<IProps, IState> {
     document.removeEventListener('keydown', this.escFunction)
   }
 
-  combineRebalanceData = (isShownMocks: boolean, getMyRebalance: IGetMyRebalanceQuery, getMyPortfolio: IGetMyPortfolioQuery) => {
-
+  combineRebalanceData = (
+    isShownMocks: boolean,
+    getMyRebalance: IGetMyRebalanceQuery,
+    getMyPortfolio: IGetMyPortfolioQuery
+  ) => {
     const userHasRebalancePortfolio =
       getMyRebalance &&
       getMyRebalance.getProfile &&
@@ -95,9 +109,9 @@ class Rebalance extends React.Component<IProps, IState> {
         (el: IShapeOfRebalancePortfolioRow) => ({
           exchange: el._id.exchange,
           symbol: el._id.coin,
-          price: parseFloat(el.amount['$numberDecimal']).toFixed(2),
+          price: parseFloat(el.amount.$numberDecimal).toFixed(2),
           portfolioPerc: null,
-          deltaPrice: el.diff['$numberDecimal'],
+          deltaPrice: el.diff.$numberDecimal,
         })
       )
 
@@ -141,7 +155,6 @@ class Rebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
-
   }
 
   setTableData = (
@@ -198,7 +211,11 @@ class Rebalance extends React.Component<IProps, IState> {
     savedRows: IRow[],
     totalSavedRows: string
   ) => {
-    const rowsWithPercentage = UTILS.calculatePercents(rows, totalRows, staticRows)
+    const rowsWithPercentage = UTILS.calculatePercents(
+      rows,
+      totalRows,
+      staticRows
+    )
     this.setState({
       staticRows: UTILS.calculatePercents(
         staticRows,
@@ -456,7 +473,7 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onDistribute = () => {
-    let { selectedActive, rows, staticRows, undistributedMoney } = this.state
+    const { selectedActive, rows, staticRows, undistributedMoney } = this.state
     if (selectedActive && selectedActive.length > 0) {
       let money = parseFloat(undistributedMoney)
 
@@ -465,12 +482,14 @@ class Rebalance extends React.Component<IProps, IState> {
         selectedActive.forEach((row, i) => {
           // TODO: Refactor when we have much more time than now
           // tslint:disable-next-line no-object-mutation
-          let roundedCurrentPrice = parseFloat(rows![selectedActive![i]]!.price)
+          const roundedCurrentPrice = parseFloat(
+            rows![selectedActive![i]]!.price
+          )
           rows![selectedActive![i]]!.price = roundedCurrentPrice + moneyPart
           money -= moneyPart
         })
       } else {
-        let roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
+        const roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
         // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
         // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
         // tslint:disable-next-line no-object-mutation
@@ -604,7 +623,8 @@ class Rebalance extends React.Component<IProps, IState> {
     ]
 
     const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
-      resultRows, totalRows
+      resultRows,
+      totalRows
     )
 
     const totalPercents = UTILS.calculateTotalPercents(
@@ -630,7 +650,9 @@ class Rebalance extends React.Component<IProps, IState> {
       totalPercents,
       rows: rowWithNewPriceDiff,
       isPercentSumGood: UTILS.checkPercentSum(newCalculatedRowsWithPercents),
-      undistributedMoney: (parseFloat(prevState.undistributedMoney) + oldNewPriceDiff).toFixed(2),
+      undistributedMoney: (
+        parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
+      ).toFixed(2),
       totalTableRows: parseFloat(newTableTotalRows),
     }))
   }
@@ -679,8 +701,9 @@ class Rebalance extends React.Component<IProps, IState> {
       undistributedMoney,
     } = this.state
 
-    const newUndistributedMoney = (Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2)
-
+    const newUndistributedMoney = (
+      Number(undistributedMoney) + Number(addMoneyInputValue)
+    ).toFixed(2)
 
     const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
     const newTableTotal = UTILS.calculateTableTotal(rows)
@@ -709,8 +732,9 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     const arrayOfStringHeadings = ['exchange', 'symbol']
-    const currentSort : ICurrentSort = (this.state as any)[tableForSort]
-    const rowsForSortText = tableForSort === 'currentSortForStatic' ? 'staticRows' : 'rows'
+    const currentSort: ICurrentSort = (this.state as any)[tableForSort]
+    const rowsForSortText =
+      tableForSort === 'currentSortForStatic' ? 'staticRows' : 'rows'
     const currentRowsForSort = this.state[rowsForSortText]
 
     const {
@@ -719,13 +743,17 @@ class Rebalance extends React.Component<IProps, IState> {
     }: {
       newData: IRow[]
       newCurrentSort: ICurrentSort | null
-    } = onSortTableFull(key, currentRowsForSort, currentSort, arrayOfStringHeadings)
+    } = onSortTableFull(
+      key,
+      currentRowsForSort,
+      currentSort,
+      arrayOfStringHeadings
+    )
 
     this.setState({
       [rowsForSortText]: newData,
-      [tableForSort]: newCurrentSort
+      [tableForSort]: newCurrentSort,
     })
-
   }
 
   onChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -758,7 +786,7 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows,
       addMoneyInputValue,
       leftBar,
-      rightBar
+      rightBar,
     } = this.state
 
     console.log('staticRows in render: ', staticRows)
@@ -780,35 +808,30 @@ class Rebalance extends React.Component<IProps, IState> {
         <Content>
           <Container>
             <CurrentPortfolioTable
-              {
-                ...{
-                  currentSortForStatic,
-                  staticRows,
-                  totalStaticRows,
-                  filterValueSmallerThenPercentage,
-                  isUSDCurrently,
-                }
-              }
+              {...{
+                currentSortForStatic,
+                staticRows,
+                totalStaticRows,
+                filterValueSmallerThenPercentage,
+                isUSDCurrently,
+              }}
               onSortTable={this.onSortTable}
-
             />
             <RebalancedPortfolioTable
-              {
-                ...{
-                  isEditModeEnabled,
-                  rows,
-                  currentSortForDynamic,
-                  selectedActive,
-                  areAllActiveChecked,
-                  totalRows,
-                  totalPercents,
-                  totalTableRows,
-                  isPercentSumGood,
-                  undistributedMoney,
-                  isUSDCurrently,
-                  addMoneyInputValue,
-                }
-              }
+              {...{
+                isEditModeEnabled,
+                rows,
+                currentSortForDynamic,
+                selectedActive,
+                areAllActiveChecked,
+                totalRows,
+                totalPercents,
+                totalTableRows,
+                isPercentSumGood,
+                undistributedMoney,
+                isUSDCurrently,
+                addMoneyInputValue,
+              }}
               onSortTable={this.onSortTable}
               onAddRowButtonClick={this.onAddRowButtonClick}
               onDeleteRowClick={this.onDeleteRowClick}
@@ -829,7 +852,11 @@ class Rebalance extends React.Component<IProps, IState> {
             />
           </Container>
           <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-            <ChartColorPicker leftBar={leftBar} rightBar={rightBar} onChangeColor={this.onChangeColor} />
+            <ChartColorPicker
+              leftBar={leftBar}
+              rightBar={rightBar}
+              onChangeColor={this.onChangeColor}
+            />
             <ChartContainer>
               <Chart>
                 {staticRows[0].portfolioPerc && (
