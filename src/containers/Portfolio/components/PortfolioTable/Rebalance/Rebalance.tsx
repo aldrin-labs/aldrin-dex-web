@@ -620,14 +620,14 @@ class Rebalance extends React.Component<IProps, IState> {
 
     // NOT READY FOR NOW
     // TODO: MOVE ALL parsefloat from this
-    let oldRowPrice = rows[idx].price
-    let newRowPrice = newCalculatedRowsWithPercents[idx].price
-    let oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+    const oldRowPrice = rows[idx].price
+    const newRowPrice = newCalculatedRowsWithPercents[idx].price
+    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
 
     this.setState((prevState) => ({
+      totalPercents,
       rows: rowWithNewPriceDiff,
       isPercentSumGood: UTILS.checkPercentSum(newCalculatedRowsWithPercents),
-      totalPercents,
       undistributedMoney: (parseFloat(prevState.undistributedMoney) + oldNewPriceDiff).toFixed(2),
       totalTableRows: parseFloat(newTableTotalRows),
     }))
