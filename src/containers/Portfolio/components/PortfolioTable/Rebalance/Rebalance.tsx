@@ -750,7 +750,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
     console.log('addmoneypressed')
 
-    let {
+    const {
       rows,
       staticRows,
       addMoneyInputValue,
