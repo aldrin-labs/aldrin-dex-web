@@ -1,6 +1,7 @@
+import { Theme } from '@material-ui/core'
 
 export interface IProps {
-
+  theme: Theme
 }
 
 export interface IState {
@@ -18,4 +19,9 @@ export interface ITradeOrderHistoryTableData {
   datetime: string
   symbol: string
   side: string
+}
+
+export interface RowProps {
+  background: string
+  evenBackground: string
 }

@@ -1,6 +1,7 @@
 import * as React from 'react'
-import QueryRenderer from '@components/QueryRenderer'
+import { withTheme } from '@material-ui/core'
 
+import QueryRenderer from '@components/QueryRenderer'
 import { MyTradesQuery } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/api'
 import {
   formatNumberToUSFormat,
@@ -16,9 +17,16 @@ import {
   ICurrentSort,
   ITradeOrderHistoryTableData,
 } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable.types'
-import {Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody, Icon} from './TradeOrderHistroryTable.styles'
-
-
+import {
+  Wrapper,
+  Table,
+  PTHC,
+  PTHead,
+  PTR,
+  PTDC,
+  PTBody,
+  Icon,
+} from './TradeOrderHistroryTable.styles'
 
 const tradeOrderHistoryTableHeadings = [
   { name: 'Exchange', value: 'exchange' },
@@ -91,18 +99,22 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
   render() {
     const { currentSort, rows } = this.state
+    const {
+      theme: { palette },
+    } = this.props
 
     return (
       <Wrapper>
         <Table>
           <PTHead>
-            <PTR>
+            <PTR background={palette.background.paper}>
               {tradeOrderHistoryTableHeadings.map((heading) => {
                 const isSorted =
                   currentSort && currentSort.key === heading.value
 
                 return (
                   <PTHC
+                    color={palette.getContrastText(palette.background.paper)}
                     key={heading.name}
                     onClick={() => this.onSortTable(heading.value)}
                   >
@@ -153,19 +165,33 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
               ]
 
               return (
-                <PTR key={`${symbol}${datetime}${idx}`}>
+                <PTR
+                  background={palette.background.paper}
+                  evenBackground={palette.action.hover}
+                  key={`${symbol}${datetime}${idx}`}
+                >
                   {cols.map((col, index) => {
                     if (String(col).match(/sell|buy/g)) {
-                      const color = col === 'sell' ? '#4caf50' : '#f44336'
+                      const color =
+                        col === 'sell' ? palette.green.main : palette.red.main
 
                       return (
-                        <PTDC key={`${col}${index}`} style={{ color }}>
+                        <PTDC key={`${col}${index}`} color={color}>
                           {col}
                         </PTDC>
                       )
                     }
 
-                    return <PTDC key={`${col}${index}`}>{col}</PTDC>
+                    return (
+                      <PTDC
+                        color={palette.getContrastText(
+                          palette.background.paper
+                        )}
+                        key={`${col}${index}`}
+                      >
+                        {col}
+                      </PTDC>
+                    )
                   })}
                 </PTR>
               )
@@ -177,7 +203,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   }
 }
 
-export default function(props: any) {
+export default (props: any) => {
   return (
     <QueryRenderer
       placeholder={TablePlaceholderLoader}

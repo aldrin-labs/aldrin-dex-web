@@ -432,8 +432,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     const { isShownChart, isUSDCurrently, children, theme } = this.props
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
-    console.log('theme: ', theme)
-
     const isSelectAll =
       (tableData &&
         selectedBalances &&
@@ -444,9 +442,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     if (!tableDataHasData) {
       return (
-        <PTWrapper tableData={tableDataHasData}>
+        <PTWrapper
+          background={theme.palette.background.paper}
+          tableData={tableDataHasData}
+        >
           <PTextBox backgroundColor={theme.palette.grey.A400}>
-            <STypography variant="display1">
+            <STypography color="default" variant="display1">
               Add an exchange or wallet
             </STypography>
             <SButton
@@ -463,12 +464,17 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={!!tableDataHasData}>
+      <PTWrapper
+        background={theme.palette.background.paper}
+        tableData={!!tableDataHasData}
+      >
         {children}
 
         <GridContainer>
           <TableAndHeadingWrapper>
-            <TableHeading>Portfolio</TableHeading>
+            <Typography color="default" variant="headline">
+              Portfolio
+            </Typography>
             <Wrapper>
               <PTable>
                 <PortfolioTableHead
@@ -495,9 +501,14 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           </TableAndHeadingWrapper>
 
           <TableAndHeadingWrapper>
-            <TableHeading>Trade history</TableHeading>
+            <Typography color="default" variant="headline">
+              Trade history
+            </Typography>
             <Wrapper>
-              <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} />
+              <TradeOrderHistoryTable
+                theme={theme}
+                isUSDCurrently={isUSDCurrently}
+              />
             </Wrapper>
           </TableAndHeadingWrapper>
 
@@ -558,14 +569,14 @@ const ChartTitle = styled(Typography)`
   margin-left: 1.2rem;
 `
 
-const PTWrapper = styled.div`
+export const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
-  background-color: #393e44;
+  background-color: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
@@ -598,17 +609,6 @@ const TableAndHeadingWrapper = styled.div`
   overflow-x: scroll;
 
   ${customAquaScrollBar};
-`
-
-const TableHeading = styled.div`
-  display: flex;
-  text-transform: uppercase;
-  font-family: Roboto, sans-serif;
-  font-size: 17px;
-  color: white;
-  font-weight: bold;
-  letter-spacing: 1.1px;
-  min-height: 25px;
 `
 
 const Wrapper = styled.div`
@@ -684,7 +684,6 @@ const SButton = styled(Button)`
 const STypography = styled(Typography)`
   text-align: center;
   margin-bottom: 3rem;
-  color: #fff;
 `
 
 const STypographyButtonText = styled(Typography)`
@@ -723,6 +722,5 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-  withTheme()
+  connect(mapStateToProps, mapDispatchToProps)
 )(MainDataWrapper)
