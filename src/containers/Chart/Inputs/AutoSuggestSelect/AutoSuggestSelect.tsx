@@ -46,7 +46,7 @@ let suggestions = [
   { label: 'XMR/USD ' },
 ].map((suggestion) => ({
   value: suggestion.label,
-  label: suggestion.label,
+  label: suggestion.label.split('/')[0],
 }))
 
 class Option extends React.PureComponent {
@@ -129,6 +129,8 @@ function SelectWrapped(props) {
 
   return (
     <Select
+      matchPos="start"
+      matchProp="value"
       onInputKeyDown={onInputKeyDown}
       optionComponent={Opt}
       noResultsText={<Typography>{'No results found'}</Typography>}
