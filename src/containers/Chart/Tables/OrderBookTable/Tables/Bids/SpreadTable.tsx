@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { green } from '@material-ui/core/colors'
 import { difference } from 'lodash'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
@@ -51,6 +50,7 @@ class SpreadTable extends Component {
       background,
       action,
       primary: { main },
+      green,
     } = palette
 
     return (
@@ -89,7 +89,7 @@ class SpreadTable extends Component {
               {data.map((order: { size: number; price: number }, i: number) => (
                 <Row background={'transparent'} key={order.price}>
                   <RowWithVolumeChart
-                    volumeColor={hexToRgbAWithOpacity(green[500], 0.25)}
+                    volumeColor={hexToRgbAWithOpacity(green.main, 0.25)}
                     colored={calculatePercentagesOfOrderSize(
                       order.size,
                       data
@@ -101,7 +101,7 @@ class SpreadTable extends Component {
 
                     <Cell width={'45%'}>
                       <StyledTypography
-                        textColor={green[500]}
+                        textColor={green.main}
                         anime={i === index}
                         color="default"
                         noWrap={true}
@@ -115,7 +115,7 @@ class SpreadTable extends Component {
                     </Cell>
                     <Cell width={'45%'}>
                       <StyledTypography
-                        textColor={green[500]}
+                        textColor={green.main}
                         anime={i === index}
                         color="default"
                         noWrap={true}

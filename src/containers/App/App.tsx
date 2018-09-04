@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { blueGrey, cyan } from '@material-ui/core/colors'
+import { blueGrey, cyan, green, red } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
 
 // https://material-ui.com/customization/css-in-js/#other-html-element
@@ -22,7 +22,6 @@ import Footer from '@components/Footer'
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
 
-
 const version = `0.1`
 const currentVersion = localStorage.getItem('version')
 if (currentVersion !== version) {
@@ -39,6 +38,12 @@ const AppRaw = ({ children, themeMode }: any) => (
           const theme = createMuiTheme({
             palette: {
               type: themeMode,
+              red: {
+                main: red[400],
+              },
+              green: {
+                main: green['500'],
+              },
               primary: blueGrey,
               secondary: {
                 ...cyan,
