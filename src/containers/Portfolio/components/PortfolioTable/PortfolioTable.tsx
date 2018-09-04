@@ -97,10 +97,11 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
     if (tab === 'correlation') {
       return (
-        <Correlation>
+        <Correlation theme={theme}>
           <PortfolioTableTabs
             toggleWallets={this.props.toggleWallets}
             tab={tab}
+            theme={theme}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
