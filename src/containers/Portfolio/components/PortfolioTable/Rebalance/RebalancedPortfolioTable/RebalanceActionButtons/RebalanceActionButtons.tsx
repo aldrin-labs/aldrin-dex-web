@@ -4,7 +4,7 @@ import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
 
-import { IProps } from './.types'
+import { IProps } from './RebalanceActionButtons.types'
 import {
   ActionButtonsContainer,
   ActionButton,
