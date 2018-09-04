@@ -26,6 +26,7 @@ export const calculatePriceByPercents = (data: IRow[], totalRows: number | strin
 }
 
 export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
+  // tslint:disable-next-line no-parameter-reassignment
   const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
 
   return (total + parseFloat(undistributedMoney)).toFixed(2)

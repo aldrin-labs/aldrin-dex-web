@@ -24,7 +24,9 @@ import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 
-import { Content, ChartWrapper, ChartContainer, Chart, ChartColorPickerContainer, PTWrapper, PTextBox, Container } from './Rebalance.styles'
+import { Content, ChartWrapper, ChartContainer, Chart, PTWrapper, PTextBox, Container } from './Rebalance.styles'
+import ChartColorPicker
+  from '@containers/Portfolio/components/PortfolioTable/Rebalance/ChartColorPicker/ChartColorPicker'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -459,7 +461,7 @@ class Rebalance extends React.Component<IProps, IState> {
       let money = parseFloat(undistributedMoney)
 
       if (selectedActive.length > 1) {
-        let moneyPart = Math.floor(money / selectedActive.length)
+        const moneyPart = Math.floor(money / selectedActive.length)
         selectedActive.forEach((row, i) => {
           // TODO: Refactor when we have much more time than now
           // tslint:disable-next-line no-object-mutation
@@ -579,7 +581,7 @@ class Rebalance extends React.Component<IProps, IState> {
     idx: number
   ) => {
     const { rows, totalRows, staticRows } = this.state
-    let percentInput = e.target.value
+    const percentInput = e.target.value
 
     if (
       !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
@@ -643,7 +645,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
 
     console.log('handleSelectChange idx: ', idx)
-
     console.log('handleSelectChange value: ', value)
 
     const resultRows = [
@@ -755,7 +756,9 @@ class Rebalance extends React.Component<IProps, IState> {
       totalTableRows,
       rows,
       staticRows,
-      addMoneyInputValue
+      addMoneyInputValue,
+      leftBar,
+      rightBar
     } = this.state
 
     console.log('staticRows in render: ', staticRows)
@@ -826,25 +829,12 @@ class Rebalance extends React.Component<IProps, IState> {
             />
           </Container>
           <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-            <ChartColorPickerContainer>
-              <input
-                type="color"
-                name="leftBar"
-                onChange={this.onChangeColor}
-                value={this.state.leftBar}
-              />
-              <input
-                type="color"
-                name="rightBar"
-                onChange={this.onChangeColor}
-                value={this.state.rightBar}
-              />
-            </ChartColorPickerContainer>
+            <ChartColorPicker leftBar={leftBar} rightBar={rightBar} onChangeColor={this.onChangeColor} />
             <ChartContainer>
               <Chart>
                 {staticRows[0].portfolioPerc && (
                   <BarChart
-                    alwaysShowLegend
+                    alwaysShowLegend={true}
                     charts={[
                       {
                         data: combineToBarChart(staticRows),

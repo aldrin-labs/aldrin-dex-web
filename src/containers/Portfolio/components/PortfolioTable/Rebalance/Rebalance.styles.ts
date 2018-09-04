@@ -1,7 +1,7 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 
-export { Content, ChartWrapper, ChartContainer, Chart, ChartColorPickerContainer, PTWrapper, PTextBox, Container }
+export { Content, ChartWrapper, ChartContainer, Chart, PTWrapper, PTextBox, Container }
 
 const Content = styled.div`
   overflow: auto;
@@ -60,15 +60,6 @@ const Chart = styled.div`
     height: inherit;
   }
 `
-
-const ChartColorPickerContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  position: absolute;
-  top: 0;
-  z-index: 2;
-`
-
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
   props.tableData ? 'calc(100% - 2rem);' : '100%'};
