@@ -40,8 +40,13 @@ const AppRaw = ({ children, themeMode }: any) => (
                 default: themeMode === 'light' ? '#fafafa' : '#303030',
                 paper: themeMode === 'light' ? '#fff' : '#393e44',
               },
+              navbar: {
+                light: '#fff',
+                dark: 'rgb(45, 49, 54)',
+              },
             },
           })
+
           if (process.browser) {
             window.theme = theme
           }
