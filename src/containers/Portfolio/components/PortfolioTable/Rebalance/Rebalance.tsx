@@ -24,6 +24,7 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
 import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
+import * as UTILS from '@utils/PortfolioRebalanceUtils'
 
 import { Content, ChartWrapper, ChartContainer, Chart, ChartColorPickerContainer, PTWrapper, PTextBox, Container } from './Rebalance.styles'
 
@@ -417,18 +418,6 @@ class Rebalance extends React.Component<IProps, IState> {
     return dataWithNewPrices
   }
 
-  removeEditableModeInCoins = (rows: IRow[]) =>
-    rows.map((el: IRow) => {
-      if (el.editable) {
-        return {
-          ...el,
-          editable: false,
-        }
-      }
-
-      return el
-    })
-
   onSaveClick = () => {
     const {
       rows,
@@ -452,7 +441,7 @@ class Rebalance extends React.Component<IProps, IState> {
       rowsWithNewPrice,
       staticRows
     )
-    const newRows = this.removeEditableModeInCoins(newRowsWithPriceDiff)
+    const newRows = UTILS.removeEditableModeInCoins(newRowsWithPriceDiff)
 
     this.setState(
       {
