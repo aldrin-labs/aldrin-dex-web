@@ -22,7 +22,7 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import { onSortStrings, roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
@@ -627,10 +627,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </PTable>
           </Wrapper>
           <ChartContainer>
-            <Heading pieChart={this.state.showChart === 'chart'}>
-              <Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />
-            </Heading>
-            <ChartWrapper>
+            {/*<Heading pieChart={this.state.showChart === 'chart'}>*/}
+              {/*<Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />*/}
+            {/*</Heading>*/}
+            <ChartWrapper isPieChartCurrent={this.state.showChart === 'chart'}>
               {this.state.showChart === 'line' ? (
                 <LineChart
                   data={this.state.lineChartMocks}
@@ -697,6 +697,12 @@ const PTWrapper = styled.div`
   overflow: auto;
 `
 
+const transformPieChart = css`
+  & .rv-xy-plot__inner {
+    transform: translateX(-20%);
+  }
+`
+
 const ChartWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -707,6 +713,9 @@ const ChartWrapper = styled.div`
   //@media (max-height: 850px) {
   //  height: 20vh;
   //}
+  
+  ${(props: { isPieChartCurrent?: boolean }) =>
+  props.isPieChartCurrent ? transformPieChart : ''};
 `
 
 const ChartContainer = styled.div`

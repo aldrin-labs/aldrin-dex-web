@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { searchSupportedNetworksQuery } from '@containers/User/api'
 import QueryRenderer from '../QueryRenderer/index'
-import { SelectR } from '@utils/cssUtils'
+import { SelectR } from '@styles/cssUtils'
 
 const SelectWalletList = ({ data, ...otherPropsForSelect }) => {
   // console.log(otherPropsForSelect, 'this props in wallet')

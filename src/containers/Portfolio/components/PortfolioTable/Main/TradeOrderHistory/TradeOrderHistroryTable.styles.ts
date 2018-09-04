@@ -1,9 +1,7 @@
-import { Icon, customAquaScrollBar } from '@utils/cssUtils'
-import { css } from 'styled-components'
-import styled from 'styled-components'
+import { customAquaScrollBar } from '@styles/cssUtils'
+import styled, { css } from 'styled-components'
 
-
-export {Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody, Icon}
+export { Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody, Icon }
 
 const Wrapper = styled.div`
   ${customAquaScrollBar};
@@ -75,17 +73,17 @@ const PTHead = styled.thead`
 const PTR = styled.tr`
   cursor: pointer;
   background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3136' : '#393e44'};
+    props.isSelected ? '#2d3136' : '#393e44'};
 
   &:nth-child(even) {
     background-color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
   }
 `
 
 const PTD = css`
   color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#4ed8da' : '#fff'};
+    props.isSelected ? '#4ed8da' : '#fff'};
 
   font-family: Roboto;
   font-size: 12px;

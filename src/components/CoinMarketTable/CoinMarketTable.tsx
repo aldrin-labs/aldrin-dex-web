@@ -3,7 +3,7 @@ import { History } from 'history'
 import styled from 'styled-components'
 import { Button as Btn } from '@material-ui/core'
 
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import Button from '@components/Elements/Button/Button'
 import QueryRenderer from '@components/QueryRenderer'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'

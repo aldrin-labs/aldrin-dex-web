@@ -8,7 +8,7 @@ import { Typography, Divider, Button } from '@material-ui/core'
 import AddIcon from 'material-ui-icons/Add'
 import { Link } from 'react-router-dom'
 
-import { getPortfolioQuery } from '@containers/Portfolio/api'
+import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
 import PortfolioTableMain from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain'
 import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
@@ -29,7 +29,7 @@ import {
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
 
 const MyLinkToUserSettings = (props) => <Link to="/user" {...props} />
@@ -700,7 +700,7 @@ class MainDataWrapper extends React.Component {
     return (
       <QueryRenderer
         component={PortfolioTableBalances}
-        query={getPortfolioQuery}
+        query={getPortfolioMainQuery}
         {...this.props}
       />
     )

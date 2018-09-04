@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Button, Typography } from '@material-ui/core'
 import { difference } from 'lodash'
 
-import { TypographyFullWidth } from '@utils/cssUtils'
+import { TypographyFullWidth } from '@styles/cssUtils'
 import { Table, Row, Title, Head, HeadCell } from '@components/Table/Table'
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
 import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'

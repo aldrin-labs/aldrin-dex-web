@@ -1,6 +1,6 @@
 import { opacityAnimation } from '@styles/keyframes'
+import { TypographyFullWidth } from '@styles/cssUtils'
 import { Cell, Row, Body } from '@components/Table/Table'
-import { TypographyFullWidth } from '@utils/cssUtils'
 
 export const EmptyCell = Cell.extend`
   position: relative;

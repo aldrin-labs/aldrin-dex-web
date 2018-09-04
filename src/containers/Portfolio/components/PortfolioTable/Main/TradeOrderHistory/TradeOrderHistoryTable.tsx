@@ -16,9 +16,19 @@ import {
   ICurrentSort,
   ITradeOrderHistoryTableData,
 } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable.types'
-import {Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody, Icon} from './TradeOrderHistroryTable.styles'
-
-
+import {
+  Wrapper,
+  Table,
+  PT,
+  PTH,
+  PTHC,
+  PTHead,
+  PTR,
+  PTD,
+  PTDC,
+  PTBody,
+  Icon,
+} from './TradeOrderHistroryTable.styles'
 
 const tradeOrderHistoryTableHeadings = [
   { name: 'Exchange', value: 'exchange' },
