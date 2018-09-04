@@ -12,8 +12,8 @@ import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions, coinsOptions } from '.././mocks'
-import { Checkbox, Icon } from '@styles/cssUtils'
 
+import { Checkbox, Label, Span, Icon } from '@styles/cssUtils'
 import {
   TableAndHeadingWrapper,
   PTHR,
@@ -37,7 +37,7 @@ import {
   SelectR,
 } from './RebalancedPortfolioTable.styles'
 
-import { Wrapper, Table, TableHeading, Span, Label } from '../sharedStyles/sharedStyles'
+import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
 
 const usdHeadingForRebalanced = [
   { name: 'Exchange', value: 'exchange' },

@@ -7,7 +7,7 @@ import {
   IState,
   IProps,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead.types'
-import { Checkbox } from '@styles/cssUtils'
+import { Checkbox, Label, Span } from '@styles/cssUtils'
 
 
 const usdHeadings: { name: string; value: Args }[] = [
@@ -111,10 +111,6 @@ export default class PortfolioTableHead extends React.Component<
     )
   }
 }
-
-const Span = styled.span``
-
-const Label = styled.label``
 
 const PTH = styled.th`
   font-family: Roboto, sans-serif;

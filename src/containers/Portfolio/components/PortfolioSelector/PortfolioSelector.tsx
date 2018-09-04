@@ -12,7 +12,7 @@ import { setKeys, filterValuesLessThen } from '../../actions'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
-import { Checkbox } from '@styles/cssUtils'
+import { Checkbox, Label, Span } from '@styles/cssUtils'
 
 
 class PortfolioSelector extends React.Component<IProps, IState> {
@@ -267,10 +267,6 @@ const AccountName = styled.span`
   text-align: left;
   margin-left: 24px;
 `
-
-const Span = styled.span``
-
-const Label = styled.label``
 
 const AccountsListItem = styled.li`
   display: flex;

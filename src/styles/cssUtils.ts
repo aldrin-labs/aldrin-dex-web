@@ -32,9 +32,9 @@ export const SelectR = styled(ReactSelectComponent)`
   }
 `
 
-const Span = styled.span``
+export const Span = styled.span``
 
-const Label = styled.label``
+export const Label = styled.label``
 
 export const Checkbox = styled.input`
   display: none;

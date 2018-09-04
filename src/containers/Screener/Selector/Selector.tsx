@@ -17,7 +17,6 @@ import ReactSelectComponent from '@components/ReactSelectComponent'
 
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
-import { Checkbox } from '@styles/cssUtils'
 
 // TODO: Update Selector types
 
@@ -820,10 +819,6 @@ const ActionButton = styled.button`
       props.isDeleteColor ? '#f44336' : '#4caf50'};
   }
 `
-
-const Label = styled.label``
-
-const Span = styled.span``
 
 const CheckBoxLabel = styled.label`
   color: #fff;

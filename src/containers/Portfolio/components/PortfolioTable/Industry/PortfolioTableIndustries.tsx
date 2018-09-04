@@ -28,7 +28,7 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
-import { Icon, Checkbox } from '@styles/cssUtils'
+import { Checkbox, Label, Span, Icon } from '@styles/cssUtils'
 
 
 const tableHeadings = [
@@ -836,10 +836,6 @@ const PTD = styled.td`
     padding-right: 16px;
   }
 `
-
-const Span = styled.span``
-
-const Label = styled.label``
 
 const PTH = styled.th`
   font-family: Roboto, sans-serif;
