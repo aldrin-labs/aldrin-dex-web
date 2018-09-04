@@ -1,10 +1,8 @@
 import React from 'react'
-import styled from 'styled-components'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import BarChart from '@components/BarChart/BarChart'
-import { customAquaScrollBar } from '@styles/cssUtils'
 import {
   IProps,
   IState,
@@ -164,12 +162,12 @@ class Rebalance extends React.Component<IProps, IState> {
     savedRows: IRow[],
     undistributedMoney: string
   ) => {
-    const totalStaticRows = this.calculateTotal(staticRows, '0')
-    const totalRows = this.calculateTotal(rows, undistributedMoney)
-    const totalSavedRows = this.calculateTotal(savedRows, undistributedMoney)
-    const totalTableStaticRows = this.calculateTableTotal(staticRows)
-    const totalTableRows = this.calculateTableTotal(rows)
-    const totalTableSavedRows = this.calculateTableTotal(savedRows)
+    const totalStaticRows = UTILS.calculateTotal(staticRows, '0')
+    const totalRows = UTILS.calculateTotal(rows, undistributedMoney)
+    const totalSavedRows = UTILS.calculateTotal(savedRows, undistributedMoney)
+    const totalTableStaticRows = UTILS.calculateTableTotal(staticRows)
+    const totalTableRows = UTILS.calculateTableTotal(rows)
+    const totalTableSavedRows = UTILS.calculateTableTotal(savedRows)
 
     this.calculateAllPercents(
       staticRows,
@@ -266,26 +264,6 @@ class Rebalance extends React.Component<IProps, IState> {
     return data
   }
 
-  calculateTotal = (data: IRow[], undistributedMoney: string) => {
-    const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
-
-    return (total + parseFloat(undistributedMoney)).toFixed(2)
-  }
-
-  calculateTableTotal = (data: IRow[]) => {
-    const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
-
-    return tableTotal.toFixed(2)
-  }
-
-  calculateTotalPercents = (data: IRow[]) => {
-    const totalPercents = data
-      .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
-      .toFixed(3)
-
-    return totalPercents
-  }
-
   calculatePercents = (data: IRow[], total: string, staticRows: IRow[]) => {
     const newDataWithPercents = data.map((row) => {
       const percentCaluclation =
@@ -300,7 +278,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
 
-    const totalPercents = this.calculateTotalPercents(newDataWithPercents)
+    const totalPercents = UTILS.calculateTotalPercents(newDataWithPercents)
 
     this.setState({
       totalPercents,
@@ -351,8 +329,8 @@ class Rebalance extends React.Component<IProps, IState> {
       parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
     ).toFixed(2)
 
-    const newTotalRows = this.calculateTotal(resultRows, newUndistributedMoney)
-    const newTableTotalRows = this.calculateTableTotal(resultRows)
+    const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
+    const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
     const newRowsWithNewPercents = this.calculatePercents(
       resultRows,
       newTotalRows,
@@ -491,7 +469,7 @@ class Rebalance extends React.Component<IProps, IState> {
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: this.checkPercentSum(clonedStaticRows),
-      totalPercents: this.calculateTotalPercents(clonedStaticRows),
+      totalPercents: UTILS.calculateTotalPercents(clonedStaticRows),
     })
   }
 
@@ -510,7 +488,7 @@ class Rebalance extends React.Component<IProps, IState> {
         areAllActiveChecked: false,
         undistributedMoney: this.state.undistributedMoneySaved,
         isPercentSumGood: this.checkPercentSum(clonedSavedRows),
-        totalPercents: this.calculateTotalPercents(clonedSavedRows),
+        totalPercents: UTILS.calculateTotalPercents(clonedSavedRows),
       }))
     } else {
       this.setState((prevState) => ({
@@ -529,8 +507,8 @@ class Rebalance extends React.Component<IProps, IState> {
     const { rows, staticRows } = this.state
 
     const newUndistributedMoney = '0'
-    const newTotalRows = this.calculateTotal(rows, newUndistributedMoney)
-    const newTableTotalRows = this.calculateTableTotal(rows)
+    const newTotalRows = UTILS.calculateTotal(rows, newUndistributedMoney)
+    const newTableTotalRows = UTILS.calculateTableTotal(rows)
     const newRowsWithNewPercents = this.calculatePercents(
       rows,
       newTotalRows,
@@ -574,8 +552,8 @@ class Rebalance extends React.Component<IProps, IState> {
       // toFixed(2) for undistributed money is just an experiment
       const newUndistributedMoney = money.toFixed(2)
 
-      const newTotal = this.calculateTotal(rows, newUndistributedMoney)
-      const newTableTotal = this.calculateTableTotal(rows)
+      const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
+      const newTableTotal = UTILS.calculateTableTotal(rows)
       const newRows = this.calculatePercents(rows, newTotal, staticRows)
 
       this.setState({
@@ -706,7 +684,7 @@ class Rebalance extends React.Component<IProps, IState> {
       resultRows, totalRows
     )
 
-    const totalPercents = this.calculateTotalPercents(
+    const totalPercents = UTILS.calculateTotalPercents(
       newCalculatedRowsWithPercents
     )
 
@@ -715,7 +693,7 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows
     )
 
-    const newTableTotalRows = this.calculateTableTotal(
+    const newTableTotalRows = UTILS.calculateTableTotal(
       newCalculatedRowsWithPercents
     )
 
@@ -782,8 +760,8 @@ class Rebalance extends React.Component<IProps, IState> {
     const newUndistributedMoney = (Number(undistributedMoney) + Number(addMoneyInputValue)).toFixed(2)
 
 
-    const newTotal = this.calculateTotal(rows, newUndistributedMoney)
-    const newTableTotal = this.calculateTableTotal(rows)
+    const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
+    const newTableTotal = UTILS.calculateTableTotal(rows)
 
     const newRows = this.calculatePercents(rows, newTotal, staticRows)
     const checkedPercentsIsGood = this.checkPercentSum(newRows)

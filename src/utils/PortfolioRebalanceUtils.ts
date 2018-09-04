@@ -24,3 +24,23 @@ export const calculatePriceByPercents = (data: IRow[], totalRows: number | strin
 
   return dataWithNewPrices
 }
+
+export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
+  const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
+
+  return (total + parseFloat(undistributedMoney)).toFixed(2)
+}
+
+export const calculateTableTotal = (data: IRow[]) => {
+  const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
+
+  return tableTotal.toFixed(2)
+}
+
+export const calculateTotalPercents = (data: IRow[]) => {
+  const totalPercents = data
+    .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
+    .toFixed(3)
+
+  return totalPercents
+}
