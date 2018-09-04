@@ -8,6 +8,7 @@ import ClearIcon from 'material-ui-icons/Clear'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 
+import RebalanceMoneyButtons from './RebalanceMoneyButtons/RebalanceMoneyButtons'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions, coinsOptions } from '.././mocks'
@@ -23,16 +24,9 @@ import {
   PTFoot,
   ActionButton,
   ActionButtonsContainer,
-  Input,
-  Button,
   TableButton,
   InputTable,
-  AddMoneyContainer,
-  ButtonsInnerWrapper,
-  ButtonsWrapper,
   EditIconWrapper,
-  UndistributedMoneyContainer,
-  UndistributedMoneyText,
   SelectR,
 } from './RebalancedPortfolioTable.styles'
 
@@ -164,7 +158,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                   return (
                     <PTHR
                       key={heading.name}
-                      onClick={() => onSortTable(heading.value, 'currentSortForDynamic')}
+                      onClick={() =>
+                        onSortTable(heading.value, 'currentSortForDynamic')
+                      }
                     >
                       {heading.name}
 
@@ -266,10 +262,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                               clearIndicatorStyles={{
                                 padding: '2px',
                               }}
-                              onChange={() => handleSelectChange(
-                                rowIndex,
-                                'exchange'
-                              )}
+                              onChange={() =>
+                                handleSelectChange(rowIndex, 'exchange')
+                              }
                             />
                           </PTDR>
                         )
@@ -295,10 +290,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                               clearIndicatorStyles={{
                                 padding: '2px',
                               }}
-                              onChange={ () => handleSelectChange(
-                                rowIndex,
-                                'symbol'
-                              )}
+                              onChange={() =>
+                                handleSelectChange(rowIndex, 'symbol')
+                              }
                             />
                           </PTDR>
                         )
@@ -326,9 +320,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 onChange={(e) =>
                                   onPercentInputChange(e, rowIndex)
                                 }
-                                onBlur={(e) =>
-                                  onBlurPercentInput(e, rowIndex)
-                                }
+                                onBlur={(e) => onBlurPercentInput(e, rowIndex)}
                                 onFocus={(e) =>
                                   onFocusPercentInput(e, rowIndex)
                                 }
@@ -431,38 +423,18 @@ export default class RebalancedPortfolioTable extends React.Component<
             </PTFoot>
           </Table>
         </Wrapper>
-        <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
-          <ButtonsInnerWrapper>
-            <AddMoneyContainer>
-              <Input
-                type="number"
-                value={addMoneyInputValue}
-                onChange={onAddMoneyInputChange}
-                onFocus={onFocusAddMoneyInput}
-              />
-              <Button onClick={onAddMoneyButtonPressed}>Add money</Button>
-            </AddMoneyContainer>
-            <AddMoneyContainer>
-              <Button onClick={onDeleteUndistributedMoney}>
-                Delete undistributed
-              </Button>
-            </AddMoneyContainer>
-            {
-              <UndistributedMoneyContainer>
-                <UndistributedMoneyText>
-                  Undistributed money:{' '}
-                  {formatNumberToUSFormat(undistributedMoney)}
-                </UndistributedMoneyText>
-                <Button
-                  disabled={undistributedMoney < 0}
-                  onClick={onDistribute}
-                >
-                  Distribute to selected
-                </Button>
-              </UndistributedMoneyContainer>
-            }
-          </ButtonsInnerWrapper>
-        </ButtonsWrapper>
+        <RebalanceMoneyButtons
+          { ...{
+            isEditModeEnabled,
+            addMoneyInputValue,
+            undistributedMoney,
+            onAddMoneyInputChange,
+            onFocusAddMoneyInput,
+            onAddMoneyButtonPressed,
+            onDeleteUndistributedMoney,
+            onDistribute,
+          }}
+        />
       </TableAndHeadingWrapper>
     )
   }
