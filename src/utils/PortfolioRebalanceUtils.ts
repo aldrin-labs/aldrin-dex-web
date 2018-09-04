@@ -44,3 +44,12 @@ export const calculateTotalPercents = (data: IRow[]) => {
 
   return totalPercents
 }
+
+export const checkPercentSum = (data: IRow[]) => {
+  const sumOfAllPercents = data.reduce(
+    (sum, row) => (sum += +row!.portfolioPerc),
+    0
+  )
+
+  return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
+}

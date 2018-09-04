@@ -7,7 +7,6 @@ import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
