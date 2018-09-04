@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import SelectReact from 'react-select'
 
 import { PT, PTH, PTD, PTF } from '../sharedStyles/sharedStyles'

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import { PT, PTH, PTD, PTF } from '../sharedStyles/sharedStyles'
 
 export { TableAndHeadingWrapper, PTHead, PTFoot, PTDC, PTBody, PTHC, PTR }

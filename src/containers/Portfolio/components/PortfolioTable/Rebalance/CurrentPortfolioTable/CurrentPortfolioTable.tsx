@@ -8,7 +8,7 @@ import { IProps, IState } from './CurrentPortfolioTable.types'
 
 import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
 import { TableAndHeadingWrapper, PTHead, PTFoot, PTDC, PTBody, PTHC, PTR } from './CurrentPortfolioTable.styles'
-import { Icon } from '@utils/cssUtils'
+import { Icon } from '@styles/cssUtils'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },

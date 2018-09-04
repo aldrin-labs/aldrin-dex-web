@@ -4,7 +4,7 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import BarChart from '@components/BarChart/BarChart'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import {
   IProps,
   IState,

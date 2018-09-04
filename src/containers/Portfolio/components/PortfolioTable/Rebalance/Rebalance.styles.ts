@@ -1,4 +1,4 @@
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 
 export { Content, ChartWrapper, ChartContainer, Chart, ChartColorPickerContainer, PTWrapper, PTextBox, Container }

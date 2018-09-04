@@ -1,20 +1,18 @@
-import React, { CSSProperties } from 'react'
+import React from 'react'
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
 import SaveIcon from 'material-ui-icons/Save'
 import EditIcon from 'material-ui-icons/Edit'
 import Replay from 'material-ui-icons/Replay'
 import ClearIcon from 'material-ui-icons/Clear'
-import { components } from 'react-select'
-import { OptionProps } from 'react-select/lib/types'
-
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
+
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions, coinsOptions } from '.././mocks'
-import { Checkbox, Icon } from '@utils/cssUtils'
+import { Checkbox, Icon } from '@styles/cssUtils'
 
 import {
   TableAndHeadingWrapper,

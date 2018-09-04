@@ -7,7 +7,7 @@ import {
   IState,
   IProps,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead.types'
-import { Checkbox } from '@utils/cssUtils'
+import { Checkbox } from '@styles/cssUtils'
 
 
 const usdHeadings: { name: string; value: Args }[] = [

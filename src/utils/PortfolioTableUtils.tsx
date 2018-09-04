@@ -1,6 +1,6 @@
 import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import React from 'react'
-import { Icon } from '@utils/cssUtils'
+import { Icon } from '@styles/cssUtils'
 
 export const calcAllSumOfPortfolioAsset = (
   assets: any,

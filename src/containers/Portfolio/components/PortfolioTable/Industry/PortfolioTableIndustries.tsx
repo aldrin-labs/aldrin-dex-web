@@ -28,7 +28,7 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
-import { Icon, Checkbox } from '@utils/cssUtils'
+import { Icon, Checkbox } from '@styles/cssUtils'
 
 
 const tableHeadings = [

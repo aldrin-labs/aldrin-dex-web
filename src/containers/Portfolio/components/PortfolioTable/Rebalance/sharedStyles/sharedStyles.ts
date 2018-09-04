@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 
 export { Span, Label, Wrapper, Table, TableHeading, PTD, PT, PTF, PTH }
 

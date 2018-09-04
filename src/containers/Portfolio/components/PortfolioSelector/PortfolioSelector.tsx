@@ -12,7 +12,7 @@ import { setKeys, filterValuesLessThen } from '../../actions'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
-import { Checkbox } from '@utils/cssUtils'
+import { Checkbox } from '@styles/cssUtils'
 
 
 class PortfolioSelector extends React.Component<IProps, IState> {

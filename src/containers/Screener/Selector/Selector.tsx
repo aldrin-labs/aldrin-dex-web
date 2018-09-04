@@ -17,7 +17,7 @@ import ReactSelectComponent from '@components/ReactSelectComponent'
 
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
-import { Checkbox } from '@utils/cssUtils'
+import { Checkbox } from '@styles/cssUtils'
 
 // TODO: Update Selector types
 
