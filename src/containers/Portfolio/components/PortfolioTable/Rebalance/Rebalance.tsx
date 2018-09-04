@@ -196,13 +196,15 @@ class Rebalance extends React.Component<IProps, IState> {
     savedRows: IRow[],
     totalSavedRows: string
   ) => {
+    const rowsWithPercentage = this.calculatePercents(rows, totalRows, staticRows)
     this.setState({
       staticRows: this.calculatePercents(
         staticRows,
         totalStaticRows,
         staticRows
       ),
-      rows: this.calculatePercents(rows, totalRows, staticRows),
+      rows: rowsWithPercentage,
+      totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
       savedRows: this.calculatePercents(savedRows, totalSavedRows, staticRows),
     })
   }
@@ -275,14 +277,7 @@ class Rebalance extends React.Component<IProps, IState> {
         portfolioPerc: percentResult,
       }
     })
-
     console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
-
-    const totalPercents = UTILS.calculateTotalPercents(newDataWithPercents)
-
-    this.setState({
-      totalPercents,
-    })
 
     return this.calculatePriceDifference(newDataWithPercents, staticRows)
   }
@@ -300,9 +295,10 @@ class Rebalance extends React.Component<IProps, IState> {
     }
     clonedRows.push(newRow)
     const rows = this.calculatePercents(clonedRows, totalRows, staticRows)
+    const totalPercents = UTILS.calculateTotalPercents(rows)
     console.log('rows in onAddRowButton ', rows)
 
-    this.setState({ rows, areAllActiveChecked: false })
+    this.setState({ rows, totalPercents, areAllActiveChecked: false })
   }
 
   onDeleteRowClick = (idx: number) => {
@@ -336,9 +332,12 @@ class Rebalance extends React.Component<IProps, IState> {
       newTotalRows,
       staticRows
     )
+    const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
+
     const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
 
     this.setState({
+      totalPercents,
       undistributedMoney: newUndistributedMoney,
       totalRows: newTotalRows,
       totalTableRows: newTableTotalRows,
@@ -514,9 +513,11 @@ class Rebalance extends React.Component<IProps, IState> {
       newTotalRows,
       staticRows
     )
+    const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
     const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
 
     this.setState({
+      totalPercents,
       undistributedMoney: '0',
       totalRows: newTotalRows,
       totalTableRows: newTableTotalRows,
@@ -555,10 +556,12 @@ class Rebalance extends React.Component<IProps, IState> {
       const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
       const newTableTotal = UTILS.calculateTableTotal(rows)
       const newRows = this.calculatePercents(rows, newTotal, staticRows)
+      const totalPercents = UTILS.calculateTotalPercents(newRows)
 
       this.setState({
-        undistributedMoney: newUndistributedMoney,
+        totalPercents,
         selectedActive,
+        undistributedMoney: newUndistributedMoney,
         rows: newRows,
         totalRows: newTotal,
         totalTableRows: newTableTotal,
@@ -755,9 +758,11 @@ class Rebalance extends React.Component<IProps, IState> {
     const newTableTotal = UTILS.calculateTableTotal(rows)
 
     const newRows = this.calculatePercents(rows, newTotal, staticRows)
+    const totalPercents = UTILS.calculateTotalPercents(newRows)
     const checkedPercentsIsGood = UTILS.checkPercentSum(newRows)
 
     this.setState({
+      totalPercents,
       undistributedMoney: newUndistributedMoney,
       addMoneyInputValue: 0,
       rows: newRows,
