@@ -11,10 +11,12 @@ const initialState = {
   correlationTableFullscreenEnabled: false,
   correlationPeriod: 'lastDay',
   optimizationPeriod: 'lastDay',
-  optimizationStartDate: daysFromNow(-1),
+  optimizationStartDate: daysFromNow(1),
   optimizationEndDate: daysFromNow(0),
-  correlationStartDate: daysFromNow(-1),
+  correlationStartDate: daysFromNow(1),
   correlationEndDate: daysFromNow(0),
+  //  default filter is negative value so every filter is no working(no filter)
+  //  this is default behaviour
   filterValuesLessThenThat: -100.0,
   keys: [],
   activeChart: 4,
