@@ -1,14 +1,11 @@
 import React from 'react'
 import DeleteIcon from 'material-ui-icons/Delete'
 import AddIcon from 'material-ui-icons/Add'
-import SaveIcon from 'material-ui-icons/Save'
-import EditIcon from 'material-ui-icons/Edit'
-import Replay from 'material-ui-icons/Replay'
-import ClearIcon from 'material-ui-icons/Clear'
 import sortIcon from '@icons/arrow.svg'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 
 import RebalanceMoneyButtons from './RebalanceMoneyButtons/RebalanceMoneyButtons'
+import RebalanceActionButtons from './RebalanceActionButtons/RebalanceActionButtons'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions, coinsOptions } from '.././mocks'
@@ -22,11 +19,8 @@ import {
   PTBody,
   PTHead,
   PTFoot,
-  ActionButton,
-  ActionButtonsContainer,
   TableButton,
   InputTable,
-  EditIconWrapper,
   SelectR,
 } from './RebalancedPortfolioTable.styles'
 
@@ -117,20 +111,13 @@ export default class RebalancedPortfolioTable extends React.Component<
       <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
         <TableHeading>
           Rebalanced portfolio
-          <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
-            <EditIconWrapper
-              onClick={onEditModeEnable}
-              isEditModeEnabled={isEditModeEnabled}
-            >
-              {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
-            </EditIconWrapper>
-            <ActionButton onClick={onReset}>
-              <Replay />
-            </ActionButton>
-            <ActionButton onClick={onSaveClick}>
-              <SaveIcon style={{ color: saveButtonColor }} />
-            </ActionButton>
-          </ActionButtonsContainer>
+          <RebalanceActionButtons {...{
+            isEditModeEnabled,
+            saveButtonColor,
+            onSaveClick,
+            onEditModeEnable,
+            onReset,
+          }} />
         </TableHeading>
         <Wrapper>
           <Table>
