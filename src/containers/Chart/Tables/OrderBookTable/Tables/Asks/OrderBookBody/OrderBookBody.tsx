@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { red } from '@material-ui/core/colors'
 
-import { Row, Body, Cell } from '@components/Table/Table'
+import { Row, Cell, Body } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
+import {
+  calculatePercentagesOfOrderSize,
+  ScrollToBottom,
+} from '@utils/chartPageUtils'
 import { IProps } from './OrderBookBody.types'
 import {
   EmptyCell,
@@ -12,18 +15,27 @@ import {
 } from '@containers/Chart/Tables/SharedStyles'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
 
+let objDiv: HTMLElement | null
+
 class ClassBody extends Component<IProps> {
   componentDidMount() {
-    //  scroll down to bottom of table
-    const objDiv = document.getElementById('body')
-    objDiv.scrollTop = objDiv.scrollHeight
+    objDiv = document.getElementById('body')
+    ScrollToBottom(objDiv)
+  }
+
+  componentDidUpdate() {
+    if (
+      objDiv &&
+      objDiv.scrollHeight - objDiv.scrollTop - objDiv.clientHeight < 45
+    ) {
+      ScrollToBottom(objDiv)
+    }
   }
   render() {
     const {
       data,
       digitsAfterDecimalForAsksPrice,
       digitsAfterDecimalForAsksSize,
-
       action,
       index,
       background,

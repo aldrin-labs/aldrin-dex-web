@@ -3,7 +3,7 @@ export interface PiePiece {
   label: string
   opacity?: number
   color?: string | number
-  style?: Object
+  style?: object
 }
 
 export interface Props {
@@ -13,6 +13,11 @@ export interface Props {
   radius?: number
   innerRadius?: number
   flexible?: boolean
+  withHints?: boolean
+  showLabels?: boolean
+  labelsRadiusMultiplier?: number
+  labelsStyle?: object
+  colorLegend?: boolean
 }
 
 export interface State {

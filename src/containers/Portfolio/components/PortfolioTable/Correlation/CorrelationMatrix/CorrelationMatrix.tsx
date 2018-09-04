@@ -4,7 +4,7 @@ import FullScreen from 'react-fullscreen-crossbrowser'
 import { Button, Card, CardContent, Typography } from '@material-ui/core'
 import FullScreenIcon from 'react-icons/lib/md/fullscreen'
 
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import SelectTimeRange from '@components/SelectTimeRangeDropdown'
 import Table from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix.types'

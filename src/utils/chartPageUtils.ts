@@ -75,3 +75,7 @@ export const sortAndFilterOrders = (orders: any[]) =>
         return order
       }
     })
+export const ScrollToBottom = (objDiv: HTMLElement | null): null => {
+  //  scroll down to bottom of asks table if user dont scrolled a lil bit up
+  if (objDiv) objDiv.scrollTop = objDiv.scrollHeight
+}

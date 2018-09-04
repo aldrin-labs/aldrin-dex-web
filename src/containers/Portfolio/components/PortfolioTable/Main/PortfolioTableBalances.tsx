@@ -8,7 +8,7 @@ import { Typography, Divider, Button } from '@material-ui/core'
 import AddIcon from 'material-ui-icons/Add'
 import { Link } from 'react-router-dom'
 
-import { getPortfolioQuery } from '@containers/Portfolio/api'
+import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
 import PortfolioTableMain from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain'
 import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
@@ -29,7 +29,7 @@ import {
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
 
 const MyLinkToUserSettings = (props) => <Link to="/user" {...props} />
@@ -166,43 +166,54 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     const { assets, cryptoWallets } = portfolio
     // checking that asset is array and have length more then 0
     const exchangeAssetsLength = assets.length ? assets.length + 1 : 0
-    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently, cryptoWallets)
-    const walletData = cryptoWallets.map((row: InewRowT) => {
+    const allSums = calcAllSumOfPortfolioAsset(
+      assets,
+      isUSDCurrently,
+      cryptoWallets
+    )
+    const walletData = cryptoWallets
+      .map((row: InewRowT) => {
+        const {
+          baseAsset = {
+            symbol: '',
+            priceUSD: 0,
+            priceBTC: 0,
+            percentChangeDay: 0,
+          },
+          name = '',
+          address = '',
+          assets = [],
+        } =
+          row || {}
+        // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
+        //   return null
+        // }
+        const { symbol, priceUSD, priceBTC } = baseAsset || {}
 
-      const {
-        baseAsset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
-        name = '',
-        address = '',
-        assets = [],
-      } =
-        row || {}
-      // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
-      //   return null
-      // }
-      const { symbol, priceUSD, priceBTC } = baseAsset || {}
+        // console.log(row);
+        // console.log(baseAsset);
+        return assets.map((walletAsset: any, i) => {
+          const mainPrice = isUSDCurrently
+            ? walletAsset.asset.priceUSD
+            : walletAsset.asset.priceBTC
 
-      // console.log(row);
-      // console.log(baseAsset);
-      return assets.map((walletAsset: any, i) => {
-        const mainPrice = isUSDCurrently ? walletAsset.asset.priceUSD : walletAsset.asset.priceBTC
-
-        const currentPrice = mainPrice * walletAsset.balance
-        const col = {
-          id: i + exchangeAssetsLength,
-          currency: (baseAsset.symbol + ' ' + name) || '',
-          symbol: walletAsset.asset.symbol,
-          percentage: roundPercentage(currentPrice * 100 / allSums),
-          price: mainPrice || 0,
-          quantity: Number((walletAsset.balance).toFixed(5)) || 0,
-          daily: 0,
-          dailyPerc: 0,
-          currentPrice: currentPrice || 0,
-          realizedPL: 0,
-          realizedPLPerc: 0,
-          unrealizedPL: 0,
-          unrealizedPLPerc: 0,
-          totalPL: 0,
-        }
+          const currentPrice = mainPrice * walletAsset.balance
+          const col = {
+            id: i + exchangeAssetsLength,
+            currency: baseAsset.symbol + ' ' + name || '',
+            symbol: walletAsset.asset.symbol,
+            percentage: roundPercentage(currentPrice * 100 / allSums),
+            price: mainPrice || 0,
+            quantity: Number(walletAsset.balance.toFixed(5)) || 0,
+            daily: 0,
+            dailyPerc: 0,
+            currentPrice: currentPrice || 0,
+            realizedPL: 0,
+            realizedPLPerc: 0,
+            unrealizedPL: 0,
+            unrealizedPLPerc: 0,
+            totalPL: 0,
+          }
 
           return col
         })
@@ -263,16 +274,19 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     ]
       .reduce((a: any, b: any) => a.concat(b), [])
       .filter(Boolean)
+      //  dust filter part
       .filter(
         (el) =>
-          el.percentage >
-          (filterValueSmallerThenPercentage
-            ? filterValueSmallerThenPercentage
-            : 0)
+          //  if el.percentage is not a number then turn it into 0
+          isNaN(el.percentage)
+            ? el.percentage
+            : 0 >
+              (filterValueSmallerThenPercentage
+                ? filterValueSmallerThenPercentage
+                : 0)
       )
 
-
-    const selectAllLinesInTable = tableData.map((el) => el.id )
+    const selectAllLinesInTable = tableData.map((el) => el.id)
 
     this.setState({ tableData, selectedBalances: selectAllLinesInTable }, () =>
       this.calculateSum(this.state.selectedBalances)
@@ -308,7 +322,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       return
     }
 
-    const sum = tableData.filter((elem) => selectedRows.indexOf(elem.id) !== -1 )
+    const sum = tableData.filter((elem) => selectedRows.indexOf(elem.id) !== -1)
 
     const reducedSum = sum.reduce(
       (acc: any, val: IRowT) => ({
@@ -418,8 +432,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     const { isShownChart, isUSDCurrently, children, theme } = this.props
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
-    console.log('theme: ', theme);
-
+    console.log('theme: ', theme)
 
     const isSelectAll =
       (tableData &&
@@ -432,9 +445,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     if (!tableDataHasData) {
       return (
         <PTWrapper tableData={tableDataHasData}>
-          <PTextBox
-          backgroundColor={theme.palette.grey.A400}
-          >
+          <PTextBox backgroundColor={theme.palette.grey.A400}>
             <STypography variant="display1">
               Add an exchange or wallet
             </STypography>
@@ -509,8 +520,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 this.state.selectedBalances &&
                 this.state.selectedBalances.length > 0
                   ? this.state.selectedBalances.map(
-                    (id, i) => this.state.tableData[i]
-                  )
+                      (id, i) => this.state.tableData[i]
+                    )
                   : []
               }
             />
@@ -630,7 +641,8 @@ const PTextBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: ${(props: { backgroundColor: string }) => props.backgroundColor};
+  background-color: ${(props: { backgroundColor: string }) =>
+    props.backgroundColor};
 `
 
 const PTChartContainer = styled.div`
@@ -659,7 +671,8 @@ const SButton = styled(Button)`
 
   &&:hover {
     border-color: ${(props: { borderColor: string }) => props.borderColor};
-    background-color: ${(props: { backgroundColor: string }) => props.backgroundColor};
+    background-color: ${(props: { backgroundColor: string }) =>
+      props.backgroundColor};
   }
 
   && > span {
@@ -687,7 +700,7 @@ class MainDataWrapper extends React.Component {
     return (
       <QueryRenderer
         component={PortfolioTableBalances}
-        query={getPortfolioQuery}
+        query={getPortfolioMainQuery}
         {...this.props}
       />
     )

@@ -3,9 +3,9 @@ import { green } from '@material-ui/core/colors'
 import { difference } from 'lodash'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
-import { Table, Row, Body, Head, Cell, HeadCell } from '@components/Table/Table'
+import { Table, Row, Head, Cell, HeadCell, Body } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
-import { TypographyFullWidth } from '@utils/cssUtils'
+import { TypographyFullWidth } from '@styles/cssUtils'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
 import {
   EmptyCell,
@@ -50,21 +50,26 @@ class SpreadTable extends Component {
     const {
       background,
       action,
-      primary: { dark },
+      primary: { main },
     } = palette
 
     return (
       <SpreadreadTableWrapper>
-        <Head background={dark} style={{ height: '1.625rem' }}>
-          <TriggerRow isHead={true} background={dark}>
+        <Head background={main} style={{ height: '1.625rem' }}>
+          <TriggerRow isHead={true} background={main}>
             <EmptyCell width="10%" />
             <HeadCell width={'45%'}>
-              <TypographyFullWidth variant="body2" align="right">
+              <TypographyFullWidth
+                textColor={palette.getContrastText(main)}
+                variant="body2"
+                align="right"
+              >
                 {quote || 'Fiat'} spread{' '}
               </TypographyFullWidth>
             </HeadCell>
             <HeadCell width={'45%'}>
               <TypographyFullWidth
+                textColor={palette.getContrastText(main)}
                 variant="body2"
                 align="right"
                 color="secondary"
@@ -76,10 +81,7 @@ class SpreadTable extends Component {
             </HeadCell>
           </TriggerRow>
         </Head>
-        <Body
-          style={{ background: background.default }}
-          height="calc(100% - 26px)"
-        >
+        <Body background={background.default} height="calc(100% - 26px)">
           {data.length === 0 ? (
             <Loading centerAligned={true} />
           ) : (

@@ -14,7 +14,7 @@ import {
   getArrayContainsOnlyOnePropertyType,
   combineDataToSelect,
 } from '@utils/PortfolioTableUtils'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import SuperSearch from '@containers/Screener/ScreenerTable/MarketSummaryTable/SuperSearch'
 
 // TODO: Think about this

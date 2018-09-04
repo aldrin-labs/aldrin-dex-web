@@ -22,25 +22,37 @@ import Footer from '@components/Footer'
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
 
-let theme = {}
-if (process.browser) {
-  window.theme = theme
-}
-
 const AppRaw = ({ children, themeMode }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
-      theme={() => {
-        theme = createMuiTheme({
-          palette: {
-            type: themeMode,
-            primary: blueGrey,
-            secondary: cyan,
-          },
-        })
+      theme={() =>
+        // ToDo  removes this
+        {
+          const theme = createMuiTheme({
+            palette: {
+              type: themeMode,
+              primary: blueGrey,
+              secondary: {
+                ...cyan,
+                main: '#4ed8da',
+              },
+              background: {
+                default: themeMode === 'light' ? '#fafafa' : '#303030',
+                paper: themeMode === 'light' ? '#fff' : '#393e44',
+              },
+              navbar: {
+                light: '#fff',
+                dark: 'rgb(45, 49, 54)',
+              },
+            },
+          })
 
-        return theme
-      }}
+          if (process.browser) {
+            window.theme = theme
+          }
+          return theme
+        }
+      }
     >
       <CssBaseline />
       <AppGridLayout>

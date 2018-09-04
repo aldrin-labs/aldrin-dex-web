@@ -14,7 +14,7 @@ import ClearIcon from 'material-ui-icons/Clear'
 
 import BarChart from '@components/BarChart/BarChart'
 import PieChart from '@components/PieChart'
-import { customAquaScrollBar } from '@utils/cssUtils'
+import { customAquaScrollBar } from '@styles/cssUtils'
 import sortIcon from '@icons/arrow.svg'
 import {
   IProps,
@@ -39,6 +39,7 @@ import {
   getMyRebalanceQuery,
   getMyPortfolioQuery,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
+import ReactSelectComponent from '@components/ReactSelectComponent'
 
 const usdHeadingForCurrent = [
   { name: 'Exchange', value: 'exchange' },
@@ -1456,12 +1457,22 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                 {/*/>*/}
                                 <SelectR
                                   key={`inputNameExchange${rowIndex}`}
-                                  styles={customStyles}
+                                  // styles={customStyles}
                                   isClearable
                                   isSearchable
                                   options={exchangeOptions}
                                   menuPortalTarget={document.body}
-                                  components={{ DropdownIndicator }}
+                                  menuStyles={{
+                                    minWidth: '150px',
+                                    height: '200px',
+                                  }}
+                                  menuListStyles={{
+                                    height: '200px',
+                                  }}
+                                  clearIndicatorStyles={{
+                                    padding: '2px',
+                                  }}
+                                  // components={{ DropdownIndicator }}
                                   onChange={this.handleSelectChangeWithoutInputExchange.bind(
                                     this,
                                     rowIndex
@@ -1484,12 +1495,22 @@ class PortfolioTableRebalance extends React.Component<IProps, IState> {
                                 {/*/>*/}
                                 <SelectR
                                   key={`inputCoinSymbol${rowIndex}`}
-                                  styles={customStyles}
+                                  // styles={customStyles}
                                   isClearable
                                   isSearchable
                                   options={coinsOptions}
                                   menuPortalTarget={document.body}
-                                  components={{ DropdownIndicator }}
+                                  // components={{ DropdownIndicator }}
+                                  menuStyles={{
+                                    minWidth: '150px',
+                                    height: '200px',
+                                  }}
+                                  menuListStyles={{
+                                    height: '200px',
+                                  }}
+                                  clearIndicatorStyles={{
+                                    padding: '2px',
+                                  }}
                                   onChange={this.handleSelectChangeWithoutInputCoin.bind(
                                     this,
                                     rowIndex
@@ -2377,21 +2398,11 @@ const PTextBox = styled.div`
   background-color: #2d3136;
 `
 
-const SelectR = styled(SelectReact)`
-  max-width: 100px;
+const SelectR = styled(ReactSelectComponent)`
   font-family: Roboto;
   font-size: 12px;
-  border-bottom: 1px solid #c1c1c1;
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    border-bottom: 1px solid #fff;
-  }
-
-  & + & {
-    margin-left: 25px;
-  }
 `
+
 
 const customStyles = {
   control: () => {
