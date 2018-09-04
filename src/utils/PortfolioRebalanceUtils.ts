@@ -11,3 +11,16 @@ export const removeEditableModeInCoins = (rows: IRow[]) =>
 
     return el
   })
+
+export const calculatePriceByPercents = (data: IRow[], totalRows: number | string ) => {
+  const dataWithNewPrices = data.map((row: IRow) => {
+    let newPrice = ((parseFloat(totalRows) / 100) * (+row.portfolioPerc)).toFixed(2)
+
+    return {
+      ...row,
+      price: newPrice,
+    }
+  })
+
+  return dataWithNewPrices
+}

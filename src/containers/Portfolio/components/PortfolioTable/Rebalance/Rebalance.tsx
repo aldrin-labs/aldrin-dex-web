@@ -403,21 +403,6 @@ class Rebalance extends React.Component<IProps, IState> {
     this.setState({ selectedActive, areAllActiveChecked })
   }
 
-  calculatePriceByPercents = (data: IRow[], totalRows: number | string ) => {
-    // const { totalRows } = this.state
-
-    const dataWithNewPrices = data.map((row: IRow) => {
-      let newPrice = ((parseFloat(totalRows) / 100) * (+row.portfolioPerc)).toFixed(2)
-
-      return {
-        ...row,
-        price: newPrice,
-      }
-    })
-
-    return dataWithNewPrices
-  }
-
   onSaveClick = () => {
     const {
       rows,
@@ -436,7 +421,7 @@ class Rebalance extends React.Component<IProps, IState> {
       return
     }
 
-    const rowsWithNewPrice = this.calculatePriceByPercents(rows, totalRows)
+    const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
     const newRowsWithPriceDiff = this.calculatePriceDifference(
       rowsWithNewPrice,
       staticRows
@@ -717,7 +702,7 @@ class Rebalance extends React.Component<IProps, IState> {
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
 
-    const newCalculatedRowsWithPercents = this.calculatePriceByPercents(
+    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
       resultRows, totalRows
     )
 
