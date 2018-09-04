@@ -47,8 +47,6 @@ class PortfolioSelector extends React.Component<IProps, IState> {
   // }
 
   componentDidMount() {
-    console.log('object')
-    console.log(this.props.data)
     if (!has(this.props.data.getProfile, 'keys')) {
       return null
     }

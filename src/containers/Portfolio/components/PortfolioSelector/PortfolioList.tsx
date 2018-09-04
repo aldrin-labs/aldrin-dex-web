@@ -14,8 +14,8 @@ import * as actions from '../../actions'
 import * as API from '../../api'
 import { LoginAlert } from '../PortfolioTable/LoginAlert'
 
-import { IProps, IState } from '@components/PortfolioSelector/PortfolioList.types'
-import { Loading } from '../../../../components/Loading/Loading'
+import { IProps, IState } from './PortfolioList.types'
+import { Loading } from '@components/Loading/Loading'
 
 const SWrapper = styled.div`
   width: 100%;
