@@ -53,3 +53,76 @@ export const checkPercentSum = (data: IRow[]) => {
 
   return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
 }
+
+export const calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
+  data.forEach((row, i) => {
+    staticRows.forEach((staticRow, j) => {
+      if (
+        data[i].exchange === staticRows[j].exchange &&
+        data[i].symbol === staticRows[j].symbol
+      ) {
+        // TODO: Refactor when we have much more time than now
+        // tslint:disable-next-line no-object-mutation
+        data[i].deltaPrice = (
+          parseFloat(data[i].price) - parseFloat(staticRows[j].price)
+        ).toFixed(2)
+      }
+    })
+  })
+
+  console.log(
+    'data.length > staticRows.length',
+    data.length > staticRows.length
+  )
+
+  if (data.length > staticRows.length) {
+    const arrayOfNewCoinIndexes: number[] = data.reduce(
+      (newCoinsIndexesArray: number[], el, i) => {
+        if (
+          !staticRows.some(
+            (element) =>
+              element.exchange === el.exchange && element.symbol === el.symbol
+          )
+        ) {
+          return newCoinsIndexesArray.concat(i)
+        }
+
+        return newCoinsIndexesArray
+      },
+      []
+    )
+
+    data = data.map((row, i) => {
+      if (arrayOfNewCoinIndexes.includes(i)) {
+        return {
+          ...row,
+          deltaPrice: (parseFloat(row.price) - 0).toFixed(2),
+        }
+      }
+
+      return row
+    })
+  }
+
+  console.log('data length', data.length)
+  console.log('staticRows length', staticRows.length)
+  console.log('data in caluclatePriceDiff', data)
+
+  return data
+}
+
+export const calculatePercents = (data: IRow[], total: string, staticRows: IRow[]) => {
+  const newDataWithPercents = data.map((row) => {
+    const percentCaluclation =
+      +row.price === 0 ? '0' : ((parseFloat(row.price) * 100) / parseFloat(total)).toFixed(4)
+    const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
+
+    return {
+      ...row,
+      portfolioPerc: percentResult,
+    }
+  })
+  console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
+
+  return calculatePriceDifference(newDataWithPercents, staticRows)
+}

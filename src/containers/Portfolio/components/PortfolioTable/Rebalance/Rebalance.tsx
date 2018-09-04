@@ -196,90 +196,17 @@ class Rebalance extends React.Component<IProps, IState> {
     savedRows: IRow[],
     totalSavedRows: string
   ) => {
-    const rowsWithPercentage = this.calculatePercents(rows, totalRows, staticRows)
+    const rowsWithPercentage = UTILS.calculatePercents(rows, totalRows, staticRows)
     this.setState({
-      staticRows: this.calculatePercents(
+      staticRows: UTILS.calculatePercents(
         staticRows,
         totalStaticRows,
         staticRows
       ),
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
-      savedRows: this.calculatePercents(savedRows, totalSavedRows, staticRows),
+      savedRows: UTILS.calculatePercents(savedRows, totalSavedRows, staticRows),
     })
-  }
-
-  calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
-    data.forEach((row, i) => {
-      staticRows.forEach((staticRow, j) => {
-        if (
-          data[i].exchange === staticRows[j].exchange &&
-          data[i].symbol === staticRows[j].symbol
-        ) {
-          // TODO: Refactor when we have much more time than now
-          // tslint:disable-next-line no-object-mutation
-          data[i].deltaPrice = (
-            parseFloat(data[i].price) - parseFloat(staticRows[j].price)
-          ).toFixed(2)
-        }
-      })
-    })
-
-    console.log(
-      'data.length > staticRows.length',
-      data.length > staticRows.length
-    )
-
-    if (data.length > staticRows.length) {
-      const arrayOfNewCoinIndexes: number[] = data.reduce(
-        (newCoinsIndexesArray: number[], el, i) => {
-          if (
-            !staticRows.some(
-              (element) =>
-                element.exchange === el.exchange && element.symbol === el.symbol
-            )
-          ) {
-            return newCoinsIndexesArray.concat(i)
-          }
-
-          return newCoinsIndexesArray
-        },
-        []
-      )
-
-      data = data.map((row, i) => {
-        if (arrayOfNewCoinIndexes.includes(i)) {
-          return {
-            ...row,
-            deltaPrice: (parseFloat(row.price) - 0).toFixed(2),
-          }
-        }
-
-        return row
-      })
-    }
-
-    console.log('data length', data.length)
-    console.log('staticRows length', staticRows.length)
-    console.log('data in caluclatePriceDiff', data)
-
-    return data
-  }
-
-  calculatePercents = (data: IRow[], total: string, staticRows: IRow[]) => {
-    const newDataWithPercents = data.map((row) => {
-      const percentCaluclation =
-        +row.price === 0 ? '0' : ((parseFloat(row.price) * 100) / parseFloat(total)).toFixed(4)
-      const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
-
-      return {
-        ...row,
-        portfolioPerc: percentResult,
-      }
-    })
-    console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
-
-    return this.calculatePriceDifference(newDataWithPercents, staticRows)
   }
 
   onAddRowButtonClick = () => {
@@ -294,7 +221,7 @@ class Rebalance extends React.Component<IProps, IState> {
       editable: true,
     }
     clonedRows.push(newRow)
-    const rows = this.calculatePercents(clonedRows, totalRows, staticRows)
+    const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
     const totalPercents = UTILS.calculateTotalPercents(rows)
     console.log('rows in onAddRowButton ', rows)
 
@@ -327,7 +254,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
-    const newRowsWithNewPercents = this.calculatePercents(
+    const newRowsWithNewPercents = UTILS.calculatePercents(
       resultRows,
       newTotalRows,
       staticRows
@@ -399,7 +326,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
-    const newRowsWithPriceDiff = this.calculatePriceDifference(
+    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
       rowsWithNewPrice,
       staticRows
     )
@@ -508,7 +435,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const newUndistributedMoney = '0'
     const newTotalRows = UTILS.calculateTotal(rows, newUndistributedMoney)
     const newTableTotalRows = UTILS.calculateTableTotal(rows)
-    const newRowsWithNewPercents = this.calculatePercents(
+    const newRowsWithNewPercents = UTILS.calculatePercents(
       rows,
       newTotalRows,
       staticRows
@@ -555,7 +482,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
       const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
       const newTableTotal = UTILS.calculateTableTotal(rows)
-      const newRows = this.calculatePercents(rows, newTotal, staticRows)
+      const newRows = UTILS.calculatePercents(rows, newTotal, staticRows)
       const totalPercents = UTILS.calculateTotalPercents(newRows)
 
       this.setState({
@@ -682,7 +609,7 @@ class Rebalance extends React.Component<IProps, IState> {
       newCalculatedRowsWithPercents
     )
 
-    const rowWithNewPriceDiff = this.calculatePriceDifference(
+    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
       newCalculatedRowsWithPercents,
       staticRows
     )
@@ -757,7 +684,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
     const newTableTotal = UTILS.calculateTableTotal(rows)
 
-    const newRows = this.calculatePercents(rows, newTotal, staticRows)
+    const newRows = UTILS.calculatePercents(rows, newTotal, staticRows)
     const totalPercents = UTILS.calculateTotalPercents(newRows)
     const checkedPercentsIsGood = UTILS.checkPercentSum(newRows)
 
