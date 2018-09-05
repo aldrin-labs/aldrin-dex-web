@@ -228,69 +228,69 @@ class Rebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onAddRowButtonClick = () => {
-    const clonedRows = cloneArrayElementsOneLevelDeep(this.state.rows)
-    const { totalRows, staticRows } = this.state
-    const newRow = {
-      exchange: 'Exchange',
-      symbol: 'Coin',
-      portfolioPerc: 0.0,
-      deltaPrice: 0,
-      price: 0,
-      editable: true,
-    }
-    clonedRows.push(newRow)
-    const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
-    const totalPercents = UTILS.calculateTotalPercents(rows)
-    console.log('rows in onAddRowButton ', rows)
-
-    this.setState({ rows, totalPercents, areAllActiveChecked: false })
-  }
-
-  onDeleteRowClick = (idx: number) => {
-    const { rows, undistributedMoney, staticRows } = this.state
-    const clonedRows = rows.map((a) => ({ ...a }))
-    const currentRowMoney = clonedRows[idx].price
-    const isEditableCoin = clonedRows[idx].editable
-
-    const resultRows = isEditableCoin
-      ? [
-          ...clonedRows.slice(0, idx),
-          ...clonedRows.slice(idx + 1, clonedRows.length),
-        ]
-      : [
-          ...clonedRows.slice(0, idx),
-          {
-            ...clonedRows[idx],
-            price: '0',
-          },
-          ...clonedRows.slice(idx + 1, clonedRows.length),
-        ]
-
-    const newUndistributedMoney = (
-      parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
-    ).toFixed(2)
-
-    const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
-    const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
-    const newRowsWithNewPercents = UTILS.calculatePercents(
-      resultRows,
-      newTotalRows,
-      staticRows
-    )
-    const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
-
-    const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
-
-    this.setState({
-      totalPercents,
-      undistributedMoney: newUndistributedMoney,
-      totalRows: newTotalRows,
-      totalTableRows: newTableTotalRows,
-      rows: newRowsWithNewPercents,
-      isPercentSumGood: newIsPercentSumGood,
-    })
-  }
+  // onAddRowButtonClick = () => {
+  //   const clonedRows = cloneArrayElementsOneLevelDeep(this.state.rows)
+  //   const { totalRows, staticRows } = this.state
+  //   const newRow = {
+  //     exchange: 'Exchange',
+  //     symbol: 'Coin',
+  //     portfolioPerc: 0.0,
+  //     deltaPrice: 0,
+  //     price: 0,
+  //     editable: true,
+  //   }
+  //   clonedRows.push(newRow)
+  //   const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
+  //   const totalPercents = UTILS.calculateTotalPercents(rows)
+  //   console.log('rows in onAddRowButton ', rows)
+  //
+  //   this.setState({ rows, totalPercents, areAllActiveChecked: false })
+  // }
+  //
+  // onDeleteRowClick = (idx: number) => {
+  //   const { rows, undistributedMoney, staticRows } = this.state
+  //   const clonedRows = rows.map((a) => ({ ...a }))
+  //   const currentRowMoney = clonedRows[idx].price
+  //   const isEditableCoin = clonedRows[idx].editable
+  //
+  //   const resultRows = isEditableCoin
+  //     ? [
+  //         ...clonedRows.slice(0, idx),
+  //         ...clonedRows.slice(idx + 1, clonedRows.length),
+  //       ]
+  //     : [
+  //         ...clonedRows.slice(0, idx),
+  //         {
+  //           ...clonedRows[idx],
+  //           price: '0',
+  //         },
+  //         ...clonedRows.slice(idx + 1, clonedRows.length),
+  //       ]
+  //
+  //   const newUndistributedMoney = (
+  //     parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
+  //   ).toFixed(2)
+  //
+  //   const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
+  //   const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
+  //   const newRowsWithNewPercents = UTILS.calculatePercents(
+  //     resultRows,
+  //     newTotalRows,
+  //     staticRows
+  //   )
+  //   const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
+  //
+  //   const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
+  //
+  //   this.setState({
+  //     totalPercents,
+  //     undistributedMoney: newUndistributedMoney,
+  //     totalRows: newTotalRows,
+  //     totalTableRows: newTableTotalRows,
+  //     rows: newRowsWithNewPercents,
+  //     isPercentSumGood: newIsPercentSumGood,
+  //   })
+  // }
 
   onSelectActiveBalance = (idx: number) => {
     const selectedActive =
@@ -448,156 +448,6 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  onFocusPercentInput = (
-    e: React.FocusEvent<HTMLInputElement>,
-    idx: number
-  ) => {
-    const { rows } = this.state
-    let percentInput = e.target.value
-
-    if (percentInput === '0' || percentInput === 0) {
-      percentInput = ''
-    }
-
-    const clonedRows = rows!.map((a: IRow) => ({ ...a }))
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: percentInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    this.setState({
-      rows: resultRows,
-    })
-  }
-
-  onBlurPercentInput = (e: React.FocusEvent<HTMLInputElement>, idx: number) => {
-    const { rows } = this.state
-    let percentInput = e.target.value
-
-    if (!/^([0-9]{1,3}\.|)$/.test(percentInput)) {
-      return
-    }
-    if (percentInput === '') {
-      percentInput = '0'
-    } else {
-      percentInput = percentInput.slice(0, -1)
-    }
-
-    const clonedRows = rows.map((a) => ({ ...a }))
-    // clonedRows[idx].portfolioPerc = percentInput
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: percentInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    this.setState({
-      rows: resultRows,
-    })
-  }
-
-  onPercentInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    idx: number
-  ) => {
-    const { rows, totalRows, staticRows } = this.state
-    const percentInput = e.target.value
-
-    if (
-      !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
-        percentInput
-      )
-    ) {
-      return
-    }
-
-    const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    // clonedRows[idx].portfolioPerc = percentInput
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: percentInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
-      resultRows,
-      totalRows
-    )
-
-    const totalPercents = UTILS.calculateTotalPercents(
-      newCalculatedRowsWithPercents
-    )
-
-    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
-      newCalculatedRowsWithPercents,
-      staticRows
-    )
-
-    const newTableTotalRows = UTILS.calculateTableTotal(
-      newCalculatedRowsWithPercents
-    )
-
-    // NOT READY FOR NOW
-    // TODO: MOVE ALL parsefloat from this
-    const oldRowPrice = rows[idx].price
-    const newRowPrice = newCalculatedRowsWithPercents[idx].price
-    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
-
-    this.setState((prevState) => ({
-      totalPercents,
-      rows: rowWithNewPriceDiff,
-      isPercentSumGood: UTILS.checkPercentSum(newCalculatedRowsWithPercents),
-      undistributedMoney: (
-        parseFloat(prevState.undistributedMoney) + oldNewPriceDiff
-      ).toFixed(2),
-      totalTableRows: parseFloat(newTableTotalRows),
-    }))
-  }
-
-  handleSelectChange = (
-    idx: number,
-    name: string,
-    optionSelected: { label: string; value: string } | null
-  ) => {
-    const { rows } = this.state
-    const value = optionSelected ? optionSelected.value : ''
-    const clonedRows = rows.map((a: IRow) => ({ ...a }))
-
-    console.log('handleSelectChange idx: ', idx)
-    console.log('handleSelectChange value: ', value)
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        [name]: value,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    this.setState(
-      {
-        rows: resultRows,
-      },
-      () => {
-        console.log('this.state.rows', this.state.rows)
-      }
-    )
-  }
-
   onSortTable = (key: string, tableForSort: string) => {
     if (!this.state.staticRows && tableForSort === 'currentSortForStatic') {
       return
@@ -713,12 +563,6 @@ class Rebalance extends React.Component<IProps, IState> {
                 addMoneyInputValue,
               }}
               onSortTable={this.onSortTable}
-              onAddRowButtonClick={this.onAddRowButtonClick}
-              onDeleteRowClick={this.onDeleteRowClick}
-              onPercentInputChange={this.onPercentInputChange}
-              onBlurPercentInput={this.onBlurPercentInput}
-              onFocusPercentInput={this.onFocusPercentInput}
-              handleSelectChange={this.handleSelectChange}
               onSelectActiveBalance={this.onSelectActiveBalance}
               onSelectAllActive={this.onSelectAllActive}
               onSaveClick={this.onSaveClick}

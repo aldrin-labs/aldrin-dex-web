@@ -6,7 +6,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 
 import RebalanceMoneyButtons from './RebalanceMoneyButtons/RebalanceMoneyButtons'
 import RebalanceActionButtons from './RebalanceActionButtons/RebalanceActionButtons'
-import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
+import { cloneArrayElementsOneLevelDeep, formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions, coinsOptions } from '.././mocks'
 
@@ -25,6 +25,8 @@ import {
 } from './RebalancedPortfolioTable.styles'
 
 import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
+import * as UTILS from '@utils/PortfolioRebalanceUtils'
+import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
 const usdHeadingForRebalanced = [
   { name: 'Exchange', value: 'exchange' },
@@ -61,6 +63,208 @@ export default class RebalancedPortfolioTable extends React.Component<
     )
   }
 
+  onFocusPercentInput = (
+    e: React.FocusEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    const { rows, updateState } = this.props
+    let percentInput = e.target.value
+
+    if (percentInput === '0' || percentInput === 0) {
+      percentInput = ''
+    }
+
+    const clonedRows = rows!.map((a: IRow) => ({ ...a }))
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: percentInput,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    updateState({
+      rows: resultRows,
+    })
+  }
+
+  onBlurPercentInput = (e: React.FocusEvent<HTMLInputElement>, idx: number) => {
+    const { rows, updateState } = this.props
+    let percentInput = e.target.value
+
+    if (!/^([0-9]{1,3}\.|)$/.test(percentInput)) {
+      return
+    }
+    if (percentInput === '') {
+      percentInput = '0'
+    } else {
+      percentInput = percentInput.slice(0, -1)
+    }
+
+    const clonedRows = rows.map((a) => ({ ...a }))
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: percentInput,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    updateState({
+      rows: resultRows,
+    })
+  }
+
+  onPercentInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    idx: number
+  ) => {
+    const { rows, totalRows, staticRows, undistributedMoney, updateState } = this.props
+    const percentInput = e.target.value
+
+    if (
+      !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
+        percentInput
+      )
+    ) {
+      return
+    }
+
+    const clonedRows = rows.map((a: IRow) => ({ ...a }))
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: percentInput,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
+      resultRows,
+      totalRows
+    )
+
+    const totalPercents = UTILS.calculateTotalPercents(
+      newCalculatedRowsWithPercents
+    )
+
+    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
+      newCalculatedRowsWithPercents,
+      staticRows
+    )
+
+    const newTableTotalRows = UTILS.calculateTableTotal(
+      newCalculatedRowsWithPercents
+    )
+
+    // NOT READY FOR NOW
+    // TODO: MOVE ALL parsefloat from this
+    const oldRowPrice = rows[idx].price
+    const newRowPrice = newCalculatedRowsWithPercents[idx].price
+    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+
+    updateState({
+      totalPercents,
+      rows: rowWithNewPriceDiff,
+      isPercentSumGood: UTILS.checkPercentSum(newCalculatedRowsWithPercents),
+      undistributedMoney: (
+        parseFloat(undistributedMoney) + oldNewPriceDiff
+      ).toFixed(2),
+      totalTableRows: parseFloat(newTableTotalRows),
+    })
+  }
+
+  handleSelectChange = (
+    idx: number,
+    name: string,
+    optionSelected?: { label: string; value: string } | null
+  ) => {
+    const { rows, updateState } = this.props
+    const value = optionSelected ? optionSelected.value : ''
+    const clonedRows = rows.map((a: IRow) => ({ ...a }))
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        [name]: value,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    updateState(
+      {
+        rows: resultRows,
+      }
+    )
+  }
+
+  onAddRowButtonClick = () => {
+    const clonedRows = cloneArrayElementsOneLevelDeep(this.props.rows)
+    const { totalRows, staticRows, updateState } = this.props
+    const newRow = {
+      exchange: 'Exchange',
+      symbol: 'Coin',
+      portfolioPerc: 0.0,
+      deltaPrice: 0,
+      price: 0,
+      editable: true,
+    }
+    clonedRows.push(newRow)
+    const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
+    const totalPercents = UTILS.calculateTotalPercents(rows)
+
+    updateState({ rows, totalPercents, areAllActiveChecked: false })
+  }
+
+  onDeleteRowClick = (idx: number) => {
+    const { rows, undistributedMoney, staticRows, updateState } = this.props
+    const clonedRows = rows.map((a) => ({ ...a }))
+    const currentRowMoney = clonedRows[idx].price
+    const isEditableCoin = clonedRows[idx].editable
+
+    const resultRows = isEditableCoin
+      ? [
+        ...clonedRows.slice(0, idx),
+        ...clonedRows.slice(idx + 1, clonedRows.length),
+      ]
+      : [
+        ...clonedRows.slice(0, idx),
+        {
+          ...clonedRows[idx],
+          price: '0',
+        },
+        ...clonedRows.slice(idx + 1, clonedRows.length),
+      ]
+
+    const newUndistributedMoney = (
+      parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
+    ).toFixed(2)
+
+    const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
+    const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
+    const newRowsWithNewPercents = UTILS.calculatePercents(
+      resultRows,
+      newTotalRows,
+      staticRows
+    )
+    const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
+
+    const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
+
+    updateState({
+      totalPercents,
+      undistributedMoney: newUndistributedMoney,
+      totalRows: newTotalRows,
+      totalTableRows: newTableTotalRows,
+      rows: newRowsWithNewPercents,
+      isPercentSumGood: newIsPercentSumGood,
+    })
+  }
+
   render() {
     const {
       rows,
@@ -77,12 +281,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       isEditModeEnabled,
       addMoneyInputValue,
       onSortTable,
-      onAddRowButtonClick,
-      onDeleteRowClick,
-      onPercentInputChange,
-      onBlurPercentInput,
-      onFocusPercentInput,
-      handleSelectChange,
       onSelectActiveBalance,
       onSelectAllActive,
       onSaveClick,
@@ -232,8 +430,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                             <SelectR
                               key={`inputNameExchange${rowIndex}`}
                               classNamePrefix="custom-select-box"
-                              isClearable
-                              isSearchable
+                              isClearable={true}
+                              isSearchable={true}
                               options={exchangeOptions}
                               menuPortalTarget={document.body}
                               menuStyles={{
@@ -247,7 +445,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 padding: '2px',
                               }}
                               onChange={() =>
-                                handleSelectChange(rowIndex, 'exchange')
+                                this.handleSelectChange(rowIndex, 'exchange')
                               }
                             />
                           </PTDR>
@@ -260,8 +458,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                             <SelectR
                               key={`inputCoinSymbol${rowIndex}`}
                               classNamePrefix="custom-select-box"
-                              isClearable
-                              isSearchable
+                              isClearable={true}
+                              isSearchable={true}
                               options={coinsOptions}
                               menuPortalTarget={document.body}
                               menuStyles={{
@@ -275,7 +473,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 padding: '2px',
                               }}
                               onChange={() =>
-                                handleSelectChange(rowIndex, 'symbol')
+                                this.handleSelectChange(rowIndex, 'symbol')
                               }
                             />
                           </PTDR>
@@ -293,8 +491,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                               {col}
                             </PTDR>
                           )
-                        } else {
-                          return (
+                        }
+
+                        return (
                             <PTDR key={`percentageInCont${idx}`}>
                               <InputTable
                                 key={`inputPercentage${rowIndex}`}
@@ -302,16 +501,15 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 isPercentSumGood={isPercentSumGood}
                                 value={rows[rowIndex].portfolioPerc}
                                 onChange={(e) =>
-                                  onPercentInputChange(e, rowIndex)
+                                  this.onPercentInputChange(e, rowIndex)
                                 }
-                                onBlur={(e) => onBlurPercentInput(e, rowIndex)}
+                                onBlur={(e) => this.onBlurPercentInput(e, rowIndex)}
                                 onFocus={(e) =>
-                                  onFocusPercentInput(e, rowIndex)
+                                  this.onFocusPercentInput(e, rowIndex)
                                 }
                               />
                             </PTDR>
-                          )
-                        }
+                        )
                       }
                       if (col.match(/BUY/g)) {
                         const color = '#4caf50'
@@ -352,7 +550,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                     <PTDR>
                       <TableButton
                         isDeleteColor={false}
-                        onClick={() => onDeleteRowClick(rowIndex)}
+                        onClick={() => this.onDeleteRowClick(rowIndex)}
                       >
                         <DeleteIcon />
                       </TableButton>
@@ -371,7 +569,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   <PTDR>
                     <TableButton
                       isDeleteColor={true}
-                      onClick={onAddRowButtonClick}
+                      onClick={this.onAddRowButtonClick}
                     >
                       <AddIcon />
                     </TableButton>

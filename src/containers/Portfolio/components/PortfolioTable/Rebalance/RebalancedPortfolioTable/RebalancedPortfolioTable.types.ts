@@ -26,7 +26,7 @@ export interface IProps {
   onDeleteUndistributedMoney: Function
   handleSelectChange: Function
   onSelectActiveBalance: Function
-  onSelectAllActive: Function
+  onSelectAllActive: React.ChangeEventHandler
   onSaveClick: Function
   onReset: Function
   onDistribute: Function
