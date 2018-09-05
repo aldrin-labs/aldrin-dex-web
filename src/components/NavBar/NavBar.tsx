@@ -6,15 +6,17 @@ import { Login } from '@containers/Login'
 import { withTheme, Theme, WithTheme } from '@material-ui/core/styles'
 
 export interface Props {
-  theme: Theme
+  theme?: Theme
+  hide?: boolean
 }
 // ToDo add grid
-const NavBarRaw: SFC<WithTheme> = ({
+const NavBarRaw: SFC<Props> = ({
   theme: {
     palette: { navbar, type, getContrastText },
   },
+  hide = false,
 }) => (
-  <Nav background={navbar[type]}>
+  <Nav hide={hide} background={navbar[type]}>
     <Logo src="https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png" />
     <SNav>
       {/*<NavButton link="/" title="Home" exact />*/}
@@ -50,6 +52,12 @@ const Nav = styled.div`
   align-items: center;
   background-color: ${(props: { background: string }) => props.background};
   z-index: 1;
+  ${(props: { hide: boolean; background: string }) =>
+    props.hide
+      ? `opacity: 0;
+    position: absolute;
+    z-index: -100;`
+      : ''};
 
   @media (max-width: 840px) {
     justify-content: space-between;

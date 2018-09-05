@@ -21,6 +21,7 @@ class OnlyCharts extends Component<Props, {}> {
       openedWarning,
       removeWarningMessage,
       theme,
+      view,
     } = this.props
 
     return (
@@ -31,7 +32,11 @@ class OnlyCharts extends Component<Props, {}> {
         mountOnEnter={true}
         unmountOnExit={true}
       >
-        <ChartContainer anime={false} chartsCount={charts.length || 1}>
+        <ChartContainer
+          fullscreen={view !== 'default'}
+          anime={false}
+          chartsCount={charts.length || 1}
+        >
           {charts.map(
             (chart: { pair: string; id: string } | string, i: number) =>
               // fallback for old values that were strings and now there must be objects
@@ -67,14 +72,18 @@ class OnlyCharts extends Component<Props, {}> {
 }
 
 const ChartContainer = styled.div`
-  margin-top: ${(props: { chartsCount?: number }) => {
-    if (props.chartsCount === 3 || props.chartsCount === 4) {
+  margin-top: ${(props: { chartsCount?: number; fullscreen: boolean }) => {
+    if (
+      !props.fullscreen &&
+      (props.chartsCount === 3 || props.chartsCount === 4)
+    ) {
       return '10vh'
     }
     return 0
   }};
   overflow: hidden;
-  max-height: calc(100vh - 59px - 80px);
+  max-height: ${(props) =>
+    props.fullscreen ? '100vh' : 'calc(100vh - 59px - 80px)'};
   width: 100%;
   display: grid;
   grid-template-columns: repeat(
@@ -86,7 +95,14 @@ const ChartContainer = styled.div`
     }}
   );
   grid-template-rows: repeat(
-    ${(props: { chartsCount?: number }) => {
+    ${(props: { chartsCount?: number; fullscreen: boolean }) => {
+      if (props.fullscreen) {
+        if (props.chartsCount && props.chartsCount > 4) {
+          return '2, calc(50vh - 30px)'
+        }
+
+        return '1, calc(100vh - 60px)'
+      }
       if (props.chartsCount && props.chartsCount > 4) {
         return '2, 41.5vh'
       }

@@ -333,7 +333,11 @@ class Chart extends React.Component {
 
   renderOnlyCharts = () => (
     <OnlyCharts
-      {...{ theme: this.props.theme, mainPair: this.props.currencyPair }}
+      {...{
+        theme: this.props.theme,
+        mainPair: this.props.currencyPair,
+        view: this.props.view,
+      }}
     />
   )
 
@@ -358,7 +362,7 @@ class Chart extends React.Component {
     const toggler = this.renderToggler()
 
     return (
-      <MainContainer>
+      <MainContainer fullscreen={view !== 'default'}>
         <TogglerContainer>
           <AutoSuggestSelect
             value={view === 'default' && currencyPair}
@@ -376,8 +380,7 @@ class Chart extends React.Component {
 }
 
 const MainContainer = styled.div`
-  font-family: Roboto, sans-serif;
-
+  ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
   @media (min-width: 1900px) {
     margin-top: -0.75rem;
   }
