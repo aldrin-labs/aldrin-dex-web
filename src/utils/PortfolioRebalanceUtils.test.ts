@@ -1,4 +1,4 @@
-import { removeEditableModeInCoins } from './PortfolioRebalanceUtils'
+import { removeEditableModeInCoins, calculateTableTotal } from './PortfolioRebalanceUtils'
 
 // Function that remove edit prop in our rows of Coins on Rebalance tab.
 // This function used to define, should I delete row or just sell all values in the row
@@ -58,5 +58,30 @@ describe('Function removeEditableModeInCoins', () => {
           editable: false,
         }),
       ]))
+  })
+})
+
+
+
+
+describe('Function calculateTableTotal ', () => {
+
+  const rowExample = {
+    exchange: 'Exchange',
+    symbol: 'Coin',
+    portfolioPerc: 0.0,
+    deltaPrice: 0,
+    price: 10,
+  }
+  const rows = Array(3).fill(rowExample)
+
+  it('the result should be String-type', () => {
+    expect(typeof calculateTableTotal(rows)).toBe('string')
+  })
+  it('should summarize', () => {
+    expect(+calculateTableTotal(rows)).toBe(30)
+  })
+  it('should summarize and round for 2 digits after point', () => {
+    expect(calculateTableTotal(rows)).toBe('30.00')
   })
 })
