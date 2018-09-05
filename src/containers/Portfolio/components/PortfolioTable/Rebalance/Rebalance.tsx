@@ -231,40 +231,6 @@ class Rebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onSelectActiveBalance = (idx: number) => {
-    const selectedActive =
-      (this.state.selectedActive && this.state.selectedActive.slice()) || []
-    const hasIndex = selectedActive.indexOf(idx)
-    if (hasIndex >= 0) {
-      selectedActive.splice(hasIndex, 1)
-    } else {
-      selectedActive.push(idx)
-    }
-
-    const areAllActiveChecked = selectedActive.length === this.state.rows.length
-
-    this.setState({ selectedActive, areAllActiveChecked })
-  }
-
-  onSelectAllActive = () => {
-    const selectedActive =
-      (this.state.selectedActive && this.state.selectedActive.slice()) || []
-    let { areAllActiveChecked } = this.state
-    if (selectedActive.length === this.state.rows.length) {
-      selectedActive.splice(0, selectedActive.length)
-      areAllActiveChecked = false
-    } else {
-      selectedActive.splice(0, selectedActive.length)
-      this.state.rows.map((a, i) => {
-        // if (i < this.state.rows.length - 1) {
-        selectedActive.push(i)
-        // }
-      })
-      areAllActiveChecked = true
-    }
-    this.setState({ selectedActive, areAllActiveChecked })
-  }
-
   onSaveClick = () => {
     const {
       rows,
@@ -375,12 +341,6 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  escFunction = (e: KeyboardEvent): void => {
-    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
-      this.onEditModeEnable()
-    }
-  }
-
   onSortTable = (key: string, tableForSort: string) => {
     if (!this.state.staticRows && tableForSort === 'currentSortForStatic') {
       return
@@ -422,6 +382,12 @@ class Rebalance extends React.Component<IProps, IState> {
 
   updateState = (obj: object) => {
     this.setState(obj)
+  }
+
+  escFunction = (e: KeyboardEvent): void => {
+    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
+      this.onEditModeEnable()
+    }
   }
 
   render() {

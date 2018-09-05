@@ -63,6 +63,38 @@ export default class RebalancedPortfolioTable extends React.Component<
     )
   }
 
+  onSelectActiveBalance = (idx: number) => {
+    const selectedActive =
+      (this.props.selectedActive && this.props.selectedActive.slice()) || []
+    const hasIndex = selectedActive.indexOf(idx)
+    if (hasIndex >= 0) {
+      selectedActive.splice(hasIndex, 1)
+    } else {
+      selectedActive.push(idx)
+    }
+
+    const areAllActiveChecked = selectedActive.length === this.props.rows.length
+
+    this.props.updateState({ selectedActive, areAllActiveChecked })
+  }
+
+  onSelectAllActive = () => {
+    const selectedActive =
+      (this.props.selectedActive && this.props.selectedActive.slice()) || []
+    let { areAllActiveChecked } = this.props
+    if (selectedActive.length === this.props.rows.length) {
+      selectedActive.splice(0, selectedActive.length)
+      areAllActiveChecked = false
+    } else {
+      selectedActive.splice(0, selectedActive.length)
+      this.props.rows.forEach((a, i) => {
+        selectedActive.push(i)
+      })
+      areAllActiveChecked = true
+    }
+    this.props.updateState({ selectedActive, areAllActiveChecked })
+  }
+
   onFocusPercentInput = (
     e: React.FocusEvent<HTMLInputElement>,
     idx: number
@@ -276,8 +308,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       isEditModeEnabled,
       addMoneyInputValue,
       onSortTable,
-      onSelectActiveBalance,
-      onSelectAllActive,
       onSaveClick,
       onReset,
       onEditModeEnable,
@@ -316,7 +346,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 {isEditModeEnabled && (
                   <PTHR key="selectAll" style={{ textAlign: 'left' }}>
                     <Checkbox
-                      onChange={onSelectAllActive}
+                      onChange={this.onSelectAllActive}
                       checked={areAllActiveChecked}
                       type="checkbox"
                       id="selectAllActive"
@@ -377,7 +407,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 } = row
 
                 const isSelected =
-                  (selectedActive && selectedActive.indexOf(rowIndex) >= 0) ||
+                  (selectedActive && selectedActive.indexOf(id) >= 0) ||
                   false
 
                 let deltaPriceString = ''
@@ -408,7 +438,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                       <PTDR
                         key="smt"
                         isSelected={isSelected}
-                        onClick={() => onSelectActiveBalance(id)}
+                        onClick={() => this.onSelectActiveBalance(id)}
                       >
                         {this.renderActiveCheckbox(id)}
                       </PTDR>
