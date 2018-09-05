@@ -1,4 +1,5 @@
 import { IRow } from '../Rebalance.types'
+import React from 'react'
 
 export interface IProps {
   rows: IRow[]
@@ -15,9 +16,9 @@ export interface IProps {
   addMoneyInputValue: number | string
   isEditModeEnabled: boolean
   onSortTable: Function
-  onSaveClick: Function
-  onReset: Function
-  onEditModeEnable: Function
+  onSaveClick: React.ReactEventHandler
+  onReset: React.ReactEventHandler
+  onEditModeEnable: React.ReactEventHandler
   updateState: Function
 }
 

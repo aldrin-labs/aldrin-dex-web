@@ -89,7 +89,6 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
     const inputAddMoney = e.target.value
 
     if (!/^(!?(-?[0-9]+\.?[0-9]+)|(-?[0-9]\.?)|)$/.test(inputAddMoney)) {
-      console.log('not our number')
       return
     }
 
@@ -111,7 +110,6 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
     if (+this.props.addMoneyInputValue === 0) {
       return
     }
-    console.log('addmoneypressed')
 
     const {
       rows,

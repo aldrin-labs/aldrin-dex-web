@@ -460,8 +460,6 @@ class Rebalance extends React.Component<IProps, IState> {
                 addMoneyInputValue,
               }}
               onSortTable={this.onSortTable}
-              onSelectActiveBalance={this.onSelectActiveBalance}
-              onSelectAllActive={this.onSelectAllActive}
               onSaveClick={this.onSaveClick}
               onReset={this.onReset}
               onEditModeEnable={this.onEditModeEnable}
