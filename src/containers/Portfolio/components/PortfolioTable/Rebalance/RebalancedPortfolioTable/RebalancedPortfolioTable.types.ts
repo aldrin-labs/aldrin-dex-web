@@ -2,6 +2,7 @@ import { IRow } from '../Rebalance.types'
 
 export interface IProps {
   rows: IRow[]
+  staticRows: IRow[]
   currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   totalRows: number | string
   selectedActive: number[] | null
@@ -30,6 +31,7 @@ export interface IProps {
   onReset: Function
   onDistribute: Function
   onEditModeEnable: Function
+  updateState: Function
 }
 
 export interface IState {

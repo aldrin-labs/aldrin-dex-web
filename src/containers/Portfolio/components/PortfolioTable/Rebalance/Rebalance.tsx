@@ -448,96 +448,6 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  onDeleteUndistributedMoney = () => {
-    const { rows, staticRows } = this.state
-
-    const newUndistributedMoney = '0'
-    const newTotalRows = UTILS.calculateTotal(rows, newUndistributedMoney)
-    const newTableTotalRows = UTILS.calculateTableTotal(rows)
-    const newRowsWithNewPercents = UTILS.calculatePercents(
-      rows,
-      newTotalRows,
-      staticRows
-    )
-    const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
-    const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
-
-    this.setState({
-      totalPercents,
-      undistributedMoney: '0',
-      totalRows: newTotalRows,
-      totalTableRows: newTableTotalRows,
-      rows: newRowsWithNewPercents,
-      isPercentSumGood: newIsPercentSumGood,
-    })
-  }
-
-  onDistribute = () => {
-    const { selectedActive, rows, staticRows, undistributedMoney } = this.state
-    if (selectedActive && selectedActive.length > 0) {
-      let money = parseFloat(undistributedMoney)
-
-      if (selectedActive.length > 1) {
-        const moneyPart = Math.floor(money / selectedActive.length)
-        selectedActive.forEach((row, i) => {
-          // TODO: Refactor when we have much more time than now
-          // tslint:disable-next-line no-object-mutation
-          const roundedCurrentPrice = parseFloat(
-            rows![selectedActive![i]]!.price
-          )
-          rows![selectedActive![i]]!.price = roundedCurrentPrice + moneyPart
-          money -= moneyPart
-        })
-      } else {
-        const roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
-        // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
-        // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
-        // tslint:disable-next-line no-object-mutation
-        rows![selectedActive![0]]!.price =
-          roundedPrice + parseFloat(undistributedMoney)
-        money = 0
-      }
-
-      // toFixed(2) for undistributed money is just an experiment
-      const newUndistributedMoney = money.toFixed(2)
-
-      const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
-      const newTableTotal = UTILS.calculateTableTotal(rows)
-      const newRows = UTILS.calculatePercents(rows, newTotal, staticRows)
-      const totalPercents = UTILS.calculateTotalPercents(newRows)
-
-      this.setState({
-        totalPercents,
-        selectedActive,
-        undistributedMoney: newUndistributedMoney,
-        rows: newRows,
-        totalRows: newTotal,
-        totalTableRows: newTableTotal,
-        isPercentSumGood: UTILS.checkPercentSum(newRows),
-      })
-    }
-  }
-
-  onAddMoneyInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputAddMoney = e.target.value
-
-    if (!/^(!?(-?[0-9]+\.?[0-9]+)|(-?[0-9]\.?)|)$/.test(inputAddMoney)) {
-      console.log('not our number')
-
-      return
-    }
-
-    this.setState({ addMoneyInputValue: inputAddMoney })
-  }
-  onFocusAddMoneyInput = (e: React.FocusEvent<HTMLInputElement>) => {
-    let inputAddMoney = e.target.value
-
-    if (inputAddMoney === 0 || inputAddMoney === '0') {
-      inputAddMoney = ''
-      this.setState({ addMoneyInputValue: inputAddMoney })
-    }
-  }
-
   onFocusPercentInput = (
     e: React.FocusEvent<HTMLInputElement>,
     idx: number
@@ -688,41 +598,6 @@ class Rebalance extends React.Component<IProps, IState> {
     )
   }
 
-  onAddMoneyButtonPressed = () => {
-    if (+this.state.addMoneyInputValue === 0) {
-      return
-    }
-    console.log('addmoneypressed')
-
-    const {
-      rows,
-      staticRows,
-      addMoneyInputValue,
-      undistributedMoney,
-    } = this.state
-
-    const newUndistributedMoney = (
-      Number(undistributedMoney) + Number(addMoneyInputValue)
-    ).toFixed(2)
-
-    const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
-    const newTableTotal = UTILS.calculateTableTotal(rows)
-
-    const newRows = UTILS.calculatePercents(rows, newTotal, staticRows)
-    const totalPercents = UTILS.calculateTotalPercents(newRows)
-    const checkedPercentsIsGood = UTILS.checkPercentSum(newRows)
-
-    this.setState({
-      totalPercents,
-      undistributedMoney: newUndistributedMoney,
-      addMoneyInputValue: 0,
-      rows: newRows,
-      totalRows: newTotal,
-      totalTableRows: newTableTotal,
-      isPercentSumGood: checkedPercentsIsGood,
-    })
-  }
-
   onSortTable = (key: string, tableForSort: string) => {
     if (!this.state.staticRows && tableForSort === 'currentSortForStatic') {
       return
@@ -760,6 +635,10 @@ class Rebalance extends React.Component<IProps, IState> {
     this.setState({
       [e.target.name]: e.target.value,
     })
+  }
+
+  updateState = (obj: object) => {
+    this.setState(obj)
   }
 
   render() {
@@ -820,6 +699,7 @@ class Rebalance extends React.Component<IProps, IState> {
             <RebalancedPortfolioTable
               {...{
                 isEditModeEnabled,
+                staticRows,
                 rows,
                 currentSortForDynamic,
                 selectedActive,
@@ -838,17 +718,13 @@ class Rebalance extends React.Component<IProps, IState> {
               onPercentInputChange={this.onPercentInputChange}
               onBlurPercentInput={this.onBlurPercentInput}
               onFocusPercentInput={this.onFocusPercentInput}
-              onAddMoneyInputChange={this.onAddMoneyInputChange}
-              onFocusAddMoneyInput={this.onFocusAddMoneyInput}
-              onAddMoneyButtonPressed={this.onAddMoneyButtonPressed}
-              onDeleteUndistributedMoney={this.onDeleteUndistributedMoney}
               handleSelectChange={this.handleSelectChange}
               onSelectActiveBalance={this.onSelectActiveBalance}
               onSelectAllActive={this.onSelectAllActive}
               onSaveClick={this.onSaveClick}
               onReset={this.onReset}
-              onDistribute={this.onDistribute}
               onEditModeEnable={this.onEditModeEnable}
+              updateState={this.updateState}
             />
           </Container>
           <ChartWrapper isEditModeEnabled={isEditModeEnabled}>

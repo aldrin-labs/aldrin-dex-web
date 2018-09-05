@@ -64,6 +64,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   render() {
     const {
       rows,
+      staticRows,
       currentSortForDynamic,
       selectedActive,
       areAllActiveChecked,
@@ -81,17 +82,13 @@ export default class RebalancedPortfolioTable extends React.Component<
       onPercentInputChange,
       onBlurPercentInput,
       onFocusPercentInput,
-      onAddMoneyInputChange,
-      onFocusAddMoneyInput,
-      onAddMoneyButtonPressed,
-      onDeleteUndistributedMoney,
       handleSelectChange,
       onSelectActiveBalance,
       onSelectAllActive,
       onSaveClick,
       onReset,
-      onDistribute,
       onEditModeEnable,
+      updateState,
     } = this.props
 
     const saveButtonColor =
@@ -415,11 +412,10 @@ export default class RebalancedPortfolioTable extends React.Component<
             isEditModeEnabled,
             addMoneyInputValue,
             undistributedMoney,
-            onAddMoneyInputChange,
-            onFocusAddMoneyInput,
-            onAddMoneyButtonPressed,
-            onDeleteUndistributedMoney,
-            onDistribute,
+            staticRows,
+            rows,
+            selectedActive,
+            updateState,
           }}
         />
       </TableAndHeadingWrapper>

@@ -1,12 +1,11 @@
-import React from 'react'
+import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
 export interface IProps {
   isEditModeEnabled: boolean
-  addMoneyInputValue: number
-  undistributedMoney: number
-  onAddMoneyInputChange: React.ChangeEventHandler
-  onFocusAddMoneyInput: React.FocusEventHandler
-  onAddMoneyButtonPressed: React.ReactEventHandler
-  onDeleteUndistributedMoney: React.ReactEventHandler
-  onDistribute: React.ReactEventHandler
+  addMoneyInputValue: number | string
+  undistributedMoney: string
+  rows: IRow[]
+  staticRows: IRow[]
+  selectedActive: number[] | null
+  updateState: Function
 }
