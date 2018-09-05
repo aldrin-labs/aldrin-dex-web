@@ -228,70 +228,6 @@ class Rebalance extends React.Component<IProps, IState> {
     })
   }
 
-  // onAddRowButtonClick = () => {
-  //   const clonedRows = cloneArrayElementsOneLevelDeep(this.state.rows)
-  //   const { totalRows, staticRows } = this.state
-  //   const newRow = {
-  //     exchange: 'Exchange',
-  //     symbol: 'Coin',
-  //     portfolioPerc: 0.0,
-  //     deltaPrice: 0,
-  //     price: 0,
-  //     editable: true,
-  //   }
-  //   clonedRows.push(newRow)
-  //   const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
-  //   const totalPercents = UTILS.calculateTotalPercents(rows)
-  //   console.log('rows in onAddRowButton ', rows)
-  //
-  //   this.setState({ rows, totalPercents, areAllActiveChecked: false })
-  // }
-  //
-  // onDeleteRowClick = (idx: number) => {
-  //   const { rows, undistributedMoney, staticRows } = this.state
-  //   const clonedRows = rows.map((a) => ({ ...a }))
-  //   const currentRowMoney = clonedRows[idx].price
-  //   const isEditableCoin = clonedRows[idx].editable
-  //
-  //   const resultRows = isEditableCoin
-  //     ? [
-  //         ...clonedRows.slice(0, idx),
-  //         ...clonedRows.slice(idx + 1, clonedRows.length),
-  //       ]
-  //     : [
-  //         ...clonedRows.slice(0, idx),
-  //         {
-  //           ...clonedRows[idx],
-  //           price: '0',
-  //         },
-  //         ...clonedRows.slice(idx + 1, clonedRows.length),
-  //       ]
-  //
-  //   const newUndistributedMoney = (
-  //     parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
-  //   ).toFixed(2)
-  //
-  //   const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
-  //   const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
-  //   const newRowsWithNewPercents = UTILS.calculatePercents(
-  //     resultRows,
-  //     newTotalRows,
-  //     staticRows
-  //   )
-  //   const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
-  //
-  //   const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
-  //
-  //   this.setState({
-  //     totalPercents,
-  //     undistributedMoney: newUndistributedMoney,
-  //     totalRows: newTotalRows,
-  //     totalTableRows: newTableTotalRows,
-  //     rows: newRowsWithNewPercents,
-  //     isPercentSumGood: newIsPercentSumGood,
-  //   })
-  // }
-
   onSelectActiveBalance = (idx: number) => {
     const selectedActive =
       (this.state.selectedActive && this.state.selectedActive.slice()) || []
@@ -335,8 +271,6 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows,
     } = this.state
 
-    console.log('rows rows rows: ', rows)
-
     if (!isPercentSumGood) {
       return
     }
@@ -371,8 +305,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const { updateRebalanceMutationQuery } = this.props
     const { rows, totalRows } = this.state
 
-    console.log(updateRebalanceMutationQuery)
-
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: {
         exchange: el.exchange,
@@ -382,8 +314,6 @@ class Rebalance extends React.Component<IProps, IState> {
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
     }))
-
-    console.log(combinedRowsData)
 
     const variablesForMutation = {
       input: {
@@ -517,8 +447,6 @@ class Rebalance extends React.Component<IProps, IState> {
       leftBar,
       rightBar,
     } = this.state
-
-    console.log('staticRows in render: ', staticRows)
 
     const tableDataHasData = !staticRows.length || !rows.length
 
