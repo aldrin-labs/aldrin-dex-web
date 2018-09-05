@@ -680,6 +680,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               </PTBody>
               {selectedSum && selectedSum.currency ? (
                 <PortfolioTableSum
+                  palette={theme.palette}
                   industry={true}
                   selectedSum={selectedSum}
                   isUSDCurrently={this.props.isUSDCurrently}

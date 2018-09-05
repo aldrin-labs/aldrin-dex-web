@@ -2,9 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { withTheme } from '@material-ui/core/styles'
-import classNames from 'classnames'
-import { Typography, Divider, Button } from '@material-ui/core'
+import { Typography, Divider, Button, Paper } from '@material-ui/core'
 import AddIcon from 'material-ui-icons/Add'
 import { Link } from 'react-router-dom'
 
@@ -483,15 +481,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                   onSelectAll={this.onSelectAll}
                   onSortTable={this.onSortTable}
                   currentSort={currentSort}
+                  theme={theme}
                 />
                 <PortfolioTableMain
                   tableData={tableData}
                   selectedBalances={selectedBalances}
                   isUSDCurrently={isUSDCurrently}
                   onSelectBalance={this.onSelectBalance}
+                  theme={theme}
                 />
                 {selectedSum.currency ? (
                   <PortfolioTableSum
+                    palette={theme.palette}
                     selectedSum={selectedSum}
                     isUSDCurrently={isUSDCurrently}
                   />
@@ -611,7 +612,7 @@ const TableAndHeadingWrapper = styled.div`
   ${customAquaScrollBar};
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled(Paper)`
   width: 100%;
   height: 100%;
   position: relative;
