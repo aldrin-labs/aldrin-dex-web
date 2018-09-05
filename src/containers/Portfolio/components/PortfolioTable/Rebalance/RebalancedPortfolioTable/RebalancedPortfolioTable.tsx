@@ -368,6 +368,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             <PTBody isEditModeEnabled={isEditModeEnabled}>
               {rows.map((row, rowIndex) => {
                 const {
+                  id,
                   exchange,
                   symbol,
                   portfolioPerc,
@@ -407,9 +408,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                       <PTDR
                         key="smt"
                         isSelected={isSelected}
-                        onClick={() => onSelectActiveBalance(rowIndex)}
+                        onClick={() => onSelectActiveBalance(id)}
                       >
-                        {this.renderActiveCheckbox(rowIndex)}
+                        {this.renderActiveCheckbox(id)}
                       </PTDR>
                     )}
 
