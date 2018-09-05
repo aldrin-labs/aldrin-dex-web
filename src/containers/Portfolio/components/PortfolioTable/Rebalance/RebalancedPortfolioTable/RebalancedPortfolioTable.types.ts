@@ -15,21 +15,8 @@ export interface IProps {
   addMoneyInputValue: number | string
   isEditModeEnabled: boolean
   onSortTable: Function
-  onAddRowButtonClick: Function
-  onDeleteRowClick: Function
-  onPercentInputChange: Function
-  onBlurPercentInput: Function
-  onFocusPercentInput: Function
-  onAddMoneyInputChange: Function
-  onFocusAddMoneyInput: Function
-  onAddMoneyButtonPressed: Function
-  onDeleteUndistributedMoney: Function
-  handleSelectChange: Function
-  onSelectActiveBalance: Function
-  onSelectAllActive: React.ChangeEventHandler
   onSaveClick: Function
   onReset: Function
-  onDistribute: Function
   onEditModeEnable: Function
   updateState: Function
 }
