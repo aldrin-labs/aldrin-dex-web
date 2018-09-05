@@ -146,22 +146,17 @@ export default class RebalancedPortfolioTable extends React.Component<
       resultRows,
       totalRows
     )
-
     const totalPercents = UTILS.calculateTotalPercents(
       newCalculatedRowsWithPercents
     )
-
     const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
       newCalculatedRowsWithPercents,
       staticRows
     )
-
     const newTableTotalRows = UTILS.calculateTableTotal(
       newCalculatedRowsWithPercents
     )
 
-    // NOT READY FOR NOW
-    // TODO: MOVE ALL parsefloat from this
     const oldRowPrice = rows[idx].price
     const newRowPrice = newCalculatedRowsWithPercents[idx].price
     const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
