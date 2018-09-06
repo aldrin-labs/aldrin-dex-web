@@ -333,7 +333,11 @@ class Chart extends React.Component {
 
   renderOnlyCharts = () => (
     <OnlyCharts
-      {...{ theme: this.props.theme, mainPair: this.props.currencyPair }}
+      {...{
+        theme: this.props.theme,
+        mainPair: this.props.currencyPair,
+        view: this.props.view,
+      }}
     />
   )
 
@@ -353,20 +357,26 @@ class Chart extends React.Component {
   }
 
   render() {
-    const { view, currencyPair } = this.props
-
-    const toggler = this.renderToggler()
+    const {
+      view,
+      currencyPair,
+      theme: { palette, shadows },
+    } = this.props
 
     return (
-      <MainContainer>
-        <TogglerContainer>
+      <MainContainer fullscreen={view !== 'default'}>
+        <TogglerContainer
+          view={view}
+          shadow={shadows[5]}
+          background={palette.primary[palette.type]}
+        >
           <AutoSuggestSelect
             value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
           />
 
-          {toggler}
+          {this.renderToggler()}
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -376,8 +386,7 @@ class Chart extends React.Component {
 }
 
 const MainContainer = styled.div`
-  font-family: Roboto, sans-serif;
-
+  ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
   @media (min-width: 1900px) {
     margin-top: -0.75rem;
   }
@@ -468,7 +477,23 @@ const TogglerContainer = styled.div`
   width: 100%;
   justify-content: flex-end;
   align-items: center;
-  font-family: Roboto, sans-serif;
+  background-color: transparent;
+  transition: top 250ms ease-out, background-color 250ms ease-in-out;
+
+  ${(props: { view: string; shadow: string; background: string }) => {
+    if (props.view !== 'default') {
+      return `position: absolute;
+    top: -50px;
+    z-index: 100;
+    background-color:${props.background};
+    cursor: pointer;
+    box-shadow: ${props.shadow};
+    &:hover{
+      top: 0px;
+    }`
+    }
+    return ''
+  }};
 `
 
 const Toggler = styled(Button)`
