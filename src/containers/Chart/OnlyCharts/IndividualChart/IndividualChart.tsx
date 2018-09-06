@@ -9,6 +9,8 @@ import {
   IChartState,
 } from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart.types'
 import DepthChartContainer from '@containers/Chart/OnlyCharts/DepthChartContainer/DepthChartContainer'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 
 export default class Charts extends Component<IChartProps, IChartState> {
   state: IChartState = {
@@ -16,22 +18,18 @@ export default class Charts extends Component<IChartProps, IChartState> {
     show: true,
   }
 
-  componentDidUpdate(prevProps) {
-    // we need this hack to update depth chart Width when width of his container changes
-    if (prevProps.chartsCount !== this.props.chartsCount) {
-      const ordersDataContainer = this.state.ordersData
-      this.setState({ ordersData: ordersDataContainer })
-    }
-  }
-
   render() {
     const { currencyPair, removeChart, index, theme } = this.props
-    const {
-      palette: { primary },
-    } = theme
+    const { palette } = theme
+    const { primary } = palette
     const { activeChart, show } = this.state
 
-    const [quote, base] = currencyPair.split('_')
+    if (currencyPair === undefined) {
+      return <CustomError error="Clean local Storage!" />
+    }
+
+    const [base, quote] = currencyPair.split('_')
+    const textColor = palette.getContrastText(primary.main)
 
     return (
       <Grow in={show} mountOnEnter={true} unmountOnExit={true}>
@@ -41,12 +39,12 @@ export default class Charts extends Component<IChartProps, IChartState> {
             divider={theme.palette.divider}
           >
             {' '}
-            <StyledTypography color="default" variant="body1">
-              {`${quote}/${base}`}
+            <StyledTypography textColor={textColor} variant="body1">
+              {`${base}/${quote}`}
             </StyledTypography>
-            <Typography color="default" variant="caption">
+            <TypographyWithCustomColor textColor={textColor} variant="caption">
               Depth
-            </Typography>
+            </TypographyWithCustomColor>
             <Switch
               color="default"
               checked={activeChart === 'candle'}
@@ -57,9 +55,9 @@ export default class Charts extends Component<IChartProps, IChartState> {
                 }))
               }}
             />
-            <Typography color="default" variant="caption">
+            <TypographyWithCustomColor textColor={textColor} variant="caption">
               Chart
-            </Typography>
+            </TypographyWithCustomColor>
             <Button
               onClick={() => {
                 this.setState({ show: false })
@@ -72,7 +70,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
             </Button>
           </ChartsSwitcher>
           {activeChart === 'candle' ? (
-            <SingleChart additionalUrl={`/?symbol=${quote}/${base}`} />
+            <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
             <DepthChartStyledWrapper>
               <DepthChartContainer
@@ -96,7 +94,7 @@ const Wrapper = styled(Paper)`
   flex-direction: column;
 `
 
-const StyledTypography = styled(Typography)`
+const StyledTypography = styled(TypographyWithCustomColor)`
   margin-right: auto;
   margin-left: 0.25rem;
 `

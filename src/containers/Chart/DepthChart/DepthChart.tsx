@@ -28,6 +28,7 @@ class DepthChart extends Component {
     crosshairValuesForSpread: [],
     crosshairValuesForOrder: [],
     nearestOrderXIndex: null,
+    nearestSpreadXIndex: null,
     transformedAsksData: [],
     transformedBidsData: [],
   }
@@ -91,6 +92,13 @@ class DepthChart extends Component {
     this.setState({
       crosshairValuesForOrder: this.state.transformedAsksData
         .map((d, i) => {
+          if (
+            index === 0 &&
+            this.state.nearestSpreadXIndex === 0 &&
+            i === index
+          ) {
+            return d
+          }
           if (index === 0) {
             return null
           }
@@ -130,6 +138,7 @@ class DepthChart extends Component {
           return null
         })
         .filter(Boolean),
+      nearestSpreadXIndex: index,
     })
   }
 
@@ -174,6 +183,7 @@ class DepthChart extends Component {
       crosshairValuesForOrder.length >= 1
     ) {
       crosshairValuesForSpread = []
+      crosshairValuesForOrder = []
     }
 
     if (!ordersData || !spreadData) {
@@ -187,24 +197,26 @@ class DepthChart extends Component {
           onMouseLeave={this.onMouseLeave}
           yDomain={[0, this.state.MAX_DOMAIN_PLOT]}
         >
-          <MidPriceContainer
-            background={hexToRgbAWithOpacity(palette.primary.light, 0.1)}
-          >
-            <IconButton onClick={() => this.scale('increase', 1.5)}>
-              <MdRemoveCircleOutline />
-            </IconButton>
+          <ScaleWrapper>
+            <MidPriceContainer
+              background={hexToRgbAWithOpacity(palette.primary.light, 0.1)}
+            >
+              <IconButton onClick={() => this.scale('increase', 1.5)}>
+                <MdRemoveCircleOutline />
+              </IconButton>
 
-            <MidPriceColumnWrapper>
-              <Typography variant="subheading">
-                {this.props.midMarketPrice || 'soon'}
-              </Typography>
-              <Typography variant="caption">Mid Market Price</Typography>
-            </MidPriceColumnWrapper>
+              <MidPriceColumnWrapper>
+                <Typography variant="subheading">
+                  {this.props.midMarketPrice || 'soon'}
+                </Typography>
+                <Typography variant="caption">Mid Market Price</Typography>
+              </MidPriceColumnWrapper>
 
-            <IconButton onClick={() => this.scale('decrease', 1.5)}>
-              <MdAddCircleOutline />
-            </IconButton>
-          </MidPriceContainer>
+              <IconButton onClick={() => this.scale('decrease', 1.5)}>
+                <MdAddCircleOutline />
+              </IconButton>
+            </MidPriceContainer>
+          </ScaleWrapper>
           <XAxis
             tickTotal={xAxisTickTotal || 10}
             tickFormat={(value) => abbrNum(+value.toFixed(4), 4)}
@@ -272,13 +284,13 @@ class DepthChart extends Component {
               {crosshairValuesForSpread.length >= 1 ? (
                 <>
                   <Typography variant="title" color="secondary">
-                    {`${crosshairValuesForSpread[0].y.toFixed(2)} `}
+                    {`${crosshairValuesForSpread[0].x.toFixed(8)} `}
                     {base || 'Fiat'}
                   </Typography>
                   <Br light={true} />
                   <CrosshairBottomWrapper>
                     <Typography variant="body1">
-                      Can be bought {crosshairValuesForSpread[0].x.toFixed(8)}{' '}
+                      Can be bought {crosshairValuesForSpread[0].y.toFixed(2)}{' '}
                       {base || 'Fiat'}
                     </Typography>
                     <RotatedBr />
@@ -305,14 +317,14 @@ class DepthChart extends Component {
               {crosshairValuesForOrder.length >= 1 ? (
                 <>
                   <Typography variant="title" color="secondary">
-                    {`${crosshairValuesForOrder[0].y.toFixed(2)} `}{' '}
+                    {`${crosshairValuesForOrder[0].x.toFixed(8)} `}{' '}
                     {base || 'Fiat'}
                   </Typography>
 
                   <Br light={true} />
                   <CrosshairBottomWrapper>
                     <Typography variant="body1">
-                      Can be sold {crosshairValuesForOrder[0].x.toFixed(8)}{' '}
+                      Can be sold {crosshairValuesForOrder[0].y.toFixed(2)}{' '}
                       {base || 'Fiat'}
                     </Typography>
                     <RotatedBr />
@@ -353,6 +365,7 @@ const CrosshairContent = styled.div`
   font-size: 1rem;
   border-radius: 5px;
   min-width: 15rem;
+  z-index: 1;
 `
 
 const Br = styled(Divider)`
@@ -379,16 +392,21 @@ const CrosshairBottomWrapper = styled.div`
   font-size: 0.75rem;
 `
 
+const ScaleWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 1rem;
+`
+
 const MidPriceContainer = styled.div`
   background: ${(props: { background?: string }) => props.background};
   border-radius: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 25%;
-  position: absolute;
-  top: 1rem;
-  left: 35%;
+  width: 11rem;
+  position: relative;
+  margin: 0 auto;
 `
 
 const MidPriceColumnWrapper = styled.div`

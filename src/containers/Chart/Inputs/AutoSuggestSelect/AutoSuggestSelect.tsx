@@ -8,6 +8,7 @@ import Input from '@material-ui/core/Input'
 import MenuItem from '@material-ui/core/MenuItem'
 import Chip from '@material-ui/core/Chip'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
+// TODO: this is old react-select v1 and should be replaced in future
 import Select from 'react-select-for-charting-page'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
@@ -131,6 +132,7 @@ function SelectWrapped(props) {
       onInputKeyDown={onInputKeyDown}
       optionComponent={Opt}
       noResultsText={<Typography>{'No results found'}</Typography>}
+      clearable={false}
       arrowRenderer={(arrowProps) =>
         arrowProps.isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />
       }
@@ -187,7 +189,7 @@ class IntegrationReactSelect extends React.PureComponent {
           inputComponent={SelectWrapped}
           value={value}
           onChange={() => {}}
-          placeholder="Add currency pair"
+          placeholder="Add chart"
           id={id}
           inputProps={{
             classes,
@@ -214,7 +216,7 @@ const styles = (theme) => ({
   },
   cssUnderline: {
     '&:after': {
-      borderBottomColor: '#4ed8da',
+      borderBottomColor: theme.palette.secondary.main,
     },
   },
   // We had to use a lot of global selectors in order to style react-select.
@@ -235,7 +237,7 @@ const styles = (theme) => ({
     '::-webkit-scrollbar': { width: 3 },
     '::-webkit-scrollbar-track': { background: 'rgba(45, 49, 54, 0.1)' },
     '::-webkit-scrollbar-thumb': {
-      background: '#4ed8da',
+      background: theme.palette.secondary.main,
     },
     '.Select-multi-value-wrapper': {
       flexGrow: 1,
@@ -282,7 +284,7 @@ const styles = (theme) => ({
     },
     '.Select-placeholder': {
       opacity: 0.42,
-      color: 'white',
+      color: theme.palette.getContrastText(theme.palette.background.paper),
     },
     '.Select-menu-outer': {
       backgroundColor: theme.palette.background.paper,
@@ -323,7 +325,7 @@ const styles = (theme) => ({
   },
 })
 
-const queryRender = function(props: any) {
+const queryRender = (props: any) => {
   return (
     <QueryRenderer
       centerAlign={false}

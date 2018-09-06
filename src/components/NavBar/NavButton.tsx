@@ -14,20 +14,23 @@ const StyledNavLink = styled(NavLink)`
   letter-spacing: 0.5px;
   text-align: center;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  transition: color 0.2s ease;
+  color: ${(props: { color: string }) => props.color};
+  transition: opacity 0.2s ease-in-out;
   height: 75px;
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0.8;
 
   &:hover {
-    color: white;
+    opacity: 1;
+    color: ${(props: { color: string }) => props.color};
     border-bottom: 2px solid #4ed8da;
   }
 
   &.selected {
-    color: white;
+    opacity: 1;
+    color: ${(props: { color: string }) => props.color};
     font-weight: bold;
     border-bottom: 2px solid #4ed8da;
   }
@@ -36,10 +39,22 @@ const StyledNavLink = styled(NavLink)`
 interface INavButton {
   link: string
   title: string
+  color: string
 }
 
-export const NavButton: SFC<INavButton> = ({ link, title, ...props }) => (
-  <StyledNavLink to={link} activeClassName={'selected'} {...props}>
+export const NavButton: SFC<INavButton> = ({
+  link,
+  title,
+  color,
+  ...props
+}) => (
+  <StyledNavLink
+    color={color}
+    to={link}
+    activeClassName={'selected'}
+    {...props}
+  >
+    {console.log(color)}
     {title}
   </StyledNavLink>
 )

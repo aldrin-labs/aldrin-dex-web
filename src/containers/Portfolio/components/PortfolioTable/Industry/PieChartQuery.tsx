@@ -7,6 +7,10 @@ import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { PortfolioPieChart } from '@containers/Portfolio/components/PortfolioTable/Industry/api'
 import { PortfolioPieChartQuery } from '@containers/Portfolio/components/PortfolioTable/Industry/annotations'
 import { MOCKS } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
+import {
+  calcAllSumOfPortfolioAsset,
+  roundPercentage,
+} from '@utils/PortfolioTableUtils'
 
 export interface Props {
   data: PortfolioPieChartQuery
@@ -43,6 +47,7 @@ class PieChartQuery extends React.Component<Props, State> {
 
   render() {
     const { data } = this.state
+    const { isUSDCurrently } = this.props
     if (!data) return <CustomError error="!data" />
     const { getProfile } = data
     if (!getProfile) return <CustomError error="!getProfile" />
@@ -51,25 +56,32 @@ class PieChartQuery extends React.Component<Props, State> {
     const { assets } = portfolio
     if (!assets) return <CustomError error="!assets" />
 
+    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
+
     const obj: { [key: string]: number } = {}
     assets.forEach((asset) => {
       if (!asset) return null
       const { value, asset: internalAsset } = asset
       if (!internalAsset) return null
-      const { industry } = internalAsset
-      if (!industry) return null
-      const { name } = industry
-      if (!name) return null
+      const { industry, priceUSD, priceBTC } = internalAsset
+      const name = industry ? industry.name : null
 
-      if (!obj[name] && !!value) {
-        obj[name] = value
+      const mainPrice = isUSDCurrently ? priceUSD : priceBTC
+      const currentPrice = mainPrice * value
+
+      if (name === null && !obj.Other) {
+        obj['Other'] = +roundPercentage(currentPrice * 100 / allSums)
+      } else if (name === null && obj.Other) {
+        obj['Other'] += +roundPercentage(currentPrice * 100 / allSums)
+      } else if (!obj[name] && !!value) {
+        obj[name] = +roundPercentage(currentPrice * 100 / allSums)
       } else if (!!obj[name] && !!value) {
-        obj[name] += value
+        obj[name] += +roundPercentage(currentPrice * 100 / allSums)
       }
-      return null
     })
 
-    const arrayOfColors = ['#EFC151',
+    const arrayOfColors = [
+      '#EFC151',
       '#E85454',
       '#BB118D',
       '#C79B42',
@@ -89,20 +101,23 @@ class PieChartQuery extends React.Component<Props, State> {
       '#7EA9D3',
       '#F2F2F2',
       '#282F39',
-    ];
+    ]
+
+    const labelsStyleObject = { fill: 'white' }
 
     const pieData = Object.keys(obj).map((key, i) => {
       return {
         angle: obj[key],
         label: key,
+        title: key,
         color: arrayOfColors[i],
-        realValue: obj[key],
+        realValue: `${roundPercentage(obj[key])}%`,
       }
     })
 
-    // console.log('pieData: ', pieData);
+    return <PieChart data={pieData} flexible={true} colorLegend={true} />
 
-    return <PieChart data={pieData} flexible />
+    // return <PieChart data={pieData} flexible colorLegend labelsRadiusMultiplier={1} labelsStyle={labelsStyleObject} />
   }
 }
 

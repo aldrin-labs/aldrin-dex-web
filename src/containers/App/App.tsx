@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
+import { connect } from 'react-redux'
 import { blueGrey, cyan } from '@material-ui/core/colors'
+import { withRouter } from 'react-router-dom'
 
 // https://material-ui.com/customization/css-in-js/#other-html-element
 import JssProvider from 'react-jss/lib/JssProvider'
@@ -20,22 +22,46 @@ import Footer from '@components/Footer'
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
 
-// TODO: 2 themes
-const theme = createMuiTheme({
-  palette: {
-    type: 'dark',
-    primary: blueGrey,
-    secondary: cyan,
-  },
-})
 
-if (process.browser) {
-  window.theme = theme
+const version = `0.1`
+const currentVersion = localStorage.getItem('version')
+if (currentVersion !== version) {
+  localStorage.clear()
+  localStorage.setItem('version', version)
 }
 
-export const App = ({ children }: any) => (
+const AppRaw = ({ children, themeMode }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
-    <MuiThemeProvider theme={theme}>
+    <MuiThemeProvider
+      theme={() =>
+        // ToDo  removes this
+        {
+          const theme = createMuiTheme({
+            palette: {
+              type: themeMode,
+              primary: blueGrey,
+              secondary: {
+                ...cyan,
+                main: '#4ed8da',
+              },
+              background: {
+                default: themeMode === 'light' ? '#fafafa' : '#303030',
+                paper: themeMode === 'light' ? '#fff' : '#393e44',
+              },
+              navbar: {
+                light: '#fff',
+                dark: 'rgb(45, 49, 54)',
+              },
+            },
+          })
+
+          if (process.browser) {
+            window.theme = theme
+          }
+          return theme
+        }
+      }
+    >
       <CssBaseline />
       <AppGridLayout>
         <NavBar />
@@ -50,3 +76,9 @@ export const App = ({ children }: any) => (
 const AppGridLayout = styled.div`
   min-height: calc(100vh - 50px);
 `
+
+const mapStateToProps = (store: any) => ({
+  themeMode: store.ui.theme,
+})
+
+export const App = withRouter(connect(mapStateToProps)(AppRaw))

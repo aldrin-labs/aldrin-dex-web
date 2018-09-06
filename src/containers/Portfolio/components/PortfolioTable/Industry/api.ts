@@ -7,6 +7,8 @@ export const PortfolioPieChart = gql`
         assets {
           value
           asset {
+            priceUSD
+            priceBTC
             industry {
               name
             }

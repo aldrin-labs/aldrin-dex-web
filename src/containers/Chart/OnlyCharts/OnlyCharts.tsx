@@ -8,6 +8,12 @@ import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageS
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
 
 class OnlyCharts extends Component<Props, {}> {
+  componentDidMount() {
+    const { charts, addChart, mainPair } = this.props
+    if (charts.length === 0) {
+      addChart(mainPair)
+    }
+  }
   render() {
     const {
       charts,
@@ -25,17 +31,30 @@ class OnlyCharts extends Component<Props, {}> {
         mountOnEnter={true}
         unmountOnExit={true}
       >
-        <ChartContainer anime={false} chartsCount={charts.length}>
-          {charts.map((chart: string, i: number) => (
-            <IndividualChart
-              key={chart}
-              theme={theme}
-              removeChart={removeChart}
-              index={i}
-              chartsCount={charts.length}
-              currencyPair={chart}
-            />
-          ))}
+        <ChartContainer anime={false} chartsCount={charts.length || 1}>
+          {charts.map(
+            (chart: { pair: string; id: string } | string, i: number) =>
+              // fallback for old values that were strings and now there must be objects
+              typeof chart === 'string' ? (
+                <IndividualChart
+                  key={i}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart}
+                />
+              ) : (
+                <IndividualChart
+                  key={chart.id}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart.pair}
+                />
+              )
+          )}
           <WarningMessageSnack
             open={openedWarning}
             onCloseClick={removeWarningMessage}
@@ -88,6 +107,7 @@ const mapStateToProps = (store: any) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   removeChart: (i: number) => dispatch(actions.removeChart(i)),
+  addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
   removeWarningMessage: () => dispatch(actions.removeWarningMessage()),
 })
 

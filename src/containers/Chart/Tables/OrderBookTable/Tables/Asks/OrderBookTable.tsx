@@ -3,11 +3,11 @@ import styled from 'styled-components'
 import { Button, Typography } from '@material-ui/core'
 import { difference } from 'lodash'
 
-import { TypographyFullWidth } from '@utils/cssUtils'
+import { TypographyFullWidth } from '@styles/cssUtils'
 import { Table, Row, Title, Head, HeadCell } from '@components/Table/Table'
-import { EmptyCell } from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/SharedStyles'
-
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
+import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 
 let index: number | null = null
 
@@ -47,15 +47,19 @@ class OrderBookTable extends Component {
     const {
       background,
       action,
-      primary: { dark },
+      primary: { main },
     } = palette
 
     return (
-      <Table>
-        <Title background={dark}>
-          <Typography color="default" variant="subheading" align="center">
+      <AsksTable>
+        <Title background={main}>
+          <TypographyWithCustomColor
+            textColor={palette.getContrastText(main)}
+            variant="subheading"
+            align="center"
+          >
             Order Book
-          </Typography>
+          </TypographyWithCustomColor>
           <SwitchTablesButton
             onClick={onButtonClick}
             variant="outlined"
@@ -69,6 +73,7 @@ class OrderBookTable extends Component {
             <EmptyCell width={'10%'} />
             <HeadCell width={'45%'}>
               <TypographyFullWidth
+                textColor={palette.getContrastText(background.default)}
                 variant="subheading"
                 color="default"
                 align="right"
@@ -78,6 +83,7 @@ class OrderBookTable extends Component {
             </HeadCell>
             <HeadCell width={'45%'}>
               <TypographyFullWidth
+                textColor={palette.getContrastText(background.default)}
                 variant="subheading"
                 noWrap={true}
                 color="default"
@@ -97,10 +103,20 @@ class OrderBookTable extends Component {
             ...this.props,
           }}
         />
-      </Table>
+      </AsksTable>
     )
   }
 }
+
+const AsksTable = Table.extend`
+  height: 50%;
+  flex-direction: column;
+  justify-content: flex-start;
+  display: flex;
+  @media (min-width: 1920px) {
+    flex-wrap: nowrap;
+  }
+`
 
 const SwitchTablesButton = styled(Button)`
   && {
