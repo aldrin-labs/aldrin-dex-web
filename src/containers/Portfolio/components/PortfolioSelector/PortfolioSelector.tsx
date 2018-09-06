@@ -49,6 +49,8 @@ class PortfolioSelector extends React.Component<IProps, IState> {
           return null
         })
         .filter(Boolean)
+      console.log('checkboxes in onToggleCheckbox', checkboxes);
+
       onChangeActive(checkboxes)
     })
   }

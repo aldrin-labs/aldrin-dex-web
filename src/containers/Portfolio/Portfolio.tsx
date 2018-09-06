@@ -30,7 +30,10 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 
   onChangeActiveKey = (checkboxes: number[]) => {
-    this.setState({ checkboxes })
+    this.setState({ checkboxes }, () => {
+      console.log('checkboxes in state', checkboxes);
+
+    })
   }
 
   toggleWallets() {
@@ -39,6 +42,7 @@ class PortfolioComponent extends React.Component<IProps> {
 
   render() {
     const { keys, login } = this.props
+    const { checkboxes } = this.state
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
@@ -52,7 +56,7 @@ class PortfolioComponent extends React.Component<IProps> {
                   onChangeActive={this.onChangeActiveKey}
                 />
                 <PortfolioTable
-                  checkboxes={keys}
+                  checkboxes={checkboxes}
                   toggleWallets={this.toggleWallets}
                   subscription={subscriptionData}
                 />
