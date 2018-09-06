@@ -29,6 +29,7 @@ export const tableMocks = [
     availableSupply: 39189968239,
     icoPrice: 'https://s2.coinmarketcap.com/static/img/coins/16x16/52.png',
   },
+
   {
     _id: '5af9d6a5e1edae0dc3aad097',
     name: 'Bitcoin Cash',
