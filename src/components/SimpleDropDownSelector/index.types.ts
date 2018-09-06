@@ -6,4 +6,5 @@ export interface IProps {
   placeholder?: string
   value: string | number
   style?: object | undefined
+  content: string
 }
