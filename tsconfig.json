@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist/",
+    "target": "esnext",
+    "sourceMap": true,
+    "declaration": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "alwaysStrict": false,
+    "allowJs": false,
+    "jsx": "react",
+    "lib": ["es2017", "dom"],
+    "typeRoots": ["./node_modules/@types", "./typings"],
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@containers/*": ["src/containers/*"],
+      "@utils/*": ["src/utils/*"],
+      "@styles/*": ["src/styles/*"],
+      "@hoc/*": ["src/hoc/*"],
+      "@icons/*": ["src/icons/*"],
+      "@graphql/*": ["src/graphql/*"]
+    },
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      },
+      {
+        "name": "ts-graphql-plugin",
+        "tag": "gql"
+      }
+    ]
+  },
+  "include": ["src", "typings", "custom.d.ts"]
+}

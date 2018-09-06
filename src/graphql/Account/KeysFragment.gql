@@ -1,0 +1,17 @@
+fragment KeysFragment on Key {
+  _id
+  name
+  apiKey
+  secret
+  date
+  exchangeId
+  ownerId
+  owner {
+    _id
+    username
+  }
+  exchange {
+    name
+    symbol
+  }
+}
