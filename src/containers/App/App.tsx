@@ -21,6 +21,7 @@ import Footer from '@components/Footer'
 
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
+import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 
 const version = `0.1`
 const currentVersion = localStorage.getItem('version')
@@ -63,7 +64,7 @@ const AppRaw = ({ children, themeMode, chartPageView }: any) => (
     >
       <CssBaseline />
       <AppGridLayout>
-        <NavBar hide={chartPageView !== 'default'} />
+        <AnimatedNavBar hide={chartPageView !== 'default'} />
         {children}
         <NavBarMobile />
       </AppGridLayout>

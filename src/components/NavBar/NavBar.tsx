@@ -3,10 +3,9 @@ import styled from 'styled-components'
 
 import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
-import { withTheme, Theme, WithTheme } from '@material-ui/core/styles'
+import { withTheme, WithTheme } from '@material-ui/core/styles'
 
-export interface Props {
-  theme?: Theme
+export interface Props extends WithTheme {
   hide?: boolean
 }
 // ToDo add grid
