@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { MenuItem, InputLabel } from '@material-ui/core'
+import { Select, MenuItem, InputLabel } from '@material-ui/core'
 import { IProps } from '@components/SimpleDropDownSelector/index.types'
-import { StyledSelect } from '@components/SimpleDropDownSelector/index.styles'
+import styled from 'styled-components'
+
+
 class SimpleDropDownSelector extends Component<IProps> {
   render() {
     const {
@@ -13,13 +15,12 @@ class SimpleDropDownSelector extends Component<IProps> {
       style,
       placeholder,
     } = this.props
-
     return (
       <>
       {placeholder ? (
         <InputLabel htmlFor="label">{placeholder}</InputLabel>
         ) : null}
-      <StyledSelect
+      <Select
       style={style}
       value={value}
       onChange={(e) => {
@@ -40,7 +41,7 @@ class SimpleDropDownSelector extends Component<IProps> {
         {option.label}
         </MenuItem>
         ))}
-      </StyledSelect>
+      </Select>
       </>
       )
   }
