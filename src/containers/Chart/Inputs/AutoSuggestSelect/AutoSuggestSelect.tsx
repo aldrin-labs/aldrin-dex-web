@@ -46,7 +46,7 @@ let suggestions = [
   { label: 'XMR/USD ' },
 ].map((suggestion) => ({
   value: suggestion.label,
-  label: suggestion.label.split('/')[0],
+  label: suggestion.label,
 }))
 
 class Option extends React.PureComponent {
