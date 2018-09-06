@@ -357,20 +357,26 @@ class Chart extends React.Component {
   }
 
   render() {
-    const { view, currencyPair } = this.props
-
-    const toggler = this.renderToggler()
+    const {
+      view,
+      currencyPair,
+      theme: { palette, shadows },
+    } = this.props
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-        <TogglerContainer>
+        <TogglerContainer
+          view={view}
+          shadow={shadows[15]}
+          background={palette.primary[palette.type]}
+        >
           <AutoSuggestSelect
             value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
           />
 
-          {toggler}
+          {this.renderToggler()}
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -471,7 +477,23 @@ const TogglerContainer = styled.div`
   width: 100%;
   justify-content: flex-end;
   align-items: center;
-  font-family: Roboto, sans-serif;
+  background-color: transparent;
+  transition: top 250ms ease-out, background-color 250ms ease-in-out;
+
+  ${(props: { view: string; shadow: string; background: string }) => {
+    if (props.view !== 'default') {
+      return `position: absolute;
+    top: -50px;
+    z-index: 100;
+    background-color:${props.background};
+    cursor: pointer;
+    box-shadow: ${props.shadow};
+    &:hover{
+      top: 0px;
+    }`
+    }
+    return ''
+  }};
 `
 
 const Toggler = styled(Button)`
