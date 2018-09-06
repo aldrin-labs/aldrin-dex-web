@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
-import { TypographyFullWidth } from '@utils/cssUtils'
+import { TypographyFullWidth } from '@styles/cssUtils'
 
 export const AccountsListItem = styled.li`
   display: flex;
