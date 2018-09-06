@@ -19,6 +19,7 @@ export const tableMocks = [
     availableSupply: 99474579,
     icoPrice: 'https://s2.coinmarketcap.com/static/img/coins/16x16/1027.png',
   },
+
   {
     _id: '5af9d870e1edae0dc3aaf4da',
     name: 'Ripple',
