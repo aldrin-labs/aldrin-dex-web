@@ -367,7 +367,7 @@ class Chart extends React.Component {
       <MainContainer fullscreen={view !== 'default'}>
         <TogglerContainer
           view={view}
-          shadow={shadows[15]}
+          shadow={shadows[5]}
           background={palette.primary[palette.type]}
         >
           <AutoSuggestSelect
