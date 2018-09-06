@@ -235,6 +235,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           btcTotalProfit = 0,
         } =
           row || {}
+        if (key === null || key.name === null) {
+          return
+        }
         if (activeKeys.indexOf(key.name) === -1) {
           return null
         }
