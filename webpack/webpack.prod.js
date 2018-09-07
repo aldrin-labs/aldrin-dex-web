@@ -1,7 +1,7 @@
 const commonPaths = require('./common-paths')
 
 const webpack = require('webpack')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
@@ -18,21 +18,28 @@ const config = {
     rules: [],
   },
   optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
     minimizer: [
-      new UglifyJsPlugin({
+      new UglifyJSPlugin({
         sourceMap: true,
         uglifyOptions: {
-          ecma: 6,
-          compress: true,
-          output: {
-            comments: false,
+          compress: {
+            inline: false,
           },
         },
       }),
     ],
+    runtimeChunk: false,
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor_app',
+          chunks: 'all',
+          minChunks: 2,
+        },
+      },
+    },
   },
   plugins: [
     new webpack.DefinePlugin({
