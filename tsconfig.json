@@ -3,7 +3,7 @@
     "baseUrl": ".",
     "outDir": "./dist/",
     "target": "esnext",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": true,
     "strict": true,
     "noUnusedLocals": true,
