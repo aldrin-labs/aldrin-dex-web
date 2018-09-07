@@ -6,14 +6,14 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --env.env=dev",
+    "dev": "cross-env DEVTOOL=source-map webpack-dev-server --env.env=dev",
     "dev:fast":
       "cross-env DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
     "build":
-      "cross-env DEVTOOL=source-map cross-env NODE_ENV=production cross-env API_ENDPOINT=develop.api.cryptocurrencies.ai cross-env CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack -p --env.env=prod",
+      "cross-env DEVTOOL=cheap-module-eval-source-map cross-env NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production cross-env API_ENDPOINT=develop.api.cryptocurrencies.ai cross-env CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack -p --env.env=prod",
     "buildMaster": "cross-env NODE_ENV=production webpack -p --env.env=prod",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
     "test": "jest",
@@ -24,20 +24,10 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json"
   },
   "jest": {
-    "setupFiles": [
-      "./jest.setup.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleDirectories": [
-      "./node_modules"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ],
+    "setupFiles": ["./jest.setup.js"],
+    "snapshotSerializers": ["enzyme-to-json/serializer"],
+    "moduleDirectories": ["./node_modules"],
+    "moduleFileExtensions": ["js", "ts", "tsx"],
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "typescript-babel-jest",
       "\\.(gql|graphql)$": "jest-transform-graphql"
@@ -106,6 +96,7 @@
     "react-intl": "^2.4.0",
     "react-jss": "^8.6.1",
     "react-loadable": "^5.4.0",
+    "react-pose": "^3.2.2",
     "react-redux": "^5.0.7",
     "react-router": "^4.2.0",
     "react-router-config": "^1.0.0-beta.4",
@@ -135,7 +126,6 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.42",
     "@babel/core": "^7.0.0-beta.42",
-    "why-did-you-update": "^0.1.1",
     "@babel/plugin-transform-runtime": "^7.0.0-beta.42",
     "@babel/preset-env": "^7.0.0-beta.42",
     "@babel/preset-react": "^7.0.0-beta.42",
@@ -195,12 +185,13 @@
     "typescript-babel-jest": "^1.0.5",
     "typescript-styled-plugin": "^0.6.0",
     "uglifyjs-webpack-plugin": "^1.2.3",
-    "webpack": "4.8.3",
+    "webpack": "^4.17.2",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-cli": "^2.0.12",
     "webpack-dev-middleware": "^3.0.1",
     "webpack-dev-server": "3.1.1",
     "webpack-jarvis": "^0.3.0",
-    "webpack-merge": "^4.1.2"
+    "webpack-merge": "^4.1.2",
+    "why-did-you-update": "^0.1.1"
   }
 }
