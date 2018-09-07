@@ -3,7 +3,6 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-
 const config = {
   entry: {
     // vendor: ['semantic-ui-react']
@@ -22,14 +21,14 @@ const config = {
       '@styles': path.join(__dirname, '..', 'src', 'styles'),
       '@graphql': path.join(__dirname, '..', 'src', 'graphql'),
       '@icons': path.join(__dirname, '..', 'src', 'icons'),
-    }
+    },
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader?cacheDirectory=true'
+        loader: 'babel-loader?cacheDirectory=true',
       },
       {
         test: /\.(graphql|gql)$/,
@@ -38,16 +37,18 @@ const config = {
       },
       {
         test: /\.svg$/,
+        exclude: /node_modules/,
+
         loader: 'svg-url-loader',
         options: {
           limit: 4096, // 4kb
         },
       },
-      {
-        test: /\.css$/,
-        include: /node_modules/,
-        loaders: ['style-loader', 'css-loader'],
-      },
+      // {
+      //   test: /\.css$/,
+      //   include: /node_modules/,
+      //   loaders: ['style-loader', 'css-loader'],
+      // },
     ],
   },
   plugins: [
