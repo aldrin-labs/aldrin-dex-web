@@ -41,38 +41,38 @@ class Correlation extends React.Component<IProps> {
     if (
       typeof this.props.data.correlationMatrixByDay === 'string' &&
       this.props.data.correlationMatrixByDay.length > 0
-    ) {
+      ) {
       dataRaw = JSON.parse(this.props.data.correlationMatrixByDay)
-    } else {
-      dataRaw = this.props.data.correlationMatrixByDay
-    }
+  } else {
+    dataRaw = this.props.data.correlationMatrixByDay
+  }
 
-    if (portfolio && dataRaw !== '') {
+  if (portfolio && dataRaw !== '') {
       // filter data here
       const allSums = calcAllSumOfPortfolioAsset(
         portfolio.getProfile.portfolio.assets,
         true
-      )
+        )
 
       const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
-        .filter(
-          (d: any) =>
-            percentagesOfCoinInPortfolio(d, allSums, true) <
-            filterValueSmallerThenPercentage
+      .filter(
+        (d: any) =>
+        percentagesOfCoinInPortfolio(d, allSums, true) <
+        filterValueSmallerThenPercentage
         )
-        .map((d: any) => d.asset.symbol)
+      .map((d: any) => d.asset.symbol)
 
       const listOfIndexes = listOfCoinsToFilter.map((coin) =>
         dataRaw.header.findIndex((d: any) => d === coin)
-      )
+        )
 
       data = {
         header: dataRaw.header.filter((d, i) => !listOfIndexes.includes(i)),
         values: dataRaw.values
-          .map((row: number[]) =>
-            row.filter((d, i) => !listOfIndexes.includes(i))
+        .map((row: number[]) =>
+          row.filter((d, i) => !listOfIndexes.includes(i))
           )
-          .filter((d, i) => !listOfIndexes.includes(i)),
+        .filter((d, i) => !listOfIndexes.includes(i)),
       }
     } else {
       data = dataRaw // no filter when mock on
@@ -80,30 +80,28 @@ class Correlation extends React.Component<IProps> {
 
     return (
       <Subscription subscription={CORRELATION_UPDATE}>
-        {(subscriptionData) => {
-          console.log(data)
-          console.log(portfolio)
-
-          return (
-            <PTWrapper>
-              {children}
-              <CorrelationMatrix
-                fullScreenChangeHandler={this.props.toggleFullscreen}
-                isFullscreenEnabled={isFullscreenEnabled || false}
-                data={
+      {(subscriptionData) => {
+        console.log(data)
+        return (
+          <PTWrapper>
+          {children}
+          <CorrelationMatrix
+          fullScreenChangeHandler={this.props.toggleFullscreen}
+          isFullscreenEnabled={isFullscreenEnabled || false}
+          data={
                   // has(subscriptionData, 'data') && subscriptionData.data
                   //   ? subscriptionData.data
                   //   : data
                   data
                 }
-                period={period}
                 setCorrelationPeriod={setCorrelationPeriodToStore}
-              />
-            </PTWrapper>
-          )
-        }}
+                period={period}
+                />
+                </PTWrapper>
+                )
+      }}
       </Subscription>
-    )
+      )
   }
 }
 
@@ -115,58 +113,61 @@ class CorrelationWrapper extends React.Component<IProps> {
       endDate,
       children,
       isFullscreenEnabled,
+      setCorrelationPeriod,
       toggleFullscreen,
+      period,
     } = this.props
-
     return (
       <Wrapper>
-        {isShownMocks ? (
-          <Correlation
-            toggleFullscreen={toggleFullscreen}
-            isFullscreenEnabled={isFullscreenEnabled}
-            data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
-            children={children}
-          />
+      {isShownMocks ? (
+        <Correlation
+        setCorrelationPeriod={setCorrelationPeriod}
+        toggleFullscreen={toggleFullscreen}
+        isFullscreenEnabled={isFullscreenEnabled}
+        data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
+        children={children}
+        period={period}
+        />
         ) : (
-          <Query query={getPortfolioQuery}>
-            {({ loading, error, data }) => (
-              <QueryRenderer
-                component={Correlation}
-                query={getCorrelationQuery}
-                variables={{
-                  startDate,
-                  endDate,
-                }}
-                {...{ portfolio: data, ...this.props }}
-              />
-            )}
-          </Query>
+        <Query query={getPortfolioQuery}>
+        {({ loading, error, data }) => (
+          <QueryRenderer
+          component={Correlation}
+          query={getCorrelationQuery}
+          variables={{
+            startDate,
+            endDate,
+          }}
+          {...{ portfolio: data, ...this.props }}
+          />
+          )}
+        </Query>
         )}
-      </Wrapper>
-    )
+        </Wrapper>
+        )
   }
 }
 
 const PTWrapper = styled.div`
-  min-width: 70vw;
-  width: 100%;
-  min-height: 75vh;
-  display: flex;
-  flex-direction: column;
+min-width: 70vw;
+width: 100%;
+min-height: 75vh;
+display: flex;
+flex-direction: column;
 
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
-  height: auto;
+border-radius: 3px;
+background-color: #393e44;
+box-shadow: 0 2px 6px 0 #00000066;
+position: relative;
+height: auto;
 `
 
 const Wrapper = styled.div`
-  height: calc(100vh - 130px);
-  width: calc(100% - 2rem);
-  margin: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
+height: calc(100vh - 130px);
+width: calc(100% - 2rem);
+margin: 1.5rem;
+display: flex;
+flex-wrap: wrap;
 `
 
 const mapStateToProps = (store: any) => ({
@@ -181,11 +182,11 @@ const mapStateToProps = (store: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
   setCorrelationPeriodToStore: (payload: object) =>
-    dispatch(setCorrelationPeriod(payload)),
+  dispatch(setCorrelationPeriod(payload)),
 })
 
 const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
   CorrelationWrapper
-)
+  )
 
 export default storeComponent
