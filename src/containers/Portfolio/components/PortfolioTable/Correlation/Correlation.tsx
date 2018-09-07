@@ -97,8 +97,8 @@ class Correlation extends React.Component<IProps> {
                   //   : data
                   data
                 }
-                period={period}
                 setCorrelationPeriod={setCorrelationPeriodToStore}
+                period={period}
               />
             </PTWrapper>
           )
@@ -116,19 +116,21 @@ class CorrelationWrapper extends React.Component<IProps> {
       endDate,
       children,
       isFullscreenEnabled,
+      setCorrelationPeriod,
       toggleFullscreen,
       theme,
+      period,
     } = this.props
-
     return (
       <Wrapper>
         {isShownMocks ? (
           <Correlation
-            theme={theme}
+            setCorrelationPeriod={setCorrelationPeriod}
             toggleFullscreen={toggleFullscreen}
             isFullscreenEnabled={isFullscreenEnabled}
             data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
             children={children}
+            period={period}
           />
         ) : (
           <Query query={getPortfolioQuery}>
