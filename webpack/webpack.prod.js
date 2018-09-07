@@ -17,27 +17,29 @@ const config = {
   module: {
     rules: [],
   },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: false,
+        uglifyOptions: {
+          ecma: 6,
+          compress: true,
+          output: {
+            comments: false,
+          },
+        },
+      }),
+    ],
+  },
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
         API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT),
         CHARTS_API_ENDPOINT: JSON.stringify(process.env.CHARTS_API_ENDPOINT),
-      },
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      children: true,
-      async: true,
-      minChunks: 3,
-    }),
-    new UglifyJsPlugin({
-      sourceMap: false,
-      uglifyOptions: {
-        ecma: 6,
-        compress: true,
-        output: {
-          comments: false,
-        },
       },
     }),
   ],
