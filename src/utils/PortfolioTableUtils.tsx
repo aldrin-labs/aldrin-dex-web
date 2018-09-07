@@ -9,13 +9,13 @@ export const calcAllSumOfPortfolioAsset = (
 ): number => {
   // transforming data like assets from profile to IData format
   const sum = assets.filter(Boolean).reduce((acc: number, curr: any) => {
-    const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-    if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
+    const { quantity = 0, asset = { priceUSD: 0 } } = curr || {}
+    if (!quantity || !asset || !asset.priceUSD || !asset.priceBTC) {
       return null
     }
     const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
 
-    return acc + value * Number(price)
+    return acc + quantity * Number(price)
   }, 0);
   if (cryptoWallets) {
     return cryptoWallets.reduce((acc: number, curr: any) =>
@@ -33,6 +33,31 @@ export const calcAllSumOfPortfolioAsset = (
   return sum;
 }
 
+
+export const calcSumOfPortfolioAssetProfitLoss = (
+  PLs: any,
+  isUSDCurrently: boolean
+): number => {
+  return PLs.reduce((acc: number, curr: any) => {
+    const { realized = 0, price, basepriceUSD, basepriceBTC, averageBuyPrice, totalBuyQty, totalSellQty } = curr || {}
+
+    if (!realized || !basepriceUSD) {
+      return acc;
+    }
+    //  pl_unrealized_points = (last_price - average_buy_price) * (total_buy_qty - total_sell_qty);
+
+    const basePrice = (isUSDCurrently ? basepriceUSD : basepriceBTC);
+    const unrealizedPL = (price - averageBuyPrice) * (totalBuyQty - totalSellQty) * basePrice;
+    const realizedPL = realized * basePrice;
+
+    acc.unrealized += unrealizedPL;
+    acc.realized += realizedPL;
+    acc.total += realizedPL + unrealizedPL;
+
+    return acc
+  }, { unrealized: 0, realized: 0, total: 0 });
+}
+
 export const percentagesOfCoinInPortfolio = (
   asset: any,
   allSum: number,
@@ -46,9 +71,12 @@ export const onSortTableFull = (
   key,
   tableData,
   currentSort,
-  arrayOfStringHeadings: string[] = [],
-  arrayOfDateHeadings:  string[] = [],
+  arrayOfStringHeadings,
+  arrayOfDateHeadings
 ) => {
+  if (!tableData) {
+    return
+  }
 
   const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
   const dateKey = arrayOfDateHeadings

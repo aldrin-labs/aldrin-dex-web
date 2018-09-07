@@ -21,7 +21,7 @@ import Footer from '@components/Footer'
 
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import { NavBar } from '@components/NavBar/NavBar'
-
+import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 
 const version = `0.1`
 const currentVersion = localStorage.getItem('version')
@@ -30,11 +30,11 @@ if (currentVersion !== version) {
   localStorage.setItem('version', version)
 }
 
-const AppRaw = ({ children, themeMode }: any) => (
+const AppRaw = ({ children, themeMode, chartPageView }: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
       theme={() =>
-        // ToDo  removes this
+        // ToDo  removes this into separate file
         {
           const theme = createMuiTheme({
             palette: {
@@ -64,11 +64,11 @@ const AppRaw = ({ children, themeMode }: any) => (
     >
       <CssBaseline />
       <AppGridLayout>
-        <NavBar />
+        <AnimatedNavBar hide={chartPageView !== 'default'} />
         {children}
         <NavBarMobile />
       </AppGridLayout>
-      <Footer />
+      <Footer hide={chartPageView !== 'default'} />
     </MuiThemeProvider>
   </JssProvider>
 )
@@ -79,6 +79,7 @@ const AppGridLayout = styled.div`
 
 const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
+  chartPageView: store.chart.view,
 })
 
 export const App = withRouter(connect(mapStateToProps)(AppRaw))
