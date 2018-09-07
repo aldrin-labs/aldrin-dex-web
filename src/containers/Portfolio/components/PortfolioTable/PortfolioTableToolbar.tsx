@@ -1,14 +1,14 @@
 import classNames from 'classnames'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import React from 'react'
 
 import DeleteIcon from 'material-ui-icons/Delete'
 import FilterListIcon from 'material-ui-icons/FilterList'
-import IconButton from 'material-ui/IconButton'
-import { lighten } from 'material-ui/styles/colorManipulator'
-import Toolbar from 'material-ui/Toolbar'
-import Tooltip from 'material-ui/Tooltip'
-import Typography from 'material-ui/Typography'
+import IconButton from '@material-ui/core/IconButton'
+import { lighten } from '@material-ui/core/styles/colorManipulator'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
 
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
