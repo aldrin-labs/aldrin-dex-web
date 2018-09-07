@@ -5,7 +5,7 @@ import { compose } from 'recompose'
 import { withTheme } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import { Typography, Divider, Button } from '@material-ui/core'
-import AddIcon from 'material-ui-icons/Add'
+import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'

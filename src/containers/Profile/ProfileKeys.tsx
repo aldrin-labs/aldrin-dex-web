@@ -1,4 +1,4 @@
-import Delete from 'material-ui-icons/Delete'
+import Delete from '@material-ui/icons/Delete'
 import Checkbox from '@material-ui/core/Checkbox'
 import IconButton from '@material-ui/core/IconButton'
 import List, {
