@@ -1,7 +1,7 @@
 const commonPaths = require('./common-paths')
 
 const webpack = require('webpack')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
