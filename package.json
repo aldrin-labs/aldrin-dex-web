@@ -52,6 +52,7 @@
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.41",
     "@material-ui/core": "^1.2.1",
+    "@material-ui/icons": "^3.0.1",
     "@material-ui/lab": "^1.0.0-alpha.5",
     "@types/d3-time-format": "^2.1.0",
     "@types/lodash": "^4.14.109",
@@ -76,8 +77,6 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^23.5.0",
     "jwt-decode": "^2.2.0",
-    "material-ui": "^1.0.0-beta.37",
-    "material-ui-icons": "^1.0.0-beta.36",
     "nanoid": "^1.0.2",
     "normalizr": "^3.2.4",
     "polished": "^1.9.2",

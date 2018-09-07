@@ -7,7 +7,12 @@ import { withRouter } from 'react-router-dom'
 // https://material-ui.com/customization/css-in-js/#other-html-element
 import JssProvider from 'react-jss/lib/JssProvider'
 import { create } from 'jss'
-import { createGenerateClassName, jssPreset } from '@material-ui/core/styles'
+import {
+  createGenerateClassName,
+  jssPreset,
+  createMuiTheme,
+  MuiThemeProvider,
+} from '@material-ui/core/styles'
 
 const generateClassName = createGenerateClassName()
 const jss = create(jssPreset())
@@ -15,8 +20,7 @@ const jss = create(jssPreset())
 jss.options.insertionPoint = document.getElementById('jss-insertion-point')
 //
 
-import CssBaseline from 'material-ui/CssBaseline'
-import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Footer from '@components/Footer'
 
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'

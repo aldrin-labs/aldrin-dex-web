@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { IProps, IState } from './ScreenerSearch.types'
-import Input from 'material-ui/Input'
+import Input from '@material-ui/core/Input'
 import SelectReact, { components } from 'react-select'
 import { data } from '@containers/Screener/Selector/selectsData'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'

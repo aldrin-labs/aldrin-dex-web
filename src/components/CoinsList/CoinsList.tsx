@@ -2,17 +2,14 @@ import nanoid from 'nanoid'
 import React from 'react'
 import { FormattedNumber } from 'react-intl'
 import styled, { css } from 'styled-components'
-import Select from 'material-ui/Select'
-import Button from 'material-ui/Button'
-import { withRouter } from 'react-router-dom'
 
-import Paper from 'material-ui/Paper'
+import Paper from '@material-ui/core/Paper'
 import Table, {
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from 'material-ui/Table'
+} from '@material-ui/core/Table'
 
 // TODO: add types
 import * as T from '@components/CoinsList/types'
@@ -33,7 +30,7 @@ const CellTypography = styled.span`
 `
 
 const CurrencyGrow = styled.span`
-  ${props =>
+  ${(props) =>
     props.grow
       ? css`
           color: #00cc81;
