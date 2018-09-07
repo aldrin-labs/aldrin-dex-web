@@ -39,14 +39,14 @@ export const calcSumOfPortfolioAssetProfitLoss = (
   isUSDCurrently: boolean
 ): number => {
   return PLs.reduce((acc: number, curr: any) => {
-    const { realized = 0, price, basepriceUSD, basepriceBTC, averageBuyPrice, totalBuyQty, totalSellQty } = curr || {}
+    const { realized = 0, price, basePriceUSD, basePriceBTC, averageBuyPrice, totalBuyQty, totalSellQty } = curr || {}
 
-    if (!realized || !basepriceUSD) {
+    if (!realized || !basePriceUSD) {
       return acc;
     }
     //  pl_unrealized_points = (last_price - average_buy_price) * (total_buy_qty - total_sell_qty);
 
-    const basePrice = (isUSDCurrently ? basepriceUSD : basepriceBTC);
+    const basePrice = (isUSDCurrently ? basePriceUSD : basePriceBTC);
     const unrealizedPL = (price - averageBuyPrice) * (totalBuyQty - totalSellQty) * basePrice;
     const realizedPL = realized * basePrice;
 
