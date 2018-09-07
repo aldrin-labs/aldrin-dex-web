@@ -16,6 +16,7 @@ import {
   onSortStrings,
   roundPercentage,
   calcAllSumOfPortfolioAsset,
+  calcSumOfPortfolioAssetProfitLoss
 } from '@utils/PortfolioTableUtils'
 import * as actions from '@containers/Portfolio/actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
@@ -169,6 +170,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       isUSDCurrently,
       cryptoWallets
     )
+
     const walletData = cryptoWallets
       .map((row: InewRowT) => {
         const {
@@ -242,6 +244,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
         const { name } = exchange
 
+        const PL = calcSumOfPortfolioAssetProfitLoss(row.PL, isUSDCurrently)
+
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
         const realizedProfit = isUSDCurrently
           ? usdRealizedProfit
@@ -262,11 +266,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           currentPrice: currentPrice || 0,
           daily: roundPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
-          realizedPL: realizedProfit,
+          realizedPL: PL.realized,
           realizedPLPerc: 0,
-          unrealizedPL: unrealizedProfit,
+          unrealizedPL: PL.unrealized,
           unrealizedPLPerc: 0,
-          totalPL: realizedProfit + unrealizedProfit,
+          totalPL: PL.total,
         }
 
         return col

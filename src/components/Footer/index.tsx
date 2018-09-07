@@ -19,8 +19,14 @@ const socialIcons = [
   // { icon: twitter, link: '' },
 ]
 
-const Footer = ({ theme: { palette }, changeModeTheme, themeMode }: Props) => (
+const Footer = ({
+  theme: { palette },
+  changeModeTheme,
+  themeMode,
+  hide,
+}: Props) => (
   <Container
+    hide={hide}
     background={
       themeMode === 'dark' ? palette.primary.dark : palette.primary.light
     }
@@ -93,6 +99,13 @@ const Container = styled.div`
   justify-content: space-around;
   background: ${(props: { background: string }) => props.background};
   transition: background 0.25s ease-in-out;
+  ${(props: { hide: boolean; background: string }) =>
+    props.hide
+      ? `opacity: 0;
+    position: absolute;
+    top: 0;
+    z-index: -100;`
+      : ''};
 `
 
 const Block = styled.div`
