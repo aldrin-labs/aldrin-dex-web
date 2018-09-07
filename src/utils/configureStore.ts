@@ -1,4 +1,3 @@
-import rootEpic from '@utils/rootEpic'
 import rootReducer from '@utils/rootReducer'
 
 import createHistory from 'history/createBrowserHistory'
@@ -12,11 +11,10 @@ import storage from 'redux-persist/lib/storage'
 
 const history = createHistory()
 
-const epicsMiddleware = createEpicMiddleware(rootEpic)
 const routesMiddleware = routerMiddleware(history)
 
 const initialState = {}
-const middlewares = [epicsMiddleware, routesMiddleware]
+const middlewares = [routesMiddleware]
 
 const persistConfig = {
   key: 'root',
