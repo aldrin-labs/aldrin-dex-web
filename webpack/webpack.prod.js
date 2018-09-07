@@ -23,7 +23,7 @@ const config = {
     },
     minimizer: [
       new UglifyJsPlugin({
-        sourceMap: false,
+        sourceMap: true,
         uglifyOptions: {
           ecma: 6,
           compress: true,
