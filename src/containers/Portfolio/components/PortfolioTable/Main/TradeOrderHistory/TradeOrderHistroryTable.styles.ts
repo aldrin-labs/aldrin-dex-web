@@ -132,7 +132,3 @@ const PTBody = styled.tbody`
   width: 100%;
   border-bottom: 1px solid ${(props: { color: string }) => props.color};
 `
-
-const Icon = styled.i`
-  padding-right: 5px;
-`

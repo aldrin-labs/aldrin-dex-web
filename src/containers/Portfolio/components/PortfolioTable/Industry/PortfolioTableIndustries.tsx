@@ -22,7 +22,13 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import sortIcon from '@icons/arrow.svg'
-import { customAquaScrollBar } from '@styles/cssUtils'
+import {
+  customAquaScrollBar,
+  Checkbox,
+  Label,
+  Span,
+  Icon,
+} from '@styles/cssUtils'
 import { onSortStrings, roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
@@ -797,10 +803,6 @@ const ChartContainer = styled.div`
   }
 `
 
-const Icon = styled.i`
-  padding-right: 5px;
-`
-
 const Wrapper = styled.div`
   overflow-y: scroll;
   border-radius: 3px;
@@ -890,41 +892,6 @@ const PTD = styled.td`
   &:nth-last-child(1) {
     min-width: 112px;
     padding-right: 16px;
-  }
-`
-
-const Span = styled.span``
-
-const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 18px;
-    height: 18px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  & :checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 14px;
   }
 `
 

@@ -6,6 +6,7 @@ import {
 } from '@utils/PortfolioTableUtils'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain.types'
 import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
+import { Icon, Checkbox, Span, Label } from '@styles/cssUtils'
 
 export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
@@ -277,43 +278,4 @@ const PTR = styled.tr`
   & ${PTD}:nth-child(n + 4) {
     text-align: right;
   }
-`
-
-const Span = styled.span``
-
-const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 18px;
-    height: 18px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  & :checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 12px;
-  }
-`
-
-const Icon = styled.i`
-  padding-right: 5px;
 `

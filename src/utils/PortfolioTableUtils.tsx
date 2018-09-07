@@ -1,6 +1,6 @@
 import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
-import styled from 'styled-components'
 import React from 'react'
+import { Icon } from '@styles/cssUtils'
 
 export const calcAllSumOfPortfolioAsset = (
   assets: any,
@@ -46,12 +46,9 @@ export const onSortTableFull = (
   key,
   tableData,
   currentSort,
-  arrayOfStringHeadings,
-  arrayOfDateHeadings
+  arrayOfStringHeadings: string[] = [],
+  arrayOfDateHeadings:  string[] = [],
 ) => {
-  if (!tableData) {
-    return
-  }
 
   const stringKey = arrayOfStringHeadings.some((heading) => heading === key)
   const dateKey = arrayOfDateHeadings
@@ -160,10 +157,6 @@ export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number
   return formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
 }
 
-
-const Icon = styled.i`
-  padding-right: 5px;
-`
 
 // TODO: SHOULD BE REFACTORED
 export const onValidateSum = (
