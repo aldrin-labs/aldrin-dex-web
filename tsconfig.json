@@ -19,10 +19,15 @@
     "typeRoots": ["./node_modules/@types", "./typings"],
     "paths": {
       "@components/*": ["src/components/*"],
+      "components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
+      "containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
+      "utils/*": ["src/utils/*"],
       "@styles/*": ["src/styles/*"],
+      "styles/*": ["src/styles/*"],
       "@hoc/*": ["src/hoc/*"],
+      "hoc/*": ["src/hoc/*"],
       "@icons/*": ["src/icons/*"],
       "@graphql/*": ["src/graphql/*"]
     },
