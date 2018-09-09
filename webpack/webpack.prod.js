@@ -20,6 +20,7 @@ const config = {
   optimization: {
     minimizer: [
       new UglifyJSPlugin({
+        parallel: true,
         uglifyOptions: {
           ecma: 8,
           warnings: true,
