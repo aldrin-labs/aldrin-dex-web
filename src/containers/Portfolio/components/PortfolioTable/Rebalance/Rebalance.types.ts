@@ -59,7 +59,7 @@ export interface IShapeOfRebalancePortfolioRow {
 }
 
 export interface IShapeOfCurrentPortolioRow {
-  value: number | string
+  quantity: number | string
   exchange: { name: string }
   asset: { symbol: string; priceUSD: string }
 }
@@ -112,7 +112,7 @@ export interface IGetMyPortfolioQuery_getProfile_portfolio_assets_asset {
 }
 
 export interface IGetMyPortfolioQuery_getProfile_portfolio_assets {
-  value: number | null;
+  quantity: number | null;
   exchange: IGetMyPortfolioQuery_getProfile_portfolio_assets_exchange | null;
   asset: IGetMyPortfolioQuery_getProfile_portfolio_assets_asset | null;
 }

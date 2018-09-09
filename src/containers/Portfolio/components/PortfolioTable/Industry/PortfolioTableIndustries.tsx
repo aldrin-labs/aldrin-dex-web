@@ -165,7 +165,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           asset = { symbol: '', priceBTC: '', priceUSD: '', industry: '' },
           key = { name: '' },
           exchange = { name: '' },
-          value = 0,
+          quantity = 0,
         } =
           row || {}
         if (activeKeys.indexOf(key!.name) === -1) {
@@ -210,7 +210,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           isUSDCurrently ? isElementHavePerformance.usd : isElementHavePerformance.btc : null
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-        const currentPrice = mainPrice * value
+        const currentPrice = mainPrice * quantity
 
 
         const col = {

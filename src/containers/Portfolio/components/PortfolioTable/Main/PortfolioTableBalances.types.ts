@@ -22,9 +22,9 @@ export interface IProps {
     portfolio: {
       name: string | null
       processing: boolean | null
-      cryptoWalletIds: (string | null)[] | null
+      cryptoWalletIds: Array<string | null> | null
       cryptoWallets:
-      | ({
+      | Array<{
         _id: string
         address: string | null
         baseAssetId: string | null
@@ -32,9 +32,9 @@ export interface IProps {
           name: string | null
           symbol: string | null
         } | null
-        assetIds: (string | null)[] | null
+        assetIds: Array<string | null> | null
         assets:
-        | ({
+        | Array<{
           _id: string
           balance: number | null
           assetId: string | null
@@ -45,18 +45,18 @@ export interface IProps {
             priceBTC: number | null
 
           } | null
-        } | null)[]
+        } | null>
         | null
-      } | null)[]
+      } | null>
       | null
-      assetIds: (string | null)[] | null
+      assetIds: Array<string | null> | null
       assets:
-      | ({
+      | Array<{
         _id: string
         assetId: string | null
         exchangeId: string | null
         keyId: string | null
-        value: number | null
+        quantity: number | null
         realizedProfit: number | null
         unrealizedProfit: number | null
         totalProfit: number | null
@@ -72,7 +72,7 @@ export interface IProps {
           name: string | null
           apiKey: string | null
         } | null
-      } | null)[]
+      } | null>
       | null
     } | null
   } | null

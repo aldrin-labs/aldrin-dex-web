@@ -5,7 +5,7 @@ export const PortfolioPieChart = gql`
     getProfile {
       portfolio {
         assets {
-          value
+          quantity
           asset {
             priceUSD
             priceBTC
