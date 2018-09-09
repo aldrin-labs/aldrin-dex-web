@@ -121,7 +121,7 @@ class Rebalance extends React.Component<IProps, IState> {
           id: i,
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
+          price: (parseFloat(el.asset.priceUSD) * el.quantity).toFixed(2),
           portfolioPerc: null,
         })
       )
@@ -133,7 +133,7 @@ class Rebalance extends React.Component<IProps, IState> {
           id: i,
           exchange: el.exchange.name,
           symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.value).toFixed(2),
+          price: (parseFloat(el.asset.priceUSD) * el.quantity).toFixed(2),
           portfolioPerc: null,
         })
       )
