@@ -1,10 +1,8 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { css } from 'styled-components'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { RowProps } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable.types'
-import { hexToRgbAWithOpacity } from '@styles/helpers'
 
-export { Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody, Icon }
+export { Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody }
 
 const Wrapper = styled.div`
   ${customAquaScrollBar};

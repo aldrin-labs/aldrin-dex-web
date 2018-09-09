@@ -1,8 +1,8 @@
 import React from 'react'
-import SaveIcon from 'material-ui-icons/Save'
-import EditIcon from 'material-ui-icons/Edit'
-import Replay from 'material-ui-icons/Replay'
-import ClearIcon from 'material-ui-icons/Clear'
+import SaveIcon from '@material-ui/icons/Save'
+import EditIcon from '@material-ui/icons/Edit'
+import Replay from '@material-ui/icons/Replay'
+import ClearIcon from '@material-ui/icons/Clear'
 
 import { IProps } from './RebalanceActionButtons.types'
 import {

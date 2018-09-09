@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { CircularProgress } from '@material-ui/core'
-import purple from 'material-ui/colors/purple'
+import purple from '@material-ui/core/colors/purple'
 import styled from 'styled-components'
 
 export const Loading = ({

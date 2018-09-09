@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { Typography, Divider, Button, Paper } from '@material-ui/core'
-import AddIcon from 'material-ui-icons/Add'
+
+import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
@@ -224,7 +225,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       assets.map((row: InewRowT, i) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
-          value = 0,
+          quantity = 0,
           key = { name: '' },
           exchange = '',
           usdRealizedProfit = 0,
@@ -255,14 +256,14 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           : btcUnrealizedProfit
         const totalProfit = isUSDCurrently ? usdTotalProfit : btcTotalProfit
 
-        const currentPrice = mainPrice * value
+        const currentPrice = mainPrice * quantity
         const col = {
           id: i,
           currency: name || '',
           symbol,
           percentage: roundPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
-          quantity: value || 0,
+          quantity: quantity || 0,
           currentPrice: currentPrice || 0,
           daily: roundPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,

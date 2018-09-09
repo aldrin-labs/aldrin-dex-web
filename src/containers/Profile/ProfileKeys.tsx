@@ -1,14 +1,18 @@
-import Delete from 'material-ui-icons/Delete'
-import Checkbox from 'material-ui/Checkbox'
-import IconButton from 'material-ui/IconButton'
-import List, { ListItem, ListItemSecondaryAction, ListItemText } from 'material-ui/List'
-import Typography from 'material-ui/Typography'
-import { withStyles } from 'material-ui/styles'
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
+import Delete from '@material-ui/icons/Delete'
+import Checkbox from '@material-ui/core/Checkbox'
+import IconButton from '@material-ui/core/IconButton'
+import List, {
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+} from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
+import { withStyles } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
 import React from 'react'
 import styled from 'styled-components'
-import TextField from 'material-ui/TextField'
+import TextField from '@material-ui/core/TextField'
 
 const SWrapper = styled.div`
   width: 100%;
@@ -18,10 +22,13 @@ const SWrapper = styled.div`
 export class ProfileKeys extends React.Component {
   state = {
     checked: [0],
-    APIKeys: [{ id: 1, name: 'Kukoin', key: 'djawk77datcwahdkaw' }, { id: 2, name: 'Rekoin', key: 'DJjcslakcaslkwa' }],
+    APIKeys: [
+      { id: 1, name: 'Kukoin', key: 'djawk77datcwahdkaw' },
+      { id: 2, name: 'Rekoin', key: 'DJjcslakcaslkwa' },
+    ],
   }
 
-  handleToggle = value => () => {
+  handleToggle = (value) => () => {
     const { checked } = this.state
     const currentIndex = checked.indexOf(value)
     const newChecked = [...checked]
@@ -37,9 +44,9 @@ export class ProfileKeys extends React.Component {
     })
   }
 
-  deleteAPIKey = name = e => {
+  deleteAPIKey = (name = (e) => {
     console.log(111, name, e.target.value)
-  }
+  })
   render() {
     const { APIKeys } = this.state
     return (

@@ -5,11 +5,11 @@ import Yup from 'yup'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 
-import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
-import Typography from 'material-ui/Typography'
-import Paper from 'material-ui/Paper'
-import { InputLabel } from 'material-ui/Input'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import InputLabel from '@material-ui/core/InputLabel'
 
 import * as API from '@containers/User/api'
 import SelectExchangeList from '@components/SelectExchangeList/SelectExchangeList'
@@ -146,9 +146,11 @@ class AddExchangeKeyComponent extends React.Component {
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
             <SelectExchangeList
               isClearable
-              onChange={handleSelectChangePrepareForFormik.bind(this, 'exchange')}
+              onChange={handleSelectChangePrepareForFormik.bind(
+                this,
+                'exchange'
+              )}
             />
-
           </SExchangeSelect>
 
           <Button type="submit" disabled={!dirty || isSubmitting}>
