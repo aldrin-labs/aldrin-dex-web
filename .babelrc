@@ -1,13 +1,6 @@
 {
   "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": {
-          "browsers": ["last 2 versions"]
-        }
-      }
-    ],
+    ["@babel/env", { "modules": false }],
     [
       "@babel/stage-1",
       {
@@ -30,5 +23,15 @@
         "moduleName": "@babel/runtime"
       }
     ]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        "@babel/react",
+        "@babel/typescript",
+        ["@babel/env", { "modules": "commonjs" }]
+      ],
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+    }
+  }
 }

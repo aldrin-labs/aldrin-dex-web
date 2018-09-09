@@ -36,6 +36,11 @@ const config = {
         loader: 'graphql-tag/loader',
       },
       {
+        test: /\.js$/,
+        use: ['source-map-loader'],
+        enforce: 'pre',
+      },
+      {
         test: /\.svg$/,
         loader: 'svg-url-loader',
         options: {

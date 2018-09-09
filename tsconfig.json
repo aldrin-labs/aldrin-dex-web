@@ -2,8 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist/",
-    "target": "esnext",
+    "target": "es5",
     "sourceMap": true,
+    "noImplicitAny": true,
     "declaration": true,
     "strict": true,
     "noUnusedLocals": true,
@@ -12,6 +13,7 @@
     "forceConsistentCasingInFileNames": true,
     "module": "commonjs",
     "moduleResolution": "node",
+    "noUnusedParameters": true,
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
