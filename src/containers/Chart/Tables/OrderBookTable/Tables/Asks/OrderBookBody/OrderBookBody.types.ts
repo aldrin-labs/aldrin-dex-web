@@ -1,5 +1,6 @@
 import { IExchange } from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.types'
 import { IOrder } from '@containers/Chart/Chart.types'
+import { Theme } from '@material-ui/core'
 
 export interface IProps {
   action: any
@@ -10,4 +11,5 @@ export interface IProps {
   digitsAfterDecimalForAsksSize: number
   digitsAfterDecimalForAsksPrice: number
   data: IOrder[]
+  theme: Theme
 }

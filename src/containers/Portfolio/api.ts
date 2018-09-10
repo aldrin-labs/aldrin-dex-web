@@ -77,13 +77,7 @@ export const getPortfolioQuery = gql`
           assetId
           exchangeId
           keyId
-          value
-          usdRealizedProfit
-          usdUnrealizedProfit
-          usdTotalProfit
-          btcRealizedProfit
-          btcUnrealizedProfit
-          btcTotalProfit
+          quantity
           asset {
             _id
             name
@@ -152,29 +146,29 @@ export const getPortfolioMainQuery = gql`
         }
         assetIds
         ownerId
-        coinPerformance {
-          coin
-          btc
-          usd
-        }
         assets {
           _id
           assetId
           exchangeId
           keyId
-          value
-          usdRealizedProfit
-          usdUnrealizedProfit
-          usdTotalProfit
-          btcRealizedProfit
-          btcUnrealizedProfit
-          btcTotalProfit
+          quantity
           asset {
             _id
             name
             symbol
             priceUSD
             priceBTC
+          }
+          PL {
+            base
+            quote
+            price
+            basePriceUSD
+            basePriceBTC
+            realized
+            averageBuyPrice
+            totalBuyQty
+            totalSellQty
           }
           exchange {
             name

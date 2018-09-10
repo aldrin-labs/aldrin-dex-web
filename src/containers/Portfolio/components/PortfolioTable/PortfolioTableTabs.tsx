@@ -42,7 +42,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio, toggleWallets } = this.props
+    const { tab, portfolio, toggleWallets, theme } = this.props
 
     return (
       <React.Fragment>
@@ -58,36 +58,46 @@ class PortfolioTableTabs extends React.Component<IProps> {
             </ToggleAccountsBtn>
 
             <Tab
+              color="primary"
               onClick={() => this.onChangeTab('main')}
-              active={tab === 'main'}
+              variant="contained"
+              disabled={tab === 'main'}
             >
               Main
             </Tab>
 
             <Tab
+              color="primary"
               onClick={() => this.onChangeTab('industry')}
-              active={tab === 'industry'}
+              variant="contained"
+              disabled={tab === 'industry'}
             >
               Industry
             </Tab>
 
             <Tab
+              color="primary"
               onClick={() => this.onChangeTab('rebalance')}
-              active={tab === 'rebalance'}
+              variant="contained"
+              disabled={tab === 'rebalance'}
             >
               Rebalance
             </Tab>
 
             <Tab
+              color="primary"
               onClick={() => this.onChangeTab('correlation')}
-              active={tab === 'correlation'}
+              variant="contained"
+              disabled={tab === 'correlation'}
             >
               Correlation
             </Tab>
 
             <Tab
+              color="primary"
               onClick={() => this.onChangeTab('optimization')}
-              active={tab === 'optimization'}
+              variant="contained"
+              disabled={tab === 'optimization'}
             >
               Optimization
             </Tab>
@@ -155,7 +165,6 @@ const PTHeadingBlock = styled.div`
 
   position: sticky;
   top: 0;
-  background-color: #393e44;
   z-index: 99;
 
   width: 100%;
@@ -226,45 +235,24 @@ const ToggleAccountsBtn = styled(IconButton)`
   }
 `
 
+const Tab = styled(Button)`
+  @media (max-width: 1290px) {
+    display: none;
+    width: 8rem;
+    padding: 0.5rem;
+  }
+`
+
 const TabContainer = styled.div`
   width: 70%;
   display: grid;
+  grid-gap: 1.5rem;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr;
   align-items: center;
 
   @media (max-width: 1290px) {
     grid-template-columns: repeat(2, 4rem);
-  }
-`
-
-const Tab = styled.button`
-  color: ${(props: { active?: boolean }) =>
-    props.active ? '#4ed8da' : '#fff'};
-  border-color: ${(props: { active?: boolean }) =>
-    props.active ? '#4ed8da' : 'transparent'};
-
-  padding: 10px 30px;
-  border-radius: 3px;
-  background-color: #292d31;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  cursor: pointer;
-  margin: 10px 15px;
-  outline: none;
-  box-sizing: border-box;
-
-  @media (max-width: 1290px) {
-    display: none;
-    width: 8rem;
-    padding: 0.5rem;
-  }
-
-  @media (max-width: 615px) {
-    width: 5.5rem;
-    padding: 0.5rem;
   }
 `
 

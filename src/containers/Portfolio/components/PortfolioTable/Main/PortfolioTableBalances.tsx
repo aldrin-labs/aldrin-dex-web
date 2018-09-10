@@ -2,10 +2,9 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { withTheme } from '@material-ui/core/styles'
-import classNames from 'classnames'
-import { Typography, Divider, Button } from '@material-ui/core'
-import AddIcon from 'material-ui-icons/Add'
+import { Typography, Divider, Button, Paper } from '@material-ui/core'
+
+import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
@@ -18,6 +17,7 @@ import {
   onSortStrings,
   roundPercentage,
   calcAllSumOfPortfolioAsset,
+  calcSumOfPortfolioAssetProfitLoss
 } from '@utils/PortfolioTableUtils'
 import * as actions from '@containers/Portfolio/actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
@@ -173,6 +173,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       isUSDCurrently,
       cryptoWallets
     )
+
     const walletData = cryptoWallets
       .map((row: InewRowT) => {
         const {
@@ -226,7 +227,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       assets.map((row: InewRowT, i) => {
         const {
           asset = { symbol: '', priceUSD: 0, priceBTC: 0, percentChangeDay: 0 },
-          value = 0,
+          quantity = 0,
           key = { name: '' },
           exchange = '',
           usdRealizedProfit = 0,
@@ -237,11 +238,16 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           btcTotalProfit = 0,
         } =
           row || {}
+        if (key === null || key.name === null) {
+          return
+        }
         if (activeKeys.indexOf(key.name) === -1) {
           return null
         }
         const { symbol, priceUSD, priceBTC, percentChangeDay } = asset || {}
         const { name } = exchange
+
+        const PL = calcSumOfPortfolioAssetProfitLoss(row.PL, isUSDCurrently)
 
         const mainPrice = isUSDCurrently ? priceUSD : priceBTC
         const realizedProfit = isUSDCurrently
@@ -252,22 +258,22 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           : btcUnrealizedProfit
         const totalProfit = isUSDCurrently ? usdTotalProfit : btcTotalProfit
 
-        const currentPrice = mainPrice * value
+        const currentPrice = mainPrice * quantity
         const col = {
           id: i,
           currency: name || '',
           symbol,
           percentage: roundPercentage(currentPrice * 100 / allSums),
           price: mainPrice || 0,
-          quantity: value || 0,
+          quantity: quantity || 0,
           currentPrice: currentPrice || 0,
           daily: roundPercentage(mainPrice / 100 * percentChangeDay),
           dailyPerc: percentChangeDay,
-          realizedPL: realizedProfit,
+          realizedPL: PL.realized,
           realizedPLPerc: 0,
-          unrealizedPL: unrealizedProfit,
+          unrealizedPL: PL.unrealized,
           unrealizedPLPerc: 0,
-          totalPL: realizedProfit + unrealizedProfit,
+          totalPL: PL.total,
         }
 
         return col
@@ -434,8 +440,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     const { isShownChart, isUSDCurrently, children, theme } = this.props
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
 
-    console.log('theme: ', theme)
-
     const isSelectAll =
       (tableData &&
         selectedBalances &&
@@ -446,9 +450,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     if (!tableDataHasData) {
       return (
-        <PTWrapper tableData={tableDataHasData}>
+        <PTWrapper
+          background={theme.palette.background.paper}
+          tableData={tableDataHasData}
+        >
           <PTextBox backgroundColor={theme.palette.grey.A400}>
-            <STypography variant="display1">
+            <STypography color="default" variant="display1">
               Add an exchange or wallet
             </STypography>
             <SButton
@@ -465,12 +472,17 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={!!tableDataHasData}>
+      <PTWrapper
+        background={theme.palette.background.paper}
+        tableData={!!tableDataHasData}
+      >
         {children}
 
         <GridContainer>
           <TableAndHeadingWrapper>
-            <TableHeading>Portfolio</TableHeading>
+            <Typography color="default" variant="headline">
+              Portfolio
+            </Typography>
             <Wrapper>
               <PTable>
                 <PortfolioTableHead
@@ -479,15 +491,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                   onSelectAll={this.onSelectAll}
                   onSortTable={this.onSortTable}
                   currentSort={currentSort}
+                  theme={theme}
                 />
                 <PortfolioTableMain
                   tableData={tableData}
                   selectedBalances={selectedBalances}
                   isUSDCurrently={isUSDCurrently}
                   onSelectBalance={this.onSelectBalance}
+                  theme={theme}
                 />
                 {selectedSum.currency ? (
                   <PortfolioTableSum
+                    palette={theme.palette}
                     selectedSum={selectedSum}
                     isUSDCurrently={isUSDCurrently}
                   />
@@ -497,9 +512,14 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           </TableAndHeadingWrapper>
 
           <TableAndHeadingWrapper>
-            <TableHeading>Trade history</TableHeading>
+            <Typography color="default" variant="headline">
+              Trade history
+            </Typography>
             <Wrapper>
-              <TradeOrderHistoryTable isUSDCurrently={isUSDCurrently} />
+              <TradeOrderHistoryTable
+                theme={theme}
+                isUSDCurrently={isUSDCurrently}
+              />
             </Wrapper>
           </TableAndHeadingWrapper>
 
@@ -560,14 +580,14 @@ const ChartTitle = styled(Typography)`
   margin-left: 1.2rem;
 `
 
-const PTWrapper = styled.div`
+export const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
-  background-color: #393e44;
+  background-color: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
@@ -602,18 +622,7 @@ const TableAndHeadingWrapper = styled.div`
   ${customAquaScrollBar};
 `
 
-const TableHeading = styled.div`
-  display: flex;
-  text-transform: uppercase;
-  font-family: Roboto, sans-serif;
-  font-size: 17px;
-  color: white;
-  font-weight: bold;
-  letter-spacing: 1.1px;
-  min-height: 25px;
-`
-
-const Wrapper = styled.div`
+const Wrapper = styled(Paper)`
   width: 100%;
   height: 100%;
   position: relative;
@@ -686,7 +695,6 @@ const SButton = styled(Button)`
 const STypography = styled(Typography)`
   text-align: center;
   margin-bottom: 3rem;
-  color: #fff;
 `
 
 const STypographyButtonText = styled(Typography)`
@@ -725,6 +733,5 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
-  withTheme()
+  connect(mapStateToProps, mapDispatchToProps)
 )(MainDataWrapper)

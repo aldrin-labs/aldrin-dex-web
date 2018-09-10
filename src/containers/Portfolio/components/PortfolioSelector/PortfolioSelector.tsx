@@ -11,6 +11,7 @@ import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 import Accounts from '@containers/Portfolio/components/PortfolioSelector/Accounts'
 
+
 class PortfolioSelector extends React.Component<IProps, IState> {
   state = {
     checkboxes: [],
@@ -170,6 +171,45 @@ const FilterIcon = styled(FaFilter)`
   color: whitesmoke;
   font-size: 1.5rem;
   margin: 0 0.5rem;
+`
+
+const CloseContainer = styled.div`
+  height: 100%;
+`
+
+const SelectAll = styled.div`
+  margin-top: 32px;
+  padding-left: 8px;
+`
+
+const AccountName = styled.span`
+  color: ${(props: { isChecked: boolean }) =>
+    props.isChecked ? '#4ed8da' : '#fff'};
+
+  font-family: Roboto, sans-serif;
+  font-size: 1em;
+  font-weight: 500;
+  text-align: left;
+  margin-left: 24px;
+`
+
+const AccountsListItem = styled.li`
+  display: flex;
+  align-items: center;
+  font-family: Roboto, sans-serif;
+  font-size: 1em;
+  font-weight: 500;
+  text-align: left;
+  color: #4ed8da;
+  margin-bottom: 24px;
+`
+
+const AccountsList = styled.ul`
+  list-style: none;
+  margin-top: 34px;
+  display: flex;
+  flex-direction: column;
+  padding-left: 8px;
 `
 
 const AccountsWalletsBlock = styled.div`

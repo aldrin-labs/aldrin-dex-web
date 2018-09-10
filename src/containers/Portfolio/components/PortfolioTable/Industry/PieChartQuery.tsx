@@ -47,7 +47,7 @@ class PieChartQuery extends React.Component<Props, State> {
 
   render() {
     const { data } = this.state
-    const { isUSDCurrently } = this.props
+    const { isUSDCurrently, theme } = this.props
     if (!data) return <CustomError error="!data" />
     const { getProfile } = data
     if (!getProfile) return <CustomError error="!getProfile" />
@@ -61,21 +61,21 @@ class PieChartQuery extends React.Component<Props, State> {
     const obj: { [key: string]: number } = {}
     assets.forEach((asset) => {
       if (!asset) return null
-      const { value, asset: internalAsset } = asset
+      const { quantity, asset: internalAsset } = asset
       if (!internalAsset) return null
       const { industry, priceUSD, priceBTC } = internalAsset
       const name = industry ? industry.name : null
 
       const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-      const currentPrice = mainPrice * value
+      const currentPrice = mainPrice * quantity
 
       if (name === null && !obj.Other) {
         obj['Other'] = +roundPercentage(currentPrice * 100 / allSums)
       } else if (name === null && obj.Other) {
         obj['Other'] += +roundPercentage(currentPrice * 100 / allSums)
-      } else if (!obj[name] && !!value) {
+      } else if (!obj[name] && !!quantity) {
         obj[name] = +roundPercentage(currentPrice * 100 / allSums)
-      } else if (!!obj[name] && !!value) {
+      } else if (!!obj[name] && !!quantity) {
         obj[name] += +roundPercentage(currentPrice * 100 / allSums)
       }
     })
@@ -115,7 +115,14 @@ class PieChartQuery extends React.Component<Props, State> {
       }
     })
 
-    return <PieChart data={pieData} flexible={true} colorLegend={true} />
+    return (
+      <PieChart
+        theme={theme}
+        data={pieData}
+        flexible={true}
+        colorLegend={true}
+      />
+    )
 
     // return <PieChart data={pieData} flexible colorLegend labelsRadiusMultiplier={1} labelsStyle={labelsStyleObject} />
   }

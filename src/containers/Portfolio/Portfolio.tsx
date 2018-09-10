@@ -9,6 +9,7 @@ import { IProps } from '@containers/Portfolio/interfaces'
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
+import { withTheme } from '@material-ui/core'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -41,8 +42,8 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 
   render() {
-    const { keys, login } = this.props
     const { checkboxes } = this.state
+    const { keys, login, theme } = this.props
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
@@ -57,6 +58,7 @@ class PortfolioComponent extends React.Component<IProps> {
                 />
                 <PortfolioTable
                   checkboxes={checkboxes}
+                  theme={theme}
                   toggleWallets={this.toggleWallets}
                   subscription={subscriptionData}
                 />
@@ -81,7 +83,9 @@ const mapStateToProps = (store) => ({
   login: store.login.loginStatus,
 })
 
-export default compose(connect(mapStateToProps))(PortfolioComponent)
+export default compose(withTheme(), connect(mapStateToProps))(
+  PortfolioComponent
+)
 
 const PortfolioContainer = styled.div`
   display: flex;

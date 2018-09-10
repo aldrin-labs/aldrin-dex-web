@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { red } from '@material-ui/core/colors'
 
 import { Row, Cell, Body } from '@components/Table/Table'
 import { Loading } from '@components/Loading'
@@ -39,6 +38,9 @@ class ClassBody extends Component<IProps> {
       action,
       index,
       background,
+      theme: {
+        palette: { red },
+      },
     } = this.props
 
     return (
@@ -54,7 +56,7 @@ class ClassBody extends Component<IProps> {
               ) => (
                 <Row background={'transparent'} key={order.price}>
                   <RowWithVolumeChart
-                    volumeColor={hexToRgbAWithOpacity(red[500], 0.25)}
+                    volumeColor={hexToRgbAWithOpacity(red.main, 0.25)}
                     colored={calculatePercentagesOfOrderSize(
                       +order.size,
                       data
@@ -66,7 +68,7 @@ class ClassBody extends Component<IProps> {
                     <Cell width={'45%'}>
                       <StyledTypography
                         anime={i === index}
-                        textColor={red[400]}
+                        textColor={red.main}
                         color="default"
                         noWrap={true}
                         variant="body1"
@@ -80,7 +82,7 @@ class ClassBody extends Component<IProps> {
                     <Cell width={'45%'}>
                       <StyledTypography
                         anime={i === index}
-                        textColor={red[400]}
+                        textColor={red.main}
                         color="default"
                         noWrap={true}
                         variant="body1"

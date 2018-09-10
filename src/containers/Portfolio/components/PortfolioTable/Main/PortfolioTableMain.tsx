@@ -1,8 +1,12 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import {formatNumberToUSFormat, roundAndFormatNumber} from '@utils/PortfolioTableUtils'
+import {
+  formatNumberToUSFormat,
+  roundAndFormatNumber,
+} from '@utils/PortfolioTableUtils'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain.types'
 import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
+import { Icon, Checkbox, Span, Label } from '@styles/cssUtils'
 
 export default class PortfolioTableMain extends React.Component<IProps> {
   renderCheckbox = (index: number) => {
@@ -21,10 +25,17 @@ export default class PortfolioTableMain extends React.Component<IProps> {
   }
 
   render() {
-    const { tableData, selectedBalances, isUSDCurrently } = this.props
+    const {
+      tableData,
+      selectedBalances,
+      isUSDCurrently,
+      theme: { palette },
+    } = this.props
     if (!tableData) {
       return null
     }
+
+    const textColor: string= palette.getContrastText(palette.background.paper)
 
     return (
       <PTBody
@@ -73,17 +84,47 @@ export default class PortfolioTableMain extends React.Component<IProps> {
             currency,
             symbol,
             `${percentage} %`,
-            [mainSymbol, `${roundAndFormatNumber(parseFloat(price), numberOfDigitsAfterPoint)}`],
+            [
+              mainSymbol,
+              `${roundAndFormatNumber(
+                parseFloat(price),
+                numberOfDigitsAfterPoint
+              )}`,
+            ],
             quantityFormatted,
-            [mainSymbol, `${roundAndFormatNumber(parseFloat(currentPrice), numberOfDigitsAfterPoint)}`],
+            [
+              mainSymbol,
+              `${roundAndFormatNumber(
+                parseFloat(currentPrice),
+                numberOfDigitsAfterPoint
+              )}`,
+            ],
             //            daily,
             //            `${dailyPerc} %`,
-            [mainSymbol, `${roundAndFormatNumber(parseFloat(realizedPL), numberOfDigitsAfterPoint)}`],
+            [
+              mainSymbol,
+              `${roundAndFormatNumber(
+                parseFloat(realizedPL),
+                numberOfDigitsAfterPoint
+              )}`,
+            ],
             // realizedPL,
             //            `${realizedPLPerc} %`,
             // unrealizedPL,
-            [mainSymbol, `${roundAndFormatNumber(parseFloat(unrealizedPL), numberOfDigitsAfterPoint)}`],
-            [mainSymbol, `${roundAndFormatNumber(parseFloat(totalPL), numberOfDigitsAfterPoint)}`],
+            [
+              mainSymbol,
+              `${roundAndFormatNumber(
+                parseFloat(unrealizedPL),
+                numberOfDigitsAfterPoint
+              )}`,
+            ],
+            [
+              mainSymbol,
+              `${roundAndFormatNumber(
+                parseFloat(totalPL),
+                numberOfDigitsAfterPoint
+              )}`,
+            ],
             //            `${unrealizedPLPerc} %`,
           ]
 
@@ -92,9 +133,18 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               key={`${currency}${symbol}${quantity}${index}`}
               isSelected={isSelected}
               isBase={isBase}
+              background={palette.background.paper}
+              selectedBackground={palette.background.default}
               onClick={() => this.props.onSelectBalance(id)}
             >
-              <PTD key={`${index}smt`} isSelected={isSelected}>
+              <PTD
+                red={palette.red.main}
+                green={palette.green.main}
+                selectedTextColor={palette.secondary.main}
+                textColor={textColor}
+                key={`${index}smt`}
+                isSelected={isSelected}
+              >
                 {this.renderCheckbox(id)}
               </PTD>
               {cols.map((col, idx) => {
@@ -110,6 +160,10 @@ export default class PortfolioTableMain extends React.Component<IProps> {
 
                 return (
                   <PTD
+                    red={palette.red.main}
+                    green={palette.green.main}
+                    selectedTextColor={palette.secondary.main}
+                    textColor={textColor}
                     key={`${currency}${symbol}${quantity}${col}${idx}`}
                     isSelected={isSelected}
                     isBase={isBase}
@@ -135,18 +189,23 @@ const PTBody = styled.tbody`
 const PTD = styled.td`
   color: ${(props: {
     isSelected?: boolean
+    red: string
+    green: string
     colorized: string | JSX.Element | null
+    selectedTextColor: string
+    textColor: string
   }) => {
     if (props.colorized) {
       const num = Number(props.colorized)
       if (num > 0) {
-        return '#4caf50'
-      } else if (num < 0) {
-        return '#f44336'
+        return props.green
+      }
+      if (num < 0) {
+        return props.red
       }
     }
 
-    return props.isSelected ? '#4ed8da' : '#fff'
+    return props.isSelected ? props.selectedTextColor : props.textColor
   }};
 
   font-family: Roboto, sans-serif;
@@ -174,18 +233,17 @@ const PTD = styled.td`
     min-width: 50px;
     max-width: 50px;
     text-overflow: ellipsis;
-
   }
 
   &:nth-child(4) {
     min-width: 85px;
     max-width: 85px;
   }
-  
+
   &:nth-child(6) {
     min-width: 90px;
   }
-  
+
   &:nth-child(7) {
     min-width: 93px;
     max-width: 93px;
@@ -204,53 +262,20 @@ const PTD = styled.td`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean; isBase?: boolean }) =>
-    props.isBase ? '#00ff0028' : props.isSelected ? '#2d3136' : '#393e44'};
+  transition: background-color 0.25s ease-in-out;
+  background-color: ${(props: {
+    isSelected?: boolean
+    isBase?: boolean
+    background: string
+    selectedBackground: string
+  }) =>
+    props.isBase
+      ? '#00ff0028'
+      : props.isSelected
+        ? props.background
+        : props.selectedBackground};
 
-  &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean; isBase?: boolean }) =>
-      props.isBase ? '#00ff0028' : props.isSelected ? '#2d3a3a' : '#3a4e4e'};
-  }
   & ${PTD}:nth-child(n + 4) {
     text-align: right;
   }
-`
-
-const Span = styled.span``
-
-const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 18px;
-    height: 18px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  & :checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 12px;
-  }
-`
-
-const Icon = styled.i`
-  padding-right: 5px;
 `

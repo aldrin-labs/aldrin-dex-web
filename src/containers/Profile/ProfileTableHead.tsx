@@ -1,24 +1,45 @@
 import React, { Component, SFC } from 'react'
 
-import Checkbox from 'material-ui/Checkbox'
-import { TableCell, TableHead, TableRow, TableSortLabel } from 'material-ui/Table'
-import Tooltip from 'material-ui/Tooltip'
+import Checkbox from '@material-ui/core/Checkbox'
+import {
+  TableCell,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+} from '@material-ui/core/Table'
+import Tooltip from '@material-ui/core/Tooltip'
 
 const columnData = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Account nickname' },
-  { id: 'accountType', numeric: true, disablePadding: false, label: 'Account Type' },
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: true,
+    label: 'Account nickname',
+  },
+  {
+    id: 'accountType',
+    numeric: true,
+    disablePadding: false,
+    label: 'Account Type',
+  },
   { id: 'exchange', numeric: true, disablePadding: false, label: 'Exchange' },
   { id: 'key', numeric: true, disablePadding: false, label: 'Key' },
-  { id: 'info', numeric: true, disablePadding: false, label: 'Info' }
+  { id: 'info', numeric: true, disablePadding: false, label: 'Info' },
 ]
 
 export class ProfileTableHead extends Component {
-  createSortHandler = property => event => {
+  createSortHandler = (property) => (event) => {
     this.props.onRequestSort(event, property)
   }
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props
+    const {
+      onSelectAllClick,
+      order,
+      orderBy,
+      numSelected,
+      rowCount,
+    } = this.props
 
     return (
       <TableHead>
@@ -30,7 +51,7 @@ export class ProfileTableHead extends Component {
               onChange={onSelectAllClick}
             />
           </TableCell>
-          {columnData.map(column => {
+          {columnData.map((column) => {
             return (
               <TableCell
                 key={column.id}
@@ -38,7 +59,11 @@ export class ProfileTableHead extends Component {
                 padding={column.disablePadding ? 'none' : 'default'}
                 sortDirection={orderBy === column.id ? order : false}
               >
-                <Tooltip title="Sort" placement={column.numeric ? 'bottom-end' : 'bottom-start'} enterDelay={300}>
+                <Tooltip
+                  title="Sort"
+                  placement={column.numeric ? 'bottom-end' : 'bottom-start'}
+                  enterDelay={300}
+                >
                   <TableSortLabel
                     active={orderBy === column.id}
                     direction={order}

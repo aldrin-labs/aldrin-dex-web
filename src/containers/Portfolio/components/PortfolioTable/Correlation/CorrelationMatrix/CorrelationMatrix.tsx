@@ -59,7 +59,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
                         : '30% 1fr 29%',
                     gridTemplateRows: '100%',
                     alignItems: 'center',
-                    background: '#393e44',
+
                     // justifyItems: 'center',
                   }
                 : {
@@ -67,7 +67,6 @@ class CorrelationMatrix extends PureComponent<IProps> {
                     gridTemplateColumns: '20% 1fr 20%',
                     gridTemplateRows: '100%',
                     alignItems: 'center',
-                    background: '#393e44',
                   }
             }
             className="full-screenable-node"
@@ -99,7 +98,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
             {isFullscreenEnabled ? null : (
               <StyledFullscreenButton
                 color="primary"
-                variant="outlined"
+                variant="contained"
                 onClick={() => {
                   this.props.fullScreenChangeHandler()
                 }}
@@ -146,7 +145,6 @@ const ScrolledWrapper = styled.div`
   height: 100%;
   width: 100%;
   overflow-y: scroll;
-  background-color: #393e44;
   margin: 0 auto;
 
   ${customAquaScrollBar};

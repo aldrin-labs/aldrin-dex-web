@@ -4,15 +4,15 @@ import Yup from 'yup'
 import { compose, withStateHandlers } from 'recompose'
 import { graphql } from 'react-apollo'
 import * as R from 'ramda'
-import Button from 'material-ui/Button'
-import TextField from 'material-ui/TextField'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'material-ui/Dialog'
-import Typography from 'material-ui/Typography'
+} from '@material-ui/core/Dialog'
+import Typography from '@material-ui/core/Typography'
 
 import { deleteExchangeKeyMutation, getKeysQuery } from '@containers/User/api'
 

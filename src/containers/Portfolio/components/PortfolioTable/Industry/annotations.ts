@@ -5,7 +5,7 @@ export interface PortfolioPieChartQuery {
   getProfile:  {
     portfolio:  {
       assets:  Array< {
-        value: number | null,
+        quantity: number | null,
         asset:  {
           industry:  {
             name: string | null,

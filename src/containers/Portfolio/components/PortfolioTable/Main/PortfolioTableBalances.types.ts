@@ -1,4 +1,10 @@
-import { IRowT, SortArgs, Args, IPortfolio } from '@containers/Portfolio/components/PortfolioTable/types'
+import {
+  IRowT,
+  SortArgs,
+  Args,
+  IPortfolio,
+} from '@containers/Portfolio/components/PortfolioTable/types'
+import { Theme } from '@material-ui/core'
 
 export interface IState {
   tableData: IRowT | null
@@ -11,6 +17,7 @@ export interface IState {
 
 export interface IProps {
   isShownChart: boolean
+  theme: Theme
   filterValueSmallerThenPercentage: number | undefined
   isUSDCurrently: boolean
   checkboxes: number[]
@@ -22,9 +29,8 @@ export interface IProps {
     portfolio: {
       name: string | null
       processing: boolean | null
-      cryptoWalletIds: (string | null)[] | null
-      cryptoWallets:
-      | ({
+      cryptoWalletIds: Array<string | null> | null
+      cryptoWallets: Array<{
         _id: string
         address: string | null
         baseAssetId: string | null
@@ -32,9 +38,8 @@ export interface IProps {
           name: string | null
           symbol: string | null
         } | null
-        assetIds: (string | null)[] | null
-        assets:
-        | ({
+        assetIds: Array<string | null> | null
+        assets: Array<{
           _id: string
           balance: number | null
           assetId: string | null
@@ -43,20 +48,16 @@ export interface IProps {
             symbol: string | null
             priceUSD: number | null
             priceBTC: number | null
-
           } | null
-        } | null)[]
-        | null
-      } | null)[]
-      | null
-      assetIds: (string | null)[] | null
-      assets:
-      | ({
+        } | null> | null
+      } | null> | null
+      assetIds: Array<string | null> | null
+      assets: Array<{
         _id: string
         assetId: string | null
         exchangeId: string | null
         keyId: string | null
-        value: number | null
+        quantity: number | null
         realizedProfit: number | null
         unrealizedProfit: number | null
         totalProfit: number | null
@@ -72,8 +73,7 @@ export interface IProps {
           name: string | null
           apiKey: string | null
         } | null
-      } | null)[]
-      | null
+      } | null> | null
     } | null
   } | null
 }
