@@ -106,6 +106,8 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     const {
       theme: { palette },
     } = this.props
+    const textColor: string= palette.getContrastText(palette.background.paper)
+
 
     return (
       <Wrapper>
@@ -118,7 +120,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
                 return (
                   <PTHC
-                    color={palette.getContrastText(palette.background.paper)}
+                    color={textColor}
                     key={heading.name}
                     onClick={() => this.onSortTable(heading.value)}
                   >
@@ -188,9 +190,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
                     return (
                       <PTDC
-                        color={palette.getContrastText(
-                          palette.background.paper
-                        )}
+                        color={textColor}
                         key={`${col}${index}`}
                       >
                         {col}

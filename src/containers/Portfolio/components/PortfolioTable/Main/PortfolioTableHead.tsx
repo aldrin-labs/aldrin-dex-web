@@ -68,11 +68,13 @@ export default class PortfolioTableHead extends React.Component<
       theme: { palette },
     } = this.props
 
+    const textColor: string = palette.getContrastText(palette.background.default) 
+
     return (
       <PTHead>
         <PTR background={palette.background.paper}>
           <PTH
-            textColor={palette.getContrastText(palette.background.default)}
+            textColor={textColor}
             key="selectAll"
             style={{ textAlign: 'left' }}
           >
@@ -91,7 +93,7 @@ export default class PortfolioTableHead extends React.Component<
 
             return (
               <PTH
-                textColor={palette.getContrastText(palette.background.default)}
+                textColor={textColor}
                 key={heading.name}
                 onClick={() => onSortTable(heading.value)}
                 // style={{ paddingRight: isSorted ? 0 : '16px' }}

@@ -14,12 +14,14 @@ export default class PortfolioTableSum extends React.Component<IProps> {
     const { selectedSum, industry, isUSDCurrently, palette } = this.props
     const numberOfDigitsAfterPoint = isUSDCurrently ? 2 : 8
 
+    const textColor: string = palette.getContrastText(palette.primary.main)
+
     return (
       <PTBody style={{ borderBottom: 'none' }}>
         <PTR background={palette.primary.main}>
           {selectedSum && (
             <PTD
-              color={palette.getContrastText(palette.primary.main)}
+              color={textColor}
               background={palette.primary[palette.type]}
               style={{ textAlign: 'left' }}
             >
@@ -40,7 +42,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
 
               return (
                 <PTD
-                  color={palette.getContrastText(palette.primary.main)}
+                  color={textColor}
                   background={palette.primary[palette.type]}
                   key={key}
                 >
@@ -60,7 +62,7 @@ export default class PortfolioTableSum extends React.Component<IProps> {
 
             return (
               <PTD
-                color={palette.getContrastText(palette.primary.main)}
+                color={textColor}
                 background={palette.primary[palette.type]}
                 key={key}
                 industry={industry}

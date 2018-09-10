@@ -35,6 +35,8 @@ export default class PortfolioTableMain extends React.Component<IProps> {
       return null
     }
 
+    const textColor: string= palette.getContrastText(palette.background.paper)
+
     return (
       <PTBody
         style={
@@ -139,7 +141,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
                 red={palette.red.main}
                 green={palette.green.main}
                 selectedTextColor={palette.secondary.main}
-                textColor={palette.getContrastText(palette.background.paper)}
+                textColor={textColor}
                 key={`${index}smt`}
                 isSelected={isSelected}
               >
@@ -161,9 +163,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
                     red={palette.red.main}
                     green={palette.green.main}
                     selectedTextColor={palette.secondary.main}
-                    textColor={palette.getContrastText(
-                      palette.background.paper
-                    )}
+                    textColor={textColor}
                     key={`${currency}${symbol}${quantity}${col}${idx}`}
                     isSelected={isSelected}
                     isBase={isBase}
