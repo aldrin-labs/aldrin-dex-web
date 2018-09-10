@@ -4,4 +4,5 @@ export default interface IProps {
   theme: Theme
   changeModeTheme: () => void
   themeMode: 'dark' | 'light'
+  hide: boolean
 }

@@ -1,16 +1,16 @@
 import classNames from 'classnames'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 import React, { SFC } from 'react'
 
-import DeleteIcon from 'material-ui-icons/Delete'
-import FilterListIcon from 'material-ui-icons/FilterList'
-import IconButton from 'material-ui/IconButton'
-import { lighten } from 'material-ui/styles/colorManipulator'
-import Toolbar from 'material-ui/Toolbar'
-import Tooltip from 'material-ui/Tooltip'
-import Typography from 'material-ui/Typography'
+import DeleteIcon from '@material-ui/icons/Delete'
+import FilterListIcon from '@material-ui/icons/FilterList'
+import IconButton from '@material-ui/core/IconButton'
+import { lighten } from '@material-ui/core/styles/colorManipulator'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
 
-const toolbarStyles = theme => ({
+const toolbarStyles = (theme) => ({
   root: {
     paddingRight: theme.spacing.unit,
   },
@@ -35,7 +35,7 @@ const toolbarStyles = theme => ({
   },
 })
 
-const TableToolbar = props => {
+const TableToolbar = (props) => {
   const { numSelected, classes } = props
 
   return (

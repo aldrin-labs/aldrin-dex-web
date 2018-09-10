@@ -1,5 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import { Typography } from '@material-ui/core'
 
 interface Props {
   onClick?: Function
@@ -14,23 +15,27 @@ export default class Switch extends React.Component<Props> {
 
     return (
       <Container>
-        {first && <Desc>{first}</Desc>}
+        {first && (
+          <Desc color="default" variant="body1">
+            {first}
+          </Desc>
+        )}
         <Label>
           <Input type="checkbox" onClick={onClick} checked={isActive} />
           <Slider />
         </Label>
-        {second && <Desc>{second}</Desc>}
+        {second && (
+          <Desc color="default" variant="body1">
+            {second}
+          </Desc>
+        )}
       </Container>
     )
   }
 }
 
-const Desc = styled.span`
-  font-family: Roboto, sans-serif;
-  font-size: 1em;
+const Desc = styled(Typography)`
   margin: 0 15px;
-  color: #fff;
-  font-weight: 500;
 `
 
 const Container = styled.div`

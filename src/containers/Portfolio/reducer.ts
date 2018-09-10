@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-act'
 import * as R from 'ramda'
 
+import { daysFromNow } from '@utils/dateUtils'
 import * as actions from '@containers/Portfolio/actions'
 
 const initialState = {
@@ -8,13 +9,15 @@ const initialState = {
   selectedAccounts: [],
   optimizationData: [],
   correlationTableFullscreenEnabled: false,
-  correlationPeriod: 'testDates',
+  correlationPeriod: 'lastDay',
   optimizationPeriod: 'lastDay',
-  optimizationStartDate: 0,
-  optimizationEndDate: 0,
-  correlationStartDate: 0,
-  correlationEndDate: 0,
-  filterValuesLessThenThat: 0,
+  optimizationStartDate: daysFromNow(1),
+  optimizationEndDate: daysFromNow(0),
+  correlationStartDate: daysFromNow(1),
+  correlationEndDate: daysFromNow(0),
+  //  default filter is negative value so every filter is no working(no filter)
+  //  this is default behaviour
+  filterValuesLessThenThat: -100.0,
   keys: [],
   activeChart: 4,
 }

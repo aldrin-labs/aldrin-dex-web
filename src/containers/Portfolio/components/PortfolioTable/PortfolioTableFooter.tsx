@@ -1,5 +1,5 @@
 import React from 'react'
-import { TableFooter, TablePagination, TableRow } from 'material-ui/Table'
+import { TableFooter, TablePagination, TableRow } from '@material-ui/core/Table'
 
 export const PortfolioTableFooter = ({ ...pageSettings }) => (
   <TableFooter>

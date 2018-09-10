@@ -1,4 +1,4 @@
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
 import React from 'react'
 import styled from 'styled-components'
 

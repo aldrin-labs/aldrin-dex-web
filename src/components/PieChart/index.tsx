@@ -56,6 +56,7 @@ export default class PieChart extends React.Component<Props, State> {
       labelsRadiusMultiplier,
       labelsStyle,
       colorLegend,
+      theme,
     } = this.props
     const hasCustomColors = data.some((a) => !!a.color || !!a.style)
     const colorIsNumber = data.every((a) => typeof a.color === 'number')
@@ -71,6 +72,9 @@ export default class PieChart extends React.Component<Props, State> {
             colors={data
               // .concat(data, data, data, data, data)
               .map((d) => d.color)}
+            textColor={theme.palette.getContrastText(
+              theme.palette.background.paper
+            )}
           />
         )}
         <FlexibleRadialChart
@@ -111,6 +115,9 @@ export default class PieChart extends React.Component<Props, State> {
             colors={data
               // .concat(data, data, data, data, data)
               .map((d) => d.color)}
+            textColor={theme.palette.getContrastText(
+              theme.palette.background.paper
+            )}
           />
         )}
         <RadialChart
@@ -172,7 +179,7 @@ const SDiscreteColorLegend = styled(DiscreteColorLegend)`
     width: 50%;
     display: flex;
     align-items: center;
-    color: #fff;
+    color: ${(props: { textColor: string }) => props.textColor};
   }
   & .rv-discrete-color-legend-item__color {
     height: 14px;

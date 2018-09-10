@@ -1,9 +1,9 @@
-import Checkbox from 'material-ui/Checkbox'
-import List, { ListItem, ListItemText } from 'material-ui/List'
-import Typography from 'material-ui/Typography'
-import { withTheme } from 'material-ui/styles'
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
+import Checkbox from '@material-ui/core/Checkbox'
+import List, { ListItem, ListItemText } from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
+import { withTheme } from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
@@ -14,8 +14,8 @@ import * as actions from '../../actions'
 import * as API from '../../api'
 import { LoginAlert } from '../PortfolioTable/LoginAlert'
 
-import { IProps, IState } from '@components/PortfolioSelector/PortfolioList.types'
-import { Loading } from '../../../../components/Loading/Loading'
+import { IProps, IState } from './PortfolioList.types'
+import { Loading } from '@components/Loading/Loading'
 
 const SWrapper = styled.div`
   width: 100%;

@@ -1,6 +1,6 @@
 import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
-import styled from 'styled-components'
 import React from 'react'
+import { Icon } from '@styles/cssUtils'
 
 export const calcAllSumOfPortfolioAsset = (
   assets: any,
@@ -9,13 +9,13 @@ export const calcAllSumOfPortfolioAsset = (
 ): number => {
   // transforming data like assets from profile to IData format
   const sum = assets.filter(Boolean).reduce((acc: number, curr: any) => {
-    const { value = 0, asset = { priceUSD: 0 } } = curr || {}
-    if (!value || !asset || !asset.priceUSD || !asset.priceBTC) {
+    const { quantity = 0, asset = { priceUSD: 0 } } = curr || {}
+    if (!quantity || !asset || !asset.priceUSD || !asset.priceBTC) {
       return null
     }
     const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
 
-    return acc + value * Number(price)
+    return acc + quantity * Number(price)
   }, 0);
   if (cryptoWallets) {
     return cryptoWallets.reduce((acc: number, curr: any) =>
@@ -33,14 +33,39 @@ export const calcAllSumOfPortfolioAsset = (
   return sum;
 }
 
+
+export const calcSumOfPortfolioAssetProfitLoss = (
+  PLs: any,
+  isUSDCurrently: boolean
+): number => {
+  return PLs.reduce((acc: number, curr: any) => {
+    const { realized = 0, price, basePriceUSD, basePriceBTC, averageBuyPrice, totalBuyQty, totalSellQty } = curr || {}
+
+    if (!basePriceUSD || !basePriceBTC) {
+      return acc;
+    }
+    //  pl_unrealized_points = (last_price - average_buy_price) * (total_buy_qty - total_sell_qty);
+
+    const basePrice = (isUSDCurrently ? basePriceUSD : basePriceBTC);
+    const unrealizedPL = (price - averageBuyPrice) * (totalBuyQty - totalSellQty) * basePrice;
+    const realizedPL = realized * basePrice;
+
+    acc.unrealized += unrealizedPL;
+    acc.realized += realizedPL;
+    acc.total += realizedPL + unrealizedPL;
+
+    return acc
+  }, { unrealized: 0, realized: 0, total: 0 });
+}
+
 export const percentagesOfCoinInPortfolio = (
   asset: any,
   allSum: number,
   isUSDCurrently: boolean
 ): number =>
   isUSDCurrently
-    ? Number(asset.asset.priceUSD * asset.value * 100 / allSum)
-    : Number(asset.asset.priceBTC * asset.value * 100 / allSum)
+    ? Number(asset.asset.priceUSD * asset.quantity * 100 / allSum)
+    : Number(asset.asset.priceBTC * asset.quantity * 100 / allSum)
 
 export const onSortTableFull = (
   key,
@@ -160,10 +185,6 @@ export const roundAndFormatNumber = (x: number, numberOfDigitsAfterPoint: number
   return formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
 }
 
-
-const Icon = styled.i`
-  padding-right: 5px;
-`
 
 // TODO: SHOULD BE REFACTORED
 export const onValidateSum = (

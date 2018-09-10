@@ -54,7 +54,6 @@ export const NavButton: SFC<INavButton> = ({
     activeClassName={'selected'}
     {...props}
   >
-    {console.log(color)}
     {title}
   </StyledNavLink>
 )
