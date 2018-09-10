@@ -44,7 +44,7 @@ const config = {
       },
       {
         test: /\.css$/,
-        include: /node_modules/,
+        include: [/node_modules\/rc-slide/],
         loaders: ['style-loader', 'css-loader'],
       },
     ],

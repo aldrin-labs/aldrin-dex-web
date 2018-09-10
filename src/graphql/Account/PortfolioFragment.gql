@@ -9,7 +9,7 @@ fragment PortfolioFragment on Portfolio {
     assetId
     exchangeId
     keyId
-    quantity
+    value
     realizedProfit
     unrealizedProfit
     totalProfit

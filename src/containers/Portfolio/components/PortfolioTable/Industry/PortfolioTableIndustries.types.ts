@@ -7,7 +7,7 @@ export interface IPortfolio {
     assetId: string | null
     exchangeId: string | null
     keyId: string | null
-    quantity: number | null
+    value: number | null
     realizedProfit: number | null
     unrealizedProfit: number | null
     totalProfit: number | null

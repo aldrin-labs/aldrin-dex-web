@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
     "outDir": "./dist/",
-    "target": "esnext",
+    "target": "es5",
     "sourceMap": true,
     "declaration": true,
     "strict": true,
@@ -10,13 +10,21 @@
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
-    "lib": ["es2017", "dom"],
+    "rootDirs": ["src", "stories"],
+    "lib": ["es5", "es6", "es7", "es2017", "dom"],
     "typeRoots": ["./node_modules/@types", "./typings"],
+    "typescript_tsdk":"/usr/lib/node_modules/typescript/lib",
+    "experimentalDecorators": true
     "paths": {
       "@components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
@@ -36,5 +44,6 @@
       }
     ]
   },
-  "include": ["src", "typings", "custom.d.ts"]
+  "include": ["src/**/*", "typings", "custom.d.ts"]
 }
+

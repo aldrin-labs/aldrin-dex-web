@@ -61,21 +61,21 @@ class PieChartQuery extends React.Component<Props, State> {
     const obj: { [key: string]: number } = {}
     assets.forEach((asset) => {
       if (!asset) return null
-      const { quantity, asset: internalAsset } = asset
+      const { value, asset: internalAsset } = asset
       if (!internalAsset) return null
       const { industry, priceUSD, priceBTC } = internalAsset
       const name = industry ? industry.name : null
 
       const mainPrice = isUSDCurrently ? priceUSD : priceBTC
-      const currentPrice = mainPrice * quantity
+      const currentPrice = mainPrice * value
 
       if (name === null && !obj.Other) {
         obj['Other'] = +roundPercentage(currentPrice * 100 / allSums)
       } else if (name === null && obj.Other) {
         obj['Other'] += +roundPercentage(currentPrice * 100 / allSums)
-      } else if (!obj[name] && !!quantity) {
+      } else if (!obj[name] && !!value) {
         obj[name] = +roundPercentage(currentPrice * 100 / allSums)
-      } else if (!!obj[name] && !!quantity) {
+      } else if (!!obj[name] && !!value) {
         obj[name] += +roundPercentage(currentPrice * 100 / allSums)
       }
     })

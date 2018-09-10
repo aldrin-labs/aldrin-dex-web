@@ -23,7 +23,7 @@ query{
     portfolio{
       assetIds
       assets{
-        quantity
+        value
         exchange {
           name
         }
