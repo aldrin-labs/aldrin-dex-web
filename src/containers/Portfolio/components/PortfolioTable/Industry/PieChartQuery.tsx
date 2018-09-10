@@ -47,7 +47,7 @@ class PieChartQuery extends React.Component<Props, State> {
 
   render() {
     const { data } = this.state
-    const { isUSDCurrently } = this.props
+    const { isUSDCurrently, theme } = this.props
     if (!data) return <CustomError error="!data" />
     const { getProfile } = data
     if (!getProfile) return <CustomError error="!getProfile" />
@@ -115,7 +115,14 @@ class PieChartQuery extends React.Component<Props, State> {
       }
     })
 
-    return <PieChart data={pieData} flexible={true} colorLegend={true} />
+    return (
+      <PieChart
+        theme={theme}
+        data={pieData}
+        flexible={true}
+        colorLegend={true}
+      />
+    )
 
     // return <PieChart data={pieData} flexible colorLegend labelsRadiusMultiplier={1} labelsStyle={labelsStyleObject} />
   }

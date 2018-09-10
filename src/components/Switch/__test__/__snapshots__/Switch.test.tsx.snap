@@ -13,7 +13,10 @@ exports[`Switch render basic 1`] = `
 
 exports[`Switch render if isActive 1`] = `
 <file__Container>
-  <file__Desc>
+  <file__Desc
+    color="default"
+    variant="body1"
+  >
     ON
   </file__Desc>
   <file__Label>
@@ -23,7 +26,10 @@ exports[`Switch render if isActive 1`] = `
     />
     <file__Slider />
   </file__Label>
-  <file__Desc>
+  <file__Desc
+    color="default"
+    variant="body1"
+  >
     OFF
   </file__Desc>
 </file__Container>
@@ -31,7 +37,10 @@ exports[`Switch render if isActive 1`] = `
 
 exports[`Switch render with values 1`] = `
 <file__Container>
-  <file__Desc>
+  <file__Desc
+    color="default"
+    variant="body1"
+  >
     ON
   </file__Desc>
   <file__Label>
@@ -40,7 +49,10 @@ exports[`Switch render with values 1`] = `
     />
     <file__Slider />
   </file__Label>
-  <file__Desc>
+  <file__Desc
+    color="default"
+    variant="body1"
+  >
     OFF
   </file__Desc>
 </file__Container>

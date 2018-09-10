@@ -213,7 +213,6 @@ const Cell = styled.div`
 
 const HeadCell = Cell.extend`
   z-index: 101;
-  background: #393e44;
   position: relative;
   position: ${(props) => (props.sticky ? 'sticky' : 'relative')};
 

@@ -1,5 +1,6 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled, { css } from 'styled-components'
+import { RowProps } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable.types'
 
 export { Wrapper, Table, PT, PTH, PTHC, PTHead, PTR, PTD, PTDC, PTBody }
 
@@ -31,7 +32,7 @@ const PTH = css`
   font-family: Roboto;
   font-size: 12px;
   line-height: 24px;
-  color: #fff;
+  color: ${(props: { color: string }) => props.color};
   text-align: left;
   font-weight: 500;
   position: relative;
@@ -72,18 +73,16 @@ const PTHead = styled.thead`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
+  background-color: ${(props: RowProps) => props.background};
 
   &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+    background-color: ${(props: RowProps) =>
+      props.evenBackground ? props.evenBackground : props.background};
   }
 `
 
 const PTD = css`
-  color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#4ed8da' : '#fff'};
+  color: ${(props: { color: string }) => props.color};
 
   font-family: Roboto;
   font-size: 12px;
@@ -129,5 +128,5 @@ const PTDC = styled.td`
 const PTBody = styled.tbody`
   display: table;
   width: 100%;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid ${(props: { color: string }) => props.color};
 `
