@@ -1,4 +1,5 @@
 const commonPaths = require('./common-paths')
+const Jarvis = require('webpack-jarvis')
 
 const webpack = require('webpack')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
@@ -17,10 +18,14 @@ const config = {
   devtool,
   module: {},
   plugins: [
+    // new webpack.optimize.ModuleConcatenationPlugin(),
     new ErrorOverlayPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new Jarvis({
+      port: 1337, // optional: set a port
+    }),
   ],
   cache: true,
   devServer: {

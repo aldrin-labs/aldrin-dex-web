@@ -20,10 +20,15 @@ const config = {
   optimization: {
     minimizer: [
       new UglifyJSPlugin({
-        sourceMap: true,
+        parallel: true,
         uglifyOptions: {
-          compress: {
-            inline: false,
+          ecma: 8,
+          warnings: true,
+          mangle: false,
+          keep_fnames: true,
+          output: {
+            beautify: false,
+            comments: false,
           },
         },
       }),
