@@ -4,8 +4,9 @@ import styled from 'styled-components'
 import { Typography } from '@material-ui/core'
 
 import { Row, Table, Head, Cell, HeadCell } from '@components/Table/Table'
+import { AggregationProps } from './Aggregation.types'
 
-const Aggregation = (props) => {
+const Aggregation = (props: AggregationProps) => {
   const {
     aggregation,
     onButtonClick,

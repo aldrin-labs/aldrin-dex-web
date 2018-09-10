@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
 import {
   FlexibleXYPlot,
-  VerticalRectSeries,
+//  VerticalRectSeries,
   XAxis,
   YAxis,
   AreaSeries,
@@ -20,8 +20,9 @@ import { red, green } from '@material-ui/core/colors'
 import { Loading } from '@components/Loading/Loading'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { hexToRgbAWithOpacity } from '../../../styles/helpers'
+import { DepthChartProps, DepthChartState } from './DepthChart.types' 
 
-class DepthChart extends Component {
+class DepthChart extends Component<DepthChartProps, DepthChartState> {
   state = {
     // must be calculated
     MAX_DOMAIN_PLOT: 0,
@@ -33,7 +34,7 @@ class DepthChart extends Component {
     transformedBidsData: [],
   }
 
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: DepthChartProps, state: DepthChartState) {
     // console.log(props)
     let totalVolumeAsks = 0
     let transformedAsksData = props.asks.map((el) => {
@@ -160,8 +161,8 @@ class DepthChart extends Component {
       base,
       quote,
       animated,
-      asks,
-      bids,
+//      asks,
+//      bids,
       xAxisTickTotal,
       theme,
     } = this.props
@@ -219,11 +220,11 @@ class DepthChart extends Component {
           </ScaleWrapper>
           <XAxis
             tickTotal={xAxisTickTotal || 10}
-            tickFormat={(value) => abbrNum(+value.toFixed(4), 4)}
+            tickFormat={(value: number) => abbrNum(+value.toFixed(4), 4)}
             style={axisStyle}
           />
           <YAxis
-            tickFormat={(value) => abbrNum(+value.toFixed(2), 2)}
+            tickFormat={(value: number) => abbrNum(+value.toFixed(2), 2)}
             key="afd"
             hideLine
             animation="stiff"
@@ -231,7 +232,7 @@ class DepthChart extends Component {
             style={axisStyle}
           />
           <YAxis
-            tickFormat={(value) => abbrNum(+value.toFixed(2), 2)}
+            tickFormat={(value: number) => abbrNum(+value.toFixed(2), 2)}
             key="dsafd"
             hideLine
             animation="stiff"
