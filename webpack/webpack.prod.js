@@ -27,8 +27,8 @@ const config = {
           mangle: false,
           keep_fnames: true,
           output: {
-            beautify: true,
-            comments: true,
+            beautify: false,
+            comments: false,
           },
         },
       }),
