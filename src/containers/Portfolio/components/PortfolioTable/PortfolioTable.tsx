@@ -6,7 +6,6 @@ import Rebalance from '@containers/Portfolio/components/PortfolioTable/Rebalance
 import PortfolioTableBalances from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
 import Optimization from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization'
 import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
-import { Loading } from '@components/Loading/Loading'
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
 export class PortfolioTable extends React.Component<ITableProps, IState> {

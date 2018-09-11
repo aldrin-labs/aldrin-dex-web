@@ -1,11 +1,11 @@
 import React from 'react'
-import { Subscription, graphql } from 'react-apollo'
+import { Subscription } from 'react-apollo'
 import styled from 'styled-components'
 import gql from 'graphql-tag'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
-import { IProps } from '@containers/Portfolio/interfaces'
+import { IProps, IState } from '@containers/Portfolio/interfaces'
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
@@ -17,20 +17,14 @@ const PORTFOLIO_UPDATE = gql`
   }
 `
 
-class PortfolioComponent extends React.Component<IProps> {
-  constructor(props, context) {
-    super(props, context)
+class PortfolioComponent extends React.Component<IProps, IState> {
 
-    this.state = {
-      // checkboxes: this.props.keys,
-      isSideNavOpen: false,
-      filter: 0.5,
-    }
-
-    this.toggleWallets = this.toggleWallets.bind(this)
+  state: IState = {
+    isSideNavOpen: false,
+    filter: 0.5,
   }
 
-  toggleWallets() {
+  toggleWallets = () => {
     this.setState({ isSideNavOpen: !this.state.isSideNavOpen })
   }
 
@@ -39,7 +33,6 @@ class PortfolioComponent extends React.Component<IProps> {
 
     console.log('activeKeys: ', activeKeys, 'keys', keys );
     console.log('activeWallets: ', activeWallets, 'wallets ', wallets);
-
 
 
     return (
@@ -51,7 +44,6 @@ class PortfolioComponent extends React.Component<IProps> {
                 <PortfolioSelector
                   toggleWallets={this.toggleWallets}
                   isSideNavOpen={this.state.isSideNavOpen}
-                  // onChangeActive={this.onChangeActiveKey}
                 />
                 <PortfolioTable
                   checkboxes={activeKeys}
@@ -75,7 +67,8 @@ class PortfolioComponent extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = (store) => ({
+// TODO: replace any in store
+const mapStateToProps = (store: any) => ({
   store: store,
   keys: store.portfolio.keys,
   activeKeys: store.portfolio.activeKeys,
@@ -94,7 +87,7 @@ const PortfolioContainer = styled.div`
   min-height: 600px;
 `
 const Backdrop = styled.div`
-  display: ${(props) => (props.isSideNavOpen ? 'block' : 'none')};
+  display: ${(props: {isSideNavOpen: boolean}) => (props.isSideNavOpen ? 'block' : 'none')};
   height: 100vh;
   width: 100vw;
   position: fixed;
