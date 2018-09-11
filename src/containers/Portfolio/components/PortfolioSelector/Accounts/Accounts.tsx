@@ -24,14 +24,12 @@ export default class Accounts extends React.PureComponent<IProps> {
     const { keys } = this.props.data.getProfile
     const checkboxes =
       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-    const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
     this.props.setKeys(checkboxes)
     this.props.setActiveKeys(checkboxes)
-    this.props.setCheckboxes({ checkboxes, checkedCheckboxes })
 
-    return true
   }
+
   render() {
     const {
       isSideNavOpen,
@@ -83,7 +81,7 @@ export default class Accounts extends React.PureComponent<IProps> {
               return null
             }
             const isChecked =
-              (checkedCheckboxes && checkedCheckboxes.indexOf(i) >= 0) || false
+              (checkedCheckboxes && checkedCheckboxes.indexOf(checkbox) !== -1)
 
             return (
               <AccountsListItem key={checkbox}>
@@ -91,7 +89,7 @@ export default class Accounts extends React.PureComponent<IProps> {
                   type="checkbox"
                   id={checkbox}
                   checked={isChecked}
-                  onClick={() => onToggleCheckbox(i)}
+                  onClick={() => onToggleCheckbox(checkbox)}
                 />
 
                 <AccountName

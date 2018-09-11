@@ -13,94 +13,44 @@ import Accounts from './Accounts/Accounts'
 
 
 class PortfolioSelector extends React.Component<IProps, IState> {
-  state = {
-    checkboxes: [],
-    checkedCheckboxes: [],
-  }
+  onToggleCheckbox = (checkBoxName: string) => {
+    const { activeKeys, setActiveKeys } = this.props
+    const clonedActiveKeys = activeKeys.slice()
 
-  setCheckboxes = ({ checkboxes, checkedCheckboxes }) => {
-    console.log({ checkboxes, checkedCheckboxes })
-    this.setState({ checkboxes, checkedCheckboxes })
-  }
-
-  onToggleCheckbox = (index: number) => {
-    const { setActiveKeys } = this.props
-
-    const checkedCheckboxes =
-      (this.state.checkedCheckboxes && this.state.checkedCheckboxes.slice()) ||
-      []
-
-    const hasIndex = checkedCheckboxes.indexOf(index)
-    if (hasIndex >= 0) {
-      checkedCheckboxes.splice(hasIndex, 1)
+    const hasIndex = clonedActiveKeys.indexOf(checkBoxName)
+    if (hasIndex !== -1) {
+      clonedActiveKeys.splice(hasIndex, 1)
     } else {
-      checkedCheckboxes.push(index)
+      clonedActiveKeys.push(checkBoxName)
     }
 
-    this.setState({ checkedCheckboxes }, () => {
-      if (!this.state.checkboxes) {
-        return
-      }
-      const checkboxes = this.state.checkboxes
-        .map((ck, idx) => {
-          if (checkedCheckboxes.indexOf(idx) >= 0) {
-            return ck
-          }
-
-          return null
-        })
-        .filter(Boolean)
-      console.log('checkboxes in onToggleCheckbox', checkboxes);
-
-      setActiveKeys(checkboxes)
-    })
+    setActiveKeys(clonedActiveKeys)
   }
 
   onToggleAll = () => {
-    const { checkedCheckboxes, checkboxes } = this.state
-    if (!checkboxes) {
-      return
-    }
+    const { keys, activeKeys, setActiveKeys } = this.props
 
-    if (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) {
-      this.setState({ checkedCheckboxes: null }, () => {
-        this.props.setActiveKeys([])
-      })
+    if (activeKeys.length === keys.length) {
+       setActiveKeys([])
     } else {
-      const allAccounts = checkboxes.map((ck, i) => i)
-
-      this.setState({ checkedCheckboxes: allAccounts }, () => {
-        if (!this.state.checkboxes) {
-          return
-        }
-        const checkboxesAgain = this.state.checkboxes
-        checkboxesAgain
-          .map((ck, idx) => {
-            if (allAccounts.indexOf(idx) >= 0) {
-              return ck
-            }
-
-            return null
-          })
-          .filter(Boolean)
-        this.props.setActiveKeys(checkboxesAgain)
-      })
+      setActiveKeys(keys)
     }
   }
 
   render() {
-    const { checkedCheckboxes, checkboxes } = this.state
     const {
       filterValuesLessThenThat,
       filterPercent,
       isSideNavOpen,
       setKeys,
       setActiveKeys,
+      keys,
+      activeKeys,
     } = this.props
 
-    if (!checkboxes) {
-      return null
-    }
+    const checkboxes = keys
+    const checkedCheckboxes = activeKeys
+
 
     const isCheckedAll =
       (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) ||
@@ -175,45 +125,6 @@ const FilterIcon = styled(FaFilter)`
   margin: 0 0.5rem;
 `
 
-const CloseContainer = styled.div`
-  height: 100%;
-`
-
-const SelectAll = styled.div`
-  margin-top: 32px;
-  padding-left: 8px;
-`
-
-const AccountName = styled.span`
-  color: ${(props: { isChecked: boolean }) =>
-    props.isChecked ? '#4ed8da' : '#fff'};
-
-  font-family: Roboto, sans-serif;
-  font-size: 1em;
-  font-weight: 500;
-  text-align: left;
-  margin-left: 24px;
-`
-
-const AccountsListItem = styled.li`
-  display: flex;
-  align-items: center;
-  font-family: Roboto, sans-serif;
-  font-size: 1em;
-  font-weight: 500;
-  text-align: left;
-  color: #4ed8da;
-  margin-bottom: 24px;
-`
-
-const AccountsList = styled.ul`
-  list-style: none;
-  margin-top: 34px;
-  display: flex;
-  flex-direction: column;
-  padding-left: 8px;
-`
-
 const AccountsWalletsBlock = styled.div`
   min-width: 200px;
   background-color: #2d3136;
@@ -236,6 +147,8 @@ const AccountsWalletsBlock = styled.div`
 `
 
 const mapStateToProps = (store) => ({
+  keys: store.portfolio.keys,
+  activeKeys: store.portfolio.activeKeys,
   isShownMocks: store.user.isShownMocks,
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })
