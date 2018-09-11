@@ -32,19 +32,11 @@ export const getKeysQuery = gql`
 `
 
 export const getWalletsQuery = gql`
-  query getKeys {
+  query getWallets {
     getProfile {
-      portfolioId
-      keys {
+      cryptoWallets {
         _id
         name
-        apiKey
-        secret
-        date
-        exchange {
-          name
-          symbol
-        }
       }
     }
   }
