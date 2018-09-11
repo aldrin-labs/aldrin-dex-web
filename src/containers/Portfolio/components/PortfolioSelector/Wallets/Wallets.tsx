@@ -2,7 +2,7 @@ import React from 'react'
 import { Checkbox } from '@material-ui/core'
 import { has } from 'lodash'
 
-import { IProps } from './Wallets.types'
+import { IProps, walletItem } from './Wallets.types'
 import {
   AccountName,
   AccountsList,
@@ -18,11 +18,12 @@ export default class Wallets extends React.PureComponent<IProps> {
 
     const { cryptoWallets } = this.props.data.getProfile
     const checkboxes =
-      (cryptoWallets && cryptoWallets.map((wallet) => wallet && wallet.name).filter(Boolean)) || []
+      (cryptoWallets && cryptoWallets.map((wallet: walletItem) => wallet && wallet.name).filter(Boolean)) || []
 
     this.props.setWallets(checkboxes)
     this.props.setActiveWallets(checkboxes)
 
+    return true
   }
 
   render() {

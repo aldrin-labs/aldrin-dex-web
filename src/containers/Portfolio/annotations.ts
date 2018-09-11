@@ -2,9 +2,8 @@
 //  This file was automatically generated and should not be edited.
 
 export interface getKeysQuery {
-  getProfile:  {
-    portfolioId: string | null,
-    keys:  Array< {
+  portfolioId: string | null,
+  keys: {
       _id: string,
       name: string | null,
       apiKey: string | null,
@@ -14,8 +13,15 @@ export interface getKeysQuery {
         name: string | null,
         symbol: string | null,
       } | null,
-    } | null > | null,
-  } | null,
+    }[] | null | null
+};
+
+export interface getWalletsQuery {
+    portfolioId: string | null,
+    cryptoWallets: {
+      _id: string,
+      name: string | null,
+    }[] | null | null,
 };
 
 export interface getPortfolioQuery {

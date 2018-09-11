@@ -13,7 +13,7 @@ import {
   filterValuesLessThen,
 } from '../../actions'
 import { getKeysQuery, getWalletsQuery } from '../../api'
-import { IProps, IState } from './PortfolioSelector.types'
+import { IProps } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 import Accounts from './Accounts/Accounts'
 import Wallets from './Wallets/Wallets'
@@ -181,7 +181,7 @@ const AccountsWalletsBlock = styled.div`
   }
 `
 
-const mapStateToProps = (store) => ({
+const mapStateToProps = (store: any) => ({
   keys: store.portfolio.keys,
   activeKeys: store.portfolio.activeKeys,
   wallets: store.portfolio.wallets,

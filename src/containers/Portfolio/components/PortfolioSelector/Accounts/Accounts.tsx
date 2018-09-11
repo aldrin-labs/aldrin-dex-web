@@ -1,8 +1,8 @@
 import React from 'react'
-import { Divider, Checkbox } from '@material-ui/core'
+import { Checkbox } from '@material-ui/core'
 import { has } from 'lodash'
 
-import { IProps } from './Accounts.types'
+import { IProps, keyItem } from './Accounts.types'
 import {
   AccountsWalletsHeadingWrapper,
   Headline,
@@ -23,11 +23,12 @@ export default class Accounts extends React.PureComponent<IProps> {
 
     const { keys } = this.props.data.getProfile
     const checkboxes =
-      (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
+      (keys && keys.map((key: keyItem) => key && key.name).filter(Boolean)) || []
 
     this.props.setKeys(checkboxes)
     this.props.setActiveKeys(checkboxes)
 
+    return true
   }
 
   render() {
