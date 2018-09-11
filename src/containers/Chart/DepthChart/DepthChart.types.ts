@@ -1,13 +1,14 @@
+import { Theme } from '@material-ui/core'
 import { IOrder } from '../Chart.types'
 
 export interface DepthChartProps {
   base: string
   quote: string
   animated: boolean
-  asks: Array< IOrder >
-  bids: Array< IOrder >
+  asks: IOrder[]
+  bids: IOrder[]
   xAxisTickTotal: number
-  theme: any
+  theme: Theme
   midMarketPrice: number
 }
 

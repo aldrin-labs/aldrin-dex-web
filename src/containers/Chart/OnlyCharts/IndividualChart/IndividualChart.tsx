@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Switch, Typography, Grow, Paper } from '@material-ui/core'
+import { Button, Switch, Grow, Paper } from '@material-ui/core'
 import { MdClear } from 'react-icons/lib/md'
 import styled from 'styled-components'
 

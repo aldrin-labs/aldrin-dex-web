@@ -3,8 +3,13 @@ import { IExchange } from '@containers/Chart/Tables/ExchangesTable/Table/Exchang
 
 export interface IProps {
   activeExchange: { exchange: IExchange; index: number }
-  animated: boolean
-  base: string
-  quote: string
+  currencyPair: string
+  aggregation: number
+  spread: number
   theme: Theme
+  quote: string
+  data: any
+  digitsAfterDecimalForSpread: number
+  digitsAfterDecimalForBidsSize: number
+  digitsAfterDecimalForBidsPrice: number
 }

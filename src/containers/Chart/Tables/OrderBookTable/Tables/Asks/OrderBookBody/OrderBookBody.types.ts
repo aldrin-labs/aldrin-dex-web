@@ -1,6 +1,6 @@
+import { Theme } from '@material-ui/core'
 import { IExchange } from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.types'
 import { IOrder } from '@containers/Chart/Chart.types'
-import { Theme } from '@material-ui/core'
 
 export interface IProps {
   action: any
