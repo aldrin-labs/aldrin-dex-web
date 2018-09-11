@@ -103,7 +103,7 @@ export default class Accounts extends React.PureComponent<IProps> {
             )
           })}
         </AccountsList>
-        <Divider />
+        {/*<Divider />*/}
       </>
     )
   }

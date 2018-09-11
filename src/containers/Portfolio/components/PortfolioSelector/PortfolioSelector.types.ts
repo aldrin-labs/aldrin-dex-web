@@ -1,4 +1,5 @@
 import { getKeysQuery } from '../../annotations'
+import React from 'react'
 
 export interface IProps {
   data: getKeysQuery
@@ -6,11 +7,7 @@ export interface IProps {
   filterValuesLessThenThat: Function
   isShownMocks: boolean
   isSideNavOpen: boolean
-  toggleWallets: Function
+  toggleWallets: React.ReactEventHandler
   filterPercent: number
 }
 
-export interface IState {
-  checkedCheckboxes: number[] | null
-  checkboxes: (string | null)[] | null
-}

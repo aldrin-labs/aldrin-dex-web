@@ -12,7 +12,8 @@ import QueryRenderer from '@components/QueryRenderer'
 import Accounts from './Accounts/Accounts'
 
 
-class PortfolioSelector extends React.Component<IProps, IState> {
+class PortfolioSelector extends React.Component<IProps> {
+
   onToggleCheckbox = (checkBoxName: string) => {
     const { activeKeys, setActiveKeys } = this.props
     const clonedActiveKeys = activeKeys.slice()
@@ -58,7 +59,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
     return (
       <AccountsWalletsBlock
-        onClick={isSideNavOpen ? null : this.props.toggleWallets}
+        onClick={isSideNavOpen ? undefined : this.props.toggleWallets}
         isSideNavOpen={this.props.isSideNavOpen}
       >
         <QueryRenderer
@@ -71,7 +72,6 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             checkedCheckboxes,
             setKeys,
             setActiveKeys,
-            setCheckboxes: this.setCheckboxes,
             onToggleAll: this.onToggleAll,
             onToggleCheckbox: this.onToggleCheckbox,
           }}
