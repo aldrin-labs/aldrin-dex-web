@@ -31,6 +31,25 @@ export const getKeysQuery = gql`
   }
 `
 
+export const getWalletsQuery = gql`
+  query getKeys {
+    getProfile {
+      portfolioId
+      keys {
+        _id
+        name
+        apiKey
+        secret
+        date
+        exchange {
+          name
+          symbol
+        }
+      }
+    }
+  }
+`
+
 export const getPortfolioQuery = gql`
   query getPortfolio {
     getProfile {
