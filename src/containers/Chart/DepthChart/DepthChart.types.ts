@@ -1,7 +1,7 @@
 import { Theme } from '@material-ui/core'
 import { IOrder } from '../Chart.types'
 
-export interface DepthChartProps {
+export interface IDepthChartProps {
   base: string
   quote: string
   animated: boolean
@@ -12,7 +12,7 @@ export interface DepthChartProps {
   midMarketPrice: number
 }
 
-export interface DepthChartState {
+export interface IDepthChartState {
   MAX_DOMAIN_PLOT: number
   crosshairValuesForSpread: Array<any>
   crosshairValuesForOrder: Array<any>

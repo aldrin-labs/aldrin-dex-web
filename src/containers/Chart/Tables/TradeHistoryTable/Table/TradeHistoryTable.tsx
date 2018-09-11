@@ -12,11 +12,11 @@ import {
   HeadCell,
   Cell,
 } from '@components/Table/Table'
-import { IProps, ITicker } from './TradeHistoryTable.types'
+import { IProps, IState, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
-class TradeHistoryTable extends PureComponent<IProps> {
+class TradeHistoryTable extends PureComponent<IProps, IState> {
   state = {
     tableExpanded: true,
   }

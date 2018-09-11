@@ -20,9 +20,9 @@ import { red, green } from '@material-ui/core/colors'
 import { Loading } from '@components/Loading/Loading'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { hexToRgbAWithOpacity } from '../../../styles/helpers'
-import { DepthChartProps, DepthChartState } from './DepthChart.types' 
+import { IDepthChartProps, IDepthChartState } from './DepthChart.types' 
 
-class DepthChart extends Component<DepthChartProps, DepthChartState> {
+class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
   state = {
     // must be calculated
     MAX_DOMAIN_PLOT: 0,
