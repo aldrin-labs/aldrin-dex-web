@@ -5,16 +5,22 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
 import Dropdown from '@components/SimpleDropDownSelector'
-import { setKeys as setKeysAction, setActiveKeys as setActiveKeysAction, filterValuesLessThen } from '../../actions'
-import { getKeysQuery } from '../../api'
+import {
+  setKeys as setKeysAction,
+  setActiveKeys as setActiveKeysAction,
+  setWallets as setWalletsAction,
+  setActiveWallets as setActiveWalletsAction,
+  filterValuesLessThen,
+} from '../../actions'
+import { getKeysQuery, getWalletsQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 import Accounts from './Accounts/Accounts'
+import Wallets from './Wallets/Wallets'
 
 
 class PortfolioSelector extends React.Component<IProps> {
-
-  onToggleCheckbox = (checkBoxName: string) => {
+  onToggleKeyCheckbox = (checkBoxName: string) => {
     const { activeKeys, setActiveKeys } = this.props
     const clonedActiveKeys = activeKeys.slice()
 
@@ -28,13 +34,29 @@ class PortfolioSelector extends React.Component<IProps> {
     setActiveKeys(clonedActiveKeys)
   }
 
-  onToggleAll = () => {
-    const { keys, activeKeys, setActiveKeys } = this.props
+  onToggleWalletCheckbox = (checkBoxName: string) => {
+    const { activeWallets, setActiveWallets } = this.props
+    const clonedActiveWallets = activeWallets.slice()
 
-    if (activeKeys.length === keys.length) {
-       setActiveKeys([])
+    const hasIndex = clonedActiveWallets.indexOf(checkBoxName)
+    if (hasIndex !== -1) {
+      clonedActiveWallets.splice(hasIndex, 1)
+    } else {
+      clonedActiveWallets.push(checkBoxName)
+    }
+
+    setActiveWallets(clonedActiveWallets)
+  }
+
+  onToggleAll = () => {
+    const { keys, activeKeys, wallets, activeWallets, setActiveKeys, setActiveWallets } = this.props
+
+    if (activeKeys.length + activeWallets.length === keys.length + wallets.length) {
+      setActiveKeys([])
+      setActiveWallets([])
     } else {
       setActiveKeys(keys)
+      setActiveWallets(wallets)
     }
   }
 
@@ -45,17 +67,16 @@ class PortfolioSelector extends React.Component<IProps> {
       isSideNavOpen,
       setKeys,
       setActiveKeys,
+      setWallets,
+      setActiveWallets,
+      wallets,
+      activeWallets,
       keys,
       activeKeys,
     } = this.props
 
-    const checkboxes = keys
-    const checkedCheckboxes = activeKeys
-
-
     const isCheckedAll =
-      (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) ||
-      false
+      (activeKeys.length + activeWallets.length === keys.length + wallets.length)
 
     return (
       <AccountsWalletsBlock
@@ -68,12 +89,26 @@ class PortfolioSelector extends React.Component<IProps> {
           {...{
             isSideNavOpen,
             isCheckedAll,
-            checkboxes,
-            checkedCheckboxes,
+            keys,
+            activeKeys,
             setKeys,
             setActiveKeys,
             onToggleAll: this.onToggleAll,
-            onToggleCheckbox: this.onToggleCheckbox,
+            onToggleKeyCheckbox: this.onToggleKeyCheckbox,
+          }}
+        />
+
+        <QueryRenderer
+          component={Wallets}
+          query={getWalletsQuery}
+          {...{
+            isSideNavOpen,
+            isCheckedAll,
+            wallets,
+            activeWallets,
+            setWallets,
+            setActiveWallets,
+            onToggleWalletCheckbox: this.onToggleWalletCheckbox,
           }}
         />
 
@@ -149,19 +184,26 @@ const AccountsWalletsBlock = styled.div`
 const mapStateToProps = (store) => ({
   keys: store.portfolio.keys,
   activeKeys: store.portfolio.activeKeys,
+  wallets: store.portfolio.wallets,
+  activeWallets: store.portfolio.activeWallets,
   isShownMocks: store.user.isShownMocks,
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   setKeys: (keys: string[]) => dispatch(setKeysAction(keys)),
-  setActiveKeys: (activeKeys: string[]) => dispatch(setActiveKeysAction(activeKeys)),
+  setActiveKeys: (activeKeys: string[]) =>
+    dispatch(setActiveKeysAction(activeKeys)),
+  setWallets: (wallets: string[]) => dispatch(setWalletsAction(wallets)),
+  setActiveWallets: (activeWallets: string[]) =>
+    dispatch(setActiveWalletsAction(activeWallets)),
   filterValuesLessThenThat: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
 })
 
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  PortfolioSelector
-)
+const storeComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PortfolioSelector)
 
 export default compose()(storeComponent)

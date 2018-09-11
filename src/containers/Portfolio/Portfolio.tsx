@@ -30,24 +30,16 @@ class PortfolioComponent extends React.Component<IProps> {
     this.toggleWallets = this.toggleWallets.bind(this)
   }
 
-  // onChangeActiveKey = (checkboxes: number[]) => {
-  //   this.setState({ checkboxes }, () => {
-  //     console.log('checkboxes in state', checkboxes);
-  //
-  //   })
-  // }
-
   toggleWallets() {
     this.setState({ isSideNavOpen: !this.state.isSideNavOpen })
   }
 
   render() {
-    // const { checkboxes } = this.state
-    const { keys, login, theme, store, activeKeys } = this.props
+    const { login, theme, keys, activeKeys, wallets, activeWallets } = this.props
 
-    // console.log('keys', keys, 'checkboxes', checkboxes);
-    // console.log('store in portfolio', store);
-    console.log('activeKeys: ', activeKeys, 'keys', keys);
+    console.log('activeKeys: ', activeKeys, 'keys', keys );
+    console.log('activeWallets: ', activeWallets, 'wallets ', wallets);
+
 
 
     return (
@@ -87,6 +79,8 @@ const mapStateToProps = (store) => ({
   store: store,
   keys: store.portfolio.keys,
   activeKeys: store.portfolio.activeKeys,
+  wallets: store.portfolio.wallets,
+  activeWallets: store.portfolio.activeWallets,
   login: store.login.loginStatus,
 })
 

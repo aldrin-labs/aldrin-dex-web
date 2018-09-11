@@ -35,9 +35,9 @@ export default class Accounts extends React.PureComponent<IProps> {
       isSideNavOpen,
       isCheckedAll,
       onToggleAll,
-      checkboxes,
-      checkedCheckboxes,
-      onToggleCheckbox,
+      keys,
+      activeKeys,
+      onToggleKeyCheckbox,
     } = this.props
 
     return (
@@ -76,20 +76,20 @@ export default class Accounts extends React.PureComponent<IProps> {
         </SelectAll>
 
         <AccountsList>
-          {checkboxes.map((checkbox, i) => {
-            if (!checkbox) {
+          {keys.map((keyName) => {
+            if (!keyName) {
               return null
             }
             const isChecked =
-              (checkedCheckboxes && checkedCheckboxes.indexOf(checkbox) !== -1)
+              (activeKeys && activeKeys.indexOf(keyName) !== -1)
 
             return (
-              <AccountsListItem key={checkbox}>
+              <AccountsListItem key={keyName}>
                 <Checkbox
                   type="checkbox"
-                  id={checkbox}
+                  id={keyName}
                   checked={isChecked}
-                  onClick={() => onToggleCheckbox(checkbox)}
+                  onClick={() => onToggleKeyCheckbox(keyName)}
                 />
 
                 <AccountName
@@ -97,7 +97,7 @@ export default class Accounts extends React.PureComponent<IProps> {
                   variant="body2"
                   color={isChecked ? 'secondary' : 'textSecondary'}
                 >
-                  {checkbox}
+                  {keyName}
                 </AccountName>
               </AccountsListItem>
             )

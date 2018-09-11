@@ -5,7 +5,7 @@ export interface IProps {
   isCheckedAll: boolean
   isSideNavOpen: boolean
   onToggleAll: Function
-  onToggleCheckbox: Function
+  onToggleKeyCheckbox: Function
   setCheckboxes: Function
   setKeys: Function
 }
