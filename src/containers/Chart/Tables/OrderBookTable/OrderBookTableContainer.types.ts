@@ -1,3 +1,5 @@
+import { IOrder } from '@containers/Chart/Chart.types'
+
 export interface IProps {
   subscribeToMore: Function
   activeExchange: { index: number }
@@ -7,14 +9,14 @@ export interface IProps {
   digitsAfterDecimalForBidsPrice: number
   digitsAfterDecimalForBidsSize:number
   setOrders: Function
-  data: 
+  data: { marketOrders: any[] }
 }
 
 export interface IState {
-  asks: []
-  bids: []
+  asks: IOrder[]
+  bids: IOrder[]
   spread: number
   digitsAfterDecimalForAsksPrice: number
   digitsAfterDecimalForAsksSize: number
-  i: 0,
+  i: number,
 }
