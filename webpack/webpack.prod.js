@@ -18,23 +18,25 @@ const config = {
     rules: [],
   },
   optimization: {
-    minimizer: [
-      new UglifyJSPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-        uglifyOptions: {
-          ecma: 8,
-          compress: {
-            inline: 1,
-          },
-          output: {
-            beautify: false,
-            comments: false,
-          },
-        },
-      }),
-    ],
+    minimize: false,
+
+    // minimizer: [
+    //   new UglifyJSPlugin({
+    //     cache: true,
+    //     parallel: true,
+    //     sourceMap: true,
+    //     uglifyOptions: {
+    //       ecma: 8,
+    //       compress: {
+    //         inline: 1,
+    //       },
+    //       output: {
+    //         beautify: false,
+    //         comments: false,
+    //       },
+    //     },
+    //   }),
+    // ],
     //  implement this in future
     // https://medium.com/@hpux/webpack-4-in-production-how-make-your-life-easier-4d03e2e5b081
     // splitChunks: {
@@ -48,7 +50,7 @@ const config = {
     //     },
     //   },
     // },
-    runtimeChunk: false,
+    // runtimeChunk: false,
   },
   plugins: [
     new webpack.DefinePlugin({

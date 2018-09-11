@@ -3,6 +3,7 @@ const Jarvis = require('webpack-jarvis')
 
 const webpack = require('webpack')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 const port = process.env.PORT || 3000
 const devtool = process.env.DEVTOOL || 'cheap-module-source-map'

@@ -2,7 +2,6 @@ const commonPaths = require('./common-paths')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 const config = {
   entry: {
