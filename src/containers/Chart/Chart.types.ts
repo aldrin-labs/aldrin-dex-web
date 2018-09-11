@@ -1,11 +1,7 @@
-export interface IOrder {
-  price: number | string
-  size: number | string
-  type: 'ask' | 'bid'
-}
+import { IActiveExchange } from '@containers/Chart/CommonTypes.types'
 
 export interface IProps {
-  activeExchange: {index: number, exchange: {name: string, symbol: string}}
+  activeExchange: IActiveExchange
   view: string
   currencyPair: string
   isShownMocks: boolean

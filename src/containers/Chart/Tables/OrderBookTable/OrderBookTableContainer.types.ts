@@ -1,13 +1,13 @@
-import { IOrder } from '@containers/Chart/Chart.types'
+import { IOrder, IActiveExchange } from '@containers/Chart/CommonTypes.types'
 
 export interface IProps {
   subscribeToMore: Function
-  activeExchange: { index: number }
+  activeExchange: IActiveExchange
   currencyPair: string
   digitsAfterDecimalForAsksPrice: number
   digitsAfterDecimalForAsksSize: number
   digitsAfterDecimalForBidsPrice: number
-  digitsAfterDecimalForBidsSize:number
+  digitsAfterDecimalForBidsSize: number
   setOrders: Function
   data: { marketOrders: any[] }
 }

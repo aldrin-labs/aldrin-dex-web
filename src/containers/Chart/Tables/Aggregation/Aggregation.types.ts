@@ -1,5 +1,5 @@
-export interface AggregationProps {
+export interface IProps {
   aggregation: number
-  onButtonClick: () => void
+  onButtonClick: (event: any) => any
   theme: any //specify
 }

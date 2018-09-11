@@ -1,5 +1,5 @@
-import { IExchange } from './Table/ExchangesTable.types'
+import { IExchange } from '@containers/Chart/CommonTypes.types'
 
-export interface ExchangesTableData {
-	marketByName: IExchange[]
+export interface IExchangesTable {
+  data: {marketByName: [{exchanges: IExchange[]}]}
 }

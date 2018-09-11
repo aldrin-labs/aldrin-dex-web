@@ -2,8 +2,9 @@ import React from 'react'
 
 import ExchangesTable from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable'
 import { mockExchanges } from '@containers/Chart/Tables/ExchangesTable/mockExchanges'
+import { IExchangesTable } from './TableContainer.types'
 
-const transformDataToExchangesTable = ({ data, ...props }) => {
+const transformDataToExchangesTable = ({ data, ...props }: IExchangesTable) => {
   if (data && data.marketByName) {
     const exchanges =
       data.marketByName.length > 0

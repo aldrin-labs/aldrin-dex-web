@@ -1,7 +1,9 @@
+import { IActiveExchange } from '@containers/Chart/CommonTypes.types'
+
 export interface IProps {
   data: {marketTickers: []}
-  subscribeToMore: () => any
-  activeExchange: {index: number}
+  subscribeToMore: Function
+  activeExchange: IActiveExchange
   currencyPair: string
 }
 
