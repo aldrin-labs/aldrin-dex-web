@@ -44,7 +44,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           isUSDCurrently={isUSDCurrently}
           switchToUsd={this.switchToUsd}
           subscription={this.props.subscription}
-          checkboxes={this.props.checkboxes}
+          activeKeys={this.props.activeKeys}
           tab={this.state.tab}
           theme={theme}
         >
@@ -63,7 +63,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     if (tab === 'industry') {
       return (
         <PortfolioTableIndustries
-          checkboxes={this.props.checkboxes}
+          activeKeys={this.props.activeKeys}
           isUSDCurrently={isUSDCurrently}
           theme={theme}
           switchToUsd={this.switchToUsd}

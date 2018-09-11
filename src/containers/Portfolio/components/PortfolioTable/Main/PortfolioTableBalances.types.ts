@@ -20,7 +20,7 @@ export interface IProps {
   theme: Theme
   filterValueSmallerThenPercentage: number | undefined
   isUSDCurrently: boolean
-  checkboxes: number[]
+  activeKeys: number[]
   subscription: any
   tab: string
   classes: { [key: string]: string }

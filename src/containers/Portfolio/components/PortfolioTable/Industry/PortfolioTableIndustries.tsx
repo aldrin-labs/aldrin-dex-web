@@ -105,7 +105,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         this.combineIndustryData({ assets: MOCKS })
       )
 
-      this.setState({ activeKeys: this.props.checkboxes })
+      this.setState({ activeKeys: this.props.activeKeys })
 
       return
     } else if (!data) {
@@ -124,7 +124,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       this.combineIndustryData(composeWithMocks)
     )
 
-    this.setState({ activeKeys: this.props.checkboxes })
+    this.setState({ activeKeys: this.props.activeKeys })
   }
 
   componentWillReceiveProps(nextProps: IndProps) {
@@ -147,13 +147,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       this.combineIndustryData(composeWithMocks)
     }
 
-    if (nextProps.checkboxes) {
-      this.setState({ activeKeys: nextProps.checkboxes }, () =>
+    if (nextProps.activeKeys) {
+      this.setState({ activeKeys: nextProps.activeKeys }, () =>
         this.combineIndustryData(this.state.portfolio)
       )
     }
 
-    if (nextProps.checkboxes && nextProps.checkboxes.length === 0) {
+    if (nextProps.activeKeys && nextProps.activeKeys.length === 0) {
       this.setState({ selectedRows: null, selectedSum: defaultSelectedSum })
     }
 

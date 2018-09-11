@@ -75,7 +75,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         this.combineTableData({ assets: MOCK_DATA })
       )
 
-      this.setState({ activeKeys: this.props.checkboxes })
+      this.setState({ activeKeys: this.props.activeKeys })
 
       return
     } else if (!data) {
@@ -95,7 +95,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       this.combineTableData(composeWithMocks)
     )
 
-    this.setState({ activeKeys: this.props.checkboxes })
+    this.setState({ activeKeys: this.props.activeKeys })
   }
 
   componentWillReceiveProps(nextProps: IProps) {
@@ -137,13 +137,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       this.combineTableData(composeWithMocks)
     }
 
-    if (nextProps.checkboxes) {
-      this.setState({ activeKeys: nextProps.checkboxes }, () =>
+    if (nextProps.activeKeys) {
+      this.setState({ activeKeys: nextProps.activeKeys }, () =>
         this.combineTableData(this.state.portfolio)
       )
     }
 
-    if (nextProps.checkboxes && nextProps.checkboxes.length === 0) {
+    if (nextProps.activeKeys && nextProps.activeKeys.length === 0) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     }
   }

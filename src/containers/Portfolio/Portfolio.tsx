@@ -46,7 +46,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                   isSideNavOpen={this.state.isSideNavOpen}
                 />
                 <PortfolioTable
-                  checkboxes={activeKeys}
+                  activeKeys={activeKeys}
                   theme={theme}
                   toggleWallets={this.toggleWallets}
                   subscription={subscriptionData}

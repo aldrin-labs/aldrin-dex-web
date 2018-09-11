@@ -91,6 +91,11 @@ export interface IndProps {
 export interface ITableProps {
   isShownChart: boolean
   loading: boolean
+  activeKeys: string[]
+  subscription: any
+  theme: object
+  toggleWallets: React.ReactEventHandler
+
   data: {
     portfolioId: string | null
     portfolio: {
@@ -125,8 +130,4 @@ export interface ITableProps {
     } | null
   } | null
 
-  checkboxes: string[]
-  subscription: any
-  theme: object
-  toggleWallets: React.ReactEventHandler
 }
