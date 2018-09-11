@@ -13,6 +13,7 @@ export const selectAllKeys = createAction('SELECT_ALL_KEYS')
 export const filterValuesLessThen = createAction('FILTER_VALUES_LESS_THEN')
 export const mergeAllKeys = createAction('MERGE_ALL_KEYS')
 export const setKeys = createAction('SET_KEYS')
+export const setActiveKeys = createAction('SET_ACTIVE_KEYS')
 export const setCorrelationPeriod = createAction('SET_CORRELATION_PERIOD')
 export const setOptimizationPeriod = createAction('SET_OPTIMIZATION_PERIOD')
 export const updateDataForOptimization = createAction(

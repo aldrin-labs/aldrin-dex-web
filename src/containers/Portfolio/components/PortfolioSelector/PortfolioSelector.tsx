@@ -5,11 +5,11 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
 import Dropdown from '@components/SimpleDropDownSelector'
-import { setKeys as setKeysAction, filterValuesLessThen } from '../../actions'
+import { setKeys as setKeysAction, setActiveKeys as setActiveKeysAction, filterValuesLessThen } from '../../actions'
 import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
-import Accounts from '@containers/Portfolio/components/PortfolioSelector/Accounts'
+import Accounts from './Accounts/Accounts'
 
 
 class PortfolioSelector extends React.Component<IProps, IState> {
@@ -24,7 +24,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
   }
 
   onToggleCheckbox = (index: number) => {
-    const { onChangeActive } = this.props
+    const { setActiveKeys } = this.props
 
     const checkedCheckboxes =
       (this.state.checkedCheckboxes && this.state.checkedCheckboxes.slice()) ||
@@ -52,7 +52,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
         .filter(Boolean)
       console.log('checkboxes in onToggleCheckbox', checkboxes);
 
-      onChangeActive(checkboxes)
+      setActiveKeys(checkboxes)
     })
   }
 
@@ -64,7 +64,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
 
     if (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) {
       this.setState({ checkedCheckboxes: null }, () => {
-        this.props.onChangeActive([])
+        this.props.setActiveKeys([])
       })
     } else {
       const allAccounts = checkboxes.map((ck, i) => i)
@@ -83,7 +83,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             return null
           })
           .filter(Boolean)
-        this.props.onChangeActive(checkboxesAgain)
+        this.props.setActiveKeys(checkboxesAgain)
       })
     }
   }
@@ -95,6 +95,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
       filterPercent,
       isSideNavOpen,
       setKeys,
+      setActiveKeys,
     } = this.props
 
     if (!checkboxes) {
@@ -119,6 +120,7 @@ class PortfolioSelector extends React.Component<IProps, IState> {
             checkboxes,
             checkedCheckboxes,
             setKeys,
+            setActiveKeys,
             setCheckboxes: this.setCheckboxes,
             onToggleAll: this.onToggleAll,
             onToggleCheckbox: this.onToggleCheckbox,
@@ -240,6 +242,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   setKeys: (keys: string[]) => dispatch(setKeysAction(keys)),
+  setActiveKeys: (activeKeys: string[]) => dispatch(setActiveKeysAction(activeKeys)),
   filterValuesLessThenThat: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
 })

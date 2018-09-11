@@ -22,7 +22,7 @@ class PortfolioComponent extends React.Component<IProps> {
     super(props, context)
 
     this.state = {
-      checkboxes: null,
+      // checkboxes: this.props.keys,
       isSideNavOpen: false,
       filter: 0.5,
     }
@@ -30,20 +30,25 @@ class PortfolioComponent extends React.Component<IProps> {
     this.toggleWallets = this.toggleWallets.bind(this)
   }
 
-  onChangeActiveKey = (checkboxes: number[]) => {
-    this.setState({ checkboxes }, () => {
-      console.log('checkboxes in state', checkboxes);
-
-    })
-  }
+  // onChangeActiveKey = (checkboxes: number[]) => {
+  //   this.setState({ checkboxes }, () => {
+  //     console.log('checkboxes in state', checkboxes);
+  //
+  //   })
+  // }
 
   toggleWallets() {
     this.setState({ isSideNavOpen: !this.state.isSideNavOpen })
   }
 
   render() {
-    const { checkboxes } = this.state
-    const { keys, login, theme } = this.props
+    // const { checkboxes } = this.state
+    const { keys, login, theme, store, activeKeys } = this.props
+
+    // console.log('keys', keys, 'checkboxes', checkboxes);
+    // console.log('store in portfolio', store);
+    console.log('activeKeys: ', activeKeys, 'keys', keys);
+
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
@@ -54,10 +59,10 @@ class PortfolioComponent extends React.Component<IProps> {
                 <PortfolioSelector
                   toggleWallets={this.toggleWallets}
                   isSideNavOpen={this.state.isSideNavOpen}
-                  onChangeActive={this.onChangeActiveKey}
+                  // onChangeActive={this.onChangeActiveKey}
                 />
                 <PortfolioTable
-                  checkboxes={checkboxes}
+                  checkboxes={activeKeys}
                   theme={theme}
                   toggleWallets={this.toggleWallets}
                   subscription={subscriptionData}
@@ -79,7 +84,9 @@ class PortfolioComponent extends React.Component<IProps> {
 }
 
 const mapStateToProps = (store) => ({
+  store: store,
   keys: store.portfolio.keys,
+  activeKeys: store.portfolio.activeKeys,
   login: store.login.loginStatus,
 })
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { Divider, Checkbox } from '@material-ui/core'
 import { has } from 'lodash'
 
-import { IProps } from './index.types'
+import { IProps } from './Accounts.types'
 import {
   AccountsWalletsHeadingWrapper,
   Headline,
@@ -27,7 +27,7 @@ export default class Accounts extends React.PureComponent<IProps> {
     const checkedCheckboxes = checkboxes.map((ck, i) => i)
 
     this.props.setKeys(checkboxes)
-
+    this.props.setActiveKeys(checkboxes)
     this.props.setCheckboxes({ checkboxes, checkedCheckboxes })
 
     return true
