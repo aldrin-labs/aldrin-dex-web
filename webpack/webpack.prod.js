@@ -9,6 +9,7 @@ const devtool = process.env.DEVTOOL || 'nosources-source-map'
 const config = {
   mode: 'production',
   entry: {
+    vendor: ['react', 'react-dom', 'redux'],
     app: [`${commonPaths.appEntry}/index.tsx`],
   },
   output: {
@@ -19,26 +20,33 @@ const config = {
     rules: [],
   },
   optimization: {
-    minimizer: [
-      new UglifyJSPlugin({
-        parallel: true,
-        uglifyOptions: {
-          compress: false,
-          ecma: 6,
-          mangle: true,
-          toplevel: true,
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          chunks: 'initial',
+          name: 'vendor',
+          test: 'vendor',
+          enforce: true,
         },
-        sourceMap: true,
-      }),
-    ],
-
-    runtimeChunk: false,
+      },
+    },
+    runtimeChunk: true,
   },
   plugins: [
     new LodashModuleReplacementPlugin({
       caching: true,
       paths: true,
       shorthands: true,
+    }),
+    new UglifyJSPlugin({
+      parallel: true,
+      uglifyOptions: {
+        compress: false,
+        ecma: 6,
+        mangle: true,
+        toplevel: true,
+      },
+      sourceMap: true,
     }),
     new webpack.DefinePlugin({
       'process.env': {
