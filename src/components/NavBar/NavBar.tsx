@@ -3,7 +3,8 @@ import styled from 'styled-components'
 
 import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
-import { withTheme, WithTheme } from '@material-ui/core/styles'
+import { WithTheme } from '@material-ui/core/styles'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 export interface Props extends WithTheme {
   hide?: boolean

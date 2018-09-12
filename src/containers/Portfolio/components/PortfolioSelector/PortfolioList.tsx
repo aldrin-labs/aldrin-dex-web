@@ -1,7 +1,9 @@
 import Checkbox from '@material-ui/core/Checkbox'
-import List, { ListItem, ListItemText } from '@material-ui/core/List'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
-import { withTheme } from '@material-ui/core/styles'
+import withTheme from '@material-ui/core/styles/withTheme'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import React from 'react'
@@ -131,6 +133,9 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export const PortfolioList = compose(
   withTheme(),
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   graphql(API.getKeysQuery, { name: 'keys' })
 )(SelectPortfolioComponent)
