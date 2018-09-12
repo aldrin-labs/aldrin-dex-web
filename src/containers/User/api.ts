@@ -153,7 +153,7 @@ export const deleteCryptoWalletMutation = gql`
 
 export const searchSupportedNetworksQuery = gql`
   query searchSupportedNetworks {
-    searchSupportedNetworks(limit: 100, search: "et") {
+    searchSupportedNetworks(limit: 200, search: "") {
       name
       symbol
     }
