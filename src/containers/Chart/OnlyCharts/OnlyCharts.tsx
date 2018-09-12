@@ -6,6 +6,7 @@ import { Slide } from '@material-ui/core'
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
+
 import { IProps } from './OnlyCharts.types'
 
 class OnlyCharts extends Component<IProps> {
