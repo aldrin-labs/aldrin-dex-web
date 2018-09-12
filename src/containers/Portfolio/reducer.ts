@@ -2,7 +2,7 @@ import { createReducer } from 'redux-act'
 
 import { daysFromNow } from '@utils/dateUtils'
 import * as actions from '@containers/Portfolio/actions'
-import { isEquals } from 'lodash'
+import { isEqual } from 'lodash'
 
 const initialState = {
   portfolio: null,
@@ -64,7 +64,7 @@ export default createReducer(
       return { ...state, selectedAccounts: [...payload] }
     },
     [actions.selectAllKeys]: (state, payload) => {
-      const isEqual = isEquals(state.selectedAccounts, payload)
+      const isEqual = isEqual(state.selectedAccounts, payload)
       if (isEqual) {
         return { ...state, selectedAccounts: [] }
       }
