@@ -18,8 +18,8 @@ const config = {
   },
   devtool,
   module: {},
+  stats: 'verbose',
   plugins: [
-    // new webpack.optimize.ModuleConcatenationPlugin(),
     new ErrorOverlayPlugin(),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -55,9 +55,6 @@ const config = {
         // (default: 50 MB) big in bytes.
         sizeThreshold: 50 * 1024 * 1024,
       },
-    }),
-    new Jarvis({
-      port: 1337, // optional: set a port
     }),
   ],
   cache: true,

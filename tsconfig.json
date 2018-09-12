@@ -10,7 +10,7 @@
     "noImplicitReturns": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
     "alwaysStrict": false,
     "allowJs": false,
