@@ -3,7 +3,8 @@
 import React from 'react'
 import classNames from 'classnames'
 
-import { MdClear, MdWarning } from 'react-icons/lib/md'
+import MdClear from '@material-ui/icons/Clear'
+import MdWarning from '@material-ui/icons/Warning'
 import green from '@material-ui/core/colors/green'
 import amber from '@material-ui/core/colors/amber'
 import IconButton from '@material-ui/core/IconButton'

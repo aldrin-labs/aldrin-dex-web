@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { FaFilter } from 'react-icons/lib/fa'
+import FaFilter from '@material-ui/icons/FilterList'
 import styled from 'styled-components'
-import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
+import Arrow from '@material-ui/icons/ArrowLeft'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { has } from 'lodash-es'
@@ -13,7 +13,6 @@ import { getKeysQuery } from '../../api'
 import { IProps, IState } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 import { Checkbox, Label, Span } from '@styles/cssUtils'
-
 
 class PortfolioSelector extends React.Component<IProps, IState> {
   state = {
@@ -367,8 +366,9 @@ class MainDataWrapper extends React.Component {
   }
 }
 
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  MainDataWrapper
-)
+const storeComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainDataWrapper)
 
 export default compose()(storeComponent)

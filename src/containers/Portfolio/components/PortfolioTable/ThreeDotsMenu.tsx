@@ -2,7 +2,7 @@ import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import MoreVertIcon from 'react-icons/lib/md/more-vert'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import styled from 'styled-components'
 
 const options = ['main', 'industry', 'rebalance', 'correlation', 'optimization']

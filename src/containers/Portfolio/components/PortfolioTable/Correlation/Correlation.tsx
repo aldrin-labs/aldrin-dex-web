@@ -86,7 +86,7 @@ class Correlation extends React.Component<IProps> {
           console.log(portfolio)
 
           return (
-            <PTWrapper background={theme.palette.background.paper}>
+            <PTWrapper background={'#000'}>
               {children}
               <CorrelationMatrix
                 fullScreenChangeHandler={this.props.toggleFullscreen}
