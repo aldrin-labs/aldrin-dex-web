@@ -34,7 +34,7 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
     transformedBidsData: [],
   }
 
-  static getDerivedStateFromProps(props: DepthChartProps, state: DepthChartState) {
+  static getDerivedStateFromProps(props: IDepthChartProps, state: IDepthChartState) {
     // console.log(props)
     let totalVolumeAsks = 0
     let transformedAsksData = props.asks.map((el) => {
