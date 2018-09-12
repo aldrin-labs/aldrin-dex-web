@@ -6,14 +6,17 @@ import {
   getNumberOfDigitsAfterDecimal,
 } from '@utils/chartPageUtils'
 
+import { IProps, IState } from './TableContainer.types'
+
+
 let unsubscribe: Function | undefined
 
-class TableContainer extends Component {
+class TableContainer extends Component<IProps, IState> {
   state = {
     data: [],
   }
 
-  static getDerivedStateFromProps(newProps, state) {
+  static getDerivedStateFromProps(newProps: IProps, state: IState) {
     if (
       !(
         newProps.data &&
@@ -69,7 +72,7 @@ class TableContainer extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IProps) {
     if (
       prevProps.activeExchange.index !== this.props.activeExchange.index ||
       prevProps.currencyPair !== this.props.currencyPair
@@ -88,13 +91,6 @@ class TableContainer extends Component {
   render() {
     const {
       data,
-      exchange, //  useless functions that we wont pass to table
-      fetchMore,
-      refetch,
-      startPolling,
-      stopPolling,
-      subscribeToMore,
-      updateQuery,
       ...rest
     } = this.props
 

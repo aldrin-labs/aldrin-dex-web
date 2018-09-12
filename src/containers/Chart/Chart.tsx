@@ -28,8 +28,9 @@ import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+import { IProps, IState } from './Chart.types'
 
-class Chart extends React.Component {
+class Chart extends React.Component<IProps, IState> {
   state = {
     view: 'default',
     orders,
@@ -41,7 +42,7 @@ class Chart extends React.Component {
     tradeHistory: [],
   }
 
-  static getDerivedStateFromProps(nextProps: any) {
+  static getDerivedStateFromProps(nextProps: IProps) {
     const [base, quote] = nextProps.currencyPair.split('_')
     document.title = `${base} to ${quote} | CCAI`
 
@@ -256,8 +257,8 @@ class Chart extends React.Component {
   }
 
   renderDefaultView = () => {
-    const { ordersData, spreadData, activeChart } = this.state
-    const { activeExchange, currencyPair, theme } = this.props
+    const { activeChart } = this.state
+    const { currencyPair, theme } = this.props
     const { palette } = theme
 
     if (!currencyPair) {
