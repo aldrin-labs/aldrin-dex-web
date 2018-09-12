@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { uniqBy } from 'lodash'
+import { uniqBy } from 'lodash-es'
 
 import {
   maximumItemsInArray,

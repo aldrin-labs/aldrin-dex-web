@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { has } from 'lodash'
+import { has } from 'lodash-es'
 
 import Dropdown from '@components/SimpleDropDownSelector'
 

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import { MdReplay } from 'react-icons/lib/md'
 import { Button as ButtonMUI } from '@material-ui/core'
-import { isEqual } from 'lodash'
+import { isEqual } from 'lodash-es'
 
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'

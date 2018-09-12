@@ -3,7 +3,7 @@ import { withFormik } from 'formik'
 import Yup from 'yup'
 import { compose, withStateHandlers } from 'recompose'
 import { graphql } from 'react-apollo'
-import { isEqual } from 'lodash'
+import { isEqual } from 'lodash-es'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Dialog, {
