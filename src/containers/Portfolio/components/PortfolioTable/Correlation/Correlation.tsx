@@ -86,7 +86,7 @@ class Correlation extends React.Component<IProps> {
           console.log(portfolio)
 
           return (
-            <PTWrapper background={'#000'}>
+            <PTWrapper background={theme.palette.background.paper}>
               {children}
               <CorrelationMatrix
                 fullScreenChangeHandler={this.props.toggleFullscreen}
@@ -188,8 +188,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(setCorrelationPeriod(payload)),
 })
 
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  CorrelationWrapper
-)
+const storeComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CorrelationWrapper)
 
 export default storeComponent
