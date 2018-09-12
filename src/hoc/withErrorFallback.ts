@@ -1,4 +1,4 @@
-import { omit } from 'ramda'
+import omit from 'lodash/omit'
 import {
   compose,
   withState,
@@ -23,5 +23,8 @@ export const withErrorFallback: any = compose(
     },
   }),
   branch((props) => props.hasError, renderComponent(ErrorFallback)),
-  compose(mapProps, omit)(['hasError', 'setHasError'])
+  compose(
+    mapProps,
+    omit
+  )(['hasError', 'setHasError'])
 )

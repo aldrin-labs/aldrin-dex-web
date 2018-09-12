@@ -2,8 +2,8 @@ import React from 'react'
 import { withFormik } from 'formik'
 import Yup from 'yup'
 import { compose, withStateHandlers } from 'recompose'
+import { isEquals } from 'lodash'
 import { graphql } from 'react-apollo'
-import * as R from 'ramda'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 
@@ -84,7 +84,7 @@ const formikDialog = withFormik({
       address: wallet.address,
       assetName: wallet.baseAsset.name,
     }
-    const checkCryptoWalletName = R.equals(wallet.name, cryptoWalletNameInput)
+    const checkCryptoWalletName = isEquals(wallet.name, cryptoWalletNameInput)
 
     if (checkCryptoWalletName) {
       try {
