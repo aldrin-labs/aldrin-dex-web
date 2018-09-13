@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Chip from '@material-ui/core/Chip'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
 // TODO: this is old react-select v1 and should be replaced in future
-import Select from 'react-select-for-charting-page'
+import Select, { createFilter } from 'react-select'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
 import * as actions from '@containers/Chart/actions'
@@ -129,17 +129,24 @@ function SelectWrapped(props) {
 
   return (
     <Select
-      matchPos="start"
-      matchProp="value"
-      onInputKeyDown={onInputKeyDown}
-      optionComponent={Opt}
-      noResultsText={<Typography>{'No results found'}</Typography>}
-      clearable={false}
-      arrowRenderer={(arrowProps) =>
+//      matchPos="start" //see createFilter()
+      matchProp="value" //see createFilter()
+      filterOption={createFilter({
+        matchFrom: "start",
+//        matchProp: "value"
+      })}
+      onKeyDown={onInputKeyDown}
+      components={{
+        Option: Opt,
+
+      }}
+      noOptionsMessage={<Typography>{'No results found'}</Typography>}
+      isClearable={false}
+      arrowRenderer={(arrowProps) => //use componets api
         arrowProps.isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />
       }
-      clearRenderer={() => <MdClear />}
-      valueComponent={(valueProps) => {
+      clearRenderer={() => <MdClear />} //use componets api
+      valueComponent={(valueProps) => { //use componets api
         const { value, children, onRemove } = valueProps
 
         const onDelete = (event) => {
