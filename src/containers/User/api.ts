@@ -159,3 +159,12 @@ export const searchSupportedNetworksQuery = gql`
     }
   }
 `
+
+export const searchAssetsQuery = gql`
+  query searchAssets($search: String!) {
+	  searchAssets(limit: 10, search: $search) {
+      name
+      symbol
+    }
+  }
+`
