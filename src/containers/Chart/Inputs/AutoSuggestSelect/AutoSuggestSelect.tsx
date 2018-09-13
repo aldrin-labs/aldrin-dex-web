@@ -9,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Chip from '@material-ui/core/Chip'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
 // TODO: this is old react-select v1 and should be replaced in future
-import Select, { createFilter } from 'react-select'
+import Select, { createFilter, components } from 'react-select'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
 
 import * as actions from '@containers/Chart/actions'
@@ -127,25 +127,57 @@ function SelectWrapped(props) {
     }
   }
 
+  const DropdownIndicator = (props) => {
+  return components.DropdownIndicator && (
+      <components.DropdownIndicator {...props}>
+        {props.hasValue ? <MdArrowDropUp /> : <MdArrowDropDown />}
+      </components.DropdownIndicator>
+    );
+  };
+
+  const ClearIndicator = () => {
+    return (
+      <MdClear />
+    );
+  };
+
+  const ValueContainer = ({ children, ...props }) => {
+    const { value, onRemove } = props
+    const onDelete = (event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          onRemove(value)
+    }  
+    if (onRemove) {
+          return (
+            <Chip
+              tabIndex={-1}
+              label={children}
+              className={classes.chip}
+              deleteIcon={<div onTouchEnd={onDelete} />}
+              onDelete={onDelete}
+            />
+          )
+        }
+    return <components.ValueContainer {...props}>
+     <div className="Select-value">{children}</div>
+     </components.ValueContainer>
+  };
+
+
   return (
     <Select
 //      matchPos="start" //see createFilter()
-      matchProp="value" //see createFilter()
+//      matchProp="value" //see createFilter()
       filterOption={createFilter({
         matchFrom: "start",
 //        matchProp: "value"
       })}
       onKeyDown={onInputKeyDown}
-      components={{
-        Option: Opt,
-
-      }}
-      noOptionsMessage={<Typography>{'No results found'}</Typography>}
+//      components={{ Option: Opt }}
+      components={{ DropdownIndicator, ClearIndicator, ValueContainer, Option: Opt }}
+      noOptionsMessage={() => <Typography>{'No results found'}</Typography>}
       isClearable={false}
-      arrowRenderer={(arrowProps) => //use componets api
-        arrowProps.isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />
-      }
-      clearRenderer={() => <MdClear />} //use componets api
       valueComponent={(valueProps) => { //use componets api
         const { value, children, onRemove } = valueProps
 
