@@ -79,6 +79,7 @@ const AppRaw = ({
       <CssBaseline />
       <AppGridLayout>
         <AnimatedNavBar
+          pathname={currentPage}
           hide={currentPage === '/chart' && chartPageView !== 'default'}
         />
         {children}
