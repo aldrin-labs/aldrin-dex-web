@@ -99,10 +99,10 @@ const ChartContainer = styled.div`
     ${(props: { chartsCount?: number; fullscreen: boolean }) => {
       if (props.fullscreen) {
         if (props.chartsCount && props.chartsCount > 4) {
-          return '2, 50vh'
+          return '2, calc(50vh - 30px)'
         }
 
-        return '1, 100vh'
+        return '1, calc(100vh - 60px)'
       }
       if (props.chartsCount && props.chartsCount > 4) {
         return '2, 41.5vh'
@@ -128,4 +128,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   removeWarningMessage: () => dispatch(actions.removeWarningMessage()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(OnlyCharts)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OnlyCharts)

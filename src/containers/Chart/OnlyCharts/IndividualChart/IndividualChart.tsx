@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Switch, Grow, Paper } from '@material-ui/core'
-import { MdClear } from 'react-icons/lib/md'
+import MdClear from '@material-ui/icons/Clear'
 import styled from 'styled-components'
 
 import { SingleChart } from '@components/Chart'

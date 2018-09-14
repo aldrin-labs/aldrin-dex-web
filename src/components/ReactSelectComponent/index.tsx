@@ -2,13 +2,11 @@ import React, { CSSProperties, Component } from 'react'
 import SelectReact, { components } from 'react-select'
 import { OptionProps } from 'react-select/lib/types'
 
-
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import { IProps } from './index.types'
-import { withTheme } from '@material-ui/core/styles'
+import withTheme from '@material-ui/core/styles/withTheme'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
-
 
 class ReactSelectComponent extends Component<IProps> {
   render() {
@@ -163,8 +161,7 @@ class ReactSelectComponent extends Component<IProps> {
   }
 }
 
-
-const DropdownIndicator = (props: object) => (
+const DropdownIndicator = (props: object) =>
   components.DropdownIndicator && (
     <components.DropdownIndicator {...props}>
       <SvgIcon
@@ -177,7 +174,5 @@ const DropdownIndicator = (props: object) => (
       />
     </components.DropdownIndicator>
   )
-)
-
 
 export default withTheme()(ReactSelectComponent)

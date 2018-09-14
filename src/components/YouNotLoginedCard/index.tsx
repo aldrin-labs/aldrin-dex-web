@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { Card, CardContent, Typography } from '@material-ui/core'
-import { MdLock } from 'react-icons/lib/md'
+import MdLock from '@material-ui/icons/Lock'
 
 import { Login } from '@containers/Login'
 import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
@@ -27,7 +27,7 @@ class LoginCard extends PureComponent<IProps, IState> {
         <StyledCard>
           <CardContent>
             <Typography align="center" variant="display4" gutterBottom>
-              <MdLock />
+              <MdLockStyled />
             </Typography>
             <Typography
               color="primary"
@@ -48,6 +48,10 @@ const StyledCard = styled(Card)`
   height: auto;
   width: 20rem;
   margin: auto;
+`
+const MdLockStyled = styled(MdLock)`
+  width: 100%;
+  height: 100%;
 `
 
 export default LoginCard

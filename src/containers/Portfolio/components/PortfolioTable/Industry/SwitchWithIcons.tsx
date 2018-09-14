@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import LineChartIcon from 'react-icons/lib/md/show-chart'
-import PieChartIcon from 'react-icons/lib/md/pie-chart-outlined'
+import LineChartIcon from '@material-ui/icons/ShowChart'
+import PieChartIcon from '@material-ui/icons/PieChartOutlined'
 
 interface Props {
   onClick?: Function

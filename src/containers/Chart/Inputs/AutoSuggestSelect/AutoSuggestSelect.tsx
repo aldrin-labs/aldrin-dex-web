@@ -10,7 +10,9 @@ import Chip from '@material-ui/core/Chip'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
 // TODO: this is old react-select v1 and should be replaced in future
 import Select from 'react-select-for-charting-page'
-import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
+import MdArrowDropDown from '@material-ui/icons/ArrowDropDown'
+import MdArrowDropUp from '@material-ui/icons/ArrowDropUp'
+import MdClear from '@material-ui/icons/Clear'
 
 import * as actions from '@containers/Chart/actions'
 
@@ -112,7 +114,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
-const Opt = connect(mapStateToProps, mapDispatchToProps)(Option)
+const Opt = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Option)
 
 function SelectWrapped(props) {
   const { classes, ...other } = props

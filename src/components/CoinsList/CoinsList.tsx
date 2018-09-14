@@ -4,12 +4,11 @@ import { FormattedNumber } from 'react-intl'
 import styled, { css } from 'styled-components'
 
 import Paper from '@material-ui/core/Paper'
-import Table, {
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@material-ui/core/Table'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
 
 // TODO: add types
 import * as T from '@components/CoinsList/types'
