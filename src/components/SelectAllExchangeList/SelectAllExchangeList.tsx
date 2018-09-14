@@ -6,7 +6,7 @@ import { Data } from './SelectAllExchangeList.types'
 import { ApolloQueryResult } from 'apollo-client'
 
 const combineDataToSelectOptions = ( data: Data ) => {
-  console.log('data in combine', data);
+  // console.log('data in combine', data);
 
   const exchangeOptions =
     data.exchangeByEntry &&
@@ -22,7 +22,7 @@ const combineDataToSelectOptions = ( data: Data ) => {
 }
 
 const promiseOptions = (inputValue: string) => {
-  console.log('inputValue in: ', inputValue);
+  // console.log('inputValue in: ', inputValue);
 
   return client.query({query: exchangeByEntryQuery, variables: {'search': inputValue}})
     .then((response: ApolloQueryResult<any> ) => combineDataToSelectOptions(response.data))

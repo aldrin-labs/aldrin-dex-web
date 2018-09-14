@@ -13,8 +13,9 @@ import {
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions } from '.././mocks'
 import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
+import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 
-import { Checkbox, Label, Span, Icon, SelectT } from '@styles/cssUtils'
+import { Checkbox, Label, Span, Icon } from '@styles/cssUtils'
 import {
   TableAndHeadingWrapper,
   PTHR,
@@ -472,7 +473,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                       if (isNewCoinName) {
                         return (
                           <PTDR key={`NameExchange${idx}`}>
-                            <SelectT
+                            <SelectAllExchangeList
                               key={`inputNameExchange${rowIndex}`}
                               classNamePrefix="custom-select-box"
                               isClearable={true}
