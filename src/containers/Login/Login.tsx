@@ -30,6 +30,14 @@ class LoginQuery extends React.Component<Props, State> {
       anchorEl: null,
     }
     const auth0Options = {
+      theme: {
+        logo:
+          'https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png',
+        primaryColor: '#4ed8da',
+      },
+      languageDictionary: {
+        title: 'Join CCAI',
+      },
       auth: {
         responseType: 'token id_token',
         redirectUri: 'localhost:3000/login',
@@ -175,6 +183,9 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export const Login = compose(
   withErrorFallback,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   graphql(API.createUserMutation, { name: 'createUser' })
 )(LoginQuery)
