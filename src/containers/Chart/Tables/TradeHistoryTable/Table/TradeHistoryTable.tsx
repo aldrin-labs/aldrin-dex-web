@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Collapse } from '@material-ui/core'
-import { MdArrowUpward, MdArrowDropUp } from 'react-icons/lib/md'
+import Collapse from '@material-ui/core/Collapse'
+import MdArrowDropUp from '@material-ui/icons/ArrowDropUp'
+import MdArrowUpward from '@material-ui/icons/ArrowUpward'
 
 import {
   Table,

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { History } from 'history'
 import styled from 'styled-components'
-import { Button as Btn } from '@material-ui/core'
+import Btn from '@material-ui/core/Button'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import Button from '@components/Elements/Button/Button'
@@ -168,8 +168,7 @@ class CoinMarketTable extends React.Component<Props, State> {
                         {priceUSD ? `$ ${Number(priceUSD).toFixed(2)}` : '-'}
                       </TD>
                       <TD /*style={{ color }}*/>
-                        {/*`${percentChangeDay}` || '-'*/}
-                        -
+                        {/*`${percentChangeDay}` || '-'*/}-
                       </TD>
                       <TD>
                         {maxSupply ? `$ ${this.formatNumber(maxSupply)}` : '-'}

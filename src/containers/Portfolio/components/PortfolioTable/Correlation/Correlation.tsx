@@ -188,8 +188,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(setCorrelationPeriod(payload)),
 })
 
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  CorrelationWrapper
-)
+const storeComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CorrelationWrapper)
 
 export default storeComponent

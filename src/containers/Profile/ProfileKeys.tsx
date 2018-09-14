@@ -7,7 +7,6 @@ import List, {
   ListItemText,
 } from '@material-ui/core/List'
 import Typography from '@material-ui/core/Typography'
-import { withStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import React from 'react'

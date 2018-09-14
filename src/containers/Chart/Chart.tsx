@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Paper, Button, Typography, Fade, Slide } from '@material-ui/core'
-import { withTheme } from '@material-ui/core/styles'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 import {
   OrderBookTable,
