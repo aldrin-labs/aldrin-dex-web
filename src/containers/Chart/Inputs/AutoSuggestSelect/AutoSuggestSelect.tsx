@@ -49,26 +49,68 @@ let suggestions = [
   label: suggestion.label,
 }))
 
-class Option extends React.PureComponent {
-  handleClick = (event) => {
+
+
+
+function SelectWrappedDev(props) {
+  const { classes, ...other } = props
+
+  const onInputKeyDown = (e) => {
+    switch (e.keyCode) {
+      case 13: // ENTER
+        e.preventDefault()
+        break
+      default:
+        break
+    }
+  }
+
+  const DropdownIndicator = (innerProps ) => {
+  return components.DropdownIndicator && (
+      <components.DropdownIndicator {...innerProps }>
+        {innerProps.isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />}
+      </components.DropdownIndicator>
+    )
+  }
+
+  const ClearIndicator = () => {
+    return (
+      <MdClear />
+    )
+  }
+
+
+  const Option = (innerProps) => {
+      const { isFocused, isSelected, onFocus } = innerProps 
+
+      return (
+        <MenuItem
+          onFocus={onFocus}
+          selected={isFocused}
+          component="div"
+          style={{
+            fontWeight: isSelected ? 500 : 400,
+          }}
+        >
+          <components.Option {...innerProps}/>
+        </MenuItem>
+      )
+    }
+
+  const logChange = (element) => {
     const {
-      onSelect,
       selectCurrencies,
       charts,
       view,
       addChart,
       openWarningMessage,
       removeWarningMessage,
-    } = this.props
-
-    onSelect(this.props.option, event)
+    } = props
     if (view === 'default') {
-      selectCurrencies(this.props.option.value)
-
+      selectCurrencies(element.value)
       return
     } else if (charts.length < 8 && view === 'onlyCharts') {
-      addChart(this.props.option.value)
-
+      addChart(element.value)
       return
     } else {
       setTimeout(() => {
@@ -76,25 +118,21 @@ class Option extends React.PureComponent {
       }, 1500)
       openWarningMessage()
     }
-  }
+   }
 
-  render() {
-    const { children, isFocused, isSelected, onFocus } = this.props
-
-    return (
-      <MenuItem
-        onFocus={onFocus}
-        selected={isFocused}
-        onClick={this.handleClick}
-        component="div"
-        style={{
-          fontWeight: isSelected ? 500 : 400,
-        }}
-      >
-        {children}
-      </MenuItem>
-    )
-  }
+  return (
+    <Select
+      filterOption={createFilter({
+        matchFrom: "start",
+      })}
+      options={suggestions}
+      onKeyDown={onInputKeyDown}
+      components={{ DropdownIndicator, ClearIndicator, Option }}
+      noOptionsMessage={() => {<Typography>{'No results found'}</Typography>}}
+      isClearable={false}
+      onChange={logChange}
+    />
+  )
 }
 
 const mapStateToProps = (store: any) => ({
@@ -112,99 +150,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
-const Opt = connect(mapStateToProps, mapDispatchToProps)(Option)
-
-function SelectWrapped(props) {
-  const { classes, ...other } = props
-
-  const onInputKeyDown = (e) => {
-    switch (e.keyCode) {
-      case 13: // ENTER
-        e.preventDefault()
-        break
-      default:
-        break
-    }
-  }
-
-  const DropdownIndicator = (props) => {
-  return components.DropdownIndicator && (
-      <components.DropdownIndicator {...props}>
-        {props.hasValue ? <MdArrowDropUp /> : <MdArrowDropDown />}
-      </components.DropdownIndicator>
-    );
-  };
-
-  const ClearIndicator = () => {
-    return (
-      <MdClear />
-    );
-  };
-
-  const ValueContainer = ({ children, ...props }) => {
-    const { value, onRemove } = props
-    const onDelete = (event) => {
-          event.preventDefault()
-          event.stopPropagation()
-          onRemove(value)
-    }  
-    if (onRemove) {
-          return (
-            <Chip
-              tabIndex={-1}
-              label={children}
-              className={classes.chip}
-              deleteIcon={<div onTouchEnd={onDelete} />}
-              onDelete={onDelete}
-            />
-          )
-        }
-    return <components.ValueContainer {...props}>
-     <div className="Select-value">{children}</div>
-     </components.ValueContainer>
-  };
-
-
-  return (
-    <Select
-//      matchPos="start" //see createFilter()
-//      matchProp="value" //see createFilter()
-      filterOption={createFilter({
-        matchFrom: "start",
-//        matchProp: "value"
-      })}
-      onKeyDown={onInputKeyDown}
-//      components={{ Option: Opt }}
-      components={{ DropdownIndicator, ClearIndicator, ValueContainer, Option: Opt }}
-      noOptionsMessage={() => <Typography>{'No results found'}</Typography>}
-      isClearable={false}
-      valueComponent={(valueProps) => { //use componets api
-        const { value, children, onRemove } = valueProps
-
-        const onDelete = (event) => {
-          event.preventDefault()
-          event.stopPropagation()
-          onRemove(value)
-        }
-
-        if (onRemove) {
-          return (
-            <Chip
-              tabIndex={-1}
-              label={children}
-              className={classes.chip}
-              deleteIcon={<div onTouchEnd={onDelete} />}
-              onDelete={onDelete}
-            />
-          )
-        }
-
-        return <div className="Select-value">{children}</div>
-      }}
-      {...other}
-    />
-  )
-}
+const SelectWrapped = connect(mapStateToProps, mapDispatchToProps)(SelectWrappedDev)
 
 class IntegrationReactSelect extends React.PureComponent {
   render() {
@@ -229,7 +175,6 @@ class IntegrationReactSelect extends React.PureComponent {
           fullWidth
           inputComponent={SelectWrapped}
           value={value}
-          onChange={() => {}}
           placeholder="Add chart"
           id={id}
           inputProps={{
@@ -250,7 +195,8 @@ const ITEM_HEIGHT = 48
 const styles = (theme) => ({
   root: {
     height: '100%',
-    width: '15%',
+//    width: '15%',
+    color: 'red',
   },
   chip: {
     margin: theme.spacing.unit / 4,
@@ -260,6 +206,7 @@ const styles = (theme) => ({
       borderBottomColor: theme.palette.secondary.main,
     },
   },
+
   // We had to use a lot of global selectors in order to style react-select.
   // We are waiting on https://github.com/JedWatson/react-select/issues/1679
   // to provide a much better implementation.
@@ -300,7 +247,7 @@ const styles = (theme) => ({
       height: 'auto',
     },
     '.Select-input input': {
-      color: 'white',
+      color: 'black',
       background: 'transparent',
       border: 0,
       padding: 0,
