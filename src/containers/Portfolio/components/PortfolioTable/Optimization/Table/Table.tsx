@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import DeleteIcon from 'react-icons/lib/md/delete-forever'
-import AddIcon from 'react-icons/lib/md/add'
+import DeleteIcon from '@material-ui/icons/Delete'
+import AddIcon from '@material-ui/icons/Add'
 import { Typography, Card, CardContent } from '@material-ui/core'
 
 import {
@@ -202,7 +202,11 @@ class Table extends Component<IProps, IState> {
             <HeadItem>Portfolio%</HeadItem>
           </Head>
           <Body>
-            <Col>{data.map((item, i) => <Item key={i}>{item.coin}</Item>)}</Col>
+            <Col>
+              {data.map((item, i) => (
+                <Item key={i}>{item.coin}</Item>
+              ))}
+            </Col>
 
             <Col>
               {data.map((item, i) => (

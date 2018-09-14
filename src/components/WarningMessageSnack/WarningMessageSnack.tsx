@@ -1,10 +1,10 @@
 // https://material-ui.com/demos/snackbars/#customized-snackbars
 
 import React from 'react'
-import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { MdClear, MdWarning } from 'react-icons/lib/md'
+import MdClear from '@material-ui/icons/Clear'
+import MdWarning from '@material-ui/icons/Warning'
 import green from '@material-ui/core/colors/green'
 import amber from '@material-ui/core/colors/amber'
 import IconButton from '@material-ui/core/IconButton'
@@ -46,7 +46,6 @@ function MySnackbarContent(props) {
   const { classes, className, message, onCloseClick, variant, ...other } = props
   const Icon = variantIcon[variant]
 
-
   return (
     <SnackbarContent
       className={classNames(classes[variant], className)}
@@ -71,14 +70,6 @@ function MySnackbarContent(props) {
       {...other}
     />
   )
-}
-
-MySnackbarContent.propTypes = {
-  classes: PropTypes.object.isRequired,
-  className: PropTypes.string,
-  message: PropTypes.node,
-  onClose: PropTypes.func,
-  variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 }
 
 const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent)
@@ -113,10 +104,6 @@ class CustomizedSnackbars extends React.Component {
       </>
     )
   }
-}
-
-CustomizedSnackbars.propTypes = {
-  classes: PropTypes.object.isRequired,
 }
 
 export default withStyles(styles2)(CustomizedSnackbars)

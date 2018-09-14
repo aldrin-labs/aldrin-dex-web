@@ -1,7 +1,6 @@
 import { Button } from '@material-ui/core'
 import styled from 'styled-components'
-import { FaCircle } from 'react-icons/lib/fa'
-
+import FaCircle from '@material-ui/icons/Brightness1'
 import { Table, HeadCell, FullWidthBlock, Cell } from '@components/Table/Table'
 
 export const Icon = styled(FaCircle)`

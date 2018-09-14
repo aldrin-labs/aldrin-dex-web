@@ -1,5 +1,5 @@
 import { createReducer } from 'redux-act'
-import { uniqWith, isEqual } from 'lodash'
+import { uniqWith, isEqual } from 'lodash-es'
 import nanoid from 'nanoid'
 
 import * as actions from '@containers/Chart/actions'

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { MdRemoveCircleOutline, MdAddCircleOutline } from 'react-icons/lib/md'
+import MdAddCircleOutline from '@material-ui/icons/AddOutlined'
+import MdRemoveCircleOutline from '@material-ui/icons/RemoveOutlined'
 import {
   FlexibleXYPlot,
 //  VerticalRectSeries,

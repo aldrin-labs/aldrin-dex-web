@@ -1,25 +1,23 @@
-import React, { Fragment } from 'react'
-import styled from 'styled-components'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import IconButton from '@material-ui/core/IconButton'
-import { MdAccountBox, MdExitToApp } from 'react-icons/lib/md'
+import ExitIcon from '@material-ui/icons/ExitToApp'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 
 const UserLink = (props) => <Link to="/user" {...props} />
 
 export const LoginMenu = ({
-  userName,
-  anchorEl,
-  open,
-  handleClose,
+  // userName,
+
   handleMenu,
   handleLogout,
-}) => (
+}: any) => (
   <>
     <IconButton color="secondary" component={UserLink}>
-      <MdAccountBox />
+      <AccountCircle />
     </IconButton>
     <IconButton color="primary" onClick={handleLogout}>
-      <MdExitToApp />
+      <ExitIcon />
     </IconButton>
   </>
 )

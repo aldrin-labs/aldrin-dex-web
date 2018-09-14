@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import Auth0Lock from 'auth0-lock'
 import { graphql } from 'react-apollo'
 import jwtDecode from 'jwt-decode'
 import Button from '@material-ui/core/Button'
@@ -13,6 +12,16 @@ import * as actions from '@containers/Login/actions'
 import * as API from '@containers/Login/api'
 import { LoginMenu } from '@containers/Login/components'
 
+const auth0Options = {
+  auth: {
+    responseType: 'token id_token',
+    redirectUri: 'localhost:3000/login',
+    scope: 'openid',
+    audience: 'localhost:5080',
+  },
+  autoclose: true,
+  oidcConformant: true,
+}
 const SWrapper = styled.div`
   z-index: 100000;
   align-items: center;
@@ -22,28 +31,17 @@ const SWrapper = styled.div`
 `
 
 class LoginQuery extends React.Component<Props, State> {
-  lock: Auth0LockStatic
+  lock: Auth0LockStatic = new Auth0Lock(
+    '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
+    'ccai.auth0.com',
+    auth0Options
+  )
 
   constructor(props: Props) {
     super(props)
     this.state = {
       anchorEl: null,
     }
-    const auth0Options = {
-      auth: {
-        responseType: 'token id_token',
-        redirectUri: 'localhost:3000/login',
-        scope: 'openid',
-        audience: 'localhost:5080',
-      },
-      autoclose: true,
-      oidcConformant: true,
-    }
-    this.lock = new Auth0Lock(
-      '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
-      'ccai.auth0.com',
-      auth0Options
-    )
   }
 
   componentWillMount() {
@@ -175,6 +173,9 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export const Login = compose(
   withErrorFallback,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   graphql(API.createUserMutation, { name: 'createUser' })
 )(LoginQuery)

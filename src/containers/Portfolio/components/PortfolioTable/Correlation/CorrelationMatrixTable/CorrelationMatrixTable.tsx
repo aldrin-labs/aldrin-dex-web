@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
-import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa'
+import FaAngleRight from '@material-ui/icons/ChevronRight'
+import FaAngleDown from '@material-ui/icons/ExpandMore'
 import nanoid from 'nanoid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'

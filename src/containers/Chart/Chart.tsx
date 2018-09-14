@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Paper, Button, Typography, Fade, Slide } from '@material-ui/core'
-import { withTheme } from '@material-ui/core/styles'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 import {
   OrderBookTable,
@@ -358,26 +358,20 @@ class Chart extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {
-      view,
-      currencyPair,
-      theme: { palette, shadows },
-    } = this.props
+    const { view, currencyPair } = this.props
+
+    const toggler = this.renderToggler()
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-        <TogglerContainer
-          view={view}
-          shadow={shadows[5]}
-          background={palette.primary[palette.type]}
-        >
+        <TogglerContainer>
           <AutoSuggestSelect
             value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
           />
 
-          {this.renderToggler()}
+          {toggler}
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -478,23 +472,7 @@ const TogglerContainer = styled.div`
   width: 100%;
   justify-content: flex-end;
   align-items: center;
-  background-color: transparent;
-  transition: top 250ms ease-out, background-color 250ms ease-in-out;
-
-  ${(props: { view: string; shadow: string; background: string }) => {
-    if (props.view !== 'default') {
-      return `position: absolute;
-    top: -50px;
-    z-index: 100;
-    background-color:${props.background};
-    cursor: pointer;
-    box-shadow: ${props.shadow};
-    &:hover{
-      top: 0px;
-    }`
-    }
-    return ''
-  }};
+  font-family: Roboto, sans-serif;
 `
 
 const Toggler = styled(Button)`
@@ -533,4 +511,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThemedChart)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ThemedChart)

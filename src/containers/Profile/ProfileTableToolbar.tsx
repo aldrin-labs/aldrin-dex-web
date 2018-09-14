@@ -1,6 +1,6 @@
 import classNames from 'classnames'
-import { withStyles } from '@material-ui/core/styles'
-import React, { SFC } from 'react'
+import withStyles from '@material-ui/core/styles/withStyles'
+import React from 'react'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'

@@ -6,9 +6,7 @@
           "@babel/preset-env",
           {
             "targets": {
-              "browsers": [
-                "last 2 versions"
-              ]
+              "browsers": ["last 2 versions"]
             }
           }
         ],
@@ -41,10 +39,9 @@
         [
           "@babel/preset-env",
           {
+            "useBuiltIns": "usage",
             "targets": {
-              "browsers": [
-                "last 2 versions"
-              ]
+              "browsers": ["last 2 Chrome versions"]
             },
             "modules": false
           }
@@ -59,16 +56,14 @@
         "@babel/typescript"
       ],
       "plugins": [
-        "react-hot-loader/babel",
-        "styled-components",
+        "lodash",
         "graphql-tag",
         [
           "@babel/plugin-transform-runtime",
           {
-            "helpers": false,
             "polyfill": false,
             "regenerator": true,
-            "moduleName": "@babel/runtime"
+            "useESModules": true
           }
         ]
       ]
@@ -79,9 +74,7 @@
           "@babel/preset-env",
           {
             "targets": {
-              "browsers": [
-                "last 2 versions"
-              ]
+              "browsers": ["last 2 versions"]
             },
             "modules": false
           }

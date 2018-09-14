@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { difference } from 'lodash'
 import styled from 'styled-components'
+import { difference } from 'lodash-es'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Head, Cell, HeadCell, Body } from '@components/Table/Table'
