@@ -79,7 +79,7 @@ export const Cell = styled.div`
   place-items: center;
 `
 
-export const HeadCell = Cell.extend`
+export const HeadCell = styled(Cell)`
   font-weight: 400;
   font-size: 0.75rem;
   white-space: nowrap;

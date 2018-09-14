@@ -90,7 +90,7 @@ const Link = styled.a`
   }
 `
 
-const LinkWithIcon = Link.extend`
+const LinkWithIcon = styled(Link)`
   margin: 0 1rem !important;
 `
 

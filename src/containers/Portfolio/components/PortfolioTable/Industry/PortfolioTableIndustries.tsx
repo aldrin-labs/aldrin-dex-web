@@ -512,13 +512,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <PTWrapper
         background={theme.palette.background.paper}
         tableData={!!tableDataHasData}
-        innerRef={this.setWrapperRef}
+        ref={this.setWrapperRef}
       >
         {children}
         <Container>
           <Wrapper
             isThereAnySelectedRows={isThereAnySelectedRows}
-            innerRef={this.setChildNodeRef}
+            ref={this.setChildNodeRef}
           >
             <PTable>
               <PTHead>
