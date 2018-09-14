@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import { Collapse } from '@material-ui/core'
 import { MdArrowUpward, MdArrowDropUp } from 'react-icons/lib/md'
-import { red, green } from '@material-ui/core/colors'
 
 import {
   Table,
@@ -13,11 +12,11 @@ import {
   HeadCell,
   Cell,
 } from '@components/Table/Table'
-import { IProps, ITicker } from './TradeHistoryTable.types'
+import { IProps, IState, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
-class TradeHistoryTable extends PureComponent<IProps> {
+class TradeHistoryTable extends PureComponent<IProps, IState> {
   state = {
     tableExpanded: true,
   }
@@ -34,6 +33,8 @@ class TradeHistoryTable extends PureComponent<IProps> {
       background,
       action,
       primary: { main },
+      red,
+      green,
     } = palette
 
     return (
@@ -130,7 +131,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                     </Cell>
                     <Cell width={'36%'} style={{ display: 'flex' }}>
                       <StyledTypography
-                        textColor={ticker.fall ? red[400] : green[500]}
+                        textColor={ticker.fall ? red.main : green.main}
                         noWrap={true}
                         variant="body1"
                         align="right"
@@ -140,7 +141,7 @@ class TradeHistoryTable extends PureComponent<IProps> {
                         )}
                       </StyledTypography>
                       <StyledArrow
-                        color={ticker.fall ? red[400] : green[500]}
+                        color={ticker.fall ? red.main : green.main}
                         direction={ticker.fall ? 'down' : 'up'}
                       />
                     </Cell>

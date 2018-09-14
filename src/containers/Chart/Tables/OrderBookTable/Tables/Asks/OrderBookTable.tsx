@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Button, Typography } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import { difference } from 'lodash'
 
 import { TypographyFullWidth } from '@styles/cssUtils'
@@ -8,11 +8,12 @@ import { Table, Row, Title, Head, HeadCell } from '@components/Table/Table'
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
 import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+import { IProps } from './OrderBookTable.types'
 
 let index: number | null = null
 
-class OrderBookTable extends Component {
-  shouldComponentUpdate(nextProps) {
+class OrderBookTable extends Component<IProps> {
+  shouldComponentUpdate(nextProps: IProps) {
     const shouldUpdate =
       difference(nextProps.data, this.props.data).length > 0 ||
       nextProps.activeExchange.index !== this.props.activeExchange.index ||
@@ -23,7 +24,7 @@ class OrderBookTable extends Component {
     return shouldUpdate
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IProps) {
     index =
       this.props.data &&
       this.props.data.findIndex(
@@ -34,14 +35,8 @@ class OrderBookTable extends Component {
   render() {
     const {
       onButtonClick,
-      roundTill,
-      aggregation,
-      digitsAfterDecimalForAsksSize,
-      digitsAfterDecimalForAsksPrice,
       quote,
-      data,
       theme: { palette },
-      tableExpanded,
     } = this.props
 
     const {

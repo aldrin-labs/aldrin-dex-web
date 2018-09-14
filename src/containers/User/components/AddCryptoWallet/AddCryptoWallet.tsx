@@ -5,11 +5,11 @@ import Yup from 'yup'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 
-import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
-import Typography from 'material-ui/Typography'
-import Paper from 'material-ui/Paper'
-import { InputLabel } from 'material-ui/Input'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
+import InputLabel from '@material-ui/core/InputLabel'
 import SelectWalletList from '@components/SelectWalletList/SelectWalletList'
 import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 
@@ -56,9 +56,14 @@ const formikEnhancer = withFormik({
       await addCryptoWallet({
         variables,
         update: (proxy, { data: { addCryptoWallet } }) => {
-          const proxyData = proxy.readQuery({ query: API.getCryptoWalletsQuery })
+          const proxyData = proxy.readQuery({
+            query: API.getCryptoWalletsQuery,
+          })
           proxyData.getProfile.cryptoWallets.push(addCryptoWallet)
-          proxy.writeQuery({ query: API.getCryptoWalletsQuery, data: proxyData })
+          proxy.writeQuery({
+            query: API.getCryptoWalletsQuery,
+            data: proxyData,
+          })
         },
       })
       console.log(variables)

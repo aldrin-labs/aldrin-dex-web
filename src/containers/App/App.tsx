@@ -1,13 +1,18 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { blueGrey, cyan } from '@material-ui/core/colors'
+import { blueGrey, cyan, green, red } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
 
 // https://material-ui.com/customization/css-in-js/#other-html-element
 import JssProvider from 'react-jss/lib/JssProvider'
 import { create } from 'jss'
-import { createGenerateClassName, jssPreset } from '@material-ui/core/styles'
+import {
+  createGenerateClassName,
+  jssPreset,
+  createMuiTheme,
+  MuiThemeProvider,
+} from '@material-ui/core/styles'
 
 const generateClassName = createGenerateClassName()
 const jss = create(jssPreset())
@@ -15,8 +20,7 @@ const jss = create(jssPreset())
 jss.options.insertionPoint = document.getElementById('jss-insertion-point')
 //
 
-import CssBaseline from 'material-ui/CssBaseline'
-import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import Footer from '@components/Footer'
 
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
@@ -39,6 +43,12 @@ const AppRaw = ({ children, themeMode, chartPageView }: any) => (
           const theme = createMuiTheme({
             palette: {
               type: themeMode,
+              red: {
+                main: red[400],
+              },
+              green: {
+                main: green['500'],
+              },
               primary: blueGrey,
               secondary: {
                 ...cyan,

@@ -353,7 +353,6 @@ const SProfileChart = styled.div`
   width: 100%;
   padding: 0 16px;
   border-radius: 3px;
-  background-color: #393e44;
   min-height: 38vh;
   margin: 0 auto;
 

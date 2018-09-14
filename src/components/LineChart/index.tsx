@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { format as dateFormat } from 'date-fns'
+import dateFormat from 'date-fns/format'
 import {
   FlexibleXYPlot,
   XAxis,

@@ -34,6 +34,7 @@ class Correlation extends React.Component<IProps> {
       setCorrelationPeriodToStore,
       portfolio,
       filterValueSmallerThenPercentage,
+      theme,
     } = this.props
 
     let dataRaw = {}
@@ -85,7 +86,7 @@ class Correlation extends React.Component<IProps> {
           console.log(portfolio)
 
           return (
-            <PTWrapper>
+            <PTWrapper background={theme.palette.background.paper}>
               {children}
               <CorrelationMatrix
                 fullScreenChangeHandler={this.props.toggleFullscreen}
@@ -96,8 +97,8 @@ class Correlation extends React.Component<IProps> {
                   //   : data
                   data
                 }
-                period={period}
                 setCorrelationPeriod={setCorrelationPeriodToStore}
+                period={period}
               />
             </PTWrapper>
           )
@@ -115,17 +116,21 @@ class CorrelationWrapper extends React.Component<IProps> {
       endDate,
       children,
       isFullscreenEnabled,
+      setCorrelationPeriod,
       toggleFullscreen,
+      theme,
+      period,
     } = this.props
-
     return (
       <Wrapper>
         {isShownMocks ? (
           <Correlation
+            setCorrelationPeriod={setCorrelationPeriod}
             toggleFullscreen={toggleFullscreen}
             isFullscreenEnabled={isFullscreenEnabled}
             data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
             children={children}
+            period={period}
           />
         ) : (
           <Query query={getPortfolioQuery}>
@@ -147,26 +152,25 @@ class CorrelationWrapper extends React.Component<IProps> {
   }
 }
 
-const PTWrapper = styled.div`
-  min-width: 70vw;
-  width: 100%;
-  min-height: 75vh;
-  display: flex;
-  flex-direction: column;
-
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
-  height: auto;
-`
-
 const Wrapper = styled.div`
   height: calc(100vh - 130px);
   width: calc(100% - 2rem);
   margin: 1.5rem;
   display: flex;
   flex-wrap: wrap;
+`
+
+const PTWrapper = styled.div`
+  min-width: 70vw;
+  width: 100%;
+  min-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  background-color: ${(props: { background: string }) => props.background};
+  border-radius: 3px;
+  box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+  height: auto;
 `
 
 const mapStateToProps = (store: any) => ({

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { IProps, IState } from '@containers/Screener/ScreenerSearch/ScreenerSearch.types'
-import Input from 'material-ui/Input'
+import Input from '@material-ui/core/Input'
 
 export default class ScreenerSearch extends React.Component<IProps, IState> {
   state: IState = {

@@ -129,6 +129,8 @@ function SelectWrapped(props) {
 
   return (
     <Select
+      matchPos="start"
+      matchProp="value"
       onInputKeyDown={onInputKeyDown}
       optionComponent={Opt}
       noResultsText={<Typography>{'No results found'}</Typography>}

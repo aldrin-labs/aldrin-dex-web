@@ -14,7 +14,7 @@ export interface IPortfolio {
         assetId: string | null
         exchangeId: string | null
         keyId: string | null
-        value: number | null
+        quantity: number | null
         realizedProfit: number | null
         unrealizedProfit: number | null
         totalProfit: number | null
@@ -48,7 +48,7 @@ export interface IndProps {
             assetId: string | null
             exchangeId: string | null
             keyId: string | null
-            value: number | null
+            quantity: number | null
             realizedProfit: number | null
             unrealizedProfit: number | null
             totalProfit: number | null
@@ -91,7 +91,7 @@ export interface ITableProps {
             assetId: string | null
             exchangeId: string | null
             keyId: string | null
-            value: number | null
+            quantity: number | null
             realizedProfit: number | null
             unrealizedProfit: number | null
             totalProfit: number | null

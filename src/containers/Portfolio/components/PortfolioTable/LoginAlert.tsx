@@ -1,11 +1,11 @@
 import React from 'react'
-import Button from 'material-ui/Button'
+import Button from '@material-ui/core/Button'
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from 'material-ui/Dialog'
+} from '@material-ui/core/Dialog'
 import { Link } from 'react-router-dom'
 import { IProps, IState } from 'LoginAlert.types'
 export class LoginAlert extends React.Component<IProps, IState> {

@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable'
 import * as actions from '@containers/Login/actions'
 
 function storeLogin(profile: any) {
@@ -7,7 +6,3 @@ function storeLogin(profile: any) {
     payload: profile,
   }
 }
-
-export const lalka = (action$: any) =>
-  action$.ofType(actions.onLogin)
-  .map(storeLogin)

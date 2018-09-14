@@ -7,6 +7,8 @@ import {
   IState,
   IProps,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead.types'
+import { Checkbox, Label, Span } from '@styles/cssUtils'
+
 
 const usdHeadings: { name: string; value: Args }[] = [
   { name: 'Exchange', value: 'currency' },
@@ -35,9 +37,9 @@ const btcHeadings: { name: string; value: Args }[] = [
   //  { name: '24hr chg BTC %', value: 'dailyPerc' },
   { name: 'Realized', value: 'realizedPL', additionName: 'P&L' },
   //  { name: 'Realized P&L %', value: 'realizedPLPerc' },
-  { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L'  },
+  { name: 'Unrealized', value: 'unrealizedPL', additionName: 'P&L' },
   //  { name: 'Unrealized P&L %', value: 'unrealizedPLPerc' },
-  { name: 'Total', value: 'totalPL', additionName: 'P&L'  },
+  { name: 'Total', value: 'totalPL', additionName: 'P&L' },
 ]
 
 export default class PortfolioTableHead extends React.Component<
@@ -58,12 +60,24 @@ export default class PortfolioTableHead extends React.Component<
 
   render() {
     const { tableHeadings } = this.state
-    const { isSelectAll, onSelectAll, onSortTable, currentSort } = this.props
+    const {
+      isSelectAll,
+      onSelectAll,
+      onSortTable,
+      currentSort,
+      theme: { palette },
+    } = this.props
+
+    const textColor: string = palette.getContrastText(palette.background.default) 
 
     return (
       <PTHead>
-        <PTR>
-          <PTH key="selectAll" style={{ textAlign: 'left' }}>
+        <PTR background={palette.background.paper}>
+          <PTH
+            textColor={textColor}
+            key="selectAll"
+            style={{ textAlign: 'left' }}
+          >
             <Checkbox
               type="checkbox"
               id="selectAll"
@@ -79,12 +93,19 @@ export default class PortfolioTableHead extends React.Component<
 
             return (
               <PTH
+                textColor={textColor}
                 key={heading.name}
                 onClick={() => onSortTable(heading.value)}
                 // style={{ paddingRight: isSorted ? 0 : '16px' }}
               >
                 {/*{index === 6 && heading.name + 100}*/}
-                {[6,7,8].includes(index) ? <>{heading.name} <br /> {heading.additionName}</> : heading.name }
+                {[6, 7, 8].includes(index) ? (
+                  <>
+                    {heading.name} <br /> {heading.additionName}
+                  </>
+                ) : (
+                  heading.name
+                )}
 
                 {isSorted && (
                   <SvgIcon
@@ -110,47 +131,12 @@ export default class PortfolioTableHead extends React.Component<
   }
 }
 
-const Span = styled.span``
-
-const Label = styled.label``
-
-const Checkbox = styled.input`
-  display: none;
-
-  & + ${Label} ${Span} {
-    display: inline-block;
-
-    width: 18px;
-    height: 18px;
-
-    cursor: pointer;
-    vertical-align: middle;
-
-    border: 1.5px solid #909294;
-    border-radius: 3px;
-    background-color: transparent;
-  }
-
-  & + ${Label}:hover ${Span} {
-    border-color: #4ed8da;
-  }
-
-  & :checked + ${Label} ${Span} {
-    border-color: #4ed8da;
-    background-color: #4ed8da;
-    background-image: url('https://image.flaticon.com/icons/png/128/447/447147.png');
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 12px;
-  }
-`
-
 const PTH = styled.th`
   font-family: Roboto, sans-serif;
   font-size: 12px;
 
   line-height: 24px;
-  color: #fff;
+  color: ${(props: { textColor: string }) => props.textColor};
   padding: 10px;
   padding-right: 0;
   font-weight: 500;
@@ -174,9 +160,9 @@ const PTH = styled.th`
   &:nth-child(4) {
     min-width: 85px;
   }
-  
+
   &:nth-child(6) {
-      min-width: 90px;
+    min-width: 90px;
   }
 
   &:nth-child(7) {
@@ -191,16 +177,18 @@ const PTH = styled.th`
     min-width: 101px;
     padding-right: 10px;
   }
-  
-  &:nth-child(n+8) {
+
+  &:nth-child(n + 8) {
     padding-bottom: 0;
   }
 `
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
+  background-color: ${(props: {
+    background: string
+    selectedBackground: string
+  }) => props.background};
 `
 
 const PTHead = styled.thead`

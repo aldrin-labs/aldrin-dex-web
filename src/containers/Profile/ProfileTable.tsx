@@ -1,15 +1,15 @@
 import React, { Component, SFC } from 'react'
 import styled from 'styled-components'
 
-import Checkbox from 'material-ui/Checkbox'
-import Paper from 'material-ui/Paper'
+import Checkbox from '@material-ui/core/Checkbox'
+import Paper from '@material-ui/core/Paper'
 import Table, {
   TableBody,
   TableCell,
   TableFooter,
   TablePagination,
   TableRow,
-} from 'material-ui/Table'
+} from '@material-ui/core/Table'
 
 import { ProfileTableHead } from '@containers/Profile/ProfileTableHead'
 import { ProfileTableToolbar } from '@containers/Profile/ProfileTableToolbar'

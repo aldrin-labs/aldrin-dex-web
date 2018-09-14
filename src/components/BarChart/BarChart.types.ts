@@ -15,8 +15,8 @@ export interface IChart {
 
 export interface IProps {
   charts: IChart[]
-  showPlaceholder: boolean
-  height: number
+  showPlaceholder?: boolean
+  height?: number
   alwaysShowLegend?: boolean
 }
 export interface IState {
