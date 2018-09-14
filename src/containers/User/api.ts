@@ -167,3 +167,11 @@ export const searchAssetsQuery = gql`
     }
   }
 `
+
+export const exchangeByEntryQuery = gql`
+  query exchangeByEntry($search: String!) {
+		exchangeByEntry(entry: $search) {
+      name
+    }
+  }
+`
