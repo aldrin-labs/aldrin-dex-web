@@ -167,14 +167,14 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
   }
 }
 
-const StyledTypography = styled(TypographyFullWidth)`
+const StyledTypography = TypographyFullWidth.extend`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
   }
 `
 
-const TriggerTitle = styled(Title)`
+const TriggerTitle = Title.extend`
   cursor: pointer;
   position: relative;
   padding: 0.5rem;
@@ -189,7 +189,7 @@ const CollapseWrapper = styled(Collapse)`
   width: 100%;
 `
 
-const CollapsibleTable = styled(Table)`
+const CollapsibleTable = Table.extend`
   position: absolute;
   bottom: 0;
   max-height: calc(70% - 37px);
@@ -201,7 +201,7 @@ const CollapsibleTable = styled(Table)`
   }
 `
 
-const TradeHistoryTableCollapsible = styled(CollapsibleTable)`
+const TradeHistoryTableCollapsible = CollapsibleTable.extend`
   max-height: 65%;
 
   @media (max-width: 1080px) {

@@ -286,7 +286,7 @@ const Item = styled.div`
   }
 `
 
-const HeadItem = styled(Item)`
+const HeadItem = Item.extend`
   top: -1px;
 
   &:nth-child(even) {
@@ -320,7 +320,7 @@ const StyledTable = styled.div`
   transition: all 0.3s linear;
 `
 
-const StyledTableWithoutInput = styled(StyledTable)`
+const StyledTableWithoutInput = StyledTable.extend`
   width: 212px;
   min-height: 10rem;
 `

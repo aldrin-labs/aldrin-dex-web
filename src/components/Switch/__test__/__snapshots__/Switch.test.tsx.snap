@@ -1,62 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Switch render basic 1`] = `
-<[object Object]>
-  <[object Object]>
-    <[object Object]
-      onChange={[Function]}
+<file__Container>
+  <file__Label>
+    <file__Input
       type="checkbox"
     />
-    <[object Object] />
-  </[object Object]>
-</[object Object]>
+    <file__Slider />
+  </file__Label>
+</file__Container>
 `;
 
 exports[`Switch render if isActive 1`] = `
-<[object Object]>
-  <[object Object]
+<file__Container>
+  <file__Desc
     color="default"
     variant="body1"
   >
     ON
-  </[object Object]>
-  <[object Object]>
-    <[object Object]
+  </file__Desc>
+  <file__Label>
+    <file__Input
       checked={true}
-      onChange={[Function]}
       type="checkbox"
     />
-    <[object Object] />
-  </[object Object]>
-  <[object Object]
+    <file__Slider />
+  </file__Label>
+  <file__Desc
     color="default"
     variant="body1"
   >
     OFF
-  </[object Object]>
-</[object Object]>
+  </file__Desc>
+</file__Container>
 `;
 
 exports[`Switch render with values 1`] = `
-<[object Object]>
-  <[object Object]
+<file__Container>
+  <file__Desc
     color="default"
     variant="body1"
   >
     ON
-  </[object Object]>
-  <[object Object]>
-    <[object Object]
-      onChange={[Function]}
+  </file__Desc>
+  <file__Label>
+    <file__Input
       type="checkbox"
     />
-    <[object Object] />
-  </[object Object]>
-  <[object Object]
+    <file__Slider />
+  </file__Label>
+  <file__Desc
     color="default"
     variant="body1"
   >
     OFF
-  </[object Object]>
-</[object Object]>
+  </file__Desc>
+</file__Container>
 `;

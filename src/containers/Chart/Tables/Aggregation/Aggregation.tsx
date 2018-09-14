@@ -81,7 +81,7 @@ const Button = styled.button`
   }
 `
 
-const AggregationWrapper = styled(Table)`
+const AggregationWrapper = Table.extend`
   z-index: 100;
   bottom: 0;
   position: absolute;

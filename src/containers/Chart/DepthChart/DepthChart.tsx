@@ -378,7 +378,7 @@ const Br = styled(Divider)`
   }
 `
 
-const RotatedBr = styled(Br)`
+const RotatedBr = Br.extend`
   && {
     transform: rotate(90deg);
     margin-top: 1rem;

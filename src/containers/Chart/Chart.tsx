@@ -441,7 +441,7 @@ const TablesContainer = styled.div`
   }
 `
 
-const ChartsContainer = styled(TablesContainer)`
+const ChartsContainer = TablesContainer.extend`
   height: calc(100vh - 59px - 80px - 1px);
   justify-content: flex-end;
   flex-direction: column;

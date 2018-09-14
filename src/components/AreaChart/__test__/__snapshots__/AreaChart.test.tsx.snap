@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Switch render() 1`] = `
-<[object Object]>
+<file__Chart>
   <FlexibleXYPlot>
     <XAxis
       attr="x"
@@ -42,5 +42,5 @@ exports[`Switch render() 1`] = `
       }
     />
   </FlexibleXYPlot>
-</[object Object]>
+</file__Chart>
 `;
