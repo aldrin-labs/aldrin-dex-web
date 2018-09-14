@@ -21,13 +21,17 @@ export default class AnimatedNavBar extends Component<Props> {
     delayedHide: false,
   }
 
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.hide !== this.props.hide) {
+      setTimeout(() => {
+        this.setState({ delayedHide: this.props.hide })
+      }, 300)
+    }
+  }
+
   render() {
     const { hide } = this.props
     const { delayedHide } = this.state
-
-    setTimeout(() => {
-      this.setState({ delayedHide: hide })
-    }, 300)
 
     return (
       <AnimatedContainer pose={hide ? 'hidden' : 'visible'}>
