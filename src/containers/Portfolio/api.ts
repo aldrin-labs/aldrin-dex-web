@@ -67,7 +67,7 @@ export const getPortfolioQuery = gql`
         }
         assetIds
         ownerId
-        coinPerformance {
+        portfolioPerformance {
           coin
           btc
           usd
