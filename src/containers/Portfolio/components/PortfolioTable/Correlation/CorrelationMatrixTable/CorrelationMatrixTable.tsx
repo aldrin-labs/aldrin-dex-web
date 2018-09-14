@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
-import { FaAngleDown, FaAngleRight } from 'react-icons/lib/fa'
+import FaAngleRight from '@material-ui/icons/ChevronRight'
+import FaAngleDown from '@material-ui/icons/ExpandMore'
 import nanoid from 'nanoid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'
@@ -211,7 +212,7 @@ const Cell = styled.div`
   transition: color 0.25s ease-out;
 `
 
-const HeadCell = Cell.extend`
+const HeadCell = styled(Cell)`
   z-index: 101;
   position: relative;
   position: ${(props) => (props.sticky ? 'sticky' : 'relative')};

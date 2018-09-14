@@ -1,5 +1,4 @@
 import { PureComponent } from 'react'
-import PropTypes from 'prop-types'
 import { UDFCompatibleDatafeed } from './datafeed'
 
 export const IntervalTypes = {
@@ -29,83 +28,6 @@ const SCRIPT_ID = 'tradingview-widget-script'
 const CONTAINER_ID = 'tradingview-widget'
 
 export default class TradingViewWrapper extends PureComponent {
-  static propTypes = {
-    widgetType: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
-    autosize: PropTypes.bool,
-    symbol: PropTypes.string.isRequired,
-    interval: PropTypes.oneOf([
-      1,
-      3,
-      5,
-      15,
-      30,
-      60,
-      120,
-      180,
-      '1',
-      '3',
-      '5',
-      '15',
-      '30',
-      '60',
-      '120',
-      '180',
-      IntervalTypes.D,
-      IntervalTypes.W,
-    ]),
-    timezone: PropTypes.string,
-    theme: PropTypes.oneOf([Themes.LIGHT, Themes.DARK]),
-    style: PropTypes.oneOf([
-      BarStyles.BARS,
-      BarStyles.CANDLES,
-      BarStyles.HOLLOW_CANDLES,
-      BarStyles.HEIKIN_ASHI,
-      BarStyles.LINE,
-      BarStyles.AREA,
-      BarStyles.RENKO,
-      BarStyles.LINE_BREAK,
-      BarStyles.KAGI,
-      BarStyles.POINT_AND_FIGURE,
-    ]),
-    locale: PropTypes.string,
-    toolbar_bg: PropTypes.string,
-    enable_publishing: PropTypes.bool,
-    allow_symbol_change: PropTypes.bool,
-    withdateranges: PropTypes.bool,
-    hide_side_toolbar: PropTypes.bool,
-    hideideas: PropTypes.bool,
-    watchlist: PropTypes.arrayOf(PropTypes.string),
-    details: PropTypes.bool,
-    hotlist: PropTypes.bool,
-    calendar: PropTypes.bool,
-    news: PropTypes.arrayOf(PropTypes.string),
-    studies: PropTypes.arrayOf(PropTypes.string),
-    show_popup_button: PropTypes.bool,
-    popup_width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    popup_height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    no_referral_id: PropTypes.bool,
-    referral_id: PropTypes.string,
-  }
-
-  static defaultProps = {
-    widgetType: 'widget',
-    width: 980,
-    height: 610,
-    autosize: false,
-    interval: IntervalTypes.D,
-    timezone: 'Etc/UTC',
-    theme: Themes.LIGHT,
-    style: BarStyles.CANDLES,
-    locale: 'en',
-    toolbar_bg: '#F1F3F6',
-    enable_publishing: false,
-    allow_symbol_change: true,
-    datafeed: new UDFCompatibleDatafeed('https://demo_feed.tradingview.com'),
-    hideideas: true,
-  }
-
   state = { containerStyle: {} }
 
   componentDidMount = () => this.appendScript(this.initWidget)
@@ -115,7 +37,7 @@ export default class TradingViewWrapper extends PureComponent {
     this.initWidget()
   }
 
-  appendScript = onload => {
+  appendScript = (onload) => {
     if (this.scriptExists()) {
       onload()
       return

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Switch from '../Switch'
 
@@ -23,16 +23,16 @@ describe('Switch', () => {
     })
   })
 
-  it('onClick Switch', () => {
-    const onClick = jest.fn()
-    const wrapper = mount(
-      <Switch values={['ON', 'OFF']} onClick={onClick} isActive />
-    )
-    wrapper
-      .find('input')
-      .props()
-      .onClick()
+  // it('onClick Switch', () => {
+  //   const onClick = jest.fn()
+  //   const wrapper = mount(
+  //     <Switch values={['ON', 'OFF']} onClick={onClick} isActive />
+  //   )
+  //   wrapper
+  //     .find('input')
+  //     .props()
+  //     .onClick()
 
-    expect(onClick).toBeCalled()
-  })
+  //   expect(onClick).toBeCalled()
+  // })
 })

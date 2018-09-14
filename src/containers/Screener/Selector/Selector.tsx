@@ -290,7 +290,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="changeInPercentageInput"
                 onChange={this.handleInputChange}
                 value={this.state.changeInPercentageInput}
-                innerRef={this.changeInPercentageRef}
+                ref={this.changeInPercentageRef}
               />
             </SFormControl>
           </SColumnForm>
@@ -311,7 +311,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="simpleMovingAverageInput"
                 onChange={this.handleInputChange}
                 value={this.state.simpleMovingAverageInput}
-                innerRef={this.simpleMovingAverageRef}
+                ref={this.simpleMovingAverageRef}
               />
             </SFormControl>
             <SFormControl value={this.state.closingPriceAverage}>
@@ -330,7 +330,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="closingPriceAverageInput"
                 onChange={this.handleInputChange}
                 value={this.state.closingPriceAverageInput}
-                innerRef={this.closingPriceAverageRef}
+                ref={this.closingPriceAverageRef}
               />
             </SFormControl>
           </SColumnForm>
@@ -402,7 +402,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="averageVolumeOnBalanceInput"
                 onChange={this.handleInputChange}
                 value={this.state.averageVolumeOnBalanceInput}
-                innerRef={this.averageVolumeOnBalanceRef}
+                ref={this.averageVolumeOnBalanceRef}
               />
             </SFormControl>
           </SColumnForm>
@@ -423,7 +423,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="averageVolume10Input"
                 onChange={this.handleInputChange}
                 value={this.state.averageVolume10Input}
-                innerRef={this.averageVolume10Ref}
+                ref={this.averageVolume10Ref}
               />
             </SFormControl>
 
@@ -443,7 +443,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="averageVolume30Input"
                 onChange={this.handleInputChange}
                 value={this.state.averageVolume30Input}
-                innerRef={this.averageVolume30Ref}
+                ref={this.averageVolume30Ref}
               />
             </SFormControl>
           </SColumnForm>
@@ -464,7 +464,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="averageVolume60Input"
                 onChange={this.handleInputChange}
                 value={this.state.averageVolume60Input}
-                innerRef={this.averageVolume60Ref}
+                ref={this.averageVolume60Ref}
               />
             </SFormControl>
 
@@ -484,7 +484,7 @@ export default class ScreenerSelect extends React.Component<IProps, IState> {
                 name="averageVolume90Input"
                 onChange={this.handleInputChange}
                 value={this.state.averageVolume90Input}
-                innerRef={this.averageVolume90Ref}
+                ref={this.averageVolume90Ref}
               />
             </SFormControl>
           </SColumnForm>

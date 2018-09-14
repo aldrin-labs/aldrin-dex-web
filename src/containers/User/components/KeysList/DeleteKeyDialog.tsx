@@ -3,7 +3,7 @@ import { withFormik } from 'formik'
 import Yup from 'yup'
 import { compose, withStateHandlers } from 'recompose'
 import { graphql } from 'react-apollo'
-import * as R from 'ramda'
+import { isEqual } from 'lodash-es'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import DialogTitle from '@material-ui/core/DialogTitle'
@@ -77,7 +77,7 @@ const formikDialog = withFormik({
       name: keyNameInput,
       removeTrades: true,
     }
-    const checkKeyName = R.equals(keyName, keyNameInput)
+    const checkKeyName = isEqual(keyName, keyNameInput)
 
     if (checkKeyName) {
       try {
