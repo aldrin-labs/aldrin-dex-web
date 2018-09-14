@@ -177,7 +177,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
     const {
       assets,
-      coinPerformance = [{ usd: '', btc: '', coin: '' }],
+      portfolioPerformance = [{ usd: '', btc: '', coin: '' }],
     } = portfolio
 
     const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
@@ -229,7 +229,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               oneYear: performance.btcYear,
             }
         // TODO: HAVE TO BE REWORKED (because it's just fix for first row without data in btc asset)
-        const isElementHavePerformance = coinPerformance.find(
+        const isElementHavePerformance = portfolioPerformance.find(
           (element) => element.coin === symbol
         )
         const portfolioPerf = isElementHavePerformance
