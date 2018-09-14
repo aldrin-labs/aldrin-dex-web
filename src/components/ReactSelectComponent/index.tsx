@@ -1,5 +1,6 @@
 import React, { CSSProperties, Component } from 'react'
 import SelectReact, { components } from 'react-select'
+import AsyncSelect from 'react-select/lib/Async';
 import { OptionProps } from 'react-select/lib/types'
 
 
@@ -13,6 +14,7 @@ import { hexToRgbAWithOpacity } from '@styles/helpers'
 class ReactSelectComponent extends Component<IProps> {
   render() {
     const {
+      asyncSelect,
       theme,
       controlStyles,
       menuStyles,
@@ -149,6 +151,18 @@ class ReactSelectComponent extends Component<IProps> {
         display: 'none',
         ...indicatorSeparatorStyles,
       }),
+    }
+
+    if (asyncSelect) {
+      return (
+        <AsyncSelect
+          className="custom-async-select-box"
+          classNamePrefix="custom-async-select-box"
+          styles={customStyles}
+          components={{ DropdownIndicator }}
+          {...otherProps}
+        />
+      )
     }
 
     return (
