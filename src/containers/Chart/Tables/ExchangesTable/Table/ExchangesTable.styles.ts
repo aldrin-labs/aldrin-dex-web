@@ -11,13 +11,13 @@ export const Icon = styled(FaCircle)`
   color: ${(props: { color: string }) => props.color};
 `
 
-export const FlexCell = Cell.extend`
+export const FlexCell = styled(Cell)`
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
 `
 
-export const FullWidthBlockMovedLeft = FullWidthBlock.extend`
+export const FullWidthBlockMovedLeft = styled(FullWidthBlock)`
   position: relative;
   left: 20%;
 `

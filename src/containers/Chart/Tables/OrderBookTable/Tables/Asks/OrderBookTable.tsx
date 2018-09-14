@@ -103,7 +103,7 @@ class OrderBookTable extends Component<IProps> {
   }
 }
 
-const AsksTable = Table.extend`
+const AsksTable = styled(Table)`
   height: 50%;
   flex-direction: column;
   justify-content: flex-start;

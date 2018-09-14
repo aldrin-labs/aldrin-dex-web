@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { difference } from 'lodash'
+import styled from 'styled-components'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
 import { Table, Row, Head, Cell, HeadCell, Body } from '@components/Table/Table'
@@ -12,7 +13,6 @@ import {
   RowWithVolumeChart,
 } from '@containers/Chart/Tables/SharedStyles'
 import { IProps } from './SpreadTable.types'
-
 
 let index: number | null = null
 //  index for animations, no need to keep it in state couse it realted to css
@@ -137,11 +137,11 @@ class SpreadTable extends Component<IProps> {
   }
 }
 
-const TriggerRow = Row.extend`
+const TriggerRow = styled(Row)`
   display: flex;
 `
 
-const SpreadreadTableWrapper = Table.extend`
+const SpreadreadTableWrapper = styled(Table)`
   height: 50%;
   @media (max-width: 1080px) {
     bottom: 40px;

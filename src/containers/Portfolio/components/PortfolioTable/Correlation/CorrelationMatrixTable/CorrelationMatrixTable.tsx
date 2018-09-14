@@ -211,7 +211,7 @@ const Cell = styled.div`
   transition: color 0.25s ease-out;
 `
 
-const HeadCell = Cell.extend`
+const HeadCell = styled(Cell)`
   z-index: 101;
   position: relative;
   position: ${(props) => (props.sticky ? 'sticky' : 'relative')};
