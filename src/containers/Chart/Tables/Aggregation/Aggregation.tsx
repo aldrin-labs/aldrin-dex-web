@@ -4,8 +4,9 @@ import Typography from '@material-ui/core/Typography'
 import MdAddCircleOutline from '@material-ui/icons/AddCircleOutlined'
 
 import { Row, Table, Head, Cell, HeadCell } from '@components/Table/Table'
+import { IProps } from './Aggregation.types'
 
-const Aggregation = (props) => {
+const Aggregation = (props: IProps) => {
   const {
     aggregation,
     onButtonClick,

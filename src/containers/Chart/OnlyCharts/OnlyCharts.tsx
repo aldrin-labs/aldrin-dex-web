@@ -7,7 +7,9 @@ import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
 
-class OnlyCharts extends Component<Props, {}> {
+import { IProps } from './OnlyCharts.types'
+
+class OnlyCharts extends Component<IProps> {
   componentDidMount() {
     const { charts, addChart, mainPair } = this.props
     if (charts.length === 0) {
@@ -34,7 +36,6 @@ class OnlyCharts extends Component<Props, {}> {
       >
         <ChartContainer
           fullscreen={view !== 'default'}
-          anime={false}
           chartsCount={charts.length || 1}
         >
           {charts.map(
