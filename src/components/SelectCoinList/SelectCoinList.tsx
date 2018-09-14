@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { searchAssetsQuery } from '@containers/User/api'
-import QueryRenderer from '../QueryRenderer/index'
-import { SelectR } from '@styles/cssUtils'
+import { SelectT } from '@styles/cssUtils'
+import { client } from '@utils/apolloClient'
+import { Data } from './SelectCoinList.types'
+import { ApolloQueryResult } from 'apollo-client'
 
-const SelectCoinList = ({ data, ...otherPropsForSelect }) => {
+const combineDataToSelectOptions = ( data: Data ) => {
+  // console.log('data in combine', data);
 
-  const walletOptions =
+  const coinOptions =
     data.searchAssets &&
     data.searchAssets
       .slice()
@@ -15,23 +18,33 @@ const SelectCoinList = ({ data, ...otherPropsForSelect }) => {
         value: symbol,
       }))
 
-  return (
-    <SelectR
-      placeholder=""
-      options={walletOptions || []}
-      {...otherPropsForSelect}
-    />
-  )
+  return coinOptions
 }
 
-const DataWrapper = ({ ...props }) => {
-  return (
-    <QueryRenderer
-      component={SelectCoinList}
-      query={searchAssetsQuery}
-      {...props}
-    />
-  )
+const promiseOptions = (inputValue: string) => {
+  // console.log('inputValue in: ', inputValue);
+
+  return client.query({query: searchAssetsQuery, variables: {'search': inputValue}})
+    .then((response: ApolloQueryResult<any> ) => combineDataToSelectOptions(response.data))
+    .catch(error=> {console.log(error)})
 }
 
-export default DataWrapper
+
+export default class SelectCoinList extends React.Component {
+
+  render() {
+    const { ...otherPropsForSelect } = this.props
+
+    return (
+      <SelectT
+        asyncSelect={true}
+        loadOptions={promiseOptions}
+        defaultOptions={true}
+        cacheOptions={true}
+        placeholder="Select..."
+        {...otherPropsForSelect}
+      />
+    )
+  }
+}
+
