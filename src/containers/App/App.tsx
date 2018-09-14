@@ -34,7 +34,12 @@ if (currentVersion !== version) {
   localStorage.setItem('version', version)
 }
 
-const AppRaw = ({ children, themeMode, chartPageView }: any) => (
+const AppRaw = ({
+  children,
+  themeMode,
+  chartPageView,
+  location: { pathname: currentPage },
+}: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
       theme={() =>
@@ -74,7 +79,9 @@ const AppRaw = ({ children, themeMode, chartPageView }: any) => (
     >
       <CssBaseline />
       <AppGridLayout>
-        <AnimatedNavBar hide={chartPageView !== 'default'} />
+        <AnimatedNavBar
+          hide={currentPage === '/chart' && chartPageView !== 'default'}
+        />
         {children}
         <NavBarMobile />
       </AppGridLayout>
