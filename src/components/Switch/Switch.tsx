@@ -1,6 +1,6 @@
-import * as React from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 
 interface Props {
   onClick?: Function
@@ -21,7 +21,12 @@ export default class Switch extends React.Component<Props> {
           </Desc>
         )}
         <Label>
-          <Input type="checkbox" onClick={onClick} checked={isActive} />
+          <Input
+            type="checkbox"
+            onChange={() => {}}
+            onClick={onClick}
+            checked={isActive}
+          />
           <Slider />
         </Label>
         {second && (
