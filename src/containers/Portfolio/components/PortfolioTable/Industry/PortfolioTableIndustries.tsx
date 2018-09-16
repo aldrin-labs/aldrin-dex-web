@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components'
 import { compose } from 'recompose'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
 import {
   roundPercentage,
   calcAllSumOfPortfolioAsset,
