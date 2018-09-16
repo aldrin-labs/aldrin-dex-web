@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React from 'react'
 import { exchangeByEntryQuery } from '@containers/User/api'
 import { SelectT } from '@styles/cssUtils'
 import { client } from '@utils/apolloClient'
