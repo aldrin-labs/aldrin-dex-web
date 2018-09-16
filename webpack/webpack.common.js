@@ -52,7 +52,6 @@ const config = {
   },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',

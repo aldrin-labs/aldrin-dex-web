@@ -17,7 +17,7 @@
           }
         ],
         "@babel/react",
-        "@babel/typescript"
+        "@babel/preset-typescript"
       ],
       "plugins": [
         "react-hot-loader/babel",
@@ -53,7 +53,7 @@
           }
         ],
         "@babel/react",
-        "@babel/typescript"
+        "@babel/preset-typescript"
       ],
       "plugins": [
         "lodash",
@@ -86,7 +86,7 @@
           }
         ],
         "@babel/react",
-        "@babel/typescript"
+        "@babel/preset-typescript"
       ],
       "plugins": [
         "react-hot-loader/babel",

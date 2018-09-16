@@ -24,6 +24,7 @@ const config = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
     new HardSourceWebpackPlugin({
       // Either an absolute path or relative to webpack's options.context.
       cacheDirectory: 'node_modules/.cache/hard-source/[confighash]',
