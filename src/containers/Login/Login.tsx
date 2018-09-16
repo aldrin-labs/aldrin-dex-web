@@ -19,6 +19,11 @@ const auth0Options = {
     scope: 'openid',
     audience: 'localhost:5080',
   },
+  theme: {
+    logo:
+      'https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png',
+    primaryColor: '#4ed8da',
+  },
   autoclose: true,
   oidcConformant: true,
 }
