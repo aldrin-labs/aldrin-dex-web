@@ -1,5 +1,5 @@
 import * as React from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
@@ -7,9 +7,10 @@ import { connect } from 'react-redux'
 import AccountIcon from '@material-ui/icons/Settings'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
+import Switch from '@material-ui/core/Switch'
+import Typography from '@material-ui/core/Typography'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Switch from '@components/Switch/Switch'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
 import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
@@ -43,7 +44,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio, toggleWallets, theme } = this.props
+    const { tab, portfolio, toggleWallets, isUSDCurrently, theme } = this.props
 
     return (
       <React.Fragment>
@@ -114,10 +115,14 @@ class PortfolioTableTabs extends React.Component<IProps> {
               tab !== 'rebalance' && (
                 <SwitchRefreshContainer>
                   <MoveRightFix fix={tab === 'main'}>
-                    <Switch
-                      onClick={this.onToggleUSDBTC}
-                      values={['USD', 'BTC']}
-                    />
+                    <FlexWrapper>
+                      <Typography variant="caption">BTC</Typography>
+                      <Switch
+                        onChange={this.onToggleUSDBTC}
+                        checked={isUSDCurrently}
+                      />
+                      <Typography variant="caption">USD</Typography>
+                    </FlexWrapper>
                   </MoveRightFix>
 
                   {tab === 'main' && (
@@ -159,6 +164,11 @@ const RefreshButton = styled(Button)`
 const MoveRightFix = styled.div`
   position: relative;
   left: ${(props: { fix: boolean }) => (props.fix ? '6px' : 0)};
+`
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
 `
 
 const PTHeadingBlock = styled.div`
