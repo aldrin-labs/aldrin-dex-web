@@ -2,6 +2,8 @@ const commonPaths = require('./common-paths')
 const Jarvis = require('webpack-jarvis')
 
 const webpack = require('webpack')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
