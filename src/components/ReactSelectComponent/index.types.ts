@@ -1,9 +1,8 @@
 import { CSSProperties } from 'react'
-import { Theme } from '@material-ui/core'
+import { WithTheme } from '@material-ui/core'
 
-export interface IProps {
+export interface IProps extends WithTheme{
   asyncSelect: boolean
-  theme: Theme
   controlStyles: CSSProperties
   menuStyles: CSSProperties
   menuListStyles: CSSProperties
