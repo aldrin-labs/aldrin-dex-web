@@ -24,11 +24,14 @@ const UserReducer = createReducer(
     [actions.storeLogout]: (state, payload) => {
       return { ...state, user: null, loginStatus: false, modalIsOpen: false }
     },
+    [actions.storeModalIsClosing]: (state, payload) => {
+      return { ...state, user: { ...payload }, isLogging: true }
+    },
     [actions.storeOpenedModal]: (state) => {
       return {...state, modalIsOpen: true}
     },
     [actions.storeClosedModal]: (state) => {
-      return {...state, modalIsOpen: false}
+      return {...state, modalIsOpen: false, isLogging: false}
     },
   },
   initialState

@@ -66,7 +66,10 @@ class LoginQuery extends React.Component<Props, State> {
       )
     })
     this.lock.on('show', () => {this.props.storeOpenedModal()})
-    this.lock.on('hide', () => {this.props.storeClosedModal()})
+    this.lock.on('hide', () => {
+      this.props.storeModalIsClosing()
+      setTimeout(() => this.props.storeClosedModal(), 1000)
+    })
     if (this.props.isShownModal) this.showLogin()
   }
 
@@ -180,6 +183,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
   storeLogout: () => dispatch(actions.storeLogout()),
   storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
+  storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
   storeClosedModal: () => dispatch(actions.storeClosedModal()),
 })
 

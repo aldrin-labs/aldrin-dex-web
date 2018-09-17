@@ -9,6 +9,7 @@ export interface Props {
   storeLogin: Function
   storeLogout: Function
   storeOpenedModal: Function
+  storeModalIsClosing: Function
   storeClosedModal: Function
 }
 
