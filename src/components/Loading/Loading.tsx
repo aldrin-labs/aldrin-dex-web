@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from 'react'
-import { CircularProgress } from '@material-ui/core'
+import React from 'react'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import purple from '@material-ui/core/colors/purple'
 import styled from 'styled-components'
 

@@ -5,11 +5,14 @@ import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
+import {
+  inflate
+} from 'graphql-deduplicator';
 
 import { API_URL } from '@utils/config'
 
 const cache = new InMemoryCache()
-const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
+const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql?deduplicate=1` })
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -49,6 +52,13 @@ const link = split(
   wsLink,
   httpLink
 )
+
+const inflateLink = new ApolloLink((operation, forward) => {
+  return forward(operation)
+    .map((response) => {
+      return inflate(response);
+    });
+});
 
 export const client = new ApolloClient({
   link: ApolloLink.from([authLink, link]),

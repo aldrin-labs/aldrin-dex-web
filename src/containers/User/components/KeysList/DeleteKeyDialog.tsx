@@ -3,15 +3,15 @@ import { withFormik } from 'formik'
 import Yup from 'yup'
 import { compose, withStateHandlers } from 'recompose'
 import { graphql } from 'react-apollo'
-import * as R from 'ramda'
+import { isEqual } from 'lodash-es'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogContent from '@material-ui/core/DialogContent'
+import Dialog from '@material-ui/core/Dialog'
+
 import Typography from '@material-ui/core/Typography'
 
 import { deleteExchangeKeyMutation, getKeysQuery } from '@containers/User/api'
@@ -77,7 +77,7 @@ const formikDialog = withFormik({
       name: keyNameInput,
       removeTrades: true,
     }
-    const checkKeyName = R.equals(keyName, keyNameInput)
+    const checkKeyName = isEqual(keyName, keyNameInput)
 
     if (checkKeyName) {
       try {

@@ -1,12 +1,9 @@
-export interface IExchange {
-  name: string
-  symbol: string
-}
+import { IActiveExchange, IExchange } from '@containers/Chart/CommonTypes.types'
 
 export interface IProps {
   onButtonClick: Function
   changeExchange: Function
-  activeExchange: { index: number; exchange: IExchange }
+  activeExchange: IActiveExchange
   exchanges: IExchange[]
   theme: any
 }

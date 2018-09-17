@@ -7,6 +7,7 @@ export interface IProps {
   filterValuesLessThen: Function
   isShownMocks: boolean
   isSideNavOpen: boolean
+  isUSDCurrently?: boolean
   toggleWallets: Function
   data: any
 }

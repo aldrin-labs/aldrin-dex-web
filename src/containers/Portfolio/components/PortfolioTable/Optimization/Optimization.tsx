@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import { LinearProgress } from '@material-ui/core'
-import { isEqual } from 'lodash'
+import { isEqual } from 'lodash-es'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import * as actions from '@containers/Portfolio/actions'

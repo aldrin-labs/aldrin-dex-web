@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
-import { Collapse } from '@material-ui/core'
-import { MdArrowUpward, MdArrowDropUp } from 'react-icons/lib/md'
+import Collapse from '@material-ui/core/Collapse'
+import MdArrowDropUp from '@material-ui/icons/ArrowDropUp'
+import MdArrowUpward from '@material-ui/icons/ArrowUpward'
 
 import {
   Table,
@@ -12,11 +13,11 @@ import {
   HeadCell,
   Cell,
 } from '@components/Table/Table'
-import { IProps, ITicker } from './TradeHistoryTable.types'
+import { IProps, IState, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
-class TradeHistoryTable extends PureComponent<IProps> {
+class TradeHistoryTable extends PureComponent<IProps, IState> {
   state = {
     tableExpanded: true,
   }
@@ -166,14 +167,14 @@ class TradeHistoryTable extends PureComponent<IProps> {
   }
 }
 
-const StyledTypography = TypographyFullWidth.extend`
+const StyledTypography = styled(TypographyFullWidth)`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
   }
 `
 
-const TriggerTitle = Title.extend`
+const TriggerTitle = styled(Title)`
   cursor: pointer;
   position: relative;
   padding: 0.5rem;
@@ -188,7 +189,7 @@ const CollapseWrapper = styled(Collapse)`
   width: 100%;
 `
 
-const CollapsibleTable = Table.extend`
+const CollapsibleTable = styled(Table)`
   position: absolute;
   bottom: 0;
   max-height: calc(70% - 37px);
@@ -200,7 +201,7 @@ const CollapsibleTable = Table.extend`
   }
 `
 
-const TradeHistoryTableCollapsible = CollapsibleTable.extend`
+const TradeHistoryTableCollapsible = styled(CollapsibleTable)`
   max-height: 65%;
 
   @media (max-width: 1080px) {

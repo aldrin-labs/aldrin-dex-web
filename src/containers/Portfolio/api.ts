@@ -34,12 +34,8 @@ export const getKeysQuery = gql`
 export const getPortfolioQuery = gql`
   query getPortfolio {
     getProfile {
-      portfolioId
       portfolio {
-        name
-        processing
         cryptoWallets {
-          _id
           name
           address
           baseAssetId
@@ -59,27 +55,17 @@ export const getPortfolioQuery = gql`
               priceBTC
             }
           }
-          ownerId
-          owner {
-            _id
-            username
-          }
         }
         assetIds
         ownerId
-        coinPerformance {
+        portfolioPerformance {
           coin
           btc
           usd
         }
         assets {
-          _id
-          assetId
-          exchangeId
-          keyId
           quantity
           asset {
-            _id
             name
             symbol
             priceUSD

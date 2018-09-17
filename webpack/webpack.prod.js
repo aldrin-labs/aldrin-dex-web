@@ -1,4 +1,5 @@
 const commonPaths = require('./common-paths')
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const webpack = require('webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
@@ -8,6 +9,7 @@ const devtool = process.env.DEVTOOL || 'nosources-source-map'
 const config = {
   mode: 'production',
   entry: {
+    vendor: ['react', 'react-dom', 'redux'],
     app: [`${commonPaths.appEntry}/index.tsx`],
   },
   output: {
@@ -18,37 +20,34 @@ const config = {
     rules: [],
   },
   optimization: {
-    minimizer: [
-      new UglifyJSPlugin({
-        parallel: true,
-        uglifyOptions: {
-          ecma: 8,
-          warnings: true,
-          mangle: false,
-          keep_fnames: true,
-          output: {
-            beautify: false,
-            comments: false,
-          },
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          chunks: 'initial',
+          name: 'vendor',
+          test: 'vendor',
+          enforce: true,
         },
-      }),
-    ],
-    //  implement this in future
-    // https://medium.com/@hpux/webpack-4-in-production-how-make-your-life-easier-4d03e2e5b081
-    // splitChunks: {
-    //   cacheGroups: {
-    //     default: false,
-    //     commons: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       name: 'vendor_app',
-    //       chunks: 'all',
-    //       minChunks: 2,
-    //     },
-    //   },
-    // },
-    runtimeChunk: false,
+      },
+    },
+    runtimeChunk: true,
   },
   plugins: [
+    new LodashModuleReplacementPlugin({
+      caching: true,
+      paths: true,
+      shorthands: true,
+    }),
+    new UglifyJSPlugin({
+      parallel: true,
+      uglifyOptions: {
+        compress: false,
+        ecma: 6,
+        mangle: true,
+        toplevel: true,
+      },
+      sourceMap: true,
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),

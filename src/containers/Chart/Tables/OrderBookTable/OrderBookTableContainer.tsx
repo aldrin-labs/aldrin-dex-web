@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { uniqBy } from 'lodash'
+import { uniqBy } from 'lodash-es'
 
 import {
   maximumItemsInArray,
@@ -10,10 +10,11 @@ import {
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
+import { IProps, IState } from './OrderBookTableContainer.types'
 
 let unsubscribe: Function | undefined
 
-class OrderBookTableContainer extends Component {
+class OrderBookTableContainer extends Component<IProps, IState> {
   state = {
     asks: [],
     bids: [],
@@ -24,7 +25,7 @@ class OrderBookTableContainer extends Component {
   }
 
   // transforming data
-  static getDerivedStateFromProps(newProps, state) {
+  static getDerivedStateFromProps(newProps: IProps, state: IState) {
     // when get data from querry
     let iterator = state.i
     if (newProps.data.marketOrders.length > 1) {
@@ -146,7 +147,7 @@ class OrderBookTableContainer extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IProps) {
     if (
       prevProps.activeExchange.index !== this.props.activeExchange.index ||
       prevProps.currencyPair !== this.props.currencyPair
@@ -166,12 +167,6 @@ class OrderBookTableContainer extends Component {
     const {
       data,
       //  useless functions
-      fetchMore,
-      refetch,
-      startPolling,
-      stopPolling,
-      subscribeToMore,
-      updateQuery,
       ...rest
     } = this.props
     const {

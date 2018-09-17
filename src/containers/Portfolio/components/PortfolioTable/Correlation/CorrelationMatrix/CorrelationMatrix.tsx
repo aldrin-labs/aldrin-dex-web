@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import FullScreen from 'react-fullscreen-crossbrowser'
-import { Button, Card, CardContent, Typography } from '@material-ui/core'
-import FullScreenIcon from 'react-icons/lib/md/fullscreen'
+import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
+import Typography from '@material-ui/core/Typography'
+import CardContent from '@material-ui/core/CardContent'
+
+import FullScreenIcon from '@material-ui/icons/Fullscreen'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import SelectTimeRange from '@components/SelectTimeRangeDropdown'
