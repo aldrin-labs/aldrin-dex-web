@@ -2,7 +2,6 @@ const commonPaths = require('./common-paths')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-var FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const config = {
   entry: {
@@ -52,7 +51,6 @@ const config = {
   },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',

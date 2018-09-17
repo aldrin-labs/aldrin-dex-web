@@ -2,6 +2,8 @@ const commonPaths = require('./common-paths')
 const Jarvis = require('webpack-jarvis')
 
 const webpack = require('webpack')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
@@ -24,6 +26,7 @@ const config = {
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new FriendlyErrorsWebpackPlugin(),
     new HardSourceWebpackPlugin({
       // Either an absolute path or relative to webpack's options.context.
       cacheDirectory: 'node_modules/.cache/hard-source/[confighash]',

@@ -38,57 +38,58 @@ const AppRaw = ({
   themeMode,
   chartPageView,
   location: { pathname: currentPage },
-}: any) => (
-  <JssProvider jss={jss} generateClassName={generateClassName}>
-    <MuiThemeProvider
-      theme={() =>
-        // ToDo  removes this into separate file
-        {
-          const theme = createMuiTheme({
-            palette: {
-              type: themeMode,
-              red: {
-                main: red[400],
+}: any) => {
+  const fullscreen: boolean =
+    currentPage === '/chart' && chartPageView !== 'default'
+  return (
+    <JssProvider jss={jss} generateClassName={generateClassName}>
+      <MuiThemeProvider
+        theme={() =>
+          // ToDo  removes this into separate file
+          {
+            const theme = createMuiTheme({
+              palette: {
+                type: themeMode,
+                red: {
+                  main: red[400],
+                },
+                green: {
+                  main: green['500'],
+                },
+                primary: blueGrey,
+                secondary: {
+                  ...cyan,
+                  main: '#4ed8da',
+                },
+                background: {
+                  default: themeMode === 'light' ? '#fafafa' : '#303030',
+                  paper: themeMode === 'light' ? '#fff' : '#393e44',
+                },
+                navbar: {
+                  light: '#fff',
+                  dark: 'rgb(45, 49, 54)',
+                },
               },
-              green: {
-                main: green['500'],
-              },
-              primary: blueGrey,
-              secondary: {
-                ...cyan,
-                main: '#4ed8da',
-              },
-              background: {
-                default: themeMode === 'light' ? '#fafafa' : '#303030',
-                paper: themeMode === 'light' ? '#fff' : '#393e44',
-              },
-              navbar: {
-                light: '#fff',
-                dark: 'rgb(45, 49, 54)',
-              },
-            },
-          })
+            })
 
-          if (process.browser) {
-            window.theme = theme
+            if (process.browser) {
+              window.theme = theme
+            }
+            return theme
           }
-          return theme
         }
-      }
-    >
-      <CssBaseline />
-      <AppGridLayout>
-        <AnimatedNavBar
-          pathname={currentPage}
-          hide={currentPage === '/chart' && chartPageView !== 'default'}
-        />
-        {children}
-        <NavBarMobile />
-      </AppGridLayout>
-      <Footer hide={chartPageView !== 'default'} />
-    </MuiThemeProvider>
-  </JssProvider>
-)
+      >
+        <CssBaseline />
+        <AppGridLayout>
+          <AnimatedNavBar pathname={currentPage} hide={fullscreen} />
+          {children}
+          <NavBarMobile />
+        </AppGridLayout>
+        <Footer hide={fullscreen} />
+      </MuiThemeProvider>
+    </JssProvider>
+  )
+}
 
 const AppGridLayout = styled.div`
   min-height: calc(100vh - 50px);
