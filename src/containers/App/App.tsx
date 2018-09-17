@@ -41,43 +41,35 @@ const AppRaw = ({
 }: any) => {
   const fullscreen: boolean =
     currentPage === '/chart' && chartPageView !== 'default'
+  const theme = createMuiTheme({
+    palette: {
+      type: themeMode,
+      red: {
+        main: red[400],
+      },
+      green: {
+        main: green['500'],
+      },
+      primary: blueGrey,
+      secondary: {
+        ...cyan,
+        main: '#4ed8da',
+      },
+      background: {
+        default: themeMode === 'light' ? '#fafafa' : '#303030',
+        paper: themeMode === 'light' ? '#fff' : '#393e44',
+      },
+      navbar: {
+        light: '#fff',
+        dark: 'rgb(45, 49, 54)',
+      },
+    },
+  })
+
   return (
     <JssProvider jss={jss} generateClassName={generateClassName}>
       <MuiThemeProvider
-        theme={() =>
-          // ToDo  removes this into separate file
-          {
-            const theme = createMuiTheme({
-              palette: {
-                type: themeMode,
-                red: {
-                  main: red[400],
-                },
-                green: {
-                  main: green['500'],
-                },
-                primary: blueGrey,
-                secondary: {
-                  ...cyan,
-                  main: '#4ed8da',
-                },
-                background: {
-                  default: themeMode === 'light' ? '#fafafa' : '#303030',
-                  paper: themeMode === 'light' ? '#fff' : '#393e44',
-                },
-                navbar: {
-                  light: '#fff',
-                  dark: 'rgb(45, 49, 54)',
-                },
-              },
-            })
-
-            if (process.browser) {
-              window.theme = theme
-            }
-            return theme
-          }
-        }
+        theme={theme}
       >
         <CssBaseline />
         <AppGridLayout>
