@@ -221,9 +221,6 @@ export default class RebalancedPortfolioTable extends React.Component<
     optionSelected?: { label: string; value: string } | null
   ) => {
 
-    console.log('idx', idx, 'name', name, 'optionSelected', optionSelected);
-
-
     const { rows, updateState } = this.props
     const value = optionSelected && !Array.isArray(optionSelected) ? optionSelected.value : ''
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
@@ -236,9 +233,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       },
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
-
-    console.log('value in handleSelectChange', value, 'resultRows ', resultRows);
-
 
     updateState({
       rows: resultRows,
