@@ -2,10 +2,12 @@ export interface Props {
   user: any
   isShownModal: boolean
   loginStatus: boolean
+  modalIsOpen: boolean
   createUser: Function
   storeLogin: Function
   storeLogout: Function
-  storeOpenModal: Function
+  storeOpenedModal: Function
+  storeClosedModal: Function
 }
 
 export interface State {

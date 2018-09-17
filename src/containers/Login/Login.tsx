@@ -60,10 +60,12 @@ class LoginQuery extends React.Component<Props, State> {
           // localStorage.setItem('token', authResult.idToken)
           this.setToken(authResult.idToken)
           this.createUserReq(profile)
+//          this.props.storeClosedModal()
         }
       )
     })
-
+    this.lock.on('show', () => {this.props.storeOpenedModal()})
+    this.lock.on('hide', () => {this.props.storeClosedModal()})
     if (this.props.isShownModal) this.showLogin()
   }
 
@@ -125,8 +127,9 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    this.lock.show()
-    this.props.storeOpenModal()
+    if (!this.props.modalIsOpen) {
+      this.lock.show()
+    }
   }
 
   render() {
@@ -167,12 +170,14 @@ class LoginQuery extends React.Component<Props, State> {
 const mapStateToProps = (state: any) => ({
   user: state.login.user,
   loginStatus: state.login.loginStatus,
+  modalIsOpen: state.login.modalIsOpen,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
   storeLogout: () => dispatch(actions.storeLogout()),
-  storeOpenModal: () => dispatch(actions.storeOpenModal()), 
+  storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
+  storeClosedModal: () => dispatch(actions.storeClosedModal()),
 })
 
 export const Login = compose(
