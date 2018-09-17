@@ -33,8 +33,6 @@ export const SelectR = styled(ReactSelectComponent)`
 `
 
 export const SelectT = styled(ReactSelectComponent)`
-  font-family: Roboto;
-  font-size: 12px;
 `
 
 export const Span = styled.span``
