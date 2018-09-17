@@ -64,7 +64,7 @@ class LoginQuery extends React.Component<Props, State> {
       )
     })
 
-    if (this.props.isShownModal) this.lock.show()
+    if (this.props.isShownModal) this.showLogin()
   }
 
   removeToken = () => {
@@ -126,6 +126,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   showLogin = () => {
     this.lock.show()
+    this.props.storeOpenModal()
   }
 
   render() {
@@ -171,6 +172,7 @@ const mapStateToProps = (state: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
   storeLogout: () => dispatch(actions.storeLogout()),
+  storeOpenModal: () => dispatch(actions.storeOpenModal()), 
 })
 
 export const Login = compose(

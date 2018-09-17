@@ -5,6 +5,7 @@ export interface Props {
   createUser: Function
   storeLogin: Function
   storeLogout: Function
+  storeOpenModal: Function
 }
 
 export interface State {
