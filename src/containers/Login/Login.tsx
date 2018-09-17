@@ -76,15 +76,17 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   checkToken = () => {
-    const token = this.getToken()
-    if (token) {
-      const decodedToken: { exp: number } = jwtDecode(token)
-      const currentTime = Date.now() / 1000
-      if (currentTime > decodedToken.exp) {
+    if (this.props.loginStatus) {
+      const token = this.getToken()
+      if (token) {
+        const decodedToken: { exp: number } = jwtDecode(token)
+        const currentTime = Date.now() / 1000
+        if (currentTime > decodedToken.exp) {
+          this.props.storeLogout()
+        }
+      } else {
         this.props.storeLogout()
       }
-    } else {
-      this.props.storeLogout()
     }
   }
 
