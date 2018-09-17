@@ -309,12 +309,6 @@ export default class GQLChart extends React.Component {
             }))
           }
 
-          if (loading) {
-            return <Loading centerAligned />
-          } else if (error) {
-            return <ErrorFallback error={error} />
-          }
-
           const render =
             data.length > 0 ? (
               <PortfolioChart
@@ -327,9 +321,7 @@ export default class GQLChart extends React.Component {
                 {...this.props}
               />
             ) : (
-              <Typography align="center" variant="display3" color="error">
-                No data
-              </Typography>
+              <Loading centerAligned />
             )
 
           return render
