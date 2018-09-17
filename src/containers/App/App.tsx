@@ -24,7 +24,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import Footer from '@components/Footer'
 
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
-import { NavBar } from '@components/NavBar/NavBar'
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 
 const version = `0.1`
@@ -34,7 +33,12 @@ if (currentVersion !== version) {
   localStorage.setItem('version', version)
 }
 
-const AppRaw = ({ children, themeMode, chartPageView }: any) => (
+const AppRaw = ({
+  children,
+  themeMode,
+  chartPageView,
+  location: { pathname: currentPage },
+}: any) => (
   <JssProvider jss={jss} generateClassName={generateClassName}>
     <MuiThemeProvider
       theme={() =>
@@ -74,7 +78,10 @@ const AppRaw = ({ children, themeMode, chartPageView }: any) => (
     >
       <CssBaseline />
       <AppGridLayout>
-        <AnimatedNavBar hide={chartPageView !== 'default'} />
+        <AnimatedNavBar
+          pathname={currentPage}
+          hide={currentPage === '/chart' && chartPageView !== 'default'}
+        />
         {children}
         <NavBarMobile />
       </AppGridLayout>

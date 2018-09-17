@@ -4,7 +4,6 @@ import styled, { css } from 'styled-components'
 import { compose } from 'recompose'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
-import Switch from '@containers/Portfolio/components/PortfolioTable/Industry/SwitchWithIcons'
 import {
   roundPercentage,
   calcAllSumOfPortfolioAsset,
@@ -177,7 +176,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
     const {
       assets,
-      coinPerformance = [{ usd: '', btc: '', coin: '' }],
+      portfolioPerformance = [{ usd: '', btc: '', coin: '' }],
     } = portfolio
 
     const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
@@ -229,7 +228,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               oneYear: performance.btcYear,
             }
         // TODO: HAVE TO BE REWORKED (because it's just fix for first row without data in btc asset)
-        const isElementHavePerformance = coinPerformance.find(
+        const isElementHavePerformance = portfolioPerformance.find(
           (element) => element.coin === symbol
         )
         const portfolioPerf = isElementHavePerformance
@@ -512,13 +511,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <PTWrapper
         background={theme.palette.background.paper}
         tableData={!!tableDataHasData}
-        innerRef={this.setWrapperRef}
+        ref={this.setWrapperRef}
       >
         {children}
         <Container>
           <Wrapper
             isThereAnySelectedRows={isThereAnySelectedRows}
-            innerRef={this.setChildNodeRef}
+            ref={this.setChildNodeRef}
           >
             <PTable>
               <PTHead>

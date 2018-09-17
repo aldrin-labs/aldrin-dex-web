@@ -9,8 +9,15 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Chip from '@material-ui/core/Chip'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
 // TODO: this is old react-select v1 and should be replaced in future
+<<<<<<< HEAD
 import Select, { createFilter, components } from 'react-select'
 import { MdArrowDropDown, MdArrowDropUp, MdClear } from 'react-icons/lib/md'
+=======
+import Select from 'react-select-for-charting-page'
+import MdArrowDropDown from '@material-ui/icons/ArrowDropDown'
+import MdArrowDropUp from '@material-ui/icons/ArrowDropUp'
+import MdClear from '@material-ui/icons/Clear'
+>>>>>>> develop
 
 import * as actions from '@containers/Chart/actions'
 
@@ -150,7 +157,67 @@ const mapDispatchToProps = (dispatch: any) => ({
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
+<<<<<<< HEAD
 const SelectWrapped = connect(mapStateToProps, mapDispatchToProps)(SelectWrappedDev)
+=======
+const Opt = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Option)
+
+function SelectWrapped(props) {
+  const { classes, ...other } = props
+
+  const onInputKeyDown = (e) => {
+    switch (e.keyCode) {
+      case 13: // ENTER
+        e.preventDefault()
+        break
+      default:
+        break
+    }
+  }
+
+  return (
+    <Select
+      matchPos="start"
+      matchProp="value"
+      onInputKeyDown={onInputKeyDown}
+      optionComponent={Opt}
+      noResultsText={<Typography>{'No results found'}</Typography>}
+      clearable={false}
+      arrowRenderer={(arrowProps) =>
+        arrowProps.isOpen ? <MdArrowDropUp /> : <MdArrowDropDown />
+      }
+      clearRenderer={() => <MdClear />}
+      valueComponent={(valueProps) => {
+        const { value, children, onRemove } = valueProps
+
+        const onDelete = (event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          onRemove(value)
+        }
+
+        if (onRemove) {
+          return (
+            <Chip
+              tabIndex={-1}
+              label={children}
+              className={classes.chip}
+              deleteIcon={<div onTouchEnd={onDelete} />}
+              onDelete={onDelete}
+            />
+          )
+        }
+
+        return <div className="Select-value">{children}</div>
+      }}
+      {...other}
+    />
+  )
+}
+>>>>>>> develop
 
 class IntegrationReactSelect extends React.PureComponent {
   render() {

@@ -1,7 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { withTheme } from '@material-ui/core/styles'
-import { Typography, Button } from '@material-ui/core'
+import withTheme from '@material-ui/core/styles/withTheme'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 import Switch from '@material-ui/core/Switch'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
@@ -89,7 +90,7 @@ const Link = styled.a`
   }
 `
 
-const LinkWithIcon = Link.extend`
+const LinkWithIcon = styled(Link)`
   margin: 0 1rem !important;
 `
 
@@ -127,5 +128,8 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 export default compose(
   withTheme(),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Footer)

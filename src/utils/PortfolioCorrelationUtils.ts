@@ -1,7 +1,5 @@
-import CORRELATION_MOCKS from './corr_matrices_total.json'
-
 export function optimizeMocks(): { rows: string[]; cols: any[][] } {
-  const m = JSON.parse(CORRELATION_MOCKS['2018-04-24'])
+  const m = {}
   const o = Object.keys(m).map((key) => ({ [key]: m[key] }))
   const rows = o.map((a) => {
     const arr = Object.keys(a)
