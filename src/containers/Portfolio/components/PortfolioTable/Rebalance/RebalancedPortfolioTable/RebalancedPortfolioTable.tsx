@@ -477,11 +477,20 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 height: '200px',
                               }}
                               menuListStyles={{
-                                fontSize:'12px',
                                 height: '200px',
+                              }}
+                              optionStyles={{
+                                fontSize:'12px',
                               }}
                               clearIndicatorStyles={{
                                 padding: '2px',
+                              }}
+                              valueContainerStyles={{
+                                maxWidth: '55px',
+                                overflow: 'hidden',
+                              }}
+                              inputStyles={{
+                                marginLeft: '0',
                               }}
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                                 this.handleSelectChange(rowIndex, 'exchange', optionSelected)
@@ -505,11 +514,20 @@ export default class RebalancedPortfolioTable extends React.Component<
                               height: '200px',
                               }}
                               menuListStyles={{
-                                fontSize:'12px',
                               height: '200px',
+                              }}
+                              optionStyles={{
+                                fontSize:'12px',
                               }}
                               clearIndicatorStyles={{
                               padding: '2px',
+                              }}
+                              valueContainerStyles={{
+                                maxWidth: '55px',
+                                overflow: 'hidden',
+                              }}
+                              inputStyles={{
+                                marginLeft: '0',
                               }}
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                               this.handleSelectChange(rowIndex, 'symbol', optionSelected)
