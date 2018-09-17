@@ -3,6 +3,8 @@ export interface Props {
   isShownModal: boolean
   loginStatus: boolean
   modalIsOpen: boolean
+  isLogging: boolean
+  onLogin: Function
   createUser: Function
   storeLogin: Function
   storeLogout: Function

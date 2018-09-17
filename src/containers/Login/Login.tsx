@@ -50,6 +50,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   componentDidMount() {
     this.lock.on('authenticated', (authResult: any) => {
+      this.props.onLogin()
       this.lock.getUserInfo(
         authResult.accessToken,
         (error: Error, profile: any) => {
@@ -127,7 +128,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    if (!this.props.modalIsOpen) {
+    if (!this.props.modalIsOpen && !this.props.isLogging) {
       this.lock.show()
     }
   }
@@ -168,12 +169,14 @@ class LoginQuery extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: any) => ({
+  isLogging: state.login.isLogging,
   user: state.login.user,
   loginStatus: state.login.loginStatus,
   modalIsOpen: state.login.modalIsOpen,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
+  onLogin: () => dispatch(actions.onLogin()),
   storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
   storeLogout: () => dispatch(actions.storeLogout()),
   storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
