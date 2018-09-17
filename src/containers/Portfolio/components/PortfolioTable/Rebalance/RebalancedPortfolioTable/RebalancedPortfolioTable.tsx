@@ -278,7 +278,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           ...clonedRows.slice(0, idx),
           {
             ...clonedRows[idx],
-            price: '0',
+            price: '0.00',
           },
           ...clonedRows.slice(idx + 1, clonedRows.length),
         ]
