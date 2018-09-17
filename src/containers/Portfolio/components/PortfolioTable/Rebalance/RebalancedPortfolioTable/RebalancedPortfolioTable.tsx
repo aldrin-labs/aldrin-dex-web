@@ -324,8 +324,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       updateState,
     } = this.props
 
-    console.log('render! RebalancedPortfolioTable');
-
 
     const saveButtonColor =
       isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
