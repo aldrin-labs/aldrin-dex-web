@@ -52,7 +52,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
           const roundedCurrentPrice = parseFloat(
             rows![selectedActive![i]]!.price
           )
-          rows![selectedActive![i]]!.price = roundedCurrentPrice + moneyPart
+          rows![selectedActive![i]]!.price = (roundedCurrentPrice + moneyPart).toFixed(2)
           money -= moneyPart
         })
       } else {
@@ -60,8 +60,8 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
         // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
         // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
         // tslint:disable-next-line no-object-mutation
-        rows![selectedActive![0]]!.price =
-          roundedPrice + parseFloat(undistributedMoney)
+        rows![selectedActive![0]]!.price = (
+          roundedPrice + parseFloat(undistributedMoney)).toFixed(2)
         money = 0
       }
 

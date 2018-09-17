@@ -11,7 +11,9 @@ import {
   formatNumberToUSFormat,
 } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
-import { exchangeOptions, coinsOptions } from '.././mocks'
+import { exchangeOptions } from '.././mocks'
+import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
+import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 
 import { Checkbox, Label, Span, Icon } from '@styles/cssUtils'
 import {
@@ -24,7 +26,6 @@ import {
   PTFoot,
   TableButton,
   InputTable,
-  SelectR,
 } from './RebalancedPortfolioTable.styles'
 
 import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
@@ -51,6 +52,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   IProps,
   IState
 > {
+
   renderActiveCheckbox = (idx: number) => {
     const { selectedActive } = this.props
     const isSelected =
@@ -218,8 +220,12 @@ export default class RebalancedPortfolioTable extends React.Component<
     name: string,
     optionSelected?: { label: string; value: string } | null
   ) => {
+
+    console.log('idx', idx, 'name', name, 'optionSelected', optionSelected);
+
+
     const { rows, updateState } = this.props
-    const value = optionSelected ? optionSelected.value : ''
+    const value = optionSelected && !Array.isArray(optionSelected) ? optionSelected.value : ''
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
 
     const resultRows = [
@@ -230,6 +236,9 @@ export default class RebalancedPortfolioTable extends React.Component<
       },
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
+
+    console.log('value in handleSelectChange', value, 'resultRows ', resultRows);
+
 
     updateState({
       rows: resultRows,
@@ -269,7 +278,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           ...clonedRows.slice(0, idx),
           {
             ...clonedRows[idx],
-            price: '0',
+            price: '0.00',
           },
           ...clonedRows.slice(idx + 1, clonedRows.length),
         ]
@@ -320,6 +329,9 @@ export default class RebalancedPortfolioTable extends React.Component<
       onEditModeEnable,
       updateState,
     } = this.props
+
+    console.log('render! RebalancedPortfolioTable');
+
 
     const saveButtonColor =
       isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
@@ -461,7 +473,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                       if (isNewCoinName) {
                         return (
                           <PTDR key={`NameExchange${idx}`}>
-                            <SelectR
+                            <SelectAllExchangeList
                               key={`inputNameExchange${rowIndex}`}
                               classNamePrefix="custom-select-box"
                               isClearable={true}
@@ -473,13 +485,14 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 height: '200px',
                               }}
                               menuListStyles={{
+                                fontSize:'12px',
                                 height: '200px',
                               }}
                               clearIndicatorStyles={{
                                 padding: '2px',
                               }}
-                              onChange={() =>
-                                this.handleSelectChange(rowIndex, 'exchange')
+                              onChange={(optionSelected: { label: string; value: string } | null) =>
+                                this.handleSelectChange(rowIndex, 'exchange', optionSelected)
                               }
                             />
                           </PTDR>
@@ -489,27 +502,27 @@ export default class RebalancedPortfolioTable extends React.Component<
                       if (isNewCoinSymbol) {
                         return (
                           <PTDR key={`CoinSymbol${idx}`}>
-                            <SelectR
+                            <SelectCoinList
                               key={`inputCoinSymbol${rowIndex}`}
                               classNamePrefix="custom-select-box"
                               isClearable={true}
                               isSearchable={true}
-                              options={coinsOptions}
                               menuPortalTarget={document.body}
                               menuStyles={{
-                                minWidth: '150px',
-                                height: '200px',
+                              minWidth: '150px',
+                              height: '200px',
                               }}
                               menuListStyles={{
-                                height: '200px',
+                                fontSize:'12px',
+                              height: '200px',
                               }}
                               clearIndicatorStyles={{
-                                padding: '2px',
+                              padding: '2px',
                               }}
-                              onChange={() =>
-                                this.handleSelectChange(rowIndex, 'symbol')
+                              onChange={(optionSelected: { label: string; value: string } | null) =>
+                              this.handleSelectChange(rowIndex, 'symbol', optionSelected)
                               }
-                            />
+                              />
                           </PTDR>
                         )
                       }

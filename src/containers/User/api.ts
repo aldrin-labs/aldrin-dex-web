@@ -153,9 +153,25 @@ export const deleteCryptoWalletMutation = gql`
 
 export const searchSupportedNetworksQuery = gql`
   query searchSupportedNetworks {
-    searchSupportedNetworks(limit: 100, search: "et") {
+    searchSupportedNetworks(limit: 200, search: "") {
       name
       symbol
+    }
+  }
+`
+
+export const searchAssetsQuery = gql`
+  query searchAssets($search: String!) {
+	  searchAssets(limit: 10, search: $search) {
+      symbol
+    }
+  }
+`
+
+export const exchangeByEntryQuery = gql`
+  query exchangeByEntry($search: String!) {
+		exchangeByEntry(entry: $search) {
+      name
     }
   }
 `
