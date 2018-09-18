@@ -40,7 +40,7 @@ class UserContainer extends React.Component {
           <Heading>Show mocks</Heading>
           <Switch
             onChange={this.toggleMocks}
-            checked={!this.props.isShownMocks}
+            checked={this.props.isShownMocks}
           />
         </AdminCP>
       </div>
