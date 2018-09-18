@@ -47,7 +47,7 @@ export const calculatePercentagesOfOrderSize = (
       bids.map((order) => +order.size).reduce((a, b) => a + b, 0) *
       100
   )
-
+// returns true if argument is JSON
 export const testJSON = (text: any): boolean => {
   if (typeof text !== 'string') {
     return false
