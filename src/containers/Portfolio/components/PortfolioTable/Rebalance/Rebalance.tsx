@@ -38,6 +38,7 @@ import {
   Container,
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -106,7 +107,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance!.getProfile!.myRebalance!.assets!.map(
-        (el: IShapeOfRebalancePortfolioRow, i:number) => ({
+        (el: IShapeOfRebalancePortfolioRow, i: number) => ({
           id: i,
           exchange: el._id.exchange,
           symbol: el._id.coin,
@@ -397,6 +398,7 @@ class Rebalance extends React.Component<IProps, IState> {
       children,
       isUSDCurrently,
       filterValueSmallerThenPercentage,
+      theme,
     } = this.props
     const {
       selectedActive,
@@ -421,7 +423,10 @@ class Rebalance extends React.Component<IProps, IState> {
 
     if (tableDataHasData) {
       return (
-        <PTWrapper tableData={tableDataHasData}>
+        <PTWrapper
+          tableData={tableDataHasData}
+          background={theme.palette.background.paper}
+        >
           {children}
           <PTextBox>Add account for Portfolio</PTextBox>
         </PTWrapper>
@@ -429,7 +434,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={true}>
+      <PTWrapper tableData={true} background={theme.palette.background.paper}>
         {children}
         <Content>
           <Container>
@@ -472,7 +477,7 @@ class Rebalance extends React.Component<IProps, IState> {
               rightBar={rightBar}
               onChangeColor={this.onChangeColor}
             />
-            <ChartContainer>
+            <ChartContainer background={theme.palette.background.paper}>
               <Chart>
                 {staticRows[0].portfolioPerc && (
                   <BarChart
@@ -506,6 +511,7 @@ const mapStateToProps = (store: any) => ({
 })
 
 export default compose(
+  withTheme(),
   connect(mapStateToProps),
   graphql(getMyPortfolioQuery, { name: 'getMyPortfolio' }),
   graphql(getMyRebalanceQuery, { name: 'getMyRebalance' }),

@@ -40,12 +40,13 @@ const ChartWrapper = styled.div`
 const ChartContainer = styled.div`
   width: 1120px;
   height: inherit;
-  background: #292d31;
+  background-color: ${(props: { background: string }) => props.background};
   border-radius: 20px;
   margin-left: 15px;
   margin-right: 15px;
   margin-bottom: 15px;
   padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 9px -5px, rgba(0, 0, 0, 0.14) 0px 15px 22px 2px, rgba(0, 0, 0, 0.12) 0px 6px 28px 5px;
 
   @media (max-width: 1150px) {
     width: 100%;
@@ -67,7 +68,7 @@ const PTWrapper = styled.div`
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
-  background-color: #393e44;
+  background-color: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
