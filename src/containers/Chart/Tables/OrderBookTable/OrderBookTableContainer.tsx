@@ -196,7 +196,7 @@ class OrderBookTableContainer extends Component<IProps, IState> {
             digitsAfterDecimalForBidsPrice,
             digitsAfterDecimalForAsksPrice
           )}
-          spread={spread}
+          spread={spread || 0}
           {...rest}
         />
       </>

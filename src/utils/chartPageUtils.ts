@@ -1,6 +1,6 @@
 import { IOrder } from '@containers/Chart/CommonTypes.types'
 
-export const findSpread = (asks: any[], bids: any[]): number =>
+export const findSpread = (asks: any[], bids: any[]): number | null =>
   asks[asks.length - 1] && bids[0]
     ? +asks[asks.length - 1].price - +bids[0].price
     : 0
