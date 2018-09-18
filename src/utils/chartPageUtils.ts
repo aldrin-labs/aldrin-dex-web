@@ -63,7 +63,12 @@ export const testJSON = (text: any): boolean => {
 
 //  must delete bids that has price more then last ask
 export const bidsPriceFiltering = (asks: IOrder[], bids: IOrder[]) =>
-  bids.filter((bid) => bid && +bid.price < +asks[asks.length - 1].price)
+  bids.filter(
+    (bid) =>
+      bid &&
+      +bid.price < +asks[asks.length - 1].price &&
+      +asks[asks.length - 1].price
+  )
 
 export const sortAndFilterOrders = (orders: any[]) =>
   orders
