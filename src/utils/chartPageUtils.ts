@@ -1,4 +1,4 @@
-import { IOrder } from '@containers/Chart/Chart.types'
+import { IOrder } from '@containers/Chart/CommonTypes.types'
 
 export const findSpread = (asks: any[], bids: any[]): number =>
   asks[asks.length - 1] && bids[0]
@@ -43,8 +43,8 @@ export const calculatePercentagesOfOrderSize = (
   bids: any[]
 ): number =>
   Math.ceil(
-    +Number(size).toFixed(8) /
-      bids.map((order) => +order.size).reduce((a, b) => a + b, 0) *
+    (+Number(size).toFixed(8) /
+      bids.map((order) => +order.size).reduce((a, b) => a + b, 0)) *
       100
   )
 // returns true if argument is JSON
@@ -63,7 +63,7 @@ export const testJSON = (text: any): boolean => {
 
 //  must delete bids that has price more then last ask
 export const bidsPriceFiltering = (asks: IOrder[], bids: IOrder[]) =>
-  bids.filter((bid) => +bid.price < +asks[asks.length - 1].price)
+  bids.filter((bid) => bid && +bid.price < +asks[asks.length - 1].price)
 
 export const sortAndFilterOrders = (orders: any[]) =>
   orders
