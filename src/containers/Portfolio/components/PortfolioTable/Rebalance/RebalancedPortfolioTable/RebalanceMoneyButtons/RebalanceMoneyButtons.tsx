@@ -143,7 +143,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
 
   render() {
 
-    const { addMoneyInputValue, undistributedMoney, isEditModeEnabled } = this.props
+    const { addMoneyInputValue, undistributedMoney, isEditModeEnabled, secondary } = this.props
 
     return (
       <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
@@ -154,11 +154,12 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
               value={addMoneyInputValue}
               onChange={this.onAddMoneyInputChangeHandler}
               onFocus={this.onFocusAddMoneyInputHandler}
+              secondary={secondary}
             />
-            <Button onClick={this.onAddMoneyButtonPressedHandler}>Add money</Button>
+            <Button onClick={this.onAddMoneyButtonPressedHandler} secondary={secondary}>Add money</Button>
           </AddMoneyContainer>
           <AddMoneyContainer>
-            <Button onClick={this.onDeleteUndistributedMoneyHandler}>
+            <Button onClick={this.onDeleteUndistributedMoneyHandler} secondary={secondary}>
               Delete undistributed
             </Button>
           </AddMoneyContainer>
@@ -167,7 +168,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
               <UndistributedMoneyText>
                 Undistributed money: {formatNumberToUSFormat(undistributedMoney)}
               </UndistributedMoneyText>
-              <Button disabled={+undistributedMoney < 0} onClick={this.onDistributeHandler}>
+              <Button disabled={+undistributedMoney < 0} onClick={this.onDistributeHandler} secondary={secondary}>
                 Distribute to selected
               </Button>
             </UndistributedMoneyContainer>
