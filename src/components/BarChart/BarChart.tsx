@@ -38,7 +38,13 @@ class BarChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { showPlaceholder, charts, height, alwaysShowLegend } = this.props
+    const {
+      showPlaceholder,
+      charts,
+      height,
+      alwaysShowLegend,
+      animated = false,
+    } = this.props
     const { value } = this.state
 
     const ITEMS: Items[] = []
@@ -55,7 +61,7 @@ class BarChart extends Component<IProps, IState> {
           key={chartIndex}
           data={data}
           color={color}
-          animation="wobbly"
+          animation={animated && 'wobbly'}
         />
       )
     })
@@ -71,7 +77,7 @@ class BarChart extends Component<IProps, IState> {
             </LegendContainer>
             {showPlaceholder ? (
               <VerticalBarSeries
-                animation="gentle"
+                animation={animated && 'gentle'}
                 key="chart"
                 data={[
                   { x: 'Q1', y: 10 },
@@ -84,8 +90,16 @@ class BarChart extends Component<IProps, IState> {
               />
             ) : (
               [
-                <YAxis animation={'gentle'} style={axisStyle} key="y" />,
-                <XAxis animation={'gentle'} style={axisStyle} key="x" />,
+                <YAxis
+                  animation={animated && 'gentle'}
+                  style={axisStyle}
+                  key="y"
+                />,
+                <XAxis
+                  animation={animated && 'gentle'}
+                  style={axisStyle}
+                  key="x"
+                />,
                 ...Charts,
               ]
             )}
