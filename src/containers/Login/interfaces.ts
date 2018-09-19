@@ -1,4 +1,7 @@
+import { Theme } from '@material-ui/core'
+
 export interface Props {
+  theme: Theme
   user: any
   isShownModal: boolean
   loginStatus: boolean
