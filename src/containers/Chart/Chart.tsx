@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
+import Loadable from 'react-loadable'
 import { Paper, Button, Fade, Slide } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 
@@ -23,12 +24,19 @@ import {
 import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
-import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
+import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
+
+const OnlyCharts = Loadable({
+  loader: () =>
+    import( '@containers/Chart/OnlyCharts/OnlyCharts'),
+  delay: 300,
+  loading: LoadableLoading,
+})
 
 class Chart extends React.Component<IProps, IState> {
   state = {

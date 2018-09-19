@@ -1,12 +1,39 @@
 import * as React from 'react'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
 import { ITableProps } from '@containers/Portfolio/interfaces'
-import PortfolioTableIndustries from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'
-import Rebalance from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance'
+import Loadable from 'react-loadable'
+
 import PortfolioTableBalances from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
-import Optimization from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization'
-import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
+import LoadableLoading from '@components/Loading/LoadableLoading'
+
+const PortfolioTableIndustries = Loadable({
+  loader: () =>
+    import( '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'),
+  delay: 300,
+  loading: LoadableLoading,
+})
+
+const Rebalance = Loadable({
+  loader: () =>
+    import('@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance'),
+  delay: 300,
+  loading: LoadableLoading,
+})
+
+const Optimization = Loadable({
+  loader: () =>
+    import('@containers/Portfolio/components/PortfolioTable/Optimization/Optimization'),
+  delay: 300,
+  loading: LoadableLoading,
+})
+
+const Correlation = Loadable({
+  loader: () =>
+    import('@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'),
+  delay: 300,
+  loading: LoadableLoading,
+})
 
 export class PortfolioTable extends React.Component<ITableProps, IState> {
   state: IState = {
