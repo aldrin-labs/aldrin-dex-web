@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import Loadable from 'react-loadable'
-import { Paper, Button, Typography, Fade, Slide } from '@material-ui/core'
+import { Paper, Button, Fade, Slide } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 
 import {
