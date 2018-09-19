@@ -190,8 +190,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         // }
         const { symbol, priceUSD, priceBTC } = baseAsset || {}
 
-        // console.log(row);
-        // console.log(baseAsset);
         return assets.map((walletAsset: any, i) => {
           const mainPrice = isUSDCurrently
             ? walletAsset.asset.priceUSD
@@ -705,6 +703,7 @@ class MainDataWrapper extends React.Component {
   render() {
     return (
       <QueryRenderer
+        fetchPolicy="network-only"
         component={PortfolioTableBalances}
         query={getPortfolioMainQuery}
         {...this.props}

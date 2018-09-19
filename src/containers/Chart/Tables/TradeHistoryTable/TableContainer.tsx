@@ -4,10 +4,10 @@ import TradeHistoryTable from './Table/TradeHistoryTable'
 import {
   maximumItemsInArray,
   getNumberOfDigitsAfterDecimal,
+  testJSON,
 } from '@utils/chartPageUtils'
 
 import { IProps, IState } from './TableContainer.types'
-
 
 let unsubscribe: Function | undefined
 
@@ -33,7 +33,9 @@ class TableContainer extends Component<IProps, IState> {
       newProps.data.marketTickers &&
       newProps.data.marketTickers.length > 0
     ) {
-      const tickerData = JSON.parse(newProps.data.marketTickers[0])
+      const tickerData = testJSON(newProps.data.marketTickers[0])
+        ? JSON.parse(newProps.data.marketTickers[0])
+        : newProps.data.marketTickers[0]
       if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
         return null
       }
@@ -89,10 +91,7 @@ class TableContainer extends Component<IProps, IState> {
   }
 
   render() {
-    const {
-      data,
-      ...rest
-    } = this.props
+    const { data, ...rest } = this.props
 
     return (
       <TradeHistoryTable
