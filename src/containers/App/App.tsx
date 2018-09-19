@@ -1,18 +1,12 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { blueGrey, cyan, green, red } from '@material-ui/core/colors'
 import { withRouter } from 'react-router-dom'
 
 // https://material-ui.com/customization/css-in-js/#other-html-element
 import JssProvider from 'react-jss/lib/JssProvider'
 import { create } from 'jss'
-import {
-  createGenerateClassName,
-  jssPreset,
-  createMuiTheme,
-  MuiThemeProvider,
-} from '@material-ui/core/styles'
+import { createGenerateClassName, jssPreset } from '@material-ui/core/styles'
 
 const generateClassName = createGenerateClassName()
 const jss = create(jssPreset())
@@ -25,6 +19,7 @@ import Footer from '@components/Footer'
 
 import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
+import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
 
 const version = `0.1`
 const currentVersion = localStorage.getItem('version')
@@ -41,36 +36,10 @@ const AppRaw = ({
 }: any) => {
   const fullscreen: boolean =
     currentPage === '/chart' && chartPageView !== 'default'
-  const theme = createMuiTheme({
-    palette: {
-      type: themeMode,
-      red: {
-        main: red[400],
-      },
-      green: {
-        main: green['500'],
-      },
-      primary: blueGrey,
-      secondary: {
-        ...cyan,
-        main: '#4ed8da',
-      },
-      background: {
-        default: themeMode === 'light' ? '#fafafa' : '#303030',
-        paper: themeMode === 'light' ? '#fff' : '#393e44',
-      },
-      navbar: {
-        light: '#fff',
-        dark: 'rgb(45, 49, 54)',
-      },
-    },
-  })
 
   return (
     <JssProvider jss={jss} generateClassName={generateClassName}>
-      <MuiThemeProvider
-        theme={theme}
-      >
+      <ThemeWrapper themeMode={themeMode}>
         <CssBaseline />
         <AppGridLayout>
           <AnimatedNavBar pathname={currentPage} hide={fullscreen} />
@@ -78,7 +47,7 @@ const AppRaw = ({
           <NavBarMobile />
         </AppGridLayout>
         <Footer hide={fullscreen} />
-      </MuiThemeProvider>
+      </ThemeWrapper>
     </JssProvider>
   )
 }
