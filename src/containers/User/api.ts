@@ -170,7 +170,7 @@ export const searchAssetsQuery = gql`
 
 export const exchangeByEntryQuery = gql`
   query exchangeByEntry($search: String!) {
-		exchangeByEntry(entry: $search) {
+		exchangeByEntry(limit: 10, entry: $search) {
       name
     }
   }

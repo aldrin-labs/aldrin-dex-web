@@ -7,6 +7,7 @@ import {
   getNumberOfDigitsAfterDecimal,
   sortAndFilterOrders,
   bidsPriceFiltering,
+  testJSON,
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
@@ -31,13 +32,13 @@ class OrderBookTableContainer extends Component<IProps, IState> {
     if (newProps.data.marketOrders.length > 1) {
       let bids = sortAndFilterOrders(
         newProps.data.marketOrders
-          .map((o) => JSON.parse(o))
+          .map((o) => (testJSON(o) ? JSON.parse(o) : o))
           .filter((o) => o.type === 'bid')
       )
 
       const asks = sortAndFilterOrders(
         newProps.data.marketOrders
-          .map((o) => JSON.parse(o))
+          .map((o) => (testJSON(o) ? JSON.parse(o) : o))
           .filter((o) => o.type === 'ask')
       )
 
@@ -195,7 +196,7 @@ class OrderBookTableContainer extends Component<IProps, IState> {
             digitsAfterDecimalForBidsPrice,
             digitsAfterDecimalForAsksPrice
           )}
-          spread={spread}
+          spread={spread || 0}
           {...rest}
         />
       </>

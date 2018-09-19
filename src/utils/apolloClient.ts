@@ -12,7 +12,7 @@ import {
 import { API_URL } from '@utils/config'
 
 const cache = new InMemoryCache()
-const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql?deduplicate=1` })
+const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists

@@ -107,11 +107,40 @@ export default class GQLChart extends React.Component {
           unixTimestampFrom: this.state.unixTimestampFrom,
           unixTimestampTo: this.state.unixTimestampTo,
         }}
-        onChangeDateRange={(area) => this.onChangeDateRange(area)}
-        updateDays={(days) => this.updateDays(days)}
-        lastDrawLocation={this.state.lastDrawLocation}
-        {...this.props}
-      />
+      >
+        {({ subscribeToMore, loading, error, ...result }) => {
+          let data = []
+          if (
+            result.data &&
+            result.data.getPriceHistory &&
+            result.data.getPriceHistory.prices &&
+            result.data.getPriceHistory.prices.length > 0
+          ) {
+            const Yvalues = result.data.getPriceHistory.prices.map((x) => x)
+            data = result.data.getPriceHistory.dates.map((date, i) => ({
+              x: Number(date),
+              y: Yvalues[i],
+            }))
+          }
+
+          const render =
+            data.length > 0 ? (
+              <PortfolioChart
+                loading={loading}
+                error={error}
+                data={this.props.isShownMocks ? yearData : data}
+                onChangeDateRange={(area) => this.onChangeDateRange(area)}
+                updateDays={(days) => this.updateDays(days)}
+                lastDrawLocation={this.state.lastDrawLocation}
+                {...this.props}
+              />
+            ) : (
+              <Loading centerAligned />
+            )
+
+          return render
+        }}
+      </Query>
     )
   }
 }

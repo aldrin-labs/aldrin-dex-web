@@ -221,9 +221,6 @@ export default class RebalancedPortfolioTable extends React.Component<
     optionSelected?: { label: string; value: string } | null
   ) => {
 
-    console.log('idx', idx, 'name', name, 'optionSelected', optionSelected);
-
-
     const { rows, updateState } = this.props
     const value = optionSelected && !Array.isArray(optionSelected) ? optionSelected.value : ''
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
@@ -236,9 +233,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       },
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
-
-    console.log('value in handleSelectChange', value, 'resultRows ', resultRows);
-
 
     updateState({
       rows: resultRows,
@@ -329,8 +323,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       onEditModeEnable,
       updateState,
     } = this.props
-
-    console.log('render! RebalancedPortfolioTable');
 
 
     const saveButtonColor =
@@ -485,11 +477,20 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 height: '200px',
                               }}
                               menuListStyles={{
-                                fontSize:'12px',
                                 height: '200px',
+                              }}
+                              optionStyles={{
+                                fontSize:'12px',
                               }}
                               clearIndicatorStyles={{
                                 padding: '2px',
+                              }}
+                              valueContainerStyles={{
+                                maxWidth: '55px',
+                                overflow: 'hidden',
+                              }}
+                              inputStyles={{
+                                marginLeft: '0',
                               }}
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                                 this.handleSelectChange(rowIndex, 'exchange', optionSelected)
@@ -513,11 +514,20 @@ export default class RebalancedPortfolioTable extends React.Component<
                               height: '200px',
                               }}
                               menuListStyles={{
-                                fontSize:'12px',
                               height: '200px',
+                              }}
+                              optionStyles={{
+                                fontSize:'12px',
                               }}
                               clearIndicatorStyles={{
                               padding: '2px',
+                              }}
+                              valueContainerStyles={{
+                                maxWidth: '55px',
+                                overflow: 'hidden',
+                              }}
+                              inputStyles={{
+                                marginLeft: '0',
                               }}
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                               this.handleSelectChange(rowIndex, 'symbol', optionSelected)

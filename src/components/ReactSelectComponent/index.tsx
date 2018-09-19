@@ -28,6 +28,7 @@ class ReactSelectComponent extends Component<IProps> {
       multiValueLabelStyles,
       multiValueRemoveStyles,
       indicatorSeparatorStyles,
+      loadingIndicatorStyles,
       ...otherProps
     } = this.props
 
@@ -149,6 +150,11 @@ class ReactSelectComponent extends Component<IProps> {
         display: 'none',
         ...indicatorSeparatorStyles,
       }),
+      loadingIndicator: (base: CSSProperties) => ({
+          ...base,
+          display: 'none',
+          ...loadingIndicatorStyles,
+        }),
     }
 
     if (asyncSelect) {
