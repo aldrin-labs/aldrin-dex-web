@@ -248,11 +248,17 @@ class Rebalance extends React.Component<IProps, IState> {
       return
     }
 
-    const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
+    // if something will broke just uncomment these lines
+    // const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
+    // const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
+    //   rowsWithNewPrice,
+    //   staticRows
+    // )
     const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
-      rowsWithNewPrice,
+      rows,
       staticRows
     )
+
     const newRows = UTILS.removeEditableModeInCoins(newRowsWithPriceDiff)
 
     this.setState(
