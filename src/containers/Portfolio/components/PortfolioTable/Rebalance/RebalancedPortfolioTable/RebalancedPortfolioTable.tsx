@@ -322,11 +322,16 @@ export default class RebalancedPortfolioTable extends React.Component<
       onReset,
       onEditModeEnable,
       updateState,
+      textColor,
+      background,
+      secondary,
+      red,
+      green,
     } = this.props
 
 
     const saveButtonColor =
-      isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
+      isPercentSumGood && undistributedMoney >= 0 ? green : red
 
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
@@ -339,7 +344,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       : btcHeadingForRebalanced
 
     return (
-      <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
+      <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled} textColor={textColor}>
         <TableHeading>
           Rebalanced portfolio
           <RebalanceActionButtons
@@ -349,6 +354,9 @@ export default class RebalancedPortfolioTable extends React.Component<
               onSaveClick,
               onEditModeEnable,
               onReset,
+              secondary,
+              red,
+              green,
             }}
           />
         </TableHeading>
@@ -450,6 +458,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                       <PTDR
                         key="smt"
                         isSelected={isSelected}
+                        secondary={secondary}
                         onClick={() => this.onSelectActiveBalance(id)}
                       >
                         {this.renderActiveCheckbox(id)}
@@ -540,8 +549,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                       if (idx === 2) {
                         const color =
                           Number(col.replace(/%/g, '')) >= 0
-                            ? '#4caf50'
-                            : '#f44336'
+                            ? green
+                            : red
                         if (!isEditModeEnabled) {
                           return (
                             <PTDR key={`${col}${idx}`} style={{ color }}>
@@ -566,12 +575,13 @@ export default class RebalancedPortfolioTable extends React.Component<
                               onFocus={(e) =>
                                 this.onFocusPercentInput(e, rowIndex)
                               }
+                              red={red}
                             />
                           </PTDR>
                         )
                       }
                       if (col.match(/BUY/g)) {
-                        const color = '#4caf50'
+                        const color = green
 
                         return (
                           <PTDR
@@ -583,7 +593,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                         )
                       }
                       if (col.match(/SELL/g)) {
-                        const color = '#f44336'
+                        const color = red
 
                         return (
                           <PTDR
@@ -610,6 +620,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                       <TableButton
                         isDeleteColor={false}
                         onClick={() => this.onDeleteRowClick(rowIndex)}
+                        red={red}
+                        green={green}
                       >
                         <DeleteIcon />
                       </TableButton>
@@ -629,6 +641,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                     <TableButton
                       isDeleteColor={true}
                       onClick={this.onAddRowButtonClick}
+                      red={red}
+                      green={green}
                     >
                       <AddIcon />
                     </TableButton>
@@ -673,6 +687,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             rows,
             selectedActive,
             updateState,
+            secondary,
+            red,
+            green,
           }}
         />
       </TableAndHeadingWrapper>

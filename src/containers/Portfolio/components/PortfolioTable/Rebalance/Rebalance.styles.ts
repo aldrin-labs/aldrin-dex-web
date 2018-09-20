@@ -1,7 +1,15 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 
-export { Content, ChartWrapper, ChartContainer, Chart, PTWrapper, PTextBox, Container }
+export {
+  Content,
+  ChartWrapper,
+  ChartContainer,
+  Chart,
+  PTWrapper,
+  PTextBox,
+  Container,
+}
 
 const Content = styled.div`
   overflow: auto;
@@ -33,19 +41,20 @@ const ChartWrapper = styled.div`
   @media (max-height: 1080px) {
     height: 400px;
     margin-top: ${(props: { isEditModeEnabled?: boolean }) =>
-  props.isEditModeEnabled ? '180px' : '40px'};
+      props.isEditModeEnabled ? '180px' : '40px'};
   }
 `
 
 const ChartContainer = styled.div`
   width: 1120px;
   height: inherit;
-  background: #292d31;
   border-radius: 20px;
   margin-left: 15px;
   margin-right: 15px;
   margin-bottom: 15px;
   padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 9px -5px,
+    rgba(0, 0, 0, 0.14) 0px 15px 22px 2px, rgba(0, 0, 0, 0.12) 0px 6px 28px 5px;
 
   @media (max-width: 1150px) {
     width: 100%;
@@ -62,12 +71,12 @@ const Chart = styled.div`
 `
 const PTWrapper = styled.div`
   width: ${(props: { tableData?: boolean }) =>
-  props.tableData ? 'calc(100% - 2rem);' : '100%'};
+    props.tableData ? 'calc(100% - 2rem);' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
-  background-color: #393e44;
+  background-color: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
@@ -87,7 +96,6 @@ const PTextBox = styled.div`
   align-items: center;
   background-color: #2d3136;
 `
-
 
 const Container = styled.div`
   display: flex;

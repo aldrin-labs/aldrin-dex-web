@@ -12,9 +12,9 @@ import {
   Input,
 } from './RebalanceMoneyButtons.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
+import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
 export class RebalanceMoneyButtons extends React.Component<IProps> {
-
   onDeleteUndistributedMoneyHandler = () => {
     const { rows, staticRows, updateState } = this.props
 
@@ -40,49 +40,66 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
   }
 
   onDistributeHandler = () => {
-    const { selectedActive, rows, staticRows, undistributedMoney, updateState } = this.props
-    if (selectedActive && selectedActive.length > 0) {
-      let money = parseFloat(undistributedMoney)
+    const {
+      selectedActive,
+      rows,
+      staticRows,
+      undistributedMoney,
+      updateState,
+    } = this.props
 
-      if (selectedActive.length > 1) {
-        const moneyPart = Math.floor(money / selectedActive.length)
-        selectedActive.forEach((row, i) => {
-          // TODO: Refactor when we have much more time than now
-          // tslint:disable-next-line no-object-mutation
-          const roundedCurrentPrice = parseFloat(
-            rows![selectedActive![i]]!.price
-          )
-          rows![selectedActive![i]]!.price = (roundedCurrentPrice + moneyPart).toFixed(2)
-          money -= moneyPart
-        })
-      } else {
-        const roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
-        // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
-        // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
-        // tslint:disable-next-line no-object-mutation
-        rows![selectedActive![0]]!.price = (
-          roundedPrice + parseFloat(undistributedMoney)).toFixed(2)
-        money = 0
-      }
-
-      // toFixed(2) for undistributed money is just an experiment
-      const newUndistributedMoney = money.toFixed(2)
-
-      const newTotal = UTILS.calculateTotal(rows, newUndistributedMoney)
-      const newTableTotal = UTILS.calculateTableTotal(rows)
-      const newRows = UTILS.calculatePercents(rows, newTotal, staticRows)
-      const totalPercents = UTILS.calculateTotalPercents(newRows)
-
-      updateState({
-        totalPercents,
-        selectedActive,
-        undistributedMoney: newUndistributedMoney,
-        rows: newRows,
-        totalRows: newTotal,
-        totalTableRows: newTableTotal,
-        isPercentSumGood: UTILS.checkPercentSum(newRows),
-      })
+    if (!selectedActive || selectedActive.length === 0) {
+      return
     }
+
+    let resultRows: IRow[]
+    let money = parseFloat(undistributedMoney)
+
+    if (selectedActive.length > 1) {
+      const arrayOfMoneyPart: number[] = UTILS.calculateMoneyPart(
+        money,
+        selectedActive.length
+      ).sort((a, b) => b - a)
+      // console.log('arrayOfMoneyPart', arrayOfMoneyPart)
+      // console.log('selectedActive', selectedActive)
+
+      resultRows = rows.map((row, i) => {
+        return selectedActive.includes(i)
+          ? {
+              ...row,
+              price: (parseFloat(row.price) + arrayOfMoneyPart.pop()).toFixed(
+                2
+              ),
+            }
+          : row
+      })
+    } else {
+      const index: number = selectedActive[0]
+      resultRows = [
+        ...rows.slice(0, index),
+        {
+          ...rows[index],
+          price: (parseFloat(rows[index].price) + money).toFixed(2),
+        },
+        ...rows.slice(index + 1, rows.length),
+      ]
+    }
+
+    const newUndistributedMoney = 0..toFixed(2)
+    const newTotal = UTILS.calculateTotal(resultRows, newUndistributedMoney)
+    const newTableTotal = UTILS.calculateTableTotal(resultRows)
+    const newRows = UTILS.calculatePercents(resultRows, newTotal, staticRows)
+    const totalPercents = UTILS.calculateTotalPercents(newRows)
+
+    updateState({
+      totalPercents,
+      selectedActive,
+      undistributedMoney: newUndistributedMoney,
+      rows: newRows,
+      totalRows: newTotal,
+      totalTableRows: newTableTotal,
+      isPercentSumGood: UTILS.checkPercentSum(newRows),
+    })
   }
 
   onAddMoneyInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,8 +159,12 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
   }
 
   render() {
-
-    const { addMoneyInputValue, undistributedMoney, isEditModeEnabled } = this.props
+    const {
+      addMoneyInputValue,
+      undistributedMoney,
+      isEditModeEnabled,
+      secondary,
+    } = this.props
 
     return (
       <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
@@ -154,20 +175,34 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
               value={addMoneyInputValue}
               onChange={this.onAddMoneyInputChangeHandler}
               onFocus={this.onFocusAddMoneyInputHandler}
+              secondary={secondary}
             />
-            <Button onClick={this.onAddMoneyButtonPressedHandler}>Add money</Button>
+            <Button
+              onClick={this.onAddMoneyButtonPressedHandler}
+              secondary={secondary}
+            >
+              Add money
+            </Button>
           </AddMoneyContainer>
           <AddMoneyContainer>
-            <Button onClick={this.onDeleteUndistributedMoneyHandler}>
+            <Button
+              onClick={this.onDeleteUndistributedMoneyHandler}
+              secondary={secondary}
+            >
               Delete undistributed
             </Button>
           </AddMoneyContainer>
           {
             <UndistributedMoneyContainer>
               <UndistributedMoneyText>
-                Undistributed money: {formatNumberToUSFormat(undistributedMoney)}
+                Undistributed money:{' '}
+                {formatNumberToUSFormat(undistributedMoney)}
               </UndistributedMoneyText>
-              <Button disabled={+undistributedMoney < 0} onClick={this.onDistributeHandler}>
+              <Button
+                disabled={+undistributedMoney < 0}
+                onClick={this.onDistributeHandler}
+                secondary={secondary}
+              >
                 Distribute to selected
               </Button>
             </UndistributedMoneyContainer>

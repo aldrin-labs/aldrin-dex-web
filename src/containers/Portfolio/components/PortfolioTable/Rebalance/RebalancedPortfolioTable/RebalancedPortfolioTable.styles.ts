@@ -18,13 +18,14 @@ export {
   PTFoot,
   TableButton,
   InputTable,
-  SelectR,
 }
 
 const TableAndHeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
+  color: ${(props: { textColor: string }) => props.textColor};
+
 
   &:not(:first-child) {
     min-height: ${(props: { isEditModeEnabled?: boolean }) =>
@@ -61,7 +62,7 @@ const PTDRNoEditMode = css`
     text-align: right;
     &:hover {
       & svg {
-        color: #ffffff;
+        color: inherit;
       }
     }
   }
@@ -181,7 +182,7 @@ const PTDREditMode = css`
     min-width: 100px;
     &:hover {
       & svg {
-        color: #ffffff;
+        color: inherit;
       }
     }
   }
@@ -205,8 +206,8 @@ const InputTable = styled.input`
   background-color: #2d3136;
   border: none;
   outline: none;
-  color: ${(props: { isPercentSumGood?: boolean }) =>
-    props.isPercentSumGood ? '#fff' : '#f44336'};
+  color: ${(props: { isPercentSumGood?: boolean, red: string }) =>
+    props.isPercentSumGood ? 'inherit' : props.red};
 `
 
 const PTR = styled.tr`
@@ -258,8 +259,8 @@ const TableButton = styled.button`
 
   &:hover {
     & svg {
-      color: ${(props: { isDeleteColor?: boolean }) =>
-        props.isDeleteColor ? '#4caf50' : '#f44336'};
+      color: ${(props: { isDeleteColor?: boolean, red: string, green: string }) =>
+        props.isDeleteColor ? props.green : props.red};
     }
   }
   & svg {

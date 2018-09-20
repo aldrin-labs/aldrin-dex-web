@@ -25,7 +25,7 @@ const TableHeading = styled.div`
   text-transform: uppercase;
   font-family: Roboto, sans-serif;
   font-size: 17px;
-  color: white;
+  color: inherit;
   font-weight: bold;
   letter-spacing: 1.1px;
   min-height: 30px;
@@ -42,7 +42,7 @@ const PT = css`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #fff;
   }
 `
 
@@ -54,7 +54,7 @@ const PTF = css`
     position: absolute;
     left: 0;
     right: 0;
-    border-top: 1px solid white;
+    border-top: 1px solid #fff;
   }
 `
 
@@ -62,7 +62,7 @@ const PTH = css`
   font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
-  color: #fff;
+  color: inherit;
   text-align: left;
   font-weight: 500;
   position: relative;
@@ -70,8 +70,8 @@ const PTH = css`
 `
 
 const PTD = css`
-  color: ${(props: { isSelected?: boolean }) =>
-  props.isSelected ? '#4ed8da' : '#fff'};
+  color: ${(props: { isSelected?: boolean, secondary?: string }) =>
+  props.isSelected ? props.secondary : 'inherit'};
 
   font-family: Roboto, sans-serif;
   font-size: 12px;

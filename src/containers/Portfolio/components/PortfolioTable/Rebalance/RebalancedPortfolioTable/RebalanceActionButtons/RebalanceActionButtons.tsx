@@ -17,18 +17,23 @@ const RebalanceActionButtons = ({
   onSaveClick,
   onEditModeEnable,
   onReset,
+  secondary,
+  red,
+  green,
 }: IProps) => (
   <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
     <EditIconWrapper
       onClick={onEditModeEnable}
       isEditModeEnabled={isEditModeEnabled}
+      red={red}
+      green={green}
     >
       {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
     </EditIconWrapper>
-    <ActionButton onClick={onReset}>
+    <ActionButton onClick={onReset} secondary={secondary}>
       <Replay />
     </ActionButton>
-    <ActionButton onClick={onSaveClick}>
+    <ActionButton onClick={onSaveClick} secondary={secondary}>
       <SaveIcon style={{ color: saveButtonColor }} />
     </ActionButton>
   </ActionButtonsContainer>

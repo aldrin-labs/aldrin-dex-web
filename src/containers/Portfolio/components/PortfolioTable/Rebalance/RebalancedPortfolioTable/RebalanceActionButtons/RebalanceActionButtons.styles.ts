@@ -28,12 +28,12 @@ const ActionButton = styled.button`
   }
 
   & svg {
-    color: white;
+    color: inherit;
     padding-bottom: 7px;
   }
 
   &:hover svg {
-    color: #4ed8da;
+    color: ${(props: { secondary: string }) => props.secondary};
   }
 `
 
@@ -51,8 +51,8 @@ const ActionButtonsContainer = styled.div`
 
 const EditIconWrapper = styled.div`
   &:hover {
-    color: ${(props: { isEditModeEnabled?: boolean }) =>
-  props.isEditModeEnabled ? '#f44336' : '#4caf50'};
+    color: ${(props: { isEditModeEnabled?: boolean, red: string, green: string }) =>
+  props.isEditModeEnabled ? props.red : props.green};
   }
 
   & svg {
