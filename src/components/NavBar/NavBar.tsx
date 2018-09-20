@@ -13,7 +13,12 @@ export interface Props extends WithTheme {
 // ToDo add grid
 const NavBarRaw: SFC<Props> = ({
   theme: {
-    palette: { navbar, type, getContrastText },
+    palette: {
+      navbar,
+      type,
+      getContrastText,
+      secondary: { main },
+    },
   },
   pathname,
   hide = false,
@@ -39,7 +44,7 @@ const NavBarRaw: SFC<Props> = ({
       />
     </SNav>
     <LoginWrapper>
-      <Login />
+      <Login mainColor={main} />
     </LoginWrapper>
   </Nav>
 )
