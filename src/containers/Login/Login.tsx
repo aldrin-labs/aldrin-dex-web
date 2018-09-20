@@ -58,13 +58,14 @@ class LoginQuery extends React.Component<Props, State> {
       ),
     }
   }
-
+/*
   componentWillMount() {
     this.checkToken()
-  }
+  }*/
 
   componentDidMount() {
     if (this.props.isShownModal) this.showLogin()
+    this.checkToken()
   }
 
   setLockListeners = () => {
