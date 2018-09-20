@@ -85,7 +85,6 @@ class LoginQuery extends React.Component<Props, State> {
       )
     })
     this.state.lock.on('show', () => {
-      console.log('open modal show')
       this.props.storeOpenedModal()
     })
     this.state.lock.on('hide', () => {
