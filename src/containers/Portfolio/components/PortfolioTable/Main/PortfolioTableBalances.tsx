@@ -448,28 +448,28 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
 
-    if (!tableDataHasData) {
-      return (
-        <PTWrapper
-          background={theme.palette.background.paper}
-          tableData={tableDataHasData}
-        >
-          <PTextBox backgroundColor={theme.palette.grey.A400}>
-            <STypography color="default" variant="display1">
-              Add an exchange or wallet
-            </STypography>
-            <SButton
-              component={MyLinkToUserSettings}
-              backgroundColor={theme.palette.grey.A400}
-              borderColor={theme.palette.secondary.light}
-            >
-              <STypographyButtonText> Add </STypographyButtonText>
-              <SAddIcon />
-            </SButton>
-          </PTextBox>
-        </PTWrapper>
-      )
-    }
+    // if (!tableDataHasData) {
+    //   return (
+    //     <PTWrapper
+    //       background={theme.palette.background.paper}
+    //       tableData={tableDataHasData}
+    //     >
+    //       <PTextBox backgroundColor={theme.palette.grey.A400}>
+    //         <STypography color="default" variant="display1">
+    //           Add an exchange or wallet
+    //         </STypography>
+    //         <SButton
+    //           component={MyLinkToUserSettings}
+    //           backgroundColor={theme.palette.grey.A400}
+    //           borderColor={theme.palette.secondary.light}
+    //         >
+    //           <STypographyButtonText> Add </STypographyButtonText>
+    //           <SAddIcon />
+    //         </SButton>
+    //       </PTextBox>
+    //     </PTWrapper>
+    //   )
+    // }
 
     return (
       <PTWrapper

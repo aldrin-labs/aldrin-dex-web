@@ -18,15 +18,20 @@ import { TypographyFullWidth } from '@styles/cssUtils'
 export default class Accounts extends React.PureComponent<IProps> {
   componentDidMount() {
     if (!has(this.props.data.getProfile, 'keys')) {
+      console.log('no keys');
+
       return null
     }
 
     const { keys } = this.props.data.getProfile
+    const oldKeys = this.props.keys
     const checkboxes =
       (keys && keys.map((key: keyItem) => key && key.name).filter(Boolean)) || []
 
     this.props.setKeys(checkboxes)
-    this.props.setActiveKeys(checkboxes)
+    if (oldKeys.length < checkboxes.length ) {
+      this.props.setActiveKeys(checkboxes)
+    }
 
     return true
   }

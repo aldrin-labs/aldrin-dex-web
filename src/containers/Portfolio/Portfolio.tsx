@@ -7,6 +7,8 @@ import { compose } from 'recompose'
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
+import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWindow/SelectExchangeOrWalletWindow'
+import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme } from '@material-ui/core'
@@ -18,7 +20,6 @@ const PORTFOLIO_UPDATE = gql`
 `
 
 class PortfolioComponent extends React.Component<IProps, IState> {
-
   state: IState = {
     isSideNavOpen: false,
     filter: 0.5,
@@ -29,32 +30,66 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { login, theme, keys, activeKeys, wallets, activeWallets } = this.props
+    const {
+      login,
+      theme,
+      keys,
+      activeKeys,
+      wallets,
+      activeWallets,
+    } = this.props
 
-    console.log('activeKeys: ', activeKeys, 'keys', keys );
-    console.log('activeWallets: ', activeWallets, 'wallets ', wallets);
+    console.log('activeKeys: ', activeKeys, 'keys', keys)
+    console.log('activeWallets: ', activeWallets, 'wallets ', wallets)
 
+    const hasKeysOrWallets = keys.length + wallets.length > 0
+    const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
 
     return (
       <Subscription subscription={PORTFOLIO_UPDATE}>
         {(subscriptionData) => (
           <PortfolioContainer>
-            {login ? (
-              <>
-                <PortfolioSelector
-                  toggleWallets={this.toggleWallets}
-                  isSideNavOpen={this.state.isSideNavOpen}
-                />
-                <PortfolioTable
-                  activeKeys={activeKeys}
-                  theme={theme}
-                  toggleWallets={this.toggleWallets}
-                  subscription={subscriptionData}
-                />
-              </>
-            ) : (
-              <YouNeedToLoginMessage showModalAfterDelay={1500} />
-            )}
+            {login &&
+              !hasKeysOrWallets &&
+            <>
+              <PortfolioSelector
+                toggleWallets={this.toggleWallets}
+                isSideNavOpen={this.state.isSideNavOpen}
+              />
+            <AddExchangeOrWalletWindow theme={theme} />
+            </>
+            }
+            {login &&
+              hasKeysOrWallets &&
+              !hasActiveKeysOrWallets && (
+                <>
+                  <PortfolioSelector
+                    toggleWallets={this.toggleWallets}
+                    isSideNavOpen={this.state.isSideNavOpen}
+                  />
+                  <SelectExchangeOrWalletWindow
+                    theme={theme}
+                    toggleWallets={this.toggleWallets}
+                  />
+                </>
+              )}
+            {login &&
+              hasKeysOrWallets &&
+              hasActiveKeysOrWallets && (
+                <>
+                  <PortfolioSelector
+                    toggleWallets={this.toggleWallets}
+                    isSideNavOpen={this.state.isSideNavOpen}
+                  />
+                  <PortfolioTable
+                    activeKeys={activeKeys}
+                    theme={theme}
+                    toggleWallets={this.toggleWallets}
+                    subscription={subscriptionData}
+                  />
+                </>
+              )}
+            {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
 
             <Backdrop
               onClick={this.toggleWallets}
@@ -77,9 +112,10 @@ const mapStateToProps = (store: any) => ({
   login: store.login.loginStatus,
 })
 
-export default compose(withTheme(), connect(mapStateToProps))(
-  PortfolioComponent
-)
+export default compose(
+  withTheme(),
+  connect(mapStateToProps)
+)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: flex;
@@ -87,7 +123,8 @@ const PortfolioContainer = styled.div`
   min-height: 600px;
 `
 const Backdrop = styled.div`
-  display: ${(props: {isSideNavOpen: boolean}) => (props.isSideNavOpen ? 'block' : 'none')};
+  display: ${(props: { isSideNavOpen: boolean }) =>
+    props.isSideNavOpen ? 'block' : 'none'};
   height: 100vh;
   width: 100vw;
   position: fixed;
