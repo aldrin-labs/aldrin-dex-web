@@ -41,7 +41,11 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
 
   onDistributeHandler = () => {
     const { selectedActive, rows, staticRows, undistributedMoney, updateState } = this.props
-    if (selectedActive && selectedActive.length > 0) {
+
+    if (!selectedActive || selectedActive.length === 0) {
+      return
+    }
+
       let money = parseFloat(undistributedMoney)
 
       if (selectedActive.length > 1) {
@@ -57,8 +61,6 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
         })
       } else {
         const roundedPrice = parseFloat(rows![selectedActive![0]]!.price)
-        // console.log('roundedPrice', roundedPrice, 'typeof roundedPrice', typeof roundedPrice);
-        // console.log('undistributedMoney', undistributedMoney, 'typeof undistributedMoney', typeof undistributedMoney);
         // tslint:disable-next-line no-object-mutation
         rows![selectedActive![0]]!.price = (
           roundedPrice + parseFloat(undistributedMoney)).toFixed(2)
@@ -82,7 +84,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
         totalTableRows: newTableTotal,
         isPercentSumGood: UTILS.checkPercentSum(newRows),
       })
-    }
+
   }
 
   onAddMoneyInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
