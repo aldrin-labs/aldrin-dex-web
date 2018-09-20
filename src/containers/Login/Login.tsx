@@ -65,6 +65,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   componentDidMount() {
     this.state.lock.on('authenticated', (authResult: any) => {
+      this.props.onLogin()
       this.state.lock.getUserInfo(
         authResult.accessToken,
         (error: Error, profile: any) => {
@@ -75,11 +76,18 @@ class LoginQuery extends React.Component<Props, State> {
           // localStorage.setItem('token', authResult.idToken)
           this.setToken(authResult.idToken)
           this.createUserReq(profile)
+          //          this.props.storeClosedModal()
         }
       )
     })
-
-    if (this.props.isShownModal) this.state.lock.show()
+    this.state.lock.on('show', () => {
+      this.props.storeOpenedModal()
+    })
+    this.state.lock.on('hide', () => {
+      this.props.storeModalIsClosing()
+      setTimeout(() => this.props.storeClosedModal(), 1000)
+    })
+    if (this.props.isShownModal) this.showLogin()
   }
 
   removeToken = () => {
@@ -91,15 +99,17 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   checkToken = () => {
-    const token = this.getToken()
-    if (token) {
-      const decodedToken: { exp: number } = jwtDecode(token)
-      const currentTime = Date.now() / 1000
-      if (currentTime > decodedToken.exp) {
+    if (this.props.loginStatus) {
+      const token = this.getToken()
+      if (token) {
+        const decodedToken: { exp: number } = jwtDecode(token)
+        const currentTime = Date.now() / 1000
+        if (currentTime > decodedToken.exp) {
+          this.props.storeLogout()
+        }
+      } else {
         this.props.storeLogout()
       }
-    } else {
-      this.props.storeLogout()
     }
   }
 
@@ -138,7 +148,9 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    this.state.lock.show()
+    if (!this.props.modalIsOpen && !this.props.isLogging) {
+      this.state.lock.show()
+    }
   }
 
   render() {
@@ -177,13 +189,19 @@ class LoginQuery extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: any) => ({
+  isLogging: state.login.isLogging,
   user: state.login.user,
   loginStatus: state.login.loginStatus,
+  modalIsOpen: state.login.modalIsOpen,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
+  onLogin: () => dispatch(actions.onLogin()),
   storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
   storeLogout: () => dispatch(actions.storeLogout()),
+  storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
+  storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
+  storeClosedModal: () => dispatch(actions.storeClosedModal()),
 })
 
 export const Login = compose(

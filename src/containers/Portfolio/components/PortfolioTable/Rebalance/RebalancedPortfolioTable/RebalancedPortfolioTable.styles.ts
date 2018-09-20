@@ -267,8 +267,3 @@ const TableButton = styled.button`
     height: 18px;
   }
 `
-
-const SelectR = styled(ReactSelectComponent)`
-  font-family: Roboto;
-  font-size: 12px;
-`
