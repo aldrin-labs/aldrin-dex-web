@@ -19,6 +19,15 @@ const auth0Options = {
     scope: 'openid',
     audience: 'localhost:5080',
   },
+  theme: {
+    logo:
+      'https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png',
+    primaryColor: '#4ed8da',
+  },
+  languageDictionary: {
+    title: 'Be the early adopter',
+  },
+  autofocus: true,
   autoclose: true,
   oidcConformant: true,
 }
@@ -31,16 +40,22 @@ const SWrapper = styled.div`
 `
 
 class LoginQuery extends React.Component<Props, State> {
-  lock: Auth0LockStatic = new Auth0Lock(
-    '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
-    'ccai.auth0.com',
-    auth0Options
-  )
-
   constructor(props: Props) {
     super(props)
     this.state = {
       anchorEl: null,
+      lock: null,
+    }
+  }
+
+  static getDerivedStateFromProps(props: Props) {
+    auth0Options.theme.primaryColor = props.mainColor
+    return {
+      lock: new Auth0Lock(
+        '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
+        'ccai.auth0.com',
+        auth0Options
+      ),
     }
   }
 
@@ -49,9 +64,9 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.lock.on('authenticated', (authResult: any) => {
+    this.state.lock.on('authenticated', (authResult: any) => {
       this.props.onLogin()
-      this.lock.getUserInfo(
+      this.state.lock.getUserInfo(
         authResult.accessToken,
         (error: Error, profile: any) => {
           if (error) {
@@ -61,12 +76,14 @@ class LoginQuery extends React.Component<Props, State> {
           // localStorage.setItem('token', authResult.idToken)
           this.setToken(authResult.idToken)
           this.createUserReq(profile)
-//          this.props.storeClosedModal()
+          //          this.props.storeClosedModal()
         }
       )
     })
-    this.lock.on('show', () => {this.props.storeOpenedModal()})
-    this.lock.on('hide', () => {
+    this.state.lock.on('show', () => {
+      this.props.storeOpenedModal()
+    })
+    this.state.lock.on('hide', () => {
       this.props.storeModalIsClosing()
       setTimeout(() => this.props.storeClosedModal(), 1000)
     })
@@ -132,7 +149,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   showLogin = () => {
     if (!this.props.modalIsOpen && !this.props.isLogging) {
-      this.lock.show()
+      this.state.lock.show()
     }
   }
 
