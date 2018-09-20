@@ -24,6 +24,10 @@ const auth0Options = {
       'https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png',
     primaryColor: '#4ed8da',
   },
+  languageDictionary: {
+    title: 'Be the early adopter',
+  },
+  autofocus: true,
   autoclose: true,
   oidcConformant: true,
 }
@@ -36,16 +40,22 @@ const SWrapper = styled.div`
 `
 
 class LoginQuery extends React.Component<Props, State> {
-  lock: Auth0LockStatic = new Auth0Lock(
-    '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
-    'ccai.auth0.com',
-    auth0Options
-  )
-
   constructor(props: Props) {
     super(props)
     this.state = {
       anchorEl: null,
+      lock: null,
+    }
+  }
+
+  static getDerivedStateFromProps(props: Props) {
+    auth0Options.theme.primaryColor = props.mainColor
+    return {
+      lock: new Auth0Lock(
+        '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
+        'ccai.auth0.com',
+        auth0Options
+      ),
     }
   }
 
@@ -54,8 +64,8 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    this.lock.on('authenticated', (authResult: any) => {
-      this.lock.getUserInfo(
+    this.state.lock.on('authenticated', (authResult: any) => {
+      this.state.lock.getUserInfo(
         authResult.accessToken,
         (error: Error, profile: any) => {
           if (error) {
@@ -69,7 +79,7 @@ class LoginQuery extends React.Component<Props, State> {
       )
     })
 
-    if (this.props.isShownModal) this.lock.show()
+    if (this.props.isShownModal) this.state.lock.show()
   }
 
   removeToken = () => {
@@ -128,7 +138,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    this.lock.show()
+    this.state.lock.show()
   }
 
   render() {
