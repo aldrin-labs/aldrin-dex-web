@@ -64,6 +64,10 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   componentDidMount() {
+    if (this.props.isShownModal) this.showLogin()
+  }
+
+  setLockListeners = () => {
     this.state.lock.on('authenticated', (authResult: any) => {
       this.props.onLogin()
       this.state.lock.getUserInfo(
@@ -73,21 +77,21 @@ class LoginQuery extends React.Component<Props, State> {
             console.error(error)
           }
           this.props.storeLogin(profile)
-          // localStorage.setItem('token', authResult.idToken)
+          //localStorage.setItem('token', authResult.idToken)
           this.setToken(authResult.idToken)
           this.createUserReq(profile)
-          //          this.props.storeClosedModal()
+          //this.props.storeClosedModal()
         }
       )
     })
     this.state.lock.on('show', () => {
+      console.log('open modal show')
       this.props.storeOpenedModal()
     })
     this.state.lock.on('hide', () => {
       this.props.storeModalIsClosing()
       setTimeout(() => this.props.storeClosedModal(), 1000)
     })
-    if (this.props.isShownModal) this.showLogin()
   }
 
   removeToken = () => {
@@ -149,6 +153,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   showLogin = () => {
     if (!this.props.modalIsOpen && !this.props.isLogging) {
+      this.setLockListeners()
       this.state.lock.show()
     }
   }
