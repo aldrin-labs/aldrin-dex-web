@@ -42,7 +42,7 @@ const PT = css`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid inherit;
+    border-bottom: 1px solid #fff;
   }
 `
 
@@ -54,7 +54,7 @@ const PTF = css`
     position: absolute;
     left: 0;
     right: 0;
-    border-top: 1px solid inherit;
+    border-top: 1px solid #fff;
   }
 `
 
