@@ -12,9 +12,14 @@ export const removeEditableModeInCoins = (rows: IRow[]) =>
     return el
   })
 
-export const calculatePriceByPercents = (data: IRow[], totalRows: number | string ) => {
+export const calculatePriceByPercents = (
+  data: IRow[],
+  totalRows: number | string
+) => {
   const dataWithNewPrices = data.map((row: IRow) => {
-    let newPrice = ((parseFloat(totalRows) / 100) * (+row.portfolioPerc)).toFixed(2)
+    let newPrice = ((parseFloat(totalRows) / 100) * +row.portfolioPerc).toFixed(
+      2
+    )
 
     return {
       ...row,
@@ -71,10 +76,10 @@ export const calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
     })
   })
 
-  console.log(
-    'data.length > staticRows.length',
-    data.length > staticRows.length
-  )
+  // console.log(
+  //   'data.length > staticRows.length',
+  //   data.length > staticRows.length
+  // )
 
   if (data.length > staticRows.length) {
     const arrayOfNewCoinIndexes: number[] = data.reduce(
@@ -105,17 +110,23 @@ export const calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
     })
   }
 
-  console.log('data length', data.length)
-  console.log('staticRows length', staticRows.length)
-  console.log('data in caluclatePriceDiff', data)
+  // console.log('data length', data.length)
+  // console.log('staticRows length', staticRows.length)
+  // console.log('data in caluclatePriceDiff', data)
 
   return data
 }
 
-export const calculatePercents = (data: IRow[], total: string, staticRows: IRow[]) => {
+export const calculatePercents = (
+  data: IRow[],
+  total: string,
+  staticRows: IRow[]
+) => {
   const newDataWithPercents = data.map((row) => {
     const percentCaluclation =
-      +row.price === 0 ? '0' : ((parseFloat(row.price) * 100) / parseFloat(total)).toFixed(4)
+      +row.price === 0
+        ? '0'
+        : ((parseFloat(row.price) * 100) / parseFloat(total)).toFixed(4)
     const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
     return {
@@ -123,7 +134,38 @@ export const calculatePercents = (data: IRow[], total: string, staticRows: IRow[
       portfolioPerc: percentResult,
     }
   })
-  console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
+  // console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
 
   return calculatePriceDifference(newDataWithPercents, staticRows)
+}
+
+export function calculateMoneyPart(
+  money: number,
+  numberOfCoinsThatMoneyWouldDistributed: number
+): number[] {
+  const divided = money / numberOfCoinsThatMoneyWouldDistributed
+  const ifDividedRemainderHasMoreThan3Numbers =
+    divided.toString().search(/\d+\.\d{3,}/) !== -1
+  // console.log(ifDividedRemainderHasMoreThan3Numbers);
+
+  const remainderWith2Number = Math.floor(divided * 100) / 100
+  // const remainderLastNumbers = ((divided * 100) % 1 * numberOfCoinsThatMoneyWouldDistributed / 100)
+  const remainderLastNumbers =
+    money - remainderWith2Number * numberOfCoinsThatMoneyWouldDistributed
+
+  // console.log('remainderLastNumbers', remainderLastNumbers);
+
+  const array = new Array(numberOfCoinsThatMoneyWouldDistributed)
+    .fill(undefined)
+    .map((el, i) => {
+      if (!ifDividedRemainderHasMoreThan3Numbers) {
+        return divided
+      }
+
+      return i === numberOfCoinsThatMoneyWouldDistributed - 1
+        ? +(remainderWith2Number + remainderLastNumbers).toFixed(2)
+        : remainderWith2Number
+    })
+
+  return array
 }
