@@ -72,7 +72,7 @@ export const onSortTableFull = (
   tableData,
   currentSort,
   arrayOfStringHeadings,
-  arrayOfDateHeadings
+  arrayOfDateHeadings?
 ) => {
   if (!tableData) {
     return

@@ -17,7 +17,7 @@ import {
   onSortStrings,
   roundPercentage,
   calcAllSumOfPortfolioAsset,
-  calcSumOfPortfolioAssetProfitLoss
+  calcSumOfPortfolioAssetProfitLoss,
 } from '@utils/PortfolioTableUtils'
 import * as actions from '@containers/Portfolio/actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
@@ -186,15 +186,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           name = '',
           address = '',
           assets = [],
-        } =
-          row || {}
+        } = row || {}
         // if (activeWallets.indexOf(cryptoWallet.name) === -1) {
         //   return null
         // }
         const { symbol, priceUSD, priceBTC } = baseAsset || {}
 
-        // console.log(row);
-        // console.log(baseAsset);
         return assets.map((walletAsset: any, i) => {
           const mainPrice = isUSDCurrently
             ? walletAsset.asset.priceUSD
@@ -205,7 +202,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             id: i + exchangeAssetsLength,
             currency: baseAsset.symbol + ' ' + name || '',
             symbol: walletAsset.asset.symbol,
-            percentage: roundPercentage(currentPrice * 100 / allSums),
+            percentage: roundPercentage((currentPrice * 100) / allSums),
             price: mainPrice || 0,
             quantity: Number(walletAsset.balance.toFixed(5)) || 0,
             daily: 0,
@@ -236,8 +233,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           btcUnrealizedProfit = 0,
           usdTotalProfit = 0,
           btcTotalProfit = 0,
-        } =
-          row || {}
+        } = row || {}
         if (key === null || key.name === null) {
           return
         }
@@ -263,11 +259,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           id: i,
           currency: name || '',
           symbol,
-          percentage: roundPercentage(currentPrice * 100 / allSums),
+          percentage: roundPercentage((currentPrice * 100) / allSums),
           price: mainPrice || 0,
           quantity: quantity || 0,
           currentPrice: currentPrice || 0,
-          daily: roundPercentage(mainPrice / 100 * percentChangeDay),
+          daily: roundPercentage((mainPrice / 100) * percentChangeDay),
           dailyPerc: percentChangeDay,
           realizedPL: PL.realized,
           realizedPLPerc: 0,
@@ -287,8 +283,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         (el) =>
           //  if el.percentage is not a number then turn it into 0
           isNaN(el.percentage)
-            ? el.percentage
-            : 0 >
+            ? 0
+            : el.percentage >
               (filterValueSmallerThenPercentage
                 ? filterValueSmallerThenPercentage
                 : 0)
@@ -709,6 +705,7 @@ class MainDataWrapper extends React.Component {
   render() {
     return (
       <QueryRenderer
+        fetchPolicy="network-only"
         component={PortfolioTableBalances}
         query={getPortfolioMainQuery}
         {...this.props}
@@ -733,5 +730,8 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(MainDataWrapper)

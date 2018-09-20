@@ -38,6 +38,7 @@ import {
   Container,
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -106,7 +107,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableRebalancedPortfolioData = getMyRebalance!.getProfile!.myRebalance!.assets!.map(
-        (el: IShapeOfRebalancePortfolioRow, i:number) => ({
+        (el: IShapeOfRebalancePortfolioRow, i: number) => ({
           id: i,
           exchange: el._id.exchange,
           symbol: el._id.coin,
@@ -247,11 +248,17 @@ class Rebalance extends React.Component<IProps, IState> {
       return
     }
 
-    const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
+    // if something will broke just uncomment these lines
+    // const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
+    // const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
+    //   rowsWithNewPrice,
+    //   staticRows
+    // )
     const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
-      rowsWithNewPrice,
+      rows,
       staticRows
     )
+
     const newRows = UTILS.removeEditableModeInCoins(newRowsWithPriceDiff)
 
     this.setState(
@@ -397,6 +404,7 @@ class Rebalance extends React.Component<IProps, IState> {
       children,
       isUSDCurrently,
       filterValueSmallerThenPercentage,
+      theme,
     } = this.props
     const {
       selectedActive,
@@ -419,9 +427,20 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
 
+    const textColor = theme.palette.getContrastText(
+      theme.palette.background.paper
+    )
+    const background = theme.palette.background.paper
+    const secondary = theme.palette.secondary.main
+    const red = theme.palette.red.main
+    const green = theme.palette.green.main
+
     if (tableDataHasData) {
       return (
-        <PTWrapper tableData={tableDataHasData}>
+        <PTWrapper
+          tableData={tableDataHasData}
+          background={background}
+        >
           {children}
           <PTextBox>Add account for Portfolio</PTextBox>
         </PTWrapper>
@@ -429,7 +448,8 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={true}>
+      <PTWrapper tableData={true} background={background}
+      >
         {children}
         <Content>
           <Container>
@@ -440,6 +460,10 @@ class Rebalance extends React.Component<IProps, IState> {
                 totalStaticRows,
                 filterValueSmallerThenPercentage,
                 isUSDCurrently,
+                textColor,
+                background,
+                red,
+                green,
               }}
               onSortTable={this.onSortTable}
             />
@@ -458,6 +482,11 @@ class Rebalance extends React.Component<IProps, IState> {
                 undistributedMoney,
                 isUSDCurrently,
                 addMoneyInputValue,
+                textColor,
+                background,
+                secondary,
+                red,
+                green,
               }}
               onSortTable={this.onSortTable}
               onSaveClick={this.onSaveClick}
@@ -472,7 +501,7 @@ class Rebalance extends React.Component<IProps, IState> {
               rightBar={rightBar}
               onChangeColor={this.onChangeColor}
             />
-            <ChartContainer>
+            <ChartContainer background={theme.palette.background.paper}>
               <Chart>
                 {staticRows[0].portfolioPerc && (
                   <BarChart
@@ -506,6 +535,7 @@ const mapStateToProps = (store: any) => ({
 })
 
 export default compose(
+  withTheme(),
   connect(mapStateToProps),
   graphql(getMyPortfolioQuery, { name: 'getMyPortfolio' }),
   graphql(getMyRebalanceQuery, { name: 'getMyRebalance' }),

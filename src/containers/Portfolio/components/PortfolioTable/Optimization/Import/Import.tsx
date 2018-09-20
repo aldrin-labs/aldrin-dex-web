@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
-import { MdReplay } from 'react-icons/lib/md'
-import { Button as ButtonMUI } from '@material-ui/core'
-import { isEqual } from 'lodash'
+import MdReplay from '@material-ui/icons/Replay'
+import { Button as ButtonMUI, Typography } from '@material-ui/core'
+import { isEqual } from 'lodash-es'
 
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
@@ -27,6 +27,7 @@ class Import extends PureComponent<IProps> {
     } else {
       assets =
         this.props.data &&
+        this.props.data.getProfile &&
         this.props.transformData(this.props.data.getProfile.portfolio.assets)
     }
 
@@ -35,7 +36,7 @@ class Import extends PureComponent<IProps> {
 
   sumSameCoins = (rawData: IData[]) => {
     let data: IData[] = []
-
+    if (!rawData) return
     rawData.forEach((asset) => {
       const index = data.findIndex((obj) => obj.coin === asset.coin)
       if (index >= 0) {
@@ -196,12 +197,21 @@ class Import extends PureComponent<IProps> {
     } else {
       assets =
         this.props.data &&
+        this.props.data.getProfile &&
         this.props.transformData(this.props.data.getProfile.portfolio.assets)
     }
 
     const data: IData[] =
       this.props.data &&
+      this.props.data.getProfile &&
       this.props.transformData(this.props.data.getProfile.portfolio.assets)
+    if (!storeData) {
+      return (
+        <Typography variant="display1" color="error">
+          Erorr during download. Please Refresh the page.{' '}
+        </Typography>
+      )
+    }
 
     return (
       <ApolloConsumer>

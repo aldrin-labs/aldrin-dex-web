@@ -1,7 +1,6 @@
 import { Button } from '@material-ui/core'
 import styled from 'styled-components'
-import { FaCircle } from 'react-icons/lib/fa'
-
+import FaCircle from '@material-ui/icons/Brightness1'
 import { Table, HeadCell, FullWidthBlock, Cell } from '@components/Table/Table'
 
 export const Icon = styled(FaCircle)`
@@ -11,13 +10,13 @@ export const Icon = styled(FaCircle)`
   color: ${(props: { color: string }) => props.color};
 `
 
-export const FlexCell = Cell.extend`
+export const FlexCell = styled(Cell)`
   align-items: center;
   display: flex;
   flex-wrap: nowrap;
 `
 
-export const FullWidthBlockMovedLeft = FullWidthBlock.extend`
+export const FullWidthBlockMovedLeft = styled(FullWidthBlock)`
   position: relative;
   left: 20%;
 `

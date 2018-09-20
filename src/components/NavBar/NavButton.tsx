@@ -28,32 +28,30 @@ const StyledNavLink = styled(NavLink)`
     border-bottom: 2px solid #4ed8da;
   }
 
-  &.selected {
-    opacity: 1;
-    color: ${(props: { color: string }) => props.color};
+  ${(props: { active: boolean; color: string }) =>
+    props.active
+      ? ` opacity: 1;
+    color: ${props.color};
     font-weight: bold;
-    border-bottom: 2px solid #4ed8da;
-  }
+    border-bottom: 2px solid #4ed8da;`
+      : ''};
 `
 
 interface INavButton {
   link: string
   title: string
   color: string
+  active: boolean
 }
 
 export const NavButton: SFC<INavButton> = ({
   link,
   title,
   color,
+  active,
   ...props
 }) => (
-  <StyledNavLink
-    color={color}
-    to={link}
-    activeClassName={'selected'}
-    {...props}
-  >
+  <StyledNavLink active={active} color={color} to={link} {...props}>
     {title}
   </StyledNavLink>
 )

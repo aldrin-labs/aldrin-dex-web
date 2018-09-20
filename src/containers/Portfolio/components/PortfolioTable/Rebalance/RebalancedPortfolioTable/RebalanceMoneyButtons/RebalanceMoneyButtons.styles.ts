@@ -16,6 +16,7 @@ const ButtonsWrapper = styled.div`
 `
 
 const ButtonsInnerWrapper = styled.div`
+  padding-bottom: 10px;
   display: flex;
   justify-content: space-between;
 `
@@ -27,7 +28,7 @@ const UndistributedMoneyContainer = styled.div`
 `
 const UndistributedMoneyText = styled.p`
   font-family: Roboto, sans-serif;
-  color: white;
+  color: inherit;
   font-size: 14px;
   padding: 15px 0 5px;
   margin: 0;
@@ -42,7 +43,7 @@ const AddMoneyContainer = styled.div`
 
 const Button = styled.button`
   border-radius: 2px;
-  background-color: #4c5055;
+  background-color: rgba(255, 255, 255, 0.12);
   padding: 10px;
   border: none;
   outline: none;
@@ -51,10 +52,13 @@ const Button = styled.button`
   text-align: center;
   font-size: 12px;
   font-weight: 500;
-  color: #4ed8da;
+  color: ${(props: { secondary: string }) => props.secondary};
   cursor: pointer;
   text-transform: uppercase;
   margin-top: 10px;
+
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 9px -5px,
+    rgba(0, 0, 0, 0.14) 0px 15px 22px 2px, rgba(0, 0, 0, 0.12) 0px 6px 28px 5px;
 
   &:disabled {
     cursor: not-allowed;
@@ -64,7 +68,8 @@ const Button = styled.button`
 
 const Input = styled.input`
   box-sizing: border-box;
-  border-bottom: 2px solid rgb(78, 216, 218);
+  border-bottom: ${(props: { secondary: string }) => `2px solid ${props.secondary}`};
+  //border-bottom: 2px solid rgb(78, 216, 218);
   background: transparent;
   border-top: none;
   border-left: none;
@@ -76,5 +81,5 @@ const Input = styled.input`
   line-height: 24px;
   text-align: left;
   padding: 10px 0 0;
-  color: rgb(255, 255, 255);
+  color: inherit;
 `

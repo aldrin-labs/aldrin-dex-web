@@ -5,8 +5,13 @@ import { connect } from 'react-redux'
 
 import { withErrorFallback } from '@hoc/withErrorFallback'
 
-import { KeysList, AddExchangeKey, CryptoWalletsList, AddCryptoWallet } from '@containers/User/components'
-import Switch from '@components/Switch/Switch'
+import {
+  KeysList,
+  AddExchangeKey,
+  CryptoWalletsList,
+  AddCryptoWallet,
+} from '@containers/User/components'
+import Switch from '@material-ui/core/Switch'
 
 class UserContainer extends React.Component {
   store: any
@@ -34,9 +39,8 @@ class UserContainer extends React.Component {
         <AdminCP>
           <Heading>Show mocks</Heading>
           <Switch
-            onClick={this.toggleMocks}
-            values={['ON', 'OFF']}
-            isActive={!this.props.isShownMocks}
+            onChange={this.toggleMocks}
+            checked={this.props.isShownMocks}
           />
         </AdminCP>
       </div>

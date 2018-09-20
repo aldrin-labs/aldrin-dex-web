@@ -13,143 +13,133 @@ import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/C
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
   toggleCorrelationTableFullscreen,
-  setCorrelationPeriod,
+  setCorrelationPeriod as setCorrelationPeriodAction,
 } from '@containers/Portfolio/actions'
 import {
   getCorrelationQuery,
   CORRELATION_UPDATE,
-  getPortfolioQuery,
+  getPortfolioMainQuery,
 } from '@containers/Portfolio/api'
 import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
+import { Loading } from '@components/Loading'
 
-class Correlation extends React.Component<IProps> {
-  render() {
-    const {
-      children,
-      isFullscreenEnabled,
-      period,
-      setCorrelationPeriodToStore,
-      portfolio,
-      filterValueSmallerThenPercentage,
-      theme,
-    } = this.props
+const Correlation = (props: IProps) => {
+  const {
+    children,
+    isFullscreenEnabled,
+    period,
+    setCorrelationPeriodToStore,
+    portfolio,
+    filterValueSmallerThenPercentage,
+    theme,
+  } = props
 
-    let dataRaw = {}
-    let data = {} // filtered data by dust
-    if (
-      typeof this.props.data.correlationMatrixByDay === 'string' &&
-      this.props.data.correlationMatrixByDay.length > 0
-    ) {
-      dataRaw = JSON.parse(this.props.data.correlationMatrixByDay)
-    } else {
-      dataRaw = this.props.data.correlationMatrixByDay
-    }
-
-    if (portfolio && dataRaw !== '') {
-      // filter data here
-      const allSums = calcAllSumOfPortfolioAsset(
-        portfolio.getProfile.portfolio.assets,
-        true
-      )
-
-      const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
-        .filter(
-          (d: any) =>
-            percentagesOfCoinInPortfolio(d, allSums, true) <
-            filterValueSmallerThenPercentage
-        )
-        .map((d: any) => d.asset.symbol)
-
-      const listOfIndexes = listOfCoinsToFilter.map((coin) =>
-        dataRaw.header.findIndex((d: any) => d === coin)
-      )
-
-      data = {
-        header: dataRaw.header.filter((d, i) => !listOfIndexes.includes(i)),
-        values: dataRaw.values
-          .map((row: number[]) =>
-            row.filter((d, i) => !listOfIndexes.includes(i))
-          )
-          .filter((d, i) => !listOfIndexes.includes(i)),
-      }
-    } else {
-      data = dataRaw // no filter when mock on
-    }
-
-    return (
-      <Subscription subscription={CORRELATION_UPDATE}>
-        {(subscriptionData) => {
-          console.log(data)
-          console.log(portfolio)
-
-          return (
-            <PTWrapper background={theme.palette.background.paper}>
-              {children}
-              <CorrelationMatrix
-                fullScreenChangeHandler={this.props.toggleFullscreen}
-                isFullscreenEnabled={isFullscreenEnabled || false}
-                data={
-                  // has(subscriptionData, 'data') && subscriptionData.data
-                  //   ? subscriptionData.data
-                  //   : data
-                  data
-                }
-                setCorrelationPeriod={setCorrelationPeriodToStore}
-                period={period}
-              />
-            </PTWrapper>
-          )
-        }}
-      </Subscription>
-    )
+  let dataRaw = {}
+  let data = {} // filtered data by dust
+  if (
+    typeof props.data.correlationMatrixByDay === 'string' &&
+    props.data.correlationMatrixByDay.length > 0
+  ) {
+    dataRaw = JSON.parse(props.data.correlationMatrixByDay)
+  } else {
+    dataRaw = props.data.correlationMatrixByDay
   }
+
+  if (portfolio && portfolio.getProfile && dataRaw !== '') {
+    // filter data here
+    const allSums = calcAllSumOfPortfolioAsset(
+      portfolio.getProfile.portfolio.assets,
+      true
+    )
+
+    const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
+      .filter(
+        (d: any) =>
+          percentagesOfCoinInPortfolio(d, allSums, true) <
+          filterValueSmallerThenPercentage
+      )
+      .map((d: any) => d.asset.symbol)
+
+    const listOfIndexes = listOfCoinsToFilter.map((coin) =>
+      dataRaw.header.findIndex((d: any) => d === coin)
+    )
+
+    data = {
+      header: dataRaw.header.filter((d, i) => !listOfIndexes.includes(i)),
+      values: dataRaw.values
+        .map((row: number[]) =>
+          row.filter((d, i) => !listOfIndexes.includes(i))
+        )
+        .filter((d, i) => !listOfIndexes.includes(i)),
+    }
+  } else {
+    data = dataRaw // no filter when mock on
+  }
+
+  return (
+    <Subscription subscription={CORRELATION_UPDATE}>
+      {(subscriptionData) => {
+        console.log(data)
+        console.log(portfolio)
+
+        return (
+          <PTWrapper background={theme.palette.background.paper}>
+            {children}
+            <CorrelationMatrix
+              fullScreenChangeHandler={props.toggleFullscreen}
+              isFullscreenEnabled={isFullscreenEnabled || false}
+              data={
+                // has(subscriptionData, 'data') && subscriptionData.data
+                //   ? subscriptionData.data
+                //   : data
+                data
+              }
+              setCorrelationPeriod={setCorrelationPeriodToStore}
+              period={period}
+            />
+          </PTWrapper>
+        )
+      }}
+    </Subscription>
+  )
 }
 
-class CorrelationWrapper extends React.Component<IProps> {
-  render() {
-    const {
-      isShownMocks,
-      startDate,
-      endDate,
-      children,
-      isFullscreenEnabled,
-      setCorrelationPeriod,
-      toggleFullscreen,
-      theme,
-      period,
-    } = this.props
-    return (
-      <Wrapper>
-        {isShownMocks ? (
-          <Correlation
-            setCorrelationPeriod={setCorrelationPeriod}
-            toggleFullscreen={toggleFullscreen}
-            isFullscreenEnabled={isFullscreenEnabled}
-            data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
-            children={children}
-            period={period}
-          />
-        ) : (
-          <Query query={getPortfolioQuery}>
-            {({ loading, error, data }) => (
+const CorrelationWrapper = (props: IProps) => {
+  const { isShownMocks, startDate, endDate, children } = props
+  return (
+    <Wrapper>
+      {isShownMocks ? (
+        <Correlation
+          data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
+          children={children}
+          {...props}
+        />
+      ) : (
+        <Query query={getPortfolioMainQuery}>
+          {({ loading, data }) => {
+            const render = loading ? (
+              <Loading centerAligned={true} />
+            ) : (
               <QueryRenderer
+                fetchPolicy="network-only"
                 component={Correlation}
                 query={getCorrelationQuery}
                 variables={{
                   startDate,
                   endDate,
                 }}
-                {...{ portfolio: data, ...this.props }}
+                {...{ portfolio: data, ...props }}
               />
-            )}
-          </Query>
-        )}
-      </Wrapper>
-    )
-  }
+            )
+            return render
+          }}
+        </Query>
+      )}
+    </Wrapper>
+  )
 }
 
 const Wrapper = styled.div`
@@ -185,11 +175,12 @@ const mapStateToProps = (store: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
   setCorrelationPeriodToStore: (payload: object) =>
-    dispatch(setCorrelationPeriod(payload)),
+    dispatch(setCorrelationPeriodAction(payload)),
 })
 
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  CorrelationWrapper
-)
+const storeComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CorrelationWrapper)
 
 export default storeComponent

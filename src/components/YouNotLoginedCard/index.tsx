@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { Card, CardContent, Typography } from '@material-ui/core'
-import { MdLock } from 'react-icons/lib/md'
-
+import MdLock from '@material-ui/icons/Lock'
+import withTheme from '@material-ui/core/styles/withTheme'
 import { Login } from '@containers/Login'
 import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
 
@@ -12,7 +12,12 @@ class LoginCard extends PureComponent<IProps, IState> {
   }
 
   render() {
-    const { showModalAfterDelay } = this.props
+    const {
+      showModalAfterDelay,
+      theme: {
+        palette: { secondary },
+      },
+    } = this.props
     const { showModal } = this.state
 
     showModalAfterDelay && showModalAfterDelay > 0
@@ -23,17 +28,19 @@ class LoginCard extends PureComponent<IProps, IState> {
 
     return (
       <>
-        {showModal ? <Login isShownModal /> : null}
+        {showModal ? (
+          <Login mainColor={secondary.main} isShownModal={true} />
+        ) : null}
         <StyledCard>
           <CardContent>
-            <Typography align="center" variant="display4" gutterBottom>
-              <MdLock />
+            <Typography align="center" variant="display4" gutterBottom={true}>
+              <MdLockStyled />
             </Typography>
             <Typography
-              color="primary"
+              color="error"
               align="center"
-              variant="title"
-              gutterBottom
+              variant="headline"
+              gutterBottom={true}
             >
               You must login to view this page
             </Typography>
@@ -49,5 +56,9 @@ const StyledCard = styled(Card)`
   width: 20rem;
   margin: auto;
 `
+const MdLockStyled = styled(MdLock)`
+  width: 80%;
+  height: 80%;
+`
 
-export default LoginCard
+export default withTheme()(LoginCard)

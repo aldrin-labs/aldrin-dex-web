@@ -6,6 +6,7 @@ import { NavBar } from '@components/NavBar'
 
 export interface Props {
   hide?: boolean
+  pathname: string
 }
 const AnimatedContainer = styled(
   posed.div({
@@ -21,18 +22,22 @@ export default class AnimatedNavBar extends Component<Props> {
     delayedHide: false,
   }
 
-  render() {
-    const { hide } = this.props
-    const { delayedHide } = this.state
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.hide !== this.props.hide) {
+      setTimeout(() => {
+        this.setState({ delayedHide: this.props.hide })
+      }, 300)
+    }
+  }
 
-    setTimeout(() => {
-      this.setState({ delayedHide: hide })
-    }, 300)
+  render() {
+    const { hide, pathname } = this.props
+    const { delayedHide } = this.state
 
     return (
       <AnimatedContainer pose={hide ? 'hidden' : 'visible'}>
         {' '}
-        <NavBar hide={delayedHide} />
+        <NavBar pathname={pathname} hide={delayedHide} />
       </AnimatedContainer>
     )
   }

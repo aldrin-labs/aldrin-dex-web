@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentLoader from 'react-content-loader'
-import { withTheme } from '@material-ui/core/styles'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 const MyLoader = (props) => (
   <div style={{ margin: `${props.margin}` }}>

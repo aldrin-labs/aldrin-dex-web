@@ -9,6 +9,7 @@ const TableAndHeadingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
+  color: ${(props: { textColor: string }) => props.textColor};
 
   &:not(:first-child) {
     padding-left: 60px;
@@ -45,7 +46,7 @@ const PTDC = styled.td`
     min-width: 100px;
     &:hover {
       & svg {
-        color: #ffffff;
+        color: inherit;
       }
     }
   }

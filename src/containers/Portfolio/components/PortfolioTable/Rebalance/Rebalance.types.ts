@@ -1,3 +1,5 @@
+import { WithTheme } from '@material-ui/core'
+
 export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'trade';
 
 // TODO: We should have one type for price & portfolioPerc, deltaPrice in IRow
@@ -11,7 +13,7 @@ export interface IRow {
   editable?: boolean
 }
 
-export interface IProps {
+export interface IProps extends WithTheme {
   children: object
   isUSDCurrently: boolean
   isShownMocks: boolean

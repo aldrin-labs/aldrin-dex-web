@@ -12,7 +12,7 @@ import {
 } from 'react-vis'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
-import { Button } from '@material-ui/core'
+import { Button, Typography } from '@material-ui/core'
 
 import Highlight from './Highlight'
 import { Props, State } from './annotations'
@@ -88,8 +88,6 @@ class PortfolioChart extends React.Component<Props, State> {
       marginTopHr,
       lastDrawLocation,
       days,
-      loading,
-      error,
     } = this.props
     const { name = '', priceUSD = '' } = coin || {}
 
@@ -103,11 +101,6 @@ class PortfolioChart extends React.Component<Props, State> {
         fontWeight: 100,
       },
       text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
-    }
-    if (loading) {
-      return <Loading centerAligned />
-    } else if (error) {
-      return <ErrorFallback error={error} />
     }
 
     return (
@@ -174,7 +167,8 @@ class PortfolioChart extends React.Component<Props, State> {
                 <p>
                   {crosshairValues
                     .map((v) => new Date(v.x * 1000).toDateString())
-                    .join(' ')}:{' '}
+                    .join(' ')}
+                  :{' '}
                   {crosshairValues
                     .map((v) => `$${Number(v.y).toFixed(2)}`)
                     .join(' ')}
@@ -315,17 +309,22 @@ export default class GQLChart extends React.Component {
             }))
           }
 
-          return (
-            <PortfolioChart
-              loading={loading}
-              error={error}
-              data={this.props.isShownMocks ? yearData : data}
-              onChangeDateRange={(area) => this.onChangeDateRange(area)}
-              updateDays={(days) => this.updateDays(days)}
-              lastDrawLocation={this.state.lastDrawLocation}
-              {...this.props}
-            />
-          )
+          const render =
+            data.length > 0 ? (
+              <PortfolioChart
+                loading={loading}
+                error={error}
+                data={this.props.isShownMocks ? yearData : data}
+                onChangeDateRange={(area) => this.onChangeDateRange(area)}
+                updateDays={(days) => this.updateDays(days)}
+                lastDrawLocation={this.state.lastDrawLocation}
+                {...this.props}
+              />
+            ) : (
+              <Loading centerAligned />
+            )
+
+          return render
         }}
       </Query>
     )

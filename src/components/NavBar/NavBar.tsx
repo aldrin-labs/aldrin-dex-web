@@ -3,16 +3,24 @@ import styled from 'styled-components'
 
 import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
-import { withTheme, WithTheme } from '@material-ui/core/styles'
+import { WithTheme } from '@material-ui/core/styles'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 export interface Props extends WithTheme {
   hide?: boolean
+  pathname: string
 }
 // ToDo add grid
 const NavBarRaw: SFC<Props> = ({
   theme: {
-    palette: { navbar, type, getContrastText },
+    palette: {
+      navbar,
+      type,
+      getContrastText,
+      secondary: { main },
+    },
   },
+  pathname,
   hide = false,
 }) => (
   <Nav hide={hide} background={navbar[type]}>
@@ -22,19 +30,21 @@ const NavBarRaw: SFC<Props> = ({
       {/*<NavButton link="/market" title="Coin Market" />*/}
       {/*<NavButton link="/profile" title="Profile" />*/}
       <NavButton
+        active={pathname === '/portfolio'}
         color={getContrastText(navbar[type])}
         link="/portfolio"
         title="Portfolio"
       />
       {/*<NavButton link="/screener" title="Screener" />*/}
       <NavButton
+        active={pathname === '/chart'}
         color={getContrastText(navbar[type])}
         link="/chart"
         title="Chart"
       />
     </SNav>
     <LoginWrapper>
-      <Login />
+      <Login mainColor={main} />
     </LoginWrapper>
   </Nav>
 )

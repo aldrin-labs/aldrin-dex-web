@@ -1,8 +1,10 @@
 import * as React from 'react'
-import { FaFilter } from 'react-icons/lib/fa'
+import FaFilter from '@material-ui/icons/FilterList'
 import styled from 'styled-components'
+import Arrow from '@material-ui/icons/ArrowLeft'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import { has } from 'lodash-es'
 
 import Dropdown from '@components/SimpleDropDownSelector'
 import {

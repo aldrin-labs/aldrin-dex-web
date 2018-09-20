@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Paper, Button, Typography, Fade, Slide } from '@material-ui/core'
-import { withTheme } from '@material-ui/core/styles'
+import Loadable from 'react-loadable'
+import { Paper, Button, Fade, Slide } from '@material-ui/core'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 import {
   OrderBookTable,
@@ -23,13 +24,21 @@ import {
 import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
-import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
+import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+import { IProps, IState } from './Chart.types'
 
-class Chart extends React.Component {
+const OnlyCharts = Loadable({
+  loader: () =>
+    import( '@containers/Chart/OnlyCharts/OnlyCharts'),
+  delay: 300,
+  loading: LoadableLoading,
+})
+
+class Chart extends React.Component<IProps, IState> {
   state = {
     view: 'default',
     orders,
@@ -41,7 +50,7 @@ class Chart extends React.Component {
     tradeHistory: [],
   }
 
-  static getDerivedStateFromProps(nextProps: any) {
+  static getDerivedStateFromProps(nextProps: IProps) {
     const [base, quote] = nextProps.currencyPair.split('_')
     document.title = `${base} to ${quote} | CCAI`
 
@@ -256,8 +265,8 @@ class Chart extends React.Component {
   }
 
   renderDefaultView = () => {
-    const { ordersData, spreadData, activeChart } = this.state
-    const { activeExchange, currencyPair, theme } = this.props
+    const { activeChart } = this.state
+    const { currencyPair, theme } = this.props
     const { palette } = theme
 
     if (!currencyPair) {
@@ -357,26 +366,20 @@ class Chart extends React.Component {
   }
 
   render() {
-    const {
-      view,
-      currencyPair,
-      theme: { palette, shadows },
-    } = this.props
+    const { view, currencyPair } = this.props
+
+    const toggler = this.renderToggler()
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-        <TogglerContainer
-          view={view}
-          shadow={shadows[5]}
-          background={palette.primary[palette.type]}
-        >
+        <TogglerContainer>
           <AutoSuggestSelect
             value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
           />
 
-          {this.renderToggler()}
+          {toggler}
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -446,7 +449,7 @@ const TablesContainer = styled.div`
   }
 `
 
-const ChartsContainer = TablesContainer.extend`
+const ChartsContainer = styled(TablesContainer)`
   height: calc(100vh - 59px - 80px - 1px);
   justify-content: flex-end;
   flex-direction: column;
@@ -477,23 +480,7 @@ const TogglerContainer = styled.div`
   width: 100%;
   justify-content: flex-end;
   align-items: center;
-  background-color: transparent;
-  transition: top 250ms ease-out, background-color 250ms ease-in-out;
-
-  ${(props: { view: string; shadow: string; background: string }) => {
-    if (props.view !== 'default') {
-      return `position: absolute;
-    top: -50px;
-    z-index: 100;
-    background-color:${props.background};
-    cursor: pointer;
-    box-shadow: ${props.shadow};
-    &:hover{
-      top: 0px;
-    }`
-    }
-    return ''
-  }};
+  font-family: Roboto, sans-serif;
 `
 
 const Toggler = styled(Button)`
@@ -532,4 +519,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThemedChart)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ThemedChart)

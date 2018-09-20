@@ -4,16 +4,19 @@ import TradeHistoryTable from './Table/TradeHistoryTable'
 import {
   maximumItemsInArray,
   getNumberOfDigitsAfterDecimal,
+  testJSON,
 } from '@utils/chartPageUtils'
+
+import { IProps, IState } from './TableContainer.types'
 
 let unsubscribe: Function | undefined
 
-class TableContainer extends Component {
+class TableContainer extends Component<IProps, IState> {
   state = {
     data: [],
   }
 
-  static getDerivedStateFromProps(newProps, state) {
+  static getDerivedStateFromProps(newProps: IProps, state: IState) {
     if (
       !(
         newProps.data &&
@@ -30,7 +33,9 @@ class TableContainer extends Component {
       newProps.data.marketTickers &&
       newProps.data.marketTickers.length > 0
     ) {
-      const tickerData = JSON.parse(newProps.data.marketTickers[0])
+      const tickerData = testJSON(newProps.data.marketTickers[0])
+        ? JSON.parse(newProps.data.marketTickers[0])
+        : newProps.data.marketTickers[0]
       if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
         return null
       }
@@ -69,7 +74,7 @@ class TableContainer extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IProps) {
     if (
       prevProps.activeExchange.index !== this.props.activeExchange.index ||
       prevProps.currencyPair !== this.props.currencyPair
@@ -86,17 +91,7 @@ class TableContainer extends Component {
   }
 
   render() {
-    const {
-      data,
-      exchange, //  useless functions that we wont pass to table
-      fetchMore,
-      refetch,
-      startPolling,
-      stopPolling,
-      subscribeToMore,
-      updateQuery,
-      ...rest
-    } = this.props
+    const { data, ...rest } = this.props
 
     return (
       <TradeHistoryTable
