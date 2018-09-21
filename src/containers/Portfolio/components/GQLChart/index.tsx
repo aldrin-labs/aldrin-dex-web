@@ -38,7 +38,7 @@ export default class GQLChart extends React.Component {
 
   static getDerivedStateFromProps(newProps, state) {
     if (newProps.coins !== state.coins) {
-      let newState = { ...state }
+      const newState = { ...state }
       // tslint:disable-next-line:no-object-mutation
       newState.coins = newProps.coins
         .map((x) => x.symbol)
@@ -66,7 +66,7 @@ export default class GQLChart extends React.Component {
 
   updateDays(days) {
     this.setState((prevState) => {
-      let newState = { ...prevState }
+      const newState = { ...prevState }
       let area = this.getTimestampRange(days)
       newState.days = days
       newState.unixTimestampFrom = area.left
@@ -88,7 +88,7 @@ export default class GQLChart extends React.Component {
     }
 
     this.setState((prevState) => {
-      let newState = { ...prevState }
+      const newState = { ...prevState }
       newState.unixTimestampFrom = Math.floor(area.left)
       newState.unixTimestampTo = Math.floor(area.right)
       newState.lastDrawLocation = area
@@ -107,6 +107,7 @@ export default class GQLChart extends React.Component {
           unixTimestampFrom: this.state.unixTimestampFrom,
           unixTimestampTo: this.state.unixTimestampTo,
         }}
+        withOutSpinner={true}
         onChangeDateRange={(area) => this.onChangeDateRange(area)}
         updateDays={(days) => this.updateDays(days)}
         lastDrawLocation={this.state.lastDrawLocation}

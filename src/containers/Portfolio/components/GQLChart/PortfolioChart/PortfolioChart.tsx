@@ -15,6 +15,7 @@ import Typography from '@material-ui/core/Typography'
 import { yearData } from '../chartMocks'
 import Highlight from '@containers/Portfolio/components/GQLChart/PortfolioChart/Highlight/Highlight'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
+import { Loading } from '@components/Loading'
 import {
   Props,
   State,
@@ -41,7 +42,7 @@ export default class PortfolioChart extends Component<Props, State> {
     crosshairValues: [],
   }
   componentDidMount() {
-    this.props.updateDays(mapLabelToDays[chartBtns[this.props.activeChart]])
+    // this.props.updateDays(mapLabelToDays[chartBtns[this.props.activeChart]])
   }
 
   onChangeActiveChart = (index: number) => {
@@ -92,11 +93,7 @@ export default class PortfolioChart extends Component<Props, State> {
     }
 
     if (transformedData.length === 0) {
-      return (
-        <Typography align="center" variant="display3" color="error">
-          No data
-        </Typography>
-      )
+      return <Loading centerAligned={true} />
     }
 
     const axisStyle = {
