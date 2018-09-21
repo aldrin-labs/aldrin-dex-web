@@ -36,13 +36,29 @@ const mapLabelToDays = {
   '1Y': 365,
 }
 
+let cacheStack: any = [];
 export default class PortfolioChart extends Component<Props, State> {
+
   state: State = {
     activeChart: 4,
     crosshairValues: [],
+    data: [],
   }
-  componentDidMount() {
-    // this.props.updateDays(mapLabelToDays[chartBtns[this.props.activeChart]])
+
+  static getDerivedStateFromProps(newProps, state) {
+    if ((cacheStack.length > 0 && newProps.lastDrawLocation !== cacheStack[cacheStack.length - 1].lastDrawLocation && newProps.data
+      && newProps.data.getPriceHistory && newProps.data.getPriceHistory.prices.length > 0
+      && cacheStack[cacheStack.length - 1].data.getPriceHistory.prices[cacheStack[cacheStack.length - 1].data.getPriceHistory.prices.length - 2] !== newProps.data.getPriceHistory.prices[newProps.data.getPriceHistory.prices.length - 2]
+      && cacheStack[cacheStack.length - 1].data.getPriceHistory.prices[0] !== newProps.data.getPriceHistory.prices[0]
+      || cacheStack.length === 0 && newProps.data.getPriceHistory && newProps.data.getPriceHistory.prices.length > 0 && (state.data.length === 0 || state.data.getPriceHistory.prices[state.data.getPriceHistory.prices.length - 2] !== newProps.data.getPriceHistory.prices[newProps.data.getPriceHistory.prices.length - 2]))
+    ) {
+      const cachedState = Object.assign(state, newProps);
+      delete cachedState.lastDrawLocation;
+      cachedState.lastDrawLocation = newProps.lastDrawLocation ? { ...newProps.lastDrawLocation } : null;
+      cacheStack.push(cachedState);
+      return cachedState;
+    }
+    return null;
   }
 
   onChangeActiveChart = (index: number) => {
@@ -61,10 +77,33 @@ export default class PortfolioChart extends Component<Props, State> {
     this.setState({ crosshairValues: [] })
   }
 
-  _formatDate = (date) => {}
+  _formatDate = (date) => { }
+
+  _onBrushStart = (data) => {
+    //    console.log('_onBrushStart', data)
+  }
+
+  _onBrushEnd = (area) => {
+    //    console.log('_onBrushEnd', area)
+    //  console.log(cacheStack.length)
+    if (area === null && cacheStack.length > 1) {
+      cacheStack.pop();
+      const cachedState = cacheStack[cacheStack.length - 1];
+      this.setState(() => ({
+        lastDrawLocation: null,
+        ...cachedState,
+      }))
+    } else if (area !== null) {
+      //      console.log(this.state.lastDrawLocation);
+      this.props.onChangeDateRange(area)
+    }
+  }
 
   render() {
+    //    console.log(cacheStack);
     const { crosshairValues } = this.state
+    const { name = '', priceUSD = '' } = coin || {}
+
     const {
       coin,
       style,
@@ -75,8 +114,8 @@ export default class PortfolioChart extends Component<Props, State> {
       data,
 
       isShownMocks,
-    } = this.props
-    const { name = '', priceUSD = '' } = coin || {}
+    } = this.state;
+
     let transformedData = isShownMocks ? yearData : []
     if (
       data &&
@@ -85,6 +124,7 @@ export default class PortfolioChart extends Component<Props, State> {
       data.getPriceHistory.prices.length > 0 &&
       !isShownMocks
     ) {
+      //      console.log(data.getPriceHistory.prices[0], lastDrawLocation);
       const Yvalues = data.getPriceHistory.prices.map((x) => x)
       transformedData = data.getPriceHistory.dates.map((date, i) => ({
         x: Number(date),
@@ -182,11 +222,7 @@ export default class PortfolioChart extends Component<Props, State> {
             </Crosshair>
 
             {this.props.isShownMocks ? null : (
-              <Highlight
-                onBrushEnd={(area) => {
-                  this.props.onChangeDateRange(area)
-                }}
-              />
+              <Highlight onBrushEnd={this._onBrushEnd} />
             )}
           </FlexibleXYPlot>
         </Chart>
@@ -196,14 +232,17 @@ export default class PortfolioChart extends Component<Props, State> {
             <Button
               color="secondary"
               size="small"
-              onClick={() => this.onChangeActiveChart(i)}
+              onClick={() => {
+                cacheStack = [];
+                this.onChangeActiveChart(i);
+              }}
               style={
                 i === this.props.activeChart
                   ? {
-                      backgroundColor: '#4ed8da',
-                      color: '#4c5055',
-                      margin: '0 0.5rem',
-                    }
+                    backgroundColor: '#4ed8da',
+                    color: '#4c5055',
+                    margin: '0 0.5rem',
+                  }
                   : { margin: '0 0.5rem' }
               }
               key={chartBtn}

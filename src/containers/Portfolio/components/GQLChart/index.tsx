@@ -42,7 +42,6 @@ export default class GQLChart extends React.Component {
       // tslint:disable-next-line:no-object-mutation
       newState.coins = newProps.coins
         .map((x) => x.symbol)
-        .filter((x) => x !== 'FUN')
       // tslint:disable-next-line:no-object-mutation
       newState.assets = newProps.coins
       // tslint:disable-next-line:no-object-mutation
@@ -57,7 +56,7 @@ export default class GQLChart extends React.Component {
   }
 
   getTimestampRange(days) {
-    const today = Date.now() / 1000 - 20 * 24 * 60 * 60
+    const today = Date.now() / 1000
     return {
       left: Math.floor(today - days * 24 * 60 * 60),
       right: Math.floor(today),
@@ -67,16 +66,11 @@ export default class GQLChart extends React.Component {
   updateDays(days) {
     this.setState((prevState) => {
       const newState = { ...prevState }
-      let area = this.getTimestampRange(days)
+      const area = this.getTimestampRange(days)
       newState.days = days
       newState.unixTimestampFrom = area.left
       newState.unixTimestampTo = area.right
-      if (prevState.lastDrawLocation !== null) {
-        area = prevState.lastDrawLocation
-        area.left = newState.unixTimestampFrom
-        area.right = newState.unixTimestampTo
-        newState.lastDrawLocation = area
-      }
+      newState.lastDrawLocation = null;
 
       return newState
     })
@@ -86,17 +80,24 @@ export default class GQLChart extends React.Component {
     if (area === null) {
       area = this.getTimestampRange(this.state.days)
     }
-
     this.setState((prevState) => {
       const newState = { ...prevState }
+      console.log(newState);
       newState.unixTimestampFrom = Math.floor(area.left)
       newState.unixTimestampTo = Math.floor(area.right)
-      newState.lastDrawLocation = area
+      if (newState.lastDrawLocation === null) {
+        newState.lastDrawLocation = area
+      } else {
+        newState.lastDrawLocation = prevState.lastDrawLocation;
+        newState.lastDrawLocation.left = newState.unixTimestampFrom;
+        newState.lastDrawLocation.right = newState.unixTimestampTo;
+      }
       return newState
     })
   }
 
   render() {
+    console.log(this.state);
     return (
       <QueryRenderer
         component={PortfolioChart}
