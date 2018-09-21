@@ -497,7 +497,7 @@ const Container = styled.div`
   width: 100%;
 
   @media (max-width: 1080px) {
-    flex-direction: column-reverse;
+    flex-direction: column;
   }
 `
 
