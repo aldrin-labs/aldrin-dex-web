@@ -26,14 +26,19 @@ import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
 
 const OnlyCharts = Loadable({
+  loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
+  delay: 300,
+  loading: LoadableLoading,
+})
+
+const MainDepthChart = Loadable({
   loader: () =>
-    import( '@containers/Chart/OnlyCharts/OnlyCharts'),
+    import('@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'),
   delay: 300,
   loading: LoadableLoading,
 })

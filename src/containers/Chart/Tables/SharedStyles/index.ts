@@ -1,12 +1,6 @@
-import { opacityAnimation } from '@styles/keyframes'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { TypographyFullWidth } from '@styles/cssUtils'
 import { Cell, Row, Body } from '@components/Table/Table'
-
-const animation = css`
-  ${opacityAnimation} 300ms cubic-bezier(0.4, 0, 1, 1) 0s 1 normal
-    none running;
-`
 
 export const EmptyCell = styled(Cell)`
   position: relative;
@@ -20,8 +14,6 @@ export const StyledTypography = styled(TypographyFullWidth)`
   && {
     color: ${(props: { textColor: string }) => props.textColor};
     font-variant-numeric: lining-nums tabular-nums;
-    ${(props: { anime?: boolean }) =>
-      props.anime ? `animation: ${animation}` : ''};
   }
 `
 

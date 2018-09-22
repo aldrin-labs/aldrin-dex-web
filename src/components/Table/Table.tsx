@@ -1,4 +1,6 @@
 import styled from 'styled-components'
+import posed from 'react-pose'
+
 import { customAquaScrollBar } from '@styles/cssUtils'
 
 export const Table = styled.div`
@@ -65,7 +67,18 @@ export const Row = styled.li`
   }
 `
 
-export const Cell = styled.div`
+export const Cell = styled(
+  posed.div({
+    attention: {
+      opacity: 1,
+      transition: {
+        type: 'keyframes',
+        duration: 1000,
+        values: [0, 0.2, 0, 5, 1],
+      },
+    },
+  })
+)`
   position: relative;
   overflow: hidden;
   list-style: none;
@@ -76,6 +89,7 @@ export const Cell = styled.div`
   text-align: center;
   vertical-align: middle;
   display: flex;
+  opacity: 1;
   place-items: center;
 `
 
