@@ -100,10 +100,6 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   render() {
-    //    console.log(cacheStack);
-    const { crosshairValues } = this.state
-    const { name = '', priceUSD = '' } = coin || {}
-
     const {
       coin,
       style,
@@ -112,9 +108,10 @@ export default class PortfolioChart extends Component<Props, State> {
       lastDrawLocation,
       days,
       data,
-
+      crosshairValues,
       isShownMocks,
     } = this.state;
+    const { name = '', priceUSD = '' } = coin || {}
 
     let transformedData = isShownMocks ? yearData : []
     if (
