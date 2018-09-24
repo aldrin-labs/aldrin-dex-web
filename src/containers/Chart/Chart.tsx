@@ -29,6 +29,7 @@ import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSu
 import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
+import CoomingSoon from '@components/CoomingSoon'
 
 const OnlyCharts = Loadable({
   loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
@@ -177,9 +178,13 @@ class Chart extends React.Component<IProps, IState> {
         ? activeExchange.exchange.symbol
         : ''
 
+    const production = process.env.NODE_ENV === 'production'
+
     return (
       <TablesContainer>
+        {production && <CoomingSoon />}
         <TablesBlockWrapper
+          blur={production}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
@@ -423,17 +428,18 @@ const TablesBlockWrapper = styled(Paper)`
   min-width: 150px;
   width: 50%;
   position: relative;
+  ${(props: { blur?: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
   border-right: 1px solid
     ${(props: { rightBorderColor?: string }) => props.rightBorderColor};
 
   && {
     overflow: hidden;
-    background-color: ${(props: { background: string }) => props.background};
+    background-color: ${(props: { background?: string }) => props.background};
     box-shadow: none !important;
   }
 
   @media (max-width: 1080px) {
-    display: ${(props: { variant: { show: boolean } }) =>
+    display: ${(props: { variant: { show?: boolean } }) =>
       props.variant.show ? 'block' : 'none'};
     width: 100%;
     height: calc(100vh - 57px - 70px);
