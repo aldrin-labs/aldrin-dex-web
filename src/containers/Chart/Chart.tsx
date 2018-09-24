@@ -31,6 +31,8 @@ import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWi
 import { IProps, IState } from './Chart.types'
 import CoomingSoon from '@components/CoomingSoon'
 
+const production = process.env.NODE_ENV === 'production'
+
 const OnlyCharts = Loadable({
   loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
   delay: 300,
@@ -177,8 +179,6 @@ class Chart extends React.Component<IProps, IState> {
       activeExchange && activeExchange.exchange
         ? activeExchange.exchange.symbol
         : ''
-
-    const production = process.env.NODE_ENV === 'production'
 
     return (
       <TablesContainer>
@@ -331,6 +331,7 @@ class Chart extends React.Component<IProps, IState> {
             ) : (
               <Fade timeout={1000} in={activeChart === 'depth'}>
                 <DepthChartContainer>
+                  {production && <CoomingSoon />}
                   <MainDepthChart
                     {...{
                       theme,
