@@ -34,6 +34,7 @@ import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import { withTheme, Paper } from '@material-ui/core'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -793,12 +794,9 @@ const ChartContainer = styled.div`
   }
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled(Paper)`
   overflow-y: scroll;
   border-radius: 3px;
-  background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
-    props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
-  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 35vh;
   margin-right: 50px;
 
@@ -945,13 +943,6 @@ const PTR = styled.tr`
 
 const PTRBody = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
-
-  &:nth-child(odd) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
-  }
 
   &:hover {
     background-color: rgba(70, 102, 142, 0.2);
@@ -988,23 +979,20 @@ const PTextBox = styled.div`
   background-color: #2d3136;
 `
 
-class MainDataWrapper extends React.Component {
-  render() {
-    return (
-      <QueryRenderer
-        component={PortfolioTableIndustries}
-        query={getPortfolioQuery}
-        {...this.props}
-      />
-    )
-  }
-}
+const MainDataWrapper = (props) => (
+  <QueryRenderer
+    component={PortfolioTableIndustries}
+    query={getPortfolioQuery}
+    {...props}
+  />
+)
 
 const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps)(MainDataWrapper)
-
-export default compose()(storeComponent)
+export default compose(
+  withTheme(),
+  connect(mapStateToProps)
+)(MainDataWrapper)
