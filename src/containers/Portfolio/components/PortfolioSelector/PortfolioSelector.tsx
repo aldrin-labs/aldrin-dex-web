@@ -147,7 +147,6 @@ const Name = styled.h1`
   border-radius: 2.5rem;
   padding: 0.5rem 0;
   text-align: center;
-  font-family: Roboto, sans-serif;
   color: #4ed8da;
 `
 

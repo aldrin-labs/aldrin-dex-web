@@ -1,11 +1,10 @@
 import styled from 'styled-components'
-import Arrow from 'react-icons/lib/md/keyboard-arrow-left'
+import Arrow from '@material-ui/icons/ChevronLeft'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
 export const AccountsListItem = styled.li`
   display: flex;
   align-items: center;
-  font-family: Roboto, sans-serif;
   font-size: 1em;
   font-weight: 500;
   text-align: left;
@@ -26,7 +25,6 @@ export const AccountsWalletsHeadingWrapper = styled.div`
 `
 
 export const StyledIcon = styled(Arrow)`
-  font-family: Roboto, sans-serif;
   color: #4ed8da;
   text-align: center;
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
@@ -55,7 +53,6 @@ export const AccountName = TypographyFullWidth.extend`
 `
 
 export const Headline = styled.div`
-  font-family: Roboto, sans-serif;
   color: #4ed8da;
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '0' : '1'};
