@@ -26,7 +26,6 @@ class UserContainer extends React.Component {
   }
 
   render() {
-    console.log(process.env.NODE_ENV)
     if (!this.props.loginStatus) {
       return <Redirect to="/portfolio" />
     }
