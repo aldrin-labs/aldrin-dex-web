@@ -21,6 +21,9 @@ import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
+import CoomingSoon from '@components/CoomingSoon'
+
+const production = true
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -311,8 +314,9 @@ class Optimization extends Component<IProps, IState> {
     const { loading, openWarning, warningMessage } = this.state
 
     return (
-      <PTWrapper>
+      <PTWrapper notScrollable={production}>
         <Content>
+          {production && <CoomingSoon />}
           {children}
           {loading ? this.renderLoading() : null}
           <ImportData>{this.renderInput()}</ImportData>
@@ -380,7 +384,9 @@ const MainArea = styled.div`
 const PTWrapper = styled.div`
   min-height: 100%;
   overflow-y: auto;
-  width: calc(100% - 2rem);
+  overflow: auto;
+  ${(props: { notScrollable: boolean }) =>
+    props.notScrollable ? 'overflow:hidden;' : ''} width: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -389,7 +395,6 @@ const PTWrapper = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
-  overflow: auto;
 
   ${customAquaScrollBar};
 `
