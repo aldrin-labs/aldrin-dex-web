@@ -39,8 +39,8 @@ class PortfolioComponent extends React.Component<IProps, IState> {
       activeWallets,
     } = this.props
 
-    console.log('activeKeys: ', activeKeys, 'keys', keys)
-    console.log('activeWallets: ', activeWallets, 'wallets ', wallets)
+    // console.log('activeKeys: ', activeKeys, 'keys', keys)
+    // console.log('activeWallets: ', activeWallets, 'wallets ', wallets)
 
     const hasKeysOrWallets = keys.length + wallets.length > 0
     const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
