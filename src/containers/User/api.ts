@@ -1,27 +1,34 @@
 import gql from 'graphql-tag'
 
+const KeyFragment = gql`
+  fragment KeyFragment on Key{
+    _id
+    name
+    apiKey
+    secret
+    date
+    exchangeId
+    ownerId
+    owner {
+      _id
+      username
+    }
+    exchange {
+      name
+      symbol
+    }
+  }
+`
+
 export const getKeysQuery = gql`
   query getKeys {
     getProfile {
       keys {
-        _id
-        name
-        apiKey
-        secret
-        date
-        exchangeId
-        ownerId
-        owner {
-          _id
-          username
-        }
-        exchange {
-          name
-          symbol
-        }
+        ...KeyFragment
       }
     }
   }
+  ${KeyFragment}
 `
 
 export const deleteExchangeKeyMutation = gql`
@@ -45,23 +52,10 @@ export const addExchangeKeyMutation = gql`
       exchange: $exchange
       date: $date
     ) {
-      _id
-      name
-      apiKey
-      secret
-      date
-      exchangeId
-      ownerId
-      owner {
-        _id
-        username
-      }
-      exchange {
-        name
-        symbol
-      }
+      ...KeyFragment
     }
   }
+  ${KeyFragment}
 `
 export const getExchangesListQuery = gql`
   query getExchangesList($page: Int, $perPage: Int) {
