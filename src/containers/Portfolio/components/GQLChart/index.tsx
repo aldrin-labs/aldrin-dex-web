@@ -1,26 +1,8 @@
 import * as React from 'react'
-import styled from 'styled-components'
-import {
-  XAxis,
-  YAxis,
-  VerticalGridLines,
-  HorizontalGridLines,
-  AreaSeries,
-  FlexibleXYPlot,
-  GradientDefs,
-  Crosshair,
-} from 'react-vis'
 import gql from 'graphql-tag'
-import { Query } from 'react-apollo'
-import { Button, Typography } from '@material-ui/core'
 
-import Highlight from './Highlight'
-import { Props, State } from './annotations'
-import { yearData } from './chartMocks'
-import { Loading } from '@components/Loading/Loading'
-import { ErrorFallback } from '@components/ErrorFallback'
-import { abbrNum } from '../../../Chart/DepthChart/depthChartUtil'
-const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
+import PortfolioChart from '@containers/Portfolio/components/GQLChart/PortfolioChart/PortfolioChart'
+import QueryRenderer from '@components/QueryRenderer'
 
 export const PRICE_HISTORY_QUERY = gql`
   query priceHistoryQuery(
@@ -43,175 +25,6 @@ export const PRICE_HISTORY_QUERY = gql`
   }
 `
 
-const mapLabelToDays = {
-  '1D': 1,
-  '7D': 7,
-  '1M': 30,
-  '3M': 90,
-  '1Y': 365,
-}
-
-class PortfolioChart extends React.Component<Props, State> {
-  showSupplies: true
-  state: State = {
-    activeChart: 4,
-    crosshairValues: [],
-  }
-  componentDidMount() {
-    this.props.updateDays(mapLabelToDays[chartBtns[this.props.activeChart]])
-  }
-
-  onChangeActiveChart = (index: number) => {
-    this.props.setActiveChart(index)
-    this.props.updateDays(mapLabelToDays[chartBtns[index]])
-  }
-
-  _onNearestX = (value, { index }) => {
-    //        console.log(value, index);
-    this.setState({
-      crosshairValues: [value],
-    })
-  }
-
-  _onMouseLeave = () => {
-    this.setState({ crosshairValues: [] })
-  }
-
-  _formatDate = (date) => {}
-
-  render() {
-    const { crosshairValues } = this.state
-    const {
-      coin,
-      style,
-      height,
-      marginTopHr,
-      lastDrawLocation,
-      days,
-    } = this.props
-    const { name = '', priceUSD = '' } = coin || {}
-
-    const axisStyle = {
-      ticks: {
-        padding: '1rem',
-        stroke: '#fff',
-        opacity: 0.75,
-        fontFamily: 'Roboto',
-        fontSize: '12px',
-        fontWeight: 100,
-      },
-      text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
-    }
-
-    return (
-      <SProfileChart style={style}>
-        <Chart height={height}>
-          <FlexibleXYPlot
-            margin={{ left: 50 }}
-            animation
-            onMouseLeave={this._onMouseLeave}
-            xDomain={
-              lastDrawLocation && [
-                lastDrawLocation.left,
-                lastDrawLocation.right,
-              ]
-            }
-          >
-            <VerticalGridLines
-              style={{ stroke: 'rgba(134, 134, 134, 0.2)' }}
-              tickTotal={12}
-              tickFormat={(v: number) => '`$${v}`'}
-              tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
-              labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
-            />
-            <HorizontalGridLines
-              style={{ stroke: 'rgba(134, 134, 134, 0.2)' }}
-            />
-            <XAxis
-              style={axisStyle}
-              tickFormat={(v: number) =>
-                new Date(v * 1000).toUTCString().substring(5, 11)
-              }
-            />
-            <YAxis
-              style={axisStyle}
-              tickFormat={(value) => `$${abbrNum(+value.toFixed(2), 2)}`}
-            />
-            <GradientDefs>
-              <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="40%" stopColor="#267871" stopOpacity={0.2} />
-                <stop offset="80%" stopColor="#136a8a" stopOpacity={0.4} />
-                <stop offset="100%" stopColor="#136a8a" stopOpacity={0.5} />
-              </linearGradient>
-            </GradientDefs>
-            <AreaSeries
-              color={'url(#CoolGradient)'}
-              onNearestX={this._onNearestX}
-              data={this.props.data}
-              style={{
-                // fill: 'rgba(133, 237, 238, 0.15)',
-                stroke: 'rgb(78, 216, 218)',
-                strokeWidth: '1px',
-              }}
-            />
-
-            <Crosshair values={crosshairValues}>
-              <div
-                style={{
-                  background: '#4c5055',
-                  color: '#4ed8da',
-                  padding: '5px',
-                  fontSize: '14px',
-                }}
-              >
-                <p>
-                  {crosshairValues
-                    .map((v) => new Date(v.x * 1000).toDateString())
-                    .join(' ')}
-                  :{' '}
-                  {crosshairValues
-                    .map((v) => `$${Number(v.y).toFixed(2)}`)
-                    .join(' ')}
-                </p>
-              </div>
-            </Crosshair>
-
-            {this.props.isShownMocks ? null : (
-              <Highlight
-                onBrushEnd={(area) => {
-                  this.props.onChangeDateRange(area)
-                }}
-              />
-            )}
-          </FlexibleXYPlot>
-        </Chart>
-
-        <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => (
-            <Button
-              color="secondary"
-              size="small"
-              onClick={() => this.onChangeActiveChart(i)}
-              style={
-                i === this.props.activeChart
-                  ? {
-                      backgroundColor: '#4ed8da',
-                      color: '#4c5055',
-                      margin: '0 0.5rem',
-                    }
-                  : { margin: '0 0.5rem' }
-              }
-              key={chartBtn}
-            >
-              {chartBtn}
-            </Button>
-          ))}
-        </BtnsContainer>
-      </SProfileChart>
-    )
-  }
-}
-
 export default class GQLChart extends React.Component {
   state = {
     coins: [],
@@ -225,11 +38,10 @@ export default class GQLChart extends React.Component {
 
   static getDerivedStateFromProps(newProps, state) {
     if (newProps.coins !== state.coins) {
-      let newState = { ...state }
+      const newState = { ...state }
       // tslint:disable-next-line:no-object-mutation
       newState.coins = newProps.coins
         .map((x) => x.symbol)
-        .filter((x) => x !== 'FUN')
       // tslint:disable-next-line:no-object-mutation
       newState.assets = newProps.coins
       // tslint:disable-next-line:no-object-mutation
@@ -244,7 +56,7 @@ export default class GQLChart extends React.Component {
   }
 
   getTimestampRange(days) {
-    const today = Date.now() / 1000 - 20 * 24 * 60 * 60
+    const today = Date.now() / 1000
     return {
       left: Math.floor(today - days * 24 * 60 * 60),
       right: Math.floor(today),
@@ -253,17 +65,12 @@ export default class GQLChart extends React.Component {
 
   updateDays(days) {
     this.setState((prevState) => {
-      let newState = { ...prevState }
-      let area = this.getTimestampRange(days)
+      const newState = { ...prevState }
+      const area = this.getTimestampRange(days)
       newState.days = days
       newState.unixTimestampFrom = area.left
       newState.unixTimestampTo = area.right
-      if (prevState.lastDrawLocation !== null) {
-        area = prevState.lastDrawLocation
-        area.left = newState.unixTimestampFrom
-        area.right = newState.unixTimestampTo
-        newState.lastDrawLocation = area
-      }
+      newState.lastDrawLocation = null;
 
       return newState
     })
@@ -273,19 +80,27 @@ export default class GQLChart extends React.Component {
     if (area === null) {
       area = this.getTimestampRange(this.state.days)
     }
-
     this.setState((prevState) => {
-      let newState = { ...prevState }
+      const newState = { ...prevState }
+      console.log(newState);
       newState.unixTimestampFrom = Math.floor(area.left)
       newState.unixTimestampTo = Math.floor(area.right)
-      newState.lastDrawLocation = area
+      if (newState.lastDrawLocation === null) {
+        newState.lastDrawLocation = area
+      } else {
+        newState.lastDrawLocation = prevState.lastDrawLocation;
+        newState.lastDrawLocation.left = newState.unixTimestampFrom;
+        newState.lastDrawLocation.right = newState.unixTimestampTo;
+      }
       return newState
     })
   }
 
   render() {
+    console.log(this.state);
     return (
-      <Query
+      <QueryRenderer
+        component={PortfolioChart}
         query={PRICE_HISTORY_QUERY}
         variables={{
           coins: this.state.coins,
@@ -293,127 +108,12 @@ export default class GQLChart extends React.Component {
           unixTimestampFrom: this.state.unixTimestampFrom,
           unixTimestampTo: this.state.unixTimestampTo,
         }}
-      >
-        {({ subscribeToMore, loading, error, ...result }) => {
-          let data = []
-          if (
-            result.data &&
-            result.data.getPriceHistory &&
-            result.data.getPriceHistory.prices &&
-            result.data.getPriceHistory.prices.length > 0
-          ) {
-            const Yvalues = result.data.getPriceHistory.prices.map((x) => x)
-            data = result.data.getPriceHistory.dates.map((date, i) => ({
-              x: Number(date),
-              y: Yvalues[i],
-            }))
-          }
-
-          if (loading) {
-            return <Loading centerAligned />
-          } else if (error) {
-            return <ErrorFallback error={error} />
-          }
-
-          const render =
-            data.length > 0 ? (
-              <PortfolioChart
-                loading={loading}
-                error={error}
-                data={this.props.isShownMocks ? yearData : data}
-                onChangeDateRange={(area) => this.onChangeDateRange(area)}
-                updateDays={(days) => this.updateDays(days)}
-                lastDrawLocation={this.state.lastDrawLocation}
-                {...this.props}
-              />
-            ) : (
-              <Typography align="center" variant="display3" color="error">
-                No data
-              </Typography>
-            )
-
-          return render
-        }}
-      </Query>
+        withOutSpinner={true}
+        onChangeDateRange={(area) => this.onChangeDateRange(area)}
+        updateDays={(days) => this.updateDays(days)}
+        lastDrawLocation={this.state.lastDrawLocation}
+        {...this.props}
+      />
     )
   }
 }
-
-const Chart = styled.div`
-  width: 100%;
-  min-height: 5em;
-  margin-top: 24px;
-  height: ${(props: { height: string }) => props.height};
-
-  @media (min-width: 1400px) {
-    height: 100%;
-  }
-`
-
-const BtnsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 16px auto 16px auto;
-`
-
-const SProfileChart = styled.div`
-  width: 100%;
-  padding: 0 16px;
-  border-radius: 3px;
-  min-height: 38vh;
-  margin: 0 auto;
-
-  display: flex;
-  flex-direction: column;
-
-  @media (min-width: 1400px) {
-    height: 90%;
-  }
-`
-
-const SuppliesBlock = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 16px auto 0 auto;
-`
-
-const SupplyBlock = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 56px;
-  margin-right: 35px;
-`
-
-const CurrentRate = styled.span`
-  font-family: Roboto, sans-serif;
-  font-size: 25px;
-  font-weight: 500;
-  color: #4ed8da;
-`
-
-const CommonRate = styled.span`
-  font-family: Roboto, sans-serif;
-  font-size: 20px;
-  color: #ffffff;
-`
-
-const SupplyLowRate = styled.span`
-  font-family: Roboto, sans-serif;
-  font-size: 20px;
-  color: #ff687a;
-`
-
-const SupplyHighRate = styled.span`
-  font-family: Roboto, sans-serif;
-  font-size: 20px;
-  color: #65c000;
-`
-
-const SupplyDetail = styled.span`
-  opacity: 0.5;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-  color: #ffffff;
-  margin-top: 4px;
-`

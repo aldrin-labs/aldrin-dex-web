@@ -11,7 +11,9 @@ import {
   formatNumberToUSFormat,
 } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
-import { exchangeOptions, coinsOptions } from '.././mocks'
+import { exchangeOptions } from '.././mocks'
+import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
+import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 
 import { Checkbox, Label, Span, Icon } from '@styles/cssUtils'
 import {
@@ -24,7 +26,6 @@ import {
   PTFoot,
   TableButton,
   InputTable,
-  SelectR,
 } from './RebalancedPortfolioTable.styles'
 
 import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
@@ -51,6 +52,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   IProps,
   IState
 > {
+
   renderActiveCheckbox = (idx: number) => {
     const { selectedActive } = this.props
     const isSelected =
@@ -218,8 +220,9 @@ export default class RebalancedPortfolioTable extends React.Component<
     name: string,
     optionSelected?: { label: string; value: string } | null
   ) => {
+
     const { rows, updateState } = this.props
-    const value = optionSelected ? optionSelected.value : ''
+    const value = optionSelected && !Array.isArray(optionSelected) ? optionSelected.value : ''
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
 
     const resultRows = [
@@ -269,7 +272,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           ...clonedRows.slice(0, idx),
           {
             ...clonedRows[idx],
-            price: '0',
+            price: '0.00',
           },
           ...clonedRows.slice(idx + 1, clonedRows.length),
         ]
@@ -319,10 +322,16 @@ export default class RebalancedPortfolioTable extends React.Component<
       onReset,
       onEditModeEnable,
       updateState,
+      textColor,
+      background,
+      secondary,
+      red,
+      green,
     } = this.props
 
+
     const saveButtonColor =
-      isPercentSumGood && undistributedMoney >= 0 ? '#4caf50' : '#f44336'
+      isPercentSumGood && undistributedMoney >= 0 ? green : red
 
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
@@ -335,7 +344,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       : btcHeadingForRebalanced
 
     return (
-      <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled}>
+      <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled} textColor={textColor}>
         <TableHeading>
           Rebalanced portfolio
           <RebalanceActionButtons
@@ -345,6 +354,9 @@ export default class RebalancedPortfolioTable extends React.Component<
               onSaveClick,
               onEditModeEnable,
               onReset,
+              secondary,
+              red,
+              green,
             }}
           />
         </TableHeading>
@@ -446,6 +458,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                       <PTDR
                         key="smt"
                         isSelected={isSelected}
+                        secondary={secondary}
                         onClick={() => this.onSelectActiveBalance(id)}
                       >
                         {this.renderActiveCheckbox(id)}
@@ -461,7 +474,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                       if (isNewCoinName) {
                         return (
                           <PTDR key={`NameExchange${idx}`}>
-                            <SelectR
+                            <SelectAllExchangeList
                               key={`inputNameExchange${rowIndex}`}
                               classNamePrefix="custom-select-box"
                               isClearable={true}
@@ -475,11 +488,21 @@ export default class RebalancedPortfolioTable extends React.Component<
                               menuListStyles={{
                                 height: '200px',
                               }}
+                              optionStyles={{
+                                fontSize:'12px',
+                              }}
                               clearIndicatorStyles={{
                                 padding: '2px',
                               }}
-                              onChange={() =>
-                                this.handleSelectChange(rowIndex, 'exchange')
+                              valueContainerStyles={{
+                                maxWidth: '55px',
+                                overflow: 'hidden',
+                              }}
+                              inputStyles={{
+                                marginLeft: '0',
+                              }}
+                              onChange={(optionSelected: { label: string; value: string } | null) =>
+                                this.handleSelectChange(rowIndex, 'exchange', optionSelected)
                               }
                             />
                           </PTDR>
@@ -489,27 +512,36 @@ export default class RebalancedPortfolioTable extends React.Component<
                       if (isNewCoinSymbol) {
                         return (
                           <PTDR key={`CoinSymbol${idx}`}>
-                            <SelectR
+                            <SelectCoinList
                               key={`inputCoinSymbol${rowIndex}`}
                               classNamePrefix="custom-select-box"
                               isClearable={true}
                               isSearchable={true}
-                              options={coinsOptions}
                               menuPortalTarget={document.body}
                               menuStyles={{
-                                minWidth: '150px',
-                                height: '200px',
+                              minWidth: '150px',
+                              height: '200px',
                               }}
                               menuListStyles={{
-                                height: '200px',
+                              height: '200px',
+                              }}
+                              optionStyles={{
+                                fontSize:'12px',
                               }}
                               clearIndicatorStyles={{
-                                padding: '2px',
+                              padding: '2px',
                               }}
-                              onChange={() =>
-                                this.handleSelectChange(rowIndex, 'symbol')
+                              valueContainerStyles={{
+                                maxWidth: '55px',
+                                overflow: 'hidden',
+                              }}
+                              inputStyles={{
+                                marginLeft: '0',
+                              }}
+                              onChange={(optionSelected: { label: string; value: string } | null) =>
+                              this.handleSelectChange(rowIndex, 'symbol', optionSelected)
                               }
-                            />
+                              />
                           </PTDR>
                         )
                       }
@@ -517,8 +549,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                       if (idx === 2) {
                         const color =
                           Number(col.replace(/%/g, '')) >= 0
-                            ? '#4caf50'
-                            : '#f44336'
+                            ? green
+                            : red
                         if (!isEditModeEnabled) {
                           return (
                             <PTDR key={`${col}${idx}`} style={{ color }}>
@@ -543,12 +575,13 @@ export default class RebalancedPortfolioTable extends React.Component<
                               onFocus={(e) =>
                                 this.onFocusPercentInput(e, rowIndex)
                               }
+                              red={red}
                             />
                           </PTDR>
                         )
                       }
                       if (col.match(/BUY/g)) {
-                        const color = '#4caf50'
+                        const color = green
 
                         return (
                           <PTDR
@@ -560,7 +593,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                         )
                       }
                       if (col.match(/SELL/g)) {
-                        const color = '#f44336'
+                        const color = red
 
                         return (
                           <PTDR
@@ -587,6 +620,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                       <TableButton
                         isDeleteColor={false}
                         onClick={() => this.onDeleteRowClick(rowIndex)}
+                        red={red}
+                        green={green}
                       >
                         <DeleteIcon />
                       </TableButton>
@@ -606,6 +641,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                     <TableButton
                       isDeleteColor={true}
                       onClick={this.onAddRowButtonClick}
+                      red={red}
+                      green={green}
                     >
                       <AddIcon />
                     </TableButton>
@@ -650,6 +687,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             rows,
             selectedActive,
             updateState,
+            secondary,
+            red,
+            green,
           }}
         />
       </TableAndHeadingWrapper>

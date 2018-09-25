@@ -19,6 +19,15 @@ const auth0Options = {
     scope: 'openid',
     audience: 'localhost:5080',
   },
+  theme: {
+    logo:
+      'https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png',
+    primaryColor: '#4ed8da',
+  },
+  languageDictionary: {
+    title: 'Be the early adopter',
+  },
+  autofocus: true,
   autoclose: true,
   oidcConformant: true,
 }
@@ -31,40 +40,58 @@ const SWrapper = styled.div`
 `
 
 class LoginQuery extends React.Component<Props, State> {
-  lock: Auth0LockStatic = new Auth0Lock(
-    '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
-    'ccai.auth0.com',
-    auth0Options
-  )
-
   constructor(props: Props) {
     super(props)
     this.state = {
       anchorEl: null,
+      lock: null,
     }
   }
 
+  static getDerivedStateFromProps(props: Props) {
+    auth0Options.theme.primaryColor = props.mainColor
+    return {
+      lock: new Auth0Lock(
+        '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm',
+        'ccai.auth0.com',
+        auth0Options
+      ),
+    }
+  }
+/*
   componentWillMount() {
     this.checkToken()
-  }
+  }*/
 
   componentDidMount() {
-    this.lock.on('authenticated', (authResult: any) => {
-      this.lock.getUserInfo(
+    if (this.props.isShownModal) this.showLogin()
+    this.checkToken()
+    this.setLockListeners()
+  }
+
+  setLockListeners = () => {
+    this.state.lock.on('authenticated', (authResult: any) => {
+      this.props.onLogin()
+      this.state.lock.getUserInfo(
         authResult.accessToken,
         (error: Error, profile: any) => {
           if (error) {
             console.error(error)
           }
           this.props.storeLogin(profile)
-          // localStorage.setItem('token', authResult.idToken)
           this.setToken(authResult.idToken)
           this.createUserReq(profile)
         }
       )
     })
-
-    if (this.props.isShownModal) this.lock.show()
+    this.state.lock.on('show', () => {
+      this.props.storeOpenedModal()
+    })
+    this.state.lock.on('hide', () => {
+      this.props.storeModalIsClosing()
+      this.setState({listenersOn: false})
+      setTimeout(() => this.props.storeClosedModal(), 1000)
+    })
   }
 
   removeToken = () => {
@@ -76,15 +103,17 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   checkToken = () => {
-    const token = this.getToken()
-    if (token) {
-      const decodedToken: { exp: number } = jwtDecode(token)
-      const currentTime = Date.now() / 1000
-      if (currentTime > decodedToken.exp) {
+    if (this.props.loginStatus) {
+      const token = this.getToken()
+      if (token) {
+        const decodedToken: { exp: number } = jwtDecode(token)
+        const currentTime = Date.now() / 1000
+        if (currentTime > decodedToken.exp) {
+          this.props.storeLogout()
+        }
+      } else {
         this.props.storeLogout()
       }
-    } else {
-      this.props.storeLogout()
     }
   }
 
@@ -123,7 +152,10 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    this.lock.show()
+    if (!this.props.modalIsOpen && !this.props.isLogging) {
+      this.state.lock.show()
+      this.setLockListeners()
+    }
   }
 
   render() {
@@ -162,13 +194,19 @@ class LoginQuery extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: any) => ({
+  isLogging: state.login.isLogging,
   user: state.login.user,
   loginStatus: state.login.loginStatus,
+  modalIsOpen: state.login.modalIsOpen,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
+  onLogin: () => dispatch(actions.onLogin()),
   storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
   storeLogout: () => dispatch(actions.storeLogout()),
+  storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
+  storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
+  storeClosedModal: () => dispatch(actions.storeClosedModal()),
 })
 
 export const Login = compose(

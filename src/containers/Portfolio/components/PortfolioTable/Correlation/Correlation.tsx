@@ -25,6 +25,7 @@ import {
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
+import { Card } from '@material-ui/core'
 
 const Correlation = (props: IProps) => {
   const {
@@ -34,7 +35,6 @@ const Correlation = (props: IProps) => {
     setCorrelationPeriodToStore,
     portfolio,
     filterValueSmallerThenPercentage,
-    theme,
   } = props
 
   let dataRaw = {}
@@ -86,7 +86,7 @@ const Correlation = (props: IProps) => {
         console.log(portfolio)
 
         return (
-          <PTWrapper background={theme.palette.background.paper}>
+          <PTWrapper>
             {children}
             <CorrelationMatrix
               fullScreenChangeHandler={props.toggleFullscreen}
@@ -150,15 +150,13 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
 `
 
-const PTWrapper = styled.div`
+const PTWrapper = styled(Card)`
   min-width: 70vw;
   width: 100%;
   min-height: 75vh;
   display: flex;
   flex-direction: column;
-  background-color: ${(props: { background: string }) => props.background};
   border-radius: 3px;
-  box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: auto;
 `

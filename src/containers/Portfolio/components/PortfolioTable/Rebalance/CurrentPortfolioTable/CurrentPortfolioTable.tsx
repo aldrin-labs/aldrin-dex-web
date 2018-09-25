@@ -36,6 +36,9 @@ export default class CurrentPortfolioTable extends React.Component<
       staticRows,
       filterValueSmallerThenPercentage,
       onSortTable,
+      textColor,
+      red,
+      green,
     } = this.props
 
     const mainSymbol = isUSDCurrently ? (
@@ -49,7 +52,7 @@ export default class CurrentPortfolioTable extends React.Component<
       : btcHeadingForCurrent
 
     return (
-      <TableAndHeadingWrapper>
+      <TableAndHeadingWrapper textColor={textColor}>
         <TableHeading>Current portfolio</TableHeading>
         <Wrapper>
           <Table style={{ width: '520px' }}>
@@ -117,8 +120,8 @@ export default class CurrentPortfolioTable extends React.Component<
                         if (col.match(/%/g)) {
                           const color =
                             Number(col.replace(/%/g, '')) >= 0
-                              ? '#4caf50'
-                              : '#f44336'
+                              ? green
+                              : red
 
                           return (
                             <PTDC key={`${col}${index}`} style={{ color }}>

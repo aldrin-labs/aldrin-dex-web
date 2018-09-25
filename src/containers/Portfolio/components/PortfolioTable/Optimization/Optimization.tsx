@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { LinearProgress } from '@material-ui/core'
-import { isEqual } from 'lodash-es'
+import { LinearProgress, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import * as actions from '@containers/Portfolio/actions'
@@ -244,6 +243,7 @@ class Optimization extends Component<IProps, IState> {
     } = this.state
     const { storeData } = this.props
 
+    if (!storeData) return
     const formatedData = storeData.map((el: IData, i) => ({
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
@@ -377,7 +377,7 @@ const MainArea = styled.div`
   margin: 2rem;
 `
 
-const PTWrapper = styled.div`
+const PTWrapper = styled(Card)`
   min-height: 100%;
   overflow-y: auto;
   width: calc(100% - 2rem);
@@ -424,8 +424,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   updateData: (data: any) => dispatch(actions.updateDataForOptimization(data)),
   setPeriod: (payload: any) => dispatch(actions.setOptimizationPeriod(payload)),
 })
-const storeComponent = connect(mapStateToProps, mapDispatchToProps)(
-  Optimization
-)
+const storeComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Optimization)
 
 export default compose()(storeComponent)

@@ -5,6 +5,7 @@ export const getCoinsForOptimization = gql`
     getProfile {
       portfolioId
       portfolio {
+        assetIds
         assets {
           _id
           quantity

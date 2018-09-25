@@ -18,6 +18,7 @@ export interface IProps {
   showPlaceholder?: boolean
   height?: number
   alwaysShowLegend?: boolean
+  animated?: boolean
 }
 export interface IState {
   value: IValue | { x: null; y: null }

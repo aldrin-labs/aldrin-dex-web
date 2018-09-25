@@ -1,6 +1,8 @@
 import { CSSProperties } from 'react'
+import { WithTheme } from '@material-ui/core'
 
-export interface IProps {
+export interface IProps extends WithTheme{
+  asyncSelect: boolean
   controlStyles: CSSProperties
   menuStyles: CSSProperties
   menuListStyles: CSSProperties
@@ -15,4 +17,5 @@ export interface IProps {
   multiValueLabelStyles: CSSProperties
   multiValueRemoveStyles: CSSProperties
   indicatorSeparatorStyles: CSSProperties
+  loadingIndicatorStyles: CSSProperties
 }

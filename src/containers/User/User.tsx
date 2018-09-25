@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
+import { Redirect } from 'react-router'
 import { connect } from 'react-redux'
 
 import { withErrorFallback } from '@hoc/withErrorFallback'
@@ -25,6 +26,9 @@ class UserContainer extends React.Component {
   }
 
   render() {
+    if (!this.props.loginStatus) {
+      return <Redirect to="/portfolio" />
+    }
     return (
       <div>
         <UserWrap>
@@ -40,7 +44,7 @@ class UserContainer extends React.Component {
           <Heading>Show mocks</Heading>
           <Switch
             onChange={this.toggleMocks}
-            checked={!this.props.isShownMocks}
+            checked={this.props.isShownMocks}
           />
         </AdminCP>
       </div>
@@ -75,6 +79,7 @@ const UserWrap = styled.div`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  loginStatus: store.login.loginStatus
 })
 
 const storeComponent = connect(mapStateToProps)(UserContainer)
