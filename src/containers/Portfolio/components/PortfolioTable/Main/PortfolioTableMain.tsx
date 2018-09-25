@@ -282,12 +282,7 @@ const PTR = styled.tr`
       isBase?: boolean
       evenBackground: string
       selectedBackground: string
-    }) =>
-      props.isBase
-        ? '#00ff0028'
-        : props.isSelected
-          ? props.evenBackground
-          : props.selectedBackground};
+    }) => props.evenBackground};
   }
 
   & ${PTD}:nth-child(n + 4) {
