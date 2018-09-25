@@ -1,8 +1,7 @@
+import { Button, Typography } from '@material-ui/core'
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { Typography, Button } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import styled from 'styled-components'
-
 
 export { PTWrapper, PTextBox, STypography, STypographyButtonText, SButton, SAddIcon }
 
