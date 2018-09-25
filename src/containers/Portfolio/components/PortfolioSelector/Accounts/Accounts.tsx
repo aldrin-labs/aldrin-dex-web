@@ -1,6 +1,6 @@
 import React from 'react'
 import { Checkbox } from '@material-ui/core'
-import { has } from 'lodash'
+import { has } from 'lodash-es'
 
 import { IProps, keyItem } from './Accounts.types'
 import {
