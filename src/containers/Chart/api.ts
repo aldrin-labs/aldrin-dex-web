@@ -18,6 +18,14 @@ export const MARKET_TICKERS = gql`
   }
 `
 
+export const MARKETS_QUERY = gql`
+  query MarketsQuery {
+    liveMarkets {
+      name
+    }
+  }
+`
+
 export const MARKET_QUERY = gql`
   query marketTickers($symbol: String!, $exchange: String!) {
     marketTickers(symbol: $symbol, exchange: $exchange)
