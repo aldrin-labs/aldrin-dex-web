@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { Typography, Divider, Button, Paper } from '@material-ui/core'
+import { Typography, Divider, Button, Paper, Card } from '@material-ui/core'
 
 import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
@@ -468,10 +468,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     // }
 
     return (
-      <PTWrapper
-        background={theme.palette.background.paper}
-        tableData={!!tableDataHasData}
-      >
+      <PTWrapper tableData={!!tableDataHasData}>
         {children}
 
         <GridContainer>
@@ -576,14 +573,13 @@ const ChartTitle = styled(Typography)`
   margin-left: 1.2rem;
 `
 
-export const PTWrapper = styled.div`
+export const PTWrapper = styled(Card)`
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
-  background-color: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
