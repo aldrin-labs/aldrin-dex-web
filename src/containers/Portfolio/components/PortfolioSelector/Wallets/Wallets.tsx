@@ -7,7 +7,7 @@ import {
   AccountName,
   AccountsList,
   AccountsListItem,
-} from '@containers/Portfolio/components/PortfolioSelector/styles'
+} from '@containers/Portfolio/components/PortfolioSelector/sharedStyles/sharedStyles'
 
 
 export default class Wallets extends React.PureComponent<IProps> {

@@ -12,7 +12,7 @@ import {
   AccountName,
   AccountsList,
   AccountsListItem,
-} from '@containers/Portfolio/components/PortfolioSelector/styles'
+} from '@containers/Portfolio/components/PortfolioSelector/sharedStyles/sharedStyles'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
 export default class Accounts extends React.PureComponent<IProps> {
