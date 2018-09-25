@@ -137,7 +137,7 @@ class AddExchangeKeyComponent extends React.Component {
             onBlur={handleBlur}
             placeholder="Enter secret key here..."
             autoComplete="off"
-            type="text"
+            type="password"
             margin="normal"
             helperText={
               touched.secret &&
