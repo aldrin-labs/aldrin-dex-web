@@ -35,7 +35,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
       return null
     }
 
-    const textColor: string= palette.getContrastText(palette.background.paper)
+    const textColor: string = palette.getContrastText(palette.background.paper)
 
     return (
       <PTBody
@@ -133,6 +133,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               key={`${currency}${symbol}${quantity}${index}`}
               isSelected={isSelected}
               isBase={isBase}
+              evenBackground={palette.action.hover}
               background={palette.background.paper}
               selectedBackground={palette.background.default}
               onClick={() => this.props.onSelectBalance(id)}
@@ -274,6 +275,20 @@ const PTR = styled.tr`
       : props.isSelected
         ? props.background
         : props.selectedBackground};
+
+  &:nth-child(even) {
+    background-color: ${(props: {
+      isSelected?: boolean
+      isBase?: boolean
+      evenBackground: string
+      selectedBackground: string
+    }) =>
+      props.isBase
+        ? '#00ff0028'
+        : props.isSelected
+          ? props.evenBackground
+          : props.selectedBackground};
+  }
 
   & ${PTD}:nth-child(n + 4) {
     text-align: right;
