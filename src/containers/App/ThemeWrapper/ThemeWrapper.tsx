@@ -25,10 +25,6 @@ export default class ThemeWrapper extends Component<Props> {
           default: themeMode === 'light' ? '#fafafa' : '#303030',
           paper: themeMode === 'light' ? '#fff' : '#393e44',
         },
-        navbar: {
-          light: '#fff',
-          dark: 'rgb(45, 49, 54)',
-        },
       },
     })
 

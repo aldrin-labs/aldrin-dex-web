@@ -22,12 +22,16 @@ class ExchangesTable extends PureComponent<IProps> {
       theme,
     } = this.props
 
+    const {
+      palette: { type },
+    } = theme
+
     return (
       <StyledTable>
-        <Title background={theme.palette.primary.main}>
+        <Title background={theme.palette.primary[type]}>
           <TypographyWithCustomColor
             textColor={theme.palette.getContrastText(
-              theme.palette.primary.main
+              theme.palette.primary[type]
             )}
             variant="subheading"
             align="center"
@@ -41,7 +45,7 @@ class ExchangesTable extends PureComponent<IProps> {
           >
             <TypographyWithCustomColor
               textColor={theme.palette.getContrastText(
-                theme.palette.primary.main
+                theme.palette.primary[type]
               )}
               variant="headline"
               align="left"

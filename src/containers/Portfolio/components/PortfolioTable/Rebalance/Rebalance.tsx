@@ -437,10 +437,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     if (tableDataHasData) {
       return (
-        <PTWrapper
-          tableData={tableDataHasData}
-          background={background}
-        >
+        <PTWrapper tableData={tableDataHasData} background={background}>
           {children}
           <PTextBox>Add account for Portfolio</PTextBox>
         </PTWrapper>
@@ -448,8 +445,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={true} background={background}
-      >
+      <PTWrapper tableData={true} background={background}>
         {children}
         <Content>
           <Container>
@@ -501,7 +497,7 @@ class Rebalance extends React.Component<IProps, IState> {
               rightBar={rightBar}
               onChangeColor={this.onChangeColor}
             />
-            <ChartContainer background={theme.palette.background.paper}>
+            <ChartContainer elevation={10}>
               <Chart>
                 {staticRows[0].portfolioPerc && (
                   <BarChart

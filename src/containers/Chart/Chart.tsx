@@ -273,6 +273,7 @@ class Chart extends React.Component<IProps, IState> {
     const { activeChart } = this.state
     const { currencyPair, theme } = this.props
     const { palette } = theme
+    const { type } = palette
 
     if (!currencyPair) {
       return
@@ -293,13 +294,13 @@ class Chart extends React.Component<IProps, IState> {
           <ChartsContainer>
             <ChartsSwitcher
               divider={palette.divider}
-              background={palette.primary.main}
+              background={palette.primary[type]}
             >
               {base &&
                 quote && (
-                  <ExchangePair background={palette.primary.dark}>
+                  <ExchangePair background={palette.primary[type]}>
                     <TypographyWithCustomColor
-                      textColor={palette.getContrastText(palette.primary.dark)}
+                      textColor={palette.getContrastText(palette.primary[type])}
                       variant="subheading"
                     >
                       {`${base}/${quote}`}

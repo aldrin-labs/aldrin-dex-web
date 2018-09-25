@@ -45,21 +45,16 @@ class SpreadTable extends Component<IProps> {
       digitsAfterDecimalForBidsSize,
       digitsAfterDecimalForBidsPrice,
     } = this.props
-    const {
-      background,
-      action,
-      primary: { main },
-      green,
-    } = palette
+    const { background, action, primary, type, green } = palette
 
     return (
       <SpreadreadTableWrapper>
-        <Head background={main} style={{ height: '1.625rem' }}>
-          <TriggerRow isHead={true} background={main}>
+        <Head background={primary[type]} style={{ height: '1.625rem' }}>
+          <TriggerRow isHead={true} background={primary[type]}>
             <EmptyCell width="10%" />
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                textColor={palette.getContrastText(main)}
+                textColor={palette.getContrastText(primary[type])}
                 variant="body2"
                 align="right"
               >
@@ -68,7 +63,7 @@ class SpreadTable extends Component<IProps> {
             </HeadCell>
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                textColor={palette.getContrastText(main)}
+                textColor={palette.getContrastText(primary[type])}
                 variant="body2"
                 align="right"
                 color="secondary"

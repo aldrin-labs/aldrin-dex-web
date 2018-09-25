@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { LinearProgress } from '@material-ui/core'
+import { LinearProgress, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import * as actions from '@containers/Portfolio/actions'
@@ -377,7 +377,7 @@ const MainArea = styled.div`
   margin: 2rem;
 `
 
-const PTWrapper = styled.div`
+const PTWrapper = styled(Card)`
   min-height: 100%;
   overflow-y: auto;
   width: calc(100% - 2rem);
