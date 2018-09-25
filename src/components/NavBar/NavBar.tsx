@@ -13,17 +13,18 @@ export interface Props extends WithTheme {
 // ToDo add grid
 const NavBarRaw: SFC<Props> = ({
   theme: {
+    shadows,
     palette: {
-      navbar,
       type,
       getContrastText,
       secondary: { main },
+      primary,
     },
   },
   pathname,
   hide = false,
 }) => (
-  <Nav hide={hide} background={navbar[type]}>
+  <Nav hide={hide} background={primary.main} shadow={shadows[5]}>
     <Logo src="https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png" />
     <SNav>
       {/*<NavButton link="/" title="Home" exact />*/}
@@ -31,14 +32,14 @@ const NavBarRaw: SFC<Props> = ({
       {/*<NavButton link="/profile" title="Profile" />*/}
       <NavButton
         active={pathname === '/portfolio'}
-        color={getContrastText(navbar[type])}
+        color={getContrastText(primary.main)}
         link="/portfolio"
         title="Portfolio"
       />
       {/*<NavButton link="/screener" title="Screener" />*/}
       <NavButton
         active={pathname === '/chart'}
-        color={getContrastText(navbar[type])}
+        color={getContrastText(primary.main)}
         link="/chart"
         title="Chart"
       />
@@ -58,8 +59,10 @@ const Nav = styled.div`
   display: flex;
   justify-content: space-between;
   height: 80px;
+  box-shadow: ${(props: { shadow: string }) => props.shadow};
   align-items: center;
-  background-color: ${(props: { background: string }) => props.background};
+  background-color: ${(props: { background: string; shadow: string }) =>
+    props.background};
   z-index: 1;
   ${(props: { hide: boolean; background: string }) =>
     props.hide

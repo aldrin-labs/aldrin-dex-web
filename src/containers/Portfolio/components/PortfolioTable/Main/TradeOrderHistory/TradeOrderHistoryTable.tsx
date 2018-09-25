@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { withTheme } from '@material-ui/core'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { MyTradesQuery } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/api'
