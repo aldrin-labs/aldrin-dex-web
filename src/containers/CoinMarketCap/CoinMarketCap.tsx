@@ -8,6 +8,7 @@ import Calculator from '@components/Calculator/Calculator'
 import DominanceChart from '@components/DominanceChart/DominanceChart'
 import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
+import { CoinMarketCapQuery } from './api'
 import { Loading } from '@components/Loading'
 
 interface Props {
@@ -151,32 +152,6 @@ const Wrapper = styled.div`
   display: flex;
   margin: 0 auto;
   padding: 0.5rem;
-`
-
-export const CoinMarketCapQuery = gql`
-  query CoinMarketCapQuery($page: Int, $perPage: Int) {
-    assetPagination(page: $page, perPage: $perPage) {
-      pageInfo {
-        pageCount
-        hasNextPage
-        currentPage
-        hasPreviousPage
-        perPage
-      }
-      count
-      items {
-        _id
-        name
-        symbol
-        priceUSD
-        maxSupply
-        totalSupply
-        availableSupply
-        priceUSD
-        percentChangeDay
-      }
-    }
-  }
 `
 
 const options = ({ location }) => {
