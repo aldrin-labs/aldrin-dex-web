@@ -75,7 +75,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         this.combineTableData({ assets: MOCK_DATA })
       )
 
-      this.setState({ activeKeys: this.props.checkboxes })
+      this.setState({ activeKeys: this.props.activeKeys })
 
       return
     } else if (!data) {
@@ -95,7 +95,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       this.combineTableData(composeWithMocks)
     )
 
-    this.setState({ activeKeys: this.props.checkboxes })
+    this.setState({ activeKeys: this.props.activeKeys })
   }
 
   componentWillReceiveProps(nextProps: IProps) {
@@ -137,13 +137,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       this.combineTableData(composeWithMocks)
     }
 
-    if (nextProps.checkboxes) {
-      this.setState({ activeKeys: nextProps.checkboxes }, () =>
+    if (nextProps.activeKeys) {
+      this.setState({ activeKeys: nextProps.activeKeys }, () =>
         this.combineTableData(this.state.portfolio)
       )
     }
 
-    if (nextProps.checkboxes && nextProps.checkboxes.length === 0) {
+    if (nextProps.activeKeys && nextProps.activeKeys.length === 0) {
       this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
     }
   }
@@ -157,6 +157,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys, activeCryptoWallets } = this.state
+    console.log('activeKeys: ', activeKeys);
+
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) {
       return
@@ -441,26 +443,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       false
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
-
-    if (!tableDataHasData) {
-      return (
-        <PTWrapper tableData={tableDataHasData}>
-          <PTextBox backgroundColor={theme.palette.grey.A400}>
-            <STypography color="default" variant="display1">
-              Add an exchange or wallet
-            </STypography>
-            <SButton
-              component={MyLinkToUserSettings}
-              backgroundColor={theme.palette.grey.A400}
-              borderColor={theme.palette.secondary.light}
-            >
-              <STypographyButtonText> Add </STypographyButtonText>
-              <SAddIcon />
-            </SButton>
-          </PTextBox>
-        </PTWrapper>
-      )
-    }
 
     return (
       <PTWrapper tableData={!!tableDataHasData}>

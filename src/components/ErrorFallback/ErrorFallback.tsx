@@ -28,10 +28,12 @@ const FormatErrorToUser = (errorMessage: string) => {
   return errorMessage
 }
 
-export const CustomError = (props: { error?: string }) => (
-  <Typography variant="headline" color="error">
-    {props.error || 'Error'}
-  </Typography>
+export const CustomError = (props: { error: string }) => (
+  <Error>
+    <Typography variant="headline" color="error">
+      {props.error || 'Error'}
+    </Typography>
+  </Error>
 )
 
 const SimpleError = (props: { error?: ApolloError }) => (

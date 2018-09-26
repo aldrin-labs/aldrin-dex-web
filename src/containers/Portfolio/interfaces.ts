@@ -1,7 +1,19 @@
 import { getPortfolioQuery } from '@containers/Portfolio/annotations'
+import React from 'react'
 
 export interface IProps {
   data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }
+  theme: object
+  login: boolean
+  keys: string[]
+  activeKeys: string[]
+  wallets: string[]
+  activeWallets: string[]
+}
+
+export interface IState {
+  isSideNavOpen: boolean
+  filter: number
 }
 
 export interface IPortfolio {
@@ -79,6 +91,11 @@ export interface IndProps {
 export interface ITableProps {
   isShownChart: boolean
   loading: boolean
+  activeKeys: string[]
+  subscription: any
+  theme: object
+  toggleWallets: React.ReactEventHandler
+
   data: {
     portfolioId: string | null
     portfolio: {
@@ -113,6 +130,4 @@ export interface ITableProps {
     } | null
   } | null
 
-  checkboxes: number[]
-  subscription: any
 }

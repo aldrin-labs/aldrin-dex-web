@@ -31,6 +31,17 @@ export const getKeysQuery = gql`
   }
 `
 
+export const getWalletsQuery = gql`
+  query getWallets {
+    getProfile {
+      cryptoWallets {
+        _id
+        name
+      }
+    }
+  }
+`
+
 export const getPortfolioQuery = gql`
   query getPortfolio {
     getProfile {

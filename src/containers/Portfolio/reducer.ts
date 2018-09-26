@@ -19,6 +19,9 @@ const initialState = {
   //  this is default behaviour
   filterValuesLessThenThat: -100.0,
   keys: [],
+  activeKeys: [],
+  wallets: [],
+  activeWallets: [],
   activeChart: 4,
 }
 
@@ -35,6 +38,18 @@ export default createReducer(
     [actions.setKeys]: (state, payload) => ({
       ...state,
       keys: payload,
+    }),
+    [actions.setActiveKeys]: (state, payload) => ({
+      ...state,
+      activeKeys: payload,
+    }),
+    [actions.setWallets]: (state, payload) => ({
+      ...state,
+      wallets: payload,
+    }),
+    [actions.setActiveWallets]: (state, payload) => ({
+      ...state,
+      activeWallets: payload,
     }),
     [actions.updateDataForOptimization]: (state, payload) => ({
       ...state,

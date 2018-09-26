@@ -1,4 +1,3 @@
-import omit from 'lodash/omit'
 import {
   compose,
   withState,
