@@ -20,6 +20,33 @@ const cryptoWalletFragmentWithAssets = gql`
   ${cryptoWalletFragment}
 `
 
+export const PRICE_HISTORY_QUERY = gql`
+  query priceHistoryQuery(
+    $coins: [String!]
+    $isBTC: Boolean!
+    $unixTimestampFrom: Int!
+    $unixTimestampTo: Int!
+  ) {
+    getPriceHistory(
+      coins: $coins
+      isBTC: $isBTC
+      unixTimestampFrom: $unixTimestampFrom
+      unixTimestampTo: $unixTimestampTo
+      period: 3600
+    ) {
+      coins
+      dates
+      prices
+    }
+  }
+`
+
+export const UPDATE_PORTFOLIO = gql`
+  mutation updatePortfolio {
+    updatePortfolio
+  }
+`
+
 export const CORRELATION_UPDATE = gql`
   subscription onCorrelationUpdated {
     matrix

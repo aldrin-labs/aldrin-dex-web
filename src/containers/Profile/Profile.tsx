@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
-import gql from 'graphql-tag'
 import styled from 'styled-components'
 import ProfileHeading from '@containers/Profile/components/ProfileHeading'
 import ProfileLinks from '@containers/Profile/components/ProfileLinks'
 import ProfileChart from '@containers/Profile/components/ProfileChart'
 import { ProfileQueryQuery } from '@containers/Profile/profile-annotation'
+import { ProfileQuery } from '@containers/Profile/api'
 
 interface Props {
   data: ProfileQueryQuery
@@ -99,23 +99,6 @@ const SProfile = styled.div`
   flex-wrap: wrap;
   max-width: 1400px;
   margin: 0 auto;
-`
-
-export const ProfileQuery = gql`
-  query ProfileQuery($id: MongoID!) {
-    assetById(_id: $id) {
-      _id
-      name
-      symbol
-      nameTrue
-      priceUSD
-      maxSupply
-      totalSupply
-      availableSupply
-      priceUSD
-      percentChangeDay
-    }
-  }
 `
 
 const options = ({ match }) => ({

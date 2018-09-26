@@ -1,6 +1,5 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
@@ -14,12 +13,7 @@ import SvgIcon from '@components/SvgIcon/SvgIcon'
 import gridLoader from '@icons/grid.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
 import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
-
-const UPDATE_PORTFOLIO = gql`
-  mutation updatePortfolio {
-    updatePortfolio
-  }
-`
+import { UPDATE_PORTFOLIO } from '@containers/Portfolio/api'
 
 class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {

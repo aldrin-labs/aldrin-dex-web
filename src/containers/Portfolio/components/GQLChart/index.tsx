@@ -1,29 +1,8 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
 
 import PortfolioChart from '@containers/Portfolio/components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
-
-export const PRICE_HISTORY_QUERY = gql`
-  query priceHistoryQuery(
-    $coins: [String!]
-    $isBTC: Boolean!
-    $unixTimestampFrom: Int!
-    $unixTimestampTo: Int!
-  ) {
-    getPriceHistory(
-      coins: $coins
-      isBTC: $isBTC
-      unixTimestampFrom: $unixTimestampFrom
-      unixTimestampTo: $unixTimestampTo
-      period: 3600
-    ) {
-      coins
-      dates
-      prices
-    }
-  }
-`
+import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 
 export default class GQLChart extends React.Component {
   state = {
