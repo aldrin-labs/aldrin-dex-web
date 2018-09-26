@@ -116,14 +116,15 @@ class AddExchangeKeyComponent extends React.Component {
           <STextField
             error={touched.apiKey && !!errors.apiKey}
             id="apiKey"
+            type="text"
             name="apiKey"
             label="API Key"
             value={values.apiKey}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter API key here..."
-            type="text"
             margin="normal"
+            autoComplete="off"
             helperText={
               touched.apiKey &&
               errors.apiKey && <FormError>{errors.apiKey}</FormError>
