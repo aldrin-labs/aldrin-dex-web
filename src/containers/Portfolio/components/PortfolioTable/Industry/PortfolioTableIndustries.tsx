@@ -483,7 +483,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    console.log('isUSDCurrently ', isUSDCurrently)
+    const textColor: string = 
+      theme.palette.getContrastText(theme.palette.background.paper)
 
     let isThereAnySelectedRows = false
     if (selectedRows) {
@@ -654,6 +655,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                                 return (
                                   <PTD
                                     key={`${col}${innerIdx}`}
+                                    textColor={textColor}
+                                    selectedTextColor={theme.palette.secondary.main}
                                     style={{ color }}
                                     isSelected={isSelected}
                                   >
@@ -666,6 +669,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                                 <PTD
                                   key={`${col}${innerIdx}`}
                                   isSelected={isSelected}
+                                  textColor={textColor}
+                                  xselectedTextColor={theme.palette.secondary.main}
                                 >
                                   {col}
                                 </PTD>
@@ -837,8 +842,15 @@ const PTBody = styled.tbody`
 `
 
 const PTD = styled.td`
-  color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#4ed8da' : '#fff'};
+  color: ${(props: {
+    isSelected?: boolean
+    selectedTextColor: string
+    textColor: string
+    }) =>
+    props.isSelected 
+      ? props.selectedTextColor 
+      : props.textColor
+  };
 
   font-family: Roboto, sans-serif;
   font-size: 12px;
@@ -992,7 +1004,4 @@ const mapStateToProps = (store: object) => ({
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-export default compose(
-  withTheme(),
-  connect(mapStateToProps)
-)(MainDataWrapper)
+export default connect(mapStateToProps)(MainDataWrapper)
