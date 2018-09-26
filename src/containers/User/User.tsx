@@ -36,13 +36,15 @@ class UserContainer extends React.Component {
           <AddCryptoWallet />
           <CryptoWalletsList />
         </UserWrap>
-        <AdminCP>
-          <Heading>Show mocks</Heading>
-          <Switch
-            onChange={this.toggleMocks}
-            checked={this.props.isShownMocks}
-          />
-        </AdminCP>
+        {process.env.NODE_ENV !== 'production' && 
+          <AdminCP>
+            <Heading>Show mocks</Heading>
+            <Switch
+              onChange={this.toggleMocks}
+              checked={this.props.isShownMocks}
+            />
+          </AdminCP>
+        }
       </div>
     )
   }

@@ -102,6 +102,7 @@ class AddExchangeKeyComponent extends React.Component {
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
+            autoComplete="off"
             placeholder="Enter key name here..."
             type="text"
             margin="normal"
@@ -110,6 +111,8 @@ class AddExchangeKeyComponent extends React.Component {
               errors.name && <FormError>{errors.name}</FormError>
             }
           />
+          {/* https://medium.com/paul-jaworski/turning-off-autocomplete-in-chrome-ee3ff8ef0908 */}
+          <input type="hidden" value="something" />
           <STextField
             error={touched.apiKey && !!errors.apiKey}
             id="apiKey"
@@ -135,6 +138,7 @@ class AddExchangeKeyComponent extends React.Component {
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter secret key here..."
+            autoComplete="off"
             type="text"
             margin="normal"
             helperText={

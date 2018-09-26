@@ -216,6 +216,7 @@ class Chart extends React.Component<IProps, IState> {
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
+          blur={production}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
