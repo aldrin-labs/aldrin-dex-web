@@ -5,7 +5,7 @@ export const Name = styled.h1`
   width: 100%;
   text-align: center;
   letter-spacing: 1px;
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
   border-radius: 2.5rem;
   padding: 0.5rem 0;
   text-align: center;
@@ -28,9 +28,9 @@ export const AccountsWalletsBlock = styled.div`
   background-color: ${(props: { background: string }) => props.background};
   padding: 16px;
   right: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-  isSideNavOpen ? '0' : '-11.5rem'};
+    isSideNavOpen ? '0' : '-11.5rem'};
   cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-  isSideNavOpen ? 'auto' : 'pointer'};
+    isSideNavOpen ? 'auto' : 'pointer'};
   display: block;
   position: fixed;
   top: 0;
@@ -39,7 +39,14 @@ export const AccountsWalletsBlock = styled.div`
   transition: right 0.2s ease-in;
 
   &:hover {
-    background-color: ${({ isSideNavOpen, background }: { isSideNavOpen: boolean, background: string }) =>
-  isSideNavOpen ? background : 'gray'};
+    background-color: ${({
+      isSideNavOpen,
+      background,
+      hoverBackground,
+    }: {
+      isSideNavOpen: boolean
+      background: string
+      hoverBackground: string
+    }) => (isSideNavOpen ? background : hoverBackground)};
   }
 `

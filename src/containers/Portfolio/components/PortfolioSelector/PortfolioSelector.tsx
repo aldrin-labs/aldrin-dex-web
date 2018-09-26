@@ -97,6 +97,7 @@ class PortfolioSelector extends React.Component<IProps> {
         onClick={isSideNavOpen ? undefined : this.props.toggleWallets}
         isSideNavOpen={this.props.isSideNavOpen}
         background={theme.palette.background.paper}
+        hoverBackground={theme.palette.action.hover}
       >
         <QueryRenderer
           component={Accounts}
