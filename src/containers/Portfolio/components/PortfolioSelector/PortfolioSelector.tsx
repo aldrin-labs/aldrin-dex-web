@@ -1,10 +1,7 @@
 import * as React from 'react'
-import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import withTheme from '@material-ui/core/styles/withTheme'
-
-import FaFilter from '@material-ui/icons/FilterList'
 
 import Dropdown from '@components/SimpleDropDownSelector'
 import {
@@ -19,6 +16,8 @@ import { IProps } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 import Accounts from './Accounts/Accounts'
 import Wallets from './Wallets/Wallets'
+import { AccountsWalletsBlock, FilterIcon, FilterValues, Name } from './PortfolioSelector.styles'
+
 
 class PortfolioSelector extends React.Component<IProps> {
   onToggleKeyCheckbox = (checkBoxName: string) => {
@@ -97,6 +96,7 @@ class PortfolioSelector extends React.Component<IProps> {
       <AccountsWalletsBlock
         onClick={isSideNavOpen ? undefined : this.props.toggleWallets}
         isSideNavOpen={this.props.isSideNavOpen}
+        background={theme.palette.background.paper}
       >
         <QueryRenderer
           component={Accounts}
@@ -129,9 +129,11 @@ class PortfolioSelector extends React.Component<IProps> {
           }}
         />
 
-        <Name>Dust</Name>
+        <Name color={color}>Dust</Name>
         <FilterValues>
-          <FilterIcon />
+          <FilterIcon color={theme.palette.getContrastText(
+            theme.palette.background.paper
+          )}/>
           <Dropdown
             style={{ width: '100%' }}
             value={filterPercent}
@@ -154,48 +156,6 @@ class PortfolioSelector extends React.Component<IProps> {
   }
 }
 
-const Name = styled.h1`
-  width: 100%;
-  text-align: center;
-  letter-spacing: 1px;
-  background: #292d31;
-  border-radius: 2.5rem;
-  padding: 0.5rem 0;
-  text-align: center;
-  color: #4ed8da;
-`
-
-const FilterValues = styled.div`
-  width: 100%;
-  display: flex;
-  place-items: center;
-`
-const FilterIcon = styled(FaFilter)`
-  color: whitesmoke;
-  font-size: 1.5rem;
-  margin: 0 0.5rem;
-`
-
-const AccountsWalletsBlock = styled.div`
-  min-width: 200px;
-  background-color: #2d3136;
-  padding: 16px;
-  right: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-    isSideNavOpen ? '0' : '-11.5rem'};
-  cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-    isSideNavOpen ? 'auto' : 'pointer'};
-  display: block;
-  position: fixed;
-  top: 0;
-  z-index: 1300;
-  height: 100vh;
-  transition: right 0.2s ease-in;
-
-  &:hover {
-    background-color: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-      isSideNavOpen ? '#2d3136' : '#323941'};
-  }
-`
 
 const mapStateToProps = (store: any) => ({
   keys: store.portfolio.keys,
