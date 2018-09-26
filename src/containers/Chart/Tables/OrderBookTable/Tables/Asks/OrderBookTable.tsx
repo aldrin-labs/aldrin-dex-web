@@ -39,13 +39,17 @@ class OrderBookTable extends Component<IProps> {
       theme: { palette },
     } = this.props
 
-    const { background, action, type, primary } = palette
+    const {
+      background,
+      action,
+      primary: { main },
+    } = palette
 
     return (
       <AsksTable>
-        <Title background={primary[type]}>
+        <Title background={main}>
           <TypographyWithCustomColor
-            textColor={palette.getContrastText(primary[type])}
+            textColor={palette.getContrastText(main)}
             variant="subheading"
             align="center"
           >

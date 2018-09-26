@@ -1,6 +1,5 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
-import { Paper } from '@material-ui/core'
 
 export {
   Content,
@@ -46,16 +45,16 @@ const ChartWrapper = styled.div`
   }
 `
 
-const ChartContainer = styled(Paper)`
-  && {
-    width: 1120px;
-    height: inherit;
-    border-radius: 20px;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    padding: 15px;
-  }
+const ChartContainer = styled.div`
+  width: 1120px;
+  height: inherit;
+  border-radius: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 9px -5px,
+    rgba(0, 0, 0, 0.14) 0px 15px 22px 2px, rgba(0, 0, 0, 0.12) 0px 6px 28px 5px;
 
   @media (max-width: 1150px) {
     width: 100%;

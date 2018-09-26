@@ -26,22 +26,14 @@ import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
+import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
-import CoomingSoon from '@components/CoomingSoon'
-
-const production = process.env.NODE_ENV === 'production'
 
 const OnlyCharts = Loadable({
-  loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
-  delay: 300,
-  loading: LoadableLoading,
-})
-
-const MainDepthChart = Loadable({
   loader: () =>
-    import('@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'),
+    import( '@containers/Chart/OnlyCharts/OnlyCharts'),
   delay: 300,
   loading: LoadableLoading,
 })
@@ -182,9 +174,7 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <TablesContainer>
-        {production && <CoomingSoon />}
         <TablesBlockWrapper
-          blur={production}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
@@ -278,7 +268,6 @@ class Chart extends React.Component<IProps, IState> {
     const { activeChart } = this.state
     const { currencyPair, theme } = this.props
     const { palette } = theme
-    const { type } = palette
 
     if (!currencyPair) {
       return
@@ -299,13 +288,13 @@ class Chart extends React.Component<IProps, IState> {
           <ChartsContainer>
             <ChartsSwitcher
               divider={palette.divider}
-              background={palette.primary[type]}
+              background={palette.primary.main}
             >
               {base &&
                 quote && (
-                  <ExchangePair background={palette.primary[type]}>
+                  <ExchangePair background={palette.primary.dark}>
                     <TypographyWithCustomColor
-                      textColor={palette.getContrastText(palette.primary[type])}
+                      textColor={palette.getContrastText(palette.primary.dark)}
                       variant="subheading"
                     >
                       {`${base}/${quote}`}
@@ -332,7 +321,6 @@ class Chart extends React.Component<IProps, IState> {
             ) : (
               <Fade timeout={1000} in={activeChart === 'depth'}>
                 <DepthChartContainer>
-                  {production && <CoomingSoon />}
                   <MainDepthChart
                     {...{
                       theme,
@@ -430,18 +418,17 @@ const TablesBlockWrapper = styled(Paper)`
   min-width: 150px;
   width: 50%;
   position: relative;
-  ${(props: { blur?: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
   border-right: 1px solid
     ${(props: { rightBorderColor?: string }) => props.rightBorderColor};
 
   && {
     overflow: hidden;
-    background-color: ${(props: { background?: string }) => props.background};
+    background-color: ${(props: { background: string }) => props.background};
     box-shadow: none !important;
   }
 
   @media (max-width: 1080px) {
-    display: ${(props: { variant: { show?: boolean } }) =>
+    display: ${(props: { variant: { show: boolean } }) =>
       props.variant.show ? 'block' : 'none'};
     width: 100%;
     height: calc(100vh - 57px - 70px);
@@ -510,7 +497,7 @@ const Container = styled.div`
   width: 100%;
 
   @media (max-width: 1080px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 `
 

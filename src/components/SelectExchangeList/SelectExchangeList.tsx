@@ -15,6 +15,7 @@ const SelectExchangeList = ({ data, ...otherPropsForSelect }) => {
         label: name,
         value: name,
       }))
+
   return (
     <SelectR
       placeholder=""

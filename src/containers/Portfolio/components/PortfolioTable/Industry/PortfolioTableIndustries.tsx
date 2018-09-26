@@ -188,7 +188,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           key = { name: '' },
           exchange = { name: '' },
           quantity = 0,
-        } = row || {}
+        } =
+          row || {}
         if (activeKeys.indexOf(key!.name) === -1) {
           return null
         }
@@ -197,7 +198,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           priceUSD = '',
           priceBTC = '',
           industry: ind = '',
-        } = asset || {}
+        } =
+          asset || {}
         const { name = '' } = exchange
         const { name: industryName, performance } = ind || {
           name: '',
@@ -247,7 +249,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             portfolioPerf !== null
               ? roundPercentage(parseFloat(portfolioPerf))
               : null,
-          portfolioPerc: roundPercentage((currentPrice * 100) / allSums),
+          portfolioPerc: roundPercentage(currentPrice * 100 / allSums),
           industryPerf1Week:
             industryPerformance.oneWeek !== null
               ? roundPercentage(parseFloat(industryPerformance.oneWeek))
@@ -495,7 +497,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     if (!tableDataHasData) {
       return (
-        <PTWrapper tableData={!!tableDataHasData}>
+        <PTWrapper
+          background={theme.palette.background.paper}
+          tableData={!!tableDataHasData}
+        >
           {children}
           <PTextBox>Add account for Portfolio</PTextBox>
         </PTWrapper>
@@ -503,7 +508,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={!!tableDataHasData} ref={this.setWrapperRef}>
+      <PTWrapper
+        background={theme.palette.background.paper}
+        tableData={!!tableDataHasData}
+        ref={this.setWrapperRef}
+      >
         {children}
         <Container>
           <Wrapper

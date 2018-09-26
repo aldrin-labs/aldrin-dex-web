@@ -45,16 +45,21 @@ class SpreadTable extends Component<IProps> {
       digitsAfterDecimalForBidsSize,
       digitsAfterDecimalForBidsPrice,
     } = this.props
-    const { background, action, primary, type, green } = palette
+    const {
+      background,
+      action,
+      primary: { main },
+      green,
+    } = palette
 
     return (
       <SpreadreadTableWrapper>
-        <Head background={primary[type]} style={{ height: '1.625rem' }}>
-          <TriggerRow isHead={true} background={primary[type]}>
+        <Head background={main} style={{ height: '1.625rem' }}>
+          <TriggerRow isHead={true} background={main}>
             <EmptyCell width="10%" />
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                textColor={palette.getContrastText(primary[type])}
+                textColor={palette.getContrastText(main)}
                 variant="body2"
                 align="right"
               >
@@ -63,7 +68,7 @@ class SpreadTable extends Component<IProps> {
             </HeadCell>
             <HeadCell width={'45%'}>
               <TypographyFullWidth
-                textColor={palette.getContrastText(primary[type])}
+                textColor={palette.getContrastText(main)}
                 variant="body2"
                 align="right"
                 color="secondary"
@@ -93,9 +98,10 @@ class SpreadTable extends Component<IProps> {
                   >
                     <EmptyCell width={'10%'} />
 
-                    <Cell pose={i === index && 'attention'} width={'45%'}>
+                    <Cell width={'45%'}>
                       <StyledTypography
                         textColor={green.main}
+                        anime={i === index}
                         color="default"
                         noWrap={true}
                         variant="body1"
@@ -106,9 +112,10 @@ class SpreadTable extends Component<IProps> {
                         )}
                       </StyledTypography>
                     </Cell>
-                    <Cell pose={i === index && 'attention'} width={'45%'}>
+                    <Cell width={'45%'}>
                       <StyledTypography
                         textColor={green.main}
+                        anime={i === index}
                         color="default"
                         noWrap={true}
                         variant="body1"

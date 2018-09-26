@@ -115,7 +115,6 @@ class AddCryptoWalletComponent extends React.Component {
             id="address"
             name="address"
             label="Address"
-            autoComplete="off"
             value={values.address}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -130,7 +129,7 @@ class AddCryptoWalletComponent extends React.Component {
           <SSelect>
             <InputLabel htmlFor="asset">Wallet</InputLabel>
             <SelectWalletList
-              isClearable={true}
+              isClearable
               onChange={handleSelectChangePrepareForFormik.bind(this, 'asset')}
             />
           </SSelect>
