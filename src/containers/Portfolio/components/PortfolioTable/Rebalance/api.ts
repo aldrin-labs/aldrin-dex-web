@@ -1,5 +1,21 @@
 import gql from 'graphql-tag'
 
+const PortfolioFragment = gql`
+  fragment PortfolioFragment on porfolio {
+    assetIds
+    assets{
+      quantity
+      exchange {
+        name
+      }
+      asset{
+        symbol
+        priceUSD
+      }
+    }
+  }
+`
+
 export const getMyRebalanceQuery = gql`
 query {
   getProfile {
@@ -21,36 +37,18 @@ export const getMyPortfolioQuery = gql`
 query{
   getProfile{
     portfolio{
-      assetIds
-      assets{
-        quantity
-        exchange {
-          name
-        }
-        asset{
-          symbol
-          priceUSD
-        }
-      }
+      ...PortfolioFragment
     }
   }
 }
+${PortfolioFragment}
 `
 
 export const getMyPortfolioData = gql`
 query {
   getProfile {
     portfolio {
-      assetIds
-      assets {
-        exchange {
-          name
-        }
-      	asset {
-          name
-          priceUSD
-        }
-      }
+      ...PortfolioFragment
     }
   	myRebalance {
       total
@@ -62,6 +60,7 @@ query {
     }
   }
 }
+${PortfolioFragment}
 `
 
 

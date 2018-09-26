@@ -107,14 +107,14 @@ export const getPortfolioMainQuery = gql`
             username
           }
         }
-        assetIds
         ownerId
+        assetIds
         assets {
           _id
-          assetId
           exchangeId
           keyId
           quantity
+          assetId
           asset {
             _id
             name
