@@ -98,6 +98,7 @@ class PortfolioSelector extends React.Component<IProps> {
         isSideNavOpen={this.props.isSideNavOpen}
         background={theme.palette.background.paper}
         hoverBackground={theme.palette.action.hover}
+        fontFamily={theme.typography.fontFamily}
       >
         <QueryRenderer
           component={Accounts}
