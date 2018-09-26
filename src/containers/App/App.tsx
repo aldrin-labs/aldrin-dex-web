@@ -21,7 +21,7 @@ import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
 
-const version = `0.1`
+const version = `0.2`
 const currentVersion = localStorage.getItem('version')
 if (currentVersion !== version) {
   localStorage.clear()
