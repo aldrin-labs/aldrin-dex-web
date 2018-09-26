@@ -16,12 +16,12 @@ export default class SelectExchangeOrWalletWindow extends React.Component<IProps
 
     return (
       <PTWrapper background={theme.palette.background.paper}>
-        <PTextBox backgroundColor={theme.palette.grey.A400}>
+        <PTextBox backgroundColor={theme.palette.background.default}>
           <STypography color="default" variant="display1">
             Select an exchange or wallet
           </STypography>
           <SButton
-            backgroundColor={theme.palette.grey.A400}
+            backgroundColor={theme.palette.background.default}
             borderColor={theme.palette.secondary.light}
             onClick={toggleWallets}
           >

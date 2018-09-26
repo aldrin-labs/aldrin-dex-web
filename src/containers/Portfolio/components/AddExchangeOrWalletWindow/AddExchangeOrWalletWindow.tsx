@@ -19,13 +19,13 @@ export default class AddExchangeOrWalletWindow extends React.Component<IProps> {
 
     return (
       <PTWrapper background={theme.palette.background.paper}>
-        <PTextBox backgroundColor={theme.palette.grey.A400}>
+        <PTextBox backgroundColor={theme.palette.background.default}>
           <STypography color="default" variant="display1">
             Add an exchange or wallet
           </STypography>
           <SButton
             component={MyLinkToUserSettings}
-            backgroundColor={theme.palette.grey.A400}
+            backgroundColor={theme.palette.background.default}
             borderColor={theme.palette.secondary.light}
           >
             <STypographyButtonText> Add </STypographyButtonText>
