@@ -15,7 +15,7 @@ export const LoginMenu = ({ userName, handleMenu, handleLogout }: any) => (
       </IconButton>
     </Tooltip>
     <Tooltip title="Exit">
-      <IconButton color="default" onClick={handleLogout}>
+      <IconButton color="secondary" onClick={handleLogout}>
         <ExitIcon />
       </IconButton>
     </Tooltip>
