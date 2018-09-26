@@ -11,6 +11,7 @@ export interface IProps {
   setActiveKeys: Function
   keys: string[]
   activeKeys: string[]
+  color: string
 }
 
 export type keyItem = {

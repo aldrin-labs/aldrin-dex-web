@@ -1,6 +1,7 @@
 import React from 'react'
+import { WithTheme } from '@material-ui/core'
 
-export interface IProps {
+export interface IProps extends WithTheme {
   filterValuesLessThenThat: Function
   isShownMocks: boolean
   isSideNavOpen: boolean

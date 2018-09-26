@@ -7,6 +7,7 @@ export interface IProps {
   wallets: string[]
   activeWallets: string[]
   onToggleWalletCheckbox: Function
+  color: string
 }
 
 export type walletItem = {

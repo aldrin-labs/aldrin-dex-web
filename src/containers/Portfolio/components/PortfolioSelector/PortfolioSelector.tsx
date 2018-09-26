@@ -2,6 +2,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import withTheme from '@material-ui/core/styles/withTheme'
+
 import FaFilter from '@material-ui/icons/FilterList'
 
 import Dropdown from '@components/SimpleDropDownSelector'
@@ -17,7 +19,6 @@ import { IProps } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 import Accounts from './Accounts/Accounts'
 import Wallets from './Wallets/Wallets'
-
 
 class PortfolioSelector extends React.Component<IProps> {
   onToggleKeyCheckbox = (checkBoxName: string) => {
@@ -49,9 +50,19 @@ class PortfolioSelector extends React.Component<IProps> {
   }
 
   onToggleAll = () => {
-    const { keys, activeKeys, wallets, activeWallets, setActiveKeys, setActiveWallets } = this.props
+    const {
+      keys,
+      activeKeys,
+      wallets,
+      activeWallets,
+      setActiveKeys,
+      setActiveWallets,
+    } = this.props
 
-    if (activeKeys.length + activeWallets.length === keys.length + wallets.length) {
+    if (
+      activeKeys.length + activeWallets.length ===
+      keys.length + wallets.length
+    ) {
       setActiveKeys([])
       setActiveWallets([])
     } else {
@@ -73,10 +84,14 @@ class PortfolioSelector extends React.Component<IProps> {
       activeWallets,
       keys,
       activeKeys,
+      theme,
     } = this.props
 
     const isCheckedAll =
-      (activeKeys.length + activeWallets.length === keys.length + wallets.length)
+      activeKeys.length + activeWallets.length === keys.length + wallets.length
+
+    const color = theme.palette.secondary.main
+
 
     return (
       <AccountsWalletsBlock
@@ -87,6 +102,7 @@ class PortfolioSelector extends React.Component<IProps> {
           component={Accounts}
           query={getKeysQuery}
           {...{
+            color,
             isSideNavOpen,
             isCheckedAll,
             keys,
@@ -102,6 +118,7 @@ class PortfolioSelector extends React.Component<IProps> {
           component={Wallets}
           query={getWalletsQuery}
           {...{
+            color,
             isSideNavOpen,
             isCheckedAll,
             wallets,
@@ -200,9 +217,10 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(filterValuesLessThen(percent)),
 })
 
-const storeComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  withTheme(),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(PortfolioSelector)
-
-export default compose()(storeComponent)

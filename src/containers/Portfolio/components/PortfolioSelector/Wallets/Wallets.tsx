@@ -31,6 +31,7 @@ export default class Wallets extends React.PureComponent<IProps> {
       wallets,
       activeWallets,
       onToggleWalletCheckbox,
+      color,
     } = this.props
 
     return (
@@ -43,7 +44,7 @@ export default class Wallets extends React.PureComponent<IProps> {
               (activeWallets && activeWallets.indexOf(walletName) !== -1)
 
             return (
-              <AccountsListItem key={walletName}>
+              <AccountsListItem key={walletName} color={color}>
                 <Checkbox
                   type="checkbox"
                   id={walletName}

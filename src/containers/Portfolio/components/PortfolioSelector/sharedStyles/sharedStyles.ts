@@ -8,7 +8,7 @@ export const AccountsListItem = styled.li`
   font-size: 1em;
   font-weight: 500;
   text-align: left;
-  color: #4ed8da;
+  color: ${(props: { color: string }) => props.color};
 `
 
 export const AccountsList = styled.ul`
@@ -25,7 +25,7 @@ export const AccountsWalletsHeadingWrapper = styled.div`
 `
 
 export const StyledIcon = styled(Arrow)`
-  color: #4ed8da;
+  color: ${(props: { color: string }) => props.color};
   text-align: center;
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '1' : '0'};
@@ -53,7 +53,7 @@ export const AccountName = styled(TypographyFullWidth)`
 `
 
 export const Headline = styled.div`
-  color: #4ed8da;
+  color: ${(props: { color: string }) => props.color};
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '0' : '1'};
   font-size: 0.7em;

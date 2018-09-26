@@ -18,7 +18,7 @@ import { TypographyFullWidth } from '@styles/cssUtils'
 export default class Accounts extends React.PureComponent<IProps> {
   componentDidMount() {
     if (!has(this.props.data.getProfile, 'keys')) {
-      console.log('no keys');
+      // console.log('no keys');
 
       return null
     }
@@ -44,6 +44,7 @@ export default class Accounts extends React.PureComponent<IProps> {
       keys,
       activeKeys,
       onToggleKeyCheckbox,
+      color,
     } = this.props
 
     return (
@@ -59,9 +60,9 @@ export default class Accounts extends React.PureComponent<IProps> {
             🔑 Api keys
           </TypographyFullWidth>
 
-          <Headline isSideNavOpen={isSideNavOpen}>settings</Headline>
+          <Headline isSideNavOpen={isSideNavOpen} color={color}>settings</Headline>
           <CloseContainer>
-            <StyledIcon isSideNavOpen={isSideNavOpen} />
+            <StyledIcon isSideNavOpen={isSideNavOpen} color={color}/>
           </CloseContainer>
         </AccountsWalletsHeadingWrapper>
 
@@ -90,7 +91,7 @@ export default class Accounts extends React.PureComponent<IProps> {
               (activeKeys && activeKeys.indexOf(keyName) !== -1)
 
             return (
-              <AccountsListItem key={keyName}>
+              <AccountsListItem key={keyName} color={color}>
                 <Checkbox
                   type="checkbox"
                   id={keyName}
