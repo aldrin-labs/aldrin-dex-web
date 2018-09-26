@@ -8,11 +8,6 @@ export const KeyFragment = gql`
     secret
     date
     exchangeId
-    ownerId
-    owner {
-      _id
-      username
-    }
     exchange {
       name
       symbol
@@ -30,11 +25,6 @@ export const cryptoWalletFragment = gql`
       _id
       symbol
       name
-    }
-    ownerId
-    owner {
-      _id
-      username
     }
   }
 `
