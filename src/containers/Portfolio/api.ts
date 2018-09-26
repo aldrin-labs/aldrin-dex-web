@@ -1,5 +1,25 @@
 import gql from 'graphql-tag'
 
+import { KeyFragment, cryptoWalletFragment } from '@graphql/fragments'
+
+const cryptoWalletFragmentWithAssets = gql`
+  fragment cryptoWalletFragmentWithAssets on CryptoWallet {
+    ...cryptoWalletFragment
+    assetIds
+    assets {
+      balance
+      assetId
+      asset {
+        name
+        symbol
+        priceUSD
+        priceBTC
+      }
+    }
+  }
+  ${cryptoWalletFragment}
+`
+
 export const CORRELATION_UPDATE = gql`
   subscription onCorrelationUpdated {
     matrix
@@ -17,18 +37,11 @@ export const getKeysQuery = gql`
     getProfile {
       portfolioId
       keys {
-        _id
-        name
-        apiKey
-        secret
-        date
-        exchange {
-          name
-          symbol
-        }
+        ...KeyFragment
       }
     }
   }
+  ${KeyFragment}
 `
 
 export const getPortfolioQuery = gql`
@@ -36,25 +49,7 @@ export const getPortfolioQuery = gql`
     getProfile {
       portfolio {
         cryptoWallets {
-          name
-          address
-          baseAssetId
-          baseAsset {
-            _id
-            symbol
-            name
-          }
-          assetIds
-          assets {
-            balance
-            assetId
-            asset {
-              name
-              symbol
-              priceUSD
-              priceBTC
-            }
-          }
+          ...cryptoWalletFragmentWithAssets
         }
         assetIds
         ownerId
@@ -95,6 +90,7 @@ export const getPortfolioQuery = gql`
       }
     }
   }
+  ${cryptoWalletFragmentWithAssets}
 `
 export const getPortfolioMainQuery = gql`
   query getPortfolio {
@@ -104,26 +100,7 @@ export const getPortfolioMainQuery = gql`
         name
         processing
         cryptoWallets {
-          _id
-          name
-          address
-          baseAssetId
-          baseAsset {
-            _id
-            symbol
-            name
-          }
-          assetIds
-          assets {
-            balance
-            assetId
-            asset {
-              name
-              symbol
-              priceUSD
-              priceBTC
-            }
-          }
+          ...cryptoWalletFragmentWithAssets
           ownerId
           owner {
             _id
@@ -167,4 +144,5 @@ export const getPortfolioMainQuery = gql`
       }
     }
   }
+  ${cryptoWalletFragmentWithAssets}
 `
