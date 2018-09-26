@@ -24,6 +24,7 @@ export const FilterIcon = styled(FaFilter)`
 `
 
 export const AccountsWalletsBlock = styled.div`
+  font-family: ${(props: { fontFamily: string }) => props.fontFamily};
   min-width: 200px;
   background-color: ${(props: { background: string }) => props.background};
   padding: 16px;
