@@ -47,7 +47,7 @@ export const SelectAll = styled.div`
   display: flex;
 `
 
-export const AccountName = TypographyFullWidth.extend`
+export const AccountName = styled(TypographyFullWidth)`
   height: 50%;
   margin: auto;
 `
