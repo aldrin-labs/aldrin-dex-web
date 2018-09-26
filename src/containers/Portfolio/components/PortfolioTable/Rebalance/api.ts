@@ -1,20 +1,6 @@
 import gql from 'graphql-tag'
 
-const PortfolioFragment = gql`
-  fragment PortfolioFragment on porfolio {
-    assetIds
-    assets{
-      quantity
-      exchange {
-        name
-      }
-      asset{
-        symbol
-        priceUSD
-      }
-    }
-  }
-`
+import { PortfolioFragment } from '@graphql/fragments'
 
 export const getMyRebalanceQuery = gql`
 query {

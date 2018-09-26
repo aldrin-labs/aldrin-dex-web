@@ -28,3 +28,19 @@ export const cryptoWalletFragment = gql`
     }
   }
 `
+
+export const PortfolioFragment = gql`
+  fragment PortfolioFragment on porfolio {
+    assetIds
+    assets{
+      quantity
+      exchange {
+        name
+      }
+      asset{
+        symbol
+        priceUSD
+      }
+    }
+  }
+`
