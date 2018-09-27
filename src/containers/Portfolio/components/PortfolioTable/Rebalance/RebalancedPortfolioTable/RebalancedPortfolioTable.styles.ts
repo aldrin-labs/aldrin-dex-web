@@ -212,6 +212,7 @@ const InputTable = styled.input`
 
 const PTR = styled.tr`
   cursor: pointer;
+  transition: background-color 0.25s ease-in-out;
   background-color: ${(props: { 
     isSelected?: boolean,
     background: string,
