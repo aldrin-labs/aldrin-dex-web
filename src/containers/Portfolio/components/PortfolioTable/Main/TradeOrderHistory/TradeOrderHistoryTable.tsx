@@ -1,3 +1,4 @@
+
 import * as React from 'react'
 
 import QueryRenderer from '@components/QueryRenderer'
@@ -111,7 +112,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     return (
       <Wrapper>
         <Table>
-          <PTHead>
+          <PTHead bottomCollor={textColor}>
             <PTR background={palette.background.paper}>
               {tradeOrderHistoryTableHeadings.map((heading) => {
                 const isSorted =

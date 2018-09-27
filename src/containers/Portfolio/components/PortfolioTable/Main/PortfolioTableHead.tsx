@@ -71,7 +71,9 @@ export default class PortfolioTableHead extends React.Component<
     const textColor: string = palette.getContrastText(palette.background.default) 
 
     return (
-      <PTHead>
+      <PTHead
+        bottomCollor={textColor}
+      >
         <PTR background={palette.background.paper}>
           <PTH
             textColor={textColor}
@@ -202,6 +204,6 @@ const PTHead = styled.thead`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
   }
 `

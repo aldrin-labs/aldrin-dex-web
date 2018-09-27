@@ -513,9 +513,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             ref={this.setChildNodeRef}
           >
             <PTable>
-              <PTHead>
-                <PTR>
-                  <PTH key="selectAll">
+              <PTHead bottomCollor={textColor}>
+                <PTR
+                  background={theme.palette.background.paper}
+                >
+                  <PTH
+                    textColor={textColor}
+                    key="selectAll"
+                  >
                     <Checkbox
                       type="checkbox"
                       id="selectAll"
@@ -535,6 +540,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         key={`${heading.name}${index}`}
                         onClick={() => this.onSortTable(heading.value)}
                         isSorted={isSorted}
+                        textColor={textColor}
                       >
                         {[4, 5, 6, 7, 8].includes(index) ? (
                           <>
@@ -913,10 +919,14 @@ const PTD = styled.td`
 `
 
 const PTH = styled.th`
+  color: ${(props: {
+    textColor: string
+    }) => props.textColor
+  };
+
   font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
-  color: #fff;
   padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
   min-width: 100px;
@@ -966,8 +976,10 @@ const PTH = styled.th`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
+  background-color: ${(props: {
+    background: string
+  }) =>
+    props.background};
 `
 
 const PTRBody = styled.tr`
@@ -1014,7 +1026,7 @@ const PTHead = styled.thead`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
   }
 `
 
