@@ -48,6 +48,7 @@ class Table extends Component<IProps, IState> {
       onPlusClick,
       optimizedData,
       filterValueSmallerThenPercentage,
+      theme: {palette}
     } = this.props
     if (withInput) {
       return (

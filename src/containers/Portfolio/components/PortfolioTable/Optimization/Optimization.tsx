@@ -229,6 +229,7 @@ class Optimization extends Component<IProps, IState> {
         percentages={percentages}
         activeButton={activeButton}
         showSwitchButtons={optimizedData.length >= 1}
+        theme={this.props.theme}
       />
     )
   }

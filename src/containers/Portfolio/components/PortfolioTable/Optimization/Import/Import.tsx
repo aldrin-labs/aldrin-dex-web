@@ -283,6 +283,7 @@ class Import extends PureComponent<IProps> {
                 filterValueSmallerThenPercentage={
                   filterValueSmallerThenPercentage
                 }
+                theme={this.props.theme}
               />
             </TableContainer>
             <HelperForCentering />
