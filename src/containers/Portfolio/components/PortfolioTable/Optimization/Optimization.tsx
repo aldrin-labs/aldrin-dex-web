@@ -385,7 +385,6 @@ const PTWrapper = styled(Card)`
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
-  background-color: #393e44;
   box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
