@@ -670,7 +670,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                                   key={`${col}${innerIdx}`}
                                   isSelected={isSelected}
                                   textColor={textColor}
-                                  xselectedTextColor={theme.palette.secondary.main}
+                                  selectedTextColor={theme.palette.secondary.main}
                                 >
                                   {col}
                                 </PTD>

@@ -34,7 +34,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
     if (!tableData) {
       return null
     }
-
+    console.log('selectedTextColor ', palette.secondary.main)
     const textColor: string = palette.getContrastText(palette.background.paper)
 
     return (
