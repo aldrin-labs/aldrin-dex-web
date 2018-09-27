@@ -273,8 +273,8 @@ const PTR = styled.tr`
     props.isBase
       ? '#00ff0028'
       : props.isSelected
-        ? props.background
-        : props.selectedBackground};
+        ? props.selectedBackground
+        : props.background};
 
   &:nth-child(even) {
     background-color: ${(props: {
@@ -282,7 +282,10 @@ const PTR = styled.tr`
       isBase?: boolean
       evenBackground: string
       selectedBackground: string
-    }) => props.evenBackground};
+    }) =>     
+      props.isSelected
+        ? props.selectedBackground
+        : props.evenBackground};
   }
 
   & ${PTD}:nth-child(n + 4) {
