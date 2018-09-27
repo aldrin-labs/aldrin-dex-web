@@ -1,6 +1,6 @@
 import React from 'react'
 import { Checkbox } from '@material-ui/core'
-import { has } from 'lodash-es'
+import { has, isEqual } from 'lodash-es'
 
 import { IProps, walletItem } from './Wallets.types'
 import {
@@ -17,11 +17,18 @@ export default class Wallets extends React.PureComponent<IProps> {
     }
 
     const { cryptoWallets } = this.props.data.getProfile
+    const oldWallets = this.props.wallets
     const checkboxes =
       (cryptoWallets && cryptoWallets.map((wallet: walletItem) => wallet && wallet.name).filter(Boolean)) || []
 
     this.props.setWallets(checkboxes)
-    this.props.setActiveWallets(checkboxes)
+
+    const areNewWalletsAndOldWalletsEqual = isEqual(checkboxes, oldWallets)
+
+    if (oldWallets.length < checkboxes.length || !areNewWalletsAndOldWalletsEqual) {
+      this.props.setActiveWallets(checkboxes)
+    }
+
 
     return true
   }
