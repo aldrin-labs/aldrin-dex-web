@@ -10,7 +10,7 @@ import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataM
 import {
   IProps,
   IData,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/import.types'
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import.types'
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import SelectDates from '@components/SelectTimeRangeDropdown'
 
