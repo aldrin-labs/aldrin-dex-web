@@ -322,13 +322,17 @@ export default class RebalancedPortfolioTable extends React.Component<
       onReset,
       onEditModeEnable,
       updateState,
-      textColor,
-      background,
-      secondary,
-      red,
-      green,
+      theme: { palette }
     } = this.props
 
+    const textColor = palette.getContrastText(
+      palette.background.paper
+    )
+    const background = palette.background.paper
+    const evenBackground = palette.action.hover
+    const secondary = palette.secondary.main
+    const red = palette.red.main
+    const green = palette.green.main
 
     const saveButtonColor =
       isPercentSumGood && undistributedMoney >= 0 ? green : red
@@ -362,8 +366,13 @@ export default class RebalancedPortfolioTable extends React.Component<
         </TableHeading>
         <Wrapper>
           <Table>
-            <PTHead isEditModeEnabled={isEditModeEnabled}>
-              <PTR>
+            <PTHead 
+              isEditModeEnabled={isEditModeEnabled}
+              bottomCollor={textColor}
+            >
+              <PTR
+                background={background}
+              >
                 {isEditModeEnabled && (
                   <PTHR key="selectAll" style={{ textAlign: 'left' }}>
                     <Checkbox
@@ -453,7 +462,13 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ]
 
                 return (
-                  <PTR key={`${rowIndex}`} isSelected={isSelected}>
+                  <PTR 
+                    key={`${rowIndex}`} 
+                    isSelected={isSelected}
+                    background={background}
+                    evenBackground={evenBackground}
+                    selectedBackground={palette.background.default}
+                  >
                     {isEditModeEnabled && (
                       <PTDR
                         key="smt"
@@ -651,7 +666,10 @@ export default class RebalancedPortfolioTable extends React.Component<
               )}
             </PTBody>
             <PTFoot isEditModeEnabled={isEditModeEnabled}>
-              <PTR>
+              <PTR
+                background={background}
+                evenBackground={evenBackground}
+              >
                 {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                 <PTHR>Subtotal</PTHR>
                 <PTHR>-</PTHR>
@@ -663,7 +681,10 @@ export default class RebalancedPortfolioTable extends React.Component<
                 <PTHR>-</PTHR>
                 <PTHR>-</PTHR>
               </PTR>
-              <PTR>
+              <PTR
+                background={background}
+                evenBackground={evenBackground}
+              >
                 {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                 <PTHR>All</PTHR>
                 <PTHR>-</PTHR>
