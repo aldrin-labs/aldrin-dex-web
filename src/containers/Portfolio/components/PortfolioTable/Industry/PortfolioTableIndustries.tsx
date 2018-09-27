@@ -641,24 +641,27 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                           </PTD>
                           {cols &&
                             cols.map((col, innerIdx) => {
+                              let colorized = null 
                               if (
                                 col &&
                                 !Array.isArray(col) &&
                                 col.match(/%/g) &&
                                 innerIdx !== 3
                               ) {
-                                const color =
+                                colorized =
                                   Number(col.replace(/%/g, '')) >= 0
-                                    ? '#65c000'
-                                    : '#ff687a'
+                                    ? 'green'
+                                    : 'red'
 
                                 return (
                                   <PTD
                                     key={`${col}${innerIdx}`}
+                                    isSelected={isSelected}
                                     textColor={textColor}
                                     selectedTextColor={theme.palette.secondary.main}
-                                    style={{ color }}
-                                    isSelected={isSelected}
+                                    red={theme.palette.red.main}
+                                    green={theme.palette.green.main}
+                                    colorized={ colorized }
                                   >
                                     {col}
                                   </PTD>
@@ -844,13 +847,24 @@ const PTBody = styled.tbody`
 const PTD = styled.td`
   color: ${(props: {
     isSelected?: boolean
+    red: string
+    green: string
+    colorized: string |  null
     selectedTextColor: string
     textColor: string
-    }) =>
-    props.isSelected 
-      ? props.selectedTextColor 
-      : props.textColor
-  };
+    }) => {
+    if (props.colorized) {
+      if (props.colorized === 'green') {
+        return props.green
+      }
+      if (props.colorized === 'red') {
+        return props.red
+      }
+    }
+
+    return props.isSelected ? props.selectedTextColor : props.textColor
+  }};
+
 
   font-family: Roboto, sans-serif;
   font-size: 12px;
