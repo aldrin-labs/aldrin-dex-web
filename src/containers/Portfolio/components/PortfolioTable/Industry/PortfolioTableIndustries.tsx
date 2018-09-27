@@ -633,6 +633,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       return (
                         <PTRBody
                           key={`${currency}${symbol}${idx}`}
+                          evenBackground={theme.palette.action.hover}
+                          background={theme.palette.background.paper}
+                          selectedBackground={theme.palette.background.default}
                           isSelected={isSelected}
                           onClick={() => this.onSelectBalance(id)}
                         >
@@ -969,6 +972,31 @@ const PTR = styled.tr`
 
 const PTRBody = styled.tr`
   cursor: pointer;
+
+  background-color: ${(props: {
+    isSelected?: boolean
+    isBase?: boolean
+    background: string
+    selectedBackground: string
+  }) =>
+    props.isBase
+      ? '#00ff0028'
+      : props.isSelected
+        ? props.selectedBackground
+        : props.background};
+
+  &:nth-child(even) {
+    background-color: ${(props: {
+      isSelected?: boolean
+      isBase?: boolean
+      evenBackground: string
+      selectedBackground: string
+    }) =>     
+      props.isSelected
+        ? props.selectedBackground
+        : props.evenBackground};
+  }
+
 
   &:hover {
     background-color: rgba(70, 102, 142, 0.2);
