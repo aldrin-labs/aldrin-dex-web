@@ -60,7 +60,7 @@ export default class PieChart extends React.Component<Props, State> {
     } = this.props
     const hasCustomColors = data.some((a) => !!a.color || !!a.style)
     const colorIsNumber = data.every((a) => typeof a.color === 'number')
-
+    const textColor: string = theme.palette.getContrastText(theme.palette.background.paper)
     const FLRadialChart = () => (
       <>
         {colorLegend && (
@@ -91,14 +91,20 @@ export default class PieChart extends React.Component<Props, State> {
           {value &&
             !!withHints && (
               <Hint value={value}>
-                <ChartTooltip>{`${
+                <ChartTooltip
+                  textColor={textColor}
+                  background={theme.palette.background.paper}
+                >{`${
                   value.labelCurrency ? value.labelCurrency : ''
                 } ${value.label} ${value.realValue}`}</ChartTooltip>
               </Hint>
             )}
           {value &&
             !withHints && (
-              <ChartTooltip>{`${value.label} ${value.realValue}`}</ChartTooltip>
+              <ChartTooltip
+                textColor={textColor}
+                background={theme.palette.background.paper}
+              >{`${value.label} ${value.realValue}`}</ChartTooltip>
             )}
         </FlexibleRadialChart>
       </>
@@ -137,14 +143,20 @@ export default class PieChart extends React.Component<Props, State> {
           {value &&
             !!withHints && (
               <Hint value={value}>
-                <ChartTooltip>{`${value.label} ${
+                <ChartTooltip
+                  textColor={textColor}
+                  background={theme.palette.background.paper}
+                >{`${value.label} ${
                   value.realValue
                 }`}</ChartTooltip>
               </Hint>
             )}
           {value &&
             !withHints && (
-              <ChartTooltip>{`${value.label} ${value.realValue}`}</ChartTooltip>
+              <ChartTooltip
+                  textColor={textColor}
+                  background={theme.palette.background.paper}
+                >{`${value.label} ${value.realValue}`}</ChartTooltip>
             )}
         </RadialChart>
       </>
@@ -159,13 +171,15 @@ export default class PieChart extends React.Component<Props, State> {
 }
 
 const ChartTooltip = styled.span`
+  color: ${(props: { textColor: string }) => props.textColor};
   font-family: Roboto, sans-serif;
   font-size: 18px;
   font-weight: 500;
   text-align: left;
-  color: #fff;
   border-radius: 3px;
-  background-color: #393e44;
+  background: ${(props: {background: string}) =>
+      props.background
+    };
   box-shadow: 0 2px 6px 0 #0006;
   padding: 8px;
   width: 100px;

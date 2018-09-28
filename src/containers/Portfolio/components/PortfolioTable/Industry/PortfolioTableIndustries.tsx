@@ -484,7 +484,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     const textColor: string = 
       theme.palette.getContrastText(theme.palette.background.paper)
-
     let isThereAnySelectedRows = false
     if (selectedRows) {
       isThereAnySelectedRows = selectedRows.length > 1
