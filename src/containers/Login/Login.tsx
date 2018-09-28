@@ -89,7 +89,7 @@ class LoginQuery extends React.Component<Props, State> {
     })
     this.state.lock.on('hide', () => {
       this.props.storeModalIsClosing()
-      this.setState({listenersOn: false})
+      this.props.listenersWillOff()
       setTimeout(() => this.props.storeClosedModal(), 1000)
     })
   }
@@ -154,7 +154,10 @@ class LoginQuery extends React.Component<Props, State> {
   showLogin = () => {
     if (!this.props.modalIsOpen && !this.props.isLogging) {
       this.state.lock.show()
-      this.setLockListeners()
+      console.log(this.props.listenersOff)
+      if (this.props.listenersOff) {
+        this.setLockListeners()
+      }
     }
   }
 
@@ -198,6 +201,7 @@ const mapStateToProps = (state: any) => ({
   user: state.login.user,
   loginStatus: state.login.loginStatus,
   modalIsOpen: state.login.modalIsOpen,
+  listenersOff: state.login.listenersOff,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -207,6 +211,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
   storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
   storeClosedModal: () => dispatch(actions.storeClosedModal()),
+  listenersWillOff: () => dispatch(actions.listenersWillOff()),
 })
 
 export const Login = compose(
