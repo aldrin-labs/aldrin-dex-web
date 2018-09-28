@@ -34,14 +34,13 @@ export default class PortfolioTableMain extends React.Component<IProps> {
     if (!tableData) {
       return null
     }
-    console.log('pallete: ', palette)
     const textColor: string = palette.getContrastText(palette.background.paper)
 
     return (
       <PTBody
         style={
           selectedBalances && selectedBalances.length > 0
-            ? { borderBottom: '1px solid #fff' }
+            ? { borderBottom: `1px solid ${textColor}`}
             : {}
         }
       >
