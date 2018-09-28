@@ -1,8 +1,7 @@
 import React from 'react'
 import DeleteIcon from '@material-ui/icons/Delete'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import AddIcon from '@material-ui/icons/Add'
-import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
 
 import RebalanceMoneyButtons from './RebalanceMoneyButtons/RebalanceMoneyButtons'
 import RebalanceActionButtons from './RebalanceActionButtons/RebalanceActionButtons'
@@ -402,11 +401,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                       {heading.name}
 
                       {isSorted && (
-                        <SvgIcon
-                          src={sortIcon}
-                          width={12}
-                          height={12}
+                        <ArrowDownward
                           style={{
+                            fontSize: 16,
                             verticalAlign: 'middle',
                             marginLeft: '4px',
                             transform:
@@ -414,7 +411,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               currentSortForDynamic.arg === 'ASC'
                                 ? 'rotate(180deg)'
                                 : null,
-                          }}
+                          }} 
                         />
                       )}
                     </PTHR>

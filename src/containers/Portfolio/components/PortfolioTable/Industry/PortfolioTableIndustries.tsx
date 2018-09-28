@@ -2,8 +2,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import styled, { css } from 'styled-components'
 import { compose } from 'recompose'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
 
-import SvgIcon from '@components/SvgIcon/SvgIcon'
 import {
   roundPercentage,
   calcAllSumOfPortfolioAsset,
@@ -20,7 +20,6 @@ import {
   Args,
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
-import sortIcon from '@icons/arrow.svg'
 import {
   customAquaScrollBar,
   Checkbox,
@@ -551,18 +550,17 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         )}
 
                         {isSorted && (
-                          <SvgIcon
-                            src={sortIcon}
-                            width={12}
-                            height={12}
+                          <ArrowDownward
                             style={{
+                              fontSize: 16,
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
-                                currentSort && currentSort.arg === 'ASC'
+                                currentSort &&
+                                currentSort.arg === 'ASC'
                                   ? 'rotate(180deg)'
                                   : null,
-                            }}
+                            }} 
                           />
                         )}
                       </PTH>

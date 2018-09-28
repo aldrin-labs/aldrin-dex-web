@@ -1,7 +1,6 @@
 import * as React from 'react'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
 
-import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IRow } from '../Rebalance.types'
 import { IProps, IState } from './CurrentPortfolioTable.types'
@@ -82,11 +81,9 @@ export default class CurrentPortfolioTable extends React.Component<
                       {heading.name}
 
                       {isSorted && (
-                        <SvgIcon
-                          src={sortIcon}
-                          width={12}
-                          height={12}
+                        <ArrowDownward
                           style={{
+                            fontSize: 16,
                             verticalAlign: 'middle',
                             marginLeft: '4px',
                             transform:
@@ -94,7 +91,7 @@ export default class CurrentPortfolioTable extends React.Component<
                               currentSortForStatic.arg === 'ASC'
                                 ? 'rotate(180deg)'
                                 : null,
-                          }}
+                          }} 
                         />
                       )}
                     </PTHC>
