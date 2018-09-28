@@ -10,7 +10,7 @@ export default ({ show = true }) =>
   show ? (
     <Container>
       <Typography variant="display2" color="textPrimary">
-        Cooming Soon
+        Coming Soon
       </Typography>
     </Container>
   ) : (

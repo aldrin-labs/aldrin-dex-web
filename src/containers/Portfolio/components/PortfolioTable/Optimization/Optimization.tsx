@@ -21,7 +21,7 @@ import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
-import CoomingSoon from '@components/CoomingSoon'
+import ComingSoon from '@components/ComingSoon'
 
 const production = true
 
@@ -316,7 +316,7 @@ class Optimization extends Component<IProps, IState> {
     return (
       <PTWrapper notScrollable={production}>
         <Content>
-          {production && <CoomingSoon />}
+          {production && <ComingSoon />}
           {children}
           {loading ? this.renderLoading() : null}
           <ImportData>{this.renderInput()}</ImportData>
