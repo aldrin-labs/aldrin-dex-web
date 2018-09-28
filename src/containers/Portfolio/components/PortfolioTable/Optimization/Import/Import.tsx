@@ -106,15 +106,6 @@ class Import extends PureComponent<IProps> {
 
       this.props.toggleLoading()
       this.props.setActiveButtonToDefault()
-      console.log('Variables')
-      console.log({
-        expectedPct: Number(expectedReturn),
-        coinList: storeData.map((el: IData) => el.coin),
-        startDate,
-        endDate,
-      })
-      console.log('Data')
-      console.log(backendData)
 
       if (backendData.portfolioOptimization === '') {
         showWarning('You get empty response! 🙈')
@@ -135,9 +126,7 @@ class Import extends PureComponent<IProps> {
       )
 
       if (!isReturnedCoinsTheSameThatInputed) {
-        // showWarning('Output coins not the same as input coins!')
         console.log('Output coins not the same as input coins!')
-        // return
       }
 
       optimizePortfolio(backendDataParsed[2])
@@ -151,7 +140,6 @@ class Import extends PureComponent<IProps> {
   }
 
   addRow = (name: string, value: number) => {
-    console.log(this.props.filterValueSmallerThenPercentage)
     if (this.props.filterValueSmallerThenPercentage >= 0) {
       this.props.showWarning('Turn off the filter first to see new coins.')
     }

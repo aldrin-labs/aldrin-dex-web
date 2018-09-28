@@ -398,8 +398,6 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   render() {
-    console.log('RENDER')
-
     const {
       children,
       isUSDCurrently,

@@ -15,8 +15,6 @@ export function combineToBarChart(dataForChart) {
     y: parseFloat(parseFloat(dataItem.portfolioPerc).toFixed(2)) || 0
   }))
 
-  // console.log('newDataForBarChart', newDataForBarChart);
-
   return newDataForBarChart
 }
 
