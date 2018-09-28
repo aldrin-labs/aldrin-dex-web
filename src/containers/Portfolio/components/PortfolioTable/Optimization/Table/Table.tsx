@@ -50,22 +50,24 @@ class Table extends Component<IProps, IState> {
       filterValueSmallerThenPercentage,
       theme: {palette}
     } = this.props
+    const textColor: string= palette.getContrastText(palette.background.paper)
+
     if (withInput) {
       return (
-        <StyledTable>
-          <Head>
-            <HeadItem>
+        <StyledTable background={palette.background.paper}>
+          <Head bottomCollor={textColor}>
+            <HeadItem background={palette.background.paper}>
               <Typography variant="title" align="center">
                 {' '}
                 Coin
               </Typography>
             </HeadItem>
-            <HeadItem>
+            <HeadItem background={palette.background.paper}>
               <Typography variant="title" align="center">
                 Portfolio%
               </Typography>
             </HeadItem>
-            <HeadItem>
+            <HeadItem background={palette.background.paper}>
               <Typography variant="title" align="center">
                 Optimized%
               </Typography>
@@ -93,7 +95,11 @@ class Table extends Component<IProps, IState> {
               {data
                 .filter((d) => d.percentage > filterValueSmallerThenPercentage)
                 .map((item, i) => (
-                  <Item key={item.coin}>
+                  <Item
+                    background={palette.background.paper}
+                    evenBackground={palette.action.hover} 
+                    key={item.coin}
+                  >
                     <Typography variant="body1" align="center">
                       {item.coin}
                     </Typography>
@@ -105,7 +111,11 @@ class Table extends Component<IProps, IState> {
               {data
                 .filter((d) => d.percentage > filterValueSmallerThenPercentage)
                 .map((item, i) => (
-                  <Item key={item.coin}>
+                  <Item
+                    background={palette.background.paper}
+                    evenBackground={palette.action.hover} 
+                    key={item.coin}
+                  >
                     <Typography variant="body1" align="center">
                       {`${Number(item.percentage).toFixed(2)}%`}{' '}
                     </Typography>
@@ -123,7 +133,11 @@ class Table extends Component<IProps, IState> {
                     (d) => d.percentage > filterValueSmallerThenPercentage
                   )
                   .map((item, i) => (
-                    <Item key={item.coin}>
+                    <Item
+                      background={palette.background.paper}
+                      evenBackground={palette.action.hover} 
+                      key={item.coin}
+                    >
                       <Typography variant="body1" align="center">
                         {optimizedData[i]
                           ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
@@ -145,7 +159,11 @@ class Table extends Component<IProps, IState> {
                     (d) => d.percentage > filterValueSmallerThenPercentage
                   )
                   .map((item, i) => (
-                    <Item key={i}>
+                    <Item
+                      background={palette.background.paper}
+                      evenBackground={palette.action.hover} 
+                      key={i}
+                    >
                       <Typography variant="body1" align="center">
                         {'-'}{' '}
                       </Typography>
@@ -160,7 +178,7 @@ class Table extends Component<IProps, IState> {
             )}
           </Body>
           <TableInput>
-            <Item>
+            <Item background={palette.background.paper}>
               <Input
                 placeholder="Coin"
                 type="text"
@@ -170,14 +188,11 @@ class Table extends Component<IProps, IState> {
               />
             </Item>
             <Item
-              style={{
-                background: 'rgb(45, 49, 54)',
-                // because of nth-child(even)
-              }}
+              background={palette.background.paper}
             />
             <Item
+              background={palette.background.paper}
               style={{
-                background: 'rgb(45, 49, 54)',
                 display: 'flex',
                 justifyContent: 'flex-end',
                 // because of nth-child(even)
@@ -197,7 +212,7 @@ class Table extends Component<IProps, IState> {
       )
     } else {
       return (
-        <StyledTableWithoutInput>
+        <StyledTableWithoutInput background={palette.background.paper}>
           <Head>
             <HeadItem>Coin</HeadItem>
             <HeadItem>Portfolio%</HeadItem>
@@ -281,18 +296,21 @@ const Item = styled.div`
   text-overflow: ellipsis;
   min-width: 0px;
   white-space: nowrap;
-
+  background: ${(props: {background: string}) =>
+      props.background
+    };
   &:nth-child(even) {
-    background: #393e44;
+    background: ${(props: {
+      evenBackground: string,
+      background:string
+    }) =>
+      props.evenBackground ? props.evenBackground : props.background};
+    }
   }
 `
 
 const HeadItem = styled(Item)`
   top: -1px;
-
-  &:nth-child(even) {
-    background: rgb(45, 49, 54);
-  }
 `
 
 const Head = styled.div`
@@ -302,7 +320,7 @@ const Head = styled.div`
   justify-content: center;
   max-width: 50rem;
   margin: 0.5rem;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid ${(props: { color: string }) => props.color};
 `
 
 const TableInput = styled.div`
@@ -316,7 +334,9 @@ const StyledTable = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  background: rgb(45, 49, 54);
+  background: ${(props: {background: string}) =>
+      props.background
+    };
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   transition: all 0.3s linear;
 `
