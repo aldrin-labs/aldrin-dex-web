@@ -66,6 +66,7 @@ class LoginQuery extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.isShownModal) this.showLogin()
     this.checkToken()
+    this.props.listenersWillOn()
     this.setLockListeners()
   }
 
@@ -154,7 +155,6 @@ class LoginQuery extends React.Component<Props, State> {
   showLogin = () => {
     if (!this.props.modalIsOpen && !this.props.isLogging) {
       this.state.lock.show()
-      console.log(this.props.listenersOff)
       if (this.props.listenersOff) {
         this.setLockListeners()
       }
@@ -211,6 +211,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
   storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
   storeClosedModal: () => dispatch(actions.storeClosedModal()),
+  listenersWillOn: () => dispatch(actions.listenersWillOn()),
   listenersWillOff: () => dispatch(actions.listenersWillOff()),
 })
 
