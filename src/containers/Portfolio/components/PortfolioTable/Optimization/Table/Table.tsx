@@ -145,6 +145,7 @@ class Table extends Component<IProps, IState> {
                       </Typography>
 
                       <StyledDeleteIcon
+                        color={textColor}
                         onClick={() => {
                           onClickDeleteIcon && onClickDeleteIcon(i)
                         }}
@@ -168,6 +169,7 @@ class Table extends Component<IProps, IState> {
                         {'-'}{' '}
                       </Typography>
                       <StyledDeleteIcon
+                        color={textColor}
                         onClick={() => {
                           onClickDeleteIcon && onClickDeleteIcon(i)
                         }}
@@ -199,6 +201,7 @@ class Table extends Component<IProps, IState> {
               }}
             >
               <AddStyled
+                color={textColor}
                 show={true}
                 onClick={() => {
                   onPlusClick && onPlusClick(this.state.name, this.state.value)
@@ -237,6 +240,7 @@ class Table extends Component<IProps, IState> {
 }
 
 const AddStyled = styled(AddIcon)`
+  color: ${(props: { color: boolean }) => props.color};
   position: relative;
   font-size: 2rem;
   cursor: pointer;
@@ -366,6 +370,7 @@ const Body = styled.div`
 `
 
 const StyledDeleteIcon = styled(DeleteIcon)`
+  color: ${(props: { color: boolean }) => props.color};
   opacity: 0;
   cursor: pointer;
   position: absolute;
