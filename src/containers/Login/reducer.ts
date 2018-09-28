@@ -11,6 +11,7 @@ const initialState = {
   loginStatus: null,
   modalIsOpen: false,
   isLogging: false,
+  listenersOff: false,
 }
 
 const UserReducer = createReducer(
@@ -33,6 +34,12 @@ const UserReducer = createReducer(
     [actions.storeClosedModal]: (state) => {
       return {...state, modalIsOpen: false, isLogging: false}
     },
+    [actions.listenersWillOff]: (state) => {
+      return {...state, listenersOff: true}
+    },
+    [actions.listenersWillOn]: (state) => {
+      return {...state, listenersOff: false}
+    }
   },
   initialState
 )
