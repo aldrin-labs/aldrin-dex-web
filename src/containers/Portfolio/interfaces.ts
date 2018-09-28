@@ -86,6 +86,7 @@ export interface IndProps {
   isUSDCurrently: boolean
   filterValueSmallerThenPercentage: string
   isShownMocks?: boolean
+  switchToUsd: Function
 }
 
 export interface ITableProps {
