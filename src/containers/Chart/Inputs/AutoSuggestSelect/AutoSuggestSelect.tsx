@@ -22,6 +22,10 @@ class IntegrationReactSelect extends React.PureComponent {
       removeWarningMessage,
     } = this.props
 
+    if (!value) {
+      return
+    }
+
     if (view === 'default') {
       selectCurrencies(value)
 
