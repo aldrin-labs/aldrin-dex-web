@@ -58,9 +58,12 @@ export default class PieChart extends React.Component<Props, State> {
       colorLegend,
       theme,
     } = this.props
+
     const hasCustomColors = data.some((a) => !!a.color || !!a.style)
     const colorIsNumber = data.every((a) => typeof a.color === 'number')
-    const textColor: string = theme.palette.getContrastText(theme.palette.background.paper)
+    const background = theme? theme.palette.background.paper : '#393e44'
+    const textColor: string = theme? theme.palette.getContrastText(background) : '#fff'
+    console.log(textColor)
     const FLRadialChart = () => (
       <>
         {colorLegend && (
@@ -72,9 +75,7 @@ export default class PieChart extends React.Component<Props, State> {
             colors={data
               // .concat(data, data, data, data, data)
               .map((d) => d.color)}
-            textColor={theme.palette.getContrastText(
-              theme.palette.background.paper
-            )}
+            textColor={textColor}
           />
         )}
         <FlexibleRadialChart
@@ -93,7 +94,7 @@ export default class PieChart extends React.Component<Props, State> {
               <Hint value={value}>
                 <ChartTooltip
                   textColor={textColor}
-                  background={theme.palette.background.paper}
+                  background={background}
                 >{`${
                   value.labelCurrency ? value.labelCurrency : ''
                 } ${value.label} ${value.realValue}`}</ChartTooltip>
@@ -103,7 +104,7 @@ export default class PieChart extends React.Component<Props, State> {
             !withHints && (
               <ChartTooltip
                 textColor={textColor}
-                background={theme.palette.background.paper}
+                background={background}
               >{`${value.label} ${value.realValue}`}</ChartTooltip>
             )}
         </FlexibleRadialChart>
@@ -121,9 +122,7 @@ export default class PieChart extends React.Component<Props, State> {
             colors={data
               // .concat(data, data, data, data, data)
               .map((d) => d.color)}
-            textColor={theme.palette.getContrastText(
-              theme.palette.background.paper
-            )}
+            textColor={textColor}
           />
         )}
         <RadialChart
@@ -145,7 +144,7 @@ export default class PieChart extends React.Component<Props, State> {
               <Hint value={value}>
                 <ChartTooltip
                   textColor={textColor}
-                  background={theme.palette.background.paper}
+                  background={background}
                 >{`${value.label} ${
                   value.realValue
                 }`}</ChartTooltip>
@@ -155,7 +154,7 @@ export default class PieChart extends React.Component<Props, State> {
             !withHints && (
               <ChartTooltip
                   textColor={textColor}
-                  background={theme.palette.background.paper}
+                  background={background}
                 >{`${value.label} ${value.realValue}`}</ChartTooltip>
             )}
         </RadialChart>
