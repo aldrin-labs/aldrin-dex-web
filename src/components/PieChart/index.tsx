@@ -63,7 +63,6 @@ export default class PieChart extends React.Component<Props, State> {
     const colorIsNumber = data.every((a) => typeof a.color === 'number')
     const background = theme? theme.palette.background.paper : '#393e44'
     const textColor: string = theme? theme.palette.getContrastText(background) : '#fff'
-    console.log(textColor)
     const FLRadialChart = () => (
       <>
         {colorLegend && (
