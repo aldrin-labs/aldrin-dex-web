@@ -22,8 +22,7 @@ import {
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
 import ComingSoon from '@components/ComingSoon'
-
-const production = true
+import { MASTER_BUILD } from '@utils/constants'
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -314,9 +313,9 @@ class Optimization extends Component<IProps, IState> {
     const { loading, openWarning, warningMessage } = this.state
 
     return (
-      <PTWrapper notScrollable={production}>
+      <PTWrapper notScrollable={MASTER_BUILD}>
         <Content>
-          {production && <ComingSoon />}
+          {MASTER_BUILD && <ComingSoon />}
           {children}
           {loading ? this.renderLoading() : null}
           <ImportData>{this.renderInput()}</ImportData>
