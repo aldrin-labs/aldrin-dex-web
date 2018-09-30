@@ -198,7 +198,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             !(
               walletAsset &&
               walletAsset.asset &&
-              (walletAsset.asset.priceUSD || walletAsset.asset.priceBTC)
+              walletAsset.asset.priceUSD && walletAsset.asset.priceBTC
             )
           ) {
             return {}
