@@ -1,6 +1,6 @@
 import React from 'react'
 import { Checkbox } from '@material-ui/core'
-import { has } from 'lodash-es'
+import { has, isEqual } from 'lodash-es'
 
 import { IProps, keyItem } from './Accounts.types'
 import {
@@ -29,7 +29,10 @@ export default class Accounts extends React.PureComponent<IProps> {
       (keys && keys.map((key: keyItem) => key && key.name).filter(Boolean)) || []
 
     this.props.setKeys(checkboxes)
-    if (oldKeys.length < checkboxes.length ) {
+
+    const areNewKeysAndOldKeysEqual = isEqual(checkboxes, oldKeys)
+
+    if (oldKeys.length < checkboxes.length || !areNewKeysAndOldKeysEqual) {
       this.props.setActiveKeys(checkboxes)
     }
 
