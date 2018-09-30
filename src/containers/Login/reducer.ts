@@ -1,10 +1,6 @@
 import { createReducer } from 'redux-act'
-import storage from 'redux-persist/lib/storage';
-import { persistReducer } from 'redux-persist';
 
 import * as actions from '@containers/Login/actions'
-
-
 
 const initialState = {
   user: null,
@@ -14,7 +10,7 @@ const initialState = {
   listenersOff: false,
 }
 
-const UserReducer = createReducer(
+export default createReducer(
   {
     [actions.onLogin]: (state, payload) => {
       return { ...state, user: { ...payload }, isLogging: true }
@@ -43,11 +39,3 @@ const UserReducer = createReducer(
   },
   initialState
 )
-
-const persistConfig = {
-  key: 'login',
-  storage: storage,
-  whitelist: ['user', 'loginStatus']
-};
-
-export default persistReducer(persistConfig, UserReducer);

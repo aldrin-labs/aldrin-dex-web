@@ -1,8 +1,7 @@
 import { createReducer } from 'redux-act'
 import { uniqWith, isEqual } from 'lodash-es'
 import nanoid from 'nanoid'
-import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+
 
 import * as actions from '@containers/Chart/actions'
 
@@ -16,7 +15,7 @@ const initialState = {
   bids: [],
 }
 
-const chartReducer = createReducer(
+export default createReducer(
   {
     [actions.setOrders]: (state, payload) => ({
       ...state,
@@ -68,11 +67,3 @@ const chartReducer = createReducer(
   },
   initialState
 )
-
-const persistConfig = {
-  key: 'chart',
-  storage: storage,
-  whitelist: ['charts', 'currencyPair', 'activeExchange'],
-}
-
-export default persistReducer(persistConfig, chartReducer)
