@@ -134,7 +134,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               isBase={isBase}
               evenBackground={palette.action.hover}
               background={palette.background.paper}
-              selectedBackground={palette.background.default}
+              selectedBackground={palette.action.selected}
               onClick={() => this.props.onSelectBalance(id)}
             >
               <PTD
