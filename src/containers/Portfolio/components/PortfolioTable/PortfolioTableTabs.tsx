@@ -45,14 +45,15 @@ class PortfolioTableTabs extends React.Component<IProps> {
         <PTHeadingBlock>
           <TabContainer>
             <Menu onMenuItemClick={this.onChangeTab} />
-            <ToggleAccountsBtn
-              onClick={() => {
-                toggleWallets()
-              }}
-            >
-              <AccountIcon />
-            </ToggleAccountsBtn>
-
+            <ToggleAccountsBtnContainer>
+              <IconButton
+                onClick={() => {
+                  toggleWallets()
+                }}
+              >
+                <AccountIcon />
+              </IconButton>
+            </ToggleAccountsBtnContainer>
             <Tab
               color="primary"
               onClick={() => this.onChangeTab('main')}
@@ -230,10 +231,10 @@ const ButtonContainer = styled.div`
   }
 `
 
-const ToggleAccountsBtn = styled(IconButton)`
+const ToggleAccountsBtnContainer = styled.div`
   display: block;
   padding: 0.75rem;
-  margin-top: 15%;
+  margin-top: 0.5rem;
 
   @media (min-width: 1290px) {
     display: none;
