@@ -22,7 +22,7 @@ import {
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
 import ComingSoon from '@components/ComingSoon'
-import { MASTER_BUILD } from '@utils/constants'
+import { MASTER_BUILD } from '@utils/config'
 
 class Optimization extends Component<IProps, IState> {
   state = {

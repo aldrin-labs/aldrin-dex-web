@@ -30,7 +30,7 @@ import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
 import ComingSoon from '@components/ComingSoon'
-import { MASTER_BUILD } from '@utils/constants'
+import { MASTER_BUILD } from '@utils/config'
 
 const OnlyCharts = Loadable({
   loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
