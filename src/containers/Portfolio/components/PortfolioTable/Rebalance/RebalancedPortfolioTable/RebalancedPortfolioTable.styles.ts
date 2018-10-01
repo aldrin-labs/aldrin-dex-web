@@ -212,24 +212,41 @@ const InputTable = styled.input`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
+  transition: background-color 0.25s ease-in-out;
+  background-color: ${(props: { 
+    isSelected?: boolean,
+    background: string,
+    selectedBackground: string
+  }) =>
+    props.isSelected ? props.selectedBackground : props.background};
 
   & ${InputTable} {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3136' : '#393e44'};
+    background-color: ${(props: { 
+    isSelected?: boolean,
+    background: string,
+    selectedBackground: string
+  }) =>
+    props.isSelected ? props.selectedBackground : props.background};
 
     border: 1px solid #928282;
   }
 
   &:nth-child(even) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+    background-color: ${(props: { 
+    isSelected?: boolean,
+    evenBackground: string,
+    selectedBackground: string
+  }) =>
+    props.isSelected ? props.selectedBackground : props.evenBackground};
   }
 
   &:nth-child(even) ${InputTable} {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+    background-color: ${(props: { 
+    isSelected?: boolean,
+    evenBackground: string,
+    selectedBackground: string
+  }) =>
+    props.isSelected ? props.selectedBackground : props.evenBackground};
   }
 `
 

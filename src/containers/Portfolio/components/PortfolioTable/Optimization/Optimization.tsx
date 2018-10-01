@@ -211,6 +211,7 @@ class Optimization extends Component<IProps, IState> {
       setPeriod,
       optimizationPeriod,
       filterValueSmallerThenPercentage,
+      theme,
     } = this.props
 
     return (
@@ -239,6 +240,7 @@ class Optimization extends Component<IProps, IState> {
         percentages={percentages}
         activeButton={activeButton}
         showSwitchButtons={optimizedData.length >= 1}
+        theme={theme}
       />
     )
   }
@@ -296,10 +298,15 @@ class Optimization extends Component<IProps, IState> {
     //     activeButton,
     //   }
     // }
+    const {
+      theme: {palette}
+    } = this.props
 
     return (
       <ChartsContainer>
-        <Chart>
+        <Chart
+          background={palette.background.default}
+        >
           <BarChart
             height={300}
             showPlaceholder={formatedData.length === 0}
@@ -307,7 +314,9 @@ class Optimization extends Component<IProps, IState> {
             alwaysShowLegend
           />
         </Chart>
-        <Chart>
+        <Chart
+          background={palette.background.default}
+        >
           <EfficientFrontierChart data={efficientFrontierData} />
         </Chart>
       </ChartsContainer>
@@ -317,7 +326,10 @@ class Optimization extends Component<IProps, IState> {
   renderLoading = () => <Loader color="secondary" />
 
   render() {
-    const { children } = this.props
+    const {
+      children,
+      theme: {palette}
+    } = this.props
     const { loading, openWarning, warningMessage } = this.state
 
     return (
@@ -328,7 +340,7 @@ class Optimization extends Component<IProps, IState> {
           {loading ? this.renderLoading() : null}
           <ImportData>{this.renderInput()}</ImportData>
 
-          <MainArea>
+          <MainArea background={palette.background.paper}>
             <MainAreaUpperPart />
             {this.renderCharts()}
           </MainArea>
@@ -342,6 +354,7 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 }
+
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,

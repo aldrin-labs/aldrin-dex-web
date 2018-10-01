@@ -1,8 +1,8 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
+
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
-import sortIcon from '../../../../../icons/arrow.svg'
 import {
   IState,
   IProps,
@@ -71,7 +71,9 @@ export default class PortfolioTableHead extends React.Component<
     const textColor: string = palette.getContrastText(palette.background.default) 
 
     return (
-      <PTHead>
+      <PTHead
+        bottomCollor={textColor}
+      >
         <PTR background={palette.background.paper}>
           <PTH
             textColor={textColor}
@@ -108,18 +110,17 @@ export default class PortfolioTableHead extends React.Component<
                 )}
 
                 {isSorted && (
-                  <SvgIcon
-                    src={sortIcon}
-                    width={12}
-                    height={12}
+                  <ArrowDownward
                     style={{
+                      fontSize: 16,
                       verticalAlign: 'middle',
                       marginLeft: '4px',
                       transform:
-                        currentSort && currentSort.arg === 'ASC'
+                        currentSort &&
+                        currentSort.arg === 'ASC'
                           ? 'rotate(180deg)'
                           : null,
-                    }}
+                    }} 
                   />
                 )}
               </PTH>
@@ -202,6 +203,6 @@ const PTHead = styled.thead`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
   }
 `

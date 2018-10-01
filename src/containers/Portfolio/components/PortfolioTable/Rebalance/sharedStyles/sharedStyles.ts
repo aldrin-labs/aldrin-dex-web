@@ -42,7 +42,7 @@ const PT = css`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid #fff;
+    border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
   }
 `
 

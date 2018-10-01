@@ -60,8 +60,6 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
         money,
         selectedActive.length
       ).sort((a, b) => b - a)
-      // console.log('arrayOfMoneyPart', arrayOfMoneyPart)
-      // console.log('selectedActive', selectedActive)
 
       resultRows = rows.map((row, i) => {
         return selectedActive.includes(i)

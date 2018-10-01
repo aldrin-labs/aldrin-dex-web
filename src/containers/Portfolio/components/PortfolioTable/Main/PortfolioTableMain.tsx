@@ -34,14 +34,13 @@ export default class PortfolioTableMain extends React.Component<IProps> {
     if (!tableData) {
       return null
     }
-
     const textColor: string = palette.getContrastText(palette.background.paper)
 
     return (
       <PTBody
         style={
           selectedBalances && selectedBalances.length > 0
-            ? { borderBottom: '1px solid #fff' }
+            ? { borderBottom: `1px solid ${textColor}`}
             : {}
         }
       >
@@ -135,7 +134,7 @@ export default class PortfolioTableMain extends React.Component<IProps> {
               isBase={isBase}
               evenBackground={palette.action.hover}
               background={palette.background.paper}
-              selectedBackground={palette.background.default}
+              selectedBackground={palette.action.selected}
               onClick={() => this.props.onSelectBalance(id)}
             >
               <PTD
@@ -273,8 +272,8 @@ const PTR = styled.tr`
     props.isBase
       ? '#00ff0028'
       : props.isSelected
-        ? props.background
-        : props.selectedBackground};
+        ? props.selectedBackground
+        : props.background};
 
   &:nth-child(even) {
     background-color: ${(props: {
@@ -282,12 +281,10 @@ const PTR = styled.tr`
       isBase?: boolean
       evenBackground: string
       selectedBackground: string
-    }) =>
-      props.isBase
-        ? '#00ff0028'
-        : props.isSelected
-          ? props.evenBackground
-          : props.selectedBackground};
+    }) =>     
+      props.isSelected
+        ? props.selectedBackground
+        : props.evenBackground};
   }
 
   & ${PTD}:nth-child(n + 4) {

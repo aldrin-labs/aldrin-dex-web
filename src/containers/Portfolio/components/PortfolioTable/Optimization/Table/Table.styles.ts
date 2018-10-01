@@ -19,7 +19,9 @@ export {
   StyledDeleteIcon,
 }
 
+
 const AddStyled = styled(AddIcon)`
+  color: ${(props: { color: boolean }) => props.color};
   position: relative;
   font-size: 2rem;
   cursor: pointer;
@@ -39,6 +41,7 @@ const StyledCard = styled(Card)`
 `
 
 const Input = styled.input`
+  color: ${(props: { color: boolean }) => props.color};
   box-sizing: border-box;
   background: transparent;
   border-top: none;
@@ -52,7 +55,6 @@ const Input = styled.input`
   line-height: 24px;
   text-align: left;
   padding: 10px 0 0px;
-  color: rgb(255, 255, 255);
   transition: all 0.25s ease-out;
 
   &:focus {
@@ -79,18 +81,21 @@ const Item = styled.div`
   text-overflow: ellipsis;
   min-width: 0px;
   white-space: nowrap;
-
+  background: ${(props: {background: string}) =>
+  props.background
+  };
   &:nth-child(even) {
-    background: #393e44;
+    background: ${(props: {
+  evenBackground: string,
+  background:string
+}) =>
+  props.evenBackground ? props.evenBackground : props.background};
+    }
   }
 `
 
 const HeadItem = styled(Item)`
   top: -1px;
-
-  &:nth-child(even) {
-    background: rgb(45, 49, 54);
-  }
 `
 
 const Head = styled.div`
@@ -100,7 +105,7 @@ const Head = styled.div`
   justify-content: center;
   max-width: 50rem;
   margin: 0.5rem;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid ${(props: { color: string }) => props.color};
 `
 
 const TableInput = styled.div`
@@ -114,7 +119,9 @@ const StyledTable = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  background: rgb(45, 49, 54);
+  background: ${(props: {background: string}) =>
+  props.background
+  };
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   transition: all 0.3s linear;
 `
@@ -144,6 +151,7 @@ const Body = styled.div`
 `
 
 const StyledDeleteIcon = styled(DeleteIcon)`
+  color: ${(props: { color: boolean }) => props.color};
   opacity: 0;
   cursor: pointer;
   position: absolute;

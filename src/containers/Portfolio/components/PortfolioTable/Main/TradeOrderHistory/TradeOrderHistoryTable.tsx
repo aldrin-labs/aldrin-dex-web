@@ -1,4 +1,5 @@
 import * as React from 'react'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { MyTradesQuery } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/api'
@@ -6,8 +7,6 @@ import {
   formatNumberToUSFormat,
   onSortTableFull,
 } from '@utils/PortfolioTableUtils'
-import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
 import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 // import { tradeOrderHistoryTableData } from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/mocks'
 import {
@@ -111,7 +110,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     return (
       <Wrapper>
         <Table>
-          <PTHead>
+          <PTHead bottomCollor={textColor}>
             <PTR background={palette.background.paper}>
               {tradeOrderHistoryTableHeadings.map((heading) => {
                 const isSorted =
@@ -126,18 +125,17 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
                     {heading.name}
 
                     {isSorted && (
-                      <SvgIcon
-                        src={sortIcon}
-                        width={12}
-                        height={12}
+                      <ArrowDownward
                         style={{
+                          fontSize: 16,
                           verticalAlign: 'middle',
                           marginLeft: '4px',
                           transform:
-                            currentSort && currentSort.arg === 'ASC'
+                            currentSort &&
+                            currentSort.arg === 'ASC'
                               ? 'rotate(180deg)'
                               : null,
-                        }}
+                        }} 
                       />
                     )}
                   </PTHC>

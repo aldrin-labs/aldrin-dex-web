@@ -58,23 +58,26 @@ export default class Table extends Component<IProps, IState> {
       onPlusClick,
       optimizedData,
       filterValueSmallerThenPercentage,
+      theme: {palette}
     } = this.props
+    const textColor: string= palette.getContrastText(palette.background.paper)
+
     if (withInput) {
       return (
-        <StyledTable>
-          <Head>
-            <HeadItem>
+        <StyledTable background={palette.background.paper}>
+          <Head bottomCollor={textColor}>
+            <HeadItem background={palette.background.paper}>
               <Typography variant="title" align="center">
                 {' '}
                 Coin
               </Typography>
             </HeadItem>
-            <HeadItem>
+            <HeadItem background={palette.background.paper}>
               <Typography variant="title" align="center">
                 Portfolio%
               </Typography>
             </HeadItem>
-            <HeadItem>
+            <HeadItem background={palette.background.paper}>
               <Typography variant="title" align="center">
                 Optimized%
               </Typography>
@@ -102,7 +105,11 @@ export default class Table extends Component<IProps, IState> {
               {data
                 .filter((d) => d.percentage > filterValueSmallerThenPercentage)
                 .map((item, i) => (
-                  <Item key={item.coin}>
+                  <Item
+                    background={palette.background.paper}
+                    evenBackground={palette.action.hover}
+                    key={item.coin}
+                  >
                     <Typography variant="body1" align="center">
                       {item.coin}
                     </Typography>
@@ -114,7 +121,11 @@ export default class Table extends Component<IProps, IState> {
               {data
                 .filter((d) => d.percentage > filterValueSmallerThenPercentage)
                 .map((item, i) => (
-                  <Item key={item.coin}>
+                  <Item
+                    background={palette.background.paper}
+                    evenBackground={palette.action.hover}
+                    key={item.coin}
+                  >
                     <Typography variant="body1" align="center">
                       {`${Number(item.percentage).toFixed(2)}%`}{' '}
                     </Typography>
@@ -132,7 +143,11 @@ export default class Table extends Component<IProps, IState> {
                     (d) => d.percentage > filterValueSmallerThenPercentage
                   )
                   .map((item, i) => (
-                    <Item key={item.coin}>
+                    <Item
+                      background={palette.background.paper}
+                      evenBackground={palette.action.hover}
+                      key={item.coin}
+                    >
                       <Typography variant="body1" align="center">
                         {optimizedData[i]
                           ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
@@ -140,6 +155,7 @@ export default class Table extends Component<IProps, IState> {
                       </Typography>
 
                       <StyledDeleteIcon
+                        color={textColor}
                         onClick={() => {
                           onClickDeleteIcon && onClickDeleteIcon(i)
                         }}
@@ -154,11 +170,16 @@ export default class Table extends Component<IProps, IState> {
                     (d) => d.percentage > filterValueSmallerThenPercentage
                   )
                   .map((item, i) => (
-                    <Item key={i}>
+                    <Item
+                      background={palette.background.paper}
+                      evenBackground={palette.action.hover}
+                      key={i}
+                    >
                       <Typography variant="body1" align="center">
                         {'-'}{' '}
                       </Typography>
                       <StyledDeleteIcon
+                        color={textColor}
                         onClick={() => {
                           onClickDeleteIcon && onClickDeleteIcon(i)
                         }}
@@ -169,8 +190,9 @@ export default class Table extends Component<IProps, IState> {
             )}
           </Body>
           <TableInput>
-            <Item>
+            <Item background={palette.background.paper}>
               <Input
+                color={textColor}
                 placeholder="Coin"
                 type="text"
                 value={this.state.name || ''}
@@ -179,20 +201,18 @@ export default class Table extends Component<IProps, IState> {
               />
             </Item>
             <Item
-              style={{
-                background: 'rgb(45, 49, 54)',
-                // because of nth-child(even)
-              }}
+              background={palette.background.paper}
             />
             <Item
+              background={palette.background.paper}
               style={{
-                background: 'rgb(45, 49, 54)',
                 display: 'flex',
                 justifyContent: 'flex-end',
                 // because of nth-child(even)
               }}
             >
               <AddStyled
+                color={textColor}
                 show={true}
                 onClick={() => {
                   onPlusClick && onPlusClick(this.state.name, this.state.value)
@@ -206,7 +226,7 @@ export default class Table extends Component<IProps, IState> {
       )
     } else {
       return (
-        <StyledTableWithoutInput>
+        <StyledTableWithoutInput background={palette.background.paper}>
           <Head>
             <HeadItem>Coin</HeadItem>
             <HeadItem>Portfolio%</HeadItem>
