@@ -157,7 +157,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys, activeCryptoWallets } = this.state
-    console.log('activeKeys: ', activeKeys);
+    console.log('activeKeys: ', activeKeys)
 
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) {
@@ -193,6 +193,16 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         const { symbol, priceUSD, priceBTC } = baseAsset || {}
 
         return assets.map((walletAsset: any, i) => {
+          // checking for props that we need
+          if (
+            !(
+              walletAsset &&
+              walletAsset.asset &&
+              walletAsset.asset.priceUSD && walletAsset.asset.priceBTC
+            )
+          ) {
+            return {}
+          }
           const mainPrice = isUSDCurrently
             ? walletAsset.asset.priceUSD
             : walletAsset.asset.priceBTC
