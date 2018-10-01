@@ -18,7 +18,7 @@ import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
-import CoomingSoon from '@components/CoomingSoon'
+import ComingSoon from '@components/CoomingSoon'
 import {
   Loader,
   ChartsContainer,
