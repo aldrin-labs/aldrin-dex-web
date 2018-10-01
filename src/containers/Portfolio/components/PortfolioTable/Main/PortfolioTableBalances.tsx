@@ -2,16 +2,11 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { Typography, Divider, Button, Paper, Card } from '@material-ui/core'
-
-import AddIcon from '@material-ui/icons/Add'
-import { Link } from 'react-router-dom'
+import { Typography, Divider, Paper, Card } from '@material-ui/core'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
-import PortfolioTableMain from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableMain'
-import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
-import PortfolioTableHead from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableHead'
+
 import {
   onValidateSum,
   onSortStrings,
@@ -31,8 +26,7 @@ import {
 import TradeOrderHistoryTable from '@containers/Portfolio/components/PortfolioTable/Main/TradeOrderHistory/TradeOrderHistoryTable'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
-
-const MyLinkToUserSettings = (props) => <Link to="/user" {...props} />
+import Table from '@components/Tables/SimpleTable'
 
 const defaultSelectedSum = {
   currency: '',
@@ -198,7 +192,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             !(
               walletAsset &&
               walletAsset.asset &&
-              walletAsset.asset.priceUSD && walletAsset.asset.priceBTC
+              walletAsset.asset.priceUSD &&
+              walletAsset.asset.priceBTC
             )
           ) {
             return {}
@@ -460,35 +455,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
         <GridContainer>
           <TableAndHeadingWrapper>
-            <Typography color="default" variant="headline">
-              Portfolio
-            </Typography>
-            <Wrapper>
-              <PTable>
-                <PortfolioTableHead
-                  isUSDCurrently={isUSDCurrently}
-                  isSelectAll={isSelectAll}
-                  onSelectAll={this.onSelectAll}
-                  onSortTable={this.onSortTable}
-                  currentSort={currentSort}
-                  theme={theme}
-                />
-                <PortfolioTableMain
-                  tableData={tableData}
-                  selectedBalances={selectedBalances}
-                  isUSDCurrently={isUSDCurrently}
-                  onSelectBalance={this.onSelectBalance}
-                  theme={theme}
-                />
-                {selectedSum.currency ? (
-                  <PortfolioTableSum
-                    palette={theme.palette}
-                    selectedSum={selectedSum}
-                    isUSDCurrently={isUSDCurrently}
-                  />
-                ) : null}
-              </PTable>
-            </Wrapper>
+            <Table />
           </TableAndHeadingWrapper>
 
           <TableAndHeadingWrapper>
@@ -533,6 +500,15 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     )
   }
 }
+
+const Wrapper = styled(Paper)`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow-y: scroll;
+
+  ${customAquaScrollBar};
+`
 
 const GridContainer = styled.div`
   align-self: center;
@@ -601,40 +577,6 @@ const TableAndHeadingWrapper = styled.div`
   ${customAquaScrollBar};
 `
 
-const Wrapper = styled(Paper)`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow-y: scroll;
-
-  ${customAquaScrollBar};
-`
-
-const PTable = styled.table`
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
-  display: inline-block;
-`
-
-const PTextBox = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
-  min-width: 400px;
-  min-height: 350px;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props: { backgroundColor: string }) =>
-    props.backgroundColor};
-`
-
 const PTChartContainer = styled.div`
   position: relative;
   grid-column: 1 / span 2;
@@ -646,42 +588,6 @@ const PTChartContainer = styled.div`
   @media (max-height: 650px) {
     display: none;
   }
-`
-
-const SButton = styled(Button)`
-  padding-right: 11px;
-  border-color: transparent;
-  border-radius: 3px;
-  background-color: transparent;
-  font-family: Roboto, sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  box-sizing: border-box;
-  border: 1px solid;
-
-  &&:hover {
-    border-color: ${(props: { borderColor: string }) => props.borderColor};
-    background-color: ${(props: { backgroundColor: string }) =>
-      props.backgroundColor};
-  }
-
-  && > span {
-    display: flex;
-    justify-content: space-between;
-  }
-`
-
-const STypography = styled(Typography)`
-  text-align: center;
-  margin-bottom: 3rem;
-`
-
-const STypographyButtonText = styled(Typography)`
-  font-weight: 500;
-`
-
-const SAddIcon = styled(AddIcon)`
-  font-size: 18px;
 `
 
 class MainDataWrapper extends React.Component {
