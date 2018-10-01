@@ -30,9 +30,6 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
     const cols = data.values
     const rows = data.header
 
-    // console.dir(cols)
-    // console.log(rows)
-
     return (
       <GridTable
         isFullscreenEnabled={isFullscreenEnabled}

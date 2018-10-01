@@ -82,9 +82,6 @@ const Correlation = (props: IProps) => {
   return (
     <Subscription subscription={CORRELATION_UPDATE}>
       {(subscriptionData) => {
-        console.log(data)
-        console.log(portfolio)
-
         return (
           <PTWrapper>
             {children}

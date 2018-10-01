@@ -1,3 +1,5 @@
+import { Theme } from '@material-ui/core'
+
 export interface PiePiece {
   angle: number
   label: string
@@ -18,6 +20,7 @@ export interface Props {
   labelsRadiusMultiplier?: number
   labelsStyle?: object
   colorLegend?: boolean
+  theme: Theme
 }
 
 export interface State {

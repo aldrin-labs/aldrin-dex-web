@@ -106,15 +106,6 @@ class Import extends PureComponent<IProps> {
 
       this.props.toggleLoading()
       this.props.setActiveButtonToDefault()
-      console.log('Variables')
-      console.log({
-        expectedPct: Number(expectedReturn),
-        coinList: storeData.map((el: IData) => el.coin),
-        startDate,
-        endDate,
-      })
-      console.log('Data')
-      console.log(backendData)
 
       if (backendData.portfolioOptimization === '') {
         showWarning('You get empty response! 🙈')
@@ -135,9 +126,7 @@ class Import extends PureComponent<IProps> {
       )
 
       if (!isReturnedCoinsTheSameThatInputed) {
-        // showWarning('Output coins not the same as input coins!')
         console.log('Output coins not the same as input coins!')
-        // return
       }
 
       optimizePortfolio(backendDataParsed[2])
@@ -151,7 +140,6 @@ class Import extends PureComponent<IProps> {
   }
 
   addRow = (name: string, value: number) => {
-    console.log(this.props.filterValueSmallerThenPercentage)
     if (this.props.filterValueSmallerThenPercentage >= 0) {
       this.props.showWarning('Turn off the filter first to see new coins.')
     }
@@ -212,7 +200,7 @@ class Import extends PureComponent<IProps> {
         </Typography>
       )
     }
-
+    const textColor: string= this.props.theme.palette.getContrastText(this.props.theme.palette.background.paper)
     return (
       <ApolloConsumer>
         {(client) => (
@@ -223,6 +211,7 @@ class Import extends PureComponent<IProps> {
                 period={optimizationPeriod}
               />
               <Input
+                color={textColor}
                 type="number"
                 placeholder="Expected return in %"
                 value={expectedReturn || ''}
@@ -283,6 +272,7 @@ class Import extends PureComponent<IProps> {
                 filterValueSmallerThenPercentage={
                   filterValueSmallerThenPercentage
                 }
+                theme={this.props.theme}
               />
             </TableContainer>
             <HelperForCentering />
@@ -329,6 +319,7 @@ const TableContainer = styled.div`
 `
 
 const Input = styled.input`
+  color: ${(props: { color: boolean }) => props.color};
   box-sizing: border-box;
   background: transparent;
   border-top: none;
@@ -342,7 +333,6 @@ const Input = styled.input`
   line-height: 24px;
   text-align: left;
   padding: 10px 0 0px;
-  color: rgb(255, 255, 255);
   transition: all 0.25s ease-out;
 
   &:focus {

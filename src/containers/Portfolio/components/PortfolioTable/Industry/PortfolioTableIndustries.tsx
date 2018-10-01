@@ -2,8 +2,8 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import styled, { css } from 'styled-components'
 import { compose } from 'recompose'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
 
-import SvgIcon from '@components/SvgIcon/SvgIcon'
 import {
   roundPercentage,
   calcAllSumOfPortfolioAsset,
@@ -20,7 +20,6 @@ import {
   Args,
 } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IndProps } from '@containers/Portfolio/interfaces'
-import sortIcon from '@icons/arrow.svg'
 import {
   customAquaScrollBar,
   Checkbox,
@@ -34,6 +33,7 @@ import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import { withTheme, Paper } from '@material-ui/core'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },
@@ -482,8 +482,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    console.log('isUSDCurrently ', isUSDCurrently)
-
+    const textColor: string = 
+      theme.palette.getContrastText(theme.palette.background.paper)
     let isThereAnySelectedRows = false
     if (selectedRows) {
       isThereAnySelectedRows = selectedRows.length > 1
@@ -511,9 +511,14 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             ref={this.setChildNodeRef}
           >
             <PTable>
-              <PTHead>
-                <PTR>
-                  <PTH key="selectAll">
+              <PTHead bottomCollor={textColor}>
+                <PTR
+                  background={theme.palette.background.paper}
+                >
+                  <PTH
+                    textColor={textColor}
+                    key="selectAll"
+                  >
                     <Checkbox
                       type="checkbox"
                       id="selectAll"
@@ -533,6 +538,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         key={`${heading.name}${index}`}
                         onClick={() => this.onSortTable(heading.value)}
                         isSorted={isSorted}
+                        textColor={textColor}
                       >
                         {[4, 5, 6, 7, 8].includes(index) ? (
                           <>
@@ -543,18 +549,17 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                         )}
 
                         {isSorted && (
-                          <SvgIcon
-                            src={sortIcon}
-                            width={12}
-                            height={12}
+                          <ArrowDownward
                             style={{
+                              fontSize: 16,
                               verticalAlign: 'middle',
                               marginLeft: '4px',
                               transform:
-                                currentSort && currentSort.arg === 'ASC'
+                                currentSort &&
+                                currentSort.arg === 'ASC'
                                   ? 'rotate(180deg)'
                                   : null,
-                            }}
+                            }} 
                           />
                         )}
                       </PTH>
@@ -631,6 +636,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       return (
                         <PTRBody
                           key={`${currency}${symbol}${idx}`}
+                          evenBackground={theme.palette.action.hover}
+                          background={theme.palette.background.paper}
+                          selectedBackground={theme.palette.action.selected}
                           isSelected={isSelected}
                           onClick={() => this.onSelectBalance(id)}
                         >
@@ -639,22 +647,27 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                           </PTD>
                           {cols &&
                             cols.map((col, innerIdx) => {
+                              let colorized = null 
                               if (
                                 col &&
                                 !Array.isArray(col) &&
                                 col.match(/%/g) &&
                                 innerIdx !== 3
                               ) {
-                                const color =
+                                colorized =
                                   Number(col.replace(/%/g, '')) >= 0
-                                    ? '#65c000'
-                                    : '#ff687a'
+                                    ? 'green'
+                                    : 'red'
 
                                 return (
                                   <PTD
                                     key={`${col}${innerIdx}`}
-                                    style={{ color }}
                                     isSelected={isSelected}
+                                    textColor={textColor}
+                                    selectedTextColor={theme.palette.secondary.main}
+                                    red={theme.palette.red.main}
+                                    green={theme.palette.green.main}
+                                    colorized={ colorized }
                                   >
                                     {col}
                                   </PTD>
@@ -665,6 +678,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                                 <PTD
                                   key={`${col}${innerIdx}`}
                                   isSelected={isSelected}
+                                  textColor={textColor}
+                                  selectedTextColor={theme.palette.secondary.main}
                                 >
                                   {col}
                                 </PTD>
@@ -793,12 +808,9 @@ const ChartContainer = styled.div`
   }
 `
 
-const Wrapper = styled.div`
+const Wrapper = styled(Paper)`
   overflow-y: scroll;
   border-radius: 3px;
-  background-color: ${(props: { isThereAnySelectedRows?: boolean }) =>
-    props.isThereAnySelectedRows ? 'transparent' : '#2d3136;'};
-  box-shadow: 0 10px 30px 0 rgb(45, 49, 54);
   max-height: 35vh;
   margin-right: 50px;
 
@@ -839,8 +851,26 @@ const PTBody = styled.tbody`
 `
 
 const PTD = styled.td`
-  color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#4ed8da' : '#fff'};
+  color: ${(props: {
+    isSelected?: boolean
+    red: string
+    green: string
+    colorized: string |  null
+    selectedTextColor: string
+    textColor: string
+    }) => {
+    if (props.colorized) {
+      if (props.colorized === 'green') {
+        return props.green
+      }
+      if (props.colorized === 'red') {
+        return props.red
+      }
+    }
+
+    return props.isSelected ? props.selectedTextColor : props.textColor
+  }};
+
 
   font-family: Roboto, sans-serif;
   font-size: 12px;
@@ -886,10 +916,14 @@ const PTD = styled.td`
 `
 
 const PTH = styled.th`
+  color: ${(props: {
+    textColor: string
+    }) => props.textColor
+  };
+
   font-family: Roboto, sans-serif;
   font-size: 12px;
   line-height: 24px;
-  color: #fff;
   padding: 1.75px 0 1.75px 10px;
   font-weight: 500;
   min-width: 100px;
@@ -939,19 +973,39 @@ const PTH = styled.th`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? '#2d3136' : '#393e44'};
+  background-color: ${(props: {
+    background: string
+  }) =>
+    props.background};
 `
 
 const PTRBody = styled.tr`
   cursor: pointer;
-  background-color: ${(props: { isSelected?: boolean }) =>
-    props.isSelected ? 'rgba(57, 62, 68, 1)' : 'rgba(45, 49, 54, 1)'};
 
-  &:nth-child(odd) {
-    background-color: ${(props: { isSelected?: boolean }) =>
-      props.isSelected ? '#2d3a3a' : '#3a4e4e'};
+  background-color: ${(props: {
+    isSelected?: boolean
+    isBase?: boolean
+    background: string
+    selectedBackground: string
+  }) =>
+    props.isBase
+      ? '#00ff0028'
+      : props.isSelected
+        ? props.selectedBackground
+        : props.background};
+
+  &:nth-child(even) {
+    background-color: ${(props: {
+      isSelected?: boolean
+      isBase?: boolean
+      evenBackground: string
+      selectedBackground: string
+    }) =>     
+      props.isSelected
+        ? props.selectedBackground
+        : props.evenBackground};
   }
+
 
   &:hover {
     background-color: rgba(70, 102, 142, 0.2);
@@ -969,7 +1023,7 @@ const PTHead = styled.thead`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
   }
 `
 
@@ -988,23 +1042,17 @@ const PTextBox = styled.div`
   background-color: #2d3136;
 `
 
-class MainDataWrapper extends React.Component {
-  render() {
-    return (
-      <QueryRenderer
-        component={PortfolioTableIndustries}
-        query={getPortfolioQuery}
-        {...this.props}
-      />
-    )
-  }
-}
+const MainDataWrapper = (props) => (
+  <QueryRenderer
+    component={PortfolioTableIndustries}
+    query={getPortfolioQuery}
+    {...props}
+  />
+)
 
 const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-const storeComponent = connect(mapStateToProps)(MainDataWrapper)
-
-export default compose()(storeComponent)
+export default connect(mapStateToProps)(MainDataWrapper)
