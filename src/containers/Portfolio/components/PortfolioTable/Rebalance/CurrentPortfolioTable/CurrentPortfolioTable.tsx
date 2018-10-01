@@ -155,7 +155,10 @@ export default class CurrentPortfolioTable extends React.Component<
                 })}
             </PTBody>
             <PTFoot>
-              <PTR>
+              <PTR
+                background={background}
+                evenBackground={background}
+              >
                 <PTHC>All</PTHC>
                 <PTHC>-</PTHC>
                 <PTHC>100%</PTHC>

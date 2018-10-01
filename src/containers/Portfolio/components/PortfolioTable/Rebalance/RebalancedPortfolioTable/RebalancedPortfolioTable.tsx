@@ -370,6 +370,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               bottomCollor={textColor}
             >
               <PTR
+                evenBackground={background}
                 background={background}
               >
                 {isEditModeEnabled && (
@@ -642,7 +643,10 @@ export default class RebalancedPortfolioTable extends React.Component<
                 )
               })}
               {isEditModeEnabled && (
-                <PTR>
+                <PTR
+                  background={background}
+                  evenBackground={evenBackground}
+                >
                   <PTDR />
                   <PTDR />
                   <PTDR />
@@ -664,8 +668,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             </PTBody>
             <PTFoot isEditModeEnabled={isEditModeEnabled}>
               <PTR
+                selectedBackground={palette.background.default}
                 background={background}
-                evenBackground={evenBackground}
+                evenBackground={background}
               >
                 {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                 <PTHR>Subtotal</PTHR>
@@ -679,8 +684,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                 <PTHR>-</PTHR>
               </PTR>
               <PTR
+                selectedBackground={palette.background.default}
                 background={background}
-                evenBackground={evenBackground}
+                evenBackground={background}
               >
                 {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                 <PTHR>All</PTHR>
