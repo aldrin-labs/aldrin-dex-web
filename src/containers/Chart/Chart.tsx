@@ -29,9 +29,8 @@ import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSu
 import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
-import CoomingSoon from '@components/CoomingSoon'
-
-const production = process.env.NODE_ENV === 'production'
+import ComingSoon from '@components/ComingSoon'
+import { MASTER_BUILD } from '@utils/config'
 
 const OnlyCharts = Loadable({
   loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
@@ -182,9 +181,9 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <TablesContainer>
-        {production && <CoomingSoon />}
+        {MASTER_BUILD && <ComingSoon />}
         <TablesBlockWrapper
-          blur={production}
+          blur={MASTER_BUILD}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
@@ -226,7 +225,7 @@ class Chart extends React.Component<IProps, IState> {
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
-          blur={production}
+          blur={MASTER_BUILD}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
@@ -333,7 +332,7 @@ class Chart extends React.Component<IProps, IState> {
             ) : (
               <Fade timeout={1000} in={activeChart === 'depth'}>
                 <DepthChartContainer>
-                  {production && <CoomingSoon />}
+                  {MASTER_BUILD && <ComingSoon />}
                   <MainDepthChart
                     {...{
                       theme,

@@ -30,7 +30,7 @@ import {
   ImportData,
 } from './Optimization.styles'
 
-const production = true
+import { MASTER_BUILD } from '@utils/config'
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -321,9 +321,9 @@ class Optimization extends Component<IProps, IState> {
     const { loading, openWarning, warningMessage } = this.state
 
     return (
-      <PTWrapper notScrollable={production}>
+      <PTWrapper notScrollable={MASTER_BUILD}>
         <Content>
-          {production && <CoomingSoon />}
+          {MASTER_BUILD && <ComingSoon />}
           {children}
           {loading ? this.renderLoading() : null}
           <ImportData>{this.renderInput()}</ImportData>

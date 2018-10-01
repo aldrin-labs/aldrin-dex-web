@@ -1,19 +1,16 @@
 import { createReducer } from 'redux-act'
-import storage from 'redux-persist/lib/storage';
-import { persistReducer } from 'redux-persist';
 
 import * as actions from '@containers/Login/actions'
-
-
 
 const initialState = {
   user: null,
   loginStatus: null,
   modalIsOpen: false,
   isLogging: false,
+  listenersOff: false,
 }
 
-const UserReducer = createReducer(
+export default createReducer(
   {
     [actions.onLogin]: (state, payload) => {
       return { ...state, user: { ...payload }, isLogging: true }
@@ -33,14 +30,12 @@ const UserReducer = createReducer(
     [actions.storeClosedModal]: (state) => {
       return {...state, modalIsOpen: false, isLogging: false}
     },
+    [actions.listenersWillOff]: (state) => {
+      return {...state, listenersOff: true}
+    },
+    [actions.listenersWillOn]: (state) => {
+      return {...state, listenersOff: false}
+    }
   },
   initialState
 )
-
-const persistConfig = {
-  key: 'login',
-  storage: storage,
-  whitelist: ['user', 'loginStatus']
-};
-
-export default persistReducer(persistConfig, UserReducer);

@@ -100,6 +100,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             theme={theme}
             toggleWallets={this.props.toggleWallets}
             tab={tab}
+            isUSDCurrently={isUSDCurrently}
             onChangeTab={this.onChangeTab}
             onToggleChart={this.onToggleChart}
             onToggleUSDBTC={this.onToggleUSDBTC}
