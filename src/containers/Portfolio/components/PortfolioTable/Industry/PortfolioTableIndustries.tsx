@@ -638,7 +638,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                           key={`${currency}${symbol}${idx}`}
                           evenBackground={theme.palette.action.hover}
                           background={theme.palette.background.paper}
-                          selectedBackground={theme.palette.background.default}
+                          selectedBackground={theme.palette.action.selected}
                           isSelected={isSelected}
                           onClick={() => this.onSelectBalance(id)}
                         >
