@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import MdAddCircleOutline from '@material-ui/icons/AddCircleOutlined'
 
-import { Row, Table, Head, Cell, HeadCell } from '@components/Table/Table'
+import { Row, Table, Head, Cell, HeadCell } from '@components/OldTable/Table'
 import { IProps } from './Aggregation.types'
 
 const Aggregation = (props: IProps) => {

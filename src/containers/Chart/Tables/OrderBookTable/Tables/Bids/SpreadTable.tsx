@@ -3,7 +3,14 @@ import styled from 'styled-components'
 import { difference } from 'lodash-es'
 
 import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
-import { Table, Row, Head, Cell, HeadCell, Body } from '@components/Table/Table'
+import {
+  Table,
+  Row,
+  Head,
+  Cell,
+  HeadCell,
+  Body,
+} from '@components/OldTable/Table'
 import { Loading } from '@components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
