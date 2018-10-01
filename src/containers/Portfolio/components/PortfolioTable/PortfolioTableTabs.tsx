@@ -42,7 +42,9 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <React.Fragment>
-        <PTHeadingBlock>
+        <PTHeadingBlock
+          background={theme.palette.background.paper}
+        >
           <TabContainer>
             <Menu onMenuItemClick={this.onChangeTab} />
             <ToggleAccountsBtnContainer>
@@ -168,7 +170,7 @@ const FlexWrapper = styled.div`
 
 const PTHeadingBlock = styled.div`
   display: flex;
-
+  background-color: ${(props: { background: string }) => props.background};
   position: sticky;
   top: 0;
   z-index: 99;
