@@ -200,7 +200,7 @@ class Import extends PureComponent<IProps> {
         </Typography>
       )
     }
-
+    const textColor: string= this.props.theme.palette.getContrastText(this.props.theme.palette.background.paper)
     return (
       <ApolloConsumer>
         {(client) => (
@@ -211,6 +211,7 @@ class Import extends PureComponent<IProps> {
                 period={optimizationPeriod}
               />
               <Input
+                color={textColor}
                 type="number"
                 placeholder="Expected return in %"
                 value={expectedReturn || ''}
@@ -318,6 +319,7 @@ const TableContainer = styled.div`
 `
 
 const Input = styled.input`
+  color: ${(props: { color: boolean }) => props.color};
   box-sizing: border-box;
   background: transparent;
   border-top: none;
@@ -331,7 +333,6 @@ const Input = styled.input`
   line-height: 24px;
   text-align: left;
   padding: 10px 0 0px;
-  color: rgb(255, 255, 255);
   transition: all 0.25s ease-out;
 
   &:focus {

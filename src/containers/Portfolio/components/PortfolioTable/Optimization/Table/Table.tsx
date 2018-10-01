@@ -182,6 +182,7 @@ class Table extends Component<IProps, IState> {
           <TableInput>
             <Item background={palette.background.paper}>
               <Input
+                color={textColor}
                 placeholder="Coin"
                 type="text"
                 value={this.state.name || ''}
@@ -260,6 +261,7 @@ const StyledCard = styled(Card)`
 `
 
 const Input = styled.input`
+  color: ${(props: { color: boolean }) => props.color};
   box-sizing: border-box;
   background: transparent;
   border-top: none;
@@ -273,7 +275,6 @@ const Input = styled.input`
   line-height: 24px;
   text-align: left;
   padding: 10px 0 0px;
-  color: rgb(255, 255, 255);
   transition: all 0.25s ease-out;
 
   &:focus {
