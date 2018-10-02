@@ -346,6 +346,7 @@ export default class Import extends PureComponent<IProps> {
 
 
 const FlexWrapper = styled.div`
+  height: 35px;
   display: flex;
   align-items: center;
 `
