@@ -15,10 +15,10 @@ const HelperForCentering = styled.div`
 `
 
 const InputContainer = styled.div`
-  margin: auto 2rem auto 0;
+  margin-right: 2rem;
   display: flex;
+  justify-content: flex-end;
   flex-direction: column;
-  justify-content: center;
   min-width: 100px;
 
   @media (max-width: 1080px) {

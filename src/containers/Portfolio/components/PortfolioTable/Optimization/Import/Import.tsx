@@ -215,53 +215,59 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <>
             <InputContainer>
-              <InputLabel>
-                Base coin
-              </InputLabel>
-              <TextField
-                color={textColor}
-                value={`USDT`}
-                // disabled={true}
-              />
-              <InputLabel>
-                Rebalance period
-              </InputLabel>
-              <SelectOptimization
-                options={RebalancePeriod}
-                isClearable={true}
-                // placeholder={` `}
-              />
-              <InputLabel>
-                Date range
-              </InputLabel>
-              <SelectOptimization
-                isClearable={true}
-                // placeholder={` `}
-              />
-              <InputLabel>
-                Risk free asset
-              </InputLabel>
-              <FlexWrapper>
-                <Typography variant="caption">No</Typography>
-                <Switch
-                  // onChange={this.onToggleUSDBTC}
-                  // checked={isUSDCurrently}
-                  checked={true}
+              <InputElementWrapper>
+                <StyledInputLabel>
+                  Base coin
+                </StyledInputLabel>
+                <STextField
+                  color={textColor}
+                  value={`USDT`}
+                  disabled={true}
                 />
-                <Typography variant="caption">Yes</Typography>
-              </FlexWrapper>
-              <InputLabel>
-                Risk profile
-              </InputLabel>
-              <SelectOptimization
-                options={RiskProfile}
-                isClearable={true}
-                // placeholder={` `}
-              />
-
-
-
-
+              </InputElementWrapper>
+              <InputElementWrapper>
+                <StyledInputLabel>
+                  Rebalance period
+                </StyledInputLabel>
+                <SelectOptimization
+                  options={RebalancePeriod}
+                  isClearable={true}
+                  // placeholder={` `}
+                />
+              </InputElementWrapper>
+              <InputElementWrapper>
+                <StyledInputLabel>
+                  Date range
+                </StyledInputLabel>
+                <SelectOptimization
+                  isClearable={true}
+                  // placeholder={` `}
+                />
+              </InputElementWrapper>
+              <InputElementWrapper>
+                <StyledInputLabel>
+                  Risk free asset
+                </StyledInputLabel>
+                <FlexWrapper>
+                  <Typography variant="caption">No</Typography>
+                  <StyledSwitch
+                    // onChange={this.onToggleUSDBTC}
+                    // checked={isUSDCurrently}
+                    checked={true}
+                  />
+                  <Typography variant="caption">Yes</Typography>
+                </FlexWrapper>
+              </InputElementWrapper>
+              <InputElementWrapper>
+                <StyledInputLabel>
+                  Risk profile
+                </StyledInputLabel>
+                <SelectOptimization
+                  options={RiskProfile}
+                  isClearable={true}
+                  // placeholder={` `}
+                />
+              </InputElementWrapper>
               {/*<SelectDates*/}
                 {/*setPeriodToStore={setPeriod}*/}
                 {/*period={optimizationPeriod}*/}
@@ -345,6 +351,7 @@ const FlexWrapper = styled.div`
 `
 
 const SelectOptimization = styled(ReactSelectComponent)`
+  min-height: 35px;
 
   border-bottom: 1px solid #c1c1c1;
   transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -353,4 +360,24 @@ const SelectOptimization = styled(ReactSelectComponent)`
     border-bottom: 2px solid #fff;
   }
   
+`
+
+const StyledInputLabel = styled(InputLabel)`
+  font-size: 0.75rem;
+`
+
+const InputElementWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 17px;
+`
+
+const STextField = styled(TextField)`
+  && > div:before {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+  }
+`
+
+const StyledSwitch = styled(Switch)`
+
 `
