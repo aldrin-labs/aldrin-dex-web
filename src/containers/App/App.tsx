@@ -44,7 +44,6 @@ const AppRaw = ({
         <AppGridLayout>
           <AnimatedNavBar pathname={currentPage} hide={fullscreen} />
           {children}
-          <NavBarMobile />
         </AppGridLayout>
         <Footer hide={fullscreen} />
       </ThemeWrapper>
