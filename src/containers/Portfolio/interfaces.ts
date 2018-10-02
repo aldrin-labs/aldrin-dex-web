@@ -18,6 +18,7 @@ export interface IState {
 
 export interface IPortfolio {
   name: string | null
+  cryptoWallets: any
   processing: boolean | null
   assetIds: (string | null)[] | null
   assets:
@@ -130,5 +131,4 @@ export interface ITableProps {
         | null
     } | null
   } | null
-
 }

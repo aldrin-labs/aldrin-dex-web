@@ -3,13 +3,13 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
 import { ITableProps } from '@containers/Portfolio/interfaces'
 import Loadable from 'react-loadable'
 
-import PortfolioTableBalances from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 import LoadableLoading from '@components/Loading/LoadableLoading'
 
 const PortfolioTableIndustries = Loadable({
   loader: () =>
-    import( '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'),
+    import('@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'),
   delay: 300,
   loading: LoadableLoading,
 })
