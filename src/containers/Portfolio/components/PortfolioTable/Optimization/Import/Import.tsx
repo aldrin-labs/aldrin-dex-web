@@ -2,7 +2,10 @@ import React, { PureComponent } from 'react'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
 import { Button as ButtonMUI, Typography } from '@material-ui/core'
+import InputLabel from '@material-ui/core/InputLabel'
 import { isEqual } from 'lodash-es'
+import TextField from '@material-ui/core/TextField';
+import ReactSelectComponent from '@components/ReactSelectComponent'
 
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
@@ -208,19 +211,55 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <>
             <InputContainer>
-              <SelectDates
-                setPeriodToStore={setPeriod}
-                period={optimizationPeriod}
-              />
-              <Input
+              <InputLabel>
+                Base coin
+              </InputLabel>
+              <TextField
                 color={textColor}
-                type="number"
-                placeholder="Expected return in %"
-                value={expectedReturn || ''}
-                onChange={(e) => {
-                  handleChange(e)
-                }}
+                value={`USDT`}
+                // disabled={true}
               />
+              {/*<Input*/}
+                {/*color={textColor}*/}
+                {/*value={`USDT`}*/}
+                {/*disabled={true}*/}
+              {/*/>*/}
+              <InputLabel>
+                Rebalance period
+              </InputLabel>
+              <ReactSelectComponent
+              />
+              <InputLabel>
+                Date range
+              </InputLabel>
+              <ReactSelectComponent
+              />
+              <InputLabel>
+                Risk free asset
+              </InputLabel>
+              <div>
+                would be checkbox or switcher
+              </div>
+              <InputLabel>
+                Risk profile
+              </InputLabel>
+              <ReactSelectComponent
+              />
+
+              {/*<SelectDates*/}
+                {/*setPeriodToStore={setPeriod}*/}
+                {/*period={optimizationPeriod}*/}
+              {/*/>*/}
+              {/*<Input*/}
+                {/*color={textColor}*/}
+                {/*type="number"*/}
+                {/*placeholder="Expected return in %"*/}
+                {/*value={expectedReturn || ''}*/}
+                {/*onChange={(e) => {*/}
+                  {/*handleChange(e)*/}
+                {/*}}*/}
+              {/*/>*/}
+
               <ButtonMUI
                 style={{ marginTop: '1rem' }}
                 color={'secondary'}
@@ -252,7 +291,6 @@ export default class Import extends PureComponent<IProps> {
                   show={showSwitchButtons}
                   activeButton={activeButton}
                 />
-
                 <ButtonMUI
                   disabled={this.isEqual(assets, storeData)}
                   color="secondary"
@@ -277,7 +315,6 @@ export default class Import extends PureComponent<IProps> {
                 theme={this.props.theme}
               />
             </TableContainer>
-            <HelperForCentering />
           </>
         )}
       </ApolloConsumer>
