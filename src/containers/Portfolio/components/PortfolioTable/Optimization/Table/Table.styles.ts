@@ -105,7 +105,7 @@ const Head = styled.div`
   justify-content: center;
   max-width: 50rem;
   margin: 0.5rem;
-  border-bottom: 1px solid ${(props: { color: string }) => props.color};
+  border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
 `
 
 const TableInput = styled.div`
