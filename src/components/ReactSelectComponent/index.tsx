@@ -54,6 +54,7 @@ class ReactSelectComponent extends Component<IProps> {
         ...base,
         backgroundColor: theme.palette.grey[800],
         minWidth: '250px',
+        zIndex: 10,
         ...menuStyles,
       }),
       menuList: (base: CSSProperties) => ({
@@ -104,6 +105,7 @@ class ReactSelectComponent extends Component<IProps> {
       valueContainer: (base: CSSProperties) => ({
         ...base,
         paddingLeft: 0,
+        fontFamily: theme.typography.fontFamily,
         ...valueContainerStyles,
       }),
       singleValue: (base: CSSProperties) => ({
@@ -114,12 +116,14 @@ class ReactSelectComponent extends Component<IProps> {
       }),
       placeholder: (base: CSSProperties) => ({
         ...base,
+        fontFamily: theme.typography.fontFamily,
         marginLeft: 0,
         ...placeholderStyles,
       }),
       input: (base: CSSProperties) => ({
         ...base,
         color: theme.palette.primary.contrastText,
+        fontFamily: theme.typography.fontFamily,
         ...inputStyles,
       }),
       multiValue: (base: CSSProperties) => ({

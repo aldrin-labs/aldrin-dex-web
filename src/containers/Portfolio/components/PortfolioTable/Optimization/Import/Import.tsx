@@ -5,8 +5,11 @@ import { Button as ButtonMUI, Typography } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField';
-import ReactSelectComponent from '@components/ReactSelectComponent'
+import Switch from '@material-ui/core/Switch'
 
+import { RebalancePeriod, RiskProfile } from './dataForSelector'
+// import { SelectR } from '@styles/cssUtils'
+import ReactSelectComponent from '@components/ReactSelectComponent'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
@@ -15,9 +18,10 @@ import {
   IData,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import.types'
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
-import SelectDates from '@components/SelectTimeRangeDropdown'
+// import SelectDates from '@components/SelectTimeRangeDropdown'
 
 import { SwitchButtonsWrapper, HelperForCentering, InputContainer, TableContainer, Input } from './Import.styles'
+import styled from 'styled-components'
 
 
 export default class Import extends PureComponent<IProps> {
@@ -219,32 +223,44 @@ export default class Import extends PureComponent<IProps> {
                 value={`USDT`}
                 // disabled={true}
               />
-              {/*<Input*/}
-                {/*color={textColor}*/}
-                {/*value={`USDT`}*/}
-                {/*disabled={true}*/}
-              {/*/>*/}
               <InputLabel>
                 Rebalance period
               </InputLabel>
-              <ReactSelectComponent
+              <SelectOptimization
+                options={RebalancePeriod}
+                isClearable={true}
+                // placeholder={` `}
               />
               <InputLabel>
                 Date range
               </InputLabel>
-              <ReactSelectComponent
+              <SelectOptimization
+                isClearable={true}
+                // placeholder={` `}
               />
               <InputLabel>
                 Risk free asset
               </InputLabel>
-              <div>
-                would be checkbox or switcher
-              </div>
+              <FlexWrapper>
+                <Typography variant="caption">No</Typography>
+                <Switch
+                  // onChange={this.onToggleUSDBTC}
+                  // checked={isUSDCurrently}
+                  checked={true}
+                />
+                <Typography variant="caption">Yes</Typography>
+              </FlexWrapper>
               <InputLabel>
                 Risk profile
               </InputLabel>
-              <ReactSelectComponent
+              <SelectOptimization
+                options={RiskProfile}
+                isClearable={true}
+                // placeholder={` `}
               />
+
+
+
 
               {/*<SelectDates*/}
                 {/*setPeriodToStore={setPeriod}*/}
@@ -321,3 +337,20 @@ export default class Import extends PureComponent<IProps> {
     )
   }
 }
+
+
+const FlexWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+const SelectOptimization = styled(ReactSelectComponent)`
+
+  border-bottom: 1px solid #c1c1c1;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-bottom: 2px solid #fff;
+  }
+  
+`
