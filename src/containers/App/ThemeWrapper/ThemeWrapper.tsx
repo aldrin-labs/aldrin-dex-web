@@ -21,16 +21,12 @@ export default class ThemeWrapper extends Component<Props> {
           ...cyan,
           main: '#4ed8da',
         },
-        action: {
-          selected: 'rgba(255, 255, 255, 0.05)',
-        },
         background: {
           default: themeMode === 'light' ? '#fafafa' : '#303030',
           paper: themeMode === 'light' ? '#fff' : '#393e44',
         },
       },
     })
-    if (window) window.theme = theme
 
     return (
       <MuiThemeProvider theme={theme}>{this.props.children}</MuiThemeProvider>

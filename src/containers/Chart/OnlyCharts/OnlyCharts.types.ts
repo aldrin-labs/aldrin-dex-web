@@ -1,14 +1,10 @@
-export interface IChart {
-  pair: string
-  id: string
-}
 
 export interface IProps {
-  addChart: () => void
-  mainPair: () => void
-  removeChart: () => void
-  removeWarningMessage: () => void
-  charts: IChart[]
+  addChart: Function
+  mainPair: Function
+  removeChart: Function
+  removeWarningMessage: Function
+  charts: Array<string>
   currencyPair: string
   isShownMocks: boolean
   openedWarning: boolean
