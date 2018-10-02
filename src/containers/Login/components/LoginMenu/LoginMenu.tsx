@@ -14,7 +14,7 @@ export const LoginMenu = ({ userName, handleMenu, handleLogout }: any) => (
         <AccountCircle />
       </IconButton>
     </Tooltip>
-    <Tooltip title="Exit">
+    <Tooltip title="Log out">
       <IconButton color="secondary" onClick={handleLogout}>
         <ExitIcon />
       </IconButton>
