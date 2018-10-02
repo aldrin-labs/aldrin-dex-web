@@ -338,7 +338,7 @@ class Optimization extends Component<IProps, IState> {
           {MASTER_BUILD && <ComingSoon />}
           {children}
           {loading ? this.renderLoading() : null}
-          <ImportData>{this.renderInput()}</ImportData>
+          {this.renderInput()}
 
           <MainArea background={palette.background.paper}>
             <MainAreaUpperPart />

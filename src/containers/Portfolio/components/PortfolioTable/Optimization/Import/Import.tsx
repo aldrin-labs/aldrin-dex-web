@@ -7,6 +7,8 @@ import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch'
 
+import BarChart from '@components/BarChart/BarChart'
+
 import { RebalancePeriod, RiskProfile } from './dataForSelector'
 // import { SelectR } from '@styles/cssUtils'
 import ReactSelectComponent from '@components/ReactSelectComponent'
@@ -20,7 +22,8 @@ import {
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 // import SelectDates from '@components/SelectTimeRangeDropdown'
 
-import { SwitchButtonsWrapper, HelperForCentering, InputContainer, TableContainer, Input } from './Import.styles'
+import { SwitchButtonsWrapper, HelperForCentering, InputContainer, TableContainer, Input, Chart, ImportData } from './Import.styles'
+// import { Chart, ImportData } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.styles'
 import styled from 'styled-components'
 
 
@@ -168,6 +171,51 @@ export default class Import extends PureComponent<IProps> {
 
   deleteAllRows = () => this.props.updateData([])
 
+  renderBarChart = () => {
+    const {
+      optimizedData,
+      storeData,
+      theme,
+    } = this.props
+
+    if (!storeData) return
+    const formatedData = storeData.map((el: IData, i) => ({
+      x: el.coin,
+      y: Number(Number(el.percentage).toFixed(2)),
+    }))
+    const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+      x: el.coin,
+      y: Number(Number(el.percentage).toFixed(2)),
+    }))
+
+    const barChartData = [
+      {
+        data: formatedData,
+        title: 'Original',
+        color: '#2496c8',
+      },
+      {
+        data: formatedOptimizedData,
+        title: 'Optimized',
+        color: '#1869a8',
+      },
+    ]
+
+    return (
+      <Chart
+        background={theme.palette.background.default}
+      >
+        <BarChart
+          height={300}
+          showPlaceholder={formatedData.length === 0}
+          charts={barChartData}
+          alwaysShowLegend={true}
+        />
+      </Chart>
+    )
+
+  }
+
   render() {
     const {
       expectedReturn,
@@ -213,7 +261,7 @@ export default class Import extends PureComponent<IProps> {
     return (
       <ApolloConsumer>
         {(client) => (
-          <>
+          <ImportData>
             <InputContainer>
               <InputElementWrapper>
                 <StyledInputLabel>
@@ -337,7 +385,8 @@ export default class Import extends PureComponent<IProps> {
                 theme={this.props.theme}
               />
             </TableContainer>
-          </>
+            {this.renderBarChart()}
+          </ImportData>
         )}
       </ApolloConsumer>
     )

@@ -70,19 +70,3 @@ const PTWrapper = styled(Card)`
 const Content = styled.div`
   flex: 0 0 auto;
 `
-
-const ImportData = styled.div`
-  //width: 80%;
-  //display: flex;
-  //justify-content: center;
-  //margin: 0 auto;
-  //
-  //@media (max-width: 1080px) {
-  //  justify-content: space-between;
-  //  width: 100%;
-  //  flex-wrap: wrap;
-  //}
-  
-  display: flex;
-  margin: 0 2rem;
-`
