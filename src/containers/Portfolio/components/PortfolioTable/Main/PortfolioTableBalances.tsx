@@ -151,7 +151,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys, activeCryptoWallets } = this.state
-    console.log('activeKeys: ', activeKeys)
+    // console.log('activeKeys: ', activeKeys)
 
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) {
@@ -448,7 +448,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       false
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
-
+    console.log(tableData)
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}

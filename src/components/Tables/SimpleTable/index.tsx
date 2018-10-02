@@ -1,5 +1,5 @@
 import React from 'react'
-import { withStyles, Theme } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -36,6 +36,14 @@ const styles = (theme) => ({
   },
   table: {
     minWidth: 700,
+  },
+  row: {
+    transition: `background-color ${theme.transitions.duration.short}ms  ${
+      theme.transitions.easing.easeOut
+    }`,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary[600],
+    },
   },
 })
 
