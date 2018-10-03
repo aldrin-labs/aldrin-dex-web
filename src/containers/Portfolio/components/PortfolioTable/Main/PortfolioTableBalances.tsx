@@ -13,7 +13,7 @@ import {
 import TradeOrderHistoryTable from './TradeOrderHistory/TradeOrderHistoryTable'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
-import Table from '@components/Tables/SimpleTable'
+import Table from '@components/Tables/WithCheckboxesAndSummary'
 
 const transformData = (data: any[], red: string, green: string) => {
   const res = data.map((row) => [
@@ -27,7 +27,7 @@ const transformData = (data: any[], red: string, green: string) => {
     { text: row.unrealizedPL, color: row.unrealizedPL > 0 ? green : red },
     { text: row.totalPL, color: row.totalPL > 0 ? green : red },
   ])
-  console.log(res)
+
   return res
 }
 class PortfolioTableBalances extends React.Component<IProps, IState> {
@@ -41,6 +41,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       currentSort,
       tableData,
       selectedBalances,
+      checkedRows,
+      onCheckboxClick,
     } = this.props
 
     const isSelectAll =
@@ -58,6 +60,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           <TableAndHeadingWrapper>
             {Array.isArray(tableData) && (
               <Table
+                checkedRows={checkedRows}
+                onChange={onCheckboxClick}
                 rows={{
                   head: [
                     { text: 'exchange', number: false },
@@ -75,6 +79,17 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                     theme.palette.red.main,
                     theme.palette.green.main
                   ),
+                  footer: [
+                    { text: 'Total', number: false },
+                    { text: ' ', number: false },
+                    { text: '100%', number: true },
+                    { text: 'price', number: true },
+                    { text: 'quantity', number: true },
+                    { text: 'usd', number: true },
+                    { text: 'realized P&L', number: true },
+                    { text: 'Unrealized P&L', number: true },
+                    { text: 'Total P&L', number: true },
+                  ],
                 }}
               />
             )}
@@ -97,7 +112,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             <ChartTitle color="default" variant="title">
               Portfolio Value
             </ChartTitle>
-            <Chart
+            {/* <Chart
               isShownMocks={this.props.isShownMocks}
               setActiveChart={this.props.setActiveChart}
               activeChart={this.props.activeChart}
@@ -112,7 +127,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                   ? selectedBalances.map((id, i) => tableData[i])
                   : []
               }
-            />
+            /> */}
           </PTChartContainer>
         </GridContainer>
       </PTWrapper>

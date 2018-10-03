@@ -53,6 +53,7 @@ class Container extends Component {
     activeKeys: null,
     activeWallets: null,
     portfolio: null,
+    checkedRows: [],
   }
   componentDidMount() {
     const {
@@ -91,6 +92,7 @@ class Container extends Component {
     this.setState({ activeKeys: this.props.activeKeys })
   }
 
+  // rewrite into gdsfp
   componentWillReceiveProps(nextProps: IProps) {
     if (nextProps.data) {
       if (!nextProps.data.getProfile) return
@@ -137,7 +139,7 @@ class Container extends Component {
     }
 
     if (nextProps.activeKeys && nextProps.activeKeys.length === 0) {
-      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
+      this.setState({ selectedBalances: null })
     }
   }
 
@@ -270,32 +272,9 @@ class Container extends Component {
     )
   }
 
-  onSelectAll = () => {
-    const { selectedBalances, tableData } = this.state
-    if (!tableData) {
-      return
-    }
-
-    if (selectedBalances && selectedBalances.length === tableData.length) {
-      this.setState({ selectedBalances: null, selectedSum: defaultSelectedSum })
-    } else {
-      const allRows = tableData.map((ck: IRowT, idx: number) => ck.id)
-
-      this.setState({ selectedBalances: allRows }, () =>
-        this.calculateSum(allRows)
-      )
-    }
-  }
-
   calculateSum = (selectedRows: number[] | null) => {
-    const { tableData } = this.state
+    const { tableData, defa } = this.state
     if (!tableData) {
-      return
-    }
-
-    if (!selectedRows) {
-      this.setState({ selectedSum: defaultSelectedSum })
-
       return
     }
 
@@ -348,71 +327,58 @@ class Container extends Component {
     this.setState({ selectedSum: validateSum })
   }
 
-  onSelectBalance = (index: number) => {
-    const selectedBalances =
-      (this.state.selectedBalances && this.state.selectedBalances.slice()) || []
+  onCheckboxClick = (id: number | string) => {
+    if (id === 'head') {
+      this.setState((prevState) => {
+        let res
+        //  if here already cheked checbox empty all of them
+        if (prevState.checkedRows.length > 0) {
+          res = []
+        } else {
+          //  otherwise check all of them
+          res = prevState.tableData.map((el, i) => i)
+        }
 
-    const hasIndex = selectedBalances.indexOf(index)
-    if (hasIndex >= 0) {
-      selectedBalances.splice(hasIndex, 1)
-    } else {
-      selectedBalances.push(index)
+        console.log(res)
+        console.log(prevState)
+
+        return { checkedRows: res }
+      })
+
+      return
     }
+    if (this.state.checkedRows.find((ind: number) => id === ind)) {
+      this.setState((prevState) => {
+        return {
+          checkedRows: prevState.checkedRows.filter((ind) => ind !== id),
+        }
+      })
 
-    this.setState({ selectedBalances }, () =>
-      this.calculateSum(selectedBalances)
-    )
-  }
-
-  onSortTable = (key: Args) => {
-    const { tableData, currentSort } = this.state
-    if (!tableData) {
       return
     }
 
-    const stringKey =
-      key === 'currency' || key === 'symbol' || key === 'industry'
-
-    const newData = tableData!.slice()!.sort((a, b) => {
-      if (currentSort && currentSort.key === key) {
-        if (currentSort.arg === 'ASC') {
-          this.setState({ currentSort: { key, arg: 'DESC' } })
-
-          if (stringKey) {
-            return onSortStrings(b[key], a[key])
-          }
-
-          return b[key] - a[key]
-        } else {
-          this.setState({ currentSort: { key, arg: 'ASC' } })
-
-          if (stringKey) {
-            return onSortStrings(a[key], b[key])
-          }
-
-          return a[key] - b[key]
-        }
-      }
-      this.setState({ currentSort: { key, arg: 'ASC' } })
-
-      if (stringKey) {
-        return onSortStrings(a[key], b[key])
-      }
-
-      return a[key] - b[key]
+    this.setState((prevState) => {
+      return { checkedRows: [...prevState.checkedRows, id] }
     })
-
-    this.setState({ tableData: newData })
   }
 
   render() {
-    const { selectedSum, currentSort, tableData, selectedBalances } = this.state
+    const {
+      selectedSum,
+      checkedRows,
+      currentSort,
+      tableData,
+      selectedBalances,
+    } = this.state
+    const { onCheckboxClick } = this
     return (
       <PortfolioMain
         {...{
           ...this.props,
           selectedSum,
+          onCheckboxClick,
           currentSort,
+          checkedRows,
           tableData,
           selectedBalances,
         }}
@@ -421,23 +387,11 @@ class Container extends Component {
   }
 }
 
-export default ({
-  selectedSum,
-  currentSort,
-  tableData,
-  selectedBalances,
-  ...other
-}) => (
+export default (props) => (
   <QueryRenderer
     fetchPolicy="network-only"
     component={Container}
     query={getPortfolioMainQuery}
-    {...{
-      selectedSum,
-      currentSort,
-      tableData,
-      selectedBalances,
-      ...other,
-    }}
+    {...props}
   />
 )

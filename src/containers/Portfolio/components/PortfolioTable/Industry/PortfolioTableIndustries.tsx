@@ -9,7 +9,6 @@ import {
   calcAllSumOfPortfolioAsset,
 } from '@utils/PortfolioTableUtils'
 import LineChart from '@components/LineChart'
-import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
 import {
   MOCKS,
   genMocks,
@@ -674,14 +673,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       )
                     })}
               </PTBody>
-              {selectedSum && selectedSum.currency ? (
-                <PortfolioTableSum
-                  palette={theme.palette}
-                  industry={true}
-                  selectedSum={selectedSum}
-                  isUSDCurrently={this.props.isUSDCurrently}
-                />
-              ) : null}
             </PTable>
           </Wrapper>
           <ChartContainer shadows={theme.shadows[15]}>
