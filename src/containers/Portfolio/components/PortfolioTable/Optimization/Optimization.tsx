@@ -8,7 +8,8 @@ import {
   IData,
   IProps,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
-import BarChart from '@components/BarChart/BarChart'
+// import BarChart from '@components/BarChart/BarChart'
+import LineChart from '@components/LineChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
@@ -29,6 +30,8 @@ import {
   Content,
   ImportData,
 } from './Optimization.styles'
+import { mockDataForLineChart } from './mockData'
+
 
 import { MASTER_BUILD } from '@utils/config'
 
@@ -299,26 +302,25 @@ class Optimization extends Component<IProps, IState> {
     //   }
     // }
     const {
-      theme: {palette}
+      theme: { palette },
     } = this.props
 
     return (
       <ChartsContainer>
-        <Chart
-          background={palette.background.default}
-        >
+        <Chart background={palette.background.default}>
           {/*<BarChart*/}
-            {/*height={300}*/}
-            {/*showPlaceholder={formatedData.length === 0}*/}
-            {/*charts={barChartData}*/}
-            {/*alwaysShowLegend*/}
+          {/*height={300}*/}
+          {/*showPlaceholder={formatedData.length === 0}*/}
+          {/*charts={barChartData}*/}
+          {/*alwaysShowLegend*/}
           {/*/>*/}
-          <EfficientFrontierChart data={efficientFrontierData} />
-
+          {/*<EfficientFrontierChart data={efficientFrontierData} />*/}
+          <LineChart
+            // height={300}
+            data={mockDataForLineChart}
+          />
         </Chart>
-        <Chart
-          background={palette.background.default}
-        >
+        <Chart background={palette.background.default}>
           <EfficientFrontierChart data={efficientFrontierData} />
         </Chart>
       </ChartsContainer>
@@ -330,7 +332,7 @@ class Optimization extends Component<IProps, IState> {
   render() {
     const {
       children,
-      theme: {palette}
+      theme: { palette },
     } = this.props
     const { loading, openWarning, warningMessage } = this.state
 
@@ -356,7 +358,6 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 }
-
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
