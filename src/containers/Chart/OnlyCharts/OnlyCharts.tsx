@@ -39,17 +39,19 @@ class OnlyCharts extends Component<IProps> {
           fullscreen={view !== 'default'}
           chartsCount={charts.length || 1}
         >
-          {charts.map((chart: IChart, i: number) => (
-            <IndividualChart
-              //  if there is no id generate it here
-              key={chart.id ? chart.id : nanoid()}
-              theme={theme}
-              removeChart={removeChart}
-              index={i}
-              chartsCount={charts.length}
-              currencyPair={chart.pair}
-            />
-          ))}
+          {charts
+            .filter((chart) => chart.id && chart.pair)
+            .map((chart: IChart, i: number) => (
+              <IndividualChart
+                //  if there is no id generate it here
+                key={chart.id}
+                theme={theme}
+                removeChart={removeChart}
+                index={i}
+                chartsCount={charts.length}
+                currencyPair={chart.pair}
+              />
+            ))}
           <WarningMessageSnack
             open={openedWarning}
             onCloseClick={removeWarningMessage}
