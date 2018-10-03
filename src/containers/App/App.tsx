@@ -17,11 +17,10 @@ jss.options.insertionPoint = document.getElementById('jss-insertion-point')
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Footer from '@components/Footer'
 
-import { NavBarMobile } from '@components/NavBar/NavBarMobile'
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
 
-const version = `0.2`
+const version = `0.3`
 const currentVersion = localStorage.getItem('version')
 if (currentVersion !== version) {
   localStorage.clear()
