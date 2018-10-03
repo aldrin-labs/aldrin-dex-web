@@ -39,7 +39,7 @@ export default class SelectCoinList extends React.Component {
       <SelectT
         asyncSelect={true}
         loadOptions={promiseOptions}
-        defaultOptions={true}
+        // defaultOptions={true}
         cacheOptions={true}
         placeholder="Select..."
         {...otherPropsForSelect}
