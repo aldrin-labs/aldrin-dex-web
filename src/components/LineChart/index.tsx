@@ -89,7 +89,7 @@ export default class LineChart extends React.Component<Props, State> {
         <YAxis
           hideLine
           style={axisStyle}
-          tickFormat={(v: number) => `$ ${v}`}
+          tickFormat={(v: number) => `${v}`}
         />
 
         {data.map((serie, i) => {
