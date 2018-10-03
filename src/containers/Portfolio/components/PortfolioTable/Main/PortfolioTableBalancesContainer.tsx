@@ -30,6 +30,7 @@ const createColumn = (
   unrealizedPL: number = 0,
   totalPL: number = 0
 ) => ({
+  id,
   exchange,
   coin,
   portfolioPercentage,
@@ -54,7 +55,6 @@ class Container extends Component {
     portfolio: null,
   }
   componentDidMount() {
-    console.log(this.props)
     const {
       data: { getProfile: data },
       isShownMocks,
@@ -407,15 +407,14 @@ class Container extends Component {
 
   render() {
     const { selectedSum, currentSort, tableData, selectedBalances } = this.state
-
     return (
       <PortfolioMain
         {...{
+          ...this.props,
           selectedSum,
           currentSort,
           tableData,
           selectedBalances,
-          ...this.props,
         }}
       />
     )

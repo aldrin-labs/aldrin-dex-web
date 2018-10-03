@@ -15,6 +15,21 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
 import Table from '@components/Tables/SimpleTable'
 
+const transformData = (data: any[], red: string, green: string) => {
+  const res = data.map((row) => [
+    row.exchange,
+    { text: row.coin, style: { fontWeight: 700 } },
+    row.portfolioPercentage,
+    row.price,
+    row.quantity,
+    row.price * row.quantity,
+    { text: row.realizedPL, color: row.realizedPL > 0 ? green : red },
+    { text: row.unrealizedPL, color: row.unrealizedPL > 0 ? green : red },
+    { text: row.totalPL, color: row.totalPL > 0 ? green : red },
+  ])
+  console.log(res)
+  return res
+}
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
@@ -28,8 +43,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       selectedBalances,
     } = this.props
 
-    console.log(this.props)
-
     const isSelectAll =
       (tableData &&
         selectedBalances &&
@@ -37,14 +50,34 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       false
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
-    console.log(tableData)
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
 
         <GridContainer>
           <TableAndHeadingWrapper>
-            <Table />
+            {Array.isArray(tableData) && (
+              <Table
+                rows={{
+                  head: [
+                    { text: 'exchange', number: false },
+                    { text: 'coin', number: false },
+                    { text: 'portfolio%', number: true },
+                    { text: 'price', number: true },
+                    { text: 'quantity', number: true },
+                    { text: 'usd', number: true },
+                    { text: 'realized P&L', number: true },
+                    { text: 'Unrealized P&L', number: true },
+                    { text: 'Total P&L', number: true },
+                  ],
+                  body: transformData(
+                    tableData,
+                    theme.palette.red.main,
+                    theme.palette.green.main
+                  ),
+                }}
+              />
+            )}
           </TableAndHeadingWrapper>
 
           <TableAndHeadingWrapper>

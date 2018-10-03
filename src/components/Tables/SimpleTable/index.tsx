@@ -18,12 +18,15 @@ const CustomTableCell = withStyles((theme) => ({
     height: theme.spacing.unit * 5,
     fontSize: 12,
     fontWeight: 'bold',
+    // padding: '4px 40px 4px 16px',
+    whiteSpace: 'nowrap',
+    position: 'relative',
   },
   body: {
+    // padding: '4px 40px 4px 16px',
     borderBottom: 'none',
     height: theme.spacing.unit * 4,
     fontSize: 12,
-    color: theme.palette.common.white,
   },
 }))(TableCell)
 
@@ -41,52 +44,84 @@ const styles = (theme) => ({
     transition: `background-color ${theme.transitions.duration.short}ms  ${
       theme.transitions.easing.easeOut
     }`,
+    borderBottom: '0',
     '&:hover': {
+      color: theme.palette.common.white,
       backgroundColor: theme.palette.secondary[600],
     },
   },
 })
 
-let id = 0
-function createData(name, calories, fat, carbs, protein) {
-  id += 1
-  return { id, name, calories, fat, carbs, protein }
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-]
-
 const CustomTable = (props) => {
-  const { classes } = props
-
+  const { classes, rows } = props
+  if (!Array.isArray(rows.head) && !Array.isArray(rows.body)) return
   return (
     <Background className={classes.root}>
       <Table className={classes.table}>
-        <TableHead>
+        <TableHead className={classes.tableHead}>
           <TableRow>
-            <CustomTableCell>Dessert (100g serving)</CustomTableCell>
-            <CustomTableCell numeric>Calories</CustomTableCell>
-            <CustomTableCell numeric>Fat (g)</CustomTableCell>
-            <CustomTableCell numeric>Carbs (g)</CustomTableCell>
-            <CustomTableCell numeric>Protein (g)</CustomTableCell>
+            {rows.head.map(
+              (
+                cell:
+                  | { text: string | number; number: boolean; style: any }
+                  | number
+              ) => {
+                return (
+                  <CustomTableCell
+                    style={{ ...cell.style }}
+                    variant="head"
+                    padding="dense"
+                    numeric={cell.number}
+                    key={cell.text}
+                  >
+                    {cell.text}
+                  </CustomTableCell>
+                )
+              }
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => {
+          {rows.body.map((row) => {
             return (
               <TableRow className={classes.row} key={row.id}>
-                <CustomTableCell component="th" scope="row">
-                  {row.name}
-                </CustomTableCell>
-                <CustomTableCell numeric>{row.calories}</CustomTableCell>
-                <CustomTableCell numeric>{row.fat}</CustomTableCell>
-                <CustomTableCell numeric>{row.carbs}</CustomTableCell>
-                <CustomTableCell numeric>{row.protein}</CustomTableCell>
+                {row.map(
+                  (
+                    cell:
+                      | string
+                      | number
+                      | { text: string | number; color: string; style: any },
+                    i: number
+                  ) => {
+                    let renderCell
+                    const numeric =
+                      typeof cell.text === 'number' || typeof cell === 'number'
+                    if (cell !== null && typeof cell === 'object') {
+                      renderCell = (
+                        <CustomTableCell
+                          padding="dense"
+                          style={{ color: cell.color, ...cell.style }}
+                          key={i}
+                          numeric={numeric}
+                        >
+                          {cell.text}
+                        </CustomTableCell>
+                      )
+                    } else if (typeof cell !== 'object') {
+                      renderCell = (
+                        <CustomTableCell
+                          numeric={numeric}
+                          padding="dense"
+                          key={i}
+                        >
+                          {cell}
+                        </CustomTableCell>
+                      )
+                    }
+
+                    return renderCell
+                  }
+                )}
               </TableRow>
             )
           })}
