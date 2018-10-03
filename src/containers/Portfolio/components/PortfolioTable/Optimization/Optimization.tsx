@@ -307,12 +307,14 @@ class Optimization extends Component<IProps, IState> {
         <Chart
           background={palette.background.default}
         >
-          <BarChart
-            height={300}
-            showPlaceholder={formatedData.length === 0}
-            charts={barChartData}
-            alwaysShowLegend
-          />
+          {/*<BarChart*/}
+            {/*height={300}*/}
+            {/*showPlaceholder={formatedData.length === 0}*/}
+            {/*charts={barChartData}*/}
+            {/*alwaysShowLegend*/}
+          {/*/>*/}
+          <EfficientFrontierChart data={efficientFrontierData} />
+
         </Chart>
         <Chart
           background={palette.background.default}
