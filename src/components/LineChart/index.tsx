@@ -8,19 +8,24 @@ import {
   MarkSeries,
   LineSeries,
   Crosshair,
+  DiscreteColorLegend,
 } from 'react-vis'
 
 import { Props, State } from '@components/LineChart/LineChart.types'
 import {
-  colors,
   inds,
   coins,
 } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
+import { getColorsAndLabelsForChartLegend, colors } from './LineChart.utils'
+import {
+  LegendContainer
+} from '@styles/cssUtils'
 
 export default class LineChart extends React.Component<Props, State> {
   state: State = {
     crosshairValues: [],
     deepLevel: 1,
+    value: { x: null, y: null },
   }
 
   onNearestX = (_: any, v: { index: number }) => {
@@ -55,8 +60,10 @@ export default class LineChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { data, activeLine } = this.props
-    const { crosshairValues } = this.state
+    const { data, activeLine, alwaysShowLegend } = this.props
+    const { crosshairValues, value } = this.state
+
+    const height = 300
 
     if (!data) return null
 
@@ -64,11 +71,12 @@ export default class LineChart extends React.Component<Props, State> {
       ticks: {
         padding: '1rem',
         stroke: '#fff',
-        opacity: 0.5,
+        opacity: 0.75,
         fontFamily: 'Roboto',
         fontSize: '12px',
         fontWeight: 100,
       },
+      text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
     }
 
     const format =
@@ -77,17 +85,36 @@ export default class LineChart extends React.Component<Props, State> {
       dateFormat(new Date(2018, 5, crosshairValues[0].x), 'dddd, MMM DD YYYY')
 
     return (
-      <FlexibleXYPlot margin={{ left: 70 }} onMouseLeave={this.onMouseLeave}>
+      <div>
+        <Container height={height}>
+      <FlexibleXYPlot margin={{ left: 70 }} onMouseLeave={this.onMouseLeave} xType="ordinal">
+        <LegendContainer
+          value={alwaysShowLegend ? { x: '1', y: '1' } : value}
+        >
+          {/*<DiscreteColorLegend orientation="horizontal" items={getColorsAndLabelsForChartLegend(data)} />*/}
+          <DiscreteColorLegend orientation="horizontal" items={[
+            {
+              title: 'Original',
+              color: colors[0],
+            },
+            {
+              title: 'Optimized',
+              color: colors[1],
+            },
+          ]}
+          />
+
+        </LegendContainer>
         <XAxis
-          hideLine
-          title="June 2018"
+          // hideLine
+          // title="June 2018"
           style={axisStyle}
           tickFormat={(v: number) => `${v}`}
           tickValues={data[0].map((d) => d.x)}
         />
 
         <YAxis
-          hideLine
+          // hideLine
           style={axisStyle}
           tickFormat={(v: number) => `${v}`}
         />
@@ -112,7 +139,7 @@ export default class LineChart extends React.Component<Props, State> {
 
         {crosshairValues && (
           <Crosshair values={crosshairValues}>
-            <Container>
+            <ContainerF>
               <HeadingParagraph>{format}</HeadingParagraph>
 
               {crosshairValues.map((v, i) => (
@@ -122,15 +149,24 @@ export default class LineChart extends React.Component<Props, State> {
                   } USD`}</Label>
                 </div>
               ))}
-            </Container>
+            </ContainerF>
           </Crosshair>
         )}
       </FlexibleXYPlot>
+        </Container>
+      </div>
     )
   }
 }
 
 const Container = styled.div`
+  height: ${(props: { height: number }) =>
+  props.height ? `${props.height}px` : `100%`};
+  width: 100%;
+`
+
+
+const ContainerF = styled.div`
   min-width: 250px;
   background-color: #f5f5f5;
   color: #4ed8da;
