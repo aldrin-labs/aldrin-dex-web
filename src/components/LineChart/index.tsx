@@ -31,13 +31,10 @@ const axisStyle = {
   text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
 }
 
-
-
 export default class LineChart extends React.Component<Props, State> {
   state: State = {
     crosshairValues: [],
     deepLevel: 1,
-    value: { x: null, y: null },
   }
 
   onNearestX = (_: any, v: { index: number }) => {
@@ -72,10 +69,13 @@ export default class LineChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { data, activeLine, alwaysShowLegend, itemsForChartLegend } = this.props
+    const {
+      data,
+      activeLine,
+      alwaysShowLegend,
+      itemsForChartLegend,
+    } = this.props
     const { crosshairValues, value } = this.state
-
-    const height = 300
 
     if (!data) return null
 
@@ -85,71 +85,66 @@ export default class LineChart extends React.Component<Props, State> {
       dateFormat(new Date(2018, 5, crosshairValues[0].x), 'dddd, MMM DD YYYY')
 
     return (
-      <div>
-        <Container height={height}>
-          <FlexibleXYPlot onMouseLeave={this.onMouseLeave} xType="ordinal">
-            {alwaysShowLegend && (
-              <LegendContainer>
-                <DiscreteColorLegend orientation="horizontal" items={itemsForChartLegend} />
-              </LegendContainer>
-            )}
+      <FlexibleXYPlot onMouseLeave={this.onMouseLeave}>
+        {alwaysShowLegend && (
+          <LegendContainer>
+            <DiscreteColorLegend orientation="horizontal" items={itemsForChartLegend} />
+          </LegendContainer>
+        )}
 
-            <XAxis
-              // title="June 2018"
-              style={axisStyle}
-              // tickFormat={(v: number) => `${v}`}
-              // tickValues={data[0].map((d) => d.x)}
+        <XAxis
+          // hideLine
+          title="June 2018"
+          style={axisStyle}
+          // tickFormat={(v: number) => `${v}`}
+          // tickValues={data[0].map((d) => d.x)}
+        />
+
+        <YAxis
+          // hideLine
+          style={axisStyle}
+          // tickFormat={(v: number) => `${v}`}
+        />
+
+        {data.map((serie, i) => {
+          const color = activeLine === i ? '#fff' : colors[i]
+          return (
+            <LineSeries
+              key={i}
+              animation
+              data={serie}
+              color={color}
+              onNearestX={this.onNearestX}
+              onSeriesClick={this.onChangeData}
             />
+          )
+        })}
 
-            <YAxis style={axisStyle} />
+        {crosshairValues && (
+          <MarkSeries data={crosshairValues} animation color="#E0F2F1" />
+        )}
 
-            {data.map((serie, i) => {
-              const color = activeLine === i ? '#fff' : colors[i]
-              return (
-                <LineSeries
-                  key={i}
-                  animation
-                  data={serie}
-                  color={color}
-                  onNearestX={this.onNearestX}
-                  onSeriesClick={this.onChangeData}
-                />
-              )
-            })}
+        {crosshairValues && (
+          <Crosshair values={crosshairValues}>
+            <ContainerForCrossHairValues>
+              <HeadingParagraph>{format}</HeadingParagraph>
 
-            {crosshairValues && (
-              <MarkSeries data={crosshairValues} animation color="#E0F2F1" />
-            )}
-
-            {crosshairValues && (
-              <Crosshair values={crosshairValues}>
-                <ContainerF>
-                  <HeadingParagraph>{format}</HeadingParagraph>
-
-                  {crosshairValues.map((v, i) => (
-                    <div key={`${v.label}: ${v.y} USD`}>
-                      <Label style={{ color: colors[i] }}>{`${v.label}: ${
-                        v.y
-                      } USD`}</Label>
-                    </div>
-                  ))}
-                </ContainerF>
-              </Crosshair>
-            )}
-          </FlexibleXYPlot>
-        </Container>
-      </div>
+              {crosshairValues.map((v, i) => (
+                <div key={`${v.label}: ${v.y} USD`}>
+                  <Label style={{ color: colors[i] }}>{`${v.label}: ${
+                    v.y
+                    } USD`}</Label>
+                </div>
+              ))}
+            </ContainerForCrossHairValues>
+          </Crosshair>
+        )}
+      </FlexibleXYPlot>
     )
   }
 }
 
-const Container = styled.div`
-  height: ${(props: { height: number }) =>
-    props.height ? `${props.height}px` : `100%`};
-  width: 100%;
-`
-
-const ContainerF = styled.div`
+const ContainerForCrossHairValues = styled.div`
   min-width: 250px;
   background-color: #f5f5f5;
   color: #4ed8da;
