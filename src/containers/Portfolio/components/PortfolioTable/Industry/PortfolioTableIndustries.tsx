@@ -1,18 +1,20 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import styled, { css } from 'styled-components'
-import { compose } from 'recompose'
+// import { compose } from 'recompose'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 
 import {
   roundPercentage,
   calcAllSumOfPortfolioAsset,
+  onSortStrings,
+  roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'
+import { genMocks } from '@utils/PortfolioIndustriesUtils'
 import LineChart from '@components/LineChart'
 import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
 import {
   MOCKS,
-  genMocks,
   inds,
 } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 import {
@@ -27,7 +29,6 @@ import {
   Span,
   Icon,
 } from '@styles/cssUtils'
-import { onSortStrings, roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
@@ -482,7 +483,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    const textColor: string = 
+    const textColor: string =
       theme.palette.getContrastText(theme.palette.background.paper)
     let isThereAnySelectedRows = false
     if (selectedRows) {
@@ -559,7 +560,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                                 currentSort.arg === 'ASC'
                                   ? 'rotate(180deg)'
                                   : null,
-                            }} 
+                            }}
                           />
                         )}
                       </PTH>
@@ -647,7 +648,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                           </PTD>
                           {cols &&
                             cols.map((col, innerIdx) => {
-                              let colorized = null 
+                              let colorized = null
                               if (
                                 col &&
                                 !Array.isArray(col) &&
