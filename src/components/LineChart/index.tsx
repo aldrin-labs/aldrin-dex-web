@@ -31,16 +31,7 @@ const axisStyle = {
   text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
 }
 
-const ITEMS = [
-  {
-    title: 'Original',
-    color: colors[0],
-  },
-  {
-    title: 'Optimized',
-    color: colors[1],
-  },
-]
+
 
 export default class LineChart extends React.Component<Props, State> {
   state: State = {
@@ -81,7 +72,7 @@ export default class LineChart extends React.Component<Props, State> {
   }
 
   render() {
-    const { data, activeLine, alwaysShowLegend } = this.props
+    const { data, activeLine, alwaysShowLegend, itemsForChartLegend } = this.props
     const { crosshairValues, value } = this.state
 
     const height = 300
@@ -99,8 +90,7 @@ export default class LineChart extends React.Component<Props, State> {
           <FlexibleXYPlot onMouseLeave={this.onMouseLeave} xType="ordinal">
             {alwaysShowLegend && (
               <LegendContainer>
-                {/*<DiscreteColorLegend orientation="horizontal" items={getColorsAndLabelsForChartLegend(data)} />*/}
-                <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
+                <DiscreteColorLegend orientation="horizontal" items={itemsForChartLegend} />
               </LegendContainer>
             )}
 

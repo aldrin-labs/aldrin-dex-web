@@ -34,6 +34,7 @@ import { mockDataForLineChart } from './mockData'
 
 
 import { MASTER_BUILD } from '@utils/config'
+import { colors } from '@components/LineChart/LineChart.utils'
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -301,6 +302,18 @@ class Optimization extends Component<IProps, IState> {
     //     activeButton,
     //   }
     // }
+
+    const itemsForChartLegend = [
+      {
+        title: 'Original',
+        color: colors[0],
+      },
+      {
+        title: 'Optimized',
+        color: colors[1],
+      },
+    ]
+
     const {
       theme: { palette },
     } = this.props
@@ -308,16 +321,10 @@ class Optimization extends Component<IProps, IState> {
     return (
       <ChartsContainer>
         <Chart background={palette.background.default}>
-          {/*<BarChart*/}
-          {/*height={300}*/}
-          {/*showPlaceholder={formatedData.length === 0}*/}
-          {/*charts={barChartData}*/}
-          {/*alwaysShowLegend*/}
-          {/*/>*/}
-          {/*<EfficientFrontierChart data={efficientFrontierData} />*/}
           <LineChart
-            // height={300}
+            alwaysShowLegend={true}
             data={mockDataForLineChart}
+            itemsForChartLegend={itemsForChartLegend}
           />
         </Chart>
         <Chart background={palette.background.default}>
