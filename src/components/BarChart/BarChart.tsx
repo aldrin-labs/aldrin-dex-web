@@ -17,9 +17,7 @@ import {
   IChart,
 } from '@components/BarChart/BarChart.types'
 
-import {
-  LegendContainer
-} from '@styles/cssUtils'
+import { LegendContainer } from '@styles/cssUtils'
 
 const axisStyle = {
   ticks: {
@@ -74,11 +72,12 @@ class BarChart extends Component<IProps, IState> {
       <div>
         <Container height={height}>
           <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal">
-            <LegendContainer
-              value={alwaysShowLegend ? { x: '1', y: '1' } : value}
-            >
-              <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
-            </LegendContainer>
+            {alwaysShowLegend && (
+              <LegendContainer>
+                <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
+              </LegendContainer>
+            )}
+
             {showPlaceholder ? (
               <VerticalBarSeries
                 animation={animated && 'gentle'}

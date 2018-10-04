@@ -17,10 +17,7 @@ import {
   coins,
 } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 import { getColorsAndLabelsForChartLegend, colors } from './LineChart.utils'
-import {
-  LegendContainer
-} from '@styles/cssUtils'
-
+import { LegendContainer } from '@styles/cssUtils'
 
 const axisStyle = {
   ticks: {
@@ -34,7 +31,16 @@ const axisStyle = {
   text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
 }
 
-
+const ITEMS = [
+  {
+    title: 'Original',
+    color: colors[0],
+  },
+  {
+    title: 'Optimized',
+    color: colors[1],
+  },
+]
 
 export default class LineChart extends React.Component<Props, State> {
   state: State = {
@@ -90,72 +96,57 @@ export default class LineChart extends React.Component<Props, State> {
     return (
       <div>
         <Container height={height}>
-      <FlexibleXYPlot margin={{ left: 70 }} onMouseLeave={this.onMouseLeave} xType="ordinal">
-        <LegendContainer
-          value={alwaysShowLegend ? { x: '1', y: '1' } : value}
-        >
-          {/*<DiscreteColorLegend orientation="horizontal" items={getColorsAndLabelsForChartLegend(data)} />*/}
-          <DiscreteColorLegend orientation="horizontal" items={[
-            {
-              title: 'Original',
-              color: colors[0],
-            },
-            {
-              title: 'Optimized',
-              color: colors[1],
-            },
-          ]}
-          />
+          <FlexibleXYPlot onMouseLeave={this.onMouseLeave} xType="ordinal">
+            {alwaysShowLegend && (
+              <LegendContainer>
+                {/*<DiscreteColorLegend orientation="horizontal" items={getColorsAndLabelsForChartLegend(data)} />*/}
+                <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
+              </LegendContainer>
+            )}
 
-        </LegendContainer>
-        <XAxis
-          // hideLine
-          // title="June 2018"
-          style={axisStyle}
-          tickFormat={(v: number) => `${v}`}
-          tickValues={data[0].map((d) => d.x)}
-        />
-
-        <YAxis
-          // hideLine
-          style={axisStyle}
-          tickFormat={(v: number) => `${v}`}
-        />
-
-        {data.map((serie, i) => {
-          const color = activeLine === i ? '#fff' : colors[i]
-          return (
-            <LineSeries
-              key={i}
-              animation
-              data={serie}
-              color={color}
-              onNearestX={this.onNearestX}
-              onSeriesClick={this.onChangeData}
+            <XAxis
+              // title="June 2018"
+              style={axisStyle}
+              // tickFormat={(v: number) => `${v}`}
+              // tickValues={data[0].map((d) => d.x)}
             />
-          )
-        })}
 
-        {crosshairValues && (
-          <MarkSeries data={crosshairValues} animation color="#E0F2F1" />
-        )}
+            <YAxis style={axisStyle} />
 
-        {crosshairValues && (
-          <Crosshair values={crosshairValues}>
-            <ContainerF>
-              <HeadingParagraph>{format}</HeadingParagraph>
+            {data.map((serie, i) => {
+              const color = activeLine === i ? '#fff' : colors[i]
+              return (
+                <LineSeries
+                  key={i}
+                  animation
+                  data={serie}
+                  color={color}
+                  onNearestX={this.onNearestX}
+                  onSeriesClick={this.onChangeData}
+                />
+              )
+            })}
 
-              {crosshairValues.map((v, i) => (
-                <div key={`${v.label}: ${v.y} USD`}>
-                  <Label style={{ color: colors[i] }}>{`${v.label}: ${
-                    v.y
-                  } USD`}</Label>
-                </div>
-              ))}
-            </ContainerF>
-          </Crosshair>
-        )}
-      </FlexibleXYPlot>
+            {crosshairValues && (
+              <MarkSeries data={crosshairValues} animation color="#E0F2F1" />
+            )}
+
+            {crosshairValues && (
+              <Crosshair values={crosshairValues}>
+                <ContainerF>
+                  <HeadingParagraph>{format}</HeadingParagraph>
+
+                  {crosshairValues.map((v, i) => (
+                    <div key={`${v.label}: ${v.y} USD`}>
+                      <Label style={{ color: colors[i] }}>{`${v.label}: ${
+                        v.y
+                      } USD`}</Label>
+                    </div>
+                  ))}
+                </ContainerF>
+              </Crosshair>
+            )}
+          </FlexibleXYPlot>
         </Container>
       </div>
     )
@@ -164,10 +155,9 @@ export default class LineChart extends React.Component<Props, State> {
 
 const Container = styled.div`
   height: ${(props: { height: number }) =>
-  props.height ? `${props.height}px` : `100%`};
+    props.height ? `${props.height}px` : `100%`};
   width: 100%;
 `
-
 
 const ContainerF = styled.div`
   min-width: 250px;

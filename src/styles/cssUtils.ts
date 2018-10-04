@@ -77,8 +77,6 @@ export const Icon = styled.i`
 `
 
 export const LegendContainer = styled.div`
-  opacity: ${(props: { value: IValue | { x: null; y: null } }) =>
-  props.value.x === null || props.value.y === null ? '0' : '1'};
   border-radius: 5px;
   position: absolute;
   font-family: Roboto, sans-serif;
