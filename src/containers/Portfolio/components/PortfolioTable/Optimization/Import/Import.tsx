@@ -4,10 +4,12 @@ import MdReplay from '@material-ui/icons/Replay'
 import { Button as ButtonMUI, Typography } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import { isEqual } from 'lodash-es'
-import TextField from '@material-ui/core/TextField';
+import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
-
 import BarChart from '@components/BarChart/BarChart'
+import 'react-dates/initialize'
+import 'react-dates/lib/css/_datepicker.css'
+import { DateRangePicker } from 'react-dates'
 
 import { RebalancePeriod, RiskProfile } from './dataForSelector'
 // import { SelectR } from '@styles/cssUtils'
@@ -22,12 +24,25 @@ import {
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 // import SelectDates from '@components/SelectTimeRangeDropdown'
 
-import { SwitchButtonsWrapper, HelperForCentering, InputContainer, TableContainer, Input, Chart, ImportData } from './Import.styles'
+import {
+  SwitchButtonsWrapper,
+  HelperForCentering,
+  InputContainer,
+  TableContainer,
+  Input,
+  Chart,
+  ImportData,
+} from './Import.styles'
 // import { Chart, ImportData } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.styles'
 import styled from 'styled-components'
 
-
 export default class Import extends PureComponent<IProps> {
+  state = {
+    focusedInput: false,
+    startDate: null,
+    endDate: null,
+  }
+
   componentDidMount() {
     this.importPortfolio()
   }
@@ -172,11 +187,7 @@ export default class Import extends PureComponent<IProps> {
   deleteAllRows = () => this.props.updateData([])
 
   renderBarChart = () => {
-    const {
-      optimizedData,
-      storeData,
-      theme,
-    } = this.props
+    const { optimizedData, storeData, theme } = this.props
 
     if (!storeData) return
     const formatedData = storeData.map((el: IData, i) => ({
@@ -202,9 +213,7 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
-      <Chart
-        background={theme.palette.background.default}
-      >
+      <Chart background={theme.palette.background.default}>
         <BarChart
           height={300}
           showPlaceholder={formatedData.length === 0}
@@ -213,8 +222,12 @@ export default class Import extends PureComponent<IProps> {
         />
       </Chart>
     )
-
   }
+
+  onDatesChange = ({ startDate, endDate }) =>
+    this.setState({ startDate, endDate })
+
+  onFocusChange = (focusedInput) => this.setState({ focusedInput })
 
   render() {
     const {
@@ -257,26 +270,20 @@ export default class Import extends PureComponent<IProps> {
         </Typography>
       )
     }
-    const textColor: string= this.props.theme.palette.getContrastText(this.props.theme.palette.background.paper)
+    const textColor: string = this.props.theme.palette.getContrastText(
+      this.props.theme.palette.background.paper
+    )
     return (
       <ApolloConsumer>
         {(client) => (
           <ImportData>
             <InputContainer>
               <InputElementWrapper>
-                <StyledInputLabel>
-                  Base coin
-                </StyledInputLabel>
-                <STextField
-                  color={textColor}
-                  value={`USDT`}
-                  disabled={true}
-                />
+                <StyledInputLabel>Base coin</StyledInputLabel>
+                <STextField color={textColor} value={`USDT`} disabled={true} />
               </InputElementWrapper>
               <InputElementWrapper>
-                <StyledInputLabel>
-                  Rebalance period
-                </StyledInputLabel>
+                <StyledInputLabel>Rebalance period</StyledInputLabel>
                 <SelectOptimization
                   options={RebalancePeriod}
                   isClearable={true}
@@ -284,18 +291,21 @@ export default class Import extends PureComponent<IProps> {
                 />
               </InputElementWrapper>
               <InputElementWrapper>
-                <StyledInputLabel>
-                  Date range
-                </StyledInputLabel>
-                <SelectOptimization
-                  isClearable={true}
-                  // placeholder={` `}
-                />
+                <StyledInputLabel>Date range</StyledInputLabel>
+                <StyledWrapperForDateRangePicker>
+                  <DateRangePicker
+                    startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                    startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                    endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                    endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                    onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
+                    focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                    onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
+                  />
+                </StyledWrapperForDateRangePicker>
               </InputElementWrapper>
               <InputElementWrapper>
-                <StyledInputLabel>
-                  Risk free asset
-                </StyledInputLabel>
+                <StyledInputLabel>Risk free asset</StyledInputLabel>
                 <FlexWrapper>
                   <Typography variant="caption">No</Typography>
                   <StyledSwitch
@@ -307,9 +317,7 @@ export default class Import extends PureComponent<IProps> {
                 </FlexWrapper>
               </InputElementWrapper>
               <InputElementWrapper>
-                <StyledInputLabel>
-                  Risk profile
-                </StyledInputLabel>
+                <StyledInputLabel>Risk profile</StyledInputLabel>
                 <SelectOptimization
                   options={RiskProfile}
                   isClearable={true}
@@ -317,17 +325,17 @@ export default class Import extends PureComponent<IProps> {
                 />
               </InputElementWrapper>
               {/*<SelectDates*/}
-                {/*setPeriodToStore={setPeriod}*/}
-                {/*period={optimizationPeriod}*/}
+              {/*setPeriodToStore={setPeriod}*/}
+              {/*period={optimizationPeriod}*/}
               {/*/>*/}
               {/*<Input*/}
-                {/*color={textColor}*/}
-                {/*type="number"*/}
-                {/*placeholder="Expected return in %"*/}
-                {/*value={expectedReturn || ''}*/}
-                {/*onChange={(e) => {*/}
-                  {/*handleChange(e)*/}
-                {/*}}*/}
+              {/*color={textColor}*/}
+              {/*type="number"*/}
+              {/*placeholder="Expected return in %"*/}
+              {/*value={expectedReturn || ''}*/}
+              {/*onChange={(e) => {*/}
+              {/*handleChange(e)*/}
+              {/*}}*/}
               {/*/>*/}
 
               <ButtonMUI
@@ -393,7 +401,6 @@ export default class Import extends PureComponent<IProps> {
   }
 }
 
-
 const FlexWrapper = styled.div`
   height: 35px;
   display: flex;
@@ -409,7 +416,6 @@ const SelectOptimization = styled(ReactSelectComponent)`
   &:hover {
     border-bottom: 2px solid #fff;
   }
-  
 `
 
 const StyledInputLabel = styled(InputLabel)`
@@ -428,6 +434,28 @@ const STextField = styled(TextField)`
   }
 `
 
-const StyledSwitch = styled(Switch)`
+const StyledSwitch = styled(Switch)``
 
+const StyledWrapperForDateRangePicker = styled.div`
+  width: 206px;
+  padding: 6px 0;
+
+  & .DateInput {
+    width: 95px;
+  }
+
+  & .DateInput_input {
+    padding: 5px;
+    font-size: 14px;
+    //color: white;
+  }
+
+  & .DateRangePicker_picker {
+    z-index: 10;
+  }
+
+  & .DateRangePickerInput_arrow_svg {
+    width: 14px;
+    height: 14px;
+  }
 `
