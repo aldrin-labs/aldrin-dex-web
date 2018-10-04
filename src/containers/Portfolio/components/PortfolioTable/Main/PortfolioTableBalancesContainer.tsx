@@ -16,6 +16,7 @@ import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataM
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { zip, isObject } from 'lodash-es'
+import { Theme } from '@material-ui/core'
 
 const createColumn = (
   id: string | number = nanoid(),
@@ -322,6 +323,30 @@ class Container extends Component {
     this.setState({ checkedRows: [] })
   }
 
+  putDataInTable = () => {
+    const { tableData } = this.state
+    const { theme, isUSDCurrently } = this.props
+    return {
+      head: [
+        { text: 'exchange', number: false },
+        { text: 'coin', number: false },
+        { text: 'portfolio%', number: true },
+        { text: 'price', number: true },
+        { text: 'quantity', number: true },
+        { text: isUSDCurrently ? 'usd' : 'BTC', number: true },
+        { text: 'realized P&L', number: true },
+        { text: 'Unrealized P&L', number: true },
+        { text: 'Total P&L', number: true },
+      ],
+      body: this.transformData(
+        tableData,
+        theme.palette.red.main,
+        theme.palette.green.main
+      ),
+      footer: this.calculateTotal(),
+    }
+  }
+
   onCheckboxClick = (e: Event, id: number | string) => {
     //  from material UI docs
     const { checkedRows: selected } = this.state
@@ -346,12 +371,7 @@ class Container extends Component {
 
   render() {
     const { checkedRows, currentSort, tableData } = this.state
-    const {
-      onCheckboxClick,
-      onSelectAllClick,
-      transformData,
-      calculateTotal,
-    } = this
+    const { onCheckboxClick, onSelectAllClick, putDataInTable } = this
 
     return (
       <PortfolioMain
@@ -360,11 +380,9 @@ class Container extends Component {
           onCheckboxClick,
           onSelectAllClick,
           currentSort,
-          transformData,
+          putDataInTable,
           checkedRows,
           tableData,
-
-          calculateTotal,
         }}
       />
     )

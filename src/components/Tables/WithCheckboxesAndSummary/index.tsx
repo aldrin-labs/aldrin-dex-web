@@ -12,6 +12,7 @@ import styled from 'styled-components'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Checkbox from '@material-ui/core/Checkbox'
 
+import { Props } from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
 import { Typography, IconButton } from '@material-ui/core'
@@ -107,7 +108,7 @@ const renderCell = (cell, i, numeric) => {
           */
 }
 
-const CustomTable = (props) => {
+const CustomTable = (props: Props) => {
   const {
     classes,
     rows,
@@ -121,7 +122,13 @@ const CustomTable = (props) => {
     },
     checkedRows = [],
   } = props
-  if (!Array.isArray(rows.head) && !Array.isArray(rows.body)) return
+  if (
+    rows !== undefined &&
+    !Array.isArray(rows.head) &&
+    !Array.isArray(rows.body)
+  ) {
+    return
+  }
   const howManyColumns = rows.head.length
   return (
     <Background className={classes.root}>

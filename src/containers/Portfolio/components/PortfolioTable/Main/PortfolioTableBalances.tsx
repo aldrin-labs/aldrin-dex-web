@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { Typography, Divider, Paper, Card } from '@material-ui/core'
+import { Typography, Divider, Paper } from '@material-ui/core'
 
 import * as actions from '@containers/Portfolio/actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
@@ -17,16 +17,12 @@ import Table from '@components/Tables/WithCheckboxesAndSummary'
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
-      isUSDCurrently,
       children,
-      theme,
-      currentSort,
+      putDataInTable,
       tableData,
       checkedRows,
       onCheckboxClick,
       onSelectAllClick,
-      transformData,
-      calculateTotal,
     } = this.props
 
     const coins =
@@ -36,11 +32,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
-      <PTWrapper tableData={!!tableDataHasData}>
+      <PTWrapper elevation={1} tableData={!!tableDataHasData}>
         {children}
 
         <GridContainer>
-          <TableWrapper>
+          <TableWrapper elevation={8}>
             {Array.isArray(tableData) && (
               <Table
                 title="Portfolio"
@@ -48,25 +44,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 withCheckboxes={true}
                 onChange={onCheckboxClick}
                 onSelectAllClick={onSelectAllClick}
-                rows={{
-                  head: [
-                    { text: 'exchange', number: false },
-                    { text: 'coin', number: false },
-                    { text: 'portfolio%', number: true },
-                    { text: 'price', number: true },
-                    { text: 'quantity', number: true },
-                    { text: 'usd', number: true },
-                    { text: 'realized P&L', number: true },
-                    { text: 'Unrealized P&L', number: true },
-                    { text: 'Total P&L', number: true },
-                  ],
-                  body: transformData(
-                    tableData,
-                    theme.palette.red.main,
-                    theme.palette.green.main
-                  ),
-                  footer: calculateTotal(),
-                }}
+                rows={putDataInTable()}
               />
             )}
           </TableWrapper>
@@ -123,7 +101,7 @@ const ChartTitle = styled(Typography)`
   margin-left: 1.2rem;
 `
 
-export const PTWrapper = styled(Card)`
+export const PTWrapper = styled(Paper)`
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
@@ -155,7 +133,7 @@ const StyledDivider = styled(Divider)`
   grid-column: 1 / span 2;
 `
 
-const TableWrapper = styled(Card)`
+const TableWrapper = styled(Paper)`
   display: flex;
   margin: 0 20px 5px;
   flex-direction: column;
