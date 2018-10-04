@@ -9,9 +9,12 @@ import TableFooter from '@material-ui/core/TableFooter'
 import Paper from '@material-ui/core/Paper'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
 import styled from 'styled-components'
+import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Checkbox from '@material-ui/core/Checkbox'
+
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { isObject } from 'formik'
+import { isObject } from 'lodash-es'
+import { Typography, IconButton } from '@material-ui/core'
 
 const CustomTableCell = withStyles((theme) => ({
   head: {
@@ -21,30 +24,37 @@ const CustomTableCell = withStyles((theme) => ({
     height: theme.spacing.unit * 5,
     fontSize: 12,
     fontWeight: 'bold',
-    // padding: '4px 40px 4px 16px',
+    border: 0,
     whiteSpace: 'nowrap',
     position: 'relative',
   },
   body: {
-    // padding: '4px 40px 4px 16px',
     borderBottom: 'none',
     height: theme.spacing.unit * 4,
     fontSize: 12,
   },
 }))(TableCell)
 
+const Settings = withStyles((theme: Theme) => ({
+  root: { color: theme.palette.common.white },
+}))(IconButton)
+
 const styles = (theme: Theme) => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
     overflowY: 'scroll',
+  },
+  indeterminateCheckbox: {
+    color: theme.palette.secondary.main,
   },
   table: {
     minWidth: 700,
   },
+  title: {
+    backgroundColor: theme.palette.primary[900],
+  },
   row: {
-    color: 'white',
     transition: `background-color ${theme.transitions.duration.short}ms  ${
       theme.transitions.easing.easeOut
     }`,
@@ -93,6 +103,7 @@ const renderCell = (cell, i, numeric) => {
 {
   /* ToDo: - Add sorting 
             - Fixed Header And summary
+            - Add settings
           */
 }
 
@@ -100,6 +111,8 @@ const CustomTable = (props) => {
   const {
     classes,
     rows,
+    withCheckboxes,
+    title,
     onChange = () => {
       return
     },
@@ -109,20 +122,45 @@ const CustomTable = (props) => {
     checkedRows = [],
   } = props
   if (!Array.isArray(rows.head) && !Array.isArray(rows.body)) return
+  const howManyColumns = rows.head.length
   return (
     <Background className={classes.root}>
       <Table className={classes.table}>
         <TableHead className={classes.tableHead}>
+          {title && (
+            <TableRow>
+              <CustomTableCell
+                className={classes.title}
+                colSpan={howManyColumns}
+              >
+                <Typography variant="title" color="secondary">
+                  {title}
+                </Typography>
+              </CustomTableCell>
+              <CustomTableCell
+                className={classes.title}
+                numeric={true}
+                colSpan={howManyColumns}
+              >
+                <Settings>
+                  <MoreVertIcon />
+                </Settings>
+              </CustomTableCell>
+            </TableRow>
+          )}
           <TableRow>
             <CustomTableCell padding="checkbox">
-              <Checkbox
-                indeterminate={
-                  checkedRows.length > 0 &&
-                  rows.body.length > checkedRows.length
-                }
-                checked={rows.body.length === checkedRows.length}
-                onChange={onSelectAllClick}
-              />
+              {withCheckboxes && (
+                <Checkbox
+                  classes={{ indeterminate: classes.indeterminateCheckbox }}
+                  indeterminate={
+                    checkedRows.length > 0 &&
+                    rows.body.length > checkedRows.length
+                  }
+                  checked={rows.body.length === checkedRows.length}
+                  onChange={onSelectAllClick}
+                />
+              )}
             </CustomTableCell>
             {rows.head.map(
               (
@@ -151,13 +189,15 @@ const CustomTable = (props) => {
             return (
               <TableRow className={classes.row} key={ind}>
                 <CustomTableCell padding="checkbox">
-                  <Checkbox
-                    indeterminate={false}
-                    checked={selected}
-                    onChange={(e) => {
-                      onChange(e, ind)
-                    }}
-                  />
+                  {withCheckboxes && (
+                    <Checkbox
+                      indeterminate={false}
+                      checked={selected}
+                      onChange={(e) => {
+                        onChange(e, ind)
+                      }}
+                    />
+                  )}
                 </CustomTableCell>
                 {row.map(
                   (
@@ -180,10 +220,14 @@ const CustomTable = (props) => {
         {Array.isArray(rows.footer) && (
           <TableFooter className={classes.footer}>
             <TableRow>
-              <CustomTableCell padding="checkbox" />
+              {withCheckboxes && <CustomTableCell padding="checkbox" />}
               {rows.footer.map(
                 (
-                  cell: { text: string | number; number: boolean; style: any },
+                  cell: {
+                    text: string | number
+                    number: boolean
+                    style: any
+                  },
                   i: number
                 ) => {
                   const numeric =
@@ -214,7 +258,8 @@ const CustomTable = (props) => {
 }
 
 const Background = styled(Paper)`
+  width: 100%;
   ${customAquaScrollBar};
 `
 
-export default withStyles(styles)(CustomTable)
+export default withStyles(styles, { withTheme: true })(CustomTable)

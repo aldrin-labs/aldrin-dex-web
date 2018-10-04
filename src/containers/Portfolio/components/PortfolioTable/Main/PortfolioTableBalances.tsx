@@ -10,7 +10,6 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
-import TradeOrderHistoryTable from './TradeOrderHistory/TradeOrderHistoryTable'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
 import Table from '@components/Tables/WithCheckboxesAndSummary'
@@ -23,7 +22,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       theme,
       currentSort,
       tableData,
-      selectedBalances,
       checkedRows,
       onCheckboxClick,
       onSelectAllClick,
@@ -31,16 +29,23 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       calculateTotal,
     } = this.props
 
+    const coins =
+      checkedRows && checkedRows.length > 0
+        ? checkedRows.map((id: number) => tableData[id])
+        : []
+
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
       <PTWrapper tableData={!!tableDataHasData}>
         {children}
 
         <GridContainer>
-          <TableAndHeadingWrapper>
+          <TableWrapper>
             {Array.isArray(tableData) && (
               <Table
+                title="Portfolio"
                 checkedRows={checkedRows}
+                withCheckboxes={true}
                 onChange={onCheckboxClick}
                 onSelectAllClick={onSelectAllClick}
                 rows={{
@@ -64,26 +69,15 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 }}
               />
             )}
-          </TableAndHeadingWrapper>
+          </TableWrapper>
 
-          <TableAndHeadingWrapper>
-            <Typography color="default" variant="headline">
-              Trade history
-            </Typography>
-            <Wrapper>
-              <TradeOrderHistoryTable
-                theme={theme}
-                isUSDCurrently={isUSDCurrently}
-              />
-            </Wrapper>
-          </TableAndHeadingWrapper>
-
-          <StyledDivider light />
+          <StyledDivider light={true} />
           <PTChartContainer>
             <ChartTitle color="default" variant="title">
               Portfolio Value
             </ChartTitle>
-            {/* <Chart
+
+            <Chart
               isShownMocks={this.props.isShownMocks}
               setActiveChart={this.props.setActiveChart}
               activeChart={this.props.activeChart}
@@ -93,12 +87,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               }}
               height="20vh"
               marginTopHr="10px"
-              coins={
-                selectedBalances && selectedBalances.length > 0
-                  ? selectedBalances.map((id, i) => tableData[i])
-                  : []
-              }
-            /> */}
+              coins={coins}
+            />
           </PTChartContainer>
         </GridContainer>
       </PTWrapper>
@@ -106,22 +96,15 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 }
 
-const Wrapper = styled(Paper)`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow-y: scroll;
-
-  ${customAquaScrollBar};
-`
-
 const GridContainer = styled.div`
   align-self: center;
 
   display: Grid;
   height: 70%;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
+  width: 100%;
   grid-template-rows: 58% 1% 40%;
+  max-width: 100rem;
 
   @media (min-width: 1400px) {
     height: 100%;
@@ -129,7 +112,6 @@ const GridContainer = styled.div`
   @media (min-width: 1800px) {
     justify-content: center;
 
-    grid-template-columns: 60% 40%;
     grid-template-rows: 58% 1% 40%;
   }
   @media (min-width: 3000px) {
@@ -173,7 +155,7 @@ const StyledDivider = styled(Divider)`
   grid-column: 1 / span 2;
 `
 
-const TableAndHeadingWrapper = styled.div`
+const TableWrapper = styled(Card)`
   display: flex;
   margin: 0 20px 5px;
   flex-direction: column;

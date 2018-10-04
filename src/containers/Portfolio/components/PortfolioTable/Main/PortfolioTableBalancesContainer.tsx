@@ -48,7 +48,7 @@ const createColumn = (
 class Container extends Component {
   state: IState = {
     tableData: null,
-    selectedBalances: null,
+
     currentSort: null,
     activeKeys: null,
     activeWallets: null,
@@ -139,7 +139,7 @@ class Container extends Component {
     }
 
     if (nextProps.activeKeys && nextProps.activeKeys.length === 0) {
-      this.setState({ selectedBalances: null })
+      this.setState({ checkedRows: [] })
     }
   }
 
@@ -264,9 +264,7 @@ class Container extends Component {
 
     tableData = dustFilter(tableData, filterValueSmallerThenPercentage)
 
-    const selectAllLinesInTable = tableData.map((el) => el.id)
-
-    this.setState({ tableData, selectedBalances: selectAllLinesInTable })
+    this.setState({ tableData })
   }
 
   calculateTotal = () => {
@@ -297,7 +295,7 @@ class Container extends Component {
         }
       })
     }
-    console.log(total)
+
     return total
   }
 
@@ -347,7 +345,7 @@ class Container extends Component {
   }
 
   render() {
-    const { checkedRows, currentSort, tableData, selectedBalances } = this.state
+    const { checkedRows, currentSort, tableData } = this.state
     const {
       onCheckboxClick,
       onSelectAllClick,
@@ -365,7 +363,7 @@ class Container extends Component {
           transformData,
           checkedRows,
           tableData,
-          selectedBalances,
+
           calculateTotal,
         }}
       />
