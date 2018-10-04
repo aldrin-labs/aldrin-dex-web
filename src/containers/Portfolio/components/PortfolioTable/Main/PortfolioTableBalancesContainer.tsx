@@ -3,7 +3,7 @@ import nanoid from 'nanoid'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
-import PortfolioMain from './PortfolioTableBalances'
+import PortfolioMain from './PortfolioTableBalances/PortfolioTableBalances'
 import {
   onValidateSum,
   onSortStrings,
@@ -13,10 +13,8 @@ import {
   dustFilter,
 } from '@utils/PortfolioTableUtils'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
-import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { zip, isObject } from 'lodash-es'
-import { Theme } from '@material-ui/core'
 
 const createColumn = (
   id: string | number = nanoid(),
@@ -313,16 +311,6 @@ class Container extends Component {
       { text: row.totalPL, color: row.totalPL > 0 ? green : red },
     ])
 
-  onSelectAllClick = (e: Event) => {
-    if (e && e.target && e.target.checked) {
-      this.setState((state) => ({
-        checkedRows: state.tableData.map((n: any, i: number) => i),
-      }))
-      return
-    }
-    this.setState({ checkedRows: [] })
-  }
-
   putDataInTable = () => {
     const { tableData } = this.state
     const { theme, isUSDCurrently } = this.props
@@ -345,6 +333,16 @@ class Container extends Component {
       ),
       footer: this.calculateTotal(),
     }
+  }
+
+  onSelectAllClick = (e: Event) => {
+    if (e && e.target && e.target.checked) {
+      this.setState((state) => ({
+        checkedRows: state.tableData.map((n: any, i: number) => i),
+      }))
+      return
+    }
+    this.setState({ checkedRows: [] })
   }
 
   onCheckboxClick = (e: Event, id: number | string) => {
