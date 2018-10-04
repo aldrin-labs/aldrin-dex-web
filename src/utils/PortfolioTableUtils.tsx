@@ -8,29 +8,37 @@ export const calcAllSumOfPortfolioAsset = (
   cryptoWallets: any = null,
 ): number => {
   // transforming data like assets from profile to IData format
+  let cryptoSum = 0
   const sum = assets.filter(Boolean).reduce((acc: number, curr: any) => {
     const { quantity = 0, asset = { priceUSD: 0 } } = curr || {}
-    if (!quantity || !asset || !asset.priceUSD || !asset.priceBTC) {
+    if (!quantity || !asset) {
+      console.log('null');
+
       return null
     }
     const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+    console.log('price in calcAllSumOfPortfolioAsset - assets', price);
+    console.log('quantity', quantity, 'Number(price)', Number(price),'quantity * Number(price)',quantity * Number(price) );
+
 
     return acc + quantity * Number(price)
   }, 0);
+
   if (cryptoWallets) {
-    return cryptoWallets.reduce((acc: number, curr: any) =>
+    cryptoSum = cryptoWallets.reduce((acc: number, curr: any) =>
       curr.assets.reduce((acc: number, curr: any) => {
         const { balance = 0, asset = { priceUSD: 0 } } = curr || {}
         if (!balance || !asset || !asset.priceUSD || !asset.priceBTC) {
           return null
         }
         const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
+        console.log('price in calcAllSumOfPortfolioAsset - wallets', price);
 
         return acc + balance * Number(price)
       }, 0), sum)
   }
 
-  return sum;
+  return sum + cryptoSum;
 }
 
 
