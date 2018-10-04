@@ -11,6 +11,7 @@ import { hexToRgbAWithOpacity } from '@styles/helpers'
 import styled from 'styled-components'
 import Checkbox from '@material-ui/core/Checkbox'
 import { customAquaScrollBar } from '@styles/cssUtils'
+import { isObject } from 'formik'
 
 const CustomTableCell = withStyles((theme) => ({
   head: {
@@ -88,6 +89,11 @@ const renderCell = (cell, i, numeric) => {
   }
 
   return null
+}
+{
+  /* ToDo: - Add sorting 
+            - Fixed Header And summary
+          */
 }
 
 const CustomTable = (props) => {
@@ -171,7 +177,7 @@ const CustomTable = (props) => {
             )
           })}
         </TableBody>
-        {rows.footer && (
+        {Array.isArray(rows.footer) && (
           <TableFooter className={classes.footer}>
             <TableRow>
               <CustomTableCell padding="checkbox" />
@@ -185,14 +191,17 @@ const CustomTable = (props) => {
                     typeof cell === 'number' ||
                     cell.number
 
+                  const spreadedCell = isObject(cell) ? cell : { text: cell }
+
                   const footerCell = {
-                    ...cell,
+                    ...spreadedCell,
                     style: {
                       ...cell.style,
                       opacity: 0.84,
                       color: 'black',
                     },
                   }
+
                   return renderCell(footerCell, i, numeric)
                 }
               )}

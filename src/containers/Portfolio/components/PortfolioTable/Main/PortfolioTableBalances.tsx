@@ -15,21 +15,6 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 
-const transformData = (data: any[], red: string, green: string) => {
-  const res = data.map((row) => [
-    row.exchange,
-    { text: row.coin, style: { fontWeight: 700 } },
-    row.portfolioPercentage,
-    row.price,
-    row.quantity,
-    row.price * row.quantity,
-    { text: row.realizedPL, color: row.realizedPL > 0 ? green : red },
-    { text: row.unrealizedPL, color: row.unrealizedPL > 0 ? green : red },
-    { text: row.totalPL, color: row.totalPL > 0 ? green : red },
-  ])
-
-  return res
-}
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
@@ -42,6 +27,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       checkedRows,
       onCheckboxClick,
       onSelectAllClick,
+      transformData,
+      calculateTotal,
     } = this.props
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
@@ -73,17 +60,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                     theme.palette.red.main,
                     theme.palette.green.main
                   ),
-                  footer: [
-                    { text: 'Total', number: false },
-                    { text: ' ', number: false },
-                    { text: '100%', number: true },
-                    { text: 'price', number: true },
-                    { text: 'quantity', number: true },
-                    { text: 'usd', number: true },
-                    { text: 'realized P&L', number: true },
-                    { text: 'Unrealized P&L', number: true },
-                    { text: 'Total P&L', number: true },
-                  ],
+                  footer: calculateTotal(),
                 }}
               />
             )}

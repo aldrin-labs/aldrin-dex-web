@@ -15,6 +15,7 @@ import {
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { Args } from '@containers/Portfolio/components/PortfolioTable/types'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
+import { zip, isObject } from 'lodash-es'
 
 const createColumn = (
   id: string | number = nanoid(),
@@ -48,12 +49,11 @@ class Container extends Component {
   state: IState = {
     tableData: null,
     selectedBalances: null,
-    selectedSum: createColumn(),
     currentSort: null,
     activeKeys: null,
     activeWallets: null,
     portfolio: null,
-    checkedRows: [0, 1],
+    checkedRows: [],
   }
   componentDidMount() {
     const {
@@ -266,65 +266,53 @@ class Container extends Component {
 
     const selectAllLinesInTable = tableData.map((el) => el.id)
 
-    this.setState({ tableData, selectedBalances: selectAllLinesInTable }, () =>
-      this.calculateSum(this.state.selectedBalances)
-    )
+    this.setState({ tableData, selectedBalances: selectAllLinesInTable })
   }
 
-  calculateSum = (selectedRows: number[] | null) => {
-    const { tableData, defa } = this.state
-    if (!tableData) {
-      return
+  calculateTotal = () => {
+    const { checkedRows, tableData } = this.state
+    //  footer of table
+    let total: any[] | null = null
+    if (tableData && checkedRows.length !== 0) {
+      // show footer
+      total = []
+      const data = this.transformData(tableData)
+      // check lodash docs (transforming rows into columns)
+      zip(...data).forEach((column, ind) => {
+        let sum = 0
+        //  skip exchange and coin columns
+        if (ind > 1) {
+          // sum each column numbers if they were selected
+          column.forEach((el, i) => {
+            const num = isObject(el) ? el.text : el
+
+            if (checkedRows.indexOf(i) !== -1 && typeof num === 'number') {
+              sum += +num
+            }
+          })
+
+          total.push(sum)
+        } else {
+          total.push(' ')
+        }
+      })
     }
-
-    const sum = tableData.filter((elem) => selectedRows.indexOf(elem.id) !== -1)
-
-    const reducedSum = sum.reduce(
-      (acc: any, val: IRowT) => ({
-        currency: val.currency,
-        symbol: val.symbol,
-        percentage: Number(acc.percentage) + Number(val.percentage),
-        price: '',
-        quantity: '',
-        currentPrice: Number(acc.currentPrice) + Number(val.currentPrice),
-        // daily: Number(acc.daily) + Number(val.daily),
-        // dailyPerc: Number(acc.dailyPerc) + Number(val.dailyPerc),
-        realizedPL: Number(acc.realizedPL) + Number(val.realizedPL),
-        // realizedPLPerc:
-        //   Number(acc.realizedPLPerc) + Number(val.realizedPLPerc),
-        unrealizedPL: Number(acc.unrealizedPL) + Number(val.unrealizedPL),
-        totalPL: Number(acc.totalPL) + Number(val.totalPL),
-        // unrealizedPLPerc:
-        //   Number(acc.unrealizedPLPerc) + Number(val.unrealizedPLPerc),
-      }),
-      {
-        currency: '',
-        symbol: '',
-        percentage: 0,
-        price: 0,
-        quantity: 0,
-        currentPrice: 0,
-        daily: 0,
-        dailyPerc: 0,
-        realizedPL: 0,
-        realizedPLPerc: 0,
-        unrealizedPL: 0,
-        unrealizedPLPerc: 0,
-        totalPL: 0,
-      }
-    )
-    const { selectedBalances } = this.state
-    const { isUSDCurrently } = this.props
-
-    const validateSum = onValidateSum(
-      reducedSum,
-      selectedBalances,
-      tableData,
-      isUSDCurrently
-    )
-
-    this.setState({ selectedSum: validateSum })
+    console.log(total)
+    return total
   }
+
+  transformData = (data: any[] = [], red: string = '', green: string = '') =>
+    data.map((row) => [
+      row.exchange,
+      { text: row.coin, style: { fontWeight: 700 } },
+      row.portfolioPercentage,
+      row.price,
+      row.quantity,
+      row.price * row.quantity,
+      { text: row.realizedPL, color: row.realizedPL > 0 ? green : red },
+      { text: row.unrealizedPL, color: row.unrealizedPL > 0 ? green : red },
+      { text: row.totalPL, color: row.totalPL > 0 ? green : red },
+    ])
 
   onSelectAllClick = (e: Event) => {
     if (e && e.target && e.target.checked) {
@@ -359,25 +347,26 @@ class Container extends Component {
   }
 
   render() {
+    const { checkedRows, currentSort, tableData, selectedBalances } = this.state
     const {
-      selectedSum,
-      checkedRows,
-      currentSort,
-      tableData,
-      selectedBalances,
-    } = this.state
-    const { onCheckboxClick, onSelectAllClick } = this
+      onCheckboxClick,
+      onSelectAllClick,
+      transformData,
+      calculateTotal,
+    } = this
+
     return (
       <PortfolioMain
         {...{
           ...this.props,
-          selectedSum,
           onCheckboxClick,
           onSelectAllClick,
           currentSort,
+          transformData,
           checkedRows,
           tableData,
           selectedBalances,
+          calculateTotal,
         }}
       />
     )
