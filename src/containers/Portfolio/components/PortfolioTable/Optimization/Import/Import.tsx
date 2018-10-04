@@ -307,13 +307,11 @@ export default class Import extends PureComponent<IProps> {
               <InputElementWrapper>
                 <StyledInputLabel>Risk free asset</StyledInputLabel>
                 <FlexWrapper>
-                  <Typography variant="caption">No</Typography>
                   <StyledSwitch
                     // onChange={this.onToggleUSDBTC}
                     // checked={isUSDCurrently}
                     checked={true}
                   />
-                  <Typography variant="caption">Yes</Typography>
                 </FlexWrapper>
               </InputElementWrapper>
               <InputElementWrapper>
@@ -409,6 +407,7 @@ const FlexWrapper = styled.div`
 
 const SelectOptimization = styled(ReactSelectComponent)`
   min-height: 35px;
+  width: 90px;
 
   border-bottom: 1px solid #c1c1c1;
   transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -425,10 +424,18 @@ const StyledInputLabel = styled(InputLabel)`
 const InputElementWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 17px;
+  margin-bottom: 14px;
+  
+  &:not(:nth-child(3)) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
 `
 
 const STextField = styled(TextField)`
+  width: 90px;
   && > div:before {
     border-bottom: 1px solid rgba(255, 255, 255, 0.7);
   }
@@ -447,7 +454,6 @@ const StyledWrapperForDateRangePicker = styled.div`
   & .DateInput_input {
     padding: 5px;
     font-size: 14px;
-    //color: white;
   }
 
   & .DateRangePicker_picker {
