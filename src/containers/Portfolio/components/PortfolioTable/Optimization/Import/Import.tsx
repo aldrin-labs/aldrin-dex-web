@@ -38,6 +38,7 @@ import styled from 'styled-components'
 
 export default class Import extends PureComponent<IProps> {
   state = {
+    baseCoin: 'USDT',
     isRiskFreeAssetEnabled: true,
     riskProfile: null,
     focusedInput: false,
@@ -284,7 +285,7 @@ export default class Import extends PureComponent<IProps> {
             <InputContainer>
               <InputElementWrapper>
                 <StyledInputLabel>Base coin</StyledInputLabel>
-                <STextField color={textColor} value={`USDT`} disabled={true} />
+                <STextField color={textColor} value={this.state.baseCoin} disabled={true} />
               </InputElementWrapper>
               <InputElementWrapper>
                 <StyledInputLabel>Rebalance period</StyledInputLabel>
