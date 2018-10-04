@@ -53,7 +53,7 @@ class Container extends Component {
     activeKeys: null,
     activeWallets: null,
     portfolio: null,
-    checkedRows: [],
+    checkedRows: [0, 1],
   }
   componentDidMount() {
     const {
@@ -327,39 +327,46 @@ class Container extends Component {
     this.setState({ selectedSum: validateSum })
   }
 
-  onCheckboxClick = (id: number | string) => {
-    if (id === 'head') {
-      this.setState((prevState) => {
-        let res
-        //  if here already cheked checbox empty all of them
-        if (prevState.checkedRows.length > 0) {
-          res = []
-        } else {
-          //  otherwise check all of them
-          res = prevState.tableData.map((el, i) => i)
+  onSelectAllClick = (e: Event) => {
+    console.log(e.target.checked)
+    if (e && e.target && e.target.checked) {
+      console.log(1)
+      this.setState(
+        (state) => ({
+          checkedRows: state.tableData.map((n: any, i: number) => i),
+        }),
+        () => {
+          console.log(this.state)
         }
-
-        console.log(res)
-        console.log(prevState)
-
-        return { checkedRows: res }
-      })
-
+      )
       return
     }
-    if (this.state.checkedRows.find((ind: number) => id === ind)) {
-      this.setState((prevState) => {
-        return {
-          checkedRows: prevState.checkedRows.filter((ind) => ind !== id),
-        }
-      })
+    console.log(2)
+    this.setState({ checkedRows: [] })
+  }
 
-      return
+  onCheckboxClick = (e: Event, id: number | string) => {
+    //  from material UI docs
+    const { checkedRows: selected } = this.state
+    const selectedIndex = selected.indexOf(id)
+    let newSelected: number[] = []
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, +id)
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1))
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1))
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      )
     }
 
-    this.setState((prevState) => {
-      return { checkedRows: [...prevState.checkedRows, id] }
-    })
+    console.log(newSelected)
+
+    this.setState({ checkedRows: newSelected })
   }
 
   render() {
@@ -370,13 +377,14 @@ class Container extends Component {
       tableData,
       selectedBalances,
     } = this.state
-    const { onCheckboxClick } = this
+    const { onCheckboxClick, onSelectAllClick } = this
     return (
       <PortfolioMain
         {...{
           ...this.props,
           selectedSum,
           onCheckboxClick,
+          onSelectAllClick,
           currentSort,
           checkedRows,
           tableData,

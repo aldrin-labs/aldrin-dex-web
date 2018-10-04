@@ -33,23 +33,16 @@ const transformData = (data: any[], red: string, green: string) => {
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
-      isShownChart,
       isUSDCurrently,
       children,
       theme,
-      selectedSum,
       currentSort,
       tableData,
       selectedBalances,
       checkedRows,
       onCheckboxClick,
+      onSelectAllClick,
     } = this.props
-
-    const isSelectAll =
-      (tableData &&
-        selectedBalances &&
-        selectedBalances.length === tableData.length) ||
-      false
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
@@ -62,6 +55,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               <Table
                 checkedRows={checkedRows}
                 onChange={onCheckboxClick}
+                onSelectAllClick={onSelectAllClick}
                 rows={{
                   head: [
                     { text: 'exchange', number: false },
