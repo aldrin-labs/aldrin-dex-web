@@ -35,10 +35,12 @@ import {
 } from './Import.styles'
 // import { Chart, ImportData } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.styles'
 import styled from 'styled-components'
+import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
 export default class Import extends PureComponent<IProps> {
   state = {
     baseCoin: 'USDT',
+    rebalancePeriod: null,
     isRiskFreeAssetEnabled: true,
     riskProfile: null,
     focusedInput: false,
@@ -232,7 +234,18 @@ export default class Import extends PureComponent<IProps> {
 
   onFocusChange = (focusedInput) => this.setState({ focusedInput })
 
-  onToggleRiskSwitch = (e,che) => this.setState({isRiskFreeAssetEnabled: che}, ()=> {console.log(this.state)})
+  onToggleRiskSwitch = (e, che) =>
+    this.setState({ isRiskFreeAssetEnabled: che }, () => {
+      console.log(this.state)
+    })
+
+  onSelectChange = (
+    name: string,
+    optionSelected?: { label: string; value: string } | null
+  ) => {
+    const value = optionSelected && !Array.isArray(optionSelected) ? optionSelected.value : ''
+    this.setState({[name]: value})
+  }
 
   render() {
     const {
@@ -285,13 +298,20 @@ export default class Import extends PureComponent<IProps> {
             <InputContainer>
               <InputElementWrapper>
                 <StyledInputLabel>Base coin</StyledInputLabel>
-                <STextField color={textColor} value={this.state.baseCoin} disabled={true} />
+                <STextField
+                  color={textColor}
+                  value={this.state.baseCoin}
+                  disabled={true}
+                />
               </InputElementWrapper>
               <InputElementWrapper>
                 <StyledInputLabel>Rebalance period</StyledInputLabel>
                 <SelectOptimization
                   options={RebalancePeriod}
                   isClearable={true}
+                  onChange={(optionSelected: { label: string; value: string } | null) =>
+                    this.onSelectChange('rebalancePeriod', optionSelected)
+                  }
                 />
               </InputElementWrapper>
               <InputElementWrapper>
@@ -317,12 +337,13 @@ export default class Import extends PureComponent<IProps> {
                   />
                 </FlexWrapper>
               </InputElementWrapper>
-              <InputElementWrapper visibility={!!this.state.isRiskFreeAssetEnabled}>
+              <InputElementWrapper
+                visibility={this.state.isRiskFreeAssetEnabled}
+              >
                 <StyledInputLabel>Risk profile</StyledInputLabel>
-                <SelectOptimization
-                  options={RiskProfile}
-                  isClearable={true}
-                />
+                <SelectOptimization options={RiskProfile} isClearable={true} onChange={(optionSelected: { label: string; value: string } | null) =>
+                  this.onSelectChange('riskProfile', optionSelected)
+                } />
               </InputElementWrapper>
               {/*<SelectDates*/}
               {/*setPeriodToStore={setPeriod}*/}
@@ -427,16 +448,17 @@ const InputElementWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 14px;
-  
+
   &:not(:nth-child(3)) {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
-  
+
   visibility: ${(props: { visibility?: boolean }) =>
-  props.visibility === undefined || props.visibility === true ? '' : 'hidden'};
-  
+    props.visibility === undefined || props.visibility === true
+      ? ''
+      : 'hidden'};
 `
 
 const STextField = styled(TextField)`
