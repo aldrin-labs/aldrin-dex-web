@@ -21,6 +21,21 @@ import {
   LegendContainer
 } from '@styles/cssUtils'
 
+
+const axisStyle = {
+  ticks: {
+    padding: '1rem',
+    stroke: '#fff',
+    opacity: 0.75,
+    fontFamily: 'Roboto',
+    fontSize: '12px',
+    fontWeight: 100,
+  },
+  text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
+}
+
+
+
 export default class LineChart extends React.Component<Props, State> {
   state: State = {
     crosshairValues: [],
@@ -66,18 +81,6 @@ export default class LineChart extends React.Component<Props, State> {
     const height = 300
 
     if (!data) return null
-
-    const axisStyle = {
-      ticks: {
-        padding: '1rem',
-        stroke: '#fff',
-        opacity: 0.75,
-        fontFamily: 'Roboto',
-        fontSize: '12px',
-        fontWeight: 100,
-      },
-      text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
-    }
 
     const format =
       crosshairValues &&
