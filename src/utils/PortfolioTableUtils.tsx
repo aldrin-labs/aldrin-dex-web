@@ -25,7 +25,7 @@ export const calcAllSumOfPortfolioAsset = (
     cryptoSum = cryptoWallets.reduce((acc: number, curr: any) =>
       curr.assets.reduce((acc: number, curr: any) => {
         const { balance = 0, asset = { priceUSD: 0 } } = curr || {}
-        if (!balance || !asset || !asset.priceUSD || !asset.priceBTC) {
+        if (!balance || !asset ) {
           return null
         }
         const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
