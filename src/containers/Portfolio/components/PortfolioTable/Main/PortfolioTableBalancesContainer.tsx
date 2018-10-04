@@ -152,7 +152,6 @@ class Container extends Component {
 
   combineTableData = (portfolio?: IPortfolio | null) => {
     const { activeKeys } = this.state
-    // console.log('activeKeys: ', activeKeys)
 
     const { isUSDCurrently, filterValueSmallerThenPercentage } = this.props
     if (!portfolio || !portfolio.assets || !activeKeys) {
@@ -328,20 +327,12 @@ class Container extends Component {
   }
 
   onSelectAllClick = (e: Event) => {
-    console.log(e.target.checked)
     if (e && e.target && e.target.checked) {
-      console.log(1)
-      this.setState(
-        (state) => ({
-          checkedRows: state.tableData.map((n: any, i: number) => i),
-        }),
-        () => {
-          console.log(this.state)
-        }
-      )
+      this.setState((state) => ({
+        checkedRows: state.tableData.map((n: any, i: number) => i),
+      }))
       return
     }
-    console.log(2)
     this.setState({ checkedRows: [] })
   }
 
@@ -363,8 +354,6 @@ class Container extends Component {
         selected.slice(selectedIndex + 1)
       )
     }
-
-    console.log(newSelected)
 
     this.setState({ checkedRows: newSelected })
   }

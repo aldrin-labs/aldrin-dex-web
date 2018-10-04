@@ -102,7 +102,6 @@ const CustomTable = (props) => {
     },
     checkedRows = [],
   } = props
-  console.log(checkedRows)
   if (!Array.isArray(rows.head) && !Array.isArray(rows.body)) return
   return (
     <Background className={classes.root}>
@@ -143,7 +142,6 @@ const CustomTable = (props) => {
         <TableBody>
           {rows.body.map((row, ind: number) => {
             const selected = checkedRows.indexOf(ind) !== -1
-            console.log(selected)
             return (
               <TableRow className={classes.row} key={ind}>
                 <CustomTableCell padding="checkbox">
