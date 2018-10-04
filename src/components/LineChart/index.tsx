@@ -75,7 +75,7 @@ export default class LineChart extends React.Component<Props, State> {
       alwaysShowLegend,
       itemsForChartLegend,
     } = this.props
-    const { crosshairValues, value } = this.state
+    const { crosshairValues } = this.state
 
     if (!data) return null
 
