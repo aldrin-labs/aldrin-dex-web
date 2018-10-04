@@ -12,13 +12,10 @@ export const calcAllSumOfPortfolioAsset = (
   const sum = assets.filter(Boolean).reduce((acc: number, curr: any) => {
     const { quantity = 0, asset = { priceUSD: 0 } } = curr || {}
     if (!quantity || !asset) {
-      //console.log('null');
 
       return null
     }
     const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
-    //console.log('price in calcAllSumOfPortfolioAsset - assets', price);
-    //console.log('quantity', quantity, 'Number(price)', Number(price),'quantity * Number(price)',quantity * Number(price) );
 
 
     return acc + quantity * Number(price)
@@ -32,7 +29,6 @@ export const calcAllSumOfPortfolioAsset = (
           return null
         }
         const price = isUSDCurrently ? asset.priceUSD : asset.priceBTC
-        //console.log('price in calcAllSumOfPortfolioAsset - wallets', price);
 
         return acc + balance * Number(price)
       }, 0), sum)
