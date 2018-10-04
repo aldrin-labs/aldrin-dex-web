@@ -32,7 +32,7 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
-import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances'
 
 const tableHeadings = [
   { name: 'Exchange', value: 'currency' },

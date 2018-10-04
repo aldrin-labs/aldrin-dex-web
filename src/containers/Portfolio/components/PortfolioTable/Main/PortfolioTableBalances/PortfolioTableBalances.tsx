@@ -9,7 +9,7 @@ import Chart from '@containers/Portfolio/components/GQLChart'
 import {
   IProps,
   IState,
-} from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
+} from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { withRouter } from 'react-router'
 import Table from '@components/Tables/WithCheckboxesAndSummary'
