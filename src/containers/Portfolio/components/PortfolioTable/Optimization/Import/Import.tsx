@@ -325,6 +325,7 @@ export default class Import extends PureComponent<IProps> {
                     onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
                     focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                     onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
+                    displayFormat="MM DD YYYY"
                   />
                 </StyledWrapperForDateRangePicker>
               </InputElementWrapper>
