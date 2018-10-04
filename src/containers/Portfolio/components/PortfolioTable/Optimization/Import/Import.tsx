@@ -38,6 +38,8 @@ import styled from 'styled-components'
 
 export default class Import extends PureComponent<IProps> {
   state = {
+    isRiskFreeAssetEnabled: true,
+    riskProfile: null,
     focusedInput: false,
     startDate: null,
     endDate: null,
@@ -229,6 +231,8 @@ export default class Import extends PureComponent<IProps> {
 
   onFocusChange = (focusedInput) => this.setState({ focusedInput })
 
+  onToggleRiskSwitch = (e,che) => this.setState({isRiskFreeAssetEnabled: che}, ()=> {console.log(this.state)})
+
   render() {
     const {
       expectedReturn,
@@ -287,7 +291,6 @@ export default class Import extends PureComponent<IProps> {
                 <SelectOptimization
                   options={RebalancePeriod}
                   isClearable={true}
-                  // placeholder={` `}
                 />
               </InputElementWrapper>
               <InputElementWrapper>
@@ -308,18 +311,16 @@ export default class Import extends PureComponent<IProps> {
                 <StyledInputLabel>Risk free asset</StyledInputLabel>
                 <FlexWrapper>
                   <StyledSwitch
-                    // onChange={this.onToggleUSDBTC}
-                    // checked={isUSDCurrently}
-                    checked={true}
+                    onChange={this.onToggleRiskSwitch}
+                    checked={this.state.isRiskFreeAssetEnabled}
                   />
                 </FlexWrapper>
               </InputElementWrapper>
-              <InputElementWrapper>
+              <InputElementWrapper visibility={!!this.state.isRiskFreeAssetEnabled}>
                 <StyledInputLabel>Risk profile</StyledInputLabel>
                 <SelectOptimization
                   options={RiskProfile}
                   isClearable={true}
-                  // placeholder={` `}
                 />
               </InputElementWrapper>
               {/*<SelectDates*/}
@@ -431,6 +432,9 @@ const InputElementWrapper = styled.div`
     justify-content: space-between;
     align-items: center;
   }
+  
+  visibility: ${(props: { visibility?: boolean }) =>
+  props.visibility === undefined || props.visibility === true ? '' : 'hidden'};
   
 `
 
