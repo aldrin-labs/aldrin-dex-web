@@ -49,6 +49,17 @@ class PortfolioComponent extends React.Component<IProps, IState> {
       <Subscription subscription={PORTFOLIO_UPDATE}>
         {(subscriptionData) => (
           <PortfolioContainer>
+            {/* refactor this */}
+            {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
+            {login && (
+              <PortfolioTable
+                showTable={hasActiveKeysOrWallets}
+                activeKeys={activeKeys}
+                theme={theme}
+                toggleWallets={this.toggleWallets}
+                subscription={subscriptionData}
+              />
+            )}
             {login &&
               !hasKeysOrWallets && (
                 <>
@@ -76,20 +87,11 @@ class PortfolioComponent extends React.Component<IProps, IState> {
             {login &&
               hasKeysOrWallets &&
               hasActiveKeysOrWallets && (
-                <>
-                  <PortfolioSelector
-                    toggleWallets={this.toggleWallets}
-                    isSideNavOpen={this.state.isSideNavOpen}
-                  />
-                  <PortfolioTable
-                    activeKeys={activeKeys}
-                    theme={theme}
-                    toggleWallets={this.toggleWallets}
-                    subscription={subscriptionData}
-                  />
-                </>
+                <PortfolioSelector
+                  toggleWallets={this.toggleWallets}
+                  isSideNavOpen={this.state.isSideNavOpen}
+                />
               )}
-            {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
 
             <Fade
               in={this.state.isSideNavOpen}

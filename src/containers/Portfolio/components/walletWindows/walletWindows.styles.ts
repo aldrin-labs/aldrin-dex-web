@@ -8,7 +8,7 @@ export { PTextBox, STypography, STypographyButtonText, SButton, SAddIcon }
 export const PTWrapper = styled(PTWrapperRaw)`
   width: calc(100% - 1rem);
 
-  grid-column-start: 1;
+  grid-column-start: 2;
   grid-column-end: 3;
   display: flex;
   flex-direction: column;
@@ -28,12 +28,9 @@ export const PTWrapper = styled(PTWrapperRaw)`
 `
 
 const PTextBox = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50vw;
-  height: 50vh;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
   min-width: 400px;
   min-height: 350px;
   padding: 0.5rem;
