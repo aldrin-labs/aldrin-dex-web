@@ -563,7 +563,7 @@ const ChartTitle = styled(Typography)`
 
 export const PTWrapper = styled(Card)`
   width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 2rem)' : '100%'};
+    props.tableData ? 'calc(100% - 7rem)' : '100%'};
   display: flex;
   flex-direction: column;
   margin: 24px;

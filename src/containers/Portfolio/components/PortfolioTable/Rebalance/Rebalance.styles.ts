@@ -76,6 +76,7 @@ const PTWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: 24px;
+  padding-top: 2rem;
   border-radius: 3px;
   background-color: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #00000066;
