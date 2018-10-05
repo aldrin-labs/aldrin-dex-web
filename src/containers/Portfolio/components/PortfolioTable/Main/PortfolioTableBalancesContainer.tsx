@@ -8,7 +8,6 @@ import {
   roundAndFormatNumber,
   composePortfolioWithMocks,
 } from '@utils/PortfolioTableUtils'
-import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { zip, isObject } from 'lodash-es'
 
 class Container extends Component {
@@ -21,26 +20,39 @@ class Container extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.data) {
-      if (!nextProps.data.getProfile) return
+    const {
+      activeKeys,
+      filterValueSmallerThenPercentage,
+      isUSDCurrently,
+      isShownMocks,
+      data,
+    } = nextProps
+    if (data && activeKeys) {
+      if (!data.getProfile) return
 
-      const { portfolio } = nextProps.data.getProfile
+      const { portfolio } = data.getProfile
 
       if (!portfolio || portfolio === null) {
         return
       }
 
-      const composeWithMocks = composePortfolioWithMocks
+      const composeWithMocks = composePortfolioWithMocks(
+        portfolio,
+        isShownMocks
+      )
 
-      return { portfolio: composeWithMocks }
-    }
-
-    if (nextProps.activeKeys) {
-      return { activeKeys: nextProps.activeKeys }
-    }
-
-    if (nextProps.activeKeys && nextProps.activeKeys.length === 0) {
-      return { checkedRows: [] }
+      return {
+        activeKeys,
+        checkedRows:
+          nextProps.activeKeys.length === 0 ? [] : prevState.checkedRows,
+        portfolio: composeWithMocks,
+        tableData: combineTableData(
+          composeWithMocks,
+          activeKeys,
+          filterValueSmallerThenPercentage,
+          isUSDCurrently
+        ),
+      }
     }
 
     return null
@@ -55,29 +67,29 @@ class Container extends Component {
       isUSDCurrently,
     } = this.props
 
-    if (!data) {
+    if (!data || !activeKeys) {
       return
     }
     const { portfolio } = data
 
-    const composeWithMocks = isShownMocks
-      ? {
-          ...portfolio,
-          assets: portfolio.assets.concat(MOCK_DATA),
-          cryptoWallets: portfolio.cryptoWallets.concat([]),
-        }
-      : portfolio
+    const composeWithMocks = composePortfolioWithMocks(portfolio, isShownMocks)
 
-    this.setState({
-      activeKeys,
-      portfolio: composeWithMocks,
-      tableData: combineTableData(
-        composeWithMocks,
+    this.setState(
+      {
         activeKeys,
-        filterValueSmallerThenPercentage,
-        isUSDCurrently
-      ),
-    })
+        portfolio: composeWithMocks,
+        tableData: combineTableData(
+          composeWithMocks,
+          activeKeys,
+          filterValueSmallerThenPercentage,
+          isUSDCurrently
+        ),
+      },
+      () => {
+        // select all checkboxes
+        this.onSelectAllClick(undefined, true)
+      }
+    )
   }
 
   calculateTotal = () => {
@@ -178,8 +190,8 @@ class Container extends Component {
     }
   }
 
-  onSelectAllClick = (e: Event) => {
-    if (e && e.target && e.target.checked) {
+  onSelectAllClick = (e: Event | undefined, selectAll = false) => {
+    if ((e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
         checkedRows: state.tableData.map((n: any, i: number) => i),
       }))

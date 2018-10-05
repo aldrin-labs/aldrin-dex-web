@@ -4,6 +4,7 @@ import nanoid from 'nanoid'
 import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import { Icon } from '@styles/cssUtils'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
+import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 
 export const calcAllSumOfPortfolioAsset = (
   assets: any,
