@@ -1,13 +1,10 @@
 import * as React from 'react'
 import { Subscription, Query } from 'react-apollo'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
-// import HeatMapChart from '@components/HeatMapChart'
 import QueryRenderer from '@components/QueryRenderer'
-import {
-  // HeatMapMocks,
-  CorrelationMatrixMockData,
-} from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
+import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
 import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
@@ -25,7 +22,6 @@ import {
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
 import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
-import styled from 'styled-components'
 
 const Correlation = (props: IProps) => {
   const {
