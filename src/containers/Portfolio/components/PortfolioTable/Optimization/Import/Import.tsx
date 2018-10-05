@@ -486,15 +486,24 @@ const StyledWrapperForDateRangePicker = styled.div`
   }
 
   & .DateInput_input {
-    padding: 5px;
+    padding: 5px 0;
     font-size: 14px;
+    height: 36px;
+	  color: #7e7e7e;
+	  background-color: #393e44;
   }
 
   & .DateRangePicker_picker {
     z-index: 10;
   }
-
+  
+  & .DateRangePickerInput {
+    background-color: #393e44;
+    border-bottom: 1px solid #c1c1c1;
+  }
+  
   & .DateRangePickerInput_arrow_svg {
+  	fill: #fff;
     width: 14px;
     height: 14px;
   }
