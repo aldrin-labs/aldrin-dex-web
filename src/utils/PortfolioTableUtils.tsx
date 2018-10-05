@@ -1,6 +1,9 @@
-import { RowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import React from 'react'
+import nanoid from 'nanoid'
+
+import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import { Icon } from '@styles/cssUtils'
+import { IPortfolio } from '@containers/Portfolio/interfaces'
 
 export const calcAllSumOfPortfolioAsset = (
   assets: any,
@@ -210,20 +213,24 @@ export const checkForString = (numberOrString: number | string) =>
 
 export const roundAndFormatNumber = (
   x: number,
-  numberOfDigitsAfterPoint: number
-) => {
+  numberOfDigitsAfterPoint: number,
+  format: boolean = true
+): string => {
   if (x === 0 || +x.toFixed(numberOfDigitsAfterPoint) === 0) {
     return '0'
   }
+  const res = format
+    ? formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
+    : x.toFixed(numberOfDigitsAfterPoint)
 
-  return formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
+  return res
 }
 
 // TODO: SHOULD BE REFACTORED
 export const onValidateSum = (
-  reducedSum: RowT,
-  selectedBalances: RowT,
-  tableData: RowT,
+  reducedSum: IRowT,
+  selectedBalances: IRowT,
+  tableData: IRowT,
   isUSDCurrently: boolean
 ) => {
   // const { selectedBalances, tableData, isUSDCurrently } = this.state
@@ -253,4 +260,168 @@ export const onValidateSum = (
   clonedSum.totalPL = [mainSymbol, clonedSum.totalPL]
 
   return clonedSum
+}
+
+export const createColumn = (
+  id: string | number = nanoid(),
+  exchange: string = '',
+  coin: string = '',
+  portfolioPercentage: number = 0,
+  price: number = 0,
+  quantity: number = 0,
+  currentPrice: number = 0,
+  daily: number = 0,
+  dailyPerc: number = 0,
+  realizedPL: number = 0,
+  unrealizedPL: number = 0,
+  totalPL: number = 0
+) => ({
+  id,
+  exchange,
+  coin,
+  portfolioPercentage,
+  price,
+  quantity,
+  currentPrice,
+  daily,
+  dailyPerc,
+  realizedPL,
+  unrealizedPL,
+  totalPL,
+})
+
+export const combineTableData = (
+  portfolio: IPortfolio | null,
+  activeKeys,
+  filterValueSmallerThenPercentage,
+  isUSDCurrently
+) => {
+  if (!portfolio || !portfolio.assets || !activeKeys) {
+    return
+  }
+  // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
+  // performance loss by mapping elements that do not pass our requirements
+  const { assets: portfolioAssets, cryptoWallets } = portfolio
+  // checking that asset is array and have length more then 0
+  const exchangeAssetsLength = portfolioAssets.length
+    ? portfolioAssets.length + 1
+    : 0
+  const allSums = calcAllSumOfPortfolioAsset(
+    portfolioAssets,
+    isUSDCurrently,
+    cryptoWallets
+  )
+
+  const walletData = cryptoWallets
+    .map((row: any) => {
+      const {
+        baseAsset = {
+          symbol: '',
+          priceUSD: 0,
+          priceBTC: 0,
+          percentChangeDay: 0,
+        },
+        name = '',
+        assets = [],
+      } = row || {}
+
+      return assets.map((walletAsset: any, i: number) => {
+        // checking for props that we need
+        if (
+          !(
+            walletAsset &&
+            walletAsset.asset &&
+            walletAsset.asset.priceUSD &&
+            walletAsset.asset.priceBTC
+          )
+        ) {
+          return {}
+        }
+        const mainPrice = isUSDCurrently
+          ? walletAsset.asset.priceUSD
+          : walletAsset.asset.priceBTC
+
+        const currentPrice = mainPrice * walletAsset.balance
+        const col = createColumn(
+          i + exchangeAssetsLength,
+          `${baseAsset.symbol} ${name}`,
+          walletAsset.asset.symbol,
+          +roundPercentage((currentPrice * 100) / allSums),
+          mainPrice,
+          +walletAsset.balance.toFixed(5),
+          currentPrice
+        )
+
+        return col
+      })
+    })
+    .reduce((a: any, b: any) => a.concat(b), [])
+
+  let tableData = [
+    portfolioAssets.map((row: any, i) => {
+      const {
+        asset = {
+          symbol: '',
+          priceUSD: 0,
+          priceBTC: 0,
+          percentChangeDay: 0,
+        },
+        quantity = 0,
+        key = { name: '' },
+        exchange = '',
+      } = row || {}
+      if (key === null || key.name === null) {
+        return
+      }
+      if (activeKeys.indexOf(key.name) === -1) {
+        return null
+      }
+      const { symbol = 0, priceUSD = 0, priceBTC = 0, percentChangeDay = 0 } =
+        asset || {}
+      const { name } = exchange
+
+      const PL = calcSumOfPortfolioAssetProfitLoss(row.PL, isUSDCurrently)
+      const mainPrice = isUSDCurrently ? priceUSD : priceBTC
+
+      const currentPrice = mainPrice * quantity
+      return createColumn(
+        i,
+        name,
+        symbol,
+        +roundPercentage((currentPrice * 100) / allSums),
+        mainPrice,
+        quantity,
+        currentPrice,
+        +roundPercentage((mainPrice / 100) * percentChangeDay),
+        percentChangeDay,
+        PL.realized,
+        PL.unrealized,
+        PL.total
+      )
+    }),
+    walletData,
+  ]
+    .reduce((a: any, b: any) => a.concat(b), [])
+    .filter(Boolean)
+
+  tableData = dustFilter(tableData, filterValueSmallerThenPercentage)
+
+  return tableData
+}
+
+export const composePortfolioWithMocks = (
+  portfolio: any,
+  isShownMocks = false
+) => {
+  if (!(portfolio && portfolio.assets && portfolio.cryptoWallets)) {
+    return
+  }
+
+  return isShownMocks
+    ? {
+        ...portfolio,
+        assets: portfolio!.assets!.concat(MOCK_DATA),
+        cryptoWallets: portfolio!.cryptoWallets!.concat([]),
+      }
+    : portfolio
 }
