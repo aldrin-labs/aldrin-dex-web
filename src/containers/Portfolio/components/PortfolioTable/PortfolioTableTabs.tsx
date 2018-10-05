@@ -121,7 +121,7 @@ const DividerWithMargin = styled(Divider)`
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: absolute;
   left: 0;
   width: 64px;
   height: calc(100vh - 80px);

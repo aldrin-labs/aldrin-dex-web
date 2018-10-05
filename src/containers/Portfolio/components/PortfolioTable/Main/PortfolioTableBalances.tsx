@@ -198,7 +198,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             !(
               walletAsset &&
               walletAsset.asset &&
-              walletAsset.asset.priceUSD && walletAsset.asset.priceBTC
+              walletAsset.asset.priceUSD &&
+              walletAsset.asset.priceBTC
             )
           ) {
             return {}
@@ -568,7 +569,6 @@ export const PTWrapper = styled(Card)`
   margin: 24px;
   border-radius: 3px;
   box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
   height: calc(100vh - 130px);
   overflow-y: auto;
   @media (max-width: 840px) {
