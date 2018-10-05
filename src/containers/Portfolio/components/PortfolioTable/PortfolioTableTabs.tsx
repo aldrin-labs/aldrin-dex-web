@@ -130,8 +130,7 @@ const Container = styled(Paper)`
 `
 
 const Tab = styled(IconButton)`
-  height: 64px;
-  width: 64px;
+  margin: 0.5rem auto;
 `
 
 const mapStateToProps = (store) => ({

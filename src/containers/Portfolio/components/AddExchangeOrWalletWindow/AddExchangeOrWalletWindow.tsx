@@ -18,7 +18,7 @@ export default class AddExchangeOrWalletWindow extends React.Component<IProps> {
     const { theme } = this.props
 
     return (
-      <PTWrapper background={theme.palette.background.paper}>
+      <PTWrapper>
         <PTextBox backgroundColor={theme.palette.background.default}>
           <STypography color="default" variant="display1">
             Add an exchange or wallet
