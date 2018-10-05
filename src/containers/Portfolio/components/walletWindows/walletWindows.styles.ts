@@ -6,7 +6,8 @@ import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/Port
 export { PTextBox, STypography, STypographyButtonText, SButton, SAddIcon }
 
 export const PTWrapper = styled(PTWrapperRaw)`
-  width: calc(100% - 2rem);
+  width: calc(100% - 1rem);
+
   grid-column-start: 1;
   grid-column-end: 3;
   display: flex;
