@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+import { withRouter } from 'react-router'
 
 import * as actions from '@containers/Portfolio/actions'
 import Chart from '@containers/Portfolio/components/GQLChart'
@@ -8,7 +9,6 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
-import { withRouter } from 'react-router'
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 import {
   TableWrapper,
