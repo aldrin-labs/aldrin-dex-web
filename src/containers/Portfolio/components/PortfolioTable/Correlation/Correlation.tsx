@@ -1,14 +1,10 @@
 import * as React from 'react'
 import { Subscription, Query } from 'react-apollo'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
+import styled from 'styled-components'
 
-// import HeatMapChart from '@components/HeatMapChart'
 import QueryRenderer from '@components/QueryRenderer'
-import {
-  // HeatMapMocks,
-  CorrelationMatrixMockData,
-} from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
+import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
 import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
@@ -25,7 +21,7 @@ import {
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
-import { Card } from '@material-ui/core'
+import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
 
 const Correlation = (props: IProps) => {
   const {
@@ -83,7 +79,7 @@ const Correlation = (props: IProps) => {
     <Subscription subscription={CORRELATION_UPDATE}>
       {(subscriptionData) => {
         return (
-          <PTWrapper>
+          <>
             {children}
             <CorrelationMatrix
               fullScreenChangeHandler={props.toggleFullscreen}
@@ -97,7 +93,7 @@ const Correlation = (props: IProps) => {
               setCorrelationPeriod={setCorrelationPeriodToStore}
               period={period}
             />
-          </PTWrapper>
+          </>
         )
       }}
     </Subscription>
@@ -107,7 +103,7 @@ const Correlation = (props: IProps) => {
 const CorrelationWrapper = (props: IProps) => {
   const { isShownMocks, startDate, endDate, children } = props
   return (
-    <Wrapper>
+    <PTWrapper>
       {isShownMocks ? (
         <Correlation
           data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
@@ -135,27 +131,12 @@ const CorrelationWrapper = (props: IProps) => {
           }}
         </Query>
       )}
-    </Wrapper>
+    </PTWrapper>
   )
 }
 
-const Wrapper = styled.div`
-  height: calc(100vh - 130px);
-  width: calc(100% - 2rem);
-  margin: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-`
-
-const PTWrapper = styled(Card)`
-  min-width: 70vw;
-  width: 100%;
-  min-height: 75vh;
-  display: flex;
-  flex-direction: column;
-  border-radius: 3px;
-  position: relative;
-  height: auto;
+const PTWrapper = styled(PTWrapperRaw)`
+  width: 98%;
 `
 
 const mapStateToProps = (store: any) => ({

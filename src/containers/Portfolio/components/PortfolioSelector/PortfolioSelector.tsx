@@ -16,8 +16,13 @@ import { IProps } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
 import Accounts from './Accounts/Accounts'
 import Wallets from './Wallets/Wallets'
-import { AccountsWalletsBlock, FilterIcon, FilterValues, Name } from './PortfolioSelector.styles'
-
+import {
+  AccountsWalletsBlock,
+  FilterIcon,
+  FilterValues,
+  Name,
+} from './PortfolioSelector.styles'
+import { Slide } from '@material-ui/core'
 
 class PortfolioSelector extends React.Component<IProps> {
   onToggleKeyCheckbox = (checkBoxName: string) => {
@@ -91,73 +96,80 @@ class PortfolioSelector extends React.Component<IProps> {
 
     const color = theme.palette.secondary.main
 
-
     return (
-      <AccountsWalletsBlock
-        onClick={isSideNavOpen ? undefined : this.props.toggleWallets}
-        isSideNavOpen={this.props.isSideNavOpen}
-        background={theme.palette.background.paper}
-        hoverBackground={theme.palette.action.hover}
-        fontFamily={theme.typography.fontFamily}
+      <Slide
+        in={isSideNavOpen}
+        direction="left"
+        mountOnEnter={true}
+        unmountOnExit={true}
       >
-        <QueryRenderer
-          component={Accounts}
-          query={getKeysQuery}
-          {...{
-            color,
-            isSideNavOpen,
-            isCheckedAll,
-            keys,
-            activeKeys,
-            setKeys,
-            setActiveKeys,
-            onToggleAll: this.onToggleAll,
-            onToggleKeyCheckbox: this.onToggleKeyCheckbox,
-          }}
-        />
-
-        <QueryRenderer
-          component={Wallets}
-          query={getWalletsQuery}
-          {...{
-            color,
-            isSideNavOpen,
-            isCheckedAll,
-            wallets,
-            activeWallets,
-            setWallets,
-            setActiveWallets,
-            onToggleWalletCheckbox: this.onToggleWalletCheckbox,
-          }}
-        />
-
-        <Name color={color}>Dust</Name>
-        <FilterValues>
-          <FilterIcon color={theme.palette.getContrastText(
-            theme.palette.background.paper
-          )}/>
-          <Dropdown
-            style={{ width: '100%' }}
-            value={filterPercent}
-            handleChange={filterValuesLessThenThat}
-            name="filterValuesInMain"
-            options={[
-              { value: -100.0, label: 'No Filter' },
-              { value: 0, label: '0% <' },
-              { value: 0.1, label: '0.1% <' },
-              { value: 0.2, label: '0.2% <' },
-              { value: 0.3, label: '0.3% <' },
-              { value: 0.5, label: '0.5% <' },
-              { value: 1, label: '1% <' },
-              { value: 10, label: '10% <' },
-            ]}
+        <AccountsWalletsBlock
+          onClick={this.props.toggleWallets}
+          isSideNavOpen={true}
+          background={theme.palette.background.paper}
+          hoverBackground={theme.palette.action.hover}
+          fontFamily={theme.typography.fontFamily}
+        >
+          <QueryRenderer
+            component={Accounts}
+            query={getKeysQuery}
+            {...{
+              color,
+              isSideNavOpen,
+              isCheckedAll,
+              keys,
+              activeKeys,
+              setKeys,
+              setActiveKeys,
+              onToggleAll: this.onToggleAll,
+              onToggleKeyCheckbox: this.onToggleKeyCheckbox,
+            }}
           />
-        </FilterValues>
-      </AccountsWalletsBlock>
+
+          <QueryRenderer
+            component={Wallets}
+            query={getWalletsQuery}
+            {...{
+              color,
+              isSideNavOpen,
+              isCheckedAll,
+              wallets,
+              activeWallets,
+              setWallets,
+              setActiveWallets,
+              onToggleWalletCheckbox: this.onToggleWalletCheckbox,
+            }}
+          />
+
+          <Name color={color}>Dust</Name>
+          <FilterValues>
+            <FilterIcon
+              color={theme.palette.getContrastText(
+                theme.palette.background.paper
+              )}
+            />
+            <Dropdown
+              style={{ width: '100%' }}
+              value={filterPercent}
+              handleChange={filterValuesLessThenThat}
+              name="filterValuesInMain"
+              options={[
+                { value: -100.0, label: 'No Filter' },
+                { value: 0, label: '0% <' },
+                { value: 0.1, label: '0.1% <' },
+                { value: 0.2, label: '0.2% <' },
+                { value: 0.3, label: '0.3% <' },
+                { value: 0.5, label: '0.5% <' },
+                { value: 1, label: '1% <' },
+                { value: 10, label: '10% <' },
+              ]}
+            />
+          </FilterValues>
+        </AccountsWalletsBlock>
+      </Slide>
     )
   }
 }
-
 
 const mapStateToProps = (store: any) => ({
   keys: store.portfolio.keys,

@@ -1,9 +1,16 @@
-import { Card, LinearProgress } from '@material-ui/core'
+import { LinearProgress } from '@material-ui/core'
 import styled from 'styled-components'
-import { customAquaScrollBar } from '@styles/cssUtils'
+import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
 
-
-export { Loader, ChartsContainer, Chart, MainArea, MainAreaUpperPart, PTWrapper, Content, ImportData }
+export {
+  Loader,
+  ChartsContainer,
+  Chart,
+  MainArea,
+  MainAreaUpperPart,
+  Content,
+  ImportData,
+}
 
 const Loader = styled(LinearProgress)`
   margin-bottom: 0.5rem;
@@ -24,7 +31,7 @@ const Chart = styled.div`
   min-width: 0;
   height: 300px;
   border-radius: 1rem;
-  background: ${(props: {background: string}) => props.background};
+  background: ${(props: { background: string }) => props.background};
 
   @media (max-width: 1080px) {
     width: 100%;
@@ -44,27 +51,15 @@ const MainArea = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 3px;
   flex-direction: column;
-  background: ${(props: {background: string}) => props.background};
+  background: ${(props: { background: string }) => props.background};
   height: auto;
   display: flex;
   margin: 2rem;
 `
 
-const PTWrapper = styled(Card)`
-  min-height: 100%;
-  overflow-y: auto;
-  overflow: auto;
+export const PTWrapper = styled(PTWrapperRaw)`
   ${(props: { notScrollable: boolean }) =>
-  props.notScrollable ? 'overflow:hidden;' : ''} width: calc(100% - 2rem);
-  display: flex;
-  flex-direction: column;
-  margin: 24px;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
-  height: calc(100vh - 130px);
-
-  ${customAquaScrollBar};
+    props.notScrollable ? 'overflow:hidden;' : ''} width: calc(100% - 2rem);
 `
 
 const Content = styled.div`

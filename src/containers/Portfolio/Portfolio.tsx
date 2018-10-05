@@ -11,7 +11,7 @@ import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWin
 import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
-import { withTheme } from '@material-ui/core'
+import { withTheme, Fade } from '@material-ui/core'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -50,15 +50,15 @@ class PortfolioComponent extends React.Component<IProps, IState> {
         {(subscriptionData) => (
           <PortfolioContainer>
             {login &&
-              !hasKeysOrWallets &&
-            <>
-              <PortfolioSelector
-                toggleWallets={this.toggleWallets}
-                isSideNavOpen={this.state.isSideNavOpen}
-              />
-            <AddExchangeOrWalletWindow theme={theme} />
-            </>
-            }
+              !hasKeysOrWallets && (
+                <>
+                  <PortfolioSelector
+                    toggleWallets={this.toggleWallets}
+                    isSideNavOpen={this.state.isSideNavOpen}
+                  />
+                  <AddExchangeOrWalletWindow theme={theme} />
+                </>
+              )}
             {login &&
               hasKeysOrWallets &&
               !hasActiveKeysOrWallets && (
@@ -91,10 +91,13 @@ class PortfolioComponent extends React.Component<IProps, IState> {
               )}
             {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
 
-            <Backdrop
-              onClick={this.toggleWallets}
-              isSideNavOpen={this.state.isSideNavOpen}
-            />
+            <Fade
+              in={this.state.isSideNavOpen}
+              mountOnEnter={true}
+              unmountOnExit={true}
+            >
+              <Backdrop onClick={this.toggleWallets} />
+            </Fade>
           </PortfolioContainer>
         )}
       </Subscription>
@@ -118,13 +121,13 @@ export default compose(
 )(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 64px 1fr;
   justify-content: center;
   min-height: 600px;
 `
 const Backdrop = styled.div`
-  display: ${(props: { isSideNavOpen: boolean }) =>
-    props.isSideNavOpen ? 'block' : 'none'};
+  display: block;
   height: 100vh;
   width: 100vw;
   position: fixed;
