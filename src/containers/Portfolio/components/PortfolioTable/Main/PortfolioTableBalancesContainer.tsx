@@ -252,6 +252,7 @@ export default (props) => (
     fetchPolicy="network-only"
     component={Container}
     query={getPortfolioMainQuery}
+    pollInterval={5000}
     {...props}
   />
 )
