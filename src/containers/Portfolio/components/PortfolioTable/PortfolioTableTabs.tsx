@@ -43,7 +43,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
     const switchUSDBTC = tab === 'main' || tab === 'industry'
 
     return (
-      <Container>
+      <Container elevation={0}>
         <Tooltip title="main" enterDelay={500} placement="right">
           <Tab
             color={tab === 'main' ? 'secondary' : 'primary'}
@@ -121,12 +121,12 @@ const DividerWithMargin = styled(Divider)`
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  position: absolute;
-  left: 0;
   width: 64px;
   height: calc(100vh - 80px);
-  top: 80px;
-  z-index: 100;
+  z-index: 1;
+  && {
+    border-radius: 0;
+  }
 `
 
 const Tab = styled(IconButton)`
