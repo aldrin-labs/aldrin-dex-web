@@ -426,3 +426,6 @@ export const composePortfolioWithMocks = (
       }
     : portfolio
 }
+
+export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>
+  isUSDCurrently ? 2 : 8

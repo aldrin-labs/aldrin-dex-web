@@ -7,6 +7,7 @@ import {
   combineTableData,
   roundAndFormatNumber,
   composePortfolioWithMocks,
+  numberOfDigitsAfterPoint,
 } from '@utils/PortfolioTableUtils'
 import { zip, isObject } from 'lodash-es'
 
@@ -17,6 +18,9 @@ class Container extends Component {
     activeWallets: null,
     portfolio: null,
     checkedRows: [],
+    numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(
+      this.props.isUSDCurrently
+    ),
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -43,6 +47,7 @@ class Container extends Component {
 
       return {
         activeKeys,
+        numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
         checkedRows:
           nextProps.activeKeys.length === 0 ? [] : prevState.checkedRows,
         portfolio: composeWithMocks,
@@ -93,7 +98,8 @@ class Container extends Component {
   }
 
   calculateTotal = () => {
-    const { checkedRows, tableData } = this.state
+    const { checkedRows, tableData, numberOfDigitsAfterPoint } = this.state
+
     //  footer of table
     let total: any[] | null = null
     if (tableData && checkedRows.length !== 0) {
@@ -114,7 +120,7 @@ class Container extends Component {
             }
           })
 
-          total.push(sum)
+          total.push(roundAndFormatNumber(sum, numberOfDigitsAfterPoint, false))
         } else {
           total.push(' ')
         }
@@ -125,8 +131,7 @@ class Container extends Component {
   }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
-    const numberOfDigitsAfterPoint = this.props.isUSDCurrently ? 2 : 8
-
+    const { numberOfDigitsAfterPoint } = this.state
     return data.map((row) => [
       row.exchange,
       { text: row.coin, style: { fontWeight: 700 } },
