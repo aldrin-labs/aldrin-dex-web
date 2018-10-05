@@ -138,8 +138,9 @@ const FullscreenNode = styled.div`
 `
 
 const StyledCard = styled(Card)`
+  width: 15rem;
   && {
-    margin: 50% auto;
+    margin: auto;
   }
 `
 

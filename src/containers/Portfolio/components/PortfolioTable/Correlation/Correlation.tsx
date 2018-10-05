@@ -24,7 +24,8 @@ import {
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
-import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import styled from 'styled-components'
 
 const Correlation = (props: IProps) => {
   const {
@@ -137,6 +138,10 @@ const CorrelationWrapper = (props: IProps) => {
     </PTWrapper>
   )
 }
+
+const PTWrapper = styled(PTWrapperRaw)`
+  width: 98%;
+`
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
