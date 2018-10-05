@@ -91,6 +91,7 @@ export interface IndProps {
 
 export interface ITableProps {
   isShownChart: boolean
+  showTable?: boolean
   loading: boolean
   activeKeys: string[]
   subscription: any
@@ -130,5 +131,4 @@ export interface ITableProps {
         | null
     } | null
   } | null
-
 }

@@ -108,7 +108,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
   render() {
     const { tab, isUSDCurrently } = this.state
-    const { theme } = this.props
+    const { theme, showTable = false } = this.props
 
     return (
       <>
@@ -121,7 +121,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           onToggleChart={this.onToggleChart}
           onToggleUSDBTC={this.onToggleUSDBTC}
         />
-        {this.renderTab()}
+        {showTable && this.renderTab()}
       </>
     )
 
