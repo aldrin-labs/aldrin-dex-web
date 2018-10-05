@@ -1,22 +1,17 @@
 import { Button, Typography } from '@material-ui/core'
-import { customAquaScrollBar } from '@styles/cssUtils'
 import AddIcon from '@material-ui/icons/Add'
 import styled from 'styled-components'
+import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
 
-export { PTWrapper, PTextBox, STypography, STypographyButtonText, SButton, SAddIcon }
+export { PTextBox, STypography, STypographyButtonText, SButton, SAddIcon }
 
-const PTWrapper = styled.div`
-  width: ${(props: { tableData?: boolean }) =>
-  props.tableData ? 'calc(100% - 2rem)' : '100%'};
+export const PTWrapper = styled(PTWrapperRaw)`
+  width: calc(100% - 2rem);
+  grid-column-start: 1;
+  grid-column-end: 3;
   display: flex;
   flex-direction: column;
-  margin: 24px;
-  border-radius: 3px;
-  background-color: ${(props: { background: string }) => props.background};
-  box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
-  height: calc(100vh - 130px);
-  overflow-y: auto;
+
   @media (max-width: 840px) {
     margin: 1.5rem auto;
   }
@@ -29,8 +24,6 @@ const PTWrapper = styled.div`
   @media (max-width: 425px) {
     width: calc(100% - 20px);
   }
-
-  ${customAquaScrollBar};
 `
 
 const PTextBox = styled.div`
@@ -48,7 +41,7 @@ const PTextBox = styled.div`
   justify-content: center;
   align-items: center;
   background-color: ${(props: { backgroundColor: string }) =>
-  props.backgroundColor};
+    props.backgroundColor};
 `
 
 const STypography = styled(Typography)`
@@ -73,7 +66,7 @@ const SButton = styled(Button)`
   &&:hover {
     border-color: ${(props: { borderColor: string }) => props.borderColor};
     background-color: ${(props: { backgroundColor: string }) =>
-  props.backgroundColor};
+      props.backgroundColor};
   }
 
   && > span {
