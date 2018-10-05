@@ -2,7 +2,7 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { Typography, Divider, Button, Paper, Card } from '@material-ui/core'
+import { Typography, Divider, Button, Paper } from '@material-ui/core'
 
 import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
@@ -561,14 +561,15 @@ const ChartTitle = styled(Typography)`
   margin-left: 1.2rem;
 `
 
-export const PTWrapper = styled(Card)`
+export const PTWrapper = styled(Paper)`
+  grid-column: 2;
   width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 7rem)' : '100%'};
+    props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
+  justify-content: center;
   flex-direction: column;
-  margin: 24px;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px 0 #00000066;
+  margin: 1.5rem auto;
+  padding: 1rem 0;
   height: calc(100vh - 130px);
   overflow-y: auto;
   @media (max-width: 840px) {

@@ -121,7 +121,8 @@ export default compose(
 )(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 64px 1fr;
   justify-content: center;
   min-height: 600px;
 `

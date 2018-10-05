@@ -20,9 +20,9 @@ class CorrelationMatrix extends PureComponent<IProps> {
 
   renderPlaceholder = () => (
     <>
-      <StyledCard>
+      <StyledCard raised={true}>
         <CardContent>
-          <Typography gutterBottom align="center" variant="display3">
+          <Typography gutterBottom={true} align="center" variant="display3">
             🤔
           </Typography>
           <Typography color="secondary" variant="headline">
@@ -139,8 +139,7 @@ const FullscreenNode = styled.div`
 
 const StyledCard = styled(Card)`
   && {
-    margin: auto;
-    background: #292d31;
+    margin: 50% auto;
   }
 `
 
