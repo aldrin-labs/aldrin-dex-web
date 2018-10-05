@@ -484,9 +484,13 @@ const StyledWrapperForDateRangePicker = styled.div`
   & .DateInput {
     width: 95px;
   }
+  
+  & .DateInput:first-child .DateInput_input {
+      padding-left: 0;
+  }
 
   & .DateInput_input {
-    padding: 5px 0;
+    padding: 5px;
     font-size: 14px;
     height: 36px;
 	  color: #7e7e7e;
@@ -494,6 +498,7 @@ const StyledWrapperForDateRangePicker = styled.div`
   }
 
   & .DateRangePicker_picker {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     z-index: 10;
   }
   
