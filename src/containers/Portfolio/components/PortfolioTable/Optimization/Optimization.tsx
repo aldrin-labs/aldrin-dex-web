@@ -28,7 +28,7 @@ import {
   MainAreaUpperPart,
   PTWrapper,
   Content,
-  ImportData,
+  ChartContainer
 } from './Optimization.styles'
 import { mockDataForLineChart } from './mockData'
 
@@ -320,6 +320,7 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer>
+        <ChartContainer>
         <Chart background={palette.background.default}>
           <LineChart
             alwaysShowLegend={true}
@@ -327,9 +328,12 @@ class Optimization extends Component<IProps, IState> {
             itemsForChartLegend={itemsForChartLegend}
           />
         </Chart>
+        </ChartContainer>
+      <ChartContainer>
         <Chart background={palette.background.default}>
           <EfficientFrontierChart data={efficientFrontierData} />
         </Chart>
+      </ChartContainer>
       </ChartsContainer>
     )
   }

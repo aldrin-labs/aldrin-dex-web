@@ -218,6 +218,7 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
+      <ChartContainer>
       <Chart background={theme.palette.background.default}>
         <BarChart
           height={300}
@@ -226,6 +227,7 @@ export default class Import extends PureComponent<IProps> {
           alwaysShowLegend={true}
         />
       </Chart>
+      </ChartContainer>
     )
   }
 
@@ -245,6 +247,10 @@ export default class Import extends PureComponent<IProps> {
   ) => {
     const value = optionSelected && !Array.isArray(optionSelected) ? optionSelected.value : ''
     this.setState({[name]: value})
+
+    // console.log(+this.state.startDate._d);
+    // console.log(+this.state.endDate._d);
+
   }
 
   render() {
@@ -492,4 +498,12 @@ const StyledWrapperForDateRangePicker = styled.div`
     width: 14px;
     height: 14px;
   }
+`
+
+const ChartContainer = styled.div`
+    width: 50%;
+    margin: 0 0 0 2rem;
+    padding: 15px;
+    box-shadow: 0 2px 6px 0 #00000066;
+    background-color: #393e44;
 `

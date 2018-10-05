@@ -19,7 +19,7 @@ const ChartsContainer = styled.div`
 `
 const Chart = styled.div`
   padding: 0.5rem;
-  margin: 1rem;
+  //margin: 1rem;
   flex-grow: 1;
   min-width: 0;
   height: 300px;
@@ -40,17 +40,17 @@ const MainAreaUpperPart = styled.div`
 `
 
 const MainArea = styled.div`
+  margin: 2rem 0;
   color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  //box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 3px;
   flex-direction: column;
-  background: ${(props: {background: string}) => props.background};
   height: auto;
   display: flex;
-  margin: 2rem;
+  //margin: 2rem;
 `
 
-const PTWrapper = styled(Card)`
+const PTWrapper = styled.div`
   min-height: 100%;
   overflow-y: auto;
   overflow: auto;
@@ -60,13 +60,28 @@ const PTWrapper = styled(Card)`
   flex-direction: column;
   margin: 24px;
   border-radius: 3px;
-  box-shadow: 0 2px 6px 0 #00000066;
+  //box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
+  background-color: #303030;
 
   ${customAquaScrollBar};
 `
 
 const Content = styled.div`
   flex: 0 0 auto;
+`
+
+
+export const ChartContainer = styled.div`
+    &:first-child {
+        margin-left: 2rem;
+    }
+
+    margin-right: 2rem;
+    width: 50%;
+    //margin: 0 0 0 2.5rem;
+    padding: 15px;
+    box-shadow: 0 2px 6px 0 #00000066;
+    background-color: #393e44;
 `
