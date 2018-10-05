@@ -97,10 +97,14 @@ class Container extends Component {
     )
   }
 
+  //  footer of table
   calculateTotal = () => {
-    const { checkedRows, tableData, numberOfDigitsAfterPoint } = this.state
+    const {
+      checkedRows,
+      tableData,
+      numberOfDigitsAfterPoint: round,
+    } = this.state
 
-    //  footer of table
     let total: any[] | null = null
     if (tableData && checkedRows.length !== 0) {
       // show footer
@@ -120,7 +124,7 @@ class Container extends Component {
             }
           })
 
-          total.push(roundAndFormatNumber(sum, numberOfDigitsAfterPoint, false))
+          total.push(+roundAndFormatNumber(sum, round, false))
         } else {
           total.push(' ')
         }
@@ -131,40 +135,24 @@ class Container extends Component {
   }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
-    const { numberOfDigitsAfterPoint } = this.state
+    const { numberOfDigitsAfterPoint: round } = this.state
     return data.map((row) => [
       row.exchange,
       { text: row.coin, style: { fontWeight: 700 } },
       row.portfolioPercentage,
-      +roundAndFormatNumber(row.price, numberOfDigitsAfterPoint, false),
+      +roundAndFormatNumber(row.price, round, false),
       row.quantity,
-      +roundAndFormatNumber(
-        row.price * row.quantity,
-        numberOfDigitsAfterPoint,
-        false
-      ),
+      +roundAndFormatNumber(row.price * row.quantity, round, false),
       {
-        text: +roundAndFormatNumber(
-          row.realizedPL,
-          numberOfDigitsAfterPoint,
-          false
-        ),
+        text: +roundAndFormatNumber(row.realizedPL, round, false),
         color: row.realizedPL > 0 ? green : red,
       },
       {
-        text: +roundAndFormatNumber(
-          row.unrealizedPL,
-          numberOfDigitsAfterPoint,
-          false
-        ),
+        text: +roundAndFormatNumber(row.unrealizedPL, round, false),
         color: row.unrealizedPL > 0 ? green : red,
       },
       {
-        text: +roundAndFormatNumber(
-          row.totalPL,
-          numberOfDigitsAfterPoint,
-          false
-        ),
+        text: +roundAndFormatNumber(row.totalPL, round, false),
         color: row.totalPL > 0 ? green : red,
       },
     ])
