@@ -14,7 +14,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
 
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
-import { Tooltip } from '@material-ui/core'
+import { Tooltip, Typography, Fade } from '@material-ui/core'
 
 class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
@@ -44,7 +44,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <Container elevation={0}>
-        <Tooltip title="main" enterDelay={500} placement="right">
+        <Tooltip title="Main" enterDelay={0} placement="right">
           <Tab
             color={tab === 'main' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('main')}
@@ -53,7 +53,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tab>
         </Tooltip>
 
-        <Tooltip title="industry" enterDelay={500} placement="right">
+        <Tooltip title="Industry" enterDelay={0} placement="right">
           <Tab
             color={tab === 'industry' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('industry')}
@@ -62,7 +62,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tab>
         </Tooltip>
 
-        <Tooltip title="rebalance" enterDelay={500} placement="right">
+        <Tooltip title="Rebalance" enterDelay={0} placement="right">
           <Tab
             color={tab === 'rebalance' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('rebalance')}
@@ -71,7 +71,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tab>
         </Tooltip>
 
-        <Tooltip title="correlation" enterDelay={500} placement="right">
+        <Tooltip title="Correlation" enterDelay={0} placement="right">
           <Tab
             color={tab === 'correlation' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('correlation')}
@@ -80,7 +80,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tab>
         </Tooltip>
 
-        <Tooltip title="optimization" enterDelay={500} placement="right">
+        <Tooltip title="Optimization" enterDelay={0} placement="right">
           <Tab
             color={tab === 'optimization' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('optimization')}
@@ -99,16 +99,18 @@ class PortfolioTableTabs extends React.Component<IProps> {
         >
           <Settings />
         </Tab>
-        {switchUSDBTC && (
-          <>
+        <Fade in={switchUSDBTC}>
+          <div>
             <DividerWithMargin />
-
+            <Typography align="center" variant="caption" color="textSecondary">
+              Switch to
+            </Typography>
             <Button color="secondary" onClick={this.onToggleUSDBTC}>
               {' '}
-              {isUSDCurrently ? 'USD' : 'BTC'}
+              {isUSDCurrently ? 'BTC' : 'USD'}
             </Button>
-          </>
-        )}
+          </div>
+        </Fade>
       </Container>
     )
   }
