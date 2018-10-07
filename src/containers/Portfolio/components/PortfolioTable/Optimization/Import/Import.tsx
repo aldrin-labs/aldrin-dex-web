@@ -10,6 +10,7 @@ import BarChart from '@components/BarChart/BarChart'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
+import moment from 'moment'
 
 import { RebalancePeriod, RiskProfile } from './dataForSelector'
 // import { SelectR } from '@styles/cssUtils'
@@ -218,15 +219,15 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
-      <ChartContainer>
-      <Chart background={theme.palette.background.default}>
-        <BarChart
-          height={300}
-          showPlaceholder={formatedData.length === 0}
-          charts={barChartData}
-          alwaysShowLegend={true}
-        />
-      </Chart>
+      <ChartContainer background={theme.palette.background.paper}>
+        <Chart background={theme.palette.background.default}>
+          <BarChart
+            height={300}
+            showPlaceholder={formatedData.length === 0}
+            charts={barChartData}
+            alwaysShowLegend={true}
+          />
+        </Chart>
       </ChartContainer>
     )
   }
@@ -245,12 +246,14 @@ export default class Import extends PureComponent<IProps> {
     name: string,
     optionSelected?: { label: string; value: string } | null
   ) => {
-    const value = optionSelected && !Array.isArray(optionSelected) ? optionSelected.value : ''
-    this.setState({[name]: value})
+    const value =
+      optionSelected && !Array.isArray(optionSelected)
+        ? optionSelected.value
+        : ''
+    this.setState({ [name]: value })
 
     // console.log(+this.state.startDate._d);
     // console.log(+this.state.endDate._d);
-
   }
 
   render() {
@@ -271,6 +274,7 @@ export default class Import extends PureComponent<IProps> {
       activeButton,
       showSwitchButtons, // optimizedData.length >= 1
       showWarning,
+      theme,
     } = this.props
 
     let assets: IData[]
@@ -297,13 +301,20 @@ export default class Import extends PureComponent<IProps> {
     const textColor: string = this.props.theme.palette.getContrastText(
       this.props.theme.palette.background.paper
     )
+
+    const fontFamily = theme.typography.fontFamily
+
+    // move it to the state
+    const maximumDate = moment().day(0)
+    const minimumDate = moment().year(-1);
+
     return (
       <ApolloConsumer>
         {(client) => (
           <ImportData>
-            <InputContainer>
+            <InputContainer background={theme.palette.background.paper}>
               <InputElementWrapper>
-                <StyledInputLabel>Base coin</StyledInputLabel>
+                <StyledInputLabel color={textColor}>Base coin</StyledInputLabel>
                 <STextField
                   color={textColor}
                   value={this.state.baseCoin}
@@ -311,19 +322,29 @@ export default class Import extends PureComponent<IProps> {
                 />
               </InputElementWrapper>
               <InputElementWrapper>
-                <StyledInputLabel>Rebalance period</StyledInputLabel>
+                <StyledInputLabel color={textColor}>
+                  Rebalance period
+                </StyledInputLabel>
                 <SelectOptimization
                   options={RebalancePeriod}
                   isClearable={true}
-                  onChange={(optionSelected: { label: string; value: string } | null) =>
-                    this.onSelectChange('rebalancePeriod', optionSelected)
-                  }
+                  onChange={(
+                    optionSelected: { label: string; value: string } | null
+                  ) => this.onSelectChange('rebalancePeriod', optionSelected)}
                 />
               </InputElementWrapper>
               <InputElementWrapper>
-                <StyledInputLabel>Date range</StyledInputLabel>
-                <StyledWrapperForDateRangePicker>
+                <StyledInputLabel color={textColor}>
+                  Date range
+                </StyledInputLabel>
+                <StyledWrapperForDateRangePicker
+                  color={textColor}
+                  background={theme.palette.background.paper}
+                  fontFamily={fontFamily}
+                >
                   <DateRangePicker
+                    enableOutsideDays={true}
+                    isOutsideRange={date => date.isBefore(minimumDate, 'day') || date.isAfter(maximumDate, 'day')}
                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                     startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
                     endDate={this.state.endDate} // momentPropTypes.momentObj or null,
@@ -336,7 +357,9 @@ export default class Import extends PureComponent<IProps> {
                 </StyledWrapperForDateRangePicker>
               </InputElementWrapper>
               <InputElementWrapper>
-                <StyledInputLabel>Risk free asset</StyledInputLabel>
+                <StyledInputLabel color={textColor}>
+                  Risk free asset
+                </StyledInputLabel>
                 <FlexWrapper>
                   <StyledSwitch
                     onChange={this.onToggleRiskSwitch}
@@ -347,10 +370,16 @@ export default class Import extends PureComponent<IProps> {
               <InputElementWrapper
                 visibility={this.state.isRiskFreeAssetEnabled}
               >
-                <StyledInputLabel>Risk profile</StyledInputLabel>
-                <SelectOptimization options={RiskProfile} isClearable={true} onChange={(optionSelected: { label: string; value: string } | null) =>
-                  this.onSelectChange('riskProfile', optionSelected)
-                } />
+                <StyledInputLabel color={textColor}>
+                  Risk profile
+                </StyledInputLabel>
+                <SelectOptimization
+                  options={RiskProfile}
+                  isClearable={true}
+                  onChange={(
+                    optionSelected: { label: string; value: string } | null
+                  ) => this.onSelectChange('riskProfile', optionSelected)}
+                />
               </InputElementWrapper>
               {/*<SelectDates*/}
               {/*setPeriodToStore={setPeriod}*/}
@@ -388,7 +417,7 @@ export default class Import extends PureComponent<IProps> {
               </ButtonMUI>
             </InputContainer>
 
-            <TableContainer>
+            <TableContainer background={theme.palette.background.paper}>
               <SwitchButtonsWrapper>
                 <SwitchButtons
                   btnClickProps={client}
@@ -448,6 +477,7 @@ const SelectOptimization = styled(ReactSelectComponent)`
 `
 
 const StyledInputLabel = styled(InputLabel)`
+  color: ${(props: { color: string }) => props.color};
   font-size: 0.75rem;
 `
 
@@ -471,7 +501,7 @@ const InputElementWrapper = styled.div`
 const STextField = styled(TextField)`
   width: 90px;
   && > div:before {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid #c1c1c1;
   }
 `
 
@@ -484,40 +514,49 @@ const StyledWrapperForDateRangePicker = styled.div`
   & .DateInput {
     width: 95px;
   }
-  
+
   & .DateInput:first-child .DateInput_input {
-      padding-left: 0;
+    padding-left: 0;
   }
 
   & .DateInput_input {
     padding: 5px;
     font-size: 14px;
     height: 36px;
-	  color: #7e7e7e;
-	  background-color: #393e44;
+    //color: #7e7e7e;
+    color: ${(props: { color: string }) => props.color};
+    background: ${(props: { background: string }) => props.background};
   }
 
   & .DateRangePicker_picker {
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-family: ${(props: { fontFamily: string }) => props.fontFamily};
+    //font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     z-index: 10;
   }
-  
+
   & .DateRangePickerInput {
-    background-color: #393e44;
+    border: 0;
+    background: ${(props: { background: string }) => props.background};
     border-bottom: 1px solid #c1c1c1;
   }
-  
+
+  & .DateInput_input__focused {
+    border-bottom: 1px solid #fff;
+    transition: all 100ms;
+  }
+
   & .DateRangePickerInput_arrow_svg {
-  	fill: #fff;
+    //fill: #fff;
+    fill: ${(props: { color: string }) => props.color};
     width: 14px;
     height: 14px;
   }
 `
 
 const ChartContainer = styled.div`
-    width: 50%;
-    margin: 0 0 0 2rem;
-    padding: 15px;
-    box-shadow: 0 2px 6px 0 #00000066;
-    background-color: #393e44;
+  width: 50%;
+  margin: 0 0 0 2rem;
+  padding: 15px;
+  box-shadow: 0 2px 6px 0 #00000066;
+  background: ${(props: { background: string }) => props.background};
 `

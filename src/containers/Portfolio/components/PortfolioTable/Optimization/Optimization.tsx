@@ -320,7 +320,7 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer>
-        <ChartContainer>
+        <ChartContainer background={palette.background.paper}>
         <Chart background={palette.background.default}>
           <LineChart
             alwaysShowLegend={true}
@@ -329,7 +329,7 @@ class Optimization extends Component<IProps, IState> {
           />
         </Chart>
         </ChartContainer>
-      <ChartContainer>
+      <ChartContainer background={palette.background.paper}>
         <Chart background={palette.background.default}>
           <EfficientFrontierChart data={efficientFrontierData} />
         </Chart>
@@ -348,7 +348,7 @@ class Optimization extends Component<IProps, IState> {
     const { loading, openWarning, warningMessage } = this.state
 
     return (
-      <PTWrapper notScrollable={MASTER_BUILD}>
+      <PTWrapper background={palette.background.default} notScrollable={MASTER_BUILD}>
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}

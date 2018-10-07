@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { customAquaScrollBar } from '@styles/cssUtils'
 
 
-export { Loader, ChartsContainer, Chart, MainArea, MainAreaUpperPart, PTWrapper, Content, ImportData }
+export { Loader, ChartsContainer, Chart, MainArea, MainAreaUpperPart, PTWrapper, Content, ChartContainer }
 
 const Loader = styled(LinearProgress)`
   margin-bottom: 0.5rem;
@@ -63,7 +63,7 @@ const PTWrapper = styled.div`
   //box-shadow: 0 2px 6px 0 #00000066;
   position: relative;
   height: calc(100vh - 130px);
-  background-color: #303030;
+  background: ${(props: {background: string}) => props.background};
 
   ${customAquaScrollBar};
 `
@@ -73,7 +73,7 @@ const Content = styled.div`
 `
 
 
-export const ChartContainer = styled.div`
+const ChartContainer = styled.div`
     &:first-child {
         margin-left: 2rem;
     }
@@ -83,5 +83,5 @@ export const ChartContainer = styled.div`
     //margin: 0 0 0 2.5rem;
     padding: 15px;
     box-shadow: 0 2px 6px 0 #00000066;
-    background-color: #393e44;
+    background: ${(props: {background: string}) => props.background};
 `

@@ -1,10 +1,17 @@
 import styled from 'styled-components'
 
-
-export { SwitchButtonsWrapper, HelperForCentering, InputContainer, TableContainer, Input, ImportData, Chart }
+export {
+  SwitchButtonsWrapper,
+  HelperForCentering,
+  InputContainer,
+  TableContainer,
+  Input,
+  ImportData,
+  Chart,
+}
 
 const SwitchButtonsWrapper = styled.div`
-    padding: 0 0.5rem;
+  padding: 0 0.5rem;
   display: flex;
   justify-content: space-between;
 `
@@ -16,9 +23,9 @@ const HelperForCentering = styled.div`
 `
 
 const InputContainer = styled.div`
-    padding: 15px;
-    box-shadow: 0 2px 6px 0 #00000066;
-    background-color: #393e44;
+  padding: 15px;
+  box-shadow: 0 2px 6px 0 #00000066;
+  background: ${(props: { background: string }) => props.background};
   margin-right: 2rem;
   display: flex;
   justify-content: flex-end;
@@ -32,10 +39,10 @@ const InputContainer = styled.div`
 `
 
 const TableContainer = styled.div`
-background-color: #393e44;
-    box-shadow: 0 2px 6px 0 #00000066;
-    margin: 15px 0 0 0;
-    
+  background: ${(props: { background: string }) => props.background};
+  box-shadow: 0 2px 6px 0 #00000066;
+  margin: 15px 0 0 0;
+
   display: flex;
   flex-direction: column;
   place-content: flex-end;
@@ -68,7 +75,6 @@ const Input = styled.input`
   }
 `
 
-
 const Chart = styled.div`
   padding: 0.5rem;
   //margin: 1rem 0 0 2.5rem;
@@ -76,7 +82,7 @@ const Chart = styled.div`
   //min-width: 0;
   height: 300px;
   border-radius: 1rem;
-  background: ${(props: {background: string}) => props.background};
+  background: ${(props: { background: string }) => props.background};
 
   @media (max-width: 1080px) {
     width: 100%;
@@ -95,7 +101,7 @@ const ImportData = styled.div`
   //  width: 100%;
   //  flex-wrap: wrap;
   //}
-  
+
   display: flex;
   align-items: flex-end;
   margin: 0 2rem;
