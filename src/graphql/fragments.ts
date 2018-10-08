@@ -3,7 +3,6 @@ import gql from 'graphql-tag'
 export const KeyFragment = gql`
   fragment KeyFragment on Key {
       apiKey
-      exchangeId
       exchange {
         name
         symbol
