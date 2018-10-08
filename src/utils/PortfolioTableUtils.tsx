@@ -216,15 +216,15 @@ export const checkForString = (numberOrString: number | string) =>
 
 export const roundAndFormatNumber = (
   x: number,
-  numberOfDigitsAfterPoint: number,
+  digitsAfterPoint: number,
   format: boolean = true
 ): string => {
-  if (x === 0 || +x.toFixed(numberOfDigitsAfterPoint) === 0) {
+  if (x === 0 || +x.toFixed(digitsAfterPoint) === 0) {
     return '0'
   }
   const res = format
-    ? formatNumberToUSFormat(x.toFixed(numberOfDigitsAfterPoint))
-    : x.toFixed(numberOfDigitsAfterPoint)
+    ? formatNumberToUSFormat(x.toFixed(digitsAfterPoint))
+    : x.toFixed(digitsAfterPoint)
 
   return res
 }
