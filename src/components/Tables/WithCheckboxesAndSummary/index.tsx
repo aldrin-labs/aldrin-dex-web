@@ -101,7 +101,17 @@ const renderCell = (cell, i, numeric) => {
     )
   }
 
-  return null
+  return (
+    <CustomTableCell
+      scope="row"
+      variant="body"
+      numeric={numeric}
+      padding="dense"
+      key={i}
+    >
+      {''}
+    </CustomTableCell>
+  )
 }
 {
   /* ToDo: - Add sorting
@@ -172,25 +182,19 @@ const CustomTable = (props: Props) => {
                 />
               )}
             </CustomTableCell>
-            {rows.head.map(
-              (
-                cell:
-                  | { text: string | number; number: boolean; style: any }
-                  | number
-              ) => {
-                return (
-                  <CustomTableCell
-                    style={{ ...cell.style }}
-                    variant="head"
-                    padding="dense"
-                    numeric={cell.number}
-                    key={cell.text}
-                  >
-                    {cell.text}
-                  </CustomTableCell>
-                )
-              }
-            )}
+            {rows.head.map((cell) => {
+              return (
+                <CustomTableCell
+                  style={{ ...cell.style }}
+                  variant="head"
+                  padding="dense"
+                  numeric={cell.number}
+                  key={cell.text}
+                >
+                  {cell.text}
+                </CustomTableCell>
+              )
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -209,20 +213,13 @@ const CustomTable = (props: Props) => {
                     />
                   )}
                 </CustomTableCell>
-                {row.map(
-                  (
-                    cell:
-                      | string
-                      | number
-                      | { text: string | number; color: string; style: any },
-                    i: number
-                  ) => {
-                    const numeric =
-                      typeof cell.text === 'number' || typeof cell === 'number'
+                {row.map((cell, i: number) => {
+                  const numeric =
+                    cell !== null &&
+                    (typeof cell.text === 'number' || typeof cell === 'number')
 
-                    return renderCell(cell, i, numeric)
-                  }
-                )}
+                  return renderCell(cell, i, numeric)
+                })}
               </TableRow>
             )
           })}
