@@ -2,16 +2,12 @@ import gql from 'graphql-tag'
 
 export const KeyFragment = gql`
   fragment KeyFragment on Key {
-    _id
-    name
-    apiKey
-    secret
-    date
-    exchangeId
-    exchange {
-      name
-      symbol
-    }
+      apiKey
+      exchangeId
+      exchange {
+        name
+        symbol
+      }
   }
 `
 
