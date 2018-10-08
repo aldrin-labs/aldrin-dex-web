@@ -363,14 +363,25 @@ class Chart extends React.Component<IProps, IState> {
   )
 
   renderToggler = () => {
-    const { toggleView, view } = this.props
+    const { 
+      toggleView,
+      view,
+      isNoCharts,
+      activeExchange,
+      currencyPair,
+      addChart
+    } = this.props
+
     const defaultView = view === 'default'
 
     return (
       <Toggler
         variant="raised"
         color="primary"
-        onClick={() => toggleView(defaultView ? 'onlyCharts' : 'default')}
+        onClick={() => {
+          toggleView(defaultView ? 'onlyCharts' : 'default')
+          if (defaultView && isNoCharts) addChart(currencyPair)
+        }}
       >
         {defaultView ? 'Multi Charts' : ' Single Chart'}
       </Toggler>
@@ -516,6 +527,7 @@ const Container = styled.div`
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
+  isNoCharts: store.chart.charts.length === 0,
   view: store.chart.view,
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
@@ -527,6 +539,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actions.toggleView(view)),
   selectCurrencies: (baseQuote: string) =>
     dispatch(actions.selectCurrencies(baseQuote)),
+  addChart: (payload) => dispatch(actions.addChart(payload)),
   setOrders: (payload) => dispatch(actions.setOrders(payload)),
 })
 const ThemeWrapper = (props) => <Chart {...props} />

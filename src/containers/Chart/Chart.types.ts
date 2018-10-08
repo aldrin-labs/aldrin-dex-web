@@ -1,6 +1,7 @@
 import { IActiveExchange } from '@containers/Chart/CommonTypes.types'
 
 export interface IProps {
+  isNoCharts: boolean
   activeExchange: IActiveExchange
   view: string
   currencyPair: string
@@ -10,6 +11,7 @@ export interface IProps {
   toggleView: Function
   selectCurrencies: Function
   setOrders: Function
+  addChart: () => void
   theme: any
 }
 
