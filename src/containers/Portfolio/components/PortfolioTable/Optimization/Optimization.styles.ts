@@ -1,6 +1,6 @@
 import { LinearProgress } from '@material-ui/core'
 import styled from 'styled-components'
-import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 
 export {
   Loader,

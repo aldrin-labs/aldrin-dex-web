@@ -31,14 +31,14 @@ export const ChartTitle = styled(Typography)`
 `
 
 export const PTWrapper = styled(Paper)`
+  grid-column: 2;
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
   display: flex;
+  justify-content: center;
   flex-direction: column;
-  margin: 24px;
-  border-radius: 3px;
-  box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
+  margin: 1.5rem auto;
+  padding: 1rem 0;
   height: calc(100vh - 130px);
   overflow-y: auto;
   @media (max-width: 840px) {
