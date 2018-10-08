@@ -86,9 +86,16 @@ const PTHC = styled.th`
 `
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: #393e44;
+  background-color: ${(props: {
+    background: string,
+    evenBackground: string
+  }) => props.background};
 
   &:nth-child(even) {
-    background-color: #3a4e4e;
+    background-color: ${(props: {
+    background: string,
+    evenBackground: string
+  }) =>
+      props.evenBackground ? props.evenBackground : props.background};
   }
 `

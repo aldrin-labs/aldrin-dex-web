@@ -54,6 +54,7 @@ class LoginCard extends PureComponent<IProps, IState> {
 const StyledCard = styled(Card)`
   height: auto;
   width: 20rem;
+  grid-column: 2;
   margin: auto;
 `
 const MdLockStyled = styled(MdLock)`

@@ -19,7 +19,7 @@ export interface IState {
   isShownChart: boolean
   portfolio: IPortfolio | null
   isUSDCurrently: boolean
-  tab: 'main' | 'industry' | 'rebalance' | 'correlation'
+  tab: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization'
 }
 
 export interface IPortfolio {

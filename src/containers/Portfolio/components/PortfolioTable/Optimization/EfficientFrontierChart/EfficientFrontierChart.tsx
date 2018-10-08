@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import {
   FlexibleXYPlot,
   XAxis,
@@ -15,6 +14,8 @@ import {
   IProps,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart.types'
 
+import { Container, ChartTooltip } from './EfficientFrontierChart.styles'
+
 const axisStyle = {
   ticks: {
     padding: '1rem',
@@ -27,7 +28,7 @@ const axisStyle = {
   title: { fontWeight: 600, fontFamily: 'Roboto', fill: '#4ed8dab8' },
 }
 
-class EfficientFrontierChart extends Component<IProps, IState> {
+export default class EfficientFrontierChart extends Component<IProps, IState> {
   state = {
     value: { x: null, y: null },
   }
@@ -106,23 +107,3 @@ class EfficientFrontierChart extends Component<IProps, IState> {
     )
   }
 }
-
-const Container = styled.div`
-  height: 300px;
-  width: 100%;
-`
-
-const ChartTooltip = styled.span`
-  white-space: nowrap;
-  font-family: Roboto, sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  text-align: left;
-  color: #fff;
-  border-radius: 3px;
-  background-color: #393e44;
-  box-shadow: 0 2px 6px 0 #0006;
-  padding: 8px;
-`
-
-export default EfficientFrontierChart

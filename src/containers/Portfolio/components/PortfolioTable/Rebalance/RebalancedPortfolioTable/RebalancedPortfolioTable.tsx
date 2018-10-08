@@ -1,8 +1,7 @@
 import React from 'react'
 import DeleteIcon from '@material-ui/icons/Delete'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
 import AddIcon from '@material-ui/icons/Add'
-import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
 
 import RebalanceMoneyButtons from './RebalanceMoneyButtons/RebalanceMoneyButtons'
 import RebalanceActionButtons from './RebalanceActionButtons/RebalanceActionButtons'
@@ -322,13 +321,17 @@ export default class RebalancedPortfolioTable extends React.Component<
       onReset,
       onEditModeEnable,
       updateState,
-      textColor,
-      background,
-      secondary,
-      red,
-      green,
+      theme: { palette }
     } = this.props
 
+    const textColor = palette.getContrastText(
+      palette.background.paper
+    )
+    const background = palette.background.paper
+    const evenBackground = palette.action.hover
+    const secondary = palette.secondary.main
+    const red = palette.red.main
+    const green = palette.green.main
 
     const saveButtonColor =
       isPercentSumGood && undistributedMoney >= 0 ? green : red
@@ -362,8 +365,14 @@ export default class RebalancedPortfolioTable extends React.Component<
         </TableHeading>
         <Wrapper>
           <Table>
-            <PTHead isEditModeEnabled={isEditModeEnabled}>
-              <PTR>
+            <PTHead
+              isEditModeEnabled={isEditModeEnabled}
+              bottomCollor={textColor}
+            >
+              <PTR
+                evenBackground={background}
+                background={background}
+              >
                 {isEditModeEnabled && (
                   <PTHR key="selectAll" style={{ textAlign: 'left' }}>
                     <Checkbox
@@ -393,11 +402,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                       {heading.name}
 
                       {isSorted && (
-                        <SvgIcon
-                          src={sortIcon}
-                          width={12}
-                          height={12}
+                        <ArrowDownward
                           style={{
+                            fontSize: 16,
                             verticalAlign: 'middle',
                             marginLeft: '4px',
                             transform:
@@ -453,7 +460,13 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ]
 
                 return (
-                  <PTR key={`${rowIndex}`} isSelected={isSelected}>
+                  <PTR
+                    key={`${rowIndex}`}
+                    isSelected={isSelected}
+                    background={background}
+                    evenBackground={evenBackground}
+                    selectedBackground={palette.background.default}
+                  >
                     {isEditModeEnabled && (
                       <PTDR
                         key="smt"
@@ -479,6 +492,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               classNamePrefix="custom-select-box"
                               isClearable={true}
                               isSearchable={true}
+                              openMenuOnClick={false}
                               options={exchangeOptions}
                               menuPortalTarget={document.body}
                               menuStyles={{
@@ -517,6 +531,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               classNamePrefix="custom-select-box"
                               isClearable={true}
                               isSearchable={true}
+                              openMenuOnClick={false}
                               menuPortalTarget={document.body}
                               menuStyles={{
                               minWidth: '150px',
@@ -541,7 +556,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                               this.handleSelectChange(rowIndex, 'symbol', optionSelected)
                               }
-                              />
+                            />
                           </PTDR>
                         )
                       }
@@ -630,7 +645,10 @@ export default class RebalancedPortfolioTable extends React.Component<
                 )
               })}
               {isEditModeEnabled && (
-                <PTR>
+                <PTR
+                  background={background}
+                  evenBackground={evenBackground}
+                >
                   <PTDR />
                   <PTDR />
                   <PTDR />
@@ -651,7 +669,11 @@ export default class RebalancedPortfolioTable extends React.Component<
               )}
             </PTBody>
             <PTFoot isEditModeEnabled={isEditModeEnabled}>
-              <PTR>
+              <PTR
+                selectedBackground={palette.background.default}
+                background={background}
+                evenBackground={background}
+              >
                 {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                 <PTHR>Subtotal</PTHR>
                 <PTHR>-</PTHR>
@@ -663,7 +685,11 @@ export default class RebalancedPortfolioTable extends React.Component<
                 <PTHR>-</PTHR>
                 <PTHR>-</PTHR>
               </PTR>
-              <PTR>
+              <PTR
+                selectedBackground={palette.background.default}
+                background={background}
+                evenBackground={background}
+              >
                 {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
                 <PTHR>All</PTHR>
                 <PTHR>-</PTHR>

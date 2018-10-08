@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
 import { Button as ButtonMUI, Typography } from '@material-ui/core'
@@ -11,11 +10,14 @@ import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataM
 import {
   IProps,
   IData,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/import.types'
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import.types'
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import SelectDates from '@components/SelectTimeRangeDropdown'
 
-class Import extends PureComponent<IProps> {
+import { SwitchButtonsWrapper, HelperForCentering, InputContainer, TableContainer, Input } from './Import.styles'
+
+
+export default class Import extends PureComponent<IProps> {
   componentDidMount() {
     this.importPortfolio()
   }
@@ -106,15 +108,6 @@ class Import extends PureComponent<IProps> {
 
       this.props.toggleLoading()
       this.props.setActiveButtonToDefault()
-      console.log('Variables')
-      console.log({
-        expectedPct: Number(expectedReturn),
-        coinList: storeData.map((el: IData) => el.coin),
-        startDate,
-        endDate,
-      })
-      console.log('Data')
-      console.log(backendData)
 
       if (backendData.portfolioOptimization === '') {
         showWarning('You get empty response! 🙈')
@@ -135,9 +128,7 @@ class Import extends PureComponent<IProps> {
       )
 
       if (!isReturnedCoinsTheSameThatInputed) {
-        // showWarning('Output coins not the same as input coins!')
         console.log('Output coins not the same as input coins!')
-        // return
       }
 
       optimizePortfolio(backendDataParsed[2])
@@ -151,7 +142,6 @@ class Import extends PureComponent<IProps> {
   }
 
   addRow = (name: string, value: number) => {
-    console.log(this.props.filterValueSmallerThenPercentage)
     if (this.props.filterValueSmallerThenPercentage >= 0) {
       this.props.showWarning('Turn off the filter first to see new coins.')
     }
@@ -212,7 +202,7 @@ class Import extends PureComponent<IProps> {
         </Typography>
       )
     }
-
+    const textColor: string= this.props.theme.palette.getContrastText(this.props.theme.palette.background.paper)
     return (
       <ApolloConsumer>
         {(client) => (
@@ -223,6 +213,7 @@ class Import extends PureComponent<IProps> {
                 period={optimizationPeriod}
               />
               <Input
+                color={textColor}
                 type="number"
                 placeholder="Expected return in %"
                 value={expectedReturn || ''}
@@ -283,6 +274,7 @@ class Import extends PureComponent<IProps> {
                 filterValueSmallerThenPercentage={
                   filterValueSmallerThenPercentage
                 }
+                theme={this.props.theme}
               />
             </TableContainer>
             <HelperForCentering />
@@ -292,62 +284,3 @@ class Import extends PureComponent<IProps> {
     )
   }
 }
-
-const SwitchButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
-const HelperForCentering = styled.div`
-  width: 224px;
-  min-width: 100px;
-  opacity: 0;
-`
-
-const InputContainer = styled.div`
-  margin: auto 2rem auto 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 100px;
-
-  @media (max-width: 1080px) {
-    margin: auto;
-    flex-wrap: wrap;
-  }
-`
-
-const TableContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  place-content: flex-end;
-  width: 50%;
-  max-width: 50rem;
-  @media (max-width: 600px) {
-    margin-top: 1rem;
-  }
-`
-
-const Input = styled.input`
-  box-sizing: border-box;
-  background: transparent;
-  border-top: none;
-  border-left: none;
-  border-bottom: 2px solid rgba(78, 216, 218, 0.3);
-  outline: none;
-  border-right: none;
-  width: 100%;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: left;
-  padding: 10px 0 0px;
-  color: rgb(255, 255, 255);
-  transition: all 0.25s ease-out;
-
-  &:focus {
-    border-bottom: 2px solid rgb(78, 216, 218);
-  }
-`
-
-export default Import

@@ -1,7 +1,6 @@
 import * as React from 'react'
+import ArrowDownward from '@material-ui/icons/ArrowDownward'
 
-import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IRow } from '../Rebalance.types'
 import { IProps, IState } from './CurrentPortfolioTable.types'
@@ -36,10 +35,18 @@ export default class CurrentPortfolioTable extends React.Component<
       staticRows,
       filterValueSmallerThenPercentage,
       onSortTable,
-      textColor,
-      red,
-      green,
+      theme: { palette }
     } = this.props
+
+    const textColor = palette.getContrastText(
+      palette.background.paper
+    )
+    const background = palette.background.paper
+    const secondary = palette.secondary.main
+    const evenBackground = palette.action.hover
+    const red = palette.red.main
+    const green = palette.green.main
+
 
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
@@ -56,8 +63,9 @@ export default class CurrentPortfolioTable extends React.Component<
         <TableHeading>Current portfolio</TableHeading>
         <Wrapper>
           <Table style={{ width: '520px' }}>
-            <PTHead>
-              <PTR>
+            <PTHead bottomCollor={textColor}>
+              <PTR
+                  background={background}              >
                 {tableHeadingsCurrentPortfolio.map((heading) => {
                   const isSorted =
                     currentSortForStatic &&
@@ -73,11 +81,9 @@ export default class CurrentPortfolioTable extends React.Component<
                       {heading.name}
 
                       {isSorted && (
-                        <SvgIcon
-                          src={sortIcon}
-                          width={12}
-                          height={12}
+                        <ArrowDownward
                           style={{
+                            fontSize: 16,
                             verticalAlign: 'middle',
                             marginLeft: '4px',
                             transform:
@@ -85,7 +91,7 @@ export default class CurrentPortfolioTable extends React.Component<
                               currentSortForStatic.arg === 'ASC'
                                 ? 'rotate(180deg)'
                                 : null,
-                          }}
+                          }} 
                         />
                       )}
                     </PTHC>
@@ -115,7 +121,11 @@ export default class CurrentPortfolioTable extends React.Component<
                   ]
 
                   return (
-                    <PTR key={`${exchange}${symbol}${idx}`}>
+                    <PTR 
+                      key={`${exchange}${symbol}${idx}`}
+                      background={background}
+                      evenBackground={evenBackground}
+                    >
                       {cols.map((col, index) => {
                         if (col.match(/%/g)) {
                           const color =
@@ -145,7 +155,10 @@ export default class CurrentPortfolioTable extends React.Component<
                 })}
             </PTBody>
             <PTFoot>
-              <PTR>
+              <PTR
+                background={background}
+                evenBackground={background}
+              >
                 <PTHC>All</PTHC>
                 <PTHC>-</PTHC>
                 <PTHC>100%</PTHC>
