@@ -106,6 +106,7 @@ class ReactSelectComponent extends Component<IProps> {
         }
       },
       dropdownIndicator: (base: CSSProperties) => ({
+        color: textColor,
         display: 'flex',
         width: '19px',
         boxSizing: 'border-box',
