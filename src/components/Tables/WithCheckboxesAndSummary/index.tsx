@@ -19,6 +19,8 @@ import { Typography, IconButton } from '@material-ui/core'
 
 const CustomTableCell = withStyles((theme) => ({
   head: {
+    position: 'sticky',
+    top: 0,
     backgroundColor: theme.palette.primary[700],
     color: hexToRgbAWithOpacity(theme.palette.common.white, 0.66),
     textTransform: 'uppercase',
@@ -27,7 +29,7 @@ const CustomTableCell = withStyles((theme) => ({
     fontWeight: 'bold',
     border: 0,
     whiteSpace: 'nowrap',
-    position: 'relative',
+    zIndex: 100,
   },
   body: {
     borderBottom: 'none',
@@ -102,9 +104,10 @@ const renderCell = (cell, i, numeric) => {
   return null
 }
 {
-  /* ToDo: - Add sorting 
+  /* ToDo: - Add sorting
             - Fixed Header And summary
             - Add settings
+            - Add render anything to Cell
           */
 }
 
