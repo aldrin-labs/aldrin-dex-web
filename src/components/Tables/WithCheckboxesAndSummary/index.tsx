@@ -114,7 +114,7 @@ const renderCell = (cell, i, numeric) => {
 const CustomTable = (props: Props) => {
   const {
     classes,
-    rows,
+    rows = { head: [], body: [], footer: [] },
     withCheckboxes,
     title,
     onChange = () => {

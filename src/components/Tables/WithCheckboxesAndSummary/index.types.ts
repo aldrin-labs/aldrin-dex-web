@@ -6,11 +6,11 @@ type TObj = {
   color: string
   style: any
 }
-type Row = T | TObj
+type Row = T[] | TObj[]
 
 export interface Props extends WithStyles {
   withCheckboxes?: boolean
-  rows?: { head: Row; body: TObj; footer: TObj }
+  rows?: { head: Row; body: Row[]; footer: Row }
   checkedRows?: number
   title?: string | number
   onChange?: (e: Event, id: number) => void
