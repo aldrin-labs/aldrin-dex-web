@@ -74,7 +74,7 @@ class DialogSelect extends React.Component {
           open={this.state.open}
           onClose={this.handleClose}
         >
-          <DialogTitle>Add pair of currencies</DialogTitle>
+          <DialogTitle> pair of currencies</DialogTitle>
           <DialogContent className={classes.rootContent}>
             <form className={classes.container}>
               <FormControl className={classes.formControl}>
