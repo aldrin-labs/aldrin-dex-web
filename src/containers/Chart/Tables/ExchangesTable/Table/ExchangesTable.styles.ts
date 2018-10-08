@@ -1,7 +1,12 @@
 import { Button } from '@material-ui/core'
 import styled from 'styled-components'
 import FaCircle from '@material-ui/icons/Brightness1'
-import { Table, HeadCell, FullWidthBlock, Cell } from '@components/Table/Table'
+import {
+  Table,
+  HeadCell,
+  FullWidthBlock,
+  Cell,
+} from '@components/OldTable/Table'
 
 export const Icon = styled(FaCircle)`
   font-size: 0.5rem;

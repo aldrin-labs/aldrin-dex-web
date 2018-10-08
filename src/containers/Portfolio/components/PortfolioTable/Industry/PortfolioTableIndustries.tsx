@@ -9,7 +9,6 @@ import {
   calcAllSumOfPortfolioAsset,
 } from '@utils/PortfolioTableUtils'
 import LineChart from '@components/LineChart'
-import PortfolioTableSum from '@containers/Portfolio/components/PortfolioTable/PortfolioTableSum'
 import {
   MOCKS,
   genMocks,
@@ -32,7 +31,7 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
-import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { withTheme, Paper } from '@material-ui/core'
 
 const tableHeadings = [
@@ -689,14 +688,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       )
                     })}
               </PTBody>
-              {selectedSum && selectedSum.currency ? (
-                <PortfolioTableSum
-                  palette={theme.palette}
-                  industry={true}
-                  selectedSum={selectedSum}
-                  isUSDCurrently={this.props.isUSDCurrently}
-                />
-              ) : null}
             </PTable>
           </Wrapper>
           <ChartContainer shadows={theme.shadows[15]}>

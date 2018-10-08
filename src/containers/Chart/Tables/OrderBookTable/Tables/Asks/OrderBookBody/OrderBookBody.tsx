@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Row, Cell, Body } from '@components/Table/Table'
+import { Row, Cell, Body } from '@components/OldTable/Table'
 import { Loading } from '@components/Loading'
 import {
   calculatePercentagesOfOrderSize,

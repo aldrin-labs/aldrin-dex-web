@@ -1,7 +1,7 @@
 export interface IRowT {
-  currency: string
-  symbol: string
-  percentage: number
+  exchange: string
+  coin: string
+  portfolioPercentage: number
   price: number
   quantity: number
   currentPrice: number

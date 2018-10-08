@@ -21,7 +21,7 @@ import {
   percentagesOfCoinInPortfolio,
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
-import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 
 const Correlation = (props: IProps) => {
   const {
