@@ -23,13 +23,21 @@ export const getCoinsForOptimization = gql`
 `
 export const OPTIMIZE_PORTFOLIO = gql`
   query getPortfolio(
-    $expectedPct: Float!
+    $rebalancePeriod: Int!
+    $riskProfile: String!
+    $baseCurrency: String!
+    $riskFree: Int!
+		$initialCapital: Float!
     $coinList: [String!]
     $startDate: Int!
     $endDate: Int!
   ) {
     portfolioOptimization(
-      expectedPct: $expectedPct
+      period: $rebalancePeriod
+      risk_profile: $riskProfile
+      base_currency: $baseCurrency
+      risk_free: $riskFree
+      initial_capital: $initialCapital
       coinList: $coinList
       startDate: $startDate
       endDate: $endDate
