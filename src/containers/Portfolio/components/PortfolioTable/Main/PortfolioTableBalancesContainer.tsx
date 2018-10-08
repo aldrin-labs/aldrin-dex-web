@@ -107,6 +107,8 @@ class Container extends Component {
 
     let total: any[] | null = null
     if (tableData && checkedRows.length !== 0) {
+      const selectedAll = tableData.length === checkedRows.length
+
       // show footer
       total = []
       const data = this.transformData(tableData)
@@ -122,6 +124,10 @@ class Container extends Component {
             if (checkedRows.indexOf(i) !== -1 && typeof num === 'number') {
               sum += +num
             }
+
+            // dont calculate sum of portfolio becouse it must always be 100
+            // this is cheaty way of doing things and may lead to unexpected behaviour
+            if (ind === 2 && selectedAll) sum = 100
           })
 
           total.push(+roundAndFormatNumber(sum, round, false))
