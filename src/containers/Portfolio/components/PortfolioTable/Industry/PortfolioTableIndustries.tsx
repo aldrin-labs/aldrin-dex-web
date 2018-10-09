@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 import { compose } from 'recompose'
 import ArrowDownward from '@material-ui/icons/ArrowDownward'
 
+import Table from '@components/Tables/WithCheckboxesAndSummary'
 import {
   roundPercentage,
   calcAllSumOfPortfolioAsset,
@@ -32,31 +33,30 @@ import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
-import { withTheme, Paper } from '@material-ui/core'
+import { withTheme, Paper, Grid, Card } from '@material-ui/core'
 
 const tableHeadings = [
-  { name: 'Exchange', value: 'currency' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
   {
-    name: 'Industry 1 week',
+    name: 'Industry: 1W',
     value: 'industryPerf1Week',
     additionName: 'performance',
   },
   {
-    name: 'Industry 1 month',
+    name: '1M',
     value: 'industryPerf1Month',
     additionName: 'performance',
   },
   {
-    name: 'Industry 3 month',
+    name: '3M',
     value: 'industryPerf3Months',
     additionName: 'performance',
   },
   {
-    name: 'Industry 1 year',
+    name: '1Y',
     value: 'industryPerf1Year',
     additionName: 'performance',
   },
@@ -165,6 +165,42 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState((prevState: IState) => ({
       showChart: prevState.showChart === 'line' ? 'chart' : 'line',
     }))
+  }
+
+  putDataInTable = () => {
+    const { industryData } = this.state
+    if (!industryData) return
+    return {
+      head: tableHeadings.map((heading, ind: number) => ({
+        text: heading.name,
+        number: ind === 0 || ind === 1 ? false : true,
+      })),
+      body: industryData.map((row) => {
+        const {
+          symbol,
+          industry,
+          portfolioPerc,
+          portfolioPerf,
+          industryPerf1Week,
+          industryPerf1Month,
+          industryPerf3Months,
+          industryPerf1Year,
+        } = row
+
+        const res = [
+          symbol,
+          industry,
+          +portfolioPerc,
+          +portfolioPerf,
+          +industryPerf1Week,
+          +industryPerf1Month,
+          +industryPerf3Months,
+          +industryPerf1Year,
+        ]
+
+        return res
+      }),
+    }
   }
 
   combineIndustryData = (portfolio?: IPortfolio) => {
@@ -481,8 +517,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    const textColor: string = 
-      theme.palette.getContrastText(theme.palette.background.paper)
+    const textColor: string = theme.palette.getContrastText(
+      theme.palette.background.paper
+    )
     let isThereAnySelectedRows = false
     if (selectedRows) {
       isThereAnySelectedRows = selectedRows.length > 1
@@ -502,233 +539,34 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={!!tableDataHasData} ref={this.setWrapperRef}>
-        {children}
-        <Container>
-          <Wrapper
-            isThereAnySelectedRows={isThereAnySelectedRows}
-            ref={this.setChildNodeRef}
-          >
-            <PTable>
-              <PTHead bottomCollor={textColor}>
-                <PTR
-                  background={theme.palette.background.paper}
-                >
-                  <PTH
-                    textColor={textColor}
-                    key="selectAll"
-                  >
-                    <Checkbox
-                      type="checkbox"
-                      id="selectAll"
-                      checked={isSelectAll}
-                      onChange={this.onSelectAll}
-                    />
-                    <Label htmlFor="selectAll">
-                      <Span />
-                    </Label>
-                  </PTH>
-                  {tableHeadings.map((heading, index) => {
-                    const isSorted =
-                      currentSort && currentSort.key === heading.value
-
-                    return (
-                      <PTH
-                        key={`${heading.name}${index}`}
-                        onClick={() => this.onSortTable(heading.value)}
-                        isSorted={isSorted}
-                        textColor={textColor}
-                      >
-                        {[4, 5, 6, 7, 8].includes(index) ? (
-                          <>
-                            {heading.name} <br /> {heading.additionName}
-                          </>
-                        ) : (
-                          heading.name
-                        )}
-
-                        {isSorted && (
-                          <ArrowDownward
-                            style={{
-                              fontSize: 16,
-                              verticalAlign: 'middle',
-                              marginLeft: '4px',
-                              transform:
-                                currentSort &&
-                                currentSort.arg === 'ASC'
-                                  ? 'rotate(180deg)'
-                                  : null,
-                            }} 
-                          />
-                        )}
-                      </PTH>
-                    )
-                  })}
-                </PTR>
-              </PTHead>
-
-              <PTBody>
-                {industryData &&
-                  industryData
-                    .filter(
-                      (el) =>
-                        el.portfolioPerc >
-                        (filterValueSmallerThenPercentage
-                          ? filterValueSmallerThenPercentage
-                          : 0)
-                    )
-                    .map((row, idx) => {
-                      const {
-                        id,
-                        currency,
-                        symbol,
-                        industry,
-                        portfolioPerc,
-                        portfolioPerf,
-                        industryPerf1Week,
-                        industryPerf1Month,
-                        industryPerf3Months,
-                        industryPerf1Year,
-                      } = row
-
-                      const mainSymbol = isUSDCurrently ? (
-                        <Icon className="fa fa-usd" key={`${idx}usd`} />
-                      ) : (
-                        <Icon className="fa fa-btc" key={`${idx}btc`} />
-                      )
-
-                      const isSelected =
-                        (selectedRows && selectedRows.indexOf(id) !== -1) ||
-                        false
-
-                      const formattedPortfolioPerf =
-                        portfolioPerf === null ? '-' : `${portfolioPerf}%`
-                      const formattedIndustryPerf1Week =
-                        industryPerf1Week === null
-                          ? '-'
-                          : `${industryPerf1Week}%`
-                      const formattedIndustryPerf1Month =
-                        industryPerf1Month === null
-                          ? '-'
-                          : `${industryPerf1Month}%`
-                      const formattedIndustry3Months =
-                        industryPerf3Months === null
-                          ? '-'
-                          : `${industryPerf3Months}%`
-                      const formattedIndustryPerf1Year =
-                        industryPerf1Year === null
-                          ? '-'
-                          : `${industryPerf1Year}%`
-
-                      const cols = [
-                        currency,
-                        symbol,
-                        industry,
-                        `${portfolioPerc}%`,
-                        formattedPortfolioPerf,
-                        formattedIndustryPerf1Week,
-                        formattedIndustryPerf1Month,
-                        formattedIndustry3Months,
-                        formattedIndustryPerf1Year,
-                      ]
-
-                      return (
-                        <PTRBody
-                          key={`${currency}${symbol}${idx}`}
-                          evenBackground={theme.palette.action.hover}
-                          background={theme.palette.background.paper}
-                          selectedBackground={theme.palette.action.selected}
-                          isSelected={isSelected}
-                          onClick={() => this.onSelectBalance(id)}
-                        >
-                          <PTD key="smt" isSelected={isSelected}>
-                            {this.renderCheckbox(id)}
-                          </PTD>
-                          {cols &&
-                            cols.map((col, innerIdx) => {
-                              let colorized = null 
-                              if (
-                                col &&
-                                !Array.isArray(col) &&
-                                col.match(/%/g) &&
-                                innerIdx !== 3
-                              ) {
-                                colorized =
-                                  Number(col.replace(/%/g, '')) >= 0
-                                    ? 'green'
-                                    : 'red'
-
-                                return (
-                                  <PTD
-                                    key={`${col}${innerIdx}`}
-                                    isSelected={isSelected}
-                                    textColor={textColor}
-                                    selectedTextColor={theme.palette.secondary.main}
-                                    red={theme.palette.red.main}
-                                    green={theme.palette.green.main}
-                                    colorized={ colorized }
-                                  >
-                                    {col}
-                                  </PTD>
-                                )
-                              }
-
-                              return (
-                                <PTD
-                                  key={`${col}${innerIdx}`}
-                                  isSelected={isSelected}
-                                  textColor={textColor}
-                                  selectedTextColor={theme.palette.secondary.main}
-                                >
-                                  {col}
-                                </PTD>
-                              )
-                            })}
-                        </PTRBody>
-                      )
-                    })}
-              </PTBody>
-            </PTable>
+      <Container container={true} spacing={24}>
+        <Grid item={true} xs={12} md={8}>
+          <Wrapper elevation={8}>
+            <Table
+              checkedRows={[]}
+              rows={this.putDataInTable()}
+              title="Industries"
+            />
           </Wrapper>
-          <ChartContainer shadows={theme.shadows[15]}>
-            {/*<Heading pieChart={this.state.showChart === 'chart'}>*/}
-            {/*<Switch onClick={this.toggleChart} isActive={this.state.showChart === 'chart'} />*/}
-            {/*</Heading>*/}
-            <ChartWrapper isPieChartCurrent={this.state.showChart === 'chart'}>
-              {this.state.showChart === 'line' ? (
-                <LineChart
-                  data={this.state.lineChartMocks}
-                  activeLine={activeLegend}
-                  onChangeData={this.onChangeData}
-                />
-              ) : (
-                // <PieChart data={genAngleMocks(inds)} flexible />
-                <PieChartQuery
-                  theme={theme}
-                  isUSDCurrently={isUSDCurrently}
-                  isShownMocks={this.props.isShownMocks}
-                />
-              )}
-            </ChartWrapper>
-          </ChartContainer>
-        </Container>
-      </PTWrapper>
+        </Grid>
+        <Grid item={true} xs={12} md={4}>
+          <ChartWrapper>
+            <PieChartQuery
+              theme={theme}
+              isUSDCurrently={isUSDCurrently}
+              isShownMocks={this.props.isShownMocks}
+            />
+          </ChartWrapper>
+        </Grid>
+      </Container>
     )
   }
 }
 
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 0 20px 20px;
-
-  @media (min-width: 1600px) and (max-width: 2200px) {
-    flex-direction: column;
-  }
-
-  @media (max-width: 2200px) {
-    align-items: center;
+const Container = styled(Grid)`
+  && {
+    padding: 1rem;
+    width: 100%;
   }
 `
 
@@ -757,20 +595,7 @@ const transformPieChart = css`
   }
 `
 
-const ChartWrapper = styled.div`
-  width: 100%;
-  height: 100%;
-  //height: 25vh;
-  display: flex;
-  position: relative;
-
-  //@media (max-height: 850px) {
-  //  height: 20vh;
-  //}
-
-  ${(props: { isPieChartCurrent?: boolean }) =>
-    props.isPieChartCurrent ? transformPieChart : ''};
-`
+const ChartWrapper = styled(Card)``
 
 const ChartContainer = styled.div`
   border-radius: 3px;
@@ -800,32 +625,6 @@ const ChartContainer = styled.div`
 `
 
 const Wrapper = styled(Paper)`
-  overflow-y: scroll;
-  border-radius: 3px;
-  max-height: 35vh;
-  margin-right: 50px;
-
-  @media (max-width: 2200px) {
-    margin-right: 0;
-    margin-bottom: 30px;
-  }
-
-  @media (max-height: 850px) {
-    max-height: 25vh;
-  }
-
-  @media (max-height: 680px) {
-    max-height: 50vh;
-  }
-
-  @media (max-height: 550px) {
-    max-height: 45vh;
-  }
-
-  @media (max-height: 460px) {
-    max-height: 40vh;
-  }
-
   ${customAquaScrollBar};
 `
 
@@ -846,10 +645,10 @@ const PTD = styled.td`
     isSelected?: boolean
     red: string
     green: string
-    colorized: string |  null
+    colorized: string | null
     selectedTextColor: string
     textColor: string
-    }) => {
+  }) => {
     if (props.colorized) {
       if (props.colorized === 'green') {
         return props.green
@@ -861,7 +660,6 @@ const PTD = styled.td`
 
     return props.isSelected ? props.selectedTextColor : props.textColor
   }};
-
 
   font-family: Roboto, sans-serif;
   font-size: 12px;
@@ -907,10 +705,7 @@ const PTD = styled.td`
 `
 
 const PTH = styled.th`
-  color: ${(props: {
-    textColor: string
-    }) => props.textColor
-  };
+  color: ${(props: { textColor: string }) => props.textColor};
 
   font-family: Roboto, sans-serif;
   font-size: 12px;
@@ -964,10 +759,7 @@ const PTH = styled.th`
 
 const PTR = styled.tr`
   cursor: pointer;
-  background-color: ${(props: {
-    background: string
-  }) =>
-    props.background};
+  background-color: ${(props: { background: string }) => props.background};
 `
 
 const PTRBody = styled.tr`
@@ -991,12 +783,8 @@ const PTRBody = styled.tr`
       isBase?: boolean
       evenBackground: string
       selectedBackground: string
-    }) =>     
-      props.isSelected
-        ? props.selectedBackground
-        : props.evenBackground};
+    }) => (props.isSelected ? props.selectedBackground : props.evenBackground)};
   }
-
 
   &:hover {
     background-color: rgba(70, 102, 142, 0.2);
@@ -1014,7 +802,8 @@ const PTHead = styled.thead`
     position: absolute;
     left: 0;
     right: 0;
-    border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
+    border-bottom: 1px solid
+      ${(props: { bottomCollor: string }) => props.bottomCollor};
   }
 `
 
