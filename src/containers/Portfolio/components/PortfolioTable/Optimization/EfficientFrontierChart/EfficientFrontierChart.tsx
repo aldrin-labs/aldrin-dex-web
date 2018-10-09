@@ -16,18 +16,6 @@ import {
 
 import { Container, ChartTooltip } from './EfficientFrontierChart.styles'
 
-const axisStyle = {
-  ticks: {
-    padding: '1rem',
-    stroke: '#fff',
-    opacity: 0.5,
-    fontFamily: 'Roboto',
-    fontSize: '12px',
-    fontWeight: 100,
-  },
-  title: { fontWeight: 600, fontFamily: 'Roboto', fill: '#4ed8dab8' },
-}
-
 export default class EfficientFrontierChart extends Component<IProps, IState> {
   state = {
     value: { x: null, y: null },
@@ -39,9 +27,26 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
+    const {theme} = this.props
     const { percentages, risk, activeButton } = this.props.data
-
     const { value } = this.state
+
+    const textColor: string = this.props.theme.palette.getContrastText(
+      this.props.theme.palette.background.paper
+    )
+    const background: string = theme.palette.background.paper
+
+    const axisStyle = {
+      ticks: {
+        padding: '1rem',
+        stroke: theme.palette.secondary.main,
+        opacity: 0.75,
+        fontFamily: theme.typography.fontFamily,
+        fontSize: '12px',
+        fontWeight: 100,
+      },
+      title: { fontWeight: 600, fontFamily: theme.typography.fontFamily, fill: theme.palette.secondary.main },
+    }
 
     let data: { x: number; y: number }[] = []
     let highlightedDotData = []
@@ -54,6 +59,11 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
 
       highlightedDotData.push(data[activeButton])
     }
+
+    console.log('data', data);
+    console.log('highlightedDotData', highlightedDotData);
+
+
 
     return (
       <Container>
@@ -97,7 +107,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
 
           {value.x === null || value.y === null ? null : (
             <Hint value={value}>
-              <ChartTooltip>{`Risk ${value.x}% - Return ${
+              <ChartTooltip color={textColor} background={background}>{`Risk ${value.x}% - Return ${
                 value.y
               }%`}</ChartTooltip>
             </Hint>
