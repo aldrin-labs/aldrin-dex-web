@@ -70,7 +70,7 @@ export const getPortfolioQuery = gql`
     getProfile {
       portfolio {
         cryptoWallets {
-          ...cryptoWalletFragmentWithAssets
+          ...CryptoWalletFragmentWithAssets
         }
         assetIds
         ownerId

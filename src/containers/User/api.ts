@@ -1,18 +1,6 @@
 import gql from 'graphql-tag'
 
-import { KeyFragment, cryptoWalletFragment } from '@graphql/fragments'
-
-const cryptoWalletFragmentWithUser = gql`
-  fragment cryptoWalletFragmentWithUser on CryptoWallet {
-    ...cryptoWalletFragment
-    ownerId
-    owner {
-      _id
-      username
-    }
-  }
-  ${cryptoWalletFragment}
-`
+import { KeyFragment, CryptoWalletFragment } from '@graphql/fragments'
 
 export const getKeysQuery = gql`
   query getKeys {
@@ -93,6 +81,7 @@ export const getCryptoWalletsQuery = gql`
         _id
         name
         address
+        baseAsset
         date
       }
     }
@@ -110,15 +99,17 @@ export const addCryptoWalletMutation = gql`
       assetName: $assetName
       address: $address
     ) {
-      ...cryptoWalletFragmentWithUser
+      name
+      baseAsset
+      address
+      date
     }
   }
-  ${cryptoWalletFragmentWithUser}
 `
 
 export const deleteCryptoWalletMutation = gql`
-  mutation deleteCryptoWallet($assetName: String!, $address: String!) {
-    deleteCryptoWallet(assetName: $assetName, address: $address)
+  mutation deleteCryptoWallet($name: String!) {
+    deleteCryptoWallet(name: $name)
   }
 `
 

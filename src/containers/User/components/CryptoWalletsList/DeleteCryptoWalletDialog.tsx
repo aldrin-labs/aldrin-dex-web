@@ -81,8 +81,7 @@ const formikDialog = withFormik({
     const { wallet, handleClose, deleteCryptoWallet } = props.props
 
     const variables = {
-      address: wallet.address,
-      assetName: wallet.baseAsset.name,
+      name: wallet.name,
     }
     const checkCryptoWalletName = isEqual(wallet.name, cryptoWalletNameInput)
 
