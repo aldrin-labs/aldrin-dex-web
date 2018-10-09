@@ -4,16 +4,16 @@ type T = string | number
 type TObj = {
   text: string
   color: string
-  numeric: boolean
+  number: boolean
   style: any
 }
-type Row = T[] | TObj[]
+export type Row = Array<T | TObj>
 
 export interface Props extends WithStyles {
   withCheckboxes?: boolean
   padding: 'default' | 'checkbox' | 'dense' | 'none'
   rows?: { head: TObj[]; body: Row[]; footer: Row }
-  checkedRows?: number
+  checkedRows?: number[]
   title?: string | number
   onChange?: (e: Event, id: number) => void
   onSelectAllClick?: (e: Event, id: number) => void
