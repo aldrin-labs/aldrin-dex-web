@@ -120,9 +120,10 @@ const CorrelationWrapper = (props: IProps) => {
                 fetchPolicy="network-only"
                 component={Correlation}
                 query={getCorrelationQuery}
+                // quick fix until I have free time
                 variables={{
-                  startDate,
-                  endDate,
+                  startDate: endDate,
+                  endDate: startDate,
                 }}
                 {...{ portfolio: data, ...props }}
               />
