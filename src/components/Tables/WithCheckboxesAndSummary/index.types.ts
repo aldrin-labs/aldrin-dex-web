@@ -11,6 +11,7 @@ type Row = T[] | TObj[]
 
 export interface Props extends WithStyles {
   withCheckboxes?: boolean
+  padding: 'default' | 'checkbox' | 'dense' | 'none'
   rows?: { head: TObj[]; body: Row[]; footer: Row }
   checkedRows?: number
   title?: string | number
