@@ -1,24 +1,6 @@
 import gql from 'graphql-tag'
 
-import { KeyFragment, cryptoWalletFragment } from '@graphql/fragments'
-
-const cryptoWalletFragmentWithAssets = gql`
-  fragment cryptoWalletFragmentWithAssets on CryptoWallet {
-    ...cryptoWalletFragment
-    assetIds
-    assets {
-      balance
-      assetId
-      asset {
-        name
-        symbol
-        priceUSD
-        priceBTC
-      }
-    }
-  }
-  ${cryptoWalletFragment}
-`
+import { KeyFragment } from '@graphql/fragments'
 
 export const PRICE_HISTORY_QUERY = gql`
   query priceHistoryQuery(
@@ -61,19 +43,20 @@ export const getCorrelationQuery = gql`
 
 export const getKeysQuery = gql`
   query getKeys {
-    getProfile {
-      portfolioId
+    myPortfolios {
       keys {
-        ...KeyFragment
+        _id
+        name
+        date
+        apiKey
       }
     }
   }
-  ${KeyFragment}
 `
 
 export const getWalletsQuery = gql`
   query getWallets {
-    getProfile {
+    myPortfolios {
       cryptoWallets {
         _id
         name
@@ -87,7 +70,7 @@ export const getPortfolioQuery = gql`
     getProfile {
       portfolio {
         cryptoWallets {
-          ...cryptoWalletFragmentWithAssets
+          ...CryptoWalletFragmentWithAssets
         }
         assetIds
         ownerId
@@ -128,59 +111,19 @@ export const getPortfolioQuery = gql`
       }
     }
   }
-  ${cryptoWalletFragmentWithAssets}
 `
 export const getPortfolioMainQuery = gql`
   query getPortfolio {
-    getProfile {
-      portfolioId
-      portfolio {
-        name
-        processing
-        cryptoWallets {
-          ...cryptoWalletFragmentWithAssets
-          ownerId
-          owner {
-            _id
-            username
-          }
-        }
-        ownerId
-        assetIds
-        assets {
-          _id
-          exchangeId
-          keyId
-          quantity
-          assetId
-          asset {
-            _id
-            name
-            symbol
-            priceUSD
-            priceBTC
-          }
-          PL {
-            base
-            quote
-            price
-            basePriceUSD
-            basePriceBTC
-            realized
-            averageBuyPrice
-            totalBuyQty
-            totalSellQty
-          }
-          exchange {
-            name
-          }
-          key {
-            name
-            apiKey
-          }
-        }
+    myPortfolios {
+      name
+      portfolioAssets(base: "BTC") {
+        _id
+        coin
+        where
+        price
+        realized
+        unrealized
       }
     }
   }
-  ${cryptoWalletFragmentWithAssets}
 `
