@@ -137,6 +137,7 @@ const Col = styled.div`
 `
 
 const Body = styled.div`
+  max-height: 108px;
   width: 98%;
   border-radius: 2px;
   display: flex;
@@ -144,7 +145,7 @@ const Body = styled.div`
   margin: 0.5rem;
   line-height: 1.5;
   max-width: 50rem;
-  max-height: 200px;
+  //max-height: 200px;
   overflow: auto;
 
   ${customAquaScrollBar};

@@ -133,7 +133,7 @@ export default class Table extends Component<IProps, IState> {
                 ))}
             </Col>
 
-            {/*  optimizedData */}
+            {console.log('optimizedData in Table', optimizedData)}
             {optimizedData.length >= 1 ? (
               //  &&
               // optimizedData.length === data.length
@@ -149,8 +149,8 @@ export default class Table extends Component<IProps, IState> {
                       key={item.coin}
                     >
                       <Typography variant="body1" align="center">
-                        {optimizedData[i]
-                          ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
+                        {optimizedData
+                          ? `${(Math.abs(Number(optimizedData[i]) * 100)).toFixed(2)}%`
                           : '-'}{' '}
                       </Typography>
 
