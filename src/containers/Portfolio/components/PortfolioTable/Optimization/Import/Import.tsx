@@ -38,6 +38,12 @@ import {
 import styled from 'styled-components'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
+const mockData = [
+  { coin: 'BCH', percentage: 10.87 },
+  { coin: 'ETH', percentage: 10.89 },
+  { coin: 'LTC', percentage: 78 },
+]
+
 export default class Import extends PureComponent<IProps> {
   state = {
     baseCoin: 'USDT',
@@ -47,12 +53,13 @@ export default class Import extends PureComponent<IProps> {
     focusedInput: false,
     startDate: null,
     endDate: null,
+    optimizedData: [],
+    percentages: [2, 7, 12, 17, 22],
   }
 
   componentDidMount() {
     this.importPortfolio()
   }
-
   importPortfolio = () => {
     let assets
     if (this.props.isShownMocks) {
@@ -95,6 +102,114 @@ export default class Import extends PureComponent<IProps> {
     })
 
     return result
+  }
+
+  newOptimizeButtonClick = async (
+    client: any,
+    storeData: IData[],
+    baseCoin: string,
+    rebalancePeriod: number,
+    isRiskFreeAssetEnabled: boolean,
+    riskProfile: null,
+    startDate: object,
+    endDate: object
+  ) => {
+    // console.log('client', client)
+    // console.log('storeData', storeData)
+    // console.log('baseCoin', baseCoin)
+    // console.log('rebalancePeriod', +rebalancePeriod)
+    // console.log('isRiskFreeAssetEnabled', +isRiskFreeAssetEnabled)
+    // console.log('riskProfile', riskProfile)
+    // console.log('startDate', startDate)
+    // console.log('endDate', endDate)
+
+    this.props.toggleLoading()
+
+    const { showWarning, optimizedToState } = this.props
+
+    const mockForQuery = {
+      rebalancePeriod: 13,
+      riskProfile: '',
+      baseCurrency: 'USDT',
+      riskFree: 1,
+      initialCapital: 1000.0012,
+      coinList: ['BCH', 'ETH', 'LTC'],
+      startDate: 1531441380,
+      endDate: 1531873380,
+    }
+
+    const myObj = {
+      // coinList: storeData.map((el: IData) => el.coin),
+      coinList: [
+        'ETH',
+        'BCH',
+        'TRX',
+        'EOS',
+        'LTC',
+        'BTC',
+        'ADA',
+        'DASH',
+        'XLM',
+      ],
+      initialCapital: +storeData
+        .reduce((acc, el: IData) => {
+          return (acc += +el.percentage)
+        }, 0)
+        .toFixed(2),
+      baseCurrency: baseCoin,
+      rebalancePeriod: +rebalancePeriod,
+      riskFree: +isRiskFreeAssetEnabled,
+      riskProfile: riskProfile,
+      startDate: 1528392417,
+      endDate: 1533662817,
+      // startDate: +startDate._d/1000,
+      // endDate: +endDate._d/1000,
+    }
+
+    console.log('myObj', myObj)
+
+    const backendResult = await client.query({
+      query: OPTIMIZE_PORTFOLIO,
+      variables: {
+        // ...myObj,
+        ...mockForQuery,
+        // coinList: storeData.map((el: IData) => el.coin),
+        // initialCapital: storeData.reduce((acc, el: IData) => {return acc += +el.percentage}, 0),
+        // baseCurrency: baseCoin,
+        // rebalancePeriod: +rebalancePeriod,
+        // riskFree: +isRiskFreeAssetEnabled,
+        // riskProfile: riskProfile,
+        // startDate: +startDate._d/1000,
+        // endDate: +endDate._d/1000,
+      },
+      fetchPolicy: 'network-only',
+    })
+
+    console.log(backendResult)
+
+    if (backendResult.portfolioOptimization === '') {
+      showWarning('You get empty response! 🙈')
+
+      return
+    }
+
+    this.props.toggleLoading()
+    this.props.setActiveButtonToDefault()
+    const backendResultParsed = JSON.parse(
+      backendResult.data.portfolioOptimization
+    )
+    console.log(backendResultParsed)
+
+    console.log(
+      'thePercentages',
+      backendResultParsed.returns[0].weights.map((elem) => elem * 100)
+    )
+    // const optimizedData = backendResultParsed.returns[0].weights.map((elem)=> elem * 100)
+    // const optimizedData = backendResultParsed.returns[0].weights.map((elem)=> elem * 100)
+    const optimizedData = backendResultParsed.returns
+
+    this.setState({ optimizedData })
+    optimizedToState(optimizedData)
   }
 
   onOptimizeButtonClick = async (
@@ -193,17 +308,22 @@ export default class Import extends PureComponent<IProps> {
   deleteAllRows = () => this.props.updateData([])
 
   renderBarChart = () => {
-    const { optimizedData, storeData, theme } = this.props
+    const { storeData, activeButton,  theme } = this.props
+    const { optimizedData } = this.state
 
     if (!storeData) return
     const formatedData = storeData.map((el: IData, i) => ({
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
     }))
-    const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+    // const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+    //   x: el.coin,
+    //   y: Number(Number(el.percentage).toFixed(2)),
+    // }))
+    const formatedOptimizedData = optimizedData.length ? storeData.map((el, i) => ({
       x: el.coin,
-      y: Number(Number(el.percentage).toFixed(2)),
-    }))
+      y: +((optimizedData[activeButton].weights[i] * 100).toFixed(2)),
+    }) ) : []
 
     const barChartData = [
       {
@@ -222,7 +342,7 @@ export default class Import extends PureComponent<IProps> {
       <ChartContainer background={theme.palette.background.paper}>
         <Chart background={theme.palette.background.default}>
           <BarChart
-            height={300}
+            height={350}
             showPlaceholder={formatedData.length === 0}
             charts={barChartData}
             alwaysShowLegend={true}
@@ -252,6 +372,8 @@ export default class Import extends PureComponent<IProps> {
         : ''
     this.setState({ [name]: value })
 
+    // console.log('this.staete.startDate', this.state.startDate);
+
     // console.log(+this.state.startDate._d);
     // console.log(+this.state.endDate._d);
   }
@@ -264,18 +386,28 @@ export default class Import extends PureComponent<IProps> {
       handleChange,
       storeData, // data from redux (data from portfolio and mannualy added)
       optimizedData,
-      startDate,
-      endDate,
+      // startDate,
+      // endDate,
       optimizationPeriod,
       setPeriod,
       onBtnClick,
-      percentages,
+      onNewBtnClick,
+      // percentages,
       filterValueSmallerThenPercentage,
       activeButton,
       showSwitchButtons, // optimizedData.length >= 1
       showWarning,
       theme,
     } = this.props
+
+    const {
+      baseCoin,
+      rebalancePeriod,
+      isRiskFreeAssetEnabled,
+      riskProfile,
+      startDate,
+      endDate,
+    } = this.state
 
     let assets: IData[]
     if (this.props.isShownMocks) {
@@ -298,6 +430,10 @@ export default class Import extends PureComponent<IProps> {
         </Typography>
       )
     }
+
+    console.log('storeData', storeData);
+
+
     const textColor: string = this.props.theme.palette.getContrastText(
       this.props.theme.palette.background.paper
     )
@@ -306,7 +442,14 @@ export default class Import extends PureComponent<IProps> {
 
     // move it to the state
     const maximumDate = moment().day(0)
-    const minimumDate = moment().year(-1);
+    const minimumDate = moment().year(-1)
+
+    const isAllOptionsFilled =
+      baseCoin &&
+      rebalancePeriod &&
+      riskProfile &&
+      startDate &&
+      endDate
 
     return (
       <ApolloConsumer>
@@ -344,7 +487,10 @@ export default class Import extends PureComponent<IProps> {
                 >
                   <DateRangePicker
                     enableOutsideDays={true}
-                    isOutsideRange={date => date.isBefore(minimumDate, 'day') || date.isAfter(maximumDate, 'day')}
+                    isOutsideRange={(date) =>
+                      date.isBefore(minimumDate, 'day') ||
+                      date.isAfter(maximumDate, 'day')
+                    }
                     startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                     startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
                     endDate={this.state.endDate} // momentPropTypes.momentObj or null,
@@ -367,9 +513,7 @@ export default class Import extends PureComponent<IProps> {
                   />
                 </FlexWrapper>
               </InputElementWrapper>
-              <InputElementWrapper
-                visibility={this.state.isRiskFreeAssetEnabled}
-              >
+              <InputElementWrapper>
                 <StyledInputLabel color={textColor}>
                   Risk profile
                 </StyledInputLabel>
@@ -395,21 +539,42 @@ export default class Import extends PureComponent<IProps> {
               {/*}}*/}
               {/*/>*/}
 
+              {/*<ButtonMUI*/}
+              {/*style={{ marginTop: '1rem' }}*/}
+              {/*color={'secondary'}*/}
+              {/*variant={'outlined'}*/}
+              {/*disabled={expectedReturn === '' || (data && data.length < 1)}*/}
+              {/*onClick={() => {*/}
+              {/*this.onOptimizeButtonClick(*/}
+              {/*client,*/}
+              {/*startDate,*/}
+              {/*endDate,*/}
+              {/*storeData,*/}
+              {/*expectedReturn,*/}
+              {/*showWarning,*/}
+              {/*optimizePortfolio,*/}
+              {/*optimizedToState*/}
+              {/*)*/}
+              {/*}}*/}
+              {/*>*/}
+              {/*Optimize Portfolio*/}
+              {/*</ButtonMUI>*/}
               <ButtonMUI
                 style={{ marginTop: '1rem' }}
                 color={'secondary'}
                 variant={'outlined'}
-                disabled={expectedReturn === '' || (data && data.length < 1)}
+                disabled={!isAllOptionsFilled}
+                // disabled={expectedReturn === '' || (data && data.length < 1)}
                 onClick={() => {
-                  this.onOptimizeButtonClick(
+                  this.newOptimizeButtonClick(
                     client,
-                    startDate,
-                    endDate,
                     storeData,
-                    expectedReturn,
-                    showWarning,
-                    optimizePortfolio,
-                    optimizedToState
+                    baseCoin,
+                    rebalancePeriod,
+                    isRiskFreeAssetEnabled,
+                    riskProfile,
+                    startDate,
+                    endDate
                   )
                 }}
               >
@@ -421,9 +586,11 @@ export default class Import extends PureComponent<IProps> {
               <SwitchButtonsWrapper>
                 <SwitchButtons
                   btnClickProps={client}
-                  onBtnClick={onBtnClick}
-                  values={percentages}
-                  show={showSwitchButtons}
+                  // onBtnClick={onBtnClick}
+                  onBtnClick={onNewBtnClick}
+                  values={this.state.percentages}
+                  // show={showSwitchButtons}
+                  show={this.state.optimizedData.length > 1}
                   activeButton={activeButton}
                 />
                 <ButtonMUI
@@ -441,14 +608,43 @@ export default class Import extends PureComponent<IProps> {
               <Table
                 onPlusClick={this.addRow}
                 data={storeData}
-                optimizedData={optimizedData}
-                withInput
+                // data={mockData}
+                // optimizedData={optimizedData}
+                optimizedData={
+                  this.state.optimizedData.length > 1
+                    ? this.state.optimizedData[activeButton].weights
+                    : []
+                }
+                withInput={true}
                 onClickDeleteIcon={this.deleteRow}
                 filterValueSmallerThenPercentage={
                   filterValueSmallerThenPercentage
                 }
                 theme={this.props.theme}
               />
+              <TableDataDesc show={this.state.optimizedData.length > 1}>
+                <StyledInputLabel color={textColor}>
+                  Confidence:{' '}
+                  {this.state.optimizedData.length > 1
+                    ? this.state.optimizedData[activeButton]
+                        .confidence
+                    : ''}
+                </StyledInputLabel>
+                <StyledInputLabel color={textColor}>
+                  Expected return low:{' '}
+                  {this.state.optimizedData.length > 1
+                    ? this.state.optimizedData[activeButton]
+                        .exptd_rtrn_low_end
+                    : ''}
+                </StyledInputLabel>
+                <StyledInputLabel color={textColor}>
+                  Expected return high:{' '}
+                  {this.state.optimizedData.length > 1
+                    ? this.state.optimizedData[activeButton]
+                        .exptd_rtrn_high_end
+                    : ''}
+                </StyledInputLabel>
+              </TableDataDesc>
             </TableContainer>
             {this.renderBarChart()}
           </ImportData>
@@ -457,6 +653,18 @@ export default class Import extends PureComponent<IProps> {
     )
   }
 }
+
+const TableDataDesc = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0.5rem 0.5rem 0.5rem;
+  opacity: ${(props: { show: boolean }) => (props.show ? '100' : 0)};
+  transition: all 100ms;
+
+  & > label {
+    margin: 0.3rem;
+  }
+`
 
 const FlexWrapper = styled.div`
   height: 35px;
@@ -482,20 +690,16 @@ const StyledInputLabel = styled(InputLabel)`
 `
 
 const InputElementWrapper = styled.div`
+  margin-bottom: 22px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 14px;
+  //margin-bottom: 14px;
 
   &:not(:nth-child(3)) {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
   }
-
-  visibility: ${(props: { visibility?: boolean }) =>
-    props.visibility === undefined || props.visibility === true
-      ? ''
-      : 'hidden'};
 `
 
 const STextField = styled(TextField)`
@@ -523,14 +727,12 @@ const StyledWrapperForDateRangePicker = styled.div`
     padding: 5px;
     font-size: 14px;
     height: 36px;
-    //color: #7e7e7e;
     color: ${(props: { color: string }) => props.color};
     background: ${(props: { background: string }) => props.background};
   }
 
   & .DateRangePicker_picker {
     font-family: ${(props: { fontFamily: string }) => props.fontFamily};
-    //font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     z-index: 10;
   }
 
@@ -546,7 +748,6 @@ const StyledWrapperForDateRangePicker = styled.div`
   }
 
   & .DateRangePickerInput_arrow_svg {
-    //fill: #fff;
     fill: ${(props: { color: string }) => props.color};
     width: 14px;
     height: 14px;
@@ -554,6 +755,7 @@ const StyledWrapperForDateRangePicker = styled.div`
 `
 
 const ChartContainer = styled.div`
+  min-height: 400px;
   width: 50%;
   margin: 0 0 0 2rem;
   padding: 15px;

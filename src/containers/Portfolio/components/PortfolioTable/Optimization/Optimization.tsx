@@ -42,7 +42,7 @@ class Optimization extends Component<IProps, IState> {
     risk: [],
     returns: [0],
     optimizedData: [],
-    rawDataBeforeOptimization: [],
+    rawDataBeforeOptimization: {},
     expectedReturn: '',
     activeButton: 2,
     percentages: [0],
@@ -120,6 +120,10 @@ class Optimization extends Component<IProps, IState> {
         percentages: this.getPercentages(Number(this.state.expectedReturn)),
       })
     }
+  }
+
+  onNewBtnClick = (index) => {
+    this.setState({ activeButton: index })
   }
 
   onBtnClick = async (index: number) => {
@@ -241,6 +245,7 @@ class Optimization extends Component<IProps, IState> {
         optimizedToState={this.optimizedToState}
         // buttons props
         onBtnClick={this.onBtnClick}
+        onNewBtnClick={this.onNewBtnClick}
         percentages={percentages}
         activeButton={activeButton}
         showSwitchButtons={optimizedData.length >= 1}
@@ -256,6 +261,7 @@ class Optimization extends Component<IProps, IState> {
       activeButton,
       risk,
       returns,
+      rawOptimizedData,
     } = this.state
     const { storeData } = this.props
 
@@ -282,10 +288,17 @@ class Optimization extends Component<IProps, IState> {
       },
     ]
 
+
+    const arrayOfReturnedValues = rawOptimizedData.map((el) => el.return_value)
+    const arrayOfReturnedRisks = rawOptimizedData.map((el) => el.risk_coefficient)
+    console.log('arrayOfReturnedValues',arrayOfReturnedValues);
+    console.log('arrayOfReturnedRisks',arrayOfReturnedRisks);
+
+
     let efficientFrontierData = {
-      percentages: returns,
-      risk,
       activeButton,
+      percentages: arrayOfReturnedValues,
+      risk: arrayOfReturnedRisks,
     }
 
     let showBarChartPlaceholder = false
@@ -315,13 +328,13 @@ class Optimization extends Component<IProps, IState> {
     ]
 
     const {
-      theme: { palette },
+      theme,
     } = this.props
 
     return (
       <ChartsContainer>
-        <ChartContainer background={palette.background.paper}>
-        <Chart background={palette.background.default}>
+        <ChartContainer background={theme.palette.background.paper}>
+        <Chart background={theme.palette.background.default}>
           <LineChart
             alwaysShowLegend={true}
             data={mockDataForLineChart}
@@ -329,9 +342,9 @@ class Optimization extends Component<IProps, IState> {
           />
         </Chart>
         </ChartContainer>
-      <ChartContainer background={palette.background.paper}>
-        <Chart background={palette.background.default}>
-          <EfficientFrontierChart data={efficientFrontierData} />
+      <ChartContainer background={theme.palette.background.paper}>
+        <Chart background={theme.palette.background.default}>
+          <EfficientFrontierChart data={efficientFrontierData} theme={theme}/>
         </Chart>
       </ChartContainer>
       </ChartsContainer>
@@ -356,7 +369,6 @@ class Optimization extends Component<IProps, IState> {
           {this.renderInput()}
 
           <MainArea background={palette.background.paper}>
-            <MainAreaUpperPart />
             {this.renderCharts()}
           </MainArea>
           <Warning
