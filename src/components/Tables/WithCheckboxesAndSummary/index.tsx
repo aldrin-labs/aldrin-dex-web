@@ -124,6 +124,7 @@ const renderCell = (cell, i, numeric) => {
 const CustomTable = (props: Props) => {
   const {
     classes,
+    padding,
     rows = { head: [], body: [], footer: [] },
     withCheckboxes,
     title,
@@ -145,7 +146,7 @@ const CustomTable = (props: Props) => {
   const howManyColumns = rows.head.length
   return (
     <Background className={classes.root}>
-      <Table className={classes.table}>
+      <Table padding={padding ? padding : 'default'} className={classes.table}>
         <TableHead className={classes.tableHead}>
           {title && (
             <TableRow>
