@@ -245,9 +245,8 @@ export const combineTableData = (
   const portfolioAssetsLength = portfolioAssets.length
     ? portfolioAssets.length + 1
     : 0
-  const allSums = portfolioAssets.reduce((acc, cur) => acc + cur.price * acc.quantity, 0);
+  const allSums = portfolioAssets.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
 
-  console.log(portfolioAssets);
   const tableData = portfolioAssets.filter(asset => activeKeys.indexOf(name)).map((row: any, i) => {
     const {
       _id,
@@ -265,7 +264,7 @@ export const combineTableData = (
     } = row || {}
     return ({
       coin,
-      portfolioPercentage,
+      portfolioPercentage: (price * quantity) * 100 / allSums,
       price,
       quantity,
       daily,
