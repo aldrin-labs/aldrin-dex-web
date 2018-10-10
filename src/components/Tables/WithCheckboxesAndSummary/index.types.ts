@@ -9,14 +9,14 @@ type TObj = {
   style: any
 }
 
-export type Cell = T | TObj
+export type Cell = T & TObj
 
 export type OnChange = (
   e: React.ChangeEvent<HTMLInputElement>,
   id: number
 ) => void
 
-type Row = Cell[]
+export type Row = Cell[]
 
 export interface Props extends WithStyles {
   withCheckboxes?: boolean

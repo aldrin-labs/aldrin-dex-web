@@ -14,7 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 
-import { Props, Cell, OnChange } from './index.types'
+import { Props, Cell, OnChange, Row } from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
 import { Typography, IconButton, Grow } from '@material-ui/core'
@@ -265,32 +265,34 @@ const CustomTable = (props: Props) => {
                 </TableRow>
                 {expandable &&
                   // rendering content of expanded row if it is expandable
-                  row[row.length - 1].map((collapsedRows, i: number) => {
-                    return (
-                      <Grow
-                        // but we hiding until have an expandedRow
-                        // saying to open expanded content
-                        in={ind === expandedRow}
-                        key={i}
-                        unmountOnExit={true}
-                        mountOnEnter={true}
-                      >
-                        <TableRow className={classes.rowExpanded}>
-                          <CustomTableCell padding="checkbox" />
-                          {collapsedRows.map(
-                            (cell: Cell, cellIndex: number) => {
-                              const numeric =
-                                cell !== null &&
-                                (typeof cell.text === 'number' ||
-                                  typeof cell === 'number')
+                  (row[row.length - 1] as Row[]).map(
+                    (collapsedRows: Row, i: number) => {
+                      return (
+                        <Grow
+                          // but we hiding until have an expandedRow
+                          // saying to open expanded content
+                          in={ind === expandedRow}
+                          key={i}
+                          unmountOnExit={true}
+                          mountOnEnter={true}
+                        >
+                          <TableRow className={classes.rowExpanded}>
+                            <CustomTableCell padding="checkbox" />
+                            {collapsedRows.map(
+                              (cell: Cell, cellIndex: number) => {
+                                const numeric =
+                                  cell !== null &&
+                                  (typeof cell.text === 'number' ||
+                                    typeof cell === 'number')
 
-                              return renderCell(cell, cellIndex, numeric)
-                            }
-                          )}
-                        </TableRow>
-                      </Grow>
-                    )
-                  })}
+                                return renderCell(cell, cellIndex, numeric)
+                              }
+                            )}
+                          </TableRow>
+                        </Grow>
+                      )
+                    }
+                  )}
               </React.Fragment>
             )
           })}
@@ -298,8 +300,9 @@ const CustomTable = (props: Props) => {
         {Array.isArray(rows.footer) && (
           <TableFooter className={classes.footer}>
             <TableRow>
-              {withCheckboxes ||
-                (expandableRows && <CustomTableCell padding="checkbox" />)}
+              {(withCheckboxes || expandableRows) && (
+                <CustomTableCell padding="checkbox" />
+              )}
               {rows.footer.map((cell, cellIndex) => {
                 const numeric =
                   typeof cell.text === 'number' ||
@@ -309,7 +312,7 @@ const CustomTable = (props: Props) => {
                 const spreadedCell = isObject(cell) ? cell : { text: cell }
 
                 const footerCell = {
-                  ...spreadedCell,
+                  ...(spreadedCell as object),
                   style: {
                     ...cell.style,
                     opacity: 0.84,
@@ -317,7 +320,7 @@ const CustomTable = (props: Props) => {
                   },
                 }
 
-                return renderCell(footerCell, cellIndex, numeric)
+                return renderCell(footerCell as Cell, cellIndex, numeric)
               })}
             </TableRow>
           </TableFooter>
