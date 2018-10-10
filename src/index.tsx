@@ -16,6 +16,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import Loadable from 'react-loadable'
 
+import { ErrorFallback } from 'components'
 import LoadableLoading from '@components/Loading/LoadableLoading'
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -96,6 +97,7 @@ const render = () =>
           <PersistGate loading={null} persistor={persistor}>
             <ConnectedRouter history={history}>
               <App>
+                <ErrorFallback />
                 <Switch>
                   <Redirect from="/" to="/portfolio" exact />
                   {/*<Route exact path="/" component={HomeRoutes} />*/}

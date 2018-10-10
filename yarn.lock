@@ -3598,6 +3598,20 @@ component-inherit@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
 
+"components@git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#CCAI-593-connect-to-web":
+  version "0.0.1"
+  resolved "git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#b1ebd184bf777e64031b5b84a37fad4667bbe2a7"
+  dependencies:
+    lodash-es "^4.17.10"
+    react "^16.4.1"
+    react-dom "^16.3.2"
+    react-loadable "^5.4.0"
+    react-pose "^3.3.3"
+    react-select "^2.0.0-beta.6"
+    react-select-for-charting-page "npm:react-select@^1.2.1"
+    react-vis "^1.11.1"
+    styled-components "^4.0.0-beta.4"
+
 compressible@~2.0.14:
   version "2.0.14"
   resolved "https://registry.yarnpkg.com/compressible/-/compressible-2.0.14.tgz#326c5f507fbb055f54116782b969a81b67a29da7"
@@ -10382,7 +10396,15 @@ react-router@^4.2.0:
     prop-types "^15.5.4"
     warning "^3.0.0"
 
-"react-select-for-charting-page@npm:react-select@^1.2.1", react-select@^1.0.0-rc.2:
+"react-select-for-charting-page@npm:react-select@^1.2.1":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.3.0.tgz#1828ad5bf7f3e42a835c7e2d8cb13b5c20714876"
+  dependencies:
+    classnames "^2.2.4"
+    prop-types "^15.5.8"
+    react-input-autosize "^2.1.2"
+
+react-select@^1.0.0-rc.2:
   name react-select-for-charting-page
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.2.1.tgz#a2fe58a569eb14dcaa6543816260b97e538120d1"
