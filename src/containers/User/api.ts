@@ -37,10 +37,12 @@ export const addExchangeKeyMutation = gql`
       exchange: $exchange
       date: $date
     ) {
-      ...KeyFragment
+      name
+      apiKey
+      exchange
+      date
     }
   }
-  ${KeyFragment}
 `
 export const getExchangesListQuery = gql`
   query getExchangesList($page: Int, $perPage: Int) {
