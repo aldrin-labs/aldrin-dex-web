@@ -8,7 +8,15 @@ type TObj = {
   number: boolean
   style: any
 }
-export type Row = Array<T | TObj>
+
+export type Cell = T | TObj
+
+export type OnChange = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  id: number
+) => void
+
+type Row = Cell[]
 
 export interface Props extends WithStyles {
   withCheckboxes?: boolean
@@ -18,6 +26,6 @@ export interface Props extends WithStyles {
   rows?: { head: TObj[]; body: Row[]; footer: Row }
   checkedRows?: number[]
   title?: string | number
-  onChange?: (e: React.ChangeEvent, id: number) => void
-  onSelectAllClick?: (e: Event, id: number) => void
+  onChange?: OnChange
+  onSelectAllClick?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
