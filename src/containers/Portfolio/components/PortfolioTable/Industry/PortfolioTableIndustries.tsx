@@ -33,11 +33,11 @@ import QueryRenderer from '@components/QueryRenderer'
 import PieChartQuery from '@containers/Portfolio/components/PortfolioTable/Industry/PieChartQuery'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
-import { withTheme, Paper, Grid, Card } from '@material-ui/core'
+import { withTheme, Paper, Grid, Card, Button } from '@material-ui/core'
 
 const tableHeadings = [
-  { name: 'Coin', value: 'symbol' },
   { name: 'Industry', value: 'industry' },
+  { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio %', value: 'portfolioPerc' },
   { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
   {
@@ -84,6 +84,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     selectedSum: defaultSelectedSum,
     activeLegend: null,
     showChart: 'chart',
+    expandedRow: NaN,
   }
 
   componentWillMount() {
@@ -175,7 +176,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         text: heading.name,
         number: ind === 0 || ind === 1 ? false : true,
       })),
-      body: industryData.map((row) => {
+      body: industryData.map((row, ind) => {
         const {
           symbol,
           industry,
@@ -188,8 +189,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         } = row
 
         const res = [
-          symbol,
           industry,
+          symbol,
           +portfolioPerc,
           +portfolioPerf,
           +industryPerf1Week,
@@ -197,6 +198,30 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           +industryPerf3Months,
           +industryPerf1Year,
         ]
+        if (ind === 2 || ind === 1) {
+          res.push([
+            [
+              '',
+              symbol,
+              +portfolioPerc,
+              +portfolioPerf,
+              +industryPerf1Week,
+              +industryPerf1Month,
+              +industryPerf3Months,
+              +industryPerf1Year,
+            ],
+            [
+              '',
+              symbol,
+              +portfolioPerc,
+              +portfolioPerf,
+              +industryPerf1Week,
+              +industryPerf1Month,
+              +industryPerf3Months,
+              +industryPerf1Year,
+            ],
+          ])
+        }
 
         return res
       }),
@@ -497,6 +522,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState({ lineChartMocks })
   }
 
+  expandRow = (e: React.ChangeEvent, index: number) => {
+    this.setState((prevState) => {
+      return { expandedRow: index === prevState.expandedRow ? NaN : index }
+    })
+  }
+
   render() {
     const {
       isUSDCurrently,
@@ -539,24 +570,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
 
     return (
-      <Container container={true} spacing={24}>
+      <Container container={true} spacing={16}>
         <Grid item={true} xs={12} md={8}>
           <Wrapper elevation={8}>
             <Table
-              checkedRows={[]}
+              onChange={this.expandRow}
+              expandedRow={this.state.expandedRow}
               rows={this.putDataInTable()}
               title="Industries"
             />
           </Wrapper>
         </Grid>
         <Grid item={true} xs={12} md={4}>
-          <ChartWrapper>
-            <PieChartQuery
-              theme={theme}
-              isUSDCurrently={isUSDCurrently}
-              isShownMocks={this.props.isShownMocks}
-            />
-          </ChartWrapper>
+          <ChartWrapper />
         </Grid>
       </Container>
     )
@@ -565,7 +591,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
 const Container = styled(Grid)`
   && {
-    padding: 1rem;
+    height: calc(100vh - 80px);
+    padding: 1rem 0;
     width: 100%;
   }
 `
@@ -625,6 +652,11 @@ const ChartContainer = styled.div`
 `
 
 const Wrapper = styled(Paper)`
+  max-height: 100%;
+  display: flex;
+  margin: 0 20px 5px;
+  flex-direction: column;
+  overflow-x: scroll;
   ${customAquaScrollBar};
 `
 
