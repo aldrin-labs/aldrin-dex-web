@@ -47,8 +47,7 @@ const Correlation = (props: IProps) => {
   if (portfolio && portfolio.getProfile && dataRaw !== '') {
     // filter data here
     const allSums = calcAllSumOfPortfolioAsset(
-      portfolio.getProfile.portfolio.assets,
-      true
+      portfolio.getProfile.portfolio.assets
     )
 
     const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
@@ -111,27 +110,27 @@ const CorrelationWrapper = (props: IProps) => {
           {...props}
         />
       ) : (
-        <Query query={getPortfolioMainQuery}>
-          {({ loading, data }) => {
-            const render = loading ? (
-              <Loading centerAligned={true} />
-            ) : (
-              <QueryRenderer
-                fetchPolicy="network-only"
-                component={Correlation}
-                query={getCorrelationQuery}
-                // quick fix until I have free time
-                variables={{
-                  startDate: endDate,
-                  endDate: startDate,
-                }}
-                {...{ portfolio: data, ...props }}
-              />
-            )
-            return render
-          }}
-        </Query>
-      )}
+          <Query query={getPortfolioMainQuery}>
+            {({ loading, data }) => {
+              const render = loading ? (
+                <Loading centerAligned={true} />
+              ) : (
+                  <QueryRenderer
+                    fetchPolicy="network-only"
+                    component={Correlation}
+                    query={getCorrelationQuery}
+                    // quick fix until I have free time
+                    variables={{
+                      startDate: endDate,
+                      endDate: startDate,
+                    }}
+                    {...{ portfolio: data, ...props }}
+                  />
+                )
+              return render
+            }}
+          </Query>
+        )}
     </PTWrapper>
   )
 }

@@ -10,8 +10,8 @@ export const KeyFragment = gql`
   }
 `
 
-export const cryptoWalletFragment = gql`
-  fragment cryptoWalletFragment on CryptoWallet {
+export const CryptoWalletFragment = gql`
+  fragment CryptoWalletFragment on CryptoWallet {
     _id
     name
     address

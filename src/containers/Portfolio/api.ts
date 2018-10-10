@@ -119,8 +119,10 @@ export const getPortfolioMainQuery = gql`
       portfolioAssets(base: "BTC") {
         _id
         coin
+        name
         where
         price
+        quantity
         realized
         unrealized
       }

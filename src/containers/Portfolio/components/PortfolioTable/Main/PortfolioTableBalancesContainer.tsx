@@ -15,8 +15,7 @@ class Container extends Component {
   state: IState = {
     currentSort: null,
     activeKeys: null,
-    activeWallets: null,
-    portfolio: null,
+    portfolioAssets: null,
     checkedRows: [],
     numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(
       this.props.isUSDCurrently
@@ -32,16 +31,16 @@ class Container extends Component {
       data,
     } = nextProps
     if (data && activeKeys) {
-      if (!data.getProfile) return
+      if (!data.myPortfolios[0]) return
 
-      const { portfolio } = data.getProfile
+      const { portfolioAssets } = data.myPortfolios[0]
 
-      if (!portfolio || portfolio === null) {
+      if (!portfolioAssets) {
         return
       }
 
-      const composeWithMocks = composePortfolioWithMocks(
-        portfolio,
+      const composePortfolioAssetsWithMocks = composePortfolioWithMocks(
+        portfolioAssets,
         isShownMocks
       )
 
@@ -50,10 +49,10 @@ class Container extends Component {
         numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
         checkedRows:
           nextProps.activeKeys.length === 0 ? [] : prevState.checkedRows,
-        portfolio: composeWithMocks,
+        portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
-          composeWithMocks,
-          activeKeys,
+          composePortfolioAssetsWithMocks,
+          portfolioAssets,
           filterValueSmallerThenPercentage,
           isUSDCurrently
         ),
@@ -65,26 +64,26 @@ class Container extends Component {
 
   componentDidMount() {
     const {
-      data: { getProfile: data },
+      data: { myPortfolios: data },
       isShownMocks,
       activeKeys,
       filterValueSmallerThenPercentage,
       isUSDCurrently,
     } = this.props
 
-    if (!data || !activeKeys) {
+    if (!data) {
       return
     }
-    const { portfolio } = data
+    const { portfolioAssets } = data[0]
 
-    const composeWithMocks = composePortfolioWithMocks(portfolio, isShownMocks)
+    const composePortfolioAssetsWithMocks = composePortfolioWithMocks(portfolioAssets, isShownMocks)
 
     this.setState(
       {
         activeKeys,
-        portfolio: composeWithMocks,
+        portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
-          composeWithMocks,
+          composePortfolioAssetsWithMocks,
           activeKeys,
           filterValueSmallerThenPercentage,
           isUSDCurrently
@@ -141,7 +140,8 @@ class Container extends Component {
   }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
-    const { numberOfDigitsAfterPoint: round } = this.state
+    const { numberOfDigitsAfterPoint: round } = this.this.state
+
     return data.map((row) => [
       row.exchange,
       { text: row.coin, style: { fontWeight: 700 } },
@@ -158,7 +158,7 @@ class Container extends Component {
         color: row.unrealizedPL > 0 ? green : red,
       },
       {
-        text: +roundAndFormatNumber(row.totalPL, round, false),
+        text: +roundAndFormatNumber(row.realizedPL + row.unrealizedPL, round, false),
         color: row.totalPL > 0 ? green : red,
       },
     ])
@@ -170,7 +170,7 @@ class Container extends Component {
 
     return {
       head: [
-        { text: 'exchange', number: false },
+        { text: 'where', number: false },
         { text: 'coin', number: false },
         { text: 'portfolio%', number: true },
         { text: 'price', number: true },
@@ -192,7 +192,7 @@ class Container extends Component {
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
     if ((e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
-        checkedRows: state.tableData.map((n: any, i: number) => i),
+        checkedRows: state.tableData ? state.tableData.map((n: any, i: number) => i) : [],
       }))
       return
     }

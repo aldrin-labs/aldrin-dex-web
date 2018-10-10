@@ -113,9 +113,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     const composeWithMocks = isShownMocks
       ? {
-          ...portfolio,
-          assets: portfolio!.assets!.concat(MOCKS),
-        }
+        ...portfolio,
+        assets: portfolio!.assets!.concat(MOCKS),
+      }
       : portfolio
 
     this.setState({ portfolio: composeWithMocks }, () =>
@@ -127,18 +127,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
-      const { portfolio } = nextProps.data.getProfile
+      const { portfolioAssets } = nextProps.data.myPortfolios[0]
       const { isShownMocks } = nextProps
 
-      if (!portfolio || !portfolio.assets) {
+      if (!portfolioAssets) {
         return
       }
 
       const composeWithMocks = isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio.assets.concat(MOCKS),
-          }
+          ...portfolio,
+          assets: portfolioAssets.concat(MOCKS),
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
@@ -178,7 +178,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       portfolioPerformance = [{ usd: '', btc: '', coin: '' }],
     } = portfolio
 
-    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
+    const allSums = calcAllSumOfPortfolioAsset(assets)
 
     const industryData = assets
       .map((row, i) => {
@@ -213,17 +213,17 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         }
         const industryPerformance = isUSDCurrently
           ? {
-              oneWeek: performance.usdWeek,
-              oneMonth: performance.usdMonth,
-              threeMonth: performance.usd3Months,
-              oneYear: performance.usdYear,
-            }
+            oneWeek: performance.usdWeek,
+            oneMonth: performance.usdMonth,
+            threeMonth: performance.usd3Months,
+            oneYear: performance.usdYear,
+          }
           : {
-              oneWeek: performance.btcWeek,
-              oneMonth: performance.btcMonth,
-              threeMonth: performance.btc3Months,
-              oneYear: performance.btcYear,
-            }
+            oneWeek: performance.btcWeek,
+            oneMonth: performance.btcMonth,
+            threeMonth: performance.btc3Months,
+            oneYear: performance.btcYear,
+          }
         // TODO: HAVE TO BE REWORKED (because it's just fix for first row without data in btc asset)
         const isElementHavePerformance = portfolioPerformance.find(
           (element) => element.coin === symbol
@@ -403,8 +403,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" key="usd" />
     ) : (
-      <Icon className="fa fa-btc" key="btc" />
-    )
+        <Icon className="fa fa-btc" key="btc" />
+      )
     // TODO: SHOULD BE REFACTORED above
 
     if (selectedRows.length === industryData.length) {
@@ -481,7 +481,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
         industryData.length === selectedRows.length) ||
       false
 
-    const textColor: string = 
+    const textColor: string =
       theme.palette.getContrastText(theme.palette.background.paper)
     let isThereAnySelectedRows = false
     if (selectedRows) {
@@ -544,8 +544,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                             {heading.name} <br /> {heading.additionName}
                           </>
                         ) : (
-                          heading.name
-                        )}
+                            heading.name
+                          )}
 
                         {isSorted && (
                           <ArrowDownward
@@ -555,10 +555,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                               marginLeft: '4px',
                               transform:
                                 currentSort &&
-                                currentSort.arg === 'ASC'
+                                  currentSort.arg === 'ASC'
                                   ? 'rotate(180deg)'
                                   : null,
-                            }} 
+                            }}
                           />
                         )}
                       </PTH>
@@ -594,8 +594,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                       const mainSymbol = isUSDCurrently ? (
                         <Icon className="fa fa-usd" key={`${idx}usd`} />
                       ) : (
-                        <Icon className="fa fa-btc" key={`${idx}btc`} />
-                      )
+                          <Icon className="fa fa-btc" key={`${idx}btc`} />
+                        )
 
                       const isSelected =
                         (selectedRows && selectedRows.indexOf(id) !== -1) ||
@@ -646,7 +646,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                           </PTD>
                           {cols &&
                             cols.map((col, innerIdx) => {
-                              let colorized = null 
+                              let colorized = null
                               if (
                                 col &&
                                 !Array.isArray(col) &&
@@ -666,7 +666,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                                     selectedTextColor={theme.palette.secondary.main}
                                     red={theme.palette.red.main}
                                     green={theme.palette.green.main}
-                                    colorized={ colorized }
+                                    colorized={colorized}
                                   >
                                     {col}
                                   </PTD>
@@ -702,13 +702,13 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                   onChangeData={this.onChangeData}
                 />
               ) : (
-                // <PieChart data={genAngleMocks(inds)} flexible />
-                <PieChartQuery
-                  theme={theme}
-                  isUSDCurrently={isUSDCurrently}
-                  isShownMocks={this.props.isShownMocks}
-                />
-              )}
+                  // <PieChart data={genAngleMocks(inds)} flexible />
+                  <PieChartQuery
+                    theme={theme}
+                    isUSDCurrently={isUSDCurrently}
+                    isShownMocks={this.props.isShownMocks}
+                  />
+                )}
             </ChartWrapper>
           </ChartContainer>
         </Container>
@@ -846,10 +846,10 @@ const PTD = styled.td`
     isSelected?: boolean
     red: string
     green: string
-    colorized: string |  null
+    colorized: string | null
     selectedTextColor: string
     textColor: string
-    }) => {
+  }) => {
     if (props.colorized) {
       if (props.colorized === 'green') {
         return props.green
@@ -909,7 +909,7 @@ const PTD = styled.td`
 const PTH = styled.th`
   color: ${(props: {
     textColor: string
-    }) => props.textColor
+  }) => props.textColor
   };
 
   font-family: Roboto, sans-serif;
@@ -987,14 +987,14 @@ const PTRBody = styled.tr`
 
   &:nth-child(even) {
     background-color: ${(props: {
-      isSelected?: boolean
-      isBase?: boolean
-      evenBackground: string
-      selectedBackground: string
-    }) =>     
-      props.isSelected
-        ? props.selectedBackground
-        : props.evenBackground};
+    isSelected?: boolean
+    isBase?: boolean
+    evenBackground: string
+    selectedBackground: string
+  }) =>
+    props.isSelected
+      ? props.selectedBackground
+      : props.evenBackground};
   }
 
 
