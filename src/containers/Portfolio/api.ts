@@ -113,10 +113,10 @@ export const getPortfolioQuery = gql`
   }
 `
 export const getPortfolioMainQuery = gql`
-  query getPortfolio {
+  query getPortfolio($baseCoin: String!) {
     myPortfolios {
       name
-      portfolioAssets(base: "BTC") {
+      portfolioAssets(base: $baseCoin) {
         _id
         coin
         name
