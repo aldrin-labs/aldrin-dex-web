@@ -238,13 +238,16 @@ const CustomTable = (props: Props) => {
             return (
               <React.Fragment key={ind}>
                 <TableRow className={classes.row}>
-                  {renderCheckBox(
-                    typeOfCheckbox,
-                    onChange,
-                    ind,
-                    expandedRow,
-                    selected
-                  )}
+                  <CustomTableCell padding="checkbox">
+                    {renderCheckBox(
+                      typeOfCheckbox,
+                      onChange,
+                      ind,
+                      expandedRow,
+                      selected
+                    )}
+                  </CustomTableCell>
+
                   {row.map((cell, cellIndex: number) => {
                     const numeric =
                       cell !== null &&
