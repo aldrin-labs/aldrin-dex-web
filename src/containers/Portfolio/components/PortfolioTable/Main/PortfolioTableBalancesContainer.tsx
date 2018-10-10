@@ -140,7 +140,7 @@ class Container extends Component {
   }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
-    const { numberOfDigitsAfterPoint: round } = this.this.state
+    const { numberOfDigitsAfterPoint: round } = this.state
 
     return data.map((row) => [
       row.exchange,
