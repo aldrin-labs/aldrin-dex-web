@@ -7,7 +7,7 @@ import {
   combineTableData,
   roundAndFormatNumber,
   composePortfolioWithMocks,
-  numberOfDigitsAfterPoint,
+  numberOfDigitsAfterPoint, roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import { zip, isObject } from 'lodash-es'
 
@@ -145,7 +145,7 @@ class Container extends Component {
     return data.map((row) => [
       row.exchange,
       { text: row.coin, style: { fontWeight: 700 } },
-      row.portfolioPercentage,
+      +roundPercentage(row.portfolioPercentage),
       +roundAndFormatNumber(row.price, round, false),
       row.quantity,
       +roundAndFormatNumber(row.price * row.quantity, round, false),
