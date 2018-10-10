@@ -14,7 +14,7 @@ import Checkbox from '@material-ui/core/Checkbox'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 
-import { Props } from './index.types'
+import { Props, Cell, OnChange } from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
 import { Typography, IconButton, Grow } from '@material-ui/core'
@@ -80,7 +80,33 @@ const styles = (theme: Theme) => ({
   },
 })
 
-const renderCell = (cell, id, numeric) => {
+const renderCheckBox = (
+  type: 'check' | 'expand' | null,
+  onChange: OnChange,
+  ind: number,
+  expandedRow: number | undefined = undefined,
+  selected = true
+) =>
+  type === 'expand' ? (
+    <Checkbox
+      checkedIcon={<ExpandLess />}
+      icon={<ExpandMore />}
+      onChange={(e) => {
+        onChange(e, ind)
+      }}
+      checked={ind === expandedRow}
+    />
+  ) : type === 'check' ? (
+    <Checkbox
+      indeterminate={false}
+      checked={selected}
+      onChange={(e) => {
+        onChange(e, ind)
+      }}
+    />
+  ) : null
+
+const renderCell = (cell: Cell, id: number, numeric: boolean) => {
   if (cell !== null && typeof cell === 'object') {
     return (
       <CustomTableCell
@@ -110,8 +136,8 @@ const renderCell = (cell, id, numeric) => {
 }
 {
   /* ToDo: - Add sorting
-            - Fixed Header And summary
-            - Add settings
+            - Fixed  summary
+            - Add settings render
             - Add render anything to Cell
           */
 }
@@ -139,10 +165,12 @@ const CustomTable = (props: Props) => {
   ) {
     return
   }
+
   const howManyColumns = withCheckboxes
     ? rows.head.length
     : rows.head.length - 1
   const expandableRows = typeof expandedRow === 'number'
+
   return (
     <Background className={classes.root}>
       <Table padding={padding ? padding : 'default'} className={classes.table}>
@@ -200,31 +228,22 @@ const CustomTable = (props: Props) => {
         <TableBody>
           {rows.body.map((row, ind: number) => {
             const selected = checkedRows.indexOf(ind) !== -1
+            const expandable = Array.isArray(row[row.length - 1])
+            const typeOfCheckbox: 'check' | 'expand' | null = withCheckboxes
+              ? 'check'
+              : expandableRows
+                ? 'expand'
+                : null
+
             return (
               <React.Fragment key={ind}>
                 <TableRow className={classes.row}>
-                  {withCheckboxes && (
-                    <CustomTableCell padding="checkbox">
-                      <Checkbox
-                        indeterminate={false}
-                        checked={selected}
-                        onChange={(e) => {
-                          onChange(e, ind)
-                        }}
-                      />
-                    </CustomTableCell>
-                  )}
-                  {expandableRows && (
-                    <CustomTableCell padding="checkbox">
-                      <Checkbox
-                        checkedIcon={<ExpandLess />}
-                        icon={<ExpandMore />}
-                        onChange={(e) => {
-                          onChange(e, ind)
-                        }}
-                        checked={ind === expandedRow}
-                      />
-                    </CustomTableCell>
+                  {renderCheckBox(
+                    typeOfCheckbox,
+                    onChange,
+                    ind,
+                    expandedRow,
+                    selected
                   )}
                   {row.map((cell, cellIndex: number) => {
                     const numeric =
@@ -232,20 +251,22 @@ const CustomTable = (props: Props) => {
                       (typeof cell.text === 'number' ||
                         typeof cell === 'number')
 
-                    if (
-                      cellIndex === row.length - 1 &&
-                      Array.isArray(row[row.length - 1])
-                    ) {
+                    // skiping rendering cell if it is array and last one
+                    //  this is how we are detecting if row expandable
+                    if (cellIndex === row.length - 1 && expandable) {
                       return
                     }
 
                     return renderCell(cell, cellIndex, numeric)
                   })}
                 </TableRow>
-                {Array.isArray(row[row.length - 1]) &&
+                {expandable &&
+                  // rendering content of expanded row if it is expandable
                   row[row.length - 1].map((collapsedRows, i: number) => {
                     return (
                       <Grow
+                        // but we hiding until have an expandedRow
+                        // saying to open expanded content
                         in={ind === expandedRow}
                         key={i}
                         unmountOnExit={true}
@@ -253,14 +274,16 @@ const CustomTable = (props: Props) => {
                       >
                         <TableRow className={classes.rowExpanded}>
                           <CustomTableCell padding="checkbox" />
-                          {collapsedRows.map((cell, cellIndex: number) => {
-                            const numeric =
-                              cell !== null &&
-                              (typeof cell.text === 'number' ||
-                                typeof cell === 'number')
+                          {collapsedRows.map(
+                            (cell: Cell, cellIndex: number) => {
+                              const numeric =
+                                cell !== null &&
+                                (typeof cell.text === 'number' ||
+                                  typeof cell === 'number')
 
-                            return renderCell(cell, cellIndex, numeric)
-                          })}
+                              return renderCell(cell, cellIndex, numeric)
+                            }
+                          )}
                         </TableRow>
                       </Grow>
                     )
@@ -272,7 +295,8 @@ const CustomTable = (props: Props) => {
         {Array.isArray(rows.footer) && (
           <TableFooter className={classes.footer}>
             <TableRow>
-              {withCheckboxes && <CustomTableCell padding="checkbox" />}
+              {withCheckboxes ||
+                (expandableRows && <CustomTableCell padding="checkbox" />)}
               {rows.footer.map((cell, cellIndex) => {
                 const numeric =
                   typeof cell.text === 'number' ||
