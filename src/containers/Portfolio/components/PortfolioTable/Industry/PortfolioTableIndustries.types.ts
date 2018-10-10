@@ -37,12 +37,9 @@ export interface IObj {
 }
 
 export interface IState {
-  selectedSum: IObj | null
-  selectedRows: number[] | null
+  expandedRow: number
   industryData: IObj[] | null
   portfolio: IPortfolio | null
   activeKeys: number[] | null
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
-  activeLegend: number | null
-  showChart: string
 }
