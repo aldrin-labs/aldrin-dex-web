@@ -41,6 +41,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     isShownChart: true,
     isUSDCurrently: true,
     tab: 'main',
+    baseCoin: 'USDT',
   }
 
   onToggleChart = () => {
@@ -48,14 +49,17 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   }
 
   onToggleUSDBTC = () => {
-    this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
+    this.setState((prevState) => ({
+      isUSDCurrently: !prevState.isUSDCurrently,
+      baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
+    }))
   }
   switchToUsd = () => {
     this.setState({ isUSDCurrently: true })
   }
 
   renderTab = () => {
-    const { tab, isShownChart, isUSDCurrently } = this.state
+    const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
     const { theme } = this.props
 
     let render = null
@@ -70,6 +74,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             activeKeys={this.props.activeKeys}
             tab={this.state.tab}
             theme={theme}
+            variables={{baseCoin}}
           />
         )
         break
