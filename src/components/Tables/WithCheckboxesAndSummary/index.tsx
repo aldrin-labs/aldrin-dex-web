@@ -11,11 +11,13 @@ import { hexToRgbAWithOpacity } from '@styles/helpers'
 import styled from 'styled-components'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Checkbox from '@material-ui/core/Checkbox'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+import ExpandLess from '@material-ui/icons/ExpandLess'
 
-import { Props, Row } from './index.types'
+import { Props } from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
-import { Typography, IconButton } from '@material-ui/core'
+import { Typography, IconButton, Grow } from '@material-ui/core'
 
 const CustomTableCell = withStyles((theme) => ({
   head: {
@@ -46,8 +48,14 @@ const styles = (theme: Theme) => ({
   root: {
     width: '100%',
     overflowX: 'auto',
-    overflowY: 'scroll',
   },
+  rowExpanded: {
+    backgroundColor: theme.palette.action.selected,
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+
   indeterminateCheckbox: {
     color: theme.palette.secondary.main,
   },
@@ -72,14 +80,14 @@ const styles = (theme: Theme) => ({
   },
 })
 
-const renderCell = (cell, i, numeric) => {
+const renderCell = (cell, id, numeric) => {
   if (cell !== null && typeof cell === 'object') {
     return (
       <CustomTableCell
         scope="row"
         variant="body"
         style={{ color: cell.color, ...cell.style }}
-        key={i}
+        key={id}
         numeric={numeric}
       >
         {cell.text}
@@ -88,14 +96,14 @@ const renderCell = (cell, i, numeric) => {
   }
   if (typeof cell !== 'object') {
     return (
-      <CustomTableCell scope="row" variant="body" numeric={numeric} key={i}>
+      <CustomTableCell scope="row" variant="body" numeric={numeric} key={id}>
         {cell}
       </CustomTableCell>
     )
   }
 
   return (
-    <CustomTableCell scope="row" variant="body" numeric={numeric} key={i}>
+    <CustomTableCell scope="row" variant="body" numeric={numeric} key={id}>
       {''}
     </CustomTableCell>
   )
@@ -110,6 +118,7 @@ const renderCell = (cell, i, numeric) => {
 
 const CustomTable = (props: Props) => {
   const {
+    expandedRow,
     classes,
     padding = 'dense',
     rows = { head: [], body: [], footer: [] },
@@ -133,6 +142,7 @@ const CustomTable = (props: Props) => {
   const howManyColumns = withCheckboxes
     ? rows.head.length
     : rows.head.length - 1
+  const expandableRows = typeof expandedRow === 'number'
   return (
     <Background className={classes.root}>
       <Table padding={padding ? padding : 'default'} className={classes.table}>
@@ -172,6 +182,7 @@ const CustomTable = (props: Props) => {
                 />
               </CustomTableCell>
             )}
+            {expandableRows && <CustomTableCell padding="checkbox" />}
             {rows.head.map((cell) => {
               return (
                 <CustomTableCell
@@ -190,26 +201,71 @@ const CustomTable = (props: Props) => {
           {rows.body.map((row, ind: number) => {
             const selected = checkedRows.indexOf(ind) !== -1
             return (
-              <TableRow className={classes.row} key={ind}>
-                {withCheckboxes && (
-                  <CustomTableCell padding="checkbox">
-                    <Checkbox
-                      indeterminate={false}
-                      checked={selected}
-                      onChange={(e) => {
-                        onChange(e, ind)
-                      }}
-                    />
-                  </CustomTableCell>
-                )}
-                {row.map((cell, i: number) => {
-                  const numeric =
-                    cell !== null &&
-                    (typeof cell.text === 'number' || typeof cell === 'number')
+              <React.Fragment key={ind}>
+                <TableRow className={classes.row}>
+                  {withCheckboxes && (
+                    <CustomTableCell padding="checkbox">
+                      <Checkbox
+                        indeterminate={false}
+                        checked={selected}
+                        onChange={(e) => {
+                          onChange(e, ind)
+                        }}
+                      />
+                    </CustomTableCell>
+                  )}
+                  {expandableRows && (
+                    <CustomTableCell padding="checkbox">
+                      <Checkbox
+                        checkedIcon={<ExpandLess />}
+                        icon={<ExpandMore />}
+                        onChange={(e) => {
+                          onChange(e, ind)
+                        }}
+                        checked={ind === expandedRow}
+                      />
+                    </CustomTableCell>
+                  )}
+                  {row.map((cell, cellIndex: number) => {
+                    const numeric =
+                      cell !== null &&
+                      (typeof cell.text === 'number' ||
+                        typeof cell === 'number')
 
-                  return renderCell(cell, i, numeric)
-                })}
-              </TableRow>
+                    if (
+                      cellIndex === row.length - 1 &&
+                      Array.isArray(row[row.length - 1])
+                    ) {
+                      return
+                    }
+
+                    return renderCell(cell, cellIndex, numeric)
+                  })}
+                </TableRow>
+                {Array.isArray(row[row.length - 1]) &&
+                  row[row.length - 1].map((collapsedRows, i: number) => {
+                    return (
+                      <Grow
+                        in={ind === expandedRow}
+                        key={i}
+                        unmountOnExit={true}
+                        mountOnEnter={true}
+                      >
+                        <TableRow className={classes.rowExpanded}>
+                          <CustomTableCell padding="checkbox" />
+                          {collapsedRows.map((cell, cellIndex: number) => {
+                            const numeric =
+                              cell !== null &&
+                              (typeof cell.text === 'number' ||
+                                typeof cell === 'number')
+
+                            return renderCell(cell, cellIndex, numeric)
+                          })}
+                        </TableRow>
+                      </Grow>
+                    )
+                  })}
+              </React.Fragment>
             )
           })}
         </TableBody>
@@ -217,7 +273,7 @@ const CustomTable = (props: Props) => {
           <TableFooter className={classes.footer}>
             <TableRow>
               {withCheckboxes && <CustomTableCell padding="checkbox" />}
-              {rows.footer.map((cell, i: number) => {
+              {rows.footer.map((cell, cellIndex) => {
                 const numeric =
                   typeof cell.text === 'number' ||
                   typeof cell === 'number' ||
@@ -234,7 +290,7 @@ const CustomTable = (props: Props) => {
                   },
                 }
 
-                return renderCell(footerCell, i, numeric)
+                return renderCell(footerCell, cellIndex, numeric)
               })}
             </TableRow>
           </TableFooter>
