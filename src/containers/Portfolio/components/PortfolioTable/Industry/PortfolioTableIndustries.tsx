@@ -47,19 +47,6 @@ const tableHeadings = [
   },
 ]
 
-const industryStateObject = ({
-  data,
-  theme,
-  isUSDCurrently,
-  filterValueSmallerThenPercentage = 0,
-}) => ({
-  industryData: combineIndustryData(
-    data,
-    filterValueSmallerThenPercentage,
-    theme.palette.red.main,
-    theme.palette.green.main
-  ),
-})
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
@@ -132,7 +119,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 height={300}
                 radius={150}
                 thickness={15}
-                data={chartCoins} 
+//                data={chartCoins} 
               />
             </CardContentWrapper>
           </ChartWrapper>
