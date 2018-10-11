@@ -18,6 +18,7 @@ import {
   StyledDivider,
   ChartTitle,
 } from './PortfolioTableBalances.styles'
+import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
@@ -41,16 +42,21 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
         <GridContainer>
           <TableWrapper elevation={8}>
-            {Array.isArray(tableData) && (
-              <Table
-                title="Portfolio"
-                checkedRows={checkedRows}
-                withCheckboxes={true}
-                onChange={onCheckboxClick}
-                onSelectAllClick={onSelectAllClick}
-                rows={putDataInTable()}
-              />
-            )}
+            <TableWrapper style={{ width: '60%' }} elevation={8}>
+              {Array.isArray(tableData) && (
+                <Table
+                  title="Portfolio"
+                  checkedRows={checkedRows}
+                  withCheckboxes={true}
+                  onChange={onCheckboxClick}
+                  onSelectAllClick={onSelectAllClick}
+                  rows={putDataInTable()}
+                />
+              )}
+            </TableWrapper>
+            <TableWrapper style={{ width: '40%' }} elevation={8}>
+              <TradeOrderHistoryTable />
+            </TableWrapper>
           </TableWrapper>
 
           <StyledDivider light={true} />

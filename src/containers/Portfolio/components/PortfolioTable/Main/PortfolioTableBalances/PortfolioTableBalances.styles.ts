@@ -65,7 +65,7 @@ export const StyledDivider = styled(Divider)`
 export const TableWrapper = styled(Paper)`
   display: flex;
   margin: 0 20px 5px;
-  flex-direction: column;
+  width: 100%;
   overflow-x: scroll;
 
   ${customAquaScrollBar};
