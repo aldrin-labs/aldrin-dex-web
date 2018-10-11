@@ -18,7 +18,7 @@ import { IndProps } from '@containers/Portfolio/interfaces'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { onSortStrings, roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
-import QueryRenderer from '@components/QueryRenderer'
+import { QueryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { Paper, Grid, Card } from '@material-ui/core'
@@ -336,7 +336,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               onChange={this.expandRow}
               expandedRow={this.state.expandedRow}
               rows={this.putDataInTable()}
-              title="Industries"
+              title="Industries Performance"
             />
           </Wrapper>
         </Grid>
@@ -379,20 +379,15 @@ const PTextBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2d3136;
 `
-
-const MainDataWrapper = (props) => (
-  <QueryRenderer
-    component={PortfolioTableIndustries}
-    query={getPortfolioQuery}
-    {...props}
-  />
-)
 
 const mapStateToProps = (store: object) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
-export default connect(mapStateToProps)(MainDataWrapper)
+export default connect(mapStateToProps)(
+  QueryRendererHoc({
+    query: getPortfolioQuery,
+  })(PortfolioTableIndustries)
+)
