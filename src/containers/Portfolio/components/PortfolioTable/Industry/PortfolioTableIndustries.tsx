@@ -47,28 +47,19 @@ const tableHeadings = [
   },
 ]
 
-const chartCoins = [
-  {
-    label: "Payments",
-    realValue: 25.1,
-  },
-  {
-    label: "Entertainment",
-    realValue: 10,
-  },
-  {
-    label: "Blockchain platform",
-    realValue: 14,
-  },
-  {
-    label: "Privacy coin",
-    realValue: 17,
-  },
-  {
-    label: "Some other things",
-    realValue: 30,
-  },
-]
+const industryStateObject = ({
+  data,
+  theme,
+  isUSDCurrently,
+  filterValueSmallerThenPercentage = 0,
+}) => ({
+  industryData: combineIndustryData(
+    data,
+    filterValueSmallerThenPercentage,
+    theme.palette.red.main,
+    theme.palette.green.main
+  ),
+})
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
@@ -81,6 +72,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   componentDidMount() {
     const { data, switchToUsd } = this.props
+    console.log('data', data)
     switchToUsd()
     this.setState({ industryData: combineIndustryData(data) })
   }
