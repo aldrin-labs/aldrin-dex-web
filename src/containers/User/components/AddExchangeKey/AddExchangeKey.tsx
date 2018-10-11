@@ -61,7 +61,7 @@ const formikEnhancer = withFormik({
         variables,
         update: (proxy, { data: { addExchangeKey } }) => {
           const proxyData = proxy.readQuery({ query: API.getKeysQuery })
-          proxyData.getProfile.keys.push(addExchangeKey)
+          proxyData.myPortfolios[0].keys.push(addExchangeKey)
           proxy.writeQuery({ query: API.getKeysQuery, data: proxyData })
         },
       })
@@ -150,7 +150,7 @@ class AddExchangeKeyComponent extends React.Component {
           <SExchangeSelect>
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
             <SelectExchangeList
-              isClearable
+              isClearable={true}
               onChange={handleSelectChangePrepareForFormik.bind(
                 this,
                 'exchange'

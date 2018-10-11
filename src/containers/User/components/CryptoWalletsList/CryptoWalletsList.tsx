@@ -20,20 +20,20 @@ class CryptoWalletsListComponent extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.data.getProfile) {
-      this.setState({ wallets: this.props.data.getProfile.cryptoWallets })
+    if (this.props.data.myPortfolios && this.props.data.myPortfolios.length > 0) {
+      this.setState({ wallets: this.props.data.myPortfolios[0].cryptoWallets })
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data.getProfile) {
-      this.setState({ wallets: nextProps.data.getProfile.cryptoWallets })
+    if (this.props.data.myPortfolios && this.props.data.myPortfolios.length > 0) {
+      this.setState({ wallets: nextProps.data.myPortfolios[0].cryptoWallets })
     }
   }
 
   render() {
     if (this.props.data.loading) {
-      return <Loading centerAligned />
+      return <Loading centerAligned={true} />
     }
 
     const { wallets } = this.state
@@ -44,12 +44,12 @@ class CryptoWalletsListComponent extends React.Component {
           <TableHead>
             <TableRow>
               <CryptoWalletTableCell>Name</CryptoWalletTableCell>
-              <CryptoWalletTableCell numeric>
+              <CryptoWalletTableCell numeric={true}>
                 Blockchain / Network
               </CryptoWalletTableCell>
-              <CryptoWalletTableCell numeric>Address</CryptoWalletTableCell>
-              <CryptoWalletTableCell numeric>Date</CryptoWalletTableCell>
-              <CryptoWalletTableCell numeric>Delete key</CryptoWalletTableCell>
+              <CryptoWalletTableCell numeric={true}>Address</CryptoWalletTableCell>
+              <CryptoWalletTableCell numeric={true}>Date</CryptoWalletTableCell>
+              <CryptoWalletTableCell numeric={true}>Delete key</CryptoWalletTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -65,16 +65,16 @@ class CryptoWalletsListComponent extends React.Component {
                 return (
                   <TableRow key={_id}>
                     <CryptoWalletTableCell>{name}</CryptoWalletTableCell>
-                    <CryptoWalletTableCell numeric>
-                      {baseAsset ? baseAsset.name : ''}
+                    <CryptoWalletTableCell numeric={true}>
+                      {baseAsset}
                     </CryptoWalletTableCell>
-                    <CryptoWalletTableCell numeric>
+                    <CryptoWalletTableCell numeric={true}>
                       {address}
                     </CryptoWalletTableCell>
-                    <CryptoWalletTableCell numeric>
+                    <CryptoWalletTableCell numeric={true}>
                       {<FormattedDate value={date} />}
                     </CryptoWalletTableCell>
-                    <CryptoWalletTableCell numeric>
+                    <CryptoWalletTableCell numeric={true}>
                       <DeleteCryptoWalletDialog wallet={wallet} />
                     </CryptoWalletTableCell>
                   </TableRow>
@@ -104,7 +104,7 @@ const CryptoWalletsTable = styled(Table)`
   table-layout: fixed;
 `
 
-export default function() {
+export default function () {
   return (
     <QueryRenderer
       component={CryptoWalletsListComponent}

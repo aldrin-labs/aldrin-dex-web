@@ -97,10 +97,6 @@ const SNav = styled.nav`
   justify-content: center;
   align-items: center;
   flex-direction: row;
-
-  @media (max-width: 840px) {
-    display: none;
-  }
 `
 
 const LoginWrapper = styled.div`

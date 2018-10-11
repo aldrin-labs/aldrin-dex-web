@@ -33,12 +33,12 @@ import {
   ChartWrapper,
   ChartContainer,
   Chart,
-  PTWrapper,
   PTextBox,
   Container,
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
+import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -425,10 +425,9 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
 
-
     if (tableDataHasData) {
       return (
-        <PTWrapper tableData={tableDataHasData} background={theme.palette.background.paper}>
+        <PTWrapper tableData={tableDataHasData}>
           {children}
           <PTextBox>Add account for Portfolio</PTextBox>
         </PTWrapper>
@@ -436,7 +435,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={true} background={theme.palette.background.paper}>
+      <PTWrapper tableData={true}>
         {children}
         <Content>
           <Container>
@@ -447,7 +446,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 totalStaticRows,
                 filterValueSmallerThenPercentage,
                 isUSDCurrently,
-                theme
+                theme,
               }}
               onSortTable={this.onSortTable}
             />
@@ -466,7 +465,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 undistributedMoney,
                 isUSDCurrently,
                 addMoneyInputValue,
-                theme
+                theme,
               }}
               onSortTable={this.onSortTable}
               onSaveClick={this.onSaveClick}

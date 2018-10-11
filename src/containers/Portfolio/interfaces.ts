@@ -18,6 +18,7 @@ export interface IState {
 
 export interface IPortfolio {
   name: string | null
+  cryptoWallets: any
   processing: boolean | null
   assetIds: (string | null)[] | null
   assets:
@@ -91,6 +92,7 @@ export interface IndProps {
 
 export interface ITableProps {
   isShownChart: boolean
+  showTable?: boolean
   loading: boolean
   activeKeys: string[]
   subscription: any
@@ -130,5 +132,4 @@ export interface ITableProps {
         | null
     } | null
   } | null
-
 }

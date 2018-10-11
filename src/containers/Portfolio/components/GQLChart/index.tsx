@@ -19,15 +19,15 @@ export default class GQLChart extends React.Component {
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
       // tslint:disable-next-line:no-object-mutation
-      newState.coins = newProps.coins
-        .map((x) => x.symbol)
+      newState.coins = newProps.coins.map((x) => x.coin)
       // tslint:disable-next-line:no-object-mutation
       newState.assets = newProps.coins
       // tslint:disable-next-line:no-object-mutation
       newState.sum = newProps.coins
         .map((x) => x.quantity)
         .reduce((prev, next) => prev + next, 0)
-
+      console.log(newState)
+      console.log(newProps)
       return newState
     }
 
@@ -49,7 +49,7 @@ export default class GQLChart extends React.Component {
       newState.days = days
       newState.unixTimestampFrom = area.left
       newState.unixTimestampTo = area.right
-      newState.lastDrawLocation = null;
+      newState.lastDrawLocation = null
 
       return newState
     })
@@ -61,22 +61,20 @@ export default class GQLChart extends React.Component {
     }
     this.setState((prevState) => {
       const newState = { ...prevState }
-      console.log(newState);
       newState.unixTimestampFrom = Math.floor(area.left)
       newState.unixTimestampTo = Math.floor(area.right)
       if (newState.lastDrawLocation === null) {
         newState.lastDrawLocation = area
       } else {
-        newState.lastDrawLocation = prevState.lastDrawLocation;
-        newState.lastDrawLocation.left = newState.unixTimestampFrom;
-        newState.lastDrawLocation.right = newState.unixTimestampTo;
+        newState.lastDrawLocation = prevState.lastDrawLocation
+        newState.lastDrawLocation.left = newState.unixTimestampFrom
+        newState.lastDrawLocation.right = newState.unixTimestampTo
       }
       return newState
     })
   }
 
   render() {
-    console.log(this.state);
     return (
       <QueryRenderer
         component={PortfolioChart}

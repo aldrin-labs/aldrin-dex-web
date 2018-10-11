@@ -1,19 +1,20 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import { Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import AccountIcon from '@material-ui/icons/Settings'
+import Settings from '@material-ui/icons/Settings'
+import Main from '@material-ui/icons/LineStyle'
+import Industry from '@material-ui/icons/PieChart'
+import Rebalance from '@material-ui/icons/SwapHoriz'
+import Correlation from '@material-ui/icons/ViewModule'
+import Optimization from '@material-ui/icons/InsertChartOutlined'
 import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
-import Switch from '@material-ui/core/Switch'
-import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper'
 
-import SvgIcon from '@components/SvgIcon/SvgIcon'
-import gridLoader from '@icons/grid.svg'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
-import Menu from '@containers/Portfolio/components/PortfolioTable/ThreeDotsMenu'
-import { UPDATE_PORTFOLIO } from '@containers/Portfolio/api'
+import { Tooltip, Typography, Fade } from '@material-ui/core'
 
 class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
@@ -38,250 +39,100 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 
   render() {
-    const { tab, portfolio, toggleWallets, isUSDCurrently, theme } = this.props
+    const { tab, toggleWallets, isUSDCurrently, theme } = this.props
+    const switchUSDBTC = tab === 'main' || tab === 'industry'
 
     return (
-      <React.Fragment>
-        <PTHeadingBlock
-          background={theme.palette.background.paper}
+      <Container elevation={0}>
+        <Tooltip title="Main" enterDelay={0} placement="right">
+          <Tab
+            color={tab === 'main' ? 'secondary' : 'primary'}
+            onClick={() => this.onChangeTab('main')}
+          >
+            <Main />
+          </Tab>
+        </Tooltip>
+
+        <Tooltip title="Industry" enterDelay={0} placement="right">
+          <Tab
+            color={tab === 'industry' ? 'secondary' : 'primary'}
+            onClick={() => this.onChangeTab('industry')}
+          >
+            <Industry />
+          </Tab>
+        </Tooltip>
+
+        <Tooltip title="Rebalance" enterDelay={0} placement="right">
+          <Tab
+            color={tab === 'rebalance' ? 'secondary' : 'primary'}
+            onClick={() => this.onChangeTab('rebalance')}
+          >
+            <Rebalance />
+          </Tab>
+        </Tooltip>
+
+        <Tooltip title="Correlation" enterDelay={0} placement="right">
+          <Tab
+            color={tab === 'correlation' ? 'secondary' : 'primary'}
+            onClick={() => this.onChangeTab('correlation')}
+          >
+            <Correlation />
+          </Tab>
+        </Tooltip>
+
+        <Tooltip title="Optimization" enterDelay={0} placement="right">
+          <Tab
+            color={tab === 'optimization' ? 'secondary' : 'primary'}
+            onClick={() => this.onChangeTab('optimization')}
+          >
+            <Optimization />
+          </Tab>
+        </Tooltip>
+
+        <DividerWithMargin />
+
+        <Tab
+          color="default"
+          onClick={() => {
+            toggleWallets()
+          }}
         >
-          <TabContainer>
-            <Menu onMenuItemClick={this.onChangeTab} />
-            <ToggleAccountsBtnContainer>
-              <IconButton
-                onClick={() => {
-                  toggleWallets()
-                }}
-              >
-                <AccountIcon />
-              </IconButton>
-            </ToggleAccountsBtnContainer>
-            <Tab
-              color="primary"
-              onClick={() => this.onChangeTab('main')}
-              variant="contained"
-              disabled={tab === 'main'}
-            >
-              Main
-            </Tab>
-
-            <Tab
-              color="primary"
-              onClick={() => this.onChangeTab('industry')}
-              variant="contained"
-              disabled={tab === 'industry'}
-            >
-              Industry
-            </Tab>
-
-            <Tab
-              color="primary"
-              onClick={() => this.onChangeTab('rebalance')}
-              variant="contained"
-              disabled={tab === 'rebalance'}
-            >
-              Rebalance
-            </Tab>
-
-            <Tab
-              color="primary"
-              onClick={() => this.onChangeTab('correlation')}
-              variant="contained"
-              disabled={tab === 'correlation'}
-            >
-              Correlation
-            </Tab>
-
-            <Tab
-              color="primary"
-              onClick={() => this.onChangeTab('optimization')}
-              variant="contained"
-              disabled={tab === 'optimization'}
-            >
-              Optimization
-            </Tab>
-          </TabContainer>
-
-          <ButtonContainer>
-            {/*<ToggleBtn onClick={this.onToggleChart}>*/}
-            {/*<SvgIcon src={filterListIcon} width={24} height={24} />*/}
-            {/*</ToggleBtn>*/}
-
-            {tab !== 'correlation' &&
-              tab !== 'optimization' &&
-              tab !== 'rebalance' && (
-                <SwitchRefreshContainer>
-                  <MoveRightFix fix={tab === 'main'}>
-                    <FlexWrapper>
-                      <Typography variant="caption">BTC</Typography>
-                      <Switch
-                        onChange={this.onToggleUSDBTC}
-                        checked={isUSDCurrently}
-                      />
-                      <Typography variant="caption">USD</Typography>
-                    </FlexWrapper>
-                  </MoveRightFix>
-
-                  {tab === 'main' && (
-                    <Mutation mutation={UPDATE_PORTFOLIO}>
-                      {(updatePortfolio, { data, loading }) => {
-                        const isLoading =
-                          loading || (portfolio && portfolio.processing)
-
-                        return (
-                          <RefreshButton size="small" onClick={updatePortfolio}>
-                            {isLoading ? (
-                              <SvgIcon
-                                src={gridLoader}
-                                width={24}
-                                height={24}
-                              />
-                            ) : (
-                              'Refresh'
-                            )}
-                          </RefreshButton>
-                        )
-                      }}
-                    </Mutation>
-                  )}
-                </SwitchRefreshContainer>
-              )}
-          </ButtonContainer>
-        </PTHeadingBlock>
-      </React.Fragment>
+          <Settings />
+        </Tab>
+        <Fade in={switchUSDBTC}>
+          <div>
+            <DividerWithMargin />
+            <Typography align="center" variant="caption" color="textSecondary">
+              Switch to
+            </Typography>
+            <Button color="secondary" onClick={this.onToggleUSDBTC}>
+              {' '}
+              {isUSDCurrently ? 'BTC' : 'USD'}
+            </Button>
+          </div>
+        </Fade>
+      </Container>
     )
   }
 }
 
-const RefreshButton = styled(Button)`
-  height: 1rem;
-  margin-right: 0.25rem;
+const DividerWithMargin = styled(Divider)`
+  margin: 0.5rem 0;
 `
 
-const MoveRightFix = styled.div`
-  position: relative;
-  left: ${(props: { fix: boolean }) => (props.fix ? '6px' : 0)};
-`
-const FlexWrapper = styled.div`
+const Container = styled(Paper)`
   display: flex;
-  align-items: center;
-  margin-right: 0.5rem;
-`
-
-const PTHeadingBlock = styled.div`
-  display: flex;
-  background-color: ${(props: { background: string }) => props.background};
-  position: sticky;
-  top: 0;
-  z-index: 99;
-
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  padding: 17px;
-  min-height: 100px;
-
-  @media (max-width: 1290px) {
-    justify-content: flex-start;
-  }
-  @media (max-width: 700px) {
-    &:first-child {
-      align-items: flex-start;
-      padding: 20px 10px 10px;
-    }
-    &:not(:first-child) {
-      padding-top: 30px;
-      padding-bottom: 10px;
-    }
-  }
-
-  @media (max-height: 700px) {
-    min-height: 60px;
-  }
-
-  @media (max-width: 425px) {
-    min-height: 60px;
-    align-items: flex-start;
-    padding: 10px;
-
-    &:not(:first-child) {
-      margin-bottom: 15px;
-    }
+  flex-direction: column;
+  width: 64px;
+  height: calc(100vh - 80px);
+  z-index: 1;
+  && {
+    border-radius: 0;
   }
 `
 
-const ButtonContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  height: 100%;
-  position: absolute;
-  right: 0;
-
-  @media (max-width: 1080px) {
-    right: 1rem;
-    left: inherit;
-  }
-  @media (max-width: 840px) {
-    margin-right: 1rem;
-  }
-
-  @media (max-width: 710px) {
-    padding-top: 10px;
-    margin-right: 0;
-    flex-flow: wrap;
-  }
-`
-
-const ToggleAccountsBtnContainer = styled.div`
-  display: block;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-
-  @media (min-width: 1290px) {
-    display: none;
-  }
-`
-
-const Tab = styled(Button)`
-  @media (max-width: 1290px) {
-    display: none;
-    width: 8rem;
-    padding: 0.5rem;
-  }
-`
-
-const TabContainer = styled.div`
-  width: 70%;
-  display: grid;
-  grid-gap: 1.5rem;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 1fr;
-  align-items: center;
-
-  @media (max-width: 1290px) {
-    grid-template-columns: repeat(2, 4rem);
-  }
-`
-
-const SwitchRefreshContainer = styled.div`
-  display: flex;
-  align-items: center;
-
-  @media (max-width: 1080px) {
-    padding-top: 20px;
-  }
-  @media (max-width: 710px) {
-    padding-top: 10px;
-  }
-
-  @media (max-width: 615px) {
-    flex-direction: column;
-  }
-
-  @media (max-width: 500px) {
-    padding-top: 20px;
-  }
+const Tab = styled(IconButton)`
+  margin: 0.5rem auto;
 `
 
 const mapStateToProps = (store) => ({

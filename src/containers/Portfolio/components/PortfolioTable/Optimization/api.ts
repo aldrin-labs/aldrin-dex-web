@@ -2,21 +2,17 @@ import gql from 'graphql-tag'
 
 export const getCoinsForOptimization = gql`
   query getPortfolio {
-    getProfile {
-      portfolioId
-      portfolio {
-        assetIds
-        assets {
-          _id
-          quantity
-          asset {
-            _id
-            name
-            symbol
-            priceUSD
-            priceBTC
-          }
-        }
+    myPortfolios {
+      name
+      portfolioAssets(base: "USDT") {
+        _id
+        coin
+        name
+        where
+        price
+        quantity
+        realized
+        unrealized
       }
     }
   }

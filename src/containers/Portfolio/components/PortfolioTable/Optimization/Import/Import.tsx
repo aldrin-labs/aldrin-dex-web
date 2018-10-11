@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react'
+import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
 import { Button as ButtonMUI, Typography } from '@material-ui/core'
@@ -11,9 +12,7 @@ import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
 import moment from 'moment'
-
 import { RebalancePeriod, RiskProfile } from './dataForSelector'
-// import { SelectR } from '@styles/cssUtils'
 import ReactSelectComponent from '@components/ReactSelectComponent'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
@@ -23,20 +22,13 @@ import {
   IData,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import.types'
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
-// import SelectDates from '@components/SelectTimeRangeDropdown'
-
 import {
   SwitchButtonsWrapper,
-  HelperForCentering,
   InputContainer,
   TableContainer,
-  Input,
   Chart,
   ImportData,
 } from './Import.styles'
-// import { Chart, ImportData } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.styles'
-import styled from 'styled-components'
-import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
 const mockData = [
   { coin: 'BCH', percentage: 10.87 },
@@ -67,11 +59,14 @@ export default class Import extends PureComponent<IProps> {
     } else {
       assets =
         this.props.data &&
-        this.props.data.getProfile &&
-        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+        this.props.data.myPortfolios[0] &&
+        this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
     }
 
-    this.props.updateData(this.sumSameCoins(assets))
+    console.log('assets in import portfolio', assets);
+
+    // this.props.updateData(this.sumSameCoins(assets))
+    this.props.updateData(assets)
   }
 
   sumSameCoins = (rawData: IData[]) => {
@@ -152,9 +147,7 @@ export default class Import extends PureComponent<IProps> {
         'XLM',
       ],
       initialCapital: +storeData
-        .reduce((acc, el: IData) => {
-          return (acc += +el.percentage)
-        }, 0)
+        .reduce((acc, el: IData) => acc + +el.percentage, 0)
         .toFixed(2),
       baseCurrency: baseCoin,
       rebalancePeriod: +rebalancePeriod,
@@ -185,7 +178,6 @@ export default class Import extends PureComponent<IProps> {
       fetchPolicy: 'network-only',
     })
 
-    console.log(backendResult)
 
     if (backendResult.portfolioOptimization === '') {
       showWarning('You get empty response! 🙈')
@@ -200,12 +192,6 @@ export default class Import extends PureComponent<IProps> {
     )
     console.log(backendResultParsed)
 
-    console.log(
-      'thePercentages',
-      backendResultParsed.returns[0].weights.map((elem) => elem * 100)
-    )
-    // const optimizedData = backendResultParsed.returns[0].weights.map((elem)=> elem * 100)
-    // const optimizedData = backendResultParsed.returns[0].weights.map((elem)=> elem * 100)
     const optimizedData = backendResultParsed.returns
 
     this.setState({ optimizedData })
@@ -281,11 +267,11 @@ export default class Import extends PureComponent<IProps> {
     }, 2000)
   }
 
-  isEqual = (assets: IData[], storeData: IData[]): boolean => {
-    const s = this.sumSameCoins(assets)
-
-    return isEqual(s, storeData)
-  }
+  // isEqual = (assets: IData[], storeData: IData[]): boolean => {
+  //   const s = this.sumSameCoins(assets)
+  //
+  //   return isEqual(s, storeData)
+  // }
 
   addRow = (name: string, value: number) => {
     if (this.props.filterValueSmallerThenPercentage >= 0) {
@@ -316,6 +302,9 @@ export default class Import extends PureComponent<IProps> {
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
     }))
+
+    console.log('storeData', storeData);
+
     // const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
     //   x: el.coin,
     //   y: Number(Number(el.percentage).toFixed(2)),
@@ -415,14 +404,10 @@ export default class Import extends PureComponent<IProps> {
     } else {
       assets =
         this.props.data &&
-        this.props.data.getProfile &&
-        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+        this.props.data.myPortfolios[0] &&
+        this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
     }
 
-    const data: IData[] =
-      this.props.data &&
-      this.props.data.getProfile &&
-      this.props.transformData(this.props.data.getProfile.portfolio.assets)
     if (!storeData) {
       return (
         <Typography variant="display1" color="error">
@@ -431,7 +416,9 @@ export default class Import extends PureComponent<IProps> {
       )
     }
 
-    console.log('storeData', storeData);
+    console.log('assets in RENDER', assets);
+
+    console.log('storeData in RENDER', storeData);
 
 
     const textColor: string = this.props.theme.palette.getContrastText(
@@ -455,6 +442,7 @@ export default class Import extends PureComponent<IProps> {
       <ApolloConsumer>
         {(client) => (
           <ImportData>
+            <TableSelectsContaienr>
             <InputContainer background={theme.palette.background.paper}>
               <InputElementWrapper>
                 <StyledInputLabel color={textColor}>Base coin</StyledInputLabel>
@@ -498,7 +486,7 @@ export default class Import extends PureComponent<IProps> {
                     onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
                     focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                     onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
-                    displayFormat="MM DD YYYY"
+                    displayFormat="MM-DD-YYYY"
                   />
                 </StyledWrapperForDateRangePicker>
               </InputElementWrapper>
@@ -586,15 +574,13 @@ export default class Import extends PureComponent<IProps> {
               <SwitchButtonsWrapper>
                 <SwitchButtons
                   btnClickProps={client}
-                  // onBtnClick={onBtnClick}
                   onBtnClick={onNewBtnClick}
                   values={this.state.percentages}
-                  // show={showSwitchButtons}
                   show={this.state.optimizedData.length > 1}
                   activeButton={activeButton}
                 />
                 <ButtonMUI
-                  disabled={this.isEqual(assets, storeData)}
+                  disabled={isEqual(assets, storeData)}
                   color="secondary"
                   style={{
                     alignSelf: 'center',
@@ -608,8 +594,6 @@ export default class Import extends PureComponent<IProps> {
               <Table
                 onPlusClick={this.addRow}
                 data={storeData}
-                // data={mockData}
-                // optimizedData={optimizedData}
                 optimizedData={
                   this.state.optimizedData.length > 1
                     ? this.state.optimizedData[activeButton].weights
@@ -646,6 +630,7 @@ export default class Import extends PureComponent<IProps> {
                 </StyledInputLabel>
               </TableDataDesc>
             </TableContainer>
+          </TableSelectsContaienr>
             {this.renderBarChart()}
           </ImportData>
         )}
@@ -756,9 +741,16 @@ const StyledWrapperForDateRangePicker = styled.div`
 
 const ChartContainer = styled.div`
   min-height: 400px;
-  width: 50%;
+  width: 49%;
   margin: 0 0 0 2rem;
   padding: 15px;
   box-shadow: 0 2px 6px 0 #00000066;
   background: ${(props: { background: string }) => props.background};
+`
+
+
+const TableSelectsContaienr = styled.div`
+  width: 49%;
+  display: flex;
+  flex-wrap: wrap;
 `

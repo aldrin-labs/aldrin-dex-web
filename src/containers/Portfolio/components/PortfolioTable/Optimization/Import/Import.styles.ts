@@ -40,12 +40,13 @@ const InputContainer = styled.div`
 `
 
 const TableContainer = styled.div`
+  flex-grow: 1;
   justify-content: flex-start;
   min-height: 400px;
   background: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #00000066;
-  margin: 15px 0 0 0;
-
+  margin: 0;
+  
   display: flex;
   flex-direction: column;
   //place-content: flex-end;

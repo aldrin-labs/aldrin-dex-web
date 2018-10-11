@@ -17,7 +17,7 @@ import { getCoinsForOptimization } from '@containers/Portfolio/components/Portfo
 import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
 import {
   calcAllSumOfPortfolioAsset,
-  percentagesOfCoinInPortfolio,
+  percentagesOfCoinInPortfolio, roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import ComingSoon from '@components/ComingSoon'
 import {
@@ -61,12 +61,20 @@ class Optimization extends Component<IProps, IState> {
   }
 
   transformData = (assets: any[]): IData[] => {
-    const allSum = calcAllSumOfPortfolioAsset(assets, true)
+    const allSum = calcAllSumOfPortfolioAsset(assets)
+    console.log('allSum', allSum);
+    console.log('assets', assets);
 
-    return assets.map((data: any) => ({
-      coin: data.asset.symbol,
-      percentage: percentagesOfCoinInPortfolio(data, allSum, true),
+
+
+    const newAssets = assets.map((asset: any) => ({
+      coin: asset.coin,
+      percentage: roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
     }))
+
+    console.log('newAssets',newAssets);
+
+    return newAssets
   }
 
   optimizePortfolio = (data: any) => {
@@ -301,7 +309,7 @@ class Optimization extends Component<IProps, IState> {
       risk: arrayOfReturnedRisks,
     }
 
-    let showBarChartPlaceholder = false
+    const showBarChartPlaceholder = false
     // if (
     //   !isEqual(
     //     storeData.map((el: IData) => el.coin).sort(),

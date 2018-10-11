@@ -17,13 +17,13 @@ import { TypographyFullWidth } from '@styles/cssUtils'
 
 export default class Accounts extends React.PureComponent<IProps> {
   componentDidMount() {
-    if (!has(this.props.data.getProfile, 'keys')) {
+    if (!has(this.props.data.myPortfolios[0], 'keys')) {
       // console.log('no keys');
 
       return null
     }
 
-    const { keys } = this.props.data.getProfile
+    const { keys } = this.props.data.myPortfolios[0]
     const oldKeys = this.props.keys
     const checkboxes =
       (keys && keys.map((key: keyItem) => key && key.name).filter(Boolean)) || []
@@ -65,7 +65,7 @@ export default class Accounts extends React.PureComponent<IProps> {
 
           <Headline isSideNavOpen={isSideNavOpen} color={color}>settings</Headline>
           <CloseContainer>
-            <StyledIcon isSideNavOpen={isSideNavOpen} color={color}/>
+            <StyledIcon isSideNavOpen={isSideNavOpen} color={color} />
           </CloseContainer>
         </AccountsWalletsHeadingWrapper>
 

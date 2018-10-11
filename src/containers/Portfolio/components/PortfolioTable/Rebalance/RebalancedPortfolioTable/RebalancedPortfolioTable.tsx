@@ -365,7 +365,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         </TableHeading>
         <Wrapper>
           <Table>
-            <PTHead 
+            <PTHead
               isEditModeEnabled={isEditModeEnabled}
               bottomCollor={textColor}
             >
@@ -412,7 +412,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               currentSortForDynamic.arg === 'ASC'
                                 ? 'rotate(180deg)'
                                 : null,
-                          }} 
+                          }}
                         />
                       )}
                     </PTHR>
@@ -460,8 +460,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ]
 
                 return (
-                  <PTR 
-                    key={`${rowIndex}`} 
+                  <PTR
+                    key={`${rowIndex}`}
                     isSelected={isSelected}
                     background={background}
                     evenBackground={evenBackground}
@@ -492,6 +492,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               classNamePrefix="custom-select-box"
                               isClearable={true}
                               isSearchable={true}
+                              openMenuOnClick={false}
                               options={exchangeOptions}
                               menuPortalTarget={document.body}
                               menuStyles={{
@@ -530,6 +531,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               classNamePrefix="custom-select-box"
                               isClearable={true}
                               isSearchable={true}
+                              openMenuOnClick={false}
                               menuPortalTarget={document.body}
                               menuStyles={{
                               minWidth: '150px',
@@ -554,7 +556,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                               this.handleSelectChange(rowIndex, 'symbol', optionSelected)
                               }
-                              />
+                            />
                           </PTDR>
                         )
                       }
