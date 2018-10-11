@@ -66,15 +66,16 @@ export const getWalletsQuery = gql`
 `
 
 export const getPortfolioQuery = gql`
-  query getPortfolio {
+  query getPortfolio($baseCoin: String!) {
     myPortfolios {
       name
-      industryData(base: "BTC") {
+      industryData(base: $baseCoin) {
         industry
         assets {
           coin
           quantity
           perf
+          price
         }
         industry1W
         industry1M
