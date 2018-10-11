@@ -72,12 +72,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
   }
 
-  onChangeData = (data: string[]) => {
-    const lineChartMocks = genMocks(31, data)
-
-    this.setState({ lineChartMocks })
-  }
-
   expandRow = (e: React.ChangeEvent, index: number) => {
     this.setState((prevState) => {
       return { expandedRow: index === prevState.expandedRow ? NaN : index }
@@ -105,12 +99,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <Container container={true} spacing={16}>
         <Grid item={true} xs={12} md={8}>
           <Wrapper elevation={8}>
-            {/* <Table
+            <Table
               onChange={this.expandRow}
               expandedRow={this.state.expandedRow}
               rows={this.putDataInTable()}
-              title="Industries Performance"
-            /> */}
+              title="Industries Performance in %"
+            />
           </Wrapper>
         </Grid>
         <Grid item={true} xs={12} md={4}>

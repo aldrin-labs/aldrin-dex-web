@@ -5,13 +5,52 @@ import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import { Icon } from '@styles/cssUtils'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+import { flatten, has } from 'lodash-es'
 
-export const calcAllSumOfPortfolioAsset = (
-  assets: any
-): number => {
+export const calcAllSumOfPortfolioAsset = (assets: any): number => {
   return assets.reduce((acc: number, curr: any) => {
     return acc + curr.quantity * Number(curr.price)
   }, 0)
+}
+
+const calculateTotalPerfOfCoin = (assets: any[]): number =>
+  +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
+
+export const combineIndustryData = (data: any) => {
+  console.log(data)
+  if (!has(data, 'myPortfolios')) {
+    return []
+  }
+
+  const { myPortfolios } = data
+  const res = flatten(
+    myPortfolios.map(({ industryData }) => {
+      return industryData.map((row) => [
+        row.industry,
+        'multiple',
+        'portfolio%',
+        calculateTotalPerfOfCoin(row.assets) || 0,
+        row.industry1W || 0,
+        row.industry1M || 0,
+        row.industry3M || 0,
+        row.industry1Y || 0,
+        row.assets.map((asset) => [
+          '',
+          { text: asset.coin, style: { fontWeight: 700 } },
+          '',
+          +roundPercentage(asset.perf),
+          '',
+          '',
+          '',
+          '',
+        ]),
+      ])
+    })
+  )
+
+  console.log(res)
+
+  return res
 }
 
 export const dustFilter = (
@@ -25,12 +64,11 @@ export const dustFilter = (
       !el || isNaN(el.portfolioPercentage)
         ? 0
         : el.portfolioPercentage >
-        (filterValueSmallerThenPercentage
-          ? filterValueSmallerThenPercentage
-          : 0)
+          (filterValueSmallerThenPercentage
+            ? filterValueSmallerThenPercentage
+            : 0)
   )
 }
-
 
 export const percentagesOfCoinInPortfolio = (
   asset: any,
@@ -101,11 +139,6 @@ export const onSortTableFull = (
     return a[key] - b[key]
   })
 
-  console.log('dateKey: ', dateKey)
-  console.log(newData)
-  console.log(newCurrentSort)
-  console.log('stringKey: ', stringKey)
-
   return {
     newData,
     newCurrentSort,
@@ -156,7 +189,7 @@ export const roundAndFormatNumber = (
   digitsAfterPoint: number,
   format: boolean = true
 ): string => {
-  if (x === null | x === 0 || +x.toFixed(digitsAfterPoint) === 0) {
+  if ((x === null) | (x === 0) || +x.toFixed(digitsAfterPoint) === 0) {
     return '0'
   }
   const res = format
@@ -182,8 +215,8 @@ export const onValidateSum = (
   const mainSymbol = isUSDCurrently ? (
     <Icon className="fa fa-usd" key="usd" />
   ) : (
-      <Icon className="fa fa-btc" key="btc" />
-    )
+    <Icon className="fa fa-btc" key="btc" />
+  )
 
   if (selectedBalances.length === tableData.length) {
     clonedSum.currency = 'Total'
@@ -245,41 +278,46 @@ export const combineTableData = (
   const portfolioAssetsLength = portfolioAssets.length
     ? portfolioAssets.length + 1
     : 0
-  const allSums = portfolioAssets.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  const allSums = portfolioAssets.reduce(
+    (acc, cur) => acc + cur.price * cur.quantity,
+    0
+  )
 
-  const tableData = portfolioAssets.filter(asset => activeKeys.indexOf(name)).map((row: any, i) => {
-    const {
-      _id,
-      price,
-      coin,
-      quantity = 0,
-      name = '',
-      where = '',
-      realized = 0,
-      unrealized = 0,
-      percentChangeDay = 0,
-      portfolioPercentage = 0,
-      dailyPerc = 0,
-      daily = 0,
-    } = row || {}
-    return ({
-      coin,
-      portfolioPercentage: (price * quantity) * 100 / allSums,
-      price,
-      quantity,
-      daily,
-      dailyPerc,
-      currentPrice: price * quantity,
-      realizedPL: realized,
-      unrealizedPL: unrealized,
-      totalPL: realized + unrealized,
-      id: _id,
-      exchange: where,
-    });
-  })
+  const tableData = portfolioAssets
+    .filter((asset) => activeKeys.indexOf(name))
+    .map((row: any, i) => {
+      const {
+        _id,
+        price,
+        coin,
+        quantity = 0,
+        name = '',
+        where = '',
+        realized = 0,
+        unrealized = 0,
+        percentChangeDay = 0,
+        portfolioPercentage = 0,
+        dailyPerc = 0,
+        daily = 0,
+      } = row || {}
+      return {
+        coin,
+        portfolioPercentage: (price * quantity * 100) / allSums,
+        price,
+        quantity,
+        daily,
+        dailyPerc,
+        currentPrice: price * quantity,
+        realizedPL: realized,
+        unrealizedPL: unrealized,
+        totalPL: realized + unrealized,
+        id: _id,
+        exchange: where,
+      }
+    })
 
   //  tableData = dustFilter(tableData, filterValueSmallerThenPercentage)
-  console.log(tableData);
+
   return tableData
 }
 
@@ -291,10 +329,7 @@ export const composePortfolioWithMocks = (
     return
   }
 
-  return isShownMocks
-    ?
-    portfolioAssets.concat(MOCK_DATA)
-    : portfolioAssets
+  return isShownMocks ? portfolioAssets.concat(MOCK_DATA) : portfolioAssets
 }
 
 export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>

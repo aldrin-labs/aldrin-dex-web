@@ -40,7 +40,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     tableData: null,
     isShownChart: true,
     isUSDCurrently: true,
-    tab: 'main',
+    tab: 'industry',
     baseCoin: 'USDT',
   }
 
@@ -74,7 +74,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             activeKeys={this.props.activeKeys}
             tab={this.state.tab}
             theme={theme}
-            variables={{baseCoin}}
+            variables={{ baseCoin }}
           />
         )
         break
