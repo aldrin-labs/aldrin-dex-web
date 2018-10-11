@@ -29,8 +29,8 @@ export default class Import extends PureComponent<IProps> {
     } else {
       assets =
         this.props.data &&
-        this.props.data.getProfile &&
-        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+        this.props.data.myPortfolios[0] &&
+        this.props.transformData(this.props.data.myPortfolios[0].portfolio.assets)
     }
 
     this.props.updateData(this.sumSameCoins(assets))
@@ -187,14 +187,14 @@ export default class Import extends PureComponent<IProps> {
     } else {
       assets =
         this.props.data &&
-        this.props.data.getProfile &&
-        this.props.transformData(this.props.data.getProfile.portfolio.assets)
+        this.props.data.myPortfolios[0] &&
+        this.props.transformData(this.props.data.myPortfolios[0].portfolio.assets)
     }
 
     const data: IData[] =
       this.props.data &&
-      this.props.data.getProfile &&
-      this.props.transformData(this.props.data.getProfile.portfolio.assets)
+      this.props.data.myPortfolios[0] &&
+      this.props.transformData(this.props.data.myPortfolios[0].portfolio.assets)
     if (!storeData) {
       return (
         <Typography variant="display1" color="error">

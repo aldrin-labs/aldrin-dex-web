@@ -2,21 +2,16 @@ import gql from 'graphql-tag'
 
 export const KeyFragment = gql`
   fragment KeyFragment on Key {
-    _id
-    name
-    apiKey
-    secret
-    date
-    exchangeId
-    exchange {
-      name
-      symbol
-    }
+      apiKey
+      exchange {
+        name
+        symbol
+      }
   }
 `
 
-export const cryptoWalletFragment = gql`
-  fragment cryptoWalletFragment on CryptoWallet {
+export const CryptoWalletFragment = gql`
+  fragment CryptoWalletFragment on CryptoWallet {
     _id
     name
     address

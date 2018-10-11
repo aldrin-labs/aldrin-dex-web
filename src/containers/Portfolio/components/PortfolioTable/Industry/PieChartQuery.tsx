@@ -56,7 +56,7 @@ class PieChartQuery extends React.Component<Props, State> {
     const { assets } = portfolio
     if (!assets) return <CustomError error="!assets" />
 
-    const allSums = calcAllSumOfPortfolioAsset(assets, isUSDCurrently)
+    const allSums = calcAllSumOfPortfolioAsset(assets)
 
     const obj: { [key: string]: number } = {}
     assets.forEach((asset) => {
