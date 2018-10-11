@@ -56,7 +56,7 @@ class DonutChartWitoutTheme extends Component<Props, State> {
   render() {
     const { value, data } = this.state
 
-    const { width, height, radius, thickness } = this.props
+    const { width, height, radius, thickness, labelPlaceholder } = this.props
     const WithDefaults = {
       width: width || 200,
       height: height || 200,
@@ -68,7 +68,7 @@ class DonutChartWitoutTheme extends Component<Props, State> {
         {/* <FlexibleXYPlot> */}
         <LabelContainer>
           <Typography variant="display1">
-            {value ? value.label : 'Industry name'}
+            {value ? value.label : labelPlaceholder || ''}
           </Typography>
         </LabelContainer>
         <ChartWrapper>
