@@ -40,7 +40,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     tableData: null,
     isShownChart: true,
     isUSDCurrently: true,
-    tab: 'industry',
+    tab: 'main',
     baseCoin: 'USDT',
   }
 
@@ -54,9 +54,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
     }))
   }
-  switchToUsd = () => {
-    this.setState({ isUSDCurrently: true })
-  }
 
   renderTab = () => {
     const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
@@ -69,7 +66,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableBalances
             isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
-            switchToUsd={this.switchToUsd}
             subscription={this.props.subscription}
             activeKeys={this.props.activeKeys}
             tab={this.state.tab}
@@ -84,7 +80,8 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             activeKeys={this.props.activeKeys}
             isUSDCurrently={isUSDCurrently}
             theme={theme}
-            switchToUsd={this.switchToUsd}
+            variables={{ baseCoin }}
+            baseCoin={baseCoin}
           />
         )
         break
