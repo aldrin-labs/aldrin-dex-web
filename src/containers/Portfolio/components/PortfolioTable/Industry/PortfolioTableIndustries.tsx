@@ -6,10 +6,7 @@ import Table from '@components/Tables/WithCheckboxesAndSummary'
 
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { customAquaScrollBar } from '@styles/cssUtils'
-import {
-  combineIndustryData,
-  numberOfDigitsAfterPoint,
-} from '@utils/PortfolioTableUtils'
+import { combineIndustryData } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { QueryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
@@ -43,10 +40,15 @@ const tableHeadings = [
   },
 ]
 
-const industryStateObject = ({ data, theme, isUSDCurrently }) => ({
+const industryStateObject = ({
+  data,
+  theme,
+  isUSDCurrently,
+  filterValueSmallerThenPercentage = 0,
+}) => ({
   industryData: combineIndustryData(
     data,
-    numberOfDigitsAfterPoint(isUSDCurrently),
+    filterValueSmallerThenPercentage,
     theme.palette.red.main,
     theme.palette.green.main
   ),
@@ -62,15 +64,37 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { data, theme, isUSDCurrently } = props
+    const {
+      data,
+      theme,
+      isUSDCurrently,
+      filterValueSmallerThenPercentage,
+    } = props
 
-    return industryStateObject({ data, theme, isUSDCurrently })
+    return industryStateObject({
+      data,
+      theme,
+      isUSDCurrently,
+      filterValueSmallerThenPercentage,
+    })
   }
 
   componentDidMount() {
-    const { data, theme, isUSDCurrently } = this.props
+    const {
+      data,
+      theme,
+      isUSDCurrently,
+      filterValueSmallerThenPercentage,
+    } = this.props
 
-    this.setState(industryStateObject({ data, theme, isUSDCurrently }))
+    this.setState(
+      industryStateObject({
+        data,
+        theme,
+        isUSDCurrently,
+        filterValueSmallerThenPercentage,
+      })
+    )
   }
 
   putDataInTable = () => {

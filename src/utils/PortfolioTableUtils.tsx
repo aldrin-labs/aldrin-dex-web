@@ -13,7 +13,37 @@ export const calcAllSumOfPortfolioAsset = (assets: any): number => {
   }, 0)
 }
 
-const calculateTotalPerfOfCoin = (assets: any[], fixTo: number): number =>
+export const dustFilter = (
+  tableData: any[],
+  filterValueSmallerThenPercentage: number | undefined = 0,
+  filterByColumn: number | null = null
+) => {
+  const filtering = (el) =>
+    !el || isNaN(el.portfolioPercentage)
+      ? 0
+      : el.portfolioPercentage >
+        (filterValueSmallerThenPercentage
+          ? filterValueSmallerThenPercentage
+          : 0)
+  // not working will figure out
+  if (!!filterByColumn) {
+    tableData.filter((arr) => {
+      console.log(filterByColumn)
+
+      console.log(arr)
+      console.log(arr[arr.length - 1])
+      console.log(arr[arr.length - 1].for)
+      return filtering(arr[arr.length - 1][filterByColumn])
+    })
+  }
+  //  dust filter part
+  return tableData.filter((el) =>
+    //  if el.percentage is not a number then turn it into 0
+    filtering(el)
+  )
+}
+
+const calculateTotalPerfOfCoin = (assets: any[]): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
 const colorful = (value: number, red: string, green: string) => ({
@@ -23,7 +53,7 @@ const colorful = (value: number, red: string, green: string) => ({
 
 export const combineIndustryData = (
   data: any,
-  fixTo: number,
+  filterValueLessThen: number,
   red: string,
   green: string
 ) => {
@@ -31,16 +61,32 @@ export const combineIndustryData = (
     return []
   }
 
+  const sumPortfolioPercentageOfAsset = (assets: any[], allSum: number) => {
+    let sum = 0
+    assets.forEach((asset) => {
+      sum += percentagesOfCoinInPortfolio(asset, allSum, true)
+    })
+
+    return +roundPercentage(sum)
+  }
+
   const { myPortfolios } = data
   const res = flatten(
     myPortfolios.map(({ industryData }) => {
+      // calculating all assets to calculate allSum
+      const allAssets = []
+      industryData.forEach((row) => {
+        row.assets.forEach((asset) => allAssets.push(asset))
+      })
+      const allSum = calcAllSumOfPortfolioAsset(allAssets)
+
       return industryData.map((row) => [
         row.industry,
         row.assets.length === 1
           ? { text: row.assets[0].coin, style: { fontWeight: 700 } }
           : 'multiple',
-        'portfolio%',
-        colorful(calculateTotalPerfOfCoin(row.assets, fixTo) || 0, red, green),
+        sumPortfolioPercentageOfAsset(row.assets, allSum),
+        colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
         colorful(+roundPercentage(row.industry1W) || 0, red, green),
         colorful(+roundPercentage(row.industry1M) || 0, red, green),
         colorful(+roundPercentage(row.industry3M) || 0, red, green),
@@ -48,7 +94,7 @@ export const combineIndustryData = (
         row.assets.map((asset) => [
           '',
           { text: asset.coin, style: { fontWeight: 700 } },
-          '',
+          +roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
           colorful(+roundPercentage(asset.perf), red, green),
           '',
           '',
@@ -60,23 +106,6 @@ export const combineIndustryData = (
   )
 
   return res
-}
-
-export const dustFilter = (
-  tableData: any[],
-  filterValueSmallerThenPercentage: number | undefined = 0
-) => {
-  //  dust filter part
-  return tableData.filter(
-    (el) =>
-      //  if el.percentage is not a number then turn it into 0
-      !el || isNaN(el.portfolioPercentage)
-        ? 0
-        : el.portfolioPercentage >
-          (filterValueSmallerThenPercentage
-            ? filterValueSmallerThenPercentage
-            : 0)
-  )
 }
 
 export const percentagesOfCoinInPortfolio = (

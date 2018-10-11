@@ -75,6 +75,7 @@ export const getPortfolioQuery = gql`
           coin
           quantity
           perf
+          price
         }
         industry1W
         industry1M
