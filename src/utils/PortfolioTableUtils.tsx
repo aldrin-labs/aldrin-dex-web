@@ -13,11 +13,20 @@ export const calcAllSumOfPortfolioAsset = (assets: any): number => {
   }, 0)
 }
 
-const calculateTotalPerfOfCoin = (assets: any[]): number =>
+const calculateTotalPerfOfCoin = (assets: any[], fixTo: number): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
-export const combineIndustryData = (data: any) => {
-  console.log(data)
+const colorful = (value: number, red: string, green: string) => ({
+  text: value,
+  style: { color: value > 0 ? green : value < 0 ? red : null },
+})
+
+export const combineIndustryData = (
+  data: any,
+  fixTo: number,
+  red: string,
+  green: string
+) => {
   if (!has(data, 'myPortfolios')) {
     return []
   }
@@ -27,18 +36,20 @@ export const combineIndustryData = (data: any) => {
     myPortfolios.map(({ industryData }) => {
       return industryData.map((row) => [
         row.industry,
-        'multiple',
+        row.assets.length === 1
+          ? { text: row.assets[0].coin, style: { fontWeight: 700 } }
+          : 'multiple',
         'portfolio%',
-        calculateTotalPerfOfCoin(row.assets) || 0,
-        row.industry1W || 0,
-        row.industry1M || 0,
-        row.industry3M || 0,
-        row.industry1Y || 0,
+        colorful(calculateTotalPerfOfCoin(row.assets, fixTo) || 0, red, green),
+        colorful(+roundPercentage(row.industry1W) || 0, red, green),
+        colorful(+roundPercentage(row.industry1M) || 0, red, green),
+        colorful(+roundPercentage(row.industry3M) || 0, red, green),
+        colorful(+roundPercentage(row.industry1Y) || 0, red, green),
         row.assets.map((asset) => [
           '',
           { text: asset.coin, style: { fontWeight: 700 } },
           '',
-          +roundPercentage(asset.perf),
+          colorful(+roundPercentage(asset.perf), red, green),
           '',
           '',
           '',
@@ -47,8 +58,6 @@ export const combineIndustryData = (data: any) => {
       ])
     })
   )
-
-  console.log(res)
 
   return res
 }
@@ -167,7 +176,7 @@ export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) =>
 export const onSortStrings = (a: string, b: string): number =>
   a.localeCompare(b)
 
-export const roundPercentage = (num: number) => num.toFixed(2)
+export const roundPercentage = (num: number) => num && num.toFixed(2)
 
 // formatNumberToUSFormat - this function takes number or string, then it converts it to string anyway, and then decide
 // — if our number has dot "." (is it number with fractional part or not) and then place commas by one of two regexes,

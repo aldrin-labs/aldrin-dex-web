@@ -7,10 +7,8 @@ import Table from '@components/Tables/WithCheckboxesAndSummary'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import {
-  onSortStrings,
-  roundAndFormatNumber,
   combineIndustryData,
-  roundPercentage,
+  numberOfDigitsAfterPoint,
 } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { QueryRendererHoc } from '@components/QueryRenderer'
@@ -45,6 +43,15 @@ const tableHeadings = [
   },
 ]
 
+const industryStateObject = ({ data, theme, isUSDCurrently }) => ({
+  industryData: combineIndustryData(
+    data,
+    numberOfDigitsAfterPoint(isUSDCurrently),
+    theme.palette.red.main,
+    theme.palette.green.main
+  ),
+})
+
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
     activeKeys: null,
@@ -54,10 +61,16 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     expandedRow: NaN,
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { data, theme, isUSDCurrently } = props
+
+    return industryStateObject({ data, theme, isUSDCurrently })
+  }
+
   componentDidMount() {
-    const { data, switchToUsd } = this.props
-    switchToUsd()
-    this.setState({ industryData: combineIndustryData(data) })
+    const { data, theme, isUSDCurrently } = this.props
+
+    this.setState(industryStateObject({ data, theme, isUSDCurrently }))
   }
 
   putDataInTable = () => {
@@ -79,7 +92,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { children, theme, filterValueSmallerThenPercentage } = this.props
+    const { children, filterValueSmallerThenPercentage, baseCoin } = this.props
     const { industryData } = this.state
 
     const tableDataHasData = industryData
@@ -103,7 +116,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               onChange={this.expandRow}
               expandedRow={this.state.expandedRow}
               rows={this.putDataInTable()}
-              title="Industries Performance in %"
+              title={`Industries Performance in ${baseCoin}`}
             />
           </Wrapper>
         </Grid>
