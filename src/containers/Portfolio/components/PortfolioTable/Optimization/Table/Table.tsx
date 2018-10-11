@@ -67,18 +67,18 @@ export default class Table extends Component<IProps, IState> {
         <StyledTable background={palette.background.paper}>
           <Head bottomCollor={textColor}>
             <HeadItem background={palette.background.paper}>
-              <Typography variant="title" align="center">
+              <Typography variant="body1" align="center">
                 {' '}
                 Coin
               </Typography>
             </HeadItem>
             <HeadItem background={palette.background.paper}>
-              <Typography variant="title" align="center">
+              <Typography variant="body1" align="center">
                 Portfolio%
               </Typography>
             </HeadItem>
             <HeadItem background={palette.background.paper}>
-              <Typography variant="title" align="center">
+              <Typography variant="body1" align="center">
                 Optimized%
               </Typography>
             </HeadItem>
@@ -208,6 +208,7 @@ export default class Table extends Component<IProps, IState> {
               style={{
                 display: 'flex',
                 justifyContent: 'flex-end',
+                alignItems: 'flex-end',
                 // because of nth-child(even)
               }}
             >

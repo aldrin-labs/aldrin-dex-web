@@ -52,21 +52,21 @@ export default class LineChart extends React.Component<Props, State> {
     this.setState({ crosshairValues: [] })
   }
 
-  onChangeData = () => {
-    const { onChangeData } = this.props
-    const { deepLevel } = this.state
-
-    this.setState({ deepLevel: deepLevel === 1 ? 2 : 1 }, () => {
-      let data = inds
-      if (deepLevel === 1) {
-        data = inds
-      } else if (deepLevel === 2) {
-        data = coins
-      }
-
-      if (onChangeData) onChangeData(data)
-    })
-  }
+  // onChangeData = () => {
+  //   const { onChangeData } = this.props
+  //   const { deepLevel } = this.state
+  //
+  //   this.setState({ deepLevel: deepLevel === 1 ? 2 : 1 }, () => {
+  //     let data = inds
+  //     if (deepLevel === 1) {
+  //       data = inds
+  //     } else if (deepLevel === 2) {
+  //       data = coins
+  //     }
+  //
+  //     if (onChangeData) onChangeData(data)
+  //   })
+  // }
 
   render() {
     const {
@@ -96,8 +96,8 @@ export default class LineChart extends React.Component<Props, State> {
           // hideLine
           title="June 2018"
           style={axisStyle}
-          // tickFormat={(v: number) => `${v}`}
-          // tickValues={data[0].map((d) => d.x)}
+          tickFormat={(v: number) => `${v}`}
+          tickValues={data[0].map((d) => d.x)}
         />
 
         <YAxis
@@ -115,7 +115,7 @@ export default class LineChart extends React.Component<Props, State> {
               data={serie}
               color={color}
               onNearestX={this.onNearestX}
-              onSeriesClick={this.onChangeData}
+              // onSeriesClick={this.onChangeData}
             />
           )
         })}

@@ -274,27 +274,27 @@ class Optimization extends Component<IProps, IState> {
     const { storeData } = this.props
 
     if (!storeData) return
-    const formatedData = storeData.map((el: IData, i) => ({
-      x: el.coin,
-      y: Number(Number(el.percentage).toFixed(2)),
-    }))
-    const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
-      x: el.coin,
-      y: Number(Number(el.percentage).toFixed(2)),
-    }))
+    // const formatedData = storeData.map((el: IData, i) => ({
+    //   x: el.coin,
+    //   y: Number(Number(el.percentage).toFixed(2)),
+    // }))
+    // const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+    //   x: el.coin,
+    //   y: Number(Number(el.percentage).toFixed(2)),
+    // }))
 
-    const barChartData = [
-      {
-        data: formatedData,
-        title: 'Original',
-        color: '#2496c8',
-      },
-      {
-        data: formatedOptimizedData,
-        title: 'Optimized',
-        color: '#1869a8',
-      },
-    ]
+    // const barChartData = [
+    //   {
+    //     data: formatedData,
+    //     title: 'Original',
+    //     color: '#2496c8',
+    //   },
+    //   {
+    //     data: formatedOptimizedData,
+    //     title: 'Optimized',
+    //     color: '#1869a8',
+    //   },
+    // ]
 
 
     const arrayOfReturnedValues = rawOptimizedData.map((el) => el.return_value)
@@ -309,7 +309,7 @@ class Optimization extends Component<IProps, IState> {
       risk: arrayOfReturnedRisks,
     }
 
-    const showBarChartPlaceholder = false
+    // let showBarChartPlaceholder = false
     // if (
     //   !isEqual(
     //     storeData.map((el: IData) => el.coin).sort(),
@@ -323,6 +323,12 @@ class Optimization extends Component<IProps, IState> {
     //     activeButton,
     //   }
     // }
+
+    const lineChartData =  rawOptimizedData.length &&  rawOptimizedData[activeButton].backtest_result.map((el) => ({
+      x: el[0],
+      y: el[1],
+    }))
+
 
     const itemsForChartLegend = [
       {
@@ -345,7 +351,8 @@ class Optimization extends Component<IProps, IState> {
         <Chart background={theme.palette.background.default}>
           <LineChart
             alwaysShowLegend={true}
-            data={mockDataForLineChart}
+            // data={mockDataForLineChart}
+            data={lineChartData}
             itemsForChartLegend={itemsForChartLegend}
           />
         </Chart>

@@ -1,27 +1,27 @@
 export const mockDataForLineChart = [
   [
     {
-      label: 'original',
+      // label: 'original',
       x: 0,
       y: 10,
     },
     {
-      label: 'original',
+      // label: 'original',
       x: 1,
       y: 9.568380731903483,
     },
     {
-      label: 'original',
+      // label: 'original',
       x: 2,
       y: 9.312687424506185,
     },
     {
-      label: 'original',
+      // label: 'original',
       x: 3,
       y: 10.270600390446138,
     },
     {
-      label: 'original',
+      // label: 'original',
       x: 4,
       y: 10.879578591001616,
     },

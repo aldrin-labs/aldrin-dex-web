@@ -607,13 +607,13 @@ export default class Import extends PureComponent<IProps> {
                 theme={this.props.theme}
               />
               <TableDataDesc show={this.state.optimizedData.length > 1}>
-                <StyledInputLabel color={textColor}>
-                  Confidence:{' '}
-                  {this.state.optimizedData.length > 1
-                    ? this.state.optimizedData[activeButton]
-                        .confidence
-                    : ''}
-                </StyledInputLabel>
+                {/*<StyledInputLabel color={textColor}>*/}
+                  {/*Confidence:{' '}*/}
+                  {/*{this.state.optimizedData.length > 1*/}
+                    {/*? this.state.optimizedData[activeButton]*/}
+                        {/*.confidence*/}
+                    {/*: ''}*/}
+                {/*</StyledInputLabel>*/}
                 <StyledInputLabel color={textColor}>
                   Expected return low:{' '}
                   {this.state.optimizedData.length > 1

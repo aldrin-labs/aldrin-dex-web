@@ -96,6 +96,9 @@ const Item = styled.div`
 
 const HeadItem = styled(Item)`
   top: -1px;
+  & > p {
+    font-weight: 500;
+  }
 `
 
 const Head = styled.div`
@@ -137,7 +140,8 @@ const Col = styled.div`
 `
 
 const Body = styled.div`
-  max-height: 108px;
+  //max-height: 108px;
+  max-height: 138px;
   width: 98%;
   border-radius: 2px;
   display: flex;
