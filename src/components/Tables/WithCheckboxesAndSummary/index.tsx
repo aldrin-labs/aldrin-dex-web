@@ -44,7 +44,7 @@ const Settings = withStyles((theme: Theme) => ({
   root: { color: theme.palette.common.white },
 }))(IconButton)
 
-const styles = (theme: Theme) => ({
+const styles = (theme) => ({
   root: {
     width: '100%',
     overflowX: 'auto',
@@ -138,6 +138,7 @@ const renderCell = (cell: Cell, id: number, numeric: boolean) => {
   /* ToDo: - Add sorting
             - Fixed  summary
             - Add settings render
+            - Add Tooltips To header
             - Add render anything to Cell
           */
 }
