@@ -115,6 +115,7 @@ const CustomTable = (props: Props) => {
     rows = { head: [], body: [], footer: [] },
     withCheckboxes,
     title,
+    elevation = 0,
     onChange = () => {
       return
     },
@@ -132,7 +133,7 @@ const CustomTable = (props: Props) => {
   }
   const howManyColumns = rows.head.length
   return (
-    <Background className={classes.root}>
+    <Background className={classes.root} elevation={elevation}>
       <Table className={classes.table}>
         <TableHead className={classes.tableHead}>
           {title && (
