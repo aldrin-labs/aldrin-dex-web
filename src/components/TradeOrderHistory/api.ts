@@ -1,13 +1,16 @@
 import gql from 'graphql-tag'
 
 export const MyTradesQuery = gql`
-  query myPortfolios {
-    portfolioActions {
-      coin
-      type
-      where
-      coin
-      date
+  query portfolios {
+    myPortfolios {
+      name
+      portfolioActions {
+        type
+        where
+        coin
+        date
+        __typename
+      }
     }
   }
 `

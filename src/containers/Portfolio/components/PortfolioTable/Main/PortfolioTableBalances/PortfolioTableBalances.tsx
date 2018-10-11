@@ -38,25 +38,21 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
       <PTWrapper elevation={1} tableData={!!tableDataHasData}>
-        {children}
-
         <GridContainer>
-          <TableWrapper elevation={8}>
-            <TableWrapper style={{ width: '60%' }} elevation={8}>
-              {Array.isArray(tableData) && (
-                <Table
-                  title="Portfolio"
-                  checkedRows={checkedRows}
-                  withCheckboxes={true}
-                  onChange={onCheckboxClick}
-                  onSelectAllClick={onSelectAllClick}
-                  rows={putDataInTable()}
-                />
-              )}
-            </TableWrapper>
-            <TableWrapper style={{ width: '40%' }} elevation={8}>
-              <TradeOrderHistoryTable />
-            </TableWrapper>
+          <TableWrapper elevation={0}>
+            {Array.isArray(tableData) && (
+              <Table
+                elevation={8}
+                title="Portfolio"
+                checkedRows={checkedRows}
+                withCheckboxes={true}
+                onChange={onCheckboxClick}
+                onSelectAllClick={onSelectAllClick}
+                rows={putDataInTable()}
+              />
+            )}
+
+            <TradeOrderHistoryTable />
           </TableWrapper>
 
           <StyledDivider light={true} />
