@@ -459,6 +459,15 @@ export default class Import extends PureComponent<IProps> {
                 <SelectOptimization
                   options={RebalancePeriod}
                   isClearable={true}
+                  singleValueStyles={{
+                    fontSize: '0.875rem',
+                  }}
+                  placeholderStyles={{
+                    fontSize: '0.875rem',
+                  }}
+                  optionStyles={{
+                    fontSize: '0.875rem',
+                  }}
                   onChange={(
                     optionSelected: { label: string; value: string } | null
                   ) => this.onSelectChange('rebalancePeriod', optionSelected)}
@@ -508,6 +517,15 @@ export default class Import extends PureComponent<IProps> {
                 <SelectOptimization
                   options={RiskProfile}
                   isClearable={true}
+                  singleValueStyles={{
+                    fontSize: '0.875rem',
+                  }}
+                  placeholderStyles={{
+                    fontSize: '0.875rem',
+                  }}
+                  optionStyles={{
+                    fontSize: '0.875rem',
+                  }}
                   onChange={(
                     optionSelected: { label: string; value: string } | null
                   ) => this.onSelectChange('riskProfile', optionSelected)}
@@ -671,7 +689,8 @@ const SelectOptimization = styled(ReactSelectComponent)`
 
 const StyledInputLabel = styled(InputLabel)`
   color: ${(props: { color: string }) => props.color};
-  font-size: 0.75rem;
+  //font-size: 0.75rem;
+  font-size: 0.875rem;
 `
 
 const InputElementWrapper = styled.div`
@@ -692,6 +711,10 @@ const STextField = styled(TextField)`
   && > div:before {
     border-bottom: 1px solid #c1c1c1;
   }
+  
+  && > div {
+    font-size: 0.875rem;
+  }
 `
 
 const StyledSwitch = styled(Switch)``
@@ -710,7 +733,8 @@ const StyledWrapperForDateRangePicker = styled.div`
 
   & .DateInput_input {
     padding: 5px;
-    font-size: 14px;
+    //font-size: 14px;
+    font-size: 0.875rem;
     height: 36px;
     color: ${(props: { color: string }) => props.color};
     background: ${(props: { background: string }) => props.background};
