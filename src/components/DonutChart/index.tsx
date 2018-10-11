@@ -73,11 +73,10 @@ class DonutChartWitoutTheme extends Component<Props, State> {
       <ChartContainer width={width? width : 200}>
         <LabelContainer>
           <Typography variant='display1'>
-            { value && value.label }
+            { value ? value.label : 'Industry name' }
           </Typography>
         </LabelContainer>
         <RadialChart
-          
           data={data}
           width={WithDefaults.width}
           height={WithDefaults.height}
@@ -92,9 +91,9 @@ class DonutChartWitoutTheme extends Component<Props, State> {
             strokeWidth: 0,
           }}
         >
-          <ValueContainer>
-            <Typography variant='display2'>
-              { value && `${value.realValue}%`}
+          <ValueContainer value={value}>
+            <Typography variant='display2' >
+              { value ? `${value.realValue}%` : '_'}
             </Typography>
           </ValueContainer>
           <GradientDefs>
