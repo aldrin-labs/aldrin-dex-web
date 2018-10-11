@@ -51,9 +51,7 @@ const styles = (theme: Theme) => ({
   indeterminateCheckbox: {
     color: theme.palette.secondary.main,
   },
-  table: {
-    minWidth: 700,
-  },
+  table: {},
   title: {
     backgroundColor: theme.palette.primary[900],
   },
