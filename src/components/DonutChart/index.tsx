@@ -4,7 +4,12 @@ import { RadialChart, GradientDefs, makeVisFlexible } from 'react-vis'
 import { withTheme } from '@material-ui/core/styles'
 
 import { Props, State, DonutPiece, InputRecord } from './types'
-import { ChartContainer, ValueContainer, LabelContainer } from './styles'
+import {
+  ChartContainer,
+  ValueContainer,
+  LabelContainer,
+  ChartWrapper,
+} from './styles'
 
 const FlexibleChart = makeVisFlexible(RadialChart)
 
@@ -66,7 +71,7 @@ class DonutChartWitoutTheme extends Component<Props, State> {
             {value ? value.label : 'Industry name'}
           </Typography>
         </LabelContainer>
-        <div style={{ height: 'calc(100% - 90px)', width: '100%' }}>
+        <ChartWrapper>
           <FlexibleChart
             data={data}
             radius={WithDefaults.radius}
@@ -108,7 +113,7 @@ class DonutChartWitoutTheme extends Component<Props, State> {
               </linearGradient>
             </GradientDefs>
           </FlexibleChart>
-        </div>
+        </ChartWrapper>
         {/* </FlexibleXYPlot> */}
       </ChartContainer>
     )
