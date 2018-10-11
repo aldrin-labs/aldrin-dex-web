@@ -5,7 +5,6 @@ import PieChart from '@components/PieChart'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 import { PortfolioPieChart } from '@containers/Portfolio/components/PortfolioTable/Industry/api'
-import { PortfolioPieChartQuery } from '@containers/Portfolio/components/PortfolioTable/Industry/annotations'
 import { MOCKS } from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
 import {
   calcAllSumOfPortfolioAsset,
@@ -70,13 +69,13 @@ class PieChartQuery extends React.Component<Props, State> {
       const currentPrice = mainPrice * quantity
 
       if (name === null && !obj.Other) {
-        obj['Other'] = +roundPercentage(currentPrice * 100 / allSums)
+        obj['Other'] = +roundPercentage((currentPrice * 100) / allSums)
       } else if (name === null && obj.Other) {
-        obj['Other'] += +roundPercentage(currentPrice * 100 / allSums)
+        obj['Other'] += +roundPercentage((currentPrice * 100) / allSums)
       } else if (!obj[name] && !!quantity) {
-        obj[name] = +roundPercentage(currentPrice * 100 / allSums)
+        obj[name] = +roundPercentage((currentPrice * 100) / allSums)
       } else if (!!obj[name] && !!quantity) {
-        obj[name] += +roundPercentage(currentPrice * 100 / allSums)
+        obj[name] += +roundPercentage((currentPrice * 100) / allSums)
       }
     })
 
