@@ -30,45 +30,45 @@ const DeleteCryptoWalletDialogComponent = ({
   handleSubmit,
   errors,
 }) => (
-  <div>
-    <Button onClick={handleClickOpen}>Delete</Button>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="form-dialog-title"
-    >
-      <DialogTitle id="form-dialog-title">
-        Delete crypto wallet {wallet.name}?
+    <div>
+      <Button onClick={handleClickOpen}>Delete</Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">
+          Delete crypto wallet {wallet.name}?
       </DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          To delete crypto wallet please enter it's name:
+        <DialogContent>
+          <DialogContentText>
+            To delete crypto wallet please enter it's name:
         </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="cryptoWalletNameInput"
-          name="cryptoWalletNameInput"
-          label="CryptoWallet name"
-          onChange={handleChange}
-          value={values.cryptoWalletNameInput}
-          error={errors && !!errors.cryptoWalletNameInput}
-          type="text"
-          fullWidth
-        />
-        <Typography color="error">{errors.cryptoWalletNameInput}</Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
+          <TextField
+            autoFocus={true}
+            margin="dense"
+            id="cryptoWalletNameInput"
+            name="cryptoWalletNameInput"
+            label="CryptoWallet name"
+            onChange={handleChange}
+            value={values.cryptoWalletNameInput}
+            error={errors && !!errors.cryptoWalletNameInput}
+            type="text"
+            fullWidth={true}
+          />
+          <Typography color="error">{errors.cryptoWalletNameInput}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
         </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Delete
+          <Button onClick={handleSubmit} color="primary">
+            Delete
         </Button>
-      </DialogActions>
-    </Dialog>
-  </div>
-)
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
 
 const formikDialog = withFormik({
   validationSchema: Yup.object().shape({
@@ -81,8 +81,7 @@ const formikDialog = withFormik({
     const { wallet, handleClose, deleteCryptoWallet } = props.props
 
     const variables = {
-      address: wallet.address,
-      assetName: wallet.baseAsset.name,
+      name: wallet.name,
     }
     const checkCryptoWalletName = isEqual(wallet.name, cryptoWalletNameInput)
 

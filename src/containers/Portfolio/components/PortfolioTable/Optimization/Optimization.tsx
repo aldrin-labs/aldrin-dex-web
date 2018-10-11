@@ -57,7 +57,7 @@ class Optimization extends Component<IProps, IState> {
   }
 
   transformData = (assets: any[]): IData[] => {
-    const allSum = calcAllSumOfPortfolioAsset(assets, true)
+    const allSum = calcAllSumOfPortfolioAsset(assets)
 
     return assets.map((data: any) => ({
       coin: data.asset.symbol,
@@ -278,13 +278,13 @@ class Optimization extends Component<IProps, IState> {
       },
     ]
 
-    let efficientFrontierData = {
+    const efficientFrontierData = {
       percentages: returns,
       risk,
       activeButton,
     }
 
-    let showBarChartPlaceholder = false
+    const showBarChartPlaceholder = false
     // if (
     //   !isEqual(
     //     storeData.map((el: IData) => el.coin).sort(),
@@ -299,7 +299,7 @@ class Optimization extends Component<IProps, IState> {
     //   }
     // }
     const {
-      theme: {palette}
+      theme: { palette },
     } = this.props
 
     return (
@@ -328,7 +328,7 @@ class Optimization extends Component<IProps, IState> {
   render() {
     const {
       children,
-      theme: {palette}
+      theme: { palette },
     } = this.props
     const { loading, openWarning, warningMessage } = this.state
 

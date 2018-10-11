@@ -100,18 +100,18 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   componentWillReceiveProps(nextProps: IndProps) {
     if (nextProps.data) {
-      const { portfolio } = nextProps.data.getProfile
+      const { portfolioAssets } = nextProps.data.myPortfolios[0]
       const { isShownMocks } = nextProps
 
-      if (!portfolio || !portfolio.assets) {
+      if (!portfolioAssets) {
         return
       }
 
       const composeWithMocks = isShownMocks
         ? {
-            ...portfolio,
-            assets: portfolio.assets.concat(MOCKS),
-          }
+          ...portfolio,
+          assets: portfolioAssets.concat(MOCKS),
+        }
         : portfolio
 
       this.setState({ portfolio: composeWithMocks })
