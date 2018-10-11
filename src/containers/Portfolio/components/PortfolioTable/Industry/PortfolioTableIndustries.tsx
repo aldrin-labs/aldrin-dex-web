@@ -11,7 +11,7 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import { QueryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
-import { Paper, Grid, Card, CardContent } from '@material-ui/core'
+import { Paper, Grid } from '@material-ui/core'
 
 import { DonutChart } from '@components/DonutChart'
 
@@ -81,24 +81,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     })
   }
 
-  componentDidMount() {
-    const {
-      data,
-      theme,
-      isUSDCurrently,
-      filterValueSmallerThenPercentage,
-    } = this.props
-
-    this.setState(
-      industryStateObject({
-        data,
-        theme,
-        isUSDCurrently,
-        filterValueSmallerThenPercentage,
-      })
-    )
-  }
-
   putDataInTable = () => {
     const { industryData } = this.state
     if (!industryData) return
@@ -135,7 +117,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
 
     return (
-      <Container container={true} spacing={8}>
+      <Container container={true} spacing={16}>
         <Grid item={true} xs={12} md={8}>
           <Wrapper elevation={8}>
             <Table
@@ -146,17 +128,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             />
           </Wrapper>
         </Grid>
-        <Grid item={true} xs={12} md={4}>
-          <ChartWrapper>
-            <CardContentWrapper>
-              <DonutChart
-                width={300}
-                height={300}
-                radius={150}
-                thickness={15}
-//                data={chartCoins} 
-              />
-            </CardContentWrapper>
+        <Grid item={true} xs={12} md={4} style={{}}>
+          <ChartWrapper elevation={8}>
+            <DonutChart
+              labelPlaceholder="Industries %"
+              radius={150}
+              thickness={15}
+              data={[
+                { label: 'mock1', realValue: 33 },
+                { label: 'mock2', realValue: 33 },
+                { label: 'mock3', realValue: 33 },
+                { label: 'mock4', realValue: 1 },
+              ]}
+            />
           </ChartWrapper>
         </Grid>
       </Container>
@@ -172,12 +156,11 @@ const Container = styled(Grid)`
   }
 `
 
-const ChartWrapper = styled(Card)`
-  text-align: center;
-`
-
-const CardContentWrapper = styled(CardContent)`
-  display: inline-block;
+const ChartWrapper = styled(Paper)`
+  max-height: 100%;
+  height: 75%;
+  width: 100%;
+  ${customAquaScrollBar};
 `
 
 const Wrapper = styled(Paper)`
