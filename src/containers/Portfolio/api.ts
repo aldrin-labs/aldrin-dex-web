@@ -66,48 +66,21 @@ export const getWalletsQuery = gql`
 `
 
 export const getPortfolioQuery = gql`
-  query getPortfolio {
-    getProfile {
-      portfolio {
-        cryptoWallets {
-          ...CryptoWalletFragmentWithAssets
-        }
-        assetIds
-        ownerId
-        portfolioPerformance {
-          coin
-          btc
-          usd
-        }
+  query getPortfolio($baseCoin: String!) {
+    myPortfolios {
+      name
+      industryData(base: $baseCoin) {
+        industry
         assets {
+          coin
           quantity
-          asset {
-            name
-            symbol
-            priceUSD
-            priceBTC
-            industry {
-              name
-              performance {
-                usdWeek
-                usdMonth
-                usd3Months
-                usdYear
-                btcWeek
-                btcMonth
-                btc3Months
-                btcYear
-              }
-            }
-          }
-          exchange {
-            name
-          }
-          key {
-            name
-            apiKey
-          }
+          perf
+          price
         }
+        industry1W
+        industry1M
+        industry3M
+        industry1Y
       }
     }
   }
