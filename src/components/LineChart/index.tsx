@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import dateFormat from 'date-fns/format'
+// import dateFormat from 'date-fns/format'
 import {
   FlexibleXYPlot,
   XAxis,
@@ -21,7 +21,6 @@ import { LegendContainer } from '@styles/cssUtils'
 
 const axisStyle = {
   ticks: {
-    padding: '1rem',
     stroke: '#fff',
     opacity: 0.75,
     fontFamily: 'Roboto',
@@ -79,13 +78,16 @@ export default class LineChart extends React.Component<Props, State> {
 
     if (!data) return null
 
-    const format =
-      crosshairValues &&
-      crosshairValues[0] &&
-      dateFormat(new Date(2018, 5, crosshairValues[0].x), 'dddd, MMM DD YYYY')
+    // const format =
+    //   crosshairValues &&
+    //   crosshairValues[0] &&
+    //   dateFormat(new Date(2018, 5, crosshairValues[0].x), 'dddd, MMM DD YYYY')
+
+    const dateOptionsFormat = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateDataFormatted = crosshairValues && crosshairValues[0] && new Date(crosshairValues[0].x * 1000).toLocaleDateString('en-US', dateOptionsFormat)
 
     return (
-      <FlexibleXYPlot onMouseLeave={this.onMouseLeave}>
+      <FlexibleXYPlot onMouseLeave={this.onMouseLeave} margin={{left: 55}} >
         {alwaysShowLegend && (
           <LegendContainer>
             <DiscreteColorLegend orientation="horizontal" items={itemsForChartLegend} />
@@ -96,8 +98,11 @@ export default class LineChart extends React.Component<Props, State> {
           // hideLine
           title="June 2018"
           style={axisStyle}
-          tickFormat={(v: number) => `${v}`}
-          tickValues={data[0].map((d) => d.x)}
+          // tickFormat={(v: number) => `${v}`}
+          // tickValues={data[0].map((d) => d.x)}
+          tickFormat={(v: number) =>
+            new Date(v * 1000).toUTCString().substring(5, 11)
+          }
         />
 
         <YAxis
@@ -127,7 +132,7 @@ export default class LineChart extends React.Component<Props, State> {
         {crosshairValues && (
           <Crosshair values={crosshairValues}>
             <ContainerForCrossHairValues>
-              <HeadingParagraph>{format}</HeadingParagraph>
+              <HeadingParagraph>{dateDataFormatted}</HeadingParagraph>
 
               {crosshairValues.map((v, i) => (
                 <div key={`${v.label}: ${v.y} USD`}>
