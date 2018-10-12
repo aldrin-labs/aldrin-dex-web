@@ -14,7 +14,7 @@ import {
 const FlexibleChart = makeVisFlexible(RadialChart)
 
 class DonutChartWitoutTheme extends Component<Props, State> {
-  state = {
+  state: State = {
     data: [],
     value: null,
   }

@@ -10,8 +10,7 @@ import { combineIndustryData } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
-import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
-import { Paper, Grid, Typography } from '@material-ui/core'
+import { Paper, Grid } from '@material-ui/core'
 
 import { DonutChart } from '@components/DonutChart'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
@@ -93,7 +92,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { children, baseCoin } = this.props
+    const { baseCoin } = this.props
     const { industryData, chartData } = this.state
 
     const tableDataHasData = industryData
@@ -161,5 +160,6 @@ export default connect(mapStateToProps)(
   queryRendererHoc({
     query: getPortfolioQuery,
     pollInterval: 5000,
+    fetchPolicy: 'network-only',
   })(PortfolioTableIndustries)
 )

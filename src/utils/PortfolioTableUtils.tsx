@@ -16,8 +16,7 @@ export const calcAllSumOfPortfolioAsset = (assets: any): number => {
 
 export const dustFilter = (
   tableData: any[],
-  filterValueSmallerThenPercentage: number | undefined = 0,
-  filterByColumn: number | null = null
+  filterValueSmallerThenPercentage: number | undefined = 0
 ) => {
   const filtering = (el) =>
     !el || isNaN(el.portfolioPercentage)
@@ -26,17 +25,7 @@ export const dustFilter = (
         (filterValueSmallerThenPercentage
           ? filterValueSmallerThenPercentage
           : 0)
-  // not working will figure out
-  if (!!filterByColumn) {
-    tableData.filter((arr) => {
-      console.log(filterByColumn)
 
-      console.log(arr)
-      console.log(arr[arr.length - 1])
-      console.log(arr[arr.length - 1].for)
-      return filtering(arr[arr.length - 1][filterByColumn])
-    })
-  }
   //  dust filter part
   return tableData.filter((el) =>
     //  if el.percentage is not a number then turn it into 0
@@ -235,7 +224,7 @@ export const roundAndFormatNumber = (
   digitsAfterPoint: number,
   format: boolean = true
 ): string => {
-  if ((x === null) | (x === 0) || +x.toFixed(digitsAfterPoint) === 0) {
+  if (x === null || x === 0 || +x.toFixed(digitsAfterPoint) === 0) {
     return '0'
   }
   const res = format
