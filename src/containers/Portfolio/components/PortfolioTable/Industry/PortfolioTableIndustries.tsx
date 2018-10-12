@@ -8,7 +8,7 @@ import { IndProps } from '@containers/Portfolio/interfaces'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { combineIndustryData } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
-import { QueryRendererHoc } from '@components/QueryRenderer'
+import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { Paper, Grid } from '@material-ui/core'
@@ -191,7 +191,7 @@ const mapStateToProps = (store: object) => ({
 })
 
 export default connect(mapStateToProps)(
-  QueryRendererHoc({
+  queryRendererHoc({
     query: getPortfolioQuery,
   })(PortfolioTableIndustries)
 )

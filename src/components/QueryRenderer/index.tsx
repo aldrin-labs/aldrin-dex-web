@@ -105,7 +105,7 @@ export default class QueryRenderer extends React.Component<IProps> {
   }
 }
 
-export const QueryRendererHoc = (params: HOCTypes) => (
+export const queryRendererHoc = (params: HOCTypes) => (
   WrappedComponent: React.ReactNode
 ) => (props: object): React.ReactElement<object> => (
   <QueryRenderer
