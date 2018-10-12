@@ -96,7 +96,7 @@ export default class LineChart extends React.Component<Props, State> {
 
         <XAxis
           // hideLine
-          title="June 2018"
+          // title="June 2018"
           style={axisStyle}
           // tickFormat={(v: number) => `${v}`}
           // tickValues={data[0].map((d) => d.x)}

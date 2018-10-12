@@ -46,6 +46,7 @@ export default class Import extends PureComponent<IProps> {
     startDate: null,
     endDate: null,
     optimizedData: [],
+
     percentages: [2, 7, 12, 17, 22],
   }
 
@@ -120,7 +121,7 @@ export default class Import extends PureComponent<IProps> {
 
     this.props.toggleLoading()
 
-    const { showWarning, optimizedToState } = this.props
+    const { showWarning, optimizedToState, activeButton, updateData } = this.props
 
     const mockForQuery = {
       rebalancePeriod: 13,
@@ -131,6 +132,27 @@ export default class Import extends PureComponent<IProps> {
       coinList: ['BCH', 'ETH', 'LTC'],
       startDate: 1531441380,
       endDate: 1531873380,
+    }
+
+
+    //   period: 7,
+    //   risk_profile: "medium",
+    //   base_currency :"USDT",
+    //   risk_free: 1,
+    //   initial_capital : 1368.99,
+    //   coinList: ["ETH","BCH","EOS","LTC","DASH"],
+    //   startDate: 1534082400,
+    //   endDate:1536760800
+
+    const otherMockForQuery = {
+      rebalancePeriod: 7,
+      riskProfile: 'medium',
+      baseCurrency: 'USDT',
+      riskFree: 1,
+      initialCapital: 1368.99,
+      coinList: ["ETH","BCH","EOS","LTC","DASH"],
+      startDate: 1534082400,
+      endDate: 1536760800,
     }
 
     const myObj = {
@@ -153,10 +175,12 @@ export default class Import extends PureComponent<IProps> {
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
       riskProfile: riskProfile,
-      startDate: 1528392417,
-      endDate: 1533662817,
+      // startDate: 1528392417,
+      // endDate: 1533662817,
       // startDate: +startDate._d/1000,
       // endDate: +endDate._d/1000,
+      startDate: startDate.unix(),
+      endDate: endDate.unix(),
     }
 
     console.log('myObj', myObj)
@@ -165,7 +189,8 @@ export default class Import extends PureComponent<IProps> {
       query: OPTIMIZE_PORTFOLIO,
       variables: {
         // ...myObj,
-        ...mockForQuery,
+        // ...mockForQuery,
+        ...otherMockForQuery,
         // coinList: storeData.map((el: IData) => el.coin),
         // initialCapital: storeData.reduce((acc, el: IData) => {return acc += +el.percentage}, 0),
         // baseCurrency: baseCoin,
@@ -196,6 +221,12 @@ export default class Import extends PureComponent<IProps> {
 
     this.setState({ optimizedData })
     optimizedToState(optimizedData)
+
+    if (storeData.length < optimizedData[activeButton].portfolio_coins_list.length) {
+      console.log('storeData.length < optimizedData');
+      // TODO: CASE when if we had USDT in portfolio
+      this.addRow('USDT', 0)
+    }
   }
 
   onOptimizeButtonClick = async (
@@ -416,9 +447,9 @@ export default class Import extends PureComponent<IProps> {
       )
     }
 
-    console.log('assets in RENDER', assets);
-
-    console.log('storeData in RENDER', storeData);
+    // console.log('assets in RENDER', assets);
+    //
+    // console.log('storeData in RENDER', storeData);
 
 
     const textColor: string = this.props.theme.palette.getContrastText(
@@ -431,8 +462,8 @@ export default class Import extends PureComponent<IProps> {
     const maximumDate = moment()
     const minimumDate = moment().subtract(3, 'years')
 
-    console.log('maxumumDate', maximumDate);
-    console.log('minimumDate', minimumDate);
+    // console.log('maxumumDate', maximumDate);
+    // console.log('minimumDate', minimumDate);
 
 
     const isAllOptionsFilled =

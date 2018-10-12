@@ -141,6 +141,7 @@ class Optimization extends Component<IProps, IState> {
 
   onNewBtnClick = (index) => {
     this.setState({ activeButton: index })
+
   }
 
   onBtnClick = async (index: number) => {
@@ -313,23 +314,27 @@ class Optimization extends Component<IProps, IState> {
     // }
 
     // for real data
-    // const lineChartData =  rawOptimizedData.length &&  rawOptimizedData[activeButton].backtest_result.map((el) => ({
-    //   x: el[0],
-    //   y: el[1],
-    // }))
-
-    const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
-      label: 'original',
-      x: el[0],
-      y: el[1],
-    }))
-    const lineChartDataOptimized = dateMockDataOptimized.map((el) => ({
+    const lineChartData = rawOptimizedData.length &&  rawOptimizedData[activeButton].backtest_results.map((el) => ({
       label: 'optimized',
       x: el[0],
       y: el[1],
     }))
 
-    console.log('lineChartData', lineChartDataOriginal);
+    console.log('lineChartData from query', lineChartData);
+
+
+    // const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
+    //   label: 'original',
+    //   x: el[0],
+    //   y: el[1],
+    // }))
+    // const lineChartDataOptimized = dateMockDataOptimized.map((el) => ({
+    //   label: 'optimized',
+    //   x: el[0],
+    //   y: el[1],
+    // }))
+
+    // console.log('lineChartData', lineChartDataOriginal);
 
 
     const itemsForChartLegend = [
@@ -354,7 +359,8 @@ class Optimization extends Component<IProps, IState> {
           <LineChart
             alwaysShowLegend={true}
             // data={mockDataForLineChart}
-            data={[lineChartDataOriginal, lineChartDataOptimized]}
+            // data={[lineChartDataOriginal, lineChartDataOptimized]}
+            data={[lineChartData]}
             itemsForChartLegend={itemsForChartLegend}
           />
         </Chart>
