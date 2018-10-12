@@ -77,9 +77,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     const { industryData } = this.state
     if (!industryData) return
     return {
-      head: tableHeadings.map((heading, ind: number) => ({
+      head: tableHeadings.map((heading, index: number) => ({
         text: heading.name,
-        number: ind === 0 || ind === 1 ? false : true,
+        number: index === 0 || index === 1 ? false : true,
       })),
       body: industryData,
     }
