@@ -362,8 +362,6 @@ export const combineTableData = (
       }
     })
 
-  //  tableData = dustFilter(tableData, filterValueSmallerThenPercentage)
-
   return tableData
 }
 

@@ -14,13 +14,9 @@ import {
 const FlexibleChart = makeVisFlexible(RadialChart)
 
 class DonutChartWitoutTheme extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      data: [],
-      value: null,
-    }
+  state = {
+    data: [],
+    value: null,
   }
 
   componentDidMount = () => {
@@ -36,8 +32,8 @@ class DonutChartWitoutTheme extends Component<Props, State> {
     }))
 
   onValueMouseOver = (value: DonutPiece) => {
-    const { data } = this.state
-    if (this.state.value && this.state.value.label === value.label) return
+    const { data, value: stateValue } = this.state
+    if (stateValue && stateValue.label === value.label) return
 
     const index = data.findIndex((d) => d.label === value.label)
     const newData = data.slice().map((d) => ({ ...d, opacity: 0.1 }))
@@ -65,7 +61,6 @@ class DonutChartWitoutTheme extends Component<Props, State> {
     }
     return (
       <ChartContainer>
-        {/* <FlexibleXYPlot> */}
         <LabelContainer>
           <Typography variant="display1">
             {value ? value.label : labelPlaceholder || ''}
@@ -114,7 +109,6 @@ class DonutChartWitoutTheme extends Component<Props, State> {
             </GradientDefs>
           </FlexibleChart>
         </ChartWrapper>
-        {/* </FlexibleXYPlot> */}
       </ChartContainer>
     )
   }

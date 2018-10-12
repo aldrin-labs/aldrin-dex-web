@@ -20,6 +20,7 @@ export const ValueContainer = styled.div`
   text-align: center;
   z-index: 1;
   opacity: ${(props: { value: string }) => (props.value ? 1 : 0)};
+  transition: opacity 0.25s ease-in-out;
 `
 
 export const LabelContainer = styled.div`
