@@ -340,7 +340,7 @@ class Optimization extends Component<IProps, IState> {
     // }))
 
     const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
-      label: 'optimized',
+      label: 'original',
       x: el[0],
       y: el[1],
     }))
