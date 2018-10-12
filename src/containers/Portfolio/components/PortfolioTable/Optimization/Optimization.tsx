@@ -8,7 +8,8 @@ import {
   IData,
   IProps,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
-import BarChart from '@components/BarChart/BarChart'
+// import BarChart from '@components/BarChart/BarChart'
+import LineChart from '@components/LineChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
@@ -16,7 +17,7 @@ import { getCoinsForOptimization } from '@containers/Portfolio/components/Portfo
 import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
 import {
   calcAllSumOfPortfolioAsset,
-  percentagesOfCoinInPortfolio,
+  percentagesOfCoinInPortfolio, roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import ComingSoon from '@components/ComingSoon'
 import {
@@ -27,10 +28,22 @@ import {
   MainAreaUpperPart,
   PTWrapper,
   Content,
-  ImportData,
+  ChartContainer
 } from './Optimization.styles'
+import { mockDataForLineChart } from './mockData'
+
 
 import { MASTER_BUILD } from '@utils/config'
+import { colors } from '@components/LineChart/LineChart.utils'
+
+const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
+  return [(1528405044 + (86400 * i)), i * 2 - 500 + (i * Math.random())]
+})
+
+const dateMockDataOptimized = new Array(1300).fill(undefined).map((elem, i) => {
+  return [(1528405044 + (86400 * i)), i * 2 + 900 - (i * Math.random())]
+})
+
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -38,7 +51,7 @@ class Optimization extends Component<IProps, IState> {
     risk: [],
     returns: [0],
     optimizedData: [],
-    rawDataBeforeOptimization: [],
+    rawDataBeforeOptimization: {},
     expectedReturn: '',
     activeButton: 2,
     percentages: [0],
@@ -58,11 +71,19 @@ class Optimization extends Component<IProps, IState> {
 
   transformData = (assets: any[]): IData[] => {
     const allSum = calcAllSumOfPortfolioAsset(assets)
+    console.log('allSum', allSum);
+    console.log('assets', assets);
 
-    return assets.map((data: any) => ({
-      coin: data.asset.symbol,
-      percentage: percentagesOfCoinInPortfolio(data, allSum, true),
+
+
+    const newAssets = assets.map((asset: any) => ({
+      coin: asset.coin,
+      percentage: roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
     }))
+
+    console.log('newAssets',newAssets);
+
+    return newAssets
   }
 
   optimizePortfolio = (data: any) => {
@@ -116,6 +137,11 @@ class Optimization extends Component<IProps, IState> {
         percentages: this.getPercentages(Number(this.state.expectedReturn)),
       })
     }
+  }
+
+  onNewBtnClick = (index) => {
+    this.setState({ activeButton: index })
+
   }
 
   onBtnClick = async (index: number) => {
@@ -237,6 +263,7 @@ class Optimization extends Component<IProps, IState> {
         optimizedToState={this.optimizedToState}
         // buttons props
         onBtnClick={this.onBtnClick}
+        onNewBtnClick={this.onNewBtnClick}
         percentages={percentages}
         activeButton={activeButton}
         showSwitchButtons={optimizedData.length >= 1}
@@ -252,39 +279,26 @@ class Optimization extends Component<IProps, IState> {
       activeButton,
       risk,
       returns,
+      rawOptimizedData,
     } = this.state
     const { storeData } = this.props
 
     if (!storeData) return
-    const formatedData = storeData.map((el: IData, i) => ({
-      x: el.coin,
-      y: Number(Number(el.percentage).toFixed(2)),
-    }))
-    const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
-      x: el.coin,
-      y: Number(Number(el.percentage).toFixed(2)),
-    }))
 
-    const barChartData = [
-      {
-        data: formatedData,
-        title: 'Original',
-        color: '#2496c8',
-      },
-      {
-        data: formatedOptimizedData,
-        title: 'Optimized',
-        color: '#1869a8',
-      },
-    ]
 
-    const efficientFrontierData = {
-      percentages: returns,
-      risk,
+    const arrayOfReturnedValues = rawOptimizedData.map((el) => el.return_value)
+    const arrayOfReturnedRisks = rawOptimizedData.map((el) => el.risk_coefficient)
+    console.log('arrayOfReturnedValues',arrayOfReturnedValues);
+    console.log('arrayOfReturnedRisks',arrayOfReturnedRisks);
+
+
+    let efficientFrontierData = {
       activeButton,
+      percentages: arrayOfReturnedValues,
+      risk: arrayOfReturnedRisks,
     }
 
-    const showBarChartPlaceholder = false
+    // let showBarChartPlaceholder = false
     // if (
     //   !isEqual(
     //     storeData.map((el: IData) => el.coin).sort(),
@@ -298,27 +312,64 @@ class Optimization extends Component<IProps, IState> {
     //     activeButton,
     //   }
     // }
+
+    // for real data
+    const lineChartData = rawOptimizedData.length &&  rawOptimizedData[activeButton].backtest_results.map((el) => ({
+      label: 'optimized',
+      x: el[0],
+      y: el[1],
+    }))
+
+    console.log('lineChartData from query', lineChartData);
+
+
+    // const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
+    //   label: 'original',
+    //   x: el[0],
+    //   y: el[1],
+    // }))
+    // const lineChartDataOptimized = dateMockDataOptimized.map((el) => ({
+    //   label: 'optimized',
+    //   x: el[0],
+    //   y: el[1],
+    // }))
+
+    // console.log('lineChartData', lineChartDataOriginal);
+
+
+    const itemsForChartLegend = [
+      {
+        title: 'Optimized',
+        color: colors[0],
+      },
+      {
+        title: 'Original',
+        color: colors[1],
+      },
+    ]
+
     const {
-      theme: { palette },
+      theme,
     } = this.props
 
     return (
       <ChartsContainer>
-        <Chart
-          background={palette.background.default}
-        >
-          <BarChart
-            height={300}
-            showPlaceholder={formatedData.length === 0}
-            charts={barChartData}
-            alwaysShowLegend
+        <ChartContainer background={theme.palette.background.paper}>
+        <Chart background={theme.palette.background.default}>
+          <LineChart
+            alwaysShowLegend={true}
+            // data={mockDataForLineChart}
+            // data={[lineChartDataOriginal, lineChartDataOptimized]}
+            data={[lineChartData]}
+            itemsForChartLegend={itemsForChartLegend}
           />
         </Chart>
-        <Chart
-          background={palette.background.default}
-        >
-          <EfficientFrontierChart data={efficientFrontierData} />
+        </ChartContainer>
+      <ChartContainer background={theme.palette.background.paper}>
+        <Chart background={theme.palette.background.default}>
+          <EfficientFrontierChart data={efficientFrontierData} theme={theme}/>
         </Chart>
+      </ChartContainer>
       </ChartsContainer>
     )
   }
@@ -333,15 +384,14 @@ class Optimization extends Component<IProps, IState> {
     const { loading, openWarning, warningMessage } = this.state
 
     return (
-      <PTWrapper notScrollable={MASTER_BUILD}>
+      <PTWrapper background={palette.background.default} notScrollable={MASTER_BUILD}>
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}
           {loading ? this.renderLoading() : null}
-          <ImportData>{this.renderInput()}</ImportData>
+          {this.renderInput()}
 
           <MainArea background={palette.background.paper}>
-            <MainAreaUpperPart />
             {this.renderCharts()}
           </MainArea>
           <Warning
@@ -354,7 +404,6 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 }
-
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,

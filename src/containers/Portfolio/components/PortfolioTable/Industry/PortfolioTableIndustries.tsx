@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 
 import { IndProps } from '@containers/Portfolio/interfaces'

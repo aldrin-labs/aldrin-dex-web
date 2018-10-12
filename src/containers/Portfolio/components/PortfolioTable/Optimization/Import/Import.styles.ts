@@ -1,9 +1,17 @@
 import styled from 'styled-components'
 
-
-export { SwitchButtonsWrapper, HelperForCentering, InputContainer, TableContainer, Input }
+export {
+  SwitchButtonsWrapper,
+  HelperForCentering,
+  InputContainer,
+  TableContainer,
+  Input,
+  ImportData,
+  Chart,
+}
 
 const SwitchButtonsWrapper = styled.div`
+  padding: 0 0.5rem;
   display: flex;
   justify-content: space-between;
 `
@@ -15,10 +23,14 @@ const HelperForCentering = styled.div`
 `
 
 const InputContainer = styled.div`
-  margin: auto 2rem auto 0;
+    min-height: 400px;
+  padding: 15px;
+  box-shadow: 0 2px 6px 0 #00000066;
+  background: ${(props: { background: string }) => props.background};
+  margin-right: 2rem;
   display: flex;
+  justify-content: flex-end;
   flex-direction: column;
-  justify-content: center;
   min-width: 100px;
 
   @media (max-width: 1080px) {
@@ -28,10 +40,17 @@ const InputContainer = styled.div`
 `
 
 const TableContainer = styled.div`
+  flex-grow: 1;
+  justify-content: flex-start;
+  min-height: 400px;
+  background: ${(props: { background: string }) => props.background};
+  box-shadow: 0 2px 6px 0 #00000066;
+  margin: 0;
+  
   display: flex;
   flex-direction: column;
-  place-content: flex-end;
-  width: 50%;
+  //place-content: flex-end;
+  width: 30%;
   max-width: 50rem;
   @media (max-width: 600px) {
     margin-top: 1rem;
@@ -58,4 +77,37 @@ const Input = styled.input`
   &:focus {
     border-bottom: 2px solid rgb(78, 216, 218);
   }
+`
+
+const Chart = styled.div`
+  height: 365px;
+  padding: 0.5rem;
+  //margin: 1rem 0 0 2.5rem;
+  flex-grow: 1;
+  //min-width: 0;
+  //height: 300px;
+  border-radius: 1rem;
+  background: ${(props: { background: string }) => props.background};
+
+  @media (max-width: 1080px) {
+    width: 100%;
+    flex-basis: 100%;
+  }
+`
+
+const ImportData = styled.div`
+  //width: 80%;
+  //display: flex;
+  //justify-content: center;
+  //margin: 0 auto;
+  //
+  //@media (max-width: 1080px) {
+  //  justify-content: space-between;
+  //  width: 100%;
+  //  flex-wrap: wrap;
+  //}
+
+  display: flex;
+  align-items: flex-end;
+  margin: 0 2rem;
 `

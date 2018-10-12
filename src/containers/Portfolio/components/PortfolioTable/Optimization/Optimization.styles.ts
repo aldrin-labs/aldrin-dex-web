@@ -1,16 +1,10 @@
 import { LinearProgress } from '@material-ui/core'
 import styled from 'styled-components'
 import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import { customAquaScrollBar } from '@styles/cssUtils'
 
-export {
-  Loader,
-  ChartsContainer,
-  Chart,
-  MainArea,
-  MainAreaUpperPart,
-  Content,
-  ImportData,
-}
+export { Loader, ChartsContainer, Chart, MainArea, MainAreaUpperPart, PTWrapper, Content, ChartContainer }
+
 
 const Loader = styled(LinearProgress)`
   margin-bottom: 0.5rem;
@@ -19,6 +13,7 @@ const Loader = styled(LinearProgress)`
 const ChartsContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
+  justify-content: space-between;
 
   @media (max-width: 1080px) {
     flex-wrap: wrap;
@@ -26,7 +21,7 @@ const ChartsContainer = styled.div`
 `
 const Chart = styled.div`
   padding: 0.5rem;
-  margin: 1rem;
+  //margin: 1rem;
   flex-grow: 1;
   min-width: 0;
   height: 300px;
@@ -47,34 +42,56 @@ const MainAreaUpperPart = styled.div`
 `
 
 const MainArea = styled.div`
+  margin: 2rem;
   color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  //box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   border-radius: 3px;
   flex-direction: column;
-  background: ${(props: { background: string }) => props.background};
-  height: auto;
-  display: flex;
-  margin: 2rem;
+//<<<<<<< HEAD
+//=======
+//>>>>>>> develop
+//  height: auto;
+//  display: flex;
+  //margin: 2rem;
 `
 
-export const PTWrapper = styled(PTWrapperRaw)`
+// <<<<<<< HEAD
+const PTWrapper = styled.div`
+  //min-height: 100%;
+  overflow-y: auto;
+  overflow: auto;
   ${(props: { notScrollable: boolean }) =>
-    props.notScrollable ? 'overflow:hidden;' : ''} width: calc(100% - 2rem);
+  props.notScrollable ? 'overflow:hidden;' : ''} width: calc(100% - 2rem);
+  display: flex;
+  flex-direction: column;
+  margin: 24px;
+  border-radius: 3px;
+  //box-shadow: 0 2px 6px 0 #00000066;
+  position: relative;
+  height: calc(100vh - 130px);
+  background: ${(props: {background: string}) => props.background};
+
+  ${customAquaScrollBar};
 `
+
+// export const PTWrapper = styled(PTWrapperRaw)`
+//   ${(props: { notScrollable: boolean }) =>
+//     props.notScrollable ? 'overflow:hidden;' : ''} width: calc(100% - 2rem);
+// `
 
 const Content = styled.div`
   flex: 0 0 auto;
 `
 
-const ImportData = styled.div`
-  width: 80%;
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
-
-  @media (max-width: 1080px) {
-    justify-content: space-between;
-    width: 100%;
-    flex-wrap: wrap;
-  }
+const ChartContainer = styled.div`
+    //&:first-child {
+    //    margin-left: 2rem;
+    //}
+    //
+    //margin-right: 2rem;
+    width: 49%;
+    //margin: 0 0 0 2.5rem;
+    padding: 15px;
+    box-shadow: 0 2px 6px 0 #00000066;
+    background: ${(props: {background: string}) => props.background};
 `

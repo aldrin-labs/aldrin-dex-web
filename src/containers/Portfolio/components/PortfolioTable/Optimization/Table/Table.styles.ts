@@ -96,6 +96,9 @@ const Item = styled.div`
 
 const HeadItem = styled(Item)`
   top: -1px;
+  & > p {
+    font-weight: 500;
+  }
 `
 
 const Head = styled.div`
@@ -105,7 +108,7 @@ const Head = styled.div`
   justify-content: center;
   max-width: 50rem;
   margin: 0.5rem;
-  border-bottom: 1px solid ${(props: { color: string }) => props.color};
+  border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
 `
 
 const TableInput = styled.div`
@@ -122,7 +125,7 @@ const StyledTable = styled.div`
   background: ${(props: {background: string}) =>
   props.background
   };
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  //box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
   transition: all 0.3s linear;
 `
 
@@ -137,6 +140,8 @@ const Col = styled.div`
 `
 
 const Body = styled.div`
+  //max-height: 108px;
+  max-height: 138px;
   width: 98%;
   border-radius: 2px;
   display: flex;
@@ -144,7 +149,7 @@ const Body = styled.div`
   margin: 0.5rem;
   line-height: 1.5;
   max-width: 50rem;
-  max-height: 200px;
+  //max-height: 200px;
   overflow: auto;
 
   ${customAquaScrollBar};

@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 
-
 export { Container, ChartTooltip }
 
 const Container = styled.div`
@@ -14,9 +13,9 @@ const ChartTooltip = styled.span`
   font-size: 18px;
   font-weight: 500;
   text-align: left;
-  color: #fff;
+  color: ${(props: { color: string }) => props.color};
   border-radius: 3px;
-  background-color: #393e44;
+  background: ${(props: { background: string }) => props.background};
   box-shadow: 0 2px 6px 0 #0006;
   padding: 8px;
 `

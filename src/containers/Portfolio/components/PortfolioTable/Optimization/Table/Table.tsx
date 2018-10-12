@@ -67,18 +67,18 @@ export default class Table extends Component<IProps, IState> {
         <StyledTable background={palette.background.paper}>
           <Head bottomCollor={textColor}>
             <HeadItem background={palette.background.paper}>
-              <Typography variant="title" align="center">
+              <Typography variant="body1" align="center">
                 {' '}
                 Coin
               </Typography>
             </HeadItem>
             <HeadItem background={palette.background.paper}>
-              <Typography variant="title" align="center">
+              <Typography variant="body1" align="center">
                 Portfolio%
               </Typography>
             </HeadItem>
             <HeadItem background={palette.background.paper}>
-              <Typography variant="title" align="center">
+              <Typography variant="body1" align="center">
                 Optimized%
               </Typography>
             </HeadItem>
@@ -133,10 +133,8 @@ export default class Table extends Component<IProps, IState> {
                 ))}
             </Col>
 
-            {/*  optimizedData */}
+            {console.log('optimizedData in Table', optimizedData)}
             {optimizedData.length >= 1 ? (
-              //  &&
-              // optimizedData.length === data.length
               <Col>
                 {data
                   .filter(
@@ -149,8 +147,8 @@ export default class Table extends Component<IProps, IState> {
                       key={item.coin}
                     >
                       <Typography variant="body1" align="center">
-                        {optimizedData[i]
-                          ? `${Number(optimizedData[i].percentage).toFixed(2)}%`
+                        {optimizedData
+                          ? `${(Math.abs(Number(optimizedData[i]) * 100)).toFixed(2)}%`
                           : '-'}{' '}
                       </Typography>
 
@@ -208,6 +206,7 @@ export default class Table extends Component<IProps, IState> {
               style={{
                 display: 'flex',
                 justifyContent: 'flex-end',
+                alignItems: 'flex-end',
                 // because of nth-child(even)
               }}
             >
