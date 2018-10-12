@@ -283,27 +283,6 @@ class Optimization extends Component<IProps, IState> {
     const { storeData } = this.props
 
     if (!storeData) return
-    // const formatedData = storeData.map((el: IData, i) => ({
-    //   x: el.coin,
-    //   y: Number(Number(el.percentage).toFixed(2)),
-    // }))
-    // const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
-    //   x: el.coin,
-    //   y: Number(Number(el.percentage).toFixed(2)),
-    // }))
-
-    // const barChartData = [
-    //   {
-    //     data: formatedData,
-    //     title: 'Original',
-    //     color: '#2496c8',
-    //   },
-    //   {
-    //     data: formatedOptimizedData,
-    //     title: 'Optimized',
-    //     color: '#1869a8',
-    //   },
-    // ]
 
 
     const arrayOfReturnedValues = rawOptimizedData.map((el) => el.return_value)

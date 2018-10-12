@@ -69,35 +69,35 @@ export default class Import extends PureComponent<IProps> {
     this.props.updateData(assets)
   }
 
-  sumSameCoins = (rawData: IData[]) => {
-    let data: IData[] = []
-    if (!rawData) return
-    rawData.forEach((asset) => {
-      const index = data.findIndex((obj) => obj.coin === asset.coin)
-      if (index >= 0) {
-        data = data.map(
-          (el, inx) =>
-            inx === index
-              ? Object.assign(el, {
-                  coin: el.coin,
-                  percentage:
-                    Number(asset.percentage) + Number(data[index].percentage),
-                })
-              : el
-        )
-      } else {
-        data.push(asset)
-      }
-    })
-
-    const result = data.map((asset) => {
-      const { coin, percentage } = asset
-
-      return { coin, percentage: Number(percentage) }
-    })
-
-    return result
-  }
+  // sumSameCoins = (rawData: IData[]) => {
+  //   let data: IData[] = []
+  //   if (!rawData) return
+  //   rawData.forEach((asset) => {
+  //     const index = data.findIndex((obj) => obj.coin === asset.coin)
+  //     if (index >= 0) {
+  //       data = data.map(
+  //         (el, inx) =>
+  //           inx === index
+  //             ? Object.assign(el, {
+  //                 coin: el.coin,
+  //                 percentage:
+  //                   Number(asset.percentage) + Number(data[index].percentage),
+  //               })
+  //             : el
+  //       )
+  //     } else {
+  //       data.push(asset)
+  //     }
+  //   })
+  //
+  //   const result = data.map((asset) => {
+  //     const { coin, percentage } = asset
+  //
+  //     return { coin, percentage: Number(percentage) }
+  //   })
+  //
+  //   return result
+  // }
 
   newOptimizeButtonClick = async (
     client: any,
@@ -267,22 +267,22 @@ export default class Import extends PureComponent<IProps> {
     }, 2000)
   }
 
-  // isEqual = (assets: IData[], storeData: IData[]): boolean => {
-  //   const s = this.sumSameCoins(assets)
-  //
-  //   return isEqual(s, storeData)
-  // }
 
   addRow = (name: string, value: number) => {
+    if (this.props.storeData.some((el)=> el.coin === name)) {
+      return
+    }
+
     if (this.props.filterValueSmallerThenPercentage >= 0) {
       this.props.showWarning('Turn off the filter first to see new coins.')
     }
+
     if (name) {
       this.props.updateData(
-        this.sumSameCoins([
+        [
           ...this.props.storeData,
           { coin: name, percentage: value },
-        ])
+        ]
       )
     }
   }

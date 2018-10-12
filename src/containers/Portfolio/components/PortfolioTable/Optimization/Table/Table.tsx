@@ -135,8 +135,6 @@ export default class Table extends Component<IProps, IState> {
 
             {console.log('optimizedData in Table', optimizedData)}
             {optimizedData.length >= 1 ? (
-              //  &&
-              // optimizedData.length === data.length
               <Col>
                 {data
                   .filter(
