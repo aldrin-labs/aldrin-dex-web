@@ -13,6 +13,8 @@ export interface Props extends WithStyles {
   rows?: { head: Row; body: Row[]; footer: Row }
   checkedRows?: number
   title?: string | number
+  // Shadow depth, corresponds to dp in the spec. It's accepting values between 0 and 24 inclusive.
+  elevation?: number
   onChange?: (e: Event, id: number) => void
   onSelectAllClick?: (e: Event, id: number) => void
 }

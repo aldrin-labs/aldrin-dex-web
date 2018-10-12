@@ -51,9 +51,7 @@ const styles = (theme: Theme) => ({
   indeterminateCheckbox: {
     color: theme.palette.secondary.main,
   },
-  table: {
-    minWidth: 700,
-  },
+  table: {},
   title: {
     backgroundColor: theme.palette.primary[900],
   },
@@ -117,6 +115,7 @@ const CustomTable = (props: Props) => {
     rows = { head: [], body: [], footer: [] },
     withCheckboxes,
     title,
+    elevation = 0,
     onChange = () => {
       return
     },
@@ -134,7 +133,7 @@ const CustomTable = (props: Props) => {
   }
   const howManyColumns = rows.head.length
   return (
-    <Background className={classes.root}>
+    <Background className={classes.root} elevation={elevation}>
       <Table className={classes.table}>
         <TableHead className={classes.tableHead}>
           {title && (
