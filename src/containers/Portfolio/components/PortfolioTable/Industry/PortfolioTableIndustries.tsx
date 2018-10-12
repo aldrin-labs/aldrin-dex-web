@@ -42,41 +42,33 @@ const tableHeadings = [
   },
 ]
 
-const industryStateObject = ({
-  data,
-  theme,
-  isUSDCurrently,
-  filterValueSmallerThenPercentage = 0,
-}) => ({
-  industryData: combineIndustryData(
+const getStateObj = ({ data, theme, filterValueSmallerThenPercentage = 0 }) => {
+  const { chartData, industryData } = combineIndustryData(
     data,
     filterValueSmallerThenPercentage,
     theme.palette.red.main,
     theme.palette.green.main
-  ),
-})
+  )
+
+  return { chartData, industryData }
+}
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
     activeKeys: null,
     portfolio: null,
     industryData: null,
+    chartData: null,
     currentSort: null,
     expandedRow: NaN,
   }
 
   static getDerivedStateFromProps(props, state) {
-    const {
-      data,
-      theme,
-      isUSDCurrently,
-      filterValueSmallerThenPercentage,
-    } = props
+    const { data, theme, filterValueSmallerThenPercentage } = props
 
-    return industryStateObject({
+    return getStateObj({
       data,
       theme,
-      isUSDCurrently,
       filterValueSmallerThenPercentage,
     })
   }
@@ -100,8 +92,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { children, filterValueSmallerThenPercentage, baseCoin } = this.props
-    const { industryData } = this.state
+    const { children, baseCoin } = this.props
+    const { industryData, chartData } = this.state
 
     const tableDataHasData = industryData
       ? !!Object.keys(industryData).length
@@ -134,12 +126,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               labelPlaceholder="Industries %"
               radius={150}
               thickness={15}
-              data={[
-                { label: 'mock1', realValue: 33 },
-                { label: 'mock2', realValue: 33 },
-                { label: 'mock3', realValue: 33 },
-                { label: 'mock4', realValue: 1 },
-              ]}
+              data={chartData}
             />
           </ChartWrapper>
         </Grid>

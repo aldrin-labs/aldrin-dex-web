@@ -6,6 +6,7 @@ import { Icon } from '@styles/cssUtils'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { flatten, has } from 'lodash-es'
+import { InputRecord } from '@components/DonutChart/types'
 
 export const calcAllSumOfPortfolioAsset = (assets: any): number => {
   return assets.reduce((acc: number, curr: any) => {
@@ -105,7 +106,12 @@ export const combineIndustryData = (
     })
   )
 
-  return res
+  const chartData: InputRecord[] = res.map((row) => ({
+    label: row[0],
+    realValue: row[2],
+  }))
+
+  return { chartData, industryData: res }
 }
 
 export const percentagesOfCoinInPortfolio = (
