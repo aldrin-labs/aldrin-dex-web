@@ -156,18 +156,18 @@ export default class Import extends PureComponent<IProps> {
     }
 
     const myObj = {
-      // coinList: storeData.map((el: IData) => el.coin),
-      coinList: [
-        'ETH',
-        'BCH',
-        'TRX',
-        'EOS',
-        'LTC',
-        'BTC',
-        'ADA',
-        'DASH',
-        'XLM',
-      ],
+      coinList: storeData.map((el: IData) => el.coin),
+      // coinList: [
+      //   'ETH',
+      //   'BCH',
+      //   'TRX',
+      //   'EOS',
+      //   'LTC',
+      //   'BTC',
+      //   'ADA',
+      //   'DASH',
+      //   'XLM',
+      // ],
       initialCapital: +storeData
         .reduce((acc, el: IData) => acc + +el.percentage, 0)
         .toFixed(2),
@@ -183,14 +183,14 @@ export default class Import extends PureComponent<IProps> {
       endDate: endDate.unix(),
     }
 
-    console.log('myObj', myObj)
+    console.log('myOb for queryj', myObj)
 
     const backendResult = await client.query({
       query: OPTIMIZE_PORTFOLIO,
       variables: {
-        // ...myObj,
+        ...myObj,
         // ...mockForQuery,
-        ...otherMockForQuery,
+        // ...otherMockForQuery,
         // coinList: storeData.map((el: IData) => el.coin),
         // initialCapital: storeData.reduce((acc, el: IData) => {return acc += +el.percentage}, 0),
         // baseCurrency: baseCoin,
@@ -204,18 +204,23 @@ export default class Import extends PureComponent<IProps> {
     })
 
 
-    if (backendResult.portfolioOptimization === '') {
+    if (backendResult.data.portfolioOptimization === '') {
       showWarning('You get empty response! 🙈')
+      this.props.toggleLoading()
 
       return
     }
+    // console.log('awaiteDDDD');
+
+    console.log('backendResult unparsed', backendResult);
+
 
     this.props.toggleLoading()
     this.props.setActiveButtonToDefault()
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
-    console.log(backendResultParsed)
+    // console.log(backendResultParsed)
 
     const optimizedData = backendResultParsed.returns
 
@@ -223,8 +228,7 @@ export default class Import extends PureComponent<IProps> {
     optimizedToState(optimizedData)
 
     if (storeData.length < optimizedData[activeButton].portfolio_coins_list.length) {
-      console.log('storeData.length < optimizedData');
-      // TODO: CASE when if we had USDT in portfolio
+      // console.log('storeData.length < optimizedData');
       this.addRow('USDT', 0)
     }
   }
@@ -334,7 +338,7 @@ export default class Import extends PureComponent<IProps> {
       y: Number(Number(el.percentage).toFixed(2)),
     }))
 
-    console.log('storeData', storeData);
+    // console.log('storeData', storeData);
 
     // const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
     //   x: el.coin,
