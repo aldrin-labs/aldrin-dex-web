@@ -160,5 +160,6 @@ const mapStateToProps = (store: object) => ({
 export default connect(mapStateToProps)(
   queryRendererHoc({
     query: getPortfolioQuery,
+    pollInterval: 5000,
   })(PortfolioTableIndustries)
 )
