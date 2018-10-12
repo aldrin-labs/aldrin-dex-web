@@ -11,9 +11,10 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
-import { Paper, Grid } from '@material-ui/core'
+import { Paper, Grid, Typography } from '@material-ui/core'
 
 import { DonutChart } from '@components/DonutChart'
+import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 
 const tableHeadings = [
   { name: 'Industry', value: 'industry' },
@@ -99,38 +100,31 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       ? !!Object.keys(industryData).length
       : false
 
-    if (!tableDataHasData) {
-      return (
-        <PTWrapper tableData={!!tableDataHasData}>
-          {children}
-          <PTextBox>Add account for Portfolio</PTextBox>
-        </PTWrapper>
-      )
-    }
-
     return (
-      <Container container={true} spacing={16}>
-        <Grid item={true} xs={12} md={8}>
-          <Wrapper elevation={8}>
-            <Table
-              onChange={this.expandRow}
-              expandedRow={this.state.expandedRow}
-              rows={this.putDataInTable()}
-              title={`Industries Performance in ${baseCoin}`}
-            />
-          </Wrapper>
-        </Grid>
-        <Grid item={true} xs={12} md={4} style={{}}>
-          <ChartWrapper elevation={8}>
-            <DonutChart
-              labelPlaceholder="Industries %"
-              radius={150}
-              thickness={15}
-              data={chartData}
-            />
-          </ChartWrapper>
-        </Grid>
-      </Container>
+      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+        <Container container={true} spacing={16}>
+          <Grid item={true} xs={12} md={8}>
+            <Wrapper elevation={8}>
+              <Table
+                onChange={this.expandRow}
+                expandedRow={this.state.expandedRow}
+                rows={this.putDataInTable()}
+                title={`Industries Performance in ${baseCoin}`}
+              />
+            </Wrapper>
+          </Grid>
+          <Grid item={true} xs={12} md={4} style={{}}>
+            <ChartWrapper elevation={8}>
+              <DonutChart
+                labelPlaceholder="Industries %"
+                radius={150}
+                thickness={15}
+                data={chartData}
+              />
+            </ChartWrapper>
+          </Grid>
+        </Container>
+      </EmptyTablePlaceholder>
     )
   }
 }
@@ -157,20 +151,6 @@ const Wrapper = styled(Paper)`
   flex-direction: column;
   overflow-x: scroll;
   ${customAquaScrollBar};
-`
-
-const PTextBox = styled.div`
-  font-size: 30px;
-  color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 const mapStateToProps = (store: object) => ({

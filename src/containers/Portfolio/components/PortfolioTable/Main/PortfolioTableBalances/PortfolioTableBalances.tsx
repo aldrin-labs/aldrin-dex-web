@@ -18,6 +18,8 @@ import {
   StyledDivider,
   ChartTitle,
 } from './PortfolioTableBalances.styles'
+import { Typography } from '@material-ui/core'
+import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
@@ -35,45 +37,46 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         : []
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
+
     return (
-      <PTWrapper elevation={1} tableData={!!tableDataHasData}>
-        {children}
+      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+        <PTWrapper elevation={1} tableData={!!tableDataHasData}>
+          <GridContainer>
+            <TableWrapper elevation={8}>
+              {Array.isArray(tableData) && (
+                <Table
+                  title="Portfolio"
+                  checkedRows={checkedRows}
+                  withCheckboxes={true}
+                  onChange={onCheckboxClick}
+                  onSelectAllClick={onSelectAllClick}
+                  rows={putDataInTable()}
+                />
+              )}
+            </TableWrapper>
 
-        <GridContainer>
-          <TableWrapper elevation={8}>
-            {Array.isArray(tableData) && (
-              <Table
-                title="Portfolio"
-                checkedRows={checkedRows}
-                withCheckboxes={true}
-                onChange={onCheckboxClick}
-                onSelectAllClick={onSelectAllClick}
-                rows={putDataInTable()}
+            <StyledDivider light={true} />
+            <PTChartContainer>
+              <ChartTitle color="default" variant="title">
+                Portfolio Value
+              </ChartTitle>
+
+              <Chart
+                isShownMocks={this.props.isShownMocks}
+                setActiveChart={this.props.setActiveChart}
+                activeChart={this.props.activeChart}
+                style={{
+                  marginLeft: 0,
+                  minHeight: '10vh',
+                }}
+                height="20vh"
+                marginTopHr="10px"
+                coins={coins}
               />
-            )}
-          </TableWrapper>
-
-          <StyledDivider light={true} />
-          <PTChartContainer>
-            <ChartTitle color="default" variant="title">
-              Portfolio Value
-            </ChartTitle>
-
-            <Chart
-              isShownMocks={this.props.isShownMocks}
-              setActiveChart={this.props.setActiveChart}
-              activeChart={this.props.activeChart}
-              style={{
-                marginLeft: 0,
-                minHeight: '10vh',
-              }}
-              height="20vh"
-              marginTopHr="10px"
-              coins={coins}
-            />
-          </PTChartContainer>
-        </GridContainer>
-      </PTWrapper>
+            </PTChartContainer>
+          </GridContainer>
+        </PTWrapper>
+      </EmptyTablePlaceholder>
     )
   }
 }
