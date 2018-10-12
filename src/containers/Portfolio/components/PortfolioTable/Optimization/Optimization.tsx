@@ -339,11 +339,11 @@ class Optimization extends Component<IProps, IState> {
 
     const itemsForChartLegend = [
       {
-        title: 'Original',
+        title: 'Optimized',
         color: colors[0],
       },
       {
-        title: 'Optimized',
+        title: 'Original',
         color: colors[1],
       },
     ]
