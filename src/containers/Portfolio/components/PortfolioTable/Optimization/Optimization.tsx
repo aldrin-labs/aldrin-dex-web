@@ -36,7 +36,11 @@ import { mockDataForLineChart } from './mockData'
 import { MASTER_BUILD } from '@utils/config'
 import { colors } from '@components/LineChart/LineChart.utils'
 
-const dateMockData = new Array(1300).fill(undefined).map((elem, i) => {
+const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
+  return [(1528405044 + (86400 * i)), i * 2 - 500 + (i * Math.random())]
+})
+
+const dateMockDataOptimized = new Array(1300).fill(undefined).map((elem, i) => {
   return [(1528405044 + (86400 * i)), i * 2 + 900 - (i * Math.random())]
 })
 
@@ -335,14 +339,18 @@ class Optimization extends Component<IProps, IState> {
     //   y: el[1],
     // }))
 
-    const lineChartData = dateMockData.map((el) => ({
+    const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
       label: 'optimized',
       x: el[0],
-      // x: new Date(el[0] * 1000).toUTCString().substring(5, 11),
+      y: el[1],
+    }))
+    const lineChartDataOptimized = dateMockDataOptimized.map((el) => ({
+      label: 'optimized',
+      x: el[0],
       y: el[1],
     }))
 
-    console.log('lineChartData', lineChartData);
+    console.log('lineChartData', lineChartDataOriginal);
 
 
     const itemsForChartLegend = [
@@ -367,7 +375,7 @@ class Optimization extends Component<IProps, IState> {
           <LineChart
             alwaysShowLegend={true}
             // data={mockDataForLineChart}
-            data={[lineChartData]}
+            data={[lineChartDataOriginal, lineChartDataOptimized]}
             itemsForChartLegend={itemsForChartLegend}
           />
         </Chart>
