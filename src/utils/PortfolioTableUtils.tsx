@@ -105,13 +105,15 @@ export const combineIndustryData = (
       ])
     })
   )
+  // aplaying dustfilter
+  const industryData = res.filter((row) => row[2] >= filterValueLessThen)
 
   const chartData: InputRecord[] = res.map((row) => ({
     label: row[0],
     realValue: row[2],
   }))
 
-  return { chartData, industryData: res }
+  return { chartData, industryData }
 }
 
 export const percentagesOfCoinInPortfolio = (
