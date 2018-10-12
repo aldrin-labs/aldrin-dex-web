@@ -40,6 +40,9 @@
       "ts",
       "tsx"
     ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!lodash-es).+\\.js$"
+    ],
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "typescript-babel-jest",
       "\\.(gql|graphql)$": "jest-transform-graphql"

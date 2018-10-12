@@ -20,6 +20,7 @@ export interface IState {
   portfolio: IPortfolio | null
   isUSDCurrently: boolean
   tab: 'main' | 'industry' | 'rebalance' | 'correlation' | 'optimization'
+  baseCoin: string
 }
 
 export interface IPortfolio {

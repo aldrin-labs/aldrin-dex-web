@@ -41,6 +41,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     isShownChart: true,
     isUSDCurrently: true,
     tab: 'main',
+    baseCoin: 'USDT',
   }
 
   onToggleChart = () => {
@@ -48,14 +49,14 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   }
 
   onToggleUSDBTC = () => {
-    this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
-  }
-  switchToUsd = () => {
-    this.setState({ isUSDCurrently: true })
+    this.setState((prevState) => ({
+      isUSDCurrently: !prevState.isUSDCurrently,
+      baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
+    }))
   }
 
   renderTab = () => {
-    const { tab, isShownChart, isUSDCurrently } = this.state
+    const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
     const { theme } = this.props
 
     let render = null
@@ -65,11 +66,11 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableBalances
             isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
-            switchToUsd={this.switchToUsd}
             subscription={this.props.subscription}
             activeKeys={this.props.activeKeys}
             tab={this.state.tab}
             theme={theme}
+            variables={{ baseCoin }}
           />
         )
         break
@@ -79,7 +80,8 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             activeKeys={this.props.activeKeys}
             isUSDCurrently={isUSDCurrently}
             theme={theme}
-            switchToUsd={this.switchToUsd}
+            variables={{ baseCoin }}
+            baseCoin={baseCoin}
           />
         )
         break
@@ -87,7 +89,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
         render = <Rebalance isUSDCurrently={true} />
         break
       case 'correlation':
-        render = <Correlation theme={theme} />
+        render = <Correlation baseCoin={baseCoin} theme={theme} />
         break
       case 'optimization':
         render = <Optimization theme={theme} />

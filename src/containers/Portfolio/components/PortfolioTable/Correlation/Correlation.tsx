@@ -100,7 +100,8 @@ const Correlation = (props: IProps) => {
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, startDate, endDate, children } = props
+  const { isShownMocks, startDate, endDate, baseCoin, children } = props
+
   return (
     <PTWrapper>
       {isShownMocks ? (
@@ -110,27 +111,27 @@ const CorrelationWrapper = (props: IProps) => {
           {...props}
         />
       ) : (
-          <Query query={getPortfolioMainQuery}>
-            {({ loading, data }) => {
-              const render = loading ? (
-                <Loading centerAligned={true} />
-              ) : (
-                  <QueryRenderer
-                    fetchPolicy="network-only"
-                    component={Correlation}
-                    query={getCorrelationQuery}
-                    // quick fix until I have free time
-                    variables={{
-                      startDate: endDate,
-                      endDate: startDate,
-                    }}
-                    {...{ portfolio: data, ...props }}
-                  />
-                )
-              return render
-            }}
-          </Query>
-        )}
+        <Query query={getPortfolioMainQuery} variables={{ baseCoin }}>
+          {({ loading, data }) => {
+            const render = loading ? (
+              <Loading centerAligned={true} />
+            ) : (
+              <QueryRenderer
+                fetchPolicy="network-only"
+                component={Correlation}
+                query={getCorrelationQuery}
+                // quick fix until I have free time
+                variables={{
+                  startDate: endDate,
+                  endDate: startDate,
+                }}
+                {...{ portfolio: data, ...props }}
+              />
+            )
+            return render
+          }}
+        </Query>
+      )}
     </PTWrapper>
   )
 }

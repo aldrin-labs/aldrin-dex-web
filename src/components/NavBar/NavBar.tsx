@@ -5,6 +5,7 @@ import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
 import { WithTheme } from '@material-ui/core/styles'
 import withTheme from '@material-ui/core/styles/withTheme'
+import MainLogo from '@icons/MainLogo.png'
 
 export interface Props extends WithTheme {
   hide?: boolean
@@ -25,7 +26,7 @@ const NavBarRaw: SFC<Props> = ({
   hide = false,
 }) => (
   <Nav hide={hide} background={primary.main} shadow={shadows[5]}>
-    <Logo src="https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png" />
+    <Logo src={MainLogo} />
     <SNav>
       {/*<NavButton link="/" title="Home" exact />*/}
       {/*<NavButton link="/market" title="Coin Market" />*/}
@@ -79,7 +80,7 @@ const Nav = styled.div`
 `
 
 const Logo = styled.img`
-  padding: 25px 0 25px 32px;
+  padding-left: 1rem;
   z-index: 1300;
   position: relative;
 
