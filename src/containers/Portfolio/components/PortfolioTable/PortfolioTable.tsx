@@ -74,7 +74,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             activeKeys={this.props.activeKeys}
             tab={this.state.tab}
             theme={theme}
-            variables={{baseCoin}}
+            variables={{ baseCoin }}
           />
         )
         break
@@ -92,7 +92,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
         render = <Rebalance isUSDCurrently={true} />
         break
       case 'correlation':
-        render = <Correlation theme={theme} />
+        render = <Correlation baseCoin={baseCoin} theme={theme} />
         break
       case 'optimization':
         render = <Optimization theme={theme} />
