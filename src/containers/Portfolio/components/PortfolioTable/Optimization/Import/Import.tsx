@@ -735,6 +735,8 @@ const StyledWrapperForDateRangePicker = styled.div`
     padding: 5px;
     //font-size: 14px;
     font-size: 0.875rem;
+    font-family: ${(props: { fontFamily: string }) => props.fontFamily};
+    font-weight: 400;
     height: 36px;
     color: ${(props: { color: string }) => props.color};
     background: ${(props: { background: string }) => props.background};
