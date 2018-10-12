@@ -63,9 +63,10 @@ export const StyledDivider = styled(Divider)`
 `
 
 export const TableWrapper = styled(Paper)`
-  display: flex;
+  display: grid;
   margin: 0 20px 5px;
-  flex-direction: column;
+  grid-template-columns: 60% 1fr;
+  grid-gap: 0.5rem;
   overflow-x: scroll;
 
   ${customAquaScrollBar};

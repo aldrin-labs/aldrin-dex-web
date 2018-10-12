@@ -18,12 +18,11 @@ import {
   StyledDivider,
   ChartTitle,
 } from './PortfolioTableBalances.styles'
-import { Typography } from '@material-ui/core'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
+import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
-      children,
       putDataInTable,
       tableData,
       checkedRows,
@@ -53,6 +52,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                   rows={putDataInTable()}
                 />
               )}
+              <TradeOrderHistoryTable />
             </TableWrapper>
 
             <StyledDivider light={true} />

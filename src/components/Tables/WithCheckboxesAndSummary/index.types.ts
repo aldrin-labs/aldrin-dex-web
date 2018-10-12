@@ -28,4 +28,6 @@ export interface Props extends WithStyles {
   title?: string | number
   onChange?: OnChange
   onSelectAllClick?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  // Shadow depth, corresponds to dp in the spec. It's accepting values between 0 and 24 inclusive.
+  elevation?: number
 }
