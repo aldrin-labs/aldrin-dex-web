@@ -428,8 +428,12 @@ export default class Import extends PureComponent<IProps> {
     const fontFamily = theme.typography.fontFamily
 
     // move it to the state
-    const maximumDate = moment().day(0)
-    const minimumDate = moment().year(-1)
+    const maximumDate = moment()
+    const minimumDate = moment().subtract(3, 'years')
+
+    console.log('maxumumDate', maximumDate);
+    console.log('minimumDate', minimumDate);
+
 
     const isAllOptionsFilled =
       baseCoin &&
@@ -483,7 +487,6 @@ export default class Import extends PureComponent<IProps> {
                   fontFamily={fontFamily}
                 >
                   <DateRangePicker
-                    enableOutsideDays={true}
                     isOutsideRange={(date) =>
                       date.isBefore(minimumDate, 'day') ||
                       date.isAfter(maximumDate, 'day')
