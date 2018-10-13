@@ -5,11 +5,11 @@ export const MyTradesQuery = gql`
     myPortfolios {
       name
       portfolioActions {
-        type
-        where
         coin
+        type
+        cost
+        where
         date
-        __typename
       }
     }
   }

@@ -16,22 +16,69 @@ import {
 
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 
-const tradeOrderHistoryTableHeadings = [
-  { name: 'Exchange', value: 'exchange' },
-  { name: 'Amount', value: 'amount' },
+const tableHeadings = [
+  { name: 'Coin', value: 'coin' },
+  { name: 'Type', value: 'type' },
   { name: 'Cost', value: 'cost' },
-  { name: 'Symbol', value: 'symbol' },
-  { name: 'Side', value: 'side' },
+  { name: 'Where', value: 'where' },
   { name: 'Datetime', value: 'datetime' },
 ]
 
-const arrayOfStringHeadings = ['exchange', 'symbol', 'side']
+const arrayOfStringHeadings = ['type', 'where', 'coin']
 
 const arrayOfDateHeadings = ['datetime']
 
+const mapPortfolioActions = (pA) => {
+  const values = Object.values(pA);
+  values.pop();
+  return values;
+}
+
 class TradeOrderHistoryTable extends React.Component<IProps, IState> {
+  state: IState = {
+    currentSort: null,
+    rows: [],
+  }
+
+  componentDidMount() {
+    const { isUSDCurrently, data } = this.props
+
+    if (data && data.myPortfolios && data.myPortfolios[0]) {
+      this.setState({
+        rows: data.myPortfolios[0].portfolioActions.map(mapPortfolioActions),
+      })
+    }
+  }
+
+  componentWillReceiveProps() {
+    const { isUSDCurrently, data } = this.props
+
+    if (data && data.myPortfolios && data.myPortfolios[0]) {
+      this.setState({
+        rows: data.myPortfolios[0].portfolioActions.map(mapPortfolioActions),
+      })
+    }
+  }
+
+  putDataInTable = () => {
+    const { rows } = this.state
+    if (!rows) return
+
+    return {
+      head: tableHeadings.map((heading, index: number) => ({
+        number: index,
+        text: heading.name,
+      })),
+      body: rows,
+    }
+  }
+
   render() {
-    return <Table />
+    return <Table
+      title="Portfolio actions"
+      withCheckboxes={false}
+      rows={this.putDataInTable()}
+    />
   }
 }
 
