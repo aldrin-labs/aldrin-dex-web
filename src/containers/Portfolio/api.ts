@@ -37,7 +37,9 @@ export const CORRELATION_UPDATE = gql`
 
 export const getCorrelationQuery = gql`
   query getPortfolio($startDate: Int!, $endDate: Int!) {
-    correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
+    myPortfolios {
+      correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
+    }
   }
 `
 

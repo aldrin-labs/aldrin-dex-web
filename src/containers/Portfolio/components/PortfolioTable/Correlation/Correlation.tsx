@@ -36,12 +36,14 @@ const Correlation = (props: IProps) => {
   let dataRaw = {}
   let data = {} // filtered data by dust
   if (
-    typeof props.data.correlationMatrixByDay === 'string' &&
-    props.data.correlationMatrixByDay.length > 0
+    props.data.myPortfolios &&
+    props.data.myPortfolios.length > 0 &&
+    typeof props.data.myPortfolios[0].correlationMatrixByDay === 'string' &&
+    props.data.myPortfolios[0].correlationMatrixByDay.length > 0
   ) {
-    dataRaw = JSON.parse(props.data.correlationMatrixByDay)
+    dataRaw = JSON.parse(props.data.myPortfolios[0].correlationMatrixByDay)
   } else {
-    dataRaw = props.data.correlationMatrixByDay
+    dataRaw = props.data.myPortfolios[0].correlationMatrixByDay
   }
 
   if (portfolio && portfolio.getProfile && dataRaw !== '') {
@@ -111,27 +113,27 @@ const CorrelationWrapper = (props: IProps) => {
           {...props}
         />
       ) : (
-        <Query query={getPortfolioMainQuery} variables={{ baseCoin }}>
-          {({ loading, data }) => {
-            const render = loading ? (
-              <Loading centerAligned={true} />
-            ) : (
-              <QueryRenderer
-                fetchPolicy="network-only"
-                component={Correlation}
-                query={getCorrelationQuery}
-                // quick fix until I have free time
-                variables={{
-                  startDate: endDate,
-                  endDate: startDate,
-                }}
-                {...{ portfolio: data, ...props }}
-              />
-            )
-            return render
-          }}
-        </Query>
-      )}
+          <Query query={getPortfolioMainQuery} variables={{ baseCoin }}>
+            {({ loading, data }) => {
+              const render = loading ? (
+                <Loading centerAligned={true} />
+              ) : (
+                  <QueryRenderer
+                    fetchPolicy="network-only"
+                    component={Correlation}
+                    query={getCorrelationQuery}
+                    // quick fix until I have free time
+                    variables={{
+                      startDate: endDate,
+                      endDate: startDate,
+                    }}
+                    {...{ portfolio: data, ...props }}
+                  />
+                )
+              return render
+            }}
+          </Query>
+        )}
     </PTWrapper>
   )
 }
