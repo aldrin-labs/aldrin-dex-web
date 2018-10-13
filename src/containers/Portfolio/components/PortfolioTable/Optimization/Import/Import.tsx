@@ -662,7 +662,7 @@ export default class Import extends PureComponent<IProps> {
                 }
                 theme={this.props.theme}
               />
-              <TableDataDesc show={this.state.optimizedData.length > 1}>
+              {/*<TableDataDesc show={this.state.optimizedData.length > 1}>*/}
                 {/*<StyledInputLabel color={textColor}>*/}
                   {/*Confidence:{' '}*/}
                   {/*{this.state.optimizedData.length > 1*/}
@@ -670,21 +670,21 @@ export default class Import extends PureComponent<IProps> {
                         {/*.confidence*/}
                     {/*: ''}*/}
                 {/*</StyledInputLabel>*/}
-                <StyledInputLabel color={textColor}>
-                  Expected return low:{' '}
-                  {this.state.optimizedData.length > 1
-                    ? this.state.optimizedData[activeButton]
-                        .exptd_rtrn_low_end
-                    : ''}
-                </StyledInputLabel>
-                <StyledInputLabel color={textColor}>
-                  Expected return high:{' '}
-                  {this.state.optimizedData.length > 1
-                    ? this.state.optimizedData[activeButton]
-                        .exptd_rtrn_high_end
-                    : ''}
-                </StyledInputLabel>
-              </TableDataDesc>
+                {/*<StyledInputLabel color={textColor}>*/}
+                  {/*Expected return low:{' '}*/}
+                  {/*{this.state.optimizedData.length > 1*/}
+                    {/*? this.state.optimizedData[activeButton]*/}
+                        {/*.exptd_rtrn_low_end*/}
+                    {/*: ''}*/}
+                {/*</StyledInputLabel>*/}
+                {/*<StyledInputLabel color={textColor}>*/}
+                  {/*Expected return high:{' '}*/}
+                  {/*{this.state.optimizedData.length > 1*/}
+                    {/*? this.state.optimizedData[activeButton]*/}
+                        {/*.exptd_rtrn_high_end*/}
+                    {/*: ''}*/}
+                {/*</StyledInputLabel>*/}
+              {/*</TableDataDesc>*/}
             </TableContainer>
           </TableSelectsContaienr>
             {this.renderBarChart()}

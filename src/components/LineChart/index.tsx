@@ -87,7 +87,7 @@ export default class LineChart extends React.Component<Props, State> {
     const dateDataFormatted = crosshairValues && crosshairValues[0] && new Date(crosshairValues[0].x * 1000).toLocaleDateString('en-US', dateOptionsFormat)
 
     return (
-      <FlexibleXYPlot onMouseLeave={this.onMouseLeave} margin={{left: 55}} >
+      <FlexibleXYPlot onMouseLeave={this.onMouseLeave} margin={{left: 55, bottom: 55}} >
         {alwaysShowLegend && (
           <LegendContainer>
             <DiscreteColorLegend orientation="horizontal" items={itemsForChartLegend} />
@@ -103,6 +103,7 @@ export default class LineChart extends React.Component<Props, State> {
           tickFormat={(v: number) =>
             new Date(v * 1000).toUTCString().substring(5, 11)
           }
+          tickLabelAngle={-90}
         />
 
         <YAxis
@@ -137,8 +138,8 @@ export default class LineChart extends React.Component<Props, State> {
               {crosshairValues.map((v, i) => (
                 <div key={`${v.label}: ${v.y} USD`}>
                   <Label style={{ color: colors[i] }}>{`${v.label}: ${
-                    v.y
-                    } USD`}</Label>
+                    Number(v.y).toFixed(2)
+                    }%`}</Label>
                 </div>
               ))}
             </ContainerForCrossHairValues>
@@ -150,9 +151,10 @@ export default class LineChart extends React.Component<Props, State> {
 }
 
 const ContainerForCrossHairValues = styled.div`
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   min-width: 250px;
-  background-color: #f5f5f5;
-  color: #4ed8da;
+  background-color: #393e44;
+  color: #fff;
   padding: 5px;
   margin: 5px;
   border-radius: 5px;
