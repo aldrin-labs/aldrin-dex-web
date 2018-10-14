@@ -29,9 +29,9 @@ const arrayOfStringHeadings = ['type', 'where', 'coin']
 const arrayOfDateHeadings = ['datetime']
 
 const mapPortfolioActions = (pA) => {
-  const values = Object.values(pA);
-  values.pop();
-  return values;
+  const values = Object.values(pA)
+  values.pop()
+  return values
 }
 
 class TradeOrderHistoryTable extends React.Component<IProps, IState> {
@@ -64,21 +64,19 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     const { rows } = this.state
     if (!rows) return
 
-    return {
+    const res = {
       head: tableHeadings.map((heading, index: number) => ({
-        number: index,
+        isNumber: index === 2 || index === 4 ? true : false,
         text: heading.name,
       })),
       body: rows,
     }
+
+    return res
   }
 
   render() {
-    return <Table
-      title="Portfolio actions"
-      withCheckboxes={false}
-      rows={this.putDataInTable()}
-    />
+    return <Table title="Portfolio actions" rows={this.putDataInTable()} />
   }
 }
 

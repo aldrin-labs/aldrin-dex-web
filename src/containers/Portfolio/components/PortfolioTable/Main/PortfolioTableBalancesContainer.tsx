@@ -7,7 +7,8 @@ import {
   combineTableData,
   roundAndFormatNumber,
   composePortfolioWithMocks,
-  numberOfDigitsAfterPoint, roundPercentage,
+  numberOfDigitsAfterPoint,
+  roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import { zip, isObject } from 'lodash-es'
 
@@ -76,7 +77,10 @@ class Container extends Component {
     }
     const { portfolioAssets } = data[0]
 
-    const composePortfolioAssetsWithMocks = composePortfolioWithMocks(portfolioAssets, isShownMocks)
+    const composePortfolioAssetsWithMocks = composePortfolioWithMocks(
+      portfolioAssets,
+      isShownMocks
+    )
 
     this.setState(
       {
@@ -158,7 +162,11 @@ class Container extends Component {
         color: row.unrealizedPL > 0 ? green : red,
       },
       {
-        text: +roundAndFormatNumber(row.realizedPL + row.unrealizedPL, round, false),
+        text: +roundAndFormatNumber(
+          row.realizedPL + row.unrealizedPL,
+          round,
+          false
+        ),
         color: row.totalPL > 0 ? green : red,
       },
     ])
@@ -170,15 +178,15 @@ class Container extends Component {
 
     return {
       head: [
-        { text: 'where', number: false },
-        { text: 'coin', number: false },
-        { text: 'portfolio%', number: true },
-        { text: 'price', number: true },
-        { text: 'quantity', number: true },
-        { text: isUSDCurrently ? 'usd' : 'BTC', number: true },
-        { text: 'realized P&L', number: true },
-        { text: 'Unrealized P&L', number: true },
-        { text: 'Total P&L', number: true },
+        { text: 'where', isNumber: false },
+        { text: 'coin', isNumber: false },
+        { text: 'portfolio%', isNumber: true },
+        { text: 'price', isNumber: true },
+        { text: 'quantity', isNumber: true },
+        { text: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },
+        { text: 'realized P&L', isNumber: true },
+        { text: 'Unrealized P&L', isNumber: true },
+        { text: 'Total P&L', isNumber: true },
       ],
       body: this.transformData(
         tableData,
@@ -192,7 +200,9 @@ class Container extends Component {
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
     if ((e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
-        checkedRows: state.tableData ? state.tableData.map((n: any, i: number) => i) : [],
+        checkedRows: state.tableData
+          ? state.tableData.map((n: any, i: number) => i)
+          : [],
       }))
       return
     }
