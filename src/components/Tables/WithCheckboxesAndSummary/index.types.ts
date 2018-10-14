@@ -5,7 +5,7 @@ type T = string | number
 type TObj = {
   text: string
   color: string
-  number: boolean
+  isNumber: boolean
   style: any
 }
 
