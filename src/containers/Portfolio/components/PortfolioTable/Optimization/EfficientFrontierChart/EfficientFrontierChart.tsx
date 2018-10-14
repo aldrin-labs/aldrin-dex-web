@@ -38,7 +38,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
 
     const axisStyle = {
       ticks: {
-        padding: '1rem',
+        // padding: '1rem',
         stroke: theme.palette.secondary.main,
         opacity: 0.75,
         fontFamily: theme.typography.fontFamily,
@@ -67,7 +67,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
 
     return (
       <Container>
-        <FlexibleXYPlot margin={{ left: 80 }}>
+        <FlexibleXYPlot margin={{ left: 60, bottom: 65 }}>
           {highlightedDotData.length < 1 ? (
             <LineMarkSeries
               animation="gentle"
@@ -82,8 +82,9 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
                 style={axisStyle}
                 key="x"
                 title="Risk"
+                tickLabelAngle={-90}
               />,
-              <YAxis hideLine style={axisStyle} key="y" title="Return" />,
+              <YAxis hideLine style={axisStyle} key="y" title="Return" left={-20} />,
               <LineMarkSeries
                 key="c"
                 curve={'curveNatural'}
