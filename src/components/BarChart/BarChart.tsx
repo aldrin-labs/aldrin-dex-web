@@ -45,6 +45,7 @@ class BarChart extends Component<IProps, IState> {
       charts,
       height,
       alwaysShowLegend,
+      hideDashForToolTip,
       animated = false,
     } = this.props
     const { value } = this.state
@@ -109,7 +110,7 @@ class BarChart extends Component<IProps, IState> {
 
             {value.x === null || value.y === null ? null : (
               <Hint value={value}>
-                <ChartTooltip>{`${value.x} - ${value.y}%`}</ChartTooltip>
+                <ChartTooltip>{`${value.x} ${hideDashForToolTip ? '' : '-'} ${value.y}%`}</ChartTooltip>
               </Hint>
             )}
           </FlexibleXYPlot>

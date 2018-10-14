@@ -370,6 +370,7 @@ export default class Import extends PureComponent<IProps> {
             showPlaceholder={formatedData.length === 0}
             charts={barChartData}
             alwaysShowLegend={true}
+            hideDashForToolTip={true}
           />
         </Chart>
       </ChartContainer>
@@ -816,5 +817,6 @@ const ChartContainer = styled.div`
 const TableSelectsContaienr = styled.div`
   width: 49%;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
 `

@@ -109,5 +109,6 @@ const ImportData = styled.div`
 
   display: flex;
   align-items: flex-end;
+  justify-content: space-between;
   margin: 0 2rem;
 `
