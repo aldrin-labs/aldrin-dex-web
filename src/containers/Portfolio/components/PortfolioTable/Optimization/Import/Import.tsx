@@ -816,5 +816,6 @@ const ChartContainer = styled.div`
 const TableSelectsContaienr = styled.div`
   width: 49%;
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
 `
