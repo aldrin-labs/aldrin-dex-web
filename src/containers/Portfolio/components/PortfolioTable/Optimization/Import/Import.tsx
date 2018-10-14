@@ -370,6 +370,7 @@ export default class Import extends PureComponent<IProps> {
             showPlaceholder={formatedData.length === 0}
             charts={barChartData}
             alwaysShowLegend={true}
+            hideDashForToolTip={true}
           />
         </Chart>
       </ChartContainer>
