@@ -26,7 +26,7 @@ const btcHeadingForCurrent = [
 export default class CurrentPortfolioTable extends React.Component<
   IProps,
   IState
-> {
+  > {
   render() {
     const {
       isUSDCurrently,
@@ -35,7 +35,7 @@ export default class CurrentPortfolioTable extends React.Component<
       staticRows,
       filterValueSmallerThenPercentage,
       onSortTable,
-      theme: { palette }
+      theme: { palette },
     } = this.props
 
     const textColor = palette.getContrastText(
@@ -51,8 +51,8 @@ export default class CurrentPortfolioTable extends React.Component<
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
-      <Icon className="fa fa-btc" />
-    )
+        <Icon className="fa fa-btc" />
+      )
 
     const tableHeadingsCurrentPortfolio = isUSDCurrently
       ? usdHeadingForCurrent
@@ -65,7 +65,7 @@ export default class CurrentPortfolioTable extends React.Component<
           <Table style={{ width: '520px' }}>
             <PTHead bottomCollor={textColor}>
               <PTR
-                  background={background}              >
+                background={background}              >
                 {tableHeadingsCurrentPortfolio.map((heading) => {
                   const isSorted =
                     currentSortForStatic &&
@@ -88,10 +88,10 @@ export default class CurrentPortfolioTable extends React.Component<
                             marginLeft: '4px',
                             transform:
                               currentSortForStatic &&
-                              currentSortForStatic.arg === 'ASC'
+                                currentSortForStatic.arg === 'ASC'
                                 ? 'rotate(180deg)'
                                 : null,
-                          }} 
+                          }}
                         />
                       )}
                     </PTHC>
@@ -106,12 +106,12 @@ export default class CurrentPortfolioTable extends React.Component<
                   (row: IRow) =>
                     row.portfolioPerc &&
                     +row.portfolioPerc >
-                      (filterValueSmallerThenPercentage
-                        ? filterValueSmallerThenPercentage
-                        : 0)
+                    (filterValueSmallerThenPercentage
+                      ? filterValueSmallerThenPercentage
+                      : 0)
                 )
                 .map((row: IRow, idx: number) => {
-                  const { exchange, symbol, portfolioPerc, price } = row
+                  const { exchange = '', symbol = '', portfolioPerc = 0, price = 0 } = row
 
                   const cols = [
                     exchange,
@@ -121,7 +121,7 @@ export default class CurrentPortfolioTable extends React.Component<
                   ]
 
                   return (
-                    <PTR 
+                    <PTR
                       key={`${exchange}${symbol}${idx}`}
                       background={background}
                       evenBackground={evenBackground}

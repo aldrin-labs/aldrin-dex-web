@@ -86,13 +86,13 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
         )
         break
       case 'rebalance':
-        render = <Rebalance isUSDCurrently={true} />
+        render = <Rebalance baseCoin={baseCoin} isUSDCurrently={true} />
         break
       case 'correlation':
         render = <Correlation baseCoin={baseCoin} theme={theme} />
         break
       case 'optimization':
-        render = <Optimization theme={theme} />
+        render = <Optimization baseCoin={baseCoin} theme={theme} />
         break
 
       default:

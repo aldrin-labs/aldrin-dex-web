@@ -104,3 +104,34 @@ export const getPortfolioMainQuery = gql`
     }
   }
 `
+
+export const getMyPortfolioAndRebalanceQuery = gql`
+  query getPortfolioAndRebalance($baseCoin: String!) {
+    myPortfolios {
+      name
+      portfolioAssets(base: $baseCoin) {
+        name
+        coin
+        price
+        quantity
+      }
+  	  myRebalance {
+        total
+        assets {
+          percent
+          amount
+          diff
+        }
+      }
+    }
+  }
+`
+
+
+export const updateRebalanceMutation = gql`
+  mutation($input: rebalanceInput) {
+    updateRebalance(input: $input) {
+      total
+    }
+  }
+`;
