@@ -26,6 +26,7 @@ class CryptoWalletsListComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.props.refetch();
     if (this.props.data.myPortfolios && this.props.data.myPortfolios.length > 0) {
       this.setState({ wallets: nextProps.data.myPortfolios[0].cryptoWallets })
     }
@@ -37,6 +38,7 @@ class CryptoWalletsListComponent extends React.Component {
     }
 
     const { wallets } = this.state
+    const { forceUpdateUserContainer } = this.props
 
     return (
       <CryptoWalletsListPaper>
@@ -75,7 +77,7 @@ class CryptoWalletsListComponent extends React.Component {
                       {<FormattedDate value={date} />}
                     </CryptoWalletTableCell>
                     <CryptoWalletTableCell numeric={true}>
-                      <DeleteCryptoWalletDialog wallet={wallet} />
+                      <DeleteCryptoWalletDialog wallet={wallet} forceUpdateUserContainer={forceUpdateUserContainer} />
                     </CryptoWalletTableCell>
                   </TableRow>
                 )
@@ -104,11 +106,11 @@ const CryptoWalletsTable = styled(Table)`
   table-layout: fixed;
 `
 
-export default function () {
-  return (
+export default (props) =>(
     <QueryRenderer
       component={CryptoWalletsListComponent}
       query={getCryptoWalletsQuery}
+      {...props}
     />
-  )
-}
+)
+

@@ -43,17 +43,18 @@ const formikEnhancer = withFormik({
   }),
   handleSubmit: async (
     values,
-    { props: { addCryptoWallet }, setSubmitting }
+    { props, setSubmitting }
   ) => {
     const variables = {
       address: values.address,
       assetName: values.asset,
       name: values.name,
       //      date: Date.now(),
+      date: Math.round(+Date.now() / 1000),
     }
 
     try {
-      await addCryptoWallet({
+      await props.addCryptoWallet({
         variables,
         update: (proxy, { data: { addCryptoWallet } }) => {
           const proxyData = proxy.readQuery({
@@ -66,7 +67,7 @@ const formikEnhancer = withFormik({
           })
         },
       })
-      console.log(variables)
+      props.forceUpdateUserContainer();
 
       setSubmitting(false)
     } catch (error) {

@@ -48,16 +48,16 @@ const formikEnhancer = withFormik({
   }),
   handleSubmit: async (
     values,
-    { props: { addExchangeKey }, setSubmitting }
+    { props, setSubmitting }
   ) => {
     const variables = {
       ...values,
       exchange: values.exchange.toLowerCase(),
-      date: Date.now(),
+      date: Math.round(+Date.now() / 1000),
     }
 
     try {
-      await addExchangeKey({
+      await props.addExchangeKey({
         variables,
         update: (proxy, { data: { addExchangeKey } }) => {
           const proxyData = proxy.readQuery({ query: API.getKeysQuery })
@@ -65,8 +65,8 @@ const formikEnhancer = withFormik({
           proxy.writeQuery({ query: API.getKeysQuery, data: proxyData })
         },
       })
-      console.log(variables)
 
+      props.forceUpdateUserContainer();
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
