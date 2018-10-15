@@ -7,12 +7,14 @@ import { connect } from 'react-redux'
 import { withErrorFallback } from '@hoc/withErrorFallback'
 
 import {
-  KeysList,
+  // KeysList,
   AddExchangeKey,
-  CryptoWalletsList,
+  // CryptoWalletsList,
   AddCryptoWallet,
 } from '@containers/User/components'
 import Switch from '@material-ui/core/Switch'
+import CryptoWalletsList from '@containers/User/components/CryptoWalletsList/CryptoWalletsList'
+import KeysList from '@containers/User/components/KeysList/KeysList'
 
 class UserContainer extends React.Component {
   store: any
@@ -25,6 +27,10 @@ class UserContainer extends React.Component {
     })
   }
 
+  forceUpdateUserContainer = () => {
+    this.forceUpdate();
+  }
+
   render() {
     if (!this.props.loginStatus) {
       return <Redirect to="/portfolio" />
@@ -32,15 +38,15 @@ class UserContainer extends React.Component {
     return (
       <div>
         <UserWrap>
-          <AddExchangeKey />
-          <KeysList />
+          <AddExchangeKey forceUpdateUserContainer={this.forceUpdateUserContainer} />
+          <KeysList forceUpdateUserContainer={this.forceUpdateUserContainer} />
         </UserWrap>
 
         <UserWrap>
-          <AddCryptoWallet />
-          <CryptoWalletsList />
+          <AddCryptoWallet forceUpdateUserContainer={this.forceUpdateUserContainer} />
+          <CryptoWalletsList forceUpdateUserContainer={this.forceUpdateUserContainer} />
         </UserWrap>
-        {process.env.NODE_ENV !== 'production' && 
+        {process.env.NODE_ENV !== 'production' &&
           <AdminCP>
             <Heading>Show mocks</Heading>
             <Switch
