@@ -78,7 +78,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
     const res = {
       head: tableHeadings.map((heading, index: number) => ({
-        isNumber: index === 2 ? true : false,
+        isNumber: index === 2,
         text: heading.name,
       })),
       body: rows,
