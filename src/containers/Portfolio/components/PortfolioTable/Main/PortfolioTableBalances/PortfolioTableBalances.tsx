@@ -12,14 +12,15 @@ import {
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 import {
   TableWrapper,
-  PTWrapper,
+  ChartWrapper,
   GridContainer,
-  PTChartContainer,
-  StyledDivider,
+  TableContainer,
+  ChartContainer,
   ChartTitle,
 } from './PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
+
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
@@ -39,9 +40,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
-        <PTWrapper elevation={1} tableData={!!tableDataHasData}>
-          <GridContainer>
-            <TableWrapper elevation={8}>
+        <GridContainer container={true} spacing={16}>
+          <TableContainer item={true} xs={10} md={8}>
+            <TableWrapper>
               {Array.isArray(tableData) && (
                 <Table
                   title="Portfolio"
@@ -52,15 +53,19 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                   rows={putDataInTable()}
                 />
               )}
+            </TableWrapper>
+          </TableContainer>
+          <TableContainer item={true} xs={10} md={4}>
+            <TableWrapper>
               <TradeOrderHistoryTable />
             </TableWrapper>
+          </TableContainer>
 
-            <StyledDivider light={true} />
-            <PTChartContainer>
+          <ChartContainer style={{ height: '39%' }} item={true} xs={10} md={12}>
+            <ChartWrapper>
               <ChartTitle color="default" variant="title">
                 Portfolio Value
               </ChartTitle>
-
               <Chart
                 isShownMocks={this.props.isShownMocks}
                 setActiveChart={this.props.setActiveChart}
@@ -73,9 +78,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 marginTopHr="10px"
                 coins={coins}
               />
-            </PTChartContainer>
-          </GridContainer>
-        </PTWrapper>
+            </ChartWrapper>
+          </ChartContainer>
+        </GridContainer>
       </EmptyTablePlaceholder>
     )
   }

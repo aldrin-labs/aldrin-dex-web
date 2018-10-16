@@ -21,13 +21,10 @@ export const SProfileChart = styled.div`
   width: 100%;
   padding: 0 16px;
   border-radius: 3px;
-  min-height: 38vh;
+
   margin: 0 auto;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
-
-  @media (min-width: 1400px) {
-    height: 90%;
-  }
 `

@@ -75,6 +75,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   putDataInTable = () => {
     const { industryData } = this.state
     if (!industryData) return
+
     return {
       head: tableHeadings.map((heading, index: number) => ({
         text: heading.name,
@@ -127,10 +128,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 }
 
-const Container = styled(Grid)`
+export const Container = styled(Grid)`
   && {
     height: calc(100vh - 80px);
-    padding: 1rem 0;
+    padding: 0.5rem 0;
     width: 100%;
   }
 `
