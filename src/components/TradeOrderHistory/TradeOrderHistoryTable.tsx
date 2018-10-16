@@ -34,10 +34,13 @@ const mapPortfolioActions = (pA) => {
   const values = Object.values(pA)
   values.pop()
   values[2] = +roundAndFormatNumber(values[2], 8, false)
-  console.log(values[4])
+  // console.log(values[4])
   values[4] = {
-    text: format(new Date(values[4] * 1000), 'MM/DD/YYYY'),
-    isNumber: true,
+    text: format(
+      new Date(values[4]).toLocaleString('en-US'),
+      'HH:m:s - MM/DD/YYYY'
+    ),
+    isNumber: false,
   }
 
   return values
@@ -75,7 +78,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
     const res = {
       head: tableHeadings.map((heading, index: number) => ({
-        isNumber: index === 2 || index === 4 ? true : false,
+        isNumber: index === 2 ? true : false,
         text: heading.name,
       })),
       body: rows,
