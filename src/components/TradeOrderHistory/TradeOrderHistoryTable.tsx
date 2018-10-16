@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { format } from 'date-fns'
 
-import QueryRenderer from '@components/QueryRenderer'
+import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
 import {
   formatNumberToUSFormat,
@@ -89,13 +89,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   }
 }
 
-export default (props: any) => {
-  return (
-    <QueryRenderer
-      placeholder={TablePlaceholderLoader}
-      component={TradeOrderHistoryTable}
-      query={MyTradesQuery}
-      {...props}
-    />
-  )
-}
+export default queryRendererHoc({
+  placeholder: TablePlaceholderLoader,
+  query: MyTradesQuery,
+})(TradeOrderHistoryTable)
