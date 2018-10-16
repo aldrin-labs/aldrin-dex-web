@@ -61,7 +61,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             </TableWrapper>
           </TableContainer>
 
-          <ChartContainer style={{ height: '39%' }} item={true} xs={10} md={12}>
+          <ChartContainer item={true} xs={10} md={12}>
             <ChartWrapper>
               <ChartTitle color="default" variant="title">
                 Portfolio Value
