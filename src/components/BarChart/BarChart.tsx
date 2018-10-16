@@ -47,6 +47,7 @@ class BarChart extends Component<IProps, IState> {
       alwaysShowLegend,
       hideDashForToolTip,
       animated = false,
+      xAxisVertical,
     } = this.props
     const { value } = this.state
 
@@ -72,7 +73,7 @@ class BarChart extends Component<IProps, IState> {
     return (
       <div>
         <Container height={height}>
-          <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal">
+          <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal" margin={{ bottom: 55}}>
             {alwaysShowLegend && (
               <LegendContainer>
                 <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
@@ -103,6 +104,7 @@ class BarChart extends Component<IProps, IState> {
                   animation={animated && 'gentle'}
                   style={axisStyle}
                   key="x"
+                  tickLabelAngle={xAxisVertical ? -90 : 0}
                 />,
                 ...Charts,
               ]

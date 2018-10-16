@@ -371,6 +371,7 @@ export default class Import extends PureComponent<IProps> {
             charts={barChartData}
             alwaysShowLegend={true}
             hideDashForToolTip={true}
+            xAxisVertical={true}
           />
         </Chart>
       </ChartContainer>
