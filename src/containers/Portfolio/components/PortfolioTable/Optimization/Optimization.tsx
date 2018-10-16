@@ -79,7 +79,6 @@ class Optimization extends Component<IProps, IState> {
     console.log('assets', assets);
 
 
-
     const newAssets = assets.map((asset: any) => ({
       coin: asset.coin,
       percentage: roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
@@ -242,13 +241,16 @@ class Optimization extends Component<IProps, IState> {
       setPeriod,
       optimizationPeriod,
       filterValueSmallerThenPercentage,
+      baseCoin,
       theme,
     } = this.props
 
     return (
       <QueryRenderer
+        fetchPolicy="network-only"
         component={Import}
         query={getCoinsForOptimization}
+        variables={{ baseCoin }}
         filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}
         optimizationPeriod={optimizationPeriod}
         showWarning={this.showWarning}

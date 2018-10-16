@@ -63,10 +63,6 @@ export default class Import extends PureComponent<IProps> {
         this.props.data.myPortfolios[0] &&
         this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
     }
-
-    console.log('assets in import portfolio', assets);
-
-    // this.props.updateData(this.sumSameCoins(assets))
     this.props.updateData(assets)
   }
 
@@ -443,9 +439,10 @@ export default class Import extends PureComponent<IProps> {
       )
     }
 
+    // console.log('this.props.data.myPortfolios[0].portfolioAssets IN RENDER', this.props.data.myPortfolios[0].portfolioAssets);
     // console.log('assets in RENDER', assets);
-    //
     // console.log('storeData in RENDER', storeData);
+    // console.log('isEqual(assets, storeData)}', isEqual(assets, storeData));
 
 
     const textColor: string = this.props.theme.palette.getContrastText(

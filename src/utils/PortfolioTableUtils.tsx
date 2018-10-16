@@ -111,8 +111,8 @@ export const percentagesOfCoinInPortfolio = (
   isUSDCurrently: boolean
 ): number =>
   isUSDCurrently
-    ? (asset.price * asset.quantity) * 100 / allSum
-    : (asset.price * asset.quantity) * 100 / allSum
+    ? (asset.price * asset.quantity * 100) / allSum
+    : (asset.price * asset.quantity * 100) / allSum
 
 export const onSortTableFull = (
   key,
@@ -367,3 +367,6 @@ export const composePortfolioWithMocks = (
 
 export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>
   isUSDCurrently ? 2 : 8
+
+export const roundPrice = (price: number, isUSDCurrently: boolean): number =>
+  +price.toFixed(numberOfDigitsAfterPoint(isUSDCurrently))
