@@ -45,9 +45,8 @@ export default class Import extends PureComponent<IProps> {
     focusedInput: false,
     startDate: null,
     endDate: null,
-    // optimizedData: [],
-
     percentages: [2, 7, 12, 17, 22],
+    totalPriceOfAllAssets: 0,
   }
 
   componentDidMount() {
@@ -63,7 +62,8 @@ export default class Import extends PureComponent<IProps> {
         this.props.data.myPortfolios[0] &&
         this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
     }
-    this.props.updateData(assets)
+    this.props.updateData(assets[0])
+    this.setState({totalPriceOfAllAssets: assets[1]})
   }
 
   // sumSameCoins = (rawData: IData[]) => {
@@ -117,6 +117,7 @@ export default class Import extends PureComponent<IProps> {
 
     this.props.toggleLoading()
 
+    const { totalPriceOfAllAssets } = this.state
     const { showWarning, optimizedToState, activeButton, updateData } = this.props
 
     const mockForQuery = {
@@ -155,9 +156,10 @@ export default class Import extends PureComponent<IProps> {
       //   'DASH',
       //   'XLM',
       // ],
-      initialCapital: +storeData
-        .reduce((acc, el: IData) => acc + +el.percentage, 0)
-        .toFixed(2),
+      // initialCapital: +storeData
+      //   .reduce((acc, el: IData) => acc + +el.percentage, 0)
+      //   .toFixed(2),
+      initialCapital: +totalPriceOfAllAssets.toFixed(2),
       baseCurrency: baseCoin,
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
@@ -428,7 +430,7 @@ export default class Import extends PureComponent<IProps> {
       assets =
         this.props.data &&
         this.props.data.myPortfolios[0] &&
-        this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
+        this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)[0]
     }
 
     if (!storeData) {

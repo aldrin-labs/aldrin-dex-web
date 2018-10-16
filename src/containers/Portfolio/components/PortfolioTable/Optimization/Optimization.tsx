@@ -86,7 +86,7 @@ class Optimization extends Component<IProps, IState> {
 
     console.log('newAssets',newAssets);
 
-    return newAssets
+    return [newAssets, allSum]
   }
 
   optimizePortfolio = (data: any) => {
