@@ -45,7 +45,7 @@ export default class Import extends PureComponent<IProps> {
     focusedInput: false,
     startDate: null,
     endDate: null,
-    optimizedData: [],
+    // optimizedData: [],
 
     percentages: [2, 7, 12, 17, 22],
   }
@@ -135,15 +135,6 @@ export default class Import extends PureComponent<IProps> {
     }
 
 
-    //   period: 7,
-    //   risk_profile: "medium",
-    //   base_currency :"USDT",
-    //   risk_free: 1,
-    //   initial_capital : 1368.99,
-    //   coinList: ["ETH","BCH","EOS","LTC","DASH"],
-    //   startDate: 1534082400,
-    //   endDate:1536760800
-
     const otherMockForQuery = {
       rebalancePeriod: 7,
       riskProfile: 'medium',
@@ -191,40 +182,39 @@ export default class Import extends PureComponent<IProps> {
         ...myObj,
         // ...mockForQuery,
         // ...otherMockForQuery,
-        // coinList: storeData.map((el: IData) => el.coin),
-        // initialCapital: storeData.reduce((acc, el: IData) => {return acc += +el.percentage}, 0),
-        // baseCurrency: baseCoin,
-        // rebalancePeriod: +rebalancePeriod,
-        // riskFree: +isRiskFreeAssetEnabled,
-        // riskProfile: riskProfile,
-        // startDate: +startDate._d/1000,
-        // endDate: +endDate._d/1000,
       },
       fetchPolicy: 'network-only',
     })
 
 
-    if (backendResult.data.portfolioOptimization === '') {
-      showWarning('You get empty response! 🙈')
+    console.log('backendResult unparsed', backendResult);
+
+    const backendResultParsed = JSON.parse(
+      backendResult.data.portfolioOptimization
+    )
+
+
+    if (backendResultParsed === '') {
+      showWarning('You got empty response! 🙈')
       this.props.toggleLoading()
 
       return
     }
-    // console.log('awaiteDDDD');
 
-    console.log('backendResult unparsed', backendResult);
+    if (backendResultParsed.error) {
+      showWarning(`You got an error! 🙈`)
+      this.props.toggleLoading()
+      console.log('ERROR', backendResultParsed.error);
 
+      return
+    }
 
     this.props.toggleLoading()
     this.props.setActiveButtonToDefault()
-    const backendResultParsed = JSON.parse(
-      backendResult.data.portfolioOptimization
-    )
-    // console.log(backendResultParsed)
 
     const optimizedData = backendResultParsed.returns
+    console.log('optimizedData', optimizedData);
 
-    this.setState({ optimizedData })
     optimizedToState(optimizedData)
 
     if (storeData.length < optimizedData[activeButton].portfolio_coins_list.length) {
@@ -329,8 +319,8 @@ export default class Import extends PureComponent<IProps> {
   deleteAllRows = () => this.props.updateData([])
 
   renderBarChart = () => {
-    const { storeData, activeButton,  theme } = this.props
-    const { optimizedData } = this.state
+    const { storeData, activeButton,  theme, rawOptimizedData } = this.props
+    // const { optimizedData } = this.state
 
     if (!storeData) return
     const formatedData = storeData.map((el: IData, i) => ({
@@ -340,13 +330,13 @@ export default class Import extends PureComponent<IProps> {
 
     // console.log('storeData', storeData);
 
-    // const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+    // const formatedOptimizedData = rawOptimizedData.map((el: IData, i) => ({
     //   x: el.coin,
     //   y: Number(Number(el.percentage).toFixed(2)),
     // }))
-    const formatedOptimizedData = optimizedData.length ? storeData.map((el, i) => ({
+    const formatedOptimizedData = rawOptimizedData.length ? storeData.map((el, i) => ({
       x: el.coin,
-      y: +((optimizedData[activeButton].weights[i] * 100).toFixed(2)),
+      y: +((rawOptimizedData[activeButton].weights[i] * 100).toFixed(2)),
     }) ) : []
 
     const barChartData = [
@@ -371,6 +361,7 @@ export default class Import extends PureComponent<IProps> {
             charts={barChartData}
             alwaysShowLegend={true}
             hideDashForToolTip={true}
+            xAxisVertical={true}
           />
         </Chart>
       </ChartContainer>
@@ -633,7 +624,7 @@ export default class Import extends PureComponent<IProps> {
                   btnClickProps={client}
                   onBtnClick={onNewBtnClick}
                   values={this.state.percentages}
-                  show={this.state.optimizedData.length > 1}
+                  show={this.props.rawOptimizedData.length > 1}
                   activeButton={activeButton}
                 />
                 <ButtonMUI
@@ -652,8 +643,8 @@ export default class Import extends PureComponent<IProps> {
                 onPlusClick={this.addRow}
                 data={storeData}
                 optimizedData={
-                  this.state.optimizedData.length > 1
-                    ? this.state.optimizedData[activeButton].weights
+                  this.props.rawOptimizedData.length > 1
+                    ? this.props.rawOptimizedData[activeButton].weights
                     : []
                 }
                 withInput={true}
