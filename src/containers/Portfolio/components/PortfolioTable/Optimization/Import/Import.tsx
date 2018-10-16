@@ -45,7 +45,7 @@ export default class Import extends PureComponent<IProps> {
     focusedInput: false,
     startDate: null,
     endDate: null,
-    optimizedData: [],
+    // optimizedData: [],
 
     percentages: [2, 7, 12, 17, 22],
   }
@@ -224,7 +224,7 @@ export default class Import extends PureComponent<IProps> {
 
     const optimizedData = backendResultParsed.returns
 
-    this.setState({ optimizedData })
+    // this.setState({ optimizedData })
     optimizedToState(optimizedData)
 
     if (storeData.length < optimizedData[activeButton].portfolio_coins_list.length) {
@@ -329,8 +329,8 @@ export default class Import extends PureComponent<IProps> {
   deleteAllRows = () => this.props.updateData([])
 
   renderBarChart = () => {
-    const { storeData, activeButton,  theme } = this.props
-    const { optimizedData } = this.state
+    const { storeData, activeButton,  theme, rawOptimizedData } = this.props
+    // const { optimizedData } = this.state
 
     if (!storeData) return
     const formatedData = storeData.map((el: IData, i) => ({
@@ -340,13 +340,13 @@ export default class Import extends PureComponent<IProps> {
 
     // console.log('storeData', storeData);
 
-    // const formatedOptimizedData = optimizedData.map((el: IData, i) => ({
+    // const formatedOptimizedData = rawOptimizedData.map((el: IData, i) => ({
     //   x: el.coin,
     //   y: Number(Number(el.percentage).toFixed(2)),
     // }))
-    const formatedOptimizedData = optimizedData.length ? storeData.map((el, i) => ({
+    const formatedOptimizedData = rawOptimizedData.length ? storeData.map((el, i) => ({
       x: el.coin,
-      y: +((optimizedData[activeButton].weights[i] * 100).toFixed(2)),
+      y: +((rawOptimizedData[activeButton].weights[i] * 100).toFixed(2)),
     }) ) : []
 
     const barChartData = [
@@ -634,7 +634,7 @@ export default class Import extends PureComponent<IProps> {
                   btnClickProps={client}
                   onBtnClick={onNewBtnClick}
                   values={this.state.percentages}
-                  show={this.state.optimizedData.length > 1}
+                  show={this.props.rawOptimizedData.length > 1}
                   activeButton={activeButton}
                 />
                 <ButtonMUI
@@ -653,8 +653,8 @@ export default class Import extends PureComponent<IProps> {
                 onPlusClick={this.addRow}
                 data={storeData}
                 optimizedData={
-                  this.state.optimizedData.length > 1
-                    ? this.state.optimizedData[activeButton].weights
+                  this.props.rawOptimizedData.length > 1
+                    ? this.props.rawOptimizedData[activeButton].weights
                     : []
                 }
                 withInput={true}
