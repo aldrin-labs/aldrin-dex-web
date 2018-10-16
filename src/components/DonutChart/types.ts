@@ -15,14 +15,18 @@ export interface InputRecord {
   realValue: number
 }
 
+export interface gradient {
+  [index: number]: string
+}
+
 export interface Props {
   data: InputRecord[]
-  width?: number
-  height?: number
-  labelPlaceholder?: string
-  radius?: number
-  thickness?: number
+  labelPlaceholder: string
+  radius: number
+  thickness: number
+  gradients: gradient[]
   theme: Theme
+  colorLegend: boolean
 }
 
 export interface State {
