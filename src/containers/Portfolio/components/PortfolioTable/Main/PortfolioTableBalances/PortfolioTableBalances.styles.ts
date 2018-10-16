@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Typography, Paper, Grid, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { Container } from '../../Industry/PortfolioTableIndustries'
+import { Container } from '../../Industry/Industry.styles'
 
 export const GridContainer = styled(Container)`
   && {
