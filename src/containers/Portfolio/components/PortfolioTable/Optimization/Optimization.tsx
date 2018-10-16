@@ -28,13 +28,17 @@ import {
   MainAreaUpperPart,
   PTWrapper,
   Content,
-  ChartContainer
+  ChartContainer,
+  ContentInner,
+  LoaderWrapper, LoaderInnerWrapper, LoadingText,
 } from './Optimization.styles'
 import { mockDataForLineChart } from './mockData'
 
 
 import { MASTER_BUILD } from '@utils/config'
 import { colors } from '@components/LineChart/LineChart.utils'
+import { Loading } from '@components/Loading'
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 
 const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
   return [(1528405044 + (86400 * i)), i * 2 - 500 + (i * Math.random())]
@@ -227,6 +231,7 @@ class Optimization extends Component<IProps, IState> {
       percentages,
       activeButton,
       optimizedData,
+      rawOptimizedData,
     } = this.state
     const {
       isShownMocks,
@@ -251,6 +256,7 @@ class Optimization extends Component<IProps, IState> {
         setPeriod={setPeriod}
         setActiveButtonToDefault={this.setActiveButtonToDefault}
         optimizedData={optimizedData}
+        rawOptimizedData={rawOptimizedData}
         transformData={this.transformData}
         storeData={storeData}
         startDate={startDate}
@@ -286,8 +292,8 @@ class Optimization extends Component<IProps, IState> {
     if (!storeData) return
 
 
-    const arrayOfReturnedValues = rawOptimizedData.map((el) => el.return_value)
-    const arrayOfReturnedRisks = rawOptimizedData.map((el) => el.risk_coefficient)
+    const arrayOfReturnedValues = rawOptimizedData && rawOptimizedData.map((el) => el.return_value)
+    const arrayOfReturnedRisks = rawOptimizedData && rawOptimizedData.map((el) => el.risk_coefficient)
     console.log('arrayOfReturnedValues',arrayOfReturnedValues);
     console.log('arrayOfReturnedRisks',arrayOfReturnedRisks);
 
@@ -314,7 +320,7 @@ class Optimization extends Component<IProps, IState> {
     // }
 
     // for real data
-    const lineChartData = rawOptimizedData.length &&  rawOptimizedData[activeButton].backtest_results.map((el) => ({
+    const lineChartData = rawOptimizedData && rawOptimizedData.length &&  rawOptimizedData[activeButton].backtest_results.map((el) => ({
       label: 'optimized',
       x: el[0],
       y: el[1],
@@ -381,6 +387,11 @@ class Optimization extends Component<IProps, IState> {
       children,
       theme: { palette },
     } = this.props
+
+    const textColor: string = palette.getContrastText(
+      palette.background.paper
+    )
+
     const { loading, openWarning, warningMessage } = this.state
 
     return (
@@ -388,12 +399,14 @@ class Optimization extends Component<IProps, IState> {
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}
-          {loading ? this.renderLoading() : null}
+          {/*{loading ? this.renderLoading() : null}*/}
+          {loading && (<LoaderWrapper> <LoaderInnerWrapper><Loading size={94} margin={'0 0 2rem 0'}/> <TypographyWithCustomColor color={textColor} variant="title">Optimizing portfolio...</TypographyWithCustomColor> </LoaderInnerWrapper> </LoaderWrapper>) }
+          <ContentInner loading={loading}>
           {this.renderInput()}
-
           <MainArea background={palette.background.paper}>
             {this.renderCharts()}
           </MainArea>
+          </ContentInner>
           <Warning
             open={openWarning}
             messageText={warningMessage}

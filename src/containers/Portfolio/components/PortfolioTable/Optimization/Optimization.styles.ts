@@ -61,7 +61,8 @@ const PTWrapper = styled.div`
   overflow-y: auto;
   overflow: auto;
   ${(props: { notScrollable: boolean }) =>
-  props.notScrollable ? 'overflow:hidden;' : ''} width: calc(100% - 2rem);
+  props.notScrollable ? 'overflow:hidden;' : ''};
+  width: calc(100% - 2rem);
   display: flex;
   flex-direction: column;
   margin: 24px;
@@ -72,6 +73,18 @@ const PTWrapper = styled.div`
   background: ${(props: {background: string}) => props.background};
 
   ${customAquaScrollBar};
+  
+
+`
+
+export const ContentInner = styled.div`
+  ${(props: { loading: boolean }) =>
+  props.loading ? `
+  filter: blur(10px);
+  user-select: none;
+  pointer-events: none;
+  ` : ``};
+  
 `
 
 // export const PTWrapper = styled(PTWrapperRaw)`
@@ -94,4 +107,29 @@ const ChartContainer = styled.div`
     padding: 15px;
     box-shadow: 0 2px 6px 0 #00000066;
     background: ${(props: {background: string}) => props.background};
+`
+
+export const LoaderWrapper = styled.div`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    & > div {
+      z-index: 1;
+    }
+`
+
+export const LoaderInnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`
+
+export const LoadingText = styled.p`
+
 `
