@@ -151,7 +151,7 @@ class Container extends Component {
       { text: row.coin, style: { fontWeight: 700 } },
       +roundPercentage(row.portfolioPercentage),
       +roundAndFormatNumber(row.price, round, false),
-      row.quantity,
+      +roundAndFormatNumber(row.quantity, round, false),
       +roundAndFormatNumber(row.price * row.quantity, round, false),
       {
         text: +roundAndFormatNumber(row.realizedPL, round, false),
