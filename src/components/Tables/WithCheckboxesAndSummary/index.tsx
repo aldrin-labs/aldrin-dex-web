@@ -81,8 +81,11 @@ const styles = (theme) => ({
     },
   },
   footer: {
-    height: theme.spacing.unit * 4,
-    backgroundColor: theme.palette.secondary.A700,
+    height: theme.spacing.unit * 5,
+    backgroundColor: theme.palette.primary[500],
+    '&:hover': {
+      backgroundColor: theme.palette.primary[500],
+    },
   },
 })
 
@@ -319,8 +322,8 @@ const CustomTable = (props: Props) => {
           })}
         </TableBody>
         {Array.isArray(rows.footer) && (
-          <TableFooter className={classes.footer}>
-            <TableRow className={classes.row}>
+          <TableFooter>
+            <TableRow className={`${classes.row} ${classes.footer}`}>
               {(withCheckboxes || expandableRows) && (
                 <CustomTableCell padding="checkbox" />
               )}
@@ -335,9 +338,9 @@ const CustomTable = (props: Props) => {
                 const footerCell = {
                   ...(spreadedCell as object),
                   style: {
-                    ...cell.style,
                     opacity: 0.84,
                     color: 'black',
+                    ...cell.style,
                   },
                 }
 
