@@ -94,12 +94,13 @@ class AddCryptoWalletComponent extends React.Component {
     return (
       <SPaper>
         <Typography variant="title">Add new crypto wallet</Typography>
-        <FormContainer onSubmit={handleSubmit}>
+        <FormContainer onSubmit={handleSubmit} autoComplete="new-password">
           <STextField
             error={touched.name && !!errors.name}
             id="name"
             name="name"
             label="Name"
+            autoComplete="off"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
