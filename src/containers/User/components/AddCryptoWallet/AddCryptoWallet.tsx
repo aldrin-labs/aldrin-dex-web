@@ -27,7 +27,7 @@ const formikEnhancer = withFormik({
       .required()
       .min(MIN_CHAR)
       .trim(),
-    address: Yup.string()
+    walletAdress: Yup.string()
       .required()
       .min(MIN_CHAR)
       .trim(),
@@ -38,7 +38,7 @@ const formikEnhancer = withFormik({
   }),
   mapPropsToValues: (props: any) => ({
     name: '',
-    address: '',
+    walletAdress: '',
     asset: '',
   }),
   handleSubmit: async (
@@ -46,7 +46,7 @@ const formikEnhancer = withFormik({
     { props, setSubmitting }
   ) => {
     const variables = {
-      address: values.address,
+      address: values.walletAdress,
       assetName: values.asset,
       name: values.name,
       //      date: Date.now(),
@@ -113,20 +113,20 @@ class AddCryptoWalletComponent extends React.Component {
             }
           />
           <STextField
-            error={touched.address && !!errors.address}
-            id="address"
-            name="address"
+            error={touched.walletAdress && !!errors.walletAdress}
+            id="walletAdress"
+            name="walletAdress"
             label="Address"
             autoComplete="off"
-            value={values.address}
+            value={values.walletAdress}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter wallet address here..."
             type="text"
             margin="normal"
             helperText={
-              touched.address &&
-              errors.address && <FormError>{errors.address}</FormError>
+              touched.walletAdress &&
+              errors.walletAdress && <FormError>{errors.walletAdress}</FormError>
             }
           />
           <SSelect>
