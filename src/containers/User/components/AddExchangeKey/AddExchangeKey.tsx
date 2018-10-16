@@ -46,10 +46,7 @@ const formikEnhancer = withFormik({
     secret: '',
     exchange: '',
   }),
-  handleSubmit: async (
-    values,
-    { props, setSubmitting }
-  ) => {
+  handleSubmit: async (values, { props, setSubmitting }) => {
     const variables = {
       ...values,
       exchange: values.exchange.toLowerCase(),
@@ -66,7 +63,7 @@ const formikEnhancer = withFormik({
         },
       })
 
-      props.forceUpdateUserContainer();
+      props.forceUpdateUserContainer()
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
@@ -93,16 +90,18 @@ class AddExchangeKeyComponent extends React.Component {
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
-        <FormContainer onSubmit={handleSubmit}>
+        <FormContainer onSubmit={handleSubmit} autoComplete="new-password">
+          <input type="hidden" value="something" />
+
           <STextField
             error={touched.name && !!errors.name}
             id="name"
             name="name"
             label="Name"
+            autoComplete="off"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
-            autoComplete="off"
             placeholder="Enter key name here..."
             type="text"
             margin="normal"
@@ -119,12 +118,12 @@ class AddExchangeKeyComponent extends React.Component {
             type="text"
             name="apiKey"
             label="API Key"
+            autoComplete="off"
             value={values.apiKey}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter API key here..."
             margin="normal"
-            autoComplete="off"
             helperText={
               touched.apiKey &&
               errors.apiKey && <FormError>{errors.apiKey}</FormError>
@@ -135,11 +134,11 @@ class AddExchangeKeyComponent extends React.Component {
             id="secret"
             name="secret"
             label="Secret"
+            autoComplete="off"
             value={values.secret}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter secret key here..."
-            autoComplete="off"
             type="text"
             margin="normal"
             helperText={
