@@ -178,7 +178,7 @@ class Container extends Component {
 
     return {
       head: [
-        { text: 'where', isNumber: false },
+        { text: 'exchange', isNumber: false },
         { text: 'coin', isNumber: false },
         { text: 'portfolio%', isNumber: true },
         { text: 'price', isNumber: true },
