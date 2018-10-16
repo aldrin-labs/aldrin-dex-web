@@ -31,7 +31,7 @@ const formikEnhancer = withFormik({
       .required()
       .min(MIN_CHAR)
       .trim(),
-    secret: Yup.string()
+    secretOfApiKey: Yup.string()
       .required()
       .min(MIN_CHAR)
       .trim(),
@@ -43,7 +43,7 @@ const formikEnhancer = withFormik({
   mapPropsToValues: (props: any) => ({
     name: '',
     apiKey: '',
-    secret: '',
+    secretOfApiKey: '',
     exchange: '',
   }),
   handleSubmit: async (values, { props, setSubmitting }) => {
@@ -130,20 +130,20 @@ class AddExchangeKeyComponent extends React.Component {
             }
           />
           <STextField
-            error={touched.secret && !!errors.secret}
-            id="secret"
-            name="secret"
+            error={touched.secretOfApiKey && !!errors.secretOfApiKey}
+            id="secretOfApiKey"
+            name="secretOfApiKey"
             label="Secret"
             autoComplete="off"
-            value={values.secret}
+            value={values.secretOfApiKey}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter secret key here..."
             type="text"
             margin="normal"
             helperText={
-              touched.secret &&
-              errors.secret && <FormError>{errors.secret}</FormError>
+              touched.secretOfApiKey &&
+              errors.secretOfApiKey && <FormError>{errors.secretOfApiKey}</FormError>
             }
           />
           <SExchangeSelect>
