@@ -86,6 +86,11 @@ const styles = (theme) => ({
   },
 })
 
+const isNumeric = (cell: Cell) =>
+  (cell !== null && typeof cell.text === 'number') ||
+  typeof cell === 'number' ||
+  cell.isNumber
+
 const renderCheckBox = (
   type: 'check' | 'expand' | null,
   onChange: OnChange,
@@ -270,10 +275,7 @@ const CustomTable = (props: Props) => {
                   )}
 
                   {row.map((cell, cellIndex: number) => {
-                    const numeric =
-                      cell !== null &&
-                      (typeof cell.text === 'number' ||
-                        typeof cell === 'number')
+                    const numeric = isNumeric(cell)
 
                     // skiping rendering cell if it is array and last one
                     //  this is how we are detecting if row expandable
@@ -301,10 +303,7 @@ const CustomTable = (props: Props) => {
                             <CustomTableCell padding="checkbox" />
                             {collapsedRows.map(
                               (cell: Cell, cellIndex: number) => {
-                                const numeric =
-                                  cell !== null &&
-                                  (typeof cell.text === 'number' ||
-                                    typeof cell === 'number')
+                                const numeric = isNumeric(cell)
 
                                 return renderCell(cell, cellIndex, numeric)
                               }
@@ -325,10 +324,7 @@ const CustomTable = (props: Props) => {
                 <CustomTableCell padding="checkbox" />
               )}
               {rows.footer.map((cell, cellIndex) => {
-                const numeric =
-                  typeof cell.text === 'number' ||
-                  typeof cell === 'number' ||
-                  cell.isNumber
+                const numeric = isNumeric(cell)
 
                 const spreadedCell = isObject(cell) ? cell : { text: cell }
 
