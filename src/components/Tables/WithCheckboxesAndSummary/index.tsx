@@ -196,7 +196,7 @@ const CustomTable = (props: Props) => {
                 className={classes.title}
                 colSpan={howManyColumns}
               >
-                <Typography variant="title" color="secondary">
+                <Typography variant="button" color="secondary">
                   {title}
                 </Typography>
               </CustomTableCell>
