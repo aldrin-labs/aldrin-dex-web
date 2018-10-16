@@ -1,10 +1,12 @@
 import * as React from 'react'
+import { format } from 'date-fns'
 
-import QueryRenderer from '@components/QueryRenderer'
+import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
 import {
   formatNumberToUSFormat,
   onSortTableFull,
+  roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'
 import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import {
@@ -20,7 +22,7 @@ const tableHeadings = [
   { name: 'Coin', value: 'coin' },
   { name: 'Type', value: 'type' },
   { name: 'Cost', value: 'cost' },
-  { name: 'Where', value: 'where' },
+  { name: 'Account', value: 'Account' },
   { name: 'Datetime', value: 'datetime' },
 ]
 
@@ -31,6 +33,13 @@ const arrayOfDateHeadings = ['datetime']
 const mapPortfolioActions = (pA) => {
   const values = Object.values(pA)
   values.pop()
+  values[2] = +roundAndFormatNumber(values[2], 8, false)
+  console.log(values[4])
+  values[4] = {
+    text: format(new Date(values[4] * 1000), 'MM/DD/YYYY'),
+    isNumber: true,
+  }
+
   return values
 }
 
@@ -80,13 +89,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   }
 }
 
-export default (props: any) => {
-  return (
-    <QueryRenderer
-      placeholder={TablePlaceholderLoader}
-      component={TradeOrderHistoryTable}
-      query={MyTradesQuery}
-      {...props}
-    />
-  )
-}
+export default queryRendererHoc({
+  placeholder: TablePlaceholderLoader,
+  query: MyTradesQuery,
+})(TradeOrderHistoryTable)
