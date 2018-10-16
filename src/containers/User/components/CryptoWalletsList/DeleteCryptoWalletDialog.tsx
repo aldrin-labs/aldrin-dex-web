@@ -78,7 +78,7 @@ const formikDialog = withFormik({
     cryptoWalletNameInput: '',
   }),
   handleSubmit: async ({ cryptoWalletNameInput }, props: any) => {
-    const { wallet, handleClose, deleteCryptoWallet } = props.props
+    const { wallet, handleClose, deleteCryptoWallet, forceUpdateUserContainer } = props.props
 
     const variables = {
       name: wallet.name,
@@ -105,6 +105,7 @@ const formikDialog = withFormik({
           },
         })
         await handleClose()
+        forceUpdateUserContainer()
       } catch (error) {
         console.log(error)
         props.setFieldError('cryptoWalletNameInput', 'Request error!')

@@ -99,7 +99,6 @@ class PortfolioSelector extends React.Component<IProps> {
     return (
       <Slide in={isSideNavOpen} direction="left">
         <AccountsWalletsBlock
-          onClick={this.props.toggleWallets}
           isSideNavOpen={true}
           background={theme.palette.background.paper}
           hoverBackground={theme.palette.action.hover}

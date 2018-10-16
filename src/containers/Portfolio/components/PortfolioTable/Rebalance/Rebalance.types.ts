@@ -18,7 +18,6 @@ export interface IProps extends WithTheme {
   isUSDCurrently: boolean
   isShownMocks: boolean
   filterValueSmallerThenPercentage: number
-  getMyRebalance: IGetMyRebalanceQuery
   getMyPortfolio: IGetMyPortfolioQuery
   updateRebalanceMutationQuery: Function
 }
@@ -33,7 +32,7 @@ export interface IState {
   currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
   currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
-  undistributedMoney:  string
+  undistributedMoney: string
   undistributedMoneySaved: string
   totalRows: number | string
   totalStaticRows: number | string
@@ -70,67 +69,6 @@ export interface IShapeOfCurrentPortolioRow {
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
 
-// ====================================================
-// GraphQL query operation: IGetMyRebalanceQuery
-// ====================================================
-
-export interface IGetMyRebalanceQuery_getProfile_myRebalance_assets {
-  id: any | null;
-  _id: any | null;
-  percent: any | null;
-  amount: any | null;
-  diff: any | null;
-}
-
-export interface IGetMyRebalanceQuery_getProfile_myRebalance {
-  total: any | null;
-  assets: (IGetMyRebalanceQuery_getProfile_myRebalance_assets | null)[] | null;
-}
-
-export interface IGetMyRebalanceQuery_getProfile {
-  myRebalance: IGetMyRebalanceQuery_getProfile_myRebalance | null;
-}
-
-export interface IGetMyRebalanceQuery {
-  getProfile: IGetMyRebalanceQuery_getProfile | null;
-}
-
-
-
-/* tslint:disable */
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: IGetMyPortfolioQuery
-// ====================================================
-
-export interface IGetMyPortfolioQuery_getProfile_portfolio_assets_exchange {
-  name: string | null;
-}
-
-export interface IGetMyPortfolioQuery_getProfile_portfolio_assets_asset {
-  symbol: string | null;
-  priceUSD: string | null;
-}
-
-export interface IGetMyPortfolioQuery_getProfile_portfolio_assets {
-  quantity: number | null;
-  exchange: IGetMyPortfolioQuery_getProfile_portfolio_assets_exchange | null;
-  asset: IGetMyPortfolioQuery_getProfile_portfolio_assets_asset | null;
-}
-
-export interface IGetMyPortfolioQuery_getProfile_portfolio {
-  assetIds: (any | null)[] | null;
-  assets: (IGetMyPortfolioQuery_getProfile_portfolio_assets | null)[] | null;
-}
-
-export interface IGetMyPortfolioQuery_getProfile {
-  portfolio: IGetMyPortfolioQuery_getProfile_portfolio | null;
-}
-
-export interface IGetMyPortfolioQuery {
-  getProfile: IGetMyPortfolioQuery_getProfile | null;
-}
 
 //==============================================================
 // START Enums and Input Objects

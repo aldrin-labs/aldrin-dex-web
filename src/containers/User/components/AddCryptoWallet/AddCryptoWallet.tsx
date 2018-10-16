@@ -27,7 +27,7 @@ const formikEnhancer = withFormik({
       .required()
       .min(MIN_CHAR)
       .trim(),
-    address: Yup.string()
+    walletAdress: Yup.string()
       .required()
       .min(MIN_CHAR)
       .trim(),
@@ -38,22 +38,23 @@ const formikEnhancer = withFormik({
   }),
   mapPropsToValues: (props: any) => ({
     name: '',
-    address: '',
+    walletAdress: '',
     asset: '',
   }),
   handleSubmit: async (
     values,
-    { props: { addCryptoWallet }, setSubmitting }
+    { props, setSubmitting }
   ) => {
     const variables = {
-      address: values.address,
+      address: values.walletAdress,
       assetName: values.asset,
       name: values.name,
       //      date: Date.now(),
+      date: Math.round(+Date.now() / 1000),
     }
 
     try {
-      await addCryptoWallet({
+      await props.addCryptoWallet({
         variables,
         update: (proxy, { data: { addCryptoWallet } }) => {
           const proxyData = proxy.readQuery({
@@ -66,7 +67,7 @@ const formikEnhancer = withFormik({
           })
         },
       })
-      console.log(variables)
+      props.forceUpdateUserContainer();
 
       setSubmitting(false)
     } catch (error) {
@@ -93,12 +94,13 @@ class AddCryptoWalletComponent extends React.Component {
     return (
       <SPaper>
         <Typography variant="title">Add new crypto wallet</Typography>
-        <FormContainer onSubmit={handleSubmit}>
+        <FormContainer onSubmit={handleSubmit} autoComplete="new-password">
           <STextField
             error={touched.name && !!errors.name}
             id="name"
             name="name"
             label="Name"
+            autoComplete="off"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -111,20 +113,20 @@ class AddCryptoWalletComponent extends React.Component {
             }
           />
           <STextField
-            error={touched.address && !!errors.address}
-            id="address"
-            name="address"
+            error={touched.walletAdress && !!errors.walletAdress}
+            id="walletAdress"
+            name="walletAdress"
             label="Address"
             autoComplete="off"
-            value={values.address}
+            value={values.walletAdress}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter wallet address here..."
             type="text"
             margin="normal"
             helperText={
-              touched.address &&
-              errors.address && <FormError>{errors.address}</FormError>
+              touched.walletAdress &&
+              errors.walletAdress && <FormError>{errors.walletAdress}</FormError>
             }
           />
           <SSelect>

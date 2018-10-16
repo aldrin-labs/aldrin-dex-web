@@ -1,16 +1,14 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
-import styled from 'styled-components'
-import Table from '@components/Tables/WithCheckboxesAndSummary'
+import { Grid } from '@material-ui/core'
 
+import Table from '@components/Tables/WithCheckboxesAndSummary'
 import { IndProps } from '@containers/Portfolio/interfaces'
-import { customAquaScrollBar } from '@styles/cssUtils'
 import { combineIndustryData } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
-import { Paper, Grid } from '@material-ui/core'
-
+import { Container, Wrapper, ChartWrapper } from './Industry.styles'
 import { DonutChart } from '@components/DonutChart'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 
@@ -75,10 +73,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   putDataInTable = () => {
     const { industryData } = this.state
     if (!industryData) return
+
     return {
       head: tableHeadings.map((heading, index: number) => ({
         text: heading.name,
-        number: index === 0 || index === 1 ? false : true,
+        isNumber: index === 0 || index === 1 ? false : true,
       })),
       body: industryData,
     }
@@ -126,30 +125,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     )
   }
 }
-
-const Container = styled(Grid)`
-  && {
-    height: calc(100vh - 80px);
-    padding: 1rem 0;
-    width: 100%;
-  }
-`
-
-const ChartWrapper = styled(Paper)`
-  max-height: 100%;
-  height: 75%;
-  width: 100%;
-  ${customAquaScrollBar};
-`
-
-const Wrapper = styled(Paper)`
-  max-height: 100%;
-  display: flex;
-  margin: 0 20px 5px;
-  flex-direction: column;
-  overflow-x: scroll;
-  ${customAquaScrollBar};
-`
 
 const mapStateToProps = (store: object) => ({
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
