@@ -295,7 +295,6 @@ class Rebalance extends React.Component<IProps, IState> {
         },
       },
     }
-    console.log('variablesForMutation', variablesForMutation)
 
     try {
       await updateRebalanceMutationQuery({ variables: variablesForMutation })
@@ -509,8 +508,7 @@ const RebalanceContainer = (props) => (
     fetchPolicy="network-only"
     component={Rebalance}
     query={getMyPortfolioAndRebalanceQuery}
-    variables={{ baseCoin: props.baseCoin }}
-    // pollInterval={5000}
+    variables={{ baseCoin: 'USDT' }}
     {...props}
   />
 )
@@ -524,6 +522,7 @@ export default compose(
       refetchQueries: [
         {
           query: getMyPortfolioAndRebalanceQuery,
+          variables: ({baseCoin: 'USDT'}),
         },
       ],
       ...values,
