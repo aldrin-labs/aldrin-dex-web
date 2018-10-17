@@ -11,6 +11,16 @@ import {
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import { zip, isObject } from 'lodash-es'
+import { Theme } from '@material-ui/core'
+
+const chooseRed = (theme: Theme) =>
+  theme.palette.type === 'dark'
+    ? theme.palette.red.light
+    : theme.palette.red.dark
+const chooseGreen = (theme: Theme) =>
+  theme.palette.type === 'dark'
+    ? theme.palette.green.light
+    : theme.palette.green.dark
 
 class Container extends Component {
   state: IState = {
@@ -18,8 +28,8 @@ class Container extends Component {
     activeKeys: null,
     portfolioAssets: null,
     checkedRows: [],
-    red: this.props.theme.palette.red.dark,
-    green: this.props.theme.palette.green.main,
+    red: chooseRed(this.props.theme),
+    green: chooseGreen(this.props.theme),
     numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(
       this.props.isUSDCurrently
     ),
@@ -32,6 +42,7 @@ class Container extends Component {
       isUSDCurrently,
       isShownMocks,
       data,
+      theme,
     } = nextProps
     if (data && activeKeys) {
       if (!data.myPortfolios[0]) return
@@ -59,6 +70,8 @@ class Container extends Component {
           filterValueSmallerThenPercentage,
           isUSDCurrently
         ),
+        red: chooseRed(theme),
+        green: chooseGreen(theme),
       }
     }
 
@@ -66,40 +79,7 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    const {
-      data: { myPortfolios: data },
-      isShownMocks,
-      activeKeys,
-      filterValueSmallerThenPercentage,
-      isUSDCurrently,
-    } = this.props
-
-    if (!data) {
-      return
-    }
-    const { portfolioAssets } = data[0]
-
-    const composePortfolioAssetsWithMocks = composePortfolioWithMocks(
-      portfolioAssets,
-      isShownMocks
-    )
-
-    this.setState(
-      {
-        activeKeys,
-        portfolio: composePortfolioAssetsWithMocks,
-        tableData: combineTableData(
-          composePortfolioAssetsWithMocks,
-          activeKeys,
-          filterValueSmallerThenPercentage,
-          isUSDCurrently
-        ),
-      },
-      () => {
-        // select all checkboxes
-        this.onSelectAllClick(undefined, true)
-      }
-    )
+    this.onSelectAllClick(undefined, true)
   }
 
   //  footer of table
