@@ -31,7 +31,7 @@ const formikEnhancer = withFormik({
       .required()
       .min(MIN_CHAR)
       .trim(),
-    secret: Yup.string()
+    secretOfApiKey: Yup.string()
       .required()
       .min(MIN_CHAR)
       .trim(),
@@ -43,13 +43,10 @@ const formikEnhancer = withFormik({
   mapPropsToValues: (props: any) => ({
     name: '',
     apiKey: '',
-    secret: '',
+    secretOfApiKey: '',
     exchange: '',
   }),
-  handleSubmit: async (
-    values,
-    { props, setSubmitting }
-  ) => {
+  handleSubmit: async (values, { props, setSubmitting }) => {
     const variables = {
       ...values,
       exchange: values.exchange.toLowerCase(),
@@ -66,7 +63,7 @@ const formikEnhancer = withFormik({
         },
       })
 
-      props.forceUpdateUserContainer();
+      props.forceUpdateUserContainer()
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
@@ -93,16 +90,18 @@ class AddExchangeKeyComponent extends React.Component {
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
-        <FormContainer onSubmit={handleSubmit}>
+        <FormContainer onSubmit={handleSubmit} autoComplete="new-password">
+          <input type="hidden" value="something" />
+
           <STextField
             error={touched.name && !!errors.name}
             id="name"
             name="name"
             label="Name"
+            autoComplete="off"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
-            autoComplete="off"
             placeholder="Enter key name here..."
             type="text"
             margin="normal"
@@ -119,32 +118,32 @@ class AddExchangeKeyComponent extends React.Component {
             type="text"
             name="apiKey"
             label="API Key"
+            autoComplete="off"
             value={values.apiKey}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter API key here..."
             margin="normal"
-            autoComplete="off"
             helperText={
               touched.apiKey &&
               errors.apiKey && <FormError>{errors.apiKey}</FormError>
             }
           />
           <STextField
-            error={touched.secret && !!errors.secret}
-            id="secret"
-            name="secret"
+            error={touched.secretOfApiKey && !!errors.secretOfApiKey}
+            id="secretOfApiKey"
+            name="secretOfApiKey"
             label="Secret"
-            value={values.secret}
+            autoComplete="off"
+            value={values.secretOfApiKey}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter secret key here..."
-            autoComplete="off"
             type="text"
             margin="normal"
             helperText={
-              touched.secret &&
-              errors.secret && <FormError>{errors.secret}</FormError>
+              touched.secretOfApiKey &&
+              errors.secretOfApiKey && <FormError>{errors.secretOfApiKey}</FormError>
             }
           />
           <SExchangeSelect>

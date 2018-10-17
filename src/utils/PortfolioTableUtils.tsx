@@ -37,7 +37,8 @@ const calculateTotalPerfOfCoin = (assets: any[]): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
 const colorful = (value: number, red: string, green: string) => ({
-  text: value,
+  text: `${value}%`,
+  isNumber: true,
   style: { color: value > 0 ? green : value < 0 ? red : null },
 })
 
@@ -57,7 +58,7 @@ export const combineIndustryData = (
       sum += percentagesOfCoinInPortfolio(asset, allSum, true)
     })
 
-    return +roundPercentage(sum)
+    return { text: `${roundPercentage(sum)}%`, isNumber: true }
   }
 
   const { myPortfolios } = data
@@ -95,11 +96,14 @@ export const combineIndustryData = (
     })
   )
   // aplaying dustfilter
-  const industryData = res.filter((row) => row[2] >= filterValueLessThen)
+  const industryData = res.filter(
+    // becouse of shape of row[2] object {text: 23%, isNumber: true}
+    (row) => +row[2].text.split('%')[0] >= filterValueLessThen
+  )
 
   const chartData: InputRecord[] = res.map((row) => ({
     label: row[0],
-    realValue: row[2],
+    realValue: +row[2].text.split('%')[0],
   }))
 
   return { chartData, industryData }
@@ -111,8 +115,8 @@ export const percentagesOfCoinInPortfolio = (
   isUSDCurrently: boolean
 ): number =>
   isUSDCurrently
-    ? (asset.price * asset.quantity) * 100 / allSum
-    : (asset.price * asset.quantity) * 100 / allSum
+    ? (asset.price * asset.quantity * 100) / allSum
+    : (asset.price * asset.quantity * 100) / allSum
 
 export const onSortTableFull = (
   key,
@@ -367,3 +371,6 @@ export const composePortfolioWithMocks = (
 
 export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>
   isUSDCurrently ? 2 : 8
+
+export const roundPrice = (price: number, isUSDCurrently: boolean): number =>
+  +price.toFixed(numberOfDigitsAfterPoint(isUSDCurrently))

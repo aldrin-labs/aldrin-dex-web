@@ -44,13 +44,15 @@ class PortfolioTableTabs extends React.Component<IProps> {
       toggleWallets,
       isUSDCurrently,
       theme: {
-        palette: { primary },
+        palette: { primary, type },
       },
     } = this.props
-    const switchUSDBTC = tab === 'main' || tab === 'industry'
+    const switchUSDBTC =
+      tab === 'main' || tab === 'industry' || tab === 'optimization'
+    const background = type === 'dark' ? primary[900] : primary[100]
 
     return (
-      <Container background={primary[900]} elevation={0}>
+      <Container background={background} elevation={0}>
         <Tooltip title="Main" enterDelay={0} placement="right">
           <Tab
             color={tab === 'main' ? 'secondary' : 'primary'}
@@ -132,7 +134,7 @@ const Container = styled(Paper)`
   flex-direction: column;
   width: 64px;
   height: calc(100vh - 80px);
-  z-index: 1;
+  z-index: 0;
   && {
     background: ${(props: { background: string }) => props.background};
     border-radius: 0;

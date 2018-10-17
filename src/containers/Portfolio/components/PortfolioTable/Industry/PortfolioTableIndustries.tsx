@@ -15,10 +15,14 @@ import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 const tableHeadings = [
   { name: 'Industry', value: 'industry' },
   { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'Portfolio', value: 'portfolioPerf', additionName: 'performance' },
+  { name: 'Portfolio', value: 'portfolioPerc' },
   {
-    name: 'Industry: 1W',
+    name: 'Portfolio performance',
+    value: 'portfolioPerf',
+    additionName: 'performance',
+  },
+  {
+    name: 'Industry performance: 1W',
     value: 'industryPerf1Week',
     additionName: 'performance',
   },
@@ -106,7 +110,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 onChange={this.expandRow}
                 expandedRow={this.state.expandedRow}
                 rows={this.putDataInTable()}
-                title={`Industries Performance in ${baseCoin}`}
+                title={`Industry Performance in ${baseCoin}`}
               />
             </Wrapper>
           </Grid>

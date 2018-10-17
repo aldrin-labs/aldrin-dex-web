@@ -38,6 +38,9 @@ const CustomTableCell = withStyles((theme) => ({
     fontSize: 12,
     padding: '1px 14px 1px 6px',
   },
+  footer: {
+    color: 'white',
+  },
 }))(TableCell)
 
 const Settings = withStyles((theme: Theme) => ({
@@ -81,10 +84,18 @@ const styles = (theme) => ({
     },
   },
   footer: {
-    height: theme.spacing.unit * 4,
-    backgroundColor: theme.palette.secondary.A700,
+    height: theme.spacing.unit * 5,
+    backgroundColor: hexToRgbAWithOpacity(theme.palette.primary[900], 0.45),
+    '&:hover': {
+      backgroundColor: hexToRgbAWithOpacity(theme.palette.primary[900], 0.45),
+    },
   },
 })
+
+const isNumeric = (cell: Cell) =>
+  (cell !== null && typeof cell.text === 'number') ||
+  typeof cell === 'number' ||
+  cell.isNumber
 
 const renderCheckBox = (
   type: 'check' | 'expand' | null,
@@ -270,10 +281,7 @@ const CustomTable = (props: Props) => {
                   )}
 
                   {row.map((cell, cellIndex: number) => {
-                    const numeric =
-                      cell !== null &&
-                      (typeof cell.text === 'number' ||
-                        typeof cell === 'number')
+                    const numeric = isNumeric(cell)
 
                     // skiping rendering cell if it is array and last one
                     //  this is how we are detecting if row expandable
@@ -301,10 +309,7 @@ const CustomTable = (props: Props) => {
                             <CustomTableCell padding="checkbox" />
                             {collapsedRows.map(
                               (cell: Cell, cellIndex: number) => {
-                                const numeric =
-                                  cell !== null &&
-                                  (typeof cell.text === 'number' ||
-                                    typeof cell === 'number')
+                                const numeric = isNumeric(cell)
 
                                 return renderCell(cell, cellIndex, numeric)
                               }
@@ -319,25 +324,21 @@ const CustomTable = (props: Props) => {
           })}
         </TableBody>
         {Array.isArray(rows.footer) && (
-          <TableFooter className={classes.footer}>
-            <TableRow className={classes.row}>
+          <TableFooter>
+            <TableRow className={`${classes.row} ${classes.footer}`}>
               {(withCheckboxes || expandableRows) && (
                 <CustomTableCell padding="checkbox" />
               )}
               {rows.footer.map((cell, cellIndex) => {
-                const numeric =
-                  typeof cell.text === 'number' ||
-                  typeof cell === 'number' ||
-                  cell.isNumber
+                const numeric = isNumeric(cell)
 
                 const spreadedCell = isObject(cell) ? cell : { text: cell }
 
                 const footerCell = {
                   ...(spreadedCell as object),
                   style: {
-                    ...cell.style,
                     opacity: 0.84,
-                    color: 'black',
+                    ...cell.style,
                   },
                 }
 

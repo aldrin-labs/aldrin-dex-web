@@ -11,6 +11,16 @@ import {
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import { zip, isObject } from 'lodash-es'
+import { Theme } from '@material-ui/core'
+
+const chooseRed = (theme: Theme) =>
+  theme.palette.type === 'dark'
+    ? theme.palette.red.light
+    : theme.palette.red.dark
+const chooseGreen = (theme: Theme) =>
+  theme.palette.type === 'dark'
+    ? theme.palette.green.light
+    : theme.palette.green.dark
 
 class Container extends Component {
   state: IState = {
@@ -18,6 +28,8 @@ class Container extends Component {
     activeKeys: null,
     portfolioAssets: null,
     checkedRows: [],
+    red: chooseRed(this.props.theme),
+    green: chooseGreen(this.props.theme),
     numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(
       this.props.isUSDCurrently
     ),
@@ -30,6 +42,7 @@ class Container extends Component {
       isUSDCurrently,
       isShownMocks,
       data,
+      theme,
     } = nextProps
     if (data && activeKeys) {
       if (!data.myPortfolios[0]) return
@@ -57,6 +70,8 @@ class Container extends Component {
           filterValueSmallerThenPercentage,
           isUSDCurrently
         ),
+        red: chooseRed(theme),
+        green: chooseGreen(theme),
       }
     }
 
@@ -64,40 +79,7 @@ class Container extends Component {
   }
 
   componentDidMount() {
-    const {
-      data: { myPortfolios: data },
-      isShownMocks,
-      activeKeys,
-      filterValueSmallerThenPercentage,
-      isUSDCurrently,
-    } = this.props
-
-    if (!data) {
-      return
-    }
-    const { portfolioAssets } = data[0]
-
-    const composePortfolioAssetsWithMocks = composePortfolioWithMocks(
-      portfolioAssets,
-      isShownMocks
-    )
-
-    this.setState(
-      {
-        activeKeys,
-        portfolio: composePortfolioAssetsWithMocks,
-        tableData: combineTableData(
-          composePortfolioAssetsWithMocks,
-          activeKeys,
-          filterValueSmallerThenPercentage,
-          isUSDCurrently
-        ),
-      },
-      () => {
-        // select all checkboxes
-        this.onSelectAllClick(undefined, true)
-      }
-    )
+    this.onSelectAllClick(undefined, true)
   }
 
   //  footer of table
@@ -106,6 +88,8 @@ class Container extends Component {
       checkedRows,
       tableData,
       numberOfDigitsAfterPoint: round,
+      red,
+      green,
     } = this.state
 
     let total: any[] | null = null
@@ -117,14 +101,18 @@ class Container extends Component {
       const data = this.transformData(tableData)
       // check lodash docs (transforming rows into columns)
       zip(...data).forEach((column, ind) => {
-        let sum = 0
-        //  skip exchange and coin columns
-        if (ind > 1) {
+        let sum: number | { text: string | number; style: object } = 0
+        //  skip exchange , coin, price and quantity columns
+        if (ind > 1 && ind !== 3 && ind !== 4) {
           // sum each column numbers if they were selected
           column.forEach((el, i) => {
             const num = isObject(el) ? el.text : el
 
-            if (checkedRows.indexOf(i) !== -1 && typeof num === 'number') {
+            if (
+              checkedRows.indexOf(i) !== -1 &&
+              typeof num === 'number' &&
+              typeof sum === 'number'
+            ) {
               sum += +num
             }
 
@@ -133,7 +121,17 @@ class Container extends Component {
             if (ind === 2 && selectedAll) sum = 100
           })
 
-          total.push(+roundAndFormatNumber(sum, round, false))
+          // coloring text depends on value for P&L
+          const formatedSum = +roundAndFormatNumber(sum, round, false)
+          if (ind > 5) {
+            total.push({
+              text: formatedSum,
+              isNumber: true,
+              style: { color: formatedSum > 0 ? green : red },
+            })
+          } else {
+            total.push(formatedSum)
+          }
         } else {
           total.push(' ')
         }
@@ -151,7 +149,7 @@ class Container extends Component {
       { text: row.coin, style: { fontWeight: 700 } },
       +roundPercentage(row.portfolioPercentage),
       +roundAndFormatNumber(row.price, round, false),
-      row.quantity,
+      +roundAndFormatNumber(row.quantity, round, false),
       +roundAndFormatNumber(row.price * row.quantity, round, false),
       {
         text: +roundAndFormatNumber(row.realizedPL, round, false),
@@ -178,7 +176,7 @@ class Container extends Component {
 
     return {
       head: [
-        { text: 'where', isNumber: false },
+        { text: 'exchange', isNumber: false },
         { text: 'coin', isNumber: false },
         { text: 'portfolio%', isNumber: true },
         { text: 'price', isNumber: true },
