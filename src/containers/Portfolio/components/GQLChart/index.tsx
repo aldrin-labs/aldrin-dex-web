@@ -1,29 +1,8 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
 
 import PortfolioChart from '@containers/Portfolio/components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
-
-export const PRICE_HISTORY_QUERY = gql`
-  query priceHistoryQuery(
-    $coins: [String!]
-    $isBTC: Boolean!
-    $unixTimestampFrom: Int!
-    $unixTimestampTo: Int!
-  ) {
-    getPriceHistory(
-      coins: $coins
-      isBTC: $isBTC
-      unixTimestampFrom: $unixTimestampFrom
-      unixTimestampTo: $unixTimestampTo
-      period: 3600
-    ) {
-      coins
-      dates
-      prices
-    }
-  }
-`
+import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 
 export default class GQLChart extends React.Component {
   state = {
@@ -40,15 +19,13 @@ export default class GQLChart extends React.Component {
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
       // tslint:disable-next-line:no-object-mutation
-      newState.coins = newProps.coins
-        .map((x) => x.symbol)
+      newState.coins = newProps.coins.map((x) => x.coin)
       // tslint:disable-next-line:no-object-mutation
       newState.assets = newProps.coins
       // tslint:disable-next-line:no-object-mutation
       newState.sum = newProps.coins
         .map((x) => x.quantity)
         .reduce((prev, next) => prev + next, 0)
-
       return newState
     }
 
@@ -70,7 +47,7 @@ export default class GQLChart extends React.Component {
       newState.days = days
       newState.unixTimestampFrom = area.left
       newState.unixTimestampTo = area.right
-      newState.lastDrawLocation = null;
+      newState.lastDrawLocation = null
 
       return newState
     })
@@ -82,22 +59,20 @@ export default class GQLChart extends React.Component {
     }
     this.setState((prevState) => {
       const newState = { ...prevState }
-      console.log(newState);
       newState.unixTimestampFrom = Math.floor(area.left)
       newState.unixTimestampTo = Math.floor(area.right)
       if (newState.lastDrawLocation === null) {
         newState.lastDrawLocation = area
       } else {
-        newState.lastDrawLocation = prevState.lastDrawLocation;
-        newState.lastDrawLocation.left = newState.unixTimestampFrom;
-        newState.lastDrawLocation.right = newState.unixTimestampTo;
+        newState.lastDrawLocation = prevState.lastDrawLocation
+        newState.lastDrawLocation.left = newState.unixTimestampFrom
+        newState.lastDrawLocation.right = newState.unixTimestampTo
       }
       return newState
     })
   }
 
   render() {
-    console.log(this.state);
     return (
       <QueryRenderer
         component={PortfolioChart}

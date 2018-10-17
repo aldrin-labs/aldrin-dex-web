@@ -1,16 +1,19 @@
-import { getKeysQuery } from '../../annotations'
+import React from 'react'
+import { WithTheme } from '@material-ui/core'
 
-export interface IProps {
-  data: getKeysQuery
-  onChangeActive: Function
+export interface IProps extends WithTheme {
   filterValuesLessThenThat: Function
   isShownMocks: boolean
   isSideNavOpen: boolean
-  toggleWallets: Function
+  toggleWallets: React.ReactEventHandler
   filterPercent: number
+  setKeys: Function
+  setActiveKeys: Function
+  setWallets: Function
+  setActiveWallets: Function
+  wallets: string[]
+  activeWallets: string[]
+  keys: string[]
+  activeKeys: string[]
 }
 
-export interface IState {
-  checkedCheckboxes: number[] | null
-  checkboxes: (string | null)[] | null
-}

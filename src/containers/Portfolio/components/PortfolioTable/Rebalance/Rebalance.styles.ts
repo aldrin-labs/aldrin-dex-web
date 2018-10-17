@@ -2,15 +2,7 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 
-export {
-  Content,
-  ChartWrapper,
-  ChartContainer,
-  Chart,
-  PTWrapper,
-  PTextBox,
-  Container,
-}
+export { Content, ChartWrapper, ChartContainer, Chart, PTextBox, Container }
 
 const Content = styled.div`
   overflow: auto;
@@ -69,18 +61,6 @@ const Chart = styled.div`
   & > div {
     height: inherit;
   }
-`
-const PTWrapper = styled.div`
-  width: ${(props: { tableData?: boolean }) =>
-    props.tableData ? 'calc(100% - 2rem);' : '100%'};
-  display: flex;
-  flex-direction: column;
-  margin: 24px;
-  border-radius: 3px;
-  background-color: ${(props: { background: string }) => props.background};
-  box-shadow: 0 2px 6px 0 #00000066;
-  position: relative;
-  height: calc(100vh - 130px);
 `
 
 const PTextBox = styled.div`

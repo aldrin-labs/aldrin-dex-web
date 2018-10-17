@@ -1,32 +1,24 @@
 import gql from 'graphql-tag'
 
+import { KeyFragment, CryptoWalletFragment } from '@graphql/fragments'
+
 export const getKeysQuery = gql`
   query getKeys {
-    getProfile {
+    myPortfolios {
       keys {
         _id
         name
+        exchange
         apiKey
-        secret
         date
-        exchangeId
-        ownerId
-        owner {
-          _id
-          username
-        }
-        exchange {
-          name
-          symbol
-        }
       }
     }
   }
 `
 
 export const deleteExchangeKeyMutation = gql`
-  mutation deleteExchangeKey($name: String, $removeTrades: Boolean) {
-    deleteExchangeKey(name: $name, removeTrades: $removeTrades)
+  mutation deleteExchangeKey($name: String) {
+    deleteExchangeKey(name: $name)
   }
 `
 
@@ -45,21 +37,10 @@ export const addExchangeKeyMutation = gql`
       exchange: $exchange
       date: $date
     ) {
-      _id
       name
       apiKey
-      secret
+      exchange
       date
-      exchangeId
-      ownerId
-      owner {
-        _id
-        username
-      }
-      exchange {
-        name
-        symbol
-      }
     }
   }
 `
@@ -97,22 +78,13 @@ export const getExchangesForKeysListQuery = gql`
 
 export const getCryptoWalletsQuery = gql`
   query getCryptoWallets {
-    getProfile {
+    myPortfolios {
       cryptoWallets {
         _id
         name
         address
-        baseAssetId
-        baseAsset {
-          _id
-          symbol
-          name
-        }
-        ownerId
-        owner {
-          _id
-          username
-        }
+        baseAsset
+        date
       }
     }
   }
@@ -123,31 +95,25 @@ export const addCryptoWalletMutation = gql`
     $name: String!
     $assetName: String!
     $address: String!
+    $date: Date
   ) {
     addCryptoWallet(
       name: $name
       assetName: $assetName
       address: $address
+      date: $date
     ) {
-      _id
       name
+      baseAsset
       address
-      ownerId
-      owner {
-        _id
-        username
-      }
-      baseAsset {
-        name
-        symbol
-      }
+      date
     }
   }
 `
 
 export const deleteCryptoWalletMutation = gql`
-  mutation deleteCryptoWallet($assetName: String!, $address: String!) {
-    deleteCryptoWallet(assetName: $assetName, address: $address)
+  mutation deleteCryptoWallet($name: String!) {
+    deleteCryptoWallet(name: $name)
   }
 `
 

@@ -43,7 +43,7 @@ const Btn = styled.button`
   background-color: ${(props: { active: boolean }) =>
     props.active ? '#4ed8da' : '#4c5055'};
   margin-right: 16px;
-  padding: 10px;
+  padding: 6px;
   border: none;
   outline: none;
   font-family: Roboto, sans-serif;

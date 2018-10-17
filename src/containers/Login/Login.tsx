@@ -11,6 +11,7 @@ import { Props, State } from '@containers/Login/interfaces'
 import * as actions from '@containers/Login/actions'
 import * as API from '@containers/Login/api'
 import { LoginMenu } from '@containers/Login/components'
+import MainLogo from '@icons/AuthLogo.png'
 
 const auth0Options = {
   auth: {
@@ -20,8 +21,7 @@ const auth0Options = {
     audience: 'localhost:5080',
   },
   theme: {
-    logo:
-      'https://cdn.zeplin.io/5a9635a8ba64bb554c38ee24/assets/E47C7F75-58EF-4A5D-9F9C-8A43CCCDBF27.png',
+    logo: MainLogo,
     primaryColor: '#4ed8da',
   },
   languageDictionary: {
@@ -58,7 +58,7 @@ class LoginQuery extends React.Component<Props, State> {
       ),
     }
   }
-/*
+  /*
   componentWillMount() {
     this.checkToken()
   }*/

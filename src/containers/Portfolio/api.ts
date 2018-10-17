@@ -1,5 +1,34 @@
 import gql from 'graphql-tag'
 
+import { KeyFragment } from '@graphql/fragments'
+
+export const PRICE_HISTORY_QUERY = gql`
+  query priceHistoryQuery(
+    $coins: [String!]
+    $isBTC: Boolean!
+    $unixTimestampFrom: Int!
+    $unixTimestampTo: Int!
+  ) {
+    getPriceHistory(
+      coins: $coins
+      isBTC: $isBTC
+      unixTimestampFrom: $unixTimestampFrom
+      unixTimestampTo: $unixTimestampTo
+      period: 3600
+    ) {
+      coins
+      dates
+      prices
+    }
+  }
+`
+
+export const UPDATE_PORTFOLIO = gql`
+  mutation updatePortfolio {
+    updatePortfolio
+  }
+`
+
 export const CORRELATION_UPDATE = gql`
   subscription onCorrelationUpdated {
     matrix
@@ -8,163 +37,101 @@ export const CORRELATION_UPDATE = gql`
 
 export const getCorrelationQuery = gql`
   query getPortfolio($startDate: Int!, $endDate: Int!) {
-    correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
+    myPortfolios {
+      correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
+    }
   }
 `
 
 export const getKeysQuery = gql`
   query getKeys {
-    getProfile {
-      portfolioId
+    myPortfolios {
       keys {
         _id
         name
-        apiKey
-        secret
         date
-        exchange {
-          name
-          symbol
-        }
+        apiKey
+      }
+    }
+  }
+`
+
+export const getWalletsQuery = gql`
+  query getWallets {
+    myPortfolios {
+      cryptoWallets {
+        _id
+        name
       }
     }
   }
 `
 
 export const getPortfolioQuery = gql`
-  query getPortfolio {
-    getProfile {
-      portfolio {
-        cryptoWallets {
-          name
-          address
-          baseAssetId
-          baseAsset {
-            _id
-            symbol
-            name
-          }
-          assetIds
-          assets {
-            balance
-            assetId
-            asset {
-              name
-              symbol
-              priceUSD
-              priceBTC
-            }
-          }
-        }
-        assetIds
-        ownerId
-        portfolioPerformance {
-          coin
-          btc
-          usd
-        }
+  query getPortfolio($baseCoin: String!) {
+    myPortfolios {
+      name
+      industryData(base: $baseCoin) {
+        industry
         assets {
+          coin
           quantity
-          asset {
-            name
-            symbol
-            priceUSD
-            priceBTC
-            industry {
-              name
-              performance {
-                usdWeek
-                usdMonth
-                usd3Months
-                usdYear
-                btcWeek
-                btcMonth
-                btc3Months
-                btcYear
-              }
-            }
-          }
-          exchange {
-            name
-          }
-          key {
-            name
-            apiKey
-          }
+          perf
+          price
         }
+        industry1W
+        industry1M
+        industry3M
+        industry1Y
       }
     }
   }
 `
 export const getPortfolioMainQuery = gql`
-  query getPortfolio {
-    getProfile {
-      portfolioId
-      portfolio {
+  query getPortfolio($baseCoin: String!) {
+    myPortfolios {
+      name
+      portfolioAssets(base: $baseCoin) {
+        _id
+        coin
         name
-        processing
-        cryptoWallets {
-          _id
-          name
-          address
-          baseAssetId
-          baseAsset {
-            _id
-            symbol
-            name
-          }
-          assetIds
-          assets {
-            balance
-            assetId
-            asset {
-              name
-              symbol
-              priceUSD
-              priceBTC
-            }
-          }
-          ownerId
-          owner {
-            _id
-            username
-          }
-        }
-        assetIds
-        ownerId
+        where
+        price
+        quantity
+        realized
+        unrealized
+      }
+    }
+  }
+`
+
+export const getMyPortfolioAndRebalanceQuery = gql`
+  query getPortfolioAndRebalance($baseCoin: String!) {
+    myPortfolios {
+      name
+      portfolioAssets(base: $baseCoin) {
+        name
+        coin
+        price
+        quantity
+      }
+  	  myRebalance {
+        total
         assets {
-          _id
-          assetId
-          exchangeId
-          keyId
-          quantity
-          asset {
-            _id
-            name
-            symbol
-            priceUSD
-            priceBTC
-          }
-          PL {
-            base
-            quote
-            price
-            basePriceUSD
-            basePriceBTC
-            realized
-            averageBuyPrice
-            totalBuyQty
-            totalSellQty
-          }
-          exchange {
-            name
-          }
-          key {
-            name
-            apiKey
-          }
+          percent
+          amount
+          diff
         }
       }
     }
   }
 `
+
+
+export const updateRebalanceMutation = gql`
+  mutation($input: rebalanceInput) {
+    updateRebalance(input: $input) {
+      total
+    }
+  }
+`;

@@ -2,6 +2,7 @@ import { createReducer } from 'redux-act'
 import { uniqWith, isEqual } from 'lodash-es'
 import nanoid from 'nanoid'
 
+
 import * as actions from '@containers/Chart/actions'
 
 const initialState = {
@@ -27,11 +28,7 @@ export default createReducer(
     }),
     [actions.selectCurrencies]: (state, payload) => ({
       ...state,
-      currencyPair: payload,
-      charts:
-        state.charts.length === 0
-          ? [payload]
-          : uniqWith([payload, ...state.charts], isEqual),
+      currencyPair: payload
     }),
     [actions.addChart]: (state, payload) => {
       // const fitlerSamePairs = uniqWith([...state.charts, payload], isEqual)

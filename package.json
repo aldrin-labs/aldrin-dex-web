@@ -14,7 +14,7 @@
     "prebuild": "rimraf dist",
     "build:stats": "yarn build --json --progress --profile > webpack-build-log.json",
     "build": "cross-env DEVTOOL=cheap-source-map NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production API_ENDPOINT=develop.api.cryptocurrencies.ai CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack -p --env.env=prod",
-    "buildMaster": "cross-env NODE_ENV=production webpack -p --env.env=prod",
+    "buildMaster": "cross-env NODE_ENV=production NODE_BUILD=master webpack -p --env.env=prod",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
     "ramCheck": "node scripts/memory_monitoring",
     "test": "cross-env NODE_ENV=test jest",
@@ -39,6 +39,9 @@
       "js",
       "ts",
       "tsx"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!lodash-es).+\\.js$"
     ],
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "typescript-babel-jest",
@@ -94,6 +97,7 @@
     "react": "^16.4.1",
     "react-apollo": "^2.1.0-beta.3",
     "react-content-loader": "^3.1.2",
+    "react-dates": "^18.1.0",
     "react-dom": "^16.3.2",
     "react-emojione": "^5.0.0",
     "react-fullscreen-crossbrowser": "^1.0.9",

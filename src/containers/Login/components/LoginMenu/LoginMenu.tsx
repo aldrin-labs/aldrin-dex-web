@@ -9,13 +9,13 @@ const UserLink = (props) => <Link to="/user" {...props} />
 
 export const LoginMenu = ({ userName, handleMenu, handleLogout }: any) => (
   <>
-    <Tooltip title={userName}>
+    <Tooltip title={userName} enterDelay={250}>
       <IconButton color="secondary" component={UserLink}>
         <AccountCircle />
       </IconButton>
     </Tooltip>
-    <Tooltip title="Exit">
-      <IconButton color="default" onClick={handleLogout}>
+    <Tooltip title="Log out" enterDelay={500}>
+      <IconButton color="secondary" onClick={handleLogout}>
         <ExitIcon />
       </IconButton>
     </Tooltip>

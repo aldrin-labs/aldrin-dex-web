@@ -62,6 +62,8 @@ export function getColor(
     return { backgroundColor: '#ff4408', textColor: 'black' }
   } else if (n >= -1 && n < -0.9) {
     return { backgroundColor: '#ff5722', textColor: 'black' }
+  } else {
+    return { backgroundColor: '#ff5722', textColor: 'black' }
   }
 }
 

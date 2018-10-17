@@ -21,23 +21,26 @@ class KeysListComponent extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.data.getProfile) {
-      this.setState({ keys: this.props.data.getProfile.keys })
+    if (this.props.data.myPortfolios && this.props.data.myPortfolios.length > 0) {
+      this.setState({ keys: this.props.data.myPortfolios[0].keys })
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.data.getProfile) {
-      this.setState({ keys: nextProps.data.getProfile.keys })
+    this.props.refetch();
+
+    if (nextProps.data.myPortfolios && nextProps.data.myPortfolios.length > 0) {
+      this.setState({ keys: nextProps.data.myPortfolios[0].keys })
     }
   }
 
   render() {
     if (this.props.data.loading) {
-      return <Loading centerAligned />
+      return <Loading centerAligned={true} />
     }
 
     const { keys } = this.state
+    const { forceUpdateUserContainer } = this.props
 
     return (
       <KeysListPaper>
@@ -45,10 +48,10 @@ class KeysListComponent extends React.Component {
           <TableHead>
             <TableRow>
               <KeyTableCell>Name</KeyTableCell>
-              <KeyTableCell numeric>Exchange</KeyTableCell>
-              <KeyTableCell numeric>Api key</KeyTableCell>
-              <KeyTableCell numeric>Date</KeyTableCell>
-              <KeyTableCell numeric>Delete key</KeyTableCell>
+              <KeyTableCell numeric={true}>Exchange</KeyTableCell>
+              <KeyTableCell numeric={true}>Api key</KeyTableCell>
+              <KeyTableCell numeric={true}>Date</KeyTableCell>
+              <KeyTableCell numeric={true}>Delete key</KeyTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,15 +61,15 @@ class KeysListComponent extends React.Component {
                 return (
                   <TableRow key={_id}>
                     <KeyTableCell>{name}</KeyTableCell>
-                    <KeyTableCell numeric>
-                      {exchange ? exchange.name : ''}
+                    <KeyTableCell numeric={true}>
+                      {exchange}
                     </KeyTableCell>
-                    <KeyTableCell numeric>{apiKey}</KeyTableCell>
-                    <KeyTableCell numeric>
+                    <KeyTableCell numeric={true}>{apiKey}</KeyTableCell>
+                    <KeyTableCell numeric={true}>
                       {<FormattedDate value={date} />}
                     </KeyTableCell>
-                    <KeyTableCell numeric>
-                      <DeleteKeyDialog keyName={name} />
+                    <KeyTableCell numeric={true}>
+                      <DeleteKeyDialog keyName={name} forceUpdateUserContainer={forceUpdateUserContainer}/>
                     </KeyTableCell>
                   </TableRow>
                 )
@@ -95,6 +98,6 @@ const KeysTable = styled(Table)`
   table-layout: fixed;
 `
 
-export default function() {
-  return <QueryRenderer component={KeysListComponent} query={getKeysQuery} />
-}
+export default (props) => (
+  <QueryRenderer component={KeysListComponent} query={getKeysQuery} {...props} />
+)

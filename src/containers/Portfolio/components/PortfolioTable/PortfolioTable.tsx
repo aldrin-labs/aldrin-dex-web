@@ -3,13 +3,13 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
 import { ITableProps } from '@containers/Portfolio/interfaces'
 import Loadable from 'react-loadable'
 
-import PortfolioTableBalances from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances'
+import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 import LoadableLoading from '@components/Loading/LoadableLoading'
 
 const PortfolioTableIndustries = Loadable({
   loader: () =>
-    import( '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'),
+    import('@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'),
   delay: 300,
   loading: LoadableLoading,
 })
@@ -41,6 +41,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     isShownChart: true,
     isUSDCurrently: true,
     tab: 'main',
+    baseCoin: 'USDT',
   }
 
   onToggleChart = () => {
@@ -48,10 +49,57 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   }
 
   onToggleUSDBTC = () => {
-    this.setState({ isUSDCurrently: !this.state.isUSDCurrently })
+    this.setState((prevState) => ({
+      isUSDCurrently: !prevState.isUSDCurrently,
+      baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
+    }))
   }
-  switchToUsd = () => {
-    this.setState({ isUSDCurrently: true })
+
+  renderTab = () => {
+    const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
+    const { theme } = this.props
+
+    let render = null
+    switch (tab) {
+      case 'main':
+        render = (
+          <PortfolioTableBalances
+            isShownChart={isShownChart}
+            isUSDCurrently={isUSDCurrently}
+            subscription={this.props.subscription}
+            activeKeys={this.props.activeKeys}
+            tab={this.state.tab}
+            theme={theme}
+            variables={{ baseCoin }}
+          />
+        )
+        break
+      case 'industry':
+        render = (
+          <PortfolioTableIndustries
+            activeKeys={this.props.activeKeys}
+            isUSDCurrently={isUSDCurrently}
+            theme={theme}
+            variables={{ baseCoin }}
+            baseCoin={baseCoin}
+          />
+        )
+        break
+      case 'rebalance':
+        render = <Rebalance baseCoin={baseCoin} isUSDCurrently={true} />
+        break
+      case 'correlation':
+        render = <Correlation baseCoin={baseCoin} theme={theme} />
+        break
+      case 'optimization':
+        render = <Optimization theme={theme} isUSDCurrently={isUSDCurrently} baseCoin={baseCoin} />
+        break
+
+      default:
+        break
+    }
+
+    return render
   }
 
   onChangeTab = (
@@ -61,95 +109,23 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
   }
 
   render() {
-    const { tab, isShownChart, isUSDCurrently } = this.state
-    const { theme } = this.props
+    const { tab, isUSDCurrently } = this.state
+    const { theme, showTable = false } = this.props
 
-    if (tab === 'main') {
-      return (
-        <PortfolioTableBalances
-          isShownChart={isShownChart}
-          isUSDCurrently={isUSDCurrently}
-          switchToUsd={this.switchToUsd}
-          subscription={this.props.subscription}
-          checkboxes={this.props.checkboxes}
-          tab={this.state.tab}
+    return (
+      <>
+        <PortfolioTableTabs
           theme={theme}
-        >
-          <PortfolioTableTabs
-            theme={theme}
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            isUSDCurrently={isUSDCurrently}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </PortfolioTableBalances>
-      )
-    }
-
-    if (tab === 'industry') {
-      return (
-        <PortfolioTableIndustries
-          checkboxes={this.props.checkboxes}
+          toggleWallets={this.props.toggleWallets}
+          tab={tab}
           isUSDCurrently={isUSDCurrently}
-          theme={theme}
-          switchToUsd={this.switchToUsd}
-        >
-          <PortfolioTableTabs
-            theme={theme}
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </PortfolioTableIndustries>
-      )
-    }
-
-    if (tab === 'rebalance') {
-      return (
-        <Rebalance isUSDCurrently={true}>
-          <PortfolioTableTabs
-            theme={theme}
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </Rebalance>
-      )
-    }
-
-    if (tab === 'correlation') {
-      return (
-        <Correlation theme={theme}>
-          <PortfolioTableTabs
-            theme={theme}
-            toggleWallets={this.props.toggleWallets}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleChart={this.onToggleChart}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </Correlation>
-      )
-    }
-
-    if (tab === 'optimization') {
-      return (
-        <Optimization>
-          <PortfolioTableTabs
-            theme={theme}
-            tab={tab}
-            onChangeTab={this.onChangeTab}
-            onToggleUSDBTC={this.onToggleUSDBTC}
-          />
-        </Optimization>
-      )
-    }
+          onChangeTab={this.onChangeTab}
+          onToggleChart={this.onToggleChart}
+          onToggleUSDBTC={this.onToggleUSDBTC}
+        />
+        {showTable && this.renderTab()}
+      </>
+    )
 
     return null
   }

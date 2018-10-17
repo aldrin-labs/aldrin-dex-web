@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { TypographyFullWidth } from '@styles/cssUtils'
-import { Cell, Row, Body } from '@components/Table/Table'
+import { Cell, Row, Body } from '@components/OldTable/Table'
 
 export const EmptyCell = styled(Cell)`
   position: relative;

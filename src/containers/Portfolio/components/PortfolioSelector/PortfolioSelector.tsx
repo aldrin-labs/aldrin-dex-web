@@ -1,374 +1,194 @@
 import * as React from 'react'
-import FaFilter from '@material-ui/icons/FilterList'
-import styled from 'styled-components'
-import Arrow from '@material-ui/icons/ArrowLeft'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import { has } from 'lodash-es'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 import Dropdown from '@components/SimpleDropDownSelector'
-
-import { setKeys, filterValuesLessThen } from '../../actions'
-import { getKeysQuery } from '../../api'
-import { IProps, IState } from './PortfolioSelector.types'
+import {
+  setKeys as setKeysAction,
+  setActiveKeys as setActiveKeysAction,
+  setWallets as setWalletsAction,
+  setActiveWallets as setActiveWalletsAction,
+  filterValuesLessThen,
+} from '../../actions'
+import { getKeysQuery, getWalletsQuery } from '../../api'
+import { IProps } from './PortfolioSelector.types'
 import QueryRenderer from '@components/QueryRenderer'
-import { Checkbox, Label, Span } from '@styles/cssUtils'
+import Accounts from './Accounts/Accounts'
+import Wallets from './Wallets/Wallets'
+import {
+  AccountsWalletsBlock,
+  FilterIcon,
+  FilterValues,
+  Name,
+} from './PortfolioSelector.styles'
+import { Slide } from '@material-ui/core'
 
-class PortfolioSelector extends React.Component<IProps, IState> {
-  state = {
-    checkboxes: [],
-    checkedCheckboxes: [],
-  }
-  // componentWillReceiveProps(nextProps: IProps) {
-  //   // called once
-  //   if (nextProps.data && nextProps.data.getProfile && !this.state.checkboxes) {
-  //     const { keys } = nextProps.data.getProfile
-  //     const checkboxes =
-  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-  //     if (
-  //       nextProps.isShownMocks &&
-  //       checkboxes.indexOf('Test1') === -1 &&
-  //       checkboxes.indexOf('Test2') === -1
-  //     ) {
-  //       checkboxes.push('Test1', 'Test2')
-  //     }
-  //     const { keys } = nextProps.data.getProfile
-  //     const checkboxes =
-  //       (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-  //     const checkedCheckboxes = checkboxes.map((ck, i) => i)
+class PortfolioSelector extends React.Component<IProps> {
+  onToggleKeyCheckbox = (checkBoxName: string) => {
+    const { activeKeys, setActiveKeys } = this.props
+    const clonedActiveKeys = activeKeys.slice()
 
-  //     if (checkboxes) {
-  //       this.setState({ checkboxes, checkedCheckboxes }, () => {
-  //         const { onChangeActive } = this.props
-
-  //         onChangeActive(checkboxes)
-  //       })
-  //     }
-  //   }
-  // }
-
-  componentDidMount() {
-    if (!has(this.props.data.getProfile, 'keys')) {
-      return null
-    }
-
-    const { keys } = this.props.data.getProfile
-    const checkboxes =
-      (keys && keys.map((key) => key && key.name).filter(Boolean)) || []
-    const checkedCheckboxes = checkboxes.map((ck, i) => i)
-
-    this.props.setKeys(checkboxes)
-
-    this.setState({ checkboxes, checkedCheckboxes })
-
-    return true
-  }
-
-  onToggleCheckbox = (index: number) => {
-    const { onChangeActive } = this.props
-
-    const checkedCheckboxes =
-      (this.state.checkedCheckboxes && this.state.checkedCheckboxes.slice()) ||
-      []
-
-    const hasIndex = checkedCheckboxes.indexOf(index)
-    if (hasIndex >= 0) {
-      checkedCheckboxes.splice(hasIndex, 1)
+    const hasIndex = clonedActiveKeys.indexOf(checkBoxName)
+    if (hasIndex !== -1) {
+      clonedActiveKeys.splice(hasIndex, 1)
     } else {
-      checkedCheckboxes.push(index)
+      clonedActiveKeys.push(checkBoxName)
     }
 
-    this.setState({ checkedCheckboxes }, () => {
-      if (!this.state.checkboxes) {
-        return
-      }
-      const checkboxes = this.state.checkboxes
-        .map((ck, idx) => {
-          if (checkedCheckboxes.indexOf(idx) >= 0) {
-            return ck
-          }
+    setActiveKeys(clonedActiveKeys)
+  }
 
-          return null
-        })
-        .filter(Boolean)
-      onChangeActive(checkboxes)
-    })
+  onToggleWalletCheckbox = (checkBoxName: string) => {
+    const { activeWallets, setActiveWallets } = this.props
+    const clonedActiveWallets = activeWallets.slice()
+
+    const hasIndex = clonedActiveWallets.indexOf(checkBoxName)
+    if (hasIndex !== -1) {
+      clonedActiveWallets.splice(hasIndex, 1)
+    } else {
+      clonedActiveWallets.push(checkBoxName)
+    }
+
+    setActiveWallets(clonedActiveWallets)
   }
 
   onToggleAll = () => {
-    const { checkedCheckboxes, checkboxes } = this.state
-    if (!checkboxes) {
-      return
-    }
+    const {
+      keys,
+      activeKeys,
+      wallets,
+      activeWallets,
+      setActiveKeys,
+      setActiveWallets,
+    } = this.props
 
-    if (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) {
-      this.setState({ checkedCheckboxes: null }, () => {
-        this.props.onChangeActive([])
-      })
+    if (
+      activeKeys.length + activeWallets.length ===
+      keys.length + wallets.length
+    ) {
+      setActiveKeys([])
+      setActiveWallets([])
     } else {
-      const allAccounts = checkboxes.map((ck, i) => i)
-
-      this.setState({ checkedCheckboxes: allAccounts }, () => {
-        if (!this.state.checkboxes) {
-          return
-        }
-        const checkboxesAgain = this.state.checkboxes
-        checkboxesAgain
-          .map((ck, idx) => {
-            if (allAccounts.indexOf(idx) >= 0) {
-              return ck
-            }
-
-            return null
-          })
-          .filter(Boolean)
-        this.props.onChangeActive(checkboxesAgain)
-      })
+      setActiveKeys(keys)
+      setActiveWallets(wallets)
     }
   }
 
   render() {
-    const { checkedCheckboxes, checkboxes } = this.state
     const {
       filterValuesLessThenThat,
       filterPercent,
       isSideNavOpen,
+      setKeys,
+      setActiveKeys,
+      setWallets,
+      setActiveWallets,
+      wallets,
+      activeWallets,
+      keys,
+      activeKeys,
+      theme,
     } = this.props
 
-    if (!checkboxes) {
-      return null
-    }
-
     const isCheckedAll =
-      (checkedCheckboxes && checkedCheckboxes.length === checkboxes.length) ||
-      false
+      activeKeys.length + activeWallets.length === keys.length + wallets.length
+
+    const color = theme.palette.secondary.main
 
     return (
-      <AccountsWalletsBlock
-        onClick={isSideNavOpen ? null : this.props.toggleWallets}
-        isSideNavOpen={this.props.isSideNavOpen}
-      >
-        <AccountsWalletsHeadingWrapper>
-          <Name>Api keys</Name>
-
-          <Headline isSideNavOpen={this.props.isSideNavOpen}>settings</Headline>
-          <CloseContainer>
-            <StyledIcon isSideNavOpen={this.props.isSideNavOpen} />
-          </CloseContainer>
-        </AccountsWalletsHeadingWrapper>
-
-        <SelectAll>
-          <Checkbox
-            type="checkbox"
-            id="all"
-            defaultChecked={true}
-            checked={isCheckedAll}
-            onClick={this.onToggleAll}
+      <Slide in={isSideNavOpen} direction="left">
+        <AccountsWalletsBlock
+          isSideNavOpen={true}
+          background={theme.palette.background.paper}
+          hoverBackground={theme.palette.action.hover}
+          fontFamily={theme.typography.fontFamily}
+        >
+          <QueryRenderer
+            component={Accounts}
+            query={getKeysQuery}
+            {...{
+              color,
+              isSideNavOpen,
+              isCheckedAll,
+              keys,
+              activeKeys,
+              setKeys,
+              setActiveKeys,
+              onToggleAll: this.onToggleAll,
+              onToggleKeyCheckbox: this.onToggleKeyCheckbox,
+            }}
           />
-          <Label htmlFor="all">
-            <Span />
-          </Label>
-          <AccountName isChecked={isCheckedAll}>Select All</AccountName>
-        </SelectAll>
 
-        <AccountsList>
-          {checkboxes.map((checkbox, i) => {
-            if (!checkbox) {
-              return null
-            }
-            const isChecked =
-              (checkedCheckboxes && checkedCheckboxes.indexOf(i) >= 0) || false
-
-            return (
-              <AccountsListItem key={checkbox}>
-                <Checkbox
-                  type="checkbox"
-                  id={checkbox}
-                  defaultChecked={true}
-                  checked={isChecked}
-                  onClick={() => this.onToggleCheckbox(i)}
-                />
-                <Label htmlFor={checkbox}>
-                  <Span />
-                </Label>
-
-                <AccountName isChecked={isChecked}>{checkbox}</AccountName>
-              </AccountsListItem>
-            )
-          })}
-        </AccountsList>
-        <Name>Dust</Name>
-        <FilterValues>
-          <FilterIcon />
-          <Dropdown
-            style={{ width: '100%' }}
-            value={filterPercent}
-            handleChange={filterValuesLessThenThat}
-            name="filterValuesInMain"
-            options={[
-              { value: -100.0, label: 'No Filter' },
-              { value: 0, label: '0% <' },
-              { value: 0.1, label: '0.1% <' },
-              { value: 0.2, label: '0.2% <' },
-              { value: 0.3, label: '0.3% <' },
-              { value: 0.5, label: '0.5% <' },
-              { value: 1, label: '1% <' },
-              { value: 10, label: '10% <' },
-            ]}
+          <QueryRenderer
+            component={Wallets}
+            query={getWalletsQuery}
+            {...{
+              color,
+              isSideNavOpen,
+              isCheckedAll,
+              wallets,
+              activeWallets,
+              setWallets,
+              setActiveWallets,
+              onToggleWalletCheckbox: this.onToggleWalletCheckbox,
+            }}
           />
-        </FilterValues>
-      </AccountsWalletsBlock>
+
+          <Name color={color}>Dust</Name>
+          <FilterValues>
+            <FilterIcon
+              color={theme.palette.getContrastText(
+                theme.palette.background.paper
+              )}
+            />
+            <Dropdown
+              style={{ width: '100%' }}
+              value={filterPercent}
+              handleChange={filterValuesLessThenThat}
+              name="filterValuesInMain"
+              options={[
+                { value: -100.0, label: 'No Filter' },
+                { value: 0, label: '0% <' },
+                { value: 0.1, label: '0.1% <' },
+                { value: 0.2, label: '0.2% <' },
+                { value: 0.3, label: '0.3% <' },
+                { value: 0.5, label: '0.5% <' },
+                { value: 1, label: '1% <' },
+                { value: 10, label: '10% <' },
+              ]}
+            />
+          </FilterValues>
+        </AccountsWalletsBlock>
+      </Slide>
     )
   }
 }
 
-const Name = styled.h1`
-  width: 100%;
-  text-align: center;
-  letter-spacing: 1px;
-  background: #292d31;
-  border-radius: 2.5rem;
-  padding: 0.5rem 0;
-  text-align: center;
-  font-family: Roboto, sans-serif;
-  color: #4ed8da;
-`
-
-const FilterValues = styled.div`
-  width: 100%;
-  display: flex;
-  place-items: center;
-`
-const FilterIcon = styled(FaFilter)`
-  color: whitesmoke;
-  font-size: 1.5rem;
-  margin: 0 0.5rem;
-`
-
-const CloseContainer = styled.div`
-  height: 100%;
-`
-
-const SelectAll = styled.div`
-  margin-top: 32px;
-  padding-left: 8px;
-`
-
-const AccountName = styled.span`
-  color: ${(props: { isChecked: boolean }) =>
-    props.isChecked ? '#4ed8da' : '#fff'};
-
-  font-family: Roboto, sans-serif;
-  font-size: 1em;
-  font-weight: 500;
-  text-align: left;
-  margin-left: 24px;
-`
-
-const AccountsListItem = styled.li`
-  display: flex;
-  align-items: center;
-  font-family: Roboto, sans-serif;
-  font-size: 1em;
-  font-weight: 500;
-  text-align: left;
-  color: #4ed8da;
-  margin-bottom: 24px;
-`
-
-const AccountsList = styled.ul`
-  list-style: none;
-  margin-top: 34px;
-  display: flex;
-  flex-direction: column;
-  padding-left: 8px;
-`
-
-const AccountsWalletsBlock = styled.div`
-  min-width: 200px;
-  background-color: #2d3136;
-  padding: 16px;
-  right: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-    isSideNavOpen ? '0' : '-11.5rem'};
-  cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-    isSideNavOpen ? 'auto' : 'pointer'};
-  display: block;
-  position: fixed;
-  top: 0;
-  z-index: 1300;
-  height: 100vh;
-  transition: right 0.2s ease-in;
-
-  &:hover {
-    background-color: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-      isSideNavOpen ? '#2d3136' : '#323941'};
-  }
-`
-
-const AccountsWalletsHeadingWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
-
-const StyledIcon = styled(Arrow)`
-  font-family: Roboto, sans-serif;
-  color: #4ed8da;
-  text-align: center;
-  opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-    isSideNavOpen ? '1' : '0'};
-  font-size: 2rem;
-  right: 10.7rem;
-
-  position: absolute;
-  bottom: 47%;
-  transition: opacity 0.2s linear;
-`
-
-const Headline = styled.div`
-  font-family: Roboto, sans-serif;
-  color: #4ed8da;
-  opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
-    isSideNavOpen ? '0' : '1'};
-  font-size: 0.7em;
-  transform: rotate(-90deg);
-  left: -0.6rem;
-  transform-origin: right, top;
-  position: absolute;
-  bottom: 50%;
-  transition: opacity 0.4s linear;
-
-  @media (min-width: 1000px) {
-    font-size: 1rem;
-    right: 10.8rem;
-  }
-`
-
-const mapStateToProps = (store) => ({
+const mapStateToProps = (store: any) => ({
+  keys: store.portfolio.keys,
+  activeKeys: store.portfolio.activeKeys,
+  wallets: store.portfolio.wallets,
+  activeWallets: store.portfolio.activeWallets,
   isShownMocks: store.user.isShownMocks,
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  setKeys: (keys: string[]) => dispatch(setKeys(keys)),
+  setKeys: (keys: string[]) => dispatch(setKeysAction(keys)),
+  setActiveKeys: (activeKeys: string[]) =>
+    dispatch(setActiveKeysAction(activeKeys)),
+  setWallets: (wallets: string[]) => dispatch(setWalletsAction(wallets)),
+  setActiveWallets: (activeWallets: string[]) =>
+    dispatch(setActiveWalletsAction(activeWallets)),
   filterValuesLessThenThat: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
 })
 
-class MainDataWrapper extends React.Component {
-  render() {
-    return (
-      <QueryRenderer
-        component={PortfolioSelector}
-        query={getKeysQuery}
-        {...this.props}
-      />
-    )
-  }
-}
-
-const storeComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MainDataWrapper)
-
-export default compose()(storeComponent)
+export default compose(
+  withTheme(),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(PortfolioSelector)

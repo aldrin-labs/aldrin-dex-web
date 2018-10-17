@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Slide } from '@material-ui/core'
+import nanoid from 'nanoid'
 
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
 
-import { IProps } from './OnlyCharts.types'
+import { IProps, IChart } from './OnlyCharts.types'
 
 class OnlyCharts extends Component<IProps> {
   componentDidMount() {
@@ -38,29 +39,19 @@ class OnlyCharts extends Component<IProps> {
           fullscreen={view !== 'default'}
           chartsCount={charts.length || 1}
         >
-          {charts.map(
-            (chart: { pair: string; id: string } | string, i: number) =>
-              // fallback for old values that were strings and now there must be objects
-              typeof chart === 'string' ? (
-                <IndividualChart
-                  key={i}
-                  theme={theme}
-                  removeChart={removeChart}
-                  index={i}
-                  chartsCount={charts.length}
-                  currencyPair={chart}
-                />
-              ) : (
-                <IndividualChart
-                  key={chart.id}
-                  theme={theme}
-                  removeChart={removeChart}
-                  index={i}
-                  chartsCount={charts.length}
-                  currencyPair={chart.pair}
-                />
-              )
-          )}
+          {charts
+            .filter((chart) => chart.id && chart.pair)
+            .map((chart: IChart, i: number) => (
+              <IndividualChart
+                //  if there is no id generate it here
+                key={chart.id}
+                theme={theme}
+                removeChart={removeChart}
+                index={i}
+                chartsCount={charts.length}
+                currencyPair={chart.pair}
+              />
+            ))}
           <WarningMessageSnack
             open={openedWarning}
             onCloseClick={removeWarningMessage}

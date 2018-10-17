@@ -26,43 +26,43 @@ const DeleteKeyDialogComponent = ({
   handleSubmit,
   errors,
 }) => (
-  <div>
-    <Button onClick={handleClickOpen}>Delete</Button>
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      aria-labelledby="form-dialog-title"
-    >
-      <DialogTitle id="form-dialog-title">Delete key {keyName}?</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          To delete key please enter it's name:
+    <div>
+      <Button onClick={handleClickOpen}>Delete</Button>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Delete key {keyName}?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            To delete key please enter it's name:
         </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="keyNameInput"
-          name="keyNameInput"
-          label="Key name"
-          onChange={handleChange}
-          value={values.keyNameInput}
-          error={errors && !!errors.keyNameInput}
-          type="text"
-          fullWidth
-        />
-        <Typography color="error">{errors.keyNameInput}</Typography>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
+          <TextField
+            autoFocus
+            margin="dense"
+            id="keyNameInput"
+            name="keyNameInput"
+            label="Key name"
+            onChange={handleChange}
+            value={values.keyNameInput}
+            error={errors && !!errors.keyNameInput}
+            type="text"
+            fullWidth
+          />
+          <Typography color="error">{errors.keyNameInput}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
         </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Delete
+          <Button onClick={handleSubmit} color="primary">
+            Delete
         </Button>
-      </DialogActions>
-    </Dialog>
-  </div>
-)
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
 
 const formikDialog = withFormik({
   validationSchema: Yup.object().shape({
@@ -72,7 +72,7 @@ const formikDialog = withFormik({
     keyNameInput: '',
   }),
   handleSubmit: async ({ keyNameInput }, props) => {
-    const { keyName, handleClose, deleteExchangeKey } = props.props
+    const { keyName, handleClose, deleteExchangeKey, forceUpdateUserContainer } = props.props
     const variables = {
       name: keyNameInput,
       removeTrades: true,
@@ -86,7 +86,7 @@ const formikDialog = withFormik({
           variables,
           update: (proxy, { data: { deleteExchangeKey } }) => {
             let proxyData = proxy.readQuery({ query: getKeysQuery })
-            const keys = proxyData.getProfile.keys.slice()
+            const keys = proxyData.myPortfolios[0].keys.slice()
             const index = keys.findIndex((v) => v._id === deleteExchangeKey._id)
             keys.splice(index, 1)
             proxyData = {
@@ -97,6 +97,7 @@ const formikDialog = withFormik({
           },
         })
         await handleClose()
+        forceUpdateUserContainer();
       } catch (error) {
         console.log(error)
         props.setFieldError('keyNameInput', 'Request error!')

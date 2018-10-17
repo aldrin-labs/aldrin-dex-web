@@ -2,6 +2,7 @@ import React from 'react'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import QueryRenderer from '@components/QueryRenderer'
 import BarChart from '@components/BarChart/BarChart'
 import {
   IProps,
@@ -21,9 +22,8 @@ import {
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
-  getMyRebalanceQuery,
-  getMyPortfolioQuery,
-} from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
+  getMyPortfolioAndRebalanceQuery,
+} from '@containers/Portfolio/api'
 import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
@@ -33,12 +33,12 @@ import {
   ChartWrapper,
   ChartContainer,
   Chart,
-  PTWrapper,
   PTextBox,
   Container,
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
+import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -68,15 +68,14 @@ class Rebalance extends React.Component<IProps, IState> {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
-    const { isShownMocks, getMyRebalance, getMyPortfolio } = this.props
-
-    this.combineRebalanceData(isShownMocks, getMyRebalance, getMyPortfolio)
+    const { isShownMocks, data } = this.props
+    this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    const { isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
+    const { isShownMocks, data } = nextProps
 
-    this.combineRebalanceData(isShownMocks, getMyRebalance, getMyPortfolio)
+    this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
 
   componentWillUnmount() {
@@ -85,28 +84,24 @@ class Rebalance extends React.Component<IProps, IState> {
 
   combineRebalanceData = (
     isShownMocks: boolean,
-    getMyRebalance: IGetMyRebalanceQuery,
-    getMyPortfolio: IGetMyPortfolioQuery
+    getMyPortfolioAndRebalanceQuery
   ) => {
     const userHasRebalancePortfolio =
-      getMyRebalance &&
-      getMyRebalance.getProfile &&
-      getMyRebalance.getProfile.myRebalance &&
-      getMyRebalance.getProfile.myRebalance.assets &&
-      getMyRebalance.getProfile.myRebalance.assets.length > 0
+      getMyPortfolioAndRebalanceQuery &&
+      getMyPortfolioAndRebalanceQuery.myRebalance &&
+      getMyPortfolioAndRebalanceQuery.myRebalance.assets &&
+      getMyPortfolioAndRebalanceQuery.myRebalance.assets.length > 0
 
     const userHasPortfolio =
-      getMyPortfolio &&
-      getMyPortfolio.getProfile &&
-      getMyPortfolio.getProfile.portfolio &&
-      getMyPortfolio.getProfile.portfolio.assets &&
-      getMyPortfolio.getProfile.portfolio.assets.length > 0
+      getMyPortfolioAndRebalanceQuery &&
+      getMyPortfolioAndRebalanceQuery.portfolioAssets &&
+      getMyPortfolioAndRebalanceQuery.portfolioAssets.length > 0
 
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyRebalance!.getProfile!.myRebalance!.assets!.map(
+      newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => ({
           id: i,
           exchange: el._id.exchange,
@@ -117,24 +112,24 @@ class Rebalance extends React.Component<IProps, IState> {
         })
       )
 
-      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
-        (el: IShapeOfCurrentPortolioRow, i: number) => ({
+      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
+        (el, i: number) => ({
           id: i,
-          exchange: el.exchange.name,
-          symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.quantity).toFixed(2),
+          exchange: el.where,
+          symbol: el.coin,
+          price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
         })
       )
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
-        (el: IShapeOfCurrentPortolioRow, i: number) => ({
+      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
+        (el, i: number) => ({
           id: i,
-          exchange: el.exchange.name,
-          symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.quantity).toFixed(2),
+          exchange: el.where,
+          symbol: el.coin,
+          price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
         })
       )
@@ -366,14 +361,14 @@ class Rebalance extends React.Component<IProps, IState> {
       newData,
       newCurrentSort,
     }: {
-      newData: IRow[]
-      newCurrentSort: ICurrentSort | null
-    } = onSortTableFull(
-      key,
-      currentRowsForSort,
-      currentSort,
-      arrayOfStringHeadings
-    )
+        newData: IRow[]
+        newCurrentSort: ICurrentSort | null
+      } = onSortTableFull(
+        key,
+        currentRowsForSort,
+        currentSort,
+        arrayOfStringHeadings
+      )
 
     this.setState({
       [rowsForSortText]: newData,
@@ -398,8 +393,6 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   render() {
-    console.log('RENDER')
-
     const {
       children,
       isUSDCurrently,
@@ -427,17 +420,9 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
 
-    const textColor = theme.palette.getContrastText(
-      theme.palette.background.paper
-    )
-    const background = theme.palette.background.paper
-    const secondary = theme.palette.secondary.main
-    const red = theme.palette.red.main
-    const green = theme.palette.green.main
-
     if (tableDataHasData) {
       return (
-        <PTWrapper tableData={tableDataHasData} background={background}>
+        <PTWrapper tableData={tableDataHasData}>
           {children}
           <PTextBox>Add account for Portfolio</PTextBox>
         </PTWrapper>
@@ -445,7 +430,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     return (
-      <PTWrapper tableData={true} background={background}>
+      <PTWrapper tableData={true}>
         {children}
         <Content>
           <Container>
@@ -456,10 +441,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 totalStaticRows,
                 filterValueSmallerThenPercentage,
                 isUSDCurrently,
-                textColor,
-                background,
-                red,
-                green,
+                theme,
               }}
               onSortTable={this.onSortTable}
             />
@@ -478,11 +460,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 undistributedMoney,
                 isUSDCurrently,
                 addMoneyInputValue,
-                textColor,
-                background,
-                secondary,
-                red,
-                green,
+                theme,
               }}
               onSortTable={this.onSortTable}
               onSaveClick={this.onSaveClick}
@@ -529,21 +507,30 @@ const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
+const RebalanceContainer = (props) => (
+  <QueryRenderer
+    fetchPolicy="network-only"
+    component={Rebalance}
+    query={getMyPortfolioAndRebalanceQuery}
+    variables={{ baseCoin: props.baseCoin }}
+    pollInterval={5000}
+    {...props}
+  />
+)
+
 
 export default compose(
   withTheme(),
   connect(mapStateToProps),
-  graphql(getMyPortfolioQuery, { name: 'getMyPortfolio' }),
-  graphql(getMyRebalanceQuery, { name: 'getMyRebalance' }),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
     options: ({ values }) => ({
       refetchQueries: [
         {
-          query: getMyRebalanceQuery,
+          query: getMyPortfolioAndRebalanceQuery,
         },
       ],
       ...values,
     }),
   })
-)(Rebalance)
+)(RebalanceContainer)

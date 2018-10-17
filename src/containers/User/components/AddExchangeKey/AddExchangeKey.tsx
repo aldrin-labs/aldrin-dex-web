@@ -31,7 +31,7 @@ const formikEnhancer = withFormik({
       .required()
       .min(MIN_CHAR)
       .trim(),
-    secret: Yup.string()
+    secretOfApiKey: Yup.string()
       .required()
       .min(MIN_CHAR)
       .trim(),
@@ -43,30 +43,27 @@ const formikEnhancer = withFormik({
   mapPropsToValues: (props: any) => ({
     name: '',
     apiKey: '',
-    secret: '',
+    secretOfApiKey: '',
     exchange: '',
   }),
-  handleSubmit: async (
-    values,
-    { props: { addExchangeKey }, setSubmitting }
-  ) => {
+  handleSubmit: async (values, { props, setSubmitting }) => {
     const variables = {
       ...values,
       exchange: values.exchange.toLowerCase(),
-      date: Date.now(),
+      date: Math.round(+Date.now() / 1000),
     }
 
     try {
-      await addExchangeKey({
+      await props.addExchangeKey({
         variables,
         update: (proxy, { data: { addExchangeKey } }) => {
           const proxyData = proxy.readQuery({ query: API.getKeysQuery })
-          proxyData.getProfile.keys.push(addExchangeKey)
+          proxyData.myPortfolios[0].keys.push(addExchangeKey)
           proxy.writeQuery({ query: API.getKeysQuery, data: proxyData })
         },
       })
-      console.log(variables)
 
+      props.forceUpdateUserContainer()
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
@@ -93,12 +90,15 @@ class AddExchangeKeyComponent extends React.Component {
     return (
       <SPaper>
         <Typography variant="title">Add new key</Typography>
-        <FormContainer onSubmit={handleSubmit}>
+        <FormContainer onSubmit={handleSubmit} autoComplete="new-password">
+          <input type="hidden" value="something" />
+
           <STextField
             error={touched.name && !!errors.name}
             id="name"
             name="name"
             label="Name"
+            autoComplete="off"
             value={values.name}
             onChange={handleChange}
             onBlur={handleBlur}
@@ -110,44 +110,46 @@ class AddExchangeKeyComponent extends React.Component {
               errors.name && <FormError>{errors.name}</FormError>
             }
           />
+          {/* https://medium.com/paul-jaworski/turning-off-autocomplete-in-chrome-ee3ff8ef0908 */}
+          <input type="hidden" value="something" />
           <STextField
             error={touched.apiKey && !!errors.apiKey}
             id="apiKey"
             type="text"
             name="apiKey"
             label="API Key"
+            autoComplete="off"
             value={values.apiKey}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter API key here..."
             margin="normal"
-            autoComplete="off"
             helperText={
               touched.apiKey &&
               errors.apiKey && <FormError>{errors.apiKey}</FormError>
             }
           />
           <STextField
-            error={touched.secret && !!errors.secret}
-            id="secret"
-            name="secret"
+            error={touched.secretOfApiKey && !!errors.secretOfApiKey}
+            id="secretOfApiKey"
+            name="secretOfApiKey"
             label="Secret"
-            value={values.secret}
+            autoComplete="off"
+            value={values.secretOfApiKey}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter secret key here..."
-            autoComplete="off"
-            type="password"
+            type="text"
             margin="normal"
             helperText={
-              touched.secret &&
-              errors.secret && <FormError>{errors.secret}</FormError>
+              touched.secretOfApiKey &&
+              errors.secretOfApiKey && <FormError>{errors.secretOfApiKey}</FormError>
             }
           />
           <SExchangeSelect>
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
             <SelectExchangeList
-              isClearable
+              isClearable={true}
               onChange={handleSelectChangePrepareForFormik.bind(
                 this,
                 'exchange'
