@@ -24,11 +24,11 @@ export const deleteExchangeKeyMutation = gql`
 
 export const addExchangeKeyMutation = gql`
   mutation addExchangeKey(
-    $name: String
-    $apiKey: String
-    $secret: String
-    $exchange: String
-    $date: Date
+    $name: String!
+    $apiKey: String!
+    $secret: String!
+    $exchange: String!
+    $date: Date!
   ) {
     addExchangeKey(
       name: $name
@@ -95,7 +95,7 @@ export const addCryptoWalletMutation = gql`
     $name: String!
     $assetName: String!
     $address: String!
-    $date: Date
+    $date: Date!
   ) {
     addCryptoWallet(
       name: $name
