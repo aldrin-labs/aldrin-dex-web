@@ -103,7 +103,7 @@ export const combineIndustryData = (
 
   const chartData: InputRecord[] = res.map((row) => ({
     label: row[0],
-    realValue: row[2],
+    realValue: +row[2].text.split('%')[0],
   }))
 
   return { chartData, industryData }

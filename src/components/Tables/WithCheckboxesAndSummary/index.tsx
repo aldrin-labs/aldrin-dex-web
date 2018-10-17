@@ -38,6 +38,9 @@ const CustomTableCell = withStyles((theme) => ({
     fontSize: 12,
     padding: '1px 14px 1px 6px',
   },
+  footer: {
+    color: 'white',
+  },
 }))(TableCell)
 
 const Settings = withStyles((theme: Theme) => ({
@@ -82,9 +85,9 @@ const styles = (theme) => ({
   },
   footer: {
     height: theme.spacing.unit * 5,
-    backgroundColor: theme.palette.primary[500],
+    backgroundColor: hexToRgbAWithOpacity(theme.palette.primary[900], 0.45),
     '&:hover': {
-      backgroundColor: theme.palette.primary[500],
+      backgroundColor: hexToRgbAWithOpacity(theme.palette.primary[900], 0.45),
     },
   },
 })
@@ -335,7 +338,6 @@ const CustomTable = (props: Props) => {
                   ...(spreadedCell as object),
                   style: {
                     opacity: 0.84,
-                    color: 'black',
                     ...cell.style,
                   },
                 }

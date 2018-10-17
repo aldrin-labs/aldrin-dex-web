@@ -34,7 +34,6 @@ const mapPortfolioActions = (pA) => {
   const values = Object.values(pA)
   values.pop()
   values[2] = +roundAndFormatNumber(values[2], 8, false)
-  // console.log(values[4])
   values[4] = {
     text: format(
       new Date(values[4]).toLocaleString('en-US'),
