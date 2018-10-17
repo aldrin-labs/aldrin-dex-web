@@ -50,7 +50,7 @@ const btcHeadingForRebalanced = [
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
   IState
-> {
+  > {
 
   renderActiveCheckbox = (idx: number) => {
     const { selectedActive } = this.props
@@ -264,17 +264,17 @@ export default class RebalancedPortfolioTable extends React.Component<
 
     const resultRows = isEditableCoin
       ? [
-          ...clonedRows.slice(0, idx),
-          ...clonedRows.slice(idx + 1, clonedRows.length),
-        ]
+        ...clonedRows.slice(0, idx),
+        ...clonedRows.slice(idx + 1, clonedRows.length),
+      ]
       : [
-          ...clonedRows.slice(0, idx),
-          {
-            ...clonedRows[idx],
-            price: '0.00',
-          },
-          ...clonedRows.slice(idx + 1, clonedRows.length),
-        ]
+        ...clonedRows.slice(0, idx),
+        {
+          ...clonedRows[idx],
+          price: '0.00',
+        },
+        ...clonedRows.slice(idx + 1, clonedRows.length),
+      ]
 
     const newUndistributedMoney = (
       parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
@@ -321,7 +321,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       onReset,
       onEditModeEnable,
       updateState,
-      theme: { palette }
+      theme: { palette },
     } = this.props
 
     const textColor = palette.getContrastText(
@@ -339,8 +339,8 @@ export default class RebalancedPortfolioTable extends React.Component<
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
-      <Icon className="fa fa-btc" />
-    )
+        <Icon className="fa fa-btc" />
+      )
 
     const tableHeadingsRebalancedPortfolio = isUSDCurrently
       ? usdHeadingForRebalanced
@@ -409,7 +409,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                             marginLeft: '4px',
                             transform:
                               currentSortForDynamic &&
-                              currentSortForDynamic.arg === 'ASC'
+                                currentSortForDynamic.arg === 'ASC'
                                 ? 'rotate(180deg)'
                                 : null,
                           }}
@@ -427,11 +427,11 @@ export default class RebalancedPortfolioTable extends React.Component<
               {rows.map((row, rowIndex) => {
                 const {
                   id,
-                  exchange,
-                  symbol,
-                  portfolioPerc,
-                  price,
-                  deltaPrice,
+                  exchange = '',
+                  symbol = '',
+                  portfolioPerc = 0,
+                  price = 0,
+                  deltaPrice = 0,
                 } = row
 
                 const isSelected =
@@ -503,7 +503,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 height: '200px',
                               }}
                               optionStyles={{
-                                fontSize:'12px',
+                                fontSize: '12px',
                               }}
                               clearIndicatorStyles={{
                                 padding: '2px',
@@ -534,17 +534,17 @@ export default class RebalancedPortfolioTable extends React.Component<
                               openMenuOnClick={false}
                               menuPortalTarget={document.body}
                               menuStyles={{
-                              minWidth: '150px',
-                              height: '200px',
+                                minWidth: '150px',
+                                height: '200px',
                               }}
                               menuListStyles={{
-                              height: '200px',
+                                height: '200px',
                               }}
                               optionStyles={{
-                                fontSize:'12px',
+                                fontSize: '12px',
                               }}
                               clearIndicatorStyles={{
-                              padding: '2px',
+                                padding: '2px',
                               }}
                               valueContainerStyles={{
                                 maxWidth: '55px',
@@ -554,7 +554,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                                 marginLeft: '0',
                               }}
                               onChange={(optionSelected: { label: string; value: string } | null) =>
-                              this.handleSelectChange(rowIndex, 'symbol', optionSelected)
+                                this.handleSelectChange(rowIndex, 'symbol', optionSelected)
                               }
                             />
                           </PTDR>

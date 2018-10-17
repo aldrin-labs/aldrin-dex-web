@@ -60,7 +60,9 @@ export default class PortfolioChart extends Component<Props, State> {
     }
     return null;
   }
-
+  componentWillUnmount() {
+    cacheStack = [];
+  }
   onChangeActiveChart = (index: number) => {
     this.props.setActiveChart(index)
     this.props.updateDays(mapLabelToDays[chartBtns[index]])

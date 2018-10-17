@@ -27,7 +27,9 @@ class KeysListComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.data.myPortfolios && this.props.data.myPortfolios.length > 0) {
+    this.props.refetch();
+
+    if (nextProps.data.myPortfolios && nextProps.data.myPortfolios.length > 0) {
       this.setState({ keys: nextProps.data.myPortfolios[0].keys })
     }
   }
@@ -38,6 +40,7 @@ class KeysListComponent extends React.Component {
     }
 
     const { keys } = this.state
+    const { forceUpdateUserContainer } = this.props
 
     return (
       <KeysListPaper>
@@ -66,7 +69,7 @@ class KeysListComponent extends React.Component {
                       {<FormattedDate value={date} />}
                     </KeyTableCell>
                     <KeyTableCell numeric={true}>
-                      <DeleteKeyDialog keyName={name} />
+                      <DeleteKeyDialog keyName={name} forceUpdateUserContainer={forceUpdateUserContainer}/>
                     </KeyTableCell>
                   </TableRow>
                 )
@@ -95,6 +98,6 @@ const KeysTable = styled(Table)`
   table-layout: fixed;
 `
 
-export default function () {
-  return <QueryRenderer component={KeysListComponent} query={getKeysQuery} />
-}
+export default (props) => (
+  <QueryRenderer component={KeysListComponent} query={getKeysQuery} {...props} />
+)

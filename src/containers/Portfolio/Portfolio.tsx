@@ -39,9 +39,6 @@ class PortfolioComponent extends React.Component<IProps, IState> {
       activeWallets,
     } = this.props
 
-    // console.log('activeKeys: ', activeKeys, 'keys', keys)
-    // console.log('activeWallets: ', activeWallets, 'wallets ', wallets)
-
     const hasKeysOrWallets = keys.length + wallets.length > 0
     const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
 
@@ -51,47 +48,33 @@ class PortfolioComponent extends React.Component<IProps, IState> {
           <PortfolioContainer>
             {/* refactor this */}
             {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
-            {login && (
-              <PortfolioTable
-                showTable={hasActiveKeysOrWallets}
-                activeKeys={activeKeys}
-                theme={theme}
+            {login &&
+              !hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
+            <>
+              <PortfolioSelector
                 toggleWallets={this.toggleWallets}
-                subscription={subscriptionData}
+                isSideNavOpen={this.state.isSideNavOpen}
               />
-            )}
-            {login &&
-              !hasKeysOrWallets && (
-                <>
-                  <PortfolioSelector
-                    toggleWallets={this.toggleWallets}
-                    isSideNavOpen={this.state.isSideNavOpen}
-                  />
-                  <AddExchangeOrWalletWindow theme={theme} />
-                </>
-              )}
-            {login &&
-              hasKeysOrWallets &&
-              !hasActiveKeysOrWallets && (
-                <>
-                  <PortfolioSelector
-                    toggleWallets={this.toggleWallets}
-                    isSideNavOpen={this.state.isSideNavOpen}
-                  />
+              {login &&
+                hasKeysOrWallets &&
+                !hasActiveKeysOrWallets && (
                   <SelectExchangeOrWalletWindow
                     theme={theme}
                     toggleWallets={this.toggleWallets}
                   />
-                </>
-              )}
-            {login &&
-              hasKeysOrWallets &&
-              hasActiveKeysOrWallets && (
-                <PortfolioSelector
-                  toggleWallets={this.toggleWallets}
-                  isSideNavOpen={this.state.isSideNavOpen}
-                />
-              )}
+                )}
+              {login &&
+                hasKeysOrWallets &&
+                hasActiveKeysOrWallets && (
+                  <PortfolioTable
+                    showTable={hasActiveKeysOrWallets}
+                    activeKeys={activeKeys}
+                    theme={theme}
+                    toggleWallets={this.toggleWallets}
+                    subscription={subscriptionData}
+                  />
+                )}
+            </>
 
             <Fade
               in={this.state.isSideNavOpen}
