@@ -112,6 +112,7 @@ export const getMyPortfolioAndRebalanceQuery = gql`
       portfolioAssets(base: $baseCoin) {
         name
         coin
+        where
         price
         quantity
       }
