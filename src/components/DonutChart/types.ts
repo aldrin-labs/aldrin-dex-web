@@ -28,6 +28,9 @@ export interface Props {
   theme: Theme
   colorLegend: boolean
   isSizeFlexible: boolean
+  hightCoefficient: number
+  widthCoefficient: number
+  radiusCoefficient: number
 }
 
 export interface State {

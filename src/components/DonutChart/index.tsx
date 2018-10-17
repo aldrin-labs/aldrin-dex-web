@@ -31,7 +31,10 @@ const FlexibleChart = makeVisFlexible(RadialChart)
 class DonutChartWitoutTheme extends Component<Props, State> {
   static defaultProps: Props = {
     radius: 100,
-    gradients: defaultGradients
+    hightCoefficient: 16,
+    widthCoefficient: 6,
+    thicknessCoefficient: 10,
+    gradients: defaultGradients,
   }
   state: State = {
     data: [],
@@ -78,16 +81,23 @@ class DonutChartWitoutTheme extends Component<Props, State> {
       gradients,
       colorLegend,
       theme,
-      isSizeFlexible
+      isSizeFlexible,
+      hightCoefficient,
+      widthCoefficient,
+      thicknessCoefficient,
+
     } = this.props
 
     var FlexibleRadius = isSizeFlexible 
-      ? Math.min(window.innerWidth / 16, window.innerHeight / 6)
+      ? Math.min(
+          window.innerWidth / hightCoefficient,
+          window.innerHeight / widthCoefficient
+        )
       : radius
 
     var innerRadius = thickness 
       ? FlexibleRadius - thickness
-      : FlexibleRadius - FlexibleRadius / 10
+      : FlexibleRadius - FlexibleRadius / thicknessCoefficient
 
     return (
       <ChartWithLegend>
