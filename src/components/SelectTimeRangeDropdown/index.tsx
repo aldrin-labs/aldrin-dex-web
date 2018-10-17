@@ -7,7 +7,7 @@ import { IProps } from './index.types'
 class DropDownMenu extends Component<IProps> {
   optionsMap: { [id: string]: any } = {
     lastWeek: () => ({
-      startDate: daysFromNow(7),
+      startDate: daysFromNow(-7),
       endDate: daysFromNow(0),
     }),
     lastDay: () => ({
