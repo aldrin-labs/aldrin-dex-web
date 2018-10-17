@@ -147,7 +147,7 @@ export default class Table extends Component<IProps, IState> {
                       key={item.coin}
                     >
                       <Typography variant="body1" align="center">
-                        {optimizedData
+                        {optimizedData && optimizedData[i] !== undefined
                           ? `${(Math.abs(Number(optimizedData[i]) * 100)).toFixed(2)}%`
                           : '-'}{' '}
                       </Typography>
