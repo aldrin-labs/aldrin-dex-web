@@ -105,4 +105,5 @@ const options = ({ match }) => ({
   variables: { id: match ? match.params.id : '' },
 })
 
-export default graphql(ProfileQuery, { options })(ProfileComponent)
+export const Profile = graphql(ProfileQuery, { options })(ProfileComponent)
+export default Profile
