@@ -51,10 +51,6 @@ class PortfolioComponent extends React.Component<IProps, IState> {
             {login &&
               !hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
             <>
-              <PortfolioSelector
-                toggleWallets={this.toggleWallets}
-                isSideNavOpen={this.state.isSideNavOpen}
-              />
               {login &&
                 hasKeysOrWallets &&
                 !hasActiveKeysOrWallets && (
@@ -66,13 +62,19 @@ class PortfolioComponent extends React.Component<IProps, IState> {
               {login &&
                 hasKeysOrWallets &&
                 hasActiveKeysOrWallets && (
-                  <PortfolioTable
-                    showTable={hasActiveKeysOrWallets}
-                    activeKeys={activeKeys}
-                    theme={theme}
-                    toggleWallets={this.toggleWallets}
-                    subscription={subscriptionData}
-                  />
+                  <>
+                    <PortfolioSelector
+                      toggleWallets={this.toggleWallets}
+                      isSideNavOpen={this.state.isSideNavOpen}
+                    />
+                    <PortfolioTable
+                      showTable={hasActiveKeysOrWallets}
+                      activeKeys={activeKeys}
+                      theme={theme}
+                      toggleWallets={this.toggleWallets}
+                      subscription={subscriptionData}
+                    />
+                  </>
                 )}
             </>
 
