@@ -115,8 +115,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <ChartWrapper elevation={8}>
               <DonutChart
                 labelPlaceholder="Industries %"
-                radius={120}
-                thickness={12}
+                radius={Math.min(window.innerWidth / 16, window.innerHeight / 6)}
+                thickness={Math.min(window.innerWidth / 160, window.innerHeight / 60)}
                 data={chartData}
                 colorLegend={true}
               />
