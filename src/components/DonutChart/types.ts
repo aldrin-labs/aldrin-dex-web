@@ -23,10 +23,11 @@ export interface Props {
   data: InputRecord[]
   labelPlaceholder: string
   radius: number
-  thickness: number
+  thickness?: number
   gradients: gradient[]
   theme: Theme
   colorLegend: boolean
+  isSizeFlexible: boolean
 }
 
 export interface State {
