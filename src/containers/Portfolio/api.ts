@@ -119,6 +119,8 @@ export const getMyPortfolioAndRebalanceQuery = gql`
   	  myRebalance {
         total
         assets {
+          _id
+          id
           percent
           amount
           diff
@@ -130,9 +132,20 @@ export const getMyPortfolioAndRebalanceQuery = gql`
 
 
 export const updateRebalanceMutation = gql`
-  mutation($input: rebalanceInput) {
-    updateRebalance(input: $input) {
-      total
+mutation updateRebalance(
+  $input: rebalanceInput
+) {
+  updateRebalance(input: $input) {
+    assets {
+      _id
+      id
+      percent
+      amount
+      diff
     }
+    total
+    updatedAt
+    createdAt
   }
+}
 `;
