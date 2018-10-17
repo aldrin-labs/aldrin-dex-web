@@ -95,11 +95,13 @@ export const addCryptoWalletMutation = gql`
     $name: String!
     $assetName: String!
     $address: String!
+    $date: Date
   ) {
     addCryptoWallet(
       name: $name
       assetName: $assetName
       address: $address
+      date: $date
     ) {
       name
       baseAsset
