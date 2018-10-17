@@ -295,6 +295,7 @@ class Rebalance extends React.Component<IProps, IState> {
         },
       },
     }
+    console.log('variablesForMutation', variablesForMutation)
 
     try {
       await updateRebalanceMutationQuery({ variables: variablesForMutation })
@@ -472,6 +473,8 @@ class Rebalance extends React.Component<IProps, IState> {
                 <Chart>
                   {staticRows[0].portfolioPerc && (
                     <BarChart
+                      hideDashForToolTip={true}
+                      xAxisVertical={true}
                       alwaysShowLegend={true}
                       charts={[
                         {
@@ -507,7 +510,7 @@ const RebalanceContainer = (props) => (
     component={Rebalance}
     query={getMyPortfolioAndRebalanceQuery}
     variables={{ baseCoin: props.baseCoin }}
-    pollInterval={5000}
+    // pollInterval={5000}
     {...props}
   />
 )

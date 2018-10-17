@@ -48,7 +48,9 @@ const formikEnhancer = withFormik({
   }),
   handleSubmit: async (values, { props, setSubmitting }) => {
     const variables = {
-      ...values,
+      name: values.name,
+      apiKey: values.apiKey,
+      secret: values.secretOfApiKey,
       exchange: values.exchange.toLowerCase(),
       date: Math.round(+Date.now() / 1000),
     }
