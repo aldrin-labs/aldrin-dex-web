@@ -47,7 +47,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
         palette: { primary },
       },
     } = this.props
-    const switchUSDBTC = tab === 'main' || tab === 'industry'
+    const switchUSDBTC = tab === 'main' || tab === 'industry' || tab === 'optimization'
 
     return (
       <Container background={primary[900]} elevation={0}>

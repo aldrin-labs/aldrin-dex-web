@@ -1,10 +1,10 @@
 import gql from 'graphql-tag'
 
 export const getCoinsForOptimization = gql`
-  query getPortfolio {
+  query getPortfolio($baseCoin: String!) {
     myPortfolios {
       name
-      portfolioAssets(base: "USDT") {
+      portfolioAssets(base: $baseCoin) {
         _id
         coin
         name
