@@ -22,6 +22,6 @@ export const Wrapper = styled(Paper)`
   display: flex;
   margin: 0 20px 5px;
   flex-direction: column;
-  overflow-x: scroll;
+  overflow-x: auto;
   ${customAquaScrollBar};
 `
