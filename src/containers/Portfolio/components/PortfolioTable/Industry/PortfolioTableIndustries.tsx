@@ -118,7 +118,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 radius={120}
                 thickness={12}
                 data={chartData}
-                colorLegend
+                colorLegend={true}
               />
             </ChartWrapper>
           </Grid>
