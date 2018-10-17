@@ -59,9 +59,8 @@ typings/
 
 # deploy
 .cache
-dist/static
+dist
 .vscode
-dist/bundle*
 .idea
 TODO
 .DS_STORE
