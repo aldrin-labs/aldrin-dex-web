@@ -187,7 +187,7 @@ const CustomTable = (props: Props) => {
     },
     checkedRows = [],
   } = props
-  console.log(rows)
+
   if (
     rows !== undefined &&
     !Array.isArray(rows.head) &&
