@@ -67,7 +67,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
 
     return (
       <Container>
-        <FlexibleXYPlot margin={{ left: 60, bottom: 65 }}>
+        <FlexibleXYPlot margin={{ left: 80, bottom: 65 }}>
           {highlightedDotData.length < 1 ? (
             <LineMarkSeries
               animation="gentle"
