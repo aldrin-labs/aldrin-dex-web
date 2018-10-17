@@ -481,6 +481,7 @@ class Rebalance extends React.Component<IProps, IState> {
               <Chart>
                 {staticRows[0].portfolioPerc && (
                   <BarChart
+                    xAxisVertical={true}
                     alwaysShowLegend={true}
                     charts={[
                       {
