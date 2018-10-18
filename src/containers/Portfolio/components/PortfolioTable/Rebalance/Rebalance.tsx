@@ -39,6 +39,7 @@ import {
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
 import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -361,14 +362,14 @@ class Rebalance extends React.Component<IProps, IState> {
       newData,
       newCurrentSort,
     }: {
-        newData: IRow[]
-        newCurrentSort: ICurrentSort | null
-      } = onSortTableFull(
-        key,
-        currentRowsForSort,
-        currentSort,
-        arrayOfStringHeadings
-      )
+      newData: IRow[]
+      newCurrentSort: ICurrentSort | null
+    } = onSortTableFull(
+      key,
+      currentRowsForSort,
+      currentSort,
+      arrayOfStringHeadings
+    )
 
     this.setState({
       [rowsForSortText]: newData,
@@ -420,87 +421,80 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
 
-    if (tableDataHasData) {
-      return (
-        <PTWrapper tableData={tableDataHasData}>
-          {children}
-          <PTextBox>Add account for Portfolio</PTextBox>
-        </PTWrapper>
-      )
-    }
-
     return (
-      <PTWrapper tableData={true}>
-        {children}
-        <Content>
-          <Container>
-            <CurrentPortfolioTable
-              {...{
-                currentSortForStatic,
-                staticRows,
-                totalStaticRows,
-                filterValueSmallerThenPercentage,
-                isUSDCurrently,
-                theme,
-              }}
-              onSortTable={this.onSortTable}
-            />
-            <RebalancedPortfolioTable
-              {...{
-                isEditModeEnabled,
-                staticRows,
-                rows,
-                currentSortForDynamic,
-                selectedActive,
-                areAllActiveChecked,
-                totalRows,
-                totalPercents,
-                totalTableRows,
-                isPercentSumGood,
-                undistributedMoney,
-                isUSDCurrently,
-                addMoneyInputValue,
-                theme,
-              }}
-              onSortTable={this.onSortTable}
-              onSaveClick={this.onSaveClick}
-              onReset={this.onReset}
-              onEditModeEnable={this.onEditModeEnable}
-              updateState={this.updateState}
-            />
-          </Container>
-          <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-            <ChartColorPicker
-              leftBar={leftBar}
-              rightBar={rightBar}
-              onChangeColor={this.onChangeColor}
-            />
-            <ChartContainer elevation={10}>
-              <Chart>
-                {staticRows[0].portfolioPerc && (
-                  <BarChart
-                    hideDashForToolTip={true}
-                    xAxisVertical={true}
-                    alwaysShowLegend={true}
-                    charts={[
-                      {
-                        data: combineToBarChart(staticRows),
-                        color: this.state.leftBar,
-                        title: 'Current',
-                      },
-                      {
-                        data: combineToBarChart(rows),
-                        color: this.state.rightBar,
-                        title: 'Rebalanced',
-                      },
-                    ]}
-                  />
-                )}
-              </Chart>
-            </ChartContainer>
-          </ChartWrapper>
-        </Content>
-      </PTWrapper>
+      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+        <PTWrapper tableData={true}>
+          {children}
+          <Content>
+            <Container>
+              <CurrentPortfolioTable
+                {...{
+                  currentSortForStatic,
+                  staticRows,
+                  totalStaticRows,
+                  filterValueSmallerThenPercentage,
+                  isUSDCurrently,
+                  theme,
+                }}
+                onSortTable={this.onSortTable}
+              />
+              <RebalancedPortfolioTable
+                {...{
+                  isEditModeEnabled,
+                  staticRows,
+                  rows,
+                  currentSortForDynamic,
+                  selectedActive,
+                  areAllActiveChecked,
+                  totalRows,
+                  totalPercents,
+                  totalTableRows,
+                  isPercentSumGood,
+                  undistributedMoney,
+                  isUSDCurrently,
+                  addMoneyInputValue,
+                  theme,
+                }}
+                onSortTable={this.onSortTable}
+                onSaveClick={this.onSaveClick}
+                onReset={this.onReset}
+                onEditModeEnable={this.onEditModeEnable}
+                updateState={this.updateState}
+              />
+            </Container>
+            <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
+              <ChartColorPicker
+                leftBar={leftBar}
+                rightBar={rightBar}
+                onChangeColor={this.onChangeColor}
+              />
+              <ChartContainer elevation={10}>
+                <Chart>
+                  {staticRows[0].portfolioPerc && (
+                    <BarChart
+                      hideDashForToolTip={true}
+                      xAxisVertical={true}
+                      alwaysShowLegend={true}
+                      charts={[
+                        {
+                          data: combineToBarChart(staticRows),
+                          color: this.state.leftBar,
+                          title: 'Current',
+                        },
+                        {
+                          data: combineToBarChart(rows),
+                          color: this.state.rightBar,
+                          title: 'Rebalanced',
+                        },
+                      ]}
+                    />
+                  )}
+                </Chart>
+              </ChartContainer>
+            </ChartWrapper>
+          </Content>
+        </PTWrapper>
+      </EmptyTablePlaceholder>
     )
   }
 }
@@ -518,7 +512,6 @@ const RebalanceContainer = (props) => (
     {...props}
   />
 )
-
 
 export default compose(
   withTheme(),
