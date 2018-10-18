@@ -59,14 +59,14 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                     toggleWallets={this.toggleWallets}
                   />
                 )}
+              <PortfolioSelector
+                toggleWallets={this.toggleWallets}
+                isSideNavOpen={this.state.isSideNavOpen}
+              />
               {login &&
                 hasKeysOrWallets &&
                 hasActiveKeysOrWallets && (
                   <>
-                    <PortfolioSelector
-                      toggleWallets={this.toggleWallets}
-                      isSideNavOpen={this.state.isSideNavOpen}
-                    />
                     <PortfolioTable
                       showTable={hasActiveKeysOrWallets}
                       activeKeys={activeKeys}
