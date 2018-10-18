@@ -18,7 +18,7 @@ const SwitchButtons = (props: IProps) => (
         active={i === props.activeButton}
         key={percentage}
       >
-        {`${percentage}%`}
+        {`${percentage}`}
       </Btn>
     ))}
   </BtnsContainer>
@@ -42,7 +42,7 @@ const Btn = styled.button`
   border-radius: 2px;
   background-color: ${(props: { active: boolean }) =>
     props.active ? '#4ed8da' : '#4c5055'};
-  margin-right: 16px;
+  margin-right: 10px;
   padding: 6px;
   border: none;
   outline: none;

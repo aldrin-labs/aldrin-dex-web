@@ -45,7 +45,7 @@ export default class Import extends PureComponent<IProps> {
     focusedInput: false,
     startDate: null,
     endDate: null,
-    percentages: [2, 7, 12, 17, 22],
+    percentages: ['min', 'low', 'med', 'high', 'max'],
     totalPriceOfAllAssets: 0,
     initialPortfolio: [],
     isUSDTInInitialPortfolioExists: false,
@@ -219,10 +219,14 @@ export default class Import extends PureComponent<IProps> {
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData);
 
+    // for future
+    // const percentages = optimizedData.map((elem) => +elem.return_value.toFixed(2));
+    // this.setState({percentages})
+
     optimizedToState(optimizedData)
 
     if (storeData.length < optimizedData[activeButton].portfolio_coins_list.length) {
-      // console.log('storeData.length < optimizedData');
+      console.log('storeData.length < optimizedData');
       this.addRow('USDT', 0)
     }
   }
