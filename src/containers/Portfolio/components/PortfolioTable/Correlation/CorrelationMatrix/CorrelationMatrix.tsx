@@ -12,6 +12,7 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 import SelectTimeRange from '@components/SelectTimeRangeDropdown'
 import Table from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix.types'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 class CorrelationMatrix extends PureComponent<IProps> {
   constructor(props: IProps) {
@@ -33,6 +34,8 @@ class CorrelationMatrix extends PureComponent<IProps> {
     </>
   )
 
+  renderError = (error: string) => <CustomError>{error}</CustomError>
+
   render() {
     const {
       isFullscreenEnabled,
@@ -53,7 +56,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
         >
           <FullscreenNode
             style={
-              data
+              data.values
                 ? {
                     display: 'grid',
                     gridTemplateColumns: isFullscreenEnabled
@@ -89,7 +92,9 @@ class CorrelationMatrix extends PureComponent<IProps> {
               </ButtonsWrapper>
             )}
 
-            {data ? (
+            {data.error ? (
+              this.renderError(data.error)
+            ) : data ? (
               <Table
                 {...{
                   isFullscreenEnabled,
