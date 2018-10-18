@@ -374,3 +374,17 @@ export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>
 
 export const roundPrice = (price: number, isUSDCurrently: boolean): number =>
   +price.toFixed(numberOfDigitsAfterPoint(isUSDCurrently))
+
+export const swapDates = ({
+  startDate,
+  endDate,
+}: {
+  startDate: number
+  endDate: number
+}) => {
+  const holder = startDate
+  startDate = endDate
+  endDate = holder
+
+  return { startDate, endDate }
+}
