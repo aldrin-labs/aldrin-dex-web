@@ -180,15 +180,24 @@ export default class Import extends PureComponent<IProps> {
 
     console.log('myOb for queryj', myObj)
 
-    const backendResult = await client.query({
-      query: OPTIMIZE_PORTFOLIO,
-      variables: {
-        ...myObj,
-        // ...mockForQuery,
-        // ...otherMockForQuery,
-      },
-      fetchPolicy: 'network-only',
-    })
+    let backendResult;
+
+    try {
+      backendResult = await client.query({
+        query: OPTIMIZE_PORTFOLIO,
+        variables: {
+          ...myObj,
+          // ...mockForQuery,
+          // ...otherMockForQuery,
+        },
+        fetchPolicy: 'network-only',
+      })
+    } catch (e) {
+        showWarning(`You got an error! 🙈`)
+        this.props.toggleLoading()
+        console.log('ERROR IN AWAIT FUNC:', e);
+        return;
+    }
 
 
     console.log('backendResult unparsed', backendResult);
