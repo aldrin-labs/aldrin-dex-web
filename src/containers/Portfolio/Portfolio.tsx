@@ -32,14 +32,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {
-      login,
-      theme,
-      activeKeys,
-      activeWallets,
-      wallets,
-      data,
-    } = this.props
+    const { theme, activeKeys, activeWallets, wallets, data } = this.props
 
     const { keys, cryptoWallets } = data.myPortfolios[0]
 
@@ -52,19 +45,16 @@ class PortfolioComponent extends React.Component<IProps, IState> {
           <PortfolioContainer>
             {/* refactor this */}
 
-            {login && (
-              <PortfolioSelector
-                newKeys={keys}
-                newCryptoWallets={cryptoWallets}
-                toggleWallets={this.toggleWallets}
-                isSideNavOpen={this.state.isSideNavOpen}
-              />
-            )}
-            {login &&
-              !hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
+            <PortfolioSelector
+              newKeys={keys}
+              newCryptoWallets={cryptoWallets}
+              toggleWallets={this.toggleWallets}
+              isSideNavOpen={this.state.isSideNavOpen}
+            />
 
-            {login &&
-              hasKeysOrWallets &&
+            {!hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
+
+            {hasKeysOrWallets &&
               !hasActiveKeysOrWallets && (
                 <SelectExchangeOrWalletWindow
                   theme={theme}
@@ -72,8 +62,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                 />
               )}
 
-            {login &&
-              hasKeysOrWallets &&
+            {hasKeysOrWallets &&
               hasActiveKeysOrWallets && (
                 <>
                   <PortfolioTable
