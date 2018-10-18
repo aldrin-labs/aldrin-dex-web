@@ -422,7 +422,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const tableDataHasData = !staticRows.length || !rows.length
 
     return (
-      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+      <EmptyTablePlaceholder isEmpty={!!tableDataHasData}>
         <PTWrapper tableData={true}>
           {children}
           <Content>
@@ -470,7 +470,7 @@ class Rebalance extends React.Component<IProps, IState> {
               />
               <ChartContainer elevation={10}>
                 <Chart>
-                  {staticRows[0].portfolioPerc && (
+                  {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
                     <BarChart
                       hideDashForToolTip={true}
                       xAxisVertical={true}
