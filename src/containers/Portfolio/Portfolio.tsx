@@ -12,7 +12,7 @@ import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/Ad
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade } from '@material-ui/core'
-import { queryRendererHoc } from '@components/QueryRenderer'
+import QueryRenderer, { queryRendererHoc } from '@components/QueryRenderer'
 import { getKeysAndWallets } from './api'
 
 const PORTFOLIO_UPDATE = gql`
@@ -40,7 +40,6 @@ class PortfolioComponent extends React.Component<IProps, IState> {
       wallets,
       data,
     } = this.props
-    console.log(data.myPortfolios[0])
 
     const { keys, cryptoWallets } = data.myPortfolios[0]
 
@@ -52,7 +51,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
         {(subscriptionData) => (
           <PortfolioContainer>
             {/* refactor this */}
-            {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
+
             {login && (
               <PortfolioSelector
                 newKeys={keys}
@@ -101,6 +100,20 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
+const withAuth = ({ login, ...props }) => {
+  const render = login ? (
+    <QueryRenderer
+      component={PortfolioComponent}
+      query={getKeysAndWallets}
+      {...{ login, ...props }}
+    />
+  ) : (
+    <YouNeedToLoginMessage showModalAfterDelay={1500} />
+  )
+
+  return render
+}
+
 // TODO: replace any in store
 const mapStateToProps = (store: any) => ({
   store: store,
@@ -112,10 +125,9 @@ const mapStateToProps = (store: any) => ({
 })
 
 export default compose(
-  queryRendererHoc({ query: getKeysAndWallets }),
   withTheme(),
   connect(mapStateToProps)
-)(PortfolioComponent)
+)(withAuth)
 
 const PortfolioContainer = styled.div`
   display: grid;
