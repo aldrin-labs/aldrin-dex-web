@@ -47,6 +47,8 @@ export default class Import extends PureComponent<IProps> {
     endDate: null,
     percentages: [2, 7, 12, 17, 22],
     totalPriceOfAllAssets: 0,
+    initialPortfolio: [],
+    isUSDTInInitialPortfolioExists: false,
   }
 
   componentDidMount() {
@@ -63,7 +65,11 @@ export default class Import extends PureComponent<IProps> {
         this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
     }
     this.props.updateData(assets[0])
+    this.setState({initialPortfolio: assets[0]})
     this.setState({totalPriceOfAllAssets: assets[1]})
+    this.setState({isUSDTInInitialPortfolioExists: assets[0].some((elem) => elem.coin === 'USDT')}, () =>{
+      console.log('this has coin', this.state);
+    })
   }
 
   // sumSameCoins = (rawData: IData[]) => {
@@ -292,7 +298,7 @@ export default class Import extends PureComponent<IProps> {
 
 
   addRow = (name: string, value: number) => {
-    if (this.props.storeData.some((el)=> el.coin === name)) {
+    if (this.props.storeData.some((el)=> el.coin === name) || (!this.state.isRiskFreeAssetEnabled && name === 'USDT' && !this.state.isUSDTInInitialPortfolioExists)) {
       return
     }
 
@@ -312,6 +318,10 @@ export default class Import extends PureComponent<IProps> {
   deleteRow = (i: number) =>
     this.props.updateData(
       [...this.props.storeData].filter((el, index) => i !== index)
+    )
+  deleteRowByCoinName = (name: string) =>
+    this.props.updateData(
+      [...this.props.storeData].filter((el) => el.coin !== name)
     )
 
   deleteAllRows = () => this.props.updateData([])
@@ -371,10 +381,20 @@ export default class Import extends PureComponent<IProps> {
 
   onFocusChange = (focusedInput) => this.setState({ focusedInput })
 
-  onToggleRiskSwitch = (e, che) =>
+  onToggleRiskSwitch = (e, che) => {
+    const { isUSDTInInitialPortfolioExists } = this.state
+    const { storeData } = this.props
+    // should double check for if we have USDT
+    if (!isUSDTInInitialPortfolioExists && storeData.some((el) => el.coin === 'USDT')) {
+      console.log('delete row');
+      this.deleteRowByCoinName('USDT')
+    }
+
     this.setState({ isRiskFreeAssetEnabled: che }, () => {
       console.log(this.state)
     })
+  }
+
 
   onSelectChange = (
     name: string,
@@ -421,6 +441,7 @@ export default class Import extends PureComponent<IProps> {
       riskProfile,
       startDate,
       endDate,
+      initialPortfolio,
     } = this.state
 
     let assets: IData[]
@@ -627,7 +648,7 @@ export default class Import extends PureComponent<IProps> {
                   activeButton={activeButton}
                 />
                 <ButtonMUI
-                  disabled={isEqual(assets, storeData)}
+                  disabled={isEqual(initialPortfolio, storeData)}
                   color="secondary"
                   style={{
                     alignSelf: 'center',
