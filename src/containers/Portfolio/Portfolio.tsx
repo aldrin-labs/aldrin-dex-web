@@ -12,6 +12,8 @@ import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/Ad
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade } from '@material-ui/core'
+import { queryRendererHoc } from '@components/QueryRenderer'
+import { getKeysAndWallets } from './api'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -33,11 +35,14 @@ class PortfolioComponent extends React.Component<IProps, IState> {
     const {
       login,
       theme,
-      keys,
       activeKeys,
-      wallets,
       activeWallets,
+      wallets,
+      data,
     } = this.props
+    console.log(data.myPortfolios[0])
+
+    const { keys, cryptoWallets } = data.myPortfolios[0]
 
     const hasKeysOrWallets = keys.length + wallets.length > 0
     const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
@@ -48,35 +53,39 @@ class PortfolioComponent extends React.Component<IProps, IState> {
           <PortfolioContainer>
             {/* refactor this */}
             {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
-            {login &&
-              !hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
-            <>
-              {login &&
-                hasKeysOrWallets &&
-                !hasActiveKeysOrWallets && (
-                  <SelectExchangeOrWalletWindow
-                    theme={theme}
-                    toggleWallets={this.toggleWallets}
-                  />
-                )}
+            {login && (
               <PortfolioSelector
+                newKeys={keys}
+                newCryptoWallets={cryptoWallets}
                 toggleWallets={this.toggleWallets}
                 isSideNavOpen={this.state.isSideNavOpen}
               />
-              {login &&
-                hasKeysOrWallets &&
-                hasActiveKeysOrWallets && (
-                  <>
-                    <PortfolioTable
-                      showTable={hasActiveKeysOrWallets}
-                      activeKeys={activeKeys}
-                      theme={theme}
-                      toggleWallets={this.toggleWallets}
-                      subscription={subscriptionData}
-                    />
-                  </>
-                )}
-            </>
+            )}
+            {login &&
+              !hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
+
+            {login &&
+              hasKeysOrWallets &&
+              !hasActiveKeysOrWallets && (
+                <SelectExchangeOrWalletWindow
+                  theme={theme}
+                  toggleWallets={this.toggleWallets}
+                />
+              )}
+
+            {login &&
+              hasKeysOrWallets &&
+              hasActiveKeysOrWallets && (
+                <>
+                  <PortfolioTable
+                    showTable={hasActiveKeysOrWallets}
+                    activeKeys={activeKeys}
+                    theme={theme}
+                    toggleWallets={this.toggleWallets}
+                    subscription={subscriptionData}
+                  />
+                </>
+              )}
 
             <Fade
               in={this.state.isSideNavOpen}
@@ -103,6 +112,7 @@ const mapStateToProps = (store: any) => ({
 })
 
 export default compose(
+  queryRendererHoc({ query: getKeysAndWallets }),
   withTheme(),
   connect(mapStateToProps)
 )(PortfolioComponent)
