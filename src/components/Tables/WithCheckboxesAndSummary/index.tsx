@@ -73,6 +73,9 @@ const styles = (theme) => ({
   headRow: {
     height: theme.spacing.unit * 4,
   },
+  rowSelected: {
+    backgroundColor: theme.palette.action.selected,
+  },
   row: {
     height: theme.spacing.unit * 4,
     transition: `background-color ${theme.transitions.duration.short}ms  ${
@@ -184,6 +187,7 @@ const CustomTable = (props: Props) => {
     },
     checkedRows = [],
   } = props
+
   if (
     rows !== undefined &&
     !Array.isArray(rows.head) &&
@@ -257,6 +261,9 @@ const CustomTable = (props: Props) => {
         <TableBody>
           {rows.body.map((row, ind: number) => {
             const selected = checkedRows.indexOf(ind) !== -1
+            const rowClassName = selected
+              ? `${classes.row} + ${classes.rowSelected}`
+              : classes.row
             const expandable = Array.isArray(row[row.length - 1])
             const typeOfCheckbox: 'check' | 'expand' | null = withCheckboxes
               ? 'check'
@@ -266,7 +273,7 @@ const CustomTable = (props: Props) => {
 
             return (
               <React.Fragment key={ind}>
-                <TableRow className={classes.row}>
+                <TableRow className={rowClassName}>
                   {typeOfCheckbox !== null && (
                     <CustomTableCell padding="checkbox">
                       {renderCheckBox(
