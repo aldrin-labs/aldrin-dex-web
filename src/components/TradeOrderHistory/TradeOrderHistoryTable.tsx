@@ -36,7 +36,7 @@ const mapPortfolioActions = (pA) => {
   values[2] = +roundAndFormatNumber(values[2], 8, false)
   values[4] = {
     text: format(
-      new Date(values[4]).toLocaleString('en-US'),
+      new Date(values[4] * 1000).toLocaleString('en-US'),
       'HH:m:s - MM/DD/YYYY'
     ),
     isNumber: false,
