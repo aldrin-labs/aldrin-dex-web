@@ -29,10 +29,13 @@ const FormatErrorToUser = (errorMessage: string) => {
   return errorMessage
 }
 
-export const CustomError = (props: { error: string }) => (
+export const CustomError = (props: {
+  error?: string
+  children?: React.ReactNode
+}) => (
   <Error>
     <Typography variant="headline" color="error">
-      {props.error || 'Error'}
+      {props.error || props.children || 'Error'}
     </Typography>
   </Error>
 )
