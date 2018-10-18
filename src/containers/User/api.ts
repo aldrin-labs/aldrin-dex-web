@@ -17,7 +17,7 @@ export const getKeysQuery = gql`
 `
 
 export const deleteExchangeKeyMutation = gql`
-  mutation deleteExchangeKey($name: String) {
+  mutation deleteExchangeKey($name: String!) {
     deleteExchangeKey(name: $name)
   }
 `
