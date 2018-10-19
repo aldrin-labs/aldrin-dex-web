@@ -1,9 +1,9 @@
 import React from 'react'
 import { Subscription } from 'react-apollo'
 import styled from 'styled-components'
-import gql from 'graphql-tag'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+import { has } from 'lodash-es'
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
 import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWindow/SelectExchangeOrWalletWindow'
@@ -12,16 +12,9 @@ import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelecto
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade } from '@material-ui/core'
 import { queryRendererHoc } from '@components/QueryRenderer'
-import { getKeysAndWallets } from './api'
-import withAuth from './components/withAuth'
-import { has } from 'lodash-es'
+import { getKeysAndWallets, PORTFOLIO_UPDATE } from './api'
+import withAuth from '@hoc/withAuth'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
-
-const PORTFOLIO_UPDATE = gql`
-  subscription onPortfolioUpdated {
-    portfolioUpdate
-  }
-`
 
 class PortfolioComponent extends React.Component<IProps, IState> {
   state: IState = {

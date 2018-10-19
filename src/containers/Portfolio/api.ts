@@ -72,6 +72,12 @@ export const getKeysAndWallets = gql`
   }
 `
 
+export const PORTFOLIO_UPDATE = gql`
+  subscription onPortfolioUpdated {
+    portfolioUpdate
+  }
+`
+
 export const getWalletsQuery = gql`
   query getWallets {
     myPortfolios {
