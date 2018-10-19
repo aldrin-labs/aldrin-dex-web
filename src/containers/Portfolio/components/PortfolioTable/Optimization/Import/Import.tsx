@@ -392,16 +392,19 @@ export default class Import extends PureComponent<IProps> {
 
     return (
       <ChartContainer background={theme.palette.background.paper}>
-        <Chart background={theme.palette.background.default}>
-          <BarChart
-            height={350}
-            showPlaceholder={formatedData.length === 0}
-            charts={barChartData}
-            alwaysShowLegend={true}
-            hideDashForToolTip={true}
-            xAxisVertical={true}
-          />
-        </Chart>
+        <Label>Portfolio Distribution</Label>
+        <InnerChartContainer>
+          <Chart background={theme.palette.background.default}>
+            <BarChart
+              height={350}
+              showPlaceholder={formatedData.length === 0}
+              charts={barChartData}
+              alwaysShowLegend={true}
+              hideDashForToolTip={true}
+              xAxisVertical={true}
+            />
+          </Chart>
+        </InnerChartContainer>
       </ChartContainer>
     )
   }
@@ -523,152 +526,123 @@ export default class Import extends PureComponent<IProps> {
           <ImportData>
             <TableSelectsContaienr>
               <InputContainer background={theme.palette.background.paper}>
-                <InputElementWrapper>
-                  <StyledInputLabel color={textColor}>
-                    Base coin
-                  </StyledInputLabel>
-                  <STextField
-                    color={textColor}
-                    value={this.state.baseCoin}
-                    disabled={true}
-                  />
-                </InputElementWrapper>
-                <InputElementWrapper>
-                  <StyledInputLabel color={textColor}>
-                    Rebalance period
-                  </StyledInputLabel>
-                  <SelectOptimization
-                    options={RebalancePeriod}
-                    isClearable={true}
-                    singleValueStyles={{
-                      fontSize: '0.875rem',
-                    }}
-                    placeholderStyles={{
-                      fontSize: '0.875rem',
-                    }}
-                    optionStyles={{
-                      fontSize: '0.875rem',
-                    }}
-                    onChange={(
-                      optionSelected: { label: string; value: string } | null
-                    ) => this.onSelectChange('rebalancePeriod', optionSelected)}
-                  />
-                </InputElementWrapper>
-                <InputElementWrapper>
-                  <StyledInputLabel color={textColor}>
-                    Date range
-                  </StyledInputLabel>
-                  <StyledWrapperForDateRangePicker
-                    color={textColor}
-                    background={theme.palette.background.paper}
-                    fontFamily={fontFamily}
-                  >
-                    <DateRangePicker
-                      isOutsideRange={(date) =>
-                        date.isBefore(minimumDate, 'day') ||
-                        date.isAfter(maximumDate, 'day')
+                <Label>Back-test input</Label>
+                <InputInnerContainer>
+                  <InputElementWrapper>
+                    <StyledInputLabel color={textColor}>
+                      Base coin
+                    </StyledInputLabel>
+                    <STextField
+                      color={textColor}
+                      value={this.state.baseCoin}
+                      disabled={true}
+                    />
+                  </InputElementWrapper>
+                  <InputElementWrapper>
+                    <StyledInputLabel color={textColor}>
+                      Rebalance period
+                    </StyledInputLabel>
+                    <SelectOptimization
+                      options={RebalancePeriod}
+                      isClearable={true}
+                      singleValueStyles={{
+                        fontSize: '0.875rem',
+                      }}
+                      placeholderStyles={{
+                        fontSize: '0.875rem',
+                      }}
+                      optionStyles={{
+                        fontSize: '0.875rem',
+                      }}
+                      onChange={(
+                        optionSelected: { label: string; value: string } | null
+                      ) =>
+                        this.onSelectChange('rebalancePeriod', optionSelected)
                       }
-                      startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                      startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                      endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                      endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                      onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
-                      focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                      onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
-                      displayFormat="MM-DD-YYYY"
                     />
-                  </StyledWrapperForDateRangePicker>
-                </InputElementWrapper>
-                <InputElementWrapper>
-                  <StyledInputLabel color={textColor}>
-                    Risk free asset
-                  </StyledInputLabel>
-                  <FlexWrapper>
-                    <StyledSwitch
-                      onChange={this.onToggleRiskSwitch}
-                      checked={this.state.isRiskFreeAssetEnabled}
+                  </InputElementWrapper>
+                  <InputElementWrapper>
+                    <StyledInputLabel color={textColor}>
+                      Date range
+                    </StyledInputLabel>
+                    <StyledWrapperForDateRangePicker
+                      color={textColor}
+                      background={theme.palette.background.paper}
+                      fontFamily={fontFamily}
+                    >
+                      <DateRangePicker
+                        isOutsideRange={(date) =>
+                          date.isBefore(minimumDate, 'day') ||
+                          date.isAfter(maximumDate, 'day')
+                        }
+                        startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                        startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                        endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                        endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                        onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
+                        focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                        onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
+                        displayFormat="MM-DD-YYYY"
+                      />
+                    </StyledWrapperForDateRangePicker>
+                  </InputElementWrapper>
+                  <InputElementWrapper>
+                    <StyledInputLabel color={textColor}>
+                      Risk free asset
+                    </StyledInputLabel>
+                    <FlexWrapper>
+                      <StyledSwitch
+                        onChange={this.onToggleRiskSwitch}
+                        checked={this.state.isRiskFreeAssetEnabled}
+                      />
+                    </FlexWrapper>
+                  </InputElementWrapper>
+                  <InputElementWrapper>
+                    <StyledInputLabel color={textColor}>
+                      Risk profile
+                    </StyledInputLabel>
+                    <SelectOptimization
+                      options={RiskProfile}
+                      isClearable={true}
+                      singleValueStyles={{
+                        fontSize: '0.875rem',
+                      }}
+                      placeholderStyles={{
+                        fontSize: '0.875rem',
+                      }}
+                      optionStyles={{
+                        fontSize: '0.875rem',
+                      }}
+                      onChange={(
+                        optionSelected: { label: string; value: string } | null
+                      ) => this.onSelectChange('riskProfile', optionSelected)}
                     />
-                  </FlexWrapper>
-                </InputElementWrapper>
-                <InputElementWrapper>
-                  <StyledInputLabel color={textColor}>
-                    Risk profile
-                  </StyledInputLabel>
-                  <SelectOptimization
-                    options={RiskProfile}
-                    isClearable={true}
-                    singleValueStyles={{
-                      fontSize: '0.875rem',
+                  </InputElementWrapper>
+                  <ButtonMUI
+                    style={{ marginTop: '1rem' }}
+                    color={'secondary'}
+                    variant={'outlined'}
+                    disabled={!isAllOptionsFilled}
+                    onClick={() => {
+                      this.newOptimizeButtonClick(
+                        client,
+                        storeData,
+                        baseCoin,
+                        rebalancePeriod,
+                        isRiskFreeAssetEnabled,
+                        riskProfile,
+                        startDate,
+                        endDate
+                      )
                     }}
-                    placeholderStyles={{
-                      fontSize: '0.875rem',
-                    }}
-                    optionStyles={{
-                      fontSize: '0.875rem',
-                    }}
-                    onChange={(
-                      optionSelected: { label: string; value: string } | null
-                    ) => this.onSelectChange('riskProfile', optionSelected)}
-                  />
-                </InputElementWrapper>
-                {/*<SelectDates*/}
-                {/*setPeriodToStore={setPeriod}*/}
-                {/*period={optimizationPeriod}*/}
-                {/*/>*/}
-                {/*<Input*/}
-                {/*color={textColor}*/}
-                {/*type="number"*/}
-                {/*placeholder="Expected return in %"*/}
-                {/*value={expectedReturn || ''}*/}
-                {/*onChange={(e) => {*/}
-                {/*handleChange(e)*/}
-                {/*}}*/}
-                {/*/>*/}
-
-                {/*<ButtonMUI*/}
-                {/*style={{ marginTop: '1rem' }}*/}
-                {/*color={'secondary'}*/}
-                {/*variant={'outlined'}*/}
-                {/*disabled={expectedReturn === '' || (data && data.length < 1)}*/}
-                {/*onClick={() => {*/}
-                {/*this.onOptimizeButtonClick(*/}
-                {/*client,*/}
-                {/*startDate,*/}
-                {/*endDate,*/}
-                {/*storeData,*/}
-                {/*expectedReturn,*/}
-                {/*showWarning,*/}
-                {/*optimizePortfolio,*/}
-                {/*optimizedToState*/}
-                {/*)*/}
-                {/*}}*/}
-                {/*>*/}
-                {/*Optimize Portfolio*/}
-                {/*</ButtonMUI>*/}
-                <ButtonMUI
-                  style={{ marginTop: '1rem' }}
-                  color={'secondary'}
-                  variant={'outlined'}
-                  disabled={!isAllOptionsFilled}
-                  // disabled={expectedReturn === '' || (data && data.length < 1)}
-                  onClick={() => {
-                    this.newOptimizeButtonClick(
-                      client,
-                      storeData,
-                      baseCoin,
-                      rebalancePeriod,
-                      isRiskFreeAssetEnabled,
-                      riskProfile,
-                      startDate,
-                      endDate
-                    )
-                  }}
-                >
-                  Optimize Portfolio
-                </ButtonMUI>
+                  >
+                    Optimize Portfolio
+                  </ButtonMUI>
+                </InputInnerContainer>
               </InputContainer>
 
               <TableContainer background={theme.palette.background.paper}>
+                <Label>Risk Profile</Label>
                 <SwitchButtonsWrapper>
                   <SwitchButtons
                     btnClickProps={client}
@@ -849,7 +823,7 @@ const ChartContainer = styled.div`
   min-height: 400px;
   width: 49%;
   margin: 0 0 0 2rem;
-  padding: 15px;
+  //padding: 15px;
   box-shadow: 0 2px 6px 0 #00000066;
   background: ${(props: { background: string }) => props.background};
 `
@@ -859,4 +833,29 @@ const TableSelectsContaienr = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+`
+
+export const Label = styled.div`
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  color: #4ed8da;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background-color: #263238;
+  //font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-transform: uppercase;
+`
+
+const InputInnerContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  min-width: 100px;
+  padding: 0 15px 15px 15px;
+`
+
+export const InnerChartContainer = styled.div`
+  padding: 0 15px 15px 15px;
 `

@@ -19,7 +19,6 @@ export {
   StyledDeleteIcon,
 }
 
-
 const AddStyled = styled(AddIcon)`
   color: ${(props: { color: boolean }) => props.color};
   position: relative;
@@ -81,15 +80,10 @@ const Item = styled.div`
   text-overflow: ellipsis;
   min-width: 0px;
   white-space: nowrap;
-  background: ${(props: {background: string}) =>
-  props.background
-  };
+  background: ${(props: { background: string }) => props.background};
   &:nth-child(even) {
-    background: ${(props: {
-  evenBackground: string,
-  background:string
-}) =>
-  props.evenBackground ? props.evenBackground : props.background};
+    background: ${(props: { evenBackground: string; background: string }) =>
+      props.evenBackground ? props.evenBackground : props.background};
     }
   }
 `
@@ -108,7 +102,8 @@ const Head = styled.div`
   justify-content: center;
   max-width: 50rem;
   margin: 0.5rem;
-  border-bottom: 1px solid ${(props: { bottomCollor: string }) => props.bottomCollor};
+  border-bottom: 1px solid
+    ${(props: { bottomCollor: string }) => props.bottomCollor};
 `
 
 const TableInput = styled.div`
@@ -122,10 +117,7 @@ const StyledTable = styled.div`
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  background: ${(props: {background: string}) =>
-  props.background
-  };
-  //box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  background: ${(props: { background: string }) => props.background};
   transition: all 0.3s linear;
 `
 
@@ -140,8 +132,7 @@ const Col = styled.div`
 `
 
 const Body = styled.div`
-  //max-height: 108px;
-  max-height: 138px;
+  max-height: 180px;
   width: 98%;
   border-radius: 2px;
   display: flex;
@@ -149,7 +140,6 @@ const Body = styled.div`
   margin: 0.5rem;
   line-height: 1.5;
   max-width: 50rem;
-  //max-height: 200px;
   overflow: auto;
 
   ${customAquaScrollBar};
