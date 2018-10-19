@@ -618,46 +618,11 @@ export default class Import extends PureComponent<IProps> {
                       ) => this.onSelectChange('riskProfile', optionSelected)}
                     />
                   </InputElementWrapper>
-                  {/*<SelectDates*/}
-                  {/*setPeriodToStore={setPeriod}*/}
-                  {/*period={optimizationPeriod}*/}
-                  {/*/>*/}
-                  {/*<Input*/}
-                  {/*color={textColor}*/}
-                  {/*type="number"*/}
-                  {/*placeholder="Expected return in %"*/}
-                  {/*value={expectedReturn || ''}*/}
-                  {/*onChange={(e) => {*/}
-                  {/*handleChange(e)*/}
-                  {/*}}*/}
-                  {/*/>*/}
-
-                  {/*<ButtonMUI*/}
-                  {/*style={{ marginTop: '1rem' }}*/}
-                  {/*color={'secondary'}*/}
-                  {/*variant={'outlined'}*/}
-                  {/*disabled={expectedReturn === '' || (data && data.length < 1)}*/}
-                  {/*onClick={() => {*/}
-                  {/*this.onOptimizeButtonClick(*/}
-                  {/*client,*/}
-                  {/*startDate,*/}
-                  {/*endDate,*/}
-                  {/*storeData,*/}
-                  {/*expectedReturn,*/}
-                  {/*showWarning,*/}
-                  {/*optimizePortfolio,*/}
-                  {/*optimizedToState*/}
-                  {/*)*/}
-                  {/*}}*/}
-                  {/*>*/}
-                  {/*Optimize Portfolio*/}
-                  {/*</ButtonMUI>*/}
                   <ButtonMUI
                     style={{ marginTop: '1rem' }}
                     color={'secondary'}
                     variant={'outlined'}
                     disabled={!isAllOptionsFilled}
-                    // disabled={expectedReturn === '' || (data && data.length < 1)}
                     onClick={() => {
                       this.newOptimizeButtonClick(
                         client,
