@@ -62,7 +62,7 @@ class SpreadTable extends Component<IProps> {
             <HeadCell width={'45%'}>
               <TypographyFullWidth
                 textColor={palette.getContrastText(primary[type])}
-                variant="body2"
+                variant="body1"
                 align="right"
               >
                 {quote || 'Fiat'} spread{' '}
@@ -71,7 +71,7 @@ class SpreadTable extends Component<IProps> {
             <HeadCell width={'45%'}>
               <TypographyFullWidth
                 textColor={palette.getContrastText(primary[type])}
-                variant="body2"
+                variant="body1"
                 align="right"
                 color="secondary"
               >

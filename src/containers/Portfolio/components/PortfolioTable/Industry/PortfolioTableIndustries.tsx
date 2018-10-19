@@ -80,7 +80,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     return {
       head: tableHeadings.map((heading, index: number) => ({
-        text: heading.name,
+        render: heading.name,
         isNumber: index === 0 || index === 1 ? false : true,
       })),
       body: industryData,
@@ -118,9 +118,9 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <ChartWrapper elevation={8}>
               <DonutChart
                 labelPlaceholder="Industries %"
-                radius={150}
-                thickness={15}
                 data={chartData}
+                isSizeFlexible={true}
+                colorLegend={true}
               />
             </ChartWrapper>
           </Grid>

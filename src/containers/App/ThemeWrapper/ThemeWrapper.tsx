@@ -33,6 +33,9 @@ export default class ThemeWrapper extends Component<Props> {
           paper: themeMode === 'light' ? '#fff' : '#393e44',
         },
       },
+      typography: {
+        useNextVariants: true,
+      },
     })
     if (window) window.theme = theme
 
