@@ -61,7 +61,7 @@ export default class Wallets extends React.PureComponent<IProps> {
 
               <AccountName
                 align="left"
-                variant="body2"
+                variant="body1"
                 color={isChecked ? 'secondary' : 'textSecondary'}
               >
                 {walletName}

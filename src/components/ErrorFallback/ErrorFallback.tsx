@@ -34,20 +34,20 @@ export const CustomError = (props: {
   children?: React.ReactNode
 }) => (
   <Error>
-    <Typography variant="headline" color="error">
+    <Typography variant="h5" color="error">
       {props.error || props.children || 'Error'}
     </Typography>
   </Error>
 )
 
 const SimpleError = (props: { error?: ApolloError }) => (
-  <Typography variant="headline" color="error">
+  <Typography variant="h5" color="error">
     {props.error ? FormatErrorToUser(props.error.message) : 'Error'}
   </Typography>
 )
 const RefetchError = (props: { error?: ApolloError; refetch: Function }) => (
   <Fragment>
-    <Typography variant="headline" color="error">
+    <Typography variant="h5" color="error">
       {props.error ? props.error.message : 'Error'}
     </Typography>
     <Button onClick={props.refetch}>Refetch data</Button>

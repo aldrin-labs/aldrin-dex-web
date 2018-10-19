@@ -33,7 +33,7 @@ class ExchangesTable extends PureComponent<IProps> {
             textColor={theme.palette.getContrastText(
               theme.palette.primary[type]
             )}
-            variant="subheading"
+            variant="subtitle1"
             align="center"
           >
             Exchanges
@@ -47,7 +47,7 @@ class ExchangesTable extends PureComponent<IProps> {
               textColor={theme.palette.getContrastText(
                 theme.palette.primary[type]
               )}
-              variant="headline"
+              variant="h5"
               align="left"
             >
               ORDER
@@ -66,7 +66,7 @@ class ExchangesTable extends PureComponent<IProps> {
                   textColor={theme.palette.getContrastText(
                     theme.palette.background.default
                   )}
-                  variant="subheading"
+                  variant="subtitle1"
                   color="default"
                   align="left"
                 >
@@ -79,7 +79,7 @@ class ExchangesTable extends PureComponent<IProps> {
                 textColor={theme.palette.getContrastText(
                   theme.palette.background.default
                 )}
-                variant="subheading"
+                variant="subtitle1"
                 color="default"
                 align="left"
               >

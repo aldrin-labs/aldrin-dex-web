@@ -62,14 +62,23 @@ export default class Import extends PureComponent<IProps> {
       assets =
         this.props.data &&
         this.props.data.myPortfolios[0] &&
-        this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
+        this.props.transformData(
+          this.props.data.myPortfolios[0].portfolioAssets
+        )
     }
     this.props.updateData(assets[0])
-    this.setState({initialPortfolio: assets[0]})
-    this.setState({totalPriceOfAllAssets: assets[1]})
-    this.setState({isUSDTInInitialPortfolioExists: assets[0].some((elem) => elem.coin === 'USDT')}, () =>{
-      console.log('this has coin', this.state);
-    })
+    this.setState({ initialPortfolio: assets[0] })
+    this.setState({ totalPriceOfAllAssets: assets[1] })
+    this.setState(
+      {
+        isUSDTInInitialPortfolioExists: assets[0].some(
+          (elem) => elem.coin === 'USDT'
+        ),
+      },
+      () => {
+        console.log('this has coin', this.state)
+      }
+    )
   }
 
   // sumSameCoins = (rawData: IData[]) => {
@@ -124,7 +133,12 @@ export default class Import extends PureComponent<IProps> {
     this.props.toggleLoading()
 
     const { totalPriceOfAllAssets } = this.state
-    const { showWarning, optimizedToState, activeButton, updateData } = this.props
+    const {
+      showWarning,
+      optimizedToState,
+      activeButton,
+      updateData,
+    } = this.props
 
     const mockForQuery = {
       rebalancePeriod: 13,
@@ -137,14 +151,13 @@ export default class Import extends PureComponent<IProps> {
       endDate: 1531873380,
     }
 
-
     const otherMockForQuery = {
       rebalancePeriod: 7,
       riskProfile: 'medium',
       baseCurrency: 'USDT',
       riskFree: 1,
       initialCapital: 1368.99,
-      coinList: ["ETH","BCH","EOS","LTC","DASH"],
+      coinList: ['ETH', 'BCH', 'EOS', 'LTC', 'DASH'],
       startDate: 1534082400,
       endDate: 1536760800,
     }
@@ -180,7 +193,7 @@ export default class Import extends PureComponent<IProps> {
 
     console.log('myOb for queryj', myObj)
 
-    let backendResult;
+    let backendResult
 
     try {
       backendResult = await client.query({
@@ -193,19 +206,17 @@ export default class Import extends PureComponent<IProps> {
         fetchPolicy: 'network-only',
       })
     } catch (e) {
-        showWarning(`You got an error! 🙈`)
-        this.props.toggleLoading()
-        console.log('ERROR IN AWAIT FUNC:', e);
-        return;
+      showWarning(`You got an error! 🙈`)
+      this.props.toggleLoading()
+      console.log('ERROR IN AWAIT FUNC:', e)
+      return
     }
 
-
-    console.log('backendResult unparsed', backendResult);
+    console.log('backendResult unparsed', backendResult)
 
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
-
 
     if (backendResultParsed === '') {
       showWarning('You got empty response! 🙈')
@@ -217,7 +228,7 @@ export default class Import extends PureComponent<IProps> {
     if (backendResultParsed.error) {
       showWarning(`You got an error! 🙈`)
       this.props.toggleLoading()
-      console.log('ERROR', backendResultParsed.error);
+      console.log('ERROR', backendResultParsed.error)
 
       return
     }
@@ -226,7 +237,7 @@ export default class Import extends PureComponent<IProps> {
     this.props.setActiveButtonToDefault()
 
     const optimizedData = backendResultParsed.returns
-    console.log('optimizedData', optimizedData);
+    console.log('optimizedData', optimizedData)
 
     // for future
     // const percentages = optimizedData.map((elem) => +elem.return_value.toFixed(2));
@@ -234,8 +245,10 @@ export default class Import extends PureComponent<IProps> {
 
     optimizedToState(optimizedData)
 
-    if (storeData.length < optimizedData[activeButton].portfolio_coins_list.length) {
-      console.log('storeData.length < optimizedData');
+    if (
+      storeData.length < optimizedData[activeButton].portfolio_coins_list.length
+    ) {
+      console.log('storeData.length < optimizedData')
       this.addRow('USDT', 0)
     }
   }
@@ -309,9 +322,13 @@ export default class Import extends PureComponent<IProps> {
     }, 2000)
   }
 
-
   addRow = (name: string, value: number) => {
-    if (this.props.storeData.some((el)=> el.coin === name) || (!this.state.isRiskFreeAssetEnabled && name === 'USDT' && !this.state.isUSDTInInitialPortfolioExists)) {
+    if (
+      this.props.storeData.some((el) => el.coin === name) ||
+      (!this.state.isRiskFreeAssetEnabled &&
+        name === 'USDT' &&
+        !this.state.isUSDTInInitialPortfolioExists)
+    ) {
       return
     }
 
@@ -320,12 +337,10 @@ export default class Import extends PureComponent<IProps> {
     }
 
     if (name) {
-      this.props.updateData(
-        [
-          ...this.props.storeData,
-          { coin: name, percentage: value },
-        ]
-      )
+      this.props.updateData([
+        ...this.props.storeData,
+        { coin: name, percentage: value },
+      ])
     }
   }
   deleteRow = (i: number) =>
@@ -340,7 +355,7 @@ export default class Import extends PureComponent<IProps> {
   deleteAllRows = () => this.props.updateData([])
 
   renderBarChart = () => {
-    const { storeData, activeButton,  theme, rawOptimizedData } = this.props
+    const { storeData, activeButton, theme, rawOptimizedData } = this.props
     // const { optimizedData } = this.state
 
     if (!storeData) return
@@ -355,10 +370,12 @@ export default class Import extends PureComponent<IProps> {
     //   x: el.coin,
     //   y: Number(Number(el.percentage).toFixed(2)),
     // }))
-    const formatedOptimizedData = rawOptimizedData.length ? storeData.map((el, i) => ({
-      x: el.coin,
-      y: +((rawOptimizedData[activeButton].weights[i] * 100).toFixed(2)),
-    }) ) : []
+    const formatedOptimizedData = rawOptimizedData.length
+      ? storeData.map((el, i) => ({
+          x: el.coin,
+          y: +(rawOptimizedData[activeButton].weights[i] * 100).toFixed(2),
+        }))
+      : []
 
     const barChartData = [
       {
@@ -398,8 +415,11 @@ export default class Import extends PureComponent<IProps> {
     const { isUSDTInInitialPortfolioExists } = this.state
     const { storeData } = this.props
     // should double check for if we have USDT
-    if (!isUSDTInInitialPortfolioExists && storeData.some((el) => el.coin === 'USDT')) {
-      console.log('delete row');
+    if (
+      !isUSDTInInitialPortfolioExists &&
+      storeData.some((el) => el.coin === 'USDT')
+    ) {
+      console.log('delete row')
       this.deleteRowByCoinName('USDT')
     }
 
@@ -407,7 +427,6 @@ export default class Import extends PureComponent<IProps> {
       console.log(this.state)
     })
   }
-
 
   onSelectChange = (
     name: string,
@@ -464,12 +483,14 @@ export default class Import extends PureComponent<IProps> {
       assets =
         this.props.data &&
         this.props.data.myPortfolios[0] &&
-        this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)[0]
+        this.props.transformData(
+          this.props.data.myPortfolios[0].portfolioAssets
+        )[0]
     }
 
     if (!storeData) {
       return (
-        <Typography variant="display1" color="error">
+        <Typography variant="h4" color="error">
           Erorr during download. Please Refresh the page.{' '}
         </Typography>
       )
@@ -479,7 +500,6 @@ export default class Import extends PureComponent<IProps> {
     // console.log('assets in RENDER', assets);
     // console.log('storeData in RENDER', storeData);
     // console.log('isEqual(assets, storeData)}', isEqual(assets, storeData));
-
 
     const textColor: string = this.props.theme.palette.getContrastText(
       this.props.theme.palette.background.paper
@@ -494,224 +514,221 @@ export default class Import extends PureComponent<IProps> {
     // console.log('maxumumDate', maximumDate);
     // console.log('minimumDate', minimumDate);
 
-
     const isAllOptionsFilled =
-      baseCoin &&
-      rebalancePeriod &&
-      riskProfile &&
-      startDate &&
-      endDate
+      baseCoin && rebalancePeriod && riskProfile && startDate && endDate
 
     return (
       <ApolloConsumer>
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-            <InputContainer background={theme.palette.background.paper}>
-              <InputElementWrapper>
-                <StyledInputLabel color={textColor}>Base coin</StyledInputLabel>
-                <STextField
-                  color={textColor}
-                  value={this.state.baseCoin}
-                  disabled={true}
-                />
-              </InputElementWrapper>
-              <InputElementWrapper>
-                <StyledInputLabel color={textColor}>
-                  Rebalance period
-                </StyledInputLabel>
-                <SelectOptimization
-                  options={RebalancePeriod}
-                  isClearable={true}
-                  singleValueStyles={{
-                    fontSize: '0.875rem',
-                  }}
-                  placeholderStyles={{
-                    fontSize: '0.875rem',
-                  }}
-                  optionStyles={{
-                    fontSize: '0.875rem',
-                  }}
-                  onChange={(
-                    optionSelected: { label: string; value: string } | null
-                  ) => this.onSelectChange('rebalancePeriod', optionSelected)}
-                />
-              </InputElementWrapper>
-              <InputElementWrapper>
-                <StyledInputLabel color={textColor}>
-                  Date range
-                </StyledInputLabel>
-                <StyledWrapperForDateRangePicker
-                  color={textColor}
-                  background={theme.palette.background.paper}
-                  fontFamily={fontFamily}
-                >
-                  <DateRangePicker
-                    isOutsideRange={(date) =>
-                      date.isBefore(minimumDate, 'day') ||
-                      date.isAfter(maximumDate, 'day')
-                    }
-                    startDate={this.state.startDate} // momentPropTypes.momentObj or null,
-                    startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
-                    endDate={this.state.endDate} // momentPropTypes.momentObj or null,
-                    endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
-                    onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
-                    focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
-                    onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
-                    displayFormat="MM-DD-YYYY"
+              <InputContainer background={theme.palette.background.paper}>
+                <InputElementWrapper>
+                  <StyledInputLabel color={textColor}>
+                    Base coin
+                  </StyledInputLabel>
+                  <STextField
+                    color={textColor}
+                    value={this.state.baseCoin}
+                    disabled={true}
                   />
-                </StyledWrapperForDateRangePicker>
-              </InputElementWrapper>
-              <InputElementWrapper>
-                <StyledInputLabel color={textColor}>
-                  Risk free asset
-                </StyledInputLabel>
-                <FlexWrapper>
-                  <StyledSwitch
-                    onChange={this.onToggleRiskSwitch}
-                    checked={this.state.isRiskFreeAssetEnabled}
+                </InputElementWrapper>
+                <InputElementWrapper>
+                  <StyledInputLabel color={textColor}>
+                    Rebalance period
+                  </StyledInputLabel>
+                  <SelectOptimization
+                    options={RebalancePeriod}
+                    isClearable={true}
+                    singleValueStyles={{
+                      fontSize: '0.875rem',
+                    }}
+                    placeholderStyles={{
+                      fontSize: '0.875rem',
+                    }}
+                    optionStyles={{
+                      fontSize: '0.875rem',
+                    }}
+                    onChange={(
+                      optionSelected: { label: string; value: string } | null
+                    ) => this.onSelectChange('rebalancePeriod', optionSelected)}
                   />
-                </FlexWrapper>
-              </InputElementWrapper>
-              <InputElementWrapper>
-                <StyledInputLabel color={textColor}>
-                  Risk profile
-                </StyledInputLabel>
-                <SelectOptimization
-                  options={RiskProfile}
-                  isClearable={true}
-                  singleValueStyles={{
-                    fontSize: '0.875rem',
-                  }}
-                  placeholderStyles={{
-                    fontSize: '0.875rem',
-                  }}
-                  optionStyles={{
-                    fontSize: '0.875rem',
-                  }}
-                  onChange={(
-                    optionSelected: { label: string; value: string } | null
-                  ) => this.onSelectChange('riskProfile', optionSelected)}
-                />
-              </InputElementWrapper>
-              {/*<SelectDates*/}
-              {/*setPeriodToStore={setPeriod}*/}
-              {/*period={optimizationPeriod}*/}
-              {/*/>*/}
-              {/*<Input*/}
-              {/*color={textColor}*/}
-              {/*type="number"*/}
-              {/*placeholder="Expected return in %"*/}
-              {/*value={expectedReturn || ''}*/}
-              {/*onChange={(e) => {*/}
-              {/*handleChange(e)*/}
-              {/*}}*/}
-              {/*/>*/}
+                </InputElementWrapper>
+                <InputElementWrapper>
+                  <StyledInputLabel color={textColor}>
+                    Date range
+                  </StyledInputLabel>
+                  <StyledWrapperForDateRangePicker
+                    color={textColor}
+                    background={theme.palette.background.paper}
+                    fontFamily={fontFamily}
+                  >
+                    <DateRangePicker
+                      isOutsideRange={(date) =>
+                        date.isBefore(minimumDate, 'day') ||
+                        date.isAfter(maximumDate, 'day')
+                      }
+                      startDate={this.state.startDate} // momentPropTypes.momentObj or null,
+                      startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
+                      endDate={this.state.endDate} // momentPropTypes.momentObj or null,
+                      endDateId="your_unique_end_date_id" // PropTypes.string.isRequired,
+                      onDatesChange={this.onDatesChange} // PropTypes.func.isRequired,
+                      focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
+                      onFocusChange={this.onFocusChange} // PropTypes.func.isRequired,
+                      displayFormat="MM-DD-YYYY"
+                    />
+                  </StyledWrapperForDateRangePicker>
+                </InputElementWrapper>
+                <InputElementWrapper>
+                  <StyledInputLabel color={textColor}>
+                    Risk free asset
+                  </StyledInputLabel>
+                  <FlexWrapper>
+                    <StyledSwitch
+                      onChange={this.onToggleRiskSwitch}
+                      checked={this.state.isRiskFreeAssetEnabled}
+                    />
+                  </FlexWrapper>
+                </InputElementWrapper>
+                <InputElementWrapper>
+                  <StyledInputLabel color={textColor}>
+                    Risk profile
+                  </StyledInputLabel>
+                  <SelectOptimization
+                    options={RiskProfile}
+                    isClearable={true}
+                    singleValueStyles={{
+                      fontSize: '0.875rem',
+                    }}
+                    placeholderStyles={{
+                      fontSize: '0.875rem',
+                    }}
+                    optionStyles={{
+                      fontSize: '0.875rem',
+                    }}
+                    onChange={(
+                      optionSelected: { label: string; value: string } | null
+                    ) => this.onSelectChange('riskProfile', optionSelected)}
+                  />
+                </InputElementWrapper>
+                {/*<SelectDates*/}
+                {/*setPeriodToStore={setPeriod}*/}
+                {/*period={optimizationPeriod}*/}
+                {/*/>*/}
+                {/*<Input*/}
+                {/*color={textColor}*/}
+                {/*type="number"*/}
+                {/*placeholder="Expected return in %"*/}
+                {/*value={expectedReturn || ''}*/}
+                {/*onChange={(e) => {*/}
+                {/*handleChange(e)*/}
+                {/*}}*/}
+                {/*/>*/}
 
-              {/*<ButtonMUI*/}
-              {/*style={{ marginTop: '1rem' }}*/}
-              {/*color={'secondary'}*/}
-              {/*variant={'outlined'}*/}
-              {/*disabled={expectedReturn === '' || (data && data.length < 1)}*/}
-              {/*onClick={() => {*/}
-              {/*this.onOptimizeButtonClick(*/}
-              {/*client,*/}
-              {/*startDate,*/}
-              {/*endDate,*/}
-              {/*storeData,*/}
-              {/*expectedReturn,*/}
-              {/*showWarning,*/}
-              {/*optimizePortfolio,*/}
-              {/*optimizedToState*/}
-              {/*)*/}
-              {/*}}*/}
-              {/*>*/}
-              {/*Optimize Portfolio*/}
-              {/*</ButtonMUI>*/}
-              <ButtonMUI
-                style={{ marginTop: '1rem' }}
-                color={'secondary'}
-                variant={'outlined'}
-                disabled={!isAllOptionsFilled}
-                // disabled={expectedReturn === '' || (data && data.length < 1)}
-                onClick={() => {
-                  this.newOptimizeButtonClick(
-                    client,
-                    storeData,
-                    baseCoin,
-                    rebalancePeriod,
-                    isRiskFreeAssetEnabled,
-                    riskProfile,
-                    startDate,
-                    endDate
-                  )
-                }}
-              >
-                Optimize Portfolio
-              </ButtonMUI>
-            </InputContainer>
-
-            <TableContainer background={theme.palette.background.paper}>
-              <SwitchButtonsWrapper>
-                <SwitchButtons
-                  btnClickProps={client}
-                  onBtnClick={onNewBtnClick}
-                  values={this.state.percentages}
-                  show={this.props.rawOptimizedData.length > 1}
-                  activeButton={activeButton}
-                />
+                {/*<ButtonMUI*/}
+                {/*style={{ marginTop: '1rem' }}*/}
+                {/*color={'secondary'}*/}
+                {/*variant={'outlined'}*/}
+                {/*disabled={expectedReturn === '' || (data && data.length < 1)}*/}
+                {/*onClick={() => {*/}
+                {/*this.onOptimizeButtonClick(*/}
+                {/*client,*/}
+                {/*startDate,*/}
+                {/*endDate,*/}
+                {/*storeData,*/}
+                {/*expectedReturn,*/}
+                {/*showWarning,*/}
+                {/*optimizePortfolio,*/}
+                {/*optimizedToState*/}
+                {/*)*/}
+                {/*}}*/}
+                {/*>*/}
+                {/*Optimize Portfolio*/}
+                {/*</ButtonMUI>*/}
                 <ButtonMUI
-                  disabled={isEqual(initialPortfolio, storeData)}
-                  color="secondary"
-                  style={{
-                    alignSelf: 'center',
+                  style={{ marginTop: '1rem' }}
+                  color={'secondary'}
+                  variant={'outlined'}
+                  disabled={!isAllOptionsFilled}
+                  // disabled={expectedReturn === '' || (data && data.length < 1)}
+                  onClick={() => {
+                    this.newOptimizeButtonClick(
+                      client,
+                      storeData,
+                      baseCoin,
+                      rebalancePeriod,
+                      isRiskFreeAssetEnabled,
+                      riskProfile,
+                      startDate,
+                      endDate
+                    )
                   }}
-                  variant="fab"
-                  onClick={this.importPortfolio}
                 >
-                  <MdReplay />
+                  Optimize Portfolio
                 </ButtonMUI>
-              </SwitchButtonsWrapper>
-              <Table
-                onPlusClick={this.addRow}
-                data={storeData}
-                optimizedData={
-                  this.props.rawOptimizedData.length > 1
-                    ? this.props.rawOptimizedData[activeButton].weights
-                    : []
-                }
-                withInput={true}
-                onClickDeleteIcon={this.deleteRow}
-                filterValueSmallerThenPercentage={
-                  filterValueSmallerThenPercentage
-                }
-                theme={this.props.theme}
-              />
-              {/*<TableDataDesc show={this.state.optimizedData.length > 1}>*/}
+              </InputContainer>
+
+              <TableContainer background={theme.palette.background.paper}>
+                <SwitchButtonsWrapper>
+                  <SwitchButtons
+                    btnClickProps={client}
+                    onBtnClick={onNewBtnClick}
+                    values={this.state.percentages}
+                    show={this.props.rawOptimizedData.length > 1}
+                    activeButton={activeButton}
+                  />
+                  <ButtonMUI
+                    disabled={isEqual(initialPortfolio, storeData)}
+                    color="secondary"
+                    style={{
+                      alignSelf: 'center',
+                    }}
+                    variant="fab"
+                    onClick={this.importPortfolio}
+                  >
+                    <MdReplay />
+                  </ButtonMUI>
+                </SwitchButtonsWrapper>
+                <Table
+                  onPlusClick={this.addRow}
+                  data={storeData}
+                  optimizedData={
+                    this.props.rawOptimizedData.length > 1
+                      ? this.props.rawOptimizedData[activeButton].weights
+                      : []
+                  }
+                  withInput={true}
+                  onClickDeleteIcon={this.deleteRow}
+                  filterValueSmallerThenPercentage={
+                    filterValueSmallerThenPercentage
+                  }
+                  theme={this.props.theme}
+                />
+                {/*<TableDataDesc show={this.state.optimizedData.length > 1}>*/}
                 {/*<StyledInputLabel color={textColor}>*/}
-                  {/*Confidence:{' '}*/}
-                  {/*{this.state.optimizedData.length > 1*/}
-                    {/*? this.state.optimizedData[activeButton]*/}
-                        {/*.confidence*/}
-                    {/*: ''}*/}
+                {/*Confidence:{' '}*/}
+                {/*{this.state.optimizedData.length > 1*/}
+                {/*? this.state.optimizedData[activeButton]*/}
+                {/*.confidence*/}
+                {/*: ''}*/}
                 {/*</StyledInputLabel>*/}
                 {/*<StyledInputLabel color={textColor}>*/}
-                  {/*Expected return low:{' '}*/}
-                  {/*{this.state.optimizedData.length > 1*/}
-                    {/*? this.state.optimizedData[activeButton]*/}
-                        {/*.exptd_rtrn_low_end*/}
-                    {/*: ''}*/}
+                {/*Expected return low:{' '}*/}
+                {/*{this.state.optimizedData.length > 1*/}
+                {/*? this.state.optimizedData[activeButton]*/}
+                {/*.exptd_rtrn_low_end*/}
+                {/*: ''}*/}
                 {/*</StyledInputLabel>*/}
                 {/*<StyledInputLabel color={textColor}>*/}
-                  {/*Expected return high:{' '}*/}
-                  {/*{this.state.optimizedData.length > 1*/}
-                    {/*? this.state.optimizedData[activeButton]*/}
-                        {/*.exptd_rtrn_high_end*/}
-                    {/*: ''}*/}
+                {/*Expected return high:{' '}*/}
+                {/*{this.state.optimizedData.length > 1*/}
+                {/*? this.state.optimizedData[activeButton]*/}
+                {/*.exptd_rtrn_high_end*/}
+                {/*: ''}*/}
                 {/*</StyledInputLabel>*/}
-              {/*</TableDataDesc>*/}
-            </TableContainer>
-          </TableSelectsContaienr>
+                {/*</TableDataDesc>*/}
+              </TableContainer>
+            </TableSelectsContaienr>
             {this.renderBarChart()}
           </ImportData>
         )}
@@ -774,7 +791,7 @@ const STextField = styled(TextField)`
   && > div:before {
     border-bottom: 1px solid #c1c1c1;
   }
-  
+
   && > div {
     font-size: 0.875rem;
   }
@@ -836,7 +853,6 @@ const ChartContainer = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
   background: ${(props: { background: string }) => props.background};
 `
-
 
 const TableSelectsContaienr = styled.div`
   width: 49%;

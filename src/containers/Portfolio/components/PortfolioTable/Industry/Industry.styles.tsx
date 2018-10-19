@@ -4,6 +4,7 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 
 export const Container = styled(Grid)`
   && {
+    overflow-y: auto;
     height: calc(100vh - 80px);
     padding: 0.5rem 0;
     width: 100%;

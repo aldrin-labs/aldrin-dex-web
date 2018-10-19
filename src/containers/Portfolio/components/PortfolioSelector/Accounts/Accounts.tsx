@@ -59,7 +59,7 @@ export default class Accounts extends React.PureComponent<IProps> {
             gutterBottom={true}
             align="center"
             color="secondary"
-            variant="title"
+            variant="h6"
           >
             🔑 Api keys
           </TypographyFullWidth>
@@ -81,7 +81,7 @@ export default class Accounts extends React.PureComponent<IProps> {
           />
 
           <AccountName
-            variant="body2"
+            variant="body1"
             color={isCheckedAll ? 'secondary' : 'textSecondary'}
           >
             Select All
@@ -106,7 +106,7 @@ export default class Accounts extends React.PureComponent<IProps> {
 
                 <AccountName
                   align="left"
-                  variant="body2"
+                  variant="body1"
                   color={isChecked ? 'secondary' : 'textSecondary'}
                 >
                   {keyName}

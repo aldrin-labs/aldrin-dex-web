@@ -306,7 +306,7 @@ class Chart extends React.Component<IProps, IState> {
                   <ExchangePair background={palette.primary[type]}>
                     <TypographyWithCustomColor
                       textColor={palette.getContrastText(palette.primary[type])}
-                      variant="subheading"
+                      variant="subtitle1"
                     >
                       {`${base}/${quote}`}
                     </TypographyWithCustomColor>
@@ -363,13 +363,13 @@ class Chart extends React.Component<IProps, IState> {
   )
 
   renderToggler = () => {
-    const { 
+    const {
       toggleView,
       view,
       isNoCharts,
       activeExchange,
       currencyPair,
-      addChart
+      addChart,
     } = this.props
 
     const defaultView = view === 'default'

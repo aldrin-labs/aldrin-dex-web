@@ -34,13 +34,13 @@ class LoginCard extends PureComponent<IProps, IState> {
         <Dialog open={true}>
           <StyledCard>
             <CardContent>
-              <Typography align="center" variant="display4" gutterBottom={true}>
+              <Typography align="center" variant="h1" gutterBottom={true}>
                 <MdLockStyled />
               </Typography>
               <Typography
                 color="error"
                 align="center"
-                variant="headline"
+                variant="h4"
                 gutterBottom={true}
               >
                 You must login to view this page
