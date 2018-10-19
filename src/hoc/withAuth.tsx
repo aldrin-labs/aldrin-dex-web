@@ -6,12 +6,13 @@ import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 
 const Result = (Component: React.ComponentType) => ({
   login,
+  openMessage,
   ...props
 }: {
   login: boolean
 }) => {
   if (!login) {
-    return <YouNeedToLoginMessage showModalAfterDelay={1500} />
+    return <YouNeedToLoginMessage open={!openMessage} showModalAfterDelay={1500} />
   }
 
   return <Component {...props} />
@@ -19,6 +20,7 @@ const Result = (Component: React.ComponentType) => ({
 
 const mapStateToProps = (store: any) => ({
   login: store.login.loginStatus,
+  openMessage: store.login.modalIsOpen
 })
 
 export default compose(
