@@ -532,14 +532,5 @@ export default compose(
   connect(mapStateToProps),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
-    // options: ({ values }) => ({
-    //   refetchQueries: [
-    //     {
-    //       query: getMyPortfolioAndRebalanceQuery,
-    //       variables: ({baseCoin: 'USDT'}),
-    //     },
-    //   ],
-    //   ...values,
-    // }),
   })
 )(RebalanceContainer)
