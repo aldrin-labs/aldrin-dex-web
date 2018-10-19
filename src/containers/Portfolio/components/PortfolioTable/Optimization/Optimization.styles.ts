@@ -104,7 +104,7 @@ const ChartContainer = styled.div`
     //margin-right: 2rem;
     width: 49%;
     //margin: 0 0 0 2.5rem;
-    padding: 15px;
+    //padding: 0 15px 15px 15px;
     box-shadow: 0 2px 6px 0 #00000066;
     background: ${(props: {background: string}) => props.background};
 `

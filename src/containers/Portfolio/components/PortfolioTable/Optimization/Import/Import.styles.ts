@@ -23,20 +23,16 @@ const HelperForCentering = styled.div`
 `
 
 const InputContainer = styled.div`
-    min-height: 400px;
-  padding: 15px;
+  min-height: 400px;
+  //padding: 0 15px 15px 15px;
   box-shadow: 0 2px 6px 0 #00000066;
   background: ${(props: { background: string }) => props.background};
   margin-right: 2rem;
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  min-width: 100px;
 
-  @media (max-width: 1080px) {
-    margin: auto;
-    flex-wrap: wrap;
-  }
+  //@media (max-width: 1080px) {
+  //  margin: auto;
+  //  flex-wrap: wrap;
+  //}
 `
 
 const TableContainer = styled.div`
@@ -80,7 +76,7 @@ const Input = styled.input`
 `
 
 const Chart = styled.div`
-  height: 365px;
+  height: 360px;
   padding: 0.5rem;
   //margin: 1rem 0 0 2.5rem;
   flex-grow: 1;

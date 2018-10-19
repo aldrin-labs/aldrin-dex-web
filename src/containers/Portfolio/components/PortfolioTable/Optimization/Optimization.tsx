@@ -11,7 +11,10 @@ import {
 // import BarChart from '@components/BarChart/BarChart'
 import LineChart from '@components/LineChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
-import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
+import Import, {
+  InnerChartContainer,
+  Label,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
@@ -363,6 +366,8 @@ class Optimization extends Component<IProps, IState> {
     return (
       <ChartsContainer>
         <ChartContainer background={theme.palette.background.paper}>
+          <Label>Back-test Optimization</Label>
+          <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <LineChart
               alwaysShowLegend={false}
@@ -372,14 +377,18 @@ class Optimization extends Component<IProps, IState> {
               itemsForChartLegend={itemsForChartLegend}
             />
           </Chart>
+          </InnerChartContainer>
         </ChartContainer>
         <ChartContainer background={theme.palette.background.paper}>
+          <Label>Efficient Frontier</Label>
+          <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <EfficientFrontierChart
               data={efficientFrontierData}
               theme={theme}
             />
           </Chart>
+          </InnerChartContainer>
         </ChartContainer>
       </ChartsContainer>
     )
