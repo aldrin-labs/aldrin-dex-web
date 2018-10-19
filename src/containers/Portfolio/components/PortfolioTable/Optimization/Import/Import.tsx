@@ -493,7 +493,7 @@ export default class Import extends PureComponent<IProps> {
 
     if (!storeData) {
       return (
-        <Typography variant="display1" color="error">
+        <Typography variant="h4" color="error">
           Erorr during download. Please Refresh the page.{' '}
         </Typography>
       )

@@ -1,23 +1,20 @@
 import React from 'react'
 import { Subscription } from 'react-apollo'
 import styled from 'styled-components'
-import gql from 'graphql-tag'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
+import { has } from 'lodash-es'
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
-import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWindow/SelectExchangeOrWalletWindow'
 import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade } from '@material-ui/core'
-
-const PORTFOLIO_UPDATE = gql`
-  subscription onPortfolioUpdated {
-    portfolioUpdate
-  }
-`
+import { queryRendererHoc } from '@components/QueryRenderer'
+import { getKeysAndWallets, PORTFOLIO_UPDATE } from './api'
+import withAuth from '@hoc/withAuth'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 class PortfolioComponent extends React.Component<IProps, IState> {
   state: IState = {
@@ -30,14 +27,17 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {
-      login,
-      theme,
-      keys,
-      activeKeys,
-      wallets,
-      activeWallets,
-    } = this.props
+    const { theme, activeKeys, activeWallets, wallets, data } = this.props
+
+    if (!has(data, 'myPortfolios')) {
+      return (
+        <CustomError>
+          No myPortfolios was provided, check Portoflio.tsx render
+        </CustomError>
+      )
+    }
+
+    const { keys, cryptoWallets } = data.myPortfolios[0]
 
     const hasKeysOrWallets = keys.length + wallets.length > 0
     const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
@@ -47,25 +47,27 @@ class PortfolioComponent extends React.Component<IProps, IState> {
         {(subscriptionData) => (
           <PortfolioContainer>
             {/* refactor this */}
-            {!login && <YouNeedToLoginMessage showModalAfterDelay={1500} />}
-            {login &&
-              !hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
-            <>
-              <PortfolioSelector
-                toggleWallets={this.toggleWallets}
-                isSideNavOpen={this.state.isSideNavOpen}
-              />
-              {login &&
-                hasKeysOrWallets &&
-                !hasActiveKeysOrWallets && (
-                  <SelectExchangeOrWalletWindow
-                    theme={theme}
-                    toggleWallets={this.toggleWallets}
-                  />
-                )}
-              {login &&
-                hasKeysOrWallets &&
-                hasActiveKeysOrWallets && (
+
+            <PortfolioSelector
+              newKeys={keys}
+              newCryptoWallets={cryptoWallets}
+              toggleWallets={this.toggleWallets}
+              isSideNavOpen={this.state.isSideNavOpen}
+            />
+
+            {!hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
+
+            {hasKeysOrWallets &&
+              !hasActiveKeysOrWallets && (
+                <SelectExchangeOrWalletWindow
+                  theme={theme}
+                  toggleWallets={this.toggleWallets}
+                />
+              )}
+
+            {hasKeysOrWallets &&
+              hasActiveKeysOrWallets && (
+                <>
                   <PortfolioTable
                     showTable={hasActiveKeysOrWallets}
                     activeKeys={activeKeys}
@@ -73,8 +75,8 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                     toggleWallets={this.toggleWallets}
                     subscription={subscriptionData}
                   />
-                )}
-            </>
+                </>
+              )}
 
             <Fade
               in={this.state.isSideNavOpen}
@@ -101,6 +103,8 @@ const mapStateToProps = (store: any) => ({
 })
 
 export default compose(
+  withAuth,
+  queryRendererHoc({ query: getKeysAndWallets }),
   withTheme(),
   connect(mapStateToProps)
 )(PortfolioComponent)

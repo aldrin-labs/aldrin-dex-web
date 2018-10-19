@@ -37,7 +37,7 @@ const calculateTotalPerfOfCoin = (assets: any[]): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
 const colorful = (value: number, red: string, green: string) => ({
-  text: `${value}%`,
+  render: `${value}%`,
   isNumber: true,
   style: { color: value > 0 ? green : value < 0 ? red : null },
 })
@@ -58,7 +58,7 @@ export const combineIndustryData = (
       sum += percentagesOfCoinInPortfolio(asset, allSum, true)
     })
 
-    return { text: `${roundPercentage(sum)}%`, isNumber: true }
+    return { render: `${roundPercentage(sum)}%`, isNumber: true }
   }
 
   const { myPortfolios } = data
@@ -74,7 +74,7 @@ export const combineIndustryData = (
       return industryData.map((row) => [
         row.industry,
         row.assets.length === 1
-          ? { text: row.assets[0].coin, style: { fontWeight: 700 } }
+          ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
           : 'multiple',
         sumPortfolioPercentageOfAsset(row.assets, allSum),
         colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
@@ -84,7 +84,7 @@ export const combineIndustryData = (
         colorful(+roundPercentage(row.industry1Y) || 0, red, green),
         row.assets.map((asset) => [
           '',
-          { text: asset.coin, style: { fontWeight: 700 } },
+          { render: asset.coin, style: { fontWeight: 700 } },
           +roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
           colorful(+roundPercentage(asset.perf), red, green),
           '',
@@ -97,13 +97,13 @@ export const combineIndustryData = (
   )
   // aplaying dustfilter
   const industryData = res.filter(
-    // becouse of shape of row[2] object {text: 23%, isNumber: true}
-    (row) => +row[2].text.split('%')[0] >= filterValueLessThen
+    // becouse of shape of row[2] object {render: 23%, isNumber: true}
+    (row) => +row[2].render.split('%')[0] >= filterValueLessThen
   )
 
   const chartData: InputRecord[] = res.map((row) => ({
     label: row[0],
-    realValue: +row[2].text.split('%')[0],
+    realValue: +row[2].render.split('%')[0],
   }))
 
   return { chartData, industryData }
@@ -374,3 +374,11 @@ export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>
 
 export const roundPrice = (price: number, isUSDCurrently: boolean): number =>
   +price.toFixed(numberOfDigitsAfterPoint(isUSDCurrently))
+
+export const swapDates = ({
+  startDate,
+  endDate,
+}: {
+  startDate: number
+  endDate: number
+}) => ({ startDate: endDate, endDate: startDate })

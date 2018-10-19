@@ -17,16 +17,18 @@ import { TypographyFullWidth } from '@styles/cssUtils'
 
 export default class Accounts extends React.PureComponent<IProps> {
   componentDidMount() {
-    if (!has(this.props.data.myPortfolios[0], 'keys')) {
+    if (!has(this.props, 'newKeys')) {
       // console.log('no keys');
 
       return null
     }
 
-    const { keys } = this.props.data.myPortfolios[0]
+    const { newKeys } = this.props
     const oldKeys = this.props.keys
     const checkboxes =
-      (keys && keys.map((key: keyItem) => key && key.name).filter(Boolean)) || []
+      (newKeys &&
+        newKeys.map((key: keyItem) => key && key.name).filter(Boolean)) ||
+      []
 
     this.props.setKeys(checkboxes)
 
@@ -53,17 +55,18 @@ export default class Accounts extends React.PureComponent<IProps> {
     return (
       <>
         <AccountsWalletsHeadingWrapper>
-          {/* <KeyIcon /> */}
           <TypographyFullWidth
             gutterBottom={true}
             align="center"
             color="secondary"
-            variant="title"
+            variant="h6"
           >
             🔑 Api keys
           </TypographyFullWidth>
 
-          <Headline isSideNavOpen={isSideNavOpen} color={color}>settings</Headline>
+          <Headline isSideNavOpen={isSideNavOpen} color={color}>
+            settings
+          </Headline>
           <CloseContainer>
             <StyledIcon isSideNavOpen={isSideNavOpen} color={color} />
           </CloseContainer>
@@ -78,7 +81,7 @@ export default class Accounts extends React.PureComponent<IProps> {
           />
 
           <AccountName
-            variant="body2"
+            variant="body1"
             color={isCheckedAll ? 'secondary' : 'textSecondary'}
           >
             Select All
@@ -90,8 +93,7 @@ export default class Accounts extends React.PureComponent<IProps> {
             if (!keyName) {
               return null
             }
-            const isChecked =
-              (activeKeys && activeKeys.indexOf(keyName) !== -1)
+            const isChecked = activeKeys && activeKeys.indexOf(keyName) !== -1
 
             return (
               <AccountsListItem key={keyName} color={color}>
@@ -104,7 +106,7 @@ export default class Accounts extends React.PureComponent<IProps> {
 
                 <AccountName
                   align="left"
-                  variant="body2"
+                  variant="body1"
                   color={isChecked ? 'secondary' : 'textSecondary'}
                 >
                   {keyName}
@@ -113,7 +115,6 @@ export default class Accounts extends React.PureComponent<IProps> {
             )
           })}
         </AccountsList>
-        {/*<Divider />*/}
       </>
     )
   }

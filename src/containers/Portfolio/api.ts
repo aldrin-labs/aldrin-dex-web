@@ -55,6 +55,28 @@ export const getKeysQuery = gql`
     }
   }
 `
+export const getKeysAndWallets = gql`
+  query getKeys {
+    myPortfolios {
+      keys {
+        _id
+        name
+        date
+        apiKey
+      }
+      cryptoWallets {
+        _id
+        name
+      }
+    }
+  }
+`
+
+export const PORTFOLIO_UPDATE = gql`
+  subscription onPortfolioUpdated {
+    portfolioUpdate
+  }
+`
 
 export const getWalletsQuery = gql`
   query getWallets {
@@ -116,9 +138,11 @@ export const getMyPortfolioAndRebalanceQuery = gql`
         price
         quantity
       }
-  	  myRebalance {
+      myRebalance {
         total
         assets {
+          _id
+          id
           percent
           amount
           diff
@@ -128,11 +152,19 @@ export const getMyPortfolioAndRebalanceQuery = gql`
   }
 `
 
-
 export const updateRebalanceMutation = gql`
-  mutation($input: rebalanceInput) {
+  mutation updateRebalance($input: rebalanceInput) {
     updateRebalance(input: $input) {
+      assets {
+        _id
+        id
+        percent
+        amount
+        diff
+      }
       total
+      updatedAt
+      createdAt
     }
   }
-`;
+`
