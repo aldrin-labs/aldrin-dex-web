@@ -101,12 +101,12 @@ class Container extends Component {
       const data = this.transformData(tableData)
       // check lodash docs (transforming rows into columns)
       zip(...data).forEach((column, ind) => {
-        let sum: number | { text: string | number; style: object } = 0
+        let sum: number | { render: string | number; style: object } = 0
         //  skip exchange , coin, price and quantity columns
         if (ind > 1 && ind !== 3 && ind !== 4) {
           // sum each column numbers if they were selected
           column.forEach((el, i) => {
-            const num = isObject(el) ? el.text : el
+            const num = isObject(el) ? el.render : el
 
             if (
               checkedRows.indexOf(i) !== -1 &&
@@ -125,7 +125,7 @@ class Container extends Component {
           const formatedSum = +roundAndFormatNumber(sum, round, false)
           if (ind > 5) {
             total.push({
-              text: formatedSum,
+              render: formatedSum,
               isNumber: true,
               style: { color: formatedSum > 0 ? green : red },
             })
@@ -146,21 +146,21 @@ class Container extends Component {
 
     return data.map((row) => [
       row.exchange,
-      { text: row.coin, style: { fontWeight: 700 } },
+      { render: row.coin, style: { fontWeight: 700 } },
       +roundPercentage(row.portfolioPercentage),
       +roundAndFormatNumber(row.price, round, false),
       +roundAndFormatNumber(row.quantity, round, false),
       +roundAndFormatNumber(row.price * row.quantity, round, false),
       {
-        text: +roundAndFormatNumber(row.realizedPL, round, false),
+        render: +roundAndFormatNumber(row.realizedPL, round, false),
         color: row.realizedPL > 0 ? green : red,
       },
       {
-        text: +roundAndFormatNumber(row.unrealizedPL, round, false),
+        render: +roundAndFormatNumber(row.unrealizedPL, round, false),
         color: row.unrealizedPL > 0 ? green : red,
       },
       {
-        text: +roundAndFormatNumber(
+        render: +roundAndFormatNumber(
           row.realizedPL + row.unrealizedPL,
           round,
           false
@@ -176,15 +176,15 @@ class Container extends Component {
 
     return {
       head: [
-        { text: 'exchange', isNumber: false },
-        { text: 'coin', isNumber: false },
-        { text: 'portfolio%', isNumber: true },
-        { text: 'price', isNumber: true },
-        { text: 'quantity', isNumber: true },
-        { text: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },
-        { text: 'realized P&L', isNumber: true },
-        { text: 'Unrealized P&L', isNumber: true },
-        { text: 'Total P&L', isNumber: true },
+        { render: 'exchange', isNumber: false },
+        { render: 'coin', isNumber: false },
+        { render: 'portfolio%', isNumber: true },
+        { render: 'price', isNumber: true },
+        { render: 'quantity', isNumber: true },
+        { render: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },
+        { render: 'realized P&L', isNumber: true },
+        { render: 'Unrealized P&L', isNumber: true },
+        { render: 'Total P&L', isNumber: true },
       ],
       body: this.transformData(
         tableData,

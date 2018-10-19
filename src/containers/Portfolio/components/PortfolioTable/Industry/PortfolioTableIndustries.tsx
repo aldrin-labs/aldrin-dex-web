@@ -80,7 +80,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     return {
       head: tableHeadings.map((heading, index: number) => ({
-        text: heading.name,
+        render: heading.name,
         isNumber: index === 0 || index === 1 ? false : true,
       })),
       body: industryData,
