@@ -70,7 +70,7 @@ class ClassBody extends Component<IProps> {
                         textColor={red.main}
                         color="default"
                         noWrap={true}
-                        variant="body1"
+                        variant="body2"
                         align="right"
                       >
                         {Number(order.size).toFixed(

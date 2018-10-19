@@ -36,13 +36,13 @@ const Footer = ({
       <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
       </Typography>
-      <Typography variant="title" color="secondary">
+      <Typography variant="h6" color="secondary">
         •
       </Typography>
       <Button size="small" color="default">
         Terms of Use
       </Button>
-      <Typography variant="title" color="secondary">
+      <Typography variant="h6" color="secondary">
         •
       </Typography>
       <Button size="small" color="default">

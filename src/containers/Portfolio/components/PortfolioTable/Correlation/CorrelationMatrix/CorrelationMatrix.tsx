@@ -23,10 +23,10 @@ class CorrelationMatrix extends PureComponent<IProps> {
     <>
       <StyledCard raised={true}>
         <CardContent>
-          <Typography gutterBottom={true} align="center" variant="display3">
+          <Typography gutterBottom={true} align="center" variant="h2">
             🤔
           </Typography>
-          <Typography color="secondary" variant="headline">
+          <Typography color="secondary" variant="h5">
             Empty Response...
           </Typography>
         </CardContent>

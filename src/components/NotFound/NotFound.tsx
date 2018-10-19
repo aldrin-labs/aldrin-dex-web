@@ -13,7 +13,7 @@ const NotFoundText = styled.div`
 export const NotFound = () => (
   <div>
     <NotFoundText>
-      <Typography variant="display3">🚧 Under construction 🚧</Typography>
+      <Typography variant="h2">🚧 Under construction 🚧</Typography>
     </NotFoundText>
   </div>
 )

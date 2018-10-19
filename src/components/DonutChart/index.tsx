@@ -4,18 +4,12 @@ import {
   RadialChart,
   GradientDefs,
   makeVisFlexible,
-  DiscreteColorLegend
+  DiscreteColorLegend,
 } from 'react-vis'
 import { Grid } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
 
-import { 
-  Props,
-  State,
-  DonutPiece,
-  InputRecord,
-  gradient,
-  } from './types'
+import { Props, State, DonutPiece, InputRecord, gradient } from './types'
 import {
   ChartContainer,
   ValueContainer,
@@ -50,7 +44,7 @@ class DonutChartWitoutTheme extends Component<Props, State> {
       angle: record.realValue,
       label: record.label,
       realValue: record.realValue,
-      gradientIndex: (index % this.props.gradients.length),
+      gradientIndex: index % this.props.gradients.length,
     }))
 
   onValueMouseOver = (value: DonutPiece) => {
@@ -74,7 +68,7 @@ class DonutChartWitoutTheme extends Component<Props, State> {
   render() {
     const { value, data } = this.state
 
-    const { 
+    const {
       radius,
       thickness,
       labelPlaceholder,
@@ -85,37 +79,34 @@ class DonutChartWitoutTheme extends Component<Props, State> {
       hightCoefficient,
       widthCoefficient,
       thicknessCoefficient,
-
     } = this.props
 
-    var FlexibleRadius = isSizeFlexible 
+    var FlexibleRadius = isSizeFlexible
       ? Math.min(
           window.innerWidth / hightCoefficient,
           window.innerHeight / widthCoefficient
         )
       : radius
 
-    var innerRadius = thickness 
+    var innerRadius = thickness
       ? FlexibleRadius - thickness
       : FlexibleRadius - FlexibleRadius / thicknessCoefficient
 
     return (
       <ChartWithLegend>
         {colorLegend && (
-            <SDiscreteColorLegend
-              width={250}
-              items={data
-                .map((d) => d.label)}
-              colors={data
-                .map((d, index) => 
-                  gradients[index % gradients.length][0]
-                )}
-              textColor={theme.typography.body1.color}
-            />
+          <SDiscreteColorLegend
+            width={250}
+            items={data.map((d) => d.label)}
+            colors={data.map(
+              (d, index) => gradients[index % gradients.length][0]
+            )}
+            textColor={theme.typography.body1.color}
+          />
         )}
         <ChartContainer>
           <LabelContainer>
-            <Typography variant="display1">
+            <Typography variant="h4">
               {value ? value.label : labelPlaceholder || ''}
             </Typography>
           </LabelContainer>
@@ -134,13 +125,19 @@ class DonutChartWitoutTheme extends Component<Props, State> {
               }}
             >
               <ValueContainer value={value}>
-                <Typography variant="display2">
+                <Typography variant="h3">
                   {value ? `${value.realValue}%` : '\u2063'}
                 </Typography>
               </ValueContainer>
               <GradientDefs>
                 {gradients.map((pair: gradient, index: number) => (
-                  <linearGradient id={index.toString()} x1="0" x2="0" y1="0" y2="1">
+                  <linearGradient
+                    id={index.toString()}
+                    x1="0"
+                    x2="0"
+                    y1="0"
+                    y2="1"
+                  >
                     <stop offset="0%" stopColor={pair[0]} opacity={0.6} />
                     <stop offset="100%" stopColor={pair[1]} opacity={0.6} />
                   </linearGradient>

@@ -4,7 +4,7 @@ import MdAddCircleOutline from '@material-ui/icons/AddOutlined'
 import MdRemoveCircleOutline from '@material-ui/icons/RemoveOutlined'
 import {
   FlexibleXYPlot,
-//  VerticalRectSeries,
+  //  VerticalRectSeries,
   XAxis,
   YAxis,
   AreaSeries,
@@ -35,7 +35,10 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
     transformedBidsData: [],
   }
 
-  static getDerivedStateFromProps(props: IDepthChartProps, state: IDepthChartState) {
+  static getDerivedStateFromProps(
+    props: IDepthChartProps,
+    state: IDepthChartState
+  ) {
     // console.log(props)
     let totalVolumeAsks = 0
     let transformedAsksData = props.asks.map((el) => {
@@ -162,8 +165,8 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
       base,
       quote,
       animated,
-//      asks,
-//      bids,
+      //      asks,
+      //      bids,
       xAxisTickTotal,
       theme,
     } = this.props
@@ -208,7 +211,7 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
               </IconButton>
 
               <MidPriceColumnWrapper>
-                <Typography variant="subheading">
+                <Typography variant="subtitle1">
                   {this.props.midMarketPrice || 'soon'}
                 </Typography>
                 <Typography variant="caption">Mid Market Price</Typography>
@@ -285,7 +288,7 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
             >
               {crosshairValuesForSpread.length >= 1 ? (
                 <>
-                  <Typography variant="title" color="secondary">
+                  <Typography variant="h6" color="secondary">
                     {`${crosshairValuesForSpread[0].x.toFixed(8)} `}
                     {base || 'Fiat'}
                   </Typography>
@@ -296,7 +299,7 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
                       {base || 'Fiat'}
                     </Typography>
                     <RotatedBr />
-                    <Typography variant="body2">
+                    <Typography variant="body1">
                       For a total of{' '}
                       {(
                         crosshairValuesForSpread[0].y *
@@ -318,7 +321,7 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
             >
               {crosshairValuesForOrder.length >= 1 ? (
                 <>
-                  <Typography variant="title" color="secondary">
+                  <Typography variant="h6" color="secondary">
                     {`${crosshairValuesForOrder[0].x.toFixed(8)} `}{' '}
                     {base || 'Fiat'}
                   </Typography>
@@ -330,7 +333,7 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
                       {base || 'Fiat'}
                     </Typography>
                     <RotatedBr />
-                    <Typography variant="body2">
+                    <Typography variant="body1">
                       {' '}
                       For a total of{' '}
                       {(

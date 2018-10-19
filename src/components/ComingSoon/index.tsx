@@ -9,7 +9,7 @@ import { Typography } from '@material-ui/core'
 export default ({ show = true }) =>
   show ? (
     <Container>
-      <Typography variant="display2" color="textPrimary">
+      <Typography variant="h3" color="textPrimary">
         Coming Soon
       </Typography>
     </Container>
