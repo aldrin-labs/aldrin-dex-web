@@ -13,6 +13,7 @@ import SelectTimeRange from '@components/SelectTimeRangeDropdown'
 import Table from '../CorrelationMatrixTable/CorrelationMatrixTable'
 import { IProps } from './CorrelationMatrix.types'
 import { formatDate } from '@utils/dateUtils'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 class CorrelationMatrix extends PureComponent<IProps> {
   constructor(props: IProps) {
@@ -33,6 +34,8 @@ class CorrelationMatrix extends PureComponent<IProps> {
       </StyledCard>
     </>
   )
+
+  renderError = (error: string) => <CustomError>{error}</CustomError>
 
   render() {
     const {
@@ -55,7 +58,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
         >
           <FullscreenNode
             style={
-              data
+              data.values
                 ? {
                     display: 'grid',
                     gridTemplateColumns: isFullscreenEnabled
@@ -93,7 +96,9 @@ class CorrelationMatrix extends PureComponent<IProps> {
               </ButtonsWrapper>
             )}
 
-            {data ? (
+            {data.error ? (
+              this.renderError(data.error)
+            ) : data ? (
               <Table
                 {...{
                   isFullscreenEnabled,

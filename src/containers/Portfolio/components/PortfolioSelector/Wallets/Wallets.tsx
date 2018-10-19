@@ -11,15 +11,15 @@ import {
 
 export default class Wallets extends React.PureComponent<IProps> {
   componentDidMount() {
-    if (!has(this.props.data.myPortfolios[0], 'cryptoWallets')) {
+    if (!has(this.props, 'newCryptoWallets')) {
       return null
     }
 
-    const { cryptoWallets } = this.props.data.myPortfolios[0]
+    const { newCryptoWallets } = this.props
     const oldWallets = this.props.wallets
     const checkboxes =
-      (cryptoWallets &&
-        cryptoWallets
+      (newCryptoWallets &&
+        newCryptoWallets
           .map((wallet: walletItem) => wallet && wallet.name)
           .filter(Boolean)) ||
       []

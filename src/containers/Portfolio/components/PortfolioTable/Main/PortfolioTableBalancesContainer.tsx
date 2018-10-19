@@ -15,11 +15,11 @@ import { Theme } from '@material-ui/core'
 
 const chooseRed = (theme: Theme) =>
   theme.palette.type === 'dark'
-    ? theme.palette.red.light
+    ? theme.palette.red.main
     : theme.palette.red.dark
 const chooseGreen = (theme: Theme) =>
   theme.palette.type === 'dark'
-    ? theme.palette.green.light
+    ? theme.palette.green.main
     : theme.palette.green.dark
 
 class Container extends Component {
