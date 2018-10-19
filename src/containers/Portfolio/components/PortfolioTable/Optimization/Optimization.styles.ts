@@ -45,6 +45,7 @@ const MainArea = styled.div`
   color: white;
   border-radius: 3px;
   flex-direction: column;
+`
 
 const PTWrapper = styled.div`
   overflow-y: auto;
@@ -61,8 +62,6 @@ const PTWrapper = styled.div`
   background: ${(props: {background: string}) => props.background};
 
   ${customAquaScrollBar};
-  
-
 `
 
 export const ContentInner = styled.div`
@@ -72,7 +71,6 @@ export const ContentInner = styled.div`
   user-select: none;
   pointer-events: none;
   ` : ``};
-  
 `
 
 const Content = styled.div`
