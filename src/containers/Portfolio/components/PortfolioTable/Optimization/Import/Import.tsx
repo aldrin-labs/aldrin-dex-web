@@ -526,7 +526,7 @@ export default class Import extends PureComponent<IProps> {
           <ImportData>
             <TableSelectsContaienr>
               <InputContainer background={theme.palette.background.paper}>
-                <Label>Back-test</Label>
+                <Label>Back-test input</Label>
                 <InputInnerContainer>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
