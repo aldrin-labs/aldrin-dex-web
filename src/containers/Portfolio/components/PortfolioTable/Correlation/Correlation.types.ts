@@ -10,5 +10,7 @@ export interface IProps {
   isShownMocks: boolean
   setCorrelationPeriodToStore: Function
   period: string
+  startDate: number
+  endDate: number
   filterValueSmallerThenPercentage: number
 }
