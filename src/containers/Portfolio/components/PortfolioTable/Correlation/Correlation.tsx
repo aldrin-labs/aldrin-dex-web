@@ -22,6 +22,8 @@ import {
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import { testJSON } from '@utils/chartPageUtils'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 const Correlation = (props: IProps) => {
   const {
@@ -41,9 +43,10 @@ const Correlation = (props: IProps) => {
     typeof props.data.myPortfolios[0].correlationMatrixByDay === 'string' &&
     props.data.myPortfolios[0].correlationMatrixByDay.length > 0
   ) {
-    dataRaw = JSON.parse(props.data.myPortfolios[0].correlationMatrixByDay)
+    const matrix = props.data.myPortfolios[0].correlationMatrixByDay
+    dataRaw = testJSON(matrix) ? JSON.parse(matrix) : matrix
   } else {
-    dataRaw = props.data.myPortfolios[0].correlationMatrixByDay
+    return <CustomError error={'wrongShape'} />
   }
 
   if (portfolio && portfolio.getProfile && dataRaw !== '') {
@@ -85,12 +88,7 @@ const Correlation = (props: IProps) => {
             <CorrelationMatrix
               fullScreenChangeHandler={props.toggleFullscreen}
               isFullscreenEnabled={isFullscreenEnabled || false}
-              data={
-                // has(subscriptionData, 'data') && subscriptionData.data
-                //   ? subscriptionData.data
-                //   : data
-                data
-              }
+              data={data}
               setCorrelationPeriod={setCorrelationPeriodToStore}
               period={period}
             />
@@ -107,7 +105,15 @@ const CorrelationWrapper = (props: IProps) => {
     <PTWrapper>
       {isShownMocks ? (
         <Correlation
-          data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
+          data={{
+            myPortfolios: [
+              {
+                correlationMatrixByDay: JSON.stringify(
+                  CorrelationMatrixMockData
+                ),
+              },
+            ],
+          }}
           children={children}
           {...props}
         />
