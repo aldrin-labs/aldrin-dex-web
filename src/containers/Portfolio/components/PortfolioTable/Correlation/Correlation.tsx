@@ -19,6 +19,7 @@ import {
 import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
+  swapDates,
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
@@ -102,7 +103,16 @@ const Correlation = (props: IProps) => {
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, startDate, endDate, baseCoin, children } = props
+  const { isShownMocks, baseCoin, children } = props
+  let { startDate, endDate } = props
+
+  // startDate must be less always
+  //  but if somehow not I will swap them
+  if (startDate > endDate) {
+    startDate = swapDates({ startDate, endDate }).startDate
+    endDate = swapDates({ startDate, endDate }).endDate
+  }
+
   return (
     <PTWrapper>
       {isShownMocks ? (
