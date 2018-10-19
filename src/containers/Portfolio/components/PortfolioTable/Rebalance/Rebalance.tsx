@@ -123,9 +123,6 @@ class Rebalance extends React.Component<IProps, IState> {
 
           const { price, currentPrice } = calcPriceForRebalancedPortfolio(el, getMyPortfolioAndRebalanceQuery.portfolioAssets)
 
-          console.log('price', price, 'currentPrice', currentPrice);
-
-
           return {
             price,
             currentPrice,
@@ -162,8 +159,6 @@ class Rebalance extends React.Component<IProps, IState> {
       : newTableRebalancedPortfolioData
 
     if (userHasRebalancePortfolio) {
-      console.log('userHasRebalancePortfolio', userHasRebalancePortfolio);
-
       this.setTableData(
         composeWithMocksCurrentPortfolio,
         composeWithMocksRebalancedPortfolio
@@ -186,9 +181,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const savedRows = cloneArrayElementsOneLevelDeep(
       tableDataRebalancedPortfolio
     )
-
-    console.log('rows in setTableData', rows);
-
 
     this.calculateAllTotals(staticRows, rows, savedRows, undistributedMoney)
   }
@@ -276,11 +268,8 @@ class Rebalance extends React.Component<IProps, IState> {
       rows,
       staticRows
     )
-    console.log('rows in onSaveClick 1', rows);
-
 
     const newRows = UTILS.removeEditableModeInCoins(newRowsWithPriceDiff)
-    console.log('rows in onSaveClick 2', newRows);
 
     this.setState(
       {
@@ -311,10 +300,6 @@ class Rebalance extends React.Component<IProps, IState> {
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
     }))
-    console.log('rows in updateServerDataOnSave', rows);
-
-    console.log('combinedRowsData in save', combinedRowsData);
-
 
     const variablesForMutation = {
       input: {
