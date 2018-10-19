@@ -95,7 +95,7 @@ export const combineIndustryData = (
       ])
     })
   )
-  // aplaying dustfilter
+  // applying dustfilter
   const industryData = res.filter(
     // becouse of shape of row[2] object {render: 23%, isNumber: true}
     (row) => +row[2].render.split('%')[0] >= filterValueLessThen
