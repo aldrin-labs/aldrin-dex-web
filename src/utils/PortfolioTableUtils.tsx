@@ -381,10 +381,4 @@ export const swapDates = ({
 }: {
   startDate: number
   endDate: number
-}) => {
-  const holder = startDate
-  startDate = endDate
-  endDate = holder
-
-  return { startDate, endDate }
-}
+}) => ({ startDate: endDate, endDate: startDate })
