@@ -46,7 +46,7 @@ class OrderBookTable extends Component<IProps> {
         <Title background={primary[type]}>
           <TypographyWithCustomColor
             textColor={palette.getContrastText(primary[type])}
-            variant="subheading"
+            variant="subtitle1"
             align="center"
           >
             Order Book
@@ -65,7 +65,7 @@ class OrderBookTable extends Component<IProps> {
             <HeadCell width={'45%'}>
               <TypographyFullWidth
                 textColor={palette.getContrastText(background.default)}
-                variant="subheading"
+                variant="subtitle1"
                 color="default"
                 align="right"
               >
@@ -75,7 +75,7 @@ class OrderBookTable extends Component<IProps> {
             <HeadCell width={'45%'}>
               <TypographyFullWidth
                 textColor={palette.getContrastText(background.default)}
-                variant="subheading"
+                variant="subtitle1"
                 noWrap={true}
                 color="default"
                 align="right"
@@ -101,12 +101,10 @@ class OrderBookTable extends Component<IProps> {
 
 const AsksTable = styled(Table)`
   height: 50%;
+  flex-wrap: nowrap;
   flex-direction: column;
   justify-content: flex-start;
   display: flex;
-  @media (min-width: 1920px) {
-    flex-wrap: nowrap;
-  }
 `
 
 const SwitchTablesButton = styled(Button)`
