@@ -33,6 +33,8 @@ const Correlation = (props: IProps) => {
     setCorrelationPeriodToStore,
     portfolio,
     filterValueSmallerThenPercentage,
+    startDate,
+    endDate,
   } = props
 
   let dataRaw = {}
@@ -91,6 +93,7 @@ const Correlation = (props: IProps) => {
               data={data}
               setCorrelationPeriod={setCorrelationPeriodToStore}
               period={period}
+              dates={{ startDate, endDate }}
             />
           </>
         )

@@ -6,5 +6,7 @@ export interface IProps {
   portfolio: object
   setCorrelationPeriodToStore: Function
   period: string
+  startDate: number
+  endDate: number
   filterValueSmallerThenPercentage: number
 }
