@@ -46,7 +46,7 @@ class OrderBookTable extends Component<IProps> {
         <Title background={primary[type]}>
           <TypographyWithCustomColor
             textColor={palette.getContrastText(primary[type])}
-            variant="subheading"
+            variant="subtitle1"
             align="center"
           >
             Order Book
@@ -65,7 +65,7 @@ class OrderBookTable extends Component<IProps> {
             <HeadCell width={'45%'}>
               <TypographyFullWidth
                 textColor={palette.getContrastText(background.default)}
-                variant="subheading"
+                variant="subtitle1"
                 color="default"
                 align="right"
               >
@@ -75,7 +75,7 @@ class OrderBookTable extends Component<IProps> {
             <HeadCell width={'45%'}>
               <TypographyFullWidth
                 textColor={palette.getContrastText(background.default)}
-                variant="subheading"
+                variant="subtitle1"
                 noWrap={true}
                 color="default"
                 align="right"

@@ -91,7 +91,7 @@ class AddExchangeKeyComponent extends React.Component {
 
     return (
       <SPaper>
-        <Typography variant="title">Add new key</Typography>
+        <Typography variant="h6">Add new key</Typography>
         <FormContainer onSubmit={handleSubmit} autoComplete="new-password">
           <input type="hidden" value="something" />
 

@@ -58,9 +58,9 @@ export default class Table extends Component<IProps, IState> {
       onPlusClick,
       optimizedData,
       filterValueSmallerThenPercentage,
-      theme: {palette}
+      theme: { palette },
     } = this.props
-    const textColor: string= palette.getContrastText(palette.background.paper)
+    const textColor: string = palette.getContrastText(palette.background.paper)
 
     if (withInput) {
       return (
@@ -87,14 +87,10 @@ export default class Table extends Component<IProps, IState> {
             {data.length === 0 ? (
               <StyledCard>
                 <CardContent>
-                  <Typography
-                    variant="display2"
-                    align="center"
-                    color="secondary"
-                  >
+                  <Typography variant="h3" align="center" color="secondary">
                     No Coins.
                   </Typography>
-                  <Typography variant="headline" align="center" color="primary">
+                  <Typography variant="h5" align="center" color="primary">
                     Add something to optimize.
                   </Typography>
                 </CardContent>
@@ -148,7 +144,9 @@ export default class Table extends Component<IProps, IState> {
                     >
                       <Typography variant="body1" align="center">
                         {optimizedData && optimizedData[i] !== undefined
-                          ? `${(Math.abs(Number(optimizedData[i]) * 100)).toFixed(2)}%`
+                          ? `${Math.abs(Number(optimizedData[i]) * 100).toFixed(
+                              2
+                            )}%`
                           : '-'}{' '}
                       </Typography>
 
@@ -198,9 +196,7 @@ export default class Table extends Component<IProps, IState> {
                 onKeyDown={this.onKeyDown}
               />
             </Item>
-            <Item
-              background={palette.background.paper}
-            />
+            <Item background={palette.background.paper} />
             <Item
               background={palette.background.paper}
               style={{

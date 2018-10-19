@@ -33,13 +33,13 @@ class LoginCard extends PureComponent<IProps, IState> {
         ) : null}
         <StyledCard>
           <CardContent>
-            <Typography align="center" variant="display4" gutterBottom={true}>
+            <Typography align="center" variant="h1" gutterBottom={true}>
               <MdLockStyled />
             </Typography>
             <Typography
               color="error"
               align="center"
-              variant="headline"
+              variant="h5"
               gutterBottom={true}
             >
               You must login to view this page
