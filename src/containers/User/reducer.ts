@@ -1,10 +1,6 @@
 import { createReducer } from 'redux-act'
 
-import { 
-  addExchangeKey,
-  testUser,
-  toggleMocks
-} from '@containers/User/actions'
+import * as actions from '@containers/User/actions'
 
 const initialState = {
   check: 'lol',
@@ -13,9 +9,9 @@ const initialState = {
 
 export default createReducer(
   {
-    [addExchangeKey]: (state, payload) => ({ ...state, check: 5 }),
-    [testUser]: (state, payload) => ({ ...state, test: 'eeeee booooiii' }),
-    [toggleMocks]: (state, payload) => ({
+    [actions.addExchangeKey]: (state, payload) => ({ ...state, check: 5 }),
+    [actions.testUser]: (state, payload) => ({ ...state, test: 'eeeee booooiii' }),
+    [actions.toggleMocks]: (state, payload) => ({
       ...state,
       isShownMocks: !state.isShownMocks,
     }),
