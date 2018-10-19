@@ -420,7 +420,7 @@ class Optimization extends Component<IProps, IState> {
               {' '}
               <LoaderInnerWrapper>
                 <Loading size={94} margin={'0 0 2rem 0'} />{' '}
-                <TypographyWithCustomColor color={textColor} variant="title">
+                <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
                 </TypographyWithCustomColor>{' '}
               </LoaderInnerWrapper>{' '}
