@@ -6,14 +6,16 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
-import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWindow/SelectExchangeOrWalletWindow'
 import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade } from '@material-ui/core'
-import QueryRenderer, { queryRendererHoc } from '@components/QueryRenderer'
+import { queryRendererHoc } from '@components/QueryRenderer'
 import { getKeysAndWallets } from './api'
+import withAuth from './components/withAuth'
+import { has } from 'lodash-es'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 const PORTFOLIO_UPDATE = gql`
   subscription onPortfolioUpdated {
@@ -33,6 +35,14 @@ class PortfolioComponent extends React.Component<IProps, IState> {
 
   render() {
     const { theme, activeKeys, activeWallets, wallets, data } = this.props
+
+    if (!has(data, 'myPortfolios')) {
+      return (
+        <CustomError>
+          No myPortfolios was provided, check Portoflio.tsx render
+        </CustomError>
+      )
+    }
 
     const { keys, cryptoWallets } = data.myPortfolios[0]
 
@@ -89,20 +99,6 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-const withAuth = ({ login, ...props }) => {
-  const render = login ? (
-    <QueryRenderer
-      component={PortfolioComponent}
-      query={getKeysAndWallets}
-      {...{ login, ...props }}
-    />
-  ) : (
-    <YouNeedToLoginMessage showModalAfterDelay={1500} />
-  )
-
-  return render
-}
-
 // TODO: replace any in store
 const mapStateToProps = (store: any) => ({
   store: store,
@@ -114,9 +110,11 @@ const mapStateToProps = (store: any) => ({
 })
 
 export default compose(
+  withAuth,
+  queryRendererHoc({ query: getKeysAndWallets }),
   withTheme(),
   connect(mapStateToProps)
-)(withAuth)
+)(PortfolioComponent)
 
 const PortfolioContainer = styled.div`
   display: grid;
