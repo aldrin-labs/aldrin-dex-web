@@ -18,7 +18,7 @@ import { Props, Cell, OnChange, Row } from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
 import { Typography, IconButton, Grow } from '@material-ui/core'
-
+import { StyledCheckbox } from './index.styles'
 const CustomTableCell = withStyles((theme) => ({
   head: {
     position: 'sticky',
@@ -65,6 +65,7 @@ const styles = (theme) => ({
   },
   checkbox: {
     padding: '0',
+    transition: 'none',
   },
   table: {},
   title: {
@@ -109,7 +110,8 @@ const renderCheckBox = (
   selected = true
 ) =>
   type === 'expand' ? (
-    <Checkbox
+    <StyledCheckbox
+      disableRipple={true}
       classes={{
         root: className,
       }}
@@ -121,7 +123,8 @@ const renderCheckBox = (
       checked={ind === expandedRow}
     />
   ) : type === 'check' ? (
-    <Checkbox
+    <StyledCheckbox
+      disableRipple={true}
       classes={{
         root: className,
       }}
