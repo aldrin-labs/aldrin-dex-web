@@ -365,7 +365,7 @@ class Optimization extends Component<IProps, IState> {
         <ChartContainer background={theme.palette.background.paper}>
         <Chart background={theme.palette.background.default}>
           <LineChart
-            alwaysShowLegend={true}
+            alwaysShowLegend={false}
             // data={mockDataForLineChart}
             // data={[lineChartDataOriginal, lineChartDataOptimized]}
             data={[lineChartData]}

@@ -108,7 +108,7 @@ export default class Table extends Component<IProps, IState> {
                   <Item
                     background={palette.background.paper}
                     evenBackground={palette.action.hover}
-                    key={item.coin}
+                    key={`percentage-opt-${item.coin}${item.percentage}${i}`}
                   >
                     <Typography variant="body1" align="center">
                       {item.coin}
@@ -124,7 +124,7 @@ export default class Table extends Component<IProps, IState> {
                   <Item
                     background={palette.background.paper}
                     evenBackground={palette.action.hover}
-                    key={item.coin}
+                    key={`percentage-opt-${item.coin}${item.percentage}${i}`}
                   >
                     <Typography variant="body1" align="center">
                       {`${Number(item.percentage).toFixed(2)}%`}{' '}
@@ -144,10 +144,10 @@ export default class Table extends Component<IProps, IState> {
                     <Item
                       background={palette.background.paper}
                       evenBackground={palette.action.hover}
-                      key={item.coin}
+                      key={`percentage-opt-${item.coin}${item.percentage}${i}`}
                     >
                       <Typography variant="body1" align="center">
-                        {optimizedData
+                        {optimizedData && optimizedData[i] !== undefined
                           ? `${(Math.abs(Number(optimizedData[i]) * 100)).toFixed(2)}%`
                           : '-'}{' '}
                       </Typography>

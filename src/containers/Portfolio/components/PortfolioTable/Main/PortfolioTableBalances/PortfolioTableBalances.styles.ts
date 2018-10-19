@@ -65,7 +65,6 @@ export const TableWrapper = styled(Card)`
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  overflow-x: scroll;
   ${customAquaScrollBar};
 `
 

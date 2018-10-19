@@ -76,10 +76,9 @@ class BarChart extends Component<IProps, IState> {
           <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal" margin={{ bottom: 55}}>
             {alwaysShowLegend && (
               <LegendContainer>
-                <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
+                <StyledDiscreteColorLegend orientation="horizontal" items={ITEMS} />
               </LegendContainer>
             )}
-
             {showPlaceholder ? (
               <VerticalBarSeries
                 animation={animated && 'gentle'}
@@ -138,6 +137,17 @@ const ChartTooltip = styled.span`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #0006;
   padding: 8px;
+`
+// it's a hotfix but we don't know why these items are height 0 and width 0 now.
+// They should be not zero without this code
+const StyledDiscreteColorLegend = styled(DiscreteColorLegend)`
+
+  & .rv-discrete-color-legend-item__color {
+    height: 3px;
+    width: 30px;
+
+  }
+  
 `
 
 export default BarChart

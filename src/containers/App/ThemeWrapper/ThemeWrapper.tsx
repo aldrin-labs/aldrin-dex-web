@@ -11,10 +11,12 @@ export default class ThemeWrapper extends Component<Props> {
       palette: {
         type: themeMode,
         red: {
+          light: red[200],
           main: red[400],
           dark: red.A700,
         },
         green: {
+          light: green[300],
           main: green['500'],
           dark: green.A700,
         },

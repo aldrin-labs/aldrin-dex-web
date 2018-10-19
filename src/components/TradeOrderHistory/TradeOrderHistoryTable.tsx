@@ -34,13 +34,15 @@ const mapPortfolioActions = (pA) => {
   const values = Object.values(pA)
   values.pop()
   values[2] = +roundAndFormatNumber(values[2], 8, false)
-  // console.log(values[4])
   values[4] = {
     text: format(
-      new Date(values[4]).toLocaleString('en-US'),
-      'HH:m:s - MM/DD/YYYY'
+      new Date(values[4] * 1000).toLocaleString('en-US'),
+      ' MM/DD/YYYY - hh:m:s A'
     ),
     isNumber: false,
+    style: {
+      fontSize: 11,
+    },
   }
 
   return values
@@ -52,24 +54,16 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     rows: [],
   }
 
-  componentDidMount() {
-    const { isUSDCurrently, data } = this.props
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const { data } = nextProps
 
     if (data && data.myPortfolios && data.myPortfolios[0]) {
-      this.setState({
+      return {
         rows: data.myPortfolios[0].portfolioActions.map(mapPortfolioActions),
-      })
+      }
     }
-  }
 
-  componentWillReceiveProps() {
-    const { isUSDCurrently, data } = this.props
-
-    if (data && data.myPortfolios && data.myPortfolios[0]) {
-      this.setState({
-        rows: data.myPortfolios[0].portfolioActions.map(mapPortfolioActions),
-      })
-    }
+    return null
   }
 
   putDataInTable = () => {
