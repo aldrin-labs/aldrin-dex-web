@@ -40,9 +40,9 @@ class LoginCard extends PureComponent<IProps, IState> {
                 <MdLockStyled />
               </Typography>
               <Typography
-                color="error"
+                color="textPrimary"
                 align="center"
-                variant="h4"
+                variant="h6"
                 gutterBottom={true}
               >
                 You must login to view this page
