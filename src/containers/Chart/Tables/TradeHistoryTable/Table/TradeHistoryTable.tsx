@@ -45,7 +45,7 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
           >
             <TypographyFullWidth
               textColor={palette.getContrastText(primary[type])}
-              variant="subtitle1"
+              variant="subheading"
               align="center"
             >
               Trade history
@@ -68,21 +68,21 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
               isHead={true}
               style={{ height: '100%' }}
             >
-              <HeadCell color="#9ca2aa" width={'33%'}>
+              <HeadCell color="#9ca2aa" width={'30%'}>
                 <TypographyFullWidth
                   textColor={palette.getContrastText(background.default)}
-                  variant="subtitle1"
+                  variant="subheading"
                   align="right"
                   noWrap={true}
                 >
                   Trade Size
                 </TypographyFullWidth>
               </HeadCell>
-              <HeadCell color="#9ca2aa" width={'36%'}>
+              <HeadCell color="#9ca2aa" width={'45%'}>
                 <TypographyFullWidth
                   noWrap={true}
                   textColor={palette.getContrastText(background.default)}
-                  variant="subtitle1"
+                  variant="subheading"
                   align="right"
                 >
                   Price {quote || 'Fiat'}
@@ -91,10 +91,10 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
               <HeadCell
                 style={{ lineHeight: '32px' }}
                 color="#9ca2aa"
-                width={'30%'}
+                width={'25%'}
               >
                 <TypographyFullWidth
-                  variant="subtitle1"
+                  variant="subheading"
                   textColor={palette.getContrastText(background.default)}
                   align="right"
                 >
@@ -113,9 +113,8 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
                     hoverBackground={action.hover}
                     key={i}
                     background={background.default}
-                    // style={{ height: '27px' }}
                   >
-                    <Cell width={'33%'}>
+                    <Cell width={'30%'}>
                       <TypographyFullWidth
                         noWrap={true}
                         variant="body1"
@@ -124,7 +123,11 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
                         {Number(ticker.size).toFixed(4)}
                       </TypographyFullWidth>
                     </Cell>
-                    <Cell width={'36%'} style={{ display: 'flex' }}>
+                    <Cell width={'45%'} style={{ display: 'flex' }}>
+                      <StyledArrow
+                        color={ticker.fall ? red.main : green.main}
+                        direction={ticker.fall ? 'down' : 'up'}
+                      />
                       <StyledTypography
                         textColor={ticker.fall ? red.main : green.main}
                         noWrap={true}
@@ -135,12 +138,8 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
                           numbersAfterDecimalForPrice
                         )}
                       </StyledTypography>
-                      <StyledArrow
-                        color={ticker.fall ? red.main : green.main}
-                        direction={ticker.fall ? 'down' : 'up'}
-                      />
                     </Cell>
-                    <Cell width={'31%'}>
+                    <Cell width={'25%'}>
                       <TypographyFullWidth
                         color="primary"
                         noWrap={true}
@@ -249,9 +248,6 @@ const StyledArrow = styled(MdArrowUpward)`
   min-width: 20%;
   color: ${(props: { direction: string; color: string }) => props.color};
 
-  position: absolute;
-  left: 0.25rem;
-  top: calc(50% - 8px);
   transform: ${(props: { direction: string; color: string }) =>
     props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
 `
