@@ -48,8 +48,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
             textColor={activeRow === i ? '#4ed8da' : '#dedede'}
             key={el}
           >
-            <StyledArrowDown show={activeRow === i} />
-
+            {rows.length <= 5 && <StyledArrowDown show={activeRow === i} />}
             {el}
           </HeadCell>
         ))}
@@ -64,7 +63,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
             style={{ gridColumnStart: 1 }}
             key={el}
           >
-            <StyledArrowRight show={activeColumn === i} />
+            {rows.length <= 5 && <StyledArrowRight show={activeColumn === i} />}{' '}
             {el}
           </HeadCell>
         ))}
@@ -96,7 +95,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   color={backgroundColor}
                   active={i === activeRow && ind === activeColumn}
                 >
-                  <CenterText>{value.toFixed(2)}</CenterText>
+                  <CenterText>{(value * 100).toFixed(1)}</CenterText>
                 </CellContent>
               </Cell>
             )
