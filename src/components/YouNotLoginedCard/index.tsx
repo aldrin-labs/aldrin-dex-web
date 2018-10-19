@@ -6,6 +6,8 @@ import withTheme from '@material-ui/core/styles/withTheme'
 
 import { Login } from '@containers/Login'
 import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
 class LoginCard extends PureComponent<IProps, IState> {
   state = {
     showModal: false,
@@ -31,7 +33,7 @@ class LoginCard extends PureComponent<IProps, IState> {
         {showModal ? (
           <Login mainColor={secondary.main} isShownModal={true} />
         ) : null}
-        <Dialog open={this.props.open}>
+        <Dialog open={true}>
           <StyledCard>
             <CardContent>
               <Typography align="center" variant="h1" gutterBottom={true}>
@@ -63,5 +65,12 @@ const MdLockStyled = styled(MdLock)`
   width: 80%;
   height: 80%;
 `
+const mapStateToProps = (store: any) => ({
+  login: store.login.loginStatus,
+  openMessage: store.login.modalIsOpen,
+})
 
-export default withTheme()(LoginCard)
+export default compose(
+  withTheme(),
+  connect(mapStateToProps)
+)(LoginCard)

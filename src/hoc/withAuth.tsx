@@ -3,6 +3,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
+import { Grow } from '@material-ui/core'
 
 const Result = (Component: React.ComponentType) => ({
   login,
@@ -10,9 +11,16 @@ const Result = (Component: React.ComponentType) => ({
   ...props
 }: {
   login: boolean
+  openMessage: boolean
 }) => {
   if (!login) {
-    return <YouNeedToLoginMessage open={!openMessage} showModalAfterDelay={1500} />
+    return (
+      <Grow in={!openMessage} mountOnEnter={true} unmountOnExit={true}>
+        <div>
+          <YouNeedToLoginMessage showModalAfterDelay={1500} />
+        </div>
+      </Grow>
+    )
   }
 
   return <Component {...props} />
@@ -20,7 +28,7 @@ const Result = (Component: React.ComponentType) => ({
 
 const mapStateToProps = (store: any) => ({
   login: store.login.loginStatus,
-  openMessage: store.login.modalIsOpen
+  openMessage: store.login.modalIsOpen,
 })
 
 export default compose(
