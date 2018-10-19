@@ -19,6 +19,9 @@ import {
   cloneArrayElementsOneLevelDeep,
   onSortTableFull,
 } from '@utils/PortfolioTableUtils'
+import {
+  calcPriceForRebalancedPortfolio,
+} from '@utils/PortfolioRebalanceUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -101,16 +104,6 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
-        (el: IShapeOfRebalancePortfolioRow, i: number) => ({
-          id: i,
-          exchange: el._id.exchange,
-          symbol: el._id.coin,
-          price: parseFloat(el.amount.$numberDecimal).toFixed(2),
-          portfolioPerc: null,
-          deltaPrice: el.diff.$numberDecimal,
-        })
-      )
 
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
@@ -119,8 +112,32 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
+          currentPrice: el.price,
         })
       )
+
+
+      newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
+        (el: IShapeOfRebalancePortfolioRow, i: number) => {
+
+          const { price, currentPrice } = calcPriceForRebalancedPortfolio(el, getMyPortfolioAndRebalanceQuery.portfolioAssets)
+
+          console.log('price', price, 'currentPrice', currentPrice);
+
+
+          return {
+            price,
+            currentPrice,
+            id: i,
+            exchange: el._id.exchange,
+            symbol: el._id.coin,
+            portfolioPerc: null,
+            deltaPrice: el.diff.$numberDecimal,
+          }
+        }
+      )
+
+
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
@@ -144,6 +161,8 @@ class Rebalance extends React.Component<IProps, IState> {
       : newTableRebalancedPortfolioData
 
     if (userHasRebalancePortfolio) {
+      console.log('userHasRebalancePortfolio', userHasRebalancePortfolio);
+
       this.setTableData(
         composeWithMocksCurrentPortfolio,
         composeWithMocksRebalancedPortfolio
@@ -166,6 +185,9 @@ class Rebalance extends React.Component<IProps, IState> {
     const savedRows = cloneArrayElementsOneLevelDeep(
       tableDataRebalancedPortfolio
     )
+
+    console.log('rows in setTableData', rows);
+
 
     this.calculateAllTotals(staticRows, rows, savedRows, undistributedMoney)
   }
@@ -253,8 +275,11 @@ class Rebalance extends React.Component<IProps, IState> {
       rows,
       staticRows
     )
+    console.log('rows in onSaveClick 1', rows);
+
 
     const newRows = UTILS.removeEditableModeInCoins(newRowsWithPriceDiff)
+    console.log('rows in onSaveClick 2', newRows);
 
     this.setState(
       {
@@ -281,10 +306,14 @@ class Rebalance extends React.Component<IProps, IState> {
         exchange: el.exchange,
         coin: el.symbol,
       },
-      amount: el.price.toString(),
+      amount: el.currentPrice ? (el.price / el.currentPrice).toString() : el.price.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
     }))
+    console.log('rows in updateServerDataOnSave', rows);
+
+    console.log('combinedRowsData in save', combinedRowsData);
+
 
     const variablesForMutation = {
       input: {
@@ -525,14 +554,14 @@ export default compose(
   connect(mapStateToProps),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
-    options: ({ values }) => ({
-      refetchQueries: [
-        {
-          query: getMyPortfolioAndRebalanceQuery,
-          variables: ({baseCoin: 'USDT'}),
-        },
-      ],
-      ...values,
-    }),
+    // options: ({ values }) => ({
+    //   refetchQueries: [
+    //     {
+    //       query: getMyPortfolioAndRebalanceQuery,
+    //       variables: ({baseCoin: 'USDT'}),
+    //     },
+    //   ],
+    //   ...values,
+    // }),
   })
 )(RebalanceContainer)

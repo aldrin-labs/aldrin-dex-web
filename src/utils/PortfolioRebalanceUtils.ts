@@ -169,3 +169,21 @@ export function calculateMoneyPart(
 
   return array
 }
+
+export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
+  const indexInCurrentPortfolio = portfolioAssets.findIndex(
+    (curEl) => curEl.where === el._id.exchange && curEl.coin === el._id.coin
+  )
+  const hasSameCoinInCurrentPortfolio = indexInCurrentPortfolio !== -1
+  const currentPrice = parseFloat(
+    portfolioAssets[indexInCurrentPortfolio].price
+  )
+  const price = hasSameCoinInCurrentPortfolio
+    ? (currentPrice * parseFloat(el.amount.$numberDecimal)).toFixed(2)
+    : parseFloat(el.amount.$numberDecimal).toFixed(2)
+
+  return {
+    price,
+    currentPrice,
+  }
+}
