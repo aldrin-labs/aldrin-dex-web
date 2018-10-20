@@ -3,7 +3,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
-import { Grow } from '@material-ui/core'
 
 const Result = (Component: React.ComponentType) => ({
   login,
@@ -15,11 +14,7 @@ const Result = (Component: React.ComponentType) => ({
 }) => {
   if (!login) {
     return (
-      <Grow in={!openMessage} mountOnEnter={true} unmountOnExit={true}>
-        <div>
-          <YouNeedToLoginMessage showModalAfterDelay={1500} />
-        </div>
-      </Grow>
+      <YouNeedToLoginMessage open={!openMessage} showModalAfterDelay={1500} />
     )
   }
 
