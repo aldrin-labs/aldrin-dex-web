@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react'
 import { CardContent, Typography } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
-
-import { Login } from '@containers/Login'
-import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+
 import { StyledDialog, StyledCard, MdLockStyled } from './index.styles'
+import { Login } from '@containers/Login'
+import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
 class LoginCard extends PureComponent<IProps, IState> {
   state = {
     showModal: false,
