@@ -25,7 +25,7 @@ const auth0Options = {
     primaryColor: '#4ed8da',
   },
   languageDictionary: {
-    title: 'Be the early adopter',
+    title: 'Be an early adopter',
   },
   autofocus: true,
   autoclose: true,
