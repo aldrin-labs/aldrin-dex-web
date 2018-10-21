@@ -10,7 +10,7 @@ const initialState = {
 export default createReducer(
   {
     [actions.addExchangeKey]: (state, payload) => ({ ...state, check: 5 }),
-    [actions.test]: (state, payload) => ({ ...state, test: 'eeeee booooiii' }),
+    [actions.testUser]: (state, payload) => ({ ...state, test: 'eeeee booooiii' }),
     [actions.toggleMocks]: (state, payload) => ({
       ...state,
       isShownMocks: !state.isShownMocks,
