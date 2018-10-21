@@ -4,7 +4,6 @@ import React from 'react'
 export interface IProps {
   data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }
   theme: object
-  login: boolean
   keys: string[]
   activeKeys: string[]
   wallets: string[]

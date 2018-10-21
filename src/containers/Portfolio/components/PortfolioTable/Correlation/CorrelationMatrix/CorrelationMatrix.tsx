@@ -10,8 +10,10 @@ import FullScreenIcon from '@material-ui/icons/Fullscreen'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import SelectTimeRange from '@components/SelectTimeRangeDropdown'
-import Table from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrixTable/CorrelationMatrixTable'
-import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix.types'
+import Table from '../CorrelationMatrixTable/CorrelationMatrixTable'
+import { IProps } from './CorrelationMatrix.types'
+import { formatDate } from '@utils/dateUtils'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 class CorrelationMatrix extends PureComponent<IProps> {
   constructor(props: IProps) {
@@ -22,16 +24,18 @@ class CorrelationMatrix extends PureComponent<IProps> {
     <>
       <StyledCard raised={true}>
         <CardContent>
-          <Typography gutterBottom={true} align="center" variant="display3">
+          <Typography gutterBottom={true} align="center" variant="h2">
             🤔
           </Typography>
-          <Typography color="secondary" variant="headline">
+          <Typography color="secondary" variant="h5">
             Empty Response...
           </Typography>
         </CardContent>
       </StyledCard>
     </>
   )
+
+  renderError = (error: string) => <CustomError>{error}</CustomError>
 
   render() {
     const {
@@ -40,6 +44,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
       fullScreenChangeHandler,
       setCorrelationPeriod,
       period,
+      dates: { startDate, endDate },
     } = this.props
 
     return (
@@ -53,7 +58,7 @@ class CorrelationMatrix extends PureComponent<IProps> {
         >
           <FullscreenNode
             style={
-              data
+              data.values
                 ? {
                     display: 'grid',
                     gridTemplateColumns: isFullscreenEnabled
@@ -63,8 +68,6 @@ class CorrelationMatrix extends PureComponent<IProps> {
                         : '30% 1fr 29%',
                     gridTemplateRows: '100%',
                     alignItems: 'center',
-
-                    // justifyItems: 'center',
                   }
                 : {
                     display: 'grid',
@@ -81,15 +84,21 @@ class CorrelationMatrix extends PureComponent<IProps> {
                   style={{
                     height: 'auto',
                     maxWidth: '10rem',
-                    marginTop: '2rem',
+                    margin: '2rem 0',
                   }}
                   setPeriodToStore={setCorrelationPeriod}
                   period={period}
                 />
+                <Typography align="center" variant="body1">
+                  {formatDate(startDate)} ---
+                  {formatDate(endDate)}
+                </Typography>
               </ButtonsWrapper>
             )}
 
-            {data ? (
+            {data.error ? (
+              this.renderError(data.error)
+            ) : data ? (
               <Table
                 {...{
                   isFullscreenEnabled,

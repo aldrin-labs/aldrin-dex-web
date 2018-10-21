@@ -280,4 +280,4 @@ const mocks = {
   },
 }
 
-export const CorrelationMatrixMockData = mocks['5']
+export const CorrelationMatrixMockData = mocks['15']

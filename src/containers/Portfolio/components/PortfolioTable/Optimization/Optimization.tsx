@@ -11,13 +11,17 @@ import {
 // import BarChart from '@components/BarChart/BarChart'
 import LineChart from '@components/LineChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
-import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
+import Import, {
+  InnerChartContainer,
+  Label,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
 import {
   calcAllSumOfPortfolioAsset,
-  percentagesOfCoinInPortfolio, roundPercentage,
+  percentagesOfCoinInPortfolio,
+  roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import ComingSoon from '@components/ComingSoon'
 import {
@@ -30,10 +34,11 @@ import {
   Content,
   ChartContainer,
   ContentInner,
-  LoaderWrapper, LoaderInnerWrapper, LoadingText,
+  LoaderWrapper,
+  LoaderInnerWrapper,
+  LoadingText,
 } from './Optimization.styles'
 import { mockDataForLineChart } from './mockData'
-
 
 import { MASTER_BUILD } from '@utils/config'
 import { colors } from '@components/LineChart/LineChart.utils'
@@ -41,13 +46,12 @@ import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 
 const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
-  return [(1528405044 + (86400 * i)), i * 2 - 500 + (i * Math.random())]
+  return [1528405044 + 86400 * i, i * 2 - 500 + i * Math.random()]
 })
 
 const dateMockDataOptimized = new Array(1300).fill(undefined).map((elem, i) => {
-  return [(1528405044 + (86400 * i)), i * 2 + 900 - (i * Math.random())]
+  return [1528405044 + 86400 * i, i * 2 + 900 - i * Math.random()]
 })
-
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -75,16 +79,17 @@ class Optimization extends Component<IProps, IState> {
 
   transformData = (assets: any[]): IData[] => {
     const allSum = calcAllSumOfPortfolioAsset(assets)
-    console.log('allSum', allSum);
-    console.log('assets', assets);
-
+    console.log('allSum', allSum)
+    console.log('assets', assets)
 
     const newAssets = assets.map((asset: any) => ({
       coin: asset.coin,
-      percentage: roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
+      percentage: roundPercentage(
+        percentagesOfCoinInPortfolio(asset, allSum, true)
+      ),
     }))
 
-    console.log('newAssets',newAssets);
+    console.log('newAssets', newAssets)
 
     return [newAssets, allSum]
   }
@@ -144,7 +149,6 @@ class Optimization extends Component<IProps, IState> {
 
   onNewBtnClick = (index) => {
     this.setState({ activeButton: index })
-
   }
 
   onBtnClick = async (index: number) => {
@@ -293,12 +297,12 @@ class Optimization extends Component<IProps, IState> {
 
     if (!storeData) return
 
-
-    const arrayOfReturnedValues = rawOptimizedData && rawOptimizedData.map((el) => el.return_value)
-    const arrayOfReturnedRisks = rawOptimizedData && rawOptimizedData.map((el) => el.risk_coefficient)
-    console.log('arrayOfReturnedValues',arrayOfReturnedValues);
-    console.log('arrayOfReturnedRisks',arrayOfReturnedRisks);
-
+    const arrayOfReturnedValues =
+      rawOptimizedData && rawOptimizedData.map((el) => el.return_value)
+    const arrayOfReturnedRisks =
+      rawOptimizedData && rawOptimizedData.map((el) => el.risk_coefficient)
+    console.log('arrayOfReturnedValues', arrayOfReturnedValues)
+    console.log('arrayOfReturnedRisks', arrayOfReturnedRisks)
 
     let efficientFrontierData = {
       activeButton,
@@ -322,14 +326,16 @@ class Optimization extends Component<IProps, IState> {
     // }
 
     // for real data
-    const lineChartData = rawOptimizedData && rawOptimizedData.length &&  rawOptimizedData[activeButton].backtest_results.map((el) => ({
-      label: 'optimized',
-      x: el[0],
-      y: el[1],
-    }))
+    const lineChartData =
+      rawOptimizedData &&
+      rawOptimizedData.length &&
+      rawOptimizedData[activeButton].backtest_results.map((el) => ({
+        label: 'optimized',
+        x: el[0],
+        y: el[1],
+      }))
 
-    console.log('lineChartData from query', lineChartData);
-
+    console.log('lineChartData from query', lineChartData)
 
     // const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
     //   label: 'original',
@@ -344,7 +350,6 @@ class Optimization extends Component<IProps, IState> {
 
     // console.log('lineChartData', lineChartDataOriginal);
 
-
     const itemsForChartLegend = [
       {
         title: 'Optimized',
@@ -356,28 +361,35 @@ class Optimization extends Component<IProps, IState> {
       },
     ]
 
-    const {
-      theme,
-    } = this.props
+    const { theme } = this.props
 
     return (
       <ChartsContainer>
         <ChartContainer background={theme.palette.background.paper}>
-        <Chart background={theme.palette.background.default}>
-          <LineChart
-            alwaysShowLegend={false}
-            // data={mockDataForLineChart}
-            // data={[lineChartDataOriginal, lineChartDataOptimized]}
-            data={[lineChartData]}
-            itemsForChartLegend={itemsForChartLegend}
-          />
-        </Chart>
+          <Label>Back-test Optimization</Label>
+          <InnerChartContainer>
+          <Chart background={theme.palette.background.default}>
+            <LineChart
+              alwaysShowLegend={false}
+              // data={mockDataForLineChart}
+              // data={[lineChartDataOriginal, lineChartDataOptimized]}
+              data={[lineChartData]}
+              itemsForChartLegend={itemsForChartLegend}
+            />
+          </Chart>
+          </InnerChartContainer>
         </ChartContainer>
-      <ChartContainer background={theme.palette.background.paper}>
-        <Chart background={theme.palette.background.default}>
-          <EfficientFrontierChart data={efficientFrontierData} theme={theme}/>
-        </Chart>
-      </ChartContainer>
+        <ChartContainer background={theme.palette.background.paper}>
+          <Label>Efficient Frontier</Label>
+          <InnerChartContainer>
+          <Chart background={theme.palette.background.default}>
+            <EfficientFrontierChart
+              data={efficientFrontierData}
+              theme={theme}
+            />
+          </Chart>
+          </InnerChartContainer>
+        </ChartContainer>
       </ChartsContainer>
     )
   }
@@ -390,24 +402,35 @@ class Optimization extends Component<IProps, IState> {
       theme: { palette },
     } = this.props
 
-    const textColor: string = palette.getContrastText(
-      palette.background.paper
-    )
+    const textColor: string = palette.getContrastText(palette.background.paper)
 
     const { loading, openWarning, warningMessage } = this.state
 
     return (
-      <PTWrapper background={palette.background.default} notScrollable={MASTER_BUILD}>
+      <PTWrapper
+        background={palette.background.default}
+        notScrollable={MASTER_BUILD}
+      >
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}
           {/*{loading ? this.renderLoading() : null}*/}
-          {loading && (<LoaderWrapper> <LoaderInnerWrapper><Loading size={94} margin={'0 0 2rem 0'}/> <TypographyWithCustomColor color={textColor} variant="title">Optimizing portfolio...</TypographyWithCustomColor> </LoaderInnerWrapper> </LoaderWrapper>) }
+          {loading && (
+            <LoaderWrapper>
+              {' '}
+              <LoaderInnerWrapper>
+                <Loading size={94} margin={'0 0 2rem 0'} />{' '}
+                <TypographyWithCustomColor color={textColor} variant="h6">
+                  Optimizing portfolio...
+                </TypographyWithCustomColor>{' '}
+              </LoaderInnerWrapper>{' '}
+            </LoaderWrapper>
+          )}
           <ContentInner loading={loading}>
-          {this.renderInput()}
-          <MainArea background={palette.background.paper}>
-            {this.renderCharts()}
-          </MainArea>
+            {this.renderInput()}
+            <MainArea background={palette.background.paper}>
+              {this.renderCharts()}
+            </MainArea>
           </ContentInner>
           <Warning
             open={openWarning}

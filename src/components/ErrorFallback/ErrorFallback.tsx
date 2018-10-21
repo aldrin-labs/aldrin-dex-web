@@ -29,22 +29,25 @@ const FormatErrorToUser = (errorMessage: string) => {
   return errorMessage
 }
 
-export const CustomError = (props: { error: string }) => (
+export const CustomError = (props: {
+  error?: string
+  children?: React.ReactNode
+}) => (
   <Error>
-    <Typography variant="headline" color="error">
-      {props.error || 'Error'}
+    <Typography variant="h5" color="error">
+      {props.error || props.children || 'Error'}
     </Typography>
   </Error>
 )
 
 const SimpleError = (props: { error?: ApolloError }) => (
-  <Typography variant="headline" color="error">
+  <Typography variant="h5" color="error">
     {props.error ? FormatErrorToUser(props.error.message) : 'Error'}
   </Typography>
 )
 const RefetchError = (props: { error?: ApolloError; refetch: Function }) => (
   <Fragment>
-    <Typography variant="headline" color="error">
+    <Typography variant="h5" color="error">
       {props.error ? props.error.message : 'Error'}
     </Typography>
     <Button onClick={props.refetch}>Refetch data</Button>

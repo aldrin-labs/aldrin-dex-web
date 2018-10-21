@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
-import { Card, CardContent, Typography } from '@material-ui/core'
-import MdLock from '@material-ui/icons/Lock'
+import { CardContent, Typography } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
+import { compose } from 'recompose'
+import { connect } from 'react-redux'
+
+import { StyledDialog, StyledCard, MdLockStyled } from './index.styles'
 import { Login } from '@containers/Login'
 import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
-
 class LoginCard extends PureComponent<IProps, IState> {
   state = {
     showModal: false,
@@ -17,6 +18,7 @@ class LoginCard extends PureComponent<IProps, IState> {
       theme: {
         palette: { secondary },
       },
+      open,
     } = this.props
     const { showModal } = this.state
 
@@ -31,35 +33,45 @@ class LoginCard extends PureComponent<IProps, IState> {
         {showModal ? (
           <Login mainColor={secondary.main} isShownModal={true} />
         ) : null}
-        <StyledCard>
-          <CardContent>
-            <Typography align="center" variant="display4" gutterBottom={true}>
-              <MdLockStyled />
-            </Typography>
-            <Typography
-              color="error"
-              align="center"
-              variant="headline"
-              gutterBottom={true}
-            >
-              You must login to view this page
-            </Typography>
-          </CardContent>
-        </StyledCard>
+        <StyledDialog
+          open={open}
+          BackdropProps={{ style: { display: 'none' } }}
+        >
+          <StyledCard>
+            <CardContent>
+              <Typography align="center" variant="h1" gutterBottom={true}>
+                <MdLockStyled />
+              </Typography>
+              <Typography
+                color="textPrimary"
+                align="center"
+                variant="h4"
+                gutterBottom={true}
+              >
+                Hello there, welcome to cryptocurrencies.ai👐
+              </Typography>
+              <Typography
+                color="textSecondary"
+                align="center"
+                variant="h6"
+                gutterBottom={true}
+              >
+                You must login to view this page
+              </Typography>
+            </CardContent>
+          </StyledCard>
+        </StyledDialog>
       </>
     )
   }
 }
 
-const StyledCard = styled(Card)`
-  height: auto;
-  width: 20rem;
-  grid-column: 2;
-  margin: auto;
-`
-const MdLockStyled = styled(MdLock)`
-  width: 80%;
-  height: 80%;
-`
+const mapStateToProps = (store: any) => ({
+  login: store.login.loginStatus,
+  openMessage: store.login.modalIsOpen,
+})
 
-export default withTheme()(LoginCard)
+export default compose(
+  withTheme(),
+  connect(mapStateToProps)
+)(LoginCard)

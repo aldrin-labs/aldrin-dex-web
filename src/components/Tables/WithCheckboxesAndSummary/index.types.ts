@@ -3,7 +3,7 @@ import React from 'react'
 
 type T = string | number
 type TObj = {
-  text: string
+  render: string
   color: string
   isNumber: boolean
   style: any

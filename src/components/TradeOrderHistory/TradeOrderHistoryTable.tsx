@@ -17,6 +17,7 @@ import {
 } from './TradeOrderHistoryTable.types'
 
 import Table from '@components/Tables/WithCheckboxesAndSummary'
+import { formatDate } from '@utils/dateUtils'
 
 const tableHeadings = [
   { name: 'Coin', value: 'coin' },
@@ -35,10 +36,7 @@ const mapPortfolioActions = (pA) => {
   values.pop()
   values[2] = +roundAndFormatNumber(values[2], 8, false)
   values[4] = {
-    text: format(
-      new Date(values[4] * 1000).toLocaleString('en-US'),
-      ' MM/DD/YYYY - hh:m:s A'
-    ),
+    render: formatDate(values[4]),
     isNumber: false,
     style: {
       fontSize: 11,
@@ -73,7 +71,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     const res = {
       head: tableHeadings.map((heading, index: number) => ({
         isNumber: index === 2,
-        text: heading.name,
+        render: heading.name,
       })),
       body: rows,
     }

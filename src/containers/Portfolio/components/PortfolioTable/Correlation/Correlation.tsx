@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
-import CorrelationMatrix from '@containers/Portfolio/components/PortfolioTable/Correlation/CorrelationMatrix/CorrelationMatrix'
+import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
   toggleCorrelationTableFullscreen,
@@ -19,9 +19,12 @@ import {
 import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
+  swapDates,
 } from '@utils/PortfolioTableUtils'
 import { Loading } from '@components/Loading'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import { testJSON } from '@utils/chartPageUtils'
+import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 
 const Correlation = (props: IProps) => {
   const {
@@ -31,6 +34,8 @@ const Correlation = (props: IProps) => {
     setCorrelationPeriodToStore,
     portfolio,
     filterValueSmallerThenPercentage,
+    startDate,
+    endDate,
   } = props
 
   let dataRaw = {}
@@ -41,9 +46,10 @@ const Correlation = (props: IProps) => {
     typeof props.data.myPortfolios[0].correlationMatrixByDay === 'string' &&
     props.data.myPortfolios[0].correlationMatrixByDay.length > 0
   ) {
-    dataRaw = JSON.parse(props.data.myPortfolios[0].correlationMatrixByDay)
+    const matrix = props.data.myPortfolios[0].correlationMatrixByDay
+    dataRaw = testJSON(matrix) ? JSON.parse(matrix) : matrix
   } else {
-    dataRaw = props.data.myPortfolios[0].correlationMatrixByDay
+    return <CustomError error={'wrongShape'} />
   }
 
   if (portfolio && portfolio.getProfile && dataRaw !== '') {
@@ -85,14 +91,10 @@ const Correlation = (props: IProps) => {
             <CorrelationMatrix
               fullScreenChangeHandler={props.toggleFullscreen}
               isFullscreenEnabled={isFullscreenEnabled || false}
-              data={
-                // has(subscriptionData, 'data') && subscriptionData.data
-                //   ? subscriptionData.data
-                //   : data
-                data
-              }
+              data={data}
               setCorrelationPeriod={setCorrelationPeriodToStore}
               period={period}
+              dates={{ startDate, endDate }}
             />
           </>
         )
@@ -102,12 +104,29 @@ const Correlation = (props: IProps) => {
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, startDate, endDate, baseCoin, children } = props
+  const { isShownMocks, baseCoin, children } = props
+  let { startDate, endDate } = props
+
+  // startDate must be less always
+  //  but if somehow not I will swap them
+  if (startDate > endDate) {
+    startDate = swapDates({ startDate, endDate }).startDate
+    endDate = swapDates({ startDate, endDate }).endDate
+  }
+
   return (
     <PTWrapper>
       {isShownMocks ? (
         <Correlation
-          data={{ correlationMatrixByDay: CorrelationMatrixMockData }}
+          data={{
+            myPortfolios: [
+              {
+                correlationMatrixByDay: JSON.stringify(
+                  CorrelationMatrixMockData
+                ),
+              },
+            ],
+          }}
           children={children}
           {...props}
         />

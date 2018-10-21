@@ -4,4 +4,5 @@ export interface IProps {
   fullScreenChangeHandler: Function
   setCorrelationPeriod: Function
   period: string
+  dates: { startDate: number; endDate: number }
 }
