@@ -36,7 +36,6 @@ const mapLabelToDays = {
   '1Y': 365,
 }
 
-let cacheStack: any = [];
 export default class PortfolioChart extends Component<Props, State> {
 
   state: State = {
@@ -46,22 +45,13 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   static getDerivedStateFromProps(newProps, state) {
-    if ((cacheStack.length > 0 && newProps.lastDrawLocation !== cacheStack[cacheStack.length - 1].lastDrawLocation && newProps.data
-      && newProps.data.getPriceHistory && newProps.data.getPriceHistory.prices.length > 0
-      && cacheStack[cacheStack.length - 1].data.getPriceHistory.prices[cacheStack[cacheStack.length - 1].data.getPriceHistory.prices.length - 2] !== newProps.data.getPriceHistory.prices[newProps.data.getPriceHistory.prices.length - 2]
-      && cacheStack[cacheStack.length - 1].data.getPriceHistory.prices[0] !== newProps.data.getPriceHistory.prices[0]
-      || cacheStack.length === 0 && newProps.data.getPriceHistory && newProps.data.getPriceHistory.prices.length > 0 && (state.data.length === 0 || state.data.getPriceHistory.prices[state.data.getPriceHistory.prices.length - 2] !== newProps.data.getPriceHistory.prices[newProps.data.getPriceHistory.prices.length - 2]))
-    ) {
-      const cachedState = Object.assign(state, newProps);
-      delete cachedState.lastDrawLocation;
-      cachedState.lastDrawLocation = newProps.lastDrawLocation ? { ...newProps.lastDrawLocation } : null;
-      cacheStack.push(cachedState);
-      return cachedState;
-    }
-    return null;
+    const cachedState = Object.assign(state, newProps);
+    delete cachedState.lastDrawLocation;
+    cachedState.lastDrawLocation = newProps.lastDrawLocation ? { ...newProps.lastDrawLocation } : null;
+    return cachedState;
   }
   componentWillUnmount() {
-    cacheStack = [];
+    // cacheStack = [];
   }
   onChangeActiveChart = (index: number) => {
     this.props.setActiveChart(index)
@@ -88,17 +78,8 @@ export default class PortfolioChart extends Component<Props, State> {
   _onBrushEnd = (area) => {
     //    console.log('_onBrushEnd', area)
     //  console.log(cacheStack.length)
-    if (area === null && cacheStack.length > 1) {
-      cacheStack.pop();
-      const cachedState = cacheStack[cacheStack.length - 1];
-      this.setState(() => ({
-        lastDrawLocation: null,
-        ...cachedState,
-      }))
-    } else if (area !== null) {
-      //      console.log(this.state.lastDrawLocation);
-      this.props.onChangeDateRange(area)
-    }
+
+    this.props.onChangeDateRange(area)
   }
 
   render() {
@@ -232,7 +213,6 @@ export default class PortfolioChart extends Component<Props, State> {
               color="secondary"
               size="small"
               onClick={() => {
-                cacheStack = [];
                 this.onChangeActiveChart(i);
               }}
               style={

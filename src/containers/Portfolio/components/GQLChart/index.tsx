@@ -1,10 +1,14 @@
 import * as React from 'react'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
+import { withRouter } from 'react-router'
 
+import * as actions from '@containers/Portfolio/actions'
 import PortfolioChart from '@containers/Portfolio/components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 
-export default class GQLChart extends React.Component {
+class GQLChart extends React.Component {
   state = {
     coins: [],
     assets: [],
@@ -92,3 +96,20 @@ export default class GQLChart extends React.Component {
     )
   }
 }
+
+
+const mapDispatchToProps = (dispatch: any) => ({
+  setActiveChart: (ex: any) => dispatch(actions.setActiveChart(ex)),
+})
+
+const mapStateToProps = (store) => ({
+  activeChart: store.portfolio.activeChart,
+})
+
+export default compose(
+  withRouter,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(GQLChart)
