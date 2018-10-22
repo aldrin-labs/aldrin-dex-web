@@ -18,4 +18,5 @@ export interface IProps extends WithTheme{
   multiValueRemoveStyles: CSSProperties
   indicatorSeparatorStyles: CSSProperties
   loadingIndicatorStyles: CSSProperties
+  noOptionsMessage: CSSProperties
 }
