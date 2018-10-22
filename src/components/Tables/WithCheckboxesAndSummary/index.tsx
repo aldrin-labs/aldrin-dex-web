@@ -22,7 +22,7 @@ import { StyledCheckbox } from './index.styles'
 const CustomTableCell = withStyles((theme) => ({
   head: {
     position: 'sticky',
-    top: 0,
+    top: theme.spacing.unit * 4,
     backgroundColor: theme.palette.primary[700],
     color: hexToRgbAWithOpacity(theme.palette.common.white, 0.66),
     textTransform: 'uppercase',
@@ -70,6 +70,8 @@ const styles = (theme) => ({
   table: {},
   title: {
     backgroundColor: theme.palette.primary[900],
+    position: 'sticky',
+    top: 0,
   },
   headRow: {
     height: theme.spacing.unit * 4,
@@ -169,7 +171,6 @@ const renderCell = (cell: Cell, id: number, numeric: boolean) => {
             - Fixed  summary
             - Add settings render
             - Add Tooltips To header
-            - Add render anything to Cell
           */
 }
 
