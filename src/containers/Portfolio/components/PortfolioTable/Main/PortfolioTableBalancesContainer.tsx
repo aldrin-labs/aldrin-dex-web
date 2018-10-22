@@ -69,7 +69,7 @@ class Container extends Component {
         portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
           composePortfolioAssetsWithMocks,
-          portfolioAssets,
+          activeKeys.concat(activeWallets),
           filterValueSmallerThenPercentage,
           isUSDCurrently
         ),
