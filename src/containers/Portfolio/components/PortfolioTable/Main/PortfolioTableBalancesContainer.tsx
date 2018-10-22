@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
-import QueryRenderer from '@components/QueryRenderer'
+import { queryRendererHoc } from '@components/QueryRenderer'
 import PortfolioMain from './PortfolioTableBalances/PortfolioTableBalances'
 import {
   combineTableData,
@@ -249,12 +249,8 @@ class Container extends Component {
   }
 }
 
-export default (props) => (
-  <QueryRenderer
-    fetchPolicy="network-only"
-    component={Container}
-    query={getPortfolioMainQuery}
-    pollInterval={5000}
-    {...props}
-  />
-)
+export default queryRendererHoc({
+  query: getPortfolioMainQuery,
+  pollInterval: 5 * 60 * 1000,
+  fetchPolicy: 'network-only',
+})(Container)
