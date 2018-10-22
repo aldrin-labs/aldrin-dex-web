@@ -1,21 +1,11 @@
 import * as React from 'react'
-import { format } from 'date-fns'
+import { isEqual } from 'lodash-es'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
-import {
-  formatNumberToUSFormat,
-  onSortTableFull,
-  roundAndFormatNumber,
-} from '@utils/PortfolioTableUtils'
+import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
-import {
-  IProps,
-  IState,
-  ICurrentSort,
-  ITradeOrderHistoryTableData,
-} from './TradeOrderHistoryTable.types'
-
+import { IProps, IState } from './TradeOrderHistoryTable.types'
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 import { formatDate } from '@utils/dateUtils'
 
@@ -49,23 +39,18 @@ const mapPortfolioActions = (pA) => {
 class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   state: IState = {
     currentSort: null,
-    rows: [],
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { data } = nextProps
-
-    if (data && data.myPortfolios && data.myPortfolios[0]) {
-      return {
-        rows: data.myPortfolios[0].portfolioActions.map(mapPortfolioActions),
-      }
-    }
-
-    return null
+  shouldComponentUpdate(nextProps: IProps) {
+    return isEqual(
+      this.props.data.myPortfolios[0].portfolioActions,
+      nextProps.data.myPortfolios[0].portfolioActions
+    )
+      ? false
+      : true
   }
 
-  putDataInTable = () => {
-    const { rows } = this.state
+  putDataInTable = (rows) => {
     if (!rows) return
 
     const res = {
@@ -80,7 +65,16 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   }
 
   render() {
-    return <Table title="Portfolio actions" rows={this.putDataInTable()} />
+    const { data } = this.props
+
+    let rows = []
+    if (data && data.myPortfolios && data.myPortfolios[0]) {
+      rows = this.putDataInTable(
+        data.myPortfolios[0].portfolioActions.map(mapPortfolioActions)
+      )
+    }
+
+    return <Table title="Portfolio actions" rows={rows} />
   }
 }
 
