@@ -71,6 +71,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                   <PortfolioTable
                     showTable={hasActiveKeysOrWallets}
                     activeKeys={activeKeys}
+                    activeWallets={activeWallets}
                     theme={theme}
                     toggleWallets={this.toggleWallets}
                     subscription={subscriptionData}

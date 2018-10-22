@@ -106,7 +106,6 @@ class PortfolioSelector extends React.Component<IProps> {
           hoverBackground={theme.palette.action.hover}
           fontFamily={theme.typography.fontFamily}
         >
-          {console.log({ newKeys, newCryptoWallets })}
           <Accounts
             {...{
               color,

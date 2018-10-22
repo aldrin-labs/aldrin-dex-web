@@ -38,6 +38,7 @@ class Container extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
       activeKeys,
+      activeWallets,
       filterValueSmallerThenPercentage,
       isUSDCurrently,
       isShownMocks,
@@ -62,7 +63,9 @@ class Container extends Component {
         activeKeys,
         numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
         checkedRows:
-          nextProps.activeKeys.length === 0 ? [] : prevState.checkedRows,
+          activeKeys.concat(activeWallets).length === 0
+            ? []
+            : prevState.checkedRows,
         portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
           composePortfolioAssetsWithMocks,
