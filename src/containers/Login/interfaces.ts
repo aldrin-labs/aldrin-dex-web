@@ -12,6 +12,8 @@ export interface Props {
   storeOpenedModal: Function
   storeModalIsClosing: Function
   storeClosedModal: Function
+  listenersWillOn: Function
+  listenersWillOff: Function
 }
 
 export interface State {

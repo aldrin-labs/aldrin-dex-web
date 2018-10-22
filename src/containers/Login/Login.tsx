@@ -85,9 +85,6 @@ class LoginQuery extends React.Component<Props, State> {
         }
       )
     })
-    this.state.lock.on('show', () => {
-      this.props.storeOpenedModal()
-    })
     this.state.lock.on('hide', () => {
       this.props.storeModalIsClosing()
       this.props.listenersWillOff()
@@ -154,6 +151,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   showLogin = () => {
     if (!this.props.modalIsOpen && !this.props.isLogging) {
+      this.props.storeOpenedModal()
       this.state.lock.show()
       if (this.props.listenersOff) {
         this.setLockListeners()
