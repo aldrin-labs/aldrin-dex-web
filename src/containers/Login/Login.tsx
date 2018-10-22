@@ -31,6 +31,7 @@ const auth0Options = {
   autoclose: true,
   oidcConformant: true,
 }
+
 const SWrapper = styled.div`
   z-index: 100000;
   align-items: center;
@@ -150,7 +151,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    if (!this.props.modalIsOpen && !this.props.isLogging) {
+    if (!this.props.modalIsOpen && !this.props.isLogging && !this.props.modalLogging) {
       this.props.storeOpenedModal()
       this.state.lock.show()
       if (this.props.listenersOff) {
@@ -195,11 +196,12 @@ class LoginQuery extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: any) => ({
-  isLogging: state.login.isLogging,
   user: state.login.user,
   loginStatus: state.login.loginStatus,
-  modalIsOpen: state.login.modalIsOpen,
-  listenersOff: state.login.listenersOff,
+  isLogging: state.login.modalStatuses.isLogging,
+  modalLogging: state.login.modalStatuses.modalLogging,
+  modalIsOpen: state.login.modalStatuses.modalIsOpen,
+  listenersOff: state.login.modalStatuses.listenersOff,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
