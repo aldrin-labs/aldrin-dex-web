@@ -62,7 +62,13 @@ export default class QueryRenderer extends React.Component<IProps> {
             return (
               <>
                 {Placeholder && (
-                  <div style={centerAlign ? { margin: '0 auto' } : {}}>
+                  <div
+                    style={
+                      centerAlign
+                        ? { margin: '0 auto', height: '100%', width: '100%' }
+                        : {}
+                    }
+                  >
                     <Placeholder />{' '}
                   </div>
                 )}
