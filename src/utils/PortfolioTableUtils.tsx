@@ -323,7 +323,7 @@ export const combineTableData = (
   )
 
   const tableData = portfolioAssets
-    .filter((asset) => activeKeys.indexOf(name))
+    .filter((asset) => activeKeys.includes(asset.name))
     .map((row: any, i) => {
       const {
         _id,
