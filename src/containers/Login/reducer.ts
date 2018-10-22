@@ -19,14 +19,15 @@ export default createReducer(
       return {
         ...state,
         user: { ...payload },
-        modalStatuses: { ...{isLogging: true} }
+        modalStatuses: { ...state.modalStatuses, isLogging: true }
       }
     },
     [actions.storeLogin]: (state, payload) => {
       return {
         ...state,
         user: { ...payload },
-        modalStatuses: { ...{ isLogging: false } }
+        loginStatus: true,
+        modalStatuses: { ...state.modalStatuses, isLogging: false  }
       }
     },
     [actions.storeLogout]: (state, payload) => {
@@ -34,39 +35,42 @@ export default createReducer(
         ...state,
         user: null,
         loginStatus: false,
-        modalStatuses: { ...{ modalIsOpen: false } }
+        modalStatuses: { ...state.modalStatuses, modalIsOpen: false }
       }
     },
     [actions.storeModalIsClosing]: (state, payload) => {
       return {
         ...state,
         user: { ...payload },
-        modalStatuses: { ...{ modalLogging: true } }
+        modalStatuses: { ...state.modalStatuses, modalLogging: true }
       }
     },
     [actions.storeOpenedModal]: (state) => {
       return {
         ...state,
-        modalStatuses: { ...{ modalIsOpen: true } }
+        modalStatuses: { ...state.modalStatuses, modalIsOpen: true }
       }
     },
     [actions.storeClosedModal]: (state) => {
       return {
         ...state,
-        modalIsOpen: false,
-        modalStatuses: { ...{ modalLogging: false } }
+        modalStatuses: {
+          ...state.modalStatuses,
+          modalLogging: false,
+          modalIsOpen: false, 
+        }
       }
     },
     [actions.listenersWillOff]: (state) => {
       return {
         ...state,
-        modalStatuses: { ...{ listenersOff: true } }
+        modalStatuses: { ...state.modalStatuses, listenersOff: true }
       }
     },
     [actions.listenersWillOn]: (state) => {
       return {
         ...state,
-        modalStatuses: { ...{ listenersOff: false } }
+        modalStatuses: { ...state.modalStatuses, listenersOff: false }
       }
     }
   },
