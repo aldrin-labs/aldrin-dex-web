@@ -71,6 +71,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                   <PortfolioTable
                     showTable={hasActiveKeysOrWallets}
                     activeKeys={activeKeys}
+                    activeWallets={activeWallets}
                     theme={theme}
                     toggleWallets={this.toggleWallets}
                     subscription={subscriptionData}
@@ -111,7 +112,7 @@ export default compose(
 
 const PortfolioContainer = styled.div`
   display: grid;
-  grid-template-columns: 64px 1fr;
+  grid-template-columns: 4rem calc(100vw - 4rem);
   justify-content: center;
   min-height: 600px;
 `

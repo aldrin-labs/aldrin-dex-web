@@ -79,7 +79,6 @@ const PTextBox = styled.div`
 `
 
 const Container = styled.div`
-  min-height: 400px;
   display: flex;
   justify-content: center;
   height: 45vh;

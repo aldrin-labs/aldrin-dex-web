@@ -41,7 +41,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <GridContainer container={true} spacing={16}>
-          <TableContainer item={true} xs={10} md={8}>
+          <TableContainer item={true} xs={12} md={8}>
             <TableWrapper>
               {Array.isArray(tableData) && (
                 <Table
@@ -55,13 +55,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               )}
             </TableWrapper>
           </TableContainer>
-          <TableContainer item={true} xs={10} md={4}>
+          <TableContainer item={true} xs={12} md={4}>
             <TableWrapper>
               <TradeOrderHistoryTable />
             </TableWrapper>
           </TableContainer>
 
-          <ChartContainer item={true} xs={10} md={12}>
+          <ChartContainer item={true} xs={12} md={12}>
             <ChartWrapper>
               <ChartTitle color="default" variant="h6">
                 Portfolio Value

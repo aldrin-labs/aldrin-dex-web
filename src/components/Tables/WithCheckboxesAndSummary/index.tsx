@@ -18,7 +18,7 @@ import { Props, Cell, OnChange, Row } from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
 import { Typography, IconButton, Grow } from '@material-ui/core'
-import { StyledCheckbox } from './index.styles'
+
 const CustomTableCell = withStyles((theme) => ({
   head: {
     position: 'sticky',
@@ -65,13 +65,20 @@ const styles = (theme) => ({
   },
   checkbox: {
     padding: '0',
-    transition: 'none',
   },
   table: {},
   title: {
     backgroundColor: theme.palette.primary[900],
     position: 'sticky',
     top: 0,
+  },
+  staticCheckbox: {
+    '&& input': {
+      transition: 'none',
+    },
+    '&& svg': {
+      transition: 'none',
+    },
   },
   headRow: {
     height: theme.spacing.unit * 4,
@@ -112,8 +119,7 @@ const renderCheckBox = (
   selected = true
 ) =>
   type === 'expand' ? (
-    <StyledCheckbox
-      disableRipple={true}
+    <Checkbox
       classes={{
         root: className,
       }}
@@ -125,8 +131,7 @@ const renderCheckBox = (
       checked={ind === expandedRow}
     />
   ) : type === 'check' ? (
-    <StyledCheckbox
-      disableRipple={true}
+    <Checkbox
       classes={{
         root: className,
       }}
@@ -190,6 +195,7 @@ const CustomTable = (props: Props) => {
       return
     },
     checkedRows = [],
+    staticCheckbox = false,
   } = props
 
   if (
@@ -274,6 +280,9 @@ const CustomTable = (props: Props) => {
               : expandableRows
                 ? 'expand'
                 : null
+            const checkboxClasses = staticCheckbox
+              ? `${classes.staticCheckbox} ${classes.checkbox}`
+              : classes.checkbox
 
             return (
               <React.Fragment key={ind}>
@@ -285,7 +294,7 @@ const CustomTable = (props: Props) => {
                         onChange,
                         ind,
                         expandedRow,
-                        classes.checkbox,
+                        checkboxClasses,
                         selected
                       )}
                     </CustomTableCell>
