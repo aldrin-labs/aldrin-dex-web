@@ -39,21 +39,20 @@ const mapLabelToDays = {
 export default class PortfolioChart extends Component<Props, State> {
 
   state: State = {
-    activeChart: 4,
+    activeChart: '1Y',
     crosshairValues: [],
     data: [],
   }
 
   static getDerivedStateFromProps(newProps, state) {
-    state.activeChart = (newProps.data && newProps.data.portfolioMain) ? newProps.data.portfolioMain.activeChart : 4;
+    console.log(newProps, state);
     return Object.assign(state, newProps);
   }
   componentWillUnmount() {
     // cacheStack = [];
   }
-  onChangeActiveChart = (index: number) => {
-    this.props.setActiveChart(index)
-    this.props.updateDays(mapLabelToDays[chartBtns[index]])
+  onChangeActiveChart = (label) => {
+    this.props.setActiveChartAndUpdateDays(label, mapLabelToDays[label])
   }
 
   _onNearestX = (value, { index }) => {
@@ -74,7 +73,7 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   _onBrushEnd = (area) => {
-    //    console.log('_onBrushEnd', area)
+    console.log('_onBrushEnd', area)
     //  console.log(cacheStack.length)
 
     this.props.onChangeDateRange(area)
@@ -207,15 +206,15 @@ export default class PortfolioChart extends Component<Props, State> {
         </Chart>
 
         <BtnsContainer>
-          {chartBtns.map((chartBtn, i) => (
+          {chartBtns.map((chartBtn) => (
             <Button
               color="secondary"
               size="small"
               onClick={() => {
-                this.onChangeActiveChart(i);
+                this.onChangeActiveChart(chartBtn);
               }}
               style={
-                i === activeChart
+                chartBtn === activeChart
                   ? {
                     backgroundColor: '#4ed8da',
                     color: '#4c5055',

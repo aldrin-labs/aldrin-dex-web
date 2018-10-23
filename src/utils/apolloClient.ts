@@ -61,7 +61,7 @@ const link = split(
 const defaultState = {
   portfolioMain: {
     __typename: 'portfolioMain',
-    activeChart: 4,
+    activeChart: '1Y',
   },
 }
 
