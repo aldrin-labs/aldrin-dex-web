@@ -41,10 +41,7 @@ const formikEnhancer = withFormik({
     walletAdress: '',
     asset: '',
   }),
-  handleSubmit: async (
-    values,
-    { props, setSubmitting }
-  ) => {
+  handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     const variables = {
       address: values.walletAdress,
       assetName: values.asset,
@@ -67,7 +64,8 @@ const formikEnhancer = withFormik({
           })
         },
       })
-      props.forceUpdateUserContainer();
+      resetForm({})
+      props.forceUpdateUserContainer()
 
       setSubmitting(false)
     } catch (error) {
@@ -101,7 +99,7 @@ class AddCryptoWalletComponent extends React.Component {
             name="name"
             label="Name"
             autoComplete="off"
-            value={values.name}
+            value={values.name || ''}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter cryptoWallet name here..."
@@ -118,7 +116,7 @@ class AddCryptoWalletComponent extends React.Component {
             name="walletAdress"
             label="Address"
             autoComplete="off"
-            value={values.walletAdress}
+            value={values.walletAdress || ''}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter wallet address here..."
@@ -126,7 +124,9 @@ class AddCryptoWalletComponent extends React.Component {
             margin="normal"
             helperText={
               touched.walletAdress &&
-              errors.walletAdress && <FormError>{errors.walletAdress}</FormError>
+              errors.walletAdress && (
+                <FormError>{errors.walletAdress}</FormError>
+              )
             }
           />
           <SSelect>

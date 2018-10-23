@@ -46,7 +46,7 @@ const formikEnhancer = withFormik({
     secretOfApiKey: '',
     exchange: '',
   }),
-  handleSubmit: async (values, { props, setSubmitting }) => {
+  handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     const variables = {
       name: values.name,
       apiKey: values.apiKey,
@@ -64,7 +64,7 @@ const formikEnhancer = withFormik({
           proxy.writeQuery({ query: API.getKeysQuery, data: proxyData })
         },
       })
-
+      resetForm({})
       props.forceUpdateUserContainer()
       setSubmitting(false)
     } catch (error) {
@@ -101,7 +101,7 @@ class AddExchangeKeyComponent extends React.Component {
             name="name"
             label="Name"
             autoComplete="off"
-            value={values.name}
+            value={values.name || ''}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter key name here..."
@@ -121,7 +121,7 @@ class AddExchangeKeyComponent extends React.Component {
             name="apiKey"
             label="API Key"
             autoComplete="off"
-            value={values.apiKey}
+            value={values.apiKey || ''}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter API key here..."
@@ -137,7 +137,7 @@ class AddExchangeKeyComponent extends React.Component {
             name="secretOfApiKey"
             label="Secret"
             autoComplete="off"
-            value={values.secretOfApiKey}
+            value={values.secretOfApiKey || ''}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter secret key here..."
@@ -145,7 +145,9 @@ class AddExchangeKeyComponent extends React.Component {
             margin="normal"
             helperText={
               touched.secretOfApiKey &&
-              errors.secretOfApiKey && <FormError>{errors.secretOfApiKey}</FormError>
+              errors.secretOfApiKey && (
+                <FormError>{errors.secretOfApiKey}</FormError>
+              )
             }
           />
           <SExchangeSelect>
