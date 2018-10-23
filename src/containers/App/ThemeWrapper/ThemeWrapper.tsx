@@ -11,10 +11,14 @@ export default class ThemeWrapper extends Component<Props> {
       palette: {
         type: themeMode,
         red: {
+          light: red[200],
           main: red[400],
+          dark: red.A700,
         },
         green: {
+          light: green[300],
           main: green['500'],
+          dark: green.A700,
         },
         primary: blueGrey,
         secondary: {
@@ -28,6 +32,9 @@ export default class ThemeWrapper extends Component<Props> {
           default: themeMode === 'light' ? '#fafafa' : '#303030',
           paper: themeMode === 'light' ? '#fff' : '#393e44',
         },
+      },
+      typography: {
+        useNextVariants: true,
       },
     })
     if (window) window.theme = theme

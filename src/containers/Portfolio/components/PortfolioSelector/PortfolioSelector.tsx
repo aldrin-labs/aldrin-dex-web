@@ -89,6 +89,8 @@ class PortfolioSelector extends React.Component<IProps> {
       keys,
       activeKeys,
       theme,
+      newCryptoWallets,
+      newKeys,
     } = this.props
 
     const isCheckedAll =
@@ -99,19 +101,17 @@ class PortfolioSelector extends React.Component<IProps> {
     return (
       <Slide in={isSideNavOpen} direction="left">
         <AccountsWalletsBlock
-          onClick={this.props.toggleWallets}
           isSideNavOpen={true}
           background={theme.palette.background.paper}
           hoverBackground={theme.palette.action.hover}
           fontFamily={theme.typography.fontFamily}
         >
-          <QueryRenderer
-            component={Accounts}
-            query={getKeysQuery}
+          <Accounts
             {...{
               color,
               isSideNavOpen,
               isCheckedAll,
+              newKeys,
               keys,
               activeKeys,
               setKeys,
@@ -121,15 +121,14 @@ class PortfolioSelector extends React.Component<IProps> {
             }}
           />
 
-          <QueryRenderer
-            component={Wallets}
-            query={getWalletsQuery}
+          <Wallets
             {...{
               color,
               isSideNavOpen,
               isCheckedAll,
               wallets,
               activeWallets,
+              newCryptoWallets,
               setWallets,
               setActiveWallets,
               onToggleWalletCheckbox: this.onToggleWalletCheckbox,

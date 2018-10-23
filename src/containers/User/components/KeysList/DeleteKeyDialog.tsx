@@ -72,7 +72,7 @@ const formikDialog = withFormik({
     keyNameInput: '',
   }),
   handleSubmit: async ({ keyNameInput }, props) => {
-    const { keyName, handleClose, deleteExchangeKey } = props.props
+    const { keyName, handleClose, deleteExchangeKey, forceUpdateUserContainer } = props.props
     const variables = {
       name: keyNameInput,
       removeTrades: true,
@@ -97,6 +97,7 @@ const formikDialog = withFormik({
           },
         })
         await handleClose()
+        forceUpdateUserContainer();
       } catch (error) {
         console.log(error)
         props.setFieldError('keyNameInput', 'Request error!')

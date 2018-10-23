@@ -26,8 +26,6 @@ export default class GQLChart extends React.Component {
       newState.sum = newProps.coins
         .map((x) => x.quantity)
         .reduce((prev, next) => prev + next, 0)
-      console.log(newState)
-      console.log(newProps)
       return newState
     }
 

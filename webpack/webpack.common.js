@@ -35,6 +35,7 @@ const config = {
         exclude: /node_modules/,
         loader: 'graphql-tag/loader',
       },
+      // remove this as this dublicated by image webpack loader
       {
         test: /\.svg$/,
         loader: 'svg-url-loader',
@@ -47,6 +48,15 @@ const config = {
         include: /node_modules/,
         loaders: ['style-loader', 'css-loader'],
       },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {},
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -54,7 +64,7 @@ const config = {
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
-      // favicon: `public/favicon.ico`
+      favicon: 'public/favicon.ico'
     }),
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: ['vendor'],

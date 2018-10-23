@@ -17,6 +17,8 @@ import {
   IChart,
 } from '@components/BarChart/BarChart.types'
 
+import { LegendContainer } from '@styles/cssUtils'
+
 const axisStyle = {
   ticks: {
     padding: '1rem',
@@ -43,7 +45,9 @@ class BarChart extends Component<IProps, IState> {
       charts,
       height,
       alwaysShowLegend,
+      hideDashForToolTip,
       animated = false,
+      xAxisVertical,
     } = this.props
     const { value } = this.state
 
@@ -69,12 +73,12 @@ class BarChart extends Component<IProps, IState> {
     return (
       <div>
         <Container height={height}>
-          <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal">
-            <LegendContainer
-              value={alwaysShowLegend ? { x: '1', y: '1' } : value}
-            >
-              <DiscreteColorLegend orientation="horizontal" items={ITEMS} />
-            </LegendContainer>
+          <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal" margin={{ bottom: 55}}>
+            {alwaysShowLegend && (
+              <LegendContainer>
+                <StyledDiscreteColorLegend orientation="horizontal" items={ITEMS} />
+              </LegendContainer>
+            )}
             {showPlaceholder ? (
               <VerticalBarSeries
                 animation={animated && 'gentle'}
@@ -99,6 +103,7 @@ class BarChart extends Component<IProps, IState> {
                   animation={animated && 'gentle'}
                   style={axisStyle}
                   key="x"
+                  tickLabelAngle={xAxisVertical ? -90 : 0}
                 />,
                 ...Charts,
               ]
@@ -106,7 +111,7 @@ class BarChart extends Component<IProps, IState> {
 
             {value.x === null || value.y === null ? null : (
               <Hint value={value}>
-                <ChartTooltip>{`${value.x} - ${value.y}%`}</ChartTooltip>
+                <ChartTooltip>{`${value.x} ${hideDashForToolTip ? '' : '-'} ${value.y}%`}</ChartTooltip>
               </Hint>
             )}
           </FlexibleXYPlot>
@@ -115,19 +120,6 @@ class BarChart extends Component<IProps, IState> {
     )
   }
 }
-
-const LegendContainer = styled.div`
-  opacity: ${(props: { value: IValue | { x: null; y: null } }) =>
-    props.value.x === null || props.value.y === null ? '0' : '1'};
-  border-radius: 5px;
-  position: absolute;
-  font-family: Roboto, sans-serif;
-  background-color: #869eb180;
-  top: 0px;
-  left: 10%;
-  color: white;
-  transition: opacity 0.25s ease-out;
-`
 
 const Container = styled.div`
   height: ${(props: { height: number }) =>
@@ -145,6 +137,17 @@ const ChartTooltip = styled.span`
   background-color: #393e44;
   box-shadow: 0 2px 6px 0 #0006;
   padding: 8px;
+`
+// it's a hotfix but we don't know why these items are height 0 and width 0 now.
+// They should be not zero without this code
+const StyledDiscreteColorLegend = styled(DiscreteColorLegend)`
+
+  & .rv-discrete-color-legend-item__color {
+    height: 3px;
+    width: 30px;
+
+  }
+  
 `
 
 export default BarChart

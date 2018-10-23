@@ -5,10 +5,10 @@ import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import { Icon } from '@styles/cssUtils'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+import { flatten, has } from 'lodash-es'
+import { InputRecord } from '@components/DonutChart/types'
 
-export const calcAllSumOfPortfolioAsset = (
-  assets: any
-): number => {
+export const calcAllSumOfPortfolioAsset = (assets: any): number => {
   return assets.reduce((acc: number, curr: any) => {
     return acc + curr.quantity * Number(curr.price)
   }, 0)
@@ -18,19 +18,96 @@ export const dustFilter = (
   tableData: any[],
   filterValueSmallerThenPercentage: number | undefined = 0
 ) => {
-  //  dust filter part
-  return tableData.filter(
-    (el) =>
-      //  if el.percentage is not a number then turn it into 0
-      !el || isNaN(el.portfolioPercentage)
-        ? 0
-        : el.portfolioPercentage >
+  const filtering = (el) =>
+    !el || isNaN(el.portfolioPercentage)
+      ? 0
+      : el.portfolioPercentage >
         (filterValueSmallerThenPercentage
           ? filterValueSmallerThenPercentage
           : 0)
+
+  //  dust filter part
+  return tableData.filter((el) =>
+    //  if el.percentage is not a number then turn it into 0
+    filtering(el)
   )
 }
 
+const calculateTotalPerfOfCoin = (assets: any[]): number =>
+  +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
+
+const colorful = (value: number, red: string, green: string) => ({
+  render: `${value}%`,
+  isNumber: true,
+  style: { color: value > 0 ? green : value < 0 ? red : null },
+})
+
+export const combineIndustryData = (
+  data: any,
+  filterValueLessThen: number,
+  red: string,
+  green: string
+) => {
+  if (!has(data, 'myPortfolios')) {
+    return []
+  }
+
+  const sumPortfolioPercentageOfAsset = (assets: any[], allSum: number) => {
+    let sum = 0
+    assets.forEach((asset) => {
+      sum += percentagesOfCoinInPortfolio(asset, allSum, true)
+    })
+
+    return { render: `${roundPercentage(sum)}%`, isNumber: true }
+  }
+
+  const { myPortfolios } = data
+  const res = flatten(
+    myPortfolios.map(({ industryData }) => {
+      // calculating all assets to calculate allSum
+      const allAssets = []
+      industryData.forEach((row) => {
+        row.assets.forEach((asset) => allAssets.push(asset))
+      })
+      const allSum = calcAllSumOfPortfolioAsset(allAssets)
+
+      return industryData.map((row) => [
+        row.industry,
+        row.assets.length === 1
+          ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
+          : 'multiple',
+        sumPortfolioPercentageOfAsset(row.assets, allSum),
+        colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
+        colorful(+roundPercentage(row.industry1W) || 0, red, green),
+        colorful(+roundPercentage(row.industry1M) || 0, red, green),
+        colorful(+roundPercentage(row.industry3M) || 0, red, green),
+        colorful(+roundPercentage(row.industry1Y) || 0, red, green),
+        row.assets.map((asset) => [
+          '',
+          { render: asset.coin, style: { fontWeight: 700 } },
+          +roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
+          colorful(+roundPercentage(asset.perf), red, green),
+          '',
+          '',
+          '',
+          '',
+        ]),
+      ])
+    })
+  )
+  // applying dustfilter
+  const industryData = res.filter(
+    // becouse of shape of row[2] object {render: 23%, isNumber: true}
+    (row) => +row[2].render.split('%')[0] >= filterValueLessThen
+  )
+
+  const chartData: InputRecord[] = res.map((row) => ({
+    label: row[0],
+    realValue: +row[2].render.split('%')[0],
+  }))
+
+  return { chartData, industryData }
+}
 
 export const percentagesOfCoinInPortfolio = (
   asset: any,
@@ -38,8 +115,8 @@ export const percentagesOfCoinInPortfolio = (
   isUSDCurrently: boolean
 ): number =>
   isUSDCurrently
-    ? Number((asset.price * asset.quantity * 100) / allSum)
-    : Number((asset.price * asset.quantity * 100) / allSum)
+    ? (asset.price * asset.quantity * 100) / allSum
+    : (asset.price * asset.quantity * 100) / allSum
 
 export const onSortTableFull = (
   key,
@@ -101,11 +178,6 @@ export const onSortTableFull = (
     return a[key] - b[key]
   })
 
-  console.log('dateKey: ', dateKey)
-  console.log(newData)
-  console.log(newCurrentSort)
-  console.log('stringKey: ', stringKey)
-
   return {
     newData,
     newCurrentSort,
@@ -134,7 +206,7 @@ export const cloneArrayElementsOneLevelDeep = (arrayOfObjects: object) =>
 export const onSortStrings = (a: string, b: string): number =>
   a.localeCompare(b)
 
-export const roundPercentage = (num: number) => num.toFixed(2)
+export const roundPercentage = (num: number) => num && num.toFixed(2)
 
 // formatNumberToUSFormat - this function takes number or string, then it converts it to string anyway, and then decide
 // — if our number has dot "." (is it number with fractional part or not) and then place commas by one of two regexes,
@@ -156,7 +228,7 @@ export const roundAndFormatNumber = (
   digitsAfterPoint: number,
   format: boolean = true
 ): string => {
-  if (x === null | x === 0 || +x.toFixed(digitsAfterPoint) === 0) {
+  if (x === null || x === 0 || +x.toFixed(digitsAfterPoint) === 0) {
     return '0'
   }
   const res = format
@@ -182,8 +254,8 @@ export const onValidateSum = (
   const mainSymbol = isUSDCurrently ? (
     <Icon className="fa fa-usd" key="usd" />
   ) : (
-      <Icon className="fa fa-btc" key="btc" />
-    )
+    <Icon className="fa fa-btc" key="btc" />
+  )
 
   if (selectedBalances.length === tableData.length) {
     clonedSum.currency = 'Total'
@@ -245,41 +317,44 @@ export const combineTableData = (
   const portfolioAssetsLength = portfolioAssets.length
     ? portfolioAssets.length + 1
     : 0
-  const allSums = portfolioAssets.reduce((acc, cur) => acc + cur.price * cur.quantity, 0);
+  const allSums = portfolioAssets.reduce(
+    (acc, cur) => acc + cur.price * cur.quantity,
+    0
+  )
 
-  const tableData = portfolioAssets.filter(asset => activeKeys.indexOf(name)).map((row: any, i) => {
-    const {
-      _id,
-      price,
-      coin,
-      quantity = 0,
-      name = '',
-      where = '',
-      realized = 0,
-      unrealized = 0,
-      percentChangeDay = 0,
-      portfolioPercentage = 0,
-      dailyPerc = 0,
-      daily = 0,
-    } = row || {}
-    return ({
-      coin,
-      portfolioPercentage: (price * quantity) * 100 / allSums,
-      price,
-      quantity,
-      daily,
-      dailyPerc,
-      currentPrice: price * quantity,
-      realizedPL: realized,
-      unrealizedPL: unrealized,
-      totalPL: realized + unrealized,
-      id: _id,
-      exchange: where,
-    });
-  })
+  const tableData = portfolioAssets
+    .filter((asset) => activeKeys.includes(asset.name))
+    .map((row: any, i) => {
+      const {
+        _id,
+        price,
+        coin,
+        quantity = 0,
+        name = '',
+        where = '',
+        realized = 0,
+        unrealized = 0,
+        percentChangeDay = 0,
+        portfolioPercentage = 0,
+        dailyPerc = 0,
+        daily = 0,
+      } = row || {}
+      return {
+        coin,
+        portfolioPercentage: (price * quantity * 100) / allSums,
+        price,
+        quantity,
+        daily,
+        dailyPerc,
+        currentPrice: price * quantity,
+        realizedPL: realized,
+        unrealizedPL: unrealized,
+        totalPL: realized + unrealized,
+        id: _id,
+        exchange: where,
+      }
+    })
 
-  //  tableData = dustFilter(tableData, filterValueSmallerThenPercentage)
-  console.log(tableData);
   return tableData
 }
 
@@ -291,11 +366,19 @@ export const composePortfolioWithMocks = (
     return
   }
 
-  return isShownMocks
-    ?
-    portfolioAssets.concat(MOCK_DATA)
-    : portfolioAssets
+  return isShownMocks ? portfolioAssets.concat(MOCK_DATA) : portfolioAssets
 }
 
 export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>
   isUSDCurrently ? 2 : 8
+
+export const roundPrice = (price: number, isUSDCurrently: boolean): number =>
+  +price.toFixed(numberOfDigitsAfterPoint(isUSDCurrently))
+
+export const swapDates = ({
+  startDate,
+  endDate,
+}: {
+  startDate: number
+  endDate: number
+}) => ({ startDate: endDate, endDate: startDate })

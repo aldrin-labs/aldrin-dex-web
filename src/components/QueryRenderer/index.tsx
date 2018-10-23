@@ -5,7 +5,8 @@ import { DocumentNode } from 'graphql'
 import { Loading } from '@components/Loading'
 import { ErrorFallback } from '@components/ErrorFallback'
 
-export interface IProps {
+interface HOCTypes {
+  component?: React.ReactNode
   query: DocumentNode
   pollInterval?: number
   withOutSpinner?: boolean
@@ -16,10 +17,13 @@ export interface IProps {
     | 'cache-only'
     | 'no-cache'
     | 'standby'
-  component: React.ReactNode
-  placeholder?: React.ReactElement<{}>
+  placeholder?: React.SFC | React.ComponentClass
   variables?: { [key: string]: any } | null
   [key: string]: any
+}
+
+export interface IProps extends HOCTypes {
+  component: React.ReactNode
 }
 
 export default class QueryRenderer extends React.Component<IProps> {
@@ -58,7 +62,13 @@ export default class QueryRenderer extends React.Component<IProps> {
             return (
               <>
                 {Placeholder && (
-                  <div style={centerAlign ? { margin: '0 auto' } : {}}>
+                  <div
+                    style={
+                      centerAlign
+                        ? { margin: '0 auto', height: '100%', width: '100%' }
+                        : {}
+                    }
+                  >
                     <Placeholder />{' '}
                   </div>
                 )}
@@ -100,3 +110,13 @@ export default class QueryRenderer extends React.Component<IProps> {
     )
   }
 }
+
+export const queryRendererHoc = (params: HOCTypes) => (
+  WrappedComponent: React.ReactNode
+) => (props: object): React.ReactElement<object> => (
+  <QueryRenderer
+    component={WrappedComponent}
+    query={params.query}
+    {...{ ...params, ...props }}
+  />
+)

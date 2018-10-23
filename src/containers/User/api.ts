@@ -17,18 +17,18 @@ export const getKeysQuery = gql`
 `
 
 export const deleteExchangeKeyMutation = gql`
-  mutation deleteExchangeKey($name: String) {
+  mutation deleteExchangeKey($name: String!) {
     deleteExchangeKey(name: $name)
   }
 `
 
 export const addExchangeKeyMutation = gql`
   mutation addExchangeKey(
-    $name: String
-    $apiKey: String
-    $secret: String
-    $exchange: String
-    $date: Date
+    $name: String!
+    $apiKey: String!
+    $secret: String!
+    $exchange: String!
+    $date: Date!
   ) {
     addExchangeKey(
       name: $name
@@ -95,11 +95,13 @@ export const addCryptoWalletMutation = gql`
     $name: String!
     $assetName: String!
     $address: String!
+    $date: Date!
   ) {
     addCryptoWallet(
       name: $name
       assetName: $assetName
       address: $address
+      date: $date
     ) {
       name
       baseAsset

@@ -37,7 +37,9 @@ export const CORRELATION_UPDATE = gql`
 
 export const getCorrelationQuery = gql`
   query getPortfolio($startDate: Int!, $endDate: Int!) {
-    correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
+    myPortfolios {
+      correlationMatrixByDay(startDate: $startDate, endDate: $endDate)
+    }
   }
 `
 
@@ -53,6 +55,28 @@ export const getKeysQuery = gql`
     }
   }
 `
+export const getKeysAndWallets = gql`
+  query getKeys {
+    myPortfolios {
+      keys {
+        _id
+        name
+        date
+        apiKey
+      }
+      cryptoWallets {
+        _id
+        name
+      }
+    }
+  }
+`
+
+export const PORTFOLIO_UPDATE = gql`
+  subscription onPortfolioUpdated {
+    portfolioUpdate
+  }
+`
 
 export const getWalletsQuery = gql`
   query getWallets {
@@ -66,48 +90,21 @@ export const getWalletsQuery = gql`
 `
 
 export const getPortfolioQuery = gql`
-  query getPortfolio {
-    getProfile {
-      portfolio {
-        cryptoWallets {
-          ...CryptoWalletFragmentWithAssets
-        }
-        assetIds
-        ownerId
-        portfolioPerformance {
-          coin
-          btc
-          usd
-        }
+  query getPortfolio($baseCoin: String!) {
+    myPortfolios {
+      name
+      industryData(base: $baseCoin) {
+        industry
         assets {
+          coin
           quantity
-          asset {
-            name
-            symbol
-            priceUSD
-            priceBTC
-            industry {
-              name
-              performance {
-                usdWeek
-                usdMonth
-                usd3Months
-                usdYear
-                btcWeek
-                btcMonth
-                btc3Months
-                btcYear
-              }
-            }
-          }
-          exchange {
-            name
-          }
-          key {
-            name
-            apiKey
-          }
+          perf
+          price
         }
+        industry1W
+        industry1M
+        industry3M
+        industry1Y
       }
     }
   }
@@ -126,6 +123,48 @@ export const getPortfolioMainQuery = gql`
         realized
         unrealized
       }
+    }
+  }
+`
+
+export const getMyPortfolioAndRebalanceQuery = gql`
+  query getPortfolioAndRebalance($baseCoin: String!) {
+    myPortfolios {
+      name
+      portfolioAssets(base: $baseCoin) {
+        name
+        coin
+        where
+        price
+        quantity
+      }
+      myRebalance {
+        total
+        assets {
+          _id
+          id
+          percent
+          amount
+          diff
+        }
+      }
+    }
+  }
+`
+
+export const updateRebalanceMutation = gql`
+  mutation updateRebalance($input: rebalanceInput) {
+    updateRebalance(input: $input) {
+      assets {
+        _id
+        id
+        percent
+        amount
+        diff
+      }
+      total
+      updatedAt
+      createdAt
     }
   }
 `

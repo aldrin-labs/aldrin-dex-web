@@ -2,6 +2,7 @@ import React from 'react'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import QueryRenderer from '@components/QueryRenderer'
 import BarChart from '@components/BarChart/BarChart'
 import {
   IProps,
@@ -18,12 +19,14 @@ import {
   cloneArrayElementsOneLevelDeep,
   onSortTableFull,
 } from '@utils/PortfolioTableUtils'
+import {
+  calcPriceForRebalancedPortfolio,
+} from '@utils/PortfolioRebalanceUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
-  getMyRebalanceQuery,
-  getMyPortfolioQuery,
-} from '@containers/Portfolio/components/PortfolioTable/Rebalance/api'
+  getMyPortfolioAndRebalanceQuery,
+} from '@containers/Portfolio/api'
 import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
@@ -39,6 +42,7 @@ import {
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
 import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -68,15 +72,14 @@ class Rebalance extends React.Component<IProps, IState> {
   componentDidMount() {
     document.addEventListener('keydown', this.escFunction)
 
-    const { isShownMocks, getMyRebalance, getMyPortfolio } = this.props
-
-    this.combineRebalanceData(isShownMocks, getMyRebalance, getMyPortfolio)
+    const { isShownMocks, data } = this.props
+    this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    const { isShownMocks, getMyRebalance, getMyPortfolio } = nextProps
+    const { isShownMocks, data } = nextProps
 
-    this.combineRebalanceData(isShownMocks, getMyRebalance, getMyPortfolio)
+    this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
 
   componentWillUnmount() {
@@ -85,56 +88,63 @@ class Rebalance extends React.Component<IProps, IState> {
 
   combineRebalanceData = (
     isShownMocks: boolean,
-    getMyRebalance: IGetMyRebalanceQuery,
-    getMyPortfolio: IGetMyPortfolioQuery
+    getMyPortfolioAndRebalanceQuery
   ) => {
     const userHasRebalancePortfolio =
-      getMyRebalance &&
-      getMyRebalance.getProfile &&
-      getMyRebalance.getProfile.myRebalance &&
-      getMyRebalance.getProfile.myRebalance.assets &&
-      getMyRebalance.getProfile.myRebalance.assets.length > 0
+      getMyPortfolioAndRebalanceQuery &&
+      getMyPortfolioAndRebalanceQuery.myRebalance &&
+      getMyPortfolioAndRebalanceQuery.myRebalance.assets &&
+      getMyPortfolioAndRebalanceQuery.myRebalance.assets.length > 0
 
     const userHasPortfolio =
-      getMyPortfolio &&
-      getMyPortfolio.getProfile &&
-      getMyPortfolio.getProfile.portfolio &&
-      getMyPortfolio.getProfile.portfolio.assets &&
-      getMyPortfolio.getProfile.portfolio.assets.length > 0
+      getMyPortfolioAndRebalanceQuery &&
+      getMyPortfolioAndRebalanceQuery.portfolioAssets &&
+      getMyPortfolioAndRebalanceQuery.portfolioAssets.length > 0
 
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableRebalancedPortfolioData = getMyRebalance!.getProfile!.myRebalance!.assets!.map(
-        (el: IShapeOfRebalancePortfolioRow, i: number) => ({
+
+      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
+        (el, i: number) => ({
           id: i,
-          exchange: el._id.exchange,
-          symbol: el._id.coin,
-          price: parseFloat(el.amount.$numberDecimal).toFixed(2),
+          exchange: el.where,
+          symbol: el.coin,
+          price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          deltaPrice: el.diff.$numberDecimal,
+          currentPrice: el.price,
         })
       )
 
-      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
-        (el: IShapeOfCurrentPortolioRow, i: number) => ({
-          id: i,
-          exchange: el.exchange.name,
-          symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.quantity).toFixed(2),
-          portfolioPerc: null,
-        })
+
+      newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
+        (el: IShapeOfRebalancePortfolioRow, i: number) => {
+
+          const { price, currentPrice } = calcPriceForRebalancedPortfolio(el, getMyPortfolioAndRebalanceQuery.portfolioAssets)
+
+          return {
+            price,
+            currentPrice,
+            id: i,
+            exchange: el._id.exchange,
+            symbol: el._id.coin,
+            portfolioPerc: null,
+            deltaPrice: el.diff.$numberDecimal,
+          }
+        }
       )
+
+
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolio!.getProfile!.portfolio!.assets!.map(
-        (el: IShapeOfCurrentPortolioRow, i: number) => ({
+      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
+        (el, i: number) => ({
           id: i,
-          exchange: el.exchange.name,
-          symbol: el.asset.symbol,
-          price: (parseFloat(el.asset.priceUSD) * el.quantity).toFixed(2),
+          exchange: el.where,
+          symbol: el.coin,
+          price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
         })
       )
@@ -286,7 +296,7 @@ class Rebalance extends React.Component<IProps, IState> {
         exchange: el.exchange,
         coin: el.symbol,
       },
-      amount: el.price.toString(),
+      amount: el.currentPrice ? (el.price / el.currentPrice).toString() : el.price.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
     }))
@@ -425,85 +435,80 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
 
-    if (tableDataHasData) {
-      return (
-        <PTWrapper tableData={tableDataHasData}>
-          {children}
-          <PTextBox>Add account for Portfolio</PTextBox>
-        </PTWrapper>
-      )
-    }
-
     return (
-      <PTWrapper tableData={true}>
-        {children}
-        <Content>
-          <Container>
-            <CurrentPortfolioTable
-              {...{
-                currentSortForStatic,
-                staticRows,
-                totalStaticRows,
-                filterValueSmallerThenPercentage,
-                isUSDCurrently,
-                theme,
-              }}
-              onSortTable={this.onSortTable}
-            />
-            <RebalancedPortfolioTable
-              {...{
-                isEditModeEnabled,
-                staticRows,
-                rows,
-                currentSortForDynamic,
-                selectedActive,
-                areAllActiveChecked,
-                totalRows,
-                totalPercents,
-                totalTableRows,
-                isPercentSumGood,
-                undistributedMoney,
-                isUSDCurrently,
-                addMoneyInputValue,
-                theme,
-              }}
-              onSortTable={this.onSortTable}
-              onSaveClick={this.onSaveClick}
-              onReset={this.onReset}
-              onEditModeEnable={this.onEditModeEnable}
-              updateState={this.updateState}
-            />
-          </Container>
-          <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-            <ChartColorPicker
-              leftBar={leftBar}
-              rightBar={rightBar}
-              onChangeColor={this.onChangeColor}
-            />
-            <ChartContainer elevation={10}>
-              <Chart>
-                {staticRows[0].portfolioPerc && (
-                  <BarChart
-                    alwaysShowLegend={true}
-                    charts={[
-                      {
-                        data: combineToBarChart(staticRows),
-                        color: this.state.leftBar,
-                        title: 'Current',
-                      },
-                      {
-                        data: combineToBarChart(rows),
-                        color: this.state.rightBar,
-                        title: 'Rebalanced',
-                      },
-                    ]}
-                  />
-                )}
-              </Chart>
-            </ChartContainer>
-          </ChartWrapper>
-        </Content>
-      </PTWrapper>
+      <EmptyTablePlaceholder isEmpty={!!tableDataHasData}>
+        <PTWrapper tableData={true}>
+          {children}
+          <Content>
+            <Container>
+              <CurrentPortfolioTable
+                {...{
+                  currentSortForStatic,
+                  staticRows,
+                  totalStaticRows,
+                  filterValueSmallerThenPercentage,
+                  isUSDCurrently,
+                  theme,
+                }}
+                onSortTable={this.onSortTable}
+              />
+              <RebalancedPortfolioTable
+                {...{
+                  isEditModeEnabled,
+                  staticRows,
+                  rows,
+                  currentSortForDynamic,
+                  selectedActive,
+                  areAllActiveChecked,
+                  totalRows,
+                  totalPercents,
+                  totalTableRows,
+                  isPercentSumGood,
+                  undistributedMoney,
+                  isUSDCurrently,
+                  addMoneyInputValue,
+                  theme,
+                }}
+                onSortTable={this.onSortTable}
+                onSaveClick={this.onSaveClick}
+                onReset={this.onReset}
+                onEditModeEnable={this.onEditModeEnable}
+                updateState={this.updateState}
+              />
+            </Container>
+            <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
+              <ChartColorPicker
+                leftBar={leftBar}
+                rightBar={rightBar}
+                onChangeColor={this.onChangeColor}
+              />
+              <ChartContainer elevation={10}>
+                <Chart>
+                  {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
+                    <BarChart
+                      hideDashForToolTip={true}
+                      xAxisVertical={true}
+                      alwaysShowLegend={true}
+                      charts={[
+                        {
+                          data: combineToBarChart(staticRows),
+                          color: this.state.leftBar,
+                          title: 'Current',
+                        },
+                        {
+                          data: combineToBarChart(rows),
+                          color: this.state.rightBar,
+                          title: 'Rebalanced',
+                        },
+                      ]}
+                    />
+                  )}
+                </Chart>
+              </ChartContainer>
+            </ChartWrapper>
+          </Content>
+        </PTWrapper>
+      </EmptyTablePlaceholder>
     )
   }
 }
@@ -512,21 +517,20 @@ const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
+const RebalanceContainer = (props) => (
+  <QueryRenderer
+    fetchPolicy="network-only"
+    component={Rebalance}
+    query={getMyPortfolioAndRebalanceQuery}
+    variables={{ baseCoin: 'USDT' }}
+    {...props}
+  />
+)
 
 export default compose(
   withTheme(),
   connect(mapStateToProps),
-  graphql(getMyPortfolioQuery, { name: 'getMyPortfolio' }),
-  graphql(getMyRebalanceQuery, { name: 'getMyRebalance' }),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
-    options: ({ values }) => ({
-      refetchQueries: [
-        {
-          query: getMyRebalanceQuery,
-        },
-      ],
-      ...values,
-    }),
   })
-)(Rebalance)
+)(RebalanceContainer)

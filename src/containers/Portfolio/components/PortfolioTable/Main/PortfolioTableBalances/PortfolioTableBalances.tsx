@@ -12,16 +12,18 @@ import {
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 import {
   TableWrapper,
-  PTWrapper,
+  ChartWrapper,
   GridContainer,
-  PTChartContainer,
-  StyledDivider,
+  TableContainer,
+  ChartContainer,
   ChartTitle,
 } from './PortfolioTableBalances.styles'
+import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
+import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
+
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const {
-      children,
       putDataInTable,
       tableData,
       checkedRows,
@@ -35,45 +37,51 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         : []
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
+
     return (
-      <PTWrapper elevation={1} tableData={!!tableDataHasData}>
-        {children}
+      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+        <GridContainer container={true} spacing={16}>
+          <TableContainer item={true} xs={12} md={8}>
+            <TableWrapper>
+              {Array.isArray(tableData) && (
+                <Table
+                  title="Portfolio"
+                  checkedRows={checkedRows}
+                  withCheckboxes={true}
+                  onChange={onCheckboxClick}
+                  onSelectAllClick={onSelectAllClick}
+                  rows={putDataInTable()}
+                />
+              )}
+            </TableWrapper>
+          </TableContainer>
+          <TableContainer item={true} xs={12} md={4}>
+            <TableWrapper>
+              <TradeOrderHistoryTable />
+            </TableWrapper>
+          </TableContainer>
 
-        <GridContainer>
-          <TableWrapper elevation={8}>
-            {Array.isArray(tableData) && (
-              <Table
-                title="Portfolio"
-                checkedRows={checkedRows}
-                withCheckboxes={true}
-                onChange={onCheckboxClick}
-                onSelectAllClick={onSelectAllClick}
-                rows={putDataInTable()}
+          <ChartContainer item={true} xs={12} md={12}>
+            <ChartWrapper>
+              <ChartTitle color="default" variant="h6">
+                Portfolio Value
+              </ChartTitle>
+              <Chart
+                isShownMocks={this.props.isShownMocks}
+                setActiveChart={this.props.setActiveChart}
+                activeChart={this.props.activeChart}
+                style={{
+                  marginLeft: 0,
+                  minHeight: '10vh',
+                }}
+                height="20vh"
+                marginTopHr="10px"
+                coins={coins}
               />
-            )}
-          </TableWrapper>
-
-          <StyledDivider light={true} />
-          <PTChartContainer>
-            <ChartTitle color="default" variant="title">
-              Portfolio Value
-            </ChartTitle>
-
-            <Chart
-              isShownMocks={this.props.isShownMocks}
-              setActiveChart={this.props.setActiveChart}
-              activeChart={this.props.activeChart}
-              style={{
-                marginLeft: 0,
-                minHeight: '10vh',
-              }}
-              height="20vh"
-              marginTopHr="10px"
-              coins={coins}
-            />
-          </PTChartContainer>
+            </ChartWrapper>
+          </ChartContainer>
         </GridContainer>
-      </PTWrapper>
+      </EmptyTablePlaceholder>
     )
   }
 }

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import FaAngleRight from '@material-ui/icons/ChevronRight'
 import FaAngleDown from '@material-ui/icons/ExpandMore'
-import nanoid from 'nanoid'
 
 import { getColor } from '@utils/PortfolioCorrelationUtils'
 import {
@@ -49,8 +48,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
             textColor={activeRow === i ? '#4ed8da' : '#dedede'}
             key={el}
           >
-            <StyledArrowDown show={activeRow === i} />
-
+            {rows.length <= 5 && <StyledArrowDown show={activeRow === i} />}
             {el}
           </HeadCell>
         ))}
@@ -65,7 +63,7 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
             style={{ gridColumnStart: 1 }}
             key={el}
           >
-            <StyledArrowRight show={activeColumn === i} />
+            {rows.length <= 5 && <StyledArrowRight show={activeColumn === i} />}{' '}
             {el}
           </HeadCell>
         ))}
@@ -90,13 +88,14 @@ class CorrelationMatrixTable extends PureComponent<IProps, IState> {
                   this.onCellMouseOver(i, ind)
                 }}
                 style={{ gridColumnStart: i + 2, gridRowStart: ind + 2 }}
-                key={nanoid()}
+                //  ETH/ETH BTC/ETH etc...
+                key={`${rows[i]}/${rows[ind]}`}
               >
                 <CellContent
                   color={backgroundColor}
                   active={i === activeRow && ind === activeColumn}
                 >
-                  <CenterText>{value.toFixed(2)}</CenterText>
+                  <CenterText>{(value * 100).toFixed(1)}</CenterText>
                 </CellContent>
               </Cell>
             )

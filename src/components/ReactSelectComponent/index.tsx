@@ -29,8 +29,17 @@ class ReactSelectComponent extends Component<IProps> {
       multiValueRemoveStyles,
       indicatorSeparatorStyles,
       loadingIndicatorStyles,
+      noOptionsMessageStyles,
       ...otherProps
     } = this.props
+
+    const textColor: string = theme.palette.getContrastText(
+      this.props.theme.palette.background.paper
+    )
+    const fontFamily: string = theme.typography.fontFamily
+
+    const background: string = theme.palette.background.default
+
 
     const customStyles = {
       control: () => {
@@ -52,8 +61,11 @@ class ReactSelectComponent extends Component<IProps> {
       },
       menu: (base: CSSProperties) => ({
         ...base,
-        backgroundColor: theme.palette.grey[800],
+        backgroundColor: background,
         minWidth: '250px',
+        zIndex: 10,
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
         ...menuStyles,
       }),
       menuList: (base: CSSProperties) => ({
@@ -68,18 +80,22 @@ class ReactSelectComponent extends Component<IProps> {
         ['::-webkit-scrollbar-thumb']: {
           background: theme.palette.secondary.main,
         },
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
         ...menuListStyles,
       }),
       option: (base: CSSProperties, state: OptionProps) => ({
         ...base,
-        color: theme.palette.primary.contrastText,
+        color: textColor,
         fontSize: '1.5em',
-        fontFamily: 'Roboto',
+        fontFamily: fontFamily,
         backgroundColor: state.isSelected
-          ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.2)
+        ? theme.palette.action.selected
+          // ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.2)
           : state.isFocused
-            ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.1)
-            : theme.palette.grey[800],
+        ? theme.palette.action.hover
+            // ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.1)
+            : background,
         [':active']: null,
         ...optionStyles,
       }),
@@ -88,13 +104,14 @@ class ReactSelectComponent extends Component<IProps> {
           display: 'flex',
           width: '20px',
           boxSizing: 'border-box',
-          color: theme.palette.primary.contrastText,
+          color: textColor,
           padding: '2px',
           transition: 'color 150ms',
           ...clearIndicatorStyles,
         }
       },
       dropdownIndicator: (base: CSSProperties) => ({
+        color: textColor,
         display: 'flex',
         width: '19px',
         boxSizing: 'border-box',
@@ -104,22 +121,25 @@ class ReactSelectComponent extends Component<IProps> {
       valueContainer: (base: CSSProperties) => ({
         ...base,
         paddingLeft: 0,
+        fontFamily: theme.typography.fontFamily,
         ...valueContainerStyles,
       }),
       singleValue: (base: CSSProperties) => ({
         ...base,
-        color: theme.palette.primary.contrastText,
+        color: textColor,
         marginLeft: '0',
         ...singleValueStyles,
       }),
       placeholder: (base: CSSProperties) => ({
         ...base,
+        fontFamily: theme.typography.fontFamily,
         marginLeft: 0,
         ...placeholderStyles,
       }),
       input: (base: CSSProperties) => ({
         ...base,
-        color: theme.palette.primary.contrastText,
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
         ...inputStyles,
       }),
       multiValue: (base: CSSProperties) => ({
@@ -127,7 +147,7 @@ class ReactSelectComponent extends Component<IProps> {
         [':hover']: {
           borderColor: theme.palette.secondary.main,
         },
-        color: theme.palette.primary.contrastText,
+        color: textColor,
         borderRadius: '3px',
         fontWeight: 'bold',
         backgroundColor: theme.palette.grey[900],
@@ -135,13 +155,13 @@ class ReactSelectComponent extends Component<IProps> {
       }),
       multiValueLabel: (base: CSSProperties) => ({
         ...base,
-        color: theme.palette.primary.contrastText,
+        color: textColor,
         ...multiValueLabelStyles,
       }),
       multiValueRemove: (base: CSSProperties) => ({
         ...base,
         [':hover']: {
-          color: theme.palette.primary.contrastText,
+          color: textColor,
           backgroundColor: theme.palette.secondary.main,
           ...multiValueRemoveStyles,
         },
@@ -153,8 +173,16 @@ class ReactSelectComponent extends Component<IProps> {
       loadingIndicator: (base: CSSProperties) => ({
           ...base,
           display: 'none',
-          ...loadingIndicatorStyles,
+          color: textColor,
+          fontFamily: theme.typography.fontFamily,
+        ...loadingIndicatorStyles,
         }),
+      noOptionsMessage: (base: CSSProperties) => ({
+        ...base,
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
+        ...noOptionsMessageStyles,
+      }),
     }
 
     if (asyncSelect) {

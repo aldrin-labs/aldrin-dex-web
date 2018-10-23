@@ -1,33 +1,37 @@
 import styled from 'styled-components'
-import { Typography, Divider, Paper } from '@material-ui/core'
+import { Typography, Paper, Grid, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
+import { Container } from '../../Industry/Industry.styles'
 
-export const GridContainer = styled.div`
-  align-self: center;
+export const GridContainer = styled(Container)`
+  && {
+    margin: 0;
+  }
+`
 
-  display: Grid;
-  height: 70%;
-  grid-template-columns: 1fr;
+export const ChartWrapper = styled(Paper)`
+  position: relative;
+  height: 100%;
   width: 100%;
-  grid-template-rows: 58% 1% 40%;
-  max-width: 100rem;
+  ${customAquaScrollBar};
+`
 
-  @media (min-width: 1400px) {
-    height: 100%;
+export const TableContainer = styled(Grid)`
+  && {
+    height: 60%;
   }
-  @media (min-width: 1800px) {
-    justify-content: center;
-
-    grid-template-rows: 58% 1% 40%;
-  }
-  @media (min-width: 3000px) {
-    align-items: center;
+`
+export const ChartContainer = styled(Grid)`
+  && {
+    height: 40%;
   }
 `
 
 export const ChartTitle = styled(Typography)`
   margin-left: 1.2rem;
+  top: 0.2rem;
+  position: absolute;
 `
 
 export const PTWrapper = styled(Paper)`
@@ -57,21 +61,14 @@ export const PTWrapper = styled(Paper)`
   ${customAquaScrollBar};
 `
 
-export const StyledDivider = styled(Divider)`
-  margin-bottom: 1rem;
-  grid-column: 1 / span 2;
-`
-
-export const TableWrapper = styled(Paper)`
+export const TableWrapper = styled(Card)`
+  max-height: 100%;
   display: flex;
-  margin: 0 20px 5px;
   flex-direction: column;
-  overflow-x: scroll;
-
   ${customAquaScrollBar};
 `
 
-export const PTChartContainer = styled.div`
+export const PTChartContainer = styled(Grid)`
   position: relative;
   grid-column: 1 / span 2;
   height: 100%;

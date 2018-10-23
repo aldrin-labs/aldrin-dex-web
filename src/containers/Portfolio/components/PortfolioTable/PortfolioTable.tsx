@@ -54,9 +54,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
     }))
   }
-  switchToUsd = () => {
-    this.setState({ isUSDCurrently: true })
-  }
 
   renderTab = () => {
     const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
@@ -69,12 +66,12 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <PortfolioTableBalances
             isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
-            switchToUsd={this.switchToUsd}
             subscription={this.props.subscription}
             activeKeys={this.props.activeKeys}
+            activeWallets={this.props.activeWallets}
             tab={this.state.tab}
             theme={theme}
-            variables={{baseCoin}}
+            variables={{ baseCoin }}
           />
         )
         break
@@ -84,18 +81,25 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             activeKeys={this.props.activeKeys}
             isUSDCurrently={isUSDCurrently}
             theme={theme}
-            switchToUsd={this.switchToUsd}
+            variables={{ baseCoin }}
+            baseCoin={baseCoin}
           />
         )
         break
       case 'rebalance':
-        render = <Rebalance isUSDCurrently={true} />
+        render = <Rebalance baseCoin={baseCoin} isUSDCurrently={true} />
         break
       case 'correlation':
-        render = <Correlation theme={theme} />
+        render = <Correlation baseCoin={baseCoin} theme={theme} />
         break
       case 'optimization':
-        render = <Optimization theme={theme} />
+        render = (
+          <Optimization
+            theme={theme}
+            isUSDCurrently={isUSDCurrently}
+            baseCoin={baseCoin}
+          />
+        )
         break
 
       default:

@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import ReactSelectComponent from '@components/ReactSelectComponent'
+import { IValue } from '@components/BarChart/BarChart.types'
 
 export const customAquaScrollBar = `
   &::-webkit-scrollbar {
@@ -73,4 +74,15 @@ export const Checkbox = styled.input`
 
 export const Icon = styled.i`
   padding-right: 5px;
+`
+
+export const LegendContainer = styled.div`
+  border-radius: 5px;
+  position: absolute;
+  font-family: Roboto, sans-serif;
+  background-color: #869eb180;
+  top: 0px;
+  left: 10%;
+  color: white;
+  transition: opacity 0.25s ease-out;
 `
