@@ -7,13 +7,13 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableFooter from '@material-ui/core/TableFooter'
 import Paper from '@material-ui/core/Paper'
-import { hexToRgbAWithOpacity } from '@styles/helpers'
 import styled from 'styled-components'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Checkbox from '@material-ui/core/Checkbox'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 
+import { hexToRgbAWithOpacity } from '@styles/helpers'
 import { Props, Cell, OnChange, Row } from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
@@ -205,6 +205,8 @@ const CustomTable = (props: Props) => {
   ) {
     return
   }
+
+  console.log(props)
 
   const howManyColumns = withCheckboxes
     ? rows.head.length
