@@ -9,7 +9,7 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { Container, Wrapper, ChartWrapper } from './Industry.styles'
-import { DonutChart } from '@components/DonutChart'
+import { DonutChart } from 'components'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 
 const tableHeadings = [
