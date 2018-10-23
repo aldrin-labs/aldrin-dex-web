@@ -98,7 +98,8 @@ class GQLChart extends React.Component {
       newState.unixTimestampTo = area.right
       newState.lastDrawLocation = null
       newState.activeChart = activeChart
-      newState.period = periods[this.state.activeChart]
+      newState.period = 3600
+      //      newState.period = periods[this.state.activeChart]
       console.log('newState', newState);
       return newState
     })
