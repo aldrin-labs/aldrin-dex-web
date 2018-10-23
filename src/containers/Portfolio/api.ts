@@ -9,6 +9,9 @@ export const PRICE_HISTORY_QUERY = gql`
     $unixTimestampFrom: Int!
     $unixTimestampTo: Int!
   ) {
+    portfolioMain @client {
+      activeChart
+    }
     getPriceHistory(
       coins: $coins
       isBTC: $isBTC

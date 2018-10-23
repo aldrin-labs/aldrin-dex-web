@@ -1,11 +1,10 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'recompose'
-import { withRouter } from 'react-router'
+import { graphql, compose } from 'react-apollo'
 
-import * as actions from '@containers/Portfolio/actions'
-import PortfolioChart from '@containers/Portfolio/components/GQLChart/PortfolioChart/PortfolioChart'
+import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
+import gql from 'graphql-tag'
+
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 
 class GQLChart extends React.Component {
@@ -91,25 +90,19 @@ class GQLChart extends React.Component {
         onChangeDateRange={(area) => this.onChangeDateRange(area)}
         updateDays={(days) => this.updateDays(days)}
         lastDrawLocation={this.state.lastDrawLocation}
+        setActiveChart={(value) => this.props.updatePortfolioMain({ variables: { value, index: 'activeChart' } })}
         {...this.props}
       />
     )
   }
 }
 
-
-const mapDispatchToProps = (dispatch: any) => ({
-  setActiveChart: (ex: any) => dispatch(actions.setActiveChart(ex)),
-})
-
-const mapStateToProps = (store) => ({
-  activeChart: store.portfolio.activeChart,
-})
+const updatePortfolioMain = gql`
+  mutation updatePortfolioMain($index: String!, $value: String!) {
+    updatePortfolioMain(index: $index, value: $value) @client
+  }
+`
 
 export default compose(
-  withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  graphql(updatePortfolioMain, { name: 'updatePortfolioMain' })
 )(GQLChart)

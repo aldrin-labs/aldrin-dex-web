@@ -13,18 +13,18 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
 import { yearData } from '../chartMocks'
-import Highlight from '@containers/Portfolio/components/GQLChart/PortfolioChart/Highlight/Highlight'
+import Highlight from '@components/GQLChart/PortfolioChart/Highlight/Highlight'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { Loading } from '@components/Loading'
 import {
   Props,
   State,
-} from '@containers/Portfolio/components/GQLChart/annotations'
+} from '@components/GQLChart/annotations'
 import {
   Chart,
   SProfileChart,
   BtnsContainer,
-} from '@containers/Portfolio/components/GQLChart/PortfolioChart/styles'
+} from '@components/GQLChart/PortfolioChart/styles'
 
 const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
 
@@ -45,10 +45,8 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   static getDerivedStateFromProps(newProps, state) {
-    const cachedState = Object.assign(state, newProps);
-    delete cachedState.lastDrawLocation;
-    cachedState.lastDrawLocation = newProps.lastDrawLocation ? { ...newProps.lastDrawLocation } : null;
-    return cachedState;
+    state.activeChart = (newProps.data && newProps.data.portfolioMain) ? newProps.data.portfolioMain.activeChart : 4;
+    return Object.assign(state, newProps);
   }
   componentWillUnmount() {
     // cacheStack = [];
@@ -93,6 +91,7 @@ export default class PortfolioChart extends Component<Props, State> {
       data,
       crosshairValues,
       isShownMocks,
+      activeChart,
     } = this.state;
     const { name = '', priceUSD = '' } = coin || {}
 
@@ -216,7 +215,7 @@ export default class PortfolioChart extends Component<Props, State> {
                 this.onChangeActiveChart(i);
               }}
               style={
-                i === this.props.activeChart
+                i === activeChart
                   ? {
                     backgroundColor: '#4ed8da',
                     color: '#4c5055',

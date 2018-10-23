@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { withRouter } from 'react-router'
 
-import Chart from '@containers/Portfolio/components/GQLChart'
+import Chart from '@components/GQLChart'
 import {
   IProps,
   IState,
