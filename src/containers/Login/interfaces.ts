@@ -5,6 +5,8 @@ export interface Props {
   loginStatus: boolean
   modalIsOpen: boolean
   isLogging: boolean
+  listenersOff: boolean
+  modalLogging: boolean
   onLogin: Function
   createUser: Function
   storeLogin: Function
@@ -12,6 +14,8 @@ export interface Props {
   storeOpenedModal: Function
   storeModalIsClosing: Function
   storeClosedModal: Function
+  listenersWillOn: Function
+  listenersWillOff: Function
 }
 
 export interface State {
