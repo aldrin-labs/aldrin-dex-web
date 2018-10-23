@@ -569,13 +569,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                       }
 
                       if (idx === 2) {
-                        const color =
-                          Number(col.replace(/%/g, '')) >= 0
-                            ? green
-                            : red
                         if (!isEditModeEnabled) {
                           return (
-                            <PTDR key={`${col}${idx}`} style={{ color }}>
+                            <PTDR key={`${col}${idx}`}>
                               {col}
                             </PTDR>
                           )
