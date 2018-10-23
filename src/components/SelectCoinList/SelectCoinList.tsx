@@ -4,6 +4,7 @@ import { SelectT } from '@styles/cssUtils'
 import { client } from '@utils/apolloClient'
 import { Data } from './SelectCoinList.types'
 import { ApolloQueryResult } from 'apollo-client'
+import ForwarderRefHoc from '@components/ForwardedRefHOC/ForwarderRef'
 
 const combineDataToSelectOptions = ( data: Data ) => {
   // console.log('data in combine', data);
@@ -30,13 +31,14 @@ const promiseOptions = (inputValue: string) => {
 }
 
 
-export default class SelectCoinList extends React.Component {
+class SelectCoinList extends React.Component {
 
   render() {
-    const { ...otherPropsForSelect } = this.props
+    const { forwardedRef, ...otherPropsForSelect } = this.props
 
     return (
       <SelectT
+        ref={forwardedRef}
         asyncSelect={true}
         loadOptions={promiseOptions}
         cacheOptions={true}
@@ -47,3 +49,5 @@ export default class SelectCoinList extends React.Component {
   }
 }
 
+
+export default ForwarderRefHoc(SelectCoinList)
