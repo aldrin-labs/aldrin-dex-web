@@ -5,73 +5,36 @@ import * as actions from '@containers/Login/actions'
 const initialState = {
   user: null,
   loginStatus: null,
-  modalStatuses: {
-    modalIsOpen: false,
-    isLogging: false,
-    modalLogging: false,
-    listenersOff: false
-  }
+  modalIsOpen: false,
+  isLogging: false,
+  listenersOff: false,
 }
 
 export default createReducer(
   {
     [actions.onLogin]: (state, payload) => {
-      return {
-        ...state,
-        user: { ...payload },
-        modalStatuses: { ...state.modalStatuses, isLogging: true }
-      }
+      return { ...state, user: { ...payload }, isLogging: true }
     },
     [actions.storeLogin]: (state, payload) => {
-      return {
-        ...state,
-        user: { ...payload },
-        loginStatus: true,
-        modalStatuses: { ...state.modalStatuses, isLogging: false  }
-      }
+      return { ...state, user: { ...payload }, loginStatus: true, isLogging: false }
     },
     [actions.storeLogout]: (state, payload) => {
-      return {
-        ...state,
-        user: null,
-        loginStatus: false,
-        modalStatuses: { ...state.modalStatuses, modalIsOpen: false }
-      }
+      return { ...state, user: null, loginStatus: false, modalIsOpen: false }
     },
     [actions.storeModalIsClosing]: (state, payload) => {
-      return {
-        ...state,
-        user: { ...payload },
-        modalStatuses: { ...state.modalStatuses, modalLogging: true }
-      }
+      return { ...state, user: { ...payload }, isLogging: true }
     },
     [actions.storeOpenedModal]: (state) => {
-      return {
-        ...state,
-        modalStatuses: { ...state.modalStatuses, modalIsOpen: true }
-      }
+      return {...state, modalIsOpen: true}
     },
     [actions.storeClosedModal]: (state) => {
-      return {
-        ...state,
-        modalStatuses: {
-          ...state.modalStatuses,
-          modalLogging: false,
-          modalIsOpen: false, 
-        }
-      }
+      return {...state, modalIsOpen: false, isLogging: false}
     },
     [actions.listenersWillOff]: (state) => {
-      return {
-        ...state,
-        modalStatuses: { ...state.modalStatuses, listenersOff: true }
-      }
+      return {...state, listenersOff: true}
     },
     [actions.listenersWillOn]: (state) => {
-      return {
-        ...state,
-        modalStatuses: { ...state.modalStatuses, listenersOff: false }
-      }
+      return {...state, listenersOff: false}
     }
   },
   initialState
