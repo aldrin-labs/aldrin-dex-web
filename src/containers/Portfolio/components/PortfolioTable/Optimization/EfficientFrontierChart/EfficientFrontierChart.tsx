@@ -63,15 +63,13 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
     console.log('data', data);
     console.log('highlightedDotData', highlightedDotData);
 
-
-
     return (
       <Container>
         <FlexibleXYPlot margin={{ left: 80, bottom: 65 }}>
           {highlightedDotData.length < 1 ? (
             <LineMarkSeries
               animation="gentle"
-              curve={'curveNatural'}
+              curve={'curveCatmullRom'}
               color="rgba(91, 96, 102, 0.7)"
               data={[{ x: 4, y: 1 }, { x: 3, y: 2 }, { x: 8, y: 5 }]}
             />
@@ -87,7 +85,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
               <YAxis hideLine style={axisStyle} key="y" title="Return" left={-20} />,
               <LineMarkSeries
                 key="c"
-                curve={'curveNatural'}
+                curve={'curveCatmullRom'}
                 color="#4fd8da90"
                 onSeriesMouseOut={this.onSeriesMouseOut}
                 onValueMouseOver={this.onValueMouseOver}

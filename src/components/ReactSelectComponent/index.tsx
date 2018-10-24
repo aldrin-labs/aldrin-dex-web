@@ -29,6 +29,7 @@ class ReactSelectComponent extends Component<IProps> {
       multiValueRemoveStyles,
       indicatorSeparatorStyles,
       loadingIndicatorStyles,
+      noOptionsMessageStyles,
       ...otherProps
     } = this.props
 
@@ -63,6 +64,8 @@ class ReactSelectComponent extends Component<IProps> {
         backgroundColor: background,
         minWidth: '250px',
         zIndex: 10,
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
         ...menuStyles,
       }),
       menuList: (base: CSSProperties) => ({
@@ -77,6 +80,8 @@ class ReactSelectComponent extends Component<IProps> {
         ['::-webkit-scrollbar-thumb']: {
           background: theme.palette.secondary.main,
         },
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
         ...menuListStyles,
       }),
       option: (base: CSSProperties, state: OptionProps) => ({
@@ -168,8 +173,16 @@ class ReactSelectComponent extends Component<IProps> {
       loadingIndicator: (base: CSSProperties) => ({
           ...base,
           display: 'none',
-          ...loadingIndicatorStyles,
+          color: textColor,
+          fontFamily: theme.typography.fontFamily,
+        ...loadingIndicatorStyles,
         }),
+      noOptionsMessage: (base: CSSProperties) => ({
+        ...base,
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
+        ...noOptionsMessageStyles,
+      }),
     }
 
     if (asyncSelect) {

@@ -25,12 +25,13 @@ const auth0Options = {
     primaryColor: '#4ed8da',
   },
   languageDictionary: {
-    title: 'Be the early adopter',
+    title: 'Be an early adopter',
   },
   autofocus: true,
   autoclose: true,
   oidcConformant: true,
 }
+
 const SWrapper = styled.div`
   z-index: 100000;
   align-items: center;
@@ -84,9 +85,6 @@ class LoginQuery extends React.Component<Props, State> {
           this.createUserReq(profile)
         }
       )
-    })
-    this.state.lock.on('show', () => {
-      this.props.storeOpenedModal()
     })
     this.state.lock.on('hide', () => {
       this.props.storeModalIsClosing()
@@ -153,7 +151,8 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    if (!this.props.modalIsOpen && !this.props.isLogging) {
+    if (!this.props.modalIsOpen && !this.props.isLogging && !this.props.modalLogging) {
+      this.props.storeOpenedModal()
       this.state.lock.show()
       if (this.props.listenersOff) {
         this.setLockListeners()
@@ -198,11 +197,13 @@ class LoginQuery extends React.Component<Props, State> {
 
 const mapStateToProps = (state: any) => ({
   isLogging: state.login.isLogging,
+  modalLogging: state.login.modalLogging,
   user: state.login.user,
   loginStatus: state.login.loginStatus,
   modalIsOpen: state.login.modalIsOpen,
   listenersOff: state.login.listenersOff,
 })
+
 
 const mapDispatchToProps = (dispatch: any) => ({
   onLogin: () => dispatch(actions.onLogin()),

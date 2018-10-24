@@ -128,13 +128,8 @@ export default class CurrentPortfolioTable extends React.Component<
                     >
                       {cols.map((col, index) => {
                         if (col.match(/%/g)) {
-                          const color =
-                            Number(col.replace(/%/g, '')) >= 0
-                              ? green
-                              : red
-
                           return (
-                            <PTDC key={`${col}${index}`} style={{ color }}>
+                            <PTDC key={`${col}${index}`}>
                               {col}
                             </PTDC>
                           )

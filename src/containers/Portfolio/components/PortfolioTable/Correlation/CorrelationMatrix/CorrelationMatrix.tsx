@@ -80,6 +80,9 @@ class CorrelationMatrix extends PureComponent<IProps> {
           >
             {isFullscreenEnabled ? null : (
               <ButtonsWrapper>
+                <Typography noWrap={true} align="center" variant="h6">
+                  Time Range
+                </Typography>
                 <SelectTimeRange
                   style={{
                     height: 'auto',
@@ -89,9 +92,9 @@ class CorrelationMatrix extends PureComponent<IProps> {
                   setPeriodToStore={setCorrelationPeriod}
                   period={period}
                 />
-                <Typography align="center" variant="body1">
-                  {formatDate(startDate)} ---
-                  {formatDate(endDate)}
+                <Typography noWrap={true} align="center" variant="body1">
+                  {formatDate(startDate, 'MM/DD/YYYY')}–
+                  {formatDate(endDate, 'MM/DD/YYYY')}
                 </Typography>
               </ButtonsWrapper>
             )}

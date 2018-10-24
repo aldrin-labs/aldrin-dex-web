@@ -37,6 +37,7 @@ export default class SelectAllExchangeList extends React.Component {
 
     return (
       <SelectT
+        defaultOptions={true}
         asyncSelect={true}
         loadOptions={promiseOptions}
         cacheOptions={true}

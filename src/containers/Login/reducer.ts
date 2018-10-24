@@ -7,6 +7,7 @@ const initialState = {
   loginStatus: null,
   modalIsOpen: false,
   isLogging: false,
+  modalLogging: false,
   listenersOff: false,
 }
 
@@ -22,13 +23,13 @@ export default createReducer(
       return { ...state, user: null, loginStatus: false, modalIsOpen: false }
     },
     [actions.storeModalIsClosing]: (state, payload) => {
-      return { ...state, user: { ...payload }, isLogging: true }
+      return { ...state, user: { ...payload }, modalLogging: true }
     },
     [actions.storeOpenedModal]: (state) => {
       return {...state, modalIsOpen: true}
     },
     [actions.storeClosedModal]: (state) => {
-      return {...state, modalIsOpen: false, isLogging: false}
+      return {...state, modalIsOpen: false, modalLogging: false}
     },
     [actions.listenersWillOff]: (state) => {
       return {...state, listenersOff: true}

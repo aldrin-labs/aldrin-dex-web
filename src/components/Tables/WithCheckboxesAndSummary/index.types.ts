@@ -20,6 +20,8 @@ export type Row = Cell[]
 
 export interface Props extends WithStyles {
   withCheckboxes?: boolean
+  // removes animation from checkbox
+  staticCheckbox?: boolean
   // use NaN if you want to select nothing
   expandedRow?: number
   padding: 'default' | 'checkbox' | 'dense' | 'none'

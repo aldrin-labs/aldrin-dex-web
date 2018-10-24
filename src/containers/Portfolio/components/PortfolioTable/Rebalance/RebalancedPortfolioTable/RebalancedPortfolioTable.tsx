@@ -492,10 +492,11 @@ export default class RebalancedPortfolioTable extends React.Component<
                               classNamePrefix="custom-select-box"
                               isClearable={true}
                               isSearchable={true}
-                              openMenuOnClick={false}
+                              openMenuOnClick={true}
                               options={exchangeOptions}
                               menuPortalTarget={document.body}
                               menuStyles={{
+                                fontSize: '12px',
                                 minWidth: '150px',
                                 height: '200px',
                               }}
@@ -518,6 +519,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                                 this.handleSelectChange(rowIndex, 'exchange', optionSelected)
                               }
+                              noOptionsMessage={()=>`No such exchange in our DB found`}
                             />
                           </PTDR>
                         )
@@ -534,6 +536,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                               openMenuOnClick={false}
                               menuPortalTarget={document.body}
                               menuStyles={{
+                                fontSize: '12px',
                                 minWidth: '150px',
                                 height: '200px',
                               }}
@@ -553,6 +556,10 @@ export default class RebalancedPortfolioTable extends React.Component<
                               inputStyles={{
                                 marginLeft: '0',
                               }}
+                              dropdownIndicatorStyles={{
+                                display: 'none',
+                              }}
+                              noOptionsMessage={()=>`No such coin in our DB found`}
                               onChange={(optionSelected: { label: string; value: string } | null) =>
                                 this.handleSelectChange(rowIndex, 'symbol', optionSelected)
                               }
@@ -562,13 +569,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                       }
 
                       if (idx === 2) {
-                        const color =
-                          Number(col.replace(/%/g, '')) >= 0
-                            ? green
-                            : red
                         if (!isEditModeEnabled) {
                           return (
-                            <PTDR key={`${col}${idx}`} style={{ color }}>
+                            <PTDR key={`${col}${idx}`}>
                               {col}
                             </PTDR>
                           )
