@@ -28,12 +28,18 @@ const config = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: [ /node_modules/, /src/storybook/node_modules/ ],
+        exclude: [ 
+          path.join(__dirname, '/node_modules/'),
+          path.join(__dirname, '/src/storybook/node_modules/')
+        ],
         loader: 'babel-loader?cacheDirectory=true',
       },
       {
         test: /\.(graphql|gql)$/,
-        exclude: [ /node_modules/, /src/storybook/node_modules/ ],
+                exclude: [ 
+          path.join(__dirname, '/node_modules/'),
+          path.join(__dirname, '/src/storybook/node_modules/')
+        ],
         loader: 'graphql-tag/loader',
       },
       // remove this as this dublicated by image webpack loader
