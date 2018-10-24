@@ -37,7 +37,7 @@ export interface IObj {
 }
 
 export interface IState {
-  expandedRow: number
+  expandedRows: number[]
   chartData: any[]
   industryData: IObj[] | null
   portfolio: IPortfolio | null
