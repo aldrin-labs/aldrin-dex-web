@@ -124,7 +124,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <Container container={true} spacing={16}>
           <Grid item={true} xs={12} md={8}>
-            <Wrapper elevation={8}>
+            <Wrapper>
               <Table
                 expandableRows={true}
                 onChange={this.expandRow}
@@ -136,7 +136,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </Wrapper>
           </Grid>
           <Grid item={true} xs={12} md={4} style={{}}>
-            <ChartWrapper elevation={8}>
+            <ChartWrapper>
               <DonutChart
                 labelPlaceholder="Industries %"
                 data={chartData}
