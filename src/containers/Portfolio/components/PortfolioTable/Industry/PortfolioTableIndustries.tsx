@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Grid } from '@material-ui/core'
 
-import { Table, DonutChart } from 'components'
+import { Table, DonutChart } from '@storybook-components'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import {
   combineIndustryData,

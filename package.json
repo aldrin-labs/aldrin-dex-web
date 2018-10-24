@@ -50,6 +50,7 @@
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleNameMapper": {
       ".+\\.(svg|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy",
+      "^@storybook-components(.*)$": "<rootDir>/src/storybook/src/components$1",
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@containers(.*)$": "<rootDir>/src/containers$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
