@@ -3641,9 +3641,9 @@ component-inherit@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
 
-"components@git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#release-v0.0.5":
+"components@git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#release-1":
   version "0.0.1"
-  resolved "git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#481a13d8843168f880918e80b39bc0dfb389588f"
+  resolved "git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#2706787d85e3cd3c0552c34fa824ec41ec8a376e"
   dependencies:
     "@babel/runtime" "7.0.0-beta.41"
     "@material-ui/core" "^3.2.2"

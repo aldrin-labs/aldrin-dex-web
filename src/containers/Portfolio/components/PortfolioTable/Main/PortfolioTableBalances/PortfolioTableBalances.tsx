@@ -9,7 +9,7 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
-import Table from '@components/Tables/WithCheckboxesAndSummary'
+import { Table } from 'components'
 import {
   TableWrapper,
   ChartWrapper,
