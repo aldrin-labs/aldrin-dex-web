@@ -915,13 +915,6 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
-"@babel/runtime@7.0.0-beta.41":
-  version "7.0.0-beta.41"
-  resolved "http://registry.npmjs.org/@babel/runtime/-/runtime-7.0.0-beta.41.tgz#776ce13391b8154ccfdea71018a47b63e4d97e74"
-  dependencies:
-    core-js "^2.5.3"
-    regenerator-runtime "^0.11.1"
-
 "@babel/runtime@7.0.0-rc.1":
   version "7.0.0-rc.1"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-rc.1.tgz#42f36fc5817911c89ea75da2b874054922967616"
@@ -1378,12 +1371,6 @@
 "@types/react@*", "@types/react@16.4.6":
   version "16.4.6"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.6.tgz#5024957c6bcef4f02823accf5974faba2e54fada"
-  dependencies:
-    csstype "^2.2.0"
-
-"@types/react@16.4.1":
-  version "16.4.1"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.1.tgz#c53bbfb4a78933db587da085ac60dbf5fcf73f8f"
   dependencies:
     csstype "^2.2.0"
 
@@ -3640,29 +3627,6 @@ component-indexof@0.0.3:
 component-inherit@0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/component-inherit/-/component-inherit-0.0.3.tgz#645fc4adf58b72b649d5cae65135619db26ff143"
-
-"components@git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#release-1":
-  version "0.0.1"
-  resolved "git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#2706787d85e3cd3c0552c34fa824ec41ec8a376e"
-  dependencies:
-    "@babel/runtime" "7.0.0-beta.41"
-    "@material-ui/core" "^3.2.2"
-    "@material-ui/icons" "^3.0.1"
-    "@material-ui/lab" "^1.0.0-alpha.5"
-    "@types/react" "16.4.1"
-    "@types/react-dom" "^16.0.4"
-    "@types/react-select" "^2.0.2"
-    css-loader "^1.0.0"
-    lodash-es "^4.17.10"
-    nanoid "^1.0.2"
-    react "^16.4.1"
-    react-dom "^16.3.2"
-    react-loadable "^5.4.0"
-    react-pose "^3.3.3"
-    react-vis "^1.11.1"
-    styled-components "^4.0.0-beta.4"
-    typescript "^3.0.3"
-    typescript-styled-plugin "^0.6.0"
 
 compressible@~2.0.14:
   version "2.0.14"
