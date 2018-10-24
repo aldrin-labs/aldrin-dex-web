@@ -78,6 +78,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     })
   }
 
+  componentDidMount() {
+    this.onSelectAllClick(undefined, true)
+  }
+
   putDataInTable = () => {
     const { industryData } = this.state
     if (!industryData) return
