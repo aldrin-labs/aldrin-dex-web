@@ -2,14 +2,13 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Grid } from '@material-ui/core'
 
-import Table from '@components/Tables/WithCheckboxesAndSummary'
+import { Table, DonutChart } from 'components'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { combineIndustryData } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { Container, Wrapper, ChartWrapper } from './Industry.styles'
-import { DonutChart } from 'components'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 
 const tableHeadings = [
