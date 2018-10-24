@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { withStyles, Theme } from '@material-ui/core/styles'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -14,7 +14,14 @@ import Checkbox from '@material-ui/core/Checkbox'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 
-import { Props, Cell, OnChange, Row } from './index.types'
+import {
+  Props,
+  Cell,
+  OnChange,
+  Row,
+  Rows,
+  OnChangeWithEvent,
+} from './index.types'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
 import { Typography, IconButton, Grow } from '@material-ui/core'
@@ -110,36 +117,71 @@ const isNumeric = (cell: Cell) =>
   typeof cell === 'number' ||
   cell.isNumber
 
-const renderCheckBox = (
-  type: 'check' | 'expand' | null,
-  onChange: OnChange,
-  ind: number,
-  expandedRow: number | undefined = undefined,
+const renderCheckBox = ({
+  type,
+  onChange,
+  ind = -1,
+  rows,
+  checkedRows = [],
   className = '',
-  selected = true
-) =>
+  checked = false,
+  disabled = false,
+}: {
+  type: 'check' | 'expand' | 'checkAll' | 'expandAll' | null
+  onChange: OnChange & OnChangeWithEvent
+  ind?: number
+  checkedRows?: number[]
+  rows?: Rows
+  className?: any
+  checked?: boolean
+  disabled?: boolean
+}) =>
   type === 'expand' ? (
     <Checkbox
       classes={{
-        root: className,
+        root: className.checkboxClasses,
       }}
+      disabled={disabled}
       checkedIcon={<ExpandLess />}
       icon={<ExpandMore />}
-      onChange={(e) => {
-        onChange(e, ind)
+      onChange={() => {
+        onChange(ind)
       }}
-      checked={ind === expandedRow}
+      checked={checked}
     />
   ) : type === 'check' ? (
     <Checkbox
       classes={{
-        root: className,
+        root: className.checkboxClasses,
       }}
       indeterminate={false}
-      checked={selected}
-      onChange={(e) => {
-        onChange(e, ind)
+      checked={checked}
+      onChange={() => {
+        onChange(ind)
       }}
+    />
+  ) : type === 'checkAll' ? (
+    <Checkbox
+      classes={{
+        indeterminate: className.indeterminate,
+        root: className.root,
+      }}
+      indeterminate={
+        rows && checkedRows.length > 0 && rows.body.length > checkedRows.length
+      }
+      checked={checked}
+      onChange={onChange as OnChangeWithEvent}
+    />
+  ) : type === 'expandAll' ? (
+    <Checkbox
+      classes={{
+        root: className.root,
+      }}
+      checkedIcon={<ExpandLess />}
+      icon={<ExpandMore />}
+      disabled={disabled}
+      checked={checked}
+      onChange={onChange as OnChangeWithEvent}
     />
   ) : null
 
@@ -181,7 +223,6 @@ const renderCell = (cell: Cell, id: number, numeric: boolean) => {
 
 const CustomTable = (props: Props) => {
   const {
-    expandedRow,
     classes,
     padding = 'dense',
     rows = { head: [], body: [], footer: [] },
@@ -191,13 +232,14 @@ const CustomTable = (props: Props) => {
     onChange = () => {
       return
     },
+    expandableRows = false,
+    expandedRows = [],
     onSelectAllClick = () => {
       return
     },
     checkedRows = [],
     staticCheckbox = false,
   } = props
-
   if (
     rows !== undefined &&
     !Array.isArray(rows.head) &&
@@ -209,7 +251,6 @@ const CustomTable = (props: Props) => {
   const howManyColumns = withCheckboxes
     ? rows.head.length
     : rows.head.length - 1
-  const expandableRows = typeof expandedRow === 'number'
 
   return (
     <Background className={classes.root} elevation={elevation}>
@@ -237,23 +278,24 @@ const CustomTable = (props: Props) => {
             </TableRow>
           )}
           <TableRow className={classes.headRow}>
-            {withCheckboxes && (
+            {(withCheckboxes || expandableRows) && (
               <CustomTableCell padding="checkbox">
-                <Checkbox
-                  classes={{
+                {renderCheckBox({
+                  rows,
+                  checkedRows,
+                  type: withCheckboxes ? 'checkAll' : 'expandAll',
+                  checked: withCheckboxes
+                    ? rows && rows.body.length === checkedRows.length
+                    : expandedRows.length > 0,
+                  onChange: onSelectAllClick,
+                  className: {
                     indeterminate: classes.indeterminateCheckbox,
                     root: classes.checkbox,
-                  }}
-                  indeterminate={
-                    checkedRows.length > 0 &&
-                    rows.body.length > checkedRows.length
-                  }
-                  checked={rows.body.length === checkedRows.length}
-                  onChange={onSelectAllClick}
-                />
+                  },
+                })}
               </CustomTableCell>
             )}
-            {expandableRows && <CustomTableCell padding="checkbox" />}
+
             {rows.head.map((cell) => {
               return (
                 <CustomTableCell
@@ -271,6 +313,7 @@ const CustomTable = (props: Props) => {
         <TableBody>
           {rows.body.map((row, ind: number) => {
             const selected = checkedRows.indexOf(ind) !== -1
+            const expandedRow = expandedRows.indexOf(ind) !== -1
             const rowClassName = selected
               ? `${classes.row} + ${classes.rowSelected}`
               : classes.row
@@ -289,14 +332,15 @@ const CustomTable = (props: Props) => {
                 <TableRow className={rowClassName}>
                   {typeOfCheckbox !== null && (
                     <CustomTableCell padding="checkbox">
-                      {renderCheckBox(
-                        typeOfCheckbox,
+                      {renderCheckBox({
                         onChange,
                         ind,
-                        expandedRow,
-                        checkboxClasses,
-                        selected
-                      )}
+                        checked: withCheckboxes ? selected : expandedRow,
+                        disabled:
+                          expandable && row[row.length - 1].length === 0,
+                        className: { checkboxClasses, disabledExpandRow: '' },
+                        type: typeOfCheckbox,
+                      })}
                     </CustomTableCell>
                   )}
 
@@ -320,7 +364,7 @@ const CustomTable = (props: Props) => {
                         <Grow
                           // but we hiding until have an expandedRow
                           // saying to open expanded content
-                          in={ind === expandedRow}
+                          in={expandedRow}
                           key={i}
                           unmountOnExit={true}
                           mountOnEnter={true}

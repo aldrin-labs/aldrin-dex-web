@@ -4,7 +4,11 @@ import { Grid } from '@material-ui/core'
 
 import Table from '@components/Tables/WithCheckboxesAndSummary'
 import { IndProps } from '@containers/Portfolio/interfaces'
-import { combineIndustryData } from '@utils/PortfolioTableUtils'
+import {
+  combineIndustryData,
+  onCheckBoxClick,
+  onAllCheckBoxClick,
+} from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
@@ -61,7 +65,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     industryData: null,
     chartData: null,
     currentSort: null,
-    expandedRow: NaN,
+    expandedRows: [],
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -72,6 +76,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       theme,
       filterValueSmallerThenPercentage,
     })
+  }
+
+  componentDidMount() {
+    this.onSelectAllClick(undefined, true)
   }
 
   putDataInTable = () => {
@@ -87,15 +95,26 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }
   }
 
-  expandRow = (e: React.ChangeEvent, index: number) => {
-    this.setState((prevState) => {
-      return { expandedRow: index === prevState.expandedRow ? NaN : index }
-    })
+  onSelectAllClick = (e: Event | undefined, selectAll = false) => {
+    if ((e && e.target && e.target.checked) || selectAll) {
+      this.setState((state) => ({
+        expandedRows: state.industryData
+          ? state.industryData.map((n: any, i: number) => i)
+          : [],
+      }))
+      return
+    }
+    this.setState({ expandedRows: [] })
   }
+
+  expandRow = (id: number) =>
+    this.setState((prevState) => ({
+      expandedRows: onCheckBoxClick(prevState.expandedRows, id),
+    }))
 
   render() {
     const { baseCoin } = this.props
-    const { industryData, chartData } = this.state
+    const { industryData, chartData, expandedRows } = this.state
 
     const tableDataHasData = industryData
       ? !!Object.keys(industryData).length
@@ -105,17 +124,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <Container container={true} spacing={16}>
           <Grid item={true} xs={12} md={8}>
-            <Wrapper elevation={8}>
+            <Wrapper>
               <Table
+                expandableRows={true}
                 onChange={this.expandRow}
-                expandedRow={this.state.expandedRow}
+                onSelectAllClick={this.onSelectAllClick}
+                expandedRows={expandedRows}
                 rows={this.putDataInTable()}
                 title={`Industry Performance in ${baseCoin}`}
               />
             </Wrapper>
           </Grid>
           <Grid item={true} xs={12} md={4} style={{}}>
-            <ChartWrapper elevation={8}>
+            <ChartWrapper>
               <DonutChart
                 labelPlaceholder="Industries %"
                 data={chartData}
