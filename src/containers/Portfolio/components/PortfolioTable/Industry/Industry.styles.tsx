@@ -1,11 +1,12 @@
 import { Paper, Grid } from '@material-ui/core'
 import styled from 'styled-components'
 import { customAquaScrollBar } from '@styles/cssUtils'
+import { navBarHeight } from '@components/NavBar/NavBar'
 
 export const Container = styled(Grid)`
   && {
     overflow-y: auto;
-    height: calc(100vh - 80px);
+    height: calc(100vh - ${navBarHeight}px);
     padding: 0.5rem 0;
     width: 100%;
   }
