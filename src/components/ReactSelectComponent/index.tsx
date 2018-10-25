@@ -8,7 +8,6 @@ import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import { IProps } from './index.types'
 import withTheme from '@material-ui/core/styles/withTheme'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
-import ForwarderRefHoc from '@components/ForwardedRefHOC/ForwarderRef'
 
 class ReactSelectComponent extends Component<IProps> {
   render() {
@@ -31,7 +30,6 @@ class ReactSelectComponent extends Component<IProps> {
       indicatorSeparatorStyles,
       loadingIndicatorStyles,
       noOptionsMessageStyles,
-      forwardedRef,
       ...otherProps
     } = this.props
 
@@ -190,7 +188,6 @@ class ReactSelectComponent extends Component<IProps> {
     if (asyncSelect) {
       return (
         <AsyncSelect
-          ref={forwardedRef}
           className="custom-async-select-box"
           classNamePrefix="custom-async-select-box"
           styles={customStyles}
@@ -202,7 +199,6 @@ class ReactSelectComponent extends Component<IProps> {
 
     return (
       <SelectReact
-        ref={forwardedRef}
         className="custom-select-box"
         classNamePrefix="custom-select-box"
         styles={customStyles}
@@ -227,4 +223,4 @@ const DropdownIndicator = (props: object) =>
     </components.DropdownIndicator>
   )
 
-export default ForwarderRefHoc(withTheme()(ReactSelectComponent))
+export default withTheme()(ReactSelectComponent)
