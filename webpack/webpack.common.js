@@ -12,7 +12,7 @@ const config = {
     publicPath: '/',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    extensions: ['.js', '.jsx', '.web.js', '.mjs', '.ts', '.tsx'],
     alias: {
       '@components': path.join(__dirname, '..', 'src', 'components'),
       '@containers': path.join(__dirname, '..', 'src', 'containers'),
@@ -34,6 +34,11 @@ const config = {
         test: /\.(graphql|gql)$/,
         exclude: /node_modules/,
         loader: 'graphql-tag/loader',
+      },
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: "javascript/auto",
       },
       // remove this as this dublicated by image webpack loader
       {
