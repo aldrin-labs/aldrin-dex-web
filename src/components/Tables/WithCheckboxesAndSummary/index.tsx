@@ -249,8 +249,6 @@ const CustomTable = (props: Props) => {
     return
   }
 
-  console.log(props)
-
   const howManyColumns = withCheckboxes
     ? rows.head.length
     : rows.head.length - 1
