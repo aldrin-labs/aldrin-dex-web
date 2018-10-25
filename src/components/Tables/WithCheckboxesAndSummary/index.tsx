@@ -7,12 +7,12 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import TableFooter from '@material-ui/core/TableFooter'
 import Paper from '@material-ui/core/Paper'
-import { hexToRgbAWithOpacity } from '@styles/helpers'
 import styled from 'styled-components'
 import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Checkbox from '@material-ui/core/Checkbox'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import ExpandLess from '@material-ui/icons/ExpandLess'
+
 
 import {
   Props,
@@ -22,6 +22,7 @@ import {
   Rows,
   OnChangeWithEvent,
 } from './index.types'
+import { hexToRgbAWithOpacity } from '@styles/helpers'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { isObject } from 'lodash-es'
 import { Typography, IconButton, Grow } from '@material-ui/core'
