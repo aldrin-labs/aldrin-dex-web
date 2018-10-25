@@ -14,7 +14,6 @@ const config = {
   resolve: {
     extensions: ['.js', '.jsx', '.web.js', '.mjs', '.ts', '.tsx'],
     alias: {
-      '@storybook-components': path.join(__dirname, '..', 'src', 'storybook', 'src',  'components'),
       '@components': path.join(__dirname, '..', 'src', 'components'),
       '@containers': path.join(__dirname, '..', 'src', 'containers'),
       '@utils': path.join(__dirname, '..', 'src', 'utils'),
@@ -28,18 +27,12 @@ const config = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: [ 
-          path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/')
-        ],
+        exclude: /node_modules/,
         loader: 'babel-loader?cacheDirectory=true',
       },
       {
         test: /\.(graphql|gql)$/,
-                exclude: [ 
-          path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/')
-        ],
+        exclude: /node_modules/,
         loader: 'graphql-tag/loader',
       },
       {
