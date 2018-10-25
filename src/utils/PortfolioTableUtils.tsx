@@ -8,6 +8,26 @@ import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataM
 import { flatten, has } from 'lodash-es'
 import { InputRecord } from '@components/DonutChart/types'
 
+export const onCheckBoxClick = (selected: any[], id) => {
+  const selectedIndex = selected.indexOf(id)
+  let newSelected: number[] = []
+
+  if (selectedIndex === -1) {
+    newSelected = newSelected.concat(selected, +id)
+  } else if (selectedIndex === 0) {
+    newSelected = newSelected.concat(selected.slice(1))
+  } else if (selectedIndex === selected.length - 1) {
+    newSelected = newSelected.concat(selected.slice(0, -1))
+  } else if (selectedIndex > 0) {
+    newSelected = newSelected.concat(
+      selected.slice(0, selectedIndex),
+      selected.slice(selectedIndex + 1)
+    )
+  }
+
+  return newSelected
+}
+
 export const calcAllSumOfPortfolioAsset = (assets: any): number => {
   return assets.reduce((acc: number, curr: any) => {
     return acc + curr.quantity * Number(curr.price)
@@ -82,16 +102,21 @@ export const combineIndustryData = (
         colorful(+roundPercentage(row.industry1M) || 0, red, green),
         colorful(+roundPercentage(row.industry3M) || 0, red, green),
         colorful(+roundPercentage(row.industry1Y) || 0, red, green),
-        row.assets.map((asset) => [
-          '',
-          { render: asset.coin, style: { fontWeight: 700 } },
-          +roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
-          colorful(+roundPercentage(asset.perf), red, green),
-          '',
-          '',
-          '',
-          '',
-        ]),
+        //  expanded row content
+        row.assets.length === 1
+          ? []
+          : row.assets.map((asset) => [
+              '',
+              { render: asset.coin, style: { fontWeight: 700 } },
+              +roundPercentage(
+                percentagesOfCoinInPortfolio(asset, allSum, true)
+              ),
+              colorful(+roundPercentage(asset.perf), red, green),
+              '',
+              '',
+              '',
+              '',
+            ]),
       ])
     })
   )
