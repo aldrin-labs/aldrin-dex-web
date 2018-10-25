@@ -8,7 +8,7 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
-import { Table } from 'components'
+import { Table } from '@storybook-components'
 import {
   TableWrapper,
   ChartWrapper,

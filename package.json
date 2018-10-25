@@ -50,6 +50,7 @@
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleNameMapper": {
       ".+\\.(svg|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy",
+      "^@storybook-components(.*)$": "<rootDir>/src/storybook/src/components$1",
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@containers(.*)$": "<rootDir>/src/containers$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
@@ -65,7 +66,6 @@
     "react-dom": "^16.3.2"
   },
   "dependencies": {
-    "components": "git+https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git#release-1",
     "@babel/runtime": "^7.0.0-beta.41",
     "@material-ui/core": "^3.2.2",
     "@material-ui/icons": "^3.0.1",
