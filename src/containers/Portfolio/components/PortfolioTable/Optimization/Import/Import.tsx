@@ -41,7 +41,6 @@ export default class Import extends PureComponent<IProps> {
     baseCoin: 'USDT',
     rebalancePeriod: null,
     isRiskFreeAssetEnabled: true,
-    riskProfile: null,
     focusedInput: false,
     startDate: null,
     endDate: null,
@@ -117,19 +116,9 @@ export default class Import extends PureComponent<IProps> {
     baseCoin: string,
     rebalancePeriod: number,
     isRiskFreeAssetEnabled: boolean,
-    riskProfile: null,
     startDate: object,
     endDate: object
   ) => {
-    // console.log('client', client)
-    // console.log('storeData', storeData)
-    // console.log('baseCoin', baseCoin)
-    // console.log('rebalancePeriod', +rebalancePeriod)
-    // console.log('isRiskFreeAssetEnabled', +isRiskFreeAssetEnabled)
-    // console.log('riskProfile', riskProfile)
-    // console.log('startDate', startDate)
-    // console.log('endDate', endDate)
-
     this.props.toggleLoading()
 
     const { totalPriceOfAllAssets } = this.state
@@ -182,7 +171,6 @@ export default class Import extends PureComponent<IProps> {
       baseCurrency: baseCoin,
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
-      riskProfile: riskProfile,
       // startDate: 1528392417,
       // endDate: 1533662817,
       // startDate: +startDate._d/1000,
@@ -473,7 +461,6 @@ export default class Import extends PureComponent<IProps> {
       baseCoin,
       rebalancePeriod,
       isRiskFreeAssetEnabled,
-      riskProfile,
       startDate,
       endDate,
       initialPortfolio,
@@ -518,7 +505,7 @@ export default class Import extends PureComponent<IProps> {
     // console.log('minimumDate', minimumDate);
 
     const isAllOptionsFilled =
-      baseCoin && rebalancePeriod && riskProfile && startDate && endDate
+      baseCoin && rebalancePeriod && startDate && endDate
 
     return (
       <ApolloConsumer>
@@ -597,29 +584,7 @@ export default class Import extends PureComponent<IProps> {
                       />
                     </FlexWrapper>
                   </InputElementWrapper>
-                  <InputElementWrapper>
-                    <StyledInputLabel color={textColor}>
-                      Risk profile
-                    </StyledInputLabel>
-                    <SelectOptimization
-                      options={RiskProfile}
-                      isClearable={true}
-                      singleValueStyles={{
-                        fontSize: '0.875rem',
-                      }}
-                      placeholderStyles={{
-                        fontSize: '0.875rem',
-                      }}
-                      optionStyles={{
-                        fontSize: '0.875rem',
-                      }}
-                      onChange={(
-                        optionSelected: { label: string; value: string } | null
-                      ) => this.onSelectChange('riskProfile', optionSelected)}
-                    />
-                  </InputElementWrapper>
                   <ButtonMUI
-                    style={{ marginTop: '1rem' }}
                     color={'secondary'}
                     variant={'outlined'}
                     disabled={!isAllOptionsFilled}
@@ -630,7 +595,6 @@ export default class Import extends PureComponent<IProps> {
                         baseCoin,
                         rebalancePeriod,
                         isRiskFreeAssetEnabled,
-                        riskProfile,
                         startDate,
                         endDate
                       )
@@ -748,7 +712,7 @@ const StyledInputLabel = styled(InputLabel)`
 `
 
 const InputElementWrapper = styled.div`
-  margin-bottom: 22px;
+  margin-bottom: 38px;
   display: flex;
   flex-direction: column;
   //margin-bottom: 14px;
