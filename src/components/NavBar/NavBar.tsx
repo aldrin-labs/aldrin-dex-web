@@ -46,9 +46,7 @@ const NavBarRaw: SFC<Props> = ({
     position="static"
     hide={hide}
     color="default"
-    // style={{
-    //   background: type === 'dark' ? primary[800] : primary[300],
-    // }}
+    background={type === 'light' && primary[300]}
   >
     <Toolbar variant="dense" style={{ height: '48px' }}>
       <Grid container={true} alignContent={'stretch'}>
@@ -92,7 +90,11 @@ export const NavBar = withTheme()(NavBarRaw)
 
 const Nav = styled(AppBar)`
   z-index: 1;
-  ${(props: { hide: boolean }) =>
+  ${({ background }: { background: string | false }) =>
+    background ? `background:${background};` : ''} ${(props: {
+    hide: boolean
+    background: string
+  }) =>
     props.hide
       ? `opacity: 0;
     position: absolute;
@@ -104,8 +106,5 @@ const Logo = styled.img`
   z-index: 1;
   position: relative;
   margin: auto 0;
-
-  @media (max-width: 768px) {
-    margin: 0;
-  }
+  height: 36px;
 `
