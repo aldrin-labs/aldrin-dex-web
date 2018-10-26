@@ -18,12 +18,12 @@ import {
 import { Icon } from '@styles/cssUtils'
 import { Table } from '@storybook-components'
 
-// const usdHeadingForCurrent = [
-//   { name: 'Exchange', value: 'exchange' },
-//   { name: 'Coin', value: 'symbol' },
-//   { name: 'Portfolio %', value: 'portfolioPerc' },
-//   { name: 'USD', value: 'price' },
-// ]
+const usdHeadingForCurrent = [
+  { name: 'Exchange', value: 'exchange' },
+  { name: 'Coin', value: 'symbol' },
+  { name: 'Portfolio %', value: 'portfolioPerc' },
+  { name: 'USD', value: 'price' },
+]
 
 // const btcHeadingForCurrent = [
 //   { name: 'Exchange', value: 'exchange' },
