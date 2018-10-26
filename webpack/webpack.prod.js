@@ -37,6 +37,8 @@ const config = {
       caching: true,
       paths: true,
       shorthands: true,
+      // Necessary as a workaround for https://github.com/apollographql/react-apollo/issues/1831
+      flattening: true,
     }),
     new UglifyJSPlugin({
       parallel: true,
