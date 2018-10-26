@@ -1,4 +1,4 @@
-import { Paper, Grid } from '@material-ui/core'
+import { Grid, Card } from '@material-ui/core'
 import styled from 'styled-components'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { navBarHeight } from '@components/NavBar/NavBar'
@@ -12,14 +12,14 @@ export const Container = styled(Grid)`
   }
 `
 
-export const ChartWrapper = styled(Paper)`
+export const ChartWrapper = styled(Card)`
   max-height: 100%;
   height: 75%;
   width: 100%;
   ${customAquaScrollBar};
 `
 
-export const Wrapper = styled(Paper)`
+export const Wrapper = styled(Card)`
   max-height: 100%;
   display: flex;
   margin: 0 20px 5px;

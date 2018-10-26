@@ -7,6 +7,33 @@ import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { flatten, has } from 'lodash-es'
 import { InputRecord } from '@components/DonutChart/types'
+import { Tooltip } from '@material-ui/core'
+import { FullWidthBlock } from '@components/OldTable/Table'
+
+const config = {
+  industryTableEmptyCellTooltip: `The "-" represents fields for which we are not successfully
+   able to calculate a value due to missing data.`,
+}
+
+export const onCheckBoxClick = (selected: any[], id) => {
+  const selectedIndex = selected.indexOf(id)
+  let newSelected: number[] = []
+
+  if (selectedIndex === -1) {
+    newSelected = newSelected.concat(selected, +id)
+  } else if (selectedIndex === 0) {
+    newSelected = newSelected.concat(selected.slice(1))
+  } else if (selectedIndex === selected.length - 1) {
+    newSelected = newSelected.concat(selected.slice(0, -1))
+  } else if (selectedIndex > 0) {
+    newSelected = newSelected.concat(
+      selected.slice(0, selectedIndex),
+      selected.slice(selectedIndex + 1)
+    )
+  }
+
+  return newSelected
+}
 
 export const calcAllSumOfPortfolioAsset = (assets: any): number => {
   return assets.reduce((acc: number, curr: any) => {
@@ -37,7 +64,14 @@ const calculateTotalPerfOfCoin = (assets: any[]): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
 const colorful = (value: number, red: string, green: string) => ({
-  render: `${value}%`,
+  render:
+    value === 0 ? (
+      <Tooltip enterDelay={250} title={config.industryTableEmptyCellTooltip}>
+        <FullWidthBlock style={{ width: '100%' }}>-</FullWidthBlock>
+      </Tooltip>
+    ) : (
+      `${value}%`
+    ),
   isNumber: true,
   style: { color: value > 0 ? green : value < 0 ? red : null },
 })
@@ -77,21 +111,27 @@ export const combineIndustryData = (
           ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
           : 'multiple',
         sumPortfolioPercentageOfAsset(row.assets, allSum),
+        // portfolio performance
         colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
         colorful(+roundPercentage(row.industry1W) || 0, red, green),
         colorful(+roundPercentage(row.industry1M) || 0, red, green),
         colorful(+roundPercentage(row.industry3M) || 0, red, green),
         colorful(+roundPercentage(row.industry1Y) || 0, red, green),
-        row.assets.map((asset) => [
-          '',
-          { render: asset.coin, style: { fontWeight: 700 } },
-          +roundPercentage(percentagesOfCoinInPortfolio(asset, allSum, true)),
-          colorful(+roundPercentage(asset.perf), red, green),
-          '',
-          '',
-          '',
-          '',
-        ]),
+        //  expanded row content
+        row.assets.length === 1
+          ? []
+          : row.assets.map((asset) => [
+              '',
+              { render: asset.coin, style: { fontWeight: 700 } },
+              +roundPercentage(
+                percentagesOfCoinInPortfolio(asset, allSum, true)
+              ),
+              colorful(+roundPercentage(asset.perf), red, green),
+              '',
+              '',
+              '',
+              '',
+            ]),
       ])
     })
   )

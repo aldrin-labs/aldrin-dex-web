@@ -46,7 +46,7 @@ const TableToolbar = (props) => {
     >
       <div className={classes.title}>
         {numSelected > 0 ? (
-          <Typography type="subheading">{numSelected} selected</Typography>
+          <Typography type="subtitle1">{numSelected} selected</Typography>
         ) : (
           <Typography type="title">Accounts</Typography>
         )}

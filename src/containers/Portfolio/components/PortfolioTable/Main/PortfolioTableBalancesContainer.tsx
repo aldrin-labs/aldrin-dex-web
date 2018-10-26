@@ -210,7 +210,7 @@ class Container extends Component {
     this.setState({ checkedRows: [] })
   }
 
-  onCheckboxClick = (e: Event, id: number | string) => {
+  onCheckboxClick = (id: number | string) => {
     //  from material UI docs
     const { checkedRows: selected } = this.state
     const selectedIndex = selected.indexOf(id)

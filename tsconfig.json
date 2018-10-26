@@ -18,6 +18,7 @@
     "lib": ["esnext", "dom"],
     "typeRoots": ["./node_modules/@types", "./typings"],
     "paths": {
+      "@storybook-components": ["src/storybook/src/components/*"],
       "@components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],

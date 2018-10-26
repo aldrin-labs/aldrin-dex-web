@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { withRouter } from 'react-router'
 
-import * as actions from '@containers/Portfolio/actions'
-import Chart from '@containers/Portfolio/components/GQLChart'
+import Chart from '@components/GQLChart'
 import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
-import Table from '@components/Tables/WithCheckboxesAndSummary'
+import { Table } from '@storybook-components'
 import {
   TableWrapper,
   ChartWrapper,
@@ -68,8 +67,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               </ChartTitle>
               <Chart
                 isShownMocks={this.props.isShownMocks}
-                setActiveChart={this.props.setActiveChart}
-                activeChart={this.props.activeChart}
                 style={{
                   marginLeft: 0,
                   minHeight: '10vh',
@@ -87,12 +84,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-  setActiveChart: (ex: any) => dispatch(actions.setActiveChart(ex)),
 })
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
-  activeChart: store.portfolio.activeChart,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 

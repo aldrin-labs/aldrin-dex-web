@@ -1,21 +1,35 @@
 import * as React from 'react'
+import { graphql, compose } from 'react-apollo'
 
-import PortfolioChart from '@containers/Portfolio/components/GQLChart/PortfolioChart/PortfolioChart'
+import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
+import gql from 'graphql-tag'
+
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 
-export default class GQLChart extends React.Component {
+const periods = {
+  '1D': 60,
+  '7D': 3600,
+  '1M': 3600,
+  '3M': 3600,
+  '1Y': 86400,
+}
+
+class GQLChart extends React.Component {
   state = {
     coins: [],
     assets: [],
+    period: 3600,
     sum: 0,
     unixTimestampFrom: this.getTimestampRange(365).left,
     unixTimestampTo: this.getTimestampRange(365).right,
     days: 365,
+    activeChart: '1Y',
     lastDrawLocation: null,
   }
 
   static getDerivedStateFromProps(newProps, state) {
+    console.log({ newProps })
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
       // tslint:disable-next-line:no-object-mutation
@@ -26,9 +40,10 @@ export default class GQLChart extends React.Component {
       newState.sum = newProps.coins
         .map((x) => x.quantity)
         .reduce((prev, next) => prev + next, 0)
+
+      // newState.activeChart = newProps.localActiveChart;
       return newState
     }
-
     return null
   }
 
@@ -72,23 +87,69 @@ export default class GQLChart extends React.Component {
     })
   }
 
+  setActiveChartAndUpdateDays(activeChart, days) {
+    console.log({ activeChart, days });
+    //    this.props.updatePortfolioMain({ variables: { activeChart, index: 'activeChart' } })
+    this.setState((prevState) => {
+      const newState = { ...prevState }
+      const area = this.getTimestampRange(days)
+      newState.days = days
+      newState.unixTimestampFrom = area.left
+      newState.unixTimestampTo = area.right
+      newState.lastDrawLocation = null
+      newState.activeChart = activeChart
+      newState.period = 3600
+      //      newState.period = periods[this.state.activeChart]
+      console.log('newState', newState);
+      return newState
+    })
+  }
+
   render() {
+
+    const variables = {
+      coins: this.state.coins,
+      isBTC: false,
+      unixTimestampFrom: this.state.unixTimestampFrom,
+      unixTimestampTo: this.state.unixTimestampTo,
+      period: this.state.period,
+    };
+    console.log(this.state);
     return (
       <QueryRenderer
         component={PortfolioChart}
         query={PRICE_HISTORY_QUERY}
-        variables={{
-          coins: this.state.coins,
-          isBTC: false,
-          unixTimestampFrom: this.state.unixTimestampFrom,
-          unixTimestampTo: this.state.unixTimestampTo,
-        }}
+        variables={variables}
         withOutSpinner={true}
         onChangeDateRange={(area) => this.onChangeDateRange(area)}
-        updateDays={(days) => this.updateDays(days)}
+        setActiveChartAndUpdateDays={(label, days) => this.setActiveChartAndUpdateDays(label, days)}
         lastDrawLocation={this.state.lastDrawLocation}
+        setActiveChart={(v) => this.setActiveChart(v)}
+        activeChart={this.state.activeChart}
         {...this.props}
       />
     )
   }
 }
+
+const updatePortfolioMain = gql`
+  mutation updatePortfolioMain($index: String!, $value: String!) {
+    updatePortfolioMain(index: $index, value: $value) @client
+  }
+`
+const portfolioMainState = gql`
+query portfolioMain {
+  portfolioMain @client {
+      activeChart
+  }
+}
+`
+
+export default compose(
+  graphql(updatePortfolioMain, { name: 'updatePortfolioMain' }),
+  graphql(portfolioMainState, {
+    props: ({ data: { portfolioMain: { activeChart } } }) => ({
+      localActiveChart: activeChart,
+    }),
+  })
+)(GQLChart)
