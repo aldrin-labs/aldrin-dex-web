@@ -153,11 +153,12 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    if (
+    const isLoginPopUpClosed =
       !this.props.modalIsOpen &&
       !this.props.isLogging &&
       !this.props.modalLogging
-    ) {
+
+    if (isLoginPopUpClosed) {
       this.props.storeOpenedModal()
       this.state.lock.show()
       if (this.props.listenersOff) {
