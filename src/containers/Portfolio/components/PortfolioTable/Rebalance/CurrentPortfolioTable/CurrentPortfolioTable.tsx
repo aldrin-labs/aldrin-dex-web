@@ -42,10 +42,7 @@ export default class CurrentPortfolioTable extends React.Component<
       palette.background.paper
     )
     const background = palette.background.paper
-    const secondary = palette.secondary.main
     const evenBackground = palette.action.hover
-    const red = palette.red.main
-    const green = palette.green.main
 
 
     const mainSymbol = isUSDCurrently ? (
