@@ -715,7 +715,6 @@ const InputElementWrapper = styled.div`
   margin-bottom: 38px;
   display: flex;
   flex-direction: column;
-  //margin-bottom: 14px;
 
   &:not(:nth-child(3)) {
     flex-direction: row;
