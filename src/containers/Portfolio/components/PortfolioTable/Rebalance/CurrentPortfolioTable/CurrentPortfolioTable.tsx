@@ -1,48 +1,27 @@
 import * as React from 'react'
-import ArrowDownward from '@material-ui/icons/ArrowDownward'
-
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
-import { IRow } from '../Rebalance.types'
 import { IProps, IState } from './CurrentPortfolioTable.types'
+import { IRow } from '../Rebalance.types'
 
-// import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
-import {
-  TableAndHeadingWrapper,
-  PTHead,
-  PTFoot,
-  PTDC,
-  PTBody,
-  PTHC,
-  PTR,
-} from './CurrentPortfolioTable.styles'
 import { Icon } from '@styles/cssUtils'
 import { Table } from '@storybook-components'
-
-const usdHeadingForCurrent = [
-  { name: 'Exchange', value: 'exchange' },
-  { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'USD', value: 'price' },
-]
-
-// const btcHeadingForCurrent = [
-//   { name: 'Exchange', value: 'exchange' },
-//   { name: 'Coin', value: 'symbol' },
-//   { name: 'Portfolio %', value: 'portfolioPerc' },
-//   { name: 'BTC', value: 'price' },
-// ]
+import styled from 'styled-components'
 
 export default class CurrentPortfolioTable extends React.Component<
   IProps,
   IState
 > {
-  transformData = (staticRows) => {
+  transformData = (staticRows, mainSymbol) => {
     const transformedData = staticRows.map((row) => {
       return Object.values({
         exchange: row.exchange,
         coin: { render: row.symbol, style: { fontWeight: 700 } },
         portfolioPerc: { render: `${row.portfolioPerc}%`, isNumber: true },
-        price: { render: `$ ${row.price}`, isNumber: true },
+        price: {
+          additionalRender: mainSymbol,
+          render: formatNumberToUSFormat(row.price),
+          isNumber: true,
+        },
       })
     })
 
@@ -50,10 +29,13 @@ export default class CurrentPortfolioTable extends React.Component<
   }
 
   putDataInTable = () => {
-    // const { theme, isUSDCurrently } = this.props
-    // const { tableData } = this.state
     const { staticRows, isUSDCurrently, totalStaticRows } = this.props
     const { transformData } = this
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" />
+    ) : (
+      <Icon className="fa fa-btc" />
+    )
 
     console.log('staticRows', staticRows)
 
@@ -64,45 +46,40 @@ export default class CurrentPortfolioTable extends React.Component<
         { render: 'portfolio%', isNumber: true },
         { render: isUSDCurrently ? 'usd' : 'btc', isNumber: true },
       ],
-      body: transformData(staticRows),
-      footer: [' ', ' ', {render: '100%', isNumber: true }, {render: `$ ${totalStaticRows}`, isNumber: true }],
+      body: transformData(staticRows, mainSymbol),
+      footer: [
+        ' ',
+        ' ',
+        { render: '100%', isNumber: true },
+        {
+          additionalRender: mainSymbol,
+          render: formatNumberToUSFormat(totalStaticRows),
+          isNumber: true,
+        },
+      ],
     }
   }
 
   render() {
-    const {
-      isUSDCurrently,
-      currentSortForStatic,
-      totalStaticRows,
-      staticRows,
-      filterValueSmallerThenPercentage,
-      onSortTable,
-      theme: { palette },
-    } = this.props
-
-    const textColor = palette.getContrastText(palette.background.paper)
-    const background = palette.background.paper
-    const evenBackground = palette.action.hover
-
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-      <Icon className="fa fa-btc" />
-    )
-
-    const tableHeadingsCurrentPortfolio = isUSDCurrently
-      ? usdHeadingForCurrent
-      : btcHeadingForCurrent
-
     return (
-      <Table
-        title="Current portfolio"
-        withCheckboxes={false}
-        rows={this.putDataInTable()}
-      />
+      <TableWrapper>
+        <Table
+          title="Current portfolio"
+          withCheckboxes={false}
+          rows={this.putDataInTable()}
+          style={{ width: '50%' }}
+        />
+      </TableWrapper>
     )
   }
 }
+
+
+const TableWrapper = styled.div`
+  width: 50%;
+  display: flex;
+`
+
 
 {
   /*<TableAndHeadingWrapper textColor={textColor}>*/
