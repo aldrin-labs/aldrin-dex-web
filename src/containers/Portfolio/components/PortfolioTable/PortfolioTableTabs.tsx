@@ -12,10 +12,10 @@ import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
+import { Tooltip, Typography, Fade } from '@material-ui/core'
 
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
-import { Tooltip, Typography, Fade } from '@material-ui/core'
-import { navBarHeight } from '@components/NavBar/NavBar'
+import { navBarHeight } from '@components/NavBar/NavBar.styles'
 
 class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
