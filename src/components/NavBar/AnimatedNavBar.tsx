@@ -15,6 +15,7 @@ const AnimatedContainer = styled(
   })
 )`
   position: relative;
+  z-index: 1;
 `
 
 export default class AnimatedNavBar extends Component<Props> {
