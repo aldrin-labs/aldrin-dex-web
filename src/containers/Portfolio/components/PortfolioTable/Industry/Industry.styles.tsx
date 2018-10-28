@@ -1,7 +1,7 @@
 import { Grid, Card } from '@material-ui/core'
 import styled from 'styled-components'
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { navBarHeight } from '@components/NavBar/NavBar'
+import { navBarHeight } from '@components/NavBar/NavBar.styles'
 
 export const Container = styled(Grid)`
   && {
