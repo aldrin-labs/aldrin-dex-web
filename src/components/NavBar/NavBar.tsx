@@ -8,6 +8,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 
 import MainLogo from '@icons/MainLogo.png'
 import { Nav, Logo } from './NavBar.styles'
+import Feedback from '@components/Feedback'
 
 export interface Props extends WithTheme {
   hide?: boolean
@@ -19,6 +20,9 @@ const Chart = (props: any) => <Link to="/chart" {...props} />
 
 const NavBarRaw: SFC<Props> = ({
   theme: {
+    transitions: {
+      duration: { standard },
+    },
     palette: {
       type,
       common,
@@ -79,7 +83,17 @@ const NavBarRaw: SFC<Props> = ({
               Chart
             </Button>
           </Grid>
-          <Grid item={true} xs={2}>
+
+          <Grid
+            justify="flex-end"
+            wrap="nowrap"
+            direction={'row'}
+            container={true}
+            item={true}
+            xs={2}
+          >
+            <Feedback />
+
             <Login mainColor={main} />
           </Grid>
         </Grid>

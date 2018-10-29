@@ -37,8 +37,6 @@ const SWrapper = styled.div`
   z-index: 100000;
   align-items: center;
   display: flex;
-  width: 100%;
-  height: 100%;
   justify-content: flex-end;
 `
 
