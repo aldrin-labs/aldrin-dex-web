@@ -61,10 +61,6 @@ class LoginQuery extends React.Component<Props, State> {
       ),
     }
   }
-  /*
-  componentWillMount() {
-    this.checkToken()
-  }*/
 
   componentDidMount() {
     if (this.props.isShownModal) this.showLogin()
@@ -174,8 +170,6 @@ class LoginQuery extends React.Component<Props, State> {
 
     if (isShownModal) return null
 
-    // TODO: change width on Button when resolution width < 340px
-
     return (
       <SWrapper>
         <Grow in={!loginStatus} unmountOnExit={true} mountOnEnter={true}>
@@ -199,7 +193,7 @@ class LoginQuery extends React.Component<Props, State> {
             handleClose={this.handleClose}
             handleMenu={this.handleMenu}
             handleLogout={this.handleLogout}
-            userName={user.name}
+            userName={user && user.name}
           />
         </Slide>
       </SWrapper>
