@@ -409,7 +409,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             `BUY ${row.symbol}  $ ${formatNumberToUSFormat(row.deltaPrice)}` :
             (+row.deltaPrice && row.deltaPrice < 0) ?
               `SELL ${row.symbol}  $ ${formatNumberToUSFormat(Math.abs(parseFloat(row.deltaPrice)))}`
-              : ''), isNumber: true, color: row.deltaPrice > 0 ? green : red},
+              : ''), color: row.deltaPrice > 0 ? green : red},
       ...(isEditModeEnabled ? {
         deleteIcon: {render: <SDeleteIcon onClick={() => this.onDeleteRowClick(index)} hoverColor={red} />},
       } : {}),
@@ -421,7 +421,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   }
 
   putDataInTable = () => {
-    const { rows, isUSDCurrently, isEditModeEnabled, totalRows, theme, isPercentSumGood } = this.props
+    const { rows, isUSDCurrently, isEditModeEnabled, totalRows, totalTableRows, totalPercents, theme, isPercentSumGood } = this.props
     const { transformData } = this
     const red = theme.palette.red.main
     const green = theme.palette.green.main
@@ -439,7 +439,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           { render: 'Coin' },
           { render: 'portfolio%', isNumber: true },
           { render: isUSDCurrently ? 'USD' : 'BTC', isNumber: true },
-          { render: 'Trade', isNumber: true },
+          { render: 'Trade' },
         ...(isEditModeEnabled ? [{ render: ' ' }] : []),
       ],
       body: transformData(rows, mainSymbol, red, green, isEditModeEnabled, isPercentSumGood),
@@ -453,16 +453,30 @@ export default class RebalancedPortfolioTable extends React.Component<
         { render: <SAddIcon onClick={this.onAddRowButtonClick} hoverColor={green} /> },
         ]] : [[]],
       footer: [
+        [
+        'Subtotal',
         ' ',
-        ' ',
-        { render: '100%', isNumber: true },
+        { render: `${totalPercents}%`, isNumber: true },
         {
           additionalRender: mainSymbol,
-          render: formatNumberToUSFormat(totalRows),
+          render: formatNumberToUSFormat(totalTableRows),
           isNumber: true,
         },
         ' ',
         ...(isEditModeEnabled ? [{ render: ' ' }] : []),
+      ],
+        [
+          'All',
+          ' ',
+          ' ',
+          {
+            additionalRender: mainSymbol,
+            render: formatNumberToUSFormat(totalRows),
+            isNumber: true,
+          },
+          ' ',
+          ...(isEditModeEnabled ? [{ render: ' ' }] : []),
+        ],
       ],
     }
   }
