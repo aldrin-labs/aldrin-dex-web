@@ -8,11 +8,11 @@ import gql from 'graphql-tag'
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 
 const periods = {
-  '1D': 60,
-  '7D': 3600,
-  '1M': 3600,
-  '3M': 3600,
-  '1Y': 86400,
+  1: 60,
+  7: 3600,
+  30: 3600,
+  90: 3600,
+  365: 86400,
 }
 
 class GQLChart extends React.Component {
@@ -98,9 +98,8 @@ class GQLChart extends React.Component {
       newState.unixTimestampTo = area.right
       newState.lastDrawLocation = null
       newState.activeChart = activeChart
-      newState.period = 3600
+      newState.period = periods[days];
       //      newState.period = periods[this.state.activeChart]
-      console.log('newState', newState);
       return newState
     })
   }
