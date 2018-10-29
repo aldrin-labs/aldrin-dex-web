@@ -31,6 +31,7 @@ import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWi
 import { IProps, IState } from './Chart.types'
 import ComingSoon from '@components/ComingSoon'
 import { MASTER_BUILD } from '@utils/config'
+import { navBarHeight } from '@components/NavBar/NavBar.styles';
 
 const OnlyCharts = Loadable({
   loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
@@ -464,7 +465,7 @@ const TablesContainer = styled.div`
   position: relative;
   display: flex;
   width: 40%;
-  height: calc(100vh - 59px - 80px);
+  height: calc(100vh - 59px - ${navBarHeight});
   overflow: hidden;
 
   @media (max-width: 1080px) {
