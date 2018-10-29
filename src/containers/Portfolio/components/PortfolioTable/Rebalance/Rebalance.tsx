@@ -43,10 +43,13 @@ import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
 import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
+import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
+import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
+
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
-    selectedActive: null,
+    selectedActive: [],
     areAllActiveChecked: false,
     rows: [],
     staticRows: [],
@@ -433,6 +436,15 @@ class Rebalance extends React.Component<IProps, IState> {
       rightBar,
     } = this.state
 
+    const { onSaveClick, onEditModeEnable, onReset, updateState } = this
+
+    const secondary = theme.palette.secondary.main
+    const red = theme.palette.red.main
+    const green = theme.palette.green.main
+
+    const saveButtonColor =
+      isPercentSumGood && +undistributedMoney >= 0 ? green : red
+
     const tableDataHasData = !staticRows.length || !rows.length
 
     return (
@@ -476,6 +488,32 @@ class Rebalance extends React.Component<IProps, IState> {
                 updateState={this.updateState}
               />
             </Container>
+            <RebalanceActionButtons
+              {...{
+                isEditModeEnabled,
+                saveButtonColor,
+                onSaveClick,
+                onEditModeEnable,
+                onReset,
+                secondary,
+                red,
+                green,
+              }}
+            />
+            <RebalanceMoneyButtons
+            {...{
+            isEditModeEnabled,
+            addMoneyInputValue,
+            undistributedMoney,
+            staticRows,
+            rows,
+            selectedActive,
+            updateState,
+            secondary,
+            red,
+            green,
+            }}
+            />
             <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
               <ChartColorPicker
                 leftBar={leftBar}

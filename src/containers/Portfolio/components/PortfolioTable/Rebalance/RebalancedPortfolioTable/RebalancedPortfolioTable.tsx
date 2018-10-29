@@ -27,25 +27,27 @@ import {
   InputTable,
 } from './RebalancedPortfolioTable.styles'
 
-import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
+// import { Wrapper, Table, TableHeading } from '../sharedStyles/sharedStyles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import styled from 'styled-components'
+import { Table } from '@storybook-components'
 
-const usdHeadingForRebalanced = [
-  { name: 'Exchange', value: 'exchange' },
-  { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'USD', value: 'price' },
-  { name: 'Trade', value: 'deltaPrice' },
-]
-
-const btcHeadingForRebalanced = [
-  { name: 'Exchange', value: 'exchange' },
-  { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio %', value: 'portfolioPerc' },
-  { name: 'BTC', value: 'price' },
-  { name: 'Trade', value: 'deltaPrice' },
-]
+// const usdHeadingForRebalanced = [
+//   { name: 'Exchange', value: 'exchange' },
+//   { name: 'Coin', value: 'symbol' },
+//   { name: 'Portfolio %', value: 'portfolioPerc' },
+//   { name: 'USD', value: 'price' },
+//   { name: 'Trade', value: 'deltaPrice' },
+// ]
+//
+// const btcHeadingForRebalanced = [
+//   { name: 'Exchange', value: 'exchange' },
+//   { name: 'Coin', value: 'symbol' },
+//   { name: 'Portfolio %', value: 'portfolioPerc' },
+//   { name: 'BTC', value: 'price' },
+//   { name: 'Trade', value: 'deltaPrice' },
+// ]
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -300,6 +302,170 @@ export default class RebalancedPortfolioTable extends React.Component<
       isPercentSumGood: newIsPercentSumGood,
     })
   }
+  transformData = (rows, mainSymbol, red, green, isEditModeEnabled, isPercentSumGood) => {
+
+    const transformedData = rows.map((row, index) => {
+
+      const portfolioPercentage = isEditModeEnabled ? <InputTable
+        key={`inputPercentage${index}`}
+        tabIndex={index + 1}
+        isPercentSumGood={isPercentSumGood}
+        value={rows[index].portfolioPerc}
+        onChange={(e) =>
+          this.onPercentInputChange(e, index)
+        }
+        onBlur={(e) =>
+          this.onBlurPercentInput(e, index)
+        }
+        onFocus={(e) =>
+          this.onFocusPercentInput(e, index)
+        }
+        red={red}
+      /> : `${row.portfolioPerc}%`
+
+      const exchange = (isEditModeEnabled && row.editable) ? <SelectAllExchangeList
+          key={`inputNameExchange${index}`}
+          classNamePrefix="custom-select-box"
+          isClearable={true}
+          isSearchable={true}
+          openMenuOnClick={true}
+          options={exchangeOptions}
+          menuPortalTarget={document.body}
+          menuStyles={{
+            fontSize: '12px',
+            minWidth: '150px',
+            height: '200px',
+          }}
+          menuListStyles={{
+            height: '200px',
+          }}
+          optionStyles={{
+            fontSize: '12px',
+          }}
+          clearIndicatorStyles={{
+            padding: '2px',
+          }}
+          valueContainerStyles={{
+            maxWidth: '55px',
+            overflow: 'hidden',
+          }}
+          inputStyles={{
+            marginLeft: '0',
+          }}
+          onChange={(optionSelected: { label: string; value: string } | null) =>
+            this.handleSelectChange(index, 'exchange', optionSelected)
+          }
+          noOptionsMessage={()=>`No such exchange in our DB found`}
+        /> : row.exchange
+
+      const coin = (isEditModeEnabled && row.editable) ? <SelectCoinList
+        ref={handleRef}
+      key={`inputCoinSymbol${index}`}
+      classNamePrefix="custom-select-box"
+      isClearable={true}
+      isSearchable={true}
+      openMenuOnClick={false}
+      menuPortalTarget={document.body}
+      menuStyles={{
+      fontSize: '12px',
+      minWidth: '150px',
+      height: '200px',
+      }}
+      menuListStyles={{
+      height: '200px',
+      }}
+      optionStyles={{
+      fontSize: '12px',
+      }}
+      clearIndicatorStyles={{
+      padding: '2px',
+      }}
+      valueContainerStyles={{
+      maxWidth: '55px',
+      overflow: 'hidden',
+      }}
+      inputStyles={{
+      marginLeft: '0',
+      }}
+      dropdownIndicatorStyles={{
+      display: 'none',
+      }}
+      noOptionsMessage={()=>`No such coin in our DB found`}
+      onChange={(optionSelected: { label: string; value: string } | null) =>
+      this.handleSelectChange(index, 'symbol', optionSelected)
+      }
+      /> : row.symbol
+
+      return Object.values({
+        exchange: {render: exchange},
+        coin: { render: coin, style: { fontWeight: 700 } },
+        portfolioPerc: { render: portfolioPercentage, isNumber: true },
+        price: {
+          additionalRender: mainSymbol,
+          render: formatNumberToUSFormat(row.price),
+          isNumber: true,
+        },
+        deltaPrice: {render: (+row.deltaPrice && row.deltaPrice > 0 ?
+            `BUY ${row.symbol}  $ ${formatNumberToUSFormat(row.deltaPrice)}` :
+            (+row.deltaPrice && row.deltaPrice < 0) ?
+              `SELL ${row.symbol}  $ ${formatNumberToUSFormat(Math.abs(parseFloat(row.deltaPrice)))}`
+              : ''), isNumber: true, color: row.deltaPrice > 0 ? green : red},
+      ...(isEditModeEnabled ? {
+        deleteIcon: {render: <SDeleteIcon onClick={() => this.onDeleteRowClick(index)} hoverColor={red} />},
+      } : {}),
+      })
+    })
+
+
+    return transformedData
+  }
+
+  putDataInTable = () => {
+    const { rows, isUSDCurrently, isEditModeEnabled, totalRows, theme, isPercentSumGood } = this.props
+    const { transformData } = this
+    const red = theme.palette.red.main
+    const green = theme.palette.green.main
+    const mainSymbol = isUSDCurrently ? (
+      <Icon className="fa fa-usd" />
+    ) : (
+      <Icon className="fa fa-btc" />
+    )
+
+
+
+    return {
+      head: [
+          { render: 'Exchange' },
+          { render: 'Coin' },
+          { render: 'portfolio%', isNumber: true },
+          { render: isUSDCurrently ? 'USD' : 'BTC', isNumber: true },
+          { render: 'Trade', isNumber: true },
+        ...(isEditModeEnabled ? [{ render: ' ' }] : []),
+      ],
+      body: transformData(rows, mainSymbol, red, green, isEditModeEnabled, isPercentSumGood),
+      upperFooter: isEditModeEnabled ? [[
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        ' ',
+        { render: <SAddIcon onClick={this.onAddRowButtonClick} hoverColor={green} /> },
+        ]] : [[]],
+      footer: [
+        ' ',
+        ' ',
+        { render: '100%', isNumber: true },
+        {
+          additionalRender: mainSymbol,
+          render: formatNumberToUSFormat(totalRows),
+          isNumber: true,
+        },
+        ' ',
+        ...(isEditModeEnabled ? [{ render: ' ' }] : []),
+      ],
+    }
+  }
 
   render() {
     const {
@@ -324,405 +490,456 @@ export default class RebalancedPortfolioTable extends React.Component<
       theme: { palette },
     } = this.props
 
-    const textColor = palette.getContrastText(
-      palette.background.paper
-    )
-    const background = palette.background.paper
-    const evenBackground = palette.action.hover
-    const secondary = palette.secondary.main
-    const red = palette.red.main
-    const green = palette.green.main
+    // const textColor = palette.getContrastText(
+    //   palette.background.paper
+    // )
+    // const background = palette.background.paper
+    // const evenBackground = palette.action.hover
+    // const secondary = palette.secondary.main
+    // const red = palette.red.main
+    // const green = palette.green.main
+    //
+    // const saveButtonColor =
+    //   isPercentSumGood && undistributedMoney >= 0 ? green : red
 
-    const saveButtonColor =
-      isPercentSumGood && undistributedMoney >= 0 ? green : red
+    // const mainSymbol = isUSDCurrently ? (
+    //   <Icon className="fa fa-usd" />
+    // ) : (
+    //     <Icon className="fa fa-btc" />
+    //   )
 
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-        <Icon className="fa fa-btc" />
-      )
+    // const tableHeadingsRebalancedPortfolio = isUSDCurrently
+    //   ? usdHeadingForRebalanced
+    //   : btcHeadingForRebalanced
 
-    const tableHeadingsRebalancedPortfolio = isUSDCurrently
-      ? usdHeadingForRebalanced
-      : btcHeadingForRebalanced
+    // const coins =
+    //   selectedActive && selectedActive.length > 0
+    //     ? selectedActive.map((id: number) => rows[id])
+    //     : []
+    //
+    // console.log('coins', coins);
+    // console.log('tableData', rows);
 
     return (
-      <TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled} textColor={textColor}>
-        <TableHeading>
-          Rebalanced portfolio
-          <RebalanceActionButtons
-            {...{
-              isEditModeEnabled,
-              saveButtonColor,
-              onSaveClick,
-              onEditModeEnable,
-              onReset,
-              secondary,
-              red,
-              green,
-            }}
-          />
-        </TableHeading>
-        <Wrapper>
-          <Table>
-            <PTHead
-              isEditModeEnabled={isEditModeEnabled}
-              bottomCollor={textColor}
-            >
-              <PTR
-                evenBackground={background}
-                background={background}
-              >
-                {isEditModeEnabled && (
-                  <PTHR key="selectAll" style={{ textAlign: 'left' }}>
-                    <Checkbox
-                      onChange={this.onSelectAllActive}
-                      checked={areAllActiveChecked}
-                      type="checkbox"
-                      id="selectAllActive"
-                    />
-                    <Label htmlFor="selectAllActive">
-                      <Span />
-                    </Label>
-                  </PTHR>
-                )}
-
-                {tableHeadingsRebalancedPortfolio.map((heading) => {
-                  const isSorted =
-                    currentSortForDynamic &&
-                    currentSortForDynamic.key === heading.value
-
-                  return (
-                    <PTHR
-                      key={heading.name}
-                      onClick={() =>
-                        onSortTable(heading.value, 'currentSortForDynamic')
-                      }
-                    >
-                      {heading.name}
-
-                      {isSorted && (
-                        <ArrowDownward
-                          style={{
-                            fontSize: 16,
-                            verticalAlign: 'middle',
-                            marginLeft: '4px',
-                            transform:
-                              currentSortForDynamic &&
-                                currentSortForDynamic.arg === 'ASC'
-                                ? 'rotate(180deg)'
-                                : null,
-                          }}
-                        />
-                      )}
-                    </PTHR>
-                  )
-                })}
-
-                {isEditModeEnabled && <PTHR />}
-              </PTR>
-            </PTHead>
-
-            <PTBody isEditModeEnabled={isEditModeEnabled}>
-              {rows.map((row, rowIndex) => {
-                const {
-                  id,
-                  exchange = '',
-                  symbol = '',
-                  portfolioPerc = 0,
-                  price = 0,
-                  deltaPrice = 0,
-                } = row
-
-                const isSelected =
-                  (selectedActive && selectedActive.indexOf(id) >= 0) || false
-
-                let deltaPriceString = ''
-
-                if (deltaPrice && +deltaPrice) {
-                  if (deltaPrice > 0) {
-                    deltaPriceString = `BUY ${symbol}  $ ${formatNumberToUSFormat(
-                      deltaPrice
-                    )}`
-                  } else {
-                    deltaPriceString = `SELL ${symbol}  $ ${formatNumberToUSFormat(
-                      Math.abs(parseFloat(deltaPrice))
-                    )}`
-                  }
-                }
-
-                const cols = [
-                  exchange,
-                  symbol || '',
-                  portfolioPerc ? `${portfolioPerc}%` : '',
-                  `${formatNumberToUSFormat(price)}`,
-                  deltaPriceString,
-                ]
-
-                return (
-                  <PTR
-                    key={`${rowIndex}`}
-                    isSelected={isSelected}
-                    background={background}
-                    evenBackground={evenBackground}
-                    selectedBackground={palette.background.default}
-                  >
-                    {isEditModeEnabled && (
-                      <PTDR
-                        key="smt"
-                        isSelected={isSelected}
-                        secondary={secondary}
-                        onClick={() => this.onSelectActiveBalance(id)}
-                      >
-                        {this.renderActiveCheckbox(id)}
-                      </PTDR>
-                    )}
-
-                    {cols.map((col, idx) => {
-                      const isNewCoinName =
-                        row.editable && idx === 0 && isEditModeEnabled
-                      const isNewCoinSymbol =
-                        row.editable && idx === 1 && isEditModeEnabled
-
-                      if (isNewCoinName) {
-                        return (
-                          <PTDR key={`NameExchange${idx}`}>
-                            <SelectAllExchangeList
-                              key={`inputNameExchange${rowIndex}`}
-                              classNamePrefix="custom-select-box"
-                              isClearable={true}
-                              isSearchable={true}
-                              openMenuOnClick={true}
-                              options={exchangeOptions}
-                              menuPortalTarget={document.body}
-                              menuStyles={{
-                                fontSize: '12px',
-                                minWidth: '150px',
-                                height: '200px',
-                              }}
-                              menuListStyles={{
-                                height: '200px',
-                              }}
-                              optionStyles={{
-                                fontSize: '12px',
-                              }}
-                              clearIndicatorStyles={{
-                                padding: '2px',
-                              }}
-                              valueContainerStyles={{
-                                maxWidth: '55px',
-                                overflow: 'hidden',
-                              }}
-                              inputStyles={{
-                                marginLeft: '0',
-                              }}
-                              onChange={(optionSelected: { label: string; value: string } | null) =>
-                                this.handleSelectChange(rowIndex, 'exchange', optionSelected)
-                              }
-                              noOptionsMessage={()=>`No such exchange in our DB found`}
-                            />
-                          </PTDR>
-                        )
-                      }
-
-                      if (isNewCoinSymbol) {
-                        return (
-                          <PTDR key={`CoinSymbol${idx}`}>
-                            <SelectCoinList
-                              ref={handleRef}
-                              key={`inputCoinSymbol${rowIndex}`}
-                              classNamePrefix="custom-select-box"
-                              isClearable={true}
-                              isSearchable={true}
-                              openMenuOnClick={false}
-                              menuPortalTarget={document.body}
-                              menuStyles={{
-                                fontSize: '12px',
-                                minWidth: '150px',
-                                height: '200px',
-                              }}
-                              menuListStyles={{
-                                height: '200px',
-                              }}
-                              optionStyles={{
-                                fontSize: '12px',
-                              }}
-                              clearIndicatorStyles={{
-                                padding: '2px',
-                              }}
-                              valueContainerStyles={{
-                                maxWidth: '55px',
-                                overflow: 'hidden',
-                              }}
-                              inputStyles={{
-                                marginLeft: '0',
-                              }}
-                              dropdownIndicatorStyles={{
-                                display: 'none',
-                              }}
-                              noOptionsMessage={()=>`No such coin in our DB found`}
-                              onChange={(optionSelected: { label: string; value: string } | null) =>
-                                this.handleSelectChange(rowIndex, 'symbol', optionSelected)
-                              }
-                            />
-                          </PTDR>
-                        )
-                      }
-
-                      if (idx === 2) {
-                        if (!isEditModeEnabled) {
-                          return (
-                            <PTDR key={`${col}${idx}`}>
-                              {col}
-                            </PTDR>
-                          )
-                        }
-
-                        return (
-                          <PTDR key={`percentageInCont${idx}`}>
-                            <InputTable
-                              key={`inputPercentage${rowIndex}`}
-                              tabIndex={rowIndex + 1}
-                              isPercentSumGood={isPercentSumGood}
-                              value={rows[rowIndex].portfolioPerc}
-                              onChange={(e) =>
-                                this.onPercentInputChange(e, rowIndex)
-                              }
-                              onBlur={(e) =>
-                                this.onBlurPercentInput(e, rowIndex)
-                              }
-                              onFocus={(e) =>
-                                this.onFocusPercentInput(e, rowIndex)
-                              }
-                              red={red}
-                            />
-                          </PTDR>
-                        )
-                      }
-                      if (col.match(/BUY/g)) {
-                        const color = green
-
-                        return (
-                          <PTDR
-                            key={`buy${idx}${col}${rowIndex}`}
-                            style={{ color }}
-                          >
-                            {col}
-                          </PTDR>
-                        )
-                      }
-                      if (col.match(/SELL/g)) {
-                        const color = red
-
-                        return (
-                          <PTDR
-                            key={`sell${idx}${col}${rowIndex}`}
-                            style={{ color }}
-                          >
-                            {col}
-                          </PTDR>
-                        )
-                      }
-
-                      if (idx === 3) {
-                        return (
-                          <PTDR key={`${col}${idx}`}>
-                            {mainSymbol}
-                            {col}
-                          </PTDR>
-                        )
-                      }
-
-                      return <PTDR key={`${col}${idx}`}>{col}</PTDR>
-                    })}
-                    <PTDR>
-                      <TableButton
-                        isDeleteColor={false}
-                        onClick={() => this.onDeleteRowClick(rowIndex)}
-                        red={red}
-                        green={green}
-                      >
-                        <DeleteIcon />
-                      </TableButton>
-                    </PTDR>
-                  </PTR>
-                )
-              })}
-              {isEditModeEnabled && (
-                <PTR
-                  background={background}
-                  evenBackground={evenBackground}
-                >
-                  <PTDR />
-                  <PTDR />
-                  <PTDR />
-                  <PTDR />
-                  <PTDR />
-                  <PTDR />
-                  <PTDR>
-                    <TableButton
-                      isDeleteColor={true}
-                      onClick={this.onAddRowButtonClick}
-                      red={red}
-                      green={green}
-                    >
-                      <AddIcon />
-                    </TableButton>
-                  </PTDR>
-                </PTR>
-              )}
-            </PTBody>
-            <PTFoot isEditModeEnabled={isEditModeEnabled}>
-              <PTR
-                selectedBackground={palette.background.default}
-                background={background}
-                evenBackground={background}
-              >
-                {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                <PTHR>Subtotal</PTHR>
-                <PTHR>-</PTHR>
-                <PTHR>{`${totalPercents}%`}</PTHR>
-                <PTHR>
-                  {mainSymbol}
-                  {formatNumberToUSFormat(totalTableRows)}
-                </PTHR>
-                <PTHR>-</PTHR>
-                <PTHR>-</PTHR>
-              </PTR>
-              <PTR
-                selectedBackground={palette.background.default}
-                background={background}
-                evenBackground={background}
-              >
-                {isEditModeEnabled && <PTHR style={{ width: '38px' }} />}
-                <PTHR>All</PTHR>
-                <PTHR>-</PTHR>
-                <PTHR>-</PTHR>
-                <PTHR>
-                  {mainSymbol}
-                  {formatNumberToUSFormat(totalRows)}
-                </PTHR>
-                <PTHR>-</PTHR>
-                <PTHR>-</PTHR>
-              </PTR>
-            </PTFoot>
-          </Table>
-        </Wrapper>
-        <RebalanceMoneyButtons
-          {...{
-            isEditModeEnabled,
-            addMoneyInputValue,
-            undistributedMoney,
-            staticRows,
-            rows,
-            selectedActive,
-            updateState,
-            secondary,
-            red,
-            green,
-          }}
+      <TableWrapper>
+        {/*<RebalanceActionButtons*/}
+          {/*{...{*/}
+            {/*isEditModeEnabled,*/}
+            {/*saveButtonColor,*/}
+            {/*onSaveClick,*/}
+            {/*onEditModeEnable,*/}
+            {/*onReset,*/}
+            {/*secondary,*/}
+            {/*red,*/}
+            {/*green,*/}
+          {/*}}*/}
+        {/*/>*/}
+        <Table
+          title="Rebalanced portfolio"
+          withCheckboxes={isEditModeEnabled}
+          checkedRows={selectedActive}
+          onChange={this.onSelectActiveBalance}
+          onSelectAllClick={this.onSelectAllActive}
+          showUpperFooter={isEditModeEnabled}
+          rows={this.putDataInTable()}
         />
-      </TableAndHeadingWrapper>
+      </TableWrapper>
     )
+
+    {/*<TableAndHeadingWrapper isEditModeEnabled={isEditModeEnabled} textColor={textColor}>*/}
+        {/*<TableHeading>*/}
+          {/*Rebalanced portfolio*/}
+          {/*<RebalanceActionButtons*/}
+            {/*{...{*/}
+              {/*isEditModeEnabled,*/}
+              {/*saveButtonColor,*/}
+              {/*onSaveClick,*/}
+              {/*onEditModeEnable,*/}
+              {/*onReset,*/}
+              {/*secondary,*/}
+              {/*red,*/}
+              {/*green,*/}
+            {/*}}*/}
+          {/*/>*/}
+        {/*</TableHeading>*/}
+        {/*<Wrapper>*/}
+          {/*<Table>*/}
+            {/*<PTHead*/}
+              {/*isEditModeEnabled={isEditModeEnabled}*/}
+              {/*bottomCollor={textColor}*/}
+            {/*>*/}
+              {/*<PTR*/}
+                {/*evenBackground={background}*/}
+                {/*background={background}*/}
+              {/*>*/}
+                {/*{isEditModeEnabled && (*/}
+                  {/*<PTHR key="selectAll" style={{ textAlign: 'left' }}>*/}
+                    {/*<Checkbox*/}
+                      {/*onChange={this.onSelectAllActive}*/}
+                      {/*checked={areAllActiveChecked}*/}
+                      {/*type="checkbox"*/}
+                      {/*id="selectAllActive"*/}
+                    {/*/>*/}
+                    {/*<Label htmlFor="selectAllActive">*/}
+                      {/*<Span />*/}
+                    {/*</Label>*/}
+                  {/*</PTHR>*/}
+                {/*)}*/}
+
+                {/*{tableHeadingsRebalancedPortfolio.map((heading) => {*/}
+                  {/*const isSorted =*/}
+                    {/*currentSortForDynamic &&*/}
+                    {/*currentSortForDynamic.key === heading.value*/}
+
+                  {/*return (*/}
+                    {/*<PTHR*/}
+                      {/*key={heading.name}*/}
+                      {/*onClick={() =>*/}
+                        {/*onSortTable(heading.value, 'currentSortForDynamic')*/}
+                      {/*}*/}
+                    {/*>*/}
+                      {/*{heading.name}*/}
+
+                      {/*{isSorted && (*/}
+                        {/*<ArrowDownward*/}
+                          {/*style={{*/}
+                            {/*fontSize: 16,*/}
+                            {/*verticalAlign: 'middle',*/}
+                            {/*marginLeft: '4px',*/}
+                            {/*transform:*/}
+                              {/*currentSortForDynamic &&*/}
+                                {/*currentSortForDynamic.arg === 'ASC'*/}
+                                {/*? 'rotate(180deg)'*/}
+                                {/*: null,*/}
+                          {/*}}*/}
+                        {/*/>*/}
+                      {/*)}*/}
+                    {/*</PTHR>*/}
+                  {/*)*/}
+                {/*})}*/}
+
+                {/*{isEditModeEnabled && <PTHR />}*/}
+              {/*</PTR>*/}
+            {/*</PTHead>*/}
+
+            {/*<PTBody isEditModeEnabled={isEditModeEnabled}>*/}
+              {/*{rows.map((row, rowIndex) => {*/}
+                {/*const {*/}
+                  {/*id,*/}
+                  {/*exchange = '',*/}
+                  {/*symbol = '',*/}
+                  {/*portfolioPerc = 0,*/}
+                  {/*price = 0,*/}
+                  {/*deltaPrice = 0,*/}
+                {/*} = row*/}
+
+                {/*const isSelected =*/}
+                  {/*(selectedActive && selectedActive.indexOf(id) >= 0) || false*/}
+
+                {/*let deltaPriceString = ''*/}
+
+                {/*if (deltaPrice && +deltaPrice) {*/}
+                  {/*if (deltaPrice > 0) {*/}
+                    {/*deltaPriceString = `BUY ${symbol}  $ ${formatNumberToUSFormat(*/}
+                      {/*deltaPrice*/}
+                    {/*)}`*/}
+                  {/*} else {*/}
+                    {/*deltaPriceString = `SELL ${symbol}  $ ${formatNumberToUSFormat(*/}
+                      {/*Math.abs(parseFloat(deltaPrice))*/}
+                    {/*)}`*/}
+                  {/*}*/}
+                {/*}*/}
+
+                {/*const cols = [*/}
+                  {/*exchange,*/}
+                  {/*symbol || '',*/}
+                  {/*portfolioPerc ? `${portfolioPerc}%` : '',*/}
+                  {/*`${formatNumberToUSFormat(price)}`,*/}
+                  {/*deltaPriceString,*/}
+                {/*]*/}
+
+                {/*return (*/}
+                  {/*<PTR*/}
+                    {/*key={`${rowIndex}`}*/}
+                    {/*isSelected={isSelected}*/}
+                    {/*background={background}*/}
+                    {/*evenBackground={evenBackground}*/}
+                    {/*selectedBackground={palette.background.default}*/}
+                  {/*>*/}
+                    {/*{isEditModeEnabled && (*/}
+                      {/*<PTDR*/}
+                        {/*key="smt"*/}
+                        {/*isSelected={isSelected}*/}
+                        {/*secondary={secondary}*/}
+                        {/*onClick={() => this.onSelectActiveBalance(id)}*/}
+                      {/*>*/}
+                        {/*{this.renderActiveCheckbox(id)}*/}
+                      {/*</PTDR>*/}
+                    {/*)}*/}
+
+                    {/*{cols.map((col, idx) => {*/}
+                      {/*const isNewCoinName =*/}
+                        {/*row.editable && idx === 0 && isEditModeEnabled*/}
+                      {/*const isNewCoinSymbol =*/}
+                        {/*row.editable && idx === 1 && isEditModeEnabled*/}
+
+                      {/*if (isNewCoinName) {*/}
+                        {/*return (*/}
+                          {/*<PTDR key={`NameExchange${idx}`}>*/}
+                            {/*<SelectAllExchangeList*/}
+                              {/*key={`inputNameExchange${rowIndex}`}*/}
+                              {/*classNamePrefix="custom-select-box"*/}
+                              {/*isClearable={true}*/}
+                              {/*isSearchable={true}*/}
+                              {/*openMenuOnClick={true}*/}
+                              {/*options={exchangeOptions}*/}
+                              {/*menuPortalTarget={document.body}*/}
+                              {/*menuStyles={{*/}
+                                {/*fontSize: '12px',*/}
+                                {/*minWidth: '150px',*/}
+                                {/*height: '200px',*/}
+                              {/*}}*/}
+                              {/*menuListStyles={{*/}
+                                {/*height: '200px',*/}
+                              {/*}}*/}
+                              {/*optionStyles={{*/}
+                                {/*fontSize: '12px',*/}
+                              {/*}}*/}
+                              {/*clearIndicatorStyles={{*/}
+                                {/*padding: '2px',*/}
+                              {/*}}*/}
+                              {/*valueContainerStyles={{*/}
+                                {/*maxWidth: '55px',*/}
+                                {/*overflow: 'hidden',*/}
+                              {/*}}*/}
+                              {/*inputStyles={{*/}
+                                {/*marginLeft: '0',*/}
+                              {/*}}*/}
+                              {/*onChange={(optionSelected: { label: string; value: string } | null) =>*/}
+                                {/*this.handleSelectChange(rowIndex, 'exchange', optionSelected)*/}
+                              {/*}*/}
+                              {/*noOptionsMessage={()=>`No such exchange in our DB found`}*/}
+                            {/*/>*/}
+                          {/*</PTDR>*/}
+                        {/*)*/}
+                      {/*}*/}
+
+                      {/*if (isNewCoinSymbol) {*/}
+                        {/*return (*/}
+                          {/*<PTDR key={`CoinSymbol${idx}`}>*/}
+                            {/*<SelectCoinList*/}
+                              {/*ref={handleRef}*/}
+                              {/*key={`inputCoinSymbol${rowIndex}`}*/}
+                              {/*classNamePrefix="custom-select-box"*/}
+                              {/*isClearable={true}*/}
+                              {/*isSearchable={true}*/}
+                              {/*openMenuOnClick={false}*/}
+                              {/*menuPortalTarget={document.body}*/}
+                              {/*menuStyles={{*/}
+                                {/*fontSize: '12px',*/}
+                                {/*minWidth: '150px',*/}
+                                {/*height: '200px',*/}
+                              {/*}}*/}
+                              {/*menuListStyles={{*/}
+                                {/*height: '200px',*/}
+                              {/*}}*/}
+                              {/*optionStyles={{*/}
+                                {/*fontSize: '12px',*/}
+                              {/*}}*/}
+                              {/*clearIndicatorStyles={{*/}
+                                {/*padding: '2px',*/}
+                              {/*}}*/}
+                              {/*valueContainerStyles={{*/}
+                                {/*maxWidth: '55px',*/}
+                                {/*overflow: 'hidden',*/}
+                              {/*}}*/}
+                              {/*inputStyles={{*/}
+                                {/*marginLeft: '0',*/}
+                              {/*}}*/}
+                              {/*dropdownIndicatorStyles={{*/}
+                                {/*display: 'none',*/}
+                              {/*}}*/}
+                              {/*noOptionsMessage={()=>`No such coin in our DB found`}*/}
+                              {/*onChange={(optionSelected: { label: string; value: string } | null) =>*/}
+                                {/*this.handleSelectChange(rowIndex, 'symbol', optionSelected)*/}
+                              {/*}*/}
+                            {/*/>*/}
+                          {/*</PTDR>*/}
+                        {/*)*/}
+                      {/*}*/}
+
+                      {/*if (idx === 2) {*/}
+                        {/*if (!isEditModeEnabled) {*/}
+                          {/*return (*/}
+                            {/*<PTDR key={`${col}${idx}`}>*/}
+                              {/*{col}*/}
+                            {/*</PTDR>*/}
+                          {/*)*/}
+                        {/*}*/}
+
+                        {/*return (*/}
+                          {/*<PTDR key={`percentageInCont${idx}`}>*/}
+                            {/*<InputTable*/}
+                              {/*key={`inputPercentage${rowIndex}`}*/}
+                              {/*tabIndex={rowIndex + 1}*/}
+                              {/*isPercentSumGood={isPercentSumGood}*/}
+                              {/*value={rows[rowIndex].portfolioPerc}*/}
+                              {/*onChange={(e) =>*/}
+                                {/*this.onPercentInputChange(e, rowIndex)*/}
+                              {/*}*/}
+                              {/*onBlur={(e) =>*/}
+                                {/*this.onBlurPercentInput(e, rowIndex)*/}
+                              {/*}*/}
+                              {/*onFocus={(e) =>*/}
+                                {/*this.onFocusPercentInput(e, rowIndex)*/}
+                              {/*}*/}
+                              {/*red={red}*/}
+                            {/*/>*/}
+                          {/*</PTDR>*/}
+                        {/*)*/}
+                      {/*}*/}
+                      {/*if (col.match(/BUY/g)) {*/}
+                        {/*const color = green*/}
+
+                        {/*return (*/}
+                          {/*<PTDR*/}
+                            {/*key={`buy${idx}${col}${rowIndex}`}*/}
+                            {/*style={{ color }}*/}
+                          {/*>*/}
+                            {/*{col}*/}
+                          {/*</PTDR>*/}
+                        {/*)*/}
+                      {/*}*/}
+                      {/*if (col.match(/SELL/g)) {*/}
+                        {/*const color = red*/}
+
+                        {/*return (*/}
+                          {/*<PTDR*/}
+                            {/*key={`sell${idx}${col}${rowIndex}`}*/}
+                            {/*style={{ color }}*/}
+                          {/*>*/}
+                            {/*{col}*/}
+                          {/*</PTDR>*/}
+                        {/*)*/}
+                      {/*}*/}
+
+                      {/*if (idx === 3) {*/}
+                        {/*return (*/}
+                          {/*<PTDR key={`${col}${idx}`}>*/}
+                            {/*{mainSymbol}*/}
+                            {/*{col}*/}
+                          {/*</PTDR>*/}
+                        {/*)*/}
+                      {/*}*/}
+
+                      {/*return <PTDR key={`${col}${idx}`}>{col}</PTDR>*/}
+                    {/*})}*/}
+                    {/*<PTDR>*/}
+                      {/*<TableButton*/}
+                        {/*isDeleteColor={false}*/}
+                        {/*onClick={() => this.onDeleteRowClick(rowIndex)}*/}
+                        {/*red={red}*/}
+                        {/*green={green}*/}
+                      {/*>*/}
+                        {/*<DeleteIcon />*/}
+                      {/*</TableButton>*/}
+                    {/*</PTDR>*/}
+                  {/*</PTR>*/}
+                {/*)*/}
+              {/*})}*/}
+              {/*{isEditModeEnabled && (*/}
+                {/*<PTR*/}
+                  {/*background={background}*/}
+                  {/*evenBackground={evenBackground}*/}
+                {/*>*/}
+                  {/*<PTDR />*/}
+                  {/*<PTDR />*/}
+                  {/*<PTDR />*/}
+                  {/*<PTDR />*/}
+                  {/*<PTDR />*/}
+                  {/*<PTDR />*/}
+                  {/*<PTDR>*/}
+                    {/*<TableButton*/}
+                      {/*isDeleteColor={true}*/}
+                      {/*onClick={this.onAddRowButtonClick}*/}
+                      {/*red={red}*/}
+                      {/*green={green}*/}
+                    {/*>*/}
+                      {/*<AddIcon />*/}
+                    {/*</TableButton>*/}
+                  {/*</PTDR>*/}
+                {/*</PTR>*/}
+              {/*)}*/}
+            {/*</PTBody>*/}
+            {/*<PTFoot isEditModeEnabled={isEditModeEnabled}>*/}
+              {/*<PTR*/}
+                {/*selectedBackground={palette.background.default}*/}
+                {/*background={background}*/}
+                {/*evenBackground={background}*/}
+              {/*>*/}
+                {/*{isEditModeEnabled && <PTHR style={{ width: '38px' }} />}*/}
+                {/*<PTHR>Subtotal</PTHR>*/}
+                {/*<PTHR>-</PTHR>*/}
+                {/*<PTHR>{`${totalPercents}%`}</PTHR>*/}
+                {/*<PTHR>*/}
+                  {/*{mainSymbol}*/}
+                  {/*{formatNumberToUSFormat(totalTableRows)}*/}
+                {/*</PTHR>*/}
+                {/*<PTHR>-</PTHR>*/}
+                {/*<PTHR>-</PTHR>*/}
+              {/*</PTR>*/}
+              {/*<PTR*/}
+                {/*selectedBackground={palette.background.default}*/}
+                {/*background={background}*/}
+                {/*evenBackground={background}*/}
+              {/*>*/}
+                {/*{isEditModeEnabled && <PTHR style={{ width: '38px' }} />}*/}
+                {/*<PTHR>All</PTHR>*/}
+                {/*<PTHR>-</PTHR>*/}
+                {/*<PTHR>-</PTHR>*/}
+                {/*<PTHR>*/}
+                  {/*{mainSymbol}*/}
+                  {/*{formatNumberToUSFormat(totalRows)}*/}
+                {/*</PTHR>*/}
+                {/*<PTHR>-</PTHR>*/}
+                {/*<PTHR>-</PTHR>*/}
+              {/*</PTR>*/}
+            {/*</PTFoot>*/}
+          {/*</Table>*/}
+        {/*</Wrapper>*/}
+        {/*<RebalanceMoneyButtons*/}
+          {/*{...{*/}
+            {/*isEditModeEnabled,*/}
+            {/*addMoneyInputValue,*/}
+            {/*undistributedMoney,*/}
+            {/*staticRows,*/}
+            {/*rows,*/}
+            {/*selectedActive,*/}
+            {/*updateState,*/}
+            {/*secondary,*/}
+            {/*red,*/}
+            {/*green,*/}
+          {/*}}*/}
+        {/*/>*/}
+      {/*</TableAndHeadingWrapper>*/}
+
   }
 }
+
+
+const TableWrapper = styled.div`
+  width: 50%;
+  display: flex;
+`
+
+const SAddIcon = styled(AddIcon)`
+  &:hover {
+    color: ${(props: { hoverColor: string }) => props.hoverColor};
+  }
+`
+
+const SDeleteIcon = styled(DeleteIcon)`
+  &:hover {
+    color: ${(props: { hoverColor: string }) => props.hoverColor};
+  }
+`
