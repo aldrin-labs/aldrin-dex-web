@@ -45,6 +45,7 @@ import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
+import styled from 'styled-components'
 
 
 class Rebalance extends React.Component<IProps, IState> {
@@ -515,15 +516,18 @@ class Rebalance extends React.Component<IProps, IState> {
             }}
             />
             <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-              <ChartColorPicker
-                leftBar={leftBar}
-                rightBar={rightBar}
-                onChangeColor={this.onChangeColor}
-              />
-              <ChartContainer elevation={10}>
-                <Chart>
+              {/*<ChartColorPicker*/}
+                {/*leftBar={leftBar}*/}
+                {/*rightBar={rightBar}*/}
+                {/*onChangeColor={this.onChangeColor}*/}
+              {/*/>*/}
+              <ChartContainer elevation={10} background={theme.palette.background.paper}>
+                <Label>Portfolio Distribution</Label>
+                <InnerChartContainer>
+                <Chart background={theme.palette.background.default}>
                   {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
                     <BarChart
+                      height={350}
                       hideDashForToolTip={true}
                       xAxisVertical={true}
                       alwaysShowLegend={true}
@@ -542,6 +546,7 @@ class Rebalance extends React.Component<IProps, IState> {
                     />
                   )}
                 </Chart>
+                </InnerChartContainer>
               </ChartContainer>
             </ChartWrapper>
           </Content>
@@ -572,3 +577,20 @@ export default compose(
     name: 'updateRebalanceMutationQuery',
   })
 )(RebalanceContainer)
+
+
+const Label = styled.div`
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  color: #4ed8da;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background-color: #263238;
+  font-weight: bold;
+  white-space: nowrap;
+  text-transform: uppercase;
+`
+
+export const InnerChartContainer = styled.div`
+  padding: 0 15px 15px 15px;
+`

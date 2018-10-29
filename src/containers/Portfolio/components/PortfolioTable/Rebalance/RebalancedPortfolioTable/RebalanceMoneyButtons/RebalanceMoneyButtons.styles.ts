@@ -11,12 +11,13 @@ export {
 }
 
 const ButtonsWrapper = styled.div`
-  display: ${(props: { isEditModeEnabled?: boolean }) =>
-    props.isEditModeEnabled ? 'block' : 'none'};
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 const ButtonsInnerWrapper = styled.div`
-  padding-bottom: 10px;
+  padding: 0 15px 15px 15px;
   display: flex;
   justify-content: space-between;
 `

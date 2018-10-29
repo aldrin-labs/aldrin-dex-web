@@ -21,32 +21,26 @@ const ChartWrapper = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  height: 25vh;
+  //height: 25vh;
   padding: 20px;
   justify-content: center;
   align-items: center;
 
-  @media (max-height: 1200px) {
-    height: 20vh;
-    padding-bottom: 1.5%;
-  }
-
-  @media (max-height: 1080px) {
-    height: 400px;
-    margin-top: ${(props: { isEditModeEnabled?: boolean }) =>
-      props.isEditModeEnabled ? '180px' : '40px'};
-  }
+  //@media (max-height: 1200px) {
+  //  height: 20vh;
+  //  padding-bottom: 1.5%;
+  //}
 `
 
 const ChartContainer = styled(Paper)`
+  background: ${(props: { background: string }) => props.background};
+
   && {
     width: 1120px;
     height: inherit;
-    border-radius: 20px;
     margin-left: 15px;
     margin-right: 15px;
     margin-bottom: 15px;
-    padding: 15px;
   }
 
   @media (max-width: 1150px) {
@@ -55,8 +49,11 @@ const ChartContainer = styled(Paper)`
 `
 
 const Chart = styled.div`
-  width: calc(100% - 15px);
-  height: 100%;
+  width: 100%;
+  height: inherit;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  background: ${(props: { background: string }) => props.background};
 
   & > div {
     height: inherit;

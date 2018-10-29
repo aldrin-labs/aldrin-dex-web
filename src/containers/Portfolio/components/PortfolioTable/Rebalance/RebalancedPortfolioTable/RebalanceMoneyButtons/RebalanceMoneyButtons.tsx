@@ -13,6 +13,7 @@ import {
 } from './RebalanceMoneyButtons.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import styled from 'styled-components'
 
 export class RebalanceMoneyButtons extends React.Component<IProps> {
   onDeleteUndistributedMoneyHandler = () => {
@@ -164,8 +165,10 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
       secondary,
     } = this.props
 
-    return (
-      <ButtonsWrapper isEditModeEnabled={isEditModeEnabled}>
+    return (isEditModeEnabled && (
+      <ButtonsWrapper>
+        <InputContainer>
+        <Label>Rebalance input</Label>
         <ButtonsInnerWrapper>
           <AddMoneyContainer>
             <Input
@@ -206,9 +209,35 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
             </UndistributedMoneyContainer>
           }
         </ButtonsInnerWrapper>
+        </InputContainer>
       </ButtonsWrapper>
+      )
     )
   }
 }
 
 export default RebalanceMoneyButtons
+
+
+const OuterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const InputContainer = styled.div`
+  width: 650px;
+  box-shadow: 0 2px 6px 0 #00000066;
+`
+
+const Label = styled.div`
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  color: #4ed8da;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background-color: #263238;
+  font-weight: bold;
+  white-space: nowrap;
+  text-transform: uppercase;
+`
