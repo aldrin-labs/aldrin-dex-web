@@ -7,6 +7,7 @@ import {
   MenuItem,
   Typography,
 } from '@material-ui/core'
+import config from './config'
 
 export default class Feedback extends Component {
   state = {
@@ -48,14 +49,14 @@ export default class Feedback extends Component {
         >
           <MenuItem
             onClick={() => {
-              this.openLink('https://ccai.typeform.com/to/CoUVp3')
+              this.openLink(config.feedbackLink)
             }}
           >
             Give Feedback
           </MenuItem>
           <MenuItem
             onClick={() => {
-              this.openLink('https://ccai.typeform.com/to/NqojKr')
+              this.openLink(config.bugLink)
             }}
           >
             <Typography variant="body1" color="error">
