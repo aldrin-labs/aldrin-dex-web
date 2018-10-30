@@ -8,7 +8,6 @@ import {
   UndistributedMoneyContainer,
   UndistributedMoneyText,
   AddMoneyContainer,
-  // Button,
   Input,
 } from './RebalanceMoneyButtons.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
@@ -244,14 +243,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
 export default RebalanceMoneyButtons
 
 
-const OuterContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`
-
 const InputContainer = styled.div`
-  //width: 650px;
   box-shadow: 0 2px 6px 0 #00000066;
 `
 
