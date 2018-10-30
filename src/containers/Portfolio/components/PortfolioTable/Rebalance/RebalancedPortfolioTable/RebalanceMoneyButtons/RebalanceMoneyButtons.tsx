@@ -163,6 +163,8 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
       undistributedMoney,
       isEditModeEnabled,
       secondary,
+      textColor,
+      fontFamily,
     } = this.props
 
     return (isEditModeEnabled && (
@@ -177,6 +179,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
               onChange={this.onAddMoneyInputChangeHandler}
               onFocus={this.onFocusAddMoneyInputHandler}
               secondary={secondary}
+              textColor={textColor}
             />
             <Button
               onClick={this.onAddMoneyButtonPressedHandler}
@@ -195,7 +198,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
           </AddMoneyContainer>
           {
             <UndistributedMoneyContainer>
-              <UndistributedMoneyText>
+              <UndistributedMoneyText textColor={textColor} fontFamily={fontFamily}>
                 Undistributed money:{' '}
                 {formatNumberToUSFormat(undistributedMoney)}
               </UndistributedMoneyText>

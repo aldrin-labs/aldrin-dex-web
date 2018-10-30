@@ -28,9 +28,9 @@ const UndistributedMoneyContainer = styled.div`
   min-width: 120px;
 `
 const UndistributedMoneyText = styled.p`
-  font-family: Roboto, sans-serif;
-  color: inherit;
+  color: ${(props: { textColor: string }) => props.textColor};
   font-size: 14px;
+  font-family: ${(props: { fontFamily: string }) => props.fontFamily};
   padding: 15px 0 5px;
   margin: 0;
 `
@@ -68,6 +68,7 @@ const Button = styled.button`
 `
 
 const Input = styled.input`
+  color: ${(props: { textColor: string }) => props.textColor};
   box-sizing: border-box;
   border-bottom: ${(props: { secondary: string }) => `2px solid ${props.secondary}`};
   //border-bottom: 2px solid rgb(78, 216, 218);
@@ -82,5 +83,4 @@ const Input = styled.input`
   line-height: 24px;
   text-align: left;
   padding: 10px 0 0;
-  color: inherit;
 `

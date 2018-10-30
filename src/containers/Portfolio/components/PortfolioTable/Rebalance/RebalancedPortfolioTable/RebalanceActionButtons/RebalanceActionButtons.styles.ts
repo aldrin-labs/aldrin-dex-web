@@ -9,7 +9,7 @@ const ActionButton = styled.button`
   width: auto;
   overflow: visible;
   background: transparent;
-  color: inherit;
+  color: ${(props: { textColor: string }) => props.textColor};
   font: inherit;
   line-height: normal;
   text-align: inherit;
@@ -50,6 +50,7 @@ const ActionButtonsContainer = styled.div`
 `
 
 const EditIconWrapper = styled.div`
+  color: ${(props: { textColor: string }) => props.textColor};
   &:hover {
     color: ${(props: { isEditModeEnabled?: boolean, red: string, green: string }) =>
   props.isEditModeEnabled ? props.red : props.green};

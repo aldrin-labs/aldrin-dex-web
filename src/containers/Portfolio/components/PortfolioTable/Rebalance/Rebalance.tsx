@@ -442,7 +442,10 @@ class Rebalance extends React.Component<IProps, IState> {
     const secondary = theme.palette.secondary.main
     const red = theme.palette.red.main
     const green = theme.palette.green.main
-
+    const textColor: string = theme.palette.getContrastText(
+      this.props.theme.palette.background.paper
+    )
+    const fontFamily: string = theme.typography.fontFamily
     const saveButtonColor =
       isPercentSumGood && +undistributedMoney >= 0 ? green : red
 
@@ -454,21 +457,22 @@ class Rebalance extends React.Component<IProps, IState> {
           {children}
           <Content>
             <Container>
-              <CurrentPortfolioTable
-                {...{
-                  currentSortForStatic,
-                  staticRows,
-                  totalStaticRows,
-                  filterValueSmallerThenPercentage,
-                  isUSDCurrently,
-                  theme,
-                }}
-                onSortTable={this.onSortTable}
-              />
+              {/*<CurrentPortfolioTable*/}
+                {/*{...{*/}
+                  {/*// currentSortForStatic,*/}
+                  {/*staticRows,*/}
+                  {/*totalStaticRows,*/}
+                  {/*// filterValueSmallerThenPercentage,*/}
+                  {/*isUSDCurrently,*/}
+                  {/*theme,*/}
+                {/*}}*/}
+                {/*onSortTable={this.onSortTable}*/}
+              {/*/>*/}
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
                   staticRows,
+                  totalStaticRows,
                   rows,
                   currentSortForDynamic,
                   selectedActive,
@@ -496,6 +500,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 onSaveClick,
                 onEditModeEnable,
                 onReset,
+                textColor,
                 secondary,
                 red,
                 green,
@@ -510,6 +515,8 @@ class Rebalance extends React.Component<IProps, IState> {
             rows,
             selectedActive,
             updateState,
+              textColor,
+              fontFamily,
             secondary,
             red,
             green,

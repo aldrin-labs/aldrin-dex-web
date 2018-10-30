@@ -212,7 +212,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       undistributedMoney: (
         parseFloat(undistributedMoney) + oldNewPriceDiff
       ).toFixed(2),
-      totalTableRows: parseFloat(newTableTotalRows),
+      totalTableRows: parseFloat(newTableTotalRows).toFixed(2),
     })
   }
 
@@ -302,7 +302,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       isPercentSumGood: newIsPercentSumGood,
     })
   }
-  transformData = (rows, mainSymbol, red, green, isEditModeEnabled, isPercentSumGood) => {
+  transformData = (rows, staticRows, mainSymbol, red, green, isEditModeEnabled, isPercentSumGood) => {
 
     const transformedData = rows.map((row, index) => {
 
@@ -399,6 +399,13 @@ export default class RebalancedPortfolioTable extends React.Component<
       return Object.values({
         exchange: {render: exchange},
         coin: { render: coin, style: { fontWeight: 700 } },
+      ...(staticRows[index] ? {
+        oririnalPortfolioPerc: {render: staticRows[index].portfolioPerc, isNumber: true },
+        oritinalPrice: {render: staticRows[index].price, isNumber: true },
+      } : {
+        oririnalPortfolioPerc: {render: ' ', isNumber: true},
+        oritinalPrice: {render: ' ', isNumber: true},
+      }),
         portfolioPerc: { render: portfolioPercentage, isNumber: true },
         price: {
           additionalRender: mainSymbol,
@@ -421,7 +428,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   }
 
   putDataInTable = () => {
-    const { rows, isUSDCurrently, isEditModeEnabled, totalRows, totalTableRows, totalPercents, theme, isPercentSumGood } = this.props
+    const { rows, staticRows, isUSDCurrently, isEditModeEnabled, totalStaticRows, totalRows, totalTableRows, totalPercents, theme, isPercentSumGood } = this.props
     const { transformData } = this
     const red = theme.palette.red.main
     const green = theme.palette.green.main
@@ -437,13 +444,17 @@ export default class RebalancedPortfolioTable extends React.Component<
       head: [
           { render: 'Exchange' },
           { render: 'Coin' },
-          { render: 'portfolio%', isNumber: true },
-          { render: isUSDCurrently ? 'USD' : 'BTC', isNumber: true },
+          { render: 'Current %', isNumber: true },
+          { render: `Current ${isUSDCurrently ? 'USD' : 'BTC'}`, isNumber: true },
+          { render: 'Rebalanced %', isNumber: true },
+          { render: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`, isNumber: true },
           { render: 'Trade' },
         ...(isEditModeEnabled ? [{ render: ' ' }] : []),
       ],
-      body: transformData(rows, mainSymbol, red, green, isEditModeEnabled, isPercentSumGood),
+      body: transformData(rows, staticRows, mainSymbol, red, green, isEditModeEnabled, isPercentSumGood),
       upperFooter: isEditModeEnabled ? [[
+        ' ',
+        ' ',
         ' ',
         ' ',
         ' ',
@@ -456,6 +467,8 @@ export default class RebalancedPortfolioTable extends React.Component<
         [
         'Subtotal',
         ' ',
+          ' ',
+          ' ',
         { render: `${totalPercents}%`, isNumber: true },
         {
           additionalRender: mainSymbol,
@@ -469,6 +482,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           'All',
           ' ',
           ' ',
+          ' ',
+          ' ',
           {
             additionalRender: mainSymbol,
             render: formatNumberToUSFormat(totalRows),
@@ -480,6 +495,57 @@ export default class RebalancedPortfolioTable extends React.Component<
       ],
     }
   }
+
+  // transformData = (staticRows, mainSymbol) => {
+  //   const transformedData = staticRows.map((row) => {
+  //     return Object.values({
+  //       exchange: row.exchange,
+  //       coin: { render: row.symbol, style: { fontWeight: 700 } },
+  //       portfolioPerc: { render: `${row.portfolioPerc}%`, isNumber: true },
+  //       price: {
+  //         additionalRender: mainSymbol,
+  //         render: formatNumberToUSFormat(row.price),
+  //         isNumber: true,
+  //       },
+  //     })
+  //   })
+  //
+  //   return transformedData
+  // }
+  //
+  // putDataInTable = () => {
+  //   const { staticRows, isUSDCurrently, totalStaticRows } = this.props
+  //   const { transformData } = this
+  //   const mainSymbol = isUSDCurrently ? (
+  //     <Icon className="fa fa-usd" />
+  //   ) : (
+  //     <Icon className="fa fa-btc" />
+  //   )
+  //
+  //   console.log('staticRows', staticRows)
+  //
+  //   return {
+  //     head: [
+  //       { render: 'exchange', isNumber: false },
+  //       { render: 'coin', isNumber: false },
+  //       { render: 'portfolio%', isNumber: true },
+  //       { render: isUSDCurrently ? 'usd' : 'btc', isNumber: true },
+  //     ],
+  //     body: transformData(staticRows, mainSymbol),
+  //     footer: [
+  //       ' ',
+  //       ' ',
+  //       { render: '100%', isNumber: true },
+  //       {
+  //         additionalRender: mainSymbol,
+  //         render: formatNumberToUSFormat(totalStaticRows),
+  //         isNumber: true,
+  //       },
+  //     ],
+  //   }
+  // }
+
+
 
   render() {
     const {
@@ -942,7 +1008,7 @@ export default class RebalancedPortfolioTable extends React.Component<
 
 
 const TableWrapper = styled.div`
-  width: 50%;
+  width: 80%;
   display: flex;
 `
 

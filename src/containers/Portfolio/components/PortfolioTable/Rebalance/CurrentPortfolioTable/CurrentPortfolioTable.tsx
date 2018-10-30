@@ -67,7 +67,6 @@ export default class CurrentPortfolioTable extends React.Component<
           title="Current portfolio"
           withCheckboxes={false}
           rows={this.putDataInTable()}
-          style={{ width: '50%' }}
         />
       </TableWrapper>
     )
