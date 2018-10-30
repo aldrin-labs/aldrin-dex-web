@@ -7,8 +7,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env DEVTOOL=source-map NODE_ENV=development webpack-dev-server --env.env=dev",
-    "dev:fast": "cross-env NODE_ENV=development DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
+    "dev": "cross-env DEVTOOL=source-map NODE_ENV=development API_ENDPOINT=develop.api.cryptocurrencies.ai CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai webpack-dev-server --env.env=dev",
+    "dev:fast": "cross-env NODE_ENV=development API_ENDPOINT=develop.api.cryptocurrencies.ai CHARTS_API_ENDPOINT=develop.chart.cryptocurrencies.ai DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",

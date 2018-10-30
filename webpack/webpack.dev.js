@@ -59,6 +59,12 @@ const config = {
         sizeThreshold: 50 * 1024 * 1024,
       },
     }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT),
+        CHARTS_API_ENDPOINT: JSON.stringify(process.env.CHARTS_API_ENDPOINT),
+      },
+    }),
   ],
   cache: true,
   devServer: {
