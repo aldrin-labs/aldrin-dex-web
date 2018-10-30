@@ -506,7 +506,11 @@ export default class RebalancedPortfolioTable extends React.Component<
           'All',
           ' ',
           ' ',
-          ' ',
+          {
+            additionalRender: mainSymbol,
+            render: formatNumberToUSFormat(totalStaticRows),
+            isNumber: true,
+          },
           ' ',
           {
             additionalRender: mainSymbol,

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 
+
 export const InputTable = styled.input`
   max-width: 60px;
   background-color: #2d3136;
