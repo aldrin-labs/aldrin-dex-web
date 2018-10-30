@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Button } from '@material-ui/core'
 
 export {
   ButtonsWrapper,
@@ -6,7 +7,6 @@ export {
   UndistributedMoneyContainer,
   UndistributedMoneyText,
   AddMoneyContainer,
-  Button,
   Input,
 }
 
@@ -43,30 +43,6 @@ const AddMoneyContainer = styled.div`
   min-width: 120px;
 `
 
-const Button = styled.button`
-  border-radius: 2px;
-  background-color: rgba(255, 255, 255, 0.12);
-  padding: 10px;
-  border: none;
-  outline: none;
-  font-family: Roboto, sans-serif;
-  letter-spacing: 0.4px;
-  text-align: center;
-  font-size: 12px;
-  font-weight: 500;
-  color: ${(props: { secondary: string }) => props.secondary};
-  cursor: pointer;
-  text-transform: uppercase;
-  margin-top: 10px;
-
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 9px -5px,
-    rgba(0, 0, 0, 0.14) 0px 15px 22px 2px, rgba(0, 0, 0, 0.12) 0px 6px 28px 5px;
-
-  &:disabled {
-    cursor: not-allowed;
-    background-color: gray;
-  }
-`
 
 const Input = styled.input`
   color: ${(props: { textColor: string }) => props.textColor};
@@ -85,4 +61,24 @@ const Input = styled.input`
   text-align: left;
   padding: 10px 0 0;
   margin-bottom: 10px;
+`
+
+export const InputContainer = styled.div`
+  box-shadow: 0 2px 6px 0 #00000066;
+`
+
+export const Label = styled.div`
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  color: #4ed8da;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background-color: #263238;
+  font-weight: bold;
+  white-space: nowrap;
+  text-transform: uppercase;
+`
+
+export const SButton = styled(Button)`
+  margin-bottom: 20px;
 `

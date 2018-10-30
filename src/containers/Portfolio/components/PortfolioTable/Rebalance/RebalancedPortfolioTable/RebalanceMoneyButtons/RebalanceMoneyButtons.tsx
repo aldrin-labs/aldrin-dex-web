@@ -9,11 +9,12 @@ import {
   UndistributedMoneyText,
   AddMoneyContainer,
   Input,
+  Label,
+  InputContainer,
+  SButton
 } from './RebalanceMoneyButtons.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
-import { Button } from '@material-ui/core'
-import styled from 'styled-components'
 
 export class RebalanceMoneyButtons extends React.Component<IProps> {
   onDeleteUndistributedMoneyHandler = () => {
@@ -186,21 +187,10 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
               variant={'outlined'}
               onClick={this.onAddMoneyButtonPressedHandler}
             >
-            {/*<Button*/}
-              {/*onClick={this.onAddMoneyButtonPressedHandler}*/}
-              {/*secondary={secondary}*/}
-            {/*>*/}
               Add money
-            {/*</Button>*/}
             </SButton>
           </AddMoneyContainer>
           <AddMoneyContainer>
-            {/*<Button*/}
-              {/*onClick={this.onDeleteUndistributedMoneyHandler}*/}
-              {/*secondary={secondary}*/}
-            {/*>*/}
-              {/*Delete undistributed*/}
-            {/*</Button>*/}
             <SButton
               color={'primary'}
               variant={'outlined'}
@@ -215,13 +205,6 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
                 Undistributed money:{' '}
                 {formatNumberToUSFormat(undistributedMoney)}
               </UndistributedMoneyText>
-              {/*<Button*/}
-                {/*disabled={+undistributedMoney < 0}*/}
-                {/*onClick={this.onDistributeHandler}*/}
-                {/*secondary={secondary}*/}
-              {/*>*/}
-                {/*Distribute to selected*/}
-              {/*</Button>*/}
               <SButton
                 disabled={+undistributedMoney < 0}
                 color={'secondary'}
@@ -241,24 +224,3 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
 }
 
 export default RebalanceMoneyButtons
-
-
-const InputContainer = styled.div`
-  box-shadow: 0 2px 6px 0 #00000066;
-`
-
-const Label = styled.div`
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 15px;
-  font-size: 0.875rem;
-  color: #4ed8da;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  background-color: #263238;
-  font-weight: bold;
-  white-space: nowrap;
-  text-transform: uppercase;
-`
-
-const SButton = styled(Button)`
-  margin-bottom: 20px;
-`
