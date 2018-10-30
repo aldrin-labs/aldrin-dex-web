@@ -20,6 +20,7 @@ const ButtonsInnerWrapper = styled.div`
   padding: 0 15px 15px 15px;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
 `
 
 const UndistributedMoneyContainer = styled.div`

@@ -492,36 +492,38 @@ class Rebalance extends React.Component<IProps, IState> {
                 onEditModeEnable={this.onEditModeEnable}
                 updateState={this.updateState}
               />
+              <BtnsWrapper>
+              <RebalanceActionButtons
+                {...{
+                  isEditModeEnabled,
+                  saveButtonColor,
+                  onSaveClick,
+                  onEditModeEnable,
+                  onReset,
+                  textColor,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+              <RebalanceMoneyButtons
+                {...{
+                  isEditModeEnabled,
+                  addMoneyInputValue,
+                  undistributedMoney,
+                  staticRows,
+                  rows,
+                  selectedActive,
+                  updateState,
+                  textColor,
+                  fontFamily,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+              </BtnsWrapper>
             </Container>
-            <RebalanceActionButtons
-              {...{
-                isEditModeEnabled,
-                saveButtonColor,
-                onSaveClick,
-                onEditModeEnable,
-                onReset,
-                textColor,
-                secondary,
-                red,
-                green,
-              }}
-            />
-            <RebalanceMoneyButtons
-            {...{
-            isEditModeEnabled,
-            addMoneyInputValue,
-            undistributedMoney,
-            staticRows,
-            rows,
-            selectedActive,
-            updateState,
-              textColor,
-              fontFamily,
-            secondary,
-            red,
-            green,
-            }}
-            />
             <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
               {/*<ChartColorPicker*/}
                 {/*leftBar={leftBar}*/}
@@ -600,4 +602,9 @@ const Label = styled.div`
 
 export const InnerChartContainer = styled.div`
   padding: 0 15px 15px 15px;
+`
+
+const BtnsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
 `

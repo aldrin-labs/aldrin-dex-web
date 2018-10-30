@@ -36,7 +36,7 @@ const ChartContainer = styled(Paper)`
   background: ${(props: { background: string }) => props.background};
 
   && {
-    width: 1120px;
+    width: 100%;
     height: inherit;
     margin-left: 15px;
     margin-right: 15px;
@@ -77,7 +77,7 @@ const PTextBox = styled.div`
 
 const Container = styled.div`
   display: flex;
-  justify-content: center;
-  height: 45vh;
+  justify-content: space-between;
+  //height: 45vh;
   padding: 0 20px 20px;
 `

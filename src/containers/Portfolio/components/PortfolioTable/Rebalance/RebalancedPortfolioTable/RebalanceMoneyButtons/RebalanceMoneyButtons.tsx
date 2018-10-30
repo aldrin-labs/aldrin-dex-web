@@ -229,7 +229,7 @@ const OuterContainer = styled.div`
 `
 
 const InputContainer = styled.div`
-  width: 650px;
+  //width: 650px;
   box-shadow: 0 2px 6px 0 #00000066;
 `
 

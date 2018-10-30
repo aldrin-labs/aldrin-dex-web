@@ -40,8 +40,7 @@ const ActionButton = styled.button`
 const ActionButtonsContainer = styled.div`
   display: flex;
   min-width: 150px;
-  justify-content: space-around;
-  padding-left: 10px;
+  justify-content: space-between;
 
   & ${ActionButton} {
     visibility: ${(props: { isEditModeEnabled?: boolean }) =>
