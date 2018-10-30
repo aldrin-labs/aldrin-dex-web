@@ -8,11 +8,12 @@ import {
   UndistributedMoneyContainer,
   UndistributedMoneyText,
   AddMoneyContainer,
-  Button,
+  // Button,
   Input,
 } from './RebalanceMoneyButtons.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import { Button } from '@material-ui/core'
 import styled from 'styled-components'
 
 export class RebalanceMoneyButtons extends React.Component<IProps> {
@@ -181,20 +182,33 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
               secondary={secondary}
               textColor={textColor}
             />
-            <Button
+            <SButton
+              color={'secondary'}
+              variant={'outlined'}
               onClick={this.onAddMoneyButtonPressedHandler}
-              secondary={secondary}
             >
+            {/*<Button*/}
+              {/*onClick={this.onAddMoneyButtonPressedHandler}*/}
+              {/*secondary={secondary}*/}
+            {/*>*/}
               Add money
-            </Button>
+            {/*</Button>*/}
+            </SButton>
           </AddMoneyContainer>
           <AddMoneyContainer>
-            <Button
+            {/*<Button*/}
+              {/*onClick={this.onDeleteUndistributedMoneyHandler}*/}
+              {/*secondary={secondary}*/}
+            {/*>*/}
+              {/*Delete undistributed*/}
+            {/*</Button>*/}
+            <SButton
+              color={'primary'}
+              variant={'outlined'}
               onClick={this.onDeleteUndistributedMoneyHandler}
-              secondary={secondary}
             >
               Delete undistributed
-            </Button>
+            </SButton>
           </AddMoneyContainer>
           {
             <UndistributedMoneyContainer>
@@ -202,13 +216,21 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
                 Undistributed money:{' '}
                 {formatNumberToUSFormat(undistributedMoney)}
               </UndistributedMoneyText>
-              <Button
+              {/*<Button*/}
+                {/*disabled={+undistributedMoney < 0}*/}
+                {/*onClick={this.onDistributeHandler}*/}
+                {/*secondary={secondary}*/}
+              {/*>*/}
+                {/*Distribute to selected*/}
+              {/*</Button>*/}
+              <SButton
                 disabled={+undistributedMoney < 0}
+                color={'secondary'}
+                variant={'outlined'}
                 onClick={this.onDistributeHandler}
-                secondary={secondary}
               >
                 Distribute to selected
-              </Button>
+              </SButton>
             </UndistributedMoneyContainer>
           }
         </ButtonsInnerWrapper>
@@ -243,4 +265,8 @@ const Label = styled.div`
   font-weight: bold;
   white-space: nowrap;
   text-transform: uppercase;
+`
+
+const SButton = styled(Button)`
+  margin-bottom: 20px;
 `

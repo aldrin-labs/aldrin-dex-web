@@ -456,7 +456,7 @@ class Rebalance extends React.Component<IProps, IState> {
         <PTWrapper tableData={true}>
           {children}
           <Content>
-            <Container>
+            <Container isEditModeEnabled={isEditModeEnabled}>
               {/*<CurrentPortfolioTable*/}
                 {/*{...{*/}
                   {/*// currentSortForStatic,*/}

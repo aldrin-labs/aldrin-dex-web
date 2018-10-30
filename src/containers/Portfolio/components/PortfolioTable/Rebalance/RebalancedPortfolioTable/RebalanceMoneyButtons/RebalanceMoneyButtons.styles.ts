@@ -84,4 +84,5 @@ const Input = styled.input`
   line-height: 24px;
   text-align: left;
   padding: 10px 0 0;
+  margin-bottom: 10px;
 `

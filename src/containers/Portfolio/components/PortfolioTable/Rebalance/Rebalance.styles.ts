@@ -77,7 +77,6 @@ const PTextBox = styled.div`
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
-  //height: 45vh;
+  justify-content: ${(props: { isEditModeEnabled: boolean }) => props.isEditModeEnabled ? 'space-between' : 'left'};
   padding: 0 20px 20px;
 `
