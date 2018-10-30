@@ -70,8 +70,8 @@ class Rebalance extends React.Component<IProps, IState> {
     totalTableSavedRows: '0',
     isPercentSumGood: true,
     totalPercents: 0,
-    leftBar: '#2496c8',
-    rightBar: '#1869a8',
+    leftBar: '#fff',
+    rightBar: '#4ed8da',
   }
 
   componentDidMount() {
