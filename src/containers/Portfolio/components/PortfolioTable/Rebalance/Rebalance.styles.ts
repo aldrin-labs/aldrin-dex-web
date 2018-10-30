@@ -2,7 +2,7 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
 
-export { Content, ChartWrapper, ChartContainer, Chart, PTextBox, Container }
+export { Content, ChartWrapper, ChartContainer, Chart, Container }
 
 const Content = styled.div`
   overflow: auto;
@@ -21,15 +21,9 @@ const ChartWrapper = styled.div`
   display: flex;
   position: relative;
   flex-direction: column;
-  //height: 25vh;
   padding: 20px;
   justify-content: center;
   align-items: center;
-
-  //@media (max-height: 1200px) {
-  //  height: 20vh;
-  //  padding-bottom: 1.5%;
-  //}
 `
 
 const ChartContainer = styled(Paper)`
@@ -60,23 +54,31 @@ const Chart = styled.div`
   }
 `
 
-const PTextBox = styled.div`
-  font-size: 30px;
-  color: white;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #2d3136;
-`
-
 const Container = styled.div`
   display: flex;
   justify-content: ${(props: { isEditModeEnabled: boolean }) => props.isEditModeEnabled ? 'space-between' : 'left'};
   padding: 0 20px 20px;
+  max-height: 60vh;
 `
+
+export const Label = styled.div`
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  color: #4ed8da;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  background-color: #263238;
+  font-weight: bold;
+  white-space: nowrap;
+  text-transform: uppercase;
+`
+
+export const InnerChartContainer = styled.div`
+  padding: 0 15px 15px 15px;
+`
+
+export const BtnsWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+

@@ -27,7 +27,6 @@ import {
   updateRebalanceMutation,
   getMyPortfolioAndRebalanceQuery,
 } from '@containers/Portfolio/api'
-import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 
@@ -36,8 +35,10 @@ import {
   ChartWrapper,
   ChartContainer,
   Chart,
-  PTextBox,
   Container,
+  Label,
+  BtnsWrapper,
+  InnerChartContainer
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
@@ -415,7 +416,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const {
       children,
       isUSDCurrently,
-      filterValueSmallerThenPercentage,
       theme,
     } = this.props
     const {
@@ -452,22 +452,11 @@ class Rebalance extends React.Component<IProps, IState> {
     const tableDataHasData = !staticRows.length || !rows.length
 
     return (
-      <EmptyTablePlaceholder isEmpty={!!tableDataHasData}>
+      <EmptyTablePlaceholder isEmpty={tableDataHasData}>
         <PTWrapper tableData={true}>
           {children}
           <Content>
             <Container isEditModeEnabled={isEditModeEnabled}>
-              {/*<CurrentPortfolioTable*/}
-                {/*{...{*/}
-                  {/*// currentSortForStatic,*/}
-                  {/*staticRows,*/}
-                  {/*totalStaticRows,*/}
-                  {/*// filterValueSmallerThenPercentage,*/}
-                  {/*isUSDCurrently,*/}
-                  {/*theme,*/}
-                {/*}}*/}
-                {/*onSortTable={this.onSortTable}*/}
-              {/*/>*/}
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
@@ -586,25 +575,3 @@ export default compose(
     name: 'updateRebalanceMutationQuery',
   })
 )(RebalanceContainer)
-
-
-const Label = styled.div`
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 15px;
-  font-size: 0.875rem;
-  color: #4ed8da;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  background-color: #263238;
-  font-weight: bold;
-  white-space: nowrap;
-  text-transform: uppercase;
-`
-
-export const InnerChartContainer = styled.div`
-  padding: 0 15px 15px 15px;
-`
-
-const BtnsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-`
