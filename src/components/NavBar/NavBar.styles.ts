@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar'
 
 export const navBarHeight = 48
 
+
 export const Nav = styled(AppBar)`
   z-index: 1;
   ${({ background }: { background: string | false }) =>
