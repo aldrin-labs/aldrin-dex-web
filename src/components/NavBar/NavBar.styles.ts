@@ -20,7 +20,6 @@ export const Nav = styled(AppBar)`
 
 export const Logo = styled.img`
   z-index: 1;
-  align-self: center;
   position: relative;
   margin: auto 0;
   height: 36px;
