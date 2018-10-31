@@ -27,7 +27,6 @@ import {
   updateRebalanceMutation,
   getMyPortfolioAndRebalanceQuery,
 } from '@containers/Portfolio/api'
-import CurrentPortfolioTable from './CurrentPortfolioTable/CurrentPortfolioTable'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 
@@ -36,17 +35,22 @@ import {
   ChartWrapper,
   ChartContainer,
   Chart,
-  PTextBox,
   Container,
+  BtnsWrapper,
+  InnerChartContainer,
+  Label,
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
 import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
+import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
+import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
+
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
-    selectedActive: null,
+    selectedActive: [],
     areAllActiveChecked: false,
     rows: [],
     staticRows: [],
@@ -65,8 +69,8 @@ class Rebalance extends React.Component<IProps, IState> {
     totalTableSavedRows: '0',
     isPercentSumGood: true,
     totalPercents: 0,
-    leftBar: '#2496c8',
-    rightBar: '#1869a8',
+    leftBar: '#fff',
+    rightBar: '#4ed8da',
   }
 
   componentDidMount() {
@@ -411,8 +415,8 @@ class Rebalance extends React.Component<IProps, IState> {
     const {
       children,
       isUSDCurrently,
-      filterValueSmallerThenPercentage,
       theme,
+      theme: {palette},
     } = this.props
     const {
       selectedActive,
@@ -433,29 +437,31 @@ class Rebalance extends React.Component<IProps, IState> {
       rightBar,
     } = this.state
 
+    const { onSaveClick, onEditModeEnable, onReset, updateState } = this
+
+    const secondary = palette.secondary.main
+    const red = palette.red.main
+    const green = palette.green.main
+    const textColor: string = palette.getContrastText(
+      palette.background.paper
+    )
+    const fontFamily: string = theme.typography.fontFamily
+    const saveButtonColor =
+      isPercentSumGood && +undistributedMoney >= 0 ? green : red
+
     const tableDataHasData = !staticRows.length || !rows.length
 
     return (
-      <EmptyTablePlaceholder isEmpty={!!tableDataHasData}>
+      <EmptyTablePlaceholder isEmpty={tableDataHasData}>
         <PTWrapper tableData={true}>
           {children}
           <Content>
-            <Container>
-              <CurrentPortfolioTable
-                {...{
-                  currentSortForStatic,
-                  staticRows,
-                  totalStaticRows,
-                  filterValueSmallerThenPercentage,
-                  isUSDCurrently,
-                  theme,
-                }}
-                onSortTable={this.onSortTable}
-              />
+            <Container isEditModeEnabled={isEditModeEnabled}>
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
                   staticRows,
+                  totalStaticRows,
                   rows,
                   currentSortForDynamic,
                   selectedActive,
@@ -475,17 +481,51 @@ class Rebalance extends React.Component<IProps, IState> {
                 onEditModeEnable={this.onEditModeEnable}
                 updateState={this.updateState}
               />
+              <BtnsWrapper>
+              <RebalanceActionButtons
+                {...{
+                  isEditModeEnabled,
+                  saveButtonColor,
+                  onSaveClick,
+                  onEditModeEnable,
+                  onReset,
+                  textColor,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+              <RebalanceMoneyButtons
+                {...{
+                  isEditModeEnabled,
+                  addMoneyInputValue,
+                  undistributedMoney,
+                  staticRows,
+                  rows,
+                  selectedActive,
+                  updateState,
+                  textColor,
+                  fontFamily,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+              </BtnsWrapper>
             </Container>
             <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-              <ChartColorPicker
-                leftBar={leftBar}
-                rightBar={rightBar}
-                onChangeColor={this.onChangeColor}
-              />
-              <ChartContainer elevation={10}>
-                <Chart>
+              {/*<ChartColorPicker*/}
+                {/*leftBar={leftBar}*/}
+                {/*rightBar={rightBar}*/}
+                {/*onChangeColor={this.onChangeColor}*/}
+              {/*/>*/}
+              <ChartContainer elevation={10} background={palette.background.paper}>
+                <Label color={'secondary'}>Portfolio Distribution</Label>
+                <InnerChartContainer>
+                <Chart background={palette.background.default}>
                   {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
                     <BarChart
+                      height={350}
                       hideDashForToolTip={true}
                       xAxisVertical={true}
                       alwaysShowLegend={true}
@@ -504,6 +544,7 @@ class Rebalance extends React.Component<IProps, IState> {
                     />
                   )}
                 </Chart>
+                </InnerChartContainer>
               </ChartContainer>
             </ChartWrapper>
           </Content>
