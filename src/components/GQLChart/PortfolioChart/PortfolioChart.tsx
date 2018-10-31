@@ -16,10 +16,7 @@ import { yearData } from '../chartMocks'
 import Highlight from '@components/GQLChart/PortfolioChart/Highlight/Highlight'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { Loading } from '@components/Loading'
-import {
-  Props,
-  State,
-} from '@components/GQLChart/annotations'
+import { Props, State } from '@components/GQLChart/annotations'
 import {
   Chart,
   SProfileChart,
@@ -37,7 +34,6 @@ const mapLabelToDays = {
 }
 
 export default class PortfolioChart extends Component<Props, State> {
-
   state: State = {
     activeChart: '1Y',
     crosshairValues: [],
@@ -45,8 +41,7 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   static getDerivedStateFromProps(newProps, state) {
-    console.log(newProps, state);
-    return Object.assign(state, newProps);
+    return Object.assign(state, newProps)
   }
   componentWillUnmount() {
     // cacheStack = [];
@@ -56,7 +51,6 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   _onNearestX = (value, { index }) => {
-    //        console.log(value, index);
     this.setState({
       crosshairValues: [value],
     })
@@ -66,16 +60,11 @@ export default class PortfolioChart extends Component<Props, State> {
     this.setState({ crosshairValues: [] })
   }
 
-  _formatDate = (date) => { }
+  _formatDate = (date) => {}
 
-  _onBrushStart = (data) => {
-    //    console.log('_onBrushStart', data)
-  }
+  _onBrushStart = (data) => {}
 
   _onBrushEnd = (area) => {
-    console.log('_onBrushEnd', area)
-    //  console.log(cacheStack.length)
-
     this.props.onChangeDateRange(area)
   }
 
@@ -91,7 +80,7 @@ export default class PortfolioChart extends Component<Props, State> {
       crosshairValues,
       isShownMocks,
       activeChart,
-    } = this.state;
+    } = this.state
     const { name = '', priceUSD = '' } = coin || {}
 
     let transformedData = isShownMocks ? yearData : []
@@ -102,7 +91,6 @@ export default class PortfolioChart extends Component<Props, State> {
       data.getPriceHistory.prices.length > 0 &&
       !isShownMocks
     ) {
-      //      console.log(data.getPriceHistory.prices[0], lastDrawLocation);
       const Yvalues = data.getPriceHistory.prices.map((x) => x)
       transformedData = data.getPriceHistory.dates.map((date, i) => ({
         x: Number(date),
@@ -211,15 +199,15 @@ export default class PortfolioChart extends Component<Props, State> {
               color="secondary"
               size="small"
               onClick={() => {
-                this.onChangeActiveChart(chartBtn);
+                this.onChangeActiveChart(chartBtn)
               }}
               style={
                 chartBtn === activeChart
                   ? {
-                    backgroundColor: '#4ed8da',
-                    color: '#4c5055',
-                    margin: '0 0.5rem',
-                  }
+                      backgroundColor: '#4ed8da',
+                      color: '#4c5055',
+                      margin: '0 0.5rem',
+                    }
                   : { margin: '0 0.5rem' }
               }
               key={chartBtn}
