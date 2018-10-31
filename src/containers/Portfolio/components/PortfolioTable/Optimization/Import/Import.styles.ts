@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Card } from '@material-ui/core';
 
 export {
   SwitchButtonsWrapper,
@@ -22,21 +23,16 @@ const HelperForCentering = styled.div`
   opacity: 0;
 `
 
-const InputContainer = styled.div`
+const InputContainer = styled(Card)`
   min-height: 400px;
-  box-shadow: 0 2px 6px 0 #00000066;
-  background: ${(props: { background: string }) => props.background};
   margin-right: 2rem;
 `
 
-const TableContainer = styled.div`
+const TableContainer = styled(Card)`
   flex-grow: 1;
   justify-content: flex-start;
   min-height: 400px;
-  background: ${(props: { background: string }) => props.background};
-  box-shadow: 0 2px 6px 0 #00000066;
   margin: 0;
-  
   display: flex;
   flex-direction: column;
   width: 30%;
@@ -69,7 +65,7 @@ const Input = styled.input`
 `
 
 const Chart = styled.div`
-  height: 360px;
+  height: 339px;
   padding: 0.5rem;
   flex-grow: 1;
   border-radius: 1rem;
@@ -85,5 +81,5 @@ const ImportData = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin: 0 2rem;
+  margin: 0.5rem 2rem 0rem 2rem;
 `

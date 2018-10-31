@@ -5,7 +5,7 @@ export interface Serie {
 }
 
 export interface Props {
-  data: Serie[][]
+  data: Serie[][] | undefined
   activeLine: number | null
   onChangeData?: Function
 }

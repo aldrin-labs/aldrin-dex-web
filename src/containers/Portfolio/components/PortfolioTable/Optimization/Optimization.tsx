@@ -44,6 +44,7 @@ import { MASTER_BUILD } from '@utils/config'
 import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+import CardHeader from '@components/CardHeader'
 
 const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
   return [1528405044 + 86400 * i, i * 2 - 500 + i * Math.random()]
@@ -79,8 +80,6 @@ class Optimization extends Component<IProps, IState> {
 
   transformData = (assets: any[]): IData[] => {
     const allSum = calcAllSumOfPortfolioAsset(assets)
-    console.log('allSum', allSum)
-    console.log('assets', assets)
 
     const newAssets = assets.map((asset: any) => ({
       coin: asset.coin,
@@ -88,8 +87,6 @@ class Optimization extends Component<IProps, IState> {
         percentagesOfCoinInPortfolio(asset, allSum, true)
       ),
     }))
-
-    console.log('newAssets', newAssets)
 
     return [newAssets, allSum]
   }
@@ -365,29 +362,36 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer>
-        <ChartContainer background={theme.palette.background.paper}>
-          <Label>Back-test Optimization</Label>
+        <ChartContainer>
+          <CardHeader
+            style={{ marginBottom: '15px' }}
+            title="Back-test Optimization"
+          />
           <InnerChartContainer>
-          <Chart background={theme.palette.background.default}>
-            <LineChart
-              alwaysShowLegend={false}
-              // data={mockDataForLineChart}
-              // data={[lineChartDataOriginal, lineChartDataOptimized]}
-              data={[lineChartData]}
-              itemsForChartLegend={itemsForChartLegend}
-            />
-          </Chart>
+            <Chart background={theme.palette.background.default}>
+              {console.log(lineChartData)}
+              <LineChart
+                alwaysShowLegend={false}
+                // data={mockDataForLineChart}
+                // data={[lineChartDataOriginal, lineChartDataOptimized]}
+                data={undefined}
+                itemsForChartLegend={itemsForChartLegend}
+              />
+            </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <ChartContainer background={theme.palette.background.paper}>
-          <Label>Efficient Frontier</Label>
+        <ChartContainer>
+          <CardHeader
+            style={{ marginBottom: '15px' }}
+            title="Efficient Frontier"
+          />
           <InnerChartContainer>
-          <Chart background={theme.palette.background.default}>
-            <EfficientFrontierChart
-              data={efficientFrontierData}
-              theme={theme}
-            />
-          </Chart>
+            <Chart background={theme.palette.background.default}>
+              <EfficientFrontierChart
+                data={efficientFrontierData}
+                theme={theme}
+              />
+            </Chart>
           </InnerChartContainer>
         </ChartContainer>
       </ChartsContainer>
