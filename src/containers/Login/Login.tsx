@@ -12,6 +12,7 @@ import * as actions from '@containers/Login/actions'
 import * as API from '@containers/Login/api'
 import { LoginMenu } from '@containers/Login/components'
 import MainLogo from '@icons/AuthLogo.png'
+import { Grow, Slide } from '@material-ui/core'
 
 const auth0Options = {
   auth: {
@@ -36,8 +37,7 @@ const SWrapper = styled.div`
   z-index: 100000;
   align-items: center;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  justify-content: flex-end;
 `
 
 class LoginQuery extends React.Component<Props, State> {
@@ -59,10 +59,6 @@ class LoginQuery extends React.Component<Props, State> {
       ),
     }
   }
-  /*
-  componentWillMount() {
-    this.checkToken()
-  }*/
 
   componentDidMount() {
     if (this.props.isShownModal) this.showLogin()
@@ -151,7 +147,12 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   showLogin = () => {
-    if (!this.props.modalIsOpen && !this.props.isLogging && !this.props.modalLogging) {
+    const isLoginPopUpClosed =
+      !this.props.modalIsOpen &&
+      !this.props.isLogging &&
+      !this.props.modalLogging
+
+    if (isLoginPopUpClosed) {
       this.props.storeOpenedModal()
       this.state.lock.show()
       if (this.props.listenersOff) {
@@ -167,11 +168,9 @@ class LoginQuery extends React.Component<Props, State> {
 
     if (isShownModal) return null
 
-    // TODO: change width on Button when resolution width < 340px
-
     return (
       <SWrapper>
-        {!loginStatus && (
+        <Grow in={!loginStatus} unmountOnExit={true} mountOnEnter={true}>
           <Button
             color="secondary"
             variant="contained"
@@ -179,17 +178,22 @@ class LoginQuery extends React.Component<Props, State> {
           >
             Log in
           </Button>
-        )}
-        {loginStatus && (
+        </Grow>
+        <Slide
+          in={loginStatus}
+          direction={'left'}
+          unmountOnExit={true}
+          mountOnEnter={true}
+        >
           <LoginMenu
             anchorEl={anchorEl}
             open={open}
             handleClose={this.handleClose}
             handleMenu={this.handleMenu}
             handleLogout={this.handleLogout}
-            userName={user.name}
+            userName={user && user.name}
           />
-        )}
+        </Slide>
       </SWrapper>
     )
   }
@@ -203,7 +207,6 @@ const mapStateToProps = (state: any) => ({
   modalIsOpen: state.login.modalIsOpen,
   listenersOff: state.login.listenersOff,
 })
-
 
 const mapDispatchToProps = (dispatch: any) => ({
   onLogin: () => dispatch(actions.onLogin()),

@@ -6,32 +6,22 @@ import Typography from '@material-ui/core/Typography'
 import Switch from '@material-ui/core/Switch'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import Telegram from '@material-ui/icons/NearMeSharp'
 
 import { changeThemeMode } from '@containers/App/actions'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
-import github from '../../icons/github.svg'
-import telegram from '../../icons/telegram.svg'
-import twitter from '../../icons/twitter.svg'
 import Props from './index.types'
-
-const socialIcons = [
-  // { icon: github, link: '' },
-  { icon: telegram, link: 'https://t.me/CryptocurrenciesAi' },
-  // { icon: twitter, link: '' },
-]
+import { AppBar, IconButton } from '@material-ui/core'
+import { MASTER_BUILD } from '@utils/config'
 
 const Footer = ({
-  theme: { palette },
   changeModeTheme,
   themeMode,
   hide,
+  theme: {
+    palette: { secondary },
+  },
 }: Props) => (
-  <Container
-    hide={hide}
-    background={
-      themeMode === 'dark' ? palette.primary.dark : palette.primary.light
-    }
-  >
+  <Container position="static" color="default" hide={hide}>
     <Block>
       <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
@@ -39,34 +29,30 @@ const Footer = ({
       <Typography variant="h6" color="secondary">
         •
       </Typography>
-      <Button size="small" color="default">
-        Terms of Use
-      </Button>
-      <Typography variant="h6" color="secondary">
-        •
-      </Typography>
-      <Button size="small" color="default">
-        Privacy Policy
-      </Button>
+      {/* you can see it only in develop for now */}
+      {!MASTER_BUILD && (
+        <>
+          <Button size="small" color="default">
+            Terms of Use
+          </Button>
+          <Typography variant="h6" color="secondary">
+            •
+          </Typography>
+          <Button size="small" color="default">
+            Privacy Policy
+          </Button>
+        </>
+      )}
     </Block>
 
     <Block>
-      {socialIcons.map((socio) => (
-        <LinkWithIcon key={socio.icon} href={socio.link}>
-          <SvgIcon
-            styledComponentsAdditionalStyle={
-              'opacity: 0.5; transition: all .5s linear; &:hover{opacity:1;}'
-            }
-            src={socio.icon}
-            width={30}
-            height={30}
-          />
-        </LinkWithIcon>
-      ))}
+      <IconButton href={'https://t.me/CryptocurrenciesAi'}>
+        <Telegram color="secondary" width={32} height={32} />
+      </IconButton>
     </Block>
 
     <Block>
-      <Typography variant="caption" color="secondary">
+      <Typography variant="body1" color="textPrimary">
         NIGHT MODE
       </Typography>
       <Switch
@@ -75,7 +61,7 @@ const Footer = ({
           changeModeTheme()
         }}
         value="theme"
-        color="secondary"
+        color="default"
       />
     </Block>
   </Container>
@@ -90,23 +76,21 @@ const Link = styled.a`
   }
 `
 
-const LinkWithIcon = styled(Link)`
-  margin: 0 1rem !important;
-`
-
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+const Container = styled(AppBar)`
+  flex-wrap: nowrap;
   justify-content: space-around;
-  background: ${(props: { background: string }) => props.background};
   transition: background 0.25s ease-in-out;
-  ${(props: { hide: boolean; background: string }) =>
+  ${(props: { hide: boolean }) =>
     props.hide
       ? `opacity: 0;
     position: absolute;
     top: 0;
     z-index: -100;`
       : ''};
+
+  && {
+    flex-direction: row;
+  }
 `
 
 const Block = styled.div`

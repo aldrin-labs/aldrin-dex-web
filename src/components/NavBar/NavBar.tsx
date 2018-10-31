@@ -1,106 +1,107 @@
 import React, { SFC } from 'react'
-import styled from 'styled-components'
-
-import { NavButton } from '@components/NavBar/NavButton'
 import { Login } from '@containers/Login'
 import { WithTheme } from '@material-ui/core/styles'
 import withTheme from '@material-ui/core/styles/withTheme'
+import { Toolbar, Button, Grid } from '@material-ui/core'
+import { NavLink as Link } from 'react-router-dom'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+
 import MainLogo from '@icons/MainLogo.png'
+import { Nav, Logo } from './NavBar.styles'
+import Feedback from '@components/Feedback'
 
 export interface Props extends WithTheme {
   hide?: boolean
   pathname: string
 }
-// ToDo add grid
+
+const Portfolio = (props: any) => <Link to="/portfolio" {...props} />
+const Chart = (props: any) => <Link to="/chart" {...props} />
+
 const NavBarRaw: SFC<Props> = ({
   theme: {
-    shadows,
+    transitions: {
+      duration: { standard },
+    },
     palette: {
       type,
-      getContrastText,
+      common,
       secondary: { main },
       primary,
     },
   },
   pathname,
   hide = false,
-}) => (
-  <Nav hide={hide} background={primary.main} shadow={shadows[5]}>
-    <Logo src={MainLogo} />
-    <SNav>
-      {/*<NavButton link="/" title="Home" exact />*/}
-      {/*<NavButton link="/market" title="Coin Market" />*/}
-      {/*<NavButton link="/profile" title="Profile" />*/}
-      <NavButton
-        active={pathname === '/portfolio'}
-        color={getContrastText(primary.main)}
-        link="/portfolio"
-        title="Portfolio"
-      />
-      {/*<NavButton link="/screener" title="Screener" />*/}
-      <NavButton
-        active={pathname === '/chart'}
-        color={getContrastText(primary.main)}
-        link="/chart"
-        title="Chart"
-      />
-    </SNav>
-    <LoginWrapper>
-      <Login mainColor={main} />
-    </LoginWrapper>
-  </Nav>
-)
+}) => {
+  const nonActiveButtonStyle =
+    type === 'dark'
+      ? { color: fade(common.white, 0.5), margin: '0.5rem 1rem' }
+      : { color: fade(common.black, 0.5), margin: '0.5rem 1rem' }
+  const activeButtonStyle = { margin: '0.5rem 1rem' }
+  const createStyleForButton = (
+    route: string,
+    button: string
+  ): { color?: string; margin?: string } =>
+    route === button ? activeButtonStyle : nonActiveButtonStyle
+
+  return (
+    <Nav
+      position="static"
+      hide={hide}
+      color="default"
+      background={type === 'light' && primary[300]}
+    >
+      <Toolbar variant="dense" style={{ height: '48px' }}>
+        <Grid alignItems="center" container={true} alignContent={'stretch'}>
+          <Grid item={true} xs={2}>
+            <Grid container={true}>
+              <Logo src={MainLogo} />
+            </Grid>
+          </Grid>
+          <Grid item={true} xs={8}>
+            <Grid
+              justify="center"
+              container={true}
+              style={{ flexDirection: 'row', display: 'flex' }}
+            >
+              <Button
+                style={createStyleForButton(pathname, '/portfolio')}
+                size="small"
+                component={Portfolio}
+                color="default"
+                variant="text"
+              >
+                Portfolio
+              </Button>
+
+              <Button
+                style={createStyleForButton(pathname, '/chart')}
+                component={Chart}
+                size="small"
+                variant="text"
+                color="default"
+              >
+                Chart
+              </Button>
+            </Grid>
+          </Grid>
+
+          <Grid item={true} xs={2}>
+            <Grid
+              justify="flex-end"
+              wrap="nowrap"
+              direction={'row'}
+              container={true}
+            >
+              <Feedback />
+
+              <Login mainColor={main} />
+            </Grid>
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </Nav>
+  )
+}
 
 export const NavBar = withTheme()(NavBarRaw)
-
-// TODO: fix z-index for drawer
-const Nav = styled.div`
-  width: 100%;
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  height: 80px;
-  box-shadow: ${(props: { shadow: string }) => props.shadow};
-  align-items: center;
-  background-color: ${(props: { background: string; shadow: string }) =>
-    props.background};
-  z-index: 1;
-  ${(props: { hide: boolean; background: string }) =>
-    props.hide
-      ? `opacity: 0;
-    position: absolute;
-    z-index: -100;`
-      : ''};
-
-  @media (max-width: 840px) {
-    justify-content: space-between;
-    margin: 0;
-    padding: 0 10px;
-  }
-`
-
-const Logo = styled.img`
-  padding-left: 1rem;
-  z-index: 1300;
-  position: relative;
-
-  @media (max-width: 768px) {
-    margin: 0;
-  }
-`
-
-const SNav = styled.nav`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  margin: 0 auto;
-  justify-content: center;
-  align-items: center;
-  flex-direction: row;
-`
-
-const LoginWrapper = styled.div`
-  width: 10%;
-  margin-right: 3%;
-`

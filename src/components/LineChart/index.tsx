@@ -139,7 +139,7 @@ export default class LineChart extends React.Component<Props, State> {
                 <div key={`${v.label}: ${v.y} USD`}>
                   <Label style={{ color: colors[i] }}>{`${v.label}: ${
                     Number(v.y).toFixed(2)
-                    }%`}</Label>
+                    }`}</Label>
                 </div>
               ))}
             </ContainerForCrossHairValues>
