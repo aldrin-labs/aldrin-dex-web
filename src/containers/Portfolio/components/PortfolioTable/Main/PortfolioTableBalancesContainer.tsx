@@ -141,7 +141,7 @@ class Container extends Component {
       })
     }
 
-    return total
+    return total && [total]
   }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {

@@ -60,8 +60,8 @@ const NavBarRaw: SFC<Props> = ({
           </Grid>
           <Grid item={true} xs={8}>
             <Grid
-              item={true}
               justify="center"
+              container={true}
               style={{ flexDirection: 'row', display: 'flex' }}
             >
               <Button
