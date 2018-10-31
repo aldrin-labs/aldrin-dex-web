@@ -374,7 +374,7 @@ class Optimization extends Component<IProps, IState> {
                 alwaysShowLegend={false}
                 // data={mockDataForLineChart}
                 // data={[lineChartDataOriginal, lineChartDataOptimized]}
-                data={undefined}
+                data={lineChartData === 0 ? undefined : [lineChartData]}
                 itemsForChartLegend={itemsForChartLegend}
               />
             </Chart>
