@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar'
 
 export const navBarHeight = 48
 
+
 export const Nav = styled(AppBar)`
   z-index: 1;
   ${({ background }: { background: string | false }) =>
@@ -19,6 +20,7 @@ export const Nav = styled(AppBar)`
 
 export const Logo = styled.img`
   z-index: 1;
+  align-self: center;
   position: relative;
   margin: auto 0;
   height: 36px;
