@@ -465,29 +465,48 @@ export default class RebalancedPortfolioTable extends React.Component<
         isEditModeEnabled,
         isPercentSumGood
       ),
-      upperFooter: isEditModeEnabled
-        ? [
-            [
-              ' ',
-              ' ',
-              ' ',
-              ' ',
-              ' ',
-              ' ',
-              ' ',
-              ' ',
-              {
-                render: (
-                  <SAddIcon
-                    onClick={this.onAddRowButtonClick}
-                    hoverColor={green}
-                  />
-                ),
-              },
-            ],
-          ]
-        : [[]],
       footer: [
+        ...(isEditModeEnabled ? [[
+        {
+          render: ' ',
+          variant: 'body',
+          style: {position: 'static'},
+        },        {
+          render: ' ',
+          variant: 'body',
+          style: {position: 'static'},
+        },       {
+          render: ' ',
+          variant: 'body',
+          style: {position: 'static'},
+        },       {
+          render: ' ',
+          variant: 'body',
+          style: {position: 'static'},
+        },        {
+          render: ' ',
+          variant: 'body',
+          style: {position: 'static'},
+        },        {
+          render: ' ',
+          variant: 'body',
+          style: {position: 'static'},
+        }, {
+          render: ' ',
+          variant: 'body',
+          style: {position: 'static'},
+        },
+        {
+          render: (
+            <SAddIcon
+              onClick={this.onAddRowButtonClick}
+              hoverColor={green}
+            />
+          ),
+          variant: 'body',
+          style: {position: 'static'},
+        },
+      ]] : []),
         [
           'Subtotal',
           ' ',
