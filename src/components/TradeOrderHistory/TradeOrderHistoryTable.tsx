@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { isEqual } from 'lodash-es'
-import { Table } from '@storybook-components'
+import { TableWithSort } from '@storybook-components'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
@@ -74,7 +74,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
       )
     }
 
-    return <Table title="Portfolio actions" rows={rows} />
+    return <TableWithSort title="Portfolio actions" rows={rows} />
   }
 }
 
