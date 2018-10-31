@@ -67,18 +67,6 @@ export const InputContainer = styled.div`
   box-shadow: 0 2px 6px 0 #00000066;
 `
 
-export const Label = styled.div`
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 15px;
-  font-size: 0.875rem;
-  color: #4ed8da;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  background-color: #263238;
-  font-weight: bold;
-  white-space: nowrap;
-  text-transform: uppercase;
-`
-
 export const SButton = styled(Button)`
   margin-bottom: 20px;
 `

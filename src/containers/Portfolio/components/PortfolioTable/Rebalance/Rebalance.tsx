@@ -36,9 +36,9 @@ import {
   ChartContainer,
   Chart,
   Container,
-  Label,
   BtnsWrapper,
-  InnerChartContainer
+  InnerChartContainer,
+  Label,
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
@@ -46,7 +46,6 @@ import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
-import styled from 'styled-components'
 
 
 class Rebalance extends React.Component<IProps, IState> {
@@ -417,6 +416,7 @@ class Rebalance extends React.Component<IProps, IState> {
       children,
       isUSDCurrently,
       theme,
+      theme: {palette},
     } = this.props
     const {
       selectedActive,
@@ -439,11 +439,11 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const { onSaveClick, onEditModeEnable, onReset, updateState } = this
 
-    const secondary = theme.palette.secondary.main
-    const red = theme.palette.red.main
-    const green = theme.palette.green.main
-    const textColor: string = theme.palette.getContrastText(
-      this.props.theme.palette.background.paper
+    const secondary = palette.secondary.main
+    const red = palette.red.main
+    const green = palette.green.main
+    const textColor: string = palette.getContrastText(
+      palette.background.paper
     )
     const fontFamily: string = theme.typography.fontFamily
     const saveButtonColor =
@@ -519,10 +519,10 @@ class Rebalance extends React.Component<IProps, IState> {
                 {/*rightBar={rightBar}*/}
                 {/*onChangeColor={this.onChangeColor}*/}
               {/*/>*/}
-              <ChartContainer elevation={10} background={theme.palette.background.paper}>
-                <Label>Portfolio Distribution</Label>
+              <ChartContainer elevation={10} background={palette.background.paper}>
+                <Label color={'secondary'}>Portfolio Distribution</Label>
                 <InnerChartContainer>
-                <Chart background={theme.palette.background.default}>
+                <Chart background={palette.background.default}>
                   {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
                     <BarChart
                       height={350}

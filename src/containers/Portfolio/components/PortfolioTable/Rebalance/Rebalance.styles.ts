@@ -1,6 +1,7 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 import { Paper } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 
 export { Content, ChartWrapper, ChartContainer, Chart, Container }
 
@@ -61,18 +62,6 @@ const Container = styled.div`
   max-height: 60vh;
 `
 
-export const Label = styled.div`
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 15px;
-  font-size: 0.875rem;
-  color: #4ed8da;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  background-color: #263238;
-  font-weight: bold;
-  white-space: nowrap;
-  text-transform: uppercase;
-`
-
 export const InnerChartContainer = styled.div`
   padding: 0 15px 15px 15px;
 `
@@ -82,3 +71,12 @@ export const BtnsWrapper = styled.div`
   flex-direction: column;
 `
 
+export const Label = styled(Typography)`
+  padding: 6px 6px 6px 6px;
+  margin-bottom: 15px;
+  font-size: 0.875rem;
+  background-color: #263238;
+  font-weight: bold;
+  white-space: nowrap;
+  text-transform: uppercase;
+`

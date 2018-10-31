@@ -9,10 +9,10 @@ import {
   UndistributedMoneyText,
   AddMoneyContainer,
   Input,
-  Label,
   InputContainer,
   SButton
 } from './RebalanceMoneyButtons.styles'
+import { Label } from '../../Rebalance.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
@@ -171,7 +171,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
     return (isEditModeEnabled && (
       <ButtonsWrapper>
         <InputContainer>
-        <Label>Rebalance input</Label>
+        <Label color={'secondary'}>Rebalance input</Label>
         <ButtonsInnerWrapper>
           <AddMoneyContainer>
             <Input
