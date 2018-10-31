@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import Loadable from 'react-loadable'
 import { Paper, Button, Fade, Slide } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 
@@ -26,25 +25,13 @@ import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-import LoadableLoading from '@components/Loading/LoadableLoading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
 import ComingSoon from '@components/ComingSoon'
 import { MASTER_BUILD } from '@utils/config'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
-
-const OnlyCharts = Loadable({
-  loader: () => import('@containers/Chart/OnlyCharts/OnlyCharts'),
-  delay: 300,
-  loading: LoadableLoading,
-})
-
-const MainDepthChart = Loadable({
-  loader: () =>
-    import('@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'),
-  delay: 300,
-  loading: LoadableLoading,
-})
+import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
+import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
