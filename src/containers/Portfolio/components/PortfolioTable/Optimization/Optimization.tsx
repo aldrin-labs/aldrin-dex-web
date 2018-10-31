@@ -369,7 +369,6 @@ class Optimization extends Component<IProps, IState> {
           />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
-              {console.log(lineChartData)}
               <LineChart
                 alwaysShowLegend={false}
                 // data={mockDataForLineChart}
