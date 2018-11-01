@@ -14,6 +14,7 @@ import SelectWalletList from '@components/SelectWalletList/SelectWalletList'
 import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 
 import * as API from '@containers/User/api'
+import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const MIN_CHAR = 3
 
@@ -133,7 +134,11 @@ class AddCryptoWalletComponent extends React.Component {
             <InputLabel htmlFor="asset">Wallet</InputLabel>
             <SelectWalletList
               isClearable={true}
-              value={values.asset ? [{label: values.asset, value: values.asset}] : null}
+              value={
+                values.asset
+                  ? [{ label: values.asset, value: values.asset }]
+                  : null
+              }
               onChange={handleSelectChangePrepareForFormik.bind(this, 'asset')}
             />
           </SSelect>
@@ -181,6 +186,11 @@ const SPaper = styled(Paper)`
 `
 
 export const AddCryptoWallet = compose(
-  graphql(API.addCryptoWalletMutation, { name: 'addCryptoWallet' }),
+  graphql(API.addCryptoWalletMutation, {
+    name: 'addCryptoWallet',
+    options: {
+      refetchQueries: [{ query: portfolioKeyAndWalletsQuery }],
+    },
+  }),
   formikEnhancer
 )(AddCryptoWalletComponent)

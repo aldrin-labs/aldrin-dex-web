@@ -19,6 +19,7 @@ import {
   deleteCryptoWalletMutation,
   getCryptoWalletsQuery,
 } from '@containers/User/api'
+import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const DeleteCryptoWalletDialogComponent = ({
   handleClickOpen,
@@ -143,7 +144,12 @@ export const DeleteCryptoWalletDialog = compose(
   graphql(deleteCryptoWalletMutation, {
     name: 'deleteCryptoWallet',
     options: {
-      refetchQueries: ['getKeys', 'getPortfolio', 'portfolios'],
+      refetchQueries: [
+        'getKeys',
+        'getPortfolio',
+        'portfolios',
+        { query: portfolioKeyAndWalletsQuery },
+      ],
     },
   }),
   graphql(getCryptoWalletsQuery),
