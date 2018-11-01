@@ -172,3 +172,30 @@ export const updateRebalanceMutation = gql`
     }
   }
 `
+
+export const updatePortfolioSettingsMutation = gql`
+  mutation updatePortfolioSettings($settings: portfolioSettings!) {
+    updateSettings(settings: $settings)
+  }
+`
+
+export const portfolioKeyAndWalletsQuery = gql`
+  query portfolioKeyAndWalletsQuery {
+    myPortfolios {
+      userSettings {
+        portfolioId
+        dustFilter
+        keys {
+          _id
+          name
+          selected
+        }
+        wallets {
+          _id
+          name
+          selected
+        }
+      }
+    }
+  }
+`
