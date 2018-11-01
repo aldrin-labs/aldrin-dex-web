@@ -81,6 +81,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
               hasActiveKeysOrWallets && (
                 <>
                   <PortfolioTable
+                    key={activeKeys.length + activeWallets.length}
                     showTable={hasActiveKeysOrWallets}
                     dustFilter={dustFilter}
                     theme={theme}
