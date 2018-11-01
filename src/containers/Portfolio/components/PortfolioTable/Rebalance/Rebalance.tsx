@@ -38,7 +38,7 @@ import {
   Container,
   BtnsWrapper,
   InnerChartContainer,
-  Label,
+  StyledCardHeader
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
@@ -520,7 +520,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 {/*onChangeColor={this.onChangeColor}*/}
               {/*/>*/}
               <ChartContainer elevation={10} background={palette.background.paper}>
-                <Label color={'secondary'}>Portfolio Distribution</Label>
+                <StyledCardHeader title={`Portfolio Distribution`} />
                 <InnerChartContainer>
                 <Chart background={palette.background.default}>
                   {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
