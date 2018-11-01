@@ -136,9 +136,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           <Grid item={true} xs={12} md={4} style={{}}>
             <ChartWrapper>
               <DonutChart
-                labelPlaceholder="Industries %"
+                labelPlaceholder="Industry %"
                 data={chartData}
-                isSizeFlexible={true}
                 colorLegend={true}
               />
             </ChartWrapper>
