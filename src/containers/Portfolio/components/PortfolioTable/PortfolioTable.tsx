@@ -52,7 +52,6 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       case 'industry':
         render = (
           <PortfolioTableIndustries
-            activeKeys={this.props.activeKeys}
             isUSDCurrently={isUSDCurrently}
             theme={theme}
             variables={{ baseCoin }}

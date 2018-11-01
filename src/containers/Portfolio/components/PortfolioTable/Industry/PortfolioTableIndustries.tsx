@@ -59,7 +59,6 @@ const getStateObj = ({ data, theme, filterValueSmallerThenPercentage = 0 }) => {
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
-    activeKeys: null,
     portfolio: null,
     industryData: null,
     chartData: null,
