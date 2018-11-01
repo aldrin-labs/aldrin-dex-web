@@ -26,6 +26,9 @@ const HelperForCentering = styled.div`
 const InputContainer = styled(Card)`
   min-height: 400px;
   margin-right: 2rem;
+  && {
+    overflow: visible;
+  }
 `
 
 const TableContainer = styled(Card)`
