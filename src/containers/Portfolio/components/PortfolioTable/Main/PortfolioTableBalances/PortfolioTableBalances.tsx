@@ -63,7 +63,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
           <ChartContainer item={true} xs={12} md={12}>
             <ChartWrapper>
-              <CardHeader title={'Portfolio Value'} />
+              <CardHeader
+                style={{ position: 'absolute' }}
+                title={'Portfolio Value'}
+              />
               <Chart
                 isShownMocks={this.props.isShownMocks}
                 style={{
