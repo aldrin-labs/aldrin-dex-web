@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
-import { Button as ButtonMUI, Typography } from '@material-ui/core'
+import { Button as ButtonMUI, Typography, Card } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
@@ -29,6 +29,8 @@ import {
   Chart,
   ImportData,
 } from './Import.styles'
+import CardHeader from '@components/CardHeader'
+import { StyledCardHeader } from '../Optimization.styles'
 
 const mockData = [
   { coin: 'BCH', percentage: 10.87 },
@@ -379,8 +381,8 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
-      <ChartContainer background={theme.palette.background.paper}>
-        <Label>Portfolio Distribution</Label>
+      <ChartContainer>
+        <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
@@ -512,8 +514,8 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer background={theme.palette.background.paper}>
-                <Label>Back-test input</Label>
+              <InputContainer>
+                <CardHeader title="Back-test input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
@@ -605,8 +607,9 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer background={theme.palette.background.paper}>
-                <Label>Risk Profile</Label>
+              <TableContainer>
+                <StyledCardHeader title="Risk Profile" />
+
                 <SwitchButtonsWrapper>
                   <SwitchButtons
                     btnClickProps={client}
@@ -642,29 +645,6 @@ export default class Import extends PureComponent<IProps> {
                   }
                   theme={this.props.theme}
                 />
-                {/*<TableDataDesc show={this.state.optimizedData.length > 1}>*/}
-                {/*<StyledInputLabel color={textColor}>*/}
-                {/*Confidence:{' '}*/}
-                {/*{this.state.optimizedData.length > 1*/}
-                {/*? this.state.optimizedData[activeButton]*/}
-                {/*.confidence*/}
-                {/*: ''}*/}
-                {/*</StyledInputLabel>*/}
-                {/*<StyledInputLabel color={textColor}>*/}
-                {/*Expected return low:{' '}*/}
-                {/*{this.state.optimizedData.length > 1*/}
-                {/*? this.state.optimizedData[activeButton]*/}
-                {/*.exptd_rtrn_low_end*/}
-                {/*: ''}*/}
-                {/*</StyledInputLabel>*/}
-                {/*<StyledInputLabel color={textColor}>*/}
-                {/*Expected return high:{' '}*/}
-                {/*{this.state.optimizedData.length > 1*/}
-                {/*? this.state.optimizedData[activeButton]*/}
-                {/*.exptd_rtrn_high_end*/}
-                {/*: ''}*/}
-                {/*</StyledInputLabel>*/}
-                {/*</TableDataDesc>*/}
               </TableContainer>
             </TableSelectsContaienr>
             {this.renderBarChart()}
@@ -782,13 +762,10 @@ const StyledWrapperForDateRangePicker = styled.div`
   }
 `
 
-const ChartContainer = styled.div`
+const ChartContainer = styled(Card)`
   min-height: 400px;
   width: 49%;
   margin: 0 0 0 2rem;
-  //padding: 15px;
-  box-shadow: 0 2px 6px 0 #00000066;
-  background: ${(props: { background: string }) => props.background};
 `
 
 const TableSelectsContaienr = styled.div`
@@ -805,7 +782,6 @@ export const Label = styled.div`
   color: #4ed8da;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   background-color: #263238;
-  //font-size: 12px;
   font-weight: bold;
   white-space: nowrap;
   text-transform: uppercase;
@@ -816,7 +792,7 @@ const InputInnerContainer = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   min-width: 100px;
-  padding: 0 15px 15px 15px;
+  padding: 0 15px 17px 15px;
 `
 
 export const InnerChartContainer = styled.div`

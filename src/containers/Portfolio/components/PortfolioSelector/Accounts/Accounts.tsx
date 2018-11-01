@@ -16,40 +16,14 @@ import {
 import { TypographyFullWidth } from '@styles/cssUtils'
 
 export default class Accounts extends React.PureComponent<IProps> {
-  componentDidMount() {
-    if (!has(this.props, 'newKeys')) {
-      // console.log('no keys');
-
-      return null
-    }
-
-    const { newKeys } = this.props
-    const oldKeys = this.props.keys
-    const checkboxes =
-      (newKeys &&
-        newKeys.map((key: keyItem) => key && key.name).filter(Boolean)) ||
-      []
-
-    this.props.setKeys(checkboxes)
-
-    const areNewKeysAndOldKeysEqual = isEqual(checkboxes, oldKeys)
-
-    if (oldKeys.length < checkboxes.length || !areNewKeysAndOldKeysEqual) {
-      this.props.setActiveKeys(checkboxes)
-    }
-
-    return true
-  }
-
   render() {
     const {
       isSideNavOpen,
       isCheckedAll,
       onToggleAll,
-      keys,
-      activeKeys,
-      onToggleKeyCheckbox,
       color,
+      newKeys,
+      onKeyToggle,
     } = this.props
 
     return (
@@ -89,19 +63,19 @@ export default class Accounts extends React.PureComponent<IProps> {
         </SelectAll>
 
         <AccountsList>
-          {keys.map((keyName) => {
+          {newKeys.map((keyName) => {
             if (!keyName) {
               return null
             }
-            const isChecked = activeKeys && activeKeys.indexOf(keyName) !== -1
+            const isChecked = keyName.selected
 
             return (
-              <AccountsListItem key={keyName} color={color}>
+              <AccountsListItem key={keyName.name} color={color}>
                 <Checkbox
                   type="checkbox"
-                  id={keyName}
+                  id={keyName.name}
                   checked={isChecked}
-                  onClick={() => onToggleKeyCheckbox(keyName)}
+                  onClick={()=> onKeyToggle(keyName._id)}
                 />
 
                 <AccountName
@@ -109,7 +83,7 @@ export default class Accounts extends React.PureComponent<IProps> {
                   variant="body1"
                   color={isChecked ? 'secondary' : 'textSecondary'}
                 >
-                  {keyName}
+                  {keyName.name}
                 </AccountName>
               </AccountsListItem>
             )

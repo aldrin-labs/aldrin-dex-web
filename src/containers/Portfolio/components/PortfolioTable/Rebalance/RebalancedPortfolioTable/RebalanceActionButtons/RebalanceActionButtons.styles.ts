@@ -9,7 +9,7 @@ const ActionButton = styled.button`
   width: auto;
   overflow: visible;
   background: transparent;
-  color: inherit;
+  color: ${(props: { textColor: string }) => props.textColor};
   font: inherit;
   line-height: normal;
   text-align: inherit;
@@ -40,8 +40,7 @@ const ActionButton = styled.button`
 const ActionButtonsContainer = styled.div`
   display: flex;
   min-width: 150px;
-  justify-content: space-around;
-  padding-left: 10px;
+  justify-content: space-between;
 
   & ${ActionButton} {
     visibility: ${(props: { isEditModeEnabled?: boolean }) =>
@@ -50,6 +49,7 @@ const ActionButtonsContainer = styled.div`
 `
 
 const EditIconWrapper = styled.div`
+  color: ${(props: { textColor: string }) => props.textColor};
   &:hover {
     color: ${(props: { isEditModeEnabled?: boolean, red: string, green: string }) =>
   props.isEditModeEnabled ? props.red : props.green};

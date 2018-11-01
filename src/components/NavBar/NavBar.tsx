@@ -52,49 +52,51 @@ const NavBarRaw: SFC<Props> = ({
       background={type === 'light' && primary[300]}
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
-        <Grid container={true} alignContent={'stretch'}>
-          <Grid style={{ display: 'flex' }} item={true} xs={2}>
-            <Logo src={MainLogo} />
+        <Grid alignItems="center" container={true} alignContent={'stretch'}>
+          <Grid item={true} xs={2}>
+            <Grid container={true}>
+              <Logo src={MainLogo} />
+            </Grid>
+          </Grid>
+          <Grid item={true} xs={8}>
+            <Grid
+              justify="center"
+              container={true}
+              style={{ flexDirection: 'row', display: 'flex' }}
+            >
+              <Button
+                style={createStyleForButton(pathname, '/portfolio')}
+                size="small"
+                component={Portfolio}
+                color="default"
+                variant="text"
+              >
+                Portfolio
+              </Button>
+
+              <Button
+                style={createStyleForButton(pathname, '/chart')}
+                component={Chart}
+                size="small"
+                variant="text"
+                color="default"
+              >
+                Chart
+              </Button>
+            </Grid>
           </Grid>
 
-          <Grid
-            item={true}
-            xs={8}
-            justify="center"
-            style={{ flexDirection: 'row', display: 'flex' }}
-          >
-            <Button
-              style={createStyleForButton(pathname, '/portfolio')}
-              size="small"
-              component={Portfolio}
-              color="default"
-              variant="text"
+          <Grid item={true} xs={2}>
+            <Grid
+              justify="flex-end"
+              wrap="nowrap"
+              direction={'row'}
+              container={true}
             >
-              Portfolio
-            </Button>
+              <Feedback />
 
-            <Button
-              style={createStyleForButton(pathname, '/chart')}
-              component={Chart}
-              size="small"
-              variant="text"
-              color="default"
-            >
-              Chart
-            </Button>
-          </Grid>
-
-          <Grid
-            justify="flex-end"
-            wrap="nowrap"
-            direction={'row'}
-            container={true}
-            item={true}
-            xs={2}
-          >
-            <Feedback />
-
-            <Login mainColor={main} />
+              <Login mainColor={main} />
+            </Grid>
           </Grid>
         </Grid>
       </Toolbar>

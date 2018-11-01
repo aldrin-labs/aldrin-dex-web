@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { isEqual } from 'lodash-es'
+import { TableWithSort } from '@storybook-components'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
 import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import { IProps, IState } from './TradeOrderHistoryTable.types'
-import Table from '@components/Tables/WithCheckboxesAndSummary'
 import { formatDate } from '@utils/dateUtils'
 
 const tableHeadings = [
@@ -74,7 +74,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
       )
     }
 
-    return <Table title="Portfolio actions" rows={rows} />
+    return <TableWithSort title="Portfolio actions" rows={rows} />
   }
 }
 

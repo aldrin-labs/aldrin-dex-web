@@ -76,6 +76,10 @@ const colorful = (value: number, red: string, green: string) => ({
   style: { color: value > 0 ? green : value < 0 ? red : null },
 })
 
+// transform "number%" to number
+export const transformToNumber = (percentage: string) =>
+  +percentage.split('%')[0]
+
 export const combineIndustryData = (
   data: any,
   filterValueLessThen: number,
@@ -138,12 +142,12 @@ export const combineIndustryData = (
   // applying dustfilter
   const industryData = res.filter(
     // becouse of shape of row[2] object {render: 23%, isNumber: true}
-    (row) => +row[2].render.split('%')[0] >= filterValueLessThen
+    (row) => +transformToNumber(row[2].render) >= filterValueLessThen
   )
 
   const chartData: InputRecord[] = res.map((row) => ({
     label: row[0],
-    realValue: +row[2].render.split('%')[0],
+    realValue: +transformToNumber(row[2].render),
   }))
 
   return { chartData, industryData }
@@ -344,11 +348,10 @@ export const createColumn = (
 
 export const combineTableData = (
   portfolioAssets,
-  activeKeys,
   filterValueSmallerThenPercentage,
   isUSDCurrently
 ) => {
-  if (!portfolioAssets || !activeKeys) {
+  if (!portfolioAssets) {
     return
   }
   // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
@@ -363,7 +366,6 @@ export const combineTableData = (
   )
 
   const tableData = portfolioAssets
-    .filter((asset) => activeKeys.includes(asset.name))
     .map((row: any, i) => {
       const {
         _id,
@@ -379,13 +381,14 @@ export const combineTableData = (
         dailyPerc = 0,
         daily = 0,
       } = row || {}
+
       return {
         coin,
-        portfolioPercentage: (price * quantity * 100) / allSums,
         price,
         quantity,
         daily,
         dailyPerc,
+        portfolioPercentage: (price * quantity * 100) / allSums,
         currentPrice: price * quantity,
         realizedPL: realized,
         unrealizedPL: unrealized,

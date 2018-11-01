@@ -1,7 +1,5 @@
 import React from 'react'
-import { Subscription } from 'react-apollo'
-import styled from 'styled-components'
-import { connect } from 'react-redux'
+import { graphql, Subscription } from 'react-apollo'
 import { compose } from 'recompose'
 import { has } from 'lodash-es'
 
@@ -12,14 +10,15 @@ import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelecto
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade } from '@material-ui/core'
 import { queryRendererHoc } from '@components/QueryRenderer'
-import { getKeysAndWallets, PORTFOLIO_UPDATE } from './api'
 import withAuth from '@hoc/withAuth'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
+import { Backdrop, PortfolioContainer } from './Portfolio.styles'
+import { updatePortfolioSettingsMutation, portfolioKeyAndWalletsQuery, PORTFOLIO_UPDATE } from '@containers/Portfolio/api'
+
 
 class PortfolioComponent extends React.Component<IProps, IState> {
   state: IState = {
     isSideNavOpen: false,
-    filter: 0.5,
   }
 
   toggleWallets = () => {
@@ -27,7 +26,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { theme, activeKeys, activeWallets, wallets, data } = this.props
+    const { theme, data, updatePortfolioSettings } = this.props
 
     if (!has(data, 'myPortfolios')) {
       return (
@@ -37,7 +36,10 @@ class PortfolioComponent extends React.Component<IProps, IState> {
       )
     }
 
-    const { keys, cryptoWallets } = data.myPortfolios[0]
+    const { userSettings: { portfolioId, dustFilter, keys, wallets }, userSettings } = data.myPortfolios[0]
+
+    const activeKeys = keys.filter((el) => el.selected)
+    const activeWallets = wallets.filter((el) => el.selected)
 
     const hasKeysOrWallets = keys.length + wallets.length > 0
     const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
@@ -49,8 +51,13 @@ class PortfolioComponent extends React.Component<IProps, IState> {
             {/* refactor this */}
 
             <PortfolioSelector
+              updatePortfolioSettings={updatePortfolioSettings}
+              portfolioId={portfolioId}
+              dustFilter={dustFilter}
               newKeys={keys}
-              newCryptoWallets={cryptoWallets}
+              newWallets={wallets}
+              activeKeys={activeKeys}
+              activeWallets={activeWallets}
               toggleWallets={this.toggleWallets}
               isSideNavOpen={this.state.isSideNavOpen}
             />
@@ -69,9 +76,9 @@ class PortfolioComponent extends React.Component<IProps, IState> {
               hasActiveKeysOrWallets && (
                 <>
                   <PortfolioTable
+                    key={activeKeys.length + activeWallets.length}
                     showTable={hasActiveKeysOrWallets}
-                    activeKeys={activeKeys}
-                    activeWallets={activeWallets}
+                    dustFilter={dustFilter}
                     theme={theme}
                     toggleWallets={this.toggleWallets}
                     subscription={subscriptionData}
@@ -93,38 +100,15 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-// TODO: replace any in store
-const mapStateToProps = (store: any) => ({
-  store: store,
-  keys: store.portfolio.keys,
-  activeKeys: store.portfolio.activeKeys,
-  wallets: store.portfolio.wallets,
-  activeWallets: store.portfolio.activeWallets,
-  login: store.login.loginStatus,
-})
-
 export default compose(
   withAuth,
-  queryRendererHoc({ query: getKeysAndWallets }),
+  queryRendererHoc({ query: portfolioKeyAndWalletsQuery }),
+  graphql(updatePortfolioSettingsMutation, {
+    name: 'updatePortfolioSettings',
+    options: {
+      refetchQueries: [{query: portfolioKeyAndWalletsQuery}],
+    },
+  }),
   withTheme(),
-  connect(mapStateToProps)
 )(PortfolioComponent)
 
-const PortfolioContainer = styled.div`
-  display: grid;
-  grid-template-columns: 4rem calc(100vw - 4rem);
-  justify-content: center;
-  min-height: 600px;
-`
-const Backdrop = styled.div`
-  display: block;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  background: rgba(0, 0, 0, 0.5);
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1000;
-`
