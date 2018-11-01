@@ -87,7 +87,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 export default compose(

@@ -154,6 +154,7 @@ class AddExchangeKeyComponent extends React.Component {
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
             <SelectExchangeList
               isClearable={true}
+              value={values.exchange ? [{label: values.exchange, value: values.exchange}] : null}
               onChange={handleSelectChangePrepareForFormik.bind(
                 this,
                 'exchange'

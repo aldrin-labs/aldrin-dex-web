@@ -59,7 +59,6 @@ const getStateObj = ({ data, theme, filterValueSmallerThenPercentage = 0 }) => {
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
-    activeKeys: null,
     portfolio: null,
     industryData: null,
     chartData: null,
@@ -150,14 +149,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 }
 
-const mapStateToProps = (store: object) => ({
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
-})
 
-export default connect(mapStateToProps)(
-  queryRendererHoc({
+export default queryRendererHoc({
     query: getPortfolioQuery,
     pollInterval: 5000,
     fetchPolicy: 'network-only',
-  })(PortfolioTableIndustries)
-)
+})(PortfolioTableIndustries)
+

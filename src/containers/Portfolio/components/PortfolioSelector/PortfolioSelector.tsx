@@ -1,19 +1,11 @@
 import * as React from 'react'
 import { compose } from 'recompose'
-import { connect } from 'react-redux'
 import withTheme from '@material-ui/core/styles/withTheme'
 
+import { Slide } from '@material-ui/core'
 import Dropdown from '@components/SimpleDropDownSelector'
-import {
-  setKeys as setKeysAction,
-  setActiveKeys as setActiveKeysAction,
-  setWallets as setWalletsAction,
-  setActiveWallets as setActiveWalletsAction,
-  filterValuesLessThen,
-} from '../../actions'
-import { getKeysQuery, getWalletsQuery } from '../../api'
+
 import { IProps } from './PortfolioSelector.types'
-import QueryRenderer from '@components/QueryRenderer'
 import Accounts from './Accounts/Accounts'
 import Wallets from './Wallets/Wallets'
 import {
@@ -22,79 +14,114 @@ import {
   FilterValues,
   Name,
 } from './PortfolioSelector.styles'
-import { Slide } from '@material-ui/core'
+import * as UTILS from '@utils/PortfolioSelectorUtils'
 
 class PortfolioSelector extends React.Component<IProps> {
-  onToggleKeyCheckbox = (checkBoxName: string) => {
-    const { activeKeys, setActiveKeys } = this.props
-    const clonedActiveKeys = activeKeys.slice()
 
-    const hasIndex = clonedActiveKeys.indexOf(checkBoxName)
-    if (hasIndex !== -1) {
-      clonedActiveKeys.splice(hasIndex, 1)
-    } else {
-      clonedActiveKeys.push(checkBoxName)
+  updateSettings = async (objectForMutation) => {
+    const { updatePortfolioSettings } = this.props;
+    console.log('objectForMutation', objectForMutation);
+
+    try {
+      await updatePortfolioSettings({
+        variables: objectForMutation,
+      })
+      console.log('settings updated');
+
+    } catch (error) {
+      console.log(error)
     }
-
-    setActiveKeys(clonedActiveKeys)
   }
 
-  onToggleWalletCheckbox = (checkBoxName: string) => {
-    const { activeWallets, setActiveWallets } = this.props
-    const clonedActiveWallets = activeWallets.slice()
+  onKeyToggle = (toggledKeyID: string) => {
+    const {
+      portfolioId,
+      newKeys,
+    } = this.props
 
-    const hasIndex = clonedActiveWallets.indexOf(checkBoxName)
-    if (hasIndex !== -1) {
-      clonedActiveWallets.splice(hasIndex, 1)
-    } else {
-      clonedActiveWallets.push(checkBoxName)
+    const objForQuery = {
+      settings: {
+        portfolioId,
+        selectedKeys: UTILS.getArrayContainsOnlySelected(newKeys, toggledKeyID),
+      },
     }
 
-    setActiveWallets(clonedActiveWallets)
+    this.updateSettings(objForQuery)
+  }
+
+  onWalletToggle = (toggledWalletID: string) => {
+    const {
+      portfolioId,
+      newWallets,
+    } = this.props
+
+    const objForQuery = {
+      settings: {
+        portfolioId,
+        selectedWallets: UTILS.getArrayContainsOnlySelected(newWallets, toggledWalletID),
+      },
+    }
+
+    this.updateSettings(objForQuery)
   }
 
   onToggleAll = () => {
     const {
-      keys,
+      newKeys,
       activeKeys,
-      wallets,
+      newWallets,
       activeWallets,
-      setActiveKeys,
-      setActiveWallets,
+      portfolioId,
     } = this.props
+    let objForQuery;
 
     if (
       activeKeys.length + activeWallets.length ===
-      keys.length + wallets.length
+      newKeys.length + newWallets.length
     ) {
-      setActiveKeys([])
-      setActiveWallets([])
+      objForQuery = {
+        settings: {
+          portfolioId,
+          selectedKeys: [],
+          selectedWallets: [],
+        },
+      }
     } else {
-      setActiveKeys(keys)
-      setActiveWallets(wallets)
+      objForQuery = {
+        settings: {
+          portfolioId,
+          selectedKeys: newKeys.map((el) => el._id),
+          selectedWallets: newWallets.map((el)=> el._id),
+        },
+      }
     }
+
+    this.updateSettings(objForQuery)
+  }
+
+  onDustFilterChange = ({target:{ value }}: {target: {value: number}}) => {
+    const { portfolioId } = this.props
+    this.updateSettings({
+      settings: {
+        portfolioId,
+        dustFilter: value,
+      },
+    })
   }
 
   render() {
     const {
-      filterValuesLessThenThat,
-      filterPercent,
       isSideNavOpen,
-      setKeys,
-      setActiveKeys,
-      setWallets,
-      setActiveWallets,
-      wallets,
-      activeWallets,
-      keys,
-      activeKeys,
       theme,
-      newCryptoWallets,
+      newWallets,
       newKeys,
+      activeKeys,
+      activeWallets,
+      dustFilter,
     } = this.props
 
     const isCheckedAll =
-      activeKeys.length + activeWallets.length === keys.length + wallets.length
+      activeKeys.length + activeWallets.length === newKeys.length + newWallets.length
 
     const color = theme.palette.secondary.main
 
@@ -112,12 +139,8 @@ class PortfolioSelector extends React.Component<IProps> {
               isSideNavOpen,
               isCheckedAll,
               newKeys,
-              keys,
-              activeKeys,
-              setKeys,
-              setActiveKeys,
               onToggleAll: this.onToggleAll,
-              onToggleKeyCheckbox: this.onToggleKeyCheckbox,
+              onKeyToggle: this.onKeyToggle,
             }}
           />
 
@@ -125,13 +148,8 @@ class PortfolioSelector extends React.Component<IProps> {
             {...{
               color,
               isSideNavOpen,
-              isCheckedAll,
-              wallets,
-              activeWallets,
-              newCryptoWallets,
-              setWallets,
-              setActiveWallets,
-              onToggleWalletCheckbox: this.onToggleWalletCheckbox,
+              newWallets,
+              onWalletToggle: this.onWalletToggle,
             }}
           />
 
@@ -144,8 +162,8 @@ class PortfolioSelector extends React.Component<IProps> {
             />
             <Dropdown
               style={{ width: '100%' }}
-              value={filterPercent}
-              handleChange={filterValuesLessThenThat}
+              value={dustFilter}
+              handleChange={this.onDustFilterChange}
               name="filterValuesInMain"
               options={[
                 { value: -100.0, label: 'No Filter' },
@@ -165,30 +183,7 @@ class PortfolioSelector extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = (store: any) => ({
-  keys: store.portfolio.keys,
-  activeKeys: store.portfolio.activeKeys,
-  wallets: store.portfolio.wallets,
-  activeWallets: store.portfolio.activeWallets,
-  isShownMocks: store.user.isShownMocks,
-  filterPercent: store.portfolio.filterValuesLessThenThat,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  setKeys: (keys: string[]) => dispatch(setKeysAction(keys)),
-  setActiveKeys: (activeKeys: string[]) =>
-    dispatch(setActiveKeysAction(activeKeys)),
-  setWallets: (wallets: string[]) => dispatch(setWalletsAction(wallets)),
-  setActiveWallets: (activeWallets: string[]) =>
-    dispatch(setActiveWalletsAction(activeWallets)),
-  filterValuesLessThenThat: (percent: number) =>
-    dispatch(filterValuesLessThen(percent)),
-})
 
 export default compose(
-  withTheme(),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  withTheme()
 )(PortfolioSelector)

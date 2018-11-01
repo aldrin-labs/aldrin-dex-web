@@ -25,7 +25,6 @@ const chooseGreen = (theme: Theme) =>
 class Container extends Component {
   state: IState = {
     currentSort: null,
-    activeKeys: null,
     portfolioAssets: null,
     checkedRows: [],
     red: chooseRed(this.props.theme),
@@ -37,15 +36,13 @@ class Container extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
-      activeKeys,
-      activeWallets,
       filterValueSmallerThenPercentage,
       isUSDCurrently,
       isShownMocks,
       data,
       theme,
     } = nextProps
-    if (data && activeKeys) {
+    if (data) {
       if (!data.myPortfolios[0]) return
 
       const { portfolioAssets } = data.myPortfolios[0]
@@ -60,16 +57,14 @@ class Container extends Component {
       )
 
       return {
-        activeKeys,
         numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
         checkedRows:
-          activeKeys.concat(activeWallets).length === 0
+          portfolioAssets.length === 0
             ? []
             : prevState.checkedRows,
         portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
           composePortfolioAssetsWithMocks,
-          activeKeys.concat(activeWallets),
           filterValueSmallerThenPercentage,
           isUSDCurrently
         ),

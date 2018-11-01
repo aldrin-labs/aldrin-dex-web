@@ -96,7 +96,7 @@ const formikDialog = withFormik({
             keys.splice(index, 1)
             proxyData = {
               ...proxyData,
-              getProfile: { ...proxyData.getProfile, keys },
+              myPortfolios: { ...proxyData.myPortfolios, keys },
             }
             proxy.writeQuery({ query: getKeysQuery, data: proxyData })
           },

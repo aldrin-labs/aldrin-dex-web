@@ -57,7 +57,7 @@ const formikEnhancer = withFormik({
           const proxyData = proxy.readQuery({
             query: API.getCryptoWalletsQuery,
           })
-          proxyData.getProfile.cryptoWallets.push(addCryptoWallet)
+          proxyData.myPortfolios[0].cryptoWallets.push(addCryptoWallet)
           proxy.writeQuery({
             query: API.getCryptoWalletsQuery,
             data: proxyData,
@@ -133,6 +133,7 @@ class AddCryptoWalletComponent extends React.Component {
             <InputLabel htmlFor="asset">Wallet</InputLabel>
             <SelectWalletList
               isClearable={true}
+              value={values.asset ? [{label: values.asset, value: values.asset}] : null}
               onChange={handleSelectChangePrepareForFormik.bind(this, 'asset')}
             />
           </SSelect>

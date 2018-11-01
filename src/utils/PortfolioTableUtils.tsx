@@ -348,11 +348,10 @@ export const createColumn = (
 
 export const combineTableData = (
   portfolioAssets,
-  activeKeys,
   filterValueSmallerThenPercentage,
   isUSDCurrently
 ) => {
-  if (!portfolioAssets || !activeKeys) {
+  if (!portfolioAssets) {
     return
   }
   // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
@@ -367,7 +366,6 @@ export const combineTableData = (
   )
 
   const tableData = portfolioAssets
-    .filter((asset) => activeKeys.includes(asset.name))
     .map((row: any, i) => {
       const {
         _id,

@@ -1,8 +1,7 @@
 import React from 'react'
 import { Checkbox } from '@material-ui/core'
-import { has, isEqual } from 'lodash-es'
 
-import { IProps, walletItem } from './Wallets.types'
+import { IProps } from './Wallets.types'
 import {
   AccountName,
   AccountsList,
@@ -10,53 +9,24 @@ import {
 } from '@containers/Portfolio/components/PortfolioSelector/sharedStyles/sharedStyles'
 
 export default class Wallets extends React.PureComponent<IProps> {
-  componentDidMount() {
-    if (!has(this.props, 'newCryptoWallets')) {
-      return null
-    }
-
-    const { newCryptoWallets } = this.props
-    const oldWallets = this.props.wallets
-    const checkboxes =
-      (newCryptoWallets &&
-        newCryptoWallets
-          .map((wallet: walletItem) => wallet && wallet.name)
-          .filter(Boolean)) ||
-      []
-
-    this.props.setWallets(checkboxes)
-
-    const areNewWalletsAndOldWalletsEqual = isEqual(checkboxes, oldWallets)
-
-    if (
-      oldWallets.length < checkboxes.length ||
-      !areNewWalletsAndOldWalletsEqual
-    ) {
-      this.props.setActiveWallets(checkboxes)
-    }
-
-    return true
-  }
-
   render() {
-    const { wallets, activeWallets, onToggleWalletCheckbox, color } = this.props
+    const { color, onWalletToggle, newWallets } = this.props
 
     return (
       <AccountsList>
-        {wallets.map((walletName) => {
-          if (!walletName) {
+        {newWallets.map((wallet) => {
+          if (!wallet) {
             return null
           }
-          const isChecked =
-            activeWallets && activeWallets.indexOf(walletName) !== -1
+          const isChecked = wallet.selected
 
           return (
-            <AccountsListItem key={walletName} color={color}>
+            <AccountsListItem key={wallet.name} color={color}>
               <Checkbox
                 type="checkbox"
-                id={walletName}
+                id={wallet.name}
                 checked={isChecked}
-                onClick={() => onToggleWalletCheckbox(walletName)}
+                onClick={() => onWalletToggle(wallet._id)}
               />
 
               <AccountName
@@ -64,7 +34,7 @@ export default class Wallets extends React.PureComponent<IProps> {
                 variant="body1"
                 color={isChecked ? 'secondary' : 'textSecondary'}
               >
-                {walletName}
+                {wallet.name}
               </AccountName>
             </AccountsListItem>
           )
