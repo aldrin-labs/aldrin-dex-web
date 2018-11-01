@@ -14,6 +14,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import * as API from '@containers/User/api'
 import SelectExchangeList from '@components/SelectExchangeList/SelectExchangeList'
 import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
+import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const MIN_CHAR = 3
 
@@ -154,7 +155,11 @@ class AddExchangeKeyComponent extends React.Component {
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
             <SelectExchangeList
               isClearable={true}
-              value={values.exchange ? [{label: values.exchange, value: values.exchange}] : null}
+              value={
+                values.exchange
+                  ? [{ label: values.exchange, value: values.exchange }]
+                  : null
+              }
               onChange={handleSelectChangePrepareForFormik.bind(
                 this,
                 'exchange'
@@ -205,6 +210,11 @@ const SPaper = styled(Paper)`
 `
 
 export const AddExchangeKey = compose(
-  graphql(API.addExchangeKeyMutation, { name: 'addExchangeKey' }),
+  graphql(API.addExchangeKeyMutation, {
+    name: 'addExchangeKey',
+    options: {
+      refetchQueries: [{ query: portfolioKeyAndWalletsQuery }],
+    },
+  }),
   formikEnhancer
 )(AddExchangeKeyComponent)
