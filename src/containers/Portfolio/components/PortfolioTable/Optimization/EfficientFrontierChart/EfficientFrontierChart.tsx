@@ -27,7 +27,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const {theme} = this.props
+    const { theme } = this.props
     const { percentages, risk, activeButton } = this.props.data
     const { value } = this.state
 
@@ -45,7 +45,11 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
         fontSize: '12px',
         fontWeight: 100,
       },
-      title: { fontWeight: 600, fontFamily: theme.typography.fontFamily, fill: theme.palette.secondary.main },
+      title: {
+        fontWeight: 600,
+        fontFamily: theme.typography.fontFamily,
+        fill: theme.palette.secondary.main,
+      },
     }
 
     let data: { x: number; y: number }[] = []
@@ -59,9 +63,6 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
 
       highlightedDotData.push(data[activeButton])
     }
-
-    console.log('data', data);
-    console.log('highlightedDotData', highlightedDotData);
 
     return (
       <Container>
@@ -82,7 +83,13 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
                 title="Risk"
                 tickLabelAngle={-90}
               />,
-              <YAxis hideLine style={axisStyle} key="y" title="Return" left={-20} />,
+              <YAxis
+                hideLine
+                style={axisStyle}
+                key="y"
+                title="Return"
+                left={-20}
+              />,
               <LineMarkSeries
                 key="c"
                 curve={'curveCatmullRom'}
@@ -106,9 +113,9 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
 
           {value.x === null || value.y === null ? null : (
             <Hint value={value}>
-              <ChartTooltip color={textColor} background={background}>{`Risk ${value.x}% - Return ${
-                value.y
-              }%`}</ChartTooltip>
+              <ChartTooltip color={textColor} background={background}>{`Risk ${
+                value.x
+              }% - Return ${value.y}%`}</ChartTooltip>
             </Hint>
           )}
         </FlexibleXYPlot>

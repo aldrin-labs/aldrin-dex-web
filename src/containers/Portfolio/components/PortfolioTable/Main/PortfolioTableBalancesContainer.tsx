@@ -150,7 +150,10 @@ class Container extends Component {
     return data.map((row) => [
       row.exchange,
       { render: row.coin, style: { fontWeight: 700 } },
-      +roundPercentage(row.portfolioPercentage),
+      {
+        render: `${roundPercentage(row.portfolioPercentage) || 0}%`,
+        isNumber: true,
+      },
       +roundAndFormatNumber(row.price, round, false),
       +roundAndFormatNumber(row.quantity, round, false),
       +roundAndFormatNumber(row.price * row.quantity, round, false),
@@ -181,7 +184,7 @@ class Container extends Component {
       head: [
         { render: 'exchange', isNumber: false },
         { render: 'coin', isNumber: false },
-        { render: 'portfolio%', isNumber: true },
+        { render: 'portfolio', isNumber: true },
         { render: 'price', isNumber: true },
         { render: 'quantity', isNumber: true },
         { render: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },

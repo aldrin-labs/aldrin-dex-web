@@ -15,10 +15,10 @@ import {
   GridContainer,
   TableContainer,
   ChartContainer,
-  ChartTitle,
 } from './PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
+import CardHeader from '@components/CardHeader'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
@@ -28,6 +28,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       checkedRows,
       onCheckboxClick,
       onSelectAllClick,
+      theme,
     } = this.props
 
     const coins =
@@ -62,9 +63,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
           <ChartContainer item={true} xs={12} md={12}>
             <ChartWrapper>
-              <ChartTitle color="default" variant="h6">
-                Portfolio Value
-              </ChartTitle>
+              <CardHeader title={'Portfolio Value'} />
               <Chart
                 isShownMocks={this.props.isShownMocks}
                 style={{
@@ -83,9 +82,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-})
-
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
@@ -93,8 +89,5 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps)
 )(PortfolioTableBalances)
