@@ -26,9 +26,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { theme,
-      // activeKeys, activeWallets,
-      data, updatePortfolioSettings } = this.props
+    const { theme, data, updatePortfolioSettings } = this.props
 
     if (!has(data, 'myPortfolios')) {
       return (
