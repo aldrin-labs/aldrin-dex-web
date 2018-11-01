@@ -74,24 +74,36 @@ class PortfolioSelector extends React.Component<IProps> {
 
   onToggleAll = () => {
     const {
-      keys,
+      newKeys,
       activeKeys,
-      wallets,
+      newWallets,
       activeWallets,
-      setActiveKeys,
-      setActiveWallets,
+      portfolioId,
     } = this.props
+    let objForQuery;
 
     if (
       activeKeys.length + activeWallets.length ===
-      keys.length + wallets.length
+      newKeys.length + newWallets.length
     ) {
-      setActiveKeys([])
-      setActiveWallets([])
+      objForQuery = {
+        settings: {
+          portfolioId,
+          selectedKeys: [],
+          selectedWallets: [],
+        },
+      }
     } else {
-      setActiveKeys(keys)
-      setActiveWallets(wallets)
+      objForQuery = {
+        settings: {
+          portfolioId,
+          selectedKeys: newKeys.map((el) => el._id),
+          selectedWallets: newWallets.map((el)=> el._id),
+        },
+      }
     }
+
+    this.updateSettings(objForQuery)
   }
 
   render() {
@@ -99,21 +111,15 @@ class PortfolioSelector extends React.Component<IProps> {
       filterValuesLessThenThat,
       filterPercent,
       isSideNavOpen,
-      setKeys,
-      setActiveKeys,
-      setWallets,
-      setActiveWallets,
-      wallets,
-      activeWallets,
-      keys,
-      activeKeys,
       theme,
       newWallets,
       newKeys,
+      activeKeys,
+      activeWallets,
     } = this.props
 
     const isCheckedAll =
-      activeKeys.length + activeWallets.length === keys.length + wallets.length
+      activeKeys.length + activeWallets.length === newKeys.length + newWallets.length
 
     const color = theme.palette.secondary.main
 
@@ -131,12 +137,7 @@ class PortfolioSelector extends React.Component<IProps> {
               isSideNavOpen,
               isCheckedAll,
               newKeys,
-              keys,
-              activeKeys,
-              setKeys,
-              setActiveKeys,
               onToggleAll: this.onToggleAll,
-              onToggleKeyCheckbox: this.onToggleKeyCheckbox,
               onKeyToggle: this.onKeyToggle,
             }}
           />
@@ -145,13 +146,7 @@ class PortfolioSelector extends React.Component<IProps> {
             {...{
               color,
               isSideNavOpen,
-              isCheckedAll,
-              wallets,
-              activeWallets,
               newWallets,
-              setWallets,
-              setActiveWallets,
-              // onToggleWalletCheckbox: this.onToggleWalletCheckbox,
               onWalletToggle: this.onWalletToggle,
             }}
           />
@@ -187,21 +182,21 @@ class PortfolioSelector extends React.Component<IProps> {
 }
 
 const mapStateToProps = (store: any) => ({
-  keys: store.portfolio.keys,
-  activeKeys: store.portfolio.activeKeys,
-  wallets: store.portfolio.wallets,
-  activeWallets: store.portfolio.activeWallets,
-  isShownMocks: store.user.isShownMocks,
+  // keys: store.portfolio.keys,
+  // activeKeys: store.portfolio.activeKeys,
+  // wallets: store.portfolio.wallets,
+  // activeWallets: store.portfolio.activeWallets,
+  // isShownMocks: store.user.isShownMocks,
   filterPercent: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  setKeys: (keys: string[]) => dispatch(setKeysAction(keys)),
-  setActiveKeys: (activeKeys: string[]) =>
-    dispatch(setActiveKeysAction(activeKeys)),
-  setWallets: (wallets: string[]) => dispatch(setWalletsAction(wallets)),
-  setActiveWallets: (activeWallets: string[]) =>
-    dispatch(setActiveWalletsAction(activeWallets)),
+  // setKeys: (keys: string[]) => dispatch(setKeysAction(keys)),
+  // setActiveKeys: (activeKeys: string[]) =>
+  //   dispatch(setActiveKeysAction(activeKeys)),
+  // setWallets: (wallets: string[]) => dispatch(setWalletsAction(wallets)),
+  // setActiveWallets: (activeWallets: string[]) =>
+  //   dispatch(setActiveWalletsAction(activeWallets)),
   filterValuesLessThenThat: (percent: number) =>
     dispatch(filterValuesLessThen(percent)),
 })
