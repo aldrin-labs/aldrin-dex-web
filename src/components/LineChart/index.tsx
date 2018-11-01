@@ -180,7 +180,6 @@ export default class LineChart extends React.Component<Props, State> {
 }
 
 const ContainerForCrossHairValues = styled.div`
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   min-width: 250px;
   background-color: #393e44;
   color: #fff;

@@ -82,8 +82,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({})
-
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
   filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
@@ -91,8 +89,5 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   withRouter,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  connect(mapStateToProps)
 )(PortfolioTableBalances)
