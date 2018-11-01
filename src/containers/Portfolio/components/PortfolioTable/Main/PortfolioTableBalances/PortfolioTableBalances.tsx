@@ -88,7 +88,7 @@ const mapDispatchToProps = (dispatch: any) => ({
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
+  // filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 export default compose(

@@ -31,7 +31,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
   renderTab = () => {
     const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
-    const { theme } = this.props
+    const { theme, dustFilter } = this.props
 
     let render = null
     switch (tab) {
@@ -44,6 +44,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             tab={this.state.tab}
             theme={theme}
             variables={{ baseCoin }}
+            filterValueSmallerThenPercentage={dustFilter}
           />
         )
         break
@@ -54,14 +55,27 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             theme={theme}
             variables={{ baseCoin }}
             baseCoin={baseCoin}
+            filterValueSmallerThenPercentage={dustFilter}
           />
         )
         break
       case 'rebalance':
-        render = <Rebalance baseCoin={baseCoin} isUSDCurrently={true} />
+        render = (
+          <Rebalance
+            baseCoin={baseCoin}
+            isUSDCurrently={true}
+            filterValueSmallerThenPercentage={dustFilter}
+          />
+        )
         break
       case 'correlation':
-        render = <Correlation baseCoin={baseCoin} theme={theme} />
+        render = (
+          <Correlation
+            baseCoin={baseCoin}
+            theme={theme}
+            ilterValueSmallerThenPercentage={dustFilter}
+          />
+        )
         break
       case 'optimization':
         render = (
@@ -69,6 +83,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             theme={theme}
             isUSDCurrently={isUSDCurrently}
             baseCoin={baseCoin}
+            filterValueSmallerThenPercentage={dustFilter}
           />
         )
         break

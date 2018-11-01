@@ -150,7 +150,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 }
 
 const mapStateToProps = (store: object) => ({
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
+  // filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 export default connect(mapStateToProps)(
