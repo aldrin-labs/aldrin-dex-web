@@ -6,6 +6,7 @@ import QueryRenderer from '@components/QueryRenderer'
 import gql from 'graphql-tag'
 
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
+import { withErrorFallback } from '@hoc/index'
 
 const periods = {
   1: 60,
@@ -152,5 +153,6 @@ export default compose(
     }) => ({
       localActiveChart: activeChart,
     }),
-  })
+  }),
+  withErrorFallback
 )(GQLChart)
