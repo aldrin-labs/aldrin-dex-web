@@ -1,6 +1,5 @@
 import React from 'react'
 import { graphql, Subscription } from 'react-apollo'
-import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { has } from 'lodash-es'
 
@@ -11,11 +10,10 @@ import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelecto
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade } from '@material-ui/core'
 import { queryRendererHoc } from '@components/QueryRenderer'
-import { getKeysAndWallets, PORTFOLIO_UPDATE } from './api'
 import withAuth from '@hoc/withAuth'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
-import { updatePortfolioSettingsMutation, portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
+import { updatePortfolioSettingsMutation, portfolioKeyAndWalletsQuery, PORTFOLIO_UPDATE } from '@containers/Portfolio/api'
 
 
 class PortfolioComponent extends React.Component<IProps, IState> {
@@ -40,15 +38,12 @@ class PortfolioComponent extends React.Component<IProps, IState> {
       )
     }
 
-    // const { keys, cryptoWallets } = data.myPortfolios[0]
     const { userSettings: { portfolioId, dustFilter, keys, wallets }, userSettings } = data.myPortfolios[0]
     console.log('userSettings', userSettings);
 
 
     const activeKeys = keys.filter((el) => el.selected)
     const activeWallets = wallets.filter((el) => el.selected)
-    // const activeKeys = keys.reduce((acc, el) => el.selected ? el.name : acc, [])
-    // const activeWallets = wallets.reduce((acc, el) => el.selected ? el.name : acc, [])
     console.log('activeKeys', activeKeys);
     console.log('activeWallets', activeWallets);
 
@@ -112,16 +107,6 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-// TODO: replace any in store
-const mapStateToProps = (store: any) => ({
-  store: store,
-  keys: store.portfolio.keys,
-  // activeKeys: store.portfolio.activeKeys,
-  wallets: store.portfolio.wallets,
-  // activeWallets: store.portfolio.activeWallets,
-  login: store.login.loginStatus,
-})
-
 export default compose(
   withAuth,
   queryRendererHoc({ query: portfolioKeyAndWalletsQuery }),
@@ -132,6 +117,5 @@ export default compose(
     },
   }),
   withTheme(),
-  connect(mapStateToProps)
 )(PortfolioComponent)
 

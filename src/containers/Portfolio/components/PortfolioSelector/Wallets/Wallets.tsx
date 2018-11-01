@@ -12,9 +12,6 @@ export default class Wallets extends React.PureComponent<IProps> {
   render() {
     const { color, onWalletToggle, newWallets } = this.props
 
-    console.log('newWallets', newWallets);
-
-
     return (
       <AccountsList>
         {newWallets.map((wallet) => {

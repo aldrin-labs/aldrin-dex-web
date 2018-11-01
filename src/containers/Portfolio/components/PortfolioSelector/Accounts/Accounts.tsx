@@ -75,7 +75,6 @@ export default class Accounts extends React.PureComponent<IProps> {
                   type="checkbox"
                   id={keyName.name}
                   checked={isChecked}
-                  // onClick={() => onToggleKeyCheckbox(keyName)}
                   onClick={()=> onKeyToggle(keyName._id)}
                 />
 
