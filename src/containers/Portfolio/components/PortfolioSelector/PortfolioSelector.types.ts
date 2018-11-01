@@ -15,5 +15,13 @@ export interface IProps extends WithTheme {
   activeWallets: string[]
   keys: string[]
   activeKeys: string[]
+  newKeys: KeyOrWallet[]
+  newWallets: KeyOrWallet[]
+  portfolioId: string
 }
 
+export type KeyOrWallet = {
+  _id: string;
+  name: string;
+  selected: boolean
+}

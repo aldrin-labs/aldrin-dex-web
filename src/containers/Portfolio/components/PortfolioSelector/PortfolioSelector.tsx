@@ -3,6 +3,7 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import withTheme from '@material-ui/core/styles/withTheme'
 
+import { Slide } from '@material-ui/core'
 import Dropdown from '@components/SimpleDropDownSelector'
 import {
   setKeys as setKeysAction,
@@ -11,9 +12,7 @@ import {
   setActiveWallets as setActiveWalletsAction,
   filterValuesLessThen,
 } from '../../actions'
-import { getKeysQuery, getWalletsQuery } from '../../api'
-import { IProps } from './PortfolioSelector.types'
-import QueryRenderer from '@components/QueryRenderer'
+import { IProps, KeyOrWallet } from './PortfolioSelector.types'
 import Accounts from './Accounts/Accounts'
 import Wallets from './Wallets/Wallets'
 import {
@@ -22,35 +21,55 @@ import {
   FilterValues,
   Name,
 } from './PortfolioSelector.styles'
-import { Slide } from '@material-ui/core'
+import * as UTILS from '@utils/PortfolioSelectorUtils'
 
 class PortfolioSelector extends React.Component<IProps> {
-  onToggleKeyCheckbox = (checkBoxName: string) => {
-    const { activeKeys, setActiveKeys } = this.props
-    const clonedActiveKeys = activeKeys.slice()
 
-    const hasIndex = clonedActiveKeys.indexOf(checkBoxName)
-    if (hasIndex !== -1) {
-      clonedActiveKeys.splice(hasIndex, 1)
-    } else {
-      clonedActiveKeys.push(checkBoxName)
+  updateSettings = async (objectForMutation) => {
+
+    const { updatePortfolioSettings } = this.props;
+
+    try {
+      await updatePortfolioSettings({
+        variables: objectForMutation,
+      })
+      console.log('settings updated');
+
+    } catch (error) {
+      console.log(error)
     }
-
-    setActiveKeys(clonedActiveKeys)
   }
 
-  onToggleWalletCheckbox = (checkBoxName: string) => {
-    const { activeWallets, setActiveWallets } = this.props
-    const clonedActiveWallets = activeWallets.slice()
+  onKeyToggle = (toggledKeyID: string) => {
+    const {
+      portfolioId,
+      newKeys,
+    } = this.props
 
-    const hasIndex = clonedActiveWallets.indexOf(checkBoxName)
-    if (hasIndex !== -1) {
-      clonedActiveWallets.splice(hasIndex, 1)
-    } else {
-      clonedActiveWallets.push(checkBoxName)
+    const objForQuery = {
+      settings: {
+        portfolioId,
+        selectedKeys: UTILS.getArrayContainsOnlySelected(newKeys, toggledKeyID),
+      },
     }
 
-    setActiveWallets(clonedActiveWallets)
+    this.updateSettings(objForQuery)
+  }
+
+  onWalletToggle = (toggledWalletID: string) => {
+    const {
+      portfolioId,
+      newWallets,
+    } = this.props
+
+    const objForQuery = {
+      settings: {
+        portfolioId,
+        selectedWallets: UTILS.getArrayContainsOnlySelected(newWallets, toggledWalletID),
+      },
+    }
+
+    this.updateSettings(objForQuery)
   }
 
   onToggleAll = () => {
@@ -89,7 +108,7 @@ class PortfolioSelector extends React.Component<IProps> {
       keys,
       activeKeys,
       theme,
-      newCryptoWallets,
+      newWallets,
       newKeys,
     } = this.props
 
@@ -118,6 +137,7 @@ class PortfolioSelector extends React.Component<IProps> {
               setActiveKeys,
               onToggleAll: this.onToggleAll,
               onToggleKeyCheckbox: this.onToggleKeyCheckbox,
+              onKeyToggle: this.onKeyToggle,
             }}
           />
 
@@ -128,10 +148,11 @@ class PortfolioSelector extends React.Component<IProps> {
               isCheckedAll,
               wallets,
               activeWallets,
-              newCryptoWallets,
+              newWallets,
               setWallets,
               setActiveWallets,
-              onToggleWalletCheckbox: this.onToggleWalletCheckbox,
+              // onToggleWalletCheckbox: this.onToggleWalletCheckbox,
+              onWalletToggle: this.onWalletToggle,
             }}
           />
 
