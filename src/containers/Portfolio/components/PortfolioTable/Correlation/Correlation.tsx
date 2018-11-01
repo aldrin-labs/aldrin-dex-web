@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
-import CorrelationMatrix from './CorrelationMatrix/CorrelationMatrix'
+import { CorrelationMatrix } from '@storybook-components'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
   toggleCorrelationTableFullscreen,
