@@ -32,11 +32,12 @@ class GQLChart extends React.Component {
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
       // tslint:disable-next-line:no-object-mutation
-      newState.coins = newProps.coins.map((x) => x.coin)
+      newState.coins = newProps.coins.filter(Boolean).map((x) => x.coin)
       // tslint:disable-next-line:no-object-mutation
-      newState.assets = newProps.coins
+      newState.assets = newProps.coins.filter(Boolean)
       // tslint:disable-next-line:no-object-mutation
       newState.sum = newProps.coins
+        .filter(Boolean)
         .map((x) => x.quantity)
         .reduce((prev, next) => prev + next, 0)
 
