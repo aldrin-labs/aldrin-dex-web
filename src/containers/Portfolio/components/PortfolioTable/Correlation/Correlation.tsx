@@ -166,7 +166,6 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
-  // filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

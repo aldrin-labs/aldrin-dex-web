@@ -556,7 +556,6 @@ class Rebalance extends React.Component<IProps, IState> {
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
-  // filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 const RebalanceContainer = (props) => (
   <QueryRenderer

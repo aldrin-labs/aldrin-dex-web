@@ -37,14 +37,9 @@ class PortfolioComponent extends React.Component<IProps, IState> {
     }
 
     const { userSettings: { portfolioId, dustFilter, keys, wallets }, userSettings } = data.myPortfolios[0]
-    console.log('userSettings', userSettings);
-
 
     const activeKeys = keys.filter((el) => el.selected)
     const activeWallets = wallets.filter((el) => el.selected)
-    console.log('activeKeys', activeKeys);
-    console.log('activeWallets', activeWallets);
-
 
     const hasKeysOrWallets = keys.length + wallets.length > 0
     const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
