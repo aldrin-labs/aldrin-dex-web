@@ -30,6 +30,7 @@ import {
   ImportData,
 } from './Import.styles'
 import CardHeader from '@components/CardHeader'
+import { StyledCardHeader } from '../Optimization.styles'
 
 const mockData = [
   { coin: 'BCH', percentage: 10.87 },
@@ -381,10 +382,7 @@ export default class Import extends PureComponent<IProps> {
 
     return (
       <ChartContainer>
-        <CardHeader
-          style={{ marginBottom: 15 }}
-          title="Portfolio Distribution"
-        />
+        <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
@@ -610,10 +608,7 @@ export default class Import extends PureComponent<IProps> {
               </InputContainer>
 
               <TableContainer>
-                <CardHeader
-                  style={{ marginBottom: '15px' }}
-                  title="Risk Profile"
-                />
+                <StyledCardHeader title="Risk Profile" />
 
                 <SwitchButtonsWrapper>
                   <SwitchButtons

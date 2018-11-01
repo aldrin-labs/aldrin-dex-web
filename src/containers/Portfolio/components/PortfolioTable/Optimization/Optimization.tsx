@@ -37,6 +37,7 @@ import {
   LoaderWrapper,
   LoaderInnerWrapper,
   LoadingText,
+  StyledCardHeader,
 } from './Optimization.styles'
 import { mockDataForLineChart } from './mockData'
 
@@ -298,8 +299,6 @@ class Optimization extends Component<IProps, IState> {
       rawOptimizedData && rawOptimizedData.map((el) => el.return_value)
     const arrayOfReturnedRisks =
       rawOptimizedData && rawOptimizedData.map((el) => el.risk_coefficient)
-    console.log('arrayOfReturnedValues', arrayOfReturnedValues)
-    console.log('arrayOfReturnedRisks', arrayOfReturnedRisks)
 
     let efficientFrontierData = {
       activeButton,
@@ -332,8 +331,6 @@ class Optimization extends Component<IProps, IState> {
         y: el[1],
       }))
 
-    console.log('lineChartData from query', lineChartData)
-
     // const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
     //   label: 'original',
     //   x: el[0],
@@ -344,8 +341,6 @@ class Optimization extends Component<IProps, IState> {
     //   x: el[0],
     //   y: el[1],
     // }))
-
-    // console.log('lineChartData', lineChartDataOriginal);
 
     const itemsForChartLegend = [
       {
@@ -363,10 +358,7 @@ class Optimization extends Component<IProps, IState> {
     return (
       <ChartsContainer>
         <ChartContainer>
-          <CardHeader
-            style={{ marginBottom: '15px' }}
-            title="Back-test Optimization"
-          />
+          <StyledCardHeader title="Back-test Optimization" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <LineChart
@@ -380,10 +372,7 @@ class Optimization extends Component<IProps, IState> {
           </InnerChartContainer>
         </ChartContainer>
         <ChartContainer>
-          <CardHeader
-            style={{ marginBottom: '15px' }}
-            title="Efficient Frontier"
-          />
+          <StyledCardHeader title="Efficient Frontier" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <EfficientFrontierChart

@@ -2,6 +2,7 @@ import { LinearProgress, Card } from '@material-ui/core'
 import styled from 'styled-components'
 import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { customAquaScrollBar } from '@styles/cssUtils'
+import CardHeader from '@components/CardHeader';
 
 export { Loader, ChartsContainer, Chart, MainArea, MainAreaUpperPart, PTWrapper, Content, ChartContainer }
 
@@ -61,6 +62,9 @@ const PTWrapper = styled.div`
 
   ${customAquaScrollBar};
 `
+
+export const StyledCardHeader = styled(CardHeader)`
+margin-bottom: 1rem;`
 
 export const ContentInner = styled.div`
   ${(props: { loading: boolean }) =>
