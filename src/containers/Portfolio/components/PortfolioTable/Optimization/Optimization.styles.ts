@@ -64,7 +64,8 @@ const PTWrapper = styled.div`
 `
 
 export const StyledCardHeader = styled(CardHeader)`
-margin-bottom: 1rem;`
+  margin-bottom: 1rem;
+`
 
 export const ContentInner = styled.div`
   ${(props: { loading: boolean }) =>

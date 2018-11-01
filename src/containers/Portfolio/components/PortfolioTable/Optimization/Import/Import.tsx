@@ -371,12 +371,12 @@ export default class Import extends PureComponent<IProps> {
       {
         data: formatedData,
         title: 'Original',
-        color: '#2496c8',
+        color: '#fff',
       },
       {
         data: formatedOptimizedData,
         title: 'Optimized',
-        color: '#1869a8',
+        color: '#4ed8da',
       },
     ]
 
