@@ -73,7 +73,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           <Correlation
             baseCoin={baseCoin}
             theme={theme}
-            ilterValueSmallerThenPercentage={dustFilter}
+            filterValueSmallerThenPercentage={dustFilter}
           />
         )
         break
