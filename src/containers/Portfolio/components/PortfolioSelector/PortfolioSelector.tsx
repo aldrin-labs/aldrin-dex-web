@@ -1,18 +1,11 @@
 import * as React from 'react'
 import { compose } from 'recompose'
-import { connect } from 'react-redux'
 import withTheme from '@material-ui/core/styles/withTheme'
 
 import { Slide } from '@material-ui/core'
 import Dropdown from '@components/SimpleDropDownSelector'
-import {
-  setKeys as setKeysAction,
-  setActiveKeys as setActiveKeysAction,
-  setWallets as setWalletsAction,
-  setActiveWallets as setActiveWalletsAction,
-  filterValuesLessThen,
-} from '../../actions'
-import { IProps, KeyOrWallet } from './PortfolioSelector.types'
+
+import { IProps } from './PortfolioSelector.types'
 import Accounts from './Accounts/Accounts'
 import Wallets from './Wallets/Wallets'
 import {
@@ -26,8 +19,8 @@ import * as UTILS from '@utils/PortfolioSelectorUtils'
 class PortfolioSelector extends React.Component<IProps> {
 
   updateSettings = async (objectForMutation) => {
-
     const { updatePortfolioSettings } = this.props;
+    console.log('objectForMutation', objectForMutation);
 
     try {
       await updatePortfolioSettings({
@@ -106,16 +99,25 @@ class PortfolioSelector extends React.Component<IProps> {
     this.updateSettings(objForQuery)
   }
 
+  onDustFilterChange = ({target:{ value }}: {target: {value: number}}) => {
+    const { portfolioId } = this.props
+    this.updateSettings({
+      settings: {
+        portfolioId,
+        dustFilter: value,
+      },
+    })
+  }
+
   render() {
     const {
-      filterValuesLessThenThat,
-      filterPercent,
       isSideNavOpen,
       theme,
       newWallets,
       newKeys,
       activeKeys,
       activeWallets,
+      dustFilter,
     } = this.props
 
     const isCheckedAll =
@@ -160,8 +162,8 @@ class PortfolioSelector extends React.Component<IProps> {
             />
             <Dropdown
               style={{ width: '100%' }}
-              value={filterPercent}
-              handleChange={filterValuesLessThenThat}
+              value={dustFilter}
+              handleChange={this.onDustFilterChange}
               name="filterValuesInMain"
               options={[
                 { value: -100.0, label: 'No Filter' },
@@ -181,30 +183,7 @@ class PortfolioSelector extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = (store: any) => ({
-  // keys: store.portfolio.keys,
-  // activeKeys: store.portfolio.activeKeys,
-  // wallets: store.portfolio.wallets,
-  // activeWallets: store.portfolio.activeWallets,
-  // isShownMocks: store.user.isShownMocks,
-  filterPercent: store.portfolio.filterValuesLessThenThat,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  // setKeys: (keys: string[]) => dispatch(setKeysAction(keys)),
-  // setActiveKeys: (activeKeys: string[]) =>
-  //   dispatch(setActiveKeysAction(activeKeys)),
-  // setWallets: (wallets: string[]) => dispatch(setWalletsAction(wallets)),
-  // setActiveWallets: (activeWallets: string[]) =>
-  //   dispatch(setActiveWalletsAction(activeWallets)),
-  filterValuesLessThenThat: (percent: number) =>
-    dispatch(filterValuesLessThen(percent)),
-})
 
 export default compose(
-  withTheme(),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+  withTheme()
 )(PortfolioSelector)

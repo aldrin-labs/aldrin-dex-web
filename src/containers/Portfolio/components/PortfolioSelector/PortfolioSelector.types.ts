@@ -18,6 +18,7 @@ export interface IProps extends WithTheme {
   newKeys: KeyOrWallet[]
   newWallets: KeyOrWallet[]
   portfolioId: string
+  dustFilter: number
 }
 
 export type KeyOrWallet = {
