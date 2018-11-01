@@ -139,7 +139,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               <DonutChart
                 labelPlaceholder="Industry %"
                 data={chartData}
-                isSizeFlexible={true}
                 colorLegend={true}
               />
             </ChartWrapper>
