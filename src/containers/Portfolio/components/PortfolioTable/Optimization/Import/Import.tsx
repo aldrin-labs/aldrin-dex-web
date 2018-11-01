@@ -792,7 +792,7 @@ const InputInnerContainer = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   min-width: 100px;
-  padding: 0 15px 15px 15px;
+  padding: 0 15px 17px 15px;
 `
 
 export const InnerChartContainer = styled.div`
