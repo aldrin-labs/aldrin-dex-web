@@ -82,8 +82,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                 <>
                   <PortfolioTable
                     showTable={hasActiveKeysOrWallets}
-                    activeKeys={activeKeys.map((el)=> el.name)}
-                    activeWallets={activeWallets.map((el)=> el.name)}
+                    dustFilter={dustFilter}
                     theme={theme}
                     toggleWallets={this.toggleWallets}
                     subscription={subscriptionData}
