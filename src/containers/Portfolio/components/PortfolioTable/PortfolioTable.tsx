@@ -1,39 +1,13 @@
 import * as React from 'react'
+
 import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
 import { ITableProps } from '@containers/Portfolio/interfaces'
-import Loadable from 'react-loadable'
-
 import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
-import LoadableLoading from '@components/Loading/LoadableLoading'
-
-const PortfolioTableIndustries = Loadable({
-  loader: () =>
-    import('@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries'),
-  delay: 300,
-  loading: LoadableLoading,
-})
-
-const Rebalance = Loadable({
-  loader: () =>
-    import('@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance'),
-  delay: 300,
-  loading: LoadableLoading,
-})
-
-const Optimization = Loadable({
-  loader: () =>
-    import('@containers/Portfolio/components/PortfolioTable/Optimization/Optimization'),
-  delay: 300,
-  loading: LoadableLoading,
-})
-
-const Correlation = Loadable({
-  loader: () =>
-    import('@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'),
-  delay: 300,
-  loading: LoadableLoading,
-})
+import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
+import Rebalance from './Rebalance/Rebalance'
+import Optimization from './Optimization/Optimization'
+import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
 
 export class PortfolioTable extends React.Component<ITableProps, IState> {
   state: IState = {
@@ -57,7 +31,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
 
   renderTab = () => {
     const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
-    const { theme } = this.props
+    const { theme, dustFilter } = this.props
 
     let render = null
     switch (tab) {
@@ -67,30 +41,41 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
             subscription={this.props.subscription}
-            activeKeys={this.props.activeKeys}
-            activeWallets={this.props.activeWallets}
             tab={this.state.tab}
             theme={theme}
             variables={{ baseCoin }}
+            filterValueSmallerThenPercentage={dustFilter}
           />
         )
         break
       case 'industry':
         render = (
           <PortfolioTableIndustries
-            activeKeys={this.props.activeKeys}
             isUSDCurrently={isUSDCurrently}
             theme={theme}
             variables={{ baseCoin }}
             baseCoin={baseCoin}
+            filterValueSmallerThenPercentage={dustFilter}
           />
         )
         break
       case 'rebalance':
-        render = <Rebalance baseCoin={baseCoin} isUSDCurrently={true} />
+        render = (
+          <Rebalance
+            baseCoin={baseCoin}
+            isUSDCurrently={true}
+            filterValueSmallerThenPercentage={dustFilter}
+          />
+        )
         break
       case 'correlation':
-        render = <Correlation baseCoin={baseCoin} theme={theme} />
+        render = (
+          <Correlation
+            baseCoin={baseCoin}
+            theme={theme}
+            filterValueSmallerThenPercentage={dustFilter}
+          />
+        )
         break
       case 'optimization':
         render = (
@@ -98,6 +83,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
             theme={theme}
             isUSDCurrently={isUSDCurrently}
             baseCoin={baseCoin}
+            filterValueSmallerThenPercentage={dustFilter}
           />
         )
         break

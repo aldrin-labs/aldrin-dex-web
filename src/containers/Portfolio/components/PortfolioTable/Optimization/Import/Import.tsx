@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
-import { Button as ButtonMUI, Typography } from '@material-ui/core'
+import { Button as ButtonMUI, Typography, Card } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
@@ -29,6 +29,8 @@ import {
   Chart,
   ImportData,
 } from './Import.styles'
+import CardHeader from '@components/CardHeader'
+import { StyledCardHeader } from '../Optimization.styles'
 
 const mockData = [
   { coin: 'BCH', percentage: 10.87 },
@@ -41,7 +43,6 @@ export default class Import extends PureComponent<IProps> {
     baseCoin: 'USDT',
     rebalancePeriod: null,
     isRiskFreeAssetEnabled: true,
-    riskProfile: null,
     focusedInput: false,
     startDate: null,
     endDate: null,
@@ -117,19 +118,9 @@ export default class Import extends PureComponent<IProps> {
     baseCoin: string,
     rebalancePeriod: number,
     isRiskFreeAssetEnabled: boolean,
-    riskProfile: null,
     startDate: object,
     endDate: object
   ) => {
-    // console.log('client', client)
-    // console.log('storeData', storeData)
-    // console.log('baseCoin', baseCoin)
-    // console.log('rebalancePeriod', +rebalancePeriod)
-    // console.log('isRiskFreeAssetEnabled', +isRiskFreeAssetEnabled)
-    // console.log('riskProfile', riskProfile)
-    // console.log('startDate', startDate)
-    // console.log('endDate', endDate)
-
     this.props.toggleLoading()
 
     const { totalPriceOfAllAssets } = this.state
@@ -182,7 +173,6 @@ export default class Import extends PureComponent<IProps> {
       baseCurrency: baseCoin,
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
-      riskProfile: riskProfile,
       // startDate: 1528392417,
       // endDate: 1533662817,
       // startDate: +startDate._d/1000,
@@ -381,18 +371,18 @@ export default class Import extends PureComponent<IProps> {
       {
         data: formatedData,
         title: 'Original',
-        color: '#2496c8',
+        color: '#fff',
       },
       {
         data: formatedOptimizedData,
         title: 'Optimized',
-        color: '#1869a8',
+        color: '#4ed8da',
       },
     ]
 
     return (
-      <ChartContainer background={theme.palette.background.paper}>
-        <Label>Portfolio Distribution</Label>
+      <ChartContainer>
+        <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
@@ -473,7 +463,6 @@ export default class Import extends PureComponent<IProps> {
       baseCoin,
       rebalancePeriod,
       isRiskFreeAssetEnabled,
-      riskProfile,
       startDate,
       endDate,
       initialPortfolio,
@@ -518,15 +507,15 @@ export default class Import extends PureComponent<IProps> {
     // console.log('minimumDate', minimumDate);
 
     const isAllOptionsFilled =
-      baseCoin && rebalancePeriod && riskProfile && startDate && endDate
+      baseCoin && rebalancePeriod && startDate && endDate
 
     return (
       <ApolloConsumer>
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer background={theme.palette.background.paper}>
-                <Label>Back-test input</Label>
+              <InputContainer>
+                <CardHeader title="Back-test input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
@@ -597,29 +586,7 @@ export default class Import extends PureComponent<IProps> {
                       />
                     </FlexWrapper>
                   </InputElementWrapper>
-                  <InputElementWrapper>
-                    <StyledInputLabel color={textColor}>
-                      Risk profile
-                    </StyledInputLabel>
-                    <SelectOptimization
-                      options={RiskProfile}
-                      isClearable={true}
-                      singleValueStyles={{
-                        fontSize: '0.875rem',
-                      }}
-                      placeholderStyles={{
-                        fontSize: '0.875rem',
-                      }}
-                      optionStyles={{
-                        fontSize: '0.875rem',
-                      }}
-                      onChange={(
-                        optionSelected: { label: string; value: string } | null
-                      ) => this.onSelectChange('riskProfile', optionSelected)}
-                    />
-                  </InputElementWrapper>
                   <ButtonMUI
-                    style={{ marginTop: '1rem' }}
                     color={'secondary'}
                     variant={'outlined'}
                     disabled={!isAllOptionsFilled}
@@ -630,7 +597,6 @@ export default class Import extends PureComponent<IProps> {
                         baseCoin,
                         rebalancePeriod,
                         isRiskFreeAssetEnabled,
-                        riskProfile,
                         startDate,
                         endDate
                       )
@@ -641,8 +607,9 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer background={theme.palette.background.paper}>
-                <Label>Risk Profile</Label>
+              <TableContainer>
+                <StyledCardHeader title="Risk Profile" />
+
                 <SwitchButtonsWrapper>
                   <SwitchButtons
                     btnClickProps={client}
@@ -678,29 +645,6 @@ export default class Import extends PureComponent<IProps> {
                   }
                   theme={this.props.theme}
                 />
-                {/*<TableDataDesc show={this.state.optimizedData.length > 1}>*/}
-                {/*<StyledInputLabel color={textColor}>*/}
-                {/*Confidence:{' '}*/}
-                {/*{this.state.optimizedData.length > 1*/}
-                {/*? this.state.optimizedData[activeButton]*/}
-                {/*.confidence*/}
-                {/*: ''}*/}
-                {/*</StyledInputLabel>*/}
-                {/*<StyledInputLabel color={textColor}>*/}
-                {/*Expected return low:{' '}*/}
-                {/*{this.state.optimizedData.length > 1*/}
-                {/*? this.state.optimizedData[activeButton]*/}
-                {/*.exptd_rtrn_low_end*/}
-                {/*: ''}*/}
-                {/*</StyledInputLabel>*/}
-                {/*<StyledInputLabel color={textColor}>*/}
-                {/*Expected return high:{' '}*/}
-                {/*{this.state.optimizedData.length > 1*/}
-                {/*? this.state.optimizedData[activeButton]*/}
-                {/*.exptd_rtrn_high_end*/}
-                {/*: ''}*/}
-                {/*</StyledInputLabel>*/}
-                {/*</TableDataDesc>*/}
               </TableContainer>
             </TableSelectsContaienr>
             {this.renderBarChart()}
@@ -748,10 +692,9 @@ const StyledInputLabel = styled(InputLabel)`
 `
 
 const InputElementWrapper = styled.div`
-  margin-bottom: 22px;
+  margin-bottom: 38px;
   display: flex;
   flex-direction: column;
-  //margin-bottom: 14px;
 
   &:not(:nth-child(3)) {
     flex-direction: row;
@@ -819,13 +762,10 @@ const StyledWrapperForDateRangePicker = styled.div`
   }
 `
 
-const ChartContainer = styled.div`
+const ChartContainer = styled(Card)`
   min-height: 400px;
   width: 49%;
   margin: 0 0 0 2rem;
-  //padding: 15px;
-  box-shadow: 0 2px 6px 0 #00000066;
-  background: ${(props: { background: string }) => props.background};
 `
 
 const TableSelectsContaienr = styled.div`
@@ -842,7 +782,6 @@ export const Label = styled.div`
   color: #4ed8da;
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   background-color: #263238;
-  //font-size: 12px;
   font-weight: bold;
   white-space: nowrap;
   text-transform: uppercase;
@@ -853,7 +792,7 @@ const InputInnerContainer = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   min-width: 100px;
-  padding: 0 15px 15px 15px;
+  padding: 0 15px 17px 15px;
 `
 
 export const InnerChartContainer = styled.div`

@@ -9,6 +9,7 @@ import {
   LineSeries,
   Crosshair,
   DiscreteColorLegend,
+  LineMarkSeries,
 } from 'react-vis'
 
 import { Props, State } from '@components/LineChart/LineChart.types'
@@ -74,23 +75,51 @@ export default class LineChart extends React.Component<Props, State> {
       alwaysShowLegend,
       itemsForChartLegend,
     } = this.props
+
     const { crosshairValues } = this.state
 
-    if (!data) return null
+    if (!data) {
+      return (
+        <FlexibleXYPlot>
+          <LineMarkSeries
+            curve={'curveCatmullRom'}
+            color="rgba(91, 96, 102, 0.7)"
+            data={[
+              { x: 3, y: 2 },
+              { x: 3, y: 2 },
+              { x: 8, y: 5 },
+              { x: 6, y: 7 },
+            ]}
+          />
+        </FlexibleXYPlot>
+      )
+    }
 
-    // const format =
-    //   crosshairValues &&
-    //   crosshairValues[0] &&
-    //   dateFormat(new Date(2018, 5, crosshairValues[0].x), 'dddd, MMM DD YYYY')
-
-    const dateOptionsFormat = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
-    const dateDataFormatted = crosshairValues && crosshairValues[0] && new Date(crosshairValues[0].x * 1000).toLocaleDateString('en-US', dateOptionsFormat)
+    const dateOptionsFormat = {
+      weekday: 'short',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    }
+    const dateDataFormatted =
+      crosshairValues &&
+      crosshairValues[0] &&
+      new Date(crosshairValues[0].x * 1000).toLocaleDateString(
+        'en-US',
+        dateOptionsFormat
+      )
 
     return (
-      <FlexibleXYPlot onMouseLeave={this.onMouseLeave} margin={{left: 55, bottom: 55}} >
+      <FlexibleXYPlot
+        onMouseLeave={this.onMouseLeave}
+        margin={{ left: 55, bottom: 55 }}
+      >
         {alwaysShowLegend && (
           <LegendContainer>
-            <DiscreteColorLegend orientation="horizontal" items={itemsForChartLegend} />
+            <DiscreteColorLegend
+              orientation="horizontal"
+              items={itemsForChartLegend}
+            />
           </LegendContainer>
         )}
 
@@ -137,9 +166,9 @@ export default class LineChart extends React.Component<Props, State> {
 
               {crosshairValues.map((v, i) => (
                 <div key={`${v.label}: ${v.y} USD`}>
-                  <Label style={{ color: colors[i] }}>{`${v.label}: ${
-                    Number(v.y).toFixed(2)
-                    }%`}</Label>
+                  <Label style={{ color: colors[i] }}>{`${v.label}: ${Number(
+                    v.y
+                  ).toFixed(2)}`}</Label>
                 </div>
               ))}
             </ContainerForCrossHairValues>
@@ -151,7 +180,6 @@ export default class LineChart extends React.Component<Props, State> {
 }
 
 const ContainerForCrossHairValues = styled.div`
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   min-width: 250px;
   background-color: #393e44;
   color: #fff;

@@ -7,6 +7,13 @@ import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 import { flatten, has } from 'lodash-es'
 import { InputRecord } from '@components/DonutChart/types'
+import { Tooltip } from '@material-ui/core'
+import { FullWidthBlock } from '@components/OldTable/Table'
+
+const config = {
+  industryTableEmptyCellTooltip: `The "-" represents fields for which we are not successfully
+   able to calculate a value due to missing data.`,
+}
 
 export const onCheckBoxClick = (selected: any[], id) => {
   const selectedIndex = selected.indexOf(id)
@@ -57,10 +64,21 @@ const calculateTotalPerfOfCoin = (assets: any[]): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
 const colorful = (value: number, red: string, green: string) => ({
-  render: `${value}%`,
+  render:
+    value === 0 ? (
+      <Tooltip enterDelay={250} title={config.industryTableEmptyCellTooltip}>
+        <FullWidthBlock style={{ width: '100%' }}>-</FullWidthBlock>
+      </Tooltip>
+    ) : (
+      `${value}%`
+    ),
   isNumber: true,
   style: { color: value > 0 ? green : value < 0 ? red : null },
 })
+
+// transform "number%" to number
+export const transformToNumber = (percentage: string) =>
+  +percentage.split('%')[0]
 
 export const combineIndustryData = (
   data: any,
@@ -97,6 +115,7 @@ export const combineIndustryData = (
           ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
           : 'multiple',
         sumPortfolioPercentageOfAsset(row.assets, allSum),
+        // portfolio performance
         colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
         colorful(+roundPercentage(row.industry1W) || 0, red, green),
         colorful(+roundPercentage(row.industry1M) || 0, red, green),
@@ -123,12 +142,12 @@ export const combineIndustryData = (
   // applying dustfilter
   const industryData = res.filter(
     // becouse of shape of row[2] object {render: 23%, isNumber: true}
-    (row) => +row[2].render.split('%')[0] >= filterValueLessThen
+    (row) => +transformToNumber(row[2].render) >= filterValueLessThen
   )
 
   const chartData: InputRecord[] = res.map((row) => ({
     label: row[0],
-    realValue: +row[2].render.split('%')[0],
+    realValue: +transformToNumber(row[2].render),
   }))
 
   return { chartData, industryData }
@@ -329,11 +348,10 @@ export const createColumn = (
 
 export const combineTableData = (
   portfolioAssets,
-  activeKeys,
   filterValueSmallerThenPercentage,
   isUSDCurrently
 ) => {
-  if (!portfolioAssets || !activeKeys) {
+  if (!portfolioAssets) {
     return
   }
   // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
@@ -348,7 +366,6 @@ export const combineTableData = (
   )
 
   const tableData = portfolioAssets
-    .filter((asset) => activeKeys.includes(asset.name))
     .map((row: any, i) => {
       const {
         _id,
@@ -364,13 +381,14 @@ export const combineTableData = (
         dailyPerc = 0,
         daily = 0,
       } = row || {}
+
       return {
         coin,
-        portfolioPercentage: (price * quantity * 100) / allSums,
         price,
         quantity,
         daily,
         dailyPerc,
+        portfolioPercentage: (price * quantity * 100) / allSums,
         currentPrice: price * quantity,
         realizedPL: realized,
         unrealizedPL: unrealized,

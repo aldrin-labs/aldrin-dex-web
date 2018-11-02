@@ -25,7 +25,6 @@ const chooseGreen = (theme: Theme) =>
 class Container extends Component {
   state: IState = {
     currentSort: null,
-    activeKeys: null,
     portfolioAssets: null,
     checkedRows: [],
     red: chooseRed(this.props.theme),
@@ -37,15 +36,13 @@ class Container extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const {
-      activeKeys,
-      activeWallets,
       filterValueSmallerThenPercentage,
       isUSDCurrently,
       isShownMocks,
       data,
       theme,
     } = nextProps
-    if (data && activeKeys) {
+    if (data) {
       if (!data.myPortfolios[0]) return
 
       const { portfolioAssets } = data.myPortfolios[0]
@@ -60,16 +57,14 @@ class Container extends Component {
       )
 
       return {
-        activeKeys,
         numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
         checkedRows:
-          activeKeys.concat(activeWallets).length === 0
+          portfolioAssets.length === 0
             ? []
             : prevState.checkedRows,
         portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
           composePortfolioAssetsWithMocks,
-          activeKeys.concat(activeWallets),
           filterValueSmallerThenPercentage,
           isUSDCurrently
         ),
@@ -141,7 +136,7 @@ class Container extends Component {
       })
     }
 
-    return total
+    return total && [total]
   }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
@@ -150,7 +145,10 @@ class Container extends Component {
     return data.map((row) => [
       row.exchange,
       { render: row.coin, style: { fontWeight: 700 } },
-      +roundPercentage(row.portfolioPercentage),
+      {
+        render: `${roundPercentage(row.portfolioPercentage) || 0}%`,
+        isNumber: true,
+      },
       +roundAndFormatNumber(row.price, round, false),
       +roundAndFormatNumber(row.quantity, round, false),
       +roundAndFormatNumber(row.price * row.quantity, round, false),
@@ -181,7 +179,7 @@ class Container extends Component {
       head: [
         { render: 'exchange', isNumber: false },
         { render: 'coin', isNumber: false },
-        { render: 'portfolio%', isNumber: true },
+        { render: 'portfolio', isNumber: true },
         { render: 'price', isNumber: true },
         { render: 'quantity', isNumber: true },
         { render: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },

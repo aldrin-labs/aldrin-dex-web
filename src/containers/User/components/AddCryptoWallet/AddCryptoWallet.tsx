@@ -14,6 +14,7 @@ import SelectWalletList from '@components/SelectWalletList/SelectWalletList'
 import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 
 import * as API from '@containers/User/api'
+import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const MIN_CHAR = 3
 
@@ -41,10 +42,7 @@ const formikEnhancer = withFormik({
     walletAdress: '',
     asset: '',
   }),
-  handleSubmit: async (
-    values,
-    { props, setSubmitting }
-  ) => {
+  handleSubmit: async (values, { props, setSubmitting, resetForm }) => {
     const variables = {
       address: values.walletAdress,
       assetName: values.asset,
@@ -60,14 +58,15 @@ const formikEnhancer = withFormik({
           const proxyData = proxy.readQuery({
             query: API.getCryptoWalletsQuery,
           })
-          proxyData.getProfile.cryptoWallets.push(addCryptoWallet)
+          proxyData.myPortfolios[0].cryptoWallets.push(addCryptoWallet)
           proxy.writeQuery({
             query: API.getCryptoWalletsQuery,
             data: proxyData,
           })
         },
       })
-      props.forceUpdateUserContainer();
+      resetForm({})
+      props.forceUpdateUserContainer()
 
       setSubmitting(false)
     } catch (error) {
@@ -101,7 +100,7 @@ class AddCryptoWalletComponent extends React.Component {
             name="name"
             label="Name"
             autoComplete="off"
-            value={values.name}
+            value={values.name || ''}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter cryptoWallet name here..."
@@ -118,7 +117,7 @@ class AddCryptoWalletComponent extends React.Component {
             name="walletAdress"
             label="Address"
             autoComplete="off"
-            value={values.walletAdress}
+            value={values.walletAdress || ''}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="Enter wallet address here..."
@@ -126,13 +125,20 @@ class AddCryptoWalletComponent extends React.Component {
             margin="normal"
             helperText={
               touched.walletAdress &&
-              errors.walletAdress && <FormError>{errors.walletAdress}</FormError>
+              errors.walletAdress && (
+                <FormError>{errors.walletAdress}</FormError>
+              )
             }
           />
           <SSelect>
             <InputLabel htmlFor="asset">Wallet</InputLabel>
             <SelectWalletList
               isClearable={true}
+              value={
+                values.asset
+                  ? [{ label: values.asset, value: values.asset }]
+                  : null
+              }
               onChange={handleSelectChangePrepareForFormik.bind(this, 'asset')}
             />
           </SSelect>
@@ -180,6 +186,11 @@ const SPaper = styled(Paper)`
 `
 
 export const AddCryptoWallet = compose(
-  graphql(API.addCryptoWalletMutation, { name: 'addCryptoWallet' }),
+  graphql(API.addCryptoWalletMutation, {
+    name: 'addCryptoWallet',
+    options: {
+      refetchQueries: [{ query: portfolioKeyAndWalletsQuery }],
+    },
+  }),
   formikEnhancer
 )(AddCryptoWalletComponent)

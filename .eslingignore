@@ -3,5 +3,5 @@
 /public
 /.vscode
 /.cache-loader
-/.dist
+/dist
 /.coverage

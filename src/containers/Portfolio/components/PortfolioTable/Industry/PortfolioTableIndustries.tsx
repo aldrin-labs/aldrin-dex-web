@@ -2,7 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { Grid } from '@material-ui/core'
 
-import { Table, DonutChart } from 'components'
+import { Table, DonutChart } from '@storybook-components'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import {
   combineIndustryData,
@@ -59,7 +59,6 @@ const getStateObj = ({ data, theme, filterValueSmallerThenPercentage = 0 }) => {
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
-    activeKeys: null,
     portfolio: null,
     industryData: null,
     chartData: null,
@@ -137,9 +136,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           <Grid item={true} xs={12} md={4} style={{}}>
             <ChartWrapper>
               <DonutChart
-                labelPlaceholder="Industries %"
+                labelPlaceholder="Industry %"
                 data={chartData}
-                isSizeFlexible={true}
                 colorLegend={true}
               />
             </ChartWrapper>
@@ -150,14 +148,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 }
 
-const mapStateToProps = (store: object) => ({
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
-})
 
-export default connect(mapStateToProps)(
-  queryRendererHoc({
+export default queryRendererHoc({
     query: getPortfolioQuery,
     pollInterval: 5000,
     fetchPolicy: 'network-only',
-  })(PortfolioTableIndustries)
-)
+})(PortfolioTableIndustries)
+

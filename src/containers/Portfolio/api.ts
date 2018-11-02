@@ -8,13 +8,17 @@ export const PRICE_HISTORY_QUERY = gql`
     $isBTC: Boolean!
     $unixTimestampFrom: Int!
     $unixTimestampTo: Int!
+    $period: Int!
   ) {
+    portfolioMain @client {
+      activeChart
+    }
     getPriceHistory(
       coins: $coins
       isBTC: $isBTC
       unixTimestampFrom: $unixTimestampFrom
       unixTimestampTo: $unixTimestampTo
-      period: 3600
+      period: $period
     ) {
       coins
       dates
@@ -165,6 +169,33 @@ export const updateRebalanceMutation = gql`
       total
       updatedAt
       createdAt
+    }
+  }
+`
+
+export const updatePortfolioSettingsMutation = gql`
+  mutation updatePortfolioSettings($settings: portfolioSettings!) {
+    updateSettings(settings: $settings)
+  }
+`
+
+export const portfolioKeyAndWalletsQuery = gql`
+  query portfolioKeyAndWalletsQuery {
+    myPortfolios {
+      userSettings {
+        portfolioId
+        dustFilter
+        keys {
+          _id
+          name
+          selected
+        }
+        wallets {
+          _id
+          name
+          selected
+        }
+      }
     }
   }
 `
