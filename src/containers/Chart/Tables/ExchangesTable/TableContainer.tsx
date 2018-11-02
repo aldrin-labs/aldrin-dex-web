@@ -6,16 +6,17 @@ import { IExchangesTable } from './TableContainer.types'
 
 const transformDataToExchangesTable = ({ data, ...props }: IExchangesTable) => {
   if (data && data.marketByName) {
-    const exchanges =
+    const exchangesWithoutMocks =
       data.marketByName.length > 0
-        ? [
-            ...data.marketByName[0].exchanges.map(({ name, symbol }) => ({
-              name,
-              symbol,
-            })),
-            ...mockExchanges,
-          ]
+        ? data.marketByName[0].exchanges.map(({ name, symbol }) => ({
+            name,
+            symbol,
+          }))
         : []
+      const exchanges =
+      props.isShownMocks
+      ? [...exchangesWithoutMocks, ...mockExchanges]
+      : exchangesWithoutMocks
 
     return <ExchangesTable exchanges={exchanges} {...props} />
   }

@@ -377,7 +377,7 @@ class Chart extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { view, currencyPair } = this.props
+    const { view, currencyPair, activeExchange } = this.props
 
     const toggler = this.renderToggler()
 
@@ -388,6 +388,7 @@ class Chart extends React.Component<IProps, IState> {
             value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
+            exchange={activeExchange}
           />
 
           {toggler}
