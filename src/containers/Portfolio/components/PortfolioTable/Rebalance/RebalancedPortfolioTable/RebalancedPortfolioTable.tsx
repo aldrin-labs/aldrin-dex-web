@@ -381,11 +381,11 @@ export default class RebalancedPortfolioTable extends React.Component<
         ...(staticRows[index]
           ? {
               oririnalPortfolioPerc: {
-                render: staticRows[index].portfolioPerc,
+                render: `${staticRows[index].portfolioPerc}%`,
                 isNumber: true,
               },
               oritinalPrice: {
-                render: staticRows[index].price,
+                render: <>{mainSymbol} {staticRows[index].price} </>,
                 isNumber: true,
               },
             }
@@ -395,8 +395,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             }),
         portfolioPerc: { render: portfolioPercentage, isNumber: true },
         price: {
-          additionalRender: mainSymbol,
-          render: formatNumberToUSFormat(row.price),
+          render: <>{mainSymbol} {formatNumberToUSFormat(row.price)}</>,
           isNumber: true,
         },
         deltaPrice: {
@@ -524,8 +523,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           ' ',
           { render: `${totalPercents}%`, isNumber: true },
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalTableRows),
+            render: <>{mainSymbol} {formatNumberToUSFormat(totalTableRows)}</>,
             isNumber: true,
           },
           ' ',
@@ -536,14 +534,12 @@ export default class RebalancedPortfolioTable extends React.Component<
           ' ',
           ' ',
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalStaticRows),
+            render: <>{mainSymbol} {formatNumberToUSFormat(totalStaticRows)}</>,
             isNumber: true,
           },
           ' ',
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalRows),
+            render: <>{mainSymbol} {formatNumberToUSFormat(totalRows)}</>,
             isNumber: true,
           },
           ' ',
