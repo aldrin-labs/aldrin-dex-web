@@ -323,7 +323,7 @@ export default class Import extends PureComponent<IProps> {
     }
 
     if (this.props.filterValueSmallerThenPercentage >= 0) {
-      this.props.showWarning('Turn off the filter first to see new coins.')
+      this.props.showWarning('Disable Dust filter first to see added coins')
     }
 
     if (name) {
