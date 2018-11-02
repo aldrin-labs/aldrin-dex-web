@@ -100,7 +100,7 @@ export const combineIndustryData = (
   }
 
   const { myPortfolios } = data
-  const res = flatten(
+  const industryData = flatten(
     myPortfolios.map(({ industryData }) => {
       // calculating all assets to calculate allSum
       const allAssets = []
@@ -109,45 +109,54 @@ export const combineIndustryData = (
       })
       const allSum = calcAllSumOfPortfolioAsset(allAssets)
 
-      return industryData.map((row) => [
-        row.industry,
-        row.assets.length === 1
-          ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
-          : 'multiple',
-        sumPortfolioPercentageOfAsset(row.assets, allSum),
-        // portfolio performance
-        colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
-        colorful(+roundPercentage(row.industry1W) || 0, red, green),
-        colorful(+roundPercentage(row.industry1M) || 0, red, green),
-        colorful(+roundPercentage(row.industry3M) || 0, red, green),
-        colorful(+roundPercentage(row.industry1Y) || 0, red, green),
-        //  expanded row content
-        row.assets.length === 1
-          ? []
-          : row.assets.map((asset) => [
-              '',
-              { render: asset.coin, style: { fontWeight: 700 } },
-              +roundPercentage(
-                percentagesOfCoinInPortfolio(asset, allSum, true)
-              ),
-              colorful(+roundPercentage(asset.perf), red, green),
-              '',
-              '',
-              '',
-              '',
-            ]),
-      ])
+      return industryData.map((row) => ({
+        // industry should be uniq
+        id: row.industry,
+        industry: row.industry,
+        coin:
+          row.assets.length === 1
+            ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
+            : 'multiple',
+        portfolio: sumPortfolioPercentageOfAsset(row.assets, allSum),
+        portfolioPerformance: colorful(
+          calculateTotalPerfOfCoin(row.assets) || 0,
+          red,
+          green
+        ),
+
+        industry1w: colorful(+roundPercentage(row.industry1W) || 0, red, green),
+
+        industry1m: colorful(+roundPercentage(row.industry1M) || 0, red, green),
+
+        industry3M: colorful(+roundPercentage(row.industry3M) || 0, red, green),
+        industry1Y: colorful(+roundPercentage(row.industry1Y) || 0, red, green),
+
+        expandableContent:
+          row.assets.length === 1
+            ? []
+            : row.assets.map((asset) => ({
+                industry: '',
+                coin: { render: asset.coin, style: { fontWeight: 700 } },
+                portfolio: +roundPercentage(
+                  percentagesOfCoinInPortfolio(asset, allSum, true)
+                ),
+                portfolioPerformance: colorful(
+                  +roundPercentage(asset.perf),
+                  red,
+                  green
+                ),
+                industry1w: '',
+                industry1m: '',
+                industry3m: '',
+                industry1y: '',
+              })),
+      }))
     })
   )
-  // applying dustfilter
-  const industryData = res.filter(
-    // becouse of shape of row[2] object {render: 23%, isNumber: true}
-    (row) => +transformToNumber(row[2].render) >= filterValueLessThen
-  )
 
-  const chartData: InputRecord[] = res.map((row) => ({
-    label: row[0],
-    realValue: +transformToNumber(row[2].render),
+  const chartData: InputRecord[] = industryData.map((row) => ({
+    label: row.industry,
+    realValue: +transformToNumber(row.portfolio.render),
   }))
 
   return { chartData, industryData }
