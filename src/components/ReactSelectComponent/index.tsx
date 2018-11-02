@@ -31,6 +31,7 @@ class ReactSelectComponent extends Component<IProps> {
       indicatorSeparatorStyles,
       loadingIndicatorStyles,
       noOptionsMessageStyles,
+      menuPortalStyles,
       forwardedRef,
       ...otherProps
     } = this.props
@@ -69,6 +70,10 @@ class ReactSelectComponent extends Component<IProps> {
         color: textColor,
         fontFamily: theme.typography.fontFamily,
         ...menuStyles,
+      }),
+      menuPortal: (base: CSSProperties) => ({
+        ...base,
+        ...menuPortalStyles,
       }),
       menuList: (base: CSSProperties) => ({
         ...base,

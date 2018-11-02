@@ -261,14 +261,16 @@ export default class RebalancedPortfolioTable extends React.Component<
     rows,
     staticRows,
     mainSymbol,
+    isEditModeEnabled,
+    isPercentSumGood,
     red,
     green,
-    isEditModeEnabled,
-    isPercentSumGood
+    background,
   ) => {
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
+          background={background}
           key={`inputPercentage${index}`}
           tabIndex={index + 1}
           isPercentSumGood={isPercentSumGood}
@@ -292,6 +294,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             openMenuOnClick={true}
             options={exchangeOptions}
             menuPortalTarget={document.body}
+            menuPortalStyles={{
+              zIndex: 111,
+            }}
             menuStyles={{
               fontSize: '12px',
               minWidth: '150px',
@@ -333,6 +338,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             isSearchable={true}
             openMenuOnClick={false}
             menuPortalTarget={document.body}
+            menuPortalStyles={{
+              zIndex: 111,
+            }}
             menuStyles={{
               fontSize: '12px',
               minWidth: '150px',
@@ -373,11 +381,11 @@ export default class RebalancedPortfolioTable extends React.Component<
         ...(staticRows[index]
           ? {
               oririnalPortfolioPerc: {
-                render: staticRows[index].portfolioPerc,
+                render: `${staticRows[index].portfolioPerc}%`,
                 isNumber: true,
               },
               oritinalPrice: {
-                render: staticRows[index].price,
+                render: <>{mainSymbol} {staticRows[index].price} </>,
                 isNumber: true,
               },
             }
@@ -387,8 +395,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             }),
         portfolioPerc: { render: portfolioPercentage, isNumber: true },
         price: {
-          additionalRender: mainSymbol,
-          render: formatNumberToUSFormat(row.price),
+          render: <>{mainSymbol} {formatNumberToUSFormat(row.price)}</>,
           isNumber: true,
         },
         deltaPrice: {
@@ -436,6 +443,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const { transformData } = this
     const red = theme.palette.red.main
     const green = theme.palette.green.main
+    const background = theme.palette.background.default
     const mainSymbol = isUSDCurrently ? (
       <Icon className="fa fa-usd" />
     ) : (
@@ -460,10 +468,11 @@ export default class RebalancedPortfolioTable extends React.Component<
         rows,
         staticRows,
         mainSymbol,
+        isEditModeEnabled,
+        isPercentSumGood,
         red,
         green,
-        isEditModeEnabled,
-        isPercentSumGood
+        background
       ),
       footer: [
         ...(isEditModeEnabled ? [[
@@ -514,8 +523,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           ' ',
           { render: `${totalPercents}%`, isNumber: true },
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalTableRows),
+            render: <>{mainSymbol} {formatNumberToUSFormat(totalTableRows)}</>,
             isNumber: true,
           },
           ' ',
@@ -526,14 +534,12 @@ export default class RebalancedPortfolioTable extends React.Component<
           ' ',
           ' ',
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalStaticRows),
+            render: <>{mainSymbol} {formatNumberToUSFormat(totalStaticRows)}</>,
             isNumber: true,
           },
           ' ',
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalRows),
+            render: <>{mainSymbol} {formatNumberToUSFormat(totalRows)}</>,
             isNumber: true,
           },
           ' ',
