@@ -515,7 +515,7 @@ export default class Import extends PureComponent<IProps> {
           <ImportData>
             <TableSelectsContaienr>
               <InputContainer>
-                <CardHeader title="Back-test input" />
+                <StyledCardHeader title="Back-test input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
