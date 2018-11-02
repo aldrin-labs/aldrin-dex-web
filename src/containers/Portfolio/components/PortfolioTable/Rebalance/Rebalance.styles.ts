@@ -1,6 +1,6 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
-import { Paper } from '@material-ui/core'
+import { Paper, Card } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 
 export { Content, ChartWrapper, ChartContainer, Chart, Container }
@@ -27,8 +27,7 @@ const ChartWrapper = styled.div`
   align-items: center;
 `
 
-const ChartContainer = styled(Paper)`
-  background: ${(props: { background: string }) => props.background};
+const ChartContainer = styled(Card)`
 
   && {
     width: 100%;

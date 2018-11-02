@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
@@ -11,7 +10,12 @@ import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
 import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 import { handleRef } from '@components/ReactSelectComponent/utils'
 import { Icon } from '@styles/cssUtils'
-import { InputTable, TableWrapper, SAddIcon, SDeleteIcon } from './RebalancedPortfolioTable.styles'
+import {
+  InputTable,
+  TableWrapper,
+  SAddIcon,
+  SDeleteIcon,
+} from './RebalancedPortfolioTable.styles'
 
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
@@ -367,7 +371,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
-      return Object.values({
+      return {
+        id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
         ...(staticRows[index]
@@ -413,8 +418,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ),
               },
             }
-          : {}),
-      })
+          : null),
+      }
     })
 
     return transformedData
@@ -442,104 +447,123 @@ export default class RebalancedPortfolioTable extends React.Component<
       <Icon className="fa fa-btc" />
     )
 
+    let columnNames = [
+      { label: 'Exchange', id: '2' },
+      { label: 'Coin', id: '22' },
+      { label: 'Current %', isNumber: true, id: '32' },
+      {
+        label: `Current ${isUSDCurrently ? 'USD' : 'BTC'}`,
+        isNumber: true,
+        id: '223',
+      },
+      { label: 'Rebalanced %', isNumber: true, id: '2r2' },
+      {
+        label: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
+        isNumber: true,
+        id: '224',
+      },
+      { label: 'Trade', id: '22 ' },
+    ]
+    //  space for delete icon
+    if (isEditModeEnabled) {
+      columnNames = [...columnNames, { label: '  ', id: '22 ' }]
+    }
+
     return {
-      head: [
-        { render: 'Exchange' },
-        { render: 'Coin' },
-        { render: 'Current %', isNumber: true },
-        { render: `Current ${isUSDCurrently ? 'USD' : 'BTC'}`, isNumber: true },
-        { render: 'Rebalanced %', isNumber: true },
-        {
-          render: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
-          isNumber: true,
-        },
-        { render: 'Trade' },
-        ...(isEditModeEnabled ? [{ render: ' ' }] : []),
-      ],
-      body: transformData(
-        rows,
-        staticRows,
-        mainSymbol,
-        red,
-        green,
-        isEditModeEnabled,
-        isPercentSumGood
-      ),
-      footer: [
-        ...(isEditModeEnabled ? [[
-        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },       {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },       {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        }, {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },
-        {
-          render: (
-            <SAddIcon
-              onClick={this.onAddRowButtonClick}
-              hoverColor={green}
-            />
-          ),
-          variant: 'body',
-          style: {position: 'static'},
-        },
-      ]] : []),
-        [
-          'Subtotal',
-          ' ',
-          ' ',
-          ' ',
-          { render: `${totalPercents}%`, isNumber: true },
+      columnNames,
+      data: {
+        body: transformData(
+          rows,
+          staticRows,
+          mainSymbol,
+          red,
+          green,
+          isEditModeEnabled,
+          isPercentSumGood
+        ),
+        footer: [
+          isEditModeEnabled
+            ? {
+                id: '3',
+                exchange: {
+                  render: ' ',
+                  style: { position: 'static' },
+                },
+                coin: {
+                  render: ' ',
+                  style: { position: 'static' },
+                },
+                current: {
+                  render: ' ',
+                  style: { position: 'static' },
+                },
+                currentUSD: {
+                  render: ' ',
+                  style: { position: 'static' },
+                },
+                rebalanced: {
+                  render: ' ',
+                  style: { position: 'static' },
+                },
+                rebalancedUSD: {
+                  render: ' ',
+                  style: { position: 'static' },
+                },
+                trade: {
+                  render: ' ',
+                  style: { position: 'static' },
+                },
+                icon: {
+                  render: (
+                    <SAddIcon
+                      onClick={this.onAddRowButtonClick}
+                      hoverColor={green}
+                    />
+                  ),
+                  style: { position: 'static' },
+                },
+                options: {
+                  variant: 'body',
+                },
+              }
+            : null,
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalTableRows),
-            isNumber: true,
+            id: '33',
+            exchange: 'Subtotal',
+            coin: ' ',
+            current: ' ',
+            currentUSD: ' ',
+            rebalanced: { render: `${totalPercents}%`, isNumber: true },
+            rebalancedUSD: {
+              additionalRender: mainSymbol,
+              render: formatNumberToUSFormat(totalTableRows),
+              isNumber: true,
+            },
+            trade: ' ',
+            ...(isEditModeEnabled ? { render: ' ' } : {}),
           },
-          ' ',
-          ...(isEditModeEnabled ? [{ render: ' ' }] : []),
+
+          {
+            id: '333',
+            exchange: 'All',
+            coin: ' ',
+            current: ' ',
+            currentUSD: {
+              additionalRender: mainSymbol,
+              render: formatNumberToUSFormat(totalStaticRows),
+              isNumber: true,
+            },
+            rebalanced: ' ',
+            rebalancedUSD: {
+              additionalRender: mainSymbol,
+              render: formatNumberToUSFormat(totalRows),
+              isNumber: true,
+            },
+            trade: ' ',
+            ...(isEditModeEnabled ? { render: ' ' } : {}),
+          },
         ],
-        [
-          'All',
-          ' ',
-          ' ',
-          {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalStaticRows),
-            isNumber: true,
-          },
-          ' ',
-          {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalRows),
-            isNumber: true,
-          },
-          ' ',
-          ...(isEditModeEnabled ? [{ render: ' ' }] : []),
-        ],
-      ],
+      },
     }
   }
 
@@ -554,10 +578,9 @@ export default class RebalancedPortfolioTable extends React.Component<
           onChange={this.onSelectActiveBalance}
           onSelectAllClick={this.onSelectAllActive}
           showUpperFooter={isEditModeEnabled}
-          rows={this.putDataInTable()}
+          {...this.putDataInTable()}
         />
       </TableWrapper>
     )
   }
 }
-

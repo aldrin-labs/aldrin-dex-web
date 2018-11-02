@@ -19,9 +19,7 @@ import {
   cloneArrayElementsOneLevelDeep,
   onSortTableFull,
 } from '@utils/PortfolioTableUtils'
-import {
-  calcPriceForRebalancedPortfolio,
-} from '@utils/PortfolioRebalanceUtils'
+import { calcPriceForRebalancedPortfolio } from '@utils/PortfolioRebalanceUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -46,7 +44,7 @@ import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
-
+import CardHeader from '@components/CardHeader'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -109,7 +107,6 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           id: i,
@@ -121,11 +118,12 @@ class Rebalance extends React.Component<IProps, IState> {
         })
       )
 
-
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-
-          const { price, currentPrice } = calcPriceForRebalancedPortfolio(el, getMyPortfolioAndRebalanceQuery.portfolioAssets)
+          const { price, currentPrice } = calcPriceForRebalancedPortfolio(
+            el,
+            getMyPortfolioAndRebalanceQuery.portfolioAssets
+          )
 
           return {
             price,
@@ -138,8 +136,6 @@ class Rebalance extends React.Component<IProps, IState> {
           }
         }
       )
-
-
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
@@ -300,7 +296,9 @@ class Rebalance extends React.Component<IProps, IState> {
         exchange: el.exchange,
         coin: el.symbol,
       },
-      amount: el.currentPrice ? (el.price / el.currentPrice).toString() : el.price.toString(),
+      amount: el.currentPrice
+        ? (el.price / el.currentPrice).toString()
+        : el.price.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
     }))
@@ -416,7 +414,7 @@ class Rebalance extends React.Component<IProps, IState> {
       children,
       isUSDCurrently,
       theme,
-      theme: {palette},
+      theme: { palette },
     } = this.props
     const {
       selectedActive,
@@ -442,9 +440,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const secondary = palette.secondary.main
     const red = palette.red.main
     const green = palette.green.main
-    const textColor: string = palette.getContrastText(
-      palette.background.paper
-    )
+    const textColor: string = palette.getContrastText(palette.background.paper)
     const fontFamily: string = theme.typography.fontFamily
     const saveButtonColor =
       isPercentSumGood && +undistributedMoney >= 0 ? green : red
@@ -482,68 +478,69 @@ class Rebalance extends React.Component<IProps, IState> {
                 updateState={this.updateState}
               />
               <BtnsWrapper>
-              <RebalanceActionButtons
-                {...{
-                  isEditModeEnabled,
-                  saveButtonColor,
-                  onSaveClick,
-                  onEditModeEnable,
-                  onReset,
-                  textColor,
-                  secondary,
-                  red,
-                  green,
-                }}
-              />
-              <RebalanceMoneyButtons
-                {...{
-                  isEditModeEnabled,
-                  addMoneyInputValue,
-                  undistributedMoney,
-                  staticRows,
-                  rows,
-                  selectedActive,
-                  updateState,
-                  textColor,
-                  fontFamily,
-                  secondary,
-                  red,
-                  green,
-                }}
-              />
+                <RebalanceActionButtons
+                  {...{
+                    isEditModeEnabled,
+                    saveButtonColor,
+                    onSaveClick,
+                    onEditModeEnable,
+                    onReset,
+                    textColor,
+                    secondary,
+                    red,
+                    green,
+                  }}
+                />
+                <RebalanceMoneyButtons
+                  {...{
+                    isEditModeEnabled,
+                    addMoneyInputValue,
+                    undistributedMoney,
+                    staticRows,
+                    rows,
+                    selectedActive,
+                    updateState,
+                    textColor,
+                    fontFamily,
+                    secondary,
+                    red,
+                    green,
+                  }}
+                />
               </BtnsWrapper>
             </Container>
             <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-              {/*<ChartColorPicker*/}
-                {/*leftBar={leftBar}*/}
-                {/*rightBar={rightBar}*/}
-                {/*onChangeColor={this.onChangeColor}*/}
-              {/*/>*/}
-              <ChartContainer elevation={10} background={palette.background.paper}>
-                <Label color={'secondary'}>Portfolio Distribution</Label>
+              <ChartContainer>
+                <CardHeader
+                  style={{ marginBottom: '0.5rem' }}
+                  color={'secondary'}
+                  title="PORTFOLIO DISTRIBUTION"
+                />
                 <InnerChartContainer>
-                <Chart background={palette.background.default}>
-                  {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
-                    <BarChart
-                      height={350}
-                      hideDashForToolTip={true}
-                      xAxisVertical={true}
-                      alwaysShowLegend={true}
-                      charts={[
-                        {
-                          data: combineToBarChart(staticRows),
-                          color: this.state.leftBar,
-                          title: 'Current',
-                        },
-                        {
-                          data: combineToBarChart(rows),
-                          color: this.state.rightBar,
-                          title: 'Rebalanced',
-                        },
-                      ]}
-                    />
-                  )}
-                </Chart>
+                  <Chart background={palette.background.default}>
+                    {staticRows &&
+                      staticRows[0] &&
+                      staticRows[0].portfolioPerc && (
+                        <BarChart
+                          height={350}
+                          hideDashForToolTip={true}
+                          xAxisVertical={true}
+                          alwaysShowLegend={true}
+                          charts={[
+                            {
+                              data: combineToBarChart(staticRows),
+                              color: this.state.leftBar,
+                              title: 'Current',
+                            },
+                            {
+                              data: combineToBarChart(rows),
+                              color: this.state.rightBar,
+                              title: 'Rebalanced',
+                            },
+                          ]}
+                        />
+                      )}
+                  </Chart>
                 </InnerChartContainer>
               </ChartContainer>
             </ChartWrapper>
