@@ -19,6 +19,8 @@ import {
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
 import CardHeader from '@components/CardHeader'
+import { find } from 'lodash-es'
+import { withErrorFallback } from '@hoc/'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
@@ -28,16 +30,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       checkedRows,
       onCheckboxClick,
       onSelectAllClick,
-      theme,
     } = this.props
+
+    const { body, head, footer } = putDataInTable()
 
     const coins =
       checkedRows && checkedRows.length > 0
-        ? checkedRows.map((id: number) => tableData[id])
+        ? checkedRows.map((id: number) =>
+            find(tableData, (row) => row.id === id)
+          )
         : []
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
-
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <GridContainer container={true} spacing={16}>
@@ -50,7 +54,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                   withCheckboxes={true}
                   onChange={onCheckboxClick}
                   onSelectAllClick={onSelectAllClick}
-                  rows={putDataInTable()}
+                  data={{ body, footer }}
+                  columnNames={head}
                 />
               )}
             </TableWrapper>
@@ -92,5 +97,6 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps)
+  connect(mapStateToProps),
+  withErrorFallback
 )(PortfolioTableBalances)

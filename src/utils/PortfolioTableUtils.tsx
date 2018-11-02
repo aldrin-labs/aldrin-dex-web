@@ -15,12 +15,12 @@ const config = {
    able to calculate a value due to missing data.`,
 }
 
-export const onCheckBoxClick = (selected: any[], id) => {
+export const onCheckBoxClick = (selected: any[], id: string): string[] => {
   const selectedIndex = selected.indexOf(id)
-  let newSelected: number[] = []
+  let newSelected: string[] = []
 
   if (selectedIndex === -1) {
-    newSelected = newSelected.concat(selected, +id)
+    newSelected = newSelected.concat(selected, id)
   } else if (selectedIndex === 0) {
     newSelected = newSelected.concat(selected.slice(1))
   } else if (selectedIndex === selected.length - 1) {
