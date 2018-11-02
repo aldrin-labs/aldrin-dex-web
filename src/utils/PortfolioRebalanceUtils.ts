@@ -178,7 +178,7 @@ export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
   const currentPrice = hasSameCoinInCurrentPortfolio ? parseFloat(
     portfolioAssets[indexInCurrentPortfolio].price
   ) : null
-  const price = hasSameCoinInCurrentPortfolio
+  const price = hasSameCoinInCurrentPortfolio && currentPrice !== 0
     ? (currentPrice * parseFloat(el.amount.$numberDecimal)).toFixed(2)
     : parseFloat(el.amount.$numberDecimal).toFixed(2)
 
