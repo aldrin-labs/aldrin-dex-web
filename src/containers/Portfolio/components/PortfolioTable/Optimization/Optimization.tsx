@@ -82,10 +82,7 @@ class Optimization extends Component<IProps, IState> {
 
   transformData = (assets: any[]): IData[] => {
     const allSum = calcAllSumOfPortfolioAsset(assets)
-
-    console.log('assets', assets);
-
-
+    // TODO: Avoid mutations in array of objects
     const newAssets = assets.map((asset: any) => ({
       coin: asset.coin,
       percentage: +roundPercentage(
