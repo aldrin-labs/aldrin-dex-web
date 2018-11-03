@@ -1,12 +1,5 @@
 import React, { Component, MouseEvent } from 'react'
-import Icon from '@material-ui/icons/FeedbackOutlined'
-import {
-  IconButton,
-  Tooltip,
-  Menu,
-  MenuItem,
-  Typography,
-} from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import config from './config'
 
 export default class Feedback extends Component {
@@ -28,42 +21,28 @@ export default class Feedback extends Component {
   }
 
   render() {
-    const { anchorEl } = this.state
-
     return (
       <>
-        <Tooltip enterDelay={300} title="Feedback">
-          <IconButton
-            aria-owns={anchorEl ? 'simple-menu' : undefined}
-            aria-haspopup="true"
-            onClick={this.handleClick}
-          >
-            <Icon />
-          </IconButton>
-        </Tooltip>
-        <Menu
-          id="simple-menu"
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={this.handleClose}
+        <Button
+          onClick={() => {
+            this.openLink(config.feedbackLink)
+          }}
+          color="secondary"
+          variant="contained"
+          size="small"
+          style={{ margin: '0.5rem 1rem' }}
         >
-          <MenuItem
-            onClick={() => {
-              this.openLink(config.feedbackLink)
-            }}
-          >
-            Give Feedback
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              this.openLink(config.bugLink)
-            }}
-          >
-            <Typography variant="body1" color="error">
-              Report bug
-            </Typography>
-          </MenuItem>
-        </Menu>
+          Feedback
+        </Button>
+        <Button
+          onClick={() => {
+            this.openLink(config.bugLink)
+          }}
+          size="small"
+          style={{ margin: '0.5rem 1rem' }}
+        >
+          Report bug
+        </Button>
       </>
     )
   }
