@@ -9,6 +9,7 @@ import {
   composePortfolioWithMocks,
   numberOfDigitsAfterPoint,
   roundPercentage,
+  transformToNumber,
 } from '@utils/PortfolioTableUtils'
 import { zip, isObject } from 'lodash-es'
 import { Theme } from '@material-ui/core'
@@ -58,10 +59,7 @@ class Container extends Component {
 
       return {
         numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
-        checkedRows:
-          portfolioAssets.length === 0
-            ? []
-            : prevState.checkedRows,
+        checkedRows: portfolioAssets.length === 0 ? [] : prevState.checkedRows,
         portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
           composePortfolioAssetsWithMocks,
@@ -104,7 +102,10 @@ class Container extends Component {
         if (ind > 1 && ind !== 3 && ind !== 4) {
           // sum each column numbers if they were selected
           column.forEach((el, i) => {
-            const num = isObject(el) ? el.render : el
+            let num = isObject(el) ? el.render : el
+            if (ind === 2) {
+              num = transformToNumber(num)
+            }
 
             if (
               checkedRows.indexOf(i) !== -1 &&
