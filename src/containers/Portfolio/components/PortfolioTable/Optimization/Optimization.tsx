@@ -46,6 +46,7 @@ import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import CardHeader from '@components/CardHeader'
+import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
 
 const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
   return [1528405044 + 86400 * i, i * 2 - 500 + i * Math.random()]
@@ -82,14 +83,18 @@ class Optimization extends Component<IProps, IState> {
   transformData = (assets: any[]): IData[] => {
     const allSum = calcAllSumOfPortfolioAsset(assets)
 
+    console.log('assets', assets);
+
+
     const newAssets = assets.map((asset: any) => ({
       coin: asset.coin,
-      percentage: roundPercentage(
+      percentage: +roundPercentage(
         percentagesOfCoinInPortfolio(asset, allSum, true)
       ),
     }))
+    const summedAssetsWithoutDuplicates = sumSameCoinsPercentages(newAssets)
 
-    return [newAssets, allSum]
+    return [summedAssetsWithoutDuplicates, allSum]
   }
 
   optimizePortfolio = (data: any) => {
