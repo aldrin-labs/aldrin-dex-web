@@ -116,7 +116,7 @@ export const combineIndustryData = (
           : 'multiple',
         sumPortfolioPercentageOfAsset(row.assets, allSum),
         // portfolio performance
-        colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
+        // colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
         colorful(+roundPercentage(row.industry1W) || 0, red, green),
         colorful(+roundPercentage(row.industry1M) || 0, red, green),
         colorful(+roundPercentage(row.industry3M) || 0, red, green),
@@ -130,7 +130,8 @@ export const combineIndustryData = (
               +roundPercentage(
                 percentagesOfCoinInPortfolio(asset, allSum, true)
               ),
-              colorful(+roundPercentage(asset.perf), red, green),
+              // portfolio performance
+              // colorful(+roundPercentage(asset.perf), red, green),
               '',
               '',
               '',
@@ -365,38 +366,37 @@ export const combineTableData = (
     0
   )
 
-  const tableData = portfolioAssets
-    .map((row: any, i) => {
-      const {
-        _id,
-        price,
-        coin,
-        quantity = 0,
-        name = '',
-        where = '',
-        realized = 0,
-        unrealized = 0,
-        percentChangeDay = 0,
-        portfolioPercentage = 0,
-        dailyPerc = 0,
-        daily = 0,
-      } = row || {}
+  const tableData = portfolioAssets.map((row: any, i) => {
+    const {
+      _id,
+      price,
+      coin,
+      quantity = 0,
+      name = '',
+      where = '',
+      realized = 0,
+      unrealized = 0,
+      percentChangeDay = 0,
+      portfolioPercentage = 0,
+      dailyPerc = 0,
+      daily = 0,
+    } = row || {}
 
-      return {
-        coin,
-        price,
-        quantity,
-        daily,
-        dailyPerc,
-        portfolioPercentage: (price * quantity * 100) / allSums,
-        currentPrice: price * quantity,
-        realizedPL: realized,
-        unrealizedPL: unrealized,
-        totalPL: realized + unrealized,
-        id: _id,
-        exchange: where,
-      }
-    })
+    return {
+      coin,
+      price,
+      quantity,
+      daily,
+      dailyPerc,
+      portfolioPercentage: (price * quantity * 100) / allSums,
+      currentPrice: price * quantity,
+      realizedPL: realized,
+      unrealizedPL: unrealized,
+      totalPL: realized + unrealized,
+      id: _id,
+      exchange: where,
+    }
+  })
 
   return tableData
 }
