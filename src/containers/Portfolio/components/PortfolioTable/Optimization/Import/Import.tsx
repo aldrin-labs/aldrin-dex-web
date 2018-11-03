@@ -121,15 +121,27 @@ export default class Import extends PureComponent<IProps> {
     startDate: object,
     endDate: object
   ) => {
-    this.props.toggleLoading()
-
-    const { totalPriceOfAllAssets } = this.state
+    const { totalPriceOfAllAssets, isUSDTInInitialPortfolioExists } = this.state
     const {
       showWarning,
       optimizedToState,
       activeButton,
       updateData,
     } = this.props
+
+    // TODO: Should create another function to remove USDT first, and then optimize
+    // should double check for if we have USDT
+    if (
+      !isUSDTInInitialPortfolioExists &&
+      !isRiskFreeAssetEnabled &&
+      storeData.some((el) => el.coin === 'USDT')
+    ) {
+      console.log('delete row')
+      this.deleteRowByCoinName('USDT')
+      storeData = storeData.filter((el) => el.coin !== 'USDT')
+    }
+
+    this.props.toggleLoading()
 
     const mockForQuery = {
       rebalancePeriod: 13,
@@ -405,17 +417,6 @@ export default class Import extends PureComponent<IProps> {
   onFocusChange = (focusedInput) => this.setState({ focusedInput })
 
   onToggleRiskSwitch = (e, che) => {
-    const { isUSDTInInitialPortfolioExists } = this.state
-    const { storeData } = this.props
-    // should double check for if we have USDT
-    if (
-      !isUSDTInInitialPortfolioExists &&
-      storeData.some((el) => el.coin === 'USDT')
-    ) {
-      console.log('delete row')
-      this.deleteRowByCoinName('USDT')
-    }
-
     this.setState({ isRiskFreeAssetEnabled: che }, () => {
       console.log(this.state)
     })
