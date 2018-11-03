@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { Grid } from '@material-ui/core'
 
 import { Table, DonutChart } from '@storybook-components'
@@ -19,11 +18,11 @@ const tableHeadings = [
   { name: 'Industry', value: 'industry' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio', value: 'portfolioPerc' },
-  {
-    name: 'Portfolio performance',
-    value: 'portfolioPerf',
-    additionName: 'performance',
-  },
+  // {
+  //   name: 'Portfolio performance',
+  //   value: 'portfolioPerf',
+  //   additionName: 'performance',
+  // },
   {
     name: 'Industry performance: 1W',
     value: 'industryPerf1Week',
@@ -148,10 +147,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 }
 
-
 export default queryRendererHoc({
-    query: getPortfolioQuery,
-    pollInterval: 5000,
-    fetchPolicy: 'network-only',
+  query: getPortfolioQuery,
+  pollInterval: 5000,
+  fetchPolicy: 'network-only',
 })(PortfolioTableIndustries)
-

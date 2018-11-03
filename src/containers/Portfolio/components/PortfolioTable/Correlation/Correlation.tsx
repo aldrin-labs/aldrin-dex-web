@@ -131,7 +131,11 @@ const CorrelationWrapper = (props: IProps) => {
           {...props}
         />
       ) : (
-        <Query query={getPortfolioMainQuery} variables={{ baseCoin }}>
+        <Query
+          fetchPolicy="network-only"
+          query={getPortfolioMainQuery}
+          variables={{ baseCoin }}
+        >
           {({ loading, data }) => {
             const render = loading ? (
               <Loading centerAligned={true} />
@@ -140,7 +144,6 @@ const CorrelationWrapper = (props: IProps) => {
                 fetchPolicy="network-only"
                 component={Correlation}
                 query={getCorrelationQuery}
-                // quick fix until I have free time
                 variables={{
                   startDate,
                   endDate,
