@@ -386,7 +386,7 @@ export default class Import extends PureComponent<IProps> {
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
-              height={350}
+              height={340}
               showPlaceholder={formatedData.length === 0}
               charts={barChartData}
               alwaysShowLegend={true}
