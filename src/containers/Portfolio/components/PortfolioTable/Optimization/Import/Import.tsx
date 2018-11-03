@@ -437,6 +437,13 @@ export default class Import extends PureComponent<IProps> {
     // console.log(+this.state.endDate._d);
   }
 
+  onResetClick = () => {
+    const { optimizedToState } = this.props
+
+    optimizedToState([])
+    this.importPortfolio()
+  }
+
   render() {
     const {
       expectedReturn,
@@ -625,7 +632,7 @@ export default class Import extends PureComponent<IProps> {
                       alignSelf: 'center',
                     }}
                     variant="fab"
-                    onClick={this.importPortfolio}
+                    onClick={this.onResetClick}
                   >
                     <MdReplay />
                   </ButtonMUI>
