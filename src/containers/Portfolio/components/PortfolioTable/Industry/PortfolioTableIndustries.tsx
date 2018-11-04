@@ -6,7 +6,6 @@ import { IndProps } from '@containers/Portfolio/interfaces'
 import {
   combineIndustryData,
   onCheckBoxClick,
-  onAllCheckBoxClick,
 } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { queryRendererHoc } from '@components/QueryRenderer'
@@ -84,11 +83,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if (!industryData) return
 
     return {
-      head: tableHeadings.map((heading, index: number) => ({
-        render: heading.name,
+      columnNames: tableHeadings.map((heading, index: number) => ({
+        label: heading.name,
+        id: heading.name,
         isNumber: index === 0 || index === 1 ? false : true,
       })),
-      body: industryData,
+      data: { body: industryData },
     }
   }
 
@@ -96,7 +96,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if ((e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
         expandedRows: state.industryData
-          ? state.industryData.map((n: any, i: number) => i)
+          ? state.industryData.map((n: any) => n && n.industry)
           : [],
       }))
       return
@@ -104,7 +104,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState({ expandedRows: [] })
   }
 
-  expandRow = (id: number) =>
+  expandRow = (id: string) =>
     this.setState((prevState) => ({
       expandedRows: onCheckBoxClick(prevState.expandedRows, id),
     }))
@@ -127,8 +127,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 onChange={this.expandRow}
                 onSelectAllClick={this.onSelectAllClick}
                 expandedRows={expandedRows}
-                rows={this.putDataInTable()}
                 title={`Industry Performance in ${baseCoin}`}
+                {...this.putDataInTable()}
               />
             </Wrapper>
           </Grid>

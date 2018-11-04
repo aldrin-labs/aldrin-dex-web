@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { isEqual } from 'lodash-es'
-import { TableWithSort } from '@storybook-components'
+import { Table as TableWithSort } from '@storybook-components'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
@@ -8,32 +8,25 @@ import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import { IProps, IState } from './TradeOrderHistoryTable.types'
 import { formatDate } from '@utils/dateUtils'
+import { withErrorFallback } from '@hoc/'
 
 const tableHeadings = [
-  { name: 'Coin', value: 'coin' },
-  { name: 'Type', value: 'type' },
-  { name: 'Cost', value: 'cost' },
-  { name: 'Account', value: 'Account' },
-  { name: 'Datetime', value: 'datetime' },
+  { isNumber: false, name: 'Coin' },
+  { isNumber: false, name: 'Type' },
+  { isNumber: true, name: 'Cost' },
+  { isNumber: false, name: 'Account' },
+  { isNumber: false, name: 'Datetime' },
 ]
 
-const arrayOfStringHeadings = ['type', 'where', 'coin']
+const mapPortfolioActions = (pA, index) => {
+  const newpA = { ...pA }
+  newpA.id = `${index}`
+  newpA.cost = +roundAndFormatNumber(newpA.cost, 8, false)
+  newpA.date = formatDate(newpA.date)
+  // dont want to render it
+  delete newpA.__typename
 
-const arrayOfDateHeadings = ['datetime']
-
-const mapPortfolioActions = (pA) => {
-  const values = Object.values(pA)
-  values.pop()
-  values[2] = +roundAndFormatNumber(values[2], 8, false)
-  values[4] = {
-    render: formatDate(values[4]),
-    isNumber: false,
-    style: {
-      fontSize: 11,
-    },
-  }
-
-  return values
+  return newpA
 }
 
 class TradeOrderHistoryTable extends React.Component<IProps, IState> {
@@ -42,21 +35,22 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   }
 
   shouldComponentUpdate(nextProps: IProps) {
-    return isEqual(
-      this.props.data.myPortfolios[0].portfolioActions,
-      nextProps.data.myPortfolios[0].portfolioActions
+    const res = !isEqual(
+      this.props.data.myPortfolios[0].portfolioActions.slice(0, 99),
+      nextProps.data.myPortfolios[0].portfolioActions.slice(0, 99)
     )
-      ? false
-      : true
+
+    return res
   }
 
   putDataInTable = (rows) => {
     if (!rows) return
 
     const res = {
-      head: tableHeadings.map((heading, index: number) => ({
-        isNumber: index === 2,
-        render: heading.name,
+      head: tableHeadings.map((heading) => ({
+        isNumber: heading.isNumber,
+        id: heading.name,
+        label: heading.name,
       })),
       body: rows,
     }
@@ -74,11 +68,19 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
       )
     }
 
-    return <TableWithSort title="Portfolio actions" rows={rows} />
+    return (
+      <TableWithSort
+        title="Portfolio actions"
+        data={{ body: rows.body }}
+        columnNames={rows.head}
+      />
+    )
   }
 }
 
-export default queryRendererHoc({
-  placeholder: TablePlaceholderLoader,
-  query: MyTradesQuery,
-})(TradeOrderHistoryTable)
+export default withErrorFallback(
+  queryRendererHoc({
+    placeholder: TablePlaceholderLoader,
+    query: MyTradesQuery,
+  })(TradeOrderHistoryTable)
+)
