@@ -15,6 +15,7 @@ import Dialog from '@material-ui/core/Dialog'
 import Typography from '@material-ui/core/Typography'
 
 import { deleteExchangeKeyMutation, getKeysQuery } from '@containers/User/api'
+import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const DeleteKeyDialogComponent = ({
   handleClickOpen,
@@ -96,7 +97,7 @@ const formikDialog = withFormik({
             keys.splice(index, 1)
             proxyData = {
               ...proxyData,
-              getProfile: { ...proxyData.getProfile, keys },
+              myPortfolios: { ...proxyData.myPortfolios, keys },
             }
             proxy.writeQuery({ query: getKeysQuery, data: proxyData })
           },
@@ -132,7 +133,12 @@ export const DeleteKeyDialog = compose(
   graphql(deleteExchangeKeyMutation, {
     name: 'deleteExchangeKey',
     options: {
-      refetchQueries: ['getKeys', 'getPortfolio', 'portfolios'],
+      refetchQueries: [
+        'getKeys',
+        'getPortfolio',
+        'portfolios',
+        { query: portfolioKeyAndWalletsQuery },
+      ],
     },
   }),
   graphql(getKeysQuery),

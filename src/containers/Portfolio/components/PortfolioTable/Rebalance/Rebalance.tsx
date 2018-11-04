@@ -36,7 +36,7 @@ import {
   Container,
   BtnsWrapper,
   InnerChartContainer,
-  Label,
+  StyledCardHeader,
 } from './Rebalance.styles'
 import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
@@ -510,12 +510,11 @@ class Rebalance extends React.Component<IProps, IState> {
               </BtnsWrapper>
             </Container>
             <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-              <ChartContainer>
-                <CardHeader
-                  style={{ marginBottom: '0.5rem' }}
-                  color={'secondary'}
-                  title="PORTFOLIO DISTRIBUTION"
-                />
+              <ChartContainer
+                elevation={10}
+                background={palette.background.paper}
+              >
+                <StyledCardHeader title={`Portfolio Distribution`} />
                 <InnerChartContainer>
                   <Chart background={palette.background.default}>
                     {staticRows &&
@@ -553,7 +552,6 @@ class Rebalance extends React.Component<IProps, IState> {
 
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
 })
 const RebalanceContainer = (props) => (
   <QueryRenderer
@@ -570,5 +568,13 @@ export default compose(
   connect(mapStateToProps),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
+    options: {
+      refetchQueries: [
+        {
+          query: getMyPortfolioAndRebalanceQuery,
+          variables: { baseCoin: 'USDT' },
+        },
+      ],
+    },
   })
 )(RebalanceContainer)

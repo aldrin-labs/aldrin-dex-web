@@ -6,6 +6,7 @@ import QueryRenderer from '@components/QueryRenderer'
 import gql from 'graphql-tag'
 
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
+import { withErrorFallback } from '@hoc/index'
 
 const periods = {
   1: 60,
@@ -31,12 +32,11 @@ class GQLChart extends React.Component {
   static getDerivedStateFromProps(newProps, state) {
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
-      // tslint:disable-next-line:no-object-mutation
-      newState.coins = newProps.coins.map((x) => x.coin)
-      // tslint:disable-next-line:no-object-mutation
-      newState.assets = newProps.coins
-      // tslint:disable-next-line:no-object-mutation
+      // PAY ATTENTION: Object mutation here
+      newState.coins = newProps.coins.filter(Boolean).map((x) => x.coin)
+      newState.assets = newProps.coins.filter(Boolean)
       newState.sum = newProps.coins
+        .filter(Boolean)
         .map((x) => x.quantity)
         .reduce((prev, next) => prev + next, 0)
 
@@ -151,5 +151,6 @@ export default compose(
     }) => ({
       localActiveChart: activeChart,
     }),
-  })
+  }),
+  withErrorFallback
 )(GQLChart)

@@ -19,6 +19,7 @@ import {
   deleteCryptoWalletMutation,
   getCryptoWalletsQuery,
 } from '@containers/User/api'
+import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const DeleteCryptoWalletDialogComponent = ({
   handleClickOpen,
@@ -97,14 +98,14 @@ const formikDialog = withFormik({
           variables,
           update: (proxy, { data: { deleteCryptoWallet } }) => {
             let proxyData = proxy.readQuery({ query: getCryptoWalletsQuery })
-            const cryptoWallets = proxyData.getProfile.cryptoWallets.slice()
+            const cryptoWallets = proxyData.myPortfolios[0].cryptoWallets.slice()
             const index = cryptoWallets.findIndex(
               (v) => v._id === deleteCryptoWallet._id
             )
             cryptoWallets.splice(index, 1)
             proxyData = {
               ...proxyData,
-              getProfile: { ...proxyData.getProfile, cryptoWallets },
+              myPortfolios: { ...proxyData.myPortfolios, cryptoWallets },
             }
             proxy.writeQuery({ query: getCryptoWalletsQuery, data: proxyData })
           },
@@ -143,7 +144,12 @@ export const DeleteCryptoWalletDialog = compose(
   graphql(deleteCryptoWalletMutation, {
     name: 'deleteCryptoWallet',
     options: {
-      refetchQueries: ['getKeys', 'getPortfolio', 'portfolios'],
+      refetchQueries: [
+        'getKeys',
+        'getPortfolio',
+        'portfolios',
+        { query: portfolioKeyAndWalletsQuery },
+      ],
     },
   }),
   graphql(getCryptoWalletsQuery),

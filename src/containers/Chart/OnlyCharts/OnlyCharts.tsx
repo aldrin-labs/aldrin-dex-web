@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Slide } from '@material-ui/core'
-import nanoid from 'nanoid'
 
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'

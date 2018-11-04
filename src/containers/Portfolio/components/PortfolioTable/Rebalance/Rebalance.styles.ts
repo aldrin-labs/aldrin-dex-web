@@ -2,6 +2,7 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 import { Paper, Card } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
+import CardHeader from '@components/CardHeader'
 
 export { Content, ChartWrapper, ChartContainer, Chart, Container }
 
@@ -78,4 +79,8 @@ export const Label = styled(Typography)`
   font-weight: bold;
   white-space: nowrap;
   text-transform: uppercase;
+`
+
+export const StyledCardHeader = styled(CardHeader)`
+  margin-bottom: 1rem;
 `

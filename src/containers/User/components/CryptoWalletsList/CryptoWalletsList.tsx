@@ -27,7 +27,8 @@ class CryptoWalletsListComponent extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     this.props.refetch();
-    if (this.props.data.myPortfolios && this.props.data.myPortfolios.length > 0) {
+
+    if (nextProps.data.myPortfolios && nextProps.data.myPortfolios.length > 0) {
       this.setState({ wallets: nextProps.data.myPortfolios[0].cryptoWallets })
     }
   }

@@ -11,7 +11,7 @@ export interface IProps {
   toggleView: Function
   selectCurrencies: Function
   setOrders: Function
-  addChart: () => void
+  addChart: (currencyPair: string) => void
   theme: any
 }
 

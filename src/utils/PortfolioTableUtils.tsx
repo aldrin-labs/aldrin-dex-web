@@ -118,11 +118,11 @@ export const combineIndustryData = (
             ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
             : 'multiple',
         portfolio: sumPortfolioPercentageOfAsset(row.assets, allSum),
-        portfolioPerformance: colorful(
-          calculateTotalPerfOfCoin(row.assets) || 0,
-          red,
-          green
-        ),
+        // portfolioPerformance: colorful(
+        //   calculateTotalPerfOfCoin(row.assets) || 0,
+        //   red,
+        //   green
+        // ),
 
         industry1w: colorful(+roundPercentage(row.industry1W) || 0, red, green),
 
@@ -357,11 +357,10 @@ export const createColumn = (
 
 export const combineTableData = (
   portfolioAssets,
-  activeKeys,
   filterValueSmallerThenPercentage,
   isUSDCurrently
 ) => {
-  if (!portfolioAssets || !activeKeys) {
+  if (!portfolioAssets) {
     return
   }
   // TODO: I guess, filter Boolean should be first before map, because it will reduce the array first, without
@@ -375,39 +374,37 @@ export const combineTableData = (
     0
   )
 
-  const tableData = portfolioAssets
-    .filter((asset) => activeKeys.includes(asset.name))
-    .map((row: any, i) => {
-      const {
-        _id,
-        price,
-        coin,
-        quantity = 0,
-        name = '',
-        where = '',
-        realized = 0,
-        unrealized = 0,
-        percentChangeDay = 0,
-        portfolioPercentage = 0,
-        dailyPerc = 0,
-        daily = 0,
-      } = row || {}
+  const tableData = portfolioAssets.map((row: any, i) => {
+    const {
+      _id,
+      price,
+      coin,
+      quantity = 0,
+      name = '',
+      where = '',
+      realized = 0,
+      unrealized = 0,
+      percentChangeDay = 0,
+      portfolioPercentage = 0,
+      dailyPerc = 0,
+      daily = 0,
+    } = row || {}
 
-      return {
-        coin,
-        price,
-        quantity,
-        daily,
-        dailyPerc,
-        portfolioPercentage: (price * quantity * 100) / allSums,
-        currentPrice: price * quantity,
-        realizedPL: realized,
-        unrealizedPL: unrealized,
-        totalPL: realized + unrealized,
-        id: _id,
-        exchange: where,
-      }
-    })
+    return {
+      coin,
+      price,
+      quantity,
+      daily,
+      dailyPerc,
+      portfolioPercentage: (price * quantity * 100) / allSums,
+      currentPrice: price * quantity,
+      realizedPL: realized,
+      unrealizedPL: unrealized,
+      totalPL: realized + unrealized,
+      id: _id,
+      exchange: where,
+    }
+  })
 
   return tableData
 }

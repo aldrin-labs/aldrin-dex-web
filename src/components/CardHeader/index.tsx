@@ -8,7 +8,10 @@ const styles = (theme: Theme) =>
       padding: '1px 14px 1px 6px',
       width: '100%',
       height: theme.spacing.unit * 4,
-      backgroundColor: theme.palette.grey[900],
+      backgroundColor:
+        theme.palette.type === 'dark'
+          ? theme.palette.grey[900]
+          : theme.palette.primary.dark,
     },
   })
 

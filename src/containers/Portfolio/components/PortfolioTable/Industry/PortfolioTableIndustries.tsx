@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { Grid } from '@material-ui/core'
 
 import { Table, DonutChart } from '@storybook-components'
@@ -18,11 +17,11 @@ const tableHeadings = [
   { name: 'Industry', value: 'industry' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio', value: 'portfolioPerc' },
-  {
-    name: 'Portfolio performance',
-    value: 'portfolioPerf',
-    additionName: 'performance',
-  },
+  // {
+  //   name: 'Portfolio performance',
+  //   value: 'portfolioPerf',
+  //   additionName: 'performance',
+  // },
   {
     name: 'Industry performance: 1W',
     value: 'industryPerf1Week',
@@ -58,7 +57,6 @@ const getStateObj = ({ data, theme, filterValueSmallerThenPercentage = 0 }) => {
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
-    activeKeys: null,
     portfolio: null,
     industryData: null,
     chartData: null,
@@ -137,9 +135,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           <Grid item={true} xs={12} md={4} style={{}}>
             <ChartWrapper>
               <DonutChart
-                labelPlaceholder="Industries %"
+                labelPlaceholder="Industry %"
                 data={chartData}
-                isSizeFlexible={true}
                 colorLegend={true}
               />
             </ChartWrapper>
@@ -150,14 +147,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 }
 
-const mapStateToProps = (store: object) => ({
-  filterValueSmallerThenPercentage: store.portfolio.filterValuesLessThenThat,
-})
-
-export default connect(mapStateToProps)(
-  queryRendererHoc({
-    query: getPortfolioQuery,
-    pollInterval: 5000,
-    fetchPolicy: 'network-only',
-  })(PortfolioTableIndustries)
-)
+export default queryRendererHoc({
+  query: getPortfolioQuery,
+  pollInterval: 5000,
+  fetchPolicy: 'network-only',
+})(PortfolioTableIndustries)
