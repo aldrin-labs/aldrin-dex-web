@@ -146,7 +146,7 @@ class Container extends Component {
           id: total[0],
           exchange: total[1],
           coin: total[2],
-          portfolio: total[3],
+          portfolio: { render: `${total[3]}%`, isNumber: true },
           price: total[4],
           quantity: total[5],
           usd: total[6],
