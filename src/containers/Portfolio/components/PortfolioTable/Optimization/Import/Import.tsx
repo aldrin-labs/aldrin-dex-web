@@ -648,18 +648,6 @@ const TableSelectsContaienr = styled.div`
   flex-wrap: wrap;
 `
 
-export const Label = styled.div`
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 15px;
-  font-size: 0.875rem;
-  color: #4ed8da;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  background-color: #263238;
-  font-weight: bold;
-  white-space: nowrap;
-  text-transform: uppercase;
-`
-
 const InputInnerContainer = styled.div`
   display: flex;
   justify-content: flex-end;
