@@ -163,9 +163,6 @@ export default class Import extends PureComponent<IProps> {
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData)
 
-    // for future
-    // const percentages = optimizedData.map((elem) => +elem.return_value.toFixed(2));
-    // this.setState({percentages})
 
     if (
       storeData.length < optimizedData[activeButton].portfolio_coins_list.length
