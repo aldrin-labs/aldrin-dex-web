@@ -2,8 +2,10 @@ import { App } from '@containers'
 
 import { client } from '@utils/apolloClient'
 import { persistor, store } from '@utils/configureStore'
-import { NotFound } from '@components/NotFound'
+import Loadable from 'react-loadable'
+import { PersistGate } from 'redux-persist/integration/react'
 
+import { NotFound } from '@components/NotFound'
 import createHistory from 'history/createBrowserHistory'
 import React from 'react'
 import { ApolloProvider } from 'react-apollo'
@@ -13,9 +15,9 @@ import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
-import { PersistGate } from 'redux-persist/integration/react'
-import Loadable from 'react-loadable'
-
+import UserRoutes from '@containers/User/routes'
+import ChartRoutes from '@containers/Chart/routes'
+import PortfolioRoutes from '@containers/Portfolio/routes'
 import LoadableLoading from '@components/Loading/LoadableLoading'
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -43,14 +45,14 @@ const ProfileRoutes = Loadable({
   webpack: () => [require.resolveWeak('./containers/Profile/routes')],
 })
 
-const PortfolioRoutes = Loadable({
-  loader: () =>
-    import(/* webpackChunkName: "portfolio" */ '@containers/Portfolio/routes'),
-  delay: 300,
-  loading: LoadableLoading,
-  modules: ['portfolio'],
-  webpack: () => [require.resolveWeak('./containers/Portfolio/routes')],
-})
+// const PortfolioRoutes  = Loadable({
+//   loader: () =>
+//     import(/* webpackChunkName: "portfolio" */ '@containers/Portfolio/routes'),
+//   delay: 300,
+//   loading: LoadableLoading,
+//   modules: ['portfolio'],
+//   webpack: () => [require.resolveWeak('./containers/Portfolio/routes')],
+// })
 
 const MarketRoutes = Loadable({
   loader: () =>
@@ -61,14 +63,14 @@ const MarketRoutes = Loadable({
   webpack: () => [require.resolveWeak('./containers/CoinMarketCap/routes')],
 })
 
-const ChartRoutes = Loadable({
-  loader: () =>
-    import(/* webpackChunkName: "chart" */ '@containers/Chart/routes'),
-  delay: 300,
-  loading: LoadableLoading,
-  modules: ['chart'],
-  webpack: () => [require.resolveWeak('./containers/Chart/routes')],
-})
+// const ChartRoutes = Loadable({
+//   loader: () =>
+//     import(/* webpackChunkName: "chart" */ '@containers/Chart/routes'),
+//   delay: 300,
+//   loading: LoadableLoading,
+//   modules: ['chart'],
+//   webpack: () => [require.resolveWeak('./containers/Chart/routes')],
+// })
 
 const ScreenerRoutes = Loadable({
   loader: () =>
@@ -79,14 +81,14 @@ const ScreenerRoutes = Loadable({
   webpack: () => [require.resolveWeak('./containers/Screener/routes')],
 })
 
-const UserRoutes = Loadable({
-  loader: () =>
-    import(/* webpackChunkName: "user" */ '@containers/User/routes'),
-  delay: 300,
-  loading: LoadableLoading,
-  modules: ['user'],
-  webpack: () => [require.resolveWeak('./containers/User/routes')],
-})
+// const UserRoutes = Loadable({
+//   loader: () =>
+//     import(/* webpackChunkName: "user" */ '@containers/User/routes'),
+//   delay: 300,
+//   loading: LoadableLoading,
+//   modules: ['user'],
+//   webpack: () => [require.resolveWeak('./containers/User/routes')],
+// })
 
 const render = () =>
   ReactDOM.render(
