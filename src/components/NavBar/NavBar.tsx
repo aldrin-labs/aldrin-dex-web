@@ -54,14 +54,16 @@ const NavBarRaw: SFC<Props> = ({
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
         <Grid alignItems="center" container={true} alignContent={'stretch'}>
-          <Grid item={true} xs={3}>
-            <Grid container={true}>
-              <Logo src={MainLogo} />
+          <Hidden only={['sm', 'xs']}>
+            <Grid item={true} md={4}>
+              <Grid container={true}>
+                <Logo src={MainLogo} />
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item={true} md={5} xs={6}>
+          </Hidden>
+          <Grid item={true} md={3} sm={5}>
             <Grid
-              justify="center"
+              justify="flex-end"
               container={true}
               style={{ flexDirection: 'row', display: 'flex' }}
             >
@@ -87,7 +89,7 @@ const NavBarRaw: SFC<Props> = ({
             </Grid>
           </Grid>
 
-          <Grid item={true} md={4} xs={3}>
+          <Grid item={true} md={5} sm={7}>
             <Grid
               justify="flex-end"
               wrap="nowrap"
