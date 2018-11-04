@@ -140,11 +140,11 @@ export const combineIndustryData = (
                 portfolio: +roundPercentage(
                   percentagesOfCoinInPortfolio(asset, allSum, true)
                 ),
-                portfolioPerformance: colorful(
-                  +roundPercentage(asset.perf),
-                  red,
-                  green
-                ),
+                // portfolioPerformance: colorful(
+                //   +roundPercentage(asset.perf),
+                //   red,
+                //   green
+                // ),
                 industry1w: '',
                 industry1m: '',
                 industry3m: '',

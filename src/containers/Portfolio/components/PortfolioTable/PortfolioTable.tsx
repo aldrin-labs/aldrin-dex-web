@@ -14,7 +14,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
     tableData: null,
     isShownChart: true,
     isUSDCurrently: true,
-    tab: 'rebalance',
+    tab: 'main',
     baseCoin: 'USDT',
   }
 
