@@ -58,6 +58,7 @@ export default class Table extends Component<IProps, IState> {
       onPlusClick,
       optimizedData,
       filterValueSmallerThenPercentage,
+      activeButton,
       theme: { palette },
     } = this.props
     const textColor: string = palette.getContrastText(palette.background.paper)
@@ -143,11 +144,9 @@ export default class Table extends Component<IProps, IState> {
                       key={`percentage-opt-${item.coin}${item.percentage}${i}`}
                     >
                       <Typography variant="body1" align="center">
-                        {optimizedData && optimizedData[i] !== undefined
-                          ? `${Math.abs(Number(optimizedData[i]) * 100).toFixed(
-                              2
-                            )}%`
-                          : '-'}{' '}
+                        {item.optimizedPercentageArray && item.optimizedPercentageArray[activeButton] ?
+                          `${item.optimizedPercentageArray[activeButton]}%` : '-'
+                        }
                       </Typography>
 
                       <StyledDeleteIcon

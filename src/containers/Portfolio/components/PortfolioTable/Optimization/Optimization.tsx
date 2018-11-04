@@ -8,12 +8,10 @@ import {
   IData,
   IProps,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
-// import BarChart from '@components/BarChart/BarChart'
 import LineChart from '@components/LineChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
 import Import, {
   InnerChartContainer,
-  Label,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
@@ -25,36 +23,23 @@ import {
 } from '@utils/PortfolioTableUtils'
 import ComingSoon from '@components/ComingSoon'
 import {
-  Loader,
   ChartsContainer,
   Chart,
   MainArea,
-  MainAreaUpperPart,
   PTWrapper,
   Content,
   ChartContainer,
   ContentInner,
   LoaderWrapper,
   LoaderInnerWrapper,
-  LoadingText,
   StyledCardHeader,
 } from './Optimization.styles'
-import { mockDataForLineChart } from './mockData'
 
 import { MASTER_BUILD } from '@utils/config'
 import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
-import CardHeader from '@components/CardHeader'
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
-
-const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
-  return [1528405044 + 86400 * i, i * 2 - 500 + i * Math.random()]
-})
-
-const dateMockDataOptimized = new Array(1300).fill(undefined).map((elem, i) => {
-  return [1528405044 + 86400 * i, i * 2 + 900 - i * Math.random()]
-})
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -71,8 +56,35 @@ class Optimization extends Component<IProps, IState> {
     warningMessage: '',
   }
 
-  optimizedToState = (data: object[]) =>
+  optimizedToState = (data: object[]) => {
+
+    const optimizedCoinsWeights = data.reduce((accMap, el) => {
+      el.weights.forEach((weight, index) => {
+        const percentageWeight = Math.abs(Number(weight) * 100).toFixed(2)
+        const currentCoinName = el.portfolio_coins_list[index]
+
+        if (accMap.has(currentCoinName)) {
+          accMap.set(currentCoinName, [
+            ...accMap.get(currentCoinName),
+            percentageWeight,
+          ])
+        }
+        else {
+          accMap.set(currentCoinName, [percentageWeight])
+        }
+
+      })
+
+      return accMap
+    },  new Map())
+
+
+    this.props.updateData(
+      [...this.props.storeData].map((el) => ({...el, optimizedPercentageArray: optimizedCoinsWeights.get(el.coin)}))
+    )
+
     this.setState({ rawOptimizedData: data })
+  }
 
   handleChange = (event: any) => {
     this.setState({
@@ -308,21 +320,6 @@ class Optimization extends Component<IProps, IState> {
       risk: arrayOfReturnedRisks,
     }
 
-    // let showBarChartPlaceholder = false
-    // if (
-    //   !isEqual(
-    //     storeData.map((el: IData) => el.coin).sort(),
-    //     optimizedData.map((el: IData) => el.coin).sort()
-    //   )
-    // ) {
-    //   showBarChartPlaceholder = true
-    //   efficientFrontierData = {
-    //     percentages: [],
-    //     risk: [],
-    //     activeButton,
-    //   }
-    // }
-
     // for real data
     const lineChartData =
       rawOptimizedData &&
@@ -332,17 +329,6 @@ class Optimization extends Component<IProps, IState> {
         x: el[0],
         y: el[1],
       }))
-
-    // const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
-    //   label: 'original',
-    //   x: el[0],
-    //   y: el[1],
-    // }))
-    // const lineChartDataOptimized = dateMockDataOptimized.map((el) => ({
-    //   label: 'optimized',
-    //   x: el[0],
-    //   y: el[1],
-    // }))
 
     const itemsForChartLegend = [
       {
@@ -388,7 +374,6 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 
-  renderLoading = () => <Loader color="secondary" />
 
   render() {
     const {
@@ -408,7 +393,6 @@ class Optimization extends Component<IProps, IState> {
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}
-          {/*{loading ? this.renderLoading() : null}*/}
           {loading && (
             <LoaderWrapper>
               {' '}

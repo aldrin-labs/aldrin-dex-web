@@ -12,7 +12,7 @@ import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
 import moment from 'moment'
-import { RebalancePeriod, RiskProfile } from './dataForSelector'
+import { RebalancePeriod } from './dataForSelector'
 import ReactSelectComponent from '@components/ReactSelectComponent'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
@@ -32,11 +32,6 @@ import {
 import CardHeader from '@components/CardHeader'
 import { StyledCardHeader } from '../Optimization.styles'
 
-const mockData = [
-  { coin: 'BCH', percentage: 10.87 },
-  { coin: 'ETH', percentage: 10.89 },
-  { coin: 'LTC', percentage: 78 },
-]
 
 export default class Import extends PureComponent<IProps> {
   state = {
@@ -82,36 +77,6 @@ export default class Import extends PureComponent<IProps> {
     )
   }
 
-  // sumSameCoins = (rawData: IData[]) => {
-  //   let data: IData[] = []
-  //   if (!rawData) return
-  //   rawData.forEach((asset) => {
-  //     const index = data.findIndex((obj) => obj.coin === asset.coin)
-  //     if (index >= 0) {
-  //       data = data.map(
-  //         (el, inx) =>
-  //           inx === index
-  //             ? Object.assign(el, {
-  //                 coin: el.coin,
-  //                 percentage:
-  //                   Number(asset.percentage) + Number(data[index].percentage),
-  //               })
-  //             : el
-  //       )
-  //     } else {
-  //       data.push(asset)
-  //     }
-  //   })
-  //
-  //   const result = data.map((asset) => {
-  //     const { coin, percentage } = asset
-  //
-  //     return { coin, percentage: Number(percentage) }
-  //   })
-  //
-  //   return result
-  // }
-
   newOptimizeButtonClick = async (
     client: any,
     storeData: IData[],
@@ -126,7 +91,6 @@ export default class Import extends PureComponent<IProps> {
       showWarning,
       optimizedToState,
       activeButton,
-      updateData,
     } = this.props
 
     // TODO: Should create another function to remove USDT first, and then optimize
@@ -143,52 +107,12 @@ export default class Import extends PureComponent<IProps> {
 
     this.props.toggleLoading()
 
-    const mockForQuery = {
-      rebalancePeriod: 13,
-      riskProfile: '',
-      baseCurrency: 'USDT',
-      riskFree: 1,
-      initialCapital: 1000.0012,
-      coinList: ['BCH', 'ETH', 'LTC'],
-      startDate: 1531441380,
-      endDate: 1531873380,
-    }
-
-    const otherMockForQuery = {
-      rebalancePeriod: 7,
-      riskProfile: 'medium',
-      baseCurrency: 'USDT',
-      riskFree: 1,
-      initialCapital: 1368.99,
-      coinList: ['ETH', 'BCH', 'EOS', 'LTC', 'DASH'],
-      startDate: 1534082400,
-      endDate: 1536760800,
-    }
-
     const myObj = {
       coinList: storeData.map((el: IData) => el.coin),
-      // coinList: [
-      //   'ETH',
-      //   'BCH',
-      //   'TRX',
-      //   'EOS',
-      //   'LTC',
-      //   'BTC',
-      //   'ADA',
-      //   'DASH',
-      //   'XLM',
-      // ],
-      // initialCapital: +storeData
-      //   .reduce((acc, el: IData) => acc + +el.percentage, 0)
-      //   .toFixed(2),
       initialCapital: +totalPriceOfAllAssets.toFixed(2),
       baseCurrency: baseCoin,
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
-      // startDate: 1528392417,
-      // endDate: 1533662817,
-      // startDate: +startDate._d/1000,
-      // endDate: +endDate._d/1000,
       startDate: startDate.unix(),
       endDate: endDate.unix(),
     }
@@ -202,8 +126,6 @@ export default class Import extends PureComponent<IProps> {
         query: OPTIMIZE_PORTFOLIO,
         variables: {
           ...myObj,
-          // ...mockForQuery,
-          // ...otherMockForQuery,
         },
         fetchPolicy: 'network-only',
       })
@@ -241,11 +163,6 @@ export default class Import extends PureComponent<IProps> {
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData)
 
-    // for future
-    // const percentages = optimizedData.map((elem) => +elem.return_value.toFixed(2));
-    // this.setState({percentages})
-
-    optimizedToState(optimizedData)
 
     if (
       storeData.length < optimizedData[activeButton].portfolio_coins_list.length
@@ -253,83 +170,15 @@ export default class Import extends PureComponent<IProps> {
       console.log('storeData.length < optimizedData')
       this.addRow('USDT', 0)
     }
+
+    optimizedToState(optimizedData)
   }
 
-  onOptimizeButtonClick = async (
-    client: any,
-    startDate: number,
-    endDate: number,
-    storeData: IData[],
-    expectedReturn: string,
-    showWarning: Function,
-    optimizePortfolio: Function,
-    optimizedToState: Function
-  ) => {
-    if (this.props.isShownMocks) {
-      optimizePortfolio()
-
-      return
-    }
-
-    const fakeBackendData = await client.query({
-      query: OPTIMIZE_PORTFOLIO,
-      variables: {
-        expectedPct: Number(expectedReturn) / 100,
-        coinList: storeData.map((el: IData) => el.coin),
-        startDate,
-        endDate,
-      },
-      fetchPolicy: 'network-only',
-    })
-    this.props.toggleLoading()
-
-    setTimeout(async () => {
-      const { data: backendData } = await client.query({
-        query: OPTIMIZE_PORTFOLIO,
-        variables: {
-          expectedPct: Number(expectedReturn) / 100,
-          coinList: storeData.map((el: IData) => el.coin),
-          startDate,
-          endDate,
-        },
-        fetchPolicy: 'network-only',
-      })
-
-      this.props.toggleLoading()
-      this.props.setActiveButtonToDefault()
-
-      if (backendData.portfolioOptimization === '') {
-        showWarning('You get empty response! 🙈')
-
-        return
-      }
-
-      const backendDataParsed = JSON.parse(backendData.portfolioOptimization)
-        .weights_list
-
-      optimizedToState(backendDataParsed)
-
-      const isReturnedCoinsTheSameThatInputed = isEqual(
-        backendDataParsed[2].weighted_coins_optimized
-          .map((el: IData) => el.coin)
-          .sort(),
-        storeData.map((el) => el.coin).sort()
-      )
-
-      if (!isReturnedCoinsTheSameThatInputed) {
-        console.log('Output coins not the same as input coins!')
-      }
-
-      optimizePortfolio(backendDataParsed[2])
-    }, 2000)
-  }
 
   addRow = (name: string, value: number) => {
     if (
       this.props.storeData.some((el) => el.coin === name) ||
-      (!this.state.isRiskFreeAssetEnabled &&
-        name === 'USDT' &&
-        !this.state.isUSDTInInitialPortfolioExists)
+      !this.state.isUSDTInInitialPortfolioExists
     ) {
       return
     }
@@ -345,6 +194,7 @@ export default class Import extends PureComponent<IProps> {
       ])
     }
   }
+
   deleteRow = (i: number) =>
     this.props.updateData(
       [...this.props.storeData].filter((el, index) => i !== index)
@@ -354,24 +204,18 @@ export default class Import extends PureComponent<IProps> {
       [...this.props.storeData].filter((el) => el.coin !== name)
     )
 
-  deleteAllRows = () => this.props.updateData([])
-
   renderBarChart = () => {
     const { storeData, activeButton, theme, rawOptimizedData } = this.props
-    // const { optimizedData } = this.state
 
-    if (!storeData) return
+    if (!storeData) {
+      return
+    }
+
     const formatedData = storeData.map((el: IData, i) => ({
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
     }))
 
-    // console.log('storeData', storeData);
-
-    // const formatedOptimizedData = rawOptimizedData.map((el: IData, i) => ({
-    //   x: el.coin,
-    //   y: Number(Number(el.percentage).toFixed(2)),
-    // }))
     const formatedOptimizedData = rawOptimizedData.length
       ? storeData.map((el, i) => ({
           x: el.coin,
@@ -431,11 +275,6 @@ export default class Import extends PureComponent<IProps> {
         ? optionSelected.value
         : ''
     this.setState({ [name]: value })
-
-    // console.log('this.staete.startDate', this.state.startDate);
-
-    // console.log(+this.state.startDate._d);
-    // console.log(+this.state.endDate._d);
   }
 
   onResetClick = () => {
@@ -447,23 +286,11 @@ export default class Import extends PureComponent<IProps> {
 
   render() {
     const {
-      expectedReturn,
-      optimizePortfolio,
-      optimizedToState,
-      handleChange,
       storeData, // data from redux (data from portfolio and mannualy added)
       optimizedData,
-      // startDate,
-      // endDate,
-      optimizationPeriod,
-      setPeriod,
-      onBtnClick,
       onNewBtnClick,
-      // percentages,
       filterValueSmallerThenPercentage,
       activeButton,
-      showSwitchButtons, // optimizedData.length >= 1
-      showWarning,
       theme,
     } = this.props
 
@@ -476,18 +303,6 @@ export default class Import extends PureComponent<IProps> {
       initialPortfolio,
     } = this.state
 
-    let assets: IData[]
-    if (this.props.isShownMocks) {
-      assets = MOCK_DATA
-    } else {
-      assets =
-        this.props.data &&
-        this.props.data.myPortfolios[0] &&
-        this.props.transformData(
-          this.props.data.myPortfolios[0].portfolioAssets
-        )[0]
-    }
-
     if (!storeData) {
       return (
         <Typography variant="h4" color="error">
@@ -495,11 +310,6 @@ export default class Import extends PureComponent<IProps> {
         </Typography>
       )
     }
-
-    // console.log('this.props.data.myPortfolios[0].portfolioAssets IN RENDER', this.props.data.myPortfolios[0].portfolioAssets);
-    // console.log('assets in RENDER', assets);
-    // console.log('storeData in RENDER', storeData);
-    // console.log('isEqual(assets, storeData)}', isEqual(assets, storeData));
 
     const textColor: string = this.props.theme.palette.getContrastText(
       this.props.theme.palette.background.paper
@@ -510,9 +320,6 @@ export default class Import extends PureComponent<IProps> {
     // move it to the state
     const maximumDate = moment()
     const minimumDate = moment().subtract(3, 'years')
-
-    // console.log('maxumumDate', maximumDate);
-    // console.log('minimumDate', minimumDate);
 
     const isAllOptionsFilled =
       baseCoin && rebalancePeriod && startDate && endDate
@@ -646,6 +453,7 @@ export default class Import extends PureComponent<IProps> {
                       ? this.props.rawOptimizedData[activeButton].weights
                       : []
                   }
+                  activeButton={activeButton}
                   withInput={true}
                   onClickDeleteIcon={this.deleteRow}
                   filterValueSmallerThenPercentage={
@@ -662,18 +470,6 @@ export default class Import extends PureComponent<IProps> {
     )
   }
 }
-
-const TableDataDesc = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 1rem 0.5rem 0.5rem 0.5rem;
-  opacity: ${(props: { show: boolean }) => (props.show ? '100' : 0)};
-  transition: all 100ms;
-
-  & > label {
-    margin: 0.3rem;
-  }
-`
 
 const FlexWrapper = styled.div`
   height: 35px;
@@ -695,7 +491,6 @@ const SelectOptimization = styled(ReactSelectComponent)`
 
 const StyledInputLabel = styled(InputLabel)`
   color: ${(props: { color: string }) => props.color};
-  //font-size: 0.75rem;
   font-size: 0.875rem;
 `
 
@@ -738,7 +533,6 @@ const StyledWrapperForDateRangePicker = styled.div`
 
   & .DateInput_input {
     padding: 5px;
-    //font-size: 14px;
     font-size: 0.875rem;
     font-family: ${(props: { fontFamily: string }) => props.fontFamily};
     font-weight: 400;
@@ -781,18 +575,6 @@ const TableSelectsContaienr = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-`
-
-export const Label = styled.div`
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 15px;
-  font-size: 0.875rem;
-  color: #4ed8da;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
-  background-color: #263238;
-  font-weight: bold;
-  white-space: nowrap;
-  text-transform: uppercase;
 `
 
 const InputInnerContainer = styled.div`
