@@ -407,7 +407,7 @@ const MainContainer = styled.div`
   }
 `
 const DepthChartContainer = styled.div`
-  height: calc(100vh - 59px - 80px - 38px);
+  height: calc(100vh - 59px - ${navBarHeight} - 38px);
   width: 100%;
 `
 
