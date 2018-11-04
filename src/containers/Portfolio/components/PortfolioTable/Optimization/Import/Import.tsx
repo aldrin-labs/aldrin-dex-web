@@ -178,9 +178,7 @@ export default class Import extends PureComponent<IProps> {
   addRow = (name: string, value: number) => {
     if (
       this.props.storeData.some((el) => el.coin === name) ||
-      (!this.state.isRiskFreeAssetEnabled &&
-        name === 'USDT' &&
-        !this.state.isUSDTInInitialPortfolioExists)
+      !this.state.isUSDTInInitialPortfolioExists
     ) {
       return
     }
