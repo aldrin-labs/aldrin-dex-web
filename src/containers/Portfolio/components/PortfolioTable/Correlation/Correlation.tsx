@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { Subscription, Query } from 'react-apollo'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 
@@ -11,17 +10,8 @@ import {
   toggleCorrelationTableFullscreen,
   setCorrelationPeriod as setCorrelationPeriodAction,
 } from '@containers/Portfolio/actions'
-import {
-  getCorrelationQuery,
-  CORRELATION_UPDATE,
-  getPortfolioMainQuery,
-} from '@containers/Portfolio/api'
-import {
-  calcAllSumOfPortfolioAsset,
-  percentagesOfCoinInPortfolio,
-  swapDates,
-} from '@utils/PortfolioTableUtils'
-import { Loading } from '@components/Loading'
+import { getCorrelationQuery } from '@containers/Portfolio/api'
+import { swapDates } from '@utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
@@ -32,14 +22,12 @@ const Correlation = (props: IProps) => {
     isFullscreenEnabled,
     period,
     setCorrelationPeriodToStore,
-    portfolio,
-    filterValueSmallerThenPercentage,
+
     startDate,
     endDate,
   } = props
 
   let dataRaw = {}
-  let data = {} // filtered data by dust
   if (
     props.data.myPortfolios &&
     props.data.myPortfolios.length > 0 &&
@@ -52,59 +40,23 @@ const Correlation = (props: IProps) => {
     return <CustomError error={'wrongShape'} />
   }
 
-  if (portfolio && portfolio.getProfile && dataRaw !== '') {
-    // filter data here
-    const allSums = calcAllSumOfPortfolioAsset(
-      portfolio.getProfile.portfolio.assets
-    )
-
-    const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
-      .filter(
-        (d: any) =>
-          percentagesOfCoinInPortfolio(d, allSums, true) <
-          filterValueSmallerThenPercentage
-      )
-      .map((d: any) => d.asset.symbol)
-
-    const listOfIndexes = listOfCoinsToFilter.map((coin) =>
-      dataRaw.header.findIndex((d: any) => d === coin)
-    )
-
-    data = {
-      header: dataRaw.header.filter((d, i) => !listOfIndexes.includes(i)),
-      values: dataRaw.values
-        .map((row: number[]) =>
-          row.filter((d, i) => !listOfIndexes.includes(i))
-        )
-        .filter((d, i) => !listOfIndexes.includes(i)),
-    }
-  } else {
-    data = dataRaw // no filter when mock on
-  }
-
   return (
-    <Subscription subscription={CORRELATION_UPDATE}>
-      {(subscriptionData) => {
-        return (
-          <>
-            {children}
-            <CorrelationMatrix
-              fullScreenChangeHandler={props.toggleFullscreen}
-              isFullscreenEnabled={isFullscreenEnabled || false}
-              data={data}
-              setCorrelationPeriod={setCorrelationPeriodToStore}
-              period={period}
-              dates={{ startDate, endDate }}
-            />
-          </>
-        )
-      }}
-    </Subscription>
+    <>
+      {children}
+      <CorrelationMatrix
+        fullScreenChangeHandler={props.toggleFullscreen}
+        isFullscreenEnabled={isFullscreenEnabled || false}
+        data={dataRaw}
+        setCorrelationPeriod={setCorrelationPeriodToStore}
+        period={period}
+        dates={{ startDate, endDate }}
+      />
+    </>
   )
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, baseCoin, children } = props
+  const { isShownMocks, children } = props
   let { startDate, endDate } = props
 
   // startDate must be less always
@@ -131,29 +83,16 @@ const CorrelationWrapper = (props: IProps) => {
           {...props}
         />
       ) : (
-        <Query
+        <QueryRenderer
           fetchPolicy="network-only"
-          query={getPortfolioMainQuery}
-          variables={{ baseCoin }}
-        >
-          {({ loading, data }) => {
-            const render = loading ? (
-              <Loading centerAligned={true} />
-            ) : (
-              <QueryRenderer
-                fetchPolicy="network-only"
-                component={Correlation}
-                query={getCorrelationQuery}
-                variables={{
-                  startDate,
-                  endDate,
-                }}
-                {...{ portfolio: data, ...props }}
-              />
-            )
-            return render
+          component={Correlation}
+          query={getCorrelationQuery}
+          variables={{
+            startDate,
+            endDate,
           }}
-        </Query>
+          {...props}
+        />
       )}
     </PTWrapper>
   )
