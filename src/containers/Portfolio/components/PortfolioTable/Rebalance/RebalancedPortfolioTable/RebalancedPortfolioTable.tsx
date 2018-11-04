@@ -383,7 +383,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
-        ...(staticRows[index]
+        ...(staticRows[index].coin === row.coin && staticRows[index].exchange === row.exchange
           ? {
               oririnalPortfolioPerc: {
                 render: `${staticRows[index].portfolioPerc}%`,
@@ -569,8 +569,11 @@ export default class RebalancedPortfolioTable extends React.Component<
             coin: ' ',
             current: ' ',
             currentUSD: {
-              additionalRender: mainSymbol,
-              render: formatNumberToUSFormat(totalStaticRows),
+              render: (
+                <>
+                  {mainSymbol} {formatNumberToUSFormat(totalStaticRows)}
+                </>
+              ),
               isNumber: true,
             },
             rebalanced: ' ',
