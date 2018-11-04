@@ -18,7 +18,7 @@ import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
 import {
-  calcAllSumOfPortfolioAsset,
+  calcAllSumOfPortfolioAsset, cloneArrayElementsOneLevelDeep,
   percentagesOfCoinInPortfolio,
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
@@ -70,8 +70,35 @@ class Optimization extends Component<IProps, IState> {
     warningMessage: '',
   }
 
-  optimizedToState = (data: object[]) =>
+  optimizedToState = (data: object[]) => {
+
+    const optimizedCoinsWeights = data.reduce((accMap, el) => {
+      el.weights.forEach((weight, index) => {
+        const percentageWeight = Math.abs(Number(weight) * 100).toFixed(2)
+        const currentCoinName = el.portfolio_coins_list[index]
+
+        if (accMap.has(currentCoinName)) {
+          accMap.set(currentCoinName, [
+            ...accMap.get(currentCoinName),
+            percentageWeight,
+          ])
+        }
+        else {
+          accMap.set(currentCoinName, [percentageWeight])
+        }
+
+      })
+
+      return accMap
+    },  new Map())
+
+
+    this.props.updateData(
+      [...this.props.storeData].map((el) => ({...el, optimizedPercentageArray: optimizedCoinsWeights.get(el.coin)}))
+    )
+
     this.setState({ rawOptimizedData: data })
+  }
 
   handleChange = (event: any) => {
     this.setState({

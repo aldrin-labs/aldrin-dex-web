@@ -167,14 +167,14 @@ export default class Import extends PureComponent<IProps> {
     // const percentages = optimizedData.map((elem) => +elem.return_value.toFixed(2));
     // this.setState({percentages})
 
-    optimizedToState(optimizedData)
-
     if (
       storeData.length < optimizedData[activeButton].portfolio_coins_list.length
     ) {
       console.log('storeData.length < optimizedData')
       this.addRow('USDT', 0)
     }
+
+    optimizedToState(optimizedData)
   }
 
   // onOptimizeButtonClick = async (
@@ -267,6 +267,7 @@ export default class Import extends PureComponent<IProps> {
       ])
     }
   }
+
   deleteRow = (i: number) =>
     this.props.updateData(
       [...this.props.storeData].filter((el, index) => i !== index)
@@ -525,6 +526,7 @@ export default class Import extends PureComponent<IProps> {
                       ? this.props.rawOptimizedData[activeButton].weights
                       : []
                   }
+                  activeButton={activeButton}
                   withInput={true}
                   onClickDeleteIcon={this.deleteRow}
                   filterValueSmallerThenPercentage={
