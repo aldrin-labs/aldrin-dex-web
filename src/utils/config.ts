@@ -18,6 +18,7 @@ export const CHARTS_API_URL = !MASTER_BUILD
   : chartURL
 
 // for testing will be here temporary
+window.env = {}
 window.env.URL = process.env.URL
 window.env.API_URL = API_URL
 window.env.CHARTS_API_URL = CHARTS_API_URL
