@@ -17,6 +17,7 @@ export interface IProps extends WithTheme {
   children: object
   isUSDCurrently: boolean
   isShownMocks: boolean
+  baseCoin: string
   filterValueSmallerThenPercentage: number
   getMyPortfolio: IGetMyPortfolioQuery
   updateRebalanceMutationQuery: Function
