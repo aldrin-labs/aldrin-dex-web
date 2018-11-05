@@ -56,10 +56,10 @@ class UserContainer extends React.Component {
 
         <UserWrap
           style={
-            process.env.NODE_ENV !== 'production' ? { filter: 'blur(3px)' } : {}
+            process.env.NODE_ENV === 'production' ? { filter: 'blur(3px)' } : {}
           }
         >
-          {process.env.NODE_ENV !== 'production' && <ComingSoon />}
+          {process.env.NODE_ENV === 'production' && <ComingSoon />}
 
           <AddCryptoWallet
             forceUpdateUserContainer={this.forceUpdateUserContainer}
@@ -93,7 +93,7 @@ class UserContainer extends React.Component {
               color="secondary"
               autoFocus={true}
             >
-              Understood
+              ok
             </Button>
           </DialogActions>
         </Dialog>
