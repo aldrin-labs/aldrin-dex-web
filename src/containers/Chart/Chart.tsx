@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Paper, Button, Fade, Slide } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
-import Joyride from 'react-joyride'
 
 import {
   OrderBookTable,
@@ -33,7 +32,6 @@ import { MASTER_BUILD } from '@utils/config'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
-import { singleChartSteps } from '@utils/joyrideSteps'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
@@ -180,40 +178,38 @@ class Chart extends React.Component<IProps, IState> {
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          <div>
-            <QueryRenderer
-              component={OrderBookTable}
-              query={ORDERS_MARKET_QUERY}
-              fetchPolicy="network-only"
-              variables={{ symbol, exchange }}
-              placeholder={TablePlaceholderLoader}
-              subscriptionArgs={{
-                subscription: MARKET_ORDERS,
-                variables: { symbol, exchange },
-                updateQueryFunction: updateOrderBookQuerryFunction,
-              }}
-              {...{
-                onButtonClick: this.changeTable,
-                roundTill: this.roundTill,
-                activeExchange,
-                currencyPair,
-                aggregation,
-                quote,
-                setOrders: this.props.setOrders,
-                symbol,
-                exchange,
-                ...this.props,
-              }}
-            />
+          <QueryRenderer
+            component={OrderBookTable}
+            query={ORDERS_MARKET_QUERY}
+            fetchPolicy="network-only"
+            variables={{ symbol, exchange }}
+            placeholder={TablePlaceholderLoader}
+            subscriptionArgs={{
+              subscription: MARKET_ORDERS,
+              variables: { symbol, exchange },
+              updateQueryFunction: updateOrderBookQuerryFunction,
+            }}
+            {...{
+              onButtonClick: this.changeTable,
+              roundTill: this.roundTill,
+              activeExchange,
+              currencyPair,
+              aggregation,
+              quote,
+              setOrders: this.props.setOrders,
+              symbol,
+              exchange,
+              ...this.props,
+            }}
+          />
 
-            <Aggregation
-              {...{
-                theme,
-                aggregation: this.state.aggregation,
-                onButtonClick: this.setAggregation,
-              }}
-            />
-          </div>
+          <Aggregation
+            {...{
+              theme,
+              aggregation: this.state.aggregation,
+              onButtonClick: this.setAggregation,
+            }}
+          />
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
@@ -284,6 +280,8 @@ class Chart extends React.Component<IProps, IState> {
         }}
         direction={'right'}
         in={true}
+        mountOnEnter={true}
+        unmountOnExit={true}
       >
         <div>
           <Container>
