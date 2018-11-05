@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import IconButton from '@material-ui/core/IconButton'
+import Announcement from '@material-ui/icons/Announcement'
 import ExitIcon from '@material-ui/icons/ExitToApp'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -14,14 +15,11 @@ const UserLink = (props) => <Link to="/user" {...props} />
 
 const LoginMenuComponent = ({ userName, handleMenu, handleLogout, showToolTip }: any) => (
   <>
-    <Button
-      className="TipButton"
-      onClick={showToolTip}
-      size="small"
-      style={{ margin: '0.5rem 1rem' }}
-    >
-      Show tips
-    </Button>
+    <Tooltip title={'Show Tips'} enterDelay={250}>
+      <IconButton onClick={showToolTip} color="default" className="TipButton">
+        <Announcement />
+      </IconButton>
+    </Tooltip>
     <Tooltip title={userName} enterDelay={250}>
       <IconButton color="default" component={UserLink} className="UserLink">
         <AccountCircle />
