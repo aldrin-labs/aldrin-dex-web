@@ -17,27 +17,20 @@ import {
 import * as UTILS from '@utils/PortfolioSelectorUtils'
 
 class PortfolioSelector extends React.Component<IProps> {
-
   updateSettings = async (objectForMutation) => {
-    const { updatePortfolioSettings } = this.props;
-    console.log('objectForMutation', objectForMutation);
+    const { updatePortfolioSettings } = this.props
 
     try {
       await updatePortfolioSettings({
         variables: objectForMutation,
       })
-      console.log('settings updated');
-
     } catch (error) {
       console.log(error)
     }
   }
 
   onKeyToggle = (toggledKeyID: string) => {
-    const {
-      portfolioId,
-      newKeys,
-    } = this.props
+    const { portfolioId, newKeys } = this.props
 
     const objForQuery = {
       settings: {
@@ -50,15 +43,15 @@ class PortfolioSelector extends React.Component<IProps> {
   }
 
   onWalletToggle = (toggledWalletID: string) => {
-    const {
-      portfolioId,
-      newWallets,
-    } = this.props
+    const { portfolioId, newWallets } = this.props
 
     const objForQuery = {
       settings: {
         portfolioId,
-        selectedWallets: UTILS.getArrayContainsOnlySelected(newWallets, toggledWalletID),
+        selectedWallets: UTILS.getArrayContainsOnlySelected(
+          newWallets,
+          toggledWalletID
+        ),
       },
     }
 
@@ -73,7 +66,7 @@ class PortfolioSelector extends React.Component<IProps> {
       activeWallets,
       portfolioId,
     } = this.props
-    let objForQuery;
+    let objForQuery
 
     if (
       activeKeys.length + activeWallets.length ===
@@ -91,7 +84,7 @@ class PortfolioSelector extends React.Component<IProps> {
         settings: {
           portfolioId,
           selectedKeys: newKeys.map((el) => el._id),
-          selectedWallets: newWallets.map((el)=> el._id),
+          selectedWallets: newWallets.map((el) => el._id),
         },
       }
     }
@@ -99,7 +92,11 @@ class PortfolioSelector extends React.Component<IProps> {
     this.updateSettings(objForQuery)
   }
 
-  onDustFilterChange = ({target:{ value }}: {target: {value: number}}) => {
+  onDustFilterChange = ({
+    target: { value },
+  }: {
+    target: { value: number }
+  }) => {
     const { portfolioId } = this.props
     this.updateSettings({
       settings: {
@@ -121,7 +118,8 @@ class PortfolioSelector extends React.Component<IProps> {
     } = this.props
 
     const isCheckedAll =
-      activeKeys.length + activeWallets.length === newKeys.length + newWallets.length
+      activeKeys.length + activeWallets.length ===
+      newKeys.length + newWallets.length
 
     const color = theme.palette.secondary.main
 
@@ -153,37 +151,38 @@ class PortfolioSelector extends React.Component<IProps> {
             }}
           />
 
-          <Name color={color}>Dust</Name>
-          <FilterValues>
-            <FilterIcon
-              color={theme.palette.getContrastText(
-                theme.palette.background.paper
-              )}
-            />
-            <Dropdown
-              style={{ width: '100%' }}
-              value={dustFilter}
-              handleChange={this.onDustFilterChange}
-              name="filterValuesInMain"
-              options={[
-                { value: -100.0, label: 'No Filter' },
-                { value: 0, label: '0% <' },
-                { value: 0.1, label: '0.1% <' },
-                { value: 0.2, label: '0.2% <' },
-                { value: 0.3, label: '0.3% <' },
-                { value: 0.5, label: '0.5% <' },
-                { value: 1, label: '1% <' },
-                { value: 10, label: '10% <' },
-              ]}
-            />
-          </FilterValues>
+          {process.env.NODE_ENV === 'production' && (
+            <>
+              <Name color={color}>Dust</Name>
+              <FilterValues>
+                <FilterIcon
+                  color={theme.palette.getContrastText(
+                    theme.palette.background.paper
+                  )}
+                />
+                <Dropdown
+                  style={{ width: '100%' }}
+                  value={dustFilter}
+                  handleChange={this.onDustFilterChange}
+                  name="filterValuesInMain"
+                  options={[
+                    { value: -100.0, label: 'No Filter' },
+                    { value: 0, label: '0% <' },
+                    { value: 0.1, label: '0.1% <' },
+                    { value: 0.2, label: '0.2% <' },
+                    { value: 0.3, label: '0.3% <' },
+                    { value: 0.5, label: '0.5% <' },
+                    { value: 1, label: '1% <' },
+                    { value: 10, label: '10% <' },
+                  ]}
+                />
+              </FilterValues>
+            </>
+          )}
         </AccountsWalletsBlock>
       </Slide>
     )
   }
 }
 
-
-export default compose(
-  withTheme()
-)(PortfolioSelector)
+export default compose(withTheme())(PortfolioSelector)
