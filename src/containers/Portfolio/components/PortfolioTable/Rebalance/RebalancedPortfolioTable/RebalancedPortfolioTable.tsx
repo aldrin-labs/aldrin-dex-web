@@ -270,7 +270,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     green,
     background
   ) => {
-    const isUSDCurrently = this.props.baseCoin === 'USDT'
+    const isUSDCurrently = this.props.isUSDCurrently
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
