@@ -20,6 +20,8 @@ export const CHARTS_API_URL = !MASTER_BUILD
 // for testing will be here temporary
 window.env = {}
 window.env.URL = process.env.URL
+window.env.KEK = process.env.KEK
+window.env.CONTEXT = process.env.CONTEXT
 window.env.API_URL = API_URL
 window.env.CHARTS_API_URL = CHARTS_API_URL
 window.env.MASTER_BUILD = MASTER_BUILD
