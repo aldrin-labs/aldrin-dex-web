@@ -68,7 +68,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     currentSort: null,
     expandedRows: [],
     run: true,
-    steps: portfolioIndustrySteps,
+    key: 0,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -122,6 +122,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       || data.action === 'skip'
       || data.status === 'finished'
     ) this.props.hideToolTip('Industry')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({key: oldKey + 1})
+    }
   }
 
   render() {
@@ -138,6 +142,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           steps={portfolioIndustrySteps}
           run={this.props.toolTip.portfolioIndustry}
           callback={this.handleJoyrideCallback}
+          key={this.state.key}
         />
         <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
           <Container container={true} spacing={16}>

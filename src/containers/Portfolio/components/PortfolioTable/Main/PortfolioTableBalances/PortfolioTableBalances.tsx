@@ -28,6 +28,7 @@ import * as actions from '@containers/User/actions'
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   state = {
     run: true,
+    key: 0,
   }
   componentDidMount() {
     this.setState({ run: true })
@@ -39,6 +40,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       || data.action === 'skip'
       || data.status === 'finished'
     ) this.props.hideToolTip('Main')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({key: oldKey + 1})
+    }
   }
 
   render() {
@@ -71,6 +76,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           steps={portfolioMainSteps}
           run={this.props.toolTip.portfolioMain}
           callback={this.handleJoyrideCallback}
+          key={this.state.key}
         />
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <GridContainer container={true} spacing={16}>

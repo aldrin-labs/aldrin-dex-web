@@ -53,6 +53,7 @@ class Optimization extends Component<IProps, IState> {
     openWarning: false,
     warningMessage: '',
     run: true,
+    key: 0,
   }
 
   optimizedToState = (data: RawOptimizedData) => {
@@ -230,6 +231,10 @@ class Optimization extends Component<IProps, IState> {
       || data.action === 'skip'
       || data.status === 'finished'
     ) this.props.hideToolTip('Optimization')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({key: oldKey + 1})
+    }
   }
 
 
@@ -256,6 +261,7 @@ class Optimization extends Component<IProps, IState> {
           steps={portfolioOptimizationSteps}
           run={toolTip.portfolioOptimization}
           callback={this.handleJoyrideCallback}
+          key={this.state.key}
         />
         <Content>
           {MASTER_BUILD && <ComingSoon />}

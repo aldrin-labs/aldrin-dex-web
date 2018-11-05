@@ -14,6 +14,7 @@ export interface IState {
   activeKeys: number[] | null
   portfolio: IPortfolio | null
   run: boolean
+  key: number
 }
 
 export interface IProps {

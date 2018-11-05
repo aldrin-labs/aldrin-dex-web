@@ -44,4 +44,5 @@ export interface IState {
   activeKeys: number[] | null
   currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
   run: boolean
+  key: number
 }

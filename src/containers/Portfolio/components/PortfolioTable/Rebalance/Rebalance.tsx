@@ -75,6 +75,7 @@ class Rebalance extends React.Component<IProps, IState> {
     leftBar: '#fff',
     rightBar: '#4ed8da',
     run: true,
+    key: 0,
   }
 
   componentDidMount() {
@@ -421,6 +422,10 @@ class Rebalance extends React.Component<IProps, IState> {
       || data.action === 'skip'
       || data.status === 'finished'
     ) this.props.hideToolTip('Rebalance')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({key: oldKey + 1})
+    }
   }
 
   render() {
@@ -471,6 +476,7 @@ class Rebalance extends React.Component<IProps, IState> {
             steps={portfolioRebalanceSteps}
             run={this.props.toolTip.portfolioRebalance}
             callback={this.handleJoyrideCallback}
+            key={this.state.key}
           />
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           <PTWrapper tableData={true}>

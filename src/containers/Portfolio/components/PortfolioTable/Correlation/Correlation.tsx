@@ -62,6 +62,7 @@ const Correlation = (props: IProps) => {
 const CorrelationWrapper = (props: IProps) => {
   const { isShownMocks, children } = props
   let { startDate, endDate } = props
+  let key = 0
 
   // startDate must be less always
   //  but if somehow not I will swap them
@@ -76,6 +77,9 @@ const CorrelationWrapper = (props: IProps) => {
       || data.action === 'skip'
       || data.status === 'finished'
     ) props.hideToolTip('Correlation')
+    if (data.status === 'finished') {
+      key = key + 1
+    }
   }
 
   return (
@@ -84,6 +88,7 @@ const CorrelationWrapper = (props: IProps) => {
         steps={portfolioCorrelationSteps}
         run={props.toolTip.portfolioCorrelation}
         callback={handleJoyrideCallback}
+        key={key}
       />
       {isShownMocks ? (
         <Correlation

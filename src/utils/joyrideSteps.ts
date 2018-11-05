@@ -1,9 +1,9 @@
 export const portfolioMainSteps = [
   {
     disableBeacon: true,
-    target: 'body',
+    target: '.TipButton',
     content: 'Welcome! This tutorial will provide a walk-through of our platform. You can skip sections or re-open this at anytime by clicking on this icon.',
-    placement: 'center',
+    placement: 'auto',
   },
   {
     target: 'body',

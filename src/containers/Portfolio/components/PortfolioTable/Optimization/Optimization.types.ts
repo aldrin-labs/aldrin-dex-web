@@ -23,6 +23,7 @@ export interface IState {
   openWarning: boolean
   warningMessage: string
   run: boolean
+  key: number
 }
 
 export interface IProps {

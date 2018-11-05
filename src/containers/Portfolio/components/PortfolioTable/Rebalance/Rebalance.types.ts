@@ -46,6 +46,7 @@ export interface IState {
   leftBar: string
   rightBar: string
   run: boolean
+  key: number
 }
 
 export interface ICurrentSort {

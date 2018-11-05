@@ -15,6 +15,7 @@ const UserLink = (props) => <Link to="/user" {...props} />
 const LoginMenuComponent = ({ userName, handleMenu, handleLogout, showToolTip }: any) => (
   <>
     <Button
+      className="TipButton"
       onClick={showToolTip}
       size="small"
       style={{ margin: '0.5rem 1rem' }}
