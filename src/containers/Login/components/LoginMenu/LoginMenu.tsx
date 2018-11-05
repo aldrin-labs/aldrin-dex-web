@@ -14,15 +14,13 @@ const UserLink = (props) => <Link to="/user" {...props} />
 
 const LoginMenuComponent = ({ userName, handleMenu, handleLogout, showToolTip }: any) => (
   <>
-    <Tooltip title={userName} enterDelay={250}>
-      <Button
-        onClick={showToolTip}
-        size="small"
-        style={{ margin: '0.5rem 1rem' }}
-      >
-        Show tips
-      </Button>
-    </Tooltip>
+    <Button
+      onClick={showToolTip}
+      size="small"
+      style={{ margin: '0.5rem 1rem' }}
+    >
+      Show tips
+    </Button>
     <Tooltip title={userName} enterDelay={250}>
       <IconButton color="default" component={UserLink} className="UserLink">
         <AccountCircle />
