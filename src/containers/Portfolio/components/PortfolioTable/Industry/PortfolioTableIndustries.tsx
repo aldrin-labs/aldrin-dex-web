@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { Grid } from '@material-ui/core'
+import Joyride from 'react-joyride';
 
 import { Table, DonutChart } from '@storybook-components'
 import { IndProps } from '@containers/Portfolio/interfaces'
@@ -12,6 +13,7 @@ import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { Container, Wrapper, ChartWrapper } from './Industry.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
+import { portfolioIndustrySteps } from '@utils/joyrideSteps'
 
 const tableHeadings = [
   { name: 'Industry', value: 'industry' },
@@ -62,6 +64,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     chartData: null,
     currentSort: null,
     expandedRows: [],
+    run: true,
+    steps: portfolioIndustrySteps,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -118,31 +122,37 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       : false
 
     return (
-      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
-        <Container container={true} spacing={16}>
-          <Grid item={true} xs={12} md={8}>
-            <Wrapper>
-              <Table
-                expandableRows={true}
-                onChange={this.expandRow}
-                onSelectAllClick={this.onSelectAllClick}
-                expandedRows={expandedRows}
-                title={`Industry Performance in ${baseCoin}`}
-                {...this.putDataInTable()}
-              />
-            </Wrapper>
-          </Grid>
-          <Grid item={true} xs={12} md={4} style={{}}>
-            <ChartWrapper>
-              <DonutChart
-                labelPlaceholder="Industry %"
-                data={chartData}
-                colorLegend={true}
-              />
-            </ChartWrapper>
-          </Grid>
-        </Container>
-      </EmptyTablePlaceholder>
+      <div>
+        <Joyride
+          steps={portfolioIndustrySteps}
+          run={true}
+        />
+        <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+          <Container container={true} spacing={16}>
+            <Grid item={true} xs={12} md={8}>
+              <Wrapper>
+                <Table
+                  expandableRows={true}
+                  onChange={this.expandRow}
+                  onSelectAllClick={this.onSelectAllClick}
+                  expandedRows={expandedRows}
+                  title={`Industry Performance in ${baseCoin}`}
+                  {...this.putDataInTable()}
+                />
+              </Wrapper>
+            </Grid>
+            <Grid item={true} xs={12} md={4} style={{}}>
+              <ChartWrapper>
+                <DonutChart
+                  labelPlaceholder="Industry %"
+                  data={chartData}
+                  colorLegend={true}
+                />
+              </ChartWrapper>
+            </Grid>
+          </Container>
+        </EmptyTablePlaceholder>
+      </div>
     )
   }
 }

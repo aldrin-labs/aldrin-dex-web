@@ -27,7 +27,7 @@ class ExchangesTable extends PureComponent<IProps> {
     } = theme
 
     return (
-      <StyledTable>
+      <StyledTable className="ExchangesTable">
         <Title background={theme.palette.primary[type]}>
           <TypographyWithCustomColor
             textColor={theme.palette.getContrastText(

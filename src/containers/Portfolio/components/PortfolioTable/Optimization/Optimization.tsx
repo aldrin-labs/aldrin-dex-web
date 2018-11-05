@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import Joyride from 'react-joyride'
 
 import * as actions from '@containers/Portfolio/actions'
 import {
@@ -40,6 +41,7 @@ import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
+import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
 
 class Optimization extends Component<IProps, IState> {
   state = {
@@ -345,7 +347,7 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer>
-        <ChartContainer>
+        <ChartContainer className="BackTestOptimizationChart">
           <StyledCardHeader title="Back-test Optimization" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
@@ -359,7 +361,7 @@ class Optimization extends Component<IProps, IState> {
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <ChartContainer>
+        <ChartContainer className="EfficientFrontierChart">
           <StyledCardHeader title="Efficient Frontier" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
@@ -390,6 +392,13 @@ class Optimization extends Component<IProps, IState> {
         background={palette.background.default}
         notScrollable={MASTER_BUILD}
       >
+        <Joyride
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={portfolioOptimizationSteps}
+          run={true}
+        />
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}

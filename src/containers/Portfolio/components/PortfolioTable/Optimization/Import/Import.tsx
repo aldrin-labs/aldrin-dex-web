@@ -218,7 +218,7 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
-      <ChartContainer>
+      <ChartContainer className="PortfolioDistributionChart">
         <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
@@ -307,7 +307,7 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer>
+              <InputContainer className="OptimizationInput">
                 <StyledCardHeader title="Back-test input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
@@ -400,7 +400,7 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer>
+              <TableContainer className="RiskProfileTable">
                 <StyledCardHeader title="Risk Profile" />
 
                 <SwitchButtonsWrapper>

@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import Joyride from 'react-joyride'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
@@ -15,6 +16,7 @@ import { swapDates } from '@utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
+import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
 
 const Correlation = (props: IProps) => {
   const {
@@ -41,7 +43,7 @@ const Correlation = (props: IProps) => {
   }
 
   return (
-    <>
+    <div>
       {children}
       <CorrelationMatrix
         fullScreenChangeHandler={props.toggleFullscreen}
@@ -51,7 +53,7 @@ const Correlation = (props: IProps) => {
         period={period}
         dates={{ startDate, endDate }}
       />
-    </>
+    </div>
   )
 }
 
@@ -68,6 +70,13 @@ const CorrelationWrapper = (props: IProps) => {
 
   return (
     <PTWrapper>
+      <Joyride
+        continuous={true}
+        showProgress={true}
+        showSkipButton={true}
+        steps={portfolioCorrelationSteps}
+        run={true}
+      />
       {isShownMocks ? (
         <Correlation
           data={{

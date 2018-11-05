@@ -2,6 +2,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { withRouter } from 'react-router'
+import Joyride from 'react-joyride'
 
 import Chart from '@components/GQLChart'
 import {
@@ -21,8 +22,15 @@ import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHist
 import CardHeader from '@components/CardHeader'
 import { find } from 'lodash-es'
 import { withErrorFallback } from '@hoc/'
+import { portfolioMainSteps } from '@utils/joyrideSteps'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
+  state = {
+    run: true,
+  }
+  componentDidMount() {
+    this.setState({ run: true })
+  }
   render() {
     const {
       putDataInTable,
@@ -31,6 +39,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       onCheckboxClick,
       onSelectAllClick,
     } = this.props
+
+    const { run } = this.state
 
     const { body, head, footer } = putDataInTable()
 
@@ -43,10 +53,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
+      <div>
+        <Joyride
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={portfolioMainSteps}
+          run={run}
+        />
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <GridContainer container={true} spacing={16}>
           <TableContainer item={true} xs={12} md={8}>
-            <TableWrapper>
+            <TableWrapper className="PortfolioMainTable">
               {Array.isArray(tableData) && (
                 <Table
                   title="Portfolio"
@@ -61,13 +79,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             </TableWrapper>
           </TableContainer>
           <TableContainer item={true} xs={12} md={4}>
-            <TableWrapper>
+            <TableWrapper className="PortfolioTradeOrderHistoryTable">
               <TradeOrderHistoryTable />
             </TableWrapper>
           </TableContainer>
 
           <ChartContainer item={true} xs={12} md={12}>
-            <ChartWrapper>
+            <ChartWrapper className="PortfolioValueChart">
               <CardHeader
                 style={{ position: 'absolute' }}
                 title={'Portfolio Value'}
@@ -86,6 +104,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           </ChartContainer>
         </GridContainer>
       </EmptyTablePlaceholder>
+      </div>
     )
   }
 }

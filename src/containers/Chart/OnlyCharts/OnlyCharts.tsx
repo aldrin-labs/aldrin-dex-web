@@ -2,12 +2,15 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Slide } from '@material-ui/core'
+import Joyride from 'react-joyride'
 
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
+import { multiChartsSteps } from '@utils/joyrideSteps'
 
 import { IProps, IChart } from './OnlyCharts.types'
+
 
 class OnlyCharts extends Component<IProps> {
   componentDidMount() {
@@ -34,29 +37,35 @@ class OnlyCharts extends Component<IProps> {
         mountOnEnter={true}
         unmountOnExit={true}
       >
-        <ChartContainer
-          fullscreen={view !== 'default'}
-          chartsCount={charts.length || 1}
-        >
-          {charts
-            .filter((chart) => chart.id && chart.pair)
-            .map((chart: IChart, i: number) => (
-              <IndividualChart
-                //  if there is no id generate it here
-                key={chart.id}
-                theme={theme}
-                removeChart={removeChart}
-                index={i}
-                chartsCount={charts.length}
-                currencyPair={chart.pair}
-              />
-            ))}
-          <WarningMessageSnack
-            open={openedWarning}
-            onCloseClick={removeWarningMessage}
-            messageText={'You can create up to 8 charts.'}
+        <div>
+          <Joyride
+            steps={multiChartsSteps}
+            run={true}
           />
-        </ChartContainer>
+          <ChartContainer
+            fullscreen={view !== 'default'}
+            chartsCount={charts.length || 1}
+          >
+            {charts
+              .filter((chart) => chart.id && chart.pair)
+              .map((chart: IChart, i: number) => (
+                <IndividualChart
+                  //  if there is no id generate it here
+                  key={chart.id}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart.pair}
+                />
+              ))}
+            <WarningMessageSnack
+              open={openedWarning}
+              onCloseClick={removeWarningMessage}
+              messageText={'You can create up to 8 charts.'}
+            />
+          </ChartContainer>
+        </div>
       </Slide>
     )
   }

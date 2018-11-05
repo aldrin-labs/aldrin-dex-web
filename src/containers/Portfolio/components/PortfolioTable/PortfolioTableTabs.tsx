@@ -107,7 +107,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             toggleWallets()
           }}
         >
-          <Settings />
+          <Settings className="settingsIcon"/>
         </Tab>
         <Fade in={switchUSDBTC}>
           <div>
