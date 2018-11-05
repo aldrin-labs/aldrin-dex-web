@@ -63,7 +63,7 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
       case 'rebalance':
         render = (
           <Rebalance
-            baseCoin={baseCoin}
+            baseCoin={`USDT`}
             isUSDCurrently={true}
             filterValueSmallerThenPercentage={dustFilter}
           />
