@@ -107,6 +107,7 @@ export default class Import extends PureComponent<IProps> {
     console.log('myOb for queryj', myObj)
 
     let backendResult
+    const systemError = `System Error: An error has occurred internally.  Please report this by clicking "Report Bug"`
 
     try {
       backendResult = await client.query({
@@ -117,7 +118,8 @@ export default class Import extends PureComponent<IProps> {
         fetchPolicy: 'network-only',
       })
     } catch (e) {
-      showWarning(`You got an error! 🙈`)
+      showWarning(systemError)
+      // showWarning(`You got an error! 🙈`)
       this.props.toggleLoading()
       console.log('ERROR IN AWAIT FUNC:', e)
       return
@@ -128,14 +130,15 @@ export default class Import extends PureComponent<IProps> {
     )
 
     if (backendResultParsed === '') {
-      showWarning('You got empty response! 🙈')
+      showWarning(systemError)
+      // showWarning('You got empty response! 🙈')
       this.props.toggleLoading()
 
       return
     }
 
-    if (backendResultParsed.error) {
-      showWarning(`You got an error! 🙈`)
+    if (backendResultParsed.error || backendResultParsed.status === 1) {
+      showWarning(backendResultParsed.error_message ? `User Error: ${backendResultParsed.error_message}` : systemError)
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
 
