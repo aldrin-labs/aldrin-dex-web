@@ -3,6 +3,12 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
 
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+} from '@material-ui/core'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,
@@ -43,6 +49,7 @@ import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
+
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -102,10 +109,6 @@ class Optimization extends Component<IProps, IState> {
 
   showWarning = (message: string) => {
     this.setState({ openWarning: true, warningMessage: message })
-
-    setTimeout(() => {
-      this.hideWarning()
-    }, 3000)
   }
 
   hideWarning = () => {
@@ -264,11 +267,29 @@ class Optimization extends Component<IProps, IState> {
               {this.renderCharts()}
             </MainArea>
           </ContentInner>
-          <Warning
+          {/*<Warning*/}
+            {/*open={openWarning}*/}
+            {/*messageText={warningMessage}*/}
+            {/*onCloseClick={this.hideWarning}*/}
+          {/*/>*/}
+          <Dialog
+            fullScreen={false}
             open={openWarning}
-            messageText={warningMessage}
-            onCloseClick={this.hideWarning}
-          />
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogTitle id="responsive-dialog-title">
+              {warningMessage}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                onClick={this.hideWarning}
+                color="secondary"
+                autoFocus={true}
+              >
+                ok
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Content>
       </PTWrapper>
     )
