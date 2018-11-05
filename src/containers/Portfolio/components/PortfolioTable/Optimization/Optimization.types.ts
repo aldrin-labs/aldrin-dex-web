@@ -26,6 +26,7 @@ export interface IState {
 }
 
 export interface IProps {
+  hideToolTip: (any: any) => void
   storeData: IData[]
   isShownMocks: boolean
   updateData: Function

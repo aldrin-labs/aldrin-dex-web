@@ -23,6 +23,7 @@ import CardHeader from '@components/CardHeader'
 import { find } from 'lodash-es'
 import { withErrorFallback } from '@hoc/'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   state = {
@@ -33,7 +34,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   handleJoyrideCallback = (data) => {
-    if (data.action === 'close') this.setState({ run: false })
+    if (
+      data.action === 'close'
+      || data.action === 'skip'
+      || data.status === 'finished'
+    ) this.props.hideToolTip('Main')
   }
 
   render() {
@@ -64,7 +69,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           showProgress={true}
           showSkipButton={true}
           steps={portfolioMainSteps}
-          run={run}
+          run={this.props.toolTip.portfolioMain}
           callback={this.handleJoyrideCallback}
         />
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
@@ -115,12 +120,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 }
 
+const mapDispatchToProps = (dispatch: any) => ({
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
+
+})
+
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
+  toolTip: store.user.toolTip,
 })
 
 export default compose(
   withRouter,
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   withErrorFallback
 )(PortfolioTableBalances)

@@ -17,6 +17,14 @@ export interface IState {
 }
 
 export interface IProps {
+  hideToolTip: (tab: string) => void
+  toolTip: {
+    portfolioMain: boolean
+    portfolioIndustry: boolean
+    portfolioRebalance: boolean
+    portfolioCorrelation: boolean
+    portfolioOptimization: boolean
+  }
   isShownChart: boolean
   theme: Theme
   filterValueSmallerThenPercentage: number | undefined

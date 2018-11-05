@@ -97,6 +97,7 @@ const NavBarRaw: SFC<Props> = ({
               direction={'row'}
               container={true}
             >
+
               <Hidden only={['sm', 'xs']}>
                 <Feedback />
               </Hidden>

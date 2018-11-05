@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { Grid } from '@material-ui/core'
-import Joyride from 'react-joyride';
+import Joyride from 'react-joyride'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 import { Table, DonutChart } from '@storybook-components'
 import { IndProps } from '@containers/Portfolio/interfaces'
@@ -14,6 +16,7 @@ import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { Container, Wrapper, ChartWrapper } from './Industry.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import { portfolioIndustrySteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 
 const tableHeadings = [
   { name: 'Industry', value: 'industry' },
@@ -114,7 +117,11 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     }))
 
   handleJoyrideCallback = (data) => {
-    if (data.action === 'close') this.setState({ run: false })
+    if (
+      data.action === 'close'
+      || data.action === 'skip'
+      || data.status === 'finished'
+    ) this.props.hideToolTip('Industry')
   }
 
   render() {
@@ -129,7 +136,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <div>
         <Joyride
           steps={portfolioIndustrySteps}
-          run={this.state.run}
+          run={this.props.toolTip.portfolioIndustry}
           callback={this.handleJoyrideCallback}
         />
         <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
@@ -162,8 +169,17 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 }
 
-export default queryRendererHoc({
+const mapDispatchToProps = (dispatch: any) => ({
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
+
+})
+
+const mapStateToProps = (store) => ({
+  toolTip: store.user.toolTip,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(queryRendererHoc({
   query: getPortfolioQuery,
   pollInterval: 5000,
   fetchPolicy: 'network-only',
-})(PortfolioTableIndustries)
+})(PortfolioTableIndustries))

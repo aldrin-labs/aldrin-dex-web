@@ -17,6 +17,8 @@ import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/Portfo
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
+
 
 const Correlation = (props: IProps) => {
   const {
@@ -68,11 +70,20 @@ const CorrelationWrapper = (props: IProps) => {
     endDate = swapDates({ startDate, endDate }).endDate
   }
 
+  const handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close'
+      || data.action === 'skip'
+      || data.status === 'finished'
+    ) props.hideToolTip('Correlation')
+  }
+
   return (
     <PTWrapper>
       <Joyride
         steps={portfolioCorrelationSteps}
-        run={true}
+        run={props.toolTip.portfolioCorrelation}
+        callback={handleJoyrideCallback}
       />
       {isShownMocks ? (
         <Correlation
@@ -114,12 +125,14 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
+  toolTip: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
   setCorrelationPeriodToStore: (payload: object) =>
     dispatch(setCorrelationPeriodAction(payload)),
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
 })
 
 const storeComponent = connect(

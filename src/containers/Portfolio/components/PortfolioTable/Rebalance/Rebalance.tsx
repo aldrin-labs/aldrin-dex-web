@@ -30,6 +30,8 @@ import {
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { portfolioRebalanceSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
+
 
 import {
   Content,
@@ -414,7 +416,11 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   handleJoyrideCallback = (data) => {
-    if (data.action === 'close') this.setState({ run: false })
+    if (
+      data.action === 'close'
+      || data.action === 'skip'
+      || data.status === 'finished'
+    ) this.props.hideToolTip('Rebalance')
   }
 
   render() {
@@ -463,7 +469,7 @@ class Rebalance extends React.Component<IProps, IState> {
             showProgress={true}
             showSkipButton={true}
             steps={portfolioRebalanceSteps}
-            run={this.state.run}
+            run={this.props.toolTip.portfolioRebalance}
             callback={this.handleJoyrideCallback}
           />
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
@@ -569,8 +575,13 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 }
 
+const mapDispatchToProps = (dispatch: any) => ({
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
+})
+
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
+  toolTip: store.user.toolTip,
 })
 const RebalanceContainer = (props) => (
   <QueryRenderer
@@ -584,7 +595,7 @@ const RebalanceContainer = (props) => (
 
 export default compose(
   withTheme(),
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProps),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
     options: {
