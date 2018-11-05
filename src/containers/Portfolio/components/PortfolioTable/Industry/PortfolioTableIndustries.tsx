@@ -113,6 +113,10 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       expandedRows: onCheckBoxClick(prevState.expandedRows, id),
     }))
 
+  handleJoyrideCallback = (data) => {
+    if (data.action === 'close') this.setState({ run: false })
+  }
+
   render() {
     const { baseCoin } = this.props
     const { industryData, chartData, expandedRows } = this.state
@@ -125,7 +129,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       <div>
         <Joyride
           steps={portfolioIndustrySteps}
-          run={true}
+          run={this.state.run}
+          callback={this.handleJoyrideCallback}
         />
         <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
           <Container container={true} spacing={16}>

@@ -22,6 +22,7 @@ export interface IState {
   rawOptimizedData: RawOptimizedData
   openWarning: boolean
   warningMessage: string
+  run: boolean
 }
 
 export interface IProps {

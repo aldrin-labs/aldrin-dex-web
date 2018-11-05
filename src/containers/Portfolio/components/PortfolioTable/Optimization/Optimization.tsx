@@ -51,6 +51,7 @@ class Optimization extends Component<IProps, IState> {
     rawOptimizedData: [],
     openWarning: false,
     warningMessage: '',
+    run: true,
   }
 
   optimizedToState = (data: RawOptimizedData) => {
@@ -222,6 +223,11 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 
+  handleJoyrideCallback = (data) => {
+    if (data.action === 'close') this.setState({ run: false })
+  }
+
+
   render() {
     const {
       children,
@@ -242,7 +248,8 @@ class Optimization extends Component<IProps, IState> {
           showProgress={true}
           showSkipButton={true}
           steps={portfolioOptimizationSteps}
-          run={true}
+          run={this.state.run}
+          callback={this.handleJoyrideCallback}
         />
         <Content>
           {MASTER_BUILD && <ComingSoon />}

@@ -13,6 +13,7 @@ export interface IState {
   currentSort: { arg: SortArgs; key: Args } | null
   activeKeys: number[] | null
   portfolio: IPortfolio | null
+  run: boolean
 }
 
 export interface IProps {

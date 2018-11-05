@@ -6,7 +6,6 @@ export const portfolioMainSteps = [
     placement: 'center',
   },
   {
-    disableBeacon: true,
     target: 'body',
     content: 'We have added a real Binance account, so you can experience all of the functionality. To add your own Binance account please go to settings and enter your api key where you can also delete this demo account. Please note our application only supports Binance currently and we will be adding support for more exchanges soon.',
     placement: 'center',
@@ -32,7 +31,6 @@ export const portfolioMainSteps = [
     placement: 'auto',
   },
   {
-    disableBeacon: true,
     target: '.SwitchButton',
     content: 'You can view your portfolio in crypto and fiat.',
     placement: 'auto',

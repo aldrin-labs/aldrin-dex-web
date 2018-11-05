@@ -31,6 +31,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   componentDidMount() {
     this.setState({ run: true })
   }
+
+  handleJoyrideCallback = (data) => {
+    if (data.action === 'close') this.setState({ run: false })
+  }
+
   render() {
     const {
       putDataInTable,
@@ -60,6 +65,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           showSkipButton={true}
           steps={portfolioMainSteps}
           run={run}
+          callback={this.handleJoyrideCallback}
         />
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <GridContainer container={true} spacing={16}>

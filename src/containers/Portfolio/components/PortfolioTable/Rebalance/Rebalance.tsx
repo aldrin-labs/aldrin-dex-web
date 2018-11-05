@@ -72,6 +72,7 @@ class Rebalance extends React.Component<IProps, IState> {
     totalPercents: 0,
     leftBar: '#fff',
     rightBar: '#4ed8da',
+    run: true,
   }
 
   componentDidMount() {
@@ -412,6 +413,10 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
+  handleJoyrideCallback = (data) => {
+    if (data.action === 'close') this.setState({ run: false })
+  }
+
   render() {
     const {
       children,
@@ -458,7 +463,8 @@ class Rebalance extends React.Component<IProps, IState> {
             showProgress={true}
             showSkipButton={true}
             steps={portfolioRebalanceSteps}
-            run={true}
+            run={this.state.run}
+            callback={this.handleJoyrideCallback}
           />
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           <PTWrapper tableData={true}>
