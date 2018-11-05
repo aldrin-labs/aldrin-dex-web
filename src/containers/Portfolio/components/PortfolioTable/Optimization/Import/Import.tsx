@@ -32,7 +32,6 @@ import {
 import CardHeader from '@components/CardHeader'
 import { StyledCardHeader } from '../Optimization.styles'
 
-
 export default class Import extends PureComponent<IProps> {
   state = {
     baseCoin: 'USDT',
@@ -51,30 +50,23 @@ export default class Import extends PureComponent<IProps> {
     this.importPortfolio()
   }
   importPortfolio = () => {
-    let assets
-    if (this.props.isShownMocks) {
-      assets = this.props.transformData(MOCK_DATA)
-    } else {
-      assets =
-        this.props.data &&
+    const assets = this.props.isShownMocks
+      ? this.props.transformData(MOCK_DATA)
+      : this.props.data &&
         this.props.data.myPortfolios[0] &&
         this.props.transformData(
           this.props.data.myPortfolios[0].portfolioAssets
         )
-    }
+
     this.props.updateData(assets[0])
-    this.setState({ initialPortfolio: assets[0] })
-    this.setState({ totalPriceOfAllAssets: assets[1] })
-    this.setState(
-      {
-        isUSDTInInitialPortfolioExists: assets[0].some(
-          (elem) => elem.coin === 'USDT'
-        ),
-      },
-      () => {
-        console.log('this has coin', this.state)
-      }
+    const isUSDTInInitialPortfolioExists = assets[0].some(
+      (elem) => elem.coin === 'USDT'
     )
+    this.setState({
+      isUSDTInInitialPortfolioExists,
+      initialPortfolio: assets[0],
+      totalPriceOfAllAssets: assets[1],
+    })
   }
 
   newOptimizeButtonClick = async (
@@ -87,11 +79,7 @@ export default class Import extends PureComponent<IProps> {
     endDate: object
   ) => {
     const { totalPriceOfAllAssets, isUSDTInInitialPortfolioExists } = this.state
-    const {
-      showWarning,
-      optimizedToState,
-      activeButton,
-    } = this.props
+    const { showWarning, optimizedToState, activeButton } = this.props
 
     // TODO: Should create another function to remove USDT first, and then optimize
     // should double check for if we have USDT
@@ -136,8 +124,6 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    console.log('backendResult unparsed', backendResult)
-
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
@@ -163,7 +149,6 @@ export default class Import extends PureComponent<IProps> {
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData)
 
-
     if (
       storeData.length < optimizedData[activeButton].portfolio_coins_list.length
     ) {
@@ -174,11 +159,8 @@ export default class Import extends PureComponent<IProps> {
     optimizedToState(optimizedData)
   }
 
-
   addRow = (name: string, value: number) => {
-    if (
-      this.props.storeData.some((el) => el.coin === name)
-    ) {
+    if (this.props.storeData.some((el) => el.coin === name)) {
       return
     }
 
@@ -260,9 +242,7 @@ export default class Import extends PureComponent<IProps> {
   onFocusChange = (focusedInput) => this.setState({ focusedInput })
 
   onToggleRiskSwitch = (e, che) => {
-    this.setState({ isRiskFreeAssetEnabled: che }, () => {
-      console.log(this.state)
-    })
+    this.setState({ isRiskFreeAssetEnabled: che })
   }
 
   onSelectChange = (
@@ -286,7 +266,6 @@ export default class Import extends PureComponent<IProps> {
   render() {
     const {
       storeData, // data from redux (data from portfolio and mannualy added)
-      optimizedData,
       onNewBtnClick,
       filterValueSmallerThenPercentage,
       activeButton,
