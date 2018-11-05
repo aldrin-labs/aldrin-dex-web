@@ -132,7 +132,9 @@ class Container extends Component {
               render: formatedSum,
               isNumber: true,
               // colors for P&L
-              style: ind > 6 && { color: sum > 0 ? green : red },
+              style: ind > 6 && {
+                color: sum > 0 ? green : sum < 0 ? red : '',
+              },
             })
           } else {
             // here will be portfolio % column
