@@ -51,6 +51,7 @@ const NavBarRaw: SFC<Props> = ({
       hide={hide}
       color="default"
       background={type === 'light' && primary.light}
+      className="Navbar"
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
         <Grid alignItems="center" container={true} alignContent={'stretch'}>

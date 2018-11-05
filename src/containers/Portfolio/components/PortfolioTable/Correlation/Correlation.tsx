@@ -43,7 +43,7 @@ const Correlation = (props: IProps) => {
   }
 
   return (
-    <div>
+    <>
       {children}
       <CorrelationMatrix
         fullScreenChangeHandler={props.toggleFullscreen}
@@ -53,7 +53,7 @@ const Correlation = (props: IProps) => {
         period={period}
         dates={{ startDate, endDate }}
       />
-    </div>
+    </>
   )
 }
 
@@ -71,9 +71,6 @@ const CorrelationWrapper = (props: IProps) => {
   return (
     <PTWrapper>
       <Joyride
-        continuous={true}
-        showProgress={true}
-        showSkipButton={true}
         steps={portfolioCorrelationSteps}
         run={true}
       />

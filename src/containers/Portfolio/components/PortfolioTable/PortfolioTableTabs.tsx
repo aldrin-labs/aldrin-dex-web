@@ -115,7 +115,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
             </Typography>
-            <Button color="secondary" onClick={this.onToggleUSDBTC}>
+            <Button color="secondary" onClick={this.onToggleUSDBTC} className="SwitchButton">
               {' '}
               {isUSDCurrently ? 'BTC' : 'USD'}
             </Button>
