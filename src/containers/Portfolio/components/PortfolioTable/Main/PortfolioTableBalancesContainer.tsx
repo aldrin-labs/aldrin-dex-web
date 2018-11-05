@@ -14,7 +14,6 @@ import {
   roundPercentage,
   onCheckBoxClick,
   transformToNumber,
-  getMainSymbol,
   addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 
@@ -126,7 +125,11 @@ class Container extends Component {
           })
 
           // coloring text depends on value for P&L
-          const formatedSum = roundAndFormatNumber(sum, round, true)
+          const formatedSum = roundAndFormatNumber(
+            sum,
+            round,
+            ind === 2 ? false : true
+          )
           if (ind > 3) {
             total.push({
               render: formatedSum,
@@ -152,7 +155,10 @@ class Container extends Component {
           id: total[0],
           exchange: total[1],
           coin: total[2],
-          portfolio: { render: `${total[3]}%`, isNumber: true },
+          portfolio: {
+            render: `${roundPercentage(+total[3])}%`,
+            isNumber: true,
+          },
           price: total[4],
           quantity: total[5],
           usd: total[6],
@@ -208,7 +214,7 @@ class Container extends Component {
           isUSDCurrently
         ),
         isNumber: true,
-        color: row.realizedPL > 0 ? green : red,
+        color: row.realizedPL > 0 ? green : row.realizedPL < 0 ? red : '',
       },
       unrealizedPL: {
         rawValue: row.unrealizedPL,
@@ -217,7 +223,7 @@ class Container extends Component {
           isUSDCurrently
         ),
         isNumber: true,
-        color: row.unrealizedPL > 0 ? green : red,
+        color: row.unrealizedPL > 0 ? green : row.unrealizedPL < 0 ? red : '',
       },
       totalPL: {
         rawValue: row.totalPL,
@@ -226,7 +232,7 @@ class Container extends Component {
           isUSDCurrently
         ),
         isNumber: true,
-        color: row.totalPL > 0 ? green : red,
+        color: row.totalPL > 0 ? green : row.totalPL < 0 ? red : '',
       },
     }))
   }
