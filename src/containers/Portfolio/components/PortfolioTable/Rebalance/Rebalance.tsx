@@ -413,6 +413,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const {
       children,
       isUSDCurrently,
+      baseCoin,
       theme,
       theme: { palette },
     } = this.props
@@ -470,6 +471,7 @@ class Rebalance extends React.Component<IProps, IState> {
                   isUSDCurrently,
                   addMoneyInputValue,
                   theme,
+                  baseCoin,
                 }}
                 onSortTable={this.onSortTable}
                 onSaveClick={this.onSaveClick}
