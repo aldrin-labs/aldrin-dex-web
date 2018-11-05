@@ -22,9 +22,12 @@ export interface IState {
   rawOptimizedData: RawOptimizedData
   openWarning: boolean
   warningMessage: string
+  run: boolean
+  key: number
 }
 
 export interface IProps {
+  hideToolTip: (any: any) => void
   storeData: IData[]
   isShownMocks: boolean
   updateData: Function

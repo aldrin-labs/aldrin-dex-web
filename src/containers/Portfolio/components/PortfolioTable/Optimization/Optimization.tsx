@@ -49,6 +49,7 @@ import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
+import * as Useractions from '@containers/User/actions'
 
 
 class Optimization extends Component<IProps, IState> {
@@ -58,6 +59,8 @@ class Optimization extends Component<IProps, IState> {
     rawOptimizedData: [],
     openWarning: false,
     warningMessage: '',
+    run: true,
+    key: 0,
   }
 
   optimizedToState = (data: RawOptimizedData) => {
@@ -225,10 +228,24 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close'
+      || data.action === 'skip'
+      || data.status === 'finished'
+    ) this.props.hideToolTip('Optimization')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({key: oldKey + 1})
+    }
+  }
+
+
   render() {
     const {
       children,
       theme: { palette },
+      toolTip,
     } = this.props
 
     const textColor: string = palette.getContrastText(palette.background.paper)
@@ -245,7 +262,9 @@ class Optimization extends Component<IProps, IState> {
           showProgress={true}
           showSkipButton={true}
           steps={portfolioOptimizationSteps}
-          run={true}
+          run={toolTip.portfolioOptimization}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
         />
         <Content>
           {MASTER_BUILD && <ComingSoon />}
@@ -299,10 +318,12 @@ class Optimization extends Component<IProps, IState> {
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   storeData: store.portfolio.optimizationData,
+  toolTip: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateData: (data: any) => dispatch(actions.updateDataForOptimization(data)),
+  hideToolTip: (tab: string) => dispatch(Useractions.hideToolTip(tab)),
 })
 const storeComponent = connect(
   mapStateToProps,

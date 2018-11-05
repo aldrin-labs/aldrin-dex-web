@@ -1,18 +1,17 @@
 export const portfolioMainSteps = [
   {
     disableBeacon: true,
-    target: 'body',
+    target: '.TipButton',
     content: 'Welcome! This tutorial will provide a walk-through of our platform. You can skip sections or re-open this at anytime by clicking on this icon.',
-    placement: 'center',
+    placement: 'auto',
   },
   {
-    disableBeacon: true,
     target: 'body',
     content: 'We have added a real Binance account, so you can experience all of the functionality. To add your own Binance account please go to settings and enter your api key where you can also delete this demo account. Please note our application only supports Binance currently and we will be adding support for more exchanges soon.',
     placement: 'center',
   },
   {
-    target: '.UserLink',
+    target: '.Navbar',
     content: 'We have two main sections Portfolio and Chart. Our portfolio consists of five different sub-sections which can be selected from the menu on the left. To begin by importing your exchange or wallet, click here to open settings.',
     placement: 'bottom',
   },
@@ -23,7 +22,7 @@ export const portfolioMainSteps = [
   },
   {
     target: '.PortfolioTradeOrderHistoryTable',
-    content: 'Portfolio main table shows connected accounts, your asset allocation %, your profit & loss.',
+    content: 'Portfolio actions contains all your trade history, deposits and withdrawals.',
     placement: 'auto',
   },
   {
@@ -32,10 +31,9 @@ export const portfolioMainSteps = [
     placement: 'auto',
   },
   {
-    disableBeacon: true,
-    target: 'body',
+    target: '.SwitchButton',
     content: 'You can view your portfolio in crypto and fiat.',
-    placement: 'center',
+    placement: 'auto',
   },
   {
     target: '.settingsIcon',
@@ -71,7 +69,7 @@ export const portfolioCorrelationSteps = [
   {
     disableBeacon: true,
     target: 'body',
-    content: 'You can see which industries you are invested in and the performance of each industry for various durations.',
+    content: 'You can switch the correlation matrix time periods and make it full screen.',
     placement: 'center',
   },
 ]

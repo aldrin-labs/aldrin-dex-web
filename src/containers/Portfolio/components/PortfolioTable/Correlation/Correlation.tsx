@@ -17,6 +17,8 @@ import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/Portfo
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
+
 
 const Correlation = (props: IProps) => {
   const {
@@ -43,7 +45,7 @@ const Correlation = (props: IProps) => {
   }
 
   return (
-    <div>
+    <>
       {children}
       <CorrelationMatrix
         fullScreenChangeHandler={props.toggleFullscreen}
@@ -53,13 +55,14 @@ const Correlation = (props: IProps) => {
         period={period}
         dates={{ startDate, endDate }}
       />
-    </div>
+    </>
   )
 }
 
 const CorrelationWrapper = (props: IProps) => {
   const { isShownMocks, children } = props
   let { startDate, endDate } = props
+  let key = 0
 
   // startDate must be less always
   //  but if somehow not I will swap them
@@ -68,14 +71,24 @@ const CorrelationWrapper = (props: IProps) => {
     endDate = swapDates({ startDate, endDate }).endDate
   }
 
+  const handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close'
+      || data.action === 'skip'
+      || data.status === 'finished'
+    ) props.hideToolTip('Correlation')
+    if (data.status === 'finished') {
+      key = key + 1
+    }
+  }
+
   return (
     <PTWrapper>
       <Joyride
-        continuous={true}
-        showProgress={true}
-        showSkipButton={true}
         steps={portfolioCorrelationSteps}
-        run={true}
+        run={props.toolTip.portfolioCorrelation}
+        callback={handleJoyrideCallback}
+        key={key}
       />
       {isShownMocks ? (
         <Correlation
@@ -117,12 +130,14 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
+  toolTip: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
   setCorrelationPeriodToStore: (payload: object) =>
     dispatch(setCorrelationPeriodAction(payload)),
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
 })
 
 const storeComponent = connect(

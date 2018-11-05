@@ -45,6 +45,8 @@ export interface IState {
   totalPercents: number | string
   leftBar: string
   rightBar: string
+  run: boolean
+  key: number
 }
 
 export interface ICurrentSort {
