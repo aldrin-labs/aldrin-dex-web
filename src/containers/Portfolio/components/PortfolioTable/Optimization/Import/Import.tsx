@@ -29,7 +29,6 @@ import {
   Chart,
   ImportData,
 } from './Import.styles'
-import CardHeader from '@components/CardHeader'
 import { StyledCardHeader } from '../Optimization.styles'
 
 export default class Import extends PureComponent<IProps> {
@@ -192,7 +191,7 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    const formatedData = storeData.map((el: IData, i) => ({
+    const formatedData = storeData.map((el: IData) => ({
       x: el.coin,
       y: Number(Number(el.percentage).toFixed(2)),
     }))
