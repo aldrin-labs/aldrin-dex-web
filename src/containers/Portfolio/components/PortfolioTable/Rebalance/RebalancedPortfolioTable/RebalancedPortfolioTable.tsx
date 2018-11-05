@@ -552,7 +552,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             current: ' ',
             currentUSD: {
               render: addMainSymbol(
-                formatNumberToUSFormat(totalStaticRows),
+                formatNumberToUSFormat(totalTableRows),
                 isUSDCurrently
               ),
               isNumber: true,
