@@ -2,6 +2,8 @@ import React from 'react'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import Joyride from 'react-joyride'
+
 import QueryRenderer from '@components/QueryRenderer'
 import BarChart from '@components/BarChart/BarChart'
 import {
@@ -27,6 +29,7 @@ import {
 } from '@containers/Portfolio/api'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
+import { portfolioRebalanceSteps } from '@utils/joyrideSteps'
 
 import {
   Content,
@@ -449,105 +452,113 @@ class Rebalance extends React.Component<IProps, IState> {
     const tableDataHasData = !staticRows.length || !rows.length
 
     return (
-      <EmptyTablePlaceholder isEmpty={tableDataHasData}>
-        <PTWrapper tableData={true}>
-          {children}
-          <Content>
-            <Container isEditModeEnabled={isEditModeEnabled}>
-              <RebalancedPortfolioTable
-                {...{
-                  isEditModeEnabled,
-                  staticRows,
-                  totalStaticRows,
-                  rows,
-                  currentSortForDynamic,
-                  selectedActive,
-                  areAllActiveChecked,
-                  totalRows,
-                  totalPercents,
-                  totalTableRows,
-                  isPercentSumGood,
-                  undistributedMoney,
-                  isUSDCurrently,
-                  addMoneyInputValue,
-                  theme,
-                  baseCoin,
-                }}
-                onSortTable={this.onSortTable}
-                onSaveClick={this.onSaveClick}
-                onReset={this.onReset}
-                onEditModeEnable={this.onEditModeEnable}
-                updateState={this.updateState}
-              />
-              <BtnsWrapper>
-                <RebalanceActionButtons
+      <div>
+          <Joyride
+            continuous={true}
+            showProgress={true}
+            showSkipButton={true}
+            steps={portfolioRebalanceSteps}
+            run={true}
+          />
+        <EmptyTablePlaceholder isEmpty={tableDataHasData}>
+          <PTWrapper tableData={true}>
+            {children}
+            <Content>
+              <Container isEditModeEnabled={isEditModeEnabled}>
+                <RebalancedPortfolioTable
                   {...{
                     isEditModeEnabled,
-                    saveButtonColor,
-                    onSaveClick,
-                    onEditModeEnable,
-                    onReset,
-                    textColor,
-                    secondary,
-                    red,
-                    green,
-                  }}
-                />
-                <RebalanceMoneyButtons
-                  {...{
-                    isEditModeEnabled,
-                    addMoneyInputValue,
-                    undistributedMoney,
                     staticRows,
+                    totalStaticRows,
                     rows,
+                    currentSortForDynamic,
                     selectedActive,
-                    updateState,
-                    textColor,
-                    fontFamily,
-                    secondary,
-                    red,
-                    green,
+                    areAllActiveChecked,
+                    totalRows,
+                    totalPercents,
+                    totalTableRows,
+                    isPercentSumGood,
+                    undistributedMoney,
+                    isUSDCurrently,
+                    addMoneyInputValue,
+                    theme,
                   }}
+                  onSortTable={this.onSortTable}
+                  onSaveClick={this.onSaveClick}
+                  onReset={this.onReset}
+                  onEditModeEnable={this.onEditModeEnable}
+                  updateState={this.updateState}
                 />
-              </BtnsWrapper>
-            </Container>
-            <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
-              <ChartContainer
-                elevation={10}
-                background={palette.background.paper}
-              >
-                <StyledCardHeader title={`Portfolio Distribution`} />
-                <InnerChartContainer>
-                  <Chart background={palette.background.default}>
-                    {staticRows &&
-                      staticRows[0] &&
-                      staticRows[0].portfolioPerc && (
-                        <BarChart
-                          height={350}
-                          hideDashForToolTip={true}
-                          xAxisVertical={true}
-                          alwaysShowLegend={true}
-                          charts={[
-                            {
-                              data: combineToBarChart(staticRows),
-                              color: this.state.leftBar,
-                              title: 'Current',
-                            },
-                            {
-                              data: combineToBarChart(rows),
-                              color: this.state.rightBar,
-                              title: 'Rebalanced',
-                            },
-                          ]}
-                        />
-                      )}
-                  </Chart>
-                </InnerChartContainer>
-              </ChartContainer>
-            </ChartWrapper>
-          </Content>
-        </PTWrapper>
-      </EmptyTablePlaceholder>
+                <BtnsWrapper>
+                  <RebalanceActionButtons
+                    {...{
+                      isEditModeEnabled,
+                      saveButtonColor,
+                      onSaveClick,
+                      onEditModeEnable,
+                      onReset,
+                      textColor,
+                      secondary,
+                      red,
+                      green,
+                    }}
+                  />
+                  <RebalanceMoneyButtons
+                    {...{
+                      isEditModeEnabled,
+                      addMoneyInputValue,
+                      undistributedMoney,
+                      staticRows,
+                      rows,
+                      selectedActive,
+                      updateState,
+                      textColor,
+                      fontFamily,
+                      secondary,
+                      red,
+                      green,
+                    }}
+                  />
+                </BtnsWrapper>
+              </Container>
+              <ChartWrapper isEditModeEnabled={isEditModeEnabled} className="PortfolioDistributionChart">
+                <ChartContainer
+                  elevation={10}
+                  background={palette.background.paper}
+                >
+                  <StyledCardHeader title={`Portfolio Distribution`}/>
+                  <InnerChartContainer>
+                    <Chart background={palette.background.default}>
+                      {staticRows &&
+                        staticRows[0] &&
+                        staticRows[0].portfolioPerc && (
+                          <BarChart
+                            height={350}
+                            hideDashForToolTip={true}
+                            xAxisVertical={true}
+                            alwaysShowLegend={true}
+                            charts={[
+                              {
+                                data: combineToBarChart(staticRows),
+                                color: this.state.leftBar,
+                                title: 'Current',
+                              },
+                              {
+                                data: combineToBarChart(rows),
+                                color: this.state.rightBar,
+                                title: 'Rebalanced',
+                              },
+                            ]}
+                          />
+                        )}
+                    </Chart>
+                  </InnerChartContainer>
+                </ChartContainer>
+              </ChartWrapper>
+            </Content>
+          </PTWrapper>
+        </EmptyTablePlaceholder>
+      </div>
     )
   }
 }

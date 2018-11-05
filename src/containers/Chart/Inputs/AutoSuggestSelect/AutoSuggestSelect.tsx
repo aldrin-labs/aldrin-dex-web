@@ -53,7 +53,7 @@ class IntegrationReactSelect extends React.PureComponent {
       }))
     }
     return (
-      <div style={{ width: '15%' }}>
+      <div style={{ width: '15%' }} className="AutoSuggestSelect">
         <SelectR
           placeholder="Add chart"
           value={value && { value, label: value }}
