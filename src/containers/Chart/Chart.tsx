@@ -45,7 +45,6 @@ class Chart extends React.Component<IProps, IState> {
     activeChart: 'candle',
     exchanges: [],
     tradeHistory: [],
-
   }
 
   static getDerivedStateFromProps(nextProps: IProps) {
@@ -287,60 +286,63 @@ class Chart extends React.Component<IProps, IState> {
         in={true}
       >
         <div>
-
           <Container>
-          <ChartsContainer>
-            <ChartsSwitcher
-              divider={palette.divider}
-              background={palette.primary[type]}
-            >
-              {base &&
-                quote && (
-                  <ExchangePair background={palette.primary[type]}>
-                    <TypographyWithCustomColor
-                      textColor={palette.getContrastText(palette.primary[type])}
-                      variant="subtitle1"
-                    >
-                      {`${base}/${quote}`}
-                    </TypographyWithCustomColor>
-                  </ExchangePair>
-                )}
-              <SwitchButtonWrapper>
-                <Button
-                  variant="text"
-                  color="secondary"
-                  onClick={() => {
-                    this.setState((prevState) => ({
-                      activeChart:
-                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                    }))
-                  }}
-                >
-                  {activeChart === 'candle' ? 'show depth' : 'show chart'}
-                </Button>
-              </SwitchButtonWrapper>
-            </ChartsSwitcher>
-            {activeChart === 'candle' ? (
-              <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
-            ) : (
-              <Fade timeout={1000} in={activeChart === 'depth'}>
-                <DepthChartContainer>
-                  {MASTER_BUILD && <ComingSoon />}
-                  <MainDepthChart
-                    {...{
-                      theme,
-                      base,
-                      quote,
-                      animated: false,
+            <ChartsContainer>
+              <ChartsSwitcher
+                divider={palette.divider}
+                background={palette.primary[type]}
+              >
+                {base &&
+                  quote && (
+                    <ExchangePair background={palette.primary[type]}>
+                      <TypographyWithCustomColor
+                        textColor={palette.getContrastText(
+                          palette.primary[type]
+                        )}
+                        variant="subtitle1"
+                      >
+                        {`${base}/${quote}`}
+                      </TypographyWithCustomColor>
+                    </ExchangePair>
+                  )}
+                <SwitchButtonWrapper>
+                  <Button
+                    variant="text"
+                    color="secondary"
+                    onClick={() => {
+                      this.setState((prevState) => ({
+                        activeChart:
+                          prevState.activeChart === 'candle'
+                            ? 'depth'
+                            : 'candle',
+                      }))
                     }}
-                  />
-                </DepthChartContainer>
-              </Fade>
-            )}
-          </ChartsContainer>
+                  >
+                    {activeChart === 'candle' ? 'show depth' : 'show chart'}
+                  </Button>
+                </SwitchButtonWrapper>
+              </ChartsSwitcher>
+              {activeChart === 'candle' ? (
+                <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
+              ) : (
+                <Fade timeout={1000} in={activeChart === 'depth'}>
+                  <DepthChartContainer>
+                    {MASTER_BUILD && <ComingSoon />}
+                    <MainDepthChart
+                      {...{
+                        theme,
+                        base,
+                        quote,
+                        animated: false,
+                      }}
+                    />
+                  </DepthChartContainer>
+                </Fade>
+              )}
+            </ChartsContainer>
 
-          {this.renderTables()}
-        </Container>
+            {this.renderTables()}
+          </Container>
         </div>
       </Slide>
     )
@@ -413,7 +415,7 @@ const MainContainer = styled.div`
   }
 `
 const DepthChartContainer = styled.div`
-  height: calc(100vh - 59px - ${navBarHeight} - 38px);
+  height: calc(100vh - 59px - ${navBarHeight}px - 38px);
   width: 100%;
 `
 
