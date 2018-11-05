@@ -14,6 +14,8 @@ import {
   roundPercentage,
   onCheckBoxClick,
   transformToNumber,
+  getMainSymbol,
+  addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 
 const chooseRed = (theme: Theme) =>
@@ -109,7 +111,7 @@ class Container extends Component {
         if (ind > 2 && ind !== 4 && ind !== 5) {
           // sum each column numbers if they were selected
           column.forEach((el, i) => {
-            const num = isObject(el) ? el.render : el
+            const num = isObject(el) ? el.rawValue : el
             if (
               checkedRows.indexOf(data[i][0]) !== -1 &&
               typeof num === 'number' &&
@@ -124,14 +126,18 @@ class Container extends Component {
           })
 
           // coloring text depends on value for P&L
-          const formatedSum = +roundAndFormatNumber(sum, round, false)
-          if (ind > 6) {
+          const formatedSum = roundAndFormatNumber(sum, round, true)
+          if (ind > 3) {
             total.push({
               render: formatedSum,
               isNumber: true,
-              style: { color: formatedSum > 0 ? green : red },
+              // colors for P&L
+              style: ind > 6 && {
+                color: sum > 0 ? green : sum < 0 ? red : '',
+              },
             })
           } else {
+            // here will be portfolio % column
             total.push(formatedSum)
           }
         } else {
@@ -160,6 +166,7 @@ class Container extends Component {
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
     const { numberOfDigitsAfterPoint: round } = this.state
+    const isUSDCurrently = this.props.baseCoin === 'USDT'
 
     return data.map((row) => ({
       // exchange + coin always uniq
@@ -168,26 +175,57 @@ class Container extends Component {
       exchange: row.exchange,
       coin: { render: row.coin, style: { fontWeight: 700 } },
       portfolio: {
+        // not formatted value for counting total in footer
+        rawValue: row.portfolioPercentage,
         render: `${roundPercentage(row.portfolioPercentage) || 0}%`,
         isNumber: true,
       },
-      price: +roundAndFormatNumber(row.price, round, false),
-      quantity: +roundAndFormatNumber(row.quantity, round, false),
-      usd: +roundAndFormatNumber(row.price * row.quantity, round, false),
-      reilizedPL: {
-        render: +roundAndFormatNumber(row.realizedPL, round, false),
+      price: {
+        rawValue: row.price,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.price, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
+      },
+      quantity: {
+        rawValue: row.quantity,
+        render: roundAndFormatNumber(row.quantity, round, true),
+        isNumber: true,
+      },
+      usd: {
+        rawValue: row.price * row.quantity,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.price * row.quantity, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
+      },
+      realizedPL: {
+        rawValue: row.realizedPL,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.realizedPL, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
         color: row.realizedPL > 0 ? green : red,
       },
-      unreilizedPL: {
-        render: +roundAndFormatNumber(row.unrealizedPL, round, false),
+      unrealizedPL: {
+        rawValue: row.unrealizedPL,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.unrealizedPL, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
         color: row.unrealizedPL > 0 ? green : red,
       },
       totalPL: {
-        render: +roundAndFormatNumber(
-          row.realizedPL + row.unrealizedPL,
-          round,
-          false
+        rawValue: row.totalPL,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.totalPL, round, true),
+          isUSDCurrently
         ),
+        isNumber: true,
         color: row.totalPL > 0 ? green : red,
       },
     }))

@@ -3,13 +3,13 @@ import React from 'react'
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
+  addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions } from '.././mocks'
 import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
 import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 import { handleRef } from '@components/ReactSelectComponent/utils'
-import { Icon } from '@styles/cssUtils'
 import {
   InputTable,
   TableWrapper,
@@ -264,13 +264,13 @@ export default class RebalancedPortfolioTable extends React.Component<
   transformData = (
     rows,
     staticRows,
-    mainSymbol,
     isEditModeEnabled,
     isPercentSumGood,
     red,
     green,
     background
   ) => {
+    const isUSDCurrently = this.props.baseCoin === 'USDT'
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
@@ -383,18 +383,15 @@ export default class RebalancedPortfolioTable extends React.Component<
         id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
-        ...(staticRows[index].coin === row.coin && staticRows[index].exchange === row.exchange
+        ...(staticRows[index].coin === row.coin &&
+        staticRows[index].exchange === row.exchange
           ? {
               oririnalPortfolioPerc: {
                 render: `${staticRows[index].portfolioPerc}%`,
                 isNumber: true,
               },
               oritinalPrice: {
-                render: (
-                  <>
-                    {mainSymbol} {staticRows[index].price}{' '}
-                  </>
-                ),
+                render: addMainSymbol(staticRows[index].price, isUSDCurrently),
                 isNumber: true,
               },
             }
@@ -404,10 +401,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             }),
         portfolioPerc: { render: portfolioPercentage, isNumber: true },
         price: {
-          render: (
-            <>
-              {mainSymbol} {formatNumberToUSFormat(row.price)}
-            </>
+          render: addMainSymbol(
+            formatNumberToUSFormat(row.price),
+            isUSDCurrently
           ),
           isNumber: true,
         },
@@ -457,11 +453,6 @@ export default class RebalancedPortfolioTable extends React.Component<
     const red = theme.palette.red.main
     const green = theme.palette.green.main
     const background = theme.palette.background.default
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-      <Icon className="fa fa-btc" />
-    )
 
     let columnNames = [
       { label: 'Exchange', id: '2' },
@@ -491,7 +482,6 @@ export default class RebalancedPortfolioTable extends React.Component<
         body: transformData(
           rows,
           staticRows,
-          mainSymbol,
           isEditModeEnabled,
           isPercentSumGood,
           red,
@@ -504,31 +494,24 @@ export default class RebalancedPortfolioTable extends React.Component<
                 id: '3',
                 exchange: {
                   render: ' ',
-                  style: { position: 'static' },
                 },
                 coin: {
                   render: ' ',
-                  style: { position: 'static' },
                 },
                 current: {
                   render: ' ',
-                  style: { position: 'static' },
                 },
                 currentUSD: {
                   render: ' ',
-                  style: { position: 'static' },
                 },
                 rebalanced: {
                   render: ' ',
-                  style: { position: 'static' },
                 },
                 rebalancedUSD: {
                   render: ' ',
-                  style: { position: 'static' },
                 },
                 trade: {
                   render: ' ',
-                  style: { position: 'static' },
                 },
                 icon: {
                   render: (
@@ -537,9 +520,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                       hoverColor={green}
                     />
                   ),
-                  style: { position: 'static' },
                 },
                 options: {
+                  static: true,
                   variant: 'body',
                 },
               }
@@ -552,10 +535,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             currentUSD: ' ',
             rebalanced: { render: `${totalPercents}%`, isNumber: true },
             rebalancedUSD: {
-              render: (
-                <>
-                  {mainSymbol} {formatNumberToUSFormat(totalStaticRows)}
-                </>
+              render: addMainSymbol(
+                formatNumberToUSFormat(totalStaticRows),
+                isUSDCurrently
               ),
               isNumber: true,
             },
@@ -569,19 +551,17 @@ export default class RebalancedPortfolioTable extends React.Component<
             coin: ' ',
             current: ' ',
             currentUSD: {
-              render: (
-                <>
-                  {mainSymbol} {formatNumberToUSFormat(totalStaticRows)}
-                </>
+              render: addMainSymbol(
+                formatNumberToUSFormat(totalTableRows),
+                isUSDCurrently
               ),
               isNumber: true,
             },
             rebalanced: ' ',
             rebalancedUSD: {
-              render: (
-                <>
-                  {mainSymbol} {formatNumberToUSFormat(totalRows)}
-                </>
+              render: addMainSymbol(
+                formatNumberToUSFormat(totalRows),
+                isUSDCurrently
               ),
               isNumber: true,
             },

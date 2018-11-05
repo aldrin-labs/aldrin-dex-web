@@ -10,6 +10,22 @@ import { InputRecord } from '@components/DonutChart/types'
 import { Tooltip } from '@material-ui/core'
 import { FullWidthBlock } from '@components/OldTable/Table'
 
+export const getMainSymbol = (isUSDCurrently: boolean) =>
+  isUSDCurrently ? (
+    <Icon className="fa fa-usd" />
+  ) : (
+    <Icon className="fa fa-btc" />
+  )
+
+export const addMainSymbol = (
+  value: string | number,
+  isUSDCurrently: boolean
+) => (
+  <span style={{ whiteSpace: 'nowrap' }}>
+    {getMainSymbol(isUSDCurrently)} {value}
+  </span>
+)
+
 const config = {
   industryTableEmptyCellTooltip: `The "-" represents fields for which we are not successfully
    able to calculate a value due to missing data.`,

@@ -416,6 +416,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const {
       children,
       isUSDCurrently,
+      baseCoin,
       theme,
       theme: { palette },
     } = this.props
