@@ -151,7 +151,7 @@ class PortfolioSelector extends React.Component<IProps> {
             }}
           />
 
-          {process.env.NODE_ENV === 'production' && (
+          {process.env.NODE_ENV !== 'production' && (
             <>
               <Name color={color}>Dust</Name>
               <FilterValues>
