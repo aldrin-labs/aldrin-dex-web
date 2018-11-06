@@ -22,8 +22,14 @@ export const portfolioMainSteps = [
   {
     target: '.Navbar',
     content:
-      'We have two main sections Portfolio and Chart. Our portfolio consists of five different sub-sections which can be selected from the menu on the left. To begin by importing your exchange or wallet, click here to open settings.',
+      'We have two main sections Portfolio and Chart. Our portfolio consists of five different sub-sections which can be selected from the menu on the left.',
     placement: 'bottom',
+  },
+  {
+    target: '.UserLink',
+    content:
+      'To import your account, click here to open settings.',
+    placement: 'auto',
   },
   {
     target: '.PortfolioMainTable',
