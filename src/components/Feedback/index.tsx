@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent } from 'react'
 import { Button } from '@material-ui/core'
-import config from './config'
+import config from '@utils/linkConfig'
 
 export default class Feedback extends Component {
   state = {

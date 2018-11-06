@@ -118,7 +118,7 @@ export default class Import extends PureComponent<IProps> {
         fetchPolicy: 'network-only',
       })
     } catch (e) {
-      showWarning(systemError)
+      showWarning(systemError, true)
       // showWarning(`You got an error! 🙈`)
       this.props.toggleLoading()
       console.log('ERROR IN AWAIT FUNC:', e)
@@ -130,7 +130,7 @@ export default class Import extends PureComponent<IProps> {
     )
 
     if (backendResultParsed === '') {
-      showWarning(systemError)
+      showWarning(systemError, true)
       // showWarning('You got empty response! 🙈')
       this.props.toggleLoading()
 
@@ -138,7 +138,10 @@ export default class Import extends PureComponent<IProps> {
     }
 
     if (backendResultParsed.error || backendResultParsed.status === 1) {
-      showWarning(backendResultParsed.error_message ? `User Error: ${backendResultParsed.error_message}` : systemError)
+      const userErrorMessage = `User Error: ${backendResultParsed.error_message}`
+      const isUserError = backendResultParsed.error_message
+
+      showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
 

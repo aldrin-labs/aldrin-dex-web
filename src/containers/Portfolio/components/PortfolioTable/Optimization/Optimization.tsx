@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import Switch from '@material-ui/core/Switch'
 import Joyride from 'react-joyride'
 
 import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
@@ -45,6 +46,7 @@ import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWi
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
 import * as Useractions from '@containers/User/actions'
+import config from '@utils/linkConfig'
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -53,6 +55,8 @@ class Optimization extends Component<IProps, IState> {
     rawOptimizedData: [],
     openWarning: false,
     warningMessage: '',
+    showAllLineChartData: false,
+    isSystemError: false,
     run: true,
     key: 0,
   }
@@ -104,8 +108,8 @@ class Optimization extends Component<IProps, IState> {
     this.setState({ activeButton: index })
   }
 
-  showWarning = (message: string) => {
-    this.setState({ openWarning: true, warningMessage: message })
+  showWarning = (message: string, isSystemError = false) => {
+    this.setState({ openWarning: true, warningMessage: message, isSystemError })
   }
 
   hideWarning = () => {
@@ -116,6 +120,17 @@ class Optimization extends Component<IProps, IState> {
 
   toggleLoading = () =>
     this.setState((prevState) => ({ loading: !prevState.loading }))
+
+  onToggleLineChartSwitch = (e, isChecked: boolean) => {
+    this.setState({
+      showAllLineChartData: isChecked,
+    })
+  }
+
+  openLink = (link: string = '') => {
+    this.hideWarning()
+    window.open(link, 'CCAI Feedback')
+  }
 
   renderInput = () => {
     // importing stuff from backend or manually bu user
@@ -154,7 +169,7 @@ class Optimization extends Component<IProps, IState> {
   }
 
   renderCharts = () => {
-    const { activeButton, rawOptimizedData } = this.state
+    const { activeButton, rawOptimizedData, showAllLineChartData } = this.state
     const { storeData } = this.props
 
     if (!storeData) return
@@ -170,8 +185,18 @@ class Optimization extends Component<IProps, IState> {
       risk: arrayOfReturnedRisks,
     }
 
+    const riskProfileNames = ['min', 'low', 'med', 'high', 'max'];
+
+    // TODO: Make it better
     // for real data
-    const lineChartData =
+    const lineChartData = showAllLineChartData ? ( rawOptimizedData && rawOptimizedData.length && rawOptimizedData.map((el, i) => {
+      return el.backtest_results.map((element) => ({
+        label: riskProfileNames[i],
+        x: element[0],
+        y: element[1],
+      }))
+      })
+    ) : (
       rawOptimizedData &&
       rawOptimizedData.length &&
       rawOptimizedData[activeButton].backtest_results.map((el) => ({
@@ -179,29 +204,38 @@ class Optimization extends Component<IProps, IState> {
         x: el[0],
         y: el[1],
       }))
+    )
 
-    const itemsForChartLegend = [
-      {
-        title: 'Optimized',
-        color: colors[0],
-      },
-      {
-        title: 'Original',
-        color: colors[1],
-      },
-    ]
+
+    const itemsForChartLegend = riskProfileNames.map((el, i) => ({
+      title: el,
+      color: colors[i],
+    }))
 
     const { theme } = this.props
 
     return (
       <ChartsContainer>
-        <ChartContainer className="BackTestOptimizationChart">
-          <StyledCardHeader title="Back-test Optimization" />
+      <ChartContainer className="BackTestOptimizationChart">
+          <StyledCardHeader
+            title="Back-test Optimization"
+            action={
+              <>
+                <TypographyWithCustomColor color={`secondary`} variant="button">
+                  Show all risk profiles
+                </TypographyWithCustomColor>
+                <Switch
+                  onChange={this.onToggleLineChartSwitch}
+                  checked={this.state.showAllLineChartData}
+                />
+              </>
+            }
+          />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <LineChart
-                alwaysShowLegend={false}
-                data={lineChartData === 0 ? undefined : [lineChartData]}
+                alwaysShowLegend={showAllLineChartData}
+                data={lineChartData === 0 ? undefined : showAllLineChartData ? lineChartData : [lineChartData]}
                 itemsForChartLegend={itemsForChartLegend}
               />
             </Chart>
@@ -245,7 +279,7 @@ class Optimization extends Component<IProps, IState> {
 
     const textColor: string = palette.getContrastText(palette.background.paper)
 
-    const { loading, openWarning, warningMessage } = this.state
+    const { loading, openWarning, warningMessage, isSystemError } = this.state
 
     return (
       <PTWrapper
@@ -279,13 +313,12 @@ class Optimization extends Component<IProps, IState> {
           {children}
           {loading && (
             <LoaderWrapper>
-              {' '}
               <LoaderInnerWrapper>
                 <Loading size={94} margin={'0 0 2rem 0'} />{' '}
                 <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
-                </TypographyWithCustomColor>{' '}
-              </LoaderInnerWrapper>{' '}
+                </TypographyWithCustomColor>
+              </LoaderInnerWrapper>
             </LoaderWrapper>
           )}
           <ContentInner loading={loading}>
@@ -315,6 +348,17 @@ class Optimization extends Component<IProps, IState> {
               >
                 ok
               </Button>
+              {isSystemError && (
+                <Button
+                  onClick={() => {
+                    this.openLink(config.bugLink)
+                  }}
+                  size="small"
+                  style={{ margin: '0.5rem 1rem' }}
+                >
+                  Report bug
+                </Button>
+              )}
             </DialogActions>
           </Dialog>
         </Content>

@@ -22,6 +22,7 @@ import { Loading } from '@components/Loading/Loading'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { hexToRgbAWithOpacity } from '../../../styles/helpers'
 import { IDepthChartProps, IDepthChartState } from './DepthChart.types'
+import ComingSoon from '@components/ComingSoon'
 
 class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
   state = {
@@ -197,6 +198,7 @@ class DepthChart extends Component<IDepthChartProps, IDepthChartState> {
 
     return (
       <Container>
+        <ComingSoon />
         <FlexibleXYPlot
           margin={{ right: 48 }}
           onMouseLeave={this.onMouseLeave}

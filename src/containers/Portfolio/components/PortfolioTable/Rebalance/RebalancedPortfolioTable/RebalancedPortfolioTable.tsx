@@ -15,11 +15,15 @@ import {
   TableWrapper,
   SAddIcon,
   SDeleteIcon,
+  LoaderInnerWrapper,
+  LoaderWrapper,
+  ContentInner,
 } from './RebalancedPortfolioTable.styles'
-
+import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { Table } from '@storybook-components'
+import { Loading } from '@components/Loading'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -264,11 +268,11 @@ export default class RebalancedPortfolioTable extends React.Component<
   transformData = (
     rows,
     staticRows,
-    isEditModeEnabled,
-    isPercentSumGood,
-    red,
-    green,
-    background
+    isEditModeEnabled: boolean,
+    isPercentSumGood: boolean,
+    red: string,
+    green: string,
+    background : string
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
     const transformedData = rows.map((row, index) => {
@@ -574,18 +578,31 @@ export default class RebalancedPortfolioTable extends React.Component<
   }
 
   render() {
-    const { selectedActive, isEditModeEnabled } = this.props
+    const { selectedActive, isEditModeEnabled, textColor, loading } = this.props
+
     return (
       <TableWrapper>
-        <Table
-          title="Rebalanced portfolio"
-          withCheckboxes={isEditModeEnabled}
-          checkedRows={selectedActive}
-          onChange={this.onSelectActiveBalance}
-          onSelectAllClick={this.onSelectAllActive}
-          showUpperFooter={isEditModeEnabled}
-          {...this.putDataInTable()}
-        />
+        {loading && (
+          <LoaderWrapper>
+            <LoaderInnerWrapper>
+              <Loading size={94} margin={'0 0 2rem 0'} />{' '}
+              <TypographyWithCustomColor color={textColor} variant="h6">
+                Saving rebalanced portfolio...
+              </TypographyWithCustomColor>{' '}
+            </LoaderInnerWrapper>{' '}
+          </LoaderWrapper>
+        )}
+        <ContentInner loading={loading}>
+          <Table
+            title="Rebalanced portfolio"
+            withCheckboxes={isEditModeEnabled}
+            checkedRows={selectedActive}
+            onChange={this.onSelectActiveBalance}
+            onSelectAllClick={this.onSelectAllActive}
+            showUpperFooter={isEditModeEnabled}
+            {...this.putDataInTable()}
+          />
+        </ContentInner>
       </TableWrapper>
     )
   }
