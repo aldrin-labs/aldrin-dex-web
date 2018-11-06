@@ -161,10 +161,26 @@ class Container extends Component {
           },
           price: total[4],
           quantity: total[5],
-          usd: total[6],
-          reailizedPL: total[7],
-          unrealizedPL: total[8],
-          totalPL: total[9],
+          usd: {
+            render: addMainSymbol(total[6].render, true),
+            style: total[6].style,
+            isNumber: total[6].isNumber,
+          },
+          reailizedPL: {
+            render: addMainSymbol(total[7].render, true),
+            style: total[7].style,
+            isNumber: total[7].isNumber,
+          },
+          unrealizedPL: {
+            render: addMainSymbol(total[8].render, true),
+            style: total[8].style,
+            isNumber: total[8].isNumber,
+          },
+          totalPL: {
+            render: addMainSymbol(total[9].render, true),
+            style: total[9].style,
+            isNumber: total[9].isNumber,
+          },
         },
       ]
     )
@@ -173,7 +189,7 @@ class Container extends Component {
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
     const { numberOfDigitsAfterPoint: round } = this.state
     const isUSDCurrently = this.props.baseCoin === 'USDT'
-
+    console.log(data)
     return data.map((row) => ({
       // exchange + coin always uniq
       //  change in future

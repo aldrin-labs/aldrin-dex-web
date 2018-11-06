@@ -56,8 +56,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     } = this.props
 
     const { body, head, footer } = putDataInTable()
-    console.log(theme.palette.background.paper)
-    console.log('theme.palette.background.paper')
 
     const coins =
       checkedRows && checkedRows.length > 0
