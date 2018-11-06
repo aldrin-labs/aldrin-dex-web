@@ -578,10 +578,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   }
 
   render() {
-    const { selectedActive, isEditModeEnabled, textColor } = this.props
-
-    const loading = true;
-
+    const { selectedActive, isEditModeEnabled, textColor, loading } = this.props
 
     return (
       <TableWrapper>
