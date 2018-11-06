@@ -135,7 +135,7 @@ export const singleChartSteps: T[] = [
     disableBeacon: true,
     target: '.ExchangesTable',
     content: 'Select the exchange.',
-    placement: 'left',
+    placement: 'bottom',
   },
   {
     target: '.AutoSuggestSelect',
