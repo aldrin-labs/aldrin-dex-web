@@ -47,6 +47,7 @@ export interface IState {
   rightBar: string
   run: boolean
   key: number
+  loading: boolean
 }
 
 export interface ICurrentSort {
