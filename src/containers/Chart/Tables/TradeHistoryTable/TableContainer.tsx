@@ -8,6 +8,7 @@ import {
 } from '@utils/chartPageUtils'
 
 import { IProps, IState } from './TableContainer.types'
+import { withErrorFallback } from '@hoc/'
 
 let unsubscribe: Function | undefined
 
@@ -103,4 +104,4 @@ class TableContainer extends Component<IProps, IState> {
   }
 }
 
-export default TableContainer
+export default withErrorFallback(TableContainer)

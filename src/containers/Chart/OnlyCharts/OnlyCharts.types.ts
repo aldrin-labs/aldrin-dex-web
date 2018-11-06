@@ -14,4 +14,5 @@ export interface IProps {
   openedWarning: boolean
   theme: any
   view: any
+  demoMode: { chartPage: boolean; multiChartPage: boolean }
 }

@@ -13,8 +13,7 @@ const transformDataToExchangesTable = ({ data, ...props }: IExchangesTable) => {
             symbol,
           }))
         : []
-      const exchanges =
-      props.isShownMocks
+    const exchanges = props.isShownMocks
       ? [...exchangesWithoutMocks, ...mockExchanges]
       : exchangesWithoutMocks
 

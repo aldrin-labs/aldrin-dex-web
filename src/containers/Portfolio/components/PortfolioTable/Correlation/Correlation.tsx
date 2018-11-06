@@ -19,7 +19,6 @@ import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 
-
 const Correlation = (props: IProps) => {
   const {
     children,
@@ -60,7 +59,7 @@ const Correlation = (props: IProps) => {
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, children } = props
+  const { isShownMocks, children, theme } = props
   let { startDate, endDate } = props
   let key = 0
 
@@ -73,10 +72,11 @@ const CorrelationWrapper = (props: IProps) => {
 
   const handleJoyrideCallback = (data) => {
     if (
-      data.action === 'close'
-      || data.action === 'skip'
-      || data.status === 'finished'
-    ) props.hideToolTip('Correlation')
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      props.hideToolTip('Correlation')
     if (data.status === 'finished') {
       key = key + 1
     }
@@ -89,6 +89,19 @@ const CorrelationWrapper = (props: IProps) => {
         run={props.toolTip.portfolioCorrelation}
         callback={handleJoyrideCallback}
         key={key}
+        styles={{
+          options: {
+            backgroundColor: theme.palette.background.paper,
+            primaryColor: theme.palette.primary.main,
+            textColor: theme.palette.getContrastText(
+              theme.palette.background.paper
+            ),
+          },
+          tooltip: {
+            fontFamily: theme.typography.fontFamily,
+            fontSize: theme.typography.fontSize,
+          },
+        }}
       />
       {isShownMocks ? (
         <Correlation

@@ -279,6 +279,7 @@ class Container extends Component {
 
   render() {
     const { checkedRows, currentSort, tableData } = this.state
+    const { theme } = this.props
     const { onSelectAllClick, putDataInTable } = this
     return (
       <PortfolioMain
@@ -289,6 +290,7 @@ class Container extends Component {
           putDataInTable,
           checkedRows,
           tableData,
+          theme,
           onCheckboxClick: this.onCheckboxClick,
         }}
       />

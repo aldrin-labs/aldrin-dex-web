@@ -11,6 +11,7 @@ import {
   FlexCell,
   Icon,
 } from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.styles'
+import { withErrorFallback } from '@hoc/'
 
 class ExchangesTable extends PureComponent<IProps> {
   render() {
@@ -27,7 +28,7 @@ class ExchangesTable extends PureComponent<IProps> {
     } = theme
 
     return (
-      <StyledTable className="ExchangesTable">
+      <StyledTable>
         <Title background={theme.palette.primary[type]}>
           <TypographyWithCustomColor
             textColor={theme.palette.getContrastText(
@@ -158,4 +159,4 @@ class ExchangesTable extends PureComponent<IProps> {
   }
 }
 
-export default ExchangesTable
+export default withErrorFallback(ExchangesTable)

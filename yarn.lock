@@ -1317,6 +1317,12 @@
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/@types/react-intl/-/react-intl-2.3.8.tgz#de56b21b67e39df24bc0fc7e67b437976b666919"
 
+"@types/react-joyride@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/react-joyride/-/react-joyride-2.0.1.tgz#2d045997309b6a2eec49ea36a7b3bf57bd6a8191"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-redux@^6.0.0":
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/@types/react-redux/-/react-redux-6.0.0.tgz#31711592b13ed6d6d2fd4506e5447b00e1f0b484"

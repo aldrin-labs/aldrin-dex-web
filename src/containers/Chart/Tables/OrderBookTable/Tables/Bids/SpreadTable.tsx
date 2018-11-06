@@ -20,6 +20,7 @@ import {
   RowWithVolumeChart,
 } from '@containers/Chart/Tables/SharedStyles'
 import { IProps } from './SpreadTable.types'
+import { withErrorFallback } from '@hoc/'
 
 let index: number | null = null
 //  index for animations, no need to keep it in state couse it realted to css
@@ -148,4 +149,4 @@ const SpreadreadTableWrapper = styled(Table)`
   }
 `
 
-export default SpreadTable
+export default withErrorFallback(SpreadTable)

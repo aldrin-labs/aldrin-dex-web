@@ -3,12 +3,7 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
-} from '@material-ui/core'
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,
@@ -50,7 +45,6 @@ import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWi
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
 import * as Useractions from '@containers/User/actions'
-
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -230,20 +224,21 @@ class Optimization extends Component<IProps, IState> {
 
   handleJoyrideCallback = (data) => {
     if (
-      data.action === 'close'
-      || data.action === 'skip'
-      || data.status === 'finished'
-    ) this.props.hideToolTip('Optimization')
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('Optimization')
     if (data.status === 'finished') {
       const oldKey = this.state.key
-      this.setState({key: oldKey + 1})
+      this.setState({ key: oldKey + 1 })
     }
   }
-
 
   render() {
     const {
       children,
+      theme,
       theme: { palette },
       toolTip,
     } = this.props
@@ -265,6 +260,19 @@ class Optimization extends Component<IProps, IState> {
           run={toolTip.portfolioOptimization}
           callback={this.handleJoyrideCallback}
           key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.background.paper,
+              primaryColor: theme.palette.primary.main,
+              textColor: theme.palette.getContrastText(
+                theme.palette.background.paper
+              ),
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
         />
         <Content>
           {MASTER_BUILD && <ComingSoon />}
@@ -287,9 +295,9 @@ class Optimization extends Component<IProps, IState> {
             </MainArea>
           </ContentInner>
           {/*<Warning*/}
-            {/*open={openWarning}*/}
-            {/*messageText={warningMessage}*/}
-            {/*onCloseClick={this.hideWarning}*/}
+          {/*open={openWarning}*/}
+          {/*messageText={warningMessage}*/}
+          {/*onCloseClick={this.hideWarning}*/}
           {/*/>*/}
           <Dialog
             fullScreen={false}

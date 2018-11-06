@@ -118,18 +118,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
   handleJoyrideCallback = (data) => {
     if (
-      data.action === 'close'
-      || data.action === 'skip'
-      || data.status === 'finished'
-    ) this.props.hideToolTip('Industry')
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('Industry')
     if (data.status === 'finished') {
       const oldKey = this.state.key
-      this.setState({key: oldKey + 1})
+      this.setState({ key: oldKey + 1 })
     }
   }
 
   render() {
-    const { baseCoin } = this.props
+    const { baseCoin, theme } = this.props
     const { industryData, chartData, expandedRows } = this.state
 
     const tableDataHasData = industryData
@@ -143,6 +144,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
           run={this.props.toolTip.portfolioIndustry}
           callback={this.handleJoyrideCallback}
           key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.background.paper,
+              primaryColor: theme.palette.primary.main,
+              textColor: theme.palette.getContrastText(
+                theme.palette.background.paper
+              ),
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
         />
         <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
           <Container container={true} spacing={16}>
@@ -176,15 +190,19 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
 const mapDispatchToProps = (dispatch: any) => ({
   hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
-
 })
 
 const mapStateToProps = (store) => ({
   toolTip: store.user.toolTip,
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(queryRendererHoc({
-  query: getPortfolioQuery,
-  pollInterval: 5000,
-  fetchPolicy: 'network-only',
-})(PortfolioTableIndustries))
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  queryRendererHoc({
+    query: getPortfolioQuery,
+    pollInterval: 5000,
+    fetchPolicy: 'network-only',
+  })(PortfolioTableIndustries)
+)
