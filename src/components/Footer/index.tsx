@@ -11,7 +11,6 @@ import Telegram from '@material-ui/icons/NearMeSharp'
 import { changeThemeMode } from '@containers/App/actions'
 import Props from './index.types'
 import { AppBar, IconButton } from '@material-ui/core'
-import { MASTER_BUILD } from '@utils/config'
 
 const Footer = ({
   changeModeTheme,
@@ -29,20 +28,19 @@ const Footer = ({
       <Typography variant="h6" color="secondary">
         •
       </Typography>
-      {/* you can see it only in develop for now */}
-      {!MASTER_BUILD && (
-        <>
-          <Button size="small" color="default">
-            Terms of Use
-          </Button>
-          <Typography variant="h6" color="secondary">
-            •
-          </Typography>
-          <Button size="small" color="default">
-            Privacy Policy
-          </Button>
-        </>
+
+      <Button size="small" color="default">
+        Terms of Use
+      </Button>
+      {/* should be vsible only at master */}
+      {process.env.MASTER_BUILD && (
+        <Typography variant="h6" color="secondary">
+          •
+        </Typography>
       )}
+      <Button size="small" color="default">
+        Privacy Policy
+      </Button>
     </Block>
 
     <Block>
