@@ -4,14 +4,16 @@
 // also container must have position: relative
 import React from 'react'
 import styled from 'styled-components'
-import { Typography } from '@material-ui/core'
+import { Typography, Fade } from '@material-ui/core'
 
 export default ({ show = true }) =>
   show ? (
     <Container>
-      <Typography variant="h3" color="textPrimary">
-        Coming Soon
-      </Typography>
+      <Fade timeout={1000} in={show}>
+        <Typography variant="h3" color="textPrimary">
+          Coming Soon
+        </Typography>
+      </Fade>
     </Container>
   ) : (
     <></>

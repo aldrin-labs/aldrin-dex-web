@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Switch from '@material-ui/core/Switch'
+import Joyride from 'react-joyride'
 
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,
@@ -42,6 +44,9 @@ import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
+import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
+import * as Useractions from '@containers/User/actions'
+import config from '@utils/linkConfig'
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -51,6 +56,9 @@ class Optimization extends Component<IProps, IState> {
     openWarning: false,
     warningMessage: '',
     showAllLineChartData: false,
+    isSystemError: false,
+    run: true,
+    key: 0,
   }
 
   optimizedToState = (data: RawOptimizedData) => {
@@ -100,12 +108,8 @@ class Optimization extends Component<IProps, IState> {
     this.setState({ activeButton: index })
   }
 
-  showWarning = (message: string) => {
-    this.setState({ openWarning: true, warningMessage: message })
-
-    setTimeout(() => {
-      this.hideWarning()
-    }, 3000)
+  showWarning = (message: string, isSystemError = false) => {
+    this.setState({ openWarning: true, warningMessage: message, isSystemError })
   }
 
   hideWarning = () => {
@@ -121,6 +125,11 @@ class Optimization extends Component<IProps, IState> {
     this.setState({
       showAllLineChartData: isChecked,
     })
+  }
+
+  openLink = (link: string = '') => {
+    this.hideWarning()
+    window.open(link, 'CCAI Feedback')
   }
 
   renderInput = () => {
@@ -207,7 +216,7 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer>
-        <ChartContainer>
+      <ChartContainer className="BackTestOptimizationChart">
           <StyledCardHeader
             title="Back-test Optimization"
             action={
@@ -232,7 +241,7 @@ class Optimization extends Component<IProps, IState> {
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <ChartContainer>
+        <ChartContainer className="EfficientFrontierChart">
           <StyledCardHeader title="Efficient Frontier" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
@@ -247,33 +256,69 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('Optimization')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({ key: oldKey + 1 })
+    }
+  }
+
   render() {
     const {
       children,
+      theme,
       theme: { palette },
+      toolTip,
     } = this.props
 
     const textColor: string = palette.getContrastText(palette.background.paper)
 
-    const { loading, openWarning, warningMessage } = this.state
+    const { loading, openWarning, warningMessage, isSystemError } = this.state
 
     return (
       <PTWrapper
         background={palette.background.default}
         notScrollable={MASTER_BUILD}
       >
+        <Joyride
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={portfolioOptimizationSteps}
+          run={toolTip.portfolioOptimization}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.background.paper,
+              primaryColor: theme.palette.primary.main,
+              textColor: theme.palette.getContrastText(
+                theme.palette.background.paper
+              ),
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}
           {loading && (
             <LoaderWrapper>
-              {' '}
               <LoaderInnerWrapper>
                 <Loading size={94} margin={'0 0 2rem 0'} />{' '}
                 <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
-                </TypographyWithCustomColor>{' '}
-              </LoaderInnerWrapper>{' '}
+                </TypographyWithCustomColor>
+              </LoaderInnerWrapper>
             </LoaderWrapper>
           )}
           <ContentInner loading={loading}>
@@ -282,11 +327,40 @@ class Optimization extends Component<IProps, IState> {
               {this.renderCharts()}
             </MainArea>
           </ContentInner>
-          <Warning
+          {/*<Warning*/}
+          {/*open={openWarning}*/}
+          {/*messageText={warningMessage}*/}
+          {/*onCloseClick={this.hideWarning}*/}
+          {/*/>*/}
+          <Dialog
+            fullScreen={false}
             open={openWarning}
-            messageText={warningMessage}
-            onCloseClick={this.hideWarning}
-          />
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogTitle id="responsive-dialog-title">
+              {warningMessage}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                onClick={this.hideWarning}
+                color="secondary"
+                autoFocus={true}
+              >
+                ok
+              </Button>
+              {isSystemError && (
+                <Button
+                  onClick={() => {
+                    this.openLink(config.bugLink)
+                  }}
+                  size="small"
+                  style={{ margin: '0.5rem 1rem' }}
+                >
+                  Report bug
+                </Button>
+              )}
+            </DialogActions>
+          </Dialog>
         </Content>
       </PTWrapper>
     )
@@ -296,10 +370,12 @@ class Optimization extends Component<IProps, IState> {
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   storeData: store.portfolio.optimizationData,
+  toolTip: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateData: (data: any) => dispatch(actions.updateDataForOptimization(data)),
+  hideToolTip: (tab: string) => dispatch(Useractions.hideToolTip(tab)),
 })
 const storeComponent = connect(
   mapStateToProps,

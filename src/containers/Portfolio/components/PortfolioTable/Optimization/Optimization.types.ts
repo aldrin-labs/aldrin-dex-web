@@ -23,9 +23,13 @@ export interface IState {
   openWarning: boolean
   warningMessage: string
   showAllLineChartData: boolean
+  isSystemError: boolean
+  run: boolean
+  key: number
 }
 
 export interface IProps {
+  hideToolTip: (any: any) => void
   storeData: IData[]
   isShownMocks: boolean
   updateData: Function

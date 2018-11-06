@@ -5,7 +5,7 @@ import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import { Icon } from '@styles/cssUtils'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
-import { flatten, has } from 'lodash-es'
+import { flatten, has, round } from 'lodash-es'
 import { InputRecord } from '@components/DonutChart/types'
 import { Tooltip } from '@material-ui/core'
 import { FullWidthBlock } from '@components/OldTable/Table'
@@ -294,15 +294,16 @@ export const checkForString = (numberOrString: number | string) =>
 
 export const roundAndFormatNumber = (
   x: number,
-  digitsAfterPoint: number,
+  precision: number,
   format: boolean = true
-): string => {
-  if (x === null || x === 0 || +x.toFixed(digitsAfterPoint) === 0) {
+): string | number => {
+  if (x === null || x === 0 || round(x, precision) === 0) {
     return '0'
   }
+
   const res = format
-    ? formatNumberToUSFormat(x.toFixed(digitsAfterPoint))
-    : x.toFixed(digitsAfterPoint)
+    ? formatNumberToUSFormat(round(x, precision))
+    : round(x, precision)
 
   return res
 }

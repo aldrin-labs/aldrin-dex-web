@@ -107,6 +107,7 @@ export default class Import extends PureComponent<IProps> {
     console.log('myOb for queryj', myObj)
 
     let backendResult
+    const systemError = `System Error: An error has occurred internally.  Please report this by clicking "Report Bug"`
 
     try {
       backendResult = await client.query({
@@ -117,7 +118,8 @@ export default class Import extends PureComponent<IProps> {
         fetchPolicy: 'network-only',
       })
     } catch (e) {
-      showWarning(`You got an error! 🙈`)
+      showWarning(systemError, true)
+      // showWarning(`You got an error! 🙈`)
       this.props.toggleLoading()
       console.log('ERROR IN AWAIT FUNC:', e)
       return
@@ -128,14 +130,18 @@ export default class Import extends PureComponent<IProps> {
     )
 
     if (backendResultParsed === '') {
-      showWarning('You got empty response! 🙈')
+      showWarning(systemError, true)
+      // showWarning('You got empty response! 🙈')
       this.props.toggleLoading()
 
       return
     }
 
-    if (backendResultParsed.error) {
-      showWarning(`You got an error! 🙈`)
+    if (backendResultParsed.error || backendResultParsed.status === 1) {
+      const userErrorMessage = `User Error: ${backendResultParsed.error_message}`
+      const isUserError = backendResultParsed.error_message
+
+      showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
 
@@ -217,7 +223,7 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
-      <ChartContainer>
+      <ChartContainer className="PortfolioDistributionChart">
         <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
@@ -306,7 +312,7 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer>
+              <InputContainer className="OptimizationInput">
                 <StyledCardHeader title="Back-test input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
@@ -399,7 +405,7 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer>
+              <TableContainer className="RiskProfileTable">
                 <StyledCardHeader title="Risk Profile" />
 
                 <SwitchButtonsWrapper>

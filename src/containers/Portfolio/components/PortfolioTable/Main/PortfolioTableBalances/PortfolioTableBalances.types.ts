@@ -13,9 +13,19 @@ export interface IState {
   currentSort: { arg: SortArgs; key: Args } | null
   activeKeys: number[] | null
   portfolio: IPortfolio | null
+  run: boolean
+  key: number
 }
 
 export interface IProps {
+  hideToolTip: (tab: string) => void
+  toolTip: {
+    portfolioMain: boolean
+    portfolioIndustry: boolean
+    portfolioRebalance: boolean
+    portfolioCorrelation: boolean
+    portfolioOptimization: boolean
+  }
   isShownChart: boolean
   theme: Theme
   filterValueSmallerThenPercentage: number | undefined

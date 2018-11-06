@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import Joyride from 'react-joyride'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
@@ -15,6 +16,8 @@ import { swapDates } from '@utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
+import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 
 const Correlation = (props: IProps) => {
   const {
@@ -56,8 +59,9 @@ const Correlation = (props: IProps) => {
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, children } = props
+  const { isShownMocks, children, theme } = props
   let { startDate, endDate } = props
+  let key = 0
 
   // startDate must be less always
   //  but if somehow not I will swap them
@@ -66,8 +70,39 @@ const CorrelationWrapper = (props: IProps) => {
     endDate = swapDates({ startDate, endDate }).endDate
   }
 
+  const handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      props.hideToolTip('Correlation')
+    if (data.status === 'finished') {
+      key = key + 1
+    }
+  }
+
   return (
     <PTWrapper>
+      <Joyride
+        steps={portfolioCorrelationSteps}
+        run={props.toolTip.portfolioCorrelation}
+        callback={handleJoyrideCallback}
+        key={key}
+        styles={{
+          options: {
+            backgroundColor: theme.palette.background.paper,
+            primaryColor: theme.palette.primary.main,
+            textColor: theme.palette.getContrastText(
+              theme.palette.background.paper
+            ),
+          },
+          tooltip: {
+            fontFamily: theme.typography.fontFamily,
+            fontSize: theme.typography.fontSize,
+          },
+        }}
+      />
       {isShownMocks ? (
         <Correlation
           data={{
@@ -108,12 +143,14 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
+  toolTip: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
   setCorrelationPeriodToStore: (payload: object) =>
     dispatch(setCorrelationPeriodAction(payload)),
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
 })
 
 const storeComponent = connect(

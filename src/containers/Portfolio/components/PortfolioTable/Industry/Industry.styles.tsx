@@ -12,18 +12,17 @@ export const Container = styled(Grid)`
   }
 `
 
-export const ChartWrapper = styled(Card)`
-  max-height: 100%;
-  height: 75%;
-  width: 100%;
-  ${customAquaScrollBar};
-`
-
 export const Wrapper = styled(Card)`
   max-height: 100%;
   display: flex;
-  margin: 0 20px 5px;
+  width: 100%;
+  margin: 0 0.5rem 0.25rem;
   flex-direction: column;
   overflow-x: auto;
   ${customAquaScrollBar};
+`
+
+export const ChartWrapper = styled(Wrapper)`
+  max-height: 100%;
+  height: 100%;
 `

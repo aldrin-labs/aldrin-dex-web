@@ -2,6 +2,8 @@ import React from 'react'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import Joyride from 'react-joyride'
+
 import QueryRenderer from '@components/QueryRenderer'
 import BarChart from '@components/BarChart/BarChart'
 import {
@@ -27,6 +29,8 @@ import {
 } from '@containers/Portfolio/api'
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
+import { portfolioRebalanceSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 
 import {
   Content,
@@ -69,6 +73,9 @@ class Rebalance extends React.Component<IProps, IState> {
     totalPercents: 0,
     leftBar: '#fff',
     rightBar: '#4ed8da',
+    run: true,
+    key: 0,
+    loading: false,
   }
 
   componentDidMount() {
@@ -288,7 +295,7 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   updateServerDataOnSave = async () => {
-    const { updateRebalanceMutationQuery } = this.props
+    const { updateRebalanceMutationQuery, refetch } = this.props
     const { rows, totalRows } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
@@ -313,8 +320,21 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     try {
+      this.setState({loading: true})
+
       await updateRebalanceMutationQuery({ variables: variablesForMutation })
+      refetch()
+        .then(() => {
+          this.setState({loading: false})
+          console.log('resolved and refetched')
+        })
+        .catch(() => {
+            this.setState({loading: false})
+            console.log('catched')
+        }
+        )
     } catch (error) {
+      this.setState({loading: false})
       console.log(error)
     }
   }
@@ -409,11 +429,23 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('Rebalance')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({ key: oldKey + 1 })
+    }
+  }
+
   render() {
     const {
       children,
       isUSDCurrently,
-      baseCoin,
       theme,
       theme: { palette },
     } = this.props
@@ -434,6 +466,7 @@ class Rebalance extends React.Component<IProps, IState> {
       addMoneyInputValue,
       leftBar,
       rightBar,
+      loading,
     } = this.state
 
     const { onSaveClick, onEditModeEnable, onReset, updateState } = this
@@ -448,9 +481,32 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
 
+
     return (
       <EmptyTablePlaceholder isEmpty={tableDataHasData}>
         <PTWrapper tableData={true}>
+          <Joyride
+            continuous={true}
+            showProgress={true}
+            showSkipButton={true}
+            steps={portfolioRebalanceSteps}
+            run={this.props.toolTip.portfolioRebalance}
+            callback={this.handleJoyrideCallback}
+            key={this.state.key}
+            styles={{
+              options: {
+                backgroundColor: theme.palette.background.paper,
+                primaryColor: theme.palette.primary.main,
+                textColor: theme.palette.getContrastText(
+                  theme.palette.background.paper
+                ),
+              },
+              tooltip: {
+                fontFamily: theme.typography.fontFamily,
+                fontSize: theme.typography.fontSize,
+              },
+            }}
+          />
           {children}
           <Content>
             <Container isEditModeEnabled={isEditModeEnabled}>
@@ -471,7 +527,8 @@ class Rebalance extends React.Component<IProps, IState> {
                   isUSDCurrently,
                   addMoneyInputValue,
                   theme,
-                  baseCoin,
+                  loading,
+                  textColor,
                 }}
                 onSortTable={this.onSortTable}
                 onSaveClick={this.onSaveClick}
@@ -511,7 +568,10 @@ class Rebalance extends React.Component<IProps, IState> {
                 />
               </BtnsWrapper>
             </Container>
-            <ChartWrapper isEditModeEnabled={isEditModeEnabled}>
+            <ChartWrapper
+              isEditModeEnabled={isEditModeEnabled}
+              className="PortfolioDistributionChart"
+            >
               <ChartContainer
                 elevation={10}
                 background={palette.background.paper}
@@ -552,8 +612,13 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 }
 
+const mapDispatchToProps = (dispatch: any) => ({
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
+})
+
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
+  toolTip: store.user.toolTip,
 })
 const RebalanceContainer = (props) => (
   <QueryRenderer
@@ -567,16 +632,19 @@ const RebalanceContainer = (props) => (
 
 export default compose(
   withTheme(),
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
-    options: {
-      refetchQueries: [
-        {
-          query: getMyPortfolioAndRebalanceQuery,
-          variables: { baseCoin: 'USDT' },
-        },
-      ],
-    },
+    // options: {
+    //   refetchQueries: [
+    //     {
+    //       query: getMyPortfolioAndRebalanceQuery,
+    //       variables: { baseCoin: 'USDT' },
+    //     },
+    //   ],
+    // },
   })
 )(RebalanceContainer)

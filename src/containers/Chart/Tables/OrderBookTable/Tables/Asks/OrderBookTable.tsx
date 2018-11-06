@@ -9,6 +9,7 @@ import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/O
 import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps } from './OrderBookTable.types'
+import { withErrorFallback } from '@hoc/'
 
 let index: number | null = null
 
@@ -117,4 +118,4 @@ const SwitchTablesButton = styled(Button)`
   }
 `
 
-export default OrderBookTable
+export default withErrorFallback(OrderBookTable)

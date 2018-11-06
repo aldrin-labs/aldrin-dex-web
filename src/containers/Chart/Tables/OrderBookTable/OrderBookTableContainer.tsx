@@ -12,7 +12,6 @@ import {
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
 import { IProps, IState } from './OrderBookTableContainer.types'
-
 let unsubscribe: Function | undefined
 
 class OrderBookTableContainer extends Component<IProps, IState> {

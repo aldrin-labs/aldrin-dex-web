@@ -1,5 +1,8 @@
 import * as React from 'react'
 import { Grid } from '@material-ui/core'
+import Joyride from 'react-joyride'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 import { Table, DonutChart } from '@storybook-components'
 import { IndProps } from '@containers/Portfolio/interfaces'
@@ -12,6 +15,8 @@ import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { Container, Wrapper, ChartWrapper } from './Industry.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
+import { portfolioIndustrySteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 
 const tableHeadings = [
   { name: 'Industry', value: 'industry' },
@@ -62,6 +67,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     chartData: null,
     currentSort: null,
     expandedRows: [],
+    run: true,
+    key: 0,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -109,8 +116,21 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       expandedRows: onCheckBoxClick(prevState.expandedRows, id),
     }))
 
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('Industry')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({ key: oldKey + 1 })
+    }
+  }
+
   render() {
-    const { baseCoin } = this.props
+    const { baseCoin, theme } = this.props
     const { industryData, chartData, expandedRows } = this.state
 
     const tableDataHasData = industryData
@@ -119,36 +139,70 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
 
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
-        <Container container={true} spacing={16}>
-          <Grid item={true} xs={12} md={8}>
-            <Wrapper>
-              <Table
-                expandableRows={true}
-                onChange={this.expandRow}
-                onSelectAllClick={this.onSelectAllClick}
-                expandedRows={expandedRows}
-                title={`Industry Performance in ${baseCoin}`}
-                {...this.putDataInTable()}
-              />
-            </Wrapper>
-          </Grid>
-          <Grid item={true} xs={12} md={4} style={{}}>
-            <ChartWrapper>
-              <DonutChart
-                labelPlaceholder="Industry %"
-                data={chartData}
-                colorLegend={true}
-              />
-            </ChartWrapper>
-          </Grid>
-        </Container>
+        <>
+          <Container container={true} spacing={16}>
+            <Grid item={true} xs={12} md={8}>
+              <Wrapper>
+                <Table
+                  expandableRows={true}
+                  onChange={this.expandRow}
+                  onSelectAllClick={this.onSelectAllClick}
+                  expandedRows={expandedRows}
+                  title={`Industry Performance in ${baseCoin}`}
+                  {...this.putDataInTable()}
+                />
+              </Wrapper>
+            </Grid>
+            <Grid item={true} xs={12} md={4}>
+              <ChartWrapper>
+                <DonutChart
+                  labelPlaceholder="Industry %"
+                  data={chartData}
+                  colorLegend={true}
+                />
+              </ChartWrapper>
+            </Grid>
+          </Container>
+          <Joyride
+            steps={portfolioIndustrySteps}
+            run={this.props.toolTip.portfolioIndustry}
+            callback={this.handleJoyrideCallback}
+            key={this.state.key}
+            styles={{
+              options: {
+                backgroundColor: theme.palette.background.paper,
+                primaryColor: theme.palette.primary.main,
+                textColor: theme.palette.getContrastText(
+                  theme.palette.background.paper
+                ),
+              },
+              tooltip: {
+                fontFamily: theme.typography.fontFamily,
+                fontSize: theme.typography.fontSize,
+              },
+            }}
+          />
+        </>
       </EmptyTablePlaceholder>
     )
   }
 }
 
-export default queryRendererHoc({
-  query: getPortfolioQuery,
-  pollInterval: 5000,
-  fetchPolicy: 'network-only',
-})(PortfolioTableIndustries)
+const mapDispatchToProps = (dispatch: any) => ({
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
+})
+
+const mapStateToProps = (store) => ({
+  toolTip: store.user.toolTip,
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  queryRendererHoc({
+    query: getPortfolioQuery,
+    pollInterval: 5000,
+    fetchPolicy: 'network-only',
+  })(PortfolioTableIndustries)
+)
