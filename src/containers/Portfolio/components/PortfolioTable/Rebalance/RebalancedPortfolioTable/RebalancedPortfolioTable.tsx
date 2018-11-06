@@ -536,7 +536,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             rebalanced: { render: `${totalPercents}%`, isNumber: true },
             rebalancedUSD: {
               render: addMainSymbol(
-                formatNumberToUSFormat(totalStaticRows),
+                formatNumberToUSFormat(totalTableRows),
                 isUSDCurrently
               ),
               isNumber: true,
@@ -552,7 +552,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             current: ' ',
             currentUSD: {
               render: addMainSymbol(
-                formatNumberToUSFormat(totalTableRows),
+                formatNumberToUSFormat(totalStaticRows),
                 isUSDCurrently
               ),
               isNumber: true,
