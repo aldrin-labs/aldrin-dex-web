@@ -45,6 +45,7 @@ import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWi
 import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
 import * as Useractions from '@containers/User/actions'
+import config from '@utils/linkConfig'
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -53,6 +54,7 @@ class Optimization extends Component<IProps, IState> {
     rawOptimizedData: [],
     openWarning: false,
     warningMessage: '',
+    isSystemError: false,
     run: true,
     key: 0,
   }
@@ -104,8 +106,8 @@ class Optimization extends Component<IProps, IState> {
     this.setState({ activeButton: index })
   }
 
-  showWarning = (message: string) => {
-    this.setState({ openWarning: true, warningMessage: message })
+  showWarning = (message: string, isSystemError = false) => {
+    this.setState({ openWarning: true, warningMessage: message, isSystemError })
   }
 
   hideWarning = () => {
@@ -116,6 +118,11 @@ class Optimization extends Component<IProps, IState> {
 
   toggleLoading = () =>
     this.setState((prevState) => ({ loading: !prevState.loading }))
+
+  openLink = (link: string = '') => {
+    this.hideWarning()
+    window.open(link, 'CCAI Feedback')
+  }
 
   renderInput = () => {
     // importing stuff from backend or manually bu user
@@ -245,7 +252,7 @@ class Optimization extends Component<IProps, IState> {
 
     const textColor: string = palette.getContrastText(palette.background.paper)
 
-    const { loading, openWarning, warningMessage } = this.state
+    const { loading, openWarning, warningMessage, isSystemError } = this.state
 
     return (
       <PTWrapper
@@ -279,13 +286,12 @@ class Optimization extends Component<IProps, IState> {
           {children}
           {loading && (
             <LoaderWrapper>
-              {' '}
               <LoaderInnerWrapper>
                 <Loading size={94} margin={'0 0 2rem 0'} />{' '}
                 <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
-                </TypographyWithCustomColor>{' '}
-              </LoaderInnerWrapper>{' '}
+                </TypographyWithCustomColor>
+              </LoaderInnerWrapper>
             </LoaderWrapper>
           )}
           <ContentInner loading={loading}>
@@ -315,6 +321,17 @@ class Optimization extends Component<IProps, IState> {
               >
                 ok
               </Button>
+              {isSystemError && (
+                <Button
+                  onClick={() => {
+                    this.openLink(config.bugLink)
+                  }}
+                  size="small"
+                  style={{ margin: '0.5rem 1rem' }}
+                >
+                  Report bug
+                </Button>
+              )}
             </DialogActions>
           </Dialog>
         </Content>
