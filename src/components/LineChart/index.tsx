@@ -1,6 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
-// import dateFormat from 'date-fns/format'
+import Typography from '@material-ui/core/Typography'
+
 import {
   FlexibleXYPlot,
   XAxis,
@@ -13,11 +14,7 @@ import {
 } from 'react-vis'
 
 import { Props, State } from '@components/LineChart/LineChart.types'
-import {
-  inds,
-  coins,
-} from '@containers/Portfolio/components/PortfolioTable/Industry/mocks'
-import { getColorsAndLabelsForChartLegend, colors } from './LineChart.utils'
+import { colors } from './LineChart.utils'
 import { LegendContainer } from '@styles/cssUtils'
 
 const axisStyle = {
@@ -116,7 +113,7 @@ export default class LineChart extends React.Component<Props, State> {
       >
         {alwaysShowLegend && (
           <LegendContainer>
-            <DiscreteColorLegend
+            <StyledDiscreteColorLegend
               orientation="horizontal"
               items={itemsForChartLegend}
             />
@@ -162,13 +159,13 @@ export default class LineChart extends React.Component<Props, State> {
         {crosshairValues && (
           <Crosshair values={crosshairValues}>
             <ContainerForCrossHairValues>
-              <HeadingParagraph>{dateDataFormatted}</HeadingParagraph>
+              <Typography variant="subtitle1" style={{ marginBottom: '1rem'}}>{dateDataFormatted}</Typography>
 
               {crosshairValues.map((v, i) => (
                 <div key={`${v.label}: ${v.y} USD`}>
-                  <Label style={{ color: colors[i] }}>{`${v.label}: ${Number(
+                  <Typography variant="body2" style={{ color: colors[i] }}>{`${v.label}: ${Number(
                     v.y
-                  ).toFixed(2)}`}</Label>
+                  ).toFixed(2)}`}</Typography>
                 </div>
               ))}
             </ContainerForCrossHairValues>
@@ -190,12 +187,15 @@ const ContainerForCrossHairValues = styled.div`
   box-shadow: 0 2px 6px 0 #0006;
 `
 
-const HeadingParagraph = styled.p`
-  padding: 0;
-  margin: 0 0 1rem 0;
-`
 
-const Label = styled.p`
-  padding: 0;
-  margin: 0;
+// it's a hotfix but we don't know why these items are height 0 and width 0 now.
+// They should be not zero without this code
+const StyledDiscreteColorLegend = styled(DiscreteColorLegend)`
+
+  & .rv-discrete-color-legend-item__color {
+    height: 3px;
+    width: 30px;
+
+  }
+  
 `

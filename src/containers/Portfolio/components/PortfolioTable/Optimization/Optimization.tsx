@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import Switch from '@material-ui/core/Switch'
 import Joyride from 'react-joyride'
 
 import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
@@ -54,6 +55,7 @@ class Optimization extends Component<IProps, IState> {
     rawOptimizedData: [],
     openWarning: false,
     warningMessage: '',
+    showAllLineChartData: false,
     isSystemError: false,
     run: true,
     key: 0,
@@ -119,6 +121,12 @@ class Optimization extends Component<IProps, IState> {
   toggleLoading = () =>
     this.setState((prevState) => ({ loading: !prevState.loading }))
 
+  onToggleLineChartSwitch = (e, isChecked: boolean) => {
+    this.setState({
+      showAllLineChartData: isChecked,
+    })
+  }
+
   openLink = (link: string = '') => {
     this.hideWarning()
     window.open(link, 'CCAI Feedback')
@@ -161,7 +169,7 @@ class Optimization extends Component<IProps, IState> {
   }
 
   renderCharts = () => {
-    const { activeButton, rawOptimizedData } = this.state
+    const { activeButton, rawOptimizedData, showAllLineChartData } = this.state
     const { storeData } = this.props
 
     if (!storeData) return
@@ -177,8 +185,18 @@ class Optimization extends Component<IProps, IState> {
       risk: arrayOfReturnedRisks,
     }
 
+    const riskProfileNames = ['min', 'low', 'med', 'high', 'max'];
+
+    // TODO: Make it better
     // for real data
-    const lineChartData =
+    const lineChartData = showAllLineChartData ? ( rawOptimizedData && rawOptimizedData.length && rawOptimizedData.map((el, i) => {
+      return el.backtest_results.map((element) => ({
+        label: riskProfileNames[i],
+        x: element[0],
+        y: element[1],
+      }))
+      })
+    ) : (
       rawOptimizedData &&
       rawOptimizedData.length &&
       rawOptimizedData[activeButton].backtest_results.map((el) => ({
@@ -186,29 +204,38 @@ class Optimization extends Component<IProps, IState> {
         x: el[0],
         y: el[1],
       }))
+    )
 
-    const itemsForChartLegend = [
-      {
-        title: 'Optimized',
-        color: colors[0],
-      },
-      {
-        title: 'Original',
-        color: colors[1],
-      },
-    ]
+
+    const itemsForChartLegend = riskProfileNames.map((el, i) => ({
+      title: el,
+      color: colors[i],
+    }))
 
     const { theme } = this.props
 
     return (
       <ChartsContainer>
-        <ChartContainer className="BackTestOptimizationChart">
-          <StyledCardHeader title="Back-test Optimization" />
+      <ChartContainer className="BackTestOptimizationChart">
+          <StyledCardHeader
+            title="Back-test Optimization"
+            action={
+              <>
+                <TypographyWithCustomColor color={`secondary`} variant="button">
+                  Show all risk profiles
+                </TypographyWithCustomColor>
+                <Switch
+                  onChange={this.onToggleLineChartSwitch}
+                  checked={this.state.showAllLineChartData}
+                />
+              </>
+            }
+          />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <LineChart
-                alwaysShowLegend={false}
-                data={lineChartData === 0 ? undefined : [lineChartData]}
+                alwaysShowLegend={showAllLineChartData}
+                data={lineChartData === 0 ? undefined : showAllLineChartData ? lineChartData : [lineChartData]}
                 itemsForChartLegend={itemsForChartLegend}
               />
             </Chart>
