@@ -212,9 +212,8 @@ class Chart extends React.Component<IProps, IState> {
             },
           }}
         />
-        {MASTER_BUILD && <ComingSoon />}
         <TablesBlockWrapper
-          blur={MASTER_BUILD}
+          blur={false}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
@@ -257,7 +256,7 @@ class Chart extends React.Component<IProps, IState> {
 
         <TablesBlockWrapper
           className="ExchangesTable"
-          blur={MASTER_BUILD}
+          blur={false}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
