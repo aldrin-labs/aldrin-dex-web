@@ -138,27 +138,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       : false
 
     return (
-      <div>
-        <Joyride
-          steps={portfolioIndustrySteps}
-          run={this.props.toolTip.portfolioIndustry}
-          callback={this.handleJoyrideCallback}
-          key={this.state.key}
-          styles={{
-            options: {
-              backgroundColor: theme.palette.background.paper,
-              primaryColor: theme.palette.primary.main,
-              textColor: theme.palette.getContrastText(
-                theme.palette.background.paper
-              ),
-            },
-            tooltip: {
-              fontFamily: theme.typography.fontFamily,
-              fontSize: theme.typography.fontSize,
-            },
-          }}
-        />
-        <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+        <>
           <Container container={true} spacing={16}>
             <Grid item={true} xs={12} md={8}>
               <Wrapper>
@@ -172,7 +153,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                 />
               </Wrapper>
             </Grid>
-            <Grid item={true} xs={12} md={4} style={{}}>
+            <Grid item={true} xs={12} md={4}>
               <ChartWrapper>
                 <DonutChart
                   labelPlaceholder="Industry %"
@@ -182,8 +163,27 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               </ChartWrapper>
             </Grid>
           </Container>
-        </EmptyTablePlaceholder>
-      </div>
+          <Joyride
+            steps={portfolioIndustrySteps}
+            run={this.props.toolTip.portfolioIndustry}
+            callback={this.handleJoyrideCallback}
+            key={this.state.key}
+            styles={{
+              options: {
+                backgroundColor: theme.palette.background.paper,
+                primaryColor: theme.palette.primary.main,
+                textColor: theme.palette.getContrastText(
+                  theme.palette.background.paper
+                ),
+              },
+              tooltip: {
+                fontFamily: theme.typography.fontFamily,
+                fontSize: theme.typography.fontSize,
+              },
+            }}
+          />
+        </>
+      </EmptyTablePlaceholder>
     )
   }
 }
