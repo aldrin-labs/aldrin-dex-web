@@ -309,7 +309,6 @@ class Optimization extends Component<IProps, IState> {
           }}
         />
         <Content>
-          {MASTER_BUILD && <ComingSoon />}
           {children}
           {loading && (
             <LoaderWrapper>
