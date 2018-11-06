@@ -1,29 +1,32 @@
 import * as React from 'react'
-import { connect } from 'react-redux'
 import { Grid } from '@material-ui/core'
+import Joyride from 'react-joyride'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 import { Table, DonutChart } from '@storybook-components'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import {
   combineIndustryData,
   onCheckBoxClick,
-  onAllCheckBoxClick,
 } from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { getPortfolioQuery } from '@containers/Portfolio/api'
 import { Container, Wrapper, ChartWrapper } from './Industry.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
+import { portfolioIndustrySteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 
 const tableHeadings = [
   { name: 'Industry', value: 'industry' },
   { name: 'Coin', value: 'symbol' },
   { name: 'Portfolio', value: 'portfolioPerc' },
-  {
-    name: 'Portfolio performance',
-    value: 'portfolioPerf',
-    additionName: 'performance',
-  },
+  // {
+  //   name: 'Portfolio performance',
+  //   value: 'portfolioPerf',
+  //   additionName: 'performance',
+  // },
   {
     name: 'Industry performance: 1W',
     value: 'industryPerf1Week',
@@ -64,6 +67,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     chartData: null,
     currentSort: null,
     expandedRows: [],
+    run: true,
+    key: 0,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -85,11 +90,12 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if (!industryData) return
 
     return {
-      head: tableHeadings.map((heading, index: number) => ({
-        render: heading.name,
+      columnNames: tableHeadings.map((heading, index: number) => ({
+        label: heading.name,
+        id: heading.name,
         isNumber: index === 0 || index === 1 ? false : true,
       })),
-      body: industryData,
+      data: { body: industryData },
     }
   }
 
@@ -97,7 +103,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     if ((e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
         expandedRows: state.industryData
-          ? state.industryData.map((n: any, i: number) => i)
+          ? state.industryData.map((n: any) => n && n.industry)
           : [],
       }))
       return
@@ -105,13 +111,26 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     this.setState({ expandedRows: [] })
   }
 
-  expandRow = (id: number) =>
+  expandRow = (id: string) =>
     this.setState((prevState) => ({
       expandedRows: onCheckBoxClick(prevState.expandedRows, id),
     }))
 
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('Industry')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({ key: oldKey + 1 })
+    }
+  }
+
   render() {
-    const { baseCoin } = this.props
+    const { baseCoin, theme } = this.props
     const { industryData, chartData, expandedRows } = this.state
 
     const tableDataHasData = industryData
@@ -119,39 +138,71 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       : false
 
     return (
-      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
-        <Container container={true} spacing={16}>
-          <Grid item={true} xs={12} md={8}>
-            <Wrapper>
-              <Table
-                expandableRows={true}
-                onChange={this.expandRow}
-                onSelectAllClick={this.onSelectAllClick}
-                expandedRows={expandedRows}
-                rows={this.putDataInTable()}
-                title={`Industry Performance in ${baseCoin}`}
-              />
-            </Wrapper>
-          </Grid>
-          <Grid item={true} xs={12} md={4} style={{}}>
-            <ChartWrapper>
-              <DonutChart
-                labelPlaceholder="Industry %"
-                data={chartData}
-                colorLegend={true}
-              />
-            </ChartWrapper>
-          </Grid>
-        </Container>
-      </EmptyTablePlaceholder>
+      <div>
+        <Joyride
+          steps={portfolioIndustrySteps}
+          run={this.props.toolTip.portfolioIndustry}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.background.paper,
+              primaryColor: theme.palette.primary.main,
+              textColor: theme.palette.getContrastText(
+                theme.palette.background.paper
+              ),
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
+        <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
+          <Container container={true} spacing={16}>
+            <Grid item={true} xs={12} md={8}>
+              <Wrapper>
+                <Table
+                  expandableRows={true}
+                  onChange={this.expandRow}
+                  onSelectAllClick={this.onSelectAllClick}
+                  expandedRows={expandedRows}
+                  title={`Industry Performance in ${baseCoin}`}
+                  {...this.putDataInTable()}
+                />
+              </Wrapper>
+            </Grid>
+            <Grid item={true} xs={12} md={4} style={{}}>
+              <ChartWrapper>
+                <DonutChart
+                  labelPlaceholder="Industry %"
+                  data={chartData}
+                  colorLegend={true}
+                />
+              </ChartWrapper>
+            </Grid>
+          </Container>
+        </EmptyTablePlaceholder>
+      </div>
     )
   }
 }
 
+const mapDispatchToProps = (dispatch: any) => ({
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
+})
 
-export default queryRendererHoc({
+const mapStateToProps = (store) => ({
+  toolTip: store.user.toolTip,
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  queryRendererHoc({
     query: getPortfolioQuery,
     pollInterval: 5000,
     fetchPolicy: 'network-only',
-})(PortfolioTableIndustries)
-
+  })(PortfolioTableIndustries)
+)

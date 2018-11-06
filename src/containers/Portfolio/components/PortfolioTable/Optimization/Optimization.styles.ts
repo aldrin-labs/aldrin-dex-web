@@ -64,7 +64,7 @@ const PTWrapper = styled.div`
 `
 
 export const StyledCardHeader = styled(CardHeader)`
-  margin-bottom: 1rem;
+  margin-bottom: 15px;
 `
 
 export const ContentInner = styled.div`

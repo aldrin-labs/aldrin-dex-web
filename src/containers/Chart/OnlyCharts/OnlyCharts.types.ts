@@ -4,8 +4,8 @@ export interface IChart {
 }
 
 export interface IProps {
-  addChart: () => void
-  mainPair: () => void
+  addChart: (pair: string) => void
+  mainPair: string
   removeChart: () => void
   removeWarningMessage: () => void
   charts: IChart[]
@@ -14,4 +14,5 @@ export interface IProps {
   openedWarning: boolean
   theme: any
   view: any
+  demoMode: { chartPage: boolean; multiChartPage: boolean }
 }

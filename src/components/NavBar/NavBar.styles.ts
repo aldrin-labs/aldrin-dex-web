@@ -9,7 +9,7 @@ export const Nav = styled(AppBar)`
   ${({ background }: { background: string | false }) =>
     background ? `background:${background};` : ''} ${(props: {
     hide: boolean
-    background: string
+    background: string | false 
   }) =>
     props.hide
       ? `opacity: 0;

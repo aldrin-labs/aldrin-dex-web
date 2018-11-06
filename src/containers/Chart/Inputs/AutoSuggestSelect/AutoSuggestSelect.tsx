@@ -6,14 +6,16 @@ import TextInputLoader from '@components/Placeholders/TextInputLoader'
 import QueryRenderer from '@components/QueryRenderer'
 import { Loading } from '@components/Loading/Loading'
 import { SelectR } from '@styles/cssUtils'
-import { MARKETS_QUERY } from '@containers/Chart/api'
+import { MARKETS_BY_EXCHANE_QUERY } from '@containers/Chart/api'
+import { createFilter } from 'react-select'
 
-let suggestions = []
+type T = { value: string; data: string }
+
+let suggestions: T[] = []
 
 class IntegrationReactSelect extends React.PureComponent {
   handleChange = ({ value }) => {
     const {
-      onSelect,
       selectCurrencies,
       charts,
       view,
@@ -42,20 +44,29 @@ class IntegrationReactSelect extends React.PureComponent {
     }
   }
   render() {
-    const { classes, id, value, data } = this.props
+    const { value, data } = this.props
     if (!suggestions || !data) {
-      return <Loading centerAligned />
+      return <Loading centerAligned={true} />
+    }
+
+    const matchFrom: 'start' | 'any' = 'start'
+
+    const filterConfig = {
+      matchFrom,
+      ignoreCase: true,
+      trim: true,
     }
 
     if (data) {
-      suggestions = data.liveMarkets.map((suggestion: any) => ({
-        value: suggestion.name,
-        label: suggestion.name,
+      suggestions = data.getMarketsByExchange.map((suggestion: any) => ({
+        value: suggestion.symbol,
+        label: suggestion.symbol,
       }))
     }
     return (
-      <div style={{ width: '15%' }}>
+      <div style={{ width: '15%' }} className="AutoSuggestSelect">
         <SelectR
+          filterOption={createFilter(filterConfig)}
           placeholder="Add chart"
           value={value && { value, label: value }}
           fullWidth={true}
@@ -73,7 +84,8 @@ const queryRender = (props: any) => {
       centerAlign={false}
       placeholder={() => <TextInputLoader style={{ width: 100, margin: 0 }} />}
       component={IntegrationReactSelect}
-      query={MARKETS_QUERY}
+      query={MARKETS_BY_EXCHANE_QUERY}
+      variables={{ splitter: '_', exchange: props.exchange.exchange.symbol }}
       {...props}
     />
   )

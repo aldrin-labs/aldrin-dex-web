@@ -5,7 +5,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 
 export const InputTable = styled.input`
   max-width: 60px;
-  background-color: #2d3136;
+  background: ${(props: { background: string }) => props.background};
   border: none;
   outline: none;
   color: ${(props: { isPercentSumGood?: boolean, red: string }) =>

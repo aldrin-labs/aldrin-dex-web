@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Paper, Button, Fade, Slide } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
+import Joyride from 'react-joyride'
 
 import {
   OrderBookTable,
@@ -10,6 +11,7 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
+import * as userActions from '@containers/User/actions'
 import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import {
   ExchangeQuery,
@@ -32,6 +34,8 @@ import { MASTER_BUILD } from '@utils/config'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
+import { singleChartSteps } from '@utils/joyrideSteps'
+import { setTimeout } from 'timers'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
@@ -43,6 +47,7 @@ class Chart extends React.Component<IProps, IState> {
     activeChart: 'candle',
     exchanges: [],
     tradeHistory: [],
+    joyride: false,
   }
 
   static getDerivedStateFromProps(nextProps: IProps) {
@@ -50,6 +55,14 @@ class Chart extends React.Component<IProps, IState> {
     document.title = `${base} to ${quote} | CCAI`
 
     return null
+  }
+
+  componentDidMount() {
+    if (!this.state.joyride) {
+      setTimeout(() => {
+        this.setState({ joyride: true })
+      }, 1000)
+    }
   }
 
   componentWillUnmount() {
@@ -149,6 +162,15 @@ class Chart extends React.Component<IProps, IState> {
     }
   }
 
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('chartPage')
+  }
+
   renderTables: any = () => {
     const { aggregation, showTableOnMobile } = this.state
     const { currencyPair } = this.props
@@ -158,7 +180,7 @@ class Chart extends React.Component<IProps, IState> {
       quote = currencyPair.split('_')[1]
     }
 
-    const { activeExchange, theme } = this.props
+    const { activeExchange, theme, demoMode } = this.props
     const { changeExchange } = this
 
     const symbol = currencyPair || ''
@@ -169,6 +191,27 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <TablesContainer>
+        <Joyride
+          showProgress={true}
+          showSkipButton={true}
+          continuous={true}
+          steps={singleChartSteps}
+          run={this.state.joyride && demoMode.chartPage}
+          callback={this.handleJoyrideCallback}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.background.paper,
+              primaryColor: theme.palette.primary.main,
+              textColor: theme.palette.getContrastText(
+                theme.palette.background.paper
+              ),
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
         {MASTER_BUILD && <ComingSoon />}
         <TablesBlockWrapper
           blur={MASTER_BUILD}
@@ -213,6 +256,7 @@ class Chart extends React.Component<IProps, IState> {
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
+          className="ExchangesTable"
           blur={MASTER_BUILD}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
@@ -377,17 +421,18 @@ class Chart extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { view, currencyPair } = this.props
+    const { view, currencyPair, activeExchange } = this.props
 
     const toggler = this.renderToggler()
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-        <TogglerContainer>
+        <TogglerContainer className="AutoSuggestSelect">
           <AutoSuggestSelect
             value={view === 'default' && currencyPair}
             id={'currencyPair'}
             view={view}
+            exchange={activeExchange}
           />
 
           {toggler}
@@ -406,7 +451,7 @@ const MainContainer = styled.div`
   }
 `
 const DepthChartContainer = styled.div`
-  height: calc(100vh - 59px - 80px - 38px);
+  height: calc(100vh - 59px - ${navBarHeight}px - 38px);
   width: 100%;
 `
 
@@ -515,6 +560,7 @@ const Container = styled.div`
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,
   isNoCharts: store.chart.charts.length === 0,
+  demoMode: store.user.toolTip,
   view: store.chart.view,
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
@@ -528,6 +574,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(actions.selectCurrencies(baseQuote)),
   addChart: (payload) => dispatch(actions.addChart(payload)),
   setOrders: (payload) => dispatch(actions.setOrders(payload)),
+  hideToolTip: (tab: string) => dispatch(userActions.hideToolTip(tab)),
 })
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)

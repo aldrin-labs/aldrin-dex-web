@@ -1,17 +1,21 @@
 import React from 'react'
 
-
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
+  addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions } from '.././mocks'
 import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
 import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 import { handleRef } from '@components/ReactSelectComponent/utils'
-import { Icon } from '@styles/cssUtils'
-import { InputTable, TableWrapper, SAddIcon, SDeleteIcon } from './RebalancedPortfolioTable.styles'
+import {
+  InputTable,
+  TableWrapper,
+  SAddIcon,
+  SDeleteIcon,
+} from './RebalancedPortfolioTable.styles'
 
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
@@ -260,15 +264,17 @@ export default class RebalancedPortfolioTable extends React.Component<
   transformData = (
     rows,
     staticRows,
-    mainSymbol,
+    isEditModeEnabled,
+    isPercentSumGood,
     red,
     green,
-    isEditModeEnabled,
-    isPercentSumGood
+    background
   ) => {
+    const isUSDCurrently = this.props.isUSDCurrently
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
+          background={background}
           key={`inputPercentage${index}`}
           tabIndex={index + 1}
           isPercentSumGood={isPercentSumGood}
@@ -292,6 +298,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             openMenuOnClick={true}
             options={exchangeOptions}
             menuPortalTarget={document.body}
+            menuPortalStyles={{
+              zIndex: 111,
+            }}
             menuStyles={{
               fontSize: '12px',
               minWidth: '150px',
@@ -333,6 +342,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             isSearchable={true}
             openMenuOnClick={false}
             menuPortalTarget={document.body}
+            menuPortalStyles={{
+              zIndex: 111,
+            }}
             menuStyles={{
               fontSize: '12px',
               minWidth: '150px',
@@ -367,17 +379,19 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
-      return Object.values({
+      return {
+        id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
-        ...(staticRows[index]
+        ...(staticRows[index].coin === row.coin &&
+        staticRows[index].exchange === row.exchange
           ? {
               oririnalPortfolioPerc: {
-                render: staticRows[index].portfolioPerc,
+                render: `${staticRows[index].portfolioPerc}%`,
                 isNumber: true,
               },
               oritinalPrice: {
-                render: staticRows[index].price,
+                render: addMainSymbol(staticRows[index].price, isUSDCurrently),
                 isNumber: true,
               },
             }
@@ -387,8 +401,10 @@ export default class RebalancedPortfolioTable extends React.Component<
             }),
         portfolioPerc: { render: portfolioPercentage, isNumber: true },
         price: {
-          additionalRender: mainSymbol,
-          render: formatNumberToUSFormat(row.price),
+          render: addMainSymbol(
+            formatNumberToUSFormat(row.price),
+            isUSDCurrently
+          ),
           isNumber: true,
         },
         deltaPrice: {
@@ -413,8 +429,8 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ),
               },
             }
-          : {}),
-      })
+          : null),
+      }
     })
 
     return transformedData
@@ -436,110 +452,124 @@ export default class RebalancedPortfolioTable extends React.Component<
     const { transformData } = this
     const red = theme.palette.red.main
     const green = theme.palette.green.main
-    const mainSymbol = isUSDCurrently ? (
-      <Icon className="fa fa-usd" />
-    ) : (
-      <Icon className="fa fa-btc" />
-    )
+    const background = theme.palette.background.default
+
+    let columnNames = [
+      { label: 'Exchange', id: '2' },
+      { label: 'Coin', id: '22' },
+      { label: 'Current %', isNumber: true, id: '32' },
+      {
+        label: `Current ${isUSDCurrently ? 'USD' : 'BTC'}`,
+        isNumber: true,
+        id: '223',
+      },
+      { label: 'Rebalanced %', isNumber: true, id: '2r2' },
+      {
+        label: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
+        isNumber: true,
+        id: '224',
+      },
+      { label: 'Trade', id: '22 ' },
+    ]
+    //  space for delete icon
+    if (isEditModeEnabled) {
+      columnNames = [...columnNames, { label: '  ', id: '22 ' }]
+    }
 
     return {
-      head: [
-        { render: 'Exchange' },
-        { render: 'Coin' },
-        { render: 'Current %', isNumber: true },
-        { render: `Current ${isUSDCurrently ? 'USD' : 'BTC'}`, isNumber: true },
-        { render: 'Rebalanced %', isNumber: true },
-        {
-          render: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
-          isNumber: true,
-        },
-        { render: 'Trade' },
-        ...(isEditModeEnabled ? [{ render: ' ' }] : []),
-      ],
-      body: transformData(
-        rows,
-        staticRows,
-        mainSymbol,
-        red,
-        green,
-        isEditModeEnabled,
-        isPercentSumGood
-      ),
-      footer: [
-        ...(isEditModeEnabled ? [[
-        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },       {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },       {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },        {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        }, {
-          render: ' ',
-          variant: 'body',
-          style: {position: 'static'},
-        },
-        {
-          render: (
-            <SAddIcon
-              onClick={this.onAddRowButtonClick}
-              hoverColor={green}
-            />
-          ),
-          variant: 'body',
-          style: {position: 'static'},
-        },
-      ]] : []),
-        [
-          'Subtotal',
-          ' ',
-          ' ',
-          ' ',
-          { render: `${totalPercents}%`, isNumber: true },
+      columnNames,
+      data: {
+        body: transformData(
+          rows,
+          staticRows,
+          isEditModeEnabled,
+          isPercentSumGood,
+          red,
+          green,
+          background
+        ),
+        footer: [
+          isEditModeEnabled
+            ? {
+                id: '3',
+                exchange: {
+                  render: ' ',
+                },
+                coin: {
+                  render: ' ',
+                },
+                current: {
+                  render: ' ',
+                },
+                currentUSD: {
+                  render: ' ',
+                },
+                rebalanced: {
+                  render: ' ',
+                },
+                rebalancedUSD: {
+                  render: ' ',
+                },
+                trade: {
+                  render: ' ',
+                },
+                icon: {
+                  render: (
+                    <SAddIcon
+                      onClick={this.onAddRowButtonClick}
+                      hoverColor={green}
+                    />
+                  ),
+                },
+                options: {
+                  static: true,
+                  variant: 'body',
+                },
+              }
+            : null,
           {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalTableRows),
-            isNumber: true,
+            id: '33',
+            exchange: 'Subtotal',
+            coin: ' ',
+            current: ' ',
+            currentUSD: ' ',
+            rebalanced: { render: `${totalPercents}%`, isNumber: true },
+            rebalancedUSD: {
+              render: addMainSymbol(
+                formatNumberToUSFormat(totalTableRows),
+                isUSDCurrently
+              ),
+              isNumber: true,
+            },
+            trade: ' ',
+            ...(isEditModeEnabled ? { render: ' ' } : {}),
           },
-          ' ',
-          ...(isEditModeEnabled ? [{ render: ' ' }] : []),
+
+          {
+            id: '333',
+            exchange: 'All',
+            coin: ' ',
+            current: ' ',
+            currentUSD: {
+              render: addMainSymbol(
+                formatNumberToUSFormat(totalStaticRows),
+                isUSDCurrently
+              ),
+              isNumber: true,
+            },
+            rebalanced: ' ',
+            rebalancedUSD: {
+              render: addMainSymbol(
+                formatNumberToUSFormat(totalRows),
+                isUSDCurrently
+              ),
+              isNumber: true,
+            },
+            trade: ' ',
+            ...(isEditModeEnabled ? { render: ' ' } : {}),
+          },
         ],
-        [
-          'All',
-          ' ',
-          ' ',
-          {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalStaticRows),
-            isNumber: true,
-          },
-          ' ',
-          {
-            additionalRender: mainSymbol,
-            render: formatNumberToUSFormat(totalRows),
-            isNumber: true,
-          },
-          ' ',
-          ...(isEditModeEnabled ? [{ render: ' ' }] : []),
-        ],
-      ],
+      },
     }
   }
 
@@ -554,10 +584,9 @@ export default class RebalancedPortfolioTable extends React.Component<
           onChange={this.onSelectActiveBalance}
           onSelectAllClick={this.onSelectAllActive}
           showUpperFooter={isEditModeEnabled}
-          rows={this.putDataInTable()}
+          {...this.putDataInTable()}
         />
       </TableWrapper>
     )
   }
 }
-

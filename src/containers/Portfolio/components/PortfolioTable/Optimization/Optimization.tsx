@@ -1,19 +1,20 @@
 import React, { Component } from 'react'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import Joyride from 'react-joyride'
 
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,
   IData,
   IProps,
+  RawOptimizedData,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
-// import BarChart from '@components/BarChart/BarChart'
 import LineChart from '@components/LineChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
 import Import, {
   InnerChartContainer,
-  Label,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
@@ -25,195 +26,86 @@ import {
 } from '@utils/PortfolioTableUtils'
 import ComingSoon from '@components/ComingSoon'
 import {
-  Loader,
   ChartsContainer,
   Chart,
   MainArea,
-  MainAreaUpperPart,
   PTWrapper,
   Content,
   ChartContainer,
   ContentInner,
   LoaderWrapper,
   LoaderInnerWrapper,
-  LoadingText,
   StyledCardHeader,
 } from './Optimization.styles'
-import { mockDataForLineChart } from './mockData'
 
 import { MASTER_BUILD } from '@utils/config'
 import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
-import CardHeader from '@components/CardHeader'
-
-const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
-  return [1528405044 + 86400 * i, i * 2 - 500 + i * Math.random()]
-})
-
-const dateMockDataOptimized = new Array(1300).fill(undefined).map((elem, i) => {
-  return [1528405044 + 86400 * i, i * 2 + 900 - i * Math.random()]
-})
+import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
+import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
+import * as Useractions from '@containers/User/actions'
 
 class Optimization extends Component<IProps, IState> {
-  state = {
+  state: IState = {
     loading: false,
-    risk: [],
-    returns: [0],
-    optimizedData: [],
-    rawDataBeforeOptimization: {},
-    expectedReturn: '',
     activeButton: 2,
-    percentages: [0],
     rawOptimizedData: [],
     openWarning: false,
     warningMessage: '',
+    run: true,
+    key: 0,
   }
 
-  optimizedToState = (data: object[]) =>
-    this.setState({ rawOptimizedData: data })
+  optimizedToState = (data: RawOptimizedData) => {
+    const optimizedCoinsWeights = data.reduce((accMap, el) => {
+      el.weights.forEach((weight: number, index: number) => {
+        const percentageWeight = Math.abs(Number(weight) * 100).toFixed(2)
+        const currentCoinName = el.portfolio_coins_list[index]
 
-  handleChange = (event: any) => {
-    this.setState({
-      expectedReturn: event.target.value.replace(/-|%/g, ''),
-    })
+        if (accMap.has(currentCoinName)) {
+          accMap.set(currentCoinName, [
+            ...accMap.get(currentCoinName),
+            percentageWeight,
+          ])
+        } else {
+          accMap.set(currentCoinName, [percentageWeight])
+        }
+      })
+
+      return accMap
+    }, new Map())
+
+    this.props.updateData(
+      [...this.props.storeData].map((el) => ({
+        ...el,
+        optimizedPercentageArray: optimizedCoinsWeights.get(el.coin),
+      }))
+    )
+
+    this.setState({ rawOptimizedData: data })
   }
 
   transformData = (assets: any[]): IData[] => {
     const allSum = calcAllSumOfPortfolioAsset(assets)
-
-    const newAssets = assets.map((asset: any) => ({
+    // TODO: Avoid mutations in array of objects
+    const newAssets = assets.map((asset: IData) => ({
       coin: asset.coin,
-      percentage: roundPercentage(
+      percentage: +roundPercentage(
         percentagesOfCoinInPortfolio(asset, allSum, true)
       ),
     }))
+    const summedAssetsWithoutDuplicates = sumSameCoinsPercentages(newAssets)
 
-    return [newAssets, allSum]
-  }
-
-  optimizePortfolio = (data: any) => {
-    if (
-      !(this.state.expectedReturn === '' || this.props.storeData.length < 1)
-    ) {
-      if (this.props.isShownMocks) {
-        //  this part outdated
-        const risk = [
-          +(Math.random() * 100).toFixed(2),
-          +(Math.random() * 100).toFixed(2),
-          +(Math.random() * 100).toFixed(2),
-          +(Math.random() * 100).toFixed(2),
-          +(Math.random() * 100).toFixed(2),
-        ]
-        this.setState(
-          {
-            optimizedData: this.props.storeData.map(
-              ({ coin }: { coin: string }) => ({
-                coin,
-                percentage: (Math.random() * 100).toFixed(2),
-              })
-            ),
-            risk,
-            returns: this.getPercentages(Number(this.state.expectedReturn)),
-            rawDataBeforeOptimization: this.props.storeData,
-          },
-          () => console.log(this.state)
-        )
-      } else {
-        this.setState(
-          {
-            loading: false,
-            optimizedData: data['weighted_coins_optimized'].map(
-              ({ coin, weight }: { coin: string; weight: number }) => ({
-                coin,
-                percentage: Math.max(+weight * 100, 0.01),
-              })
-            ),
-            risk: this.state.rawOptimizedData.map((el: any) => el.risk * 100),
-            returns: this.state.rawOptimizedData.map(
-              (el: any) => el.returns * 100
-            ),
-            rawDataBeforeOptimization: this.props.storeData,
-          },
-          () => console.log(this.state)
-        )
-      }
-
-      this.setState({
-        percentages: this.getPercentages(Number(this.state.expectedReturn)),
-      })
-    }
+    return [summedAssetsWithoutDuplicates, allSum]
   }
 
   onNewBtnClick = (index) => {
     this.setState({ activeButton: index })
   }
 
-  onBtnClick = async (index: number) => {
-    if (!this.props.isShownMocks) {
-      this.setState({ loading: true })
-    }
-    this.setState({ activeButton: index })
-
-    const { rawOptimizedData, percentages } = this.state
-    const percentage = percentages[index]
-
-    const data = rawOptimizedData.find(
-      (el: any) => el.percentage_expected_returns === percentage
-    )
-
-    data && this.optimizePortfolio(data)
-  }
-
-  getPercentages = (percentage: number) => {
-    /* tslint:disable */
-    //  not optimized code
-    const percetageArray: number[] = []
-
-    if (percentage <= 0) {
-      return []
-    }
-
-    if (percentage <= 5) {
-      percetageArray.push(percentage)
-      for (let index = 1; index < 5; index++) {
-        percetageArray.push(percentage + 5 * index)
-      }
-
-      return percetageArray
-    }
-
-    if (percentage <= 10) {
-      percetageArray.push(percentage - 5)
-      percetageArray.push(percentage)
-
-      for (let index = 1; index < 4; index++) {
-        percetageArray.push(percentage + 5 * index)
-      }
-
-      return percetageArray
-    }
-
-    for (let index = 1; index < 3; index++) {
-      percetageArray.push(percentage - 5 * (3 - index))
-    }
-
-    percetageArray.push(percentage)
-
-    for (let index = 1; index < 3; index++) {
-      percetageArray.push(percentage + 5 * index)
-    }
-    /* tslint:enable */
-
-    return percetageArray
-  }
-
   showWarning = (message: string) => {
     this.setState({ openWarning: true, warningMessage: message })
-
-    setTimeout(() => {
-      this.hideWarning()
-    }, 3000)
   }
 
   hideWarning = () => {
@@ -227,21 +119,11 @@ class Optimization extends Component<IProps, IState> {
 
   renderInput = () => {
     // importing stuff from backend or manually bu user
-    const {
-      expectedReturn,
-      percentages,
-      activeButton,
-      optimizedData,
-      rawOptimizedData,
-    } = this.state
+    const { activeButton, rawOptimizedData } = this.state
     const {
       isShownMocks,
       updateData,
       storeData,
-      startDate,
-      endDate,
-      setPeriod,
-      optimizationPeriod,
       filterValueSmallerThenPercentage,
       baseCoin,
       theme,
@@ -254,43 +136,25 @@ class Optimization extends Component<IProps, IState> {
         query={getCoinsForOptimization}
         variables={{ baseCoin }}
         filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}
-        optimizationPeriod={optimizationPeriod}
         showWarning={this.showWarning}
         toggleLoading={this.toggleLoading}
-        setPeriod={setPeriod}
         setActiveButtonToDefault={this.setActiveButtonToDefault}
-        optimizedData={optimizedData}
         rawOptimizedData={rawOptimizedData}
         transformData={this.transformData}
         storeData={storeData}
-        startDate={startDate}
-        endDate={endDate}
-        expectedReturn={expectedReturn}
-        optimizePortfolio={this.optimizePortfolio}
         isShownMocks={isShownMocks}
         updateData={updateData}
-        handleChange={this.handleChange}
         optimizedToState={this.optimizedToState}
         // buttons props
-        onBtnClick={this.onBtnClick}
         onNewBtnClick={this.onNewBtnClick}
-        percentages={percentages}
         activeButton={activeButton}
-        showSwitchButtons={optimizedData.length >= 1}
         theme={theme}
       />
     )
   }
 
   renderCharts = () => {
-    const {
-      optimizedData,
-      rawDataBeforeOptimization,
-      activeButton,
-      risk,
-      returns,
-      rawOptimizedData,
-    } = this.state
+    const { activeButton, rawOptimizedData } = this.state
     const { storeData } = this.props
 
     if (!storeData) return
@@ -300,26 +164,11 @@ class Optimization extends Component<IProps, IState> {
     const arrayOfReturnedRisks =
       rawOptimizedData && rawOptimizedData.map((el) => el.risk_coefficient)
 
-    let efficientFrontierData = {
+    const efficientFrontierData = {
       activeButton,
       percentages: arrayOfReturnedValues,
       risk: arrayOfReturnedRisks,
     }
-
-    // let showBarChartPlaceholder = false
-    // if (
-    //   !isEqual(
-    //     storeData.map((el: IData) => el.coin).sort(),
-    //     optimizedData.map((el: IData) => el.coin).sort()
-    //   )
-    // ) {
-    //   showBarChartPlaceholder = true
-    //   efficientFrontierData = {
-    //     percentages: [],
-    //     risk: [],
-    //     activeButton,
-    //   }
-    // }
 
     // for real data
     const lineChartData =
@@ -330,17 +179,6 @@ class Optimization extends Component<IProps, IState> {
         x: el[0],
         y: el[1],
       }))
-
-    // const lineChartDataOriginal = dateMockDataOriginal.map((el) => ({
-    //   label: 'original',
-    //   x: el[0],
-    //   y: el[1],
-    // }))
-    // const lineChartDataOptimized = dateMockDataOptimized.map((el) => ({
-    //   label: 'optimized',
-    //   x: el[0],
-    //   y: el[1],
-    // }))
 
     const itemsForChartLegend = [
       {
@@ -357,21 +195,19 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer>
-        <ChartContainer>
+        <ChartContainer className="BackTestOptimizationChart">
           <StyledCardHeader title="Back-test Optimization" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <LineChart
                 alwaysShowLegend={false}
-                // data={mockDataForLineChart}
-                // data={[lineChartDataOriginal, lineChartDataOptimized]}
                 data={lineChartData === 0 ? undefined : [lineChartData]}
                 itemsForChartLegend={itemsForChartLegend}
               />
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <ChartContainer>
+        <ChartContainer className="EfficientFrontierChart">
           <StyledCardHeader title="Efficient Frontier" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
@@ -386,12 +222,25 @@ class Optimization extends Component<IProps, IState> {
     )
   }
 
-  renderLoading = () => <Loader color="secondary" />
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('Optimization')
+    if (data.status === 'finished') {
+      const oldKey = this.state.key
+      this.setState({ key: oldKey + 1 })
+    }
+  }
 
   render() {
     const {
       children,
+      theme,
       theme: { palette },
+      toolTip,
     } = this.props
 
     const textColor: string = palette.getContrastText(palette.background.paper)
@@ -403,10 +252,31 @@ class Optimization extends Component<IProps, IState> {
         background={palette.background.default}
         notScrollable={MASTER_BUILD}
       >
+        <Joyride
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={portfolioOptimizationSteps}
+          run={toolTip.portfolioOptimization}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.background.paper,
+              primaryColor: theme.palette.primary.main,
+              textColor: theme.palette.getContrastText(
+                theme.palette.background.paper
+              ),
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
         <Content>
           {MASTER_BUILD && <ComingSoon />}
           {children}
-          {/*{loading ? this.renderLoading() : null}*/}
           {loading && (
             <LoaderWrapper>
               {' '}
@@ -424,11 +294,29 @@ class Optimization extends Component<IProps, IState> {
               {this.renderCharts()}
             </MainArea>
           </ContentInner>
-          <Warning
+          {/*<Warning*/}
+          {/*open={openWarning}*/}
+          {/*messageText={warningMessage}*/}
+          {/*onCloseClick={this.hideWarning}*/}
+          {/*/>*/}
+          <Dialog
+            fullScreen={false}
             open={openWarning}
-            messageText={warningMessage}
-            onCloseClick={this.hideWarning}
-          />
+            aria-labelledby="responsive-dialog-title"
+          >
+            <DialogTitle id="responsive-dialog-title">
+              {warningMessage}
+            </DialogTitle>
+            <DialogActions>
+              <Button
+                onClick={this.hideWarning}
+                color="secondary"
+                autoFocus={true}
+              >
+                ok
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Content>
       </PTWrapper>
     )
@@ -438,14 +326,12 @@ class Optimization extends Component<IProps, IState> {
 const mapStateToProps = (store: any) => ({
   isShownMocks: store.user.isShownMocks,
   storeData: store.portfolio.optimizationData,
-  startDate: store.portfolio.optimizationStartDate,
-  endDate: store.portfolio.optimizationEndDate,
-  optimizationPeriod: store.portfolio.optimizationPeriod,
+  toolTip: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateData: (data: any) => dispatch(actions.updateDataForOptimization(data)),
-  setPeriod: (payload: any) => dispatch(actions.setOptimizationPeriod(payload)),
+  hideToolTip: (tab: string) => dispatch(Useractions.hideToolTip(tab)),
 })
 const storeComponent = connect(
   mapStateToProps,

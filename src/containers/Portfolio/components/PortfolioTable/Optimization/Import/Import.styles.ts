@@ -68,7 +68,7 @@ const Input = styled.input`
 `
 
 const Chart = styled.div`
-  height: 339px;
+  height: 354px;
   padding: 0.5rem;
   flex-grow: 1;
   border-radius: 1rem;

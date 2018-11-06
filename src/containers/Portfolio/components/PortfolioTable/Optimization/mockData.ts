@@ -1,3 +1,11 @@
+const dateMockDataOriginal = new Array(1300).fill(undefined).map((elem, i) => {
+  return [1528405044 + 86400 * i, i * 2 - 500 + i * Math.random()]
+})
+
+const dateMockDataOptimized = new Array(1300).fill(undefined).map((elem, i) => {
+  return [1528405044 + 86400 * i, i * 2 + 900 - i * Math.random()]
+})
+
 export const mockDataForLineChart = [
   [
     {

@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { Subscription, Query } from 'react-apollo'
 import { connect } from 'react-redux'
 import styled from 'styled-components'
+import Joyride from 'react-joyride'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
@@ -11,20 +11,13 @@ import {
   toggleCorrelationTableFullscreen,
   setCorrelationPeriod as setCorrelationPeriodAction,
 } from '@containers/Portfolio/actions'
-import {
-  getCorrelationQuery,
-  CORRELATION_UPDATE,
-  getPortfolioMainQuery,
-} from '@containers/Portfolio/api'
-import {
-  calcAllSumOfPortfolioAsset,
-  percentagesOfCoinInPortfolio,
-  swapDates,
-} from '@utils/PortfolioTableUtils'
-import { Loading } from '@components/Loading'
+import { getCorrelationQuery } from '@containers/Portfolio/api'
+import { swapDates } from '@utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
+import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 
 const Correlation = (props: IProps) => {
   const {
@@ -32,14 +25,12 @@ const Correlation = (props: IProps) => {
     isFullscreenEnabled,
     period,
     setCorrelationPeriodToStore,
-    portfolio,
-    filterValueSmallerThenPercentage,
+
     startDate,
     endDate,
   } = props
 
   let dataRaw = {}
-  let data = {} // filtered data by dust
   if (
     props.data.myPortfolios &&
     props.data.myPortfolios.length > 0 &&
@@ -52,60 +43,25 @@ const Correlation = (props: IProps) => {
     return <CustomError error={'wrongShape'} />
   }
 
-  if (portfolio && portfolio.getProfile && dataRaw !== '') {
-    // filter data here
-    const allSums = calcAllSumOfPortfolioAsset(
-      portfolio.getProfile.portfolio.assets
-    )
-
-    const listOfCoinsToFilter = portfolio.getProfile.portfolio.assets
-      .filter(
-        (d: any) =>
-          percentagesOfCoinInPortfolio(d, allSums, true) <
-          filterValueSmallerThenPercentage
-      )
-      .map((d: any) => d.asset.symbol)
-
-    const listOfIndexes = listOfCoinsToFilter.map((coin) =>
-      dataRaw.header.findIndex((d: any) => d === coin)
-    )
-
-    data = {
-      header: dataRaw.header.filter((d, i) => !listOfIndexes.includes(i)),
-      values: dataRaw.values
-        .map((row: number[]) =>
-          row.filter((d, i) => !listOfIndexes.includes(i))
-        )
-        .filter((d, i) => !listOfIndexes.includes(i)),
-    }
-  } else {
-    data = dataRaw // no filter when mock on
-  }
-
   return (
-    <Subscription subscription={CORRELATION_UPDATE}>
-      {(subscriptionData) => {
-        return (
-          <>
-            {children}
-            <CorrelationMatrix
-              fullScreenChangeHandler={props.toggleFullscreen}
-              isFullscreenEnabled={isFullscreenEnabled || false}
-              data={data}
-              setCorrelationPeriod={setCorrelationPeriodToStore}
-              period={period}
-              dates={{ startDate, endDate }}
-            />
-          </>
-        )
-      }}
-    </Subscription>
+    <>
+      {children}
+      <CorrelationMatrix
+        fullScreenChangeHandler={props.toggleFullscreen}
+        isFullscreenEnabled={isFullscreenEnabled || false}
+        data={dataRaw}
+        setCorrelationPeriod={setCorrelationPeriodToStore}
+        period={period}
+        dates={{ startDate, endDate }}
+      />
+    </>
   )
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, baseCoin, children } = props
+  const { isShownMocks, children, theme } = props
   let { startDate, endDate } = props
+  let key = 0
 
   // startDate must be less always
   //  but if somehow not I will swap them
@@ -114,8 +70,39 @@ const CorrelationWrapper = (props: IProps) => {
     endDate = swapDates({ startDate, endDate }).endDate
   }
 
+  const handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      props.hideToolTip('Correlation')
+    if (data.status === 'finished') {
+      key = key + 1
+    }
+  }
+
   return (
     <PTWrapper>
+      <Joyride
+        steps={portfolioCorrelationSteps}
+        run={props.toolTip.portfolioCorrelation}
+        callback={handleJoyrideCallback}
+        key={key}
+        styles={{
+          options: {
+            backgroundColor: theme.palette.background.paper,
+            primaryColor: theme.palette.primary.main,
+            textColor: theme.palette.getContrastText(
+              theme.palette.background.paper
+            ),
+          },
+          tooltip: {
+            fontFamily: theme.typography.fontFamily,
+            fontSize: theme.typography.fontSize,
+          },
+        }}
+      />
       {isShownMocks ? (
         <Correlation
           data={{
@@ -131,26 +118,16 @@ const CorrelationWrapper = (props: IProps) => {
           {...props}
         />
       ) : (
-        <Query query={getPortfolioMainQuery} variables={{ baseCoin }}>
-          {({ loading, data }) => {
-            const render = loading ? (
-              <Loading centerAligned={true} />
-            ) : (
-              <QueryRenderer
-                fetchPolicy="network-only"
-                component={Correlation}
-                query={getCorrelationQuery}
-                // quick fix until I have free time
-                variables={{
-                  startDate,
-                  endDate,
-                }}
-                {...{ portfolio: data, ...props }}
-              />
-            )
-            return render
+        <QueryRenderer
+          fetchPolicy="network-only"
+          component={Correlation}
+          query={getCorrelationQuery}
+          variables={{
+            startDate,
+            endDate,
           }}
-        </Query>
+          {...props}
+        />
       )}
     </PTWrapper>
   )
@@ -166,12 +143,14 @@ const mapStateToProps = (store: any) => ({
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
+  toolTip: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   toggleFullscreen: (data: any) => dispatch(toggleCorrelationTableFullscreen()),
   setCorrelationPeriodToStore: (payload: object) =>
     dispatch(setCorrelationPeriodAction(payload)),
+  hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
 })
 
 const storeComponent = connect(

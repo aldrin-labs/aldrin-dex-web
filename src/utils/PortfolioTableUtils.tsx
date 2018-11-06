@@ -5,22 +5,38 @@ import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
 import { Icon } from '@styles/cssUtils'
 import { IPortfolio } from '@containers/Portfolio/interfaces'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
-import { flatten, has } from 'lodash-es'
+import { flatten, has, round } from 'lodash-es'
 import { InputRecord } from '@components/DonutChart/types'
 import { Tooltip } from '@material-ui/core'
 import { FullWidthBlock } from '@components/OldTable/Table'
+
+export const getMainSymbol = (isUSDCurrently: boolean) =>
+  isUSDCurrently ? (
+    <Icon className="fa fa-usd" />
+  ) : (
+    <Icon className="fa fa-btc" />
+  )
+
+export const addMainSymbol = (
+  value: string | number,
+  isUSDCurrently: boolean
+) => (
+  <span style={{ whiteSpace: 'nowrap' }}>
+    {getMainSymbol(isUSDCurrently)} {value}
+  </span>
+)
 
 const config = {
   industryTableEmptyCellTooltip: `The "-" represents fields for which we are not successfully
    able to calculate a value due to missing data.`,
 }
 
-export const onCheckBoxClick = (selected: any[], id) => {
+export const onCheckBoxClick = (selected: any[], id: string): string[] => {
   const selectedIndex = selected.indexOf(id)
-  let newSelected: number[] = []
+  let newSelected: string[] = []
 
   if (selectedIndex === -1) {
-    newSelected = newSelected.concat(selected, +id)
+    newSelected = newSelected.concat(selected, id)
   } else if (selectedIndex === 0) {
     newSelected = newSelected.concat(selected.slice(1))
   } else if (selectedIndex === selected.length - 1) {
@@ -100,7 +116,7 @@ export const combineIndustryData = (
   }
 
   const { myPortfolios } = data
-  const res = flatten(
+  const industryData = flatten(
     myPortfolios.map(({ industryData }) => {
       // calculating all assets to calculate allSum
       const allAssets = []
@@ -109,45 +125,54 @@ export const combineIndustryData = (
       })
       const allSum = calcAllSumOfPortfolioAsset(allAssets)
 
-      return industryData.map((row) => [
-        row.industry,
-        row.assets.length === 1
-          ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
-          : 'multiple',
-        sumPortfolioPercentageOfAsset(row.assets, allSum),
-        // portfolio performance
-        colorful(calculateTotalPerfOfCoin(row.assets) || 0, red, green),
-        colorful(+roundPercentage(row.industry1W) || 0, red, green),
-        colorful(+roundPercentage(row.industry1M) || 0, red, green),
-        colorful(+roundPercentage(row.industry3M) || 0, red, green),
-        colorful(+roundPercentage(row.industry1Y) || 0, red, green),
-        //  expanded row content
-        row.assets.length === 1
-          ? []
-          : row.assets.map((asset) => [
-              '',
-              { render: asset.coin, style: { fontWeight: 700 } },
-              +roundPercentage(
-                percentagesOfCoinInPortfolio(asset, allSum, true)
-              ),
-              colorful(+roundPercentage(asset.perf), red, green),
-              '',
-              '',
-              '',
-              '',
-            ]),
-      ])
+      return industryData.map((row) => ({
+        // industry should be uniq
+        id: row.industry,
+        industry: row.industry,
+        coin:
+          row.assets.length === 1
+            ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
+            : 'multiple',
+        portfolio: sumPortfolioPercentageOfAsset(row.assets, allSum),
+        // portfolioPerformance: colorful(
+        //   calculateTotalPerfOfCoin(row.assets) || 0,
+        //   red,
+        //   green
+        // ),
+
+        industry1w: colorful(+roundPercentage(row.industry1W) || 0, red, green),
+
+        industry1m: colorful(+roundPercentage(row.industry1M) || 0, red, green),
+
+        industry3M: colorful(+roundPercentage(row.industry3M) || 0, red, green),
+        industry1Y: colorful(+roundPercentage(row.industry1Y) || 0, red, green),
+
+        expandableContent:
+          row.assets.length === 1
+            ? []
+            : row.assets.map((asset) => ({
+                industry: '',
+                coin: { render: asset.coin, style: { fontWeight: 700 } },
+                portfolio: +roundPercentage(
+                  percentagesOfCoinInPortfolio(asset, allSum, true)
+                ),
+                // portfolioPerformance: colorful(
+                //   +roundPercentage(asset.perf),
+                //   red,
+                //   green
+                // ),
+                industry1w: '',
+                industry1m: '',
+                industry3m: '',
+                industry1y: '',
+              })),
+      }))
     })
   )
-  // applying dustfilter
-  const industryData = res.filter(
-    // becouse of shape of row[2] object {render: 23%, isNumber: true}
-    (row) => +transformToNumber(row[2].render) >= filterValueLessThen
-  )
 
-  const chartData: InputRecord[] = res.map((row) => ({
-    label: row[0],
-    realValue: +transformToNumber(row[2].render),
+  const chartData: InputRecord[] = industryData.map((row) => ({
+    label: row.industry,
+    realValue: +transformToNumber(row.portfolio.render),
   }))
 
   return { chartData, industryData }
@@ -269,15 +294,16 @@ export const checkForString = (numberOrString: number | string) =>
 
 export const roundAndFormatNumber = (
   x: number,
-  digitsAfterPoint: number,
+  precision: number,
   format: boolean = true
-): string => {
-  if (x === null || x === 0 || +x.toFixed(digitsAfterPoint) === 0) {
+): string | number => {
+  if (x === null || x === 0 || round(x, precision) === 0) {
     return '0'
   }
+
   const res = format
-    ? formatNumberToUSFormat(x.toFixed(digitsAfterPoint))
-    : x.toFixed(digitsAfterPoint)
+    ? formatNumberToUSFormat(round(x, precision))
+    : round(x, precision)
 
   return res
 }
@@ -365,38 +391,37 @@ export const combineTableData = (
     0
   )
 
-  const tableData = portfolioAssets
-    .map((row: any, i) => {
-      const {
-        _id,
-        price,
-        coin,
-        quantity = 0,
-        name = '',
-        where = '',
-        realized = 0,
-        unrealized = 0,
-        percentChangeDay = 0,
-        portfolioPercentage = 0,
-        dailyPerc = 0,
-        daily = 0,
-      } = row || {}
+  const tableData = portfolioAssets.map((row: any, i) => {
+    const {
+      _id,
+      price,
+      coin,
+      quantity = 0,
+      name = '',
+      where = '',
+      realized = 0,
+      unrealized = 0,
+      percentChangeDay = 0,
+      portfolioPercentage = 0,
+      dailyPerc = 0,
+      daily = 0,
+    } = row || {}
 
-      return {
-        coin,
-        price,
-        quantity,
-        daily,
-        dailyPerc,
-        portfolioPercentage: (price * quantity * 100) / allSums,
-        currentPrice: price * quantity,
-        realizedPL: realized,
-        unrealizedPL: unrealized,
-        totalPL: realized + unrealized,
-        id: _id,
-        exchange: where,
-      }
-    })
+    return {
+      coin,
+      price,
+      quantity,
+      daily,
+      dailyPerc,
+      portfolioPercentage: (price * quantity * 100) / allSums,
+      currentPrice: price * quantity,
+      realizedPL: realized,
+      unrealizedPL: unrealized,
+      totalPL: realized + unrealized,
+      id: _id,
+      exchange: where,
+    }
+  })
 
   return tableData
 }

@@ -15,6 +15,16 @@ import {
 import Switch from '@material-ui/core/Switch'
 import CryptoWalletsList from '@containers/User/components/CryptoWalletsList/CryptoWalletsList'
 import KeysList from '@containers/User/components/KeysList/KeysList'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+} from '@material-ui/core'
+import { updateBinanceWarning } from './actions'
+import ComingSoon from '@components/ComingSoon'
 
 class UserContainer extends React.Component {
   store: any
@@ -28,7 +38,7 @@ class UserContainer extends React.Component {
   }
 
   forceUpdateUserContainer = () => {
-    this.forceUpdate();
+    this.forceUpdate()
   }
 
   render() {
@@ -36,17 +46,29 @@ class UserContainer extends React.Component {
       return <Redirect to="/portfolio" />
     }
     return (
-      <div>
+      <>
         <UserWrap>
-          <AddExchangeKey forceUpdateUserContainer={this.forceUpdateUserContainer} />
+          <AddExchangeKey
+            forceUpdateUserContainer={this.forceUpdateUserContainer}
+          />
           <KeysList forceUpdateUserContainer={this.forceUpdateUserContainer} />
         </UserWrap>
 
-        <UserWrap>
-          <AddCryptoWallet forceUpdateUserContainer={this.forceUpdateUserContainer} />
-          <CryptoWalletsList forceUpdateUserContainer={this.forceUpdateUserContainer} />
+        <UserWrap
+          style={
+            process.env.NODE_ENV === 'production' ? { filter: 'blur(3px)' } : {}
+          }
+        >
+          {process.env.NODE_ENV === 'production' && <ComingSoon />}
+
+          <AddCryptoWallet
+            forceUpdateUserContainer={this.forceUpdateUserContainer}
+          />
+          <CryptoWalletsList
+            forceUpdateUserContainer={this.forceUpdateUserContainer}
+          />
         </UserWrap>
-        {process.env.NODE_ENV !== 'production' &&
+        {process.env.NODE_ENV !== 'production' && (
           <AdminCP>
             <Heading>Show mocks</Heading>
             <Switch
@@ -54,8 +76,28 @@ class UserContainer extends React.Component {
               checked={this.props.isShownMocks}
             />
           </AdminCP>
-        }
-      </div>
+        )}
+        <Dialog
+          fullScreen={false}
+          open={this.props.showBinanceWarning}
+          aria-labelledby="responsive-dialog-title"
+        >
+          <DialogTitle id="responsive-dialog-title">
+            {
+              'We currently support only Binance exchange and will be adding more exchanges soon!'
+            }
+          </DialogTitle>
+          <DialogActions>
+            <Button
+              onClick={() => this.props.updateBinanceWarning(false)}
+              color="secondary"
+              autoFocus={true}
+            >
+              ok
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
     )
   }
 }
@@ -87,9 +129,18 @@ const UserWrap = styled.div`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
-  loginStatus: store.login.loginStatus
+  loginStatus: store.login.loginStatus,
+  showBinanceWarning: store.user.showBinanceWarning,
 })
 
-const storeComponent = connect(mapStateToProps)(UserContainer)
+const mapDispatchToProps = (dispatch: any) => ({
+  updateBinanceWarning: (payload: boolean) =>
+    dispatch(updateBinanceWarning(payload)),
+})
+
+const storeComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserContainer)
 
 export const User = compose(withErrorFallback)(storeComponent)

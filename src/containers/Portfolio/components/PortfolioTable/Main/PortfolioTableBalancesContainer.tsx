@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import { zip, isObject } from 'lodash-es'
+import { Theme } from '@material-ui/core'
+import nanoid from 'nanoid'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import { queryRendererHoc } from '@components/QueryRenderer'
@@ -9,9 +12,10 @@ import {
   composePortfolioWithMocks,
   numberOfDigitsAfterPoint,
   roundPercentage,
+  onCheckBoxClick,
+  transformToNumber,
+  addMainSymbol,
 } from '@utils/PortfolioTableUtils'
-import { zip, isObject } from 'lodash-es'
-import { Theme } from '@material-ui/core'
 
 const chooseRed = (theme: Theme) =>
   theme.palette.type === 'dark'
@@ -58,10 +62,7 @@ class Container extends Component {
 
       return {
         numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
-        checkedRows:
-          portfolioAssets.length === 0
-            ? []
-            : prevState.checkedRows,
+        checkedRows: portfolioAssets.length === 0 ? [] : prevState.checkedRows,
         portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
           composePortfolioAssetsWithMocks,
@@ -96,18 +97,22 @@ class Container extends Component {
 
       // show footer
       total = []
-      const data = this.transformData(tableData)
+      const data = this.transformData(tableData).map((row) => {
+        const result = Object.values(row)
+        // becouse portfolio has %
+        result[3] = transformToNumber(result[3].render)
+        return result
+      })
       // check lodash docs (transforming rows into columns)
       zip(...data).forEach((column, ind) => {
         let sum: number | { render: string | number; style: object } = 0
-        //  skip exchange , coin, price and quantity columns
-        if (ind > 1 && ind !== 3 && ind !== 4) {
+        //  skip id, exchange , coin, price and quantity columns
+        if (ind > 2 && ind !== 4 && ind !== 5) {
           // sum each column numbers if they were selected
           column.forEach((el, i) => {
-            const num = isObject(el) ? el.render : el
-
+            const num = isObject(el) ? el.rawValue : el
             if (
-              checkedRows.indexOf(i) !== -1 &&
+              checkedRows.indexOf(data[i][0]) !== -1 &&
               typeof num === 'number' &&
               typeof sum === 'number'
             ) {
@@ -116,18 +121,26 @@ class Container extends Component {
 
             // dont calculate sum of portfolio becouse it must always be 100
             // this is cheaty way of doing things and may lead to unexpected behaviour
-            if (ind === 2 && selectedAll) sum = 100
+            if (ind === 3 && selectedAll) sum = 100
           })
 
           // coloring text depends on value for P&L
-          const formatedSum = +roundAndFormatNumber(sum, round, false)
-          if (ind > 5) {
+          const formatedSum = roundAndFormatNumber(
+            sum,
+            round,
+            ind === 2 ? false : true
+          )
+          if (ind > 3) {
             total.push({
               render: formatedSum,
               isNumber: true,
-              style: { color: formatedSum > 0 ? green : red },
+              // colors for P&L
+              style: ind > 6 && {
+                color: sum > 0 ? green : sum < 0 ? red : '',
+              },
             })
           } else {
+            // here will be portfolio % column
             total.push(formatedSum)
           }
         } else {
@@ -136,39 +149,108 @@ class Container extends Component {
       })
     }
 
-    return total && [total]
+    return (
+      total && [
+        {
+          id: total[0],
+          exchange: total[1],
+          coin: total[2],
+          portfolio: {
+            render: `${roundPercentage(+total[3])}%`,
+            isNumber: true,
+          },
+          price: total[4],
+          quantity: total[5],
+          usd: {
+            render: addMainSymbol(total[6].render, true),
+            style: total[6].style,
+            isNumber: total[6].isNumber,
+          },
+          reailizedPL: {
+            render: addMainSymbol(total[7].render, true),
+            style: total[7].style,
+            isNumber: total[7].isNumber,
+          },
+          unrealizedPL: {
+            render: addMainSymbol(total[8].render, true),
+            style: total[8].style,
+            isNumber: total[8].isNumber,
+          },
+          totalPL: {
+            render: addMainSymbol(total[9].render, true),
+            style: total[9].style,
+            isNumber: total[9].isNumber,
+          },
+        },
+      ]
+    )
   }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
     const { numberOfDigitsAfterPoint: round } = this.state
-
-    return data.map((row) => [
-      row.exchange,
-      { render: row.coin, style: { fontWeight: 700 } },
-      {
+    const isUSDCurrently = this.props.baseCoin === 'USDT'
+    console.log(data)
+    return data.map((row) => ({
+      // exchange + coin always uniq
+      //  change in future
+      id: row.id,
+      exchange: row.exchange,
+      coin: { render: row.coin, style: { fontWeight: 700 } },
+      portfolio: {
+        // not formatted value for counting total in footer
+        rawValue: row.portfolioPercentage,
         render: `${roundPercentage(row.portfolioPercentage) || 0}%`,
         isNumber: true,
       },
-      +roundAndFormatNumber(row.price, round, false),
-      +roundAndFormatNumber(row.quantity, round, false),
-      +roundAndFormatNumber(row.price * row.quantity, round, false),
-      {
-        render: +roundAndFormatNumber(row.realizedPL, round, false),
-        color: row.realizedPL > 0 ? green : red,
-      },
-      {
-        render: +roundAndFormatNumber(row.unrealizedPL, round, false),
-        color: row.unrealizedPL > 0 ? green : red,
-      },
-      {
-        render: +roundAndFormatNumber(
-          row.realizedPL + row.unrealizedPL,
-          round,
-          false
+      price: {
+        rawValue: row.price,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.price, round, true),
+          isUSDCurrently
         ),
-        color: row.totalPL > 0 ? green : red,
+        isNumber: true,
       },
-    ])
+      quantity: {
+        rawValue: row.quantity,
+        render: roundAndFormatNumber(row.quantity, round, true),
+        isNumber: true,
+      },
+      usd: {
+        rawValue: row.price * row.quantity,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.price * row.quantity, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
+      },
+      realizedPL: {
+        rawValue: row.realizedPL,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.realizedPL, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
+        color: row.realizedPL > 0 ? green : row.realizedPL < 0 ? red : '',
+      },
+      unrealizedPL: {
+        rawValue: row.unrealizedPL,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.unrealizedPL, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
+        color: row.unrealizedPL > 0 ? green : row.unrealizedPL < 0 ? red : '',
+      },
+      totalPL: {
+        rawValue: row.totalPL,
+        render: addMainSymbol(
+          roundAndFormatNumber(row.totalPL, round, true),
+          isUSDCurrently
+        ),
+        isNumber: true,
+        color: row.totalPL > 0 ? green : row.totalPL < 0 ? red : '',
+      },
+    }))
   }
 
   putDataInTable = () => {
@@ -177,15 +259,15 @@ class Container extends Component {
 
     return {
       head: [
-        { render: 'exchange', isNumber: false },
-        { render: 'coin', isNumber: false },
-        { render: 'portfolio', isNumber: true },
-        { render: 'price', isNumber: true },
-        { render: 'quantity', isNumber: true },
-        { render: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },
-        { render: 'realized P&L', isNumber: true },
-        { render: 'Unrealized P&L', isNumber: true },
-        { render: 'Total P&L', isNumber: true },
+        { id: nanoid(), label: 'exchange', isNumber: false },
+        { id: nanoid(), label: 'coin', isNumber: false },
+        { id: nanoid(), label: 'portfolio', isNumber: true },
+        { id: nanoid(), label: 'price', isNumber: true },
+        { id: nanoid(), label: 'quantity', isNumber: true },
+        { id: nanoid(), label: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },
+        { id: nanoid(), label: 'realized P&L', isNumber: true },
+        { id: nanoid(), label: 'Unrealized P&L', isNumber: true },
+        { id: nanoid(), label: 'Total P&L', isNumber: true },
       ],
       body: this.transformData(
         tableData,
@@ -196,11 +278,14 @@ class Container extends Component {
     }
   }
 
+  onCheckboxClick = (id: string) =>
+    this.setState({ checkedRows: onCheckBoxClick(this.state.checkedRows, id) })
+
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
     if ((e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
         checkedRows: state.tableData
-          ? state.tableData.map((n: any, i: number) => i)
+          ? state.tableData.map((row: any, i: number) => row.id)
           : [],
       }))
       return
@@ -208,42 +293,21 @@ class Container extends Component {
     this.setState({ checkedRows: [] })
   }
 
-  onCheckboxClick = (id: number | string) => {
-    //  from material UI docs
-    const { checkedRows: selected } = this.state
-    const selectedIndex = selected.indexOf(id)
-    let newSelected: number[] = []
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, +id)
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1))
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1))
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      )
-    }
-
-    this.setState({ checkedRows: newSelected })
-  }
-
   render() {
     const { checkedRows, currentSort, tableData } = this.state
-    const { onCheckboxClick, onSelectAllClick, putDataInTable } = this
-
+    const { theme } = this.props
+    const { onSelectAllClick, putDataInTable } = this
     return (
       <PortfolioMain
         {...{
           ...this.props,
-          onCheckboxClick,
           onSelectAllClick,
           currentSort,
           putDataInTable,
           checkedRows,
           tableData,
+          theme,
+          onCheckboxClick: this.onCheckboxClick,
         }}
       />
     )

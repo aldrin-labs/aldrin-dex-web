@@ -2,7 +2,6 @@ import { createReducer } from 'redux-act'
 
 import { daysFromNow } from '@utils/dateUtils'
 import * as actions from '@containers/Portfolio/actions'
-import { isEqual } from 'lodash-es'
 
 const initialState = {
   portfolio: null,

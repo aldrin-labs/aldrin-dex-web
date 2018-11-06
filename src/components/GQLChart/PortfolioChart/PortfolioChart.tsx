@@ -144,10 +144,13 @@ export default class PortfolioChart extends Component<Props, State> {
                 new Date(v * 1000).toUTCString().substring(5, 11)
               }
             />
-            <YAxis
-              style={axisStyle}
-              tickFormat={(value) => `$${abbrNum(+value.toFixed(2), 2)}`}
-            />
+            {/* hiding Axis for a while */}
+            {false && (
+              <YAxis
+                style={axisStyle}
+                tickFormat={(value) => `$${abbrNum(+value.toFixed(2), 2)}`}
+              />
+            )}
             <GradientDefs>
               <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
                 <stop offset="40%" stopColor="#267871" stopOpacity={0.2} />

@@ -129,6 +129,12 @@ const StyledTableWithoutInput = styled(StyledTable)`
 const Col = styled.div`
   flex: 1;
   flex-direction: column;
+  
+  &:first-child ${Item} p {
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `
 
 const Body = styled.div`

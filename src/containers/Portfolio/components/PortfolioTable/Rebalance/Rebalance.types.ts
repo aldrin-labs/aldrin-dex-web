@@ -17,6 +17,7 @@ export interface IProps extends WithTheme {
   children: object
   isUSDCurrently: boolean
   isShownMocks: boolean
+  baseCoin: string
   filterValueSmallerThenPercentage: number
   getMyPortfolio: IGetMyPortfolioQuery
   updateRebalanceMutationQuery: Function
@@ -44,6 +45,8 @@ export interface IState {
   totalPercents: number | string
   leftBar: string
   rightBar: string
+  run: boolean
+  key: number
 }
 
 export interface ICurrentSort {

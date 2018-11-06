@@ -8,14 +8,25 @@ const styles = (theme: Theme) =>
       padding: '1px 14px 1px 6px',
       width: '100%',
       height: theme.spacing.unit * 4,
-      backgroundColor: theme.palette.grey[900],
+      backgroundColor:
+        theme.palette.type === 'dark'
+          ? theme.palette.grey[900]
+          : theme.palette.primary.dark,
+    },
+    action: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   })
 
 const Header = (props: CardHeaderProps) => (
   <CardHeader
     titleTypographyProps={{ variant: 'button', color: 'secondary' }}
-    className={props && props.classes && props.classes.root}
+    classes={{
+      root: props && props.classes && props.classes.root,
+      action: props && props.classes && props.classes.action,
+    }}
     {...props}
   />
 )

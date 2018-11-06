@@ -5,6 +5,7 @@ import withTheme from '@material-ui/core/styles/withTheme'
 import { Toolbar, Button, Grid } from '@material-ui/core'
 import { NavLink as Link } from 'react-router-dom'
 import { fade } from '@material-ui/core/styles/colorManipulator'
+import Hidden from '@material-ui/core/Hidden'
 
 import MainLogo from '@icons/MainLogo.png'
 import { Nav, Logo } from './NavBar.styles'
@@ -49,18 +50,21 @@ const NavBarRaw: SFC<Props> = ({
       position="static"
       hide={hide}
       color="default"
-      background={type === 'light' && primary[300]}
+      background={type === 'light' && primary.light}
+      className="Navbar"
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
         <Grid alignItems="center" container={true} alignContent={'stretch'}>
-          <Grid item={true} xs={2}>
-            <Grid container={true}>
-              <Logo src={MainLogo} />
+          <Hidden only={['sm', 'xs']}>
+            <Grid item={true} md={4}>
+              <Grid container={true}>
+                <Logo src={MainLogo} />
+              </Grid>
             </Grid>
-          </Grid>
-          <Grid item={true} xs={8}>
+          </Hidden>
+          <Grid item={true} md={3} sm={5}>
             <Grid
-              justify="center"
+              justify="flex-end"
               container={true}
               style={{ flexDirection: 'row', display: 'flex' }}
             >
@@ -86,14 +90,17 @@ const NavBarRaw: SFC<Props> = ({
             </Grid>
           </Grid>
 
-          <Grid item={true} xs={2}>
+          <Grid item={true} md={5} sm={7}>
             <Grid
               justify="flex-end"
               wrap="nowrap"
               direction={'row'}
               container={true}
             >
-              <Feedback />
+
+              <Hidden only={['sm', 'xs']}>
+                <Feedback />
+              </Hidden>
 
               <Login mainColor={main} />
             </Grid>
