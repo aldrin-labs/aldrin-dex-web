@@ -14,7 +14,6 @@ export const Container = styled(Grid)`
 
 export const ChartWrapper = styled(Card)`
   max-height: 100%;
-  height: 75%;
   width: 100%;
   ${customAquaScrollBar};
 `
