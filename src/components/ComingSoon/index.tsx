@@ -21,7 +21,7 @@ export default ({ show = true }) =>
 
 const Container = styled.div`
   height: 100%;
-  opacity: 0.75;
+  opacity: 0.50;
   width: 100%;
   background: #83a4d4; /* fallback for old browsers */
   background: linear-gradient(to right, #83a4d4, #b6fbff);
