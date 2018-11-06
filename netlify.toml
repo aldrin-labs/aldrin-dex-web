@@ -8,5 +8,4 @@
 # repository branch will inherit these settings.
 [context.production]
   command = "yarn buildMaster"
-[context.production.environment]
-    MASTER_BUILD = "true"
+
