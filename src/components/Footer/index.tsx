@@ -8,14 +8,28 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Telegram from '@material-ui/icons/NearMeSharp'
 
-import { changeThemeMode } from '@containers/App/actions'
+import {
+  changeThemeMode,
+  togglePrivacyPolicy as togglePrivacyPolicyAction,
+} from '@containers/App/actions'
 import Props from './index.types'
-import { AppBar, IconButton } from '@material-ui/core'
+import {
+  AppBar,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@material-ui/core'
+import privacyPolicy from '@utils/privacyPolicy'
 
 const Footer = ({
   changeModeTheme,
   themeMode,
   hide,
+  togglePrivacyPolicy,
+  open,
   theme: {
     palette: { secondary },
   },
@@ -29,16 +43,15 @@ const Footer = ({
         •
       </Typography>
 
-      <Button size="small" color="default">
+      {/* <Button size="small" color="default">
         Terms of Use
-      </Button>
-      {/* should be vsible only at master */}
-      {process.env.MASTER_BUILD && (
-        <Typography variant="h6" color="secondary">
-          •
-        </Typography>
-      )}
-      <Button size="small" color="default">
+      </Button> */}
+
+      <Typography variant="h6" color="secondary">
+        •
+      </Typography>
+
+      <Button size="small" onClick={togglePrivacyPolicy} color="default">
         Privacy Policy
       </Button>
     </Block>
@@ -62,17 +75,20 @@ const Footer = ({
         color="default"
       />
     </Block>
+    {/* do formating and put it into separate component */}
+    <Dialog open={open} scroll={'paper'} aria-labelledby="scroll-dialog-title">
+      <DialogTitle id="scroll-dialog-title">Privacy Policy</DialogTitle>
+      <DialogContent>
+        <DialogContentText>{privacyPolicy}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={togglePrivacyPolicy} color="primary">
+          Ok
+        </Button>
+      </DialogActions>
+    </Dialog>
   </Container>
 )
-
-const Link = styled.a`
-  &:visited {
-    text-decoration: none;
-  }
-  &:active {
-    text-decoration: none;
-  }
-`
 
 const Container = styled(AppBar)`
   flex-wrap: nowrap;
@@ -102,10 +118,12 @@ const Block = styled.div`
 
 const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
+  open: store.ui.showPrivacyPolicy,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   changeModeTheme: () => dispatch(changeThemeMode()),
+  togglePrivacyPolicy: () => dispatch(togglePrivacyPolicyAction()),
 })
 
 export default compose(
