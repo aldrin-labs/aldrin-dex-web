@@ -30,19 +30,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     run: true,
     key: 0,
   }
-  componentDidMount() {
-    this.setState({ run: true })
-  }
 
-  handleJoyrideCallback = (data) => {
+  handleJoyrideCallback = (data: any) => {
     if (
-      data.action === 'close'
-      || data.action === 'skip'
-      || data.status === 'finished'
-    ) this.props.hideToolTip('Main')
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    ) {
+      this.props.hideToolTip('Main')
+    }
     if (data.status === 'finished') {
       const oldKey = this.state.key
-      this.setState({key: oldKey + 1})
+      this.setState({ key: oldKey + 1 })
     }
   }
 
@@ -53,11 +52,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       checkedRows,
       onCheckboxClick,
       onSelectAllClick,
+      theme,
     } = this.props
 
-    const { run } = this.state
-
     const { body, head, footer } = putDataInTable()
+    console.log(theme.palette.background.paper)
+    console.log('theme.palette.background.paper')
 
     const coins =
       checkedRows && checkedRows.length > 0
@@ -68,18 +68,30 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
-      <div>
-        <Joyride
-          continuous={true}
-          showProgress={true}
-          showSkipButton={true}
-          steps={portfolioMainSteps}
-          run={this.props.toolTip.portfolioMain}
-          callback={this.handleJoyrideCallback}
-          key={this.state.key}
-        />
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <GridContainer container={true} spacing={16}>
+          <Joyride
+            continuous={true}
+            showProgress={true}
+            showSkipButton={true}
+            steps={portfolioMainSteps}
+            run={this.props.toolTip.portfolioMain}
+            callback={this.handleJoyrideCallback}
+            key={this.state.key}
+            styles={{
+              options: {
+                backgroundColor: theme.palette.background.paper,
+                primaryColor: theme.palette.primary.main,
+                textColor: theme.palette.getContrastText(
+                  theme.palette.background.paper
+                ),
+              },
+              tooltip: {
+                fontFamily: theme.typography.fontFamily,
+                fontSize: theme.typography.fontSize,
+              },
+            }}
+          />
           <TableContainer item={true} xs={12} md={8}>
             <TableWrapper className="PortfolioMainTable">
               {Array.isArray(tableData) && (
@@ -105,7 +117,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             <ChartWrapper className="PortfolioValueChart">
               <CardHeader
                 style={{ position: 'absolute' }}
-                title={'Portfolio Value'}
+                title={'Portfolio Value | Cooming Soon | In development'}
               />
               <Chart
                 isShownMocks={this.props.isShownMocks}
@@ -121,14 +133,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           </ChartContainer>
         </GridContainer>
       </EmptyTablePlaceholder>
-      </div>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
   hideToolTip: (tab: string) => dispatch(actions.hideToolTip(tab)),
-
 })
 
 const mapStateToProps = (store) => ({
@@ -138,6 +148,9 @@ const mapStateToProps = (store) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   withErrorFallback
 )(PortfolioTableBalances)

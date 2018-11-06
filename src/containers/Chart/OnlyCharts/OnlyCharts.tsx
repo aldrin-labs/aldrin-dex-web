@@ -2,12 +2,16 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Slide } from '@material-ui/core'
+import Joyride from 'react-joyride'
 
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@components/WarningMessageSnack/WarningMessageSnack'
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
+import * as userActions from '@containers/User/actions'
 
 import { IProps, IChart } from './OnlyCharts.types'
+import { multiChartsSteps } from '@utils/joyrideSteps'
+import { withErrorFallback } from '@hoc/'
 
 class OnlyCharts extends Component<IProps> {
   componentDidMount() {
@@ -16,6 +20,16 @@ class OnlyCharts extends Component<IProps> {
       addChart(mainPair)
     }
   }
+
+  handleJoyrideCallback = (data) => {
+    if (
+      data.action === 'close' ||
+      data.action === 'skip' ||
+      data.status === 'finished'
+    )
+      this.props.hideToolTip('multiChartPage')
+  }
+
   render() {
     const {
       charts,
@@ -24,40 +38,64 @@ class OnlyCharts extends Component<IProps> {
       removeWarningMessage,
       theme,
       view,
+      demoMode,
     } = this.props
 
     return (
-      <Slide
-        direction="left"
-        timeout={500}
-        in={true}
-        mountOnEnter={true}
-        unmountOnExit={true}
-      >
-        <ChartContainer
-          fullscreen={view !== 'default'}
-          chartsCount={charts.length || 1}
+      <>
+        <Joyride
+          showProgress={true}
+          showSkipButton={true}
+          continuous={true}
+          steps={multiChartsSteps}
+          run={demoMode.multiChartPage}
+          callback={this.handleJoyrideCallback}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.background.paper,
+              primaryColor: theme.palette.primary.main,
+              textColor: theme.palette.getContrastText(
+                theme.palette.background.paper
+              ),
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
+        <Slide
+          direction="left"
+          timeout={500}
+          in={true}
+          mountOnEnter={true}
+          unmountOnExit={true}
         >
-          {charts
-            .filter((chart) => chart.id && chart.pair)
-            .map((chart: IChart, i: number) => (
-              <IndividualChart
-                //  if there is no id generate it here
-                key={chart.id}
-                theme={theme}
-                removeChart={removeChart}
-                index={i}
-                chartsCount={charts.length}
-                currencyPair={chart.pair}
-              />
-            ))}
-          <WarningMessageSnack
-            open={openedWarning}
-            onCloseClick={removeWarningMessage}
-            messageText={'You can create up to 8 charts.'}
-          />
-        </ChartContainer>
-      </Slide>
+          <ChartContainer
+            fullscreen={view !== 'default'}
+            chartsCount={charts.length || 1}
+          >
+            {charts
+              .filter((chart) => chart.id && chart.pair)
+              .map((chart: IChart, i: number) => (
+                <IndividualChart
+                  //  if there is no id generate it here
+                  key={chart.id}
+                  theme={theme}
+                  removeChart={removeChart}
+                  index={i}
+                  chartsCount={charts.length}
+                  currencyPair={chart.pair}
+                />
+              ))}
+            <WarningMessageSnack
+              open={openedWarning}
+              onCloseClick={removeWarningMessage}
+              messageText={'You can create up to 8 charts.'}
+            />
+          </ChartContainer>
+        </Slide>
+      </>
     )
   }
 }
@@ -110,15 +148,19 @@ const mapStateToProps = (store: any) => ({
   currencyPair: store.chart.currencyPair,
   isShownMocks: store.user.isShownMocks,
   openedWarning: store.chart.warningMessageOpened,
+  demoMode: store.user.toolTip,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   removeChart: (i: number) => dispatch(actions.removeChart(i)),
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
   removeWarningMessage: () => dispatch(actions.removeWarningMessage()),
+  hideToolTip: (tab: string) => dispatch(userActions.hideToolTip(tab)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(OnlyCharts)
+export default withErrorFallback(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(OnlyCharts)
+)
