@@ -115,7 +115,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             <ChartWrapper className="PortfolioValueChart">
               <CardHeader
                 style={{ position: 'absolute' }}
-                title={'Portfolio Value | Cooming Soon | In development'}
+                title={'Portfolio Value | Coming Soon | In development'}
               />
               <Chart
                 isShownMocks={this.props.isShownMocks}
