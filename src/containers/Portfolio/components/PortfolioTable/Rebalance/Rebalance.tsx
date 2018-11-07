@@ -114,8 +114,6 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      console.log('userHasRebalancePortfolio && userHasPortfolio');
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -150,8 +148,6 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      console.log('!userHasRebalancePortfolio && userHasPortfolio');
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -173,10 +169,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const composeWithMocksRebalancedPortfolio = isShownMocks
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
-
-
-    console.log('composeWithMocksCurrentPortfolio', composeWithMocksCurrentPortfolio);
-    console.log('composeWithMocksRebalancedPortfolio', composeWithMocksRebalancedPortfolio);
 
 
     if (userHasRebalancePortfolio) {

@@ -162,10 +162,6 @@ export function calculateMoneyPart(
 }
 
 export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
-  console.log('el', el);
-  console.log('portfolioAssets', portfolioAssets);
-
-
   const indexInCurrentPortfolio = portfolioAssets.findIndex(
     (curEl) => curEl._id === el._id
   )
