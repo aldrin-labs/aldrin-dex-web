@@ -114,8 +114,11 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
+      console.log('userHasRebalancePortfolio && userHasPortfolio');
+
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
+          _id: el._id,
           id: i,
           exchange: el.where,
           symbol: el.coin,
@@ -135,9 +138,10 @@ class Rebalance extends React.Component<IProps, IState> {
           return {
             price,
             currentPrice,
+            _id: el._id,
             id: i,
-            exchange: el._id.exchange,
-            symbol: el._id.coin,
+            exchange: el.exchange,
+            symbol: el.coin,
             portfolioPerc: null,
             deltaPrice: el.diff.$numberDecimal,
           }
@@ -146,8 +150,11 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
+      console.log('!userHasRebalancePortfolio && userHasPortfolio');
+
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
+          _id: el._id,
           id: i,
           exchange: el.where,
           symbol: el.coin,
@@ -166,6 +173,11 @@ class Rebalance extends React.Component<IProps, IState> {
     const composeWithMocksRebalancedPortfolio = isShownMocks
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
+
+
+    console.log('composeWithMocksCurrentPortfolio', composeWithMocksCurrentPortfolio);
+    console.log('composeWithMocksRebalancedPortfolio', composeWithMocksRebalancedPortfolio);
+
 
     if (userHasRebalancePortfolio) {
       this.setTableData(
@@ -301,10 +313,9 @@ class Rebalance extends React.Component<IProps, IState> {
     const { rows, totalRows } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
-      _id: {
-        exchange: el.exchange,
-        coin: el.symbol,
-      },
+      _id: el._id,
+      exchange: el.exchange,
+      coin: el.symbol,
       amount: el.currentPrice
         ? (el.price / el.currentPrice).toString()
         : el.price.toString(),
@@ -640,13 +651,5 @@ export default compose(
   ),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
-    // options: {
-    //   refetchQueries: [
-    //     {
-    //       query: getMyPortfolioAndRebalanceQuery,
-    //       variables: { baseCoin: 'USDT' },
-    //     },
-    //   ],
-    // },
   })
 )(RebalanceContainer)
