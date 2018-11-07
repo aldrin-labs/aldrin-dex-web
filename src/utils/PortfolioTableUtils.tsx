@@ -80,6 +80,7 @@ const calculateTotalPerfOfCoin = (assets: any[]): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
 const colorful = (value: number, red: string, green: string) => ({
+  contentToSort: value,
   render:
     value === 0 ? (
       <Tooltip enterDelay={250} title={config.industryTableEmptyCellTooltip}>

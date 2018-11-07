@@ -110,7 +110,7 @@ class Container extends Component {
         if (ind > 2 && ind !== 4 && ind !== 5) {
           // sum each column numbers if they were selected
           column.forEach((el, i) => {
-            const num = isObject(el) ? el.rawValue : el
+            const num = isObject(el) ? el.contentToSort : el
             if (
               checkedRows.indexOf(data[i][0]) !== -1 &&
               typeof num === 'number' &&
@@ -197,12 +197,12 @@ class Container extends Component {
       coin: { render: row.coin, style: { fontWeight: 700 } },
       portfolio: {
         // not formatted value for counting total in footer
-        rawValue: row.portfolioPercentage,
+        contentToSort: row.portfolioPercentage,
         render: `${roundPercentage(row.portfolioPercentage) || 0}%`,
         isNumber: true,
       },
       price: {
-        rawValue: row.price,
+        contentToSort: row.price,
         render: addMainSymbol(
           roundAndFormatNumber(row.price, round, true),
           isUSDCurrently
@@ -210,12 +210,12 @@ class Container extends Component {
         isNumber: true,
       },
       quantity: {
-        rawValue: row.quantity,
+        contentToSort: row.quantity,
         render: roundAndFormatNumber(row.quantity, round, true),
         isNumber: true,
       },
       usd: {
-        rawValue: row.price * row.quantity,
+        contentToSort: row.price * row.quantity,
         render: addMainSymbol(
           roundAndFormatNumber(row.price * row.quantity, round, true),
           isUSDCurrently
@@ -223,7 +223,7 @@ class Container extends Component {
         isNumber: true,
       },
       realizedPL: {
-        rawValue: row.realizedPL,
+        contentToSort: row.realizedPL,
         render: addMainSymbol(
           roundAndFormatNumber(row.realizedPL, round, true),
           isUSDCurrently
@@ -232,7 +232,7 @@ class Container extends Component {
         color: row.realizedPL > 0 ? green : row.realizedPL < 0 ? red : '',
       },
       unrealizedPL: {
-        rawValue: row.unrealizedPL,
+        contentToSort: row.unrealizedPL,
         render: addMainSymbol(
           roundAndFormatNumber(row.unrealizedPL, round, true),
           isUSDCurrently
@@ -241,7 +241,7 @@ class Container extends Component {
         color: row.unrealizedPL > 0 ? green : row.unrealizedPL < 0 ? red : '',
       },
       totalPL: {
-        rawValue: row.totalPL,
+        contentToSort: row.totalPL,
         render: addMainSymbol(
           roundAndFormatNumber(row.totalPL, round, true),
           isUSDCurrently
@@ -258,15 +258,15 @@ class Container extends Component {
 
     return {
       head: [
-        { id: nanoid(), label: 'exchange', isNumber: false },
-        { id: nanoid(), label: 'coin', isNumber: false },
-        { id: nanoid(), label: 'portfolio', isNumber: true },
-        { id: nanoid(), label: 'price', isNumber: true },
-        { id: nanoid(), label: 'quantity', isNumber: true },
-        { id: nanoid(), label: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },
-        { id: nanoid(), label: 'realized P&L', isNumber: true },
-        { id: nanoid(), label: 'Unrealized P&L', isNumber: true },
-        { id: nanoid(), label: 'Total P&L', isNumber: true },
+        { id: 'exchange', label: 'exchange', isNumber: false },
+        { id: 'coin', label: 'coin', isNumber: false },
+        { id: 'portfolio', label: 'portfolio', isNumber: true },
+        { id: 'price', label: 'price', isNumber: true },
+        { id: 'quantity', label: 'quantity', isNumber: true },
+        { id: 'usd', label: isUSDCurrently ? 'usd' : 'BTC', isNumber: true },
+        { id: 'realizedPL', label: 'realized P&L', isNumber: true },
+        { id: 'unrealizedPL', label: 'Unrealized P&L', isNumber: true },
+        { id: 'totalPL', label: 'Total P&L', isNumber: true },
       ],
       body: this.transformData(
         tableData,
