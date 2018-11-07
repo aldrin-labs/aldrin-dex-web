@@ -39,7 +39,6 @@ import {
   StyledCardHeader,
 } from './Optimization.styles'
 
-import { MASTER_BUILD } from '@utils/config'
 import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
@@ -284,7 +283,6 @@ class Optimization extends Component<IProps, IState> {
     return (
       <PTWrapper
         background={palette.background.default}
-        notScrollable={MASTER_BUILD}
       >
         <Joyride
           continuous={true}
@@ -309,7 +307,6 @@ class Optimization extends Component<IProps, IState> {
           }}
         />
         <Content>
-          {MASTER_BUILD && <ComingSoon />}
           {children}
           {loading && (
             <LoaderWrapper>
