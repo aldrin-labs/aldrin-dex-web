@@ -189,7 +189,6 @@ class Container extends Component {
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
     const { numberOfDigitsAfterPoint: round } = this.state
     const isUSDCurrently = this.props.baseCoin === 'USDT'
-    console.log(data)
     return data.map((row) => ({
       // exchange + coin always uniq
       //  change in future
