@@ -57,7 +57,9 @@ export interface ICurrentSort {
 
 export interface IShapeOfRebalancePortfolioRow {
   id: string
-  _id: { exchange: string; coin: string }
+  // _id: { exchange: string; coin: string }
+  exchange: string
+  coin: string
   percent: { $numberDecimal: string }
   amount: { $numberDecimal: string }
   diff: { $numberDecimal: string }

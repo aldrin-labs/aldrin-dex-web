@@ -1,5 +1,6 @@
 import React from 'react'
 
+import nanoid from 'nanoid'
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
@@ -206,6 +207,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const clonedRows = cloneArrayElementsOneLevelDeep(this.props.rows)
     const { totalRows, staticRows, updateState } = this.props
     const newRow = {
+      _id: nanoid(),
       exchange: 'Exchange',
       symbol: 'Coin',
       portfolioPerc: 0.0,
@@ -385,15 +387,13 @@ export default class RebalancedPortfolioTable extends React.Component<
 
       //TODO:
       // Should handle a case when saved rebalanced portfolio > current and vice versa
-      // Should handle a case when exchange + coin is not a key
+      // + Should handle a case when exchange + coin is not a key
 
       return {
         id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
-        ...(staticRows[index] &&
-        staticRows[index].coin === row.coin &&
-        staticRows[index].exchange === row.exchange
+        ...(staticRows[index] && staticRows[index]._id === row._id
           ? {
               oririnalPortfolioPerc: {
                 render: `${staticRows[index].portfolioPerc}%`,
