@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { isEqual } from 'lodash-es'
-import { Table as TableWithSort } from '@storybook-components'
+import { TableWithSort } from '@storybook-components'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
@@ -11,11 +11,11 @@ import { formatDate } from '@utils/dateUtils'
 import { withErrorFallback } from '@hoc/'
 
 const tableHeadings = [
-  { isNumber: false, name: 'Coin' },
-  { isNumber: false, name: 'Type' },
-  { isNumber: true, name: 'Cost' },
-  { isNumber: false, name: 'Account' },
-  { isNumber: false, name: 'Datetime' },
+  { isNumber: false, name: 'Coin', id: 'coin' },
+  { isNumber: false, name: 'Type', id: 'type' },
+  { isNumber: true, name: 'Cost', id: 'cost' },
+  { isNumber: false, name: 'Account', id: 'where' },
+  { isNumber: false, name: 'Datetime', id: 'date' },
 ]
 
 const mapPortfolioActions = (pA, index) => {
@@ -49,7 +49,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     const res = {
       head: tableHeadings.map((heading) => ({
         isNumber: heading.isNumber,
-        id: heading.name,
+        id: heading.id,
         label: heading.name,
       })),
       body: rows,

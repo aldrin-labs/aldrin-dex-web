@@ -2,9 +2,8 @@ import * as React from 'react'
 import { Grid } from '@material-ui/core'
 import Joyride from 'react-joyride'
 import { connect } from 'react-redux'
-import { compose } from 'recompose'
 
-import { Table, DonutChart } from '@storybook-components'
+import { TableWithSort as Table, DonutChart } from '@storybook-components'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import {
   combineIndustryData,
@@ -19,9 +18,9 @@ import { portfolioIndustrySteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 
 const tableHeadings = [
-  { name: 'Industry', value: 'industry' },
-  { name: 'Coin', value: 'symbol' },
-  { name: 'Portfolio', value: 'portfolioPerc' },
+  { name: 'Industry', value: 'industry', id: 'industry' },
+  { name: 'Coin', value: 'symbol', id: 'coin' },
+  { name: 'Portfolio', value: 'portfolioPerc', id: 'portfolio' },
   // {
   //   name: 'Portfolio performance',
   //   value: 'portfolioPerf',
@@ -31,21 +30,25 @@ const tableHeadings = [
     name: 'Industry performance: 1W',
     value: 'industryPerf1Week',
     additionName: 'performance',
+    id: 'industry1w',
   },
   {
     name: '1M',
     value: 'industryPerf1Month',
     additionName: 'performance',
+    id: 'industry1m',
   },
   {
     name: '3M',
     value: 'industryPerf3Months',
     additionName: 'performance',
+    id: 'industry3M',
   },
   {
     name: '1Y',
     value: 'industryPerf1Year',
     additionName: 'performance',
+    id: 'industry1Y',
   },
 ]
 
@@ -92,7 +95,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     return {
       columnNames: tableHeadings.map((heading, index: number) => ({
         label: heading.name,
-        id: heading.name,
+        id: heading.id,
         isNumber: index === 0 || index === 1 ? false : true,
       })),
       data: { body: industryData },
@@ -136,6 +139,8 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
     const tableDataHasData = industryData
       ? !!Object.keys(industryData).length
       : false
+
+    console.log({ ...this.putDataInTable() })
 
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
