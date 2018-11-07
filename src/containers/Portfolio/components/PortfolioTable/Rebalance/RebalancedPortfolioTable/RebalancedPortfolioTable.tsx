@@ -22,7 +22,7 @@ import {
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
-import { Table } from '@storybook-components'
+import { TableWithSort, Table as ImTable } from '@storybook-components'
 import { Loading } from '@components/Loading'
 
 export default class RebalancedPortfolioTable extends React.Component<
@@ -272,7 +272,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     isPercentSumGood: boolean,
     red: string,
     green: string,
-    background : string
+    background: string
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
     const transformedData = rows.map((row, index) => {
@@ -383,17 +383,16 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
-
       //TODO:
       // Should handle a case when saved rebalanced portfolio > current and vice versa
       // Should handle a case when exchange + coin is not a key
-
 
       return {
         id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
-        ...(staticRows[index] && staticRows[index].coin === row.coin &&
+        ...(staticRows[index] &&
+        staticRows[index].coin === row.coin &&
         staticRows[index].exchange === row.exchange
           ? {
               oririnalPortfolioPerc: {
@@ -401,6 +400,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 isNumber: true,
               },
               oritinalPrice: {
+                contentToSort: staticRows[index].price,
                 render: addMainSymbol(staticRows[index].price, isUSDCurrently),
                 isNumber: true,
               },
@@ -411,6 +411,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             }),
         portfolioPerc: { render: portfolioPercentage, isNumber: true },
         price: {
+          contentToSort: row.price,
           render: addMainSymbol(
             formatNumberToUSFormat(row.price),
             isUSDCurrently
@@ -465,25 +466,25 @@ export default class RebalancedPortfolioTable extends React.Component<
     const background = theme.palette.background.default
 
     let columnNames = [
-      { label: 'Exchange', id: '2' },
-      { label: 'Coin', id: '22' },
-      { label: 'Current %', isNumber: true, id: '32' },
+      { label: 'Exchange', id: 'exchange' },
+      { label: 'Coin', id: 'coin' },
+      { label: 'Current %', isNumber: true, id: 'oririnalPortfolioPerc' },
       {
         label: `Current ${isUSDCurrently ? 'USD' : 'BTC'}`,
         isNumber: true,
-        id: '223',
+        id: 'oritinalPrice',
       },
-      { label: 'Rebalanced %', isNumber: true, id: '2r2' },
+      { label: 'Rebalanced %', isNumber: true, id: 'portfolioPerc' },
       {
         label: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
         isNumber: true,
-        id: '224',
+        id: 'price',
       },
-      { label: 'Trade', id: '22 ' },
+      { label: 'Trade', id: 'deltaPrice' },
     ]
     //  space for delete icon
     if (isEditModeEnabled) {
-      columnNames = [...columnNames, { label: '  ', id: '22 ' }]
+      columnNames = [...columnNames, { label: '  ', id: 'deleteIcon' }]
     }
 
     return {
@@ -545,6 +546,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             currentUSD: ' ',
             rebalanced: { render: `${totalPercents}%`, isNumber: true },
             rebalancedUSD: {
+              contentToSort: totalTableRows,
               render: addMainSymbol(
                 formatNumberToUSFormat(totalTableRows),
                 isUSDCurrently
@@ -561,6 +563,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             coin: ' ',
             current: ' ',
             currentUSD: {
+              contentToSort: totalStaticRows,
               render: addMainSymbol(
                 formatNumberToUSFormat(totalStaticRows),
                 isUSDCurrently
@@ -569,6 +572,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             },
             rebalanced: ' ',
             rebalancedUSD: {
+              contentToSort: totalRows,
               render: addMainSymbol(
                 formatNumberToUSFormat(totalRows),
                 isUSDCurrently
@@ -585,7 +589,8 @@ export default class RebalancedPortfolioTable extends React.Component<
 
   render() {
     const { selectedActive, isEditModeEnabled, textColor, loading } = this.props
-
+    const Table = isEditModeEnabled ? ImTable : TableWithSort
+    console.log({ ...this.putDataInTable() })
     return (
       <TableWrapper>
         {loading && (
