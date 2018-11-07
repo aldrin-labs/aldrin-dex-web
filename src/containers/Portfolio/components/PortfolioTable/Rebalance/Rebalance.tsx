@@ -152,10 +152,12 @@ class Rebalance extends React.Component<IProps, IState> {
           exchange: el.where,
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
+          currentPrice: el.price,
           portfolioPerc: null,
         })
       )
     }
+
 
     const composeWithMocksCurrentPortfolio = isShownMocks
       ? [...newTableCurrentPortfolioData, ...mockTableData]
