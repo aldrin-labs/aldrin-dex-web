@@ -22,6 +22,8 @@ export interface IState {
   rawOptimizedData: RawOptimizedData
   openWarning: boolean
   warningMessage: string
+  showAllLineChartData: boolean
+  isSystemError: boolean
   run: boolean
   key: number
 }

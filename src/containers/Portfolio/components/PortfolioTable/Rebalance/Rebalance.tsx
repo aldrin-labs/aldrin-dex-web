@@ -75,6 +75,7 @@ class Rebalance extends React.Component<IProps, IState> {
     rightBar: '#4ed8da',
     run: true,
     key: 0,
+    loading: false,
   }
 
   componentDidMount() {
@@ -151,10 +152,12 @@ class Rebalance extends React.Component<IProps, IState> {
           exchange: el.where,
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
+          currentPrice: el.price,
           portfolioPerc: null,
         })
       )
     }
+
 
     const composeWithMocksCurrentPortfolio = isShownMocks
       ? [...newTableCurrentPortfolioData, ...mockTableData]
@@ -294,7 +297,7 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   updateServerDataOnSave = async () => {
-    const { updateRebalanceMutationQuery } = this.props
+    const { updateRebalanceMutationQuery, refetch } = this.props
     const { rows, totalRows } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
@@ -319,8 +322,21 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     try {
+      this.setState({loading: true})
+
       await updateRebalanceMutationQuery({ variables: variablesForMutation })
+      refetch()
+        .then(() => {
+          this.setState({loading: false})
+          console.log('resolved and refetched')
+        })
+        .catch(() => {
+            this.setState({loading: false})
+            console.log('catched')
+        }
+        )
     } catch (error) {
+      this.setState({loading: false})
       console.log(error)
     }
   }
@@ -432,7 +448,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const {
       children,
       isUSDCurrently,
-      baseCoin,
       theme,
       theme: { palette },
     } = this.props
@@ -453,6 +468,7 @@ class Rebalance extends React.Component<IProps, IState> {
       addMoneyInputValue,
       leftBar,
       rightBar,
+      loading,
     } = this.state
 
     const { onSaveClick, onEditModeEnable, onReset, updateState } = this
@@ -467,6 +483,8 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
     console.log('data', combineToBarChart(staticRows), staticRows, combineToBarChart(rows), rows)
+
+
     return (
       <EmptyTablePlaceholder isEmpty={tableDataHasData}>
         <PTWrapper tableData={true}>
@@ -512,6 +530,8 @@ class Rebalance extends React.Component<IProps, IState> {
                   isUSDCurrently,
                   addMoneyInputValue,
                   theme,
+                  loading,
+                  textColor,
                 }}
                 onSortTable={this.onSortTable}
                 onSaveClick={this.onSaveClick}
@@ -621,13 +641,13 @@ export default compose(
   ),
   graphql(updateRebalanceMutation, {
     name: 'updateRebalanceMutationQuery',
-    options: {
-      refetchQueries: [
-        {
-          query: getMyPortfolioAndRebalanceQuery,
-          variables: { baseCoin: 'USDT' },
-        },
-      ],
-    },
+    // options: {
+    //   refetchQueries: [
+    //     {
+    //       query: getMyPortfolioAndRebalanceQuery,
+    //       variables: { baseCoin: 'USDT' },
+    //     },
+    //   ],
+    // },
   })
 )(RebalanceContainer)

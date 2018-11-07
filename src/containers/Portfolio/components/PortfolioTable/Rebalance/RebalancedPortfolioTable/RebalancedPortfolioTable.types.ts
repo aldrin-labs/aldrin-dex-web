@@ -1,5 +1,6 @@
 import { IRow } from '../Rebalance.types'
 import React from 'react'
+import { Theme } from '@material-ui/core'
 
 export interface IProps {
   rows: IRow[]
@@ -8,6 +9,7 @@ export interface IProps {
   totalRows: number | string
   selectedActive: number[] | null
   areAllActiveChecked: boolean
+  totalStaticRows: number | string
   totalTableRows: number | string
   totalPercents: number | string
   isPercentSumGood: boolean
@@ -20,6 +22,8 @@ export interface IProps {
   onReset: React.ReactEventHandler
   onEditModeEnable: React.ReactEventHandler
   updateState: Function
+  loading: boolean
+  theme: Theme
 }
 
 export interface IState {
