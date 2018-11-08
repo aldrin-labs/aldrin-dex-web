@@ -6,5 +6,5 @@ export default interface IProps {
   togglePrivacyPolicy: () => void
   themeMode: 'dark' | 'light'
   hide: boolean
-  open: boolean
+  openPrivacyPolicy: boolean
 }
