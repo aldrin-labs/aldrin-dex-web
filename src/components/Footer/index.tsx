@@ -13,23 +13,15 @@ import {
   togglePrivacyPolicy as togglePrivacyPolicyAction,
 } from '@containers/App/actions'
 import Props from './index.types'
-import {
-  AppBar,
-  IconButton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from '@material-ui/core'
-import privacyPolicy from '@utils/privacyPolicy'
+import { AppBar, IconButton } from '@material-ui/core'
+import PrivacyPolicy from '@components/PrivacyPolicy/PrivacyPolicy'
 
 const Footer = ({
   changeModeTheme,
   themeMode,
   hide,
   togglePrivacyPolicy,
-  open,
+  openPrivacyPolicy,
   theme: {
     palette: { secondary },
   },
@@ -39,13 +31,6 @@ const Footer = ({
       <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
       </Typography>
-      <Typography variant="h6" color="secondary">
-        •
-      </Typography>
-
-      {/* <Button size="small" color="default">
-        Terms of Use
-      </Button> */}
 
       <Typography variant="h6" color="secondary">
         •
@@ -75,18 +60,7 @@ const Footer = ({
         color="default"
       />
     </Block>
-    {/* do formating and put it into separate component */}
-    <Dialog open={open} scroll={'paper'} aria-labelledby="scroll-dialog-title">
-      <DialogTitle id="scroll-dialog-title">Privacy Policy</DialogTitle>
-      <DialogContent>
-        <DialogContentText>{privacyPolicy}</DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={togglePrivacyPolicy} color="primary">
-          Ok
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <PrivacyPolicy open={openPrivacyPolicy} onClick={togglePrivacyPolicy} />
   </Container>
 )
 
@@ -118,7 +92,7 @@ const Block = styled.div`
 
 const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
-  open: store.ui.showPrivacyPolicy,
+  openPrivacyPolicy: store.ui.showPrivacyPolicy,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
