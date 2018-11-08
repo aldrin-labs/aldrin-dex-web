@@ -8,7 +8,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env DEVTOOL=source-map NODE_ENV=development webpack-dev-server --env.env=dev",
-    "dev:fast": "cross-env NODE_ENV=development DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
+    "dev:fast": "webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",

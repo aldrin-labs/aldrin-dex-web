@@ -8,18 +8,34 @@ const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 const port = process.env.PORT || 3000
-const devtool = process.env.DEVTOOL || 'cheap-module-source-map'
 
 const config = {
   mode: 'development',
   entry: {
-    app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.tsx`],
+    app: [
+      'react-hot-loader/patch',
+      'webpack/hot/only-dev-server',
+      `${commonPaths.appEntry}/index.tsx`,
+    ],
   },
   output: {
-    filename: 'bundle.[hash].js',
+    filename: '[name].js',
   },
-  devtool,
+  devtool: 'eval-sourcemap',
   module: {},
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          enforce: true,
+          chunks: 'all',
+        },
+      },
+    },
+  },
   stats: 'verbose',
   plugins: [
     new ErrorOverlayPlugin(),
@@ -61,18 +77,37 @@ const config = {
     }),
     new webpack.DefinePlugin({
       'process.env': {
+        NODE_ENV: JSON.stringify('development'),
         API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT),
         CHARTS_API_ENDPOINT: JSON.stringify(process.env.CHARTS_API_ENDPOINT),
       },
     }),
   ],
   cache: true,
+  optimization: {
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          enforce: true,
+          chunks: 'all',
+        },
+      },
+    },
+  },
   devServer: {
     host: 'localhost',
     port,
     historyApiFallback: true,
     hot: true,
     open: true,
+    compress: true,
+    overlay: {
+      warnings: true,
+      errors: true,
+    },
   },
 }
 
