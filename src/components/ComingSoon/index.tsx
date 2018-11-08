@@ -1,4 +1,4 @@
-// Put in container that you want to be covered by cooming soon
+// Put in container that you want to be covered by coming soon
 // it must have it's own heihgt and width
 // becouse this component has Width 100% and height 100%
 // also container must have position: relative
@@ -21,7 +21,7 @@ export default ({ show = true }) =>
 
 const Container = styled.div`
   height: 100%;
-  opacity: 0.50;
+  opacity: 0.5;
   width: 100%;
   background: #83a4d4; /* fallback for old browsers */
   background: linear-gradient(to right, #83a4d4, #b6fbff);
