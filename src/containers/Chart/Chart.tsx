@@ -363,7 +363,6 @@ class Chart extends React.Component<IProps, IState> {
             ) : (
               <Fade timeout={1000} in={activeChart === 'depth'}>
                 <DepthChartContainer>
-                  {MASTER_BUILD && <ComingSoon />}
                   <MainDepthChart
                     {...{
                       theme,
