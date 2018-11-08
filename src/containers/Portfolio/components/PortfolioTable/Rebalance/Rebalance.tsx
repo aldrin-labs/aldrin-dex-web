@@ -482,7 +482,6 @@ class Rebalance extends React.Component<IProps, IState> {
       isPercentSumGood && +undistributedMoney >= 0 ? green : red
 
     const tableDataHasData = !staticRows.length || !rows.length
-    console.log('data', combineToBarChart(staticRows), staticRows, combineToBarChart(rows), rows)
 
 
     return (
