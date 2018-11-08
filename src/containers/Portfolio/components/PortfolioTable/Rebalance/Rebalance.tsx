@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
 
 import QueryRenderer from '@components/QueryRenderer'
-import BarChart from '@components/BarChart/BarChart'
+import BarChart from '@storybook-components/BarChart'
 import {
   IProps,
   IState,
