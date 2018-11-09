@@ -4,6 +4,7 @@ import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
 import { Button as ButtonMUI, Typography, Card } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
+import Tooltip from '@material-ui/core/Tooltip'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
@@ -138,7 +139,9 @@ export default class Import extends PureComponent<IProps> {
     }
 
     if (backendResultParsed.error || backendResultParsed.status === 1) {
-      const userErrorMessage = `User Error: ${backendResultParsed.error_message}`
+      const userErrorMessage = `User Error: ${
+        backendResultParsed.error_message
+      }`
       const isUserError = backendResultParsed.error_message
 
       showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
@@ -416,17 +419,23 @@ export default class Import extends PureComponent<IProps> {
                     show={this.props.rawOptimizedData.length > 1}
                     activeButton={activeButton}
                   />
-                  <ButtonMUI
-                    disabled={isEqual(initialPortfolio, storeData)}
-                    color="secondary"
-                    style={{
-                      alignSelf: 'center',
-                    }}
-                    variant="fab"
-                    onClick={this.onResetClick}
+                  <Tooltip
+                    title={`Reset to initial portfolio`}
+                    enterDelay={250}
+                    leaveDelay={200}
                   >
-                    <MdReplay />
-                  </ButtonMUI>
+                    <ButtonMUI
+                      disabled={isEqual(initialPortfolio, storeData)}
+                      color="secondary"
+                      style={{
+                        alignSelf: 'center',
+                      }}
+                      variant="fab"
+                      onClick={this.onResetClick}
+                    >
+                      <MdReplay />
+                    </ButtonMUI>
+                  </Tooltip>
                 </SwitchButtonsWrapper>
                 <Table
                   onPlusClick={this.addRow}
