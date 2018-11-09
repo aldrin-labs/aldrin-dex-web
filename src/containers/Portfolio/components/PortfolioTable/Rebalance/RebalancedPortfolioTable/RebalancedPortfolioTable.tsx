@@ -270,6 +270,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   transformData = (
     rows,
     staticRows,
+    staticRowsMap,
     isEditModeEnabled: boolean,
     isPercentSumGood: boolean,
     red: string,
@@ -386,7 +387,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         )
 
       //TODO:
-      // Should handle a case when saved rebalanced portfolio > current and vice versa
+      // + Should handle a case when saved rebalanced portfolio > current and vice versa
       // + Should handle a case when exchange + coin is not a key
 
       return {
@@ -451,6 +452,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const {
       rows,
       staticRows,
+      staticRowsMap,
       isUSDCurrently,
       isEditModeEnabled,
       totalStaticRows,
@@ -493,6 +495,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         body: transformData(
           rows,
           staticRows,
+          staticRowsMap,
           isEditModeEnabled,
           isPercentSumGood,
           red,

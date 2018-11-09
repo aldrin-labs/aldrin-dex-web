@@ -57,6 +57,7 @@ class Rebalance extends React.Component<IProps, IState> {
     rows: [],
     staticRows: [],
     savedRows: [],
+    staticRowsMap: new Map(),
     addMoneyInputValue: 0,
     currentSortForStatic: null,
     currentSortForDynamic: null,
@@ -112,6 +113,8 @@ class Rebalance extends React.Component<IProps, IState> {
 
     let newTableRebalancedPortfolioData = []
     let newTableCurrentPortfolioData = []
+    let newAssetsData = []
+    let staticRowsMap = new Map()
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
@@ -145,6 +148,36 @@ class Rebalance extends React.Component<IProps, IState> {
           }
         }
       )
+
+      console.log('newTableCurrentPortfolioData', newTableCurrentPortfolioData);
+
+      console.log('newTableRebalancedPortfolioData', newTableRebalancedPortfolioData);
+
+
+      staticRowsMap = newTableCurrentPortfolioData.reduce((accMap, el) => {
+        accMap.set(el._id, el)
+        return accMap
+      }, new Map())
+
+
+      newAssetsData = newTableCurrentPortfolioData.filter((currentPortfolioAsset) =>
+        !newTableRebalancedPortfolioData.some(
+          (rebalancedPortfolioAsset) => currentPortfolioAsset._id === rebalancedPortfolioAsset._id
+        )
+      )
+      // .map((el) => ({...el, deltaPrice: 0, isStaticAsset: true}))
+      const isCurrentPortfolioDataHaveMoreCoinsThanRebalanced =
+        newAssetsData.length
+
+      newTableRebalancedPortfolioData = isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
+        ? newTableRebalancedPortfolioData.concat(newAssetsData)
+        : newTableRebalancedPortfolioData
+      console.log('newAssetsData', newAssetsData)
+      console.log(
+        'isCurrentPortfolioDataHaveMoreCoinsThanRebalanced',
+        isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
+      )
+      console.log('staticRowsMap', staticRowsMap)
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
@@ -161,7 +194,6 @@ class Rebalance extends React.Component<IProps, IState> {
       )
     }
 
-
     const composeWithMocksCurrentPortfolio = isShownMocks
       ? [...newTableCurrentPortfolioData, ...mockTableData]
       : newTableCurrentPortfolioData
@@ -169,7 +201,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const composeWithMocksRebalancedPortfolio = isShownMocks
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
-
 
     if (userHasRebalancePortfolio) {
       this.setTableData(
@@ -182,6 +213,8 @@ class Rebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
+
+    this.setState({ staticRowsMap })
   }
 
   setTableData = (
@@ -325,21 +358,20 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     try {
-      this.setState({loading: true})
+      this.setState({ loading: true })
 
       await updateRebalanceMutationQuery({ variables: variablesForMutation })
       refetch()
         .then(() => {
-          this.setState({loading: false})
+          this.setState({ loading: false })
           console.log('resolved and refetched')
         })
         .catch(() => {
-            this.setState({loading: false})
-            console.log('catched')
-        }
-        )
+          this.setState({ loading: false })
+          console.log('catched')
+        })
     } catch (error) {
-      this.setState({loading: false})
+      this.setState({ loading: false })
       console.log(error)
     }
   }
@@ -486,7 +518,6 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const tableDataHasData = !staticRows.length || !rows.length
 
-
     return (
       <EmptyTablePlaceholder isEmpty={tableDataHasData}>
         <PTWrapper tableData={true}>
@@ -519,6 +550,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 {...{
                   isEditModeEnabled,
                   staticRows,
+                  staticRowsMap,
                   totalStaticRows,
                   rows,
                   currentSortForDynamic,
