@@ -268,8 +268,9 @@ export default class RebalancedPortfolioTable extends React.Component<
   }
 
   transformData = (
-    rows,
-    staticRows,
+    rows: IRow[],
+    staticRows: IRow[],
+    staticRowsMap,
     isEditModeEnabled: boolean,
     isPercentSumGood: boolean,
     red: string,
@@ -385,23 +386,19 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
-      //TODO:
-      // Should handle a case when saved rebalanced portfolio > current and vice versa
-      // + Should handle a case when exchange + coin is not a key
-
       return {
         id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
-        ...(staticRows[index] && staticRows[index]._id === row._id
+        ...(staticRowsMap.has(row._id)
           ? {
               oririnalPortfolioPerc: {
-                render: `${staticRows[index].portfolioPerc}%`,
+                render: `${staticRowsMap.get(row._id).portfolioPerc}%`,
                 isNumber: true,
               },
               oritinalPrice: {
-                contentToSort: staticRows[index].price,
-                render: addMainSymbol(staticRows[index].price, isUSDCurrently),
+                contentToSort: staticRowsMap.get(row._id).price,
+                render: addMainSymbol(staticRowsMap.get(row._id).price, isUSDCurrently),
                 isNumber: true,
               },
             }
@@ -451,6 +448,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const {
       rows,
       staticRows,
+      staticRowsMap,
       isUSDCurrently,
       isEditModeEnabled,
       totalStaticRows,
@@ -493,6 +491,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         body: transformData(
           rows,
           staticRows,
+          staticRowsMap,
           isEditModeEnabled,
           isPercentSumGood,
           red,
@@ -590,7 +589,6 @@ export default class RebalancedPortfolioTable extends React.Component<
   render() {
     const { selectedActive, isEditModeEnabled, textColor, loading } = this.props
     const Table = isEditModeEnabled ? ImTable : TableWithSort
-    console.log({ ...this.putDataInTable() })
     return (
       <TableWrapper>
         {loading && (

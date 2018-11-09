@@ -42,7 +42,7 @@ import {
 import { colors } from '@components/LineChart/LineChart.utils'
 import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
-import { sumSameCoinsPercentages } from '@utils/PortfolioOptimizationUtils'
+import { sumSame } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
 import * as Useractions from '@containers/User/actions'
 import config from '@utils/linkConfig'
@@ -98,7 +98,7 @@ class Optimization extends Component<IProps, IState> {
         percentagesOfCoinInPortfolio(asset, allSum, true)
       ),
     }))
-    const summedAssetsWithoutDuplicates = sumSameCoinsPercentages(newAssets)
+    const summedAssetsWithoutDuplicates = sumSame(newAssets, 'coin', 'percentage')
 
     return [summedAssetsWithoutDuplicates, allSum]
   }

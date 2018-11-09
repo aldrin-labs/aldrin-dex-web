@@ -1,3 +1,6 @@
+import { sumSame } from '@utils/PortfolioOptimizationUtils'
+import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
+
 export function combineToChart(mockData) {
 
   return mockData.map((dataItem) => ({
@@ -9,8 +12,9 @@ export function combineToChart(mockData) {
 }
 
 export function combineToBarChart(dataForChart) {
+  const clonedDataChart = cloneArrayElementsOneLevelDeep(dataForChart)
 
-  const newDataForBarChart = dataForChart.map((dataItem) => ({
+  const newDataForBarChart = sumSame(clonedDataChart, 'symbol', 'portfolioPerc').map((dataItem) => ({
     x: dataItem.symbol,
     y: parseFloat(parseFloat(dataItem.portfolioPerc).toFixed(2)) || 0
   }))
