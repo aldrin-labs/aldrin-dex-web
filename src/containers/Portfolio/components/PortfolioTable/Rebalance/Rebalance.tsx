@@ -143,9 +143,6 @@ class Rebalance extends React.Component<IProps, IState> {
         }
       )
 
-      // console.log('newTableCurrentPortfolioData', newTableCurrentPortfolioData);
-      // console.log('newTableRebalancedPortfolioData', newTableRebalancedPortfolioData);
-
       const newAssetsData = newTableCurrentPortfolioData.filter((currentPortfolioAsset: IRow) =>
         !newTableRebalancedPortfolioData.some(
           (rebalancedPortfolioAsset) => currentPortfolioAsset._id === rebalancedPortfolioAsset._id
@@ -157,11 +154,6 @@ class Rebalance extends React.Component<IProps, IState> {
       newTableRebalancedPortfolioData = isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
         ? newTableRebalancedPortfolioData.concat(newAssetsData)
         : newTableRebalancedPortfolioData
-      // console.log('newAssetsData', newAssetsData)
-      // console.log(
-      //   'isCurrentPortfolioDataHaveMoreCoinsThanRebalanced',
-      //   isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
-      // )
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {

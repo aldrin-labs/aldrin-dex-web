@@ -386,25 +386,10 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
-      // TODO:
-      // + Should handle a case when saved rebalanced portfolio > current and vice versa
-      // + Should handle a case when exchange + coin is not a key
-
-      // console.log('staticRows', staticRows);
-      //
-      // console.log('staticRowsMap', staticRowsMap);
-      // console.log('staticRowsMap.get(row._id)', staticRowsMap.get(row._id).price);
-      //
-      // console.log('staticRowsMap.get(row._id).portfolioPerc', staticRowsMap.get(row._id).portfolioPerc);
-      // console.log('staticRowsMap.get(row._id).price', staticRowsMap.get(row._id).price);
-
-
-
       return {
         id: index,
         exchange: { render: exchange },
         coin: { render: coin, style: { fontWeight: 700 } },
-        // ...(staticRows[index] && staticRows[index]._id === row._id
         ...(staticRowsMap.has(row._id)
           ? {
               oririnalPortfolioPerc: {
