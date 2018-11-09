@@ -50,7 +50,7 @@ export interface IState {
   run: boolean
   key: number
   loading: boolean
-  staticRowsMap: Map<IRow[]>
+  staticRowsMap: Map<string, string>
   openWarning: boolean
   isSystemError: boolean
   warningMessage: string
