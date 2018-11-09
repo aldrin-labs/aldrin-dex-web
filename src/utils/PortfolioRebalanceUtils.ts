@@ -63,10 +63,7 @@ export const checkPercentSum = (data: IRow[]) => {
 export const calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
   data.forEach((row, i) => {
     staticRows.forEach((staticRow, j) => {
-      if (
-        data[i].exchange === staticRows[j].exchange &&
-        data[i].symbol === staticRows[j].symbol
-      ) {
+      if (data[i]._id === staticRows[j]._id) {
         // TODO: Refactor when we have much more time than now
         // tslint:disable-next-line no-object-mutation
         data[i].deltaPrice = (
@@ -76,18 +73,13 @@ export const calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
     })
   })
 
-  // console.log(
-  //   'data.length > staticRows.length',
-  //   data.length > staticRows.length
-  // )
-
   if (data.length > staticRows.length) {
     const arrayOfNewCoinIndexes: number[] = data.reduce(
       (newCoinsIndexesArray: number[], el, i) => {
         if (
           !staticRows.some(
             (element) =>
-              element.exchange === el.exchange && element.symbol === el.symbol
+              element._id === el._id
           )
         ) {
           return newCoinsIndexesArray.concat(i)
@@ -134,7 +126,6 @@ export const calculatePercents = (
       portfolioPerc: percentResult,
     }
   })
-  // console.log('DATA IN CALCULATE PERCENTS: ', newDataWithPercents)
 
   return calculatePriceDifference(newDataWithPercents, staticRows)
 }
@@ -172,7 +163,7 @@ export function calculateMoneyPart(
 
 export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
   const indexInCurrentPortfolio = portfolioAssets.findIndex(
-    (curEl) => curEl.where === el._id.exchange && curEl.coin === el._id.coin
+    (curEl) => curEl._id === el._id
   )
   const hasSameCoinInCurrentPortfolio = indexInCurrentPortfolio !== -1
   const currentPrice = hasSameCoinInCurrentPortfolio ? parseFloat(

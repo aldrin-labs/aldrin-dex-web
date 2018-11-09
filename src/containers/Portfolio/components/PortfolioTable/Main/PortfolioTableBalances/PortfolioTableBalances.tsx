@@ -9,7 +9,7 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
-import { Table } from '@storybook-components'
+import { TableWithSort } from '@storybook-components'
 import {
   TableWrapper,
   ChartWrapper,
@@ -93,7 +93,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           <TableContainer item={true} xs={12} md={8}>
             <TableWrapper className="PortfolioMainTable">
               {Array.isArray(tableData) && (
-                <Table
+                <TableWithSort
                   title="Portfolio"
                   checkedRows={checkedRows}
                   withCheckboxes={true}
