@@ -12,6 +12,8 @@ import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
 import moment from 'moment'
+
+import { systemError } from '@utils/errorsConfig'
 import { RebalancePeriod } from './dataForSelector'
 import ReactSelectComponent from '@components/ReactSelectComponent'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
@@ -107,7 +109,6 @@ export default class Import extends PureComponent<IProps> {
     console.log('myOb for queryj', myObj)
 
     let backendResult
-    const systemError = `System Error: An error has occurred internally.  Please report this by clicking "Report Bug"`
 
     try {
       backendResult = await client.query({
