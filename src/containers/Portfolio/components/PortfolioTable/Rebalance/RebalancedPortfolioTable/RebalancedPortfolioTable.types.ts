@@ -24,6 +24,7 @@ export interface IProps {
   updateState: Function
   loading: boolean
   theme: Theme
+  textColor: string
 }
 
 export interface IState {

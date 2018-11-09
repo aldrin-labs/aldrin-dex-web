@@ -1,13 +1,17 @@
 import { WithTheme } from '@material-ui/core'
+import { Map } from 'typescript'
 
 export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'trade';
 
 // TODO: We should have one type for price & portfolioPerc, deltaPrice in IRow
 
 export interface IRow {
+  _id: string
+  id: number
   exchange: string
   symbol: string
   price: string
+  currentPrice: string | number
   portfolioPerc: number | string | null
   deltaPrice?: number | string
   editable?: boolean
@@ -19,8 +23,8 @@ export interface IProps extends WithTheme {
   isShownMocks: boolean
   baseCoin: string
   filterValueSmallerThenPercentage: number
-  getMyPortfolio: IGetMyPortfolioQuery
   updateRebalanceMutationQuery: Function
+  refetch: Function
 }
 
 export interface IState {
@@ -30,8 +34,6 @@ export interface IState {
   staticRows: IRow[]
   savedRows: IRow[]
   addMoneyInputValue: number | string
-  currentSortForStatic: { key: string; arg: 'ASC' | 'DESC' } | null
-  currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   isEditModeEnabled: boolean
   undistributedMoney: string
   undistributedMoneySaved: string
@@ -48,16 +50,16 @@ export interface IState {
   run: boolean
   key: number
   loading: boolean
+  staticRowsMap: Map<IRow[]>
+  openWarning: boolean
+  isSystemError: boolean
+  warningMessage: string
 }
 
-export interface ICurrentSort {
-  key: string
-  arg: 'ASC' | 'DESC'
-}
 
 export interface IShapeOfRebalancePortfolioRow {
+  _id: string
   id: string
-  // _id: { exchange: string; coin: string }
   exchange: string
   coin: string
   percent: { $numberDecimal: string }
