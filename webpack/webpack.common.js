@@ -4,9 +4,6 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const config = {
-  entry: {
-    // vendor: ['semantic-ui-react']
-  },
   output: {
     path: commonPaths.outputPath,
     publicPath: '/',
@@ -14,7 +11,14 @@ const config = {
   resolve: {
     extensions: ['.js', '.jsx', '.web.js', '.mjs', '.ts', '.tsx'],
     alias: {
-      '@storybook-components': path.join(__dirname, '..', 'src', 'storybook', 'src',  'components'),
+      '@storybook-components': path.join(
+        __dirname,
+        '..',
+        'src',
+        'storybook',
+        'src',
+        'components'
+      ),
       '@components': path.join(__dirname, '..', 'src', 'components'),
       '@containers': path.join(__dirname, '..', 'src', 'containers'),
       '@utils': path.join(__dirname, '..', 'src', 'utils'),
@@ -28,24 +32,24 @@ const config = {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: [ 
+        exclude: [
           path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/')
+          path.join(__dirname, '/src/storybook/node_modules/'),
         ],
         loader: 'babel-loader?cacheDirectory=true',
       },
       {
         test: /\.(graphql|gql)$/,
-                exclude: [ 
+        exclude: [
           path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/')
+          path.join(__dirname, '/src/storybook/node_modules/'),
         ],
         loader: 'graphql-tag/loader',
       },
       {
         test: /\.mjs$/,
         include: /node_modules/,
-        type: "javascript/auto",
+        type: 'javascript/auto',
       },
       // remove this as this dublicated by image webpack loader
       {
@@ -76,12 +80,8 @@ const config = {
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
-      favicon: 'public/favicon.ico'
+      favicon: 'public/favicon.ico',
     }),
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: ['vendor'],
-    //   minChunks: Infinity
-    // })
   ],
 }
 
