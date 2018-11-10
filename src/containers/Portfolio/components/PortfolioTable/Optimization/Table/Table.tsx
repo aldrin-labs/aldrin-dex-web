@@ -84,7 +84,7 @@ export default class Table extends Component<IProps, IState> {
               </Typography>
             </HeadItem>
           </Head>
-          <Body>
+          <Body scrollBarWidth={5}>
             {data.length === 0 ? (
               <StyledCard>
                 <CardContent>
