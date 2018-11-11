@@ -71,6 +71,7 @@ export default class LineChart extends React.Component<Props, State> {
       activeLine,
       alwaysShowLegend,
       itemsForChartLegend,
+      additionalInfoInPopup,
     } = this.props
 
     const { crosshairValues } = this.state
@@ -168,6 +169,9 @@ export default class LineChart extends React.Component<Props, State> {
                   ).toFixed(2)}`}</Typography>
                 </div>
               ))}
+              {additionalInfoInPopup && (
+                <Typography variant="body2" style={{ marginTop: '1rem', fontStyle: 'italic'}}>Note: we simulate the starting balance of $1,000 for optimization</Typography>
+              )}
             </ContainerForCrossHairValues>
           </Crosshair>
         )}

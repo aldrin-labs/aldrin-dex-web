@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
-import BarChart from '@storybook-components/BarChart'
+import { BarChart } from '@storybook-components'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
@@ -121,7 +121,7 @@ export default class Import extends PureComponent<IProps> {
       })
     } catch (e) {
       showWarning(systemError, true)
-      // showWarning(`You got an error! 🙈`)
+      this.onReset()
       this.props.toggleLoading()
       console.log('ERROR IN AWAIT FUNC:', e)
       return
@@ -133,7 +133,7 @@ export default class Import extends PureComponent<IProps> {
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
-      // showWarning('You got empty response! 🙈')
+      this.onReset()
       this.props.toggleLoading()
 
       return
@@ -146,6 +146,7 @@ export default class Import extends PureComponent<IProps> {
       const isUserError = backendResultParsed.error_message
 
       showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
+      this.onReset()
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
 
@@ -265,7 +266,7 @@ export default class Import extends PureComponent<IProps> {
     this.setState({ [name]: value })
   }
 
-  onResetClick = () => {
+  onReset = () => {
     const { optimizedToState } = this.props
 
     optimizedToState([])
@@ -432,7 +433,7 @@ export default class Import extends PureComponent<IProps> {
                         alignSelf: 'center',
                       }}
                       variant="fab"
-                      onClick={this.onResetClick}
+                      onClick={this.onReset}
                     >
                       <MdReplay />
                     </ButtonMUI>

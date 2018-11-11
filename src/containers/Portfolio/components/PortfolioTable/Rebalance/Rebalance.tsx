@@ -7,17 +7,15 @@ import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 
 import { systemError } from '@utils/errorsConfig'
 import QueryRenderer from '@components/QueryRenderer'
-import BarChart from '@storybook-components/BarChart'
+import { BarChart } from '@storybook-components'
 import {
   IProps,
   IState,
   IRow,
-  IShapeOfRebalancePortfolioRow
+  IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import {
-  cloneArrayElementsOneLevelDeep,
-} from '@utils/PortfolioTableUtils'
+import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -143,10 +141,12 @@ class Rebalance extends React.Component<IProps, IState> {
         }
       )
 
-      const newAssetsData = newTableCurrentPortfolioData.filter((currentPortfolioAsset: IRow) =>
-        !newTableRebalancedPortfolioData.some(
-          (rebalancedPortfolioAsset) => currentPortfolioAsset._id === rebalancedPortfolioAsset._id
-        )
+      const newAssetsData = newTableCurrentPortfolioData.filter(
+        (currentPortfolioAsset: IRow) =>
+          !newTableRebalancedPortfolioData.some(
+            (rebalancedPortfolioAsset) =>
+              currentPortfolioAsset._id === rebalancedPortfolioAsset._id
+          )
       )
       const isCurrentPortfolioDataHaveMoreCoinsThanRebalanced =
         newAssetsData.length
@@ -189,7 +189,7 @@ class Rebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
-    }
+  }
 
   setTableData = (
     tableDataCurrentPortfolio: IRow[],
@@ -343,10 +343,11 @@ class Rebalance extends React.Component<IProps, IState> {
     try {
       this.setState({ loading: true })
 
-      const backendResult = await updateRebalanceMutationQuery({ variables: variablesForMutation })
+      const backendResult = await updateRebalanceMutationQuery({
+        variables: variablesForMutation,
+      })
       if (backendResult.data.updateRebalance === null) {
         this.showWarning(systemError, true)
-
       }
       refetch()
         .then(() => {
@@ -360,7 +361,6 @@ class Rebalance extends React.Component<IProps, IState> {
       this.setState({ loading: false })
       this.showWarning(systemError, true)
       console.log(error)
-
     }
   }
 

@@ -1,11 +1,10 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import ReactSelectComponent from '@components/ReactSelectComponent'
-import { IValue } from '@components/BarChart/BarChart.types'
 
-export const customAquaScrollBar = `
+export const customAquaScrollBar = css`
   &::-webkit-scrollbar {
-    width: 3px;
+    width: ${({scrollBarWidth}: {scrollBarWidth: number}) => (scrollBarWidth ? `${scrollBarWidth}px` : '3px')};
     height: 6px;
   }
 
@@ -15,7 +14,8 @@ export const customAquaScrollBar = `
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
-  }`
+  }
+`
 
 export const TypographyFullWidth = styled(TypographyWithCustomColor)`
   width: 100%;
