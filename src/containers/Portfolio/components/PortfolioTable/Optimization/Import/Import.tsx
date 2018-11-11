@@ -101,7 +101,7 @@ export default class Import extends PureComponent<IProps> {
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
       startDate: startDate.unix(),
-      endDate: endDate.unix(),
+      endDate: endDate.unix() - (endDate.unix() % 43200),
     }
 
     console.log('myOb for queryj', myObj)
