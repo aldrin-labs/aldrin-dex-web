@@ -75,7 +75,7 @@ class BarChart extends Component<IProps, IState> {
         <Container height={height}>
           <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal" margin={{ bottom: 55}}>
             {alwaysShowLegend && (
-              <LegendContainer>
+              <LegendContainer left={10}>
                 <StyledDiscreteColorLegend orientation="horizontal" items={ITEMS} />
               </LegendContainer>
             )}
