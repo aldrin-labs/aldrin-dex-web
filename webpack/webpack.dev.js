@@ -23,19 +23,19 @@ const config = {
   },
   devtool: 'eval-sourcemap',
   module: {},
-  optimization: {
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          enforce: true,
-          chunks: 'all',
-        },
-      },
-    },
-  },
+  // optimization: {
+  //   runtimeChunk: 'single',
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       vendors: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name: 'vendors',
+  //         enforce: true,
+  //         chunks: 'all',
+  //       },
+  //     },
+  //   },
+  // },
   stats: 'verbose',
   plugins: [
     new ErrorOverlayPlugin(),
@@ -84,19 +84,6 @@ const config = {
     }),
   ],
   cache: true,
-  optimization: {
-    runtimeChunk: 'single',
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          enforce: true,
-          chunks: 'all',
-        },
-      },
-    },
-  },
   devServer: {
     host: 'localhost',
     port,

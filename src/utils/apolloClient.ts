@@ -5,18 +5,15 @@ import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
-import { defaults, resolvers } from './resolvers';
+// import { defaults, resolvers } from './resolvers';
 import { withClientState } from 'apollo-link-state'
 import gql from 'graphql-tag'
 
-import {
-  inflate
-} from 'graphql-deduplicator';
+import { inflate } from 'graphql-deduplicator'
 
 import { API_URL } from '@utils/config'
 
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
-
 
 const memCache = new InMemoryCache()
 
@@ -32,7 +29,9 @@ const authLink = setContext((_, { headers }) => {
 })
 
 const getToken = () => {
-  return localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
+  return localStorage.getItem('token')
+    ? `Bearer ${localStorage.getItem('token')}`
+    : ''
 }
 
 // Create a WebSocket link:
@@ -70,8 +69,8 @@ const stateLink = withClientState({
   resolvers: {
     Mutation: {
       updatePortfolioMain: (_, args, source) => {
-        const { index, value } = args;
-        const { cache } = source;
+        const { index, value } = args
+        const { cache } = source
         const query = gql`
           query portfolioMain {
             portfolioMain @client {
@@ -89,18 +88,17 @@ const stateLink = withClientState({
             },
           },
         })
-        return null;
+        return null
       },
     },
   },
 })
 
 const inflateLink = new ApolloLink((operation, forward) => {
-  return forward(operation)
-    .map((response) => {
-      return inflate(response);
-    });
-});
+  return forward(operation).map((response) => {
+    return inflate(response)
+  })
+})
 
 export const client = new ApolloClient({
   link: ApolloLink.from([stateLink, authLink, link]),

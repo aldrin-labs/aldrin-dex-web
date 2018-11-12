@@ -31,12 +31,12 @@ const config = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(tsx?)|(js)$/,
         exclude: [
           path.join(__dirname, '/node_modules/'),
           path.join(__dirname, '/src/storybook/node_modules/'),
         ],
-        loader: 'babel-loader?cacheDirectory=true',
+        use: ['babel-loader'],
       },
       {
         test: /\.(graphql|gql)$/,
