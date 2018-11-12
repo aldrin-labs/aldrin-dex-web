@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Paper, Button, Fade, Slide } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 import Joyride from 'react-joyride'
+import { Table } from '@storybook-components'
 
 import {
   OrderBookTable,
@@ -327,22 +328,22 @@ class Chart extends React.Component<IProps, IState> {
         unmountOnExit={true}
       >
         <Container>
+          <Table />
           <ChartsContainer>
             <ChartsSwitcher
               divider={palette.divider}
               background={palette.primary[type]}
             >
-              {base &&
-                quote && (
-                  <ExchangePair background={palette.primary[type]}>
-                    <TypographyWithCustomColor
-                      textColor={palette.getContrastText(palette.primary[type])}
-                      variant="subtitle1"
-                    >
-                      {`${base}/${quote}`}
-                    </TypographyWithCustomColor>
-                  </ExchangePair>
-                )}
+              {base && quote && (
+                <ExchangePair background={palette.primary[type]}>
+                  <TypographyWithCustomColor
+                    textColor={palette.getContrastText(palette.primary[type])}
+                    variant="subtitle1"
+                  >
+                    {`${base}/${quote}`}
+                  </TypographyWithCustomColor>
+                </ExchangePair>
+              )}
               <SwitchButtonWrapper>
                 <Button
                   variant="text"
