@@ -25,6 +25,7 @@ import {
 } from '@material-ui/core'
 import { updateBinanceWarning } from './actions'
 import ComingSoon from '@components/ComingSoon'
+import { MASTER_BUILD } from '@utils/config'
 
 class UserContainer extends React.Component {
   store: any
@@ -56,10 +57,10 @@ class UserContainer extends React.Component {
 
         <UserWrap
           style={
-            process.env.NODE_ENV === 'production' ? { filter: 'blur(3px)' } : {}
+            MASTER_BUILD && { filter: 'blur(3px)' }
           }
         >
-          {process.env.NODE_ENV === 'production' && <ComingSoon />}
+          {MASTER_BUILD && <ComingSoon />}
 
           <AddCryptoWallet
             forceUpdateUserContainer={this.forceUpdateUserContainer}
@@ -68,7 +69,7 @@ class UserContainer extends React.Component {
             forceUpdateUserContainer={this.forceUpdateUserContainer}
           />
         </UserWrap>
-        {process.env.NODE_ENV !== 'production' && (
+        {!MASTER_BUILD && (
           <AdminCP>
             <Heading>Show mocks</Heading>
             <Switch
