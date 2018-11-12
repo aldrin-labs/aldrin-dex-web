@@ -274,6 +274,19 @@ export default class Import extends PureComponent<IProps> {
     this.importPortfolio()
   }
 
+  onResetOnlyOptimizationData = () => {
+    const { optimizedToState, updateData, storeData } = this.props
+
+    optimizedToState([])
+
+    updateData(
+      [...storeData].map((el) => ({
+        ...el,
+        optimizedPercentageArray: [],
+      }))
+    )
+  }
+
   render() {
     const {
       storeData, // data from redux (data from portfolio and mannualy added)
