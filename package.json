@@ -7,8 +7,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env DEVTOOL=source-map NODE_ENV=development webpack-dev-server --env.env=dev",
-    "dev:fast": "webpack-dev-server --env.env=dev",
+    "dev": "webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
@@ -146,7 +145,7 @@
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash-es": "^4.17.1",
     "@types/nanoid": "^1.2.0",
-    "@types/react": "16.4.18",
+    "@types/react": "16.7.3",
     "@types/react-dom": "^16.0.9",
     "@types/react-intl": "^2.3.8",
     "@types/react-redux": "^6.0.9",
