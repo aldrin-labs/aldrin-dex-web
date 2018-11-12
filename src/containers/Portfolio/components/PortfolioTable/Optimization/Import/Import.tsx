@@ -140,10 +140,11 @@ export default class Import extends PureComponent<IProps> {
     }
 
     if (backendResultParsed.error || backendResultParsed.status === 1) {
+      const isUserError = backendResultParsed.error_message
+
       const userErrorMessage = `User Error: ${
         backendResultParsed.error_message
       }`
-      const isUserError = backendResultParsed.error_message
 
       showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
       this.onReset()
