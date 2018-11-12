@@ -141,12 +141,33 @@ export default class Import extends PureComponent<IProps> {
 
     if (backendResultParsed.error || backendResultParsed.status === 1) {
       const isUserError = backendResultParsed.error_message
+      //TODO: Should be another function
 
-      const userErrorMessage = `User Error: ${
-        backendResultParsed.error_message
-      }`
+      if (isUserError.length) {
+        const userErrorMessage = `User Error: \n ${
+          backendResultParsed.error_message.map((el: string) => `${el} \n`).join()}`
 
-      showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
+        showWarning(userErrorMessage, false)
+
+        if (backendResultParsed.new_start_date) {
+          this.setState({startDate: backendResultParsed.new_start_date})
+          this.setDataFromResponse(backendResultParsed)
+        }
+        if (backendResultParsed.status === 4) {
+          this.setDataFromResponse(backendResultParsed)
+        }
+
+        if (backendResultParsed.status !== 4) {
+          this.onResetOnlyOptimizationData()
+        }
+
+        this.props.toggleLoading()
+        console.log('USER ERROR', backendResultParsed.error)
+
+        return
+      }
+
+      showWarning(systemError, true)
       this.onReset()
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
@@ -157,13 +178,19 @@ export default class Import extends PureComponent<IProps> {
     this.props.toggleLoading()
     this.props.setActiveButtonToDefault()
 
+
+    this.setDataFromResponse(backendResultParsed)
+  }
+
+  setDataFromResponse = (backendResultParsed: object) => {
+    const { optimizedToState } = this.props
+    const { isRiskFreeAssetEnabled } = this.state
+
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData)
 
-    if (
-      storeData.length < optimizedData[activeButton].portfolio_coins_list.length
-    ) {
-      console.log('storeData.length < optimizedData')
+    if (isRiskFreeAssetEnabled) {
+      console.log('isRiskFreeAssetEnabled')
       this.addRow('USDT', 0)
     }
 
