@@ -15,6 +15,7 @@ import {
   Name,
 } from './PortfolioSelector.styles'
 import * as UTILS from '@utils/PortfolioSelectorUtils'
+import { MASTER_BUILD } from '@utils/config'
 
 class PortfolioSelector extends React.Component<IProps> {
   updateSettings = async (objectForMutation) => {
@@ -151,7 +152,7 @@ class PortfolioSelector extends React.Component<IProps> {
             }}
           />
 
-          {process.env.NODE_ENV !== 'production' && (
+          {!MASTER_BUILD && (
             <>
               <Name color={color}>Dust</Name>
               <FilterValues>
