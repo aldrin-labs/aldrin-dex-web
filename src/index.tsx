@@ -90,6 +90,7 @@ const ScreenerRoutes = Loadable({
 //   webpack: () => [require.resolveWeak('./containers/User/routes')],
 // })
 
+
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
@@ -103,7 +104,7 @@ const render = () =>
                   {/*<Route exact path="/" component={HomeRoutes} />*/}
                   {/*<Route exact path="/profile" component={ProfileRoutes} />*/}
                   <Route exact path="/portfolio" component={PortfolioRoutes} />
-                  {/*<Route exact path="/market" component={MarketRoutes} />*/}
+                  {<Route exact path="/market" component={MarketRoutes} />}
                   <Route exact path="/chart" component={ChartRoutes} />
                   {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                   <Route exact path="/user" component={UserRoutes} />

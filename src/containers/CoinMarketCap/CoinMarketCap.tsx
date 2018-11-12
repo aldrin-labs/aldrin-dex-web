@@ -1,14 +1,20 @@
 import * as React from 'react'
-import { graphql } from 'react-apollo'
 import styled from 'styled-components'
 import { History } from 'history'
+import { Paper, Grid, Card } from '@material-ui/core'
+
 import Button from '@components/Elements/Button/Button'
 import Calculator from '@components/Calculator/Calculator'
 import DominanceChart from '@components/DominanceChart/DominanceChart'
 import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
+import { TableWithSort as Table } from '@storybook-components'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
-import { CoinMarketCapQuery } from './api'
-import { Loading } from '@components/Loading'
+// import { CoinMarketCapQuery } from './api'
+import { mock } from '@storybook-components/Tables/mocks'
+
+import { Container, TableWrapper, TableContainer } from './styles'
+
+import { data } from './mocks'
 
 interface Props {
   data: CoinMarketCapQueryQuery
@@ -31,7 +37,7 @@ export const rates = [
   { name: 'USD/XRP', rate: 1 },
 ]
 
-class CoinMarket extends React.Component<Props, State> {
+export class CoinMarket extends React.Component<Props, State> {
   state: State = {
     activeSortArg: null,
   }
@@ -94,33 +100,66 @@ class CoinMarket extends React.Component<Props, State> {
     }
   }
 
+  getDataForTabale = (data) => {
+    return {
+      head: [
+        { id: 'Number', isNumber: true, label: '№' },
+        { id: 'Name', isNumber: false, label: 'Name' },
+        { id: 'Symbol', isNumber: false, label: 'Symbol'},
+        { id: 'Price', isNumber: true, label: 'Price' },
+        { id: 'Change', isNumber: false, label: 'Change (24h)' },
+        { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
+        { id: 'AvailableSupply', isNumber: true, label: 'Available Supply' },
+      ],
+      data: {
+        body: (data.assetPagination.items).map((value, index) => ({
+          id: index,
+          Number: index,
+          Name: value.name,
+          Symbol: value.symbol,
+          Price: value.priceUSD,
+          Change: '-',
+          MarketCap: value.maxSupply || 0,
+          AvailableSupply: value.availableSupply,
+        })),
+      },
+    }
+  }
+
   render() {
     const { activeSortArg } = this.state
     const { data } = this.props
-    if (data.loading || !data.assetPagination) {
-      return <Loading centerAligned />
-    }
+    console.log(data)
     const { assetPagination } = data
     const { items } = assetPagination
+    const dataForTable = this.getDataForTabale(this.props.data)
+    console.log(dataForTable)
 
     return (
-      <Wrapper>
-        <LeftColumn>
-          <CoinMarketTable location={this.props.location} />
-
-          <Pagination>
-            <Button title="Previous" onClick={this.decrementPage} />
-            <Button title="View all coins" />
-            <Button title="Next" onClick={this.incrementPage} />
-          </Pagination>
-        </LeftColumn>
-
-        <RightColumn>
-          <Calculator rates={rates} />
-
-          <DominanceChart />
-        </RightColumn>
-      </Wrapper>
+           <Container container={true} spacing={16}>
+             <TableContainer item={true} xs={12} md={8}>
+                <TableWrapper className="PortfolioMainTable">
+                  <Table
+                      title="Title"
+                      columnNames={dataForTable.head}
+                      data={dataForTable.data}
+                      checkedRows={['1']}
+                      actionsColSpan={1}
+                  />
+                  <Pagination>
+                  <Button title="Previous" onClick={this.decrementPage} />
+                  <Button title="View all coins" />
+                  <Button title="Next" onClick={this.incrementPage} />
+                  </Pagination>
+                </TableWrapper>
+              </TableContainer>
+              <TableContainer item={true} xs={12} md={4}>
+                <TableWrapper className="PortfolioTradeOrderHistoryTable">
+                  <Calculator rates={rates} />
+                  <DominanceChart />
+                </TableWrapper>
+              </TableContainer>
+           </Container>
     )
   }
 }
@@ -146,12 +185,6 @@ const Pagination = styled.div`
   margin-top: 16px;
 `
 
-const Wrapper = styled.div`
-  max-width: 1400px;
-  display: flex;
-  margin: 0 auto;
-  padding: 0.5rem;
-`
 
 const options = ({ location }) => {
   let page
@@ -164,8 +197,18 @@ const options = ({ location }) => {
   return { variables: { perPage: 20, page } }
 }
 
-export const CoinMarketCap = graphql(CoinMarketCapQuery, { options })(
+/*export const CoinMarketCap = graphql(CoinMarketCapQuery, { options })(
   CoinMarket
-)
+)*/
 
-export default CoinMarketCap
+
+export const MyCoinMarket = (props) => {
+  return (
+    <CoinMarket
+      data={data}
+      {...props}
+    />
+  )
+}
+
+export default MyCoinMarket

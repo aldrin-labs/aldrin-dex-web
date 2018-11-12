@@ -25,11 +25,8 @@ export interface Props {
   data: CoinMarketCapQueryQuery
   location: Location
   history: History
-  fetchMore: Function
 
   showFilterBns?: boolean
-  onChangeSortArg?: Function
-  redirectToProfile?: Function
 }
 
 export interface State {
@@ -42,7 +39,7 @@ class CoinMarketTable extends React.Component<Props, State> {
   }
 
   fetchMore = () => {
-    const { history, location, fetchMore } = this.props
+    const { history, location } = this.props
     let page
     const query = new URLSearchParams(location.search)
     if (query.has('page')) {
@@ -53,19 +50,6 @@ class CoinMarketTable extends React.Component<Props, State> {
     }
     page = (Number(page) || 1) + 1
     history.push({ search: `?page=${page}` })
-    fetchMore({
-      query: HomeQuery,
-      variables: { page, perPage: 40 },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev
-        return Object.assign({}, prev, {
-          assetPagination: [
-            ...prev.assetPagination,
-            ...fetchMoreResult.assetPagination,
-          ],
-        })
-      },
-    })
   }
 
   onChangeKind = (index: number) => {
@@ -95,13 +79,7 @@ class CoinMarketTable extends React.Component<Props, State> {
         {showFilterBns && (
           <BtnsContainer>
             {kindBtns.map((kindBtn, i) => (
-              <Button
-                onClick={() => this.onChangeKind(i)}
-                // active={i === activeKind}
-                key={kindBtn}
-                title={kindBtn}
-                mRight
-              />
+              <Button />
             ))}
           </BtnsContainer>
         )}
@@ -280,7 +258,7 @@ const TR = styled.tr`
   }
 `
 
-export default function({
+/*export default function({
   location,
   history,
 }: {
@@ -310,5 +288,16 @@ export default function({
       location={location}
       history={history}
     />
+  )/
+}*/
+
+export const MyCoinMarketTable = (props) => {
+  return (
+    <CoinMarketTable
+      data={props.data.data}
+      {...props}
+    />
   )
 }
+
+export default MyCoinMarketTable
