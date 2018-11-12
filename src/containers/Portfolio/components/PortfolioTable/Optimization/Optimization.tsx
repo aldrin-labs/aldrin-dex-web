@@ -189,20 +189,23 @@ class Optimization extends Component<IProps, IState> {
     // TODO: Make it better
     // for real data
     const lineChartData = showAllLineChartData ? ( rawOptimizedData && rawOptimizedData.length && rawOptimizedData.map((el, i) => {
-      return el.backtest_results.map((element) => ({
+      return {data: el.backtest_results.map((element) => ({
         label: riskProfileNames[i],
         x: element[0],
         y: element[1],
-      }))
+      })),
+      color: colors[i]}
       })
     ) : (
       rawOptimizedData &&
       rawOptimizedData.length &&
-      rawOptimizedData[activeButton].backtest_results.map((el) => ({
+      { data: rawOptimizedData[activeButton].backtest_results.map((el, i) => ({
         label: 'optimized',
         x: el[0],
         y: el[1],
-      }))
+      })),
+        color: colors[activeButton],
+      }
     )
 
 

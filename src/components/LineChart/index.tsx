@@ -40,7 +40,8 @@ export default class LineChart extends React.Component<Props, State> {
 
     this.setState({
       crosshairValues: data.map((serie) => {
-        return serie[v.index]
+        const { data } = serie
+        return data[v.index]
       }),
     })
   }
@@ -48,22 +49,6 @@ export default class LineChart extends React.Component<Props, State> {
   onMouseLeave = () => {
     this.setState({ crosshairValues: [] })
   }
-
-  // onChangeData = () => {
-  //   const { onChangeData } = this.props
-  //   const { deepLevel } = this.state
-  //
-  //   this.setState({ deepLevel: deepLevel === 1 ? 2 : 1 }, () => {
-  //     let data = inds
-  //     if (deepLevel === 1) {
-  //       data = inds
-  //     } else if (deepLevel === 2) {
-  //       data = coins
-  //     }
-  //
-  //     if (onChangeData) onChangeData(data)
-  //   })
-  // }
 
   render() {
     const {
@@ -113,7 +98,7 @@ export default class LineChart extends React.Component<Props, State> {
         margin={{ left: 55, bottom: 55 }}
       >
         {alwaysShowLegend && (
-          <LegendContainer>
+          <LegendContainer right={10}>
             <StyledDiscreteColorLegend
               orientation="horizontal"
               items={itemsForChartLegend}
@@ -122,11 +107,7 @@ export default class LineChart extends React.Component<Props, State> {
         )}
 
         <XAxis
-          // hideLine
-          // title="June 2018"
           style={axisStyle}
-          // tickFormat={(v: number) => `${v}`}
-          // tickValues={data[0].map((d) => d.x)}
           tickFormat={(v: number) =>
             new Date(v * 1000).toUTCString().substring(5, 11)
           }
@@ -134,18 +115,17 @@ export default class LineChart extends React.Component<Props, State> {
         />
 
         <YAxis
-          // hideLine
           style={axisStyle}
-          // tickFormat={(v: number) => `${v}`}
         />
 
         {data.map((serie, i) => {
-          const color = activeLine === i ? '#fff' : colors[i]
+          const color = serie.color ? serie.color : colors[i]
+
           return (
             <LineSeries
               key={i}
               animation
-              data={serie}
+              data={serie.data}
               color={color}
               onNearestX={this.onNearestX}
               // onSeriesClick={this.onChangeData}
@@ -164,7 +144,7 @@ export default class LineChart extends React.Component<Props, State> {
 
               {crosshairValues.map((v, i) => (
                 <div key={`${v.label}: ${v.y} USD`}>
-                  <Typography variant="body2" style={{ color: colors[i] }}>{`${v.label}: ${Number(
+                  <Typography variant="body2" style={{ color: 'fff' }}>{`${v.label}: ${Number(
                     v.y
                   ).toFixed(2)}`}</Typography>
                 </div>
