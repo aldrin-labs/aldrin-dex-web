@@ -140,8 +140,6 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
       ? !!Object.keys(industryData).length
       : false
 
-    console.log({ ...this.putDataInTable() })
-
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
         <>

@@ -398,7 +398,10 @@ export default class RebalancedPortfolioTable extends React.Component<
               },
               oritinalPrice: {
                 contentToSort: staticRowsMap.get(row._id).price,
-                render: addMainSymbol(staticRowsMap.get(row._id).price, isUSDCurrently),
+                render: addMainSymbol(
+                  staticRowsMap.get(row._id).price,
+                  isUSDCurrently
+                ),
                 isNumber: true,
               },
             }
@@ -406,7 +409,11 @@ export default class RebalancedPortfolioTable extends React.Component<
               oririnalPortfolioPerc: { render: ' ', isNumber: true },
               oritinalPrice: { render: ' ', isNumber: true },
             }),
-        portfolioPerc: { render: portfolioPercentage, isNumber: true },
+        portfolioPerc: {
+          render: portfolioPercentage,
+          isNumber: true,
+          contentToSort: row.portfolioPerc,
+        },
         price: {
           contentToSort: row.price,
           render: addMainSymbol(
@@ -420,10 +427,10 @@ export default class RebalancedPortfolioTable extends React.Component<
             +row.deltaPrice && row.deltaPrice > 0
               ? `BUY ${row.symbol}  $ ${formatNumberToUSFormat(row.deltaPrice)}`
               : +row.deltaPrice && row.deltaPrice < 0
-                ? `SELL ${row.symbol}  $ ${formatNumberToUSFormat(
-                    Math.abs(parseFloat(row.deltaPrice))
-                  )}`
-                : '',
+              ? `SELL ${row.symbol}  $ ${formatNumberToUSFormat(
+                  Math.abs(parseFloat(row.deltaPrice))
+                )}`
+              : '',
           color: row.deltaPrice > 0 ? green : red,
         },
         ...(isEditModeEnabled

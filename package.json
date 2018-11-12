@@ -7,8 +7,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env DEVTOOL=source-map NODE_ENV=development webpack-dev-server --env.env=dev",
-    "dev:fast": "webpack-dev-server --env.env=dev",
+    "dev": "webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
@@ -62,9 +61,7 @@
     }
   },
   "resolutions": {
-    "babel-core": "^7.0.0-bridge.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.3.2"
+    "babel-core": "^7.0.0-bridge.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.41",
@@ -102,7 +99,7 @@
     "react-apollo": "^2.2.4",
     "react-content-loader": "^3.1.2",
     "react-dates": "^18.1.0",
-    "react-dom": "^16.3.2",
+    "react-dom": "^16.6.1",
     "react-emojione": "^5.0.0",
     "react-fullscreen-crossbrowser": "^1.0.9",
     "react-grid-layout": "^0.16.6",
@@ -197,7 +194,7 @@
     "tslint-react": "^3.6.0",
     "typescript-babel-jest": "^1.0.5",
     "typescript-styled-plugin": "^0.12.0",
-    "uglifyjs-webpack-plugin": "^2.0.1",
+    "uglifyjs-webpack-plugin": "1.3.0",
     "webpack": "^4.17.2",
     "webpack-cli": "^2.0.12",
     "webpack-jarvis": "^0.3.0",

@@ -1244,15 +1244,6 @@
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@popmotion/easing/-/easing-1.0.1.tgz#48336aea29542113df10aeb81b4fd10f0b95f937"
 
-"@popmotion/popcorn@^0.1.0":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@popmotion/popcorn/-/popcorn-0.1.2.tgz#2db84c24796a4f02e5f4897174de30f17ebce6a0"
-  dependencies:
-    "@popmotion/easing" "^1.0.1"
-    framesync "^4.0.1"
-    hey-listen "^1.0.5"
-    style-value-types "^3.0.7"
-
 "@sindresorhus/is@^0.7.0":
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
@@ -1430,9 +1421,9 @@
   dependencies:
     csstype "^2.2.0"
 
-"@types/react@16.4.18":
-  version "16.4.18"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.18.tgz#2e28a2e7f92d3fa7d6a65f2b73275c3e3138a13d"
+"@types/react@16.7.3":
+  version "16.7.3"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.7.3.tgz#dd96b19b21c450fab7d136f71d48f4b8fc72777e"
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -3195,25 +3186,6 @@ cacache@^10.0.4:
     unique-filename "^1.1.0"
     y18n "^4.0.0"
 
-cacache@^11.2.0:
-  version "11.3.1"
-  resolved "https://registry.yarnpkg.com/cacache/-/cacache-11.3.1.tgz#d09d25f6c4aca7a6d305d141ae332613aa1d515f"
-  dependencies:
-    bluebird "^3.5.1"
-    chownr "^1.0.1"
-    figgy-pudding "^3.1.0"
-    glob "^7.1.2"
-    graceful-fs "^4.1.11"
-    lru-cache "^4.1.3"
-    mississippi "^3.0.0"
-    mkdirp "^0.5.1"
-    move-concurrently "^1.0.1"
-    promise-inflight "^1.0.1"
-    rimraf "^2.6.2"
-    ssri "^6.0.0"
-    unique-filename "^1.1.0"
-    y18n "^4.0.0"
-
 cache-base@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cache-base/-/cache-base-1.0.1.tgz#0a7f46416831c8b662ee36fe4e7c59d76f666ab2"
@@ -3729,10 +3701,6 @@ commander@~2.13.0:
   version "2.13.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.13.0.tgz#6964bca67685df7c1f1430c584f07d7597885b9c"
 
-commander@~2.17.1:
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
-
 common-tags@^1.5.1:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/common-tags/-/common-tags-1.8.0.tgz#8e3153e542d4a39e9b10554434afaaf98956a937"
@@ -4147,8 +4115,8 @@ csstype@^2.0.0:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.3.0.tgz#062e141c78345cf814da0e0b716ad777931b08af"
 
 csstype@^2.2.0:
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.5.tgz#4125484a3d42189a863943f23b9e4b80fedfa106"
+  version "2.5.7"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.7.tgz#bf9235d5872141eccfb2d16d82993c6b149179ff"
 
 csstype@^2.5.2:
   version "2.5.3"
@@ -5384,10 +5352,6 @@ fclone@^1.0.11:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/fclone/-/fclone-1.0.11.tgz#10e85da38bfea7fc599341c296ee1d77266ee640"
 
-figgy-pudding@^3.1.0, figgy-pudding@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/figgy-pudding/-/figgy-pudding-3.5.1.tgz#862470112901c727a0e495a80744bd5baa1d6790"
-
 figures@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -5613,15 +5577,9 @@ fragment-cache@^0.2.1:
   dependencies:
     map-cache "^0.2.2"
 
-framesync@^3.1.8:
+framesync@^3.1.8, framesync@^3.1.9:
   version "3.1.9"
   resolved "https://registry.yarnpkg.com/framesync/-/framesync-3.1.9.tgz#f65f815c711cf876f343b1f63da6e18b1384172f"
-
-framesync@^4.0.0, framesync@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/framesync/-/framesync-4.0.1.tgz#ed7791baf0d266f58ab02000456f82cb384815bf"
-  dependencies:
-    hey-listen "^1.0.5"
 
 fresh@0.5.2:
   version "0.5.2"
@@ -8510,7 +8468,7 @@ lru-cache@^4.0.0, lru-cache@^4.1.1:
     pseudomap "^1.0.2"
     yallist "^2.1.2"
 
-lru-cache@^4.0.1, lru-cache@^4.1.3:
+lru-cache@^4.0.1:
   version "4.1.3"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.3.tgz#a1175cf3496dfc8436c156c334b4955992bce69c"
   dependencies:
@@ -8858,21 +8816,6 @@ mississippi@^2.0.0:
     from2 "^2.1.0"
     parallel-transform "^1.1.0"
     pump "^2.0.1"
-    pumpify "^1.3.3"
-    stream-each "^1.1.0"
-    through2 "^2.0.0"
-
-mississippi@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/mississippi/-/mississippi-3.0.0.tgz#ea0a3291f97e0b5e8776b363d5f0a12d94c67022"
-  dependencies:
-    concat-stream "^1.5.0"
-    duplexify "^3.4.2"
-    end-of-stream "^1.1.0"
-    flush-write-stream "^1.0.0"
-    from2 "^2.1.0"
-    parallel-transform "^1.1.0"
-    pump "^3.0.0"
     pumpify "^1.3.3"
     stream-each "^1.1.0"
     through2 "^2.0.0"
@@ -9901,23 +9844,22 @@ polka@^0.3.1:
     trouter "^1.0.0"
 
 popmotion-pose@^3.3.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/popmotion-pose/-/popmotion-pose-3.4.0.tgz#6f9f60f3683b77c2d54d7588f64f9c1ec1faf6a9"
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/popmotion-pose/-/popmotion-pose-3.3.0.tgz#6df7843cbb5fee81f8d8977b0233b051247c2f4d"
   dependencies:
     "@popmotion/easing" "^1.0.1"
     hey-listen "^1.0.5"
-    popmotion "^8.5.0"
+    popmotion "^8.3.7"
     pose-core "^2.0.0"
     style-value-types "^3.0.6"
     tslib "^1.9.1"
 
-popmotion@^8.5.0:
-  version "8.5.0"
-  resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-8.5.0.tgz#9d5df110319990eb6ef1e16c0a5acd8d10249e76"
+popmotion@^8.3.7:
+  version "8.3.8"
+  resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-8.3.8.tgz#af2b9ba00d4be089461043b60ea82c1709352a27"
   dependencies:
     "@popmotion/easing" "^1.0.1"
-    "@popmotion/popcorn" "^0.1.0"
-    framesync "^4.0.0"
+    framesync "^3.1.9"
     hey-listen "^1.0.5"
     style-value-types "^3.0.6"
     stylefire "^2.0.7"
@@ -10131,8 +10073,8 @@ preserve@^0.2.0:
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
 prettier@^1.15.1:
-  version "1.15.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.15.1.tgz#06c67106afb1b40e74b002353b2079cc7e0e67bf"
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.15.2.tgz#d31abe22afa4351efa14c7f8b94b58bb7452205e"
 
 prettier@^1.5.3:
   version "1.12.1"
@@ -10293,13 +10235,6 @@ pump@^1.0.2:
 pump@^2.0.0, pump@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/pump/-/pump-2.0.1.tgz#12399add6e4cf7526d973cbc8b5ce2e2908b3909"
-  dependencies:
-    end-of-stream "^1.1.0"
-    once "^1.3.1"
-
-pump@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/pump/-/pump-3.0.0.tgz#b4a2116815bde2f4e1ea602354e8c75565107a64"
   dependencies:
     end-of-stream "^1.1.0"
     once "^1.3.1"
@@ -10596,6 +10531,10 @@ react-event-listener@^0.6.2:
     prop-types "^15.6.0"
     warning "^4.0.1"
 
+react-fast-compare@^2.0.3:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.4.tgz#e84b4d455b0fec113e0402c329352715196f81f9"
+
 react-favicon@^0.0.11:
   version "0.0.11"
   resolved "https://registry.yarnpkg.com/react-favicon/-/react-favicon-0.0.11.tgz#2c4216ca9003ecf9d8aee4f11e6a20f729577925"
@@ -10654,7 +10593,11 @@ react-is@^16.3.2:
   version "16.3.2"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.3.2.tgz#f4d3d0e2f5fbb6ac46450641eb2e25bf05d36b22"
 
-react-is@^16.5.1, react-is@^16.6.0:
+react-is@^16.5.1:
+  version "16.5.2"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
+
+react-is@^16.6.0:
   version "16.6.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.6.1.tgz#f77b1c3d901be300abe8d58645b7a59e794e5982"
 
@@ -12164,12 +12107,6 @@ ssri@^5.2.4:
   dependencies:
     safe-buffer "^5.1.1"
 
-ssri@^6.0.0:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/ssri/-/ssri-6.0.1.tgz#2a3c41b28dd45b62b63676ecb74001265ae9edd8"
-  dependencies:
-    figgy-pudding "^3.5.1"
-
 stack-utils@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/stack-utils/-/stack-utils-1.0.1.tgz#d4f33ab54e8e38778b0ca5cfd3b3afb12db68620"
@@ -12365,7 +12302,7 @@ style-search@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/style-search/-/style-search-0.1.0.tgz#7958c793e47e32e07d2b5cafe5c0bf8e12e77902"
 
-style-value-types@^3.0.6, style-value-types@^3.0.7:
+style-value-types@^3.0.6:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-3.0.7.tgz#6e7a22cc8b1a4465193268ed66ad5f2a82579054"
 
@@ -13099,18 +13036,11 @@ uglify-js@^2.6:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
-uglify-js@^3.0.0:
-  version "3.4.9"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.4.9.tgz#af02f180c1207d76432e473ed24a28f4a782bae3"
-  dependencies:
-    commander "~2.17.1"
-    source-map "~0.6.1"
-
 uglify-to-browserify@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/uglify-to-browserify/-/uglify-to-browserify-1.0.2.tgz#6e0924d6bda6b5afe349e39a6d632850a0f882b7"
 
-uglifyjs-webpack-plugin@^1.2.4:
+uglifyjs-webpack-plugin@1.3.0, uglifyjs-webpack-plugin@^1.2.4:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-1.3.0.tgz#75f548160858163a08643e086d5fefe18a5d67de"
   dependencies:
@@ -13120,19 +13050,6 @@ uglifyjs-webpack-plugin@^1.2.4:
     serialize-javascript "^1.4.0"
     source-map "^0.6.1"
     uglify-es "^3.3.4"
-    webpack-sources "^1.1.0"
-    worker-farm "^1.5.2"
-
-uglifyjs-webpack-plugin@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/uglifyjs-webpack-plugin/-/uglifyjs-webpack-plugin-2.0.1.tgz#f346af53ed496ce72fef462517d417f62bec3010"
-  dependencies:
-    cacache "^11.2.0"
-    find-cache-dir "^2.0.0"
-    schema-utils "^1.0.0"
-    serialize-javascript "^1.4.0"
-    source-map "^0.6.1"
-    uglify-js "^3.0.0"
     webpack-sources "^1.1.0"
     worker-farm "^1.5.2"
 
@@ -13827,10 +13744,11 @@ which@^1.2.14:
     isexe "^2.0.0"
 
 why-did-you-update@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/why-did-you-update/-/why-did-you-update-1.0.3.tgz#1253dc5b1f19cb54ff409656910310b09ef436fc"
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/why-did-you-update/-/why-did-you-update-1.0.6.tgz#2e2c6a04291e715755ecdff1ac8272f721df6f04"
   dependencies:
     lodash "^4.17.11"
+    react-fast-compare "^2.0.3"
 
 wide-align@^1.1.0:
   version "1.1.3"
