@@ -1,5 +1,5 @@
 export { Title } from '@components/Title'
-export { Chart } from '@components/Chart'
+export { SingleChart } from '@components/Chart'
 export { CoinsList } from '@components/CoinsList'
 export { Loading } from '@components/Loading'
 export { NavBar } from '@components/NavBar'
