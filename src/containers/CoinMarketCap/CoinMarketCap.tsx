@@ -2,15 +2,14 @@ import * as React from 'react'
 import styled from 'styled-components'
 import { History } from 'history'
 import { Button } from '@material-ui/core'
-
 // import Button from '@components/Elements/Button/Button'
 import Calculator from '@components/Calculator/Calculator'
 import DominanceChart from '@components/DominanceChart/DominanceChart'
-import { DonutChart } from '@storybook-components'
-//import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
-import { TableWithSort } from '@storybook-components'
+import { DonutChart, TableWithSort } from '@storybook-components/index'
+import { queryRendererHoc } from '@components/QueryRenderer'
+// import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
-// import { CoinMarketCapQuery } from './api'
+ import { CoinMarketCapQuery } from './api'
 import CardHeader from '@components/CardHeader';
 
 import {
@@ -21,6 +20,7 @@ import {
   ChartWrapper,
   DonutChatWrapper,
   CalculatorWrapper,
+  Pagination,
 } from './styles'
 
 import { data, chartCoins } from './mocks'
@@ -116,7 +116,6 @@ export class CoinMarket extends React.Component<Props, State> {
         { id: 'Name', isNumber: false, label: 'Name' },
         { id: 'Symbol', isNumber: false, label: 'Symbol'},
         { id: 'Price', isNumber: true, label: 'Price' },
-        { id: 'Change', isNumber: false, label: 'Change (24h)' },
         { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
         { id: 'AvailableSupply', isNumber: true, label: 'Available Supply' },
       ],
@@ -127,7 +126,6 @@ export class CoinMarket extends React.Component<Props, State> {
           Name: value.name,
           Symbol: value.symbol,
           Price: value.priceUSD,
-          Change: '-',
           MarketCap: value.maxSupply || 0,
           AvailableSupply: value.availableSupply,
         })),
@@ -184,26 +182,7 @@ export class CoinMarket extends React.Component<Props, State> {
   }
 }
 
-const RightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 380px;
-  margin-top: 24px;
-  margin-left: 16px;
-`
 
-const LeftColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 775px;
-`
-
-const Pagination = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 16px;
-`
 
 
 const options = ({ location }) => {
@@ -214,14 +193,20 @@ const options = ({ location }) => {
     const query = new URLSearchParams(location.search)
     page = query.get('page')
   }
-  return { variables: { perPage: 20, page } }
+  return { perPage: 20, page }
 }
 
-/*export const CoinMarketCap = graphql(CoinMarketCapQuery, { options })(
-  CoinMarket
-)*/
+
+export const MyCoinMarket =   queryRendererHoc({
+  query: CoinMarketCapQuery,
+  pollInterval: 5000,
+  fetchPolicy: 'network-only',
+  variables: options(location)
+})(CoinMarket)
 
 
+
+/*
 export const MyCoinMarket = (props) => {
   return (
     <CoinMarket
@@ -229,6 +214,6 @@ export const MyCoinMarket = (props) => {
       {...props}
     />
   )
-}
+}*/
 
 export default MyCoinMarket

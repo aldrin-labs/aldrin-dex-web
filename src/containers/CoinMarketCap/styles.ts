@@ -54,3 +54,9 @@ export const CalculatorWrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
 `
+export const Pagination = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 16px;
+`
