@@ -320,6 +320,9 @@ class Optimization extends Component<IProps, IState> {
                 <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
                 </TypographyWithCustomColor>
+                <TypographyWithCustomColor style={{marginTop: '2rem'}} color={textColor} variant="h6">
+                  We are working on improving the speed of this model
+                </TypographyWithCustomColor>
               </LoaderInnerWrapper>
             </LoaderWrapper>
           )}
