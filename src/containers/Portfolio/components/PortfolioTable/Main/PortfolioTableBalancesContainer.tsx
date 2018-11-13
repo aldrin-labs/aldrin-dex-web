@@ -314,6 +314,6 @@ class Container extends Component {
 
 export default queryRendererHoc({
   query: getPortfolioMainQuery,
-  pollInterval: 5 * 60 * 1000,
+  pollInterval: 1 * 1 * 1000,
   fetchPolicy: 'network-only',
 })(Container)
