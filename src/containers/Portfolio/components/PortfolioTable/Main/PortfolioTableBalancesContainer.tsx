@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { zip, isObject } from 'lodash-es'
 import { Theme } from '@material-ui/core'
-import nanoid from 'nanoid'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import { queryRendererHoc } from '@components/QueryRenderer'
