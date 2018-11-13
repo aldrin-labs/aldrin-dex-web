@@ -583,6 +583,7 @@ class Rebalance extends React.Component<IProps, IState> {
                       staticRows[0] &&
                       staticRows[0].portfolioPerc && (
                         <BarChart
+                          theme={theme}
                           height={350}
                           hideDashForToolTip={true}
                           xAxisVertical={true}

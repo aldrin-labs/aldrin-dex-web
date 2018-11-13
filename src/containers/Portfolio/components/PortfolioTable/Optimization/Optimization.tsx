@@ -236,6 +236,7 @@ class Optimization extends Component<IProps, IState> {
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <LineChart
+                theme={theme}
                 additionalInfoInPopup={true}
                 alwaysShowLegend={showAllLineChartData}
                 data={lineChartData === 0 ? undefined : showAllLineChartData ? lineChartData : [lineChartData]}
