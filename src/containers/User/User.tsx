@@ -18,24 +18,22 @@ import KeysList from '@containers/User/components/KeysList/KeysList'
 import {
   Dialog,
   DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions,
   Button,
+  Card,
 } from '@material-ui/core'
-import { updateBinanceWarning } from './actions'
+import { updateBinanceWarning, toggleMocks } from './actions'
 import ComingSoon from '@components/ComingSoon'
 import { MASTER_BUILD } from '@utils/config'
+import CardHeader from '@components/CardHeader'
 
 class UserContainer extends React.Component {
   store: any
 
   toggleMocks = () => {
-    const { dispatch } = this.props
+    const { toggleMocks: toggleMockups } = this.props
 
-    dispatch({
-      type: 'TOGGLE_MOCKS',
-    })
+    toggleMockups()
   }
 
   forceUpdateUserContainer = () => {
@@ -55,11 +53,7 @@ class UserContainer extends React.Component {
           <KeysList forceUpdateUserContainer={this.forceUpdateUserContainer} />
         </UserWrap>
 
-        <UserWrap
-          style={
-            MASTER_BUILD && { filter: 'blur(3px)' }
-          }
-        >
+        <UserWrap style={MASTER_BUILD ? { filter: 'blur(3px)' } : {}}>
           {MASTER_BUILD && <ComingSoon />}
 
           <AddCryptoWallet
@@ -71,7 +65,7 @@ class UserContainer extends React.Component {
         </UserWrap>
         {!MASTER_BUILD && (
           <AdminCP>
-            <Heading>Show mocks</Heading>
+            <CardHeader title="Show mocks" />
             <Switch
               onChange={this.toggleMocks}
               checked={this.props.isShownMocks}
@@ -103,24 +97,12 @@ class UserContainer extends React.Component {
   }
 }
 
-const Heading = styled.span`
-  font-size: 1em;
-  font-family: Roboto, sans-serif;
-  color: #fff;
-  padding-bottom: 10px;
-`
-
-const AdminCP = styled.div`
-  margin: 18px;
-  padding: 8px 8px 20px 8px;
-  background-color: #424242;
+const AdminCP = styled(Card)`
+  margin: 1rem;
   width: 10em;
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 2px;
-  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2),
-    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
 `
 
 const UserWrap = styled.div`
@@ -135,6 +117,7 @@ const mapStateToProps = (store) => ({
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
+  toggleMocks: () => dispatch(toggleMocks()),
   updateBinanceWarning: (payload: boolean) =>
     dispatch(updateBinanceWarning(payload)),
 })
