@@ -16,6 +16,9 @@ export const Container = styled.div`
   flex-direction: column;
   height: calc(100vh - ${navBarHeight}px);
   z-index: 0;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 export const TableWrapper = styled(Card)`
