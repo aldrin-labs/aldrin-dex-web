@@ -15,6 +15,7 @@ import {
   Name,
 } from './PortfolioSelector.styles'
 import * as UTILS from '@utils/PortfolioSelectorUtils'
+import { MASTER_BUILD } from '@utils/config'
 
 class PortfolioSelector extends React.Component<IProps> {
   updateSettings = async (objectForMutation) => {
@@ -124,7 +125,12 @@ class PortfolioSelector extends React.Component<IProps> {
     const color = theme.palette.secondary.main
 
     return (
-      <Slide in={isSideNavOpen} direction="left">
+      <Slide
+        in={isSideNavOpen}
+        direction="left"
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
         <AccountsWalletsBlock
           isSideNavOpen={true}
           background={theme.palette.background.paper}
@@ -151,7 +157,7 @@ class PortfolioSelector extends React.Component<IProps> {
             }}
           />
 
-          {process.env.NODE_ENV !== 'production' && (
+          {!MASTER_BUILD && (
             <>
               <Name color={color}>Dust</Name>
               <FilterValues>

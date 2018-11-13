@@ -13,8 +13,22 @@ import { queryRendererHoc } from '@components/QueryRenderer'
 import withAuth from '@hoc/withAuth'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
-import { updatePortfolioSettingsMutation, portfolioKeyAndWalletsQuery, PORTFOLIO_UPDATE } from '@containers/Portfolio/api'
+import {
+  updatePortfolioSettingsMutation,
+  portfolioKeyAndWalletsQuery,
+  PORTFOLIO_UPDATE,
+} from '@containers/Portfolio/api'
 
+const safePortfolioDestruction = (
+  portfolio = {
+    userSettings: {
+      portfolioId: null,
+      dustFilter: null,
+      keys: [],
+      wallets: [],
+    },
+  }
+) => portfolio
 
 class PortfolioComponent extends React.Component<IProps, IState> {
   state: IState = {
@@ -26,7 +40,11 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { theme, data, updatePortfolioSettings } = this.props
+    const {
+      theme,
+      data = { myPortfolios: [{ userSettings: {} }] },
+      updatePortfolioSettings,
+    } = this.props
 
     if (!has(data, 'myPortfolios')) {
       return (
@@ -36,7 +54,9 @@ class PortfolioComponent extends React.Component<IProps, IState> {
       )
     }
 
-    const { userSettings: { portfolioId, dustFilter, keys, wallets }, userSettings } = data.myPortfolios[0]
+    const {
+      userSettings: { portfolioId, dustFilter, keys, wallets },
+    } = safePortfolioDestruction(data.myPortfolios[0])
 
     const activeKeys = keys.filter((el) => el.selected)
     const activeWallets = wallets.filter((el) => el.selected)
@@ -64,27 +84,25 @@ class PortfolioComponent extends React.Component<IProps, IState> {
 
             {!hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
 
-            {hasKeysOrWallets &&
-              !hasActiveKeysOrWallets && (
-                <SelectExchangeOrWalletWindow
+            {hasKeysOrWallets && !hasActiveKeysOrWallets && (
+              <SelectExchangeOrWalletWindow
+                theme={theme}
+                toggleWallets={this.toggleWallets}
+              />
+            )}
+
+            {hasKeysOrWallets && hasActiveKeysOrWallets && (
+              <>
+                <PortfolioTable
+                  key={activeKeys.length + activeWallets.length}
+                  showTable={hasActiveKeysOrWallets}
+                  dustFilter={dustFilter}
                   theme={theme}
                   toggleWallets={this.toggleWallets}
+                  subscription={subscriptionData}
                 />
-              )}
-
-            {hasKeysOrWallets &&
-              hasActiveKeysOrWallets && (
-                <>
-                  <PortfolioTable
-                    key={activeKeys.length + activeWallets.length}
-                    showTable={hasActiveKeysOrWallets}
-                    dustFilter={dustFilter}
-                    theme={theme}
-                    toggleWallets={this.toggleWallets}
-                    subscription={subscriptionData}
-                  />
-                </>
-              )}
+              </>
+            )}
 
             <Fade
               in={this.state.isSideNavOpen}
@@ -106,9 +124,8 @@ export default compose(
   graphql(updatePortfolioSettingsMutation, {
     name: 'updatePortfolioSettings',
     options: {
-      refetchQueries: [{query: portfolioKeyAndWalletsQuery}],
+      refetchQueries: [{ query: portfolioKeyAndWalletsQuery }],
     },
   }),
-  withTheme(),
+  withTheme()
 )(PortfolioComponent)
-
