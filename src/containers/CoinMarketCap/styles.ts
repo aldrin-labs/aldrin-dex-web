@@ -19,6 +19,18 @@ export const TableWrapper = styled(Card)`
 
 export const TableContainer = styled(Grid)`
   && {
-    height: 80%;
+    height: 100%;
   }
+`
+
+export const Wrapper = styled(Card)`
+  max-height: 100%;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+`
+
+export const ChartWrapper = styled(Wrapper)`
+  max-height: 60%;
+  height: 60%;
 `

@@ -6,13 +6,19 @@ import { Paper, Grid, Card } from '@material-ui/core'
 import Button from '@components/Elements/Button/Button'
 import Calculator from '@components/Calculator/Calculator'
 import DominanceChart from '@components/DominanceChart/DominanceChart'
-import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
-import { TableWithSort as Table } from '@storybook-components'
+import { DonutChart } from '@storybook-components'
+//import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
+import { TableWithSort } from '@storybook-components'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 // import { CoinMarketCapQuery } from './api'
 import { mock } from '@storybook-components/Tables/mocks'
+import CardHeader from '@components/CardHeader';
 
-import { Container, TableWrapper, TableContainer } from './styles'
+import {
+  Container,
+  TableWrapper, TableContainer,
+  ChartWrapper
+} from './styles'
 
 import { data } from './mocks'
 
@@ -114,7 +120,7 @@ export class CoinMarket extends React.Component<Props, State> {
       data: {
         body: (data.assetPagination.items).map((value, index) => ({
           id: index,
-          Number: index,
+          Number: index + 1,
           Name: value.name,
           Symbol: value.symbol,
           Price: value.priceUSD,
@@ -139,7 +145,7 @@ export class CoinMarket extends React.Component<Props, State> {
            <Container container={true} spacing={16}>
              <TableContainer item={true} xs={12} md={8}>
                 <TableWrapper className="PortfolioMainTable">
-                  <Table
+                  <TableWithSort
                       title="Title"
                       columnNames={dataForTable.head}
                       data={dataForTable.data}
@@ -155,9 +161,13 @@ export class CoinMarket extends React.Component<Props, State> {
               </TableContainer>
               <TableContainer item={true} xs={12} md={4}>
                 <TableWrapper className="PortfolioTradeOrderHistoryTable">
+                  <CardHeader title="Calculator" />
                   <Calculator rates={rates} />
-                  <DominanceChart />
                 </TableWrapper>
+                <CardHeader title="Donut Chart" />
+                <ChartWrapper>
+                  <DonutChart />
+                </ChartWrapper>
               </TableContainer>
            </Container>
     )
