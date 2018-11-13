@@ -26,7 +26,7 @@ export const TableWrapper = styled(Card)`
 `
 
 export const DonutChatWrapper = styled(TableWrapper)`
-  height: 50vh;
+  height: 51vh;
 `
 
 export const TableContainer = styled(Grid)`
@@ -40,7 +40,7 @@ export const ChartWrapper = styled.div`
   width: 100%;
   flex-direction: column;
   height: 100%;
-  max-width: 400px;
+  max-width: 50vh;
   margin-left: auto;
   margin-right: auto;
 `

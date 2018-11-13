@@ -169,7 +169,7 @@ export class CoinMarket extends React.Component<Props, State> {
               <ChartWrapper>
                 <DonutChart
                   colorLegend
-                  colorLegendWhidh={100}
+                  colorLegendWhidh={150}
                   data={chartCoins}
                 />
               </ChartWrapper>
