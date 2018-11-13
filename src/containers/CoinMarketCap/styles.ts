@@ -47,3 +47,10 @@ export const ChartWrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
 `
+
+export const CalculatorWrapper = styled.div`
+  height: 100%;
+  max-width: 50vh;
+  margin-left: auto;
+  margin-right: auto;
+`

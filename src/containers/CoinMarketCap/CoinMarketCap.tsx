@@ -20,6 +20,7 @@ import {
   TableContainer,
   ChartWrapper,
   DonutChatWrapper,
+  CalculatorWrapper,
 } from './styles'
 
 import { data, chartCoins } from './mocks'
@@ -162,7 +163,9 @@ export class CoinMarket extends React.Component<Props, State> {
           <TableContainer item={true} xs={12} md={5}>
             <TableWrapper className="PortfolioTradeOrderHistoryTable">
               <CardHeader title="Calculator" />
-              <Calculator rates={rates} />
+              <CalculatorWrapper>
+                <Calculator rates={rates} />
+              </CalculatorWrapper>
             </TableWrapper>
             <DonutChatWrapper>
               <CardHeader title="Donut Chart" />
