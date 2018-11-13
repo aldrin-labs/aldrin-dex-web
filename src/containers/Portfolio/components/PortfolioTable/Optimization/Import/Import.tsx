@@ -130,6 +130,8 @@ export default class Import extends PureComponent<IProps> {
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
+    console.log('backendResultParsed', backendResultParsed);
+
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
@@ -139,7 +141,7 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.status === 1) {
+    if (backendResultParsed.error || backendResultParsed.error_message || backendResultParsed.status === 1) {
       const isUserError = backendResultParsed.error_message
       //TODO: Should be another function
 
@@ -153,16 +155,20 @@ export default class Import extends PureComponent<IProps> {
           this.setState({startDate: backendResultParsed.new_start_date})
           this.setDataFromResponse(backendResultParsed)
         }
-        if (backendResultParsed.status === 4) {
+        if (backendResultParsed.status === 0) {
+          console.log('status 0, set data');
+
           this.setDataFromResponse(backendResultParsed)
         }
 
-        if (backendResultParsed.status !== 4) {
+        if (backendResultParsed.status !== 0) {
+          console.log('status not 0, reset data');
+
           this.onResetOnlyOptimizationData()
         }
 
         this.props.toggleLoading()
-        console.log('USER ERROR', backendResultParsed.error)
+        console.log('USER ERROR', backendResultParsed.error_message)
 
         return
       }
