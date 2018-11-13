@@ -9,7 +9,7 @@ export default class LoadableLoading extends React.Component {
     if (error) {
       // When the loader has errored
       console.log('ERROR in LoadableLoading: ', error)
-      console.log('error.stack: ', error.stack);
+      console.log('error.stack: ', error.stack)
 
       return <CustomError error={error.message} />
     } else if (timedOut) {

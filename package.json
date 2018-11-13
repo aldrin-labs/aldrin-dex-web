@@ -61,9 +61,7 @@
     }
   },
   "resolutions": {
-    "babel-core": "^7.0.0-bridge.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.3.2"
+    "babel-core": "^7.0.0-bridge.0"
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.41",
@@ -101,7 +99,7 @@
     "react-apollo": "^2.2.4",
     "react-content-loader": "^3.1.2",
     "react-dates": "^18.1.0",
-    "react-dom": "^16.3.2",
+    "react-dom": "^16.6.1",
     "react-emojione": "^5.0.0",
     "react-fullscreen-crossbrowser": "^1.0.9",
     "react-grid-layout": "^0.16.6",
@@ -145,7 +143,7 @@
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash-es": "^4.17.1",
     "@types/nanoid": "^1.2.0",
-    "@types/react": "16.7.3",
+    "@types/react": "16.4.18",
     "@types/react-dom": "^16.0.9",
     "@types/react-intl": "^2.3.8",
     "@types/react-redux": "^6.0.9",
