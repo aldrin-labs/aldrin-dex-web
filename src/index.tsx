@@ -45,7 +45,7 @@ const render = () =>
                         path="/portfolio"
                         component={PortfolioRoutes}
                       />
-                      {/*<Route exact path="/market" component={MarketRoutes} />*/}
+                      {<Route exact path="/market" component={MarketRoutes} />}
                       <Route exact path="/chart" component={ChartRoutes} />
                       {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                       <Route exact path="/user" component={UserRoutes} />
