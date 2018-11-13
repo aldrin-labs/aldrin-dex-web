@@ -150,7 +150,7 @@ export default class LineChart extends React.Component<Props, State> {
 
               {crosshairValues.map((v, i) => (
                 <div key={`${v.label}: ${v.y} USD`}>
-                  <Typography variant="body2" style={{ color: data.length > 1 ? theme.palette.common.white : 'fff' }}>{`${v.label}: ${Number(
+                  <Typography variant="body2" style={{ color: data.length > 1 ? colors[i] : theme.palette.common.white }}>{`${v.label}: ${Number(
                     v.y
                   ).toFixed(2)}`}</Typography>
                 </div>
