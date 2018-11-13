@@ -125,7 +125,12 @@ class PortfolioSelector extends React.Component<IProps> {
     const color = theme.palette.secondary.main
 
     return (
-      <Slide in={isSideNavOpen} direction="left">
+      <Slide
+        in={isSideNavOpen}
+        direction="left"
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
         <AccountsWalletsBlock
           isSideNavOpen={true}
           background={theme.palette.background.paper}
