@@ -79,10 +79,11 @@ export const Icon = styled.i`
 export const LegendContainer = styled.div`
   border-radius: 5px;
   position: absolute;
-  font-family: Roboto, sans-serif;
+  font-family: ${(props: { fontFamily: string }) => props.fontFamily};
   background-color: #869eb180;
-  top: 0px;
-  left: 10%;
-  color: white;
+  top: ${({ top }: { top: number }) => (top ? `${top}` : 0)};
+  left: ${({ left }: { left: number }) => (left ? `${left}` : '')};
+  right: ${({ right }: { right: number }) => (right ? `${right}` : '')};
+  color: ${(props: { color: string }) => props.color};
   transition: opacity 0.25s ease-out;
 `

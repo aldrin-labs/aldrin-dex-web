@@ -189,20 +189,23 @@ class Optimization extends Component<IProps, IState> {
     // TODO: Make it better
     // for real data
     const lineChartData = showAllLineChartData ? ( rawOptimizedData && rawOptimizedData.length && rawOptimizedData.map((el, i) => {
-      return el.backtest_results.map((element) => ({
+      return {data: el.backtest_results.map((element) => ({
         label: riskProfileNames[i],
         x: element[0],
         y: element[1],
-      }))
+      })),
+      color: colors[i]}
       })
     ) : (
       rawOptimizedData &&
       rawOptimizedData.length &&
-      rawOptimizedData[activeButton].backtest_results.map((el) => ({
+      { data: rawOptimizedData[activeButton].backtest_results.map((el, i) => ({
         label: 'optimized',
         x: el[0],
         y: el[1],
-      }))
+      })),
+        color: colors[activeButton],
+      }
     )
 
 
@@ -233,6 +236,7 @@ class Optimization extends Component<IProps, IState> {
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <LineChart
+                theme={theme}
                 additionalInfoInPopup={true}
                 alwaysShowLegend={showAllLineChartData}
                 data={lineChartData === 0 ? undefined : showAllLineChartData ? lineChartData : [lineChartData]}
@@ -315,6 +319,9 @@ class Optimization extends Component<IProps, IState> {
                 <Loading size={94} margin={'0 0 2rem 0'} />{' '}
                 <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
+                </TypographyWithCustomColor>
+                <TypographyWithCustomColor style={{marginTop: '2rem'}} color={textColor} variant="h6">
+                  We are working on improving the speed of this model
                 </TypographyWithCustomColor>
               </LoaderInnerWrapper>
             </LoaderWrapper>

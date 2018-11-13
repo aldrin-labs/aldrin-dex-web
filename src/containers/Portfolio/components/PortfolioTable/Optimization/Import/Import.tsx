@@ -130,6 +130,8 @@ export default class Import extends PureComponent<IProps> {
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
+    console.log('backendResultParsed', backendResultParsed);
+
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
@@ -139,13 +141,41 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.status === 1) {
-      const userErrorMessage = `User Error: ${
-        backendResultParsed.error_message
-      }`
+    if (backendResultParsed.error || backendResultParsed.error_message || backendResultParsed.status === 1) {
       const isUserError = backendResultParsed.error_message
+      //TODO: Should be another function
 
-      showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
+      if (isUserError && isUserError.length) {
+        const userErrorMessage = `User Error: ${
+          backendResultParsed.error_message.map((el: string) => `${el}`).join()}`
+
+        showWarning(userErrorMessage, false)
+
+        if (backendResultParsed.new_start) {
+          console.log('backendResultParsed.new_start', backendResultParsed.new_start);
+
+          this.setState({startDate: moment.unix(backendResultParsed.new_start)}, () => {console.log('this.state after update on user error', this.state)})
+          this.setDataFromResponse(backendResultParsed)
+        }
+        if (backendResultParsed.status === 0) {
+          console.log('status 0, set data');
+
+          this.setDataFromResponse(backendResultParsed)
+        }
+
+        if (backendResultParsed.status !== 0) {
+          console.log('status not 0, reset data');
+
+          this.onResetOnlyOptimizationData()
+        }
+
+        this.props.toggleLoading()
+        console.log('USER ERROR', backendResultParsed.error_message)
+
+        return
+      }
+
+      showWarning(systemError, true)
       this.onReset()
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
@@ -156,13 +186,19 @@ export default class Import extends PureComponent<IProps> {
     this.props.toggleLoading()
     this.props.setActiveButtonToDefault()
 
+
+    this.setDataFromResponse(backendResultParsed)
+  }
+
+  setDataFromResponse = (backendResultParsed: object) => {
+    const { optimizedToState } = this.props
+    const { isRiskFreeAssetEnabled } = this.state
+
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData)
 
-    if (
-      storeData.length < optimizedData[activeButton].portfolio_coins_list.length
-    ) {
-      console.log('storeData.length < optimizedData')
+    if (isRiskFreeAssetEnabled) {
+      console.log('isRiskFreeAssetEnabled')
       this.addRow('USDT', 0)
     }
 
@@ -233,6 +269,7 @@ export default class Import extends PureComponent<IProps> {
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
+              theme={theme}
               height={340}
               showPlaceholder={formatedData.length === 0}
               charts={barChartData}
@@ -271,6 +308,19 @@ export default class Import extends PureComponent<IProps> {
 
     optimizedToState([])
     this.importPortfolio()
+  }
+
+  onResetOnlyOptimizationData = () => {
+    const { optimizedToState, updateData, storeData } = this.props
+
+    optimizedToState([])
+
+    updateData(
+      [...storeData].map((el) => ({
+        ...el,
+        optimizedPercentageArray: [],
+      }))
+    )
   }
 
   render() {
