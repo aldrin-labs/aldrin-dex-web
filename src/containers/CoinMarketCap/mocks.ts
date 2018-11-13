@@ -212,3 +212,15 @@ export const data = {
       ],
     },
   }
+
+export const chartCoins: ReadonlyArray<any> = [
+    { realValue: 5, label: 'BCash'},
+    { realValue: 30, label: 'Bitcoin'},
+    { realValue: 5, label: 'NEO'},
+    { realValue: 5, label: 'Ethereum'},
+    { realValue: 15, label: 'Litecoin'},
+    { realValue: 5, label: 'Stellar'},
+    { realValue: 5, label: 'Ripple'},
+    { realValue: 5, label: 'Cardano'},
+    { realValue: 25, label: 'Others'},
+  ]

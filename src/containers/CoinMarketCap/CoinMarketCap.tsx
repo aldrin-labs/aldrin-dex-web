@@ -1,9 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import { History } from 'history'
-import { Paper, Grid, Card } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 
-import Button from '@components/Elements/Button/Button'
+// import Button from '@components/Elements/Button/Button'
 import Calculator from '@components/Calculator/Calculator'
 import DominanceChart from '@components/DominanceChart/DominanceChart'
 import { DonutChart } from '@storybook-components'
@@ -11,16 +11,18 @@ import { DonutChart } from '@storybook-components'
 import { TableWithSort } from '@storybook-components'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 // import { CoinMarketCapQuery } from './api'
-import { mock } from '@storybook-components/Tables/mocks'
 import CardHeader from '@components/CardHeader';
 
 import {
   Container,
-  TableWrapper, TableContainer,
-  ChartWrapper
+  GridContainer,
+  TableWrapper,
+  TableContainer,
+  ChartWrapper,
+  DonutChatWrapper,
 } from './styles'
 
-import { data } from './mocks'
+import { data, chartCoins } from './mocks'
 
 interface Props {
   data: CoinMarketCapQueryQuery
@@ -135,41 +137,46 @@ export class CoinMarket extends React.Component<Props, State> {
   render() {
     const { activeSortArg } = this.state
     const { data } = this.props
-    console.log(data)
     const { assetPagination } = data
     const { items } = assetPagination
     const dataForTable = this.getDataForTabale(this.props.data)
-    console.log(dataForTable)
 
     return (
-           <Container container={true} spacing={16}>
-             <TableContainer item={true} xs={12} md={8}>
-                <TableWrapper className="PortfolioMainTable">
-                  <TableWithSort
-                      title="Title"
-                      columnNames={dataForTable.head}
-                      data={dataForTable.data}
-                      checkedRows={['1']}
-                      actionsColSpan={1}
-                  />
-                  <Pagination>
-                  <Button title="Previous" onClick={this.decrementPage} />
-                  <Button title="View all coins" />
-                  <Button title="Next" onClick={this.incrementPage} />
-                  </Pagination>
-                </TableWrapper>
-              </TableContainer>
-              <TableContainer item={true} xs={12} md={4}>
-                <TableWrapper className="PortfolioTradeOrderHistoryTable">
-                  <CardHeader title="Calculator" />
-                  <Calculator rates={rates} />
-                </TableWrapper>
-                <CardHeader title="Donut Chart" />
-                <ChartWrapper>
-                  <DonutChart />
-                </ChartWrapper>
-              </TableContainer>
-           </Container>
+      <Container>
+        <GridContainer container={true} spacing={16}>
+          <TableContainer item={true} xs={12} md={8}>
+            <TableWrapper className="PortfolioMainTable">
+              <TableWithSort
+                  title="Title"
+                  columnNames={dataForTable.head}
+                  data={dataForTable.data}
+                  actionsColSpan={1}
+              />
+              <Pagination>
+              <Button title="Previous" onClick={this.decrementPage}> Previous </Button>
+              <Button title="View all coins"> View all coins </Button>
+              <Button title="Next" onClick={this.incrementPage}> Next </Button>
+              </Pagination>
+            </TableWrapper>
+          </TableContainer>
+          <TableContainer item={true} xs={12} md={4}>
+            <TableWrapper className="PortfolioTradeOrderHistoryTable">
+              <CardHeader title="Calculator" />
+              <Calculator rates={rates} />
+            </TableWrapper>
+            <DonutChatWrapper>
+              <CardHeader title="Donut Chart" />
+              <ChartWrapper>
+                <DonutChart
+                  colorLegend
+                  colorLegendWhidh={100}
+                  data={chartCoins}
+                />
+              </ChartWrapper>
+            </DonutChatWrapper>
+          </TableContainer>
+        </GridContainer>
+      </Container>
     )
   }
 }
