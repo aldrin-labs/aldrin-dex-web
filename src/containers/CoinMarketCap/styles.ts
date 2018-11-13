@@ -40,4 +40,7 @@ export const ChartWrapper = styled.div`
   width: 100%;
   flex-direction: column;
   height: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 `
