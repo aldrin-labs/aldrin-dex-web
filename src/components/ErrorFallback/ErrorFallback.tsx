@@ -61,6 +61,7 @@ const ErrorWithoutMessage = () => (
   </Typography>
 )
 
+// For ApolloErrors
 export const ErrorFallback = (props: {
   error?: ApolloError
   refetch?: Function
@@ -69,3 +70,26 @@ export const ErrorFallback = (props: {
     {MASTER_BUILD ? <ErrorWithoutMessage /> : <SimpleError {...props} />}
   </Error>
 )
+
+export default class ErrorBoundary extends React.Component {
+  state = { hasError: false, error: null }
+
+  static getDerivedStateFromError(error: any) {
+    // Update state so the next render will show the fallback UI.
+    return { error, hasError: true }
+  }
+
+  componentDidCatch(error: any, info: any) {
+    // imlement service/component to send errors to our database
+    console.log(error, info)
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <ErrorFallback error={this.state.error} />
+    }
+
+    return this.props.children
+  }
+}
