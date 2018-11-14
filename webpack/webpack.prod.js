@@ -54,6 +54,7 @@ const config = {
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
         API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT),
+        MASTER_BUILD: JSON.stringify(process.env.MASTER_BUILD),
         CHARTS_API_ENDPOINT: JSON.stringify(process.env.CHARTS_API_ENDPOINT),
       },
     }),

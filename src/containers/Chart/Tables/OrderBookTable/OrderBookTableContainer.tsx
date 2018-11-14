@@ -11,6 +11,7 @@ import {
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
+import ComingSoon from '@components/ComingSoon'
 import { IProps, IState } from './OrderBookTableContainer.types'
 let unsubscribe: Function | undefined
 
@@ -181,6 +182,7 @@ class OrderBookTableContainer extends Component<IProps, IState> {
 
     return (
       <>
+        <ComingSoon />
         <OrderBookTable
           digitsAfterDecimalForAsksSize={digitsAfterDecimalForAsksSize}
           digitsAfterDecimalForAsksPrice={digitsAfterDecimalForAsksPrice}
