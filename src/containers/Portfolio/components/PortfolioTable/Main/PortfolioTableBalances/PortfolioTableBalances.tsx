@@ -27,6 +27,7 @@ import { withErrorFallback } from '@hoc/'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import { Loading } from '@components/index'
+import PortfolioMainTable from '@components/PortfolioMainTable/PortfolioMainTable'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   state = {
@@ -60,12 +61,13 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const { body, head, footer } = putDataInTable()
 
-    const coins =
-      checkedRows && checkedRows.length > 0
-        ? checkedRows.map((id: number) =>
-            find(tableData, (row) => row.id === id)
-          )
-        : []
+    // const coins =
+    //   checkedRows && checkedRows.length > 0
+    //     ? checkedRows.map((id: number) =>
+    //         find(tableData, (row) => row.id === id)
+    //       )
+    //     : []
+    const coins = []
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
@@ -95,17 +97,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           />
           <TableContainer item={true} xs={12} md={8}>
             <TableWrapper className="PortfolioMainTable">
-              {Array.isArray(tableData) && (
-                <TableWithSort
-                  title="Portfolio"
-                  checkedRows={checkedRows}
-                  withCheckboxes={true}
-                  onChange={onCheckboxClick}
-                  onSelectAllClick={onSelectAllClick}
-                  data={{ body, footer }}
-                  columnNames={head}
-                />
-              )}
+              {Array.isArray(tableData) && <PortfolioMainTable />}
             </TableWrapper>
           </TableContainer>
           <TableContainer item={true} xs={12} md={4}>

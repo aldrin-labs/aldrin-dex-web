@@ -14,6 +14,9 @@ import Rebalance from './Rebalance/Rebalance'
 import Optimization from './Optimization/Optimization'
 import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
 import { Loading } from '@components/index'
+import { Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
+import { TOGGLE_BASE_COIN } from 'src/mutations/toggleBaseCoin'
 
 export class PortfolioTable extends Component<ITableProps, IState> {
   state: IState = {
@@ -113,22 +116,27 @@ export class PortfolioTable extends Component<ITableProps, IState> {
     const { theme, showTable = false } = this.props
 
     return (
-      <>
-        <PortfolioTableTabs
-          theme={theme}
-          toggleWallets={this.props.toggleWallets}
-          tab={tab}
-          isUSDCurrently={isUSDCurrently}
-          onChangeTab={this.onChangeTab}
-          onToggleChart={this.onToggleChart}
-          onToggleUSDBTC={this.onToggleUSDBTC}
-        />
-        <Suspense fallback={<Loading centerAligned />}>
-          {showTable && this.renderTab()}
-        </Suspense>
-      </>
+      <Mutation mutation={TOGGLE_BASE_COIN}>
+        {(toggleBaseCoin) => (
+          <>
+            <PortfolioTableTabs
+              theme={theme}
+              toggleWallets={this.props.toggleWallets}
+              tab={tab}
+              isUSDCurrently={isUSDCurrently}
+              onChangeTab={this.onChangeTab}
+              onToggleChart={this.onToggleChart}
+              onToggleUSDBTC={() => {
+                this.onToggleUSDBTC()
+                toggleBaseCoin()
+              }}
+            />
+            <Suspense fallback={<Loading centerAligned />}>
+              {showTable && this.renderTab()}
+            </Suspense>
+          </>
+        )}
+      </Mutation>
     )
-
-    return null
   }
 }

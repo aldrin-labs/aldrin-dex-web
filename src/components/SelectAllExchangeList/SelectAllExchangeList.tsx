@@ -1,11 +1,11 @@
 import React from 'react'
 import { exchangeByEntryQuery } from '@containers/User/api'
 import { SelectT } from '@styles/cssUtils'
-import { client } from '@utils/apolloClient'
+import { client } from '@graphql/apolloClient'
 import { Data } from './SelectAllExchangeList.types'
 import { ApolloQueryResult } from 'apollo-client'
 
-const combineDataToSelectOptions = ( data: Data ) => {
+const combineDataToSelectOptions = (data: Data) => {
   // console.log('data in combine', data);
 
   const exchangeOptions =
@@ -24,14 +24,17 @@ const combineDataToSelectOptions = ( data: Data ) => {
 const promiseOptions = (inputValue: string) => {
   // console.log('inputValue in: ', inputValue);
 
-  return client.query({query: exchangeByEntryQuery, variables: {'search': inputValue}})
-    .then((response: ApolloQueryResult<any> ) => combineDataToSelectOptions(response.data))
-    .catch(error=> {console.log(error)})
+  return client
+    .query({ query: exchangeByEntryQuery, variables: { search: inputValue } })
+    .then((response: ApolloQueryResult<any>) =>
+      combineDataToSelectOptions(response.data)
+    )
+    .catch((error) => {
+      console.log(error)
+    })
 }
 
-
 export default class SelectAllExchangeList extends React.Component {
-
   render() {
     const { ...otherPropsForSelect } = this.props
 
@@ -47,4 +50,3 @@ export default class SelectAllExchangeList extends React.Component {
     )
   }
 }
-
