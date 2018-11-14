@@ -141,7 +141,7 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.error_message || backendResultParsed.status === 1) {
+    if (backendResultParsed.error || backendResultParsed.error_message.length || backendResultParsed.status === 1) {
       const isUserError = backendResultParsed.error_message
       //TODO: Should be another function
 
