@@ -29,8 +29,6 @@ import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
-import ComingSoon from '@components/ComingSoon'
-import { MASTER_BUILD } from '@utils/config'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
@@ -332,17 +330,16 @@ class Chart extends React.Component<IProps, IState> {
               divider={palette.divider}
               background={palette.primary[type]}
             >
-              {base &&
-                quote && (
-                  <ExchangePair background={palette.primary[type]}>
-                    <TypographyWithCustomColor
-                      textColor={palette.getContrastText(palette.primary[type])}
-                      variant="subtitle1"
-                    >
-                      {`${base}/${quote}`}
-                    </TypographyWithCustomColor>
-                  </ExchangePair>
-                )}
+              {base && quote && (
+                <ExchangePair background={palette.primary[type]}>
+                  <TypographyWithCustomColor
+                    textColor={palette.getContrastText(palette.primary[type])}
+                    variant="subtitle1"
+                  >
+                    {`${base}/${quote}`}
+                  </TypographyWithCustomColor>
+                </ExchangePair>
+              )}
               <SwitchButtonWrapper>
                 <Button
                   variant="text"
