@@ -1,11 +1,10 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import ReactSelectComponent from '@components/ReactSelectComponent'
-import { IValue } from '@components/BarChart/BarChart.types'
 
-export const customAquaScrollBar = `
+export const customAquaScrollBar = css`
   &::-webkit-scrollbar {
-    width: 3px;
+    width: ${({scrollBarWidth}: {scrollBarWidth: number}) => (scrollBarWidth ? `${scrollBarWidth}px` : '3px')};
     height: 6px;
   }
 
@@ -15,7 +14,8 @@ export const customAquaScrollBar = `
 
   &::-webkit-scrollbar-thumb {
     background: #4ed8da;
-  }`
+  }
+`
 
 export const TypographyFullWidth = styled(TypographyWithCustomColor)`
   width: 100%;
@@ -79,10 +79,11 @@ export const Icon = styled.i`
 export const LegendContainer = styled.div`
   border-radius: 5px;
   position: absolute;
-  font-family: Roboto, sans-serif;
+  font-family: ${(props: { fontFamily: string }) => props.fontFamily};
   background-color: #869eb180;
-  top: 0px;
-  left: 10%;
-  color: white;
+  top: ${({ top }: { top: number }) => (top ? `${top}` : 0)};
+  left: ${({ left }: { left: number }) => (left ? `${left}` : '')};
+  right: ${({ right }: { right: number }) => (right ? `${right}` : '')};
+  color: ${(props: { color: string }) => props.color};
   transition: opacity 0.25s ease-out;
 `

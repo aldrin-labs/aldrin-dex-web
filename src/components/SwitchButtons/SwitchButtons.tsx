@@ -25,6 +25,7 @@ const SwitchButtons = (props: IProps) => (
 )
 
 const BtnsContainer = styled.div`
+  overflow-x: auto;
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;

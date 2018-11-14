@@ -113,7 +113,11 @@ export const combineIndustryData = (
       sum += percentagesOfCoinInPortfolio(asset, allSum, true)
     })
 
-    return { render: `${roundPercentage(sum)}%`, isNumber: true }
+    return {
+      render: `${roundPercentage(sum)}%`,
+      isNumber: true,
+      contentToSort: +roundPercentage(sum),
+    }
   }
 
   const { myPortfolios } = data

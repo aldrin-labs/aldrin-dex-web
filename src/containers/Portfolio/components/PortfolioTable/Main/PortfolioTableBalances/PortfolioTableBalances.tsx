@@ -1,10 +1,9 @@
-import * as React from 'react'
+import React, { Suspense, lazy } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { withRouter } from 'react-router'
 import Joyride from 'react-joyride'
 
-import Chart from '@components/GQLChart'
 import {
   IProps,
   IState,
@@ -18,12 +17,16 @@ import {
   ChartContainer,
 } from './PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
-import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
+const Chart = lazy(() => import('@components/GQLChart'))
+const TradeOrderHistoryTable = lazy(() =>
+  import('@components/TradeOrderHistory/TradeOrderHistoryTable')
+)
 import CardHeader from '@components/CardHeader'
 import { find } from 'lodash-es'
 import { withErrorFallback } from '@hoc/'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
+import { Loading } from '@components/index'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   state = {
@@ -107,7 +110,9 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           </TableContainer>
           <TableContainer item={true} xs={12} md={4}>
             <TableWrapper className="PortfolioTradeOrderHistoryTable">
-              <TradeOrderHistoryTable />
+              <Suspense fallback={<Loading centerAligned />}>
+                <TradeOrderHistoryTable />
+              </Suspense>
             </TableWrapper>
           </TableContainer>
 
@@ -117,16 +122,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 style={{ position: 'absolute' }}
                 title={'Portfolio Value | Coming Soon | In development'}
               />
-              <Chart
-                isShownMocks={this.props.isShownMocks}
-                style={{
-                  marginLeft: 0,
-                  minHeight: '10vh',
-                }}
-                height="20vh"
-                marginTopHr="10px"
-                coins={coins}
-              />
+              <Suspense fallback={<Loading centerAligned />}>
+                <Chart
+                  isShownMocks={this.props.isShownMocks}
+                  style={{
+                    marginLeft: 0,
+                    minHeight: '10vh',
+                  }}
+                  height="20vh"
+                  marginTopHr="10px"
+                  coins={coins}
+                />
+              </Suspense>
             </ChartWrapper>
           </ChartContainer>
         </GridContainer>

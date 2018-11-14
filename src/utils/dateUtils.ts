@@ -12,5 +12,5 @@ export const daysFromNow = (days: number) => {
 
 export const formatDate = (
   date: number,
-  format: string = 'MM/DD/YYYY - hh:m:s A'
-): string => fns(new Date(date * 1000).toLocaleString('en-US'), format)
+  format: string = 'MM/DD/YYYY - hh:mm:ss A'
+): string => fns(new Date(date * 1000), format)

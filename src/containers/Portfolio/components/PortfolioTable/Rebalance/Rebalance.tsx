@@ -3,25 +3,19 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 
+import { systemError } from '@utils/errorsConfig'
 import QueryRenderer from '@components/QueryRenderer'
-import BarChart from '@components/BarChart/BarChart'
+import { BarChart } from '@storybook-components'
 import {
   IProps,
   IState,
   IRow,
   IShapeOfRebalancePortfolioRow,
-  IShapeOfCurrentPortolioRow,
-  IGetMyPortfolioQuery,
-  IGetMyRebalanceQuery,
-  ICurrentSort,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import {
-  cloneArrayElementsOneLevelDeep,
-  onSortTableFull,
-} from '@utils/PortfolioTableUtils'
-import { calcPriceForRebalancedPortfolio } from '@utils/PortfolioRebalanceUtils'
+import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -42,13 +36,12 @@ import {
   InnerChartContainer,
   StyledCardHeader,
 } from './Rebalance.styles'
-import ChartColorPicker from './ChartColorPicker/ChartColorPicker'
 import withTheme from '@material-ui/core/styles/withTheme'
 import { PTWrapper } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
-import CardHeader from '@components/CardHeader'
+import config from '@utils/linkConfig'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -57,9 +50,8 @@ class Rebalance extends React.Component<IProps, IState> {
     rows: [],
     staticRows: [],
     savedRows: [],
+    staticRowsMap: new Map(),
     addMoneyInputValue: 0,
-    currentSortForStatic: null,
-    currentSortForDynamic: null,
     isEditModeEnabled: false,
     undistributedMoney: '0',
     undistributedMoneySaved: '0',
@@ -76,6 +68,9 @@ class Rebalance extends React.Component<IProps, IState> {
     run: true,
     key: 0,
     loading: false,
+    openWarning: false,
+    isSystemError: false,
+    warningMessage: '',
   }
 
   componentDidMount() {
@@ -110,8 +105,8 @@ class Rebalance extends React.Component<IProps, IState> {
       getMyPortfolioAndRebalanceQuery.portfolioAssets &&
       getMyPortfolioAndRebalanceQuery.portfolioAssets.length > 0
 
-    let newTableRebalancedPortfolioData = []
-    let newTableCurrentPortfolioData = []
+    let newTableRebalancedPortfolioData: IRow[] = []
+    let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
@@ -128,7 +123,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-          const { price, currentPrice } = calcPriceForRebalancedPortfolio(
+          const { price, currentPrice } = UTILS.calcPriceForRebalancedPortfolio(
             el,
             getMyPortfolioAndRebalanceQuery.portfolioAssets
           )
@@ -145,6 +140,20 @@ class Rebalance extends React.Component<IProps, IState> {
           }
         }
       )
+
+      const newAssetsData = newTableCurrentPortfolioData.filter(
+        (currentPortfolioAsset: IRow) =>
+          !newTableRebalancedPortfolioData.some(
+            (rebalancedPortfolioAsset) =>
+              currentPortfolioAsset._id === rebalancedPortfolioAsset._id
+          )
+      )
+      const isCurrentPortfolioDataHaveMoreCoinsThanRebalanced =
+        newAssetsData.length
+
+      newTableRebalancedPortfolioData = isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
+        ? newTableRebalancedPortfolioData.concat(newAssetsData)
+        : newTableRebalancedPortfolioData
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
@@ -161,7 +170,6 @@ class Rebalance extends React.Component<IProps, IState> {
       )
     }
 
-
     const composeWithMocksCurrentPortfolio = isShownMocks
       ? [...newTableCurrentPortfolioData, ...mockTableData]
       : newTableCurrentPortfolioData
@@ -169,7 +177,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const composeWithMocksRebalancedPortfolio = isShownMocks
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
-
 
     if (userHasRebalancePortfolio) {
       this.setTableData(
@@ -243,12 +250,21 @@ class Rebalance extends React.Component<IProps, IState> {
       totalRows,
       staticRows
     )
+
+    const staticRowsWithPercentage = UTILS.calculatePercents(
+      staticRows,
+      totalStaticRows,
+      staticRows
+    )
+
+    const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
+      accMap.set(el._id, el)
+      return accMap
+    }, new Map())
+
     this.setState({
-      staticRows: UTILS.calculatePercents(
-        staticRows,
-        totalStaticRows,
-        staticRows
-      ),
+      staticRowsMap,
+      staticRows: staticRowsWithPercentage,
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
       savedRows: UTILS.calculatePercents(savedRows, totalSavedRows, staticRows),
@@ -325,21 +341,25 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     try {
-      this.setState({loading: true})
+      this.setState({ loading: true })
 
-      await updateRebalanceMutationQuery({ variables: variablesForMutation })
+      const backendResult = await updateRebalanceMutationQuery({
+        variables: variablesForMutation,
+      })
+      if (backendResult.data.updateRebalance === null) {
+        this.showWarning(systemError, true)
+      }
       refetch()
         .then(() => {
-          this.setState({loading: false})
-          console.log('resolved and refetched')
+          this.setState({ loading: false })
         })
         .catch(() => {
-            this.setState({loading: false})
-            console.log('catched')
-        }
-        )
+          this.setState({ loading: false })
+          this.showWarning(systemError, true)
+        })
     } catch (error) {
-      this.setState({loading: false})
+      this.setState({ loading: false })
+      this.showWarning(systemError, true)
       console.log(error)
     }
   }
@@ -385,45 +405,6 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  onSortTable = (key: string, tableForSort: string) => {
-    if (!this.state.staticRows && tableForSort === 'currentSortForStatic') {
-      return
-    }
-    if (!this.state.rows && tableForSort === 'currentSortForDynamic') {
-      return
-    }
-
-    const arrayOfStringHeadings = ['exchange', 'symbol']
-    const currentSort: ICurrentSort = (this.state as any)[tableForSort]
-    const rowsForSortText =
-      tableForSort === 'currentSortForStatic' ? 'staticRows' : 'rows'
-    const currentRowsForSort = this.state[rowsForSortText]
-
-    const {
-      newData,
-      newCurrentSort,
-    }: {
-      newData: IRow[]
-      newCurrentSort: ICurrentSort | null
-    } = onSortTableFull(
-      key,
-      currentRowsForSort,
-      currentSort,
-      arrayOfStringHeadings
-    )
-
-    this.setState({
-      [rowsForSortText]: newData,
-      [tableForSort]: newCurrentSort,
-    })
-  }
-
-  onChangeColor = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    })
-  }
-
   updateState = (obj: object) => {
     this.setState(obj)
   }
@@ -439,12 +420,26 @@ class Rebalance extends React.Component<IProps, IState> {
       data.action === 'close' ||
       data.action === 'skip' ||
       data.status === 'finished'
-    )
+    ) {
       this.props.hideToolTip('Rebalance')
+    }
     if (data.status === 'finished') {
       const oldKey = this.state.key
       this.setState({ key: oldKey + 1 })
     }
+  }
+
+  showWarning = (message: string, isSystemError = false) => {
+    this.setState({ isSystemError, openWarning: true, warningMessage: message })
+  }
+
+  hideWarning = () => {
+    this.setState({ openWarning: false })
+  }
+
+  openLink = (link: string = '') => {
+    this.hideWarning()
+    window.open(link, 'CCAI Feedback')
   }
 
   render() {
@@ -457,8 +452,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const {
       selectedActive,
       areAllActiveChecked,
-      currentSortForStatic,
-      currentSortForDynamic,
       totalStaticRows,
       totalRows,
       isEditModeEnabled,
@@ -472,6 +465,10 @@ class Rebalance extends React.Component<IProps, IState> {
       leftBar,
       rightBar,
       loading,
+      staticRowsMap,
+      openWarning,
+      isSystemError,
+      warningMessage,
     } = this.state
 
     const { onSaveClick, onEditModeEnable, onReset, updateState } = this
@@ -480,12 +477,11 @@ class Rebalance extends React.Component<IProps, IState> {
     const red = palette.red.main
     const green = palette.green.main
     const textColor: string = palette.getContrastText(palette.background.paper)
-    const fontFamily: string = theme.typography.fontFamily
+    const fontFamily = theme.typography.fontFamily
     const saveButtonColor =
       isPercentSumGood && +undistributedMoney >= 0 ? green : red
 
     const tableDataHasData = !staticRows.length || !rows.length
-
 
     return (
       <EmptyTablePlaceholder isEmpty={tableDataHasData}>
@@ -519,9 +515,9 @@ class Rebalance extends React.Component<IProps, IState> {
                 {...{
                   isEditModeEnabled,
                   staticRows,
+                  staticRowsMap,
                   totalStaticRows,
                   rows,
-                  currentSortForDynamic,
                   selectedActive,
                   areAllActiveChecked,
                   totalRows,
@@ -535,7 +531,6 @@ class Rebalance extends React.Component<IProps, IState> {
                   loading,
                   textColor,
                 }}
-                onSortTable={this.onSortTable}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}
                 onEditModeEnable={this.onEditModeEnable}
@@ -588,6 +583,7 @@ class Rebalance extends React.Component<IProps, IState> {
                       staticRows[0] &&
                       staticRows[0].portfolioPerc && (
                         <BarChart
+                          theme={theme}
                           height={350}
                           hideDashForToolTip={true}
                           xAxisVertical={true}
@@ -595,12 +591,12 @@ class Rebalance extends React.Component<IProps, IState> {
                           charts={[
                             {
                               data: combineToBarChart(staticRows),
-                              color: this.state.leftBar,
+                              color: leftBar,
                               title: 'Current',
                             },
                             {
                               data: combineToBarChart(rows),
-                              color: this.state.rightBar,
+                              color: rightBar,
                               title: 'Rebalanced',
                             },
                           ]}
@@ -610,6 +606,35 @@ class Rebalance extends React.Component<IProps, IState> {
                 </InnerChartContainer>
               </ChartContainer>
             </ChartWrapper>
+            <Dialog
+              fullScreen={false}
+              open={openWarning}
+              aria-labelledby="responsive-dialog-title"
+            >
+              <DialogTitle id="responsive-dialog-title">
+                {warningMessage}
+              </DialogTitle>
+              <DialogActions>
+                <Button
+                  onClick={this.hideWarning}
+                  color="secondary"
+                  autoFocus={true}
+                >
+                  ok
+                </Button>
+                {isSystemError && (
+                  <Button
+                    onClick={() => {
+                      this.openLink(config.bugLink)
+                    }}
+                    size="small"
+                    style={{ margin: '0.5rem 1rem' }}
+                  >
+                    Report bug
+                  </Button>
+                )}
+              </DialogActions>
+            </Dialog>
           </Content>
         </PTWrapper>
       </EmptyTablePlaceholder>

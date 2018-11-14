@@ -4,14 +4,17 @@ import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
 import { Button as ButtonMUI, Typography, Card } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
+import Tooltip from '@material-ui/core/Tooltip'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
-import BarChart from '@components/BarChart/BarChart'
+import { BarChart } from '@storybook-components'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
 import moment from 'moment'
+
+import { systemError } from '@utils/errorsConfig'
 import { RebalancePeriod } from './dataForSelector'
 import ReactSelectComponent from '@components/ReactSelectComponent'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
@@ -107,7 +110,6 @@ export default class Import extends PureComponent<IProps> {
     console.log('myOb for queryj', myObj)
 
     let backendResult
-    const systemError = `System Error: An error has occurred internally.  Please report this by clicking "Report Bug"`
 
     try {
       backendResult = await client.query({
@@ -119,7 +121,7 @@ export default class Import extends PureComponent<IProps> {
       })
     } catch (e) {
       showWarning(systemError, true)
-      // showWarning(`You got an error! 🙈`)
+      this.onReset()
       this.props.toggleLoading()
       console.log('ERROR IN AWAIT FUNC:', e)
       return
@@ -128,20 +130,53 @@ export default class Import extends PureComponent<IProps> {
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
+    console.log('backendResultParsed', backendResultParsed);
+
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
-      // showWarning('You got empty response! 🙈')
+      this.onReset()
       this.props.toggleLoading()
 
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.status === 1) {
-      const userErrorMessage = `User Error: ${backendResultParsed.error_message}`
+    if (backendResultParsed.error || backendResultParsed.error_message || backendResultParsed.status === 1) {
       const isUserError = backendResultParsed.error_message
+      //TODO: Should be another function
 
-      showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
+      if (isUserError && isUserError.length) {
+        const userErrorMessage = `User Error: ${
+          backendResultParsed.error_message.map((el: string) => `${el}`).join()}`
+
+        showWarning(userErrorMessage, false)
+
+        if (backendResultParsed.new_start) {
+          console.log('backendResultParsed.new_start', backendResultParsed.new_start);
+
+          this.setState({startDate: moment.unix(backendResultParsed.new_start)}, () => {console.log('this.state after update on user error', this.state)})
+          this.setDataFromResponse(backendResultParsed)
+        }
+        if (backendResultParsed.status === 0) {
+          console.log('status 0, set data');
+
+          this.setDataFromResponse(backendResultParsed)
+        }
+
+        if (backendResultParsed.status !== 0) {
+          console.log('status not 0, reset data');
+
+          this.onResetOnlyOptimizationData()
+        }
+
+        this.props.toggleLoading()
+        console.log('USER ERROR', backendResultParsed.error_message)
+
+        return
+      }
+
+      showWarning(systemError, true)
+      this.onReset()
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
 
@@ -151,13 +186,19 @@ export default class Import extends PureComponent<IProps> {
     this.props.toggleLoading()
     this.props.setActiveButtonToDefault()
 
+
+    this.setDataFromResponse(backendResultParsed)
+  }
+
+  setDataFromResponse = (backendResultParsed: object) => {
+    const { optimizedToState } = this.props
+    const { isRiskFreeAssetEnabled } = this.state
+
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData)
 
-    if (
-      storeData.length < optimizedData[activeButton].portfolio_coins_list.length
-    ) {
-      console.log('storeData.length < optimizedData')
+    if (isRiskFreeAssetEnabled) {
+      console.log('isRiskFreeAssetEnabled')
       this.addRow('USDT', 0)
     }
 
@@ -228,6 +269,7 @@ export default class Import extends PureComponent<IProps> {
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
+              theme={theme}
               height={340}
               showPlaceholder={formatedData.length === 0}
               charts={barChartData}
@@ -261,11 +303,24 @@ export default class Import extends PureComponent<IProps> {
     this.setState({ [name]: value })
   }
 
-  onResetClick = () => {
+  onReset = () => {
     const { optimizedToState } = this.props
 
     optimizedToState([])
     this.importPortfolio()
+  }
+
+  onResetOnlyOptimizationData = () => {
+    const { optimizedToState, updateData, storeData } = this.props
+
+    optimizedToState([])
+
+    updateData(
+      [...storeData].map((el) => ({
+        ...el,
+        optimizedPercentageArray: [],
+      }))
+    )
   }
 
   render() {
@@ -416,17 +471,23 @@ export default class Import extends PureComponent<IProps> {
                     show={this.props.rawOptimizedData.length > 1}
                     activeButton={activeButton}
                   />
-                  <ButtonMUI
-                    disabled={isEqual(initialPortfolio, storeData)}
-                    color="secondary"
-                    style={{
-                      alignSelf: 'center',
-                    }}
-                    variant="fab"
-                    onClick={this.onResetClick}
+                  <Tooltip
+                    title={`Reset to initial portfolio`}
+                    enterDelay={250}
+                    leaveDelay={200}
                   >
-                    <MdReplay />
-                  </ButtonMUI>
+                    <ButtonMUI
+                      disabled={isEqual(initialPortfolio, storeData)}
+                      color="secondary"
+                      style={{
+                        alignSelf: 'center',
+                      }}
+                      variant="fab"
+                      onClick={this.onReset}
+                    >
+                      <MdReplay />
+                    </ButtonMUI>
+                  </Tooltip>
                 </SwitchButtonsWrapper>
                 <Table
                   onPlusClick={this.addRow}
