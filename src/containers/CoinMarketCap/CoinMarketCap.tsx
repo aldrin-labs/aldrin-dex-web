@@ -121,7 +121,7 @@ export class CoinMarket extends React.Component<Props, State> {
         { id: 'Symbol', isNumber: false, label: 'Symbol'},
         { id: 'Price', isNumber: true, label: 'Price' },
         { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
-        { id: 'AvailableSupply', isNumber: true, label: 'Available Supply' },
+        { id: 'AvailableSupply', isNumber: false, label: 'Available Supply' },
       ],
       data: {
         body: (data.assetPagination.items).map((value, index) => ({
@@ -132,9 +132,14 @@ export class CoinMarket extends React.Component<Props, State> {
           Price: {
             contentToSort: value.priceUSD,
             render: addMainSymbol(formatNumberToUSFormat(value.priceUSD), true),
+            isNumber: true,
           },
-          MarketCap: value.maxSupply || 0,
-          AvailableSupply: value.availableSupply,
+          MarketCap: {
+            contentToSort: value.maxSupply || 0,
+            render: addMainSymbol(formatNumberToUSFormat(value.maxSupply || 0), true),
+            isNumber: true,
+          },
+          AvailableSupply: `${value.availableSupply} ${value.symbol}`,
         })),
       },
     }
