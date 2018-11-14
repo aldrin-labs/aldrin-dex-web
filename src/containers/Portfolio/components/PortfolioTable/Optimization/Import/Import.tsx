@@ -246,7 +246,7 @@ export default class Import extends PureComponent<IProps> {
     const formatedOptimizedData = rawOptimizedData.length
       ? storeData.map((el, i) => ({
           x: el.coin,
-          y: +(rawOptimizedData[activeButton].weights[i] * 100).toFixed(2),
+          y: el.optimizedPercentageArray && el.optimizedPercentageArray[activeButton] || 0,
         }))
       : []
 
