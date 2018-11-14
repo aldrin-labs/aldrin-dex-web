@@ -25,7 +25,7 @@ export const TableWrapper = styled(Card)`
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 8px;
+  margin-bottom: 9px;
 `
 
 export const DonutChatWrapper = styled(TableWrapper)`
