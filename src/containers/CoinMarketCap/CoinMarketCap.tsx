@@ -13,8 +13,7 @@ import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 import CardHeader from '@components/CardHeader'
 import {
   addMainSymbol,
-  roundAndFormatNumber,
-  numberOfDigitsAfterPoint,
+  formatNumberToUSFormat,
 } from '@utils/PortfolioTableUtils'
 
 import {
@@ -132,7 +131,7 @@ export class CoinMarket extends React.Component<Props, State> {
           Symbol: value.symbol,
           Price: {
             contentToSort: value.priceUSD,
-            render: addMainSymbol(roundAndFormatNumber(value.priceUSD), true),
+            render: addMainSymbol(formatNumberToUSFormat(value.priceUSD), true),
           },
           MarketCap: value.maxSupply || 0,
           AvailableSupply: value.availableSupply,
