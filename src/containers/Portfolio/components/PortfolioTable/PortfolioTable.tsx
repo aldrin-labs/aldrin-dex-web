@@ -15,8 +15,7 @@ import Optimization from './Optimization/Optimization'
 import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
 import { Loading } from '@components/index'
 import { Mutation } from 'react-apollo'
-import gql from 'graphql-tag'
-import { TOGGLE_BASE_COIN } from 'src/mutations/toggleBaseCoin'
+import { TOGGLE_BASE_COIN } from '../../../../mutations/portfolio/toggleBaseCoin'
 
 export class PortfolioTable extends Component<ITableProps, IState> {
   state: IState = {
