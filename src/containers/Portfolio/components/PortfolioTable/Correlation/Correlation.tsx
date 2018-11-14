@@ -18,6 +18,7 @@ import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
+import { MASTER_BUILD } from '@utils/config'
 
 const Correlation = (props: IProps) => {
   const {
@@ -103,7 +104,7 @@ const CorrelationWrapper = (props: IProps) => {
           },
         }}
       />
-      {isShownMocks ? (
+      {isShownMocks && !MASTER_BUILD ? (
         <Correlation
           data={{
             myPortfolios: [
