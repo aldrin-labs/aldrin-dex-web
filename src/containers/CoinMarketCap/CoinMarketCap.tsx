@@ -10,7 +10,12 @@ import { queryRendererHoc } from '@components/QueryRenderer'
 // import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
  import { CoinMarketCapQuery } from './api'
-import CardHeader from '@components/CardHeader';
+import CardHeader from '@components/CardHeader'
+import {
+  addMainSymbol,
+  roundAndFormatNumber,
+  numberOfDigitsAfterPoint,
+} from '@utils/PortfolioTableUtils'
 
 import {
   Container,
@@ -125,7 +130,10 @@ export class CoinMarket extends React.Component<Props, State> {
           Number: index + 1,
           Name: value.name,
           Symbol: value.symbol,
-          Price: value.priceUSD,
+          Price: {
+            contentToSort: value.priceUSD,
+            render: addMainSymbol(roundAndFormatNumber(value.priceUSD), true),
+          },
           MarketCap: value.maxSupply || 0,
           AvailableSupply: value.availableSupply,
         })),
