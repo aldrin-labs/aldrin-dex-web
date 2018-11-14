@@ -37,6 +37,8 @@ interface Props {
 
 interface State {
   activeSortArg: number | null
+  page: number
+  rowsPerPage: number
 }
 
 export const rates = [
@@ -53,6 +55,19 @@ export const rates = [
 export class CoinMarket extends React.Component<Props, State> {
   state: State = {
     activeSortArg: null,
+    page: 0,
+    rowsPerPage: 20,
+  }
+
+  handleChangePage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    page: number
+  ) => {
+    this.setState({ page })
+  }
+
+  handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ rowsPerPage: event.target.value })
   }
 
   redirectToProfile = (_id: string) => {
@@ -161,13 +176,14 @@ export class CoinMarket extends React.Component<Props, State> {
                   title="Title"
                   columnNames={dataForTable.head}
                   data={dataForTable.data}
-                  actionsColSpan={1}
+                  padding="default"
+                  pagination={{
+                    page: this.state.page,
+                    rowsPerPage: this.state.rowsPerPage,
+                    handleChangeRowsPerPage: this.handleChangeRowsPerPage,
+                    handleChangePage: this.handleChangePage,
+                  }}
               />
-              <Pagination>
-              <Button title="Previous" onClick={this.decrementPage}> Previous </Button>
-              <Button title="View all coins"> View all coins </Button>
-              <Button title="Next" onClick={this.incrementPage}> Next </Button>
-              </Pagination>
             </TableWrapper>
           </TableContainer>
           <TableContainer item={true} xs={12} md={5}>
@@ -205,11 +221,11 @@ const options = ({ location }) => {
     const query = new URLSearchParams(location.search)
     page = query.get('page')
   }
-  return { perPage: 20, page }
+  return { perPage: 1000, page }
 }
 
 
-export const MyCoinMarket =   queryRendererHoc({
+export const MyCoinMarket = queryRendererHoc({
   query: CoinMarketCapQuery,
   pollInterval: 5000,
   fetchPolicy: 'network-only',
