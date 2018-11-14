@@ -236,6 +236,7 @@ class Optimization extends Component<IProps, IState> {
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
               <LineChart
+                theme={theme}
                 additionalInfoInPopup={true}
                 alwaysShowLegend={showAllLineChartData}
                 data={lineChartData === 0 ? undefined : showAllLineChartData ? lineChartData : [lineChartData]}
@@ -318,6 +319,9 @@ class Optimization extends Component<IProps, IState> {
                 <Loading size={94} margin={'0 0 2rem 0'} />{' '}
                 <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
+                </TypographyWithCustomColor>
+                <TypographyWithCustomColor style={{marginTop: '2rem'}} color={textColor} variant="h6">
+                  We are working on improving the speed of this model
                 </TypographyWithCustomColor>
               </LoaderInnerWrapper>
             </LoaderWrapper>

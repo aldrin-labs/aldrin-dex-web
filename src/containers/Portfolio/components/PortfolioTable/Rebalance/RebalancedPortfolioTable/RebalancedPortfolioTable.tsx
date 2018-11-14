@@ -393,11 +393,12 @@ export default class RebalancedPortfolioTable extends React.Component<
         ...(staticRowsMap.has(row._id)
           ? {
               oririnalPortfolioPerc: {
+                contentToSort: +staticRowsMap.get(row._id).portfolioPerc,
                 render: `${staticRowsMap.get(row._id).portfolioPerc}%`,
                 isNumber: true,
               },
               oritinalPrice: {
-                contentToSort: staticRowsMap.get(row._id).price,
+                contentToSort: +staticRowsMap.get(row._id).price,
                 render: addMainSymbol(
                   staticRowsMap.get(row._id).price,
                   isUSDCurrently
@@ -412,10 +413,10 @@ export default class RebalancedPortfolioTable extends React.Component<
         portfolioPerc: {
           render: portfolioPercentage,
           isNumber: true,
-          contentToSort: row.portfolioPerc,
+          contentToSort: row.portfolioPerc === null ? 0 : +row.portfolioPerc,
         },
         price: {
-          contentToSort: row.price,
+          contentToSort: +row.price,
           render: addMainSymbol(
             formatNumberToUSFormat(row.price),
             isUSDCurrently
@@ -552,7 +553,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             currentUSD: ' ',
             rebalanced: { render: `${totalPercents}%`, isNumber: true },
             rebalancedUSD: {
-              contentToSort: totalTableRows,
+              contentToSort: +totalTableRows,
               render: addMainSymbol(
                 formatNumberToUSFormat(totalTableRows),
                 isUSDCurrently
@@ -569,7 +570,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             coin: ' ',
             current: ' ',
             currentUSD: {
-              contentToSort: totalStaticRows,
+              contentToSort: +totalStaticRows,
               render: addMainSymbol(
                 formatNumberToUSFormat(totalStaticRows),
                 isUSDCurrently
@@ -578,7 +579,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             },
             rebalanced: ' ',
             rebalancedUSD: {
-              contentToSort: totalRows,
+              contentToSort: +totalRows,
               render: addMainSymbol(
                 formatNumberToUSFormat(totalRows),
                 isUSDCurrently

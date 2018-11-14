@@ -104,7 +104,7 @@ export default class Import extends PureComponent<IProps> {
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
       startDate: startDate.unix(),
-      endDate: endDate.unix(),
+      endDate: endDate.unix() - (endDate.unix() % 43200),
     }
 
     console.log('myOb for queryj', myObj)
@@ -130,6 +130,8 @@ export default class Import extends PureComponent<IProps> {
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
+    console.log('backendResultParsed', backendResultParsed);
+
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
@@ -139,30 +141,36 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.status === 1) {
+    if (backendResultParsed.error || backendResultParsed.error_message.length || backendResultParsed.status === 1) {
       const isUserError = backendResultParsed.error_message
       //TODO: Should be another function
 
-      if (isUserError.length) {
-        const userErrorMessage = `User Error: \n ${
-          backendResultParsed.error_message.map((el: string) => `${el} \n`).join()}`
+      if (isUserError && isUserError.length) {
+        const userErrorMessage = `User Error: ${
+          backendResultParsed.error_message.map((el: string) => `${el}`).join()}`
 
         showWarning(userErrorMessage, false)
 
-        if (backendResultParsed.new_start_date) {
-          this.setState({startDate: backendResultParsed.new_start_date})
+        if (backendResultParsed.new_start) {
+          console.log('backendResultParsed.new_start', backendResultParsed.new_start);
+
+          this.setState({startDate: moment.unix(backendResultParsed.new_start)}, () => {console.log('this.state after update on user error', this.state)})
           this.setDataFromResponse(backendResultParsed)
         }
-        if (backendResultParsed.status === 4) {
+        if (backendResultParsed.status === 0) {
+          console.log('status 0, set data');
+
           this.setDataFromResponse(backendResultParsed)
         }
 
-        if (backendResultParsed.status !== 4) {
+        if (backendResultParsed.status !== 0) {
+          console.log('status not 0, reset data');
+
           this.onResetOnlyOptimizationData()
         }
 
         this.props.toggleLoading()
-        console.log('USER ERROR', backendResultParsed.error)
+        console.log('USER ERROR', backendResultParsed.error_message)
 
         return
       }
@@ -261,6 +269,7 @@ export default class Import extends PureComponent<IProps> {
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
+              theme={theme}
               height={340}
               showPlaceholder={formatedData.length === 0}
               charts={barChartData}

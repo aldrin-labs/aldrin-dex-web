@@ -9,6 +9,7 @@ const initialState = {
   portfolio: {
     drawer: false,
   },
+  showPrivacyPolicy: false,
 }
 
 export default createReducer(
@@ -16,6 +17,10 @@ export default createReducer(
     [actions.changeThemeMode]: (state, payload) => ({
       ...state,
       theme: state.theme === 'dark' ? 'light' : 'dark',
+    }),
+    [actions.togglePrivacyPolicy]: (state, payload) => ({
+      ...state,
+      showPrivacyPolicy: !state.showPrivacyPolicy,
     }),
   },
   initialState

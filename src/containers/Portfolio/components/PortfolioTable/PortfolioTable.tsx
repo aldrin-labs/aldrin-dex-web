@@ -1,15 +1,24 @@
-import * as React from 'react'
+import React, { Component, lazy, Suspense } from 'react'
 
 import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
 import { ITableProps } from '@containers/Portfolio/interfaces'
-import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
-import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
-import PortfolioTableIndustries from './Industry/PortfolioTableIndustries'
-import Rebalance from './Rebalance/Rebalance'
-import Optimization from './Optimization/Optimization'
-import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
+const PortfolioTableBalances = React.lazy(() =>
+  import('./Main/PortfolioTableBalancesContainer')
+)
+const PortfolioTableIndustries = React.lazy(() =>
+  import('./Industry/PortfolioTableIndustries')
+)
+const Rebalance = React.lazy(() => import('./Rebalance/Rebalance'))
+const Optimization = React.lazy(() => import('./Optimization/Optimization'))
+const Correlation = React.lazy(() =>
+  import('@containers/Portfolio/components/PortfolioTable/Correlation/Correlation')
+)
 
-export class PortfolioTable extends React.Component<ITableProps, IState> {
+import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
+
+import { Loading } from '@components/index'
+
+export class PortfolioTable extends Component<ITableProps, IState> {
   state: IState = {
     tableData: null,
     isShownChart: true,
@@ -117,10 +126,10 @@ export class PortfolioTable extends React.Component<ITableProps, IState> {
           onToggleChart={this.onToggleChart}
           onToggleUSDBTC={this.onToggleUSDBTC}
         />
-        {showTable && this.renderTab()}
+        <Suspense fallback={<Loading centerAligned />}>
+          {showTable && this.renderTab()}
+        </Suspense>
       </>
     )
-
-    return null
   }
 }

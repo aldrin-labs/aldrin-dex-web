@@ -82,5 +82,6 @@ export default withErrorFallback(
   queryRendererHoc({
     placeholder: TablePlaceholderLoader,
     query: MyTradesQuery,
+    fetchPolicy: 'network-only',
   })(TradeOrderHistoryTable)
 )

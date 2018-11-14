@@ -1,10 +1,19 @@
-const apiLocalhostFallback = 'develop.api.cryptocurrencies.ai'
-const apiChartLocalhostFallback = 'develop.chart.cryptocurrencies.ai'
+// change return here to just URL to fallback to
+// main apiURL even on localhost
+// should be convinent when develop.api is down
+const addDevelopToURL = (URL: string) => `develop.${URL}`
+const chooseURL = (isMaster: boolean, URL: string) =>
+  isMaster ? URL : addDevelopToURL(URL)
 
-export const API_URL =
-  // from netlify.toml or localhostfallback
-  process.env.API_ENDPOINT || apiLocalhostFallback
-export const CHARTS_API_URL =
-  process.env.CHARTS_API_ENDPOINT || apiChartLocalhostFallback
-// asume that it is master build and not develop one
-export const MASTER_BUILD = process.env.NODE_BUILD === 'master'
+// change default api here
+const apiURL = 'api.cryptocurrencies.ai'
+const chartURL = 'chart.cryptocurrencies.ai'
+
+// configuring master build at netlify.toml it should be
+//  undefined as default and "true" at master builds
+export const MASTER_BUILD = process.env.MASTER_BUILD
+export const API_URL = chooseURL(Boolean(process.env.MASTER_BUILD), apiURL)
+export const CHARTS_API_URL = chooseURL(
+  Boolean(process.env.MASTER_BUILD),
+  chartURL
+)

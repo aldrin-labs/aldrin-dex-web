@@ -8,14 +8,4 @@
 # repository branch will inherit these settings.
 [context.production]
   command = "yarn buildMaster"
-  [context.production.environment]
-    API_ENDPOINT = "api.cryptocurrencies.ai"
-    CHARTS_API_ENDPOINT = "chart.cryptocurrencies.ai"
-    NODE_BUILD = "master"
 
-#branch-deploy - develop in our case
-[context.branch-deploy]
-  command = "yarn build"
-  [context.branch-deploy.environment]
-    API_ENDPOINT = "develop.api.cryptocurrencies.ai"
-    CHARTS_API_ENDPOINT = "develop.chart.cryptocurrencies.ai"

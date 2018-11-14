@@ -13,6 +13,7 @@ import * as API from '@containers/Login/api'
 import { LoginMenu } from '@containers/Login/components'
 import MainLogo from '@icons/AuthLogo.png'
 import { Grow, Slide } from '@material-ui/core'
+import { MASTER_BUILD } from '@utils/config'
 
 const auth0Options = {
   auth: {
@@ -65,6 +66,18 @@ class LoginQuery extends React.Component<Props, State> {
     this.checkToken()
     this.props.listenersWillOn()
     this.setLockListeners()
+    if (this.props.loginStatus) this.addFSIdentify(this.props.user)
+  }
+
+   addFSIdentify(profile) {
+    console.log('addFSIdentify')
+    console.log('userId', profile.email)
+    if (MASTER_BUILD) {
+      FS.identify(profile.email, {
+        displayName: profile.email,
+        email: profile.email,
+      })
+    }
   }
 
   setLockListeners = () => {
@@ -79,6 +92,7 @@ class LoginQuery extends React.Component<Props, State> {
           this.props.storeLogin(profile)
           this.setToken(authResult.idToken)
           this.createUserReq(profile)
+          this.addFSIdentify(profile)
         }
       )
     })
