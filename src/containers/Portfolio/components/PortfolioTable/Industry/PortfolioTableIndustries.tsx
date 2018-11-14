@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core'
 import Joyride from 'react-joyride'
 import { connect } from 'react-redux'
 
-import { TableWithSort as Table, DonutChart } from '@storybook-components'
+import { TableWithSort as Table, DonutChart } from '@storybook-components/index'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import {
   combineIndustryData,
@@ -147,6 +147,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <Grid item={true} xs={12} md={8}>
               <Wrapper>
                 <Table
+                  actionsColSpan={3}
                   expandableRows={true}
                   onChange={this.expandRow}
                   onSelectAllClick={this.onSelectAllClick}
