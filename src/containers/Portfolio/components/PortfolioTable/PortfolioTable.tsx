@@ -23,7 +23,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
     tableData: null,
     isShownChart: true,
     isUSDCurrently: true,
-    tab: 'industry',
+    tab: 'main',
     baseCoin: 'USDT',
   }
 
