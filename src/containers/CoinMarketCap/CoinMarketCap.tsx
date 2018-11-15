@@ -24,7 +24,6 @@ import {
   ChartWrapper,
   DonutChatWrapper,
   CalculatorWrapper,
-  Pagination,
 } from './styles'
 
 import { data, chartCoins } from './mocks'
@@ -134,9 +133,18 @@ export class CoinMarket extends React.Component<Props, State> {
         { id: 'Number', isNumber: true, label: '№' },
         { id: 'Name', isNumber: false, label: 'Name' },
         { id: 'Symbol', isNumber: false, label: 'Symbol'},
-        { id: 'Price', isNumber: true, label: 'Price' },
+        { id: 'PriceUSD', isNumber: true, label: 'Price USD' },
+        { id: 'PriceBTC', isNumber: true, label: 'Price BTC' },
         { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
-        { id: 'AvailableSupply', isNumber: false, label: 'Available Supply' },
+        { id: 'AvailableSupply', isNumber: true, label: 'Available Supply' },
+        { id: 'Volume24h', isNumber: true, label: 'Volume 24 hr' },
+        { id: 'cg1hUSD', isNumber: true, label: '%1hr USD' },
+        { id: 'cg1hBTC', isNumber: true, label: '%1hr BTC' },
+        { id: 'cg24hUSD', isNumber: true, label: '%24hr USD' },
+        { id: 'cg24hBTC', isNumber: true, label: '%24hr BTC' },
+        { id: 'cg7dUSD', isNumber: true, label: '%7days USD' },
+        { id: 'cg7dBTC', isNumber: true, label: '%7days BTC' },
+        { id: 'cgATH', isNumber: true, label: '% chg ATH' },
       ],
       data: {
         body: (data.assetPagination.items).map((value, index) => ({
@@ -144,9 +152,14 @@ export class CoinMarket extends React.Component<Props, State> {
           Number: index + 1,
           Name: value.name,
           Symbol: value.symbol,
-          Price: {
+          PriceUSD: {
             contentToSort: value.priceUSD,
             render: addMainSymbol(formatNumberToUSFormat(value.priceUSD), true),
+            isNumber: true,
+          },
+          PriceBTC: {
+            contentToSort: value.priceUSD,
+            render: addMainSymbol(formatNumberToUSFormat(0), true),
             isNumber: true,
           },
           MarketCap: {
@@ -154,7 +167,19 @@ export class CoinMarket extends React.Component<Props, State> {
             render: addMainSymbol(formatNumberToUSFormat(value.maxSupply || 0), true),
             isNumber: true,
           },
-          AvailableSupply: `${value.availableSupply} ${value.symbol}`,
+          AvailableSupply: {
+            contentToSort: value.availableSupply,
+            render: formatNumberToUSFormat(value.availableSupply),
+            isNumber: true,
+          },
+          Volume24h: 0,
+          cg1hUSD: 0,
+          cg1hBTC: 0,
+          cg24hUSD: 0,
+          cg24hBTC: 0,
+          cg7dUSD: 0,
+          cg7dBTC: 0,
+          cgATH: 0,
         })),
       },
     }
@@ -170,7 +195,7 @@ export class CoinMarket extends React.Component<Props, State> {
     return (
       <Container>
         <GridContainer container={true} spacing={16}>
-          <TableContainer item={true} xs={12} md={7}>
+          <TableContainer item={true} xs={12} md={9}>
             <TableWrapper className="PortfolioMainTable">
               <TableWithSort
                   title="Title"
@@ -186,7 +211,7 @@ export class CoinMarket extends React.Component<Props, State> {
               />
             </TableWrapper>
           </TableContainer>
-          <TableContainer item={true} xs={12} md={5}>
+          <TableContainer item={true} xs={12} md={3}>
             <TableWrapper className="PortfolioTradeOrderHistoryTable">
               <CardHeader title="Calculator" />
               <CalculatorWrapper>

@@ -16,7 +16,6 @@ export const Container = styled.div`
   flex-direction: column;
   height: calc(100vh - ${navBarHeight}px);
   z-index: 0;
-  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
 `
@@ -34,7 +33,7 @@ export const DonutChatWrapper = styled(TableWrapper)`
 
 export const TableContainer = styled(Grid)`
   && {
-    height: 100%;
+    max-height: 100%;
   }
 `
 
@@ -54,9 +53,4 @@ export const CalculatorWrapper = styled.div`
   margin-left: auto;
   margin-right: auto;
 `
-export const Pagination = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 16px;
-`
+
