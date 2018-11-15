@@ -63,5 +63,5 @@ export const updateOrderBookQuerryFunction = (prev, { subscriptionData }) => {
 
   const newOrder = JSON.parse(subscriptionData.data.listenMarketOrders)
 
-  return newOrder
+  return { marketOrders: [newOrder] }
 }
