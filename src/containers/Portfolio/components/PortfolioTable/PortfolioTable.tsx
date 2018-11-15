@@ -8,11 +8,14 @@ const PortfolioTableBalances = React.lazy(() =>
 const PortfolioTableIndustries = React.lazy(() =>
   import('./Industry/PortfolioTableIndustries')
 )
+const Rebalance = React.lazy(() => import('./Rebalance/Rebalance'))
+const Optimization = React.lazy(() => import('./Optimization/Optimization'))
+const Correlation = React.lazy(() =>
+  import('@containers/Portfolio/components/PortfolioTable/Correlation/Correlation')
+)
 
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
-import Rebalance from './Rebalance/Rebalance'
-import Optimization from './Optimization/Optimization'
-import Correlation from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation'
+
 import { Loading } from '@components/index'
 import { Mutation } from 'react-apollo'
 import { TOGGLE_BASE_COIN } from '../../../../mutations/portfolio/toggleBaseCoin'
