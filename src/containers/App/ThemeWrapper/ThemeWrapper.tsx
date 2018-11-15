@@ -3,38 +3,51 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 import { blueGrey, cyan, green, red } from '@material-ui/core/colors'
 
 import { Props } from './ThemeWrapper.types'
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 export default class ThemeWrapper extends Component<Props> {
   render() {
     const { themeMode } = this.props
+
+    const divider = '#707070'
     const theme = createMuiTheme({
+      typography: {
+        useNextVariants: true,
+      },
+      overrides: {
+        MuiCard: {
+          // Name of the component ⚛️ / style sheet
+          root: {
+            // Name of the rule
+            border: `1px solid ${fade(divider, 0.26)}`, // Some CSS
+          },
+        },
+      },
       palette: {
+        divider,
         type: themeMode,
+        text: { primary: '#DBD9E6' },
         red: {
-          light: red[200],
-          main: red[400],
-          dark: red.A700,
+          main: '#48DCC6',
         },
         green: {
-          light: green[300],
-          main: green['500'],
-          dark: green.A700,
+          main: '#FE425A',
         },
-        primary: blueGrey,
+        primary: {
+          main: '#303037',
+          dark: '#1F1F24',
+          light: '#27272D',
+        },
         secondary: {
-          ...cyan,
-          main: '#4ed8da',
+          main: '#48DCC6',
         },
         action: {
           selected: 'rgba(255, 255, 255, 0.05)',
         },
         background: {
-          default: themeMode === 'light' ? '#fafafa' : '#303030',
-          paper: themeMode === 'light' ? '#fff' : '#393e44',
+          default: themeMode === 'light' ? '#fafafa' : '#16161D',
+          paper: themeMode === 'light' ? '#fff' : '#16161D',
         },
-      },
-      typography: {
-        useNextVariants: true,
       },
     })
     if (window) window.theme = theme

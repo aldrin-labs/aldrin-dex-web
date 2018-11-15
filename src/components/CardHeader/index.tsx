@@ -5,12 +5,12 @@ import { CardHeaderProps } from '@material-ui/core/CardHeader'
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      padding: '1px 14px 1px 6px',
+      height: theme.spacing.unit * 8.5,
+      padding: theme.spacing.unit * 2.875,
       width: '100%',
-      height: theme.spacing.unit * 4,
       backgroundColor:
         theme.palette.type === 'dark'
-          ? theme.palette.grey[900]
+          ? theme.palette.primary.main
           : theme.palette.primary.dark,
     },
     action: {
@@ -22,7 +22,7 @@ const styles = (theme: Theme) =>
 
 const Header = (props: CardHeaderProps) => (
   <CardHeader
-    titleTypographyProps={{ variant: 'button', color: 'secondary' }}
+    titleTypographyProps={{ variant: 'body1', color: 'default' }}
     classes={{
       root: props && props.classes && props.classes.root,
       action: props && props.classes && props.classes.action,
