@@ -66,6 +66,10 @@ const defaultState = {
     __typename: 'portfolioMain',
     activeChart: '1Y',
   },
+  portfolioMainCoins: {
+    __typename: 'portfolioMainCoins',
+    coins: [],
+  },
 }
 
 const stateLink = withClientState({
@@ -74,7 +78,7 @@ const stateLink = withClientState({
   resolvers: {
     Mutation: {
       updatePortfolioMain: (_, args, source) => {
-        const { index, value } = args
+        const { value } = args
         const { cache } = source
         const query = gql`
           query portfolioMain {
@@ -107,6 +111,24 @@ const stateLink = withClientState({
           data: {
             portfolio: {
               baseCoin,
+              __typename: previous.portfolio.__typename,
+            },
+          },
+        })
+
+        return null
+      },
+      updateCoins: (_: undefined, args: any, source: any) => {
+        const { value } = args
+        const { cache } = source
+        const query = GET_BASE_COIN
+
+        const previous = cache.readQuery({ query })
+
+        cache.writeData({
+          data: {
+            portfolioMainCoins: {
+              coins: value,
               __typename: previous.portfolio.__typename,
             },
           },

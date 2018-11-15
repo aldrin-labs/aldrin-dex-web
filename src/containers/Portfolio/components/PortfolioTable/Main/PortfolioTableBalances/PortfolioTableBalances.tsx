@@ -8,7 +8,6 @@ import {
   IProps,
   IState,
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
-import { TableWithSort } from '@storybook-components'
 import {
   TableWrapper,
   ChartWrapper,
@@ -22,7 +21,6 @@ const TradeOrderHistoryTable = lazy(() =>
   import('@components/TradeOrderHistory/TradeOrderHistoryTable')
 )
 import CardHeader from '@components/CardHeader'
-import { find } from 'lodash-es'
 import { withErrorFallback } from '@hoc/'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
@@ -61,12 +59,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
     const { body, head, footer } = putDataInTable()
 
-    // const coins =
-    //   checkedRows && checkedRows.length > 0
-    //     ? checkedRows.map((id: number) =>
-    //         find(tableData, (row) => row.id === id)
-    //       )
-    //     : []
     const coins = []
 
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
@@ -116,14 +108,12 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               />
               <Suspense fallback={<Loading centerAligned />}>
                 <Chart
-                  isShownMocks={this.props.isShownMocks}
                   style={{
                     marginLeft: 0,
                     minHeight: '10vh',
                   }}
                   height="20vh"
                   marginTopHr="10px"
-                  coins={coins}
                 />
               </Suspense>
             </ChartWrapper>

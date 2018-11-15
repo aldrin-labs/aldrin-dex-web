@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { zip, isObject } from 'lodash-es'
+import { zip, isObject, find } from 'lodash-es'
 import { Theme } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
+import { ApolloConsumer, Mutation } from 'react-apollo'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
@@ -18,6 +19,7 @@ import {
 } from '@utils/PortfolioTableUtils'
 import { Query } from 'react-apollo'
 import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
+import gql from 'graphql-tag'
 const chooseRed = (theme: Theme) =>
   theme.palette.type === 'dark'
     ? theme.palette.red.main
@@ -282,12 +284,34 @@ class Container extends Component {
     this.setState({ checkedRows: onCheckBoxClick(this.state.checkedRows, id) })
 
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
+    console.log(1)
+
     if ((e && e.target && e.target.checked) || selectAll) {
-      this.setState((state) => ({
-        checkedRows: state.tableData
-          ? state.tableData.map((row: any, i: number) => row.id)
-          : [],
-      }))
+      this.setState(
+        (state) => ({
+          checkedRows: state.tableData
+            ? state.tableData.map((row: any, i: number) => row.id)
+            : [],
+        }),
+        () => {
+          const data = {
+            data: {
+              portfolioMainCoins: {
+                __typename: 'portfolioMainCoins',
+                coins: this.state.checkedRows.map((id: number) => ({
+                  __typename: id,
+                  ...find(this.state.tableData, (row) => {
+                    return row.id === id
+                  }),
+                })),
+              },
+            },
+          }
+          console.log(data)
+          this.props.client.writeData(data)
+        }
+      )
+
       return
     }
     this.setState({ checkedRows: [] })
@@ -314,24 +338,30 @@ class Container extends Component {
 
 // change to renderProps
 const APIWrapper = (props: any) => (
-  <Query query={GET_BASE_COIN}>
-    {({
-      data: {
-        portfolio: { baseCoin },
-      },
-    }) => (
-      <QueryRenderer
-        {...props}
-        component={Container}
-        query={getPortfolioMainQuery}
-        variables={{ baseCoin }}
-        baseCoin={baseCoin}
-        isUSDCurrently={baseCoin === 'USDT'}
-        // pollInterval={1 * 1 * 1000}
-        fetchPolicy="network-only"
-      />
+  <Mutation mutation={}>
+    {(updateCoins) => (
+      <Query query={GET_BASE_COIN}>
+        {({
+          data: {
+            portfolio: { baseCoin },
+          },
+        }) => (
+          <QueryRenderer
+            {...props}
+            component={Container}
+            query={getPortfolioMainQuery}
+            variables={{ baseCoin }}
+            baseCoin={baseCoin}
+            isUSDCurrently={baseCoin === 'USDT'}
+            // pollInterval={1 * 1 * 1000}
+            fetchPolicy="network-only"
+          />
+        )}
+      </Query>
     )}
-  </Query>
+  </Mutation>
 )
+
+const UPDATE_COINS = gql``
 
 export default withTheme()(APIWrapper)

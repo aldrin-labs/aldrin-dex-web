@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
+import { graphql, compose, Query } from 'react-apollo'
 
 import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
@@ -33,6 +33,7 @@ class GQLChart extends React.Component {
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
       // PAY ATTENTION: Object mutation here
+      console.log(newProps.coins)
       newState.coins = newProps.coins.filter(Boolean).map((x) => x.coin)
       newState.assets = newProps.coins.filter(Boolean)
       newState.sum = newProps.coins
@@ -140,6 +141,21 @@ const portfolioMainState = gql`
     }
   }
 `
+const GET_COINS = gql`
+  query getCoins {
+    portfolioMainCoins @client {
+      coins
+    }
+  }
+`
+
+const withCoins = (props: any) => (
+  <Query query={GET_COINS}>
+    {({ data: { portfolioMainCoins = [] } }) => (
+      <GQLChart {...props} coins={portfolioMainCoins} />
+    )}
+  </Query>
+)
 
 export default compose(
   graphql(updatePortfolioMain, { name: 'updatePortfolioMain' }),
@@ -153,4 +169,4 @@ export default compose(
     }),
   }),
   withErrorFallback
-)(GQLChart)
+)(withCoins)
