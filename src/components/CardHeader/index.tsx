@@ -1,6 +1,7 @@
 import React from 'react'
 import { withStyles, CardHeader, createStyles, Theme } from '@material-ui/core'
 import { CardHeaderProps } from '@material-ui/core/CardHeader'
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -10,8 +11,8 @@ const styles = (theme: Theme) =>
       width: '100%',
       backgroundColor:
         theme.palette.type === 'dark'
-          ? theme.palette.primary.main
-          : theme.palette.primary.dark,
+          ? theme.palette.primary.light
+          : fade(theme.palette.primary.main, 0.5),
     },
     action: {
       display: 'flex',
