@@ -115,8 +115,8 @@ class OrderBookTableContainer extends Component<IProps, IState> {
 
       return {
         spread,
-        bids: maximumItemsInArray([...bids], 200, 10),
-        asks: maximumItemsInArray([...asks], 200, 10, true),
+        bids: maximumItemsInArray([...bids], 100, 10),
+        asks: maximumItemsInArray([...asks], 100, 10, true),
         i: iterator,
         digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
           asks,
@@ -180,7 +180,7 @@ class OrderBookTableContainer extends Component<IProps, IState> {
       digitsAfterDecimalForBidsPrice,
       digitsAfterDecimalForBidsSize,
     } = this.state
-
+//    console.log('order history lengh', bids.length, asks.length)
     return (
       <>
         {MASTER_BUILD && <ComingSoon />}

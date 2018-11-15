@@ -93,7 +93,7 @@ class TableContainer extends Component<IProps, IState> {
 
   render() {
     const { data, ...rest } = this.props
-
+//    console.log('data length', this.state.data.length)
     return (
       <TradeHistoryTable
         data={this.state.data}
