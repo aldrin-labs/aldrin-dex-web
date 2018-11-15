@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import Arrow from '@material-ui/icons/ChevronLeft'
+import Arrow from '@material-ui/icons/ChevronRight'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
 export const AccountsListItem = styled.li`
@@ -30,10 +30,10 @@ export const StyledIcon = styled(Arrow)`
   opacity: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '1' : '0'};
   font-size: 2rem;
-  right: 10.7rem;
+  right: -0.5rem;
 
   position: absolute;
-  bottom: 47%;
+  bottom: 40%;
   transition: opacity 0.2s linear;
 `
 

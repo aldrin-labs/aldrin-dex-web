@@ -1,8 +1,13 @@
 import React, { Component, MouseEvent } from 'react'
 import { Button } from '@material-ui/core'
 import config from '@utils/linkConfig'
+import styled from 'styled-components'
 
-export default class Feedback extends Component {
+type Props = {
+  borderColor: string
+}
+
+export default class Feedback extends Component<Props> {
   state = {
     anchorEl: null,
   }
@@ -21,29 +26,38 @@ export default class Feedback extends Component {
   }
 
   render() {
+    const { borderColor } = this.props
     return (
       <>
-        <Button
-          onClick={() => {
-            this.openLink(config.feedbackLink)
-          }}
-          color="secondary"
-          variant="contained"
-          size="small"
-          style={{ margin: '0.5rem 1rem' }}
-        >
-          Feedback
-        </Button>
-        <Button
-          onClick={() => {
-            this.openLink(config.bugLink)
-          }}
-          size="small"
-          style={{ margin: '0.5rem 1rem' }}
-        >
-          Report bug
-        </Button>
+        <Wrapper borderColor={borderColor}>
+          <Button
+            onClick={() => {
+              this.openLink(config.feedbackLink)
+            }}
+            color="secondary"
+            variant="text"
+            size="small"
+          >
+            Feedback
+          </Button>
+        </Wrapper>
+        <Wrapper borderColor={borderColor}>
+          <Button
+            onClick={() => {
+              this.openLink(config.bugLink)
+            }}
+            size="small"
+          >
+            Report bug
+          </Button>
+        </Wrapper>
       </>
     )
   }
 }
+
+export const Wrapper = styled.div`
+  padding: 0.5rem 1rem;
+  border: ${(props: { borderColor: string }) =>
+    `1px solid ${props.borderColor}`};
+`

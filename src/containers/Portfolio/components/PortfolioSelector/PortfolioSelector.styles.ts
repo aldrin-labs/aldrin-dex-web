@@ -28,7 +28,7 @@ export const AccountsWalletsBlock = styled.div`
   min-width: 200px;
   background-color: ${(props: { background: string }) => props.background};
   padding: 16px;
-  right: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
+  left: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? '0' : '-11.5rem'};
   cursor: ${({ isSideNavOpen }: { isSideNavOpen: boolean }) =>
     isSideNavOpen ? 'auto' : 'pointer'};

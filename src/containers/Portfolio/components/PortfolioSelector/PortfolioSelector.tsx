@@ -127,7 +127,7 @@ class PortfolioSelector extends React.Component<IProps> {
     return (
       <Slide
         in={isSideNavOpen}
-        direction="left"
+        direction="right"
         mountOnEnter={true}
         unmountOnExit={true}
       >

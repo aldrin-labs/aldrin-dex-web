@@ -28,10 +28,10 @@ export default class ThemeWrapper extends Component<Props> {
         type: themeMode,
         text: { primary: '#DBD9E6' },
         red: {
-          main: '#48DCC6',
+          main: '#FE425A',
         },
         green: {
-          main: '#FE425A',
+          main: '#48DCC6',
         },
         primary: {
           main: '#303037',
