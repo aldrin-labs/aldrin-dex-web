@@ -55,8 +55,6 @@ class SpreadTable extends Component<IProps> {
     } = this.props
     const { background, action, primary, type, green } = palette
 
-    console.log('spreadTable', data.length)
-
     return (
       <SpreadreadTableWrapper>
         <Head background={primary[type]} style={{ height: '1.625rem' }}>

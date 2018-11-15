@@ -180,7 +180,6 @@ class OrderBookTableContainer extends Component<IProps, IState> {
       digitsAfterDecimalForBidsPrice,
       digitsAfterDecimalForBidsSize,
     } = this.state
-//    console.log('order history lengh', bids.length, asks.length)
     return (
       <>
         {MASTER_BUILD && <ComingSoon />}
