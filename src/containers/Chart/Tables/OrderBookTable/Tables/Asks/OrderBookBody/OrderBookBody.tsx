@@ -65,7 +65,7 @@ class ClassBody extends Component<IProps> {
                     background={background.default}
                   >
                     <EmptyCell width={'10%'} />
-                    <Cell pose={i === index && 'attention'} width={'45%'}>
+                    <Cell pose={false} width={'45%'}>
                       <StyledTypography
                         textColor={red.main}
                         color="default"
@@ -78,7 +78,7 @@ class ClassBody extends Component<IProps> {
                         )}
                       </StyledTypography>
                     </Cell>
-                    <Cell pose={i === index && 'attention'} width={'45%'}>
+                    <Cell pose={false} width={'45%'}>
                       <StyledTypography
                         textColor={red.main}
                         color="default"

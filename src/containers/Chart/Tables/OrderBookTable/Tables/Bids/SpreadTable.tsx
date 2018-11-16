@@ -101,7 +101,7 @@ class SpreadTable extends Component<IProps> {
                   >
                     <EmptyCell width={'10%'} />
 
-                    <Cell pose={i === index && 'attention'} width={'45%'}>
+                    <Cell pose={false} width={'45%'}>
                       <StyledTypography
                         textColor={green.main}
                         color="default"
@@ -114,7 +114,7 @@ class SpreadTable extends Component<IProps> {
                         )}
                       </StyledTypography>
                     </Cell>
-                    <Cell pose={i === index && 'attention'} width={'45%'}>
+                    <Cell pose={false} width={'45%'}>
                       <StyledTypography
                         textColor={green.main}
                         color="default"
