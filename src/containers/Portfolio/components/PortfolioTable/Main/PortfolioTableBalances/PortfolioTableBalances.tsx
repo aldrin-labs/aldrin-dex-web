@@ -119,7 +119,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           <ChartContainer item={true} xs={12} md={12}>
             <ChartWrapper className="PortfolioValueChart">
               <CardHeader
-                style={{ position: 'absolute' }}
                 title={'Portfolio Value | Coming Soon | In development'}
               />
               <Suspense fallback={<Loading centerAligned />}>

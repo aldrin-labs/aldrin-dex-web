@@ -4,10 +4,10 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Settings from '@material-ui/icons/Settings'
 import Main from '@material-ui/icons/LineStyle'
-import Industry from '@material-ui/icons/PieChart'
+import Industry from '@material-ui/icons/DonutLarge'
 import Rebalance from '@material-ui/icons/SwapHoriz'
 import Correlation from '@material-ui/icons/ViewModule'
-import Optimization from '@material-ui/icons/InsertChartOutlined'
+import Optimization from '@material-ui/icons/Assessment'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
@@ -50,13 +50,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
     } = this.props
     const switchUSDBTC =
       tab === 'main' || tab === 'industry' || tab === 'optimization'
-    const background = type === 'dark' ? primary[900] : primary[100]
+    const background = type === 'dark' ? primary.light : primary[100]
 
     return (
       <Container background={background} elevation={0}>
         <Tooltip title="Main" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'main' ? 'secondary' : 'primary'}
+            color={tab === 'main' ? 'secondary' : 'default'}
             onClick={() => this.onChangeTab('main')}
           >
             <Main />
@@ -65,7 +65,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Industry" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'industry' ? 'secondary' : 'primary'}
+            color={tab === 'industry' ? 'secondary' : 'default'}
             onClick={() => this.onChangeTab('industry')}
           >
             <Industry />
@@ -74,7 +74,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Rebalance" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'rebalance' ? 'secondary' : 'primary'}
+            color={tab === 'rebalance' ? 'secondary' : 'default'}
             onClick={() => this.onChangeTab('rebalance')}
           >
             <Rebalance />
@@ -83,7 +83,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Correlation" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'correlation' ? 'secondary' : 'primary'}
+            color={tab === 'correlation' ? 'secondary' : 'default'}
             onClick={() => this.onChangeTab('correlation')}
           >
             <Correlation />
@@ -92,7 +92,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Optimization" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'optimization' ? 'secondary' : 'primary'}
+            color={tab === 'optimization' ? 'secondary' : 'default'}
             onClick={() => this.onChangeTab('optimization')}
           >
             <Optimization />
@@ -107,7 +107,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             toggleWallets()
           }}
         >
-          <Settings className="settingsIcon"/>
+          <Settings className="settingsIcon" />
         </Tab>
         <Fade in={switchUSDBTC}>
           <div>
@@ -115,7 +115,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
             </Typography>
-            <Button color="secondary" onClick={this.onToggleUSDBTC} className="SwitchButton">
+            <Button
+              color="secondary"
+              onClick={this.onToggleUSDBTC}
+              className="SwitchButton"
+            >
               {' '}
               {isUSDCurrently ? 'BTC' : 'USD'}
             </Button>

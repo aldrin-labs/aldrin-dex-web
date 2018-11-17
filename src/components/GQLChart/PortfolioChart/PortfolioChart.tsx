@@ -80,6 +80,7 @@ export default class PortfolioChart extends Component<Props, State> {
       crosshairValues,
       isShownMocks,
       activeChart,
+      theme,
     } = this.state
     const { name = '', priceUSD = '' } = coin || {}
 
@@ -153,9 +154,16 @@ export default class PortfolioChart extends Component<Props, State> {
             )}
             <GradientDefs>
               <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="40%" stopColor="#267871" stopOpacity={0.2} />
-                <stop offset="80%" stopColor="#136a8a" stopOpacity={0.4} />
-                <stop offset="100%" stopColor="#136a8a" stopOpacity={0.5} />
+                <stop
+                  offset="0%"
+                  stopColor={theme.palette.secondary.main}
+                  stopOpacity={0.3}
+                />
+                <stop
+                  offset="60%"
+                  stopColor={theme.palette.secondary.main}
+                  stopOpacity={0}
+                />
               </linearGradient>
             </GradientDefs>
             <AreaSeries
@@ -204,16 +212,10 @@ export default class PortfolioChart extends Component<Props, State> {
               onClick={() => {
                 this.onChangeActiveChart(chartBtn)
               }}
-              style={
-                chartBtn === activeChart
-                  ? {
-                      backgroundColor: '#4ed8da',
-                      color: '#4c5055',
-                      margin: '0 0.5rem',
-                    }
-                  : { margin: '0 0.5rem' }
-              }
+              color="secondary"
+              variant={chartBtn !== activeChart ? 'text' : 'contained'}
               key={chartBtn}
+              style={{ margin: '0 1rem' }}
             >
               {chartBtn}
             </Button>

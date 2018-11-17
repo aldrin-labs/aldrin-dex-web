@@ -61,7 +61,7 @@ class Optimization extends Component<IProps, IState> {
   }
 
   optimizedToState = (data: RawOptimizedData) => {
-    const optimizedCoinsWeights = data.reduce((accMap, el) => {
+    const optimizedCoinsWeightsMap = data.reduce((accMap, el) => {
       el.weights.forEach((weight: number, index: number) => {
         const percentageWeight = Math.abs(Number(weight) * 100).toFixed(2)
         const currentCoinName = el.portfolio_coins_list[index]
@@ -82,7 +82,7 @@ class Optimization extends Component<IProps, IState> {
     this.props.updateData(
       [...this.props.storeData].map((el) => ({
         ...el,
-        optimizedPercentageArray: optimizedCoinsWeights.get(el.coin),
+        optimizedPercentageArray: optimizedCoinsWeightsMap.get(el.coin),
       }))
     )
 

@@ -4,6 +4,7 @@ import { graphql, compose } from 'react-apollo'
 import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
 import gql from 'graphql-tag'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
@@ -152,5 +153,6 @@ export default compose(
       localActiveChart: activeChart,
     }),
   }),
+  withTheme(),
   withErrorFallback
 )(GQLChart)

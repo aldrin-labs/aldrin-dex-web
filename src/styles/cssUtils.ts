@@ -4,12 +4,13 @@ import ReactSelectComponent from '@components/ReactSelectComponent'
 
 export const customAquaScrollBar = css`
   &::-webkit-scrollbar {
-    width: ${({scrollBarWidth}: {scrollBarWidth: number}) => (scrollBarWidth ? `${scrollBarWidth}px` : '3px')};
+    width: ${({ scrollBarWidth }: { scrollBarWidth: number }) =>
+      scrollBarWidth ? `${scrollBarWidth}px` : '3px'};
     height: 6px;
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
+    background: #27272d;
   }
 
   &::-webkit-scrollbar-thumb {
@@ -33,8 +34,7 @@ export const SelectR = styled(ReactSelectComponent)`
   }
 `
 
-export const SelectT = styled(ReactSelectComponent)`
-`
+export const SelectT = styled(ReactSelectComponent)``
 
 export const Span = styled.span``
 

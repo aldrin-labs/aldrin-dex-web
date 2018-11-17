@@ -3,13 +3,13 @@ import AppBar from '@material-ui/core/AppBar'
 
 export const navBarHeight = 48
 
-
 export const Nav = styled(AppBar)`
   z-index: 1;
+  overflow: hidden;
   ${({ background }: { background: string | false }) =>
     background ? `background:${background};` : ''} ${(props: {
     hide: boolean
-    background: string | false 
+    background: string | false
   }) =>
     props.hide
       ? `opacity: 0;

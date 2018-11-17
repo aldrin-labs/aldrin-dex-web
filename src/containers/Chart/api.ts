@@ -37,14 +37,10 @@ export const updateTradeHistoryQuerryFunction = (
   { subscriptionData }
 ) => {
   if (!subscriptionData.data) {
-    return prev
+    return {}
   }
   const newTicker = subscriptionData.data.listenMarketTickers
-  let obj = Object.assign({}, prev, {
-    marketTickers: [newTicker],
-  })
-
-  return obj
+  return { marketTickers: [newTicker] }
 }
 
 // OrderBook
@@ -62,13 +58,10 @@ export const ORDERS_MARKET_QUERY = gql`
 
 export const updateOrderBookQuerryFunction = (prev, { subscriptionData }) => {
   if (!subscriptionData.data) {
-    return prev
+    return {}
   }
 
   const newOrder = JSON.parse(subscriptionData.data.listenMarketOrders)
-  let obj = Object.assign({}, prev, {
-    marketOrders: [newOrder],
-  })
 
-  return obj
+  return { marketOrders: [newOrder] }
 }
