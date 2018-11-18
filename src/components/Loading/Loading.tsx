@@ -1,18 +1,31 @@
 import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import purple from '@material-ui/core/colors/purple'
 import styled from 'styled-components'
+import withTheme from '@material-ui/core/styles/withTheme'
+import { Theme } from '@material-ui/core'
 
-export const Loading = ({
+const RawLoading = ({
   size = 64,
-  color = purple[400],
+  color,
   margin = 0,
   centerAligned = false,
+  theme,
+}: {
+  color?: string
+  size?: number
+  margin?: string | number
+  centerAligned?: boolean
+  theme?: Theme
 }) => (
   <SpinnerContainer margin={margin} centerAligned={centerAligned}>
-    <CircularProgress style={{ color }} size={size} />
+    <CircularProgress
+      style={{ color: color || theme.palette.secondary.main }}
+      size={size}
+    />
   </SpinnerContainer>
 )
+
+export const Loading = withTheme()(RawLoading)
 
 const SpinnerContainer = styled.div`
   margin: ${(props) => (props.margin ? props.margin : '0 auto')};
