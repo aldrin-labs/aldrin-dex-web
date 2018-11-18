@@ -27,6 +27,7 @@ import { withErrorFallback } from '@hoc/'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import { Loading } from '@components/index'
+import { Grid } from '@material-ui/core'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   state = {
@@ -70,7 +71,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
-        <GridContainer container={true} spacing={16}>
+        <GridContainer
+          style={{ flexWrap: 'nowrap', flexDirection: 'column' }}
+          container={true}
+          spacing={16}
+        >
           <Joyride
             continuous={true}
             showProgress={true}
@@ -93,30 +98,43 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               },
             }}
           />
-          <TableContainer item={true} xs={12} md={8}>
-            <TableWrapper className="PortfolioMainTable">
-              {Array.isArray(tableData) && (
-                <TableWithSort
-                  title="Portfolio"
-                  checkedRows={checkedRows}
-                  withCheckboxes={true}
-                  onChange={onCheckboxClick}
-                  onSelectAllClick={onSelectAllClick}
-                  data={{ body, footer }}
-                  columnNames={head}
-                />
-              )}
-            </TableWrapper>
-          </TableContainer>
-          <TableContainer item={true} xs={12} md={4}>
-            <TableWrapper className="PortfolioTradeOrderHistoryTable">
-              <Suspense fallback={<Loading centerAligned />}>
-                <TradeOrderHistoryTable />
-              </Suspense>
-            </TableWrapper>
-          </TableContainer>
+          <Grid
+            spacing={8}
+            style={{ maxHeight: '50%', flexBasis: 'inherit' }}
+            container={true}
+            item={true}
+            xs={12}
+          >
+            <Grid item={true} xs={12} md={8}>
+              <TableWrapper className="PortfolioMainTable">
+                {Array.isArray(tableData) && (
+                  <TableWithSort
+                    title="Portfolio"
+                    checkedRows={checkedRows}
+                    withCheckboxes={true}
+                    onChange={onCheckboxClick}
+                    onSelectAllClick={onSelectAllClick}
+                    data={{ body, footer }}
+                    columnNames={head}
+                  />
+                )}
+              </TableWrapper>
+            </Grid>
+            <Grid item={true} xs={12} md={4}>
+              <TableWrapper className="PortfolioTradeOrderHistoryTable">
+                <Suspense fallback={<Loading centerAligned />}>
+                  <TradeOrderHistoryTable />
+                </Suspense>
+              </TableWrapper>
+            </Grid>
+          </Grid>
 
-          <ChartContainer item={true} xs={12} md={12}>
+          <ChartContainer
+            style={{ flexBasis: '51%', padding: '0 8px' }}
+            item={true}
+            xs={12}
+            md={12}
+          >
             <ChartWrapper className="PortfolioValueChart">
               <CardHeader
                 title={'Portfolio Value | Coming Soon | In development'}
@@ -128,7 +146,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                     marginLeft: 0,
                     minHeight: '10vh',
                   }}
-                  height="20vh"
+                  height="calc(100% - 2rem)"
                   marginTopHr="10px"
                   coins={coins}
                 />
