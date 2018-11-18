@@ -13,7 +13,6 @@ import {
   TableWrapper,
   ChartWrapper,
   GridContainer,
-  TableContainer,
   ChartContainer,
 } from './PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
@@ -109,6 +108,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               <TableWrapper className="PortfolioMainTable">
                 {Array.isArray(tableData) && (
                   <TableWithSort
+                    padding="dense"
                     title="Portfolio"
                     checkedRows={checkedRows}
                     withCheckboxes={true}
