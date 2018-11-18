@@ -8,6 +8,7 @@ import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
 import { updatePortfolioMain } from '../../mutations/portfolio/updatePortfolioMain'
 import { portfolioMainState } from '../../mutations/portfolio/portfolioMainState'
+import { isEqual } from 'lodash-es'
 
 const periods = {
   1: 60,
@@ -34,7 +35,6 @@ class GQLChart extends React.Component {
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
       // PAY ATTENTION: Object mutation here
-      console.log(newProps.coins)
       newState.coins = newProps.coins.filter(Boolean).map((x) => x.coin)
       newState.assets = newProps.coins.filter(Boolean)
       newState.sum = newProps.coins
@@ -46,6 +46,13 @@ class GQLChart extends React.Component {
       return newState
     }
     return null
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(
+      nextProps.coins.filter(Boolean).map((row) => row.coin),
+      this.props.coins.filter(Boolean).map((row) => row.coin)
+    )
   }
 
   getTimestampRange(days) {
