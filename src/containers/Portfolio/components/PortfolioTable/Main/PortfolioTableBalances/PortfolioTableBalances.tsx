@@ -2,19 +2,19 @@ import React, { Suspense, lazy } from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { withRouter } from 'react-router'
+import { Grid } from '@material-ui/core'
 import Joyride from 'react-joyride'
 
 import {
   IProps,
   IState,
-} from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.types'
+} from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import {
   TableWrapper,
   ChartWrapper,
   GridContainer,
-  TableContainer,
   ChartContainer,
-} from './PortfolioTableBalances.styles'
+} from '../PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 const Chart = lazy(() => import('@components/GQLChart'))
 const TradeOrderHistoryTable = lazy(() =>
@@ -57,14 +57,14 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
       theme,
     } = this.props
 
-    const { body, head, footer } = putDataInTable()
-
-    const coins = []
-
     const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
       <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
-        <GridContainer container={true} spacing={16}>
+        <GridContainer
+          style={{ flexWrap: 'nowrap', flexDirection: 'column' }}
+          container={true}
+          spacing={16}
+        >
           <Joyride
             continuous={true}
             showProgress={true}
@@ -87,23 +87,35 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               },
             }}
           />
-          <TableContainer item={true} xs={12} md={8}>
-            <TableWrapper className="PortfolioMainTable">
-              {Array.isArray(tableData) && <PortfolioMainTable />}
-            </TableWrapper>
-          </TableContainer>
-          <TableContainer item={true} xs={12} md={4}>
-            <TableWrapper className="PortfolioTradeOrderHistoryTable">
-              <Suspense fallback={<Loading centerAligned />}>
-                <TradeOrderHistoryTable />
-              </Suspense>
-            </TableWrapper>
-          </TableContainer>
+          <Grid
+            spacing={8}
+            style={{ maxHeight: '50%', flexBasis: 'inherit' }}
+            container={true}
+            item={true}
+            xs={12}
+          >
+            <Grid item={true} xs={12} md={8}>
+              <TableWrapper className="PortfolioMainTable">
+                {Array.isArray(tableData) && <PortfolioMainTable />}
+              </TableWrapper>
+            </Grid>
+            <Grid item={true} xs={12} md={4}>
+              <TableWrapper className="PortfolioTradeOrderHistoryTable">
+                <Suspense fallback={<Loading centerAligned />}>
+                  <TradeOrderHistoryTable />
+                </Suspense>
+              </TableWrapper>
+            </Grid>
+          </Grid>
 
-          <ChartContainer item={true} xs={12} md={12}>
+          <ChartContainer
+            style={{ flexBasis: '51%', padding: '0 8px' }}
+            item={true}
+            xs={12}
+            md={12}
+          >
             <ChartWrapper className="PortfolioValueChart">
               <CardHeader
-                style={{ position: 'absolute' }}
                 title={'Portfolio Value | Coming Soon | In development'}
               />
               <Suspense fallback={<Loading centerAligned />}>
@@ -112,7 +124,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                     marginLeft: 0,
                     minHeight: '10vh',
                   }}
-                  height="20vh"
+                  height="calc(100% - 2rem)"
                   marginTopHr="10px"
                 />
               </Suspense>

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { Paper, Grid, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { Container } from '../../Industry/Industry.styles'
+import { Container } from '../Industry/Industry.styles'
 
 export const GridContainer = styled(Container)`
   && {
@@ -10,7 +10,7 @@ export const GridContainer = styled(Container)`
   }
 `
 
-export const ChartWrapper = styled(Paper)`
+export const ChartWrapper = styled(Card)`
   position: relative;
   height: 100%;
   width: 100%;
@@ -27,8 +27,6 @@ export const ChartContainer = styled(Grid)`
     height: 40%;
   }
 `
-
-
 
 export const PTWrapper = styled(Paper)`
   grid-column: 2;

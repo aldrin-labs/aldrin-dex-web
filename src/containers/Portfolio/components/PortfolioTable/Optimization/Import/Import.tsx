@@ -141,7 +141,7 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.error_message || backendResultParsed.status === 1) {
+    if (backendResultParsed.error || backendResultParsed.error_message.length || backendResultParsed.status === 1) {
       const isUserError = backendResultParsed.error_message
       //TODO: Should be another function
 
@@ -246,7 +246,7 @@ export default class Import extends PureComponent<IProps> {
     const formatedOptimizedData = rawOptimizedData.length
       ? storeData.map((el, i) => ({
           x: el.coin,
-          y: +(rawOptimizedData[activeButton].weights[i] * 100).toFixed(2),
+          y: el.optimizedPercentageArray && el.optimizedPercentageArray[activeButton] || 0,
         }))
       : []
 

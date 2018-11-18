@@ -29,6 +29,7 @@ const NavBarRaw: SFC<Props> = ({
       common,
       secondary: { main },
       primary,
+      divider,
     },
   },
   pathname,
@@ -50,7 +51,7 @@ const NavBarRaw: SFC<Props> = ({
       position="static"
       hide={hide}
       color="default"
-      background={type === 'light' && primary.light}
+      background={primary.main}
       className="Navbar"
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
@@ -97,9 +98,8 @@ const NavBarRaw: SFC<Props> = ({
               direction={'row'}
               container={true}
             >
-
               <Hidden only={['sm', 'xs']}>
-                <Feedback />
+                <Feedback borderColor={fade(divider, 0.5)} />
               </Hidden>
 
               <Login mainColor={main} />

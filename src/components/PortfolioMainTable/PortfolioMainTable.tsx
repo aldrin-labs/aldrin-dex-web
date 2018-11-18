@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { zip, isObject, find } from 'lodash-es'
+import { zip, isObject, find, has } from 'lodash-es'
 import { Theme } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
 import { Mutation, Query } from 'react-apollo'
@@ -50,8 +50,7 @@ class Container extends Component {
       theme,
     } = nextProps
     if (data) {
-      if (!data.myPortfolios[0]) return
-
+      if (!has(data, 'myPortfolios') || !data.myPortfolios[0]) return
       const { portfolioAssets } = data.myPortfolios[0]
 
       if (!portfolioAssets) {
@@ -360,7 +359,7 @@ const APIWrapper = (props: any) => (
             baseCoin={baseCoin}
             isUSDCurrently={baseCoin === 'USDT'}
             pollInterval={1 * 5 * 1000}
-            withOutSpinner
+            withOutSpinner={false}
             fetchPolicy="network-only"
           />
         )}

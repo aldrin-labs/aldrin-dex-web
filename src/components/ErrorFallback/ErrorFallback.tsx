@@ -81,13 +81,21 @@ export default class ErrorBoundary extends React.Component {
 
   componentDidCatch(error: any, info: any) {
     // imlement service/component to send errors to our database
-    console.log(error, info)
+    console.log(error)
+    console.log(info)
   }
 
   render() {
     if (this.state.hasError) {
+      const { error } = this.state
+      if (
+        error.split(' ')[1] === 'Loading' &&
+        error.split(' ')[2] === 'chunk'
+      ) {
+        window.location.reload()
+      }
       // You can render any custom fallback UI
-      return <ErrorFallback error={this.state.error} />
+      return <ErrorFallback error={error} />
     }
 
     return this.props.children

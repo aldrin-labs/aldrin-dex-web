@@ -4,6 +4,8 @@ import { graphql, compose, Query } from 'react-apollo'
 import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
 import { GET_COINS } from '../../mutations/portfolio/getCoins'
+import withTheme from '@material-ui/core/styles/withTheme'
+
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
 import { updatePortfolioMain } from '../../mutations/portfolio/updatePortfolioMain'
@@ -156,5 +158,6 @@ export default compose(
       localActiveChart: activeChart,
     }),
   }),
+  withTheme(),
   withErrorFallback
 )(withCoins)

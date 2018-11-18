@@ -129,8 +129,6 @@ export default class Table extends Component<IProps, IState> {
                   </Item>
                 ))}
             </Col>
-
-            {console.log('optimizedData in Table', optimizedData)}
             {optimizedData.length >= 1 ? (
               <Col>
                 {data
