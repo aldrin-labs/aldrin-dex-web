@@ -13,7 +13,7 @@ import { inflate } from 'graphql-deduplicator'
 
 import { API_URL } from '@utils/config'
 import { GET_BASE_COIN } from '../queries/portfolio/getBaseCoin'
-import { GET_COINS } from '@components/GQLChart'
+import { GET_COINS } from '../mutations/portfolio/getCoins'
 
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 

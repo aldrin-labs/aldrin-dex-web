@@ -3,10 +3,11 @@ import { graphql, compose, Query } from 'react-apollo'
 
 import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
-import gql from 'graphql-tag'
-
+import { GET_COINS } from '../../mutations/portfolio/getCoins'
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
+import { updatePortfolioMain } from '../../mutations/portfolio/updatePortfolioMain'
+import { portfolioMainState } from '../../mutations/portfolio/portfolioMainState'
 
 const periods = {
   1: 60,
@@ -128,26 +129,6 @@ class GQLChart extends React.Component {
     )
   }
 }
-
-const updatePortfolioMain = gql`
-  mutation updatePortfolioMain($index: String!, $value: String!) {
-    updatePortfolioMain(index: $index, value: $value) @client
-  }
-`
-const portfolioMainState = gql`
-  query portfolioMain {
-    portfolioMain @client {
-      activeChart
-    }
-  }
-`
-export const GET_COINS = gql`
-  query getCoins {
-    portfolioMain @client {
-      coins
-    }
-  }
-`
 
 const withCoins = (props: any) => (
   <Query query={GET_COINS}>

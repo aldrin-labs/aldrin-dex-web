@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { zip, isObject, find } from 'lodash-es'
 import { Theme } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
-import { ApolloConsumer, Mutation } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
@@ -17,9 +17,9 @@ import {
   transformToNumber,
   addMainSymbol,
 } from '@utils/PortfolioTableUtils'
-import { Query } from 'react-apollo'
 import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
-import gql from 'graphql-tag'
+import { UPDATE_COINS } from '../../mutations/portfolio/updateCoins'
+
 const chooseRed = (theme: Theme) =>
   theme.palette.type === 'dark'
     ? theme.palette.red.main
@@ -188,6 +188,26 @@ class Container extends Component {
       ]
     )
   }
+  updateCoinsInApollo = () => {
+    const data = {
+      data: {
+        portfolioMain: {
+          __typename: 'portfolioMain',
+          coins: this.state.checkedRows.map((id: number) => ({
+            __typename: id,
+            ...find(this.state.tableData, (row) => {
+              return row.id === id
+            }),
+          })),
+        },
+      },
+    }
+    this.props.updateCoins({
+      variables: {
+        coins: data.data.portfolioMain.coins,
+      },
+    })
+  }
 
   transformData = (data: any[] = [], red: string = '', green: string = '') => {
     const { numberOfDigitsAfterPoint: round } = this.state
@@ -281,7 +301,10 @@ class Container extends Component {
   }
 
   onCheckboxClick = (id: string) =>
-    this.setState({ checkedRows: onCheckBoxClick(this.state.checkedRows, id) })
+    this.setState(
+      { checkedRows: onCheckBoxClick(this.state.checkedRows, id) },
+      this.updateCoinsInApollo
+    )
 
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
     if ((e && e.target && e.target.checked) || selectAll) {
@@ -291,31 +314,12 @@ class Container extends Component {
             ? state.tableData.map((row: any, i: number) => row.id)
             : [],
         }),
-        () => {
-          const data = {
-            data: {
-              portfolioMain: {
-                __typename: 'portfolioMain',
-                coins: this.state.checkedRows.map((id: number) => ({
-                  __typename: id,
-                  ...find(this.state.tableData, (row) => {
-                    return row.id === id
-                  }),
-                })),
-              },
-            },
-          }
-          this.props.updateCoins({
-            variables: {
-              coins: data.data.portfolioMain.coins,
-            },
-          })
-        }
+        this.updateCoinsInApollo
       )
 
       return
     }
-    this.setState({ checkedRows: [] })
+    this.setState({ checkedRows: [] }, this.updateCoinsInApollo)
   }
 
   render() {
@@ -355,7 +359,7 @@ const APIWrapper = (props: any) => (
             variables={{ baseCoin }}
             baseCoin={baseCoin}
             isUSDCurrently={baseCoin === 'USDT'}
-            // pollInterval={1 * 1 * 1000}
+            pollInterval={1 * 1 * 1000}
             fetchPolicy="network-only"
           />
         )}
@@ -363,11 +367,5 @@ const APIWrapper = (props: any) => (
     )}
   </Mutation>
 )
-
-const UPDATE_COINS = gql`
-  mutation updateCoins($coins: [String!]!) {
-    updateCoins(coins: $coins) @client
-  }
-`
 
 export default withTheme()(APIWrapper)
