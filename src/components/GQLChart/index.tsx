@@ -143,7 +143,7 @@ const portfolioMainState = gql`
 `
 export const GET_COINS = gql`
   query getCoins {
-    portfolioMainCoins @client {
+    portfolioMain @client {
       coins
     }
   }
@@ -151,8 +151,8 @@ export const GET_COINS = gql`
 
 const withCoins = (props: any) => (
   <Query query={GET_COINS}>
-    {({ data: { portfolioMainCoins = [] } }) => (
-      <GQLChart {...props} coins={portfolioMainCoins.coins} />
+    {({ data: { portfolioMain = [] } }) => (
+      <GQLChart {...props} coins={portfolioMain.coins} />
     )}
   </Query>
 )

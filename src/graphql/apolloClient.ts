@@ -66,6 +66,7 @@ const defaultState = {
   portfolioMain: {
     __typename: 'portfolioMain',
     activeChart: '1Y',
+    coins: [],
   },
   portfolioMainCoins: {
     __typename: 'portfolioMainCoins',
@@ -129,9 +130,9 @@ const stateLink = withClientState({
         cache.writeQuery({
           query,
           data: {
-            portfolioMainCoins: {
+            portfolioMain: {
               coins: coins,
-              __typename: previous.portfolioMainCoins.__typename,
+              __typename: 'portfolioMain',
             },
           },
         })

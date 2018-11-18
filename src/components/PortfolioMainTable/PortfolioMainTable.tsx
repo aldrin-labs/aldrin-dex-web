@@ -294,8 +294,8 @@ class Container extends Component {
         () => {
           const data = {
             data: {
-              portfolioMainCoins: {
-                __typename: 'portfolioMainCoins',
+              portfolioMain: {
+                __typename: 'portfolioMain',
                 coins: this.state.checkedRows.map((id: number) => ({
                   __typename: id,
                   ...find(this.state.tableData, (row) => {
@@ -307,7 +307,7 @@ class Container extends Component {
           }
           this.props.updateCoins({
             variables: {
-              coins: data.data.portfolioMainCoins.coins,
+              coins: data.data.portfolioMain.coins,
             },
           })
         }
