@@ -14,6 +14,7 @@ const config = {
   },
   output: {
     filename: 'static/[name].[hash].js',
+    chunkFilename: '[name].bundle.js',
   },
   devtool,
   module: {
