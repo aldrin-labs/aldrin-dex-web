@@ -284,8 +284,6 @@ class Container extends Component {
     this.setState({ checkedRows: onCheckBoxClick(this.state.checkedRows, id) })
 
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
-    console.log(1)
-
     if ((e && e.target && e.target.checked) || selectAll) {
       this.setState(
         (state) => ({
@@ -307,8 +305,11 @@ class Container extends Component {
               },
             },
           }
-          console.log(data)
-          this.props.client.writeData(data)
+          this.props.updateCoins({
+            variables: {
+              coins: data.data.portfolioMainCoins.coins,
+            },
+          })
         }
       )
 
@@ -338,7 +339,7 @@ class Container extends Component {
 
 // change to renderProps
 const APIWrapper = (props: any) => (
-  <Mutation mutation={}>
+  <Mutation mutation={UPDATE_COINS}>
     {(updateCoins) => (
       <Query query={GET_BASE_COIN}>
         {({
@@ -348,6 +349,7 @@ const APIWrapper = (props: any) => (
         }) => (
           <QueryRenderer
             {...props}
+            updateCoins={updateCoins}
             component={Container}
             query={getPortfolioMainQuery}
             variables={{ baseCoin }}
@@ -362,6 +364,10 @@ const APIWrapper = (props: any) => (
   </Mutation>
 )
 
-const UPDATE_COINS = gql``
+const UPDATE_COINS = gql`
+  mutation updateCoins($coins: [String!]!) {
+    updateCoins(coins: $coins) @client
+  }
+`
 
 export default withTheme()(APIWrapper)

@@ -13,6 +13,7 @@ import { inflate } from 'graphql-deduplicator'
 
 import { API_URL } from '@utils/config'
 import { GET_BASE_COIN } from '../queries/portfolio/getBaseCoin'
+import { GET_COINS } from '@components/GQLChart'
 
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 
@@ -119,17 +120,18 @@ const stateLink = withClientState({
         return null
       },
       updateCoins: (_: undefined, args: any, source: any) => {
-        const { value } = args
+        const { coins } = args
         const { cache } = source
-        const query = GET_BASE_COIN
+        const query = GET_COINS
 
         const previous = cache.readQuery({ query })
 
-        cache.writeData({
+        cache.writeQuery({
+          query,
           data: {
             portfolioMainCoins: {
-              coins: value,
-              __typename: previous.portfolio.__typename,
+              coins: coins,
+              __typename: previous.portfolioMainCoins.__typename,
             },
           },
         })
