@@ -334,6 +334,7 @@ class Container extends Component {
         onChange={onCheckboxClick}
         onSelectAllClick={onSelectAllClick}
         data={{ body, footer }}
+        padding="dense"
         columnNames={head}
       />
     )
@@ -359,7 +360,7 @@ const APIWrapper = (props: any) => (
             baseCoin={baseCoin}
             isUSDCurrently={baseCoin === 'USDT'}
             pollInterval={1 * 5 * 1000}
-            withOutSpinner={false}
+            withOutSpinner={true}
             fetchPolicy="network-only"
           />
         )}
