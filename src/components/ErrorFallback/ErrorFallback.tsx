@@ -74,10 +74,10 @@ export const ErrorFallback = (props: {
 export default class ErrorBoundary extends React.Component {
   state = { hasError: false, error: null }
 
-  static getDerivedStateFromError(error: any) {
+/*  static getDerivedStateFromError(error: any) {
     // Update state so the next render will show the fallback UI.
     return { error, hasError: true }
-  }
+  }*/
 
   componentDidCatch(error: any, info: any) {
     // imlement service/component to send errors to our database
