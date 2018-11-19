@@ -34,6 +34,8 @@ class Container extends Component {
     currentSort: null,
     portfolioAssets: null,
     checkedRows: [],
+    tableData: null,
+    withOutSpinner: false,
     red: chooseRed(this.props.theme),
     green: chooseGreen(this.props.theme),
     numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(
@@ -62,9 +64,15 @@ class Container extends Component {
         isShownMocks
       )
 
+      let checkedRows =
+        portfolioAssets.length === 0 ? [] : prevState.checkedRows
+      if (prevState.tableData === null && portfolioAssets.length > 0) {
+        checkedRows = portfolioAssets.map((row: any, i: number) => row._id)
+      }
+
       return {
+        checkedRows,
         numberOfDigitsAfterPoint: numberOfDigitsAfterPoint(isUSDCurrently),
-        checkedRows: portfolioAssets.length === 0 ? [] : prevState.checkedRows,
         portfolio: composePortfolioAssetsWithMocks,
         tableData: combineTableData(
           composePortfolioAssetsWithMocks,
@@ -77,10 +85,6 @@ class Container extends Component {
     }
 
     return null
-  }
-
-  componentDidMount() {
-    this.onSelectAllClick(undefined, true)
   }
 
   //  footer of table
@@ -277,6 +281,9 @@ class Container extends Component {
   putDataInTable = () => {
     const { theme, isUSDCurrently } = this.props
     const { tableData } = this.state
+    if (!tableData) {
+      return { head: [], body: [], footer: null }
+    }
 
     return {
       head: [
