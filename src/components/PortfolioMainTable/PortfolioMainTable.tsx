@@ -7,6 +7,7 @@ import { Mutation, Query } from 'react-apollo'
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
 import { TableWithSort } from '@storybook-components/index'
+import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import {
   combineTableData,
   roundAndFormatNumber,
@@ -332,6 +333,10 @@ class Container extends Component {
     const { checkedRows } = this.state
     const { onSelectAllClick, putDataInTable, onCheckboxClick } = this
     const { body, head, footer } = putDataInTable()
+
+    if (body.length === 0) {
+      return <TablePlaceholderLoader />
+    }
 
     return (
       <TableWithSort
