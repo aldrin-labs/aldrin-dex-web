@@ -218,30 +218,7 @@ class Chart extends React.Component<IProps, IState> {
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          <QueryRenderer
-            component={OrderBookTable}
-            query={ORDERS_MARKET_QUERY}
-            fetchPolicy="network-only"
-            variables={{ symbol, exchange }}
-            placeholder={TablePlaceholderLoader}
-            subscriptionArgs={{
-              subscription: MARKET_ORDERS,
-              variables: { symbol, exchange },
-              updateQueryFunction: updateOrderBookQuerryFunction,
-            }}
-            {...{
-              onButtonClick: this.changeTable,
-              roundTill: this.roundTill,
-              activeExchange,
-              currencyPair,
-              aggregation,
-              quote,
-              setOrders: this.props.setOrders,
-              symbol,
-              exchange,
-              ...this.props,
-            }}
-          />
+
 
           <Aggregation
             {...{

@@ -55,7 +55,7 @@ class TableContainer extends Component<IProps, IState> {
       }
 
       return {
-        data: maximumItemsInArray([ticker, ...state.data], 100, 40),
+        data: maximumItemsInArray([ticker, ...state.data], 20, 10),
         numbersAfterDecimalForPrice: getNumberOfDigitsAfterDecimal(
           [ticker, ...state.data],
           'price'
@@ -93,6 +93,7 @@ class TableContainer extends Component<IProps, IState> {
 
   render() {
     const { data, ...rest } = this.props
+    console.log(this.state.data.length)
     return (
       <TradeHistoryTable
         data={this.state.data}

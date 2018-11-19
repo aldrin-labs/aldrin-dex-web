@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components'
 import Collapse from '@material-ui/core/Collapse'
 import MdArrowDropUp from '@material-ui/icons/ArrowDropUp'
 import MdArrowUpward from '@material-ui/icons/ArrowUpward'
+import { FixedSizeList as List } from 'react-window'
 
 import {
   Table,
@@ -22,6 +23,8 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
     tableExpanded: true,
   }
 
+
+
   render() {
     const {
       numbersAfterDecimalForPrice,
@@ -31,6 +34,54 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
     } = this.props
     const { tableExpanded } = this.state
     const { background, action, primary, type, red, green } = palette
+
+    const WindowRow = ({ index }: { index: number }) => {
+      console.log('index', index)
+      const ticker = data[index]
+      return (
+        <Row
+          hoverBackground={action.hover}
+          key={index}
+          background={background.default}
+        >
+          <Cell width={'30%'}>
+            <TypographyFullWidth
+              noWrap={true}
+              variant="body1"
+              align="right"
+            >
+              {Number(ticker.size).toFixed(4)}
+            </TypographyFullWidth>
+          </Cell>
+          <Cell width={'45%'} style={{ display: 'flex' }}>
+            <StyledArrow
+              color={ticker.fall ? red.main : green.main}
+              direction={ticker.fall ? 'down' : 'up'}
+            />
+            <StyledTypography
+              textColor={ticker.fall ? red.main : green.main}
+              noWrap={true}
+              variant="body1"
+              align="right"
+            >
+              {Number(ticker.price).toFixed(
+                numbersAfterDecimalForPrice
+              )}
+            </StyledTypography>
+          </Cell>
+          <Cell width={'25%'}>
+            <TypographyFullWidth
+              color="primary"
+              noWrap={true}
+              variant="body1"
+              align="right"
+            >
+              {ticker.time}
+            </TypographyFullWidth>
+          </Cell>
+        </Row>
+      )
+    }
 
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
@@ -103,57 +154,21 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
               </HeadCell>
             </Row>
           </Head>
-          <Body background={background.default} height="42vh">
             {data.length === 0 && tableExpanded ? (
               <Loading centerAligned={true} />
             ) : (
               <>
-                {data.map((ticker: ITicker, i: number) => (
-                  <Row
-                    hoverBackground={action.hover}
-                    key={i}
-                    background={background.default}
-                  >
-                    <Cell width={'30%'}>
-                      <TypographyFullWidth
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {Number(ticker.size).toFixed(4)}
-                      </TypographyFullWidth>
-                    </Cell>
-                    <Cell width={'45%'} style={{ display: 'flex' }}>
-                      <StyledArrow
-                        color={ticker.fall ? red.main : green.main}
-                        direction={ticker.fall ? 'down' : 'up'}
-                      />
-                      <StyledTypography
-                        textColor={ticker.fall ? red.main : green.main}
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {Number(ticker.price).toFixed(
-                          numbersAfterDecimalForPrice
-                        )}
-                      </StyledTypography>
-                    </Cell>
-                    <Cell width={'25%'}>
-                      <TypographyFullWidth
-                        color="primary"
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {ticker.time}
-                      </TypographyFullWidth>
-                    </Cell>
-                  </Row>
-                ))}
+                <List
+                  className="List"
+                  height={280}
+                  itemSize={35}
+                  itemCount={data.length}
+                  width={'100%'}
+                >
+                  {WindowRow}
+                </List>
               </>
             )}
-          </Body>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>
     )
