@@ -37,7 +37,7 @@ import {
   StyledCardHeader,
 } from './Rebalance.styles'
 import withTheme from '@material-ui/core/styles/withTheme'
-import { PTWrapper } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import { PTWrapper } from '../Main/PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
