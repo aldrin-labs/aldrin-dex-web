@@ -15,7 +15,6 @@ import Paper from '@material-ui/core/Paper'
 import { Tooltip, Typography, Fade } from '@material-ui/core'
 
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
-import { navBarHeight } from '@components/NavBar/NavBar.styles'
 
 class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
@@ -138,8 +137,8 @@ const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
   width: 64px;
-  /* - navbarHeight */
-  height: calc(100vh - ${navBarHeight}px);
+  height: 100%;
+  min-height: 100vh;
   z-index: 0;
   && {
     background: ${(props: { background: string }) => props.background};
