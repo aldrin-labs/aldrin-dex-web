@@ -22,6 +22,9 @@ export default class ThemeWrapper extends Component<Props> {
             border: `1px solid ${fade(divider, 0.26)}`, // Some CSS
           },
         },
+        MuiCheckbox: {
+          root: { color: '#3C3C44' },
+        },
       },
       palette: {
         divider,
