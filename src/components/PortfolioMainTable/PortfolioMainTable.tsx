@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { zip, isObject, find, has } from 'lodash-es'
+import { zip, isObject, find, has, isEqual } from 'lodash-es'
 import { Theme } from '@material-ui/core'
 import { withTheme } from '@material-ui/core/styles'
 import { Mutation, Query } from 'react-apollo'
@@ -86,6 +86,19 @@ class Container extends Component {
     }
 
     return null
+  }
+
+  shouldComponentUpdate(prevProps, prevState) {
+    // need to be refactored this is not best optimization
+    // just temporary fix
+    return (
+      this.state.tableData === null ||
+      (!isEqual(
+        this.state.tableData.slice(0, 50),
+        prevState.tableData.slice(0, 50)
+      ) ||
+        !isEqual(prevState.checkedRows, this.state.checkedRows))
+    )
   }
 
   //  footer of table
@@ -308,25 +321,19 @@ class Container extends Component {
   }
 
   onCheckboxClick = (id: string) =>
-    this.setState(
-      { checkedRows: onCheckBoxClick(this.state.checkedRows, id) },
-      this.updateCoinsInApollo
-    )
+    this.setState({ checkedRows: onCheckBoxClick(this.state.checkedRows, id) })
 
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
     if ((e && e.target && e.target.checked) || selectAll) {
-      this.setState(
-        (state) => ({
-          checkedRows: state.tableData
-            ? state.tableData.map((row: any, i: number) => row.id)
-            : [],
-        }),
-        this.updateCoinsInApollo
-      )
+      this.setState((state) => ({
+        checkedRows: state.tableData
+          ? state.tableData.map((row: any, i: number) => row.id)
+          : [],
+      }))
 
       return
     }
-    this.setState({ checkedRows: [] }, this.updateCoinsInApollo)
+    this.setState({ checkedRows: [] })
   }
 
   render() {
@@ -337,6 +344,8 @@ class Container extends Component {
     if (body.length === 0) {
       return <TablePlaceholderLoader />
     }
+
+    this.updateCoinsInApollo()
 
     return (
       <TableWithSort

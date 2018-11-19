@@ -11,15 +11,13 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.types'
 import {
   TableWrapper,
+  TablesWrapper,
   ChartWrapper,
   GridContainer,
   ChartContainer,
 } from './PortfolioTableBalances.styles'
-import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
-const Chart = lazy(() => import('@components/GQLChart'))
-const TradeOrderHistoryTable = lazy(() =>
-  import('@components/TradeOrderHistory/TradeOrderHistoryTable')
-)
+import Chart from '@components/GQLChart'
+import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
 import CardHeader from '@components/CardHeader'
 import { withErrorFallback } from '@hoc/'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
@@ -48,23 +46,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {
-      putDataInTable,
-      tableData,
-      checkedRows,
-      onCheckboxClick,
-      onSelectAllClick,
-      theme,
-    } = this.props
+    const { theme } = this.props
 
-    const tableDataHasData = tableData ? Object.keys(tableData).length : false
     return (
-      <EmptyTablePlaceholder isEmpty={false}>
-        <GridContainer
-          style={{ flexWrap: 'nowrap', flexDirection: 'column' }}
-          container={true}
-          spacing={16}
-        >
+      <>
+        <GridContainer container={true} spacing={16}>
           <Joyride
             continuous={true}
             showProgress={true}
@@ -87,16 +73,10 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
               },
             }}
           />
-          <Grid
-            spacing={8}
-            style={{ maxHeight: '50%', flexBasis: 'inherit' }}
-            container={true}
-            item={true}
-            xs={12}
-          >
+          <TablesWrapper spacing={8} container={true} item={true} xs={12}>
             <Grid item={true} xs={12} md={8}>
               <TableWrapper className="PortfolioMainTable">
-                {<PortfolioMainTable />}
+                <PortfolioMainTable />
               </TableWrapper>
             </Grid>
             <Grid item={true} xs={12} md={4}>
@@ -106,32 +86,25 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
                 </Suspense>
               </TableWrapper>
             </Grid>
-          </Grid>
+          </TablesWrapper>
 
-          <ChartContainer
-            style={{ flexBasis: '51%', padding: '0 8px' }}
-            item={true}
-            xs={12}
-            md={12}
-          >
+          <ChartContainer item={true} xs={12} md={12}>
             <ChartWrapper className="PortfolioValueChart">
               <CardHeader
                 title={'Portfolio Value | Coming Soon | In development'}
               />
-              <Suspense fallback={<Loading centerAligned />}>
-                <Chart
-                  style={{
-                    marginLeft: 0,
-                    minHeight: '10vh',
-                  }}
-                  height="calc(100% - 2rem)"
-                  marginTopHr="10px"
-                />
-              </Suspense>
+              <Chart
+                style={{
+                  marginLeft: 0,
+                  minHeight: '10vh',
+                }}
+                height="calc(100% - 2rem)"
+                marginTopHr="10px"
+              />
             </ChartWrapper>
           </ChartContainer>
         </GridContainer>
-      </EmptyTablePlaceholder>
+      </>
     )
   }
 }

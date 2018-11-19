@@ -5,6 +5,12 @@ import { customAquaScrollBar } from '@styles/cssUtils'
 import { Container } from '../Industry/Industry.styles'
 
 export const GridContainer = styled(Container)`
+  flex-wrap: nowrap;
+  flex-direction: column;
+  @media (max-width: 960px) {
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
   && {
     margin: 0;
   }
@@ -23,6 +29,12 @@ export const TableContainer = styled(Grid)`
   }
 `
 export const ChartContainer = styled(Grid)`
+  flex-basis: 51%;
+  padding: 0 8px;
+  @media (max-width: 960px) {
+    flex-basis: 100%;
+    padding: 0 8px;
+  }
   && {
     height: 40%;
   }
@@ -60,6 +72,15 @@ export const TableWrapper = styled(Card)`
   display: flex;
   flex-direction: column;
   ${customAquaScrollBar};
+`
+
+export const TablesWrapper = styled(Grid)`
+  max-height: 50%;
+  flex-basis: inherit;
+
+  @media (max-width: 960px) {
+    max-height: inherit;
+  }
 `
 
 export const PTChartContainer = styled(Grid)`
