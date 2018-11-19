@@ -23,7 +23,8 @@ export default class ThemeWrapper extends Component<Props> {
           },
         },
         MuiCheckbox: {
-          root: { color: '#3C3C44' },
+          root: { color: '#575A64' },
+          indeterminate: { color: '#575A64' },
         },
       },
       palette: {
