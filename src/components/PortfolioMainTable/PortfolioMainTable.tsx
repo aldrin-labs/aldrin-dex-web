@@ -57,7 +57,7 @@ class Container extends Component {
       const { portfolioAssets } = data.myPortfolios[0]
 
       if (!portfolioAssets) {
-        return
+        return null
       }
 
       const composePortfolioAssetsWithMocks = composePortfolioWithMocks(

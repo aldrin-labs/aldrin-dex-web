@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { graphql, compose, Query } from 'react-apollo'
+import { compose, Query } from 'react-apollo'
 
 import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
@@ -8,8 +8,6 @@ import withTheme from '@material-ui/core/styles/withTheme'
 
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
-import { updatePortfolioMain } from '../../mutations/portfolio/updatePortfolioMain'
-import { portfolioMainState } from '../../mutations/portfolio/portfolioMainState'
 import { isEqual } from 'lodash-es'
 
 const periods = {
@@ -50,10 +48,13 @@ class GQLChart extends React.Component {
     return null
   }
 
-  shouldComponentUpdate(nextProps) {
-    return !isEqual(
-      nextProps.coins.filter(Boolean).map((row) => row.coin),
-      this.props.coins.filter(Boolean).map((row) => row.coin)
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      nextState.activeChart !== this.props.activeChart ||
+      !isEqual(
+        nextProps.coins.filter(Boolean).map((row) => row.coin),
+        this.props.coins.filter(Boolean).map((row) => row.coin)
+      )
     )
   }
 
@@ -148,16 +149,6 @@ const withCoins = (props: any) => (
 )
 
 export default compose(
-  graphql(updatePortfolioMain, { name: 'updatePortfolioMain' }),
-  graphql(portfolioMainState, {
-    props: ({
-      data: {
-        portfolioMain: { activeChart },
-      },
-    }) => ({
-      localActiveChart: activeChart,
-    }),
-  }),
   withTheme(),
   withErrorFallback
 )(withCoins)
