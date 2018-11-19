@@ -21,6 +21,7 @@ import {
 } from '@containers/Chart/Tables/SharedStyles'
 import { IProps } from './SpreadTable.types'
 import { withErrorFallback } from '@hoc/'
+import { PRODUCTION } from '@utils/config'
 
 let index: number | null = null
 //  index for animations, no need to keep it in state couse it realted to css
@@ -88,48 +89,52 @@ class SpreadTable extends Component<IProps> {
             <Loading centerAligned={true} />
           ) : (
             <>
-              {data.map((order: { size: number; price: number }, i: number) => (
-                <Row background={'transparent'} key={order.price}>
-                  <RowWithVolumeChart
-                    volumeColor={hexToRgbAWithOpacity(green.main, 0.25)}
-                    colored={calculatePercentagesOfOrderSize(
-                      order.size,
-                      data
-                    ).toString()}
-                    hoverBackground={action.hover}
-                    background={background.default}
-                  >
-                    <EmptyCell width={'10%'} />
+              {data.map((order: { size: number; price: number }, i: number) => {
+                const pose = PRODUCTION ? false : i === index && 'attention'
 
-                    <Cell pose={false} width={'45%'}>
-                      <StyledTypography
-                        textColor={green.main}
-                        color="default"
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {Number(order.size).toFixed(
-                          digitsAfterDecimalForBidsSize
-                        )}
-                      </StyledTypography>
-                    </Cell>
-                    <Cell pose={false} width={'45%'}>
-                      <StyledTypography
-                        textColor={green.main}
-                        color="default"
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {Number(order.price).toFixed(
-                          digitsAfterDecimalForBidsPrice
-                        )}
-                      </StyledTypography>
-                    </Cell>
-                  </RowWithVolumeChart>
-                </Row>
-              ))}
+                return (
+                  <Row background={'transparent'} key={order.price}>
+                    <RowWithVolumeChart
+                      volumeColor={hexToRgbAWithOpacity(green.main, 0.25)}
+                      colored={calculatePercentagesOfOrderSize(
+                        order.size,
+                        data
+                      ).toString()}
+                      hoverBackground={action.hover}
+                      background={background.default}
+                    >
+                      <EmptyCell width={'10%'} />
+
+                      <Cell pose={pose} width={'45%'}>
+                        <StyledTypography
+                          textColor={green.main}
+                          color="default"
+                          noWrap={true}
+                          variant="body1"
+                          align="right"
+                        >
+                          {Number(order.size).toFixed(
+                            digitsAfterDecimalForBidsSize
+                          )}
+                        </StyledTypography>
+                      </Cell>
+                      <Cell pose={pose} width={'45%'}>
+                        <StyledTypography
+                          textColor={green.main}
+                          color="default"
+                          noWrap={true}
+                          variant="body1"
+                          align="right"
+                        >
+                          {Number(order.price).toFixed(
+                            digitsAfterDecimalForBidsPrice
+                          )}
+                        </StyledTypography>
+                      </Cell>
+                    </RowWithVolumeChart>
+                  </Row>
+                )
+              })}
             </>
           )}
         </Body>

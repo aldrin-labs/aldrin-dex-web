@@ -13,6 +13,7 @@ import {
   StyledTypography,
 } from '@containers/Chart/Tables/SharedStyles'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
+import { PRODUCTION } from '@utils/config'
 
 let objDiv: HTMLElement | null
 
@@ -53,47 +54,51 @@ class ClassBody extends Component<IProps> {
               (
                 order: { size: number | string; price: number | string },
                 i: number
-              ) => (
-                <Row background={'transparent'} key={order.price}>
-                  <RowWithVolumeChart
-                    volumeColor={hexToRgbAWithOpacity(red.main, 0.25)}
-                    colored={calculatePercentagesOfOrderSize(
-                      +order.size,
-                      data
-                    ).toString()}
-                    hoverBackground={action.hover}
-                    background={background.default}
-                  >
-                    <EmptyCell width={'10%'} />
-                    <Cell pose={false} width={'45%'}>
-                      <StyledTypography
-                        textColor={red.main}
-                        color="default"
-                        noWrap={true}
-                        variant="body2"
-                        align="right"
-                      >
-                        {Number(order.size).toFixed(
-                          digitsAfterDecimalForAsksSize
-                        )}
-                      </StyledTypography>
-                    </Cell>
-                    <Cell pose={false} width={'45%'}>
-                      <StyledTypography
-                        textColor={red.main}
-                        color="default"
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {Number(order.price).toFixed(
-                          digitsAfterDecimalForAsksPrice
-                        )}
-                      </StyledTypography>
-                    </Cell>
-                  </RowWithVolumeChart>
-                </Row>
-              )
+              ) => {
+                const pose = PRODUCTION ? false : i === index && 'attention'
+
+                return (
+                  <Row background={'transparent'} key={order.price}>
+                    <RowWithVolumeChart
+                      volumeColor={hexToRgbAWithOpacity(red.main, 0.25)}
+                      colored={calculatePercentagesOfOrderSize(
+                        +order.size,
+                        data
+                      ).toString()}
+                      hoverBackground={action.hover}
+                      background={background.default}
+                    >
+                      <EmptyCell width={'10%'} />
+                      <Cell pose={pose} width={'45%'}>
+                        <StyledTypography
+                          textColor={red.main}
+                          color="default"
+                          noWrap={true}
+                          variant="body2"
+                          align="right"
+                        >
+                          {Number(order.size).toFixed(
+                            digitsAfterDecimalForAsksSize
+                          )}
+                        </StyledTypography>
+                      </Cell>
+                      <Cell pose={pose} width={'45%'}>
+                        <StyledTypography
+                          textColor={red.main}
+                          color="default"
+                          noWrap={true}
+                          variant="body1"
+                          align="right"
+                        >
+                          {Number(order.price).toFixed(
+                            digitsAfterDecimalForAsksPrice
+                          )}
+                        </StyledTypography>
+                      </Cell>
+                    </RowWithVolumeChart>
+                  </Row>
+                )
+              }
             )}
           </>
         )}
