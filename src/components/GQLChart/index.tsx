@@ -1,13 +1,16 @@
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
+import { graphql, compose, Query } from 'react-apollo'
 
 import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
-import gql from 'graphql-tag'
+import { GET_COINS } from '../../mutations/portfolio/getCoins'
 import withTheme from '@material-ui/core/styles/withTheme'
 
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
+import { updatePortfolioMain } from '../../mutations/portfolio/updatePortfolioMain'
+import { portfolioMainState } from '../../mutations/portfolio/portfolioMainState'
+import { isEqual } from 'lodash-es'
 
 const periods = {
   1: 60,
@@ -45,6 +48,13 @@ class GQLChart extends React.Component {
       return newState
     }
     return null
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(
+      nextProps.coins.filter(Boolean).map((row) => row.coin),
+      this.props.coins.filter(Boolean).map((row) => row.coin)
+    )
   }
 
   getTimestampRange(days) {
@@ -129,18 +139,13 @@ class GQLChart extends React.Component {
   }
 }
 
-const updatePortfolioMain = gql`
-  mutation updatePortfolioMain($index: String!, $value: String!) {
-    updatePortfolioMain(index: $index, value: $value) @client
-  }
-`
-const portfolioMainState = gql`
-  query portfolioMain {
-    portfolioMain @client {
-      activeChart
-    }
-  }
-`
+const withCoins = (props: any) => (
+  <Query query={GET_COINS}>
+    {({ data: { portfolioMain = [] } }) => (
+      <GQLChart {...props} coins={portfolioMain.coins} />
+    )}
+  </Query>
+)
 
 export default compose(
   graphql(updatePortfolioMain, { name: 'updatePortfolioMain' }),
@@ -155,4 +160,4 @@ export default compose(
   }),
   withTheme(),
   withErrorFallback
-)(GQLChart)
+)(withCoins)

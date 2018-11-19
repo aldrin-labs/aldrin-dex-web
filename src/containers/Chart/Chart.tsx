@@ -315,15 +315,6 @@ class Chart extends React.Component<IProps, IState> {
     const [base, quote] = currencyPair.split('_')
 
     return (
-      <Slide
-        timeout={{
-          enter: 500,
-        }}
-        direction={'right'}
-        in={true}
-        mountOnEnter={true}
-        unmountOnExit={true}
-      >
         <Container>
           <ChartsContainer>
             <ChartsSwitcher
@@ -375,7 +366,6 @@ class Chart extends React.Component<IProps, IState> {
 
           {this.renderTables()}
         </Container>
-      </Slide>
     )
   }
 

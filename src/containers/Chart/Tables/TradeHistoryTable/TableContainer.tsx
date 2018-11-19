@@ -93,7 +93,6 @@ class TableContainer extends Component<IProps, IState> {
 
   render() {
     const { data, ...rest } = this.props
-
     return (
       <TradeHistoryTable
         data={this.state.data}

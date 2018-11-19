@@ -12,6 +12,7 @@ const chartURL = 'chart.cryptocurrencies.ai'
 // configuring master build at netlify.toml it should be
 //  undefined as default and "true" at master builds
 export const MASTER_BUILD = process.env.MASTER_BUILD
+export const PRODUCTION = process.env.NODE_ENV === 'production'
 export const API_URL = chooseURL(Boolean(process.env.MASTER_BUILD), apiURL)
 export const CHARTS_API_URL = chooseURL(
   Boolean(process.env.MASTER_BUILD),
