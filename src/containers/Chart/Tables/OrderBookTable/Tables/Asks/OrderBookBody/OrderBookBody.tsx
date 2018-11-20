@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, memo } from 'react'
 
 import { Row, Cell, Body } from '@components/OldTable/Table'
 import { Loading } from '@components/Loading'
@@ -16,6 +16,52 @@ import { hexToRgbAWithOpacity } from '@styles/helpers'
 import { PRODUCTION } from '@utils/config'
 
 let objDiv: HTMLElement | null
+
+const OptimizedRow = memo(
+  ({
+    order,
+    data,
+    action,
+    background,
+    red,
+    pose = false,
+    digitsAfterDecimalForAsksSize,
+    digitsAfterDecimalForAsksPrice,
+  }) => (
+    <Row background={'transparent'}>
+      <RowWithVolumeChart
+        volumeColor={hexToRgbAWithOpacity(red.main, 0.25)}
+        colored={calculatePercentagesOfOrderSize(+order.size, data).toString()}
+        background={background.default}
+      >
+        <EmptyCell width={'10%'} />
+        <Cell pose={pose} width={'45%'}>
+          <StyledTypography
+            textColor={red.main}
+            color="default"
+            noWrap={true}
+            variant="body2"
+            align="right"
+          >
+            {Number(order.size).toFixed(digitsAfterDecimalForAsksSize)}
+          </StyledTypography>
+        </Cell>
+        <Cell pose={pose} width={'45%'}>
+          <StyledTypography
+            textColor={red.main}
+            color="default"
+            noWrap={true}
+            variant="body1"
+            align="right"
+          >
+            {Number(order.price).toFixed(digitsAfterDecimalForAsksPrice)}
+          </StyledTypography>
+        </Cell>
+      </RowWithVolumeChart>
+    </Row>
+  ),
+  (prevProps, nextProps) => nextProps.order.price === prevProps.order.price
+)
 
 class ClassBody extends Component<IProps> {
   componentDidMount() {
@@ -58,45 +104,18 @@ class ClassBody extends Component<IProps> {
                 const pose = PRODUCTION ? false : i === index && 'attention'
 
                 return (
-                  <Row background={'transparent'} key={order.price}>
-                    <RowWithVolumeChart
-                      volumeColor={hexToRgbAWithOpacity(red.main, 0.25)}
-                      colored={calculatePercentagesOfOrderSize(
-                        +order.size,
-                        data
-                      ).toString()}
-                      hoverBackground={action.hover}
-                      background={background.default}
-                    >
-                      <EmptyCell width={'10%'} />
-                      <Cell pose={pose} width={'45%'}>
-                        <StyledTypography
-                          textColor={red.main}
-                          color="default"
-                          noWrap={true}
-                          variant="body2"
-                          align="right"
-                        >
-                          {Number(order.size).toFixed(
-                            digitsAfterDecimalForAsksSize
-                          )}
-                        </StyledTypography>
-                      </Cell>
-                      <Cell pose={pose} width={'45%'}>
-                        <StyledTypography
-                          textColor={red.main}
-                          color="default"
-                          noWrap={true}
-                          variant="body1"
-                          align="right"
-                        >
-                          {Number(order.price).toFixed(
-                            digitsAfterDecimalForAsksPrice
-                          )}
-                        </StyledTypography>
-                      </Cell>
-                    </RowWithVolumeChart>
-                  </Row>
+                  <OptimizedRow
+                    key={order.price}
+                    {...{
+                      order,
+                      data,
+                      action,
+                      background,
+                      red,
+                      digitsAfterDecimalForAsksSize,
+                      digitsAfterDecimalForAsksPrice,
+                    }}
+                  />
                 )
               }
             )}

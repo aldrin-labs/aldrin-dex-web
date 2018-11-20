@@ -112,7 +112,7 @@ const SwitchTablesButton = styled(Button)`
   && {
     display: none;
 
-    @media (max - width: 1080px) {
+    @media (max-width: 1080px) {
       display: block;
     }
   }

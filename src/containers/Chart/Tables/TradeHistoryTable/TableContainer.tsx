@@ -27,7 +27,7 @@ class TableContainer extends Component<IProps, IState> {
       )
     ) {
       //  if data is actually not a new data
-      return
+      return null
     }
     if (
       newProps.data &&
@@ -37,6 +37,7 @@ class TableContainer extends Component<IProps, IState> {
       const tickerData = testJSON(newProps.data.marketTickers[0])
         ? JSON.parse(newProps.data.marketTickers[0])
         : newProps.data.marketTickers[0]
+
       if (state.data.length > 0 && tickerData[3] === state.data[0].price) {
         return null
       }
@@ -44,6 +45,7 @@ class TableContainer extends Component<IProps, IState> {
         state.data.length > 0 ? state.data[0].price > tickerData[3] : false
       const ticker = {
         fall,
+        id: tickerData[5],
         size: tickerData[4],
         price: tickerData[3],
         time: new Date(tickerData[7]).toLocaleTimeString(),
