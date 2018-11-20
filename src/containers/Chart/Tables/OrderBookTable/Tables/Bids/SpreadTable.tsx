@@ -29,7 +29,6 @@ const RowFunc = ({
   background,
   digitsAfterDecimalForBidsSize,
   green,
-  pose = false,
   digitsAfterDecimalForBidsPrice,
 }) => (
   <Row background={'transparent'} key={order.price}>
@@ -69,7 +68,44 @@ const RowFunc = ({
 
 const MemoizedRow = memo(
   RowFunc,
-  (prevProps, nextProps) => nextProps.order.price === prevProps.order.price
+  (prevProps, nextProps) =>
+    nextProps.order.price === prevProps.order.price &&
+    nextProps.type === prevProps.type
+)
+
+const HeadRowWithMemo = memo(
+  ({ primary, type, palette, quote, spread, digitsAfterDecimalForSpread }) => (
+    <Head background={primary[type]} style={{ height: '1.625rem' }}>
+      <TriggerRow isHead={true} background={primary[type]}>
+        <EmptyCell width="10%" />
+        <HeadCell width={'45%'}>
+          <TypographyFullWidth
+            textColor={palette.getContrastText(primary[type])}
+            variant="body1"
+            align="right"
+          >
+            {quote || 'Fiat'} spread{' '}
+          </TypographyFullWidth>
+        </HeadCell>
+        <HeadCell width={'45%'}>
+          <TypographyFullWidth
+            textColor={palette.getContrastText(primary[type])}
+            variant="body1"
+            align="right"
+            color="secondary"
+          >
+            {+spread.toFixed(digitsAfterDecimalForSpread) <= 0
+              ? '~ 0'
+              : spread.toFixed(digitsAfterDecimalForSpread)}
+          </TypographyFullWidth>
+        </HeadCell>
+      </TriggerRow>
+    </Head>
+  ),
+  (prevProps, nextProps) =>
+    nextProps.spread === prevProps.spread &&
+    nextProps.quote === prevProps.quote &&
+    nextProps.type === prevProps.type
 )
 
 class SpreadTable extends Component<IProps> {
@@ -96,32 +132,16 @@ class SpreadTable extends Component<IProps> {
 
     return (
       <SpreadreadTableWrapper>
-        <Head background={primary[type]} style={{ height: '1.625rem' }}>
-          <TriggerRow isHead={true} background={primary[type]}>
-            <EmptyCell width="10%" />
-            <HeadCell width={'45%'}>
-              <TypographyFullWidth
-                textColor={palette.getContrastText(primary[type])}
-                variant="body1"
-                align="right"
-              >
-                {quote || 'Fiat'} spread{' '}
-              </TypographyFullWidth>
-            </HeadCell>
-            <HeadCell width={'45%'}>
-              <TypographyFullWidth
-                textColor={palette.getContrastText(primary[type])}
-                variant="body1"
-                align="right"
-                color="secondary"
-              >
-                {+spread.toFixed(digitsAfterDecimalForSpread) <= 0
-                  ? '~ 0'
-                  : spread.toFixed(digitsAfterDecimalForSpread)}
-              </TypographyFullWidth>
-            </HeadCell>
-          </TriggerRow>
-        </Head>
+        <HeadRowWithMemo
+          {...{
+            primary,
+            type,
+            palette,
+            quote,
+            spread,
+            digitsAfterDecimalForSpread,
+          }}
+        />
         <Body background={background.default} height="calc(100% - 26px)">
           {data.length === 0 ? (
             <Loading centerAligned={true} />
@@ -131,6 +151,7 @@ class SpreadTable extends Component<IProps> {
                 <MemoizedRow
                   key={order.price}
                   {...{
+                    type,
                     order,
                     data,
                     action,

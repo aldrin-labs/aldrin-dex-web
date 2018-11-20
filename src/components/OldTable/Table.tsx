@@ -91,9 +91,11 @@ export const HeadCell = styled(Cell)`
   width: 7%;
 `
 
+// padding right for scrollbar width
 export const Head = styled.ul`
   margin: 0;
   padding: 0;
+  padding-right: 6px;
   height: 2rem;
   width: 100%;
   background-color: ${(props: { background: string }) => props.background};

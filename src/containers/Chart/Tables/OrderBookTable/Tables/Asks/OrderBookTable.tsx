@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, memo } from 'react'
 import styled from 'styled-components'
 import { Button } from '@material-ui/core'
 import { difference } from 'lodash-es'
@@ -12,6 +12,58 @@ import { IProps } from './OrderBookTable.types'
 import { withErrorFallback } from '@hoc/'
 
 let index: number | null = null
+
+const MemoHead = memo(
+  ({ palette, primary, type, onButtonClick, background, quote }) => (
+    <>
+      {' '}
+      <Title background={primary[type]}>
+        <TypographyWithCustomColor
+          textColor={palette.getContrastText(primary[type])}
+          variant="subtitle1"
+          align="center"
+        >
+          Order Book
+        </TypographyWithCustomColor>
+        <SwitchTablesButton
+          onClick={onButtonClick}
+          variant="outlined"
+          color="primary"
+        >
+          HISTORY
+        </SwitchTablesButton>
+      </Title>
+      <Head background={background.default}>
+        <Row isHead={true} background={background.default}>
+          <EmptyCell width={'10%'} />
+          <HeadCell width={'45%'}>
+            <TypographyFullWidth
+              textColor={palette.getContrastText(background.default)}
+              variant="subtitle1"
+              color="default"
+              align="right"
+            >
+              Trade Size
+            </TypographyFullWidth>
+          </HeadCell>
+          <HeadCell width={'45%'}>
+            <TypographyFullWidth
+              textColor={palette.getContrastText(background.default)}
+              variant="subtitle1"
+              noWrap={true}
+              color="default"
+              align="right"
+            >
+              Price {quote || 'Fiat'}
+            </TypographyFullWidth>
+          </HeadCell>
+        </Row>
+      </Head>
+    </>
+  ),
+  (prevProps, nextProps) =>
+    nextProps.quote === prevProps.quote && nextProps.type === prevProps.type
+)
 
 class OrderBookTable extends Component<IProps> {
   shouldComponentUpdate(nextProps: IProps) {
@@ -44,48 +96,9 @@ class OrderBookTable extends Component<IProps> {
 
     return (
       <AsksTable>
-        <Title background={primary[type]}>
-          <TypographyWithCustomColor
-            textColor={palette.getContrastText(primary[type])}
-            variant="subtitle1"
-            align="center"
-          >
-            Order Book
-          </TypographyWithCustomColor>
-          <SwitchTablesButton
-            onClick={onButtonClick}
-            variant="outlined"
-            color="primary"
-          >
-            HISTORY
-          </SwitchTablesButton>
-        </Title>
-        <Head background={background.default}>
-          <Row isHead={true} background={background.default}>
-            <EmptyCell width={'10%'} />
-            <HeadCell width={'45%'}>
-              <TypographyFullWidth
-                textColor={palette.getContrastText(background.default)}
-                variant="subtitle1"
-                color="default"
-                align="right"
-              >
-                Trade Size
-              </TypographyFullWidth>
-            </HeadCell>
-            <HeadCell width={'45%'}>
-              <TypographyFullWidth
-                textColor={palette.getContrastText(background.default)}
-                variant="subtitle1"
-                noWrap={true}
-                color="default"
-                align="right"
-              >
-                Price {quote || 'Fiat'}
-              </TypographyFullWidth>
-            </HeadCell>
-          </Row>
-        </Head>
+        <MemoHead
+          {...{ palette, primary, type, onButtonClick, background, quote }}
+        />
         {/* hack to autoscroll to bottom */}
         <OrderBookBody
           {...{

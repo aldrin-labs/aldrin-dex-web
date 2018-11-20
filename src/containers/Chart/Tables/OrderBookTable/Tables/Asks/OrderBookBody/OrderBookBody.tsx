@@ -20,12 +20,11 @@ const OptimizedRow = memo(
   ({
     order,
     data,
-    action,
     background,
     red,
-    pose = false,
     digitsAfterDecimalForAsksSize,
     digitsAfterDecimalForAsksPrice,
+    type,
   }) => (
     <Row background={'transparent'}>
       <RowWithVolumeChart
@@ -59,7 +58,9 @@ const OptimizedRow = memo(
       </RowWithVolumeChart>
     </Row>
   ),
-  (prevProps, nextProps) => nextProps.order.price === prevProps.order.price
+  (prevProps, nextProps) =>
+    nextProps.order.price === prevProps.order.price &&
+    nextProps.type === prevProps.type
 )
 
 class ClassBody extends Component<IProps> {
@@ -85,7 +86,7 @@ class ClassBody extends Component<IProps> {
       index,
       background,
       theme: {
-        palette: { red },
+        palette: { red, type },
       },
     } = this.props
 
@@ -103,6 +104,7 @@ class ClassBody extends Component<IProps> {
                 <OptimizedRow
                   key={order.price}
                   {...{
+                    type,
                     order,
                     data,
                     action,
