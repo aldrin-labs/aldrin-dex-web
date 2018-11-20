@@ -17,26 +17,6 @@ import { IProps, IState, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
-// class OptimizedRow extends Component {
-//   shouldComponentUpdate(nextProps, nextState, nextContext) {
-//     return this.props.ticker.id !== nextProps.ticker.id
-//   }
-
-//   render() {
-//     const {
-//       action,
-//       ticker,
-//       background,
-//       numbersAfterDecimalForPrice,
-//       red,
-//       green,
-//     } = this.props
-//     return (
-
-//     )
-//   }
-// }
-
 const OptimizedRow = memo(
   ({ ticker, background, numbersAfterDecimalForPrice, red, green }) => (
     <Row background={background.default}>
