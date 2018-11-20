@@ -92,11 +92,10 @@ const CorrelationWrapper = (props: IProps) => {
         key={key}
         styles={{
           options: {
-            backgroundColor: theme.palette.background.paper,
-            primaryColor: theme.palette.primary.main,
-            textColor: theme.palette.getContrastText(
-              theme.palette.background.paper
-            ),
+            backgroundColor: theme.palette.getContrastText(
+              theme.palette.primary.main),
+            primaryColor: theme.palette.secondary.main,
+            textColor: theme.palette.primary.main,
           },
           tooltip: {
             fontFamily: theme.typography.fontFamily,
