@@ -57,6 +57,7 @@ export const Row = styled.li`
   background-color: ${(props: { isHead?: boolean; background: string }) =>
     props.background};
   height: ${(props: { isHead?: boolean }) => (props.isHead ? '100%' : '22px')};
+  will-change: background;
 
   &:hover {
     background: ${(props: {

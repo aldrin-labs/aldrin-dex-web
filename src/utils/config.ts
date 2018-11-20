@@ -9,7 +9,7 @@ const chooseURL = (isMaster: boolean, URL: string) =>
 const apiURL = 'api.cryptocurrencies.ai'
 const chartURL = 'chart.cryptocurrencies.ai'
 
-// configuring master build at netlify.toml it should be
+// configuring master build at Package.json it should be
 //  undefined as default and "true" at master builds
 export const MASTER_BUILD = process.env.MASTER_BUILD
 export const PRODUCTION = process.env.NODE_ENV === 'production'

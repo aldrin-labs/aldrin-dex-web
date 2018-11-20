@@ -4,6 +4,7 @@ export interface IState {
 
 export interface ITicker {
   size: number
+  id: string
   price: string
   time: string
   fall: boolean

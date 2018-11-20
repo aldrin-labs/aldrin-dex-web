@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { memo, PureComponent } from 'react'
 import styled, { keyframes } from 'styled-components'
 import Collapse from '@material-ui/core/Collapse'
 import MdArrowDropUp from '@material-ui/icons/ArrowDropUp'
@@ -16,6 +16,43 @@ import {
 import { IProps, IState, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
+
+const OptimizedRow = memo(
+  ({ ticker, background, numbersAfterDecimalForPrice, red, green }) => (
+    <Row background={background.default}>
+      <Cell width={'30%'}>
+        <TypographyFullWidth noWrap={true} variant="body1" align="right">
+          {Number(ticker.size).toFixed(4)}
+        </TypographyFullWidth>
+      </Cell>
+      <Cell width={'45%'} style={{ display: 'flex' }}>
+        <StyledArrow
+          color={ticker.fall ? red.main : green.main}
+          direction={ticker.fall ? 'down' : 'up'}
+        />
+        <StyledTypography
+          textColor={ticker.fall ? red.main : green.main}
+          noWrap={true}
+          variant="body1"
+          align="right"
+        >
+          {Number(ticker.price).toFixed(numbersAfterDecimalForPrice)}
+        </StyledTypography>
+      </Cell>
+      <Cell width={'25%'}>
+        <TypographyFullWidth
+          color="primary"
+          noWrap={true}
+          variant="body1"
+          align="right"
+        >
+          {ticker.time}
+        </TypographyFullWidth>
+      </Cell>
+    </Row>
+  ),
+  (prevProps, nextProps) => nextProps.ticker.id === prevProps.ticker.id
+)
 
 class TradeHistoryTable extends PureComponent<IProps, IState> {
   state = {
@@ -109,47 +146,16 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
             ) : (
               <>
                 {data.map((ticker: ITicker, i: number) => (
-                  <Row
-                    hoverBackground={action.hover}
-                    key={i}
-                    background={background.default}
-                  >
-                    <Cell width={'30%'}>
-                      <TypographyFullWidth
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {Number(ticker.size).toFixed(4)}
-                      </TypographyFullWidth>
-                    </Cell>
-                    <Cell width={'45%'} style={{ display: 'flex' }}>
-                      <StyledArrow
-                        color={ticker.fall ? red.main : green.main}
-                        direction={ticker.fall ? 'down' : 'up'}
-                      />
-                      <StyledTypography
-                        textColor={ticker.fall ? red.main : green.main}
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {Number(ticker.price).toFixed(
-                          numbersAfterDecimalForPrice
-                        )}
-                      </StyledTypography>
-                    </Cell>
-                    <Cell width={'25%'}>
-                      <TypographyFullWidth
-                        color="primary"
-                        noWrap={true}
-                        variant="body1"
-                        align="right"
-                      >
-                        {ticker.time}
-                      </TypographyFullWidth>
-                    </Cell>
-                  </Row>
+                  <OptimizedRow
+                    key={ticker.id}
+                    {...{
+                      ticker,
+                      background,
+                      numbersAfterDecimalForPrice,
+                      red,
+                      green,
+                    }}
+                  />
                 ))}
               </>
             )}
