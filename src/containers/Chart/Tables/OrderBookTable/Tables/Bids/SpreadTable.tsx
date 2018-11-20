@@ -82,14 +82,6 @@ class SpreadTable extends Component<IProps> {
     return shouldUpdate
   }
 
-  componentDidUpdate(prevProps: IProps) {
-    index =
-      this.props.data &&
-      this.props.data.findIndex(
-        (el) => el === difference(this.props.data, prevProps.data)[0]
-      )
-  }
-
   render() {
     const {
       digitsAfterDecimalForSpread,
