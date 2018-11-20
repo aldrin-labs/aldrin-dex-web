@@ -198,10 +198,10 @@ class Chart extends React.Component<IProps, IState> {
           callback={this.handleJoyrideCallback}
           styles={{
             options: {
-              backgroundColor: theme.palette.background.paper,
+              backgroundColor: theme.palette.text.primary,
               primaryColor: theme.palette.primary.main,
               textColor: theme.palette.getContrastText(
-                theme.palette.background.paper
+                theme.palette.text.primary
               ),
             },
             tooltip: {
