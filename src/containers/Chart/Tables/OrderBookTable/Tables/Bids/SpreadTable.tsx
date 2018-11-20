@@ -21,11 +21,6 @@ import {
 } from '@containers/Chart/Tables/SharedStyles'
 import { IProps } from './SpreadTable.types'
 import { withErrorFallback } from '@hoc/'
-import { PRODUCTION } from '@utils/config'
-
-let index: number | null = null
-//  index for animations, no need to keep it in state couse it realted to css
-//  and there is no needs for rerendering
 
 const RowFunc = ({
   order,
@@ -46,7 +41,7 @@ const RowFunc = ({
     >
       <EmptyCell width={'10%'} />
 
-      <Cell pose={pose} width={'45%'}>
+      <Cell width={'45%'}>
         <StyledTypography
           textColor={green.main}
           color="default"
@@ -57,7 +52,7 @@ const RowFunc = ({
           {Number(order.size).toFixed(digitsAfterDecimalForBidsSize)}
         </StyledTypography>
       </Cell>
-      <Cell pose={pose} width={'45%'}>
+      <Cell width={'45%'}>
         <StyledTypography
           textColor={green.main}
           color="default"
@@ -128,7 +123,7 @@ class SpreadTable extends Component<IProps> {
                 align="right"
                 color="secondary"
               >
-                {spread.toFixed(digitsAfterDecimalForSpread) <= 0
+                {+spread.toFixed(digitsAfterDecimalForSpread) <= 0
                   ? '~ 0'
                   : spread.toFixed(digitsAfterDecimalForSpread)}
               </TypographyFullWidth>
@@ -140,24 +135,20 @@ class SpreadTable extends Component<IProps> {
             <Loading centerAligned={true} />
           ) : (
             <>
-              {data.map((order: { size: number; price: number }, i: number) => {
-                const pose = PRODUCTION ? false : i === index && 'attention'
-
-                return (
-                  <MemoizedRow
-                    key={order.price}
-                    {...{
-                      order,
-                      data,
-                      action,
-                      background,
-                      digitsAfterDecimalForBidsSize,
-                      green,
-                      digitsAfterDecimalForBidsPrice,
-                    }}
-                  />
-                )
-              })}
+              {data.map((order: { size: number; price: number }, i: number) => (
+                <MemoizedRow
+                  key={order.price}
+                  {...{
+                    order,
+                    data,
+                    action,
+                    background,
+                    digitsAfterDecimalForBidsSize,
+                    green,
+                    digitsAfterDecimalForBidsPrice,
+                  }}
+                />
+              ))}
             </>
           )}
         </Body>

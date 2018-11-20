@@ -13,7 +13,6 @@ import {
   StyledTypography,
 } from '@containers/Chart/Tables/SharedStyles'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
-import { PRODUCTION } from '@utils/config'
 
 let objDiv: HTMLElement | null
 
@@ -35,7 +34,7 @@ const OptimizedRow = memo(
         background={background.default}
       >
         <EmptyCell width={'10%'} />
-        <Cell pose={pose} width={'45%'}>
+        <Cell width={'45%'}>
           <StyledTypography
             textColor={red.main}
             color="default"
@@ -46,7 +45,7 @@ const OptimizedRow = memo(
             {Number(order.size).toFixed(digitsAfterDecimalForAsksSize)}
           </StyledTypography>
         </Cell>
-        <Cell pose={pose} width={'45%'}>
+        <Cell width={'45%'}>
           <StyledTypography
             textColor={red.main}
             color="default"
@@ -100,24 +99,20 @@ class ClassBody extends Component<IProps> {
               (
                 order: { size: number | string; price: number | string },
                 i: number
-              ) => {
-                const pose = PRODUCTION ? false : i === index && 'attention'
-
-                return (
-                  <OptimizedRow
-                    key={order.price}
-                    {...{
-                      order,
-                      data,
-                      action,
-                      background,
-                      red,
-                      digitsAfterDecimalForAsksSize,
-                      digitsAfterDecimalForAsksPrice,
-                    }}
-                  />
-                )
-              }
+              ) => (
+                <OptimizedRow
+                  key={order.price}
+                  {...{
+                    order,
+                    data,
+                    action,
+                    background,
+                    red,
+                    digitsAfterDecimalForAsksSize,
+                    digitsAfterDecimalForAsksPrice,
+                  }}
+                />
+              )
             )}
           </>
         )}
