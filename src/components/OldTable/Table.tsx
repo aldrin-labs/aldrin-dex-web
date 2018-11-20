@@ -68,18 +68,7 @@ export const Row = styled.li`
   }
 `
 
-export const Cell = styled(
-  posed.div({
-    attention: {
-      opacity: 1,
-      transition: {
-        type: 'keyframes',
-        duration: 1000,
-        values: [0, 0.2, 0, 5, 1],
-      },
-    },
-  })
-)`
+export const Cell = styled.div`
   position: relative;
   overflow: hidden;
   list-style: none;
