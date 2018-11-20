@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { TypographyFullWidth } from '@styles/cssUtils'
-import { Cell, Row, Body } from '@components/OldTable/Table'
+import { Cell, Body } from '@components/OldTable/Table'
 
 export const EmptyCell = styled(Cell)`
   position: relative;
@@ -17,10 +17,18 @@ export const StyledTypography = styled(TypographyFullWidth)`
   }
 `
 
-export const RowWithVolumeChart = styled(Row)`
+export const RowWithVolumeChart = styled.div`
+  width: 100%;
+  position: relative;
+  display: flex;
+
+  background-color: ${(props: { isHead?: boolean; background: string }) =>
+    props.background};
+  height: ${(props: { isHead?: boolean }) => (props.isHead ? '100%' : '22px')};
+
   &:before {
     position: absolute;
-    z-index: 100;
+    z-index: 1;
     top: 0;
     left: 0;
     width: ${(props: { colored?: string }) => Number(props.colored)}%;

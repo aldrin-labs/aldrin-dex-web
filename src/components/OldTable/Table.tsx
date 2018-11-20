@@ -57,6 +57,7 @@ export const Row = styled.li`
   background-color: ${(props: { isHead?: boolean; background: string }) =>
     props.background};
   height: ${(props: { isHead?: boolean }) => (props.isHead ? '100%' : '22px')};
+  will-change: background;
 
   &:hover {
     background: ${(props: {
@@ -67,18 +68,7 @@ export const Row = styled.li`
   }
 `
 
-export const Cell = styled(
-  posed.div({
-    attention: {
-      opacity: 1,
-      transition: {
-        type: 'keyframes',
-        duration: 1000,
-        values: [0, 0.2, 0, 5, 1],
-      },
-    },
-  })
-)`
+export const Cell = styled.div`
   position: relative;
   overflow: hidden;
   list-style: none;
@@ -101,9 +91,11 @@ export const HeadCell = styled(Cell)`
   width: 7%;
 `
 
+// padding right for scrollbar width
 export const Head = styled.ul`
   margin: 0;
   padding: 0;
+  padding-right: 6px;
   height: 2rem;
   width: 100%;
   background-color: ${(props: { background: string }) => props.background};

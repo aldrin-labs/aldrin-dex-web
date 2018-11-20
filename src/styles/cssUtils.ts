@@ -10,11 +10,11 @@ export const customAquaScrollBar = css`
   }
 
   &::-webkit-scrollbar-track {
-    background: #27272d;
+    background: rgba(45, 49, 54, 0.1);
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
+    background: rgb(39, 39, 45);
   }
 `
 

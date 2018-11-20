@@ -8,7 +8,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
-import { BarChart } from '@storybook-components'
+import { BarChart } from '@storybook-components/index'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
@@ -130,8 +130,7 @@ export default class Import extends PureComponent<IProps> {
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
-    console.log('backendResultParsed', backendResultParsed);
-
+    console.log('backendResultParsed', backendResultParsed)
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
@@ -141,30 +140,43 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.error_message.length || backendResultParsed.status === 1) {
+    if (
+      backendResultParsed.error ||
+      backendResultParsed.error_message.length ||
+      backendResultParsed.status === 1
+    ) {
       const isUserError = backendResultParsed.error_message
       //TODO: Should be another function
 
       if (isUserError && isUserError.length) {
-        const userErrorMessage = `User Error: ${
-          backendResultParsed.error_message.map((el: string) => `${el}`).join()}`
+        const userErrorMessage = `User Error: ${backendResultParsed.error_message
+          .map((el: string) => `${el}`)
+          .join()}`
 
         showWarning(userErrorMessage, false)
 
         if (backendResultParsed.new_start) {
-          console.log('backendResultParsed.new_start', backendResultParsed.new_start);
+          console.log(
+            'backendResultParsed.new_start',
+            backendResultParsed.new_start
+          )
 
-          this.setState({startDate: moment.unix(backendResultParsed.new_start)}, () => {console.log('this.state after update on user error', this.state)})
+          this.setState(
+            { startDate: moment.unix(backendResultParsed.new_start) },
+            () => {
+              console.log('this.state after update on user error', this.state)
+            }
+          )
           this.setDataFromResponse(backendResultParsed)
         }
         if (backendResultParsed.status === 0) {
-          console.log('status 0, set data');
+          console.log('status 0, set data')
 
           this.setDataFromResponse(backendResultParsed)
         }
 
         if (backendResultParsed.status !== 0) {
-          console.log('status not 0, reset data');
+          console.log('status not 0, reset data')
 
           this.onResetOnlyOptimizationData()
         }
@@ -185,7 +197,6 @@ export default class Import extends PureComponent<IProps> {
 
     this.props.toggleLoading()
     this.props.setActiveButtonToDefault()
-
 
     this.setDataFromResponse(backendResultParsed)
   }
@@ -246,7 +257,11 @@ export default class Import extends PureComponent<IProps> {
     const formatedOptimizedData = rawOptimizedData.length
       ? storeData.map((el, i) => ({
           x: el.coin,
-          y: el.optimizedPercentageArray && el.optimizedPercentageArray[activeButton] || 0,
+          y: Number(
+            (el.optimizedPercentageArray &&
+              el.optimizedPercentageArray[activeButton]) ||
+              0
+          ),
         }))
       : []
 

@@ -17,6 +17,8 @@ const Correlation = React.lazy(() =>
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
 import { Loading } from '@components/index'
+import { Mutation } from 'react-apollo'
+import { TOGGLE_BASE_COIN } from '../../../../mutations/portfolio/toggleBaseCoin'
 
 export class PortfolioTable extends Component<ITableProps, IState> {
   state: IState = {
@@ -116,20 +118,27 @@ export class PortfolioTable extends Component<ITableProps, IState> {
     const { theme, showTable = false } = this.props
 
     return (
-      <>
-        <PortfolioTableTabs
-          theme={theme}
-          toggleWallets={this.props.toggleWallets}
-          tab={tab}
-          isUSDCurrently={isUSDCurrently}
-          onChangeTab={this.onChangeTab}
-          onToggleChart={this.onToggleChart}
-          onToggleUSDBTC={this.onToggleUSDBTC}
-        />
-        <Suspense fallback={<Loading centerAligned />}>
-          {showTable && this.renderTab()}
-        </Suspense>
-      </>
+      <Mutation mutation={TOGGLE_BASE_COIN}>
+        {(toggleBaseCoin) => (
+          <>
+            <PortfolioTableTabs
+              theme={theme}
+              toggleWallets={this.props.toggleWallets}
+              tab={tab}
+              isUSDCurrently={isUSDCurrently}
+              onChangeTab={this.onChangeTab}
+              onToggleChart={this.onToggleChart}
+              onToggleUSDBTC={() => {
+                this.onToggleUSDBTC()
+                toggleBaseCoin()
+              }}
+            />
+            <Suspense fallback={<Loading centerAligned />}>
+              {showTable && this.renderTab()}
+            </Suspense>
+          </>
+        )}
+      </Mutation>
     )
   }
 }

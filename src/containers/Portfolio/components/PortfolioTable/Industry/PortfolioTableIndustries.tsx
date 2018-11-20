@@ -16,6 +16,7 @@ import { Container, Wrapper, ChartWrapper } from './Industry.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import { portfolioIndustrySteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
+import { withErrorFallback } from '@hoc/'
 
 const tableHeadings = [
   { name: 'Industry', value: 'industry', id: 'industry' },
@@ -204,9 +205,11 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  queryRendererHoc({
-    query: getPortfolioQuery,
-    pollInterval: 5000,
-    fetchPolicy: 'network-only',
-  })(PortfolioTableIndustries)
+  withErrorFallback(
+    queryRendererHoc({
+      query: getPortfolioQuery,
+      pollInterval: 5000,
+      fetchPolicy: 'network-only',
+    })(PortfolioTableIndustries)
+  )
 )

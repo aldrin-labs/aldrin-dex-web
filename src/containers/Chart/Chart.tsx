@@ -220,6 +220,7 @@ class Chart extends React.Component<IProps, IState> {
         >
           <QueryRenderer
             component={OrderBookTable}
+            withOutSpinner
             query={ORDERS_MARKET_QUERY}
             fetchPolicy="network-only"
             variables={{ symbol, exchange }}
@@ -315,57 +316,57 @@ class Chart extends React.Component<IProps, IState> {
     const [base, quote] = currencyPair.split('_')
 
     return (
-        <Container>
-          <ChartsContainer>
-            <ChartsSwitcher
-              divider={palette.divider}
-              background={palette.primary[type]}
-            >
-              {base && quote && (
-                <ExchangePair background={palette.primary[type]}>
-                  <TypographyWithCustomColor
-                    textColor={palette.getContrastText(palette.primary[type])}
-                    variant="subtitle1"
-                  >
-                    {`${base}/${quote}`}
-                  </TypographyWithCustomColor>
-                </ExchangePair>
-              )}
-              <SwitchButtonWrapper>
-                <Button
-                  variant="text"
-                  color="secondary"
-                  onClick={() => {
-                    this.setState((prevState) => ({
-                      activeChart:
-                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                    }))
-                  }}
+      <Container>
+        <ChartsContainer>
+          <ChartsSwitcher
+            divider={palette.divider}
+            background={palette.primary[type]}
+          >
+            {base && quote && (
+              <ExchangePair background={palette.primary[type]}>
+                <TypographyWithCustomColor
+                  textColor={palette.getContrastText(palette.primary[type])}
+                  variant="subtitle1"
                 >
-                  {activeChart === 'candle' ? 'show depth' : 'show chart'}
-                </Button>
-              </SwitchButtonWrapper>
-            </ChartsSwitcher>
-            {activeChart === 'candle' ? (
-              <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
-            ) : (
-              <Fade timeout={1000} in={activeChart === 'depth'}>
-                <DepthChartContainer>
-                  <MainDepthChart
-                    {...{
-                      theme,
-                      base,
-                      quote,
-                      animated: false,
-                    }}
-                  />
-                </DepthChartContainer>
-              </Fade>
+                  {`${base}/${quote}`}
+                </TypographyWithCustomColor>
+              </ExchangePair>
             )}
-          </ChartsContainer>
+            <SwitchButtonWrapper>
+              <Button
+                variant="text"
+                color="secondary"
+                onClick={() => {
+                  this.setState((prevState) => ({
+                    activeChart:
+                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                  }))
+                }}
+              >
+                {activeChart === 'candle' ? 'show depth' : 'show chart'}
+              </Button>
+            </SwitchButtonWrapper>
+          </ChartsSwitcher>
+          {activeChart === 'candle' ? (
+            <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
+          ) : (
+            <Fade timeout={1000} in={activeChart === 'depth'}>
+              <DepthChartContainer>
+                <MainDepthChart
+                  {...{
+                    theme,
+                    base,
+                    quote,
+                    animated: false,
+                  }}
+                />
+              </DepthChartContainer>
+            </Fade>
+          )}
+        </ChartsContainer>
 
-          {this.renderTables()}
-        </Container>
+        {this.renderTables()}
+      </Container>
     )
   }
 

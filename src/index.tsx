@@ -10,12 +10,11 @@ import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { App } from '@containers/index'
-import { client } from '@utils/apolloClient'
+import { client } from '@graphql/apolloClient'
 import { persistor, store } from '@utils/configureStore'
 import ErrorBoundary from '@components/ErrorFallback/ErrorFallback'
 import { Loading } from '@components/index'
-import ChartRoutes from '@containers/Chart/routes'
-// const ChartRoutes = lazy(() => import('@containers/Chart/routes'))
+const ChartRoutes = lazy(() => import('@containers/Chart/routes'))
 const NotFound = lazy(() => import('@components/NotFound'))
 const UserRoutes = lazy(() => import('@containers/User/routes'))
 const PortfolioRoutes = lazy(() => import('@containers/Portfolio/routes'))

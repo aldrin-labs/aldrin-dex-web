@@ -36,6 +36,7 @@ const auth0Options = {
 
 const SWrapper = styled.div`
   z-index: 100000;
+  padding: 0 1rem;
   align-items: center;
   display: flex;
   justify-content: flex-end;
@@ -69,7 +70,7 @@ class LoginQuery extends React.Component<Props, State> {
     if (this.props.loginStatus) this.addFSIdentify(this.props.user)
   }
 
-   addFSIdentify(profile) {
+  addFSIdentify(profile) {
     console.log('addFSIdentify')
     console.log('userId', profile.email)
     if (MASTER_BUILD) {
