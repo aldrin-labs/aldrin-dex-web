@@ -195,7 +195,7 @@ export class CoinMarket extends React.Component<Props, State> {
     return (
       <Container>
         <GridContainer container={true} spacing={16}>
-          <TableContainer item={true} xs={12} md={9}>
+          <TableContainer item={true} xs={12} md={12}>
             <TableWrapper className="PortfolioMainTable">
               <TableWithSort
                   title="Title"
@@ -210,24 +210,6 @@ export class CoinMarket extends React.Component<Props, State> {
                   }}
               />
             </TableWrapper>
-          </TableContainer>
-          <TableContainer item={true} xs={12} md={3}>
-            <TableWrapper className="PortfolioTradeOrderHistoryTable">
-              <CardHeader title="Calculator" />
-              <CalculatorWrapper>
-                <Calculator rates={rates} />
-              </CalculatorWrapper>
-            </TableWrapper>
-            <DonutChatWrapper>
-              <CardHeader title="Donut Chart" />
-              <ChartWrapper>
-                <DonutChart
-                  colorLegend
-                  colorLegendWhidh={150}
-                  data={chartCoins}
-                />
-              </ChartWrapper>
-            </DonutChatWrapper>
           </TableContainer>
         </GridContainer>
       </Container>
