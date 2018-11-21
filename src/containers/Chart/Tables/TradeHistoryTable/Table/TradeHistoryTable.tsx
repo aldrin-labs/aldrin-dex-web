@@ -79,7 +79,7 @@ const MemoizedHead = memo(
           }}
         />
       </TriggerTitle>
-      <Head background={palette.background.default}>
+      <Head background={palette.background.default} border={palette.divider}>
         <Row
           background={palette.background.default}
           isHead={true}
@@ -133,7 +133,7 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
     tableExpanded: true,
   }
 
-  onClick = () => () => {
+  onClick = () => {
     this.setState((prevState) => ({
       tableExpanded: !prevState.tableExpanded,
     }))
@@ -201,7 +201,7 @@ const TriggerTitle = styled(Title)`
   position: relative;
   padding: 0.5rem;
   transition: opacity 0.75s ease-in-out;
-
+  height: 2.875rem;
   &:hover {
     opacity: 0.85;
   }
@@ -224,7 +224,7 @@ const CollapsibleTable = styled(Table)`
 `
 
 const TradeHistoryTableCollapsible = styled(CollapsibleTable)`
-  max-height: 65%;
+  max-height: 50%;
 
   @media (max-width: 1080px) {
     bottom: 0.5rem;

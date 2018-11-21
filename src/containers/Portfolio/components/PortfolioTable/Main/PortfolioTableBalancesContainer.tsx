@@ -58,7 +58,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           styles={{
             options: {
               backgroundColor: theme.palette.getContrastText(
-                theme.palette.primary.main),
+                theme.palette.primary.main
+              ),
               primaryColor: theme.palette.secondary.main,
               textColor: theme.palette.primary.main,
             },
@@ -82,19 +83,18 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         </TablesWrapper>
 
         <ChartContainer item={true} xs={12} md={12}>
-          <ChartWrapper className="PortfolioValueChart">
+          {/* <ChartWrapper className="PortfolioValueChart">
             <CardHeader
               title={'Portfolio Value | Coming Soon | In development'}
-            />
-            <Chart
-              style={{
-                marginLeft: 0,
-                minHeight: '10vh',
-              }}
-              height="calc(100% - 2rem)"
-              marginTopHr="10px"
-            />
-          </ChartWrapper>
+            /> */}
+          <Chart
+            style={{
+              marginLeft: 0,
+              minHeight: '10vh',
+            }}
+            marginTopHr="10px"
+          />
+          {/* </ChartWrapper> */}
         </ChartContainer>
       </GridContainer>
     )

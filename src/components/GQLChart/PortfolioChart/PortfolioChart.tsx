@@ -10,7 +10,6 @@ import {
   Crosshair,
 } from 'react-vis'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 
 import { yearData } from '../chartMocks'
 import Highlight from '@components/GQLChart/PortfolioChart/Highlight/Highlight'
@@ -20,8 +19,8 @@ import { Props, State } from '@components/GQLChart/annotations'
 import {
   Chart,
   SProfileChart,
-  BtnsContainer,
 } from '@components/GQLChart/PortfolioChart/styles'
+import CardHeader from '@components/CardHeader'
 
 const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
 
@@ -43,9 +42,7 @@ export default class PortfolioChart extends Component<Props, State> {
   static getDerivedStateFromProps(newProps, state) {
     return Object.assign(state, newProps)
   }
-  componentWillUnmount() {
-    // cacheStack = [];
-  }
+
   onChangeActiveChart = (label) => {
     this.props.setActiveChartAndUpdateDays(label, mapLabelToDays[label])
   }
@@ -72,7 +69,7 @@ export default class PortfolioChart extends Component<Props, State> {
     const {
       coin,
       style,
-      height,
+      height = '100%',
       marginTopHr,
       lastDrawLocation,
       days,
@@ -106,18 +103,46 @@ export default class PortfolioChart extends Component<Props, State> {
     const axisStyle = {
       ticks: {
         padding: '1rem',
-        stroke: '#fff',
+        stroke: '#3E3E4A',
         opacity: 0.75,
-        fontFamily: 'Roboto',
-        fontSize: '12px',
         fontWeight: 100,
       },
-      text: { stroke: 'none', fill: '#4ed8da', fontWeight: 600, opacity: 1 },
+      text: {
+        stroke: 'none',
+        fill: '#777777',
+        fontWeight: 600,
+        opacity: 1,
+        fontFamily: 'Roboto',
+        fontSize: '14px',
+      },
     }
 
     return (
-      <SProfileChart style={style}>
-        <Chart height={height}>
+      <SProfileChart style={{ ...style, height }}>
+        <CardHeader
+          title={'Portfolio Value | Coming Soon | In development'}
+          action={
+            <>
+              {chartBtns.map((chartBtn) => (
+                <Button
+                  color="secondary"
+                  size="small"
+                  onClick={() => {
+                    this.onChangeActiveChart(chartBtn)
+                  }}
+                  color="secondary"
+                  variant={chartBtn !== activeChart ? 'text' : 'contained'}
+                  key={chartBtn}
+                  style={{ margin: '0 1rem' }}
+                >
+                  {chartBtn}
+                </Button>
+              ))}
+            </>
+          }
+        />
+        {/* minus cardHeader Height */}
+        <Chart height={`calc(100% - 68px)`}>
           <FlexibleXYPlot
             margin={{ left: 50 }}
             animation={true}
@@ -130,7 +155,7 @@ export default class PortfolioChart extends Component<Props, State> {
             }
           >
             <VerticalGridLines
-              style={{ stroke: 'rgba(134, 134, 134, 0.2)' }}
+              style={{ stroke: '#848484' }}
               tickTotal={12}
               tickFormat={(v: number) => '`$${v}`'}
               tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
@@ -171,7 +196,6 @@ export default class PortfolioChart extends Component<Props, State> {
               onNearestX={this._onNearestX}
               data={transformedData}
               style={{
-                // fill: 'rgba(133, 237, 238, 0.15)',
                 stroke: 'rgb(78, 216, 218)',
                 strokeWidth: '1px',
               }}
@@ -203,24 +227,6 @@ export default class PortfolioChart extends Component<Props, State> {
             )}
           </FlexibleXYPlot>
         </Chart>
-
-        <BtnsContainer>
-          {chartBtns.map((chartBtn) => (
-            <Button
-              color="secondary"
-              size="small"
-              onClick={() => {
-                this.onChangeActiveChart(chartBtn)
-              }}
-              color="secondary"
-              variant={chartBtn !== activeChart ? 'text' : 'contained'}
-              key={chartBtn}
-              style={{ margin: '0 1rem' }}
-            >
-              {chartBtn}
-            </Button>
-          ))}
-        </BtnsContainer>
       </SProfileChart>
     )
   }

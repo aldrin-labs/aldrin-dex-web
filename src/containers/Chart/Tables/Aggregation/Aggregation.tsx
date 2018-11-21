@@ -5,6 +5,7 @@ import MdAddCircleOutline from '@material-ui/icons/AddCircleOutlined'
 
 import { Row, Table, Head, Cell, HeadCell } from '@components/OldTable/Table'
 import { IProps } from './Aggregation.types'
+import { MASTER_BUILD } from '@utils/config'
 
 const Aggregation = (props: IProps) => {
   const {
@@ -19,7 +20,7 @@ const Aggregation = (props: IProps) => {
         <Row background={palette.background.paper} isHead>
           <Cell width={'10%'} />
           <HeadCell width={'45%'}>
-            <Typography color="primary" variant="caption">
+            <Typography color="textPrimary" variant="caption">
               Aggregation
             </Typography>
           </HeadCell>
@@ -34,17 +35,19 @@ const Aggregation = (props: IProps) => {
             }}
             width={'25%'}
           >
-            <Button>
-              <MdAddCircleOutline
-                onClick={onButtonClick}
-                style={{
-                  color: palette.primary['light'],
-                  fontSize: '0.75rem',
-                  cursor: 'pointer',
-                  position: 'relative',
-                }}
-              />
-            </Button>
+            {!MASTER_BUILD && (
+              <Button>
+                <MdAddCircleOutline
+                  onClick={onButtonClick}
+                  style={{
+                    color: palette.primary['light'],
+                    fontSize: '0.75rem',
+                    cursor: 'pointer',
+                    position: 'relative',
+                  }}
+                />
+              </Button>
+            )}
           </HeadCell>
         </Row>
       </AggHead>

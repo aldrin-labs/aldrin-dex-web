@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 import * as actions from '@containers/Chart/actions'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
@@ -8,6 +9,7 @@ import { Loading } from '@components/Loading/Loading'
 import { SelectR } from '@styles/cssUtils'
 import { MARKETS_BY_EXCHANE_QUERY } from '@containers/Chart/api'
 import { createFilter } from 'react-select'
+import { ExchangePair } from '@containers/Chart/Chart'
 
 type T = { value: string; data: string }
 
@@ -44,7 +46,13 @@ class IntegrationReactSelect extends React.PureComponent {
     }
   }
   render() {
-    const { value, data } = this.props
+    const {
+      value,
+      data,
+      theme: {
+        palette: { divider },
+      },
+    } = this.props
     if (!suggestions || !data) {
       return <Loading centerAligned={true} />
     }
@@ -64,8 +72,13 @@ class IntegrationReactSelect extends React.PureComponent {
       }))
     }
     return (
-      <div style={{ width: '15%' }} className="AutoSuggestSelect">
+      <ExchangePair
+        border={divider}
+        style={{ width: '15%' }}
+        className="AutoSuggestSelect"
+      >
         <SelectR
+          style={{ width: '100%' }}
           filterOption={createFilter(filterConfig)}
           placeholder="Add chart"
           value={value && { value, label: value }}
@@ -73,7 +86,7 @@ class IntegrationReactSelect extends React.PureComponent {
           options={suggestions || []}
           onChange={this.handleChange}
         />
-      </div>
+      </ExchangePair>
     )
   }
 }
@@ -106,7 +119,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(queryRender)
+export default withTheme()(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(queryRender)
+)

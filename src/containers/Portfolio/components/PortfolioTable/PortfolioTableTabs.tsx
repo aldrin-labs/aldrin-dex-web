@@ -55,7 +55,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
       <Container background={background} elevation={0}>
         <Tooltip title="Main" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'main' ? 'secondary' : 'default'}
+            color={tab === 'main' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('main')}
           >
             <Main />
@@ -64,7 +64,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Industry" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'industry' ? 'secondary' : 'default'}
+            color={tab === 'industry' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('industry')}
           >
             <Industry />
@@ -73,7 +73,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Rebalance" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'rebalance' ? 'secondary' : 'default'}
+            color={tab === 'rebalance' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('rebalance')}
           >
             <Rebalance />
@@ -82,7 +82,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Correlation" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'correlation' ? 'secondary' : 'default'}
+            color={tab === 'correlation' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('correlation')}
           >
             <Correlation />
@@ -91,17 +91,15 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
         <Tooltip title="Optimization" enterDelay={0} placement="right">
           <Tab
-            color={tab === 'optimization' ? 'secondary' : 'default'}
+            color={tab === 'optimization' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('optimization')}
           >
             <Optimization />
           </Tab>
         </Tooltip>
 
-        <DividerWithMargin />
-
         <Tab
-          color="default"
+          color="primary"
           onClick={() => {
             toggleWallets()
           }}
@@ -110,12 +108,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
         </Tab>
         <Fade in={switchUSDBTC}>
           <div>
-            <DividerWithMargin />
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
             </Typography>
             <Button
-              color="secondary"
+              color="default"
               onClick={this.onToggleUSDBTC}
               className="SwitchButton"
             >
@@ -124,13 +121,15 @@ class PortfolioTableTabs extends React.Component<IProps> {
             </Button>
           </div>
         </Fade>
+        <DividerWithMargin />
       </Container>
     )
   }
 }
 
 const DividerWithMargin = styled(Divider)`
-  margin: 0.5rem 0;
+  margin: 0.5rem auto;
+  width: 70%;
 `
 
 const Container = styled(Paper)`

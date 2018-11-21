@@ -20,7 +20,7 @@ const MemoHead = memo(
       <Title background={primary[type]}>
         <TypographyWithCustomColor
           textColor={palette.getContrastText(primary[type])}
-          variant="subtitle1"
+          variant="body1"
           align="center"
         >
           Order Book
@@ -33,7 +33,7 @@ const MemoHead = memo(
           HISTORY
         </SwitchTablesButton>
       </Title>
-      <Head background={background.default}>
+      <Head background={background.default} border={palette.divider}>
         <Row isHead={true} background={background.default}>
           <EmptyCell width={'10%'} />
           <HeadCell width={'45%'}>
