@@ -6,12 +6,16 @@ const PortfolioTableBalances = React.lazy(() =>
   import('./Main/PortfolioTableBalancesContainer')
 )
 const PortfolioTableIndustries = React.lazy(() =>
-  import('./Industry/PortfolioTableIndustries')
+  import(/* webpackPrefetch: true */ './Industry/PortfolioTableIndustries')
 )
-const Rebalance = React.lazy(() => import('./Rebalance/Rebalance'))
-const Optimization = React.lazy(() => import('./Optimization/Optimization'))
+const Rebalance = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './Rebalance/Rebalance')
+)
+const Optimization = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './Optimization/Optimization')
+)
 const Correlation = React.lazy(() =>
-  import('@containers/Portfolio/components/PortfolioTable/Correlation/Correlation')
+  import(/* webpackPrefetch: true */ '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation')
 )
 
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
