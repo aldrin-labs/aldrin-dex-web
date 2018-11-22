@@ -467,7 +467,7 @@ export const ExchangePair = styled.div`
   height: 38px;
   place-content: center;
   display: flex;
-  width: 130px;
+  width: 160px;
   background: transparent;
 `
 
