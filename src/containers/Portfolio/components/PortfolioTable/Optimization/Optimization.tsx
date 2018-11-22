@@ -207,7 +207,7 @@ class Optimization extends Component<IProps, IState> {
         rawOptimizedData.length && {
           data: rawOptimizedData[activeButton].backtest_results.map(
             (el, i) => ({
-              label: 'optimized',
+              label: 'Optimized',
               x: el[0],
               y: el[1],
             })
