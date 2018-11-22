@@ -1,75 +1,62 @@
 import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
-import { Paper, Card } from '@material-ui/core'
+import { Card, Grid, IconButton, CardContent } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
-import CardHeader from '@components/CardHeader'
 
 export { Content, ChartWrapper, ChartContainer, Chart, Container }
 
-const Content = styled.div`
-  outline: none;
+const Content = styled(Grid)`
   overflow: auto;
-  height: 100%;
-
-  @media (min-height: 1080px) {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+  height: 100vh;
+  width: 100%;
+  margin: 0;
 
   ${customAquaScrollBar};
 `
 
-const ChartWrapper = styled.div`
+const ChartWrapper = styled(Grid)`
   display: flex;
   position: relative;
   flex-direction: column;
-  padding: 20px;
+
   justify-content: center;
   align-items: center;
+
+  height: 45%;
 `
 
 const ChartContainer = styled(Card)`
-
   && {
-    width: 100%;
-    height: inherit;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-  }
-
-  @media (max-width: 1150px) {
+    height: 100%;
     width: 100%;
   }
 `
 
-const Chart = styled.div`
+//  minus card header height
+const Chart = styled(CardContent)`
   width: 100%;
-  height: inherit;
-  border-radius: 1rem;
+  height: calc(100% - 68px);
   padding: 0.5rem;
-  background: ${(props: { background: string }) => props.background};
-
-  & > div {
-    height: inherit;
-  }
 `
 
-const Container = styled.div`
-  display: flex;
-  justify-content: ${(props: { isEditModeEnabled: boolean }) => props.isEditModeEnabled ? 'space-between' : 'left'};
-  padding: 0 20px 20px;
-  max-height: 60vh;
+const Container = styled(Grid)`
+  justify-content: ${(props: { isEditModeEnabled: boolean }) =>
+    props.isEditModeEnabled ? 'space-between' : 'left'};
+
+  max-height: 55%;
 `
 
-export const InnerChartContainer = styled.div`
-  padding: 0 15px 15px 15px;
-`
-
-export const BtnsWrapper = styled.div`
+export const BtnsWrapper = styled(Grid)`
   display: flex;
   flex-direction: column;
+`
+
+export const IconButtonWithHover = styled(IconButton)`
+  will-change: color;
+
+  &:hover {
+    color: ${(props: { hoverColor: string }) => props.hoverColor};
+  }
 `
 
 export const Label = styled(Typography)`
@@ -80,8 +67,4 @@ export const Label = styled(Typography)`
   font-weight: bold;
   white-space: nowrap;
   text-transform: uppercase;
-`
-
-export const StyledCardHeader = styled(CardHeader)`
-  margin-bottom: 1rem;
 `

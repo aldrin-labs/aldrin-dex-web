@@ -1,8 +1,7 @@
 import styled from 'styled-components'
-import { Button } from '@material-ui/core'
+import { Button, CardContent } from '@material-ui/core'
 
 export {
-  ButtonsWrapper,
   ButtonsInnerWrapper,
   UndistributedMoneyContainer,
   UndistributedMoneyText,
@@ -10,14 +9,7 @@ export {
   Input,
 }
 
-const ButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-const ButtonsInnerWrapper = styled.div`
-  padding: 0 15px 15px 15px;
+const ButtonsInnerWrapper = styled(CardContent)`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -43,11 +35,11 @@ const AddMoneyContainer = styled.div`
   min-width: 120px;
 `
 
-
 const Input = styled.input`
   color: ${(props: { textColor: string }) => props.textColor};
   box-sizing: border-box;
-  border-bottom: ${(props: { secondary: string }) => `2px solid ${props.secondary}`};
+  border-bottom: ${(props: { secondary: string }) =>
+    `2px solid ${props.secondary}`};
   //border-bottom: 2px solid rgb(78, 216, 218);
   background: transparent;
   border-top: none;
@@ -61,10 +53,6 @@ const Input = styled.input`
   text-align: left;
   padding: 10px 0 0;
   margin-bottom: 10px;
-`
-
-export const InputContainer = styled.div`
-  box-shadow: 0 2px 6px 0 #00000066;
 `
 
 export const SButton = styled(Button)`

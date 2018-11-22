@@ -43,8 +43,8 @@ export const Body = styled.ul`
   overflow-x: hidden;
   transition: height 0.25s ease-out;
   background: ${(props: { background?: string; height?: string }) =>
-      props.background ? props.background : 'transparent'}
-    ${customAquaScrollBar};
+    props.background ? props.background : 'transparent'};
+  ${customAquaScrollBar};
 `
 
 export const Row = styled.li`
@@ -103,6 +103,4 @@ export const Head = styled.ul`
     ${({ border }: { border?: string; background?: string }) => border};
   position: sticky;
   top: 0;
-
-  font-family: Roboto, sans-serif;
 `

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Button, Fade, Typography, Card, Grid } from '@material-ui/core'
+import { Button, Fade, Typography, Card, Grid, Slide } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 import Joyride from 'react-joyride'
 
@@ -381,7 +381,12 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <MainContainer fullscreen={view !== 'default'}>
         <TogglerContainer container className="AutoSuggestSelect">
-          {base && quote && (
+          <Slide
+            direction="top"
+            in={base && quote && view === 'default'}
+            mountOnenter
+            unMountOnExit
+          >
             <Grid
               spacing={16}
               item
@@ -417,7 +422,8 @@ class Chart extends React.Component<IProps, IState> {
                 {activeChart === 'candle' ? 'show depth' : 'show chart'}
               </Button>
             </Grid>
-          )}
+          </Slide>
+
           <Grid
             alignItems="center"
             item

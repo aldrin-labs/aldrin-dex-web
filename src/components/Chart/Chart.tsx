@@ -12,6 +12,10 @@ const Wrapper = styled(Card)`
 
 export const SingleChart = ({ additionalUrl }: { additionalUrl: string }) => (
   <Wrapper>
-    <iframe src={`https://${CHARTS_API_URL}${additionalUrl}`} height={'100%'} />
+    <iframe
+      style={{ borderWidth: 0 }}
+      src={`https://${CHARTS_API_URL}${additionalUrl}`}
+      height={'100%'}
+    />
   </Wrapper>
 )
