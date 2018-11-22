@@ -21,7 +21,7 @@ export const FullWidthBlock = styled.div`
 
 export const Title = styled.div`
   width: 100%;
-  padding: 10px;
+  padding: 6px;
   height: 40px;
   background: ${(props: { background: string }) => props.background};
   text-align: center;

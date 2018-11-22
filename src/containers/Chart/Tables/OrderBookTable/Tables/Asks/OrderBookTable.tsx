@@ -20,7 +20,7 @@ const MemoHead = memo(
       <Title background={primary[type]}>
         <TypographyWithCustomColor
           textColor={palette.getContrastText(primary[type])}
-          variant="body1"
+          variant="subtitle1"
           align="center"
         >
           Order Book
@@ -39,7 +39,7 @@ const MemoHead = memo(
           <HeadCell width={'45%'}>
             <TypographyFullWidth
               textColor={palette.getContrastText(background.default)}
-              variant="subtitle1"
+              variant="body2"
               color="default"
               align="right"
             >
@@ -49,7 +49,7 @@ const MemoHead = memo(
           <HeadCell width={'45%'}>
             <TypographyFullWidth
               textColor={palette.getContrastText(background.default)}
-              variant="subtitle1"
+              variant="body2"
               noWrap={true}
               color="default"
               align="right"

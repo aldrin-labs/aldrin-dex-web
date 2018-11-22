@@ -11,6 +11,15 @@ export default class ThemeWrapper extends Component<Props> {
     const theme = createMuiTheme({
       typography: {
         useNextVariants: true,
+        body1: {
+          fontSize: '0.875rem',
+        },
+        title: {
+          fontSize: '0.875rem',
+        },
+        body2: {
+          fontSize: '0.875rem',
+        },
       },
       overrides: {
         MuiCard: {

@@ -15,7 +15,7 @@ const Aggregation = (props: IProps) => {
   } = props
 
   return (
-    <AggregationWrapper>
+    <AggregationWrapper borderTopColor={palette.divider}>
       <AggHead background={palette.background.paper}>
         <Row background={palette.background.paper} isHead>
           <Cell width={'10%'} />
@@ -87,6 +87,8 @@ const Button = styled.button`
 const AggregationWrapper = styled(Table)`
   z-index: 100;
   bottom: 0;
+  border-top: 1px solid
+    ${(props: { borderTopColor: string }) => props.borderTopColor};
   position: absolute;
   width: 100%;
 
