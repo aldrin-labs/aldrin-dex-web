@@ -7,7 +7,6 @@ import { Mutation, Query } from 'react-apollo'
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
 import { TableWithSort } from '@storybook-components/index'
-import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import {
   combineTableData,
   roundAndFormatNumber,
@@ -20,6 +19,7 @@ import {
 } from '@utils/PortfolioTableUtils'
 import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
 import { UPDATE_COINS } from '../../mutations/portfolio/updateCoins'
+import Loader from '@components/TablePlaceholderLoader/newLoader'
 
 const chooseRed = (theme: Theme) =>
   theme.palette.type === 'dark'
@@ -342,7 +342,7 @@ class Container extends Component {
     const { body, head, footer } = putDataInTable()
 
     if (body.length === 0) {
-      return <TablePlaceholderLoader />
+      return <Loader />
     }
 
     this.updateCoinsInApollo()

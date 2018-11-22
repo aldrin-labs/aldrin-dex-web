@@ -25,6 +25,7 @@ export const TypographyFullWidth = styled(TypographyWithCustomColor)`
 
 export const SelectR = styled(ReactSelectComponent)`
   font-family: Roboto;
+  width: 100%;
   font-size: 16px;
   border-bottom: 1px solid #c1c1c1;
   transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);

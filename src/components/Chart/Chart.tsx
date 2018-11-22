@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import { CHARTS_API_URL } from '@utils/config'
+import { Card } from '@material-ui/core'
 
-const Wrapper = styled.div`
+const Wrapper = styled(Card)`
   display: flex;
   flex-direction: column;
   width: 100%;

@@ -75,7 +75,11 @@ const MemoizedRow = memo(
 
 const HeadRowWithMemo = memo(
   ({ primary, type, palette, quote, spread, digitsAfterDecimalForSpread }) => (
-    <Head background={primary[type]} style={{ height: '1.625rem' }}>
+    <Head
+      background={primary[type]}
+      style={{ height: '2.875rem' }}
+      border={'none'}
+    >
       <TriggerRow isHead={true} background={primary[type]}>
         <EmptyCell width="10%" />
         <HeadCell width={'45%'}>

@@ -42,17 +42,9 @@ class ExchangesTable extends PureComponent<IProps> {
           <SwitchTablesButton
             onClick={onButtonClick}
             variant="outlined"
-            color="primary"
+            color="default"
           >
-            <TypographyWithCustomColor
-              textColor={theme.palette.getContrastText(
-                theme.palette.primary[type]
-              )}
-              variant="h5"
-              align="left"
-            >
-              ORDER
-            </TypographyWithCustomColor>
+            ORDER
           </SwitchTablesButton>
         </Title>
         <Head background={theme.palette.background.default}>

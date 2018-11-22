@@ -39,9 +39,9 @@ const OptimizedRow = memo(
           {Number(ticker.price).toFixed(numbersAfterDecimalForPrice)}
         </StyledTypography>
       </Cell>
-      <Cell width={'25%'}>
+      <Cell style={{ paddingLeft: 0, paddingRight: '0.2rem' }} width={'25%'}>
         <TypographyFullWidth
-          color="primary"
+          color="textSecondary"
           noWrap={true}
           variant="body1"
           align="right"
@@ -79,16 +79,16 @@ const MemoizedHead = memo(
           }}
         />
       </TriggerTitle>
-      <Head background={palette.background.default}>
+      <Head background={palette.background.default} border={palette.divider}>
         <Row
           background={palette.background.default}
           isHead={true}
           style={{ height: '100%' }}
         >
-          <HeadCell color="#9ca2aa" width={'30%'}>
+          <HeadCell style={{ padding: 0 }} color="#9ca2aa" width={'30%'}>
             <TypographyFullWidth
               textColor={palette.getContrastText(palette.background.default)}
-              variant="subtitle1"
+              variant="body2"
               align="right"
               noWrap={true}
             >
@@ -99,19 +99,22 @@ const MemoizedHead = memo(
             <TypographyFullWidth
               noWrap={true}
               textColor={palette.getContrastText(palette.background.default)}
-              variant="subtitle1"
+              variant="body2"
               align="right"
             >
               Price {quote || 'Fiat'}
             </TypographyFullWidth>
           </HeadCell>
           <HeadCell
-            style={{ lineHeight: '32px' }}
-            color="#9ca2aa"
+            style={{
+              lineHeight: '32px',
+              paddingLeft: 0,
+              paddingRight: '0.2rem',
+            }}
             width={'25%'}
           >
             <TypographyFullWidth
-              variant="subtitle1"
+              variant="body2"
               textColor={palette.getContrastText(palette.background.default)}
               align="right"
             >
@@ -133,7 +136,7 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
     tableExpanded: true,
   }
 
-  onClick = () => () => {
+  onClick = () => {
     this.setState((prevState) => ({
       tableExpanded: !prevState.tableExpanded,
     }))
@@ -201,7 +204,7 @@ const TriggerTitle = styled(Title)`
   position: relative;
   padding: 0.5rem;
   transition: opacity 0.75s ease-in-out;
-
+  height: 2.875rem;
   &:hover {
     opacity: 0.85;
   }
@@ -224,7 +227,7 @@ const CollapsibleTable = styled(Table)`
 `
 
 const TradeHistoryTableCollapsible = styled(CollapsibleTable)`
-  max-height: 65%;
+  max-height: 50%;
 
   @media (max-width: 1080px) {
     bottom: 0.5rem;

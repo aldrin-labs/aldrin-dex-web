@@ -28,6 +28,7 @@ const RawLoading = ({
 export const Loading = withTheme()(RawLoading)
 
 const SpinnerContainer = styled.div`
+  z-index: 10000;
   margin: ${(props) => (props.margin ? props.margin : '0 auto')};
   position: ${(props) => (props.centerAligned ? 'absolute' : 'static')};
   top: ${(props) => (props.centerAligned ? 'calc(50% - 32px)' : null)};

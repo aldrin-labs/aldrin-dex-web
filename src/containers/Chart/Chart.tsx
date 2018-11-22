@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Paper, Button, Fade, Slide } from '@material-ui/core'
+import { Button, Fade, Typography, Card, Grid } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 import Joyride from 'react-joyride'
 
@@ -27,13 +27,14 @@ import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps, IState } from './Chart.types'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 import { singleChartSteps } from '@utils/joyrideSteps'
 import { setTimeout } from 'timers'
+import { withErrorFallback } from '@hoc/index'
+import TransparentExtendedFAB from '@components/TransparentExtendedFAB'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
@@ -188,7 +189,7 @@ class Chart extends React.Component<IProps, IState> {
         : ''
 
     return (
-      <TablesContainer>
+      <TablesContainer item sm={4}>
         <Joyride
           showProgress={true}
           showSkipButton={true}
@@ -198,8 +199,7 @@ class Chart extends React.Component<IProps, IState> {
           callback={this.handleJoyrideCallback}
           styles={{
             options: {
-              backgroundColor: theme.palette.getContrastText(
-                theme.palette.primary.main),
+              backgroundColor: theme.palette.common.white,
               primaryColor: theme.palette.secondary.main,
               textColor: theme.palette.primary.main,
             },
@@ -306,8 +306,6 @@ class Chart extends React.Component<IProps, IState> {
   renderDefaultView = () => {
     const { activeChart } = this.state
     const { currencyPair, theme } = this.props
-    const { palette } = theme
-    const { type } = palette
 
     if (!currencyPair) {
       return
@@ -315,37 +313,8 @@ class Chart extends React.Component<IProps, IState> {
     const [base, quote] = currencyPair.split('_')
 
     return (
-      <Container>
-        <ChartsContainer>
-          <ChartsSwitcher
-            divider={palette.divider}
-            background={palette.primary[type]}
-          >
-            {base && quote && (
-              <ExchangePair background={palette.primary[type]}>
-                <TypographyWithCustomColor
-                  textColor={palette.getContrastText(palette.primary[type])}
-                  variant="subtitle1"
-                >
-                  {`${base}/${quote}`}
-                </TypographyWithCustomColor>
-              </ExchangePair>
-            )}
-            <SwitchButtonWrapper>
-              <Button
-                variant="text"
-                color="secondary"
-                onClick={() => {
-                  this.setState((prevState) => ({
-                    activeChart:
-                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                  }))
-                }}
-              >
-                {activeChart === 'candle' ? 'show depth' : 'show chart'}
-              </Button>
-            </SwitchButtonWrapper>
-          </ChartsSwitcher>
+      <Container container spacing={16}>
+        <ChartsContainer item sm={8}>
           {activeChart === 'candle' ? (
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
@@ -380,47 +349,92 @@ class Chart extends React.Component<IProps, IState> {
   )
 
   renderToggler = () => {
-    const {
-      toggleView,
-      view,
-      isNoCharts,
-      activeExchange,
-      currencyPair,
-      addChart,
-    } = this.props
+    const { toggleView, view, isNoCharts, currencyPair, addChart } = this.props
 
     const defaultView = view === 'default'
 
     return (
-      <Toggler
-        variant="raised"
-        color="primary"
-        onClick={() => {
-          toggleView(defaultView ? 'onlyCharts' : 'default')
-          if (defaultView && isNoCharts) addChart(currencyPair)
-        }}
-      >
-        {defaultView ? 'Multi Charts' : ' Single Chart'}
+      <Toggler>
+        <TransparentExtendedFAB
+          onClick={() => {
+            toggleView(defaultView ? 'onlyCharts' : 'default')
+            if (defaultView && isNoCharts) addChart(currencyPair)
+          }}
+        >
+          {defaultView ? 'Multi Charts' : ' Single Chart'}
+        </TransparentExtendedFAB>
       </Toggler>
     )
   }
 
   render() {
-    const { view, currencyPair, activeExchange } = this.props
+    const { view, currencyPair, activeExchange, theme } = this.props
+    const { activeChart } = this.state
+    const { palette } = theme
 
+    if (!currencyPair) {
+      return
+    }
+    const [base, quote] = currencyPair.split('_')
     const toggler = this.renderToggler()
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-        <TogglerContainer className="AutoSuggestSelect">
-          <AutoSuggestSelect
-            value={view === 'default' && currencyPair}
-            id={'currencyPair'}
-            view={view}
-            exchange={activeExchange}
-          />
+        <TogglerContainer container className="AutoSuggestSelect">
+          {base && quote && (
+            <Grid
+              spacing={16}
+              item
+              sm={8}
+              xs={6}
+              container
+              alignItems="center"
+              justify="flex-end"
+            >
+              <ExchangePair border={palette.divider}>
+                {
+                  <Typography
+                    style={{ margin: 'auto' }}
+                    align="center"
+                    color="default"
+                    variant="button"
+                  >
+                    {`${base}/${quote}`}
+                  </Typography>
+                }
+              </ExchangePair>
+              <Button
+                style={{ height: 38, marginLeft: '1.5rem' }}
+                variant="extendedFab"
+                color="secondary"
+                onClick={() => {
+                  this.setState((prevState) => ({
+                    activeChart:
+                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                  }))
+                }}
+              >
+                {activeChart === 'candle' ? 'show depth' : 'show chart'}
+              </Button>
+            </Grid>
+          )}
+          <Grid
+            alignItems="center"
+            item
+            xs={6}
+            sm={4}
+            container
+            justify="flex-end"
+          >
+            <AutoSuggestSelect
+              value={view === 'default' && currencyPair}
+              id={'currencyPair'}
+              view={view}
+              exchange={activeExchange}
+            />
 
-          {toggler}
+            {toggler}
+          </Grid>
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -435,33 +449,27 @@ const MainContainer = styled.div`
     margin-top: -0.75rem;
   }
 `
-const DepthChartContainer = styled.div`
-  height: calc(100vh - 59px - ${navBarHeight}px - 38px);
+const DepthChartContainer = styled(Card)`
+  height: 100%;
   width: 100%;
 `
 
-const SwitchButtonWrapper = styled.div`
-  margin: 1rem;
-`
-
-const ExchangePair = styled.div`
-  margin: 0 0.5rem;
-  background: ${(props: { background: string }) => props.background};
+export const ExchangePair = styled.div`
+  border-radius: 24px;
+  border: 1px solid ${(props: { border: string }) => props.border};
+  padding: 0 16px;
+  height: 38px;
+  place-content: center;
   display: flex;
-  place-items: center;
-  white-space: nowrap;
-  border-radius: 3px;
-  height: 100%;
-  padding: 0 1rem;
+  width: 130px;
+  background: transparent;
 `
 
-const TablesBlockWrapper = styled(Paper)`
+const TablesBlockWrapper = styled(Card)`
   min-width: 150px;
   width: 50%;
   position: relative;
   ${(props: { blur?: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
-  border-right: 1px solid
-    ${(props: { rightBorderColor?: string }) => props.rightBorderColor};
 
   && {
     overflow: hidden;
@@ -478,16 +486,15 @@ const TablesBlockWrapper = styled(Paper)`
   }
 `
 
-const TablesContainer = styled.div`
+const TablesContainer = styled(Grid)`
   position: relative;
   display: flex;
-  width: 40%;
+
   height: calc(100vh - 59px - ${navBarHeight}px);
   overflow: hidden;
 
   @media (max-width: 1080px) {
     flex-wrap: wrap;
-    width: 100%;
   }
 `
 
@@ -495,7 +502,6 @@ const ChartsContainer = styled(TablesContainer)`
   height: calc(100vh - 59px - ${navBarHeight}px);
   justify-content: flex-end;
   flex-direction: column;
-  border-right: 1px solid #30353a;
   width: 60%;
 
   @media (max-width: 1080px) {
@@ -503,43 +509,22 @@ const ChartsContainer = styled(TablesContainer)`
   }
 `
 
-const ChartsSwitcher = styled.div`
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+// margin for centring
+const TogglerContainer = styled(Grid)`
+  margin-bottom: -8px;
+  height: 4rem;
   width: 100%;
-  height: 38px;
-  background: ${(props: { background: string }) => props.background};
-  color: white;
-  border-bottom: 1px solid
-    ${(props: { divider: string; background: string }) => props.divider};
 `
 
-const TogglerContainer = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
-  align-items: center;
-  font-family: Roboto, sans-serif;
-`
-
-const Toggler = styled(Button)`
+const Toggler = styled.div`
   && {
     margin: 0.7rem;
   }
 `
 
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
+const Container = styled(Grid)`
   width: 100%;
-
-  @media (max-width: 1080px) {
-    flex-direction: column;
-  }
+  margin: 0;
 `
 
 const mapStateToProps = (store: any) => ({
@@ -564,7 +549,9 @@ const mapDispatchToProps = (dispatch: any) => ({
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ThemedChart)
+export default withErrorFallback(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(ThemedChart)
+)

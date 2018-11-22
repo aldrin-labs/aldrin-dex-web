@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
-import { blueGrey, cyan, green, red } from '@material-ui/core/colors'
 
 import { Props } from './ThemeWrapper.types'
 import { fade } from '@material-ui/core/styles/colorManipulator'
@@ -9,22 +8,45 @@ export default class ThemeWrapper extends Component<Props> {
   render() {
     const { themeMode } = this.props
 
-    const divider = '#707070'
     const theme = createMuiTheme({
       typography: {
         useNextVariants: true,
+        body1: {
+          fontSize: '0.875rem',
+        },
+        title: {
+          fontSize: '0.875rem',
+        },
+        body2: {
+          fontSize: '0.875rem',
+        },
       },
       overrides: {
         MuiCard: {
           // Name of the component ⚛️ / style sheet
           root: {
             // Name of the rule
-            border: `1px solid ${fade(divider, 0.26)}`, // Some CSS
+            border: `1px solid ${fade('#707070', 0.26)}`, // Some CSS
+          },
+        },
+        MuiPaper: {
+          // Name of the component ⚛️ / style sheet
+          rounded: {
+            // Name of the rule
+            borderRadius: '6px', // Some CSS
+          },
+        },
+        MuiIconButton: {
+          root: {
+            color: '#FFFFFF',
+          },
+          colorPrimary: {
+            color: '#575A64',
           },
         },
       },
       palette: {
-        divider,
+        divider: fade('#748AA1', 0.16),
         type: themeMode,
         text: { primary: '#DBD9E6' },
         red: {

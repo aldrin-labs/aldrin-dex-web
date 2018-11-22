@@ -4,19 +4,14 @@ import { DocumentNode } from 'graphql'
 
 import { Loading } from '@components/Loading'
 import { ErrorFallback } from '@components/ErrorFallback'
+import { FetchPolicy } from 'apollo-client'
 
 interface HOCTypes {
   component?: React.ReactNode
   query: DocumentNode
   pollInterval?: number
   withOutSpinner?: boolean
-  fetchPolicy?:
-    | 'cache-first'
-    | 'cache-and-network'
-    | 'network-only'
-    | 'cache-only'
-    | 'no-cache'
-    | 'standby'
+  fetchPolicy?: FetchPolicy
   placeholder?: React.SFC | React.ComponentClass
   variables?: { [key: string]: any } | null
   [key: string]: any
@@ -34,7 +29,7 @@ export default class QueryRenderer extends React.Component<IProps> {
       variables,
       subscriptionArgs,
       placeholder: Placeholder,
-      fetchPolicy,
+      fetchPolicy = 'cache-first',
       pollInterval,
       withOutSpinner,
       centerAlign = true,
@@ -46,7 +41,7 @@ export default class QueryRenderer extends React.Component<IProps> {
         query={query}
         variables={variables}
         pollInterval={pollInterval}
-        fetchPolicy={fetchPolicy ? fetchPolicy : 'cache-first'}
+        fetchPolicy={fetchPolicy}
       >
         {({
           loading,
