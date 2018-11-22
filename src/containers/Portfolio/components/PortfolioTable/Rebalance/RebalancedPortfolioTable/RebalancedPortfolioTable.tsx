@@ -1,6 +1,10 @@
 import React from 'react'
-
+import EditIcon from '@material-ui/icons/Edit'
 import nanoid from 'nanoid'
+import Typography from '@material-ui/core/Typography'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+import AddIcon from '@material-ui/icons/Add'
+
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
@@ -13,17 +17,16 @@ import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllEx
 import { handleRef } from '@components/ReactSelectComponent/utils'
 import {
   InputTable,
-  SAddIcon,
   SDeleteIcon,
   LoaderInnerWrapper,
   LoaderWrapper,
   ContentInner,
 } from './RebalancedPortfolioTable.styles'
-import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
-import { TableWithSort, Table as ImTable } from '@storybook-components'
+import { TableWithSort, Table as ImTable } from '@storybook-components/index'
 import { Loading } from '@components/Loading'
+import { IconButtonWithHover } from '../Rebalance.styles'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -437,10 +440,12 @@ export default class RebalancedPortfolioTable extends React.Component<
           ? {
               deleteIcon: {
                 render: (
-                  <SDeleteIcon
-                    onClick={() => this.onDeleteRowClick(index)}
+                  <IconButtonWithHover
                     hoverColor={red}
-                  />
+                    onClick={() => this.onDeleteRowClick(index)}
+                  >
+                    <SDeleteIcon />
+                  </IconButtonWithHover>
                 ),
               },
             }
@@ -532,10 +537,12 @@ export default class RebalancedPortfolioTable extends React.Component<
                 },
                 icon: {
                   render: (
-                    <SAddIcon
+                    <IconButtonWithHover
                       onClick={this.onAddRowButtonClick}
                       hoverColor={green}
-                    />
+                    >
+                      <AddIcon />
+                    </IconButtonWithHover>
                   ),
                 },
                 options: {
@@ -594,22 +601,37 @@ export default class RebalancedPortfolioTable extends React.Component<
   }
 
   render() {
-    const { selectedActive, isEditModeEnabled, textColor, loading } = this.props
+    const {
+      selectedActive,
+      isEditModeEnabled,
+      theme,
+      loading,
+      onEditModeEnable,
+    } = this.props
     const Table = isEditModeEnabled ? ImTable : TableWithSort
     return (
       <>
         {loading && (
-          <LoaderWrapper>
+          <LoaderWrapper background={fade(theme.palette.common.black, 0.7)}>
             <LoaderInnerWrapper>
               <Loading size={94} margin={'0 0 2rem 0'} />{' '}
-              <TypographyWithCustomColor color={textColor} variant="h6">
+              <Typography color="secondary" variant="h4">
                 Saving rebalanced portfolio...
-              </TypographyWithCustomColor>{' '}
+              </Typography>{' '}
             </LoaderInnerWrapper>{' '}
           </LoaderWrapper>
         )}
-        <ContentInner loading={loading}>
+        <ContentInner>
           <Table
+            actionsColSpan={2}
+            actions={[
+              {
+                id: 1,
+                icon: <EditIcon />,
+                onClick: onEditModeEnable,
+                color: 'secondary',
+              },
+            ]}
             title="Rebalanced portfolio"
             withCheckboxes={isEditModeEnabled}
             checkedRows={selectedActive}

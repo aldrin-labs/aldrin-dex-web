@@ -24,6 +24,7 @@ const styles = (theme: Theme) =>
 
 const Header = (props: CardHeaderProps) => (
   <CardHeader
+    style={props.style}
     titleTypographyProps={{ variant: 'body1', color: 'default' }}
     classes={{
       root: props && props.classes && props.classes.root,

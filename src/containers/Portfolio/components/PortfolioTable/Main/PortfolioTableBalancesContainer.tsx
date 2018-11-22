@@ -69,7 +69,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             },
           }}
         />
-        <TablesWrapper spacing={8} container={true} item={true} xs={12}>
+        <TablesWrapper spacing={16} container={true} item={true} xs={12}>
           <Grid item={true} xs={12} md={8}>
             <TableWrapper className="PortfolioMainTable">
               <PortfolioMainTable />
@@ -83,10 +83,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         </TablesWrapper>
 
         <ChartContainer item={true} xs={12} md={12}>
-          {/* <ChartWrapper className="PortfolioValueChart">
-            <CardHeader
-              title={'Portfolio Value | Coming Soon | In development'}
-            /> */}
           <Chart
             style={{
               marginLeft: 0,
@@ -94,7 +90,6 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             }}
             marginTopHr="10px"
           />
-          {/* </ChartWrapper> */}
         </ChartContainer>
       </GridContainer>
     )
