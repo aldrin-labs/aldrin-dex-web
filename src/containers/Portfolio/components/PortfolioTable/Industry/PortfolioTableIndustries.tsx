@@ -153,7 +153,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
                   onChange={this.expandRow}
                   onSelectAllClick={this.onSelectAllClick}
                   expandedRows={expandedRows}
-                  title={`Industry Performance in ${baseCoin}`}
+                  title={'Industry Performance'}
                   {...this.putDataInTable()}
                 />
               </Wrapper>
