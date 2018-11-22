@@ -28,7 +28,7 @@ const MemoHead = memo(
         <SwitchTablesButton
           onClick={onButtonClick}
           variant="outlined"
-          color="primary"
+          color="default"
         >
           HISTORY
         </SwitchTablesButton>

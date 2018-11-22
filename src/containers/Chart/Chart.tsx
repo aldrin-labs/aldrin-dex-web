@@ -385,7 +385,8 @@ class Chart extends React.Component<IProps, IState> {
             <Grid
               spacing={16}
               item
-              xs={8}
+              sm={8}
+              xs={6}
               container
               alignItems="center"
               justify="flex-end"
@@ -417,7 +418,14 @@ class Chart extends React.Component<IProps, IState> {
               </Button>
             </Grid>
           )}
-          <Grid alignItems="center" item sm={4} container justify="flex-end">
+          <Grid
+            alignItems="center"
+            item
+            xs={6}
+            sm={4}
+            container
+            justify="flex-end"
+          >
             <AutoSuggestSelect
               value={view === 'default' && currencyPair}
               id={'currencyPair'}
