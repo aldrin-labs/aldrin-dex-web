@@ -7,6 +7,7 @@ import CardHeader from '@components/CardHeader'
 export { Content, ChartWrapper, ChartContainer, Chart, Container }
 
 const Content = styled.div`
+  outline: none;
   overflow: auto;
   height: 100%;
 
