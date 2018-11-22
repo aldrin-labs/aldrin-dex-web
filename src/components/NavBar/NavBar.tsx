@@ -8,6 +8,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 import Hidden from '@material-ui/core/Hidden'
 
 import MainLogo from '@icons/MainLogo.png'
+import MainLogoDark from '@icons/MainLogoDarkColor.png'
 import { Nav, Logo } from './NavBar.styles'
 import Feedback from '@components/Feedback'
 
@@ -59,7 +60,7 @@ const NavBarRaw: SFC<Props> = ({
           <Hidden only={['sm', 'xs']}>
             <Grid item={true} md={4}>
               <Grid container={true}>
-                <Logo src={MainLogo} />
+                <Logo src={!(type === 'dark') ? MainLogoDark : MainLogo} />
               </Grid>
             </Grid>
           </Hidden>

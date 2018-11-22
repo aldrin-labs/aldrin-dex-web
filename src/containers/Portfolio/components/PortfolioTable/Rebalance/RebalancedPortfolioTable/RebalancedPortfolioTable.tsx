@@ -13,7 +13,6 @@ import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllEx
 import { handleRef } from '@components/ReactSelectComponent/utils'
 import {
   InputTable,
-  TableWrapper,
   SAddIcon,
   SDeleteIcon,
   LoaderInnerWrapper,
@@ -598,7 +597,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const { selectedActive, isEditModeEnabled, textColor, loading } = this.props
     const Table = isEditModeEnabled ? ImTable : TableWithSort
     return (
-      <TableWrapper>
+      <>
         {loading && (
           <LoaderWrapper>
             <LoaderInnerWrapper>
@@ -620,7 +619,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             {...this.putDataInTable()}
           />
         </ContentInner>
-      </TableWrapper>
+      </>
     )
   }
 }

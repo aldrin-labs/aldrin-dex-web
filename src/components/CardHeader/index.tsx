@@ -6,6 +6,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 const styles = (theme: Theme) =>
   createStyles({
     root: {
+      borderBottom: `1px solid ${theme.palette.divider}`,
       height: theme.spacing.unit * 8.5,
       padding: theme.spacing.unit * 2.875,
       width: '100%',
