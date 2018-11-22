@@ -40,6 +40,7 @@ export const updateTradeHistoryQuerryFunction = (
     return prev
   }
   const newTicker = subscriptionData.data.listenMarketTickers
+  console.log(newTicker)
   let obj = Object.assign({}, prev, {
     marketTickers: [newTicker],
   })

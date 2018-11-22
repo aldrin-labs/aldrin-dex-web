@@ -56,6 +56,7 @@ class TableContainer extends Component<IProps, IState> {
         return null
       }
 
+      if (state.data.length) console.log(ticker.id === state.data[0].id + 1)
       return {
         data: maximumItemsInArray([ticker, ...state.data], 100, 40),
         numbersAfterDecimalForPrice: getNumberOfDigitsAfterDecimal(
