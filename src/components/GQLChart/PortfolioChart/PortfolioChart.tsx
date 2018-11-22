@@ -11,7 +11,6 @@ import {
 } from 'react-vis'
 import Button from '@material-ui/core/Button'
 
-import { yearData } from '../chartMocks'
 import Highlight from '@components/GQLChart/PortfolioChart/Highlight/Highlight'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { Loading } from '@components/Loading'
@@ -81,22 +80,8 @@ export default class PortfolioChart extends Component<Props, State> {
     } = this.state
     const { name = '', priceUSD = '' } = coin || {}
 
-    let transformedData = isShownMocks ? yearData : []
-    if (
-      data &&
-      data.getPriceHistory &&
-      data.getPriceHistory.prices &&
-      data.getPriceHistory.prices.length > 0 &&
-      !isShownMocks
-    ) {
-      const Yvalues = data.getPriceHistory.prices.map((x) => x)
-      transformedData = data.getPriceHistory.dates.map((date, i) => ({
-        x: Number(date),
-        y: Yvalues[i],
-      }))
-    }
 
-    if (transformedData.length === 0) {
+    if (!(data.length)) {
       return <Loading centerAligned={true} />
     }
 
@@ -194,7 +179,7 @@ export default class PortfolioChart extends Component<Props, State> {
             <AreaSeries
               color={'url(#CoolGradient)'}
               onNearestX={this._onNearestX}
-              data={transformedData}
+              data={data}
               style={{
                 stroke: 'rgb(78, 216, 218)',
                 strokeWidth: '1px',

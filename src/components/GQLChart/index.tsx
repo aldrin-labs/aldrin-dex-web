@@ -9,6 +9,7 @@ import withTheme from '@material-ui/core/styles/withTheme'
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
 import { isEqual } from 'lodash-es'
+import { yearData } from './chartMocks'
 
 const periods = {
   1: 60,
@@ -16,6 +17,41 @@ const periods = {
   30: 3600,
   90: 3600,
   365: 86400,
+}
+
+const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
+
+const mapLabelToDays = {
+  '1D': 1,
+  '7D': 7,
+  '1M': 30,
+  '3M': 90,
+  '1Y': 365,
+}
+
+const TransformData = (props: any) => {
+  const { data, isShownMocks, ...otherProps } = props
+  let transformedData = isShownMocks ? yearData : []
+  if (
+    data &&
+    data.getPriceHistory &&
+    data.getPriceHistory.prices &&
+    data.getPriceHistory.prices.length > 0 &&
+    !isShownMocks
+  ) {
+    const Yvalues = data.getPriceHistory.prices.map((x) => x)
+    transformedData = data.getPriceHistory.dates.map((date, i) => ({
+      x: Number(date),
+      y: Yvalues[i],
+    }))
+  }
+
+  return (
+    <PortfolioChart
+      data={ transformedData }
+      { ...otherProps }
+    />
+  )
 }
 
 class GQLChart extends React.Component {
@@ -123,7 +159,7 @@ class GQLChart extends React.Component {
     }
     return (
       <QueryRenderer
-        component={PortfolioChart}
+        component={TransformData}
         query={PRICE_HISTORY_QUERY}
         variables={variables}
         withOutSpinner={true}
