@@ -72,11 +72,7 @@ class IntegrationReactSelect extends React.PureComponent {
       }))
     }
     return (
-      <ExchangePair
-        border={divider}
-        style={{ width: '15%' }}
-        className="AutoSuggestSelect"
-      >
+      <ExchangePair border={divider} className="AutoSuggestSelect">
         <SelectR
           style={{ width: '100%' }}
           filterOption={createFilter(filterConfig)}

@@ -1,15 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {
-  Paper,
-  Button,
-  Fade,
-  Slide,
-  Typography,
-  Card,
-  Grid,
-} from '@material-ui/core'
+import { Button, Fade, Typography, Card, Grid } from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 import Joyride from 'react-joyride'
 
@@ -42,6 +34,7 @@ import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDept
 import { singleChartSteps } from '@utils/joyrideSteps'
 import { setTimeout } from 'timers'
 import { withErrorFallback } from '@hoc/index'
+import TransparentExtendedFAB from '@components/TransparentExtendedFAB'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
@@ -361,15 +354,15 @@ class Chart extends React.Component<IProps, IState> {
     const defaultView = view === 'default'
 
     return (
-      <Toggler
-        variant="raised"
-        color="primary"
-        onClick={() => {
-          toggleView(defaultView ? 'onlyCharts' : 'default')
-          if (defaultView && isNoCharts) addChart(currencyPair)
-        }}
-      >
-        {defaultView ? 'Multi Charts' : ' Single Chart'}
+      <Toggler>
+        <TransparentExtendedFAB
+          onClick={() => {
+            toggleView(defaultView ? 'onlyCharts' : 'default')
+            if (defaultView && isNoCharts) addChart(currencyPair)
+          }}
+        >
+          {defaultView ? 'Multi Charts' : ' Single Chart'}
+        </TransparentExtendedFAB>
       </Toggler>
     )
   }
@@ -387,43 +380,53 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-        <TogglerContainer className="AutoSuggestSelect">
+        <TogglerContainer container className="AutoSuggestSelect">
           {base && quote && (
-            <ExchangePair border={palette.divider}>
-              {
-                <Typography
-                  style={{ margin: 'auto' }}
-                  align="center"
-                  color="default"
-                  variant="button"
-                >
-                  {`${base}/${quote}`}
-                </Typography>
-              }
-            </ExchangePair>
+            <Grid
+              spacing={16}
+              item
+              xs={8}
+              container
+              alignItems="center"
+              justify="flex-end"
+            >
+              <ExchangePair border={palette.divider}>
+                {
+                  <Typography
+                    style={{ margin: 'auto' }}
+                    align="center"
+                    color="default"
+                    variant="button"
+                  >
+                    {`${base}/${quote}`}
+                  </Typography>
+                }
+              </ExchangePair>
+              <Button
+                style={{ height: 38, marginLeft: '1.5rem' }}
+                variant="extendedFab"
+                color="secondary"
+                onClick={() => {
+                  this.setState((prevState) => ({
+                    activeChart:
+                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                  }))
+                }}
+              >
+                {activeChart === 'candle' ? 'show depth' : 'show chart'}
+              </Button>
+            </Grid>
           )}
-          <Button
-            style={{ height: 38 }}
-            variant="extendedFab"
-            color="secondary"
-            onClick={() => {
-              this.setState((prevState) => ({
-                activeChart:
-                  prevState.activeChart === 'candle' ? 'depth' : 'candle',
-              }))
-            }}
-          >
-            {activeChart === 'candle' ? 'show depth' : 'show chart'}
-          </Button>
+          <Grid alignItems="center" item sm={4} container justify="flex-end">
+            <AutoSuggestSelect
+              value={view === 'default' && currencyPair}
+              id={'currencyPair'}
+              view={view}
+              exchange={activeExchange}
+            />
 
-          <AutoSuggestSelect
-            value={view === 'default' && currencyPair}
-            id={'currencyPair'}
-            view={view}
-            exchange={activeExchange}
-          />
-
-          {toggler}
+            {toggler}
+          </Grid>
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -498,16 +501,14 @@ const ChartsContainer = styled(TablesContainer)`
   }
 `
 
-const TogglerContainer = styled.div`
-  display: flex;
+// margin for centring
+const TogglerContainer = styled(Grid)`
+  margin-bottom: -8px;
   height: 4rem;
-  padding: 1rem;
   width: 100%;
-  justify-content: flex-end;
-  align-items: center;
 `
 
-const Toggler = styled(Button)`
+const Toggler = styled.div`
   && {
     margin: 0.7rem;
   }
