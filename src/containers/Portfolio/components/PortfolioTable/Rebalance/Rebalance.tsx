@@ -3,15 +3,9 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
-  Grid,
-  CardContent,
-} from '@material-ui/core'
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 
+import { Container as Content } from '../Industry/Industry.styles'
 import { systemError } from '@utils/errorsConfig'
 import QueryRenderer from '@components/QueryRenderer'
 import { BarChart } from '@storybook-components/index'
@@ -34,7 +28,6 @@ import { portfolioRebalanceSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 
 import {
-  Content,
   ChartWrapper,
   ChartContainer,
   Chart,

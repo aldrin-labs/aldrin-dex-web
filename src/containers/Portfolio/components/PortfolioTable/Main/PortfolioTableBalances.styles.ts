@@ -77,8 +77,8 @@ export const TableWrapper = styled(Card)`
 export const TablesWrapper = styled(Grid)`
   max-height: 50%;
   flex-basis: inherit;
-  padding: 0 8px !important;
-
+  padding: 0 !important;
+  margin: 0;
   @media (max-width: 960px) {
     max-height: inherit;
   }

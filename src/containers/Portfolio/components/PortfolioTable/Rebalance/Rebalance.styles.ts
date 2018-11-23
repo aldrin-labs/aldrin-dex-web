@@ -1,18 +1,8 @@
-import { customAquaScrollBar } from '@styles/cssUtils'
 import styled from 'styled-components'
 import { Card, Grid, IconButton, CardContent } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 
-export { Content, ChartWrapper, ChartContainer, Chart, Container }
-
-const Content = styled(Grid)`
-  overflow: auto;
-  height: 100vh;
-  width: 100%;
-  margin: 0;
-
-  ${customAquaScrollBar};
-`
+export { ChartWrapper, ChartContainer, Chart, Container }
 
 const ChartWrapper = styled(Grid)`
   display: flex;
