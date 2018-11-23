@@ -11,6 +11,7 @@ import MainLogo from '@icons/MainLogo.png'
 import MainLogoDark from '@icons/MainLogoDarkColor.png'
 import { Nav, Logo } from './NavBar.styles'
 import Feedback from '@components/Feedback'
+import styled from 'styled-components'
 
 export interface Props extends WithTheme {
   hide?: boolean
@@ -77,6 +78,7 @@ const NavBarRaw: SFC<Props> = ({
                 color="default"
                 variant="text"
               >
+                {pathname === '/portfolio' && <Marker color={main} />}
                 Portfolio
               </Button>
 
@@ -88,6 +90,7 @@ const NavBarRaw: SFC<Props> = ({
                 color="default"
                 size="medium"
               >
+                {pathname === '/chart' && <Marker color={main} />}
                 Chart
               </Button>
             </Grid>
@@ -112,5 +115,14 @@ const NavBarRaw: SFC<Props> = ({
     </Nav>
   )
 }
+
+const Marker = styled.span`
+  width: 28px;
+  height: 6px;
+  border-radius: 6px;
+  background: ${(props: { color: string }) => props.color};
+  position: absolute;
+  bottom: -9px;
+`
 
 export const NavBar = withTheme()(NavBarRaw)
