@@ -27,6 +27,7 @@ const OptimizedRow = memo(
       </Cell>
       <Cell width={'45%'} style={{ display: 'flex' }}>
         <StyledArrow
+          fontSize="small"
           color={ticker.fall ? red.main : green.main}
           direction={ticker.fall ? 'down' : 'up'}
         />
@@ -75,7 +76,7 @@ const MemoizedHead = memo(
           }}
           style={{
             marginRight: '0.5rem',
-            color: palette.secondary['light'],
+            color: palette.secondary.main,
           }}
         />
       </TriggerTitle>

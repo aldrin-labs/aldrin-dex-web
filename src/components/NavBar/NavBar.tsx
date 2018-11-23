@@ -72,7 +72,7 @@ const NavBarRaw: SFC<Props> = ({
             >
               <Button
                 style={createStyleForButton(pathname, '/portfolio')}
-                size="small"
+                size="medium"
                 component={Portfolio}
                 color="default"
                 variant="text"
@@ -86,6 +86,7 @@ const NavBarRaw: SFC<Props> = ({
                 size="small"
                 variant="text"
                 color="default"
+                size="medium"
               >
                 Chart
               </Button>

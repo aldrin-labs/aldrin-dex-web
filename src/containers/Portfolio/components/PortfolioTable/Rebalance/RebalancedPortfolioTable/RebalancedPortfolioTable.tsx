@@ -473,7 +473,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const { transformData } = this
     const red = theme.palette.red.main
     const green = theme.palette.green.main
-    const background = theme.palette.background.default
+    const background = theme.palette.primary.main
 
     let columnNames = [
       { label: 'Exchange', id: 'exchange' },

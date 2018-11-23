@@ -47,6 +47,10 @@ export const IconButtonWithHover = styled(IconButton)`
   &:hover {
     color: ${(props: { hoverColor: string }) => props.hoverColor};
   }
+
+  && {
+    padding: 0.25rem;
+  }
 `
 
 export const Label = styled(Typography)`
