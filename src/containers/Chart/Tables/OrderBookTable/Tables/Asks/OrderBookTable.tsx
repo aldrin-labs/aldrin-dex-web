@@ -28,18 +28,18 @@ const MemoHead = memo(
         <SwitchTablesButton
           onClick={onButtonClick}
           variant="outlined"
-          color="primary"
+          color="default"
         >
           HISTORY
         </SwitchTablesButton>
       </Title>
-      <Head background={background.default}>
+      <Head background={background.default} border={palette.divider}>
         <Row isHead={true} background={background.default}>
           <EmptyCell width={'10%'} />
           <HeadCell width={'45%'}>
             <TypographyFullWidth
               textColor={palette.getContrastText(background.default)}
-              variant="subtitle1"
+              variant="body2"
               color="default"
               align="right"
             >
@@ -49,7 +49,7 @@ const MemoHead = memo(
           <HeadCell width={'45%'}>
             <TypographyFullWidth
               textColor={palette.getContrastText(background.default)}
-              variant="subtitle1"
+              variant="body2"
               noWrap={true}
               color="default"
               align="right"

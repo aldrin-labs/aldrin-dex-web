@@ -3,11 +3,18 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
-import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  Grid,
+  CardContent,
+} from '@material-ui/core'
 
 import { systemError } from '@utils/errorsConfig'
 import QueryRenderer from '@components/QueryRenderer'
-import { BarChart } from '@storybook-components'
+import { BarChart } from '@storybook-components/index'
 import {
   IProps,
   IState,
@@ -33,15 +40,12 @@ import {
   Chart,
   Container,
   BtnsWrapper,
-  InnerChartContainer,
-  StyledCardHeader,
 } from './Rebalance.styles'
 import withTheme from '@material-ui/core/styles/withTheme'
-import { PTWrapper } from '../Main/PortfolioTableBalances.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
-import RebalanceActionButtons from './RebalancedPortfolioTable/RebalanceActionButtons/RebalanceActionButtons'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
 import config from '@utils/linkConfig'
+import CardHeader from '@components/CardHeader'
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -484,32 +488,11 @@ class Rebalance extends React.Component<IProps, IState> {
     const tableDataHasData = !staticRows.length || !rows.length
 
     return (
-      <EmptyTablePlaceholder isEmpty={tableDataHasData}>
-        <PTWrapper tableData={true}>
-          <Joyride
-            continuous={true}
-            showProgress={true}
-            showSkipButton={true}
-            steps={portfolioRebalanceSteps}
-            run={this.props.toolTip.portfolioRebalance}
-            callback={this.handleJoyrideCallback}
-            key={this.state.key}
-            styles={{
-              options: {
-                backgroundColor: theme.palette.getContrastText(
-                  theme.palette.primary.main),
-                primaryColor: theme.palette.secondary.main,
-                textColor: theme.palette.primary.main,
-              },
-              tooltip: {
-                fontFamily: theme.typography.fontFamily,
-                fontSize: theme.typography.fontSize,
-              },
-            }}
-          />
+      <>
+        <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
-          <Content>
-            <Container isEditModeEnabled={isEditModeEnabled}>
+          <Content container spacing={16}>
+            <Container item md={8} isEditModeEnabled={isEditModeEnabled}>
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
@@ -528,115 +511,134 @@ class Rebalance extends React.Component<IProps, IState> {
                   addMoneyInputValue,
                   theme,
                   loading,
-                  textColor,
                 }}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}
                 onEditModeEnable={this.onEditModeEnable}
                 updateState={this.updateState}
               />
-              <BtnsWrapper>
-                <RebalanceActionButtons
-                  {...{
-                    isEditModeEnabled,
-                    saveButtonColor,
-                    onSaveClick,
-                    onEditModeEnable,
-                    onReset,
-                    textColor,
-                    secondary,
-                    red,
-                    green,
-                  }}
-                />
-                <RebalanceMoneyButtons
-                  {...{
-                    isEditModeEnabled,
-                    addMoneyInputValue,
-                    undistributedMoney,
-                    staticRows,
-                    rows,
-                    selectedActive,
-                    updateState,
-                    textColor,
-                    fontFamily,
-                    secondary,
-                    red,
-                    green,
-                  }}
-                />
-              </BtnsWrapper>
             </Container>
+
+            <BtnsWrapper
+              container
+              justify="center"
+              alignItems="center"
+              item
+              md={4}
+            >
+              <RebalanceMoneyButtons
+                {...{
+                  isEditModeEnabled,
+                  addMoneyInputValue,
+                  undistributedMoney,
+                  onEditModeEnable,
+                  onReset,
+                  onSaveClick,
+                  saveButtonColor,
+                  textColor,
+                  staticRows,
+                  rows,
+                  selectedActive,
+                  updateState,
+                  fontFamily,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+            </BtnsWrapper>
+
             <ChartWrapper
+              item
+              md={12}
               isEditModeEnabled={isEditModeEnabled}
               className="PortfolioDistributionChart"
             >
-              <ChartContainer
-                elevation={10}
-                background={palette.background.paper}
-              >
-                <StyledCardHeader title={`Portfolio Distribution`} />
-                <InnerChartContainer>
-                  <Chart background={palette.background.default}>
-                    {staticRows &&
-                      staticRows[0] &&
-                      staticRows[0].portfolioPerc && (
-                        <BarChart
-                          theme={theme}
-                          height={350}
-                          hideDashForToolTip={true}
-                          xAxisVertical={true}
-                          alwaysShowLegend={true}
-                          charts={[
-                            {
-                              data: combineToBarChart(staticRows),
-                              color: leftBar,
-                              title: 'Current',
-                            },
-                            {
-                              data: combineToBarChart(rows),
-                              color: rightBar,
-                              title: 'Rebalanced',
-                            },
-                          ]}
-                        />
-                      )}
-                  </Chart>
-                </InnerChartContainer>
+              <ChartContainer background={palette.background.paper}>
+                <CardHeader title={`Portfolio Distribution`} />
+
+                <Chart>
+                  {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
+                    <BarChart
+                      theme={theme}
+                      hideDashForToolTip={true}
+                      xAxisVertical={true}
+                      alwaysShowLegend={true}
+                      charts={[
+                        {
+                          data: combineToBarChart(staticRows),
+                          color: leftBar,
+                          title: 'Current',
+                        },
+                        {
+                          data: combineToBarChart(rows),
+                          color: rightBar,
+                          title: 'Rebalanced',
+                        },
+                      ]}
+                    />
+                  )}
+                </Chart>
               </ChartContainer>
             </ChartWrapper>
-            <Dialog
-              fullScreen={false}
-              open={openWarning}
-              aria-labelledby="responsive-dialog-title"
-            >
-              <DialogTitle id="responsive-dialog-title">
-                {warningMessage}
-              </DialogTitle>
-              <DialogActions>
-                <Button
-                  onClick={this.hideWarning}
-                  color="secondary"
-                  autoFocus={true}
-                >
-                  ok
-                </Button>
-                {isSystemError && (
+
+            {/* end of a grid */}
+            <>
+              <Dialog
+                fullScreen={false}
+                open={openWarning}
+                aria-labelledby="responsive-dialog-title"
+              >
+                <DialogTitle id="responsive-dialog-title">
+                  {warningMessage}
+                </DialogTitle>
+                <DialogActions>
                   <Button
-                    onClick={() => {
-                      this.openLink(config.bugLink)
-                    }}
-                    size="small"
-                    style={{ margin: '0.5rem 1rem' }}
+                    onClick={this.hideWarning}
+                    color="secondary"
+                    autoFocus={true}
                   >
-                    Report bug
+                    ok
                   </Button>
-                )}
-              </DialogActions>
-            </Dialog>
+                  {isSystemError && (
+                    <Button
+                      onClick={() => {
+                        this.openLink(config.bugLink)
+                      }}
+                      size="small"
+                      style={{ margin: '0.5rem 1rem' }}
+                    >
+                      Report bug
+                    </Button>
+                  )}
+                </DialogActions>
+              </Dialog>
+              <Joyride
+                continuous={true}
+                showProgress={true}
+                showSkipButton={true}
+                steps={portfolioRebalanceSteps}
+                run={this.props.toolTip.portfolioRebalance}
+                callback={this.handleJoyrideCallback}
+                key={this.state.key}
+                styles={{
+                  options: {
+                    backgroundColor: theme.palette.getContrastText(
+                      theme.palette.primary.main
+                    ),
+                    primaryColor: theme.palette.secondary.main,
+                    textColor: theme.palette.primary.main,
+                  },
+                  tooltip: {
+                    fontFamily: theme.typography.fontFamily,
+                    fontSize: theme.typography.fontSize,
+                  },
+                }}
+              />
+            </>
           </Content>
-        </PTWrapper>
-      </EmptyTablePlaceholder>
+        </EmptyTablePlaceholder>
+      </>
     )
   }
 }

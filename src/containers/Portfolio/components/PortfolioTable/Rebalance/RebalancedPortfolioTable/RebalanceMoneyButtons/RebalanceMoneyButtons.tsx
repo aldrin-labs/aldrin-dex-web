@@ -3,18 +3,19 @@ import React from 'react'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps } from './RebalanceMoneyButtons.types'
 import {
-  ButtonsWrapper,
   ButtonsInnerWrapper,
   UndistributedMoneyContainer,
   UndistributedMoneyText,
   AddMoneyContainer,
   Input,
-  InputContainer,
-  SButton
+  SButton,
 } from './RebalanceMoneyButtons.styles'
-import { StyledCardHeader } from '../../Rebalance.styles'
+
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import RebalanceActionButtons from '../RebalanceActionButtons/RebalanceActionButtons'
+import { Grow, Card } from '@material-ui/core'
+import CardHeader from '@components/CardHeader'
 
 export class RebalanceMoneyButtons extends React.Component<IProps> {
   onDeleteUndistributedMoneyHandler = () => {
@@ -85,7 +86,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
       ]
     }
 
-    const newUndistributedMoney = 0..toFixed(2)
+    const newUndistributedMoney = (0).toFixed(2)
     const newTotal = UTILS.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotal = UTILS.calculateTableTotal(resultRows)
     const newRows = UTILS.calculatePercents(resultRows, newTotal, staticRows)
@@ -165,60 +166,87 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
       isEditModeEnabled,
       secondary,
       textColor,
+      red,
+      green,
       fontFamily,
+      saveButtonColor,
+      onSaveClick,
+      onEditModeEnable,
+      onReset,
     } = this.props
 
-    return (isEditModeEnabled && (
-      <ButtonsWrapper>
-        <InputContainer>
-        <StyledCardHeader title={`Rebalance input`} />
-        <ButtonsInnerWrapper>
-          <AddMoneyContainer>
-            <Input
-              type="number"
-              value={addMoneyInputValue}
-              onChange={this.onAddMoneyInputChangeHandler}
-              onFocus={this.onFocusAddMoneyInputHandler}
-              secondary={secondary}
-              textColor={textColor}
-            />
-            <SButton
-              color={'secondary'}
-              variant={'outlined'}
-              onClick={this.onAddMoneyButtonPressedHandler}
-            >
-              Add money
-            </SButton>
-          </AddMoneyContainer>
-          <AddMoneyContainer>
-            <SButton
-              color={'primary'}
-              variant={'outlined'}
-              onClick={this.onDeleteUndistributedMoneyHandler}
-            >
-              Delete undistributed
-            </SButton>
-          </AddMoneyContainer>
-          {
-            <UndistributedMoneyContainer>
-              <UndistributedMoneyText textColor={textColor} fontFamily={fontFamily}>
-                Undistributed money:{' '}
-                {formatNumberToUSFormat(undistributedMoney)}
-              </UndistributedMoneyText>
+    return (
+      <Grow mounOnEnter unmountOnExit in={isEditModeEnabled}>
+        <Card style={{ width: '60%' }}>
+          <CardHeader
+            style={{ padding: '1rem 1.5rem' }}
+            action={
+              <RebalanceActionButtons
+                {...{
+                  isEditModeEnabled,
+                  saveButtonColor,
+                  onSaveClick,
+                  onEditModeEnable,
+                  onReset,
+                  textColor,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+            }
+            title={`Rebalance input`}
+          />
+
+          <ButtonsInnerWrapper>
+            <AddMoneyContainer>
+              <Input
+                type="number"
+                value={addMoneyInputValue}
+                onChange={this.onAddMoneyInputChangeHandler}
+                onFocus={this.onFocusAddMoneyInputHandler}
+                secondary={secondary}
+                textColor={textColor}
+              />
               <SButton
-                disabled={+undistributedMoney < 0}
                 color={'secondary'}
-                variant={'outlined'}
-                onClick={this.onDistributeHandler}
+                variant="outlined"
+                onClick={this.onAddMoneyButtonPressedHandler}
               >
-                Distribute to selected
+                Add money
               </SButton>
-            </UndistributedMoneyContainer>
-          }
-        </ButtonsInnerWrapper>
-        </InputContainer>
-      </ButtonsWrapper>
-      )
+            </AddMoneyContainer>
+            <AddMoneyContainer>
+              <SButton
+                color="default"
+                variant="outlined"
+                onClick={this.onDeleteUndistributedMoneyHandler}
+              >
+                Delete undistributed
+              </SButton>
+            </AddMoneyContainer>
+            {
+              <UndistributedMoneyContainer>
+                <UndistributedMoneyText
+                  textColor={textColor}
+                  fontFamily={fontFamily}
+                >
+                  Undistributed money:{' '}
+                  {formatNumberToUSFormat(undistributedMoney)}
+                </UndistributedMoneyText>
+                <SButton
+                  disabled={+undistributedMoney < 0}
+                  color={'secondary'}
+                  variant="outlined"
+                  onClick={this.onDistributeHandler}
+                >
+                  Distribute to selected
+                </SButton>
+              </UndistributedMoneyContainer>
+            }
+          </ButtonsInnerWrapper>
+        </Card>
+      </Grow>
     )
   }
 }

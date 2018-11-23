@@ -19,13 +19,11 @@ import Import, {
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
-import Warning from '@components/WarningMessageSnack/WarningMessageSnack'
 import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
-import ComingSoon from '@components/ComingSoon'
 import {
   ChartsContainer,
   Chart,
@@ -98,7 +96,11 @@ class Optimization extends Component<IProps, IState> {
         percentagesOfCoinInPortfolio(asset, allSum, true)
       ),
     }))
-    const summedAssetsWithoutDuplicates = sumSame(newAssets, 'coin', 'percentage')
+    const summedAssetsWithoutDuplicates = sumSame(
+      newAssets,
+      'coin',
+      'percentage'
+    )
 
     return [summedAssetsWithoutDuplicates, allSum]
   }
@@ -184,30 +186,34 @@ class Optimization extends Component<IProps, IState> {
       risk: arrayOfReturnedRisks,
     }
 
-    const riskProfileNames = ['min', 'low', 'med', 'high', 'max'];
+    const riskProfileNames = ['min', 'low', 'med', 'high', 'max']
 
     // TODO: Make it better
     // for real data
-    const lineChartData = showAllLineChartData ? ( rawOptimizedData && rawOptimizedData.length && rawOptimizedData.map((el, i) => {
-      return {data: el.backtest_results.map((element) => ({
-        label: riskProfileNames[i],
-        x: element[0],
-        y: element[1],
-      })),
-      color: colors[i]}
-      })
-    ) : (
-      rawOptimizedData &&
-      rawOptimizedData.length &&
-      { data: rawOptimizedData[activeButton].backtest_results.map((el, i) => ({
-        label: 'optimized',
-        x: el[0],
-        y: el[1],
-      })),
-        color: colors[activeButton],
-      }
-    )
-
+    const lineChartData = showAllLineChartData
+      ? rawOptimizedData &&
+        rawOptimizedData.length &&
+        rawOptimizedData.map((el, i) => {
+          return {
+            data: el.backtest_results.map((element) => ({
+              label: riskProfileNames[i],
+              x: element[0],
+              y: element[1],
+            })),
+            color: colors[i],
+          }
+        })
+      : rawOptimizedData &&
+        rawOptimizedData.length && {
+          data: rawOptimizedData[activeButton].backtest_results.map(
+            (el, i) => ({
+              label: 'Optimized',
+              x: el[0],
+              y: el[1],
+            })
+          ),
+          color: colors[activeButton],
+        }
 
     const itemsForChartLegend = riskProfileNames.map((el, i) => ({
       title: el,
@@ -218,7 +224,7 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer>
-      <ChartContainer className="BackTestOptimizationChart">
+        <ChartContainer className="BackTestOptimizationChart">
           <StyledCardHeader
             title="Back-test Optimization"
             action={
@@ -239,7 +245,13 @@ class Optimization extends Component<IProps, IState> {
                 theme={theme}
                 additionalInfoInPopup={true}
                 alwaysShowLegend={showAllLineChartData}
-                data={lineChartData === 0 ? undefined : showAllLineChartData ? lineChartData : [lineChartData]}
+                data={
+                  lineChartData === 0
+                    ? undefined
+                    : showAllLineChartData
+                    ? lineChartData
+                    : [lineChartData]
+                }
                 itemsForChartLegend={itemsForChartLegend}
               />
             </Chart>
@@ -286,9 +298,7 @@ class Optimization extends Component<IProps, IState> {
     const { loading, openWarning, warningMessage, isSystemError } = this.state
 
     return (
-      <PTWrapper
-        background={palette.background.default}
-      >
+      <PTWrapper background={palette.background.default}>
         <Joyride
           continuous={true}
           showProgress={true}
@@ -299,8 +309,7 @@ class Optimization extends Component<IProps, IState> {
           key={this.state.key}
           styles={{
             options: {
-              backgroundColor: theme.palette.getContrastText(
-                theme.palette.primary.main),
+              backgroundColor: theme.palette.common.white,
               primaryColor: theme.palette.secondary.main,
               textColor: theme.palette.primary.main,
             },
@@ -319,7 +328,11 @@ class Optimization extends Component<IProps, IState> {
                 <TypographyWithCustomColor color={textColor} variant="h6">
                   Optimizing portfolio...
                 </TypographyWithCustomColor>
-                <TypographyWithCustomColor style={{marginTop: '2rem'}} color={textColor} variant="h6">
+                <TypographyWithCustomColor
+                  style={{ marginTop: '2rem' }}
+                  color={textColor}
+                  variant="h6"
+                >
                   We are working on improving the speed of this model
                 </TypographyWithCustomColor>
               </LoaderInnerWrapper>
@@ -331,11 +344,7 @@ class Optimization extends Component<IProps, IState> {
               {this.renderCharts()}
             </MainArea>
           </ContentInner>
-          {/*<Warning*/}
-          {/*open={openWarning}*/}
-          {/*messageText={warningMessage}*/}
-          {/*onCloseClick={this.hideWarning}*/}
-          {/*/>*/}
+
           <Dialog
             fullScreen={false}
             open={openWarning}

@@ -16,7 +16,7 @@ export default ({ open, onClick }: { open: boolean; onClick: () => void }) => (
       <DialogContentText>{privacyPolicy}</DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={onClick} color="primary">
+      <Button onClick={onClick} color="secondary">
         Ok
       </Button>
     </DialogActions>

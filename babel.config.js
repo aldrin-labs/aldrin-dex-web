@@ -1,107 +1,108 @@
 module.exports = {
-  "env": {
-    "test": {
-      "presets": [
+  env: {
+    test: {
+      presets: [
         [
-          "@babel/preset-env",
+          '@babel/preset-env',
           {
-            "targets": {
-              "browsers": ["last 2 versions"]
-            }
-          }
-        ],
-        [
-          "@babel/stage-1",
-          {
-            "decoratorsLegacy": true
-          }
-        ],
-        "@babel/react",
-        "@babel/preset-typescript"
-      ],
-      "plugins": [
-        "react-hot-loader/babel",
-        "styled-components",
-        "graphql-tag",
-        [
-          "@babel/plugin-transform-runtime",
-          {
-            "helpers": false,
-            "polyfill": false,
-            "regenerator": true,
-            "moduleName": "@babel/runtime"
-          }
-        ]
-      ]
-    },
-    "production": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "useBuiltIns": "usage",
-            "targets": {
-              "browsers": ["last 2 Chrome versions"]
+            targets: {
+              browsers: ['last 2 versions'],
             },
-            "modules": false
-          }
+          },
         ],
         [
-          "@babel/stage-1",
+          '@babel/stage-1',
           {
-            "decoratorsLegacy": true
-          }
+            decoratorsLegacy: true,
+          },
         ],
-        "@babel/react",
-        "@babel/preset-typescript"
+        '@babel/react',
+        '@babel/preset-typescript',
       ],
-      "plugins": [
-        "lodash",
-        "graphql-tag",
+      plugins: [
+        'react-hot-loader/babel',
+        'styled-components',
+        'graphql-tag',
         [
-          "@babel/plugin-transform-runtime",
+          '@babel/plugin-transform-runtime',
           {
-            "polyfill": false,
-            "regenerator": true,
-            "useESModules": true
-          }
-        ]
-      ]
+            helpers: false,
+            polyfill: false,
+            regenerator: true,
+            moduleName: '@babel/runtime',
+          },
+        ],
+      ],
     },
-    "development": {
-      "presets": [
+    production: {
+      presets: [
         [
-          "@babel/preset-env",
+          '@babel/preset-env',
           {
-            "targets": {
-              "browsers": ["last 2 versions"]
+            useBuiltIns: 'usage',
+            targets: {
+              browsers: ['last 2 Chrome versions'],
             },
-            "modules": false
-          }
+            modules: false,
+          },
         ],
         [
-          "@babel/stage-1",
+          '@babel/stage-1',
           {
-            "decoratorsLegacy": true
-          }
+            decoratorsLegacy: true,
+          },
         ],
-        "@babel/react",
-        "@babel/preset-typescript"
+        '@babel/react',
+        '@babel/preset-typescript',
       ],
-      "plugins": [
-        "react-hot-loader/babel",
-        "styled-components",
-        "graphql-tag",
+      plugins: [
+        'lodash',
+        'graphql-tag',
+        '@babel/plugin-transform-react-inline-elements',
         [
-          "@babel/plugin-transform-runtime",
+          '@babel/plugin-transform-runtime',
           {
-            "helpers": false,
-            "polyfill": false,
-            "regenerator": true,
-            "moduleName": "@babel/runtime"
-          }
-        ]
-      ]
-    }
-  }
+            polyfill: false,
+            regenerator: true,
+            useESModules: true,
+          },
+        ],
+      ],
+    },
+    development: {
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            targets: {
+              browsers: ['last 2 versions'],
+            },
+            modules: false,
+          },
+        ],
+        [
+          '@babel/stage-1',
+          {
+            decoratorsLegacy: true,
+          },
+        ],
+        '@babel/react',
+        '@babel/preset-typescript',
+      ],
+      plugins: [
+        'react-hot-loader/babel',
+        'styled-components',
+        'graphql-tag',
+        [
+          '@babel/plugin-transform-runtime',
+          {
+            helpers: false,
+            polyfill: false,
+            regenerator: true,
+            moduleName: '@babel/runtime',
+          },
+        ],
+      ],
+    },
+  },
 }

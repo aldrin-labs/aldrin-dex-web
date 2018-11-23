@@ -5,10 +5,10 @@ import { TableWithSort } from '@storybook-components'
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
 import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
-import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import { IProps, IState } from './TradeOrderHistoryTable.types'
 import { formatDate } from '@utils/dateUtils'
 import { withErrorFallback } from '@hoc/'
+import newLoader from '@components/TablePlaceholderLoader/newLoader'
 
 const tableHeadings = [
   { isNumber: false, name: 'Coin', id: 'coin' },
@@ -80,8 +80,8 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
 export default withErrorFallback(
   queryRendererHoc({
-    placeholder: TablePlaceholderLoader,
+    placeholder: newLoader,
     query: MyTradesQuery,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   })(TradeOrderHistoryTable)
 )
