@@ -134,6 +134,7 @@ class Rebalance extends React.Component<IProps, IState> {
             symbol: el.coin,
             portfolioPerc: null,
             deltaPrice: el.diff.$numberDecimal,
+            isCustomAsset: el.isCustomAsset,
           }
         }
       )
@@ -326,6 +327,7 @@ class Rebalance extends React.Component<IProps, IState> {
         : el.price.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
+      isCustomAsset: el.isCustomAsset,
     }))
 
     const variablesForMutation = {
