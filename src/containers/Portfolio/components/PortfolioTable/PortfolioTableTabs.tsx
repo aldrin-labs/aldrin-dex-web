@@ -106,7 +106,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
         >
           <Settings className="settingsIcon" />
         </Tab>
-        <Fade in={switchUSDBTC}>
+        <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
           <div>
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
