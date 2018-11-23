@@ -216,6 +216,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       deltaPrice: 0,
       price: 0,
       editable: true,
+      isCustomAsset: true,
     }
     clonedRows.push(newRow)
     const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
