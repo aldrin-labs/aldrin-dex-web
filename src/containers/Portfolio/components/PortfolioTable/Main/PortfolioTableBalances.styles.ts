@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Paper, Grid, Card } from '@material-ui/core'
+import { Grid, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { Container } from '../Industry/Industry.styles'
@@ -40,7 +40,7 @@ export const ChartContainer = styled(Grid)`
   }
 `
 
-export const PTWrapper = styled(Paper)`
+export const PTWrapper = styled(Card)`
   grid-column: 2;
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
