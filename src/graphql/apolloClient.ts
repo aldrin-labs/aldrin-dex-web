@@ -1,6 +1,7 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import ApolloClient from 'apollo-client'
 import { ApolloLink, split } from 'apollo-link'
+import { persistCache } from 'apollo-cache-persist'
 import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
@@ -18,6 +19,11 @@ import { GET_COINS } from '../mutations/portfolio/getCoins'
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 
 const memCache = new InMemoryCache()
+
+persistCache({
+  cache: memCache,
+  storage: localStorage,
+})
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
