@@ -21,7 +21,7 @@ const combineDataToSelectOptions = (data: Data) => {
   return exchangeOptions
 }
 
-const promiseOptions = (inputValue: string) => {
+const promiseOptions = (inputValue = '') => {
   // console.log('inputValue in: ', inputValue);
 
   return client
