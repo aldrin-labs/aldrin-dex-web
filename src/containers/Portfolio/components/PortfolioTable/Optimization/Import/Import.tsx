@@ -149,7 +149,7 @@ export default class Import extends PureComponent<IProps> {
       //TODO: Should be another function
 
       if (isUserError && isUserError.length) {
-        const userErrorMessage = `User Error: ${backendResultParsed.error_message
+        const userErrorMessage = `Info: ${backendResultParsed.error_message
           .map((el: string) => `${el}`)
           .join()}`
 
