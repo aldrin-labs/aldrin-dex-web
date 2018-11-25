@@ -215,7 +215,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       portfolioPerc: 0.0,
       deltaPrice: 0,
       price: 0,
-      editable: true,
       isCustomAsset: true,
     }
     clonedRows.push(newRow)
@@ -229,7 +228,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const { rows, undistributedMoney, staticRows, updateState } = this.props
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
-    const isEditableCoin = clonedRows[idx].editable
+    const isEditableCoin = clonedRows[idx].isCustomAsset
 
     const resultRows = isEditableCoin
       ? [
@@ -299,7 +298,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       )
 
       const exchange =
-        isEditModeEnabled && row.editable ? (
+        isEditModeEnabled && row.isCustomAsset ? (
           <SelectAllExchangeList
             key={`inputNameExchange${index}`}
             classNamePrefix="custom-select-box"
@@ -343,7 +342,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         )
 
       const coin =
-        isEditModeEnabled && row.editable ? (
+        isEditModeEnabled && row.isCustomAsset ? (
           <SelectCoinList
             ref={handleRef}
             key={`inputCoinSymbol${index}`}
