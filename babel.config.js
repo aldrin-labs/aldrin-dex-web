@@ -10,12 +10,6 @@ module.exports = {
             },
           },
         ],
-        [
-          '@babel/stage-1',
-          {
-            decoratorsLegacy: true,
-          },
-        ],
         '@babel/react',
         '@babel/preset-typescript',
       ],
@@ -30,6 +24,29 @@ module.exports = {
             regenerator: true,
           },
         ],
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-class-properties",
+        [
+          "@babel/plugin-proposal-decorators",
+          {
+            decoratorsBeforeExport: true,
+          }
+        ],
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-proposal-export-namespace-from",
+        "@babel/plugin-proposal-function-sent",
+        "@babel/plugin-proposal-json-strings",
+        "@babel/plugin-proposal-logical-assignment-operators",
+        "@babel/plugin-proposal-nullish-coalescing-operator",
+        "@babel/plugin-proposal-numeric-separator",
+        "@babel/plugin-proposal-optional-chaining",
+        [
+          "@babel/plugin-proposal-pipeline-operator",
+          { proposal: "minimal" }
+        ],
+        "@babel/plugin-proposal-throw-expressions",
+        "@babel/plugin-syntax-import-meta",
+        "@babel/plugin-transform-react-inline-elements",
       ],
     },
     production: {
@@ -44,19 +61,12 @@ module.exports = {
             modules: false,
           },
         ],
-        [
-          '@babel/stage-1',
-          {
-            decoratorsLegacy: true,
-          },
-        ],
         '@babel/react',
         '@babel/preset-typescript',
       ],
       plugins: [
         'lodash',
         'graphql-tag',
-        '@babel/plugin-transform-react-inline-elements',
         [
           '@babel/plugin-transform-runtime',
           {
@@ -64,6 +74,29 @@ module.exports = {
             useESModules: true,
           },
         ],
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-class-properties",
+        [
+          "@babel/plugin-proposal-decorators",
+          {
+            decoratorsBeforeExport: true,
+          }
+        ],
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-proposal-export-namespace-from",
+        "@babel/plugin-proposal-function-sent",
+        "@babel/plugin-proposal-json-strings",
+        "@babel/plugin-proposal-logical-assignment-operators",
+        "@babel/plugin-proposal-nullish-coalescing-operator",
+        "@babel/plugin-proposal-numeric-separator",
+        "@babel/plugin-proposal-optional-chaining",
+        [
+          "@babel/plugin-proposal-pipeline-operator",
+          { proposal: "minimal" }
+        ],
+        "@babel/plugin-proposal-throw-expressions",
+        "@babel/plugin-syntax-import-meta",
+        "@babel/plugin-transform-react-inline-elements",
       ],
     },
     development: {
@@ -75,12 +108,6 @@ module.exports = {
               browsers: ['last 2 versions'],
             },
             modules: false,
-          },
-        ],
-        [
-          '@babel/stage-1',
-          {
-            decoratorsLegacy: true,
           },
         ],
         '@babel/react',
@@ -97,6 +124,29 @@ module.exports = {
             regenerator: true,
           },
         ],
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-class-properties",
+        [
+          "@babel/plugin-proposal-decorators",
+          {
+            decoratorsBeforeExport: true,
+          }
+        ],
+        "@babel/plugin-proposal-export-default-from",
+        "@babel/plugin-proposal-export-namespace-from",
+        "@babel/plugin-proposal-function-sent",
+        "@babel/plugin-proposal-json-strings",
+        "@babel/plugin-proposal-logical-assignment-operators",
+        "@babel/plugin-proposal-nullish-coalescing-operator",
+        "@babel/plugin-proposal-numeric-separator",
+        "@babel/plugin-proposal-optional-chaining",
+        [
+          "@babel/plugin-proposal-pipeline-operator",
+          { proposal: "minimal" }
+        ],
+        "@babel/plugin-proposal-throw-expressions",
+        "@babel/plugin-syntax-import-meta",
+        "@babel/plugin-transform-react-inline-elements",
       ],
     },
   },
