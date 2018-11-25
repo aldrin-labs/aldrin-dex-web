@@ -27,9 +27,7 @@ module.exports = {
           '@babel/plugin-transform-runtime',
           {
             helpers: false,
-            polyfill: false,
             regenerator: true,
-            moduleName: '@babel/runtime',
           },
         ],
       ],
@@ -62,7 +60,6 @@ module.exports = {
         [
           '@babel/plugin-transform-runtime',
           {
-            polyfill: false,
             regenerator: true,
             useESModules: true,
           },
@@ -97,9 +94,7 @@ module.exports = {
           '@babel/plugin-transform-runtime',
           {
             helpers: false,
-            polyfill: false,
             regenerator: true,
-            moduleName: '@babel/runtime',
           },
         ],
       ],
