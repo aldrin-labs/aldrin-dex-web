@@ -7,7 +7,9 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
+const devtool = process.env.DEVTOOL || 'cheap-module-source-map'
 const port = process.env.PORT || 3000
+
 
 const config = {
   mode: 'development',
@@ -21,7 +23,7 @@ const config = {
   output: {
     filename: '[name].js',
   },
-  devtool: 'eval-sourcemap',
+  devtool,
   module: {},
 
   stats: 'verbose',
