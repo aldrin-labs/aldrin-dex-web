@@ -296,11 +296,12 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows
     )
 
+    const newRows = UTILS.removeEditableModeInCoins(newRowsWithPriceDiff)
 
     this.setState(
       {
-        savedRows: cloneArrayElementsOneLevelDeep(newRowsWithPriceDiff),
-        rows: newRowsWithPriceDiff,
+        savedRows: cloneArrayElementsOneLevelDeep(newRows),
+        rows: newRows,
         totalSavedRows: totalRows,
         isEditModeEnabled: false,
         selectedActive: [],
