@@ -14,7 +14,7 @@ export interface IRow {
   currentPrice: string | number
   portfolioPerc: number | string | null
   deltaPrice?: number | string
-  isCustomAsset?: boolean
+  editable?: boolean
 }
 
 export interface IProps extends WithTheme {
