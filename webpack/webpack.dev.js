@@ -7,7 +7,7 @@ const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
-const devtool = process.env.DEVTOOL || 'cheap-module-source-map'
+const devtool = process.env.DEVTOOL || 'source-map'
 const port = process.env.PORT || 3000
 
 
