@@ -110,8 +110,9 @@ const NavBarRaw: SFC<Props> = ({
               <Hidden only={['sm', 'xs']}>
                 <Feedback borderColor={fade(divider, 0.5)} />
               </Hidden>
-
-              <Login mainColor={main} />
+              <Hidden only="xs">
+                <Login mainColor={main} />
+              </Hidden>
             </Grid>
           </Grid>
         </Grid>
