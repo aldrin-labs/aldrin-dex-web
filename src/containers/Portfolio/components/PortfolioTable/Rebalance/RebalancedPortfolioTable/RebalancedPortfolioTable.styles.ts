@@ -9,7 +9,7 @@ export const InputTable = styled.input`
   border: none;
   outline: none;
   color: ${(props: { isPercentSumGood?: boolean; red: string }) =>
-    props.isPercentSumGood ? 'inherit' : props.red};
+    props.isPercentSumGood ? '#7ad3d8' : props.red};
 `
 
 export const TableWrapper = styled.div`
