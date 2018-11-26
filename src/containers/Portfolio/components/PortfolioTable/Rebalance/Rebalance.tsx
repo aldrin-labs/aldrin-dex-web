@@ -320,13 +320,13 @@ class Rebalance extends React.Component<IProps, IState> {
 
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery, refetch } = this.props
-    const { rows, totalRows } = this.state
+    const { rows, totalRows, staticRowsMap } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: el._id,
       exchange: el.exchange,
       coin: el.symbol,
-      amount: el.isCustomAsset ? el.price.toString() : el.quantity,
+      amount: el.isCustomAsset ? el.price.toString() : (staticRowsMap.get(el._id).price !== el.price ? (el.price / el.currentPrice).toString() : el.quantity.toString()),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
       isCustomAsset: el.isCustomAsset,
