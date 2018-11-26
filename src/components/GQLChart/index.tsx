@@ -115,7 +115,7 @@ class GQLChart extends React.Component {
 
   render() {
     const variables = {
-      coins: this.state.coins,
+      coins: this.state.coins.filter(Boolean),
       isBTC: false,
       unixTimestampFrom: this.state.unixTimestampFrom,
       unixTimestampTo: this.state.unixTimestampTo,

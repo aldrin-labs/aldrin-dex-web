@@ -153,6 +153,7 @@ export const getMyPortfolioAndRebalanceQuery = gql`
           percent
           amount
           diff
+          isCustomAsset
         }
       }
     }
@@ -170,6 +171,7 @@ export const updateRebalanceMutation = gql`
         percent
         amount
         diff
+        isCustomAsset
       }
       total
       updatedAt

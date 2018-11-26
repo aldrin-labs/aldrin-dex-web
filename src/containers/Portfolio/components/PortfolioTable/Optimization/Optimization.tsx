@@ -109,7 +109,7 @@ class Optimization extends Component<IProps, IState> {
     this.setState({ activeButton: index })
   }
 
-  showWarning = (message: string, isSystemError = false) => {
+  showWarning = (message: string | JSX.Element, isSystemError = false) => {
     this.setState({ openWarning: true, warningMessage: message, isSystemError })
   }
 

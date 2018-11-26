@@ -1,7 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Button, Fade, Typography, Card, Grid, Slide } from '@material-ui/core'
+import {
+  Button,
+  Fade,
+  Typography,
+  Card,
+  Grid,
+  Slide,
+  Hidden,
+} from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 import Joyride from 'react-joyride'
 
@@ -392,6 +400,7 @@ class Chart extends React.Component<IProps, IState> {
               item
               sm={8}
               xs={6}
+              style={{ margin: '0 -8px', height: '100%' }}
               container
               alignItems="center"
               justify="flex-end"
@@ -399,16 +408,18 @@ class Chart extends React.Component<IProps, IState> {
               <ExchangePair border={palette.divider}>
                 {
                   <Typography
-                    style={{ margin: 'auto' }}
+                    style={{ margin: 'auto', fontSize: '0.8rem' }}
                     align="center"
                     color="default"
-                    variant="button"
+                    variant="body2"
                   >
                     {`${base}/${quote}`}
                   </Typography>
                 }
               </ExchangePair>
+
               <Button
+                size="small"
                 style={{ height: 38, marginLeft: '1.5rem' }}
                 variant="extendedFab"
                 color="secondary"
@@ -427,6 +438,7 @@ class Chart extends React.Component<IProps, IState> {
           <Grid
             alignItems="center"
             item
+            style={{ marginLeft: '16px', height: '100%' }}
             xs={6}
             sm={4}
             container
@@ -439,7 +451,7 @@ class Chart extends React.Component<IProps, IState> {
               exchange={activeExchange}
             />
 
-            {toggler}
+            <Hidden smDown>{toggler}</Hidden>
           </Grid>
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
@@ -451,9 +463,6 @@ class Chart extends React.Component<IProps, IState> {
 
 const MainContainer = styled.div`
   ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
-  @media (min-width: 1900px) {
-    margin-top: -0.75rem;
-  }
 `
 const DepthChartContainer = styled(Card)`
   height: 100%;
@@ -462,12 +471,12 @@ const DepthChartContainer = styled(Card)`
 
 export const ExchangePair = styled.div`
   border-radius: 24px;
-  border: 1px solid ${(props: { border: string }) => props.border};
+  border: 2px solid ${(props: { border: string }) => props.border};
   padding: 0 16px;
   height: 38px;
   place-content: center;
   display: flex;
-  width: 160px;
+  width: 130px;
   background: transparent;
 `
 

@@ -44,7 +44,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
       toggleWallets,
       isUSDCurrently,
       theme: {
-        palette: { primary, type },
+        palette: {
+          primary,
+          type,
+          secondary: { main },
+        },
       },
     } = this.props
     const switchUSDBTC =
@@ -58,6 +62,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             color={tab === 'main' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('main')}
           >
+            {tab === 'main' && renderMarker(main)}
             <Main />
           </Tab>
         </Tooltip>
@@ -67,6 +72,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
             color={tab === 'industry' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('industry')}
           >
+            {tab === 'industry' && renderMarker(main)}
             <Industry />
           </Tab>
         </Tooltip>
@@ -76,6 +82,8 @@ class PortfolioTableTabs extends React.Component<IProps> {
             color={tab === 'rebalance' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('rebalance')}
           >
+            {tab === 'rebalance' && renderMarker(main)}
+
             <Rebalance />
           </Tab>
         </Tooltip>
@@ -85,6 +93,8 @@ class PortfolioTableTabs extends React.Component<IProps> {
             color={tab === 'correlation' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('correlation')}
           >
+            {tab === 'correlation' && renderMarker(main)}
+
             <Correlation />
           </Tab>
         </Tooltip>
@@ -94,6 +104,8 @@ class PortfolioTableTabs extends React.Component<IProps> {
             color={tab === 'optimization' ? 'secondary' : 'primary'}
             onClick={() => this.onChangeTab('optimization')}
           >
+            {tab === 'optimization' && renderMarker(main)}
+
             <Optimization />
           </Tab>
         </Tooltip>
@@ -106,7 +118,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
         >
           <Settings className="settingsIcon" />
         </Tab>
-        <Fade in={switchUSDBTC}>
+        <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
           <div>
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
@@ -127,6 +139,13 @@ class PortfolioTableTabs extends React.Component<IProps> {
   }
 }
 
+const renderMarker = (color: string) => (
+  <>
+    <Marker color={color} />
+    <BlurForMarker color={color} />
+  </>
+)
+
 const DividerWithMargin = styled(Divider)`
   margin: 0.5rem auto;
   width: 70%;
@@ -143,6 +162,24 @@ const Container = styled(Paper)`
     background: ${(props: { background: string }) => props.background};
     border-radius: 0;
   }
+`
+
+const Marker = styled.span`
+  left: -20px;
+  border-radius: 23px;
+  height: 40px;
+  width: 1rem;
+  background: ${(props: { color: string }) => props.color};
+  position: absolute;
+`
+const BlurForMarker = styled.span`
+  left: -20px;
+  border-radius: 23px;
+  height: 40px;
+  width: 1rem;
+  filter: blur(1rem);
+  background: ${(props: { color: string }) => props.color};
+  position: absolute;
 `
 
 const Tab = styled(IconButton)`

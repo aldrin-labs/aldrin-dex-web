@@ -5,7 +5,7 @@ import Joyride from 'react-joyride'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
-import { CorrelationMatrix } from '@storybook-components'
+import { CorrelationMatrix } from '@storybook-components/index'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
   toggleCorrelationTableFullscreen,
@@ -93,7 +93,8 @@ const CorrelationWrapper = (props: IProps) => {
         styles={{
           options: {
             backgroundColor: theme.palette.getContrastText(
-              theme.palette.primary.main),
+              theme.palette.primary.main
+            ),
             primaryColor: theme.palette.secondary.main,
             textColor: theme.palette.primary.main,
           },

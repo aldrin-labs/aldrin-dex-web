@@ -13,8 +13,6 @@ import {
   composePortfolioWithMocks,
   numberOfDigitsAfterPoint,
   roundPercentage,
-  onCheckBoxClick,
-  transformToNumber,
   addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
@@ -34,7 +32,6 @@ class Container extends Component {
   state: IState = {
     currentSort: null,
     portfolioAssets: null,
-    checkedRows: [],
     tableData: null,
     withOutSpinner: false,
     red: chooseRed(this.props.theme),
@@ -93,11 +90,10 @@ class Container extends Component {
     // just temporary fix
     return (
       this.state.tableData === null ||
-      (!isEqual(
+      !isEqual(
         this.state.tableData.slice(0, 50),
         prevState.tableData.slice(0, 50)
-      ) ||
-        !isEqual(prevState.checkedRows, this.state.checkedRows))
+      )
     )
   }
 
@@ -111,23 +107,25 @@ class Container extends Component {
       green,
     } = this.state
 
+    const isUSDCurrently = this.props.baseCoin === 'USDT'
+
     let total: any[] | null = null
     if (tableData && checkedRows.length !== 0) {
-      const selectedAll = tableData.length === checkedRows.length
-
       // show footer
       total = []
+      // tranfsorm to the old shape this need to be refactored
       const data = this.transformData(tableData).map((row) => {
         const result = Object.values(row)
         // becouse portfolio has %
-        result[3] = transformToNumber(result[3].render)
+        result[3] = result[3].render
         return result
       })
       // check lodash docs (transforming rows into columns)
       zip(...data).forEach((column, ind) => {
         let sum: number | { render: string | number; style: object } = 0
-        //  skip id, exchange , coin, price and quantity columns
-        if (ind > 2 && ind !== 4 && ind !== 5) {
+        //  skip id, exchange , portfolioPercentages,
+        //  coin, price and quantity columns
+        if (ind > 3 && ind !== 4 && ind !== 5) {
           // sum each column numbers if they were selected
           column.forEach((el, i) => {
             const num = isObject(el) ? el.contentToSort : el
@@ -138,10 +136,6 @@ class Container extends Component {
             ) {
               sum += +num
             }
-
-            // dont calculate sum of portfolio becouse it must always be 100
-            // this is cheaty way of doing things and may lead to unexpected behaviour
-            if (ind === 3 && selectedAll) sum = 100
           })
 
           // coloring text depends on value for P&L
@@ -150,19 +144,15 @@ class Container extends Component {
             round,
             ind === 2 ? false : true
           )
-          if (ind > 3) {
-            total.push({
-              render: formatedSum,
-              isNumber: true,
-              // colors for P&L
-              style: ind > 6 && {
-                color: sum > 0 ? green : sum < 0 ? red : '',
-              },
-            })
-          } else {
-            // here will be portfolio % column
-            total.push(formatedSum)
-          }
+
+          total.push({
+            render: formatedSum,
+            isNumber: true,
+            // colors for P&L
+            style: ind > 6 && {
+              color: sum > 0 ? green : sum < 0 ? red : '',
+            },
+          })
         } else {
           total.push(' ')
         }
@@ -175,29 +165,26 @@ class Container extends Component {
           id: total[0],
           exchange: total[1],
           coin: total[2],
-          portfolio: {
-            render: `${roundPercentage(+total[3])}%`,
-            isNumber: true,
-          },
+          portfolio: total[3],
           price: total[4],
           quantity: total[5],
           usd: {
-            render: addMainSymbol(total[6].render, true),
+            render: addMainSymbol(total[6].render, isUSDCurrently),
             style: total[6].style,
             isNumber: total[6].isNumber,
           },
           reailizedPL: {
-            render: addMainSymbol(total[7].render, true),
+            render: addMainSymbol(total[7].render, isUSDCurrently),
             style: total[7].style,
             isNumber: total[7].isNumber,
           },
           unrealizedPL: {
-            render: addMainSymbol(total[8].render, true),
+            render: addMainSymbol(total[8].render, isUSDCurrently),
             style: total[8].style,
             isNumber: total[8].isNumber,
           },
           totalPL: {
-            render: addMainSymbol(total[9].render, true),
+            render: addMainSymbol(total[9].render, isUSDCurrently),
             style: total[9].style,
             isNumber: total[9].isNumber,
           },
@@ -205,20 +192,21 @@ class Container extends Component {
       ]
     )
   }
-  updateCoinsInApollo = () => {
+  updateCoinsInApollo = (checkedRows, tableBody) => {
     const data = {
       data: {
         portfolioMain: {
           __typename: 'portfolioMain',
-          coins: this.state.checkedRows.map((id: number) => ({
+          coins: checkedRows.map((id: number) => ({
             __typename: id,
-            ...find(this.state.tableData, (row) => {
+            ...find(tableBody, (row) => {
               return row.id === id
             }),
           })),
         },
       },
     }
+
     this.props.updateCoins({
       variables: {
         coins: data.data.portfolioMain.coins,
@@ -320,9 +308,6 @@ class Container extends Component {
     }
   }
 
-  onCheckboxClick = (id: string) =>
-    this.setState({ checkedRows: onCheckBoxClick(this.state.checkedRows, id) })
-
   onSelectAllClick = (e: Event | undefined, selectAll = false) => {
     if ((e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
@@ -337,26 +322,22 @@ class Container extends Component {
   }
 
   render() {
-    const { checkedRows } = this.state
-    const { onSelectAllClick, putDataInTable, onCheckboxClick } = this
+    const { putDataInTable } = this
+    const { checkedRows, tableData } = this.state
     const { body, head, footer } = putDataInTable()
 
     if (body.length === 0) {
       return <Loader />
     }
 
-    this.updateCoinsInApollo()
+    this.updateCoinsInApollo(checkedRows, tableData)
 
     return (
       <TableWithSort
         title="Portfolio"
-        checkedRows={checkedRows}
-        withCheckboxes={true}
-        onChange={onCheckboxClick}
-        onSelectAllClick={onSelectAllClick}
+        columnNames={head}
         data={{ body, footer }}
         padding="dense"
-        columnNames={head}
       />
     )
   }
@@ -380,9 +361,9 @@ const APIWrapper = (props: any) => (
             variables={{ baseCoin }}
             baseCoin={baseCoin}
             isUSDCurrently={baseCoin === 'USDT'}
-            pollInterval={1 * 5 * 1000}
+            pollInterval={1 * 30 * 1000}
             withOutSpinner={true}
-            fetchPolicy="network-only"
+            fetchPolicy="cache-and-network"
           />
         )}
       </Query>

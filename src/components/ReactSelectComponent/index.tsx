@@ -1,13 +1,12 @@
 import React, { CSSProperties, Component } from 'react'
 import SelectReact, { components } from 'react-select'
-import AsyncSelect from 'react-select/lib/Async';
+import AsyncSelect from 'react-select/lib/Async'
 import { OptionProps } from 'react-select/lib/types'
 
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import { IProps } from './index.types'
 import withTheme from '@material-ui/core/styles/withTheme'
-import { hexToRgbAWithOpacity } from '@styles/helpers'
 import ForwarderRefHoc from '@components/ForwardedRefHOC/ForwarderRef'
 
 class ReactSelectComponent extends Component<IProps> {
@@ -36,13 +35,10 @@ class ReactSelectComponent extends Component<IProps> {
       ...otherProps
     } = this.props
 
-    const textColor: string = theme.palette.getContrastText(
-      this.props.theme.palette.background.paper
-    )
+    const textColor: string = theme.typography.body2.color
     const fontFamily: string = theme.typography.fontFamily
 
     const background: string = theme.palette.background.default
-
 
     const customStyles = {
       control: () => {
@@ -59,13 +55,13 @@ class ReactSelectComponent extends Component<IProps> {
           backgroundColor: 'transparent',
           minHeight: '0.8em',
           border: 'none',
+          width: '100%',
           ...controlStyles,
         }
       },
       menu: (base: CSSProperties) => ({
         ...base,
         backgroundColor: background,
-        minWidth: '250px',
         zIndex: 10,
         color: textColor,
         fontFamily: theme.typography.fontFamily,
@@ -94,15 +90,15 @@ class ReactSelectComponent extends Component<IProps> {
       option: (base: CSSProperties, state: OptionProps) => ({
         ...base,
         color: textColor,
-        fontSize: '1.5em',
+        fontSize: '1em',
         fontFamily: fontFamily,
         backgroundColor: state.isSelected
-        ? theme.palette.action.selected
-          // ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.2)
-          : state.isFocused
-        ? theme.palette.action.hover
-            // ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.1)
-            : background,
+          ? theme.palette.action.selected
+          : // ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.2)
+          state.isFocused
+          ? theme.palette.action.hover
+          : // ? hexToRgbAWithOpacity(theme.palette.primary.contrastText, 0.1)
+            background,
         [':active']: null,
         ...optionStyles,
       }),
@@ -178,12 +174,12 @@ class ReactSelectComponent extends Component<IProps> {
         ...indicatorSeparatorStyles,
       }),
       loadingIndicator: (base: CSSProperties) => ({
-          ...base,
-          display: 'none',
-          color: textColor,
-          fontFamily: theme.typography.fontFamily,
+        ...base,
+        display: 'none',
+        color: textColor,
+        fontFamily: theme.typography.fontFamily,
         ...loadingIndicatorStyles,
-        }),
+      }),
       noOptionsMessage: (base: CSSProperties) => ({
         ...base,
         color: textColor,

@@ -149,9 +149,9 @@ export default class Import extends PureComponent<IProps> {
       //TODO: Should be another function
 
       if (isUserError && isUserError.length) {
-        const userErrorMessage = `User Error: ${backendResultParsed.error_message
-          .map((el: string) => `${el}`)
-          .join()}`
+        const userErrorMessage = <div><Typography variant="h6">Info:</Typography>
+          {backendResultParsed.error_message
+            .map((el: string, i: number) => <Typography key={i} variant="subtitle1">{el}</Typography>)}</div>
 
         showWarning(userErrorMessage, false)
 

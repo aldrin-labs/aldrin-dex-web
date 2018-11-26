@@ -34,7 +34,7 @@ export default withTheme()(
     rows = 10,
   }: {
     theme: Theme
-    rows: number
+    rows?: number
   }) => (
     <React.Fragment>
       {Array(rows)
