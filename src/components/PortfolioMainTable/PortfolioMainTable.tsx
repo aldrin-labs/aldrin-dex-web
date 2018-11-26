@@ -90,11 +90,10 @@ class Container extends Component {
     // just temporary fix
     return (
       this.state.tableData === null ||
-      (!isEqual(
+      !isEqual(
         this.state.tableData.slice(0, 50),
         prevState.tableData.slice(0, 50)
-      ) ||
-        !isEqual(prevState.checkedRows, this.state.checkedRows))
+      )
     )
   }
 
@@ -193,20 +192,21 @@ class Container extends Component {
       ]
     )
   }
-  updateCoinsInApollo = () => {
+  updateCoinsInApollo = (checkedRows, tableBody) => {
     const data = {
       data: {
         portfolioMain: {
           __typename: 'portfolioMain',
-          coins: this.state.checkedRows.map((id: number) => ({
+          coins: checkedRows.map((id: number) => ({
             __typename: id,
-            ...find(this.state.tableData, (row) => {
+            ...find(tableBody, (row) => {
               return row.id === id
             }),
           })),
         },
       },
     }
+
     this.props.updateCoins({
       variables: {
         coins: data.data.portfolioMain.coins,
@@ -323,13 +323,14 @@ class Container extends Component {
 
   render() {
     const { putDataInTable } = this
+    const { checkedRows, tableData } = this.state
     const { body, head, footer } = putDataInTable()
 
     if (body.length === 0) {
       return <Loader />
     }
 
-    this.updateCoinsInApollo()
+    this.updateCoinsInApollo(checkedRows, tableData)
 
     return (
       <TableWithSort
