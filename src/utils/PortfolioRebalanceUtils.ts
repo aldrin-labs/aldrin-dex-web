@@ -173,8 +173,13 @@ export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
     ? (currentPrice * parseFloat(el.amount.$numberDecimal)).toFixed(2)
     : parseFloat(el.amount.$numberDecimal).toFixed(2)
 
+  const quantity = hasSameCoinInCurrentPortfolio
+    ? parseFloat(el.amount.$numberDecimal)
+    : null
+
   return {
     price,
     currentPrice,
+    quantity,
   }
 }
