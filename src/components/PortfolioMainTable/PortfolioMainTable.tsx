@@ -13,7 +13,6 @@ import {
   composePortfolioWithMocks,
   numberOfDigitsAfterPoint,
   roundPercentage,
-  transformToNumber,
   addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
@@ -109,6 +108,8 @@ class Container extends Component {
       green,
     } = this.state
 
+    const isUSDCurrently = this.props.baseCoin === 'USDT'
+
     let total: any[] | null = null
     if (tableData && checkedRows.length !== 0) {
       // show footer
@@ -169,22 +170,22 @@ class Container extends Component {
           price: total[4],
           quantity: total[5],
           usd: {
-            render: addMainSymbol(total[6].render, true),
+            render: addMainSymbol(total[6].render, isUSDCurrently),
             style: total[6].style,
             isNumber: total[6].isNumber,
           },
           reailizedPL: {
-            render: addMainSymbol(total[7].render, true),
+            render: addMainSymbol(total[7].render, isUSDCurrently),
             style: total[7].style,
             isNumber: total[7].isNumber,
           },
           unrealizedPL: {
-            render: addMainSymbol(total[8].render, true),
+            render: addMainSymbol(total[8].render, isUSDCurrently),
             style: total[8].style,
             isNumber: total[8].isNumber,
           },
           totalPL: {
-            render: addMainSymbol(total[9].render, true),
+            render: addMainSymbol(total[9].render, isUSDCurrently),
             style: total[9].style,
             isNumber: total[9].isNumber,
           },
@@ -359,7 +360,7 @@ const APIWrapper = (props: any) => (
             variables={{ baseCoin }}
             baseCoin={baseCoin}
             isUSDCurrently={baseCoin === 'USDT'}
-            pollInterval={1 * 5 * 1000}
+            pollInterval={1 * 30 * 1000}
             withOutSpinner={true}
             fetchPolicy="cache-and-network"
           />

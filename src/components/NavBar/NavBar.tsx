@@ -69,7 +69,11 @@ const NavBarRaw: SFC<Props> = ({
             <Grid
               justify="flex-end"
               container={true}
-              style={{ flexDirection: 'row', display: 'flex' }}
+              style={{
+                flexDirection: 'row',
+                display: 'flex',
+                flexWrap: 'nowrap',
+              }}
             >
               <Button
                 style={createStyleForButton(pathname, '/portfolio')}

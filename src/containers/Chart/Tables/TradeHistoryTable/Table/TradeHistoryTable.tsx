@@ -20,12 +20,12 @@ import { TypographyFullWidth } from '@styles/cssUtils'
 const OptimizedRow = memo(
   ({ ticker, background, numbersAfterDecimalForPrice, red, green }) => (
     <Row background={background.default}>
-      <Cell width={'30%'}>
-        <TypographyFullWidth noWrap={true} variant="body1" align="right">
+      <Cell style={{ padding: '0 0.2rem' }} width={'30%'}>
+        <TypographyFullWidth noWrap={true} variant="caption" align="right">
           {Number(ticker.size).toFixed(4)}
         </TypographyFullWidth>
       </Cell>
-      <Cell width={'45%'} style={{ display: 'flex' }}>
+      <Cell width={'40%'} style={{ padding: '0 0.2rem', display: 'flex' }}>
         <StyledArrow
           fontSize="small"
           color={ticker.fall ? red.main : green.main}
@@ -34,17 +34,17 @@ const OptimizedRow = memo(
         <StyledTypography
           textColor={ticker.fall ? red.main : green.main}
           noWrap={true}
-          variant="body1"
+          variant="caption"
           align="right"
         >
           {Number(ticker.price).toFixed(numbersAfterDecimalForPrice)}
         </StyledTypography>
       </Cell>
-      <Cell style={{ paddingLeft: 0, paddingRight: '0.2rem' }} width={'25%'}>
+      <Cell style={{ padding: '0 0.2rem' }} width={'30%'}>
         <TypographyFullWidth
           color="textSecondary"
           noWrap={true}
-          variant="body1"
+          variant="caption"
           align="right"
         >
           {ticker.time}
@@ -86,7 +86,7 @@ const MemoizedHead = memo(
           isHead={true}
           style={{ height: '100%' }}
         >
-          <HeadCell style={{ padding: 0 }} color="#9ca2aa" width={'30%'}>
+          <HeadCell style={{ padding: '0 ' }} color="#9ca2aa" width={'30%'}>
             <TypographyFullWidth
               textColor={palette.getContrastText(palette.background.default)}
               variant="body2"
@@ -96,7 +96,11 @@ const MemoizedHead = memo(
               Trade Size
             </TypographyFullWidth>
           </HeadCell>
-          <HeadCell color="#9ca2aa" width={'45%'}>
+          <HeadCell
+            color="#9ca2aa"
+            style={{ padding: '0 0.2rem' }}
+            width={'40%'}
+          >
             <TypographyFullWidth
               noWrap={true}
               textColor={palette.getContrastText(palette.background.default)}
@@ -109,10 +113,9 @@ const MemoizedHead = memo(
           <HeadCell
             style={{
               lineHeight: '32px',
-              paddingLeft: 0,
-              paddingRight: '0.2rem',
+              padding: '0 0.2rem',
             }}
-            width={'25%'}
+            width={'30%'}
           >
             <TypographyFullWidth
               variant="body2"
