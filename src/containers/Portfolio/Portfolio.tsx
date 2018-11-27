@@ -126,15 +126,13 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                     )}
 
                     {hasKeysOrWallets && hasActiveKeysOrWallets && (
-                      <>
-                        <PortfolioTable
-                          key={activeKeys.length + activeWallets.length}
-                          showTable={hasActiveKeysOrWallets}
-                          dustFilter={dustFilter}
-                          theme={theme}
-                          toggleWallets={this.toggleWallets}
-                        />
-                      </>
+                      <PortfolioTable
+                        key={activeKeys.length + activeWallets.length}
+                        showTable={hasActiveKeysOrWallets}
+                        dustFilter={dustFilter}
+                        theme={theme}
+                        toggleWallets={this.toggleWallets}
+                      />
                     )}
 
                     <Fade
