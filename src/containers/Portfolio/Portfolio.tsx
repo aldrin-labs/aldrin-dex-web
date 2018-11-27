@@ -18,6 +18,7 @@ import {
   portfolioKeyAndWalletsQuery,
 } from '@containers/Portfolio/api'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
+import { Loading } from '@components/Loading/Loading'
 
 const safePortfolioDestruction = (
   portfolio = {
@@ -54,6 +55,20 @@ class PortfolioComponent extends React.Component<IProps, IState> {
           refetch,
           networkStatus,
         }) => {
+          if (networkStatus === 4 || loading) {
+            return (
+              <LinearProgress
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  width: '100vw',
+                  zIndex: 1009,
+                }}
+                color="secondary"
+              />
+            )
+          }
+
           if (!has(data, 'myPortfolios') && !loading) {
             return (
               <CustomError>
@@ -89,17 +104,6 @@ class PortfolioComponent extends React.Component<IProps, IState> {
             >
               {(updatePortfolioSettings) => (
                 <>
-                  {(networkStatus === 4 || loading) && (
-                    <LinearProgress
-                      style={{
-                        position: 'fixed',
-                        top: 0,
-                        width: '100vw',
-                        zIndex: 1009,
-                      }}
-                      color="secondary"
-                    />
-                  )}
                   <PortfolioContainer>
                     {/* refactor this */}
                     <PortfolioSelector
