@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { Button, CardContent } from '@material-ui/core'
+import CardHeader from '@components/CardHeader'
 
 export {
   ButtonsInnerWrapper,
@@ -57,4 +58,12 @@ const Input = styled.input`
 
 export const SButton = styled(Button)`
   margin-bottom: 20px;
+`
+
+export const SCardHeader = styled(CardHeader)`
+ & > div {
+  align-self: auto !important;
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+ }
 `

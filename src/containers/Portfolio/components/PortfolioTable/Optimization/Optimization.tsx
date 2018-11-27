@@ -52,7 +52,7 @@ class Optimization extends Component<IProps, IState> {
     rawOptimizedData: [],
     openWarning: false,
     warningMessage: '',
-    showAllLineChartData: false,
+    showAllLineChartData: true,
     isSystemError: false,
     run: true,
     key: 0,

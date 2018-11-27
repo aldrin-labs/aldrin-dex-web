@@ -33,6 +33,7 @@ import {
   ImportData,
 } from './Import.styles'
 import { StyledCardHeader } from '../Optimization.styles'
+import { sliceCoinName } from '@utils/PortfolioTableUtils'
 
 export default class Import extends PureComponent<IProps> {
   state = {
@@ -250,13 +251,13 @@ export default class Import extends PureComponent<IProps> {
     }
 
     const formatedData = storeData.map((el: IData) => ({
-      x: el.coin,
+      x: sliceCoinName(el.coin),
       y: Number(Number(el.percentage).toFixed(2)),
     }))
 
     const formatedOptimizedData = rawOptimizedData.length
       ? storeData.map((el, i) => ({
-          x: el.coin,
+          x: sliceCoinName(el.coin),
           y: Number(
             (el.optimizedPercentageArray &&
               el.optimizedPercentageArray[activeButton]) ||
@@ -284,6 +285,7 @@ export default class Import extends PureComponent<IProps> {
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
+              bottomMargin={75}
               theme={theme}
               height={340}
               showPlaceholder={formatedData.length === 0}
@@ -641,7 +643,7 @@ const InputInnerContainer = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   min-width: 100px;
-  padding: 0 15px 17px 15px;
+  padding: 0 15px 0 15px;
 `
 
 export const InnerChartContainer = styled.div`

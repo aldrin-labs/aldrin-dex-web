@@ -13,6 +13,9 @@ const ChartWrapper = styled(Grid)`
   align-items: center;
 
   height: 45%;
+  && { 
+    padding-bottom: 0;
+  }
 `
 
 const ChartContainer = styled(Card)`
@@ -26,7 +29,9 @@ const ChartContainer = styled(Card)`
 const Chart = styled(CardContent)`
   width: 100%;
   height: calc(100% - 68px);
-  padding: 0.5rem;
+  && {
+    padding: 0.5rem 0.5rem 0 0.5rem;
+  }
 `
 
 const Container = styled(Grid)`

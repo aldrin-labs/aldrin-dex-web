@@ -73,6 +73,12 @@ const PTWrapper = styled.div`
 
 export const StyledCardHeader = styled(CardHeader)`
   margin-bottom: 15px;
+  
+   & > div {
+  align-self: auto !important;
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+ }
 `
 
 export const ContentInner = styled.div`

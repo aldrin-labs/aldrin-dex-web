@@ -455,3 +455,6 @@ export const swapDates = ({
   startDate: number
   endDate: number
 }) => ({ startDate: endDate, endDate: startDate })
+
+
+export const sliceCoinName = (str: string) => str.slice(0, 6)
