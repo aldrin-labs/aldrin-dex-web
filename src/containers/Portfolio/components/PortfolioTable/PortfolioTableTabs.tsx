@@ -57,69 +57,80 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <Container background={background} elevation={0}>
-        <Tooltip title="Main" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'main' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('main')}
-          >
-            {tab === 'main' && renderMarker(main)}
-            <Main />
-          </Tab>
-        </Tooltip>
+        <BarContainer>
+          <Tooltip title="Main" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'main' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('main')}
+            >
+              {tab === 'main' && renderMarker(main)}
+              <Main />
+            </Tab>
+          </Tooltip>
+          <Typography variant="caption"> Main </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Industry" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'industry' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('industry')}
+            >
+              {tab === 'industry' && renderMarker(main)}
+              <Industry />
+            </Tab>
+          </Tooltip>
+          <Typography variant="caption"> Industry </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Rebalance" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'rebalance' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('rebalance')}
+            >
+              {tab === 'rebalance' && renderMarker(main)}
 
-        <Tooltip title="Industry" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'industry' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('industry')}
-          >
-            {tab === 'industry' && renderMarker(main)}
-            <Industry />
-          </Tab>
-        </Tooltip>
+              <Rebalance />
+            </Tab>
+          </Tooltip>
+          <Typography variant="caption"> Rebalance </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Correlation" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'correlation' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('correlation')}
+            >
+              {tab === 'correlation' && renderMarker(main)}
 
-        <Tooltip title="Rebalance" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'rebalance' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('rebalance')}
-          >
-            {tab === 'rebalance' && renderMarker(main)}
+              <Correlation />
+            </Tab>
+          </Tooltip>
+          <Typography variant="caption"> Correlation </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Optimization" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'optimization' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('optimization')}
+            >
+              {tab === 'optimization' && renderMarker(main)}
 
-            <Rebalance />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Correlation" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'correlation' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('correlation')}
-          >
-            {tab === 'correlation' && renderMarker(main)}
-
-            <Correlation />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Optimization" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'optimization' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('optimization')}
-          >
-            {tab === 'optimization' && renderMarker(main)}
-
-            <Optimization />
-          </Tab>
-        </Tooltip>
-
-        <Tab
+              <Optimization />
+            </Tab>
+          </Tooltip>
+          <Typography variant="caption"> Optimization </Typography>
+        </BarContainer>
+        <DividerWithMargin />
+        <SettingsTab
           color="primary"
           onClick={() => {
             toggleWallets()
           }}
         >
           <Settings className="settingsIcon" />
-        </Tab>
+        </SettingsTab>
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
-          <div>
+          <BarContainer>
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
             </Typography>
@@ -131,7 +142,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               {' '}
               {isUSDCurrently ? 'BTC' : 'USD'}
             </Button>
-          </div>
+          </BarContainer>
         </Fade>
         <DividerWithMargin />
       </Container>
@@ -146,15 +157,17 @@ const renderMarker = (color: string) => (
   </React.Fragment>
 )
 
+
 const DividerWithMargin = styled(Divider)`
   margin: 0.5rem auto;
+  margin-bottom: 0px;
   width: 70%;
 `
 
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 64px;
+  width: 86px;
   height: 100%;
   min-height: 100vh;
   z-index: 0;
@@ -165,7 +178,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -20px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -173,7 +186,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -20px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -183,7 +196,16 @@ const BlurForMarker = styled.span`
 `
 
 const Tab = styled(IconButton)`
-  margin: 0.5rem auto;
+  margin: 0.6rem auto;
+  margin-bottom: 0px;
+`
+
+const SettingsTab = styled(IconButton)`
+margin: 0.6rem auto;
+`
+
+const BarContainer = styled.div`
+  text-align: center;
 `
 
 const mapStateToProps = (store) => ({
