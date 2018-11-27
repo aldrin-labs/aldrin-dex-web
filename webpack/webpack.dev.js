@@ -86,6 +86,10 @@ const config = {
       warnings: true,
       errors: true,
     },
+    watchOptions: {
+      poll: 1000,
+      ignored: /node_modules/
+    },
   },
 }
 
