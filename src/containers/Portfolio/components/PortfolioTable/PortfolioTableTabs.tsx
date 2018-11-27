@@ -57,59 +57,69 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <Container background={background} elevation={0}>
-        <Tooltip title="Main" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'main' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('main')}
-          >
-            {tab === 'main' && renderMarker(main)}
-            <Main />
-          </Tab>
-        </Tooltip>
+        <BarContainer>
+          <Tooltip title="Main" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'main' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('main')}
+            >
+              {tab === 'main' && renderMarker(main)}
+              <Main />
+            </Tab>
+          </Tooltip>
+          <Typography> Main </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Industry" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'industry' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('industry')}
+            >
+              {tab === 'industry' && renderMarker(main)}
+              <Industry />
+            </Tab>
+          </Tooltip>
+          <Typography > Industry </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Rebalance" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'rebalance' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('rebalance')}
+            >
+              {tab === 'rebalance' && renderMarker(main)}
 
-        <Tooltip title="Industry" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'industry' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('industry')}
-          >
-            {tab === 'industry' && renderMarker(main)}
-            <Industry />
-          </Tab>
-        </Tooltip>
+              <Rebalance />
+            </Tab>
+          </Tooltip>
+          <Typography > Rebalance </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Correlation" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'correlation' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('correlation')}
+            >
+              {tab === 'correlation' && renderMarker(main)}
 
-        <Tooltip title="Rebalance" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'rebalance' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('rebalance')}
-          >
-            {tab === 'rebalance' && renderMarker(main)}
+              <Correlation />
+            </Tab>
+          </Tooltip>
+          <Typography > Correlation </Typography>
+        </BarContainer>
+        <BarContainer>
+          <Tooltip title="Optimization" enterDelay={0} placement="right">
+            <Tab
+              color={tab === 'optimization' ? 'secondary' : 'primary'}
+              onClick={() => this.onChangeTab('optimization')}
+            >
+              {tab === 'optimization' && renderMarker(main)}
 
-            <Rebalance />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Correlation" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'correlation' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('correlation')}
-          >
-            {tab === 'correlation' && renderMarker(main)}
-
-            <Correlation />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Optimization" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'optimization' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('optimization')}
-          >
-            {tab === 'optimization' && renderMarker(main)}
-
-            <Optimization />
-          </Tab>
-        </Tooltip>
-
+              <Optimization />
+            </Tab>
+          </Tooltip>
+          <Typography variant="subtitle2"> Optimization </Typography>
+        </BarContainer>
         <Tab
           color="primary"
           onClick={() => {
@@ -145,6 +155,7 @@ const renderMarker = (color: string) => (
     <BlurForMarker color={color} />
   </>
 )
+
 
 const DividerWithMargin = styled(Divider)`
   margin: 0.5rem auto;
@@ -184,6 +195,10 @@ const BlurForMarker = styled.span`
 
 const Tab = styled(IconButton)`
   margin: 0.5rem auto;
+`
+
+const BarContainer = styled.div`
+  text-align: center;
 `
 
 const mapStateToProps = (store) => ({
