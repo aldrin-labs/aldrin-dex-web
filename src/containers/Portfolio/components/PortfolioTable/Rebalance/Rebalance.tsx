@@ -115,12 +115,13 @@ class Rebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
           currentPrice: el.price,
+          quantity: el.quantity,
         })
       )
 
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-          const { price, currentPrice } = UTILS.calcPriceForRebalancedPortfolio(
+          const { price, currentPrice, quantity } = UTILS.calcPriceForRebalancedPortfolio(
             el,
             getMyPortfolioAndRebalanceQuery.portfolioAssets
           )
@@ -128,6 +129,7 @@ class Rebalance extends React.Component<IProps, IState> {
           return {
             price,
             currentPrice,
+            quantity,
             _id: el._id,
             id: i,
             exchange: el.exchange,
@@ -164,6 +166,7 @@ class Rebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           currentPrice: el.price,
           portfolioPerc: null,
+          quantity: el.quantity,
         })
       )
     }
@@ -255,6 +258,7 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows
     )
 
+
     const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
       accMap.set(el._id, el)
       return accMap
@@ -316,15 +320,13 @@ class Rebalance extends React.Component<IProps, IState> {
 
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery, refetch } = this.props
-    const { rows, totalRows } = this.state
+    const { rows, totalRows, staticRowsMap } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: el._id,
       exchange: el.exchange,
       coin: el.symbol,
-      amount: el.currentPrice
-        ? (el.price / el.currentPrice).toString()
-        : el.price.toString(),
+      amount: el.isCustomAsset ? el.price.toString() : (staticRowsMap.get(el._id).price !== el.price ? (el.price / el.currentPrice).toString() : el.quantity.toString()),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
       isCustomAsset: el.isCustomAsset,

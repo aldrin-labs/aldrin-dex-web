@@ -63,8 +63,17 @@ class PortfolioComponent extends React.Component<IProps, IState> {
           }
 
           const {
-            userSettings: { portfolioId, dustFilter, keys, wallets },
+            userSettings: { portfolioId, dustFilter },
           } = safePortfolioDestruction(data.myPortfolios[0])
+
+          // TODO: hotfix, should be fixed on backend
+          let {
+            userSettings: { keys, wallets },
+          } = safePortfolioDestruction(data.myPortfolios[0])
+
+          keys = Array.isArray(keys) ? keys : []
+          wallets = Array.isArray(wallets) ? wallets : []
+          // TODO: hotfix, should be fixed on backend
 
           const activeKeys = keys.filter((el) => el.selected)
           const activeWallets = wallets.filter((el) => el.selected)

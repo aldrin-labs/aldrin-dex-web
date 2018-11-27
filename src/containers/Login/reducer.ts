@@ -1,6 +1,7 @@
 import { createReducer } from 'redux-act'
 
 import * as actions from '@containers/Login/actions'
+import { client } from '@graphql/apolloClient'
 
 const initialState = {
   user: null,
@@ -17,26 +18,33 @@ export default createReducer(
       return { ...state, user: { ...payload }, isLogging: true }
     },
     [actions.storeLogin]: (state, payload) => {
-      return { ...state, user: { ...payload }, loginStatus: true, isLogging: false }
+      return {
+        ...state,
+        user: { ...payload },
+        loginStatus: true,
+        isLogging: false,
+      }
     },
     [actions.storeLogout]: (state, payload) => {
+      client.cache.reset()
+      client.clearStore()
       return { ...state, user: null, loginStatus: false, modalIsOpen: false }
     },
     [actions.storeModalIsClosing]: (state, payload) => {
       return { ...state, user: { ...payload }, modalLogging: true }
     },
     [actions.storeOpenedModal]: (state) => {
-      return {...state, modalIsOpen: true}
+      return { ...state, modalIsOpen: true }
     },
     [actions.storeClosedModal]: (state) => {
-      return {...state, modalIsOpen: false, modalLogging: false}
+      return { ...state, modalIsOpen: false, modalLogging: false }
     },
     [actions.listenersWillOff]: (state) => {
-      return {...state, listenersOff: true}
+      return { ...state, listenersOff: true }
     },
     [actions.listenersWillOn]: (state) => {
-      return {...state, listenersOff: false}
-    }
+      return { ...state, listenersOff: false }
+    },
   },
   initialState
 )

@@ -8,7 +8,7 @@ import AddIcon from '@material-ui/icons/Add'
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
-  addMainSymbol,
+  addMainSymbol, roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions } from '.././mocks'
@@ -217,6 +217,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       price: 0,
       editable: true,
       isCustomAsset: true,
+      quantity: null,
     }
     clonedRows.push(newRow)
     const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
@@ -389,6 +390,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
+      const rebalancedQuantity = row.quantity === null ? 0 : row.quantity
+
       return {
         id: index,
         exchange: { render: exchange },
@@ -408,11 +411,17 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ),
                 isNumber: true,
               },
+              originalQuantity: {
+                contentToSort: +staticRowsMap.get(row._id).quantity,
+                render: roundAndFormatNumber(staticRowsMap.get(row._id).quantity, 8, true),
+                isNumber: true,
+              },
             }
           : {
               oririnalPortfolioPerc: { render: ' ', isNumber: true },
               oritinalPrice: { render: ' ', isNumber: true },
-            }),
+              originalQuantity: { render: ' ', isNumber: true },
+          }),
         portfolioPerc: {
           render: portfolioPercentage,
           isNumber: true,
@@ -424,6 +433,11 @@ export default class RebalancedPortfolioTable extends React.Component<
             formatNumberToUSFormat(row.price),
             isUSDCurrently
           ),
+          isNumber: true,
+        },
+        quantity: {
+          contentToSort: rebalancedQuantity,
+          render: row.isCustomAsset ? '-' : roundAndFormatNumber(rebalancedQuantity, 8, true),
           isNumber: true,
         },
         deltaPrice: {
@@ -485,12 +499,14 @@ export default class RebalancedPortfolioTable extends React.Component<
         isNumber: true,
         id: 'oritinalPrice',
       },
+      { label: 'Current Quantity', isNumber: true, id: 'originalQuantity' },
       { label: 'Rebalanced %', isNumber: true, id: 'portfolioPerc' },
       {
         label: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
         isNumber: true,
         id: 'price',
       },
+      { label: 'Quantity', isNumber: true, id: 'quantity' },
       { label: 'Trade', id: 'deltaPrice' },
     ]
     //  space for delete icon
@@ -527,11 +543,17 @@ export default class RebalancedPortfolioTable extends React.Component<
                 currentUSD: {
                   render: ' ',
                 },
+                currentQuantity: {
+                  render: ' ',
+                },
                 rebalanced: {
                   render: ' ',
                 },
                 rebalancedUSD: {
                   render: ' ',
+                },
+                rebalancedQuantity: {
+                  render: ' '
                 },
                 trade: {
                   render: ' ',
@@ -558,6 +580,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             coin: ' ',
             current: ' ',
             currentUSD: ' ',
+            currentQuantity: ' ',
             rebalanced: { render: `${totalPercents}%`, isNumber: true },
             rebalancedUSD: {
               contentToSort: +totalTableRows,
@@ -567,6 +590,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               ),
               isNumber: true,
             },
+            rebalancedQuantity: ' ',
             trade: ' ',
             ...(isEditModeEnabled ? { render: ' ' } : {}),
           },
@@ -584,6 +608,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               ),
               isNumber: true,
             },
+            currentQuantity: ' ',
             rebalanced: ' ',
             rebalancedUSD: {
               contentToSort: +totalRows,
@@ -593,6 +618,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               ),
               isNumber: true,
             },
+            rebalancedQuantity: ' ',
             trade: ' ',
             ...(isEditModeEnabled ? { render: ' ' } : {}),
           },
