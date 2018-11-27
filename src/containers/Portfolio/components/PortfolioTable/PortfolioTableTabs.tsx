@@ -167,7 +167,7 @@ const DividerWithMargin = styled(Divider)`
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 90px;
+  width: 94px;
   height: 100%;
   min-height: 100vh;
   z-index: 0;
@@ -178,7 +178,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -34px;
+  left: -38px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -186,7 +186,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -34px;
+  left: -38px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
