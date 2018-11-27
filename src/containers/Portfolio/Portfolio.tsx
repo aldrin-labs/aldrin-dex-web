@@ -130,7 +130,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
 
 export default compose(
   withAuth,
-  queryRendererHoc({ query: portfolioKeyAndWalletsQuery }),
+  queryRendererHoc({ query: portfolioKeyAndWalletsQuery, fetchPolicy: 'network-only' }),
   graphql(updatePortfolioSettingsMutation, {
     name: 'updatePortfolioSettings',
     options: {
