@@ -348,24 +348,24 @@ const APIWrapper = (props: any) => (
   <Mutation mutation={UPDATE_COINS}>
     {(updateCoins) => (
       <Query query={GET_BASE_COIN}>
-        {({
-          data: {
-            portfolio: { baseCoin },
-          },
-        }) => (
-          <QueryRenderer
-            {...props}
-            updateCoins={updateCoins}
-            component={Container}
-            query={getPortfolioMainQuery}
-            variables={{ baseCoin }}
-            baseCoin={baseCoin}
-            isUSDCurrently={baseCoin === 'USDT'}
-            pollInterval={1 * 30 * 1000}
-            withOutSpinner={true}
-            fetchPolicy="cache-and-network"
-          />
-        )}
+        {({ data }) => {
+          const baseCoin = (data.portfolio && data.portfolio.baseCoin) || 'USDT'
+
+          return (
+            <QueryRenderer
+              {...props}
+              updateCoins={updateCoins}
+              component={Container}
+              query={getPortfolioMainQuery}
+              variables={{ baseCoin }}
+              baseCoin={baseCoin}
+              isUSDCurrently={baseCoin === 'USDT'}
+              pollInterval={1 * 30 * 1000}
+              withOutSpinner={true}
+              fetchPolicy="network-only"
+            />
+          )
+        }}
       </Query>
     )}
   </Mutation>
