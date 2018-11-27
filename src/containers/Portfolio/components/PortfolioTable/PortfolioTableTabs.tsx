@@ -160,6 +160,7 @@ const renderMarker = (color: string) => (
 
 const DividerWithMargin = styled(Divider)`
   margin: 0.5rem auto;
+  margin-bottom: 0px;
   width: 70%;
 `
 
