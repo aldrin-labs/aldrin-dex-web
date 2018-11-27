@@ -1,5 +1,5 @@
 import React from 'react'
-import { graphql, Subscription } from 'react-apollo'
+import { Query, Mutation } from 'react-apollo'
 import { compose } from 'recompose'
 import { has } from 'lodash-es'
 
@@ -8,16 +8,16 @@ import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWin
 import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
-import { withTheme, Fade } from '@material-ui/core'
-import { queryRendererHoc } from '@components/QueryRenderer'
+import { withTheme, Fade, LinearProgress } from '@material-ui/core'
+
 import withAuth from '@hoc/withAuth'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
 import {
   updatePortfolioSettingsMutation,
   portfolioKeyAndWalletsQuery,
-  PORTFOLIO_UPDATE,
 } from '@containers/Portfolio/api'
+import { navBarHeight } from '@components/NavBar/NavBar.styles'
 
 const safePortfolioDestruction = (
   portfolio = {
@@ -40,102 +40,122 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const {
-      theme,
-      data = { myPortfolios: [{ userSettings: {} }] },
-      updatePortfolioSettings,
-    } = this.props
-
-    if (!has(data, 'myPortfolios')) {
-      return (
-        <CustomError>
-          No myPortfolios was provided, check Portoflio.tsx render
-        </CustomError>
-      )
-    }
-
-    const {
-      userSettings: { portfolioId, dustFilter },
-    } = safePortfolioDestruction(data.myPortfolios[0])
-
-    // TODO: hotfix, should be fixed on backend
-    let {
-      userSettings: { keys, wallets }
-    } = safePortfolioDestruction(data.myPortfolios[0])
-
-    keys = Array.isArray(keys) ? keys : []
-    wallets = Array.isArray(wallets) ? wallets : []
-    // TODO: hotfix, should be fixed on backend
-
-
-    const activeKeys = keys.filter((el) => el.selected)
-    const activeWallets = wallets.filter((el) => el.selected)
-
-    const hasKeysOrWallets = keys.length + wallets.length > 0
-    const hasActiveKeysOrWallets = activeKeys.length + activeWallets.length > 0
+    const { theme } = this.props
 
     return (
-      <Subscription subscription={PORTFOLIO_UPDATE}>
-        {(subscriptionData) => (
-          <PortfolioContainer>
-            {/* refactor this */}
+      <Query
+        notifyOnNetworkStatusChange
+        fetchPolicy="cache-and-network"
+        query={portfolioKeyAndWalletsQuery}
+      >
+        {({
+          data = { myPortfolios: [{ userSettings: {} }] },
+          loading,
+          refetch,
+          networkStatus,
+        }) => {
+          if (!has(data, 'myPortfolios') && !loading) {
+            return (
+              <CustomError>
+                No myPortfolios was provided, check Portoflio.tsx render
+              </CustomError>
+            )
+          }
 
-            <PortfolioSelector
-              updatePortfolioSettings={updatePortfolioSettings}
-              portfolioId={portfolioId}
-              dustFilter={dustFilter}
-              newKeys={keys}
-              newWallets={wallets}
-              activeKeys={activeKeys}
-              activeWallets={activeWallets}
-              toggleWallets={this.toggleWallets}
-              isSideNavOpen={this.state.isSideNavOpen}
-            />
+          const {
+            userSettings: { portfolioId, dustFilter },
+          } = safePortfolioDestruction(data.myPortfolios[0])
 
-            {!hasKeysOrWallets && <AddExchangeOrWalletWindow theme={theme} />}
+          // TODO: hotfix, should be fixed on backend
+          let {
+            userSettings: { keys, wallets },
+          } = safePortfolioDestruction(data.myPortfolios[0])
 
-            {hasKeysOrWallets && !hasActiveKeysOrWallets && (
-              <SelectExchangeOrWalletWindow
-                theme={theme}
-                toggleWallets={this.toggleWallets}
-              />
-            )}
+          keys = Array.isArray(keys) ? keys : []
+          wallets = Array.isArray(wallets) ? wallets : []
+          // TODO: hotfix, should be fixed on backend
 
-            {hasKeysOrWallets && hasActiveKeysOrWallets && (
-              <>
-                <PortfolioTable
-                  key={activeKeys.length + activeWallets.length}
-                  showTable={hasActiveKeysOrWallets}
-                  dustFilter={dustFilter}
-                  theme={theme}
-                  toggleWallets={this.toggleWallets}
-                  subscription={subscriptionData}
-                />
-              </>
-            )}
+          const activeKeys = keys.filter((el) => el.selected)
+          const activeWallets = wallets.filter((el) => el.selected)
 
-            <Fade
-              in={this.state.isSideNavOpen}
-              mountOnEnter={true}
-              unmountOnExit={true}
+          const hasKeysOrWallets = keys.length + wallets.length > 0
+          const hasActiveKeysOrWallets =
+            activeKeys.length + activeWallets.length > 0
+
+          return (
+            <Mutation
+              onCompleted={() => refetch()}
+              mutation={updatePortfolioSettingsMutation}
             >
-              <Backdrop onClick={this.toggleWallets} />
-            </Fade>
-          </PortfolioContainer>
-        )}
-      </Subscription>
+              {(updatePortfolioSettings) => (
+                <>
+                  {(networkStatus === 4 || loading) && (
+                    <LinearProgress
+                      style={{
+                        position: 'fixed',
+                        top: 0,
+                        width: '100vw',
+                        zIndex: 1009,
+                      }}
+                      color="secondary"
+                    />
+                  )}
+                  <PortfolioContainer>
+                    {/* refactor this */}
+                    <PortfolioSelector
+                      updatePortfolioSettings={updatePortfolioSettings}
+                      portfolioId={portfolioId}
+                      dustFilter={dustFilter}
+                      newKeys={keys}
+                      newWallets={wallets}
+                      activeKeys={activeKeys}
+                      activeWallets={activeWallets}
+                      toggleWallets={this.toggleWallets}
+                      isSideNavOpen={this.state.isSideNavOpen}
+                    />
+
+                    {!hasKeysOrWallets && (
+                      <AddExchangeOrWalletWindow theme={theme} />
+                    )}
+
+                    {hasKeysOrWallets && !hasActiveKeysOrWallets && (
+                      <SelectExchangeOrWalletWindow
+                        theme={theme}
+                        toggleWallets={this.toggleWallets}
+                      />
+                    )}
+
+                    {hasKeysOrWallets && hasActiveKeysOrWallets && (
+                      <>
+                        <PortfolioTable
+                          key={activeKeys.length + activeWallets.length}
+                          showTable={hasActiveKeysOrWallets}
+                          dustFilter={dustFilter}
+                          theme={theme}
+                          toggleWallets={this.toggleWallets}
+                        />
+                      </>
+                    )}
+
+                    <Fade
+                      in={this.state.isSideNavOpen}
+                      mountOnEnter={true}
+                      unmountOnExit={true}
+                    >
+                      <Backdrop onClick={this.toggleWallets} />
+                    </Fade>
+                  </PortfolioContainer>
+                </>
+              )}
+            </Mutation>
+          )
+        }}
+      </Query>
     )
   }
 }
 
 export default compose(
   withAuth,
-  queryRendererHoc({ query: portfolioKeyAndWalletsQuery, fetchPolicy: 'network-only' }),
-  graphql(updatePortfolioSettingsMutation, {
-    name: 'updatePortfolioSettings',
-    options: {
-      refetchQueries: [{ query: portfolioKeyAndWalletsQuery }],
-    },
-  }),
   withTheme()
 )(PortfolioComponent)
