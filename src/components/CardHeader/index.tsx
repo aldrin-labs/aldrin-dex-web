@@ -29,13 +29,8 @@ const styles = (theme: Theme) =>
     },
   })
 
-const Header = (props: CardHeaderProps) => {
-
-  console.log('props', props);
-  console.log('props && props.classes && props.classes.action', props && props.classes && props.classes.action);
-
-
-  return <CardHeader
+const Header = (props: CardHeaderProps) => (
+  <CardHeader
     style={props.style}
     titleTypographyProps={{ variant: 'body1', color: 'default' }}
     classes={{
@@ -44,6 +39,6 @@ const Header = (props: CardHeaderProps) => {
     }}
     {...props}
   />
-}
+)
 
 export default withStyles(styles, { withTheme: true })(Header)
