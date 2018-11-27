@@ -57,11 +57,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <Container background={background} elevation={0}>
-        <BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('main')}>
           <Tooltip title="Main" enterDelay={0} placement="right">
             <Tab
               color={tab === 'main' ? 'secondary' : 'primary'}
-              onClick={() => this.onChangeTab('main')}
             >
               {tab === 'main' && renderMarker(main)}
               <Main />
@@ -69,11 +68,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tooltip>
           <Typography variant="caption"> Main </Typography>
         </BarContainer>
-        <BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('industry')}>
           <Tooltip title="Industry" enterDelay={0} placement="right">
             <Tab
               color={tab === 'industry' ? 'secondary' : 'primary'}
-              onClick={() => this.onChangeTab('industry')}
             >
               {tab === 'industry' && renderMarker(main)}
               <Industry />
@@ -81,11 +79,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tooltip>
           <Typography variant="caption"> Industry </Typography>
         </BarContainer>
-        <BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('rebalance')}>
           <Tooltip title="Rebalance" enterDelay={0} placement="right">
             <Tab
               color={tab === 'rebalance' ? 'secondary' : 'primary'}
-              onClick={() => this.onChangeTab('rebalance')}
             >
               {tab === 'rebalance' && renderMarker(main)}
 
@@ -94,11 +91,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tooltip>
           <Typography variant="caption"> Rebalance </Typography>
         </BarContainer>
-        <BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('correlation')}>
           <Tooltip title="Correlation" enterDelay={0} placement="right">
             <Tab
               color={tab === 'correlation' ? 'secondary' : 'primary'}
-              onClick={() => this.onChangeTab('correlation')}
             >
               {tab === 'correlation' && renderMarker(main)}
 
@@ -107,11 +103,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
           </Tooltip>
           <Typography variant="caption"> Correlation </Typography>
         </BarContainer>
-        <BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('optimization')}>
           <Tooltip title="Optimization" enterDelay={0} placement="right">
             <Tab
               color={tab === 'optimization' ? 'secondary' : 'primary'}
-              onClick={() => this.onChangeTab('optimization')}
             >
               {tab === 'optimization' && renderMarker(main)}
 
@@ -130,7 +125,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Settings className="settingsIcon" />
         </SettingsTab>
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
-          <BarContainer>
+          <BarContainer >
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
             </Typography>
@@ -206,6 +201,7 @@ margin: 0.6rem auto;
 
 const BarContainer = styled.div`
   text-align: center;
+  cursor: pointer;
 `
 
 const mapStateToProps = (store) => ({
