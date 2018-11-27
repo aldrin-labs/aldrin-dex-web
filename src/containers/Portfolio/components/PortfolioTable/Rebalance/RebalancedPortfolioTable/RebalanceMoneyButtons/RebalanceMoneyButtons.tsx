@@ -8,7 +8,7 @@ import {
   UndistributedMoneyText,
   AddMoneyContainer,
   Input,
-  SButton,
+  SButton, SCardHeader,
 } from './RebalanceMoneyButtons.styles'
 
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
@@ -177,9 +177,8 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
 
     return (
       <Grow mounOnEnter unmountOnExit in={isEditModeEnabled}>
-        <Card style={{ width: '60%' }}>
-          <CardHeader
-            style={{ padding: '1rem 1.5rem' }}
+        <Card style={{ width: '63%' }}>
+          <SCardHeader
             action={
               <RebalanceActionButtons
                 {...{

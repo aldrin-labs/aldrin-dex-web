@@ -4,6 +4,6 @@ export { ActionButtonsContainer }
 
 const ActionButtonsContainer = styled.div`
   display: flex;
-  min-width: 150px;
+  min-width: 100px;
   justify-content: space-between;
 `
