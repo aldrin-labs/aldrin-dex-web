@@ -1,7 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Button, Fade, Typography, Card, Grid, Slide } from '@material-ui/core'
+import {
+  Button,
+  Fade,
+  Typography,
+  Card,
+  Grid,
+  Slide,
+  Hidden,
+} from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 import Joyride from 'react-joyride'
 
@@ -409,6 +417,7 @@ class Chart extends React.Component<IProps, IState> {
                   </Typography>
                 }
               </ExchangePair>
+
               <Button
                 size="small"
                 style={{ height: 38, marginLeft: '1.5rem' }}
@@ -442,7 +451,7 @@ class Chart extends React.Component<IProps, IState> {
               exchange={activeExchange}
             />
 
-            {toggler}
+            <Hidden smDown>{toggler}</Hidden>
           </Grid>
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}

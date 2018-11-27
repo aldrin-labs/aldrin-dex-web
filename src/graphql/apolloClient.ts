@@ -1,7 +1,7 @@
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import ApolloClient from 'apollo-client'
 import { ApolloLink, split } from 'apollo-link'
-import { persistCache } from 'apollo-cache-persist'
+import { CachePersistor } from 'apollo-cache-persist'
 import { HttpLink } from 'apollo-link-http'
 import { setContext } from 'apollo-link-context'
 import { WebSocketLink } from 'apollo-link-ws'
@@ -20,7 +20,7 @@ const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 
 const memCache = new InMemoryCache()
 
-persistCache({
+export const persistor = new CachePersistor({
   cache: memCache,
   storage: localStorage,
 })

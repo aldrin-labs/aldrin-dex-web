@@ -69,7 +69,11 @@ const NavBarRaw: SFC<Props> = ({
             <Grid
               justify="flex-end"
               container={true}
-              style={{ flexDirection: 'row', display: 'flex' }}
+              style={{
+                flexDirection: 'row',
+                display: 'flex',
+                flexWrap: 'nowrap',
+              }}
             >
               <Button
                 style={createStyleForButton(pathname, '/portfolio')}
@@ -106,8 +110,9 @@ const NavBarRaw: SFC<Props> = ({
               <Hidden only={['sm', 'xs']}>
                 <Feedback borderColor={fade(divider, 0.5)} />
               </Hidden>
-
-              <Login mainColor={main} />
+              <Hidden only="xs">
+                <Login mainColor={main} />
+              </Hidden>
             </Grid>
           </Grid>
         </Grid>

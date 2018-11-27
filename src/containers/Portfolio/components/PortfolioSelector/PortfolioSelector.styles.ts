@@ -35,7 +35,7 @@ export const AccountsWalletsBlock = styled.div`
   display: block;
   position: fixed;
   top: 0;
-  z-index: 1300;
+  z-index: 1008;
   height: 100vh;
   transition: right 0.2s ease-in;
 

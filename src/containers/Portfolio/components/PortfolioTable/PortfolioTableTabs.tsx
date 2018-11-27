@@ -12,7 +12,7 @@ import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
-import { Tooltip, Typography, Fade } from '@material-ui/core'
+import { Typography, Fade } from '@material-ui/core'
 
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
 
@@ -57,69 +57,65 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <Container background={background} elevation={0}>
-        <Tooltip title="Main" enterDelay={0} placement="right">
+        <BarContainer onClick={() => this.onChangeTab('main')}>
           <Tab
             color={tab === 'main' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('main')}
           >
             {tab === 'main' && renderMarker(main)}
             <Main />
           </Tab>
-        </Tooltip>
-
-        <Tooltip title="Industry" enterDelay={0} placement="right">
+          <Typography variant="caption"> Main </Typography>
+        </BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('industry')}>
           <Tab
             color={tab === 'industry' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('industry')}
           >
             {tab === 'industry' && renderMarker(main)}
             <Industry />
           </Tab>
-        </Tooltip>
-
-        <Tooltip title="Rebalance" enterDelay={0} placement="right">
+          <Typography variant="caption"> Industry </Typography>
+        </BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('rebalance')}>
           <Tab
             color={tab === 'rebalance' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('rebalance')}
           >
             {tab === 'rebalance' && renderMarker(main)}
 
             <Rebalance />
           </Tab>
-        </Tooltip>
-
-        <Tooltip title="Correlation" enterDelay={0} placement="right">
+          <Typography variant="caption"> Rebalance </Typography>
+        </BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('correlation')}>
           <Tab
             color={tab === 'correlation' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('correlation')}
           >
             {tab === 'correlation' && renderMarker(main)}
 
             <Correlation />
           </Tab>
-        </Tooltip>
-
-        <Tooltip title="Optimization" enterDelay={0} placement="right">
+          <Typography variant="caption"> Correlation </Typography>
+        </BarContainer>
+        <BarContainer onClick={() => this.onChangeTab('optimization')}>
           <Tab
             color={tab === 'optimization' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('optimization')}
           >
             {tab === 'optimization' && renderMarker(main)}
 
             <Optimization />
           </Tab>
-        </Tooltip>
-
-        <Tab
+          <Typography variant="caption"> Optimization </Typography>
+        </BarContainer>
+        <DividerWithMargin />
+        <SettingsTab
           color="primary"
           onClick={() => {
             toggleWallets()
           }}
         >
           <Settings className="settingsIcon" />
-        </Tab>
+        </SettingsTab>
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
-          <div>
+          <BarContainer >
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
             </Typography>
@@ -131,7 +127,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               {' '}
               {isUSDCurrently ? 'BTC' : 'USD'}
             </Button>
-          </div>
+          </BarContainer>
         </Fade>
         <DividerWithMargin />
       </Container>
@@ -140,21 +136,23 @@ class PortfolioTableTabs extends React.Component<IProps> {
 }
 
 const renderMarker = (color: string) => (
-  <>
+  <React.Fragment key={1}>
     <Marker color={color} />
     <BlurForMarker color={color} />
-  </>
+  </React.Fragment>
 )
+
 
 const DividerWithMargin = styled(Divider)`
   margin: 0.5rem auto;
+  margin-bottom: 0px;
   width: 70%;
 `
 
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 64px;
+  width: 86px;
   height: 100%;
   min-height: 100vh;
   z-index: 0;
@@ -165,7 +163,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -20px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -173,7 +171,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -20px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -183,7 +181,17 @@ const BlurForMarker = styled.span`
 `
 
 const Tab = styled(IconButton)`
-  margin: 0.5rem auto;
+  margin: 0.6rem auto;
+  margin-bottom: 0px;
+`
+
+const SettingsTab = styled(IconButton)`
+margin: 0.6rem auto;
+`
+
+const BarContainer = styled.div`
+  text-align: center;
+  cursor: pointer;
 `
 
 const mapStateToProps = (store) => ({

@@ -34,10 +34,11 @@ class GQLChart extends React.Component {
   static getDerivedStateFromProps(newProps, state) {
     if (newProps.coins !== state.coins) {
       const newState = { ...state }
+      const assets = Array.isArray(newProps.coins) ? newProps.coins : []
       // PAY ATTENTION: Object mutation here
-      newState.coins = newProps.coins.filter(Boolean).map((x) => x.coin)
-      newState.assets = newProps.coins.filter(Boolean)
-      newState.sum = newProps.coins
+      newState.coins = assets.filter(Boolean).map((x) => x.coin)
+      newState.assets = assets.filter(Boolean)
+      newState.sum = assets
         .filter(Boolean)
         .map((x) => x.quantity)
         .reduce((prev, next) => prev + next, 0)
@@ -49,11 +50,14 @@ class GQLChart extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    const nextAssets = Array.isArray(nextProps.coins) ? nextProps.coins : []
+    const assets = Array.isArray(this.props.coins) ? nextProps.coins : []
+
     return (
       nextState.activeChart !== this.props.activeChart ||
       !isEqual(
-        nextProps.coins.filter(Boolean).map((row) => row.coin),
-        this.props.coins.filter(Boolean).map((row) => row.coin)
+        nextAssets.filter(Boolean).map((row) => row.coin),
+        assets.filter(Boolean).map((row) => row.coin)
       )
     )
   }
@@ -115,7 +119,7 @@ class GQLChart extends React.Component {
 
   render() {
     const variables = {
-      coins: this.state.coins,
+      coins: this.state.coins.filter(Boolean),
       isBTC: false,
       unixTimestampFrom: this.state.unixTimestampFrom,
       unixTimestampTo: this.state.unixTimestampTo,

@@ -13,7 +13,6 @@ import {
   composePortfolioWithMocks,
   numberOfDigitsAfterPoint,
   roundPercentage,
-  transformToNumber,
   addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
@@ -91,11 +90,10 @@ class Container extends Component {
     // just temporary fix
     return (
       this.state.tableData === null ||
-      (!isEqual(
+      !isEqual(
         this.state.tableData.slice(0, 50),
         prevState.tableData.slice(0, 50)
-      ) ||
-        !isEqual(prevState.checkedRows, this.state.checkedRows))
+      )
     )
   }
 
@@ -108,6 +106,8 @@ class Container extends Component {
       red,
       green,
     } = this.state
+
+    const isUSDCurrently = this.props.baseCoin === 'USDT'
 
     let total: any[] | null = null
     if (tableData && checkedRows.length !== 0) {
@@ -169,22 +169,22 @@ class Container extends Component {
           price: total[4],
           quantity: total[5],
           usd: {
-            render: addMainSymbol(total[6].render, true),
+            render: addMainSymbol(total[6].render, isUSDCurrently),
             style: total[6].style,
             isNumber: total[6].isNumber,
           },
           reailizedPL: {
-            render: addMainSymbol(total[7].render, true),
+            render: addMainSymbol(total[7].render, isUSDCurrently),
             style: total[7].style,
             isNumber: total[7].isNumber,
           },
           unrealizedPL: {
-            render: addMainSymbol(total[8].render, true),
+            render: addMainSymbol(total[8].render, isUSDCurrently),
             style: total[8].style,
             isNumber: total[8].isNumber,
           },
           totalPL: {
-            render: addMainSymbol(total[9].render, true),
+            render: addMainSymbol(total[9].render, isUSDCurrently),
             style: total[9].style,
             isNumber: total[9].isNumber,
           },
@@ -192,20 +192,21 @@ class Container extends Component {
       ]
     )
   }
-  updateCoinsInApollo = () => {
+  updateCoinsInApollo = (checkedRows, tableBody) => {
     const data = {
       data: {
         portfolioMain: {
           __typename: 'portfolioMain',
-          coins: this.state.checkedRows.map((id: number) => ({
+          coins: checkedRows.map((id: number) => ({
             __typename: id,
-            ...find(this.state.tableData, (row) => {
+            ...find(tableBody, (row) => {
               return row.id === id
             }),
           })),
         },
       },
     }
+
     this.props.updateCoins({
       variables: {
         coins: data.data.portfolioMain.coins,
@@ -322,13 +323,14 @@ class Container extends Component {
 
   render() {
     const { putDataInTable } = this
+    const { checkedRows, tableData } = this.state
     const { body, head, footer } = putDataInTable()
 
     if (body.length === 0) {
       return <Loader />
     }
 
-    this.updateCoinsInApollo()
+    this.updateCoinsInApollo(checkedRows, tableData)
 
     return (
       <TableWithSort
@@ -346,24 +348,24 @@ const APIWrapper = (props: any) => (
   <Mutation mutation={UPDATE_COINS}>
     {(updateCoins) => (
       <Query query={GET_BASE_COIN}>
-        {({
-          data: {
-            portfolio: { baseCoin },
-          },
-        }) => (
-          <QueryRenderer
-            {...props}
-            updateCoins={updateCoins}
-            component={Container}
-            query={getPortfolioMainQuery}
-            variables={{ baseCoin }}
-            baseCoin={baseCoin}
-            isUSDCurrently={baseCoin === 'USDT'}
-            pollInterval={1 * 5 * 1000}
-            withOutSpinner={true}
-            fetchPolicy="cache-and-network"
-          />
-        )}
+        {({ data }) => {
+          const baseCoin = (data.portfolio && data.portfolio.baseCoin) || 'USDT'
+
+          return (
+            <QueryRenderer
+              {...props}
+              updateCoins={updateCoins}
+              component={Container}
+              query={getPortfolioMainQuery}
+              variables={{ baseCoin }}
+              baseCoin={baseCoin}
+              isUSDCurrently={baseCoin === 'USDT'}
+              pollInterval={1 * 30 * 1000}
+              withOutSpinner={true}
+              fetchPolicy="network-only"
+            />
+          )
+        }}
       </Query>
     )}
   </Mutation>

@@ -55,7 +55,6 @@ export class PortfolioTable extends Component<ITableProps, IState> {
           <PortfolioTableBalances
             isShownChart={isShownChart}
             isUSDCurrently={isUSDCurrently}
-            subscription={this.props.subscription}
             tab={this.state.tab}
             theme={theme}
             variables={{ baseCoin }}
