@@ -284,6 +284,7 @@ export default class Import extends PureComponent<IProps> {
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
             <BarChart
+              bottomMargin={75}
               theme={theme}
               height={340}
               showPlaceholder={formatedData.length === 0}
@@ -641,7 +642,7 @@ const InputInnerContainer = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   min-width: 100px;
-  padding: 0 15px 17px 15px;
+  padding: 0 15px 0 15px;
 `
 
 export const InnerChartContainer = styled.div`

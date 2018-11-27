@@ -59,7 +59,7 @@ const Input = styled.input`
   font-size: 16px;
   line-height: 24px;
   text-align: left;
-  padding: 10px 0 0px;
+  padding: 10px 0 0;
   transition: all 0.25s ease-out;
 
   &:focus {
@@ -69,7 +69,6 @@ const Input = styled.input`
 
 const Chart = styled.div`
   height: 354px;
-  padding: 0.5rem;
   flex-grow: 1;
   border-radius: 1rem;
   background: ${(props: { background: string }) => props.background};
