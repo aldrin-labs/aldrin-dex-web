@@ -3,7 +3,13 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
-import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  Grow,
+} from '@material-ui/core'
 
 import { Container as Content } from '../Industry/Industry.styles'
 import { systemError } from '@utils/errorsConfig'
@@ -121,7 +127,11 @@ class Rebalance extends React.Component<IProps, IState> {
 
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-          const { price, currentPrice, quantity } = UTILS.calcPriceForRebalancedPortfolio(
+          const {
+            price,
+            currentPrice,
+            quantity,
+          } = UTILS.calcPriceForRebalancedPortfolio(
             el,
             getMyPortfolioAndRebalanceQuery.portfolioAssets
           )
@@ -258,7 +268,6 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows
     )
 
-
     const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
       accMap.set(el._id, el)
       return accMap
@@ -326,7 +335,11 @@ class Rebalance extends React.Component<IProps, IState> {
       _id: el._id,
       exchange: el.exchange,
       coin: el.symbol,
-      amount: el.isCustomAsset ? el.price.toString() : (staticRowsMap.get(el._id).price !== el.price ? (el.price / el.currentPrice).toString() : el.quantity.toString()),
+      amount: el.isCustomAsset
+        ? el.price.toString()
+        : staticRowsMap.get(el._id).price !== el.price
+        ? (el.price / el.currentPrice).toString()
+        : el.quantity.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
       isCustomAsset: el.isCustomAsset,
@@ -489,7 +502,11 @@ class Rebalance extends React.Component<IProps, IState> {
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
-            <Container item md={8} isEditModeEnabled={isEditModeEnabled}>
+            <Container
+              item
+              md={isEditModeEnabled ? 8 : 12}
+              isEditModeEnabled={isEditModeEnabled}
+            >
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
@@ -516,34 +533,44 @@ class Rebalance extends React.Component<IProps, IState> {
               />
             </Container>
 
-            <BtnsWrapper
-              container
-              justify="center"
-              alignItems="center"
-              item
-              md={4}
+            <Grow
+              timeout={{
+                enter: theme.transitions.duration.enteringScreen,
+                exit: 0,
+              }}
+              in={isEditModeEnabled}
+              mountOnEnter
+              unmountOnExit
             >
-              <RebalanceMoneyButtons
-                {...{
-                  isEditModeEnabled,
-                  addMoneyInputValue,
-                  undistributedMoney,
-                  onEditModeEnable,
-                  onReset,
-                  onSaveClick,
-                  saveButtonColor,
-                  textColor,
-                  staticRows,
-                  rows,
-                  selectedActive,
-                  updateState,
-                  fontFamily,
-                  secondary,
-                  red,
-                  green,
-                }}
-              />
-            </BtnsWrapper>
+              <BtnsWrapper
+                container
+                justify="center"
+                alignItems="center"
+                item
+                md={4}
+              >
+                <RebalanceMoneyButtons
+                  {...{
+                    isEditModeEnabled,
+                    addMoneyInputValue,
+                    undistributedMoney,
+                    onEditModeEnable,
+                    onReset,
+                    onSaveClick,
+                    saveButtonColor,
+                    textColor,
+                    staticRows,
+                    rows,
+                    selectedActive,
+                    updateState,
+                    fontFamily,
+                    secondary,
+                    red,
+                    green,
+                  }}
+                />
+              </BtnsWrapper>
+            </Grow>
 
             <ChartWrapper
               item

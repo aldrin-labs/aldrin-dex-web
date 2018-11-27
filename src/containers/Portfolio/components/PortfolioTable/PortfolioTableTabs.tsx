@@ -140,10 +140,10 @@ class PortfolioTableTabs extends React.Component<IProps> {
 }
 
 const renderMarker = (color: string) => (
-  <>
+  <React.Fragment key={1}>
     <Marker color={color} />
     <BlurForMarker color={color} />
-  </>
+  </React.Fragment>
 )
 
 const DividerWithMargin = styled(Divider)`
