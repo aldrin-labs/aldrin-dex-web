@@ -67,7 +67,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Main />
             </Tab>
           </Tooltip>
-          <Typography> Main </Typography>
+          <Typography variant="caption"> Main </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Industry" enterDelay={0} placement="right">
@@ -79,7 +79,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Industry />
             </Tab>
           </Tooltip>
-          <Typography> Industry </Typography>
+          <Typography variant="caption"> Industry </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Rebalance" enterDelay={0} placement="right">
@@ -92,7 +92,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Rebalance />
             </Tab>
           </Tooltip>
-          <Typography> Rebalance </Typography>
+          <Typography variant="caption"> Rebalance </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Correlation" enterDelay={0} placement="right">
@@ -105,7 +105,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Correlation />
             </Tab>
           </Tooltip>
-          <Typography> Correlation </Typography>
+          <Typography variant="caption"> Correlation </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Optimization" enterDelay={0} placement="right">
@@ -118,7 +118,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Optimization />
             </Tab>
           </Tooltip>
-          <Typography> Optimization </Typography>
+          <Typography variant="caption"> Optimization </Typography>
         </BarContainer>
         <DividerWithMargin />
         <SettingsTab
@@ -167,7 +167,7 @@ const DividerWithMargin = styled(Divider)`
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 90px;
+  width: 86px;
   height: 100%;
   min-height: 100vh;
   z-index: 0;
@@ -178,7 +178,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -34px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -186,7 +186,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -34px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
