@@ -67,7 +67,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Main />
             </Tab>
           </Tooltip>
-          <Typography variant="caption"> Main </Typography>
+          <Typography> Main </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Industry" enterDelay={0} placement="right">
@@ -79,7 +79,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Industry />
             </Tab>
           </Tooltip>
-          <Typography variant="caption"> Industry </Typography>
+          <Typography> Industry </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Rebalance" enterDelay={0} placement="right">
@@ -92,7 +92,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Rebalance />
             </Tab>
           </Tooltip>
-          <Typography variant="caption"> Rebalance </Typography>
+          <Typography> Rebalance </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Correlation" enterDelay={0} placement="right">
@@ -105,7 +105,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Correlation />
             </Tab>
           </Tooltip>
-          <Typography variant="caption"> Correlation </Typography>
+          <Typography> Correlation </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Optimization" enterDelay={0} placement="right">
@@ -118,16 +118,17 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Optimization />
             </Tab>
           </Tooltip>
-          <Typography variant="caption"> Optimization </Typography>
+          <Typography> Optimization </Typography>
         </BarContainer>
-        <Tab
+        <DividerWithMargin />
+        <SettingsTab
           color="primary"
           onClick={() => {
             toggleWallets()
           }}
         >
           <Settings className="settingsIcon" />
-        </Tab>
+        </SettingsTab>
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
           <BarContainer>
             <Typography align="center" variant="caption" color="textSecondary">
@@ -165,7 +166,7 @@ const DividerWithMargin = styled(Divider)`
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 84px;
+  width: 90px;
   height: 100%;
   min-height: 100vh;
   z-index: 0;
@@ -176,7 +177,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -30px;
+  left: -34px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -184,7 +185,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -30px;
+  left: -34px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -194,7 +195,12 @@ const BlurForMarker = styled.span`
 `
 
 const Tab = styled(IconButton)`
-  margin: 0.3rem auto;
+  margin: 0.6rem auto;
+  margin-bottom: 0px;
+`
+
+const SettingsTab = styled(IconButton)`
+margin: 0.6rem auto;
 `
 
 const BarContainer = styled.div`
