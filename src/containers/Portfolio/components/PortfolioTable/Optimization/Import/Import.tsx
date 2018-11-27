@@ -33,6 +33,7 @@ import {
   ImportData,
 } from './Import.styles'
 import { StyledCardHeader } from '../Optimization.styles'
+import { sliceCoinName } from '@utils/PortfolioTableUtils'
 
 export default class Import extends PureComponent<IProps> {
   state = {
@@ -250,13 +251,13 @@ export default class Import extends PureComponent<IProps> {
     }
 
     const formatedData = storeData.map((el: IData) => ({
-      x: el.coin,
+      x: sliceCoinName(el.coin),
       y: Number(Number(el.percentage).toFixed(2)),
     }))
 
     const formatedOptimizedData = rawOptimizedData.length
       ? storeData.map((el, i) => ({
-          x: el.coin,
+          x: sliceCoinName(el.coin),
           y: Number(
             (el.optimizedPercentageArray &&
               el.optimizedPercentageArray[activeButton]) ||
