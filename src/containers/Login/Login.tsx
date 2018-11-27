@@ -90,9 +90,9 @@ class LoginQuery extends React.Component<Props, State> {
           if (error) {
             console.error(error)
           }
+          await this.setToken(authResult.idToken)
           await this.createUserReq(profile)
           this.props.storeLogin(profile)
-          this.setToken(authResult.idToken)
           this.addFSIdentify(profile)
         }
       )
