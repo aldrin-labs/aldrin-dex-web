@@ -67,7 +67,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Main />
             </Tab>
           </Tooltip>
-          <Typography> Main </Typography>
+          <Typography variant="caption"> Main </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Industry" enterDelay={0} placement="right">
@@ -79,7 +79,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Industry />
             </Tab>
           </Tooltip>
-          <Typography > Industry </Typography>
+          <Typography variant="caption"> Industry </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Rebalance" enterDelay={0} placement="right">
@@ -92,7 +92,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Rebalance />
             </Tab>
           </Tooltip>
-          <Typography > Rebalance </Typography>
+          <Typography variant="caption"> Rebalance </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Correlation" enterDelay={0} placement="right">
@@ -105,7 +105,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Correlation />
             </Tab>
           </Tooltip>
-          <Typography > Correlation </Typography>
+          <Typography variant="caption"> Correlation </Typography>
         </BarContainer>
         <BarContainer>
           <Tooltip title="Optimization" enterDelay={0} placement="right">
@@ -118,7 +118,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               <Optimization />
             </Tab>
           </Tooltip>
-          <Typography variant="subtitle2"> Optimization </Typography>
+          <Typography variant="caption"> Optimization </Typography>
         </BarContainer>
         <Tab
           color="primary"
@@ -129,7 +129,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Settings className="settingsIcon" />
         </Tab>
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
-          <div>
+          <BarContainer>
             <Typography align="center" variant="caption" color="textSecondary">
               Switch to
             </Typography>
@@ -141,7 +141,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
               {' '}
               {isUSDCurrently ? 'BTC' : 'USD'}
             </Button>
-          </div>
+          </BarContainer>
         </Fade>
         <DividerWithMargin />
       </Container>
@@ -165,7 +165,7 @@ const DividerWithMargin = styled(Divider)`
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 64px;
+  width: 84px;
   height: 100%;
   min-height: 100vh;
   z-index: 0;
@@ -176,7 +176,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -20px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -184,7 +184,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -20px;
+  left: -30px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -194,7 +194,7 @@ const BlurForMarker = styled.span`
 `
 
 const Tab = styled(IconButton)`
-  margin: 0.5rem auto;
+  margin: 0.3rem auto;
 `
 
 const BarContainer = styled.div`
