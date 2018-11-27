@@ -41,6 +41,7 @@ const Footer = ({
       </Button>
     </Block>
 
+
     <Block>
       <IconButton href={'https://t.me/CryptocurrenciesAi'}>
         <Telegram color="secondary" width={32} height={32} />
@@ -60,7 +61,8 @@ const Footer = ({
         color="default"
       />
     </Block>
-    <PrivacyPolicy open={openPrivacyPolicy} onClick={togglePrivacyPolicy} />
+  
+
   </Container>
 )
 
