@@ -8,7 +8,7 @@ import {
   UndistributedMoneyText,
   AddMoneyContainer,
   Input,
-  SButton,
+  SButton, SCardHeader,
 } from './RebalanceMoneyButtons.styles'
 
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
@@ -176,26 +176,25 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
     } = this.props
 
     return (
-      <Card style={{ width: '60%' }}>
-        <CardHeader
-          style={{ padding: '1rem 1.5rem' }}
-          action={
-            <RebalanceActionButtons
-              {...{
-                isEditModeEnabled,
-                saveButtonColor,
-                onSaveClick,
-                onEditModeEnable,
-                onReset,
-                textColor,
-                secondary,
-                red,
-                green,
-              }}
-            />
-          }
-          title={`Rebalance input`}
-        />
+        <Card style={{ width: '63%' }}>
+          <SCardHeader
+            action={
+              <RebalanceActionButtons
+                {...{
+                  isEditModeEnabled,
+                  saveButtonColor,
+                  onSaveClick,
+                  onEditModeEnable,
+                  onReset,
+                  textColor,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+            }
+            title={`Rebalance input`}
+          />
 
         <ButtonsInnerWrapper>
           <AddMoneyContainer>
