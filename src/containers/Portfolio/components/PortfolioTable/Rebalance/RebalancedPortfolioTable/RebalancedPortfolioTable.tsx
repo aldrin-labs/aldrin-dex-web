@@ -8,7 +8,8 @@ import AddIcon from '@material-ui/icons/Add'
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
-  addMainSymbol, roundAndFormatNumber,
+  addMainSymbol,
+  roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions } from '.././mocks'
@@ -298,13 +299,18 @@ export default class RebalancedPortfolioTable extends React.Component<
         `${row.portfolioPerc}%`
       )
 
-      const shouldWeShowPlaceholderForExchange = row.exchange === '' || row.exchange === 'Exchange'
+      const shouldWeShowPlaceholderForExchange =
+        row.exchange === '' || row.exchange === 'Exchange'
 
       const exchange =
         isEditModeEnabled && row.isCustomAsset ? (
           <SelectAllExchangeList
             key={`inputNameExchange${index}`}
-            value={(shouldWeShowPlaceholderForExchange ? null : [{value: row.exchange, label: row.exchange}])}
+            value={
+              shouldWeShowPlaceholderForExchange
+                ? null
+                : [{ value: row.exchange, label: row.exchange }]
+            }
             classNamePrefix="custom-select-box"
             isClearable={true}
             isSearchable={true}
@@ -345,12 +351,17 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.exchange
         )
 
-      const shouldWeShowPlaceholderForCoin = row.symbol === '' || row.symbol === 'Coin'
+      const shouldWeShowPlaceholderForCoin =
+        row.symbol === '' || row.symbol === 'Coin'
 
       const coin =
         isEditModeEnabled && row.isCustomAsset ? (
           <SelectCoinList
-            value={(shouldWeShowPlaceholderForCoin ? null : [{value: row.symbol, label: row.symbol}])}
+            value={
+              shouldWeShowPlaceholderForCoin
+                ? null
+                : [{ value: row.symbol, label: row.symbol }]
+            }
             ref={handleRef}
             key={`inputCoinSymbol${index}`}
             classNamePrefix="custom-select-box"
@@ -399,8 +410,16 @@ export default class RebalancedPortfolioTable extends React.Component<
 
       return {
         id: index,
-        exchange: { render: exchange },
-        coin: { render: coin, style: { fontWeight: 700 } },
+        exchange: {
+          render: exchange,
+          ...(isEditModeEnabled ? { style: { minWidth: '125px' } } : {}),
+        },
+        coin: {
+          render: coin,
+          ...(isEditModeEnabled
+            ? { style: { fontWeight: 700, minWidth: '125px' } }
+            : { style: { fontWeight: 700 } }),
+        },
         ...(staticRowsMap.has(row._id)
           ? {
               oririnalPortfolioPerc: {
@@ -418,7 +437,11 @@ export default class RebalancedPortfolioTable extends React.Component<
               },
               originalQuantity: {
                 contentToSort: +staticRowsMap.get(row._id).quantity,
-                render: roundAndFormatNumber(staticRowsMap.get(row._id).quantity, 8, true),
+                render: roundAndFormatNumber(
+                  staticRowsMap.get(row._id).quantity,
+                  8,
+                  true
+                ),
                 isNumber: true,
               },
             }
@@ -426,7 +449,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               oririnalPortfolioPerc: { render: ' ', isNumber: true },
               oritinalPrice: { render: ' ', isNumber: true },
               originalQuantity: { render: ' ', isNumber: true },
-          }),
+            }),
         portfolioPerc: {
           render: portfolioPercentage,
           isNumber: true,
@@ -442,7 +465,9 @@ export default class RebalancedPortfolioTable extends React.Component<
         },
         quantity: {
           contentToSort: rebalancedQuantity,
-          render: row.isCustomAsset ? '-' : roundAndFormatNumber(rebalancedQuantity, 8, true),
+          render: row.isCustomAsset
+            ? '-'
+            : roundAndFormatNumber(rebalancedQuantity, 8, true),
           isNumber: true,
         },
         deltaPrice: {
@@ -533,53 +558,54 @@ export default class RebalancedPortfolioTable extends React.Component<
           background
         ),
         footer: [
-        ...(isEditModeEnabled
-            ? [{
-                id: '3',
-                exchange: {
-                  render: ' ',
+          ...(isEditModeEnabled
+            ? [
+                {
+                  id: '3',
+                  exchange: {
+                    render: ' ',
+                  },
+                  coin: {
+                    render: ' ',
+                  },
+                  current: {
+                    render: ' ',
+                  },
+                  currentUSD: {
+                    render: ' ',
+                  },
+                  currentQuantity: {
+                    render: ' ',
+                  },
+                  rebalanced: {
+                    render: ' ',
+                  },
+                  rebalancedUSD: {
+                    render: ' ',
+                  },
+                  rebalancedQuantity: {
+                    render: ' ',
+                  },
+                  trade: {
+                    render: ' ',
+                  },
+                  icon: {
+                    render: (
+                      <IconButtonWithHover
+                        onClick={this.onAddRowButtonClick}
+                        hoverColor={green}
+                      >
+                        <AddIcon />
+                      </IconButtonWithHover>
+                    ),
+                  },
+                  options: {
+                    static: true,
+                    variant: 'body',
+                  },
                 },
-                coin: {
-                  render: ' ',
-                },
-                current: {
-                  render: ' ',
-                },
-                currentUSD: {
-                  render: ' ',
-                },
-                currentQuantity: {
-                  render: ' ',
-                },
-                rebalanced: {
-                  render: ' ',
-                },
-                rebalancedUSD: {
-                  render: ' ',
-                },
-                rebalancedQuantity: {
-                  render: ' '
-                },
-                trade: {
-                  render: ' ',
-                },
-                icon: {
-                  render: (
-                    <IconButtonWithHover
-                      onClick={this.onAddRowButtonClick}
-                      hoverColor={green}
-                    >
-                      <AddIcon />
-                    </IconButtonWithHover>
-                  ),
-                },
-                options: {
-                  static: true,
-                  variant: 'body',
-                },
-              }]
-            : []
-          ),
+              ]
+            : []),
           {
             id: '33',
             exchange: 'Subtotal',
