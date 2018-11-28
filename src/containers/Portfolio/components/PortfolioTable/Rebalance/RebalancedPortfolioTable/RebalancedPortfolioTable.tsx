@@ -215,7 +215,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       portfolioPerc: 0.0,
       deltaPrice: 0,
       price: 0,
-      editable: true,
       isCustomAsset: true,
       quantity: null,
     }
@@ -230,7 +229,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const { rows, undistributedMoney, staticRows, updateState } = this.props
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
-    const isEditableCoin = clonedRows[idx].editable
+    const isEditableCoin = clonedRows[idx].isCustomAsset
 
     const resultRows = isEditableCoin
       ? [
@@ -299,10 +298,13 @@ export default class RebalancedPortfolioTable extends React.Component<
         `${row.portfolioPerc}%`
       )
 
+      const shouldWeShowPlaceholderForExchange = row.exchange === '' || row.exchange === 'Exchange'
+
       const exchange =
-        isEditModeEnabled && row.editable ? (
+        isEditModeEnabled && row.isCustomAsset ? (
           <SelectAllExchangeList
             key={`inputNameExchange${index}`}
+            value={(shouldWeShowPlaceholderForExchange ? null : [{value: row.exchange, label: row.exchange}])}
             classNamePrefix="custom-select-box"
             isClearable={true}
             isSearchable={true}
@@ -343,9 +345,12 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.exchange
         )
 
+      const shouldWeShowPlaceholderForCoin = row.symbol === '' || row.symbol === 'Coin'
+
       const coin =
-        isEditModeEnabled && row.editable ? (
+        isEditModeEnabled && row.isCustomAsset ? (
           <SelectCoinList
+            value={(shouldWeShowPlaceholderForCoin ? null : [{value: row.symbol, label: row.symbol}])}
             ref={handleRef}
             key={`inputCoinSymbol${index}`}
             classNamePrefix="custom-select-box"
@@ -464,7 +469,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ),
               },
             }
-          : null),
+          : {}),
       }
     })
 
@@ -528,8 +533,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           background
         ),
         footer: [
-          isEditModeEnabled
-            ? {
+        ...(isEditModeEnabled
+            ? [{
                 id: '3',
                 exchange: {
                   render: ' ',
@@ -572,8 +577,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                   static: true,
                   variant: 'body',
                 },
-              }
-            : null,
+              }]
+            : []
+          ),
           {
             id: '33',
             exchange: 'Subtotal',
