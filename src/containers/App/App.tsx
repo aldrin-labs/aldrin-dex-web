@@ -19,13 +19,20 @@ import Footer from '@components/Footer'
 
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
-import { Hidden, Typography, Paper } from '@material-ui/core';
+import { Hidden, Typography, Paper } from '@material-ui/core'
 
 const version = `1`
 const currentVersion = localStorage.getItem('version')
 if (currentVersion !== version) {
   localStorage.clear()
   localStorage.setItem('version', version)
+}
+
+function isMobileDevice() {
+  return (
+    typeof window.orientation !== 'undefined' ||
+    navigator.userAgent.indexOf('IEMobile') !== -1
+  )
 }
 
 const AppRaw = ({
@@ -46,14 +53,14 @@ const AppRaw = ({
           {children}
         </AppGridLayout>
         <Footer hide={fullscreen} />
-        <Hidden smUp>
+        {isMobileDevice() && (
           <DontUseOnMobileWarning>
-            <Typography color='error' variant='h4'>
-            😞We are currently in beta and don't support your screen resolution. Please open the desktop version of this page.
+            <Typography color="error" variant="h4">
+              😞We are currently in beta and don't support your screen
+              resolution. Please open the desktop version of this page.
             </Typography>
-          </DontUseOnMobileWarning >
-
-        </Hidden>
+          </DontUseOnMobileWarning>
+        )}
       </ThemeWrapper>
     </JssProvider>
   )
@@ -68,15 +75,14 @@ const AppGridLayout = styled.div`
 `
 
 const DontUseOnMobileWarning = styled(Paper)`
-height: 100vh;
-width: 100vw;
-display:flex;
-place-content:center;
-position: fixed; 
-top: 0; 
-z-index: 99999999;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  place-content: center;
+  position: fixed;
+  top: 0;
+  z-index: 99999999;
 `
-
 
 const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
