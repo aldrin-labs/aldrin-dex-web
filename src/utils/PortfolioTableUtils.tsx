@@ -298,10 +298,10 @@ export const checkForString = (numberOrString: number | string) =>
   typeof numberOrString === 'string'
 
 export const roundAndFormatNumber = (
-  x: number,
+  x: number | null,
   precision: number,
   format: boolean = true
-): string | number => {
+): string => {
   if (x === null || x === 0 || +(x.toFixed(precision)) === 0) {
     return '0'
   }
