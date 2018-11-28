@@ -21,15 +21,6 @@ import {
 } from '@components/GQLChart/PortfolioChart/styles'
 import CardHeader from '@components/CardHeader'
 
-const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
-
-const mapLabelToDays = {
-  '1D': 1,
-  '7D': 7,
-  '1M': 30,
-  '3M': 90,
-  '1Y': 365,
-}
 
 export default class PortfolioChart extends Component<Props, State> {
   state: State = {
@@ -43,7 +34,7 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   onChangeActiveChart = (label) => {
-    this.props.setActiveChartAndUpdateDays(label, mapLabelToDays[label])
+    this.props.setActiveChartAndUpdateDays(label, this.state.mapLabelToDays[label])
   }
 
   _onNearestX = (value, { index }) => {
@@ -77,6 +68,7 @@ export default class PortfolioChart extends Component<Props, State> {
       isShownMocks,
       activeChart,
       theme,
+      chartBtns,
     } = this.state
     const { name = '', priceUSD = '' } = coin || {}
 

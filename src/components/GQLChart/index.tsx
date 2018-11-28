@@ -19,7 +19,7 @@ const periods = {
   365: 86400,
 }
 
-const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
+const chartBtns: ReadonlyArray<any> = ['1D', '7D', '1M', '3M', '1Y']
 
 const mapLabelToDays = {
   '1D': 1,
@@ -170,6 +170,8 @@ class GQLChart extends React.Component {
         lastDrawLocation={this.state.lastDrawLocation}
         setActiveChart={(v) => this.setActiveChart(v)}
         activeChart={this.state.activeChart}
+        chartBtns={chartBtns}
+        mapLabelToDays={mapLabelToDays}
         {...this.props}
       />
     )
