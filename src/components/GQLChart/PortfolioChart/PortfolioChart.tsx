@@ -18,6 +18,7 @@ import { Props, State } from '@components/GQLChart/annotations'
 import {
   Chart,
   SProfileChart,
+  axisStyle,
 } from '@components/GQLChart/PortfolioChart/styles'
 import CardHeader from '@components/CardHeader'
 
@@ -75,23 +76,6 @@ export default class PortfolioChart extends Component<Props, State> {
 
     if (!(data.length)) {
       return <Loading centerAligned={true} />
-    }
-
-    const axisStyle = {
-      ticks: {
-        padding: '1rem',
-        stroke: '#3E3E4A',
-        opacity: 0.75,
-        fontWeight: 100,
-      },
-      text: {
-        stroke: 'none',
-        fill: '#777777',
-        fontWeight: 600,
-        opacity: 1,
-        fontFamily: 'Roboto',
-        fontSize: '14px',
-      },
     }
 
     return (
