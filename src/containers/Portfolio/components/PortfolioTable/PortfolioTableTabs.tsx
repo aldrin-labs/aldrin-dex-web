@@ -103,30 +103,38 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Optimization />
         </BarTab>
         <DividerWithMargin />
-        <SettingsTab
-          color="primary"
-          onClick={() => {
-            toggleWallets()
-          }}
-        >
-          <Settings className="settingsIcon" />
-        </SettingsTab>
-        <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
-          <BarContainer >
-            <Typography align="center" variant="caption" color="textSecondary">
-              Switch to
-            </Typography>
-            <Button
-              color="default"
-              onClick={this.onToggleUSDBTC}
-              className="SwitchButton"
-            >
-              {' '}
-              {isUSDCurrently ? 'BTC' : 'USD'}
-            </Button>
-          </BarContainer>
-        </Fade>
+        <BarContainer >
+          <Tab
+            color="primary"
+            onClick={() => {
+              toggleWallets()
+            }}
+          >
+            <Settings className="settingsIcon" />
+          </Tab>
+          <Typography align="center" variant="caption" color="textSecondary">
+            Accounts
+          </Typography>
+        </BarContainer>
         <DividerWithMargin />
+        <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
+          <>
+            <BarContainer >
+              <Button
+                color="default"
+                onClick={this.onToggleUSDBTC}
+                className="SwitchButton"
+              >
+                {' '}
+                {isUSDCurrently ? 'BTC' : 'USD'}
+              </Button>
+              <Typography align="center" variant="caption" color="textSecondary">
+                Switch to
+              </Typography>
+            </BarContainer>
+            <DividerWithMargin />
+          </>
+        </Fade>
       </Container>
     )
   }
