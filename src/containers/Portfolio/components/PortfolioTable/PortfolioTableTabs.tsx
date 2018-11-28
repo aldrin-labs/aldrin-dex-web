@@ -57,54 +57,51 @@ class PortfolioTableTabs extends React.Component<IProps> {
 
     return (
       <Container background={background} elevation={0}>
-        <BarContainer onClick={() => this.onChangeTab('main')}>
-          <Tab
-            color={tab === 'main' ? 'secondary' : 'primary'}
-          >
-            {tab === 'main' && renderMarker(main)}
-            <Main />
-          </Tab>
-          <Typography variant="caption"> Main </Typography>
-        </BarContainer>
-        <BarContainer onClick={() => this.onChangeTab('industry')}>
-          <Tab
-            color={tab === 'industry' ? 'secondary' : 'primary'}
-          >
-            {tab === 'industry' && renderMarker(main)}
-            <Industry />
-          </Tab>
-          <Typography variant="caption"> Industry </Typography>
-        </BarContainer>
-        <BarContainer onClick={() => this.onChangeTab('rebalance')}>
-          <Tab
-            color={tab === 'rebalance' ? 'secondary' : 'primary'}
-          >
-            {tab === 'rebalance' && renderMarker(main)}
-
-            <Rebalance />
-          </Tab>
-          <Typography variant="caption"> Rebalance </Typography>
-        </BarContainer>
-        <BarContainer onClick={() => this.onChangeTab('correlation')}>
-          <Tab
-            color={tab === 'correlation' ? 'secondary' : 'primary'}
-          >
-            {tab === 'correlation' && renderMarker(main)}
-
-            <Correlation />
-          </Tab>
-          <Typography variant="caption"> Correlation </Typography>
-        </BarContainer>
-        <BarContainer onClick={() => this.onChangeTab('optimization')}>
-          <Tab
-            color={tab === 'optimization' ? 'secondary' : 'primary'}
-          >
-            {tab === 'optimization' && renderMarker(main)}
-
-            <Optimization />
-          </Tab>
-          <Typography variant="caption"> Optimization </Typography>
-        </BarContainer>
+        <BarTab
+          thisTab="main"
+          thisTabName="Main"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('main')}
+          mainColor={main}
+        >
+          <Main />
+        </BarTab>
+        <BarTab
+          thisTab="industry"
+          thisTabName="Industry"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('industry')}
+          mainColor={main}
+        >
+          <Industry />
+        </BarTab>
+        <BarTab
+          thisTab="rebalance"
+          thisTabName="Rebalance"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('rebalance')}
+          mainColor={main}
+        >
+          <Rebalance />
+        </BarTab>
+        <BarTab
+          thisTab="correlation"
+          thisTabName="Correlation"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('correlation')}
+          mainColor={main}
+        >
+          <Correlation />
+        </BarTab>
+        <BarTab
+          thisTab="optimization"
+          thisTabName="Optimization"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('optimization')}
+          mainColor={main}
+        >
+          <Optimization />
+        </BarTab>
         <DividerWithMargin />
         <SettingsTab
           color="primary"
@@ -140,6 +137,27 @@ const renderMarker = (color: string) => (
     <Marker color={color} />
     <BlurForMarker color={color} />
   </React.Fragment>
+)
+
+const BarTab = (props: {
+  children?:any,
+  thisTab: string,
+  thisTabName: string,
+  curentTab: string,
+  onClick: () => void,
+  mainColor: string
+}) => (
+  <BarContainer onClick={props.onClick}>
+    <Tab
+      color={props.curentTab === props.thisTab ? 'secondary' : 'primary'}
+    >
+      {props.curentTab === props.thisTab && renderMarker(props.mainColor)}
+      {props.children}
+    </Tab>
+    <Typography
+      variant="caption"
+      color={props.curentTab === props.thisTab ? 'secondary' : 'default'}> {props.thisTabName} </Typography>
+  </BarContainer>
 )
 
 
