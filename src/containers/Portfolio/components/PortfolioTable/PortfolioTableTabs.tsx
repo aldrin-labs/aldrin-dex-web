@@ -103,12 +103,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Optimization />
         </BarTab>
         <DividerWithMargin />
-        <BarContainer >
+        <BarContainer onClick={() => {
+              toggleWallets()
+            }}>
           <Tab
             color="primary"
-            onClick={() => {
-              toggleWallets()
-            }}
           >
             <Settings className="settingsIcon" />
           </Tab>
@@ -119,17 +118,16 @@ class PortfolioTableTabs extends React.Component<IProps> {
         <DividerWithMargin />
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
           <>
-            <BarContainer >
+            <BarContainer onClick={this.onToggleUSDBTC}>
               <Button
                 color="default"
-                onClick={this.onToggleUSDBTC}
                 className="SwitchButton"
               >
                 {' '}
-                {isUSDCurrently ? 'BTC' : 'USD'}
+                {isUSDCurrently ? 'USD' : 'BTC'}
               </Button>
               <Typography align="center" variant="caption" color="textSecondary">
-                Switch to
+                Switch currency
               </Typography>
             </BarContainer>
             <DividerWithMargin />
