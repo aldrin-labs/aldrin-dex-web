@@ -19,7 +19,8 @@ import Footer from '@components/Footer'
 
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
-import { Hidden, Typography, Paper } from '@material-ui/core'
+import { Hidden, Typography, Paper, Fade } from '@material-ui/core'
+import { toggleMobilePopup } from './actions'
 
 const version = `1`
 const currentVersion = localStorage.getItem('version')
@@ -39,6 +40,8 @@ const AppRaw = ({
   children,
   themeMode,
   chartPageView,
+  mobilePopup,
+  togglePopUp,
   location: { pathname: currentPage },
 }: any) => {
   const fullscreen: boolean =
@@ -53,14 +56,22 @@ const AppRaw = ({
           {children}
         </AppGridLayout>
         <Footer hide={fullscreen} />
-        {isMobileDevice() && (
-          <DontUseOnMobileWarning>
+
+        <Fade in={true && mobilePopup} mountOnEnter unmountOnExit>
+          <DontUseOnMobileWarning
+            onClick={() => {
+              togglePopUp()
+            }}
+          >
             <Typography color="error" variant="h4">
               😞We are currently in beta and don't support your screen
               resolution. Please open the desktop version of this page.
             </Typography>
+            <Typography color="error" variant="h3">
+              Click to close!
+            </Typography>
           </DontUseOnMobileWarning>
-        )}
+        </Fade>
       </ThemeWrapper>
     </JssProvider>
   )
@@ -82,11 +93,22 @@ const DontUseOnMobileWarning = styled(Paper)`
   position: fixed;
   top: 0;
   z-index: 99999999;
+  flex-direction: column;
 `
 
 const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
+  mobilePopup: store.ui.mobilePopup,
   chartPageView: store.chart.view,
 })
 
-export const App = withRouter(connect(mapStateToProps)(AppRaw))
+const mapDispatchToProps = (dispatch: any) => ({
+  togglePopUp: () => dispatch(toggleMobilePopup()),
+})
+
+export const App = withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(AppRaw)
+)
