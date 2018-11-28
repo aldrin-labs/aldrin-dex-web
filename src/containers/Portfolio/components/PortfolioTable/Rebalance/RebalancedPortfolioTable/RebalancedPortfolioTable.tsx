@@ -299,10 +299,13 @@ export default class RebalancedPortfolioTable extends React.Component<
         `${row.portfolioPerc}%`
       )
 
+      const shouldWeShowPlaceholderForExchange = row.exchange === '' || row.exchange === 'Exchange'
+
       const exchange =
         isEditModeEnabled && row.editable ? (
           <SelectAllExchangeList
             key={`inputNameExchange${index}`}
+            value={(shouldWeShowPlaceholderForExchange ? null : [{value: row.exchange, label: row.exchange}])}
             classNamePrefix="custom-select-box"
             isClearable={true}
             isSearchable={true}
@@ -343,9 +346,12 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.exchange
         )
 
+      const shouldWeShowPlaceholderForCoin = row.symbol === '' || row.symbol === 'Coin'
+
       const coin =
         isEditModeEnabled && row.editable ? (
           <SelectCoinList
+            value={(shouldWeShowPlaceholderForCoin ? null : [{value: row.symbol, label: row.symbol}])}
             ref={handleRef}
             key={`inputCoinSymbol${index}`}
             classNamePrefix="custom-select-box"
