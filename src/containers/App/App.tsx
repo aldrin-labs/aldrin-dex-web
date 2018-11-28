@@ -19,6 +19,7 @@ import Footer from '@components/Footer'
 
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
+import { Hidden, Typography, Paper } from '@material-ui/core';
 
 const version = `1`
 const currentVersion = localStorage.getItem('version')
@@ -45,6 +46,14 @@ const AppRaw = ({
           {children}
         </AppGridLayout>
         <Footer hide={fullscreen} />
+        <Hidden smUp>
+          <DontUseOnMobileWarning>
+            <Typography color='error' variant='h4'>
+            😞We are currently in beta and don't support your screen resolution. Please open the desktop version of this page.
+            </Typography>
+          </DontUseOnMobileWarning >
+
+        </Hidden>
       </ThemeWrapper>
     </JssProvider>
   )
@@ -57,6 +66,17 @@ const AppGridLayout = styled.div`
   overflow-x: hidden;
   min-height: calc(100vh - 50px);
 `
+
+const DontUseOnMobileWarning = styled(Paper)`
+height: 100vh;
+width: 100vw;
+display:flex;
+place-content:center;
+position: fixed; 
+top: 0; 
+z-index: 99999999;
+`
+
 
 const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
