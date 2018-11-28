@@ -464,7 +464,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ),
               },
             }
-          : null),
+          : {}),
       }
     })
 
@@ -528,8 +528,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           background
         ),
         footer: [
-          isEditModeEnabled
-            ? {
+        ...(isEditModeEnabled
+            ? [{
                 id: '3',
                 exchange: {
                   render: ' ',
@@ -572,8 +572,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                   static: true,
                   variant: 'body',
                 },
-              }
-            : null,
+              }]
+            : []
+          ),
           {
             id: '33',
             exchange: 'Subtotal',
