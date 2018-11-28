@@ -124,7 +124,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
                 className="SwitchButton"
               >
                 {' '}
-                {isUSDCurrently ? 'USD' : 'BTC'}
+                {isUSDCurrently ? 'BTC' : 'USD'}
               </Button>
               <Typography align="center" variant="caption" color="textSecondary">
                 Switch currency
