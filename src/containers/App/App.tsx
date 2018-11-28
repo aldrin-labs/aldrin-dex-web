@@ -57,21 +57,22 @@ const AppRaw = ({
         </AppGridLayout>
         <Footer hide={fullscreen} />
 
-        <Fade in={true && mobilePopup} mountOnEnter unmountOnExit>
-          <DontUseOnMobileWarning
-            onClick={() => {
-              togglePopUp()
-            }}
-          >
-            <Typography color="error" variant="h4">
-              😞We are currently in beta and don't support your screen
-              resolution. Please open the desktop version of this page.
+        {isMobileDevice() && (
+          <Fade in={true && mobilePopup} mountOnEnter unmountOnExit>
+            <DontUseOnMobileWarning
+              onClick={() => {
+                togglePopUp()
+              }}
+            >
+              <Typography color="error" variant="h4">
+                😞We are currently in beta and don't support your screen
+                resolution. Please open the desktop version of this page.
             </Typography>
-            <Typography color="error" variant="h3">
-              Click to close!
+              <Typography color="error" variant="h3">
+                Click to close!
             </Typography>
-          </DontUseOnMobileWarning>
-        </Fade>
+            </DontUseOnMobileWarning>
+          </Fade>)}
       </ThemeWrapper>
     </JssProvider>
   )
