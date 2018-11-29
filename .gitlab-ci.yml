@@ -96,7 +96,6 @@ variables:
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-    - .npm
     - cache/Cypress
     - node_modules
 
@@ -106,7 +105,7 @@ install:
   stage: build
 
   script:
-    - npm ci
+    - yarn
     - $(npm bin)/print-env CI
     - npm run cy:verify
 
