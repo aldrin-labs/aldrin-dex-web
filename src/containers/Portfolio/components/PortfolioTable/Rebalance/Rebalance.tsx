@@ -46,6 +46,9 @@ import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButt
 import config from '@utils/linkConfig'
 import CardHeader from '@components/CardHeader'
 
+// TODO: Remove quantity
+// TODO: Fix types for snapshots changes
+
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
     selectedActive: [],
@@ -179,6 +182,8 @@ class Rebalance extends React.Component<IProps, IState> {
           currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          percentSnapshot: null,
         })
       )
     }
@@ -275,6 +280,10 @@ class Rebalance extends React.Component<IProps, IState> {
       return accMap
     }, new Map())
 
+
+    console.log('rows', rows);
+
+
     this.setState({
       staticRowsMap,
       staticRows: staticRowsWithPercentage,
@@ -344,6 +353,8 @@ class Rebalance extends React.Component<IProps, IState> {
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
       isCustomAsset: el.isCustomAsset,
+      priceSnapshot: el.priceSnapshot,
+      percentSnapshot: el.percentSnapshot,
     }))
 
     const variablesForMutation = {
