@@ -60,7 +60,7 @@ const PopUp = ({
         `}
       >
         <Typography color="error" variant="h4">
-          😞We are currently in beta and don't support your screen resolution.
+          We are currently in beta and don't support your screen resolution.
           Please open the desktop version of this page.
         </Typography>
       </DialogContent>
