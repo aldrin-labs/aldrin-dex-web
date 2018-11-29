@@ -56,7 +56,11 @@ const AppRaw = ({
           {children}
         </AppGridLayout>
         <Footer hide={fullscreen} />
-
+      </ThemeWrapper>
+    </JssProvider>
+  )
+}
+/*
         {isMobileDevice() && (
           <Fade in={true && mobilePopup} mountOnEnter unmountOnExit>
             <DontUseOnMobileWarning
@@ -73,10 +77,7 @@ const AppRaw = ({
             </Typography>
             </DontUseOnMobileWarning>
           </Fade>)}
-      </ThemeWrapper>
-    </JssProvider>
-  )
-}
+          */
 
 // put overflow-x hidden since
 // we dont need it to horizontal scrollbar
