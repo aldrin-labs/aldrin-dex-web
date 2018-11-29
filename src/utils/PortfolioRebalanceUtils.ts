@@ -162,6 +162,7 @@ export function calculateMoneyPart(
 }
 
 export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
+  //TODO: Write it with staticRowsMap without comparision
   const indexInCurrentPortfolio = portfolioAssets.findIndex(
     (curEl) => curEl._id === el._id
   )

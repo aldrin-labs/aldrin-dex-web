@@ -220,7 +220,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       deltaPrice: 0,
       price: 0,
       isCustomAsset: true,
-      quantity: null,
       priceSnapshot: null,
       percentSnapshot: null,
     }
@@ -413,7 +412,6 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
-      const rebalancedQuantity = row.quantity === null ? 0 : row.quantity
       const percentSnapshot = row.percentSnapshot === null ? 0 : row.percentSnapshot
       const priceSnapshot = row.priceSnapshot === null ? 0 : row.priceSnapshot
 
