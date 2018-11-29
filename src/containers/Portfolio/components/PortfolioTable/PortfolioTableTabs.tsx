@@ -51,8 +51,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
         },
       },
     } = this.props
-    const switchUSDBTC =
-      tab === 'main' || tab === 'industry' || tab === 'optimization'
+    const switchUSDBTC = tab === 'main'
     const background = type === 'dark' ? primary.light : primary[100]
 
     return (
@@ -103,12 +102,12 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Optimization />
         </BarTab>
         <DividerWithMargin />
-        <BarContainer onClick={() => {
-              toggleWallets()
-            }}>
-          <Tab
-            color="primary"
-          >
+        <BarContainer
+          onClick={() => {
+            toggleWallets()
+          }}
+        >
+          <Tab color="primary">
             <Settings className="settingsIcon" />
           </Tab>
           <Typography align="center" variant="caption" color="textSecondary">
@@ -119,14 +118,15 @@ class PortfolioTableTabs extends React.Component<IProps> {
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
           <>
             <BarContainer onClick={this.onToggleUSDBTC}>
-              <Button
-                color="default"
-                className="SwitchButton"
-              >
+              <Button color="default" className="SwitchButton">
                 {' '}
                 {isUSDCurrently ? 'BTC' : 'USD'}
               </Button>
-              <Typography align="center" variant="caption" color="textSecondary">
+              <Typography
+                align="center"
+                variant="caption"
+                color="textSecondary"
+              >
                 Switch currency
               </Typography>
             </BarContainer>
@@ -146,26 +146,27 @@ const renderMarker = (color: string) => (
 )
 
 const BarTab = (props: {
-  children?:any,
-  thisTab: string,
-  thisTabName: string,
-  curentTab: string,
-  onClick: () => void,
+  children?: any
+  thisTab: string
+  thisTabName: string
+  curentTab: string
+  onClick: () => void
   mainColor: string
 }) => (
   <BarContainer onClick={props.onClick}>
-    <Tab
-      color={props.curentTab === props.thisTab ? 'secondary' : 'primary'}
-    >
+    <Tab color={props.curentTab === props.thisTab ? 'secondary' : 'primary'}>
       {props.curentTab === props.thisTab && renderMarker(props.mainColor)}
       {props.children}
     </Tab>
     <Typography
       variant="caption"
-      color={props.curentTab === props.thisTab ? 'secondary' : 'default'}> {props.thisTabName} </Typography>
+      color={props.curentTab === props.thisTab ? 'secondary' : 'default'}
+    >
+      {' '}
+      {props.thisTabName}{' '}
+    </Typography>
   </BarContainer>
 )
-
 
 const DividerWithMargin = styled(Divider)`
   margin: 0.5rem auto;
@@ -210,7 +211,7 @@ const Tab = styled(IconButton)`
 `
 
 const SettingsTab = styled(IconButton)`
-margin: 0.6rem auto;
+  margin: 0.6rem auto;
 `
 
 const BarContainer = styled.div`
