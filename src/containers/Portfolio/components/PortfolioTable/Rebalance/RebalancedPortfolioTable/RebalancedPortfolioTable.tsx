@@ -224,7 +224,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       percentSnapshot: null,
     }
     clonedRows.push(newRow)
-    const rows = UTILS.calculatePercents(clonedRows, totalRows, staticRows)
+    const rows = UTILS.calculatePriceDifference(UTILS.calculatePercents(clonedRows, totalRows), staticRows)
     const totalPercents = UTILS.calculateTotalPercents(rows)
 
     updateState({ rows, totalPercents, areAllActiveChecked: false })
@@ -256,9 +256,9 @@ export default class RebalancedPortfolioTable extends React.Component<
 
     const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
-    const newRowsWithNewPercents = UTILS.calculatePercents(
+    const newRowsWithNewPercents = UTILS.calculatePriceDifference(UTILS.calculatePercents(
       resultRows,
-      newTotalRows,
+      newTotalRows),
       staticRows
     )
     const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)

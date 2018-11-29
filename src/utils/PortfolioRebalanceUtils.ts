@@ -112,7 +112,6 @@ export const calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
 export const calculatePercents = (
   data: IRow[],
   total: string,
-  staticRows: IRow[]
 ) => {
   const newDataWithPercents = data.map((row) => {
     const percentCaluclation =
@@ -127,7 +126,7 @@ export const calculatePercents = (
     }
   })
 
-  return calculatePriceDifference(newDataWithPercents, staticRows)
+  return newDataWithPercents
 }
 
 export function calculateMoneyPart(

@@ -265,15 +265,13 @@ class Rebalance extends React.Component<IProps, IState> {
     savedRows: IRow[],
     totalSavedRows: string
   ) => {
-    const rowsWithPercentage = UTILS.calculatePercents(
-      rows,
-      totalRows,
+    const rowsWithPercentage = UTILS.calculatePriceDifference(
+      UTILS.calculatePercents(rows, totalRows),
       staticRows
     )
 
-    const staticRowsWithPercentage = UTILS.calculatePercents(
-      staticRows,
-      totalStaticRows,
+    const staticRowsWithPercentage = UTILS.calculatePriceDifference(
+      UTILS.calculatePercents(staticRows, totalStaticRows),
       staticRows
     )
 
@@ -287,7 +285,7 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows: staticRowsWithPercentage,
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
-      savedRows: UTILS.calculatePercents(savedRows, totalSavedRows, staticRows),
+      savedRows: UTILS.calculatePriceDifference(UTILS.calculatePercents(savedRows, totalSavedRows), staticRows),
     })
   }
 
