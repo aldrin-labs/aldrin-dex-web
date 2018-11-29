@@ -39,7 +39,7 @@ const PopUp = ({
       `}
       TransitionComponent={Transition}
       fullScreen
-      open={isMobileDevice() && mobilePopup}
+      open={true && mobilePopup}
     >
       <AppBar position="static">
         <Toolbar>
@@ -59,7 +59,7 @@ const PopUp = ({
           place-content: center;
         `}
       >
-        <Typography color="error" variant="h4">
+        <Typography color="error" variant="h2">
           We are currently in beta and don't support your screen resolution.
           Please open the desktop version of this page.
         </Typography>
