@@ -6,10 +6,13 @@ import { Card } from '@material-ui/core'
 export const InputTable = styled.input`
   max-width: 60px;
   background: ${(props: { background: string }) => props.background};
+  font-family: ${(props: { fontFamily: string }) => props.fontFamily};
+  font-size: 14px;
   border: none;
   outline: none;
   color: ${(props: { isPercentSumGood?: boolean; red: string }) =>
-    props.isPercentSumGood ? '#7ad3d8' : props.red};
+    props.isPercentSumGood ? 'inherit' : props.red};
+  
 `
 
 export const TableWrapper = styled.div`

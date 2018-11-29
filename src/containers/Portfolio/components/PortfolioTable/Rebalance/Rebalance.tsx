@@ -147,6 +147,8 @@ class Rebalance extends React.Component<IProps, IState> {
             portfolioPerc: null,
             deltaPrice: el.diff.$numberDecimal,
             isCustomAsset: el.isCustomAsset,
+            priceSnapshot: el.priceSnapshot,
+            percentSnapshot: el.percentSnapshot,
           }
         }
       )
@@ -503,7 +505,7 @@ class Rebalance extends React.Component<IProps, IState> {
           <Content container spacing={16}>
             <Container
               item
-              md={isEditModeEnabled ? 8 : 12}
+              md={12}
               isEditModeEnabled={isEditModeEnabled}
             >
               <RebalancedPortfolioTable
@@ -524,6 +526,10 @@ class Rebalance extends React.Component<IProps, IState> {
                   addMoneyInputValue,
                   theme,
                   loading,
+                  red,
+                  saveButtonColor,
+                  secondary,
+                  fontFamily
                 }}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}
@@ -531,45 +537,45 @@ class Rebalance extends React.Component<IProps, IState> {
                 updateState={this.updateState}
               />
             </Container>
-
-            <Grow
-              timeout={{
-                enter: theme.transitions.duration.enteringScreen,
-                exit: 0,
-              }}
-              in={isEditModeEnabled}
-              mountOnEnter
-              unmountOnExit
-            >
-              <BtnsWrapper
-                container
-                justify="center"
-                alignItems="center"
-                item
-                md={4}
-              >
-                <RebalanceMoneyButtons
-                  {...{
-                    isEditModeEnabled,
-                    addMoneyInputValue,
-                    undistributedMoney,
-                    onEditModeEnable,
-                    onReset,
-                    onSaveClick,
-                    saveButtonColor,
-                    textColor,
-                    staticRows,
-                    rows,
-                    selectedActive,
-                    updateState,
-                    fontFamily,
-                    secondary,
-                    red,
-                    green,
-                  }}
-                />
-              </BtnsWrapper>
-            </Grow>
+            {/*don't delete this it's for future*/}
+            {/*<Grow*/}
+              {/*timeout={{*/}
+                {/*enter: theme.transitions.duration.enteringScreen,*/}
+                {/*exit: 0,*/}
+              {/*}}*/}
+              {/*in={isEditModeEnabled}*/}
+              {/*mountOnEnter*/}
+              {/*unmountOnExit*/}
+            {/*>*/}
+              {/*<BtnsWrapper*/}
+                {/*container*/}
+                {/*justify="center"*/}
+                {/*alignItems="center"*/}
+                {/*item*/}
+                {/*md={4}*/}
+              {/*>*/}
+                {/*<RebalanceMoneyButtons*/}
+                  {/*{...{*/}
+                    {/*isEditModeEnabled,*/}
+                    {/*addMoneyInputValue,*/}
+                    {/*undistributedMoney,*/}
+                    {/*onEditModeEnable,*/}
+                    {/*onReset,*/}
+                    {/*onSaveClick,*/}
+                    {/*saveButtonColor,*/}
+                    {/*textColor,*/}
+                    {/*staticRows,*/}
+                    {/*rows,*/}
+                    {/*selectedActive,*/}
+                    {/*updateState,*/}
+                    {/*fontFamily,*/}
+                    {/*secondary,*/}
+                    {/*red,*/}
+                    {/*green,*/}
+                  {/*}}*/}
+                {/*/>*/}
+              {/*</BtnsWrapper>*/}
+            {/*</Grow>*/}
 
             <ChartWrapper
               item

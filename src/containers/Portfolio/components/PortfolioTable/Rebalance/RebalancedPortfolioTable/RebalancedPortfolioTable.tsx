@@ -1,5 +1,8 @@
 import React from 'react'
 import EditIcon from '@material-ui/icons/Edit'
+import SaveIcon from '@material-ui/icons/Save'
+import Replay from '@material-ui/icons/Replay'
+import ClearIcon from '@material-ui/icons/Clear'
 import nanoid from 'nanoid'
 import Typography from '@material-ui/core/Typography'
 import { fade } from '@material-ui/core/styles/colorManipulator'
@@ -279,13 +282,15 @@ export default class RebalancedPortfolioTable extends React.Component<
     isPercentSumGood: boolean,
     red: string,
     green: string,
-    background: string
+    background: string,
+    fontFamily: string
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
           background={background}
+          fontFamily={fontFamily}
           key={`inputPercentage${index}`}
           tabIndex={index + 1}
           isPercentSumGood={isPercentSumGood}
@@ -514,6 +519,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       totalPercents,
       theme,
       isPercentSumGood,
+      fontFamily,
     } = this.props
     const { transformData } = this
     const red = theme.palette.red.main
@@ -555,7 +561,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           isPercentSumGood,
           red,
           green,
-          background
+          background,
+          fontFamily,
         ),
         footer: [
           ...(isEditModeEnabled
@@ -666,6 +673,10 @@ export default class RebalancedPortfolioTable extends React.Component<
       theme,
       loading,
       onEditModeEnable,
+      onReset,
+      onSaveClick,
+      red,
+      saveButtonColor,
     } = this.props
     const Table = isEditModeEnabled ? ImTable : TableWithSort
     return (
@@ -689,6 +700,28 @@ export default class RebalancedPortfolioTable extends React.Component<
                 icon: <EditIcon />,
                 onClick: onEditModeEnable,
                 color: 'secondary',
+                style: {color: saveButtonColor, marginRight: '7px'},
+
+              },
+              {
+                id: 2,
+                icon: <ClearIcon />,
+                onClick: onEditModeEnable,
+                style: {color: red, marginRight: '7px'},
+              },
+              {
+                id: 3,
+                icon: <Replay />,
+                onClick: onReset,
+                style: {marginRight: '7px'},
+
+              },
+              {
+                id: 4,
+                icon:  <SaveIcon />,
+                onClick: onSaveClick,
+                color: saveButtonColor,
+                style: {color: saveButtonColor, marginRight: '7px'},
               },
             ]}
             title="Rebalanced portfolio"
@@ -696,7 +729,6 @@ export default class RebalancedPortfolioTable extends React.Component<
             checkedRows={selectedActive}
             onChange={this.onSelectActiveBalance}
             onSelectAllClick={this.onSelectAllActive}
-            showUpperFooter={isEditModeEnabled}
             {...this.putDataInTable()}
           />
         </ContentInner>
