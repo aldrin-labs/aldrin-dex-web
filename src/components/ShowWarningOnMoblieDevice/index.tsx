@@ -1,8 +1,6 @@
 import React from 'react'
 import {
   Dialog,
-  AppBar,
-  Toolbar,
   IconButton,
   Button,
   Typography,
@@ -39,26 +37,26 @@ const PopUp = ({
       `}
       TransitionComponent={Transition}
       fullScreen
-      open={true && mobilePopup}
+      open={isMobileDevice() && mobilePopup}
     >
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            color="secondary"
-            onClick={togglePopUp}
-            aria-label="Close"
-          >
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
       <DialogContent
         css={`
           display: flex;
+          flex-direction: column;
           place-items: center;
           place-content: center;
         `}
       >
+        <IconButton
+          css={`
+            align-self: end;
+          `}
+          color="secondary"
+          onClick={togglePopUp}
+          aria-label="Close"
+        >
+          <CloseIcon />
+        </IconButton>
         <Typography color="error" variant="h2">
           We are currently in beta and don't support your screen resolution.
           Please open the desktop version of this page.
