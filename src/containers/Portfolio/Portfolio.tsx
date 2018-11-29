@@ -158,6 +158,5 @@ class PortfolioComponent extends React.Component<IProps, IState> {
 }
 
 export default compose(
-  withAuth,
   withTheme()
 )(PortfolioComponent)
