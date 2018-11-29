@@ -7,6 +7,8 @@ import {
   Button,
   Typography,
   Slide,
+  DialogActions,
+  DialogContent,
 } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import { connect } from 'react-redux'
@@ -48,16 +50,25 @@ const PopUp = ({
           >
             <CloseIcon />
           </IconButton>
-
-          <Button color="inherit" onClick={togglePopUp}>
-            okey
-          </Button>
         </Toolbar>
       </AppBar>
-      <Typography color="error" variant="h4">
-        😞We are currently in beta and don't support your screen resolution.
-        Please open the desktop version of this page.
-      </Typography>
+      <DialogContent
+        css={`
+          display: flex;
+          place-items: center;
+          place-content: center;
+        `}
+      >
+        <Typography color="error" variant="h4">
+          😞We are currently in beta and don't support your screen resolution.
+          Please open the desktop version of this page.
+        </Typography>
+      </DialogContent>
+      <DialogActions>
+        <Button color="secondary" size="large" onClick={togglePopUp}>
+          okay
+        </Button>
+      </DialogActions>
     </Dialog>
   )
 }
