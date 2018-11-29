@@ -107,7 +107,6 @@ install:
 
   script:
     - yarn install --pure-lockfile --cache-folder .yarn
-    - $(npm bin)/print-env CI
     - npm run cy:verify
 
 # all jobs that actually run tests can use the same definition
@@ -115,8 +114,6 @@ install:
   image: cypress/base:10
   stage: test
   script:
-    # print CI environment variables for reference
-    - $(npm bin)/print-env CI
     # start the server in the background
     - npm run start:ci &
     # run Cypress test in load balancing mode, pass id to tie jobs together
