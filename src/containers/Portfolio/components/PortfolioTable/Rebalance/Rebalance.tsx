@@ -182,7 +182,9 @@ class Rebalance extends React.Component<IProps, IState> {
           currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
-          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          priceSnapshot: parseFloat(
+            (parseFloat(el.price) * el.quantity).toFixed(2)
+          ),
           percentSnapshot: null,
         })
       )
@@ -280,10 +282,6 @@ class Rebalance extends React.Component<IProps, IState> {
       return accMap
     }, new Map())
 
-
-    console.log('rows', rows);
-
-
     this.setState({
       staticRowsMap,
       staticRows: staticRowsWithPercentage,
@@ -319,7 +317,6 @@ class Rebalance extends React.Component<IProps, IState> {
       rows,
       staticRows
     )
-
 
     this.setState(
       {
@@ -514,11 +511,7 @@ class Rebalance extends React.Component<IProps, IState> {
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
-            <Container
-              item
-              md={12}
-              isEditModeEnabled={isEditModeEnabled}
-            >
+            <Container item md={12} isEditModeEnabled={isEditModeEnabled}>
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
@@ -540,7 +533,7 @@ class Rebalance extends React.Component<IProps, IState> {
                   red,
                   saveButtonColor,
                   secondary,
-                  fontFamily
+                  fontFamily,
                 }}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}
@@ -550,42 +543,42 @@ class Rebalance extends React.Component<IProps, IState> {
             </Container>
             {/*don't delete this it's for future*/}
             {/*<Grow*/}
-              {/*timeout={{*/}
-                {/*enter: theme.transitions.duration.enteringScreen,*/}
-                {/*exit: 0,*/}
-              {/*}}*/}
-              {/*in={isEditModeEnabled}*/}
-              {/*mountOnEnter*/}
-              {/*unmountOnExit*/}
+            {/*timeout={{*/}
+            {/*enter: theme.transitions.duration.enteringScreen,*/}
+            {/*exit: 0,*/}
+            {/*}}*/}
+            {/*in={isEditModeEnabled}*/}
+            {/*mountOnEnter*/}
+            {/*unmountOnExit*/}
             {/*>*/}
-              {/*<BtnsWrapper*/}
-                {/*container*/}
-                {/*justify="center"*/}
-                {/*alignItems="center"*/}
-                {/*item*/}
-                {/*md={4}*/}
-              {/*>*/}
-                {/*<RebalanceMoneyButtons*/}
-                  {/*{...{*/}
-                    {/*isEditModeEnabled,*/}
-                    {/*addMoneyInputValue,*/}
-                    {/*undistributedMoney,*/}
-                    {/*onEditModeEnable,*/}
-                    {/*onReset,*/}
-                    {/*onSaveClick,*/}
-                    {/*saveButtonColor,*/}
-                    {/*textColor,*/}
-                    {/*staticRows,*/}
-                    {/*rows,*/}
-                    {/*selectedActive,*/}
-                    {/*updateState,*/}
-                    {/*fontFamily,*/}
-                    {/*secondary,*/}
-                    {/*red,*/}
-                    {/*green,*/}
-                  {/*}}*/}
-                {/*/>*/}
-              {/*</BtnsWrapper>*/}
+            {/*<BtnsWrapper*/}
+            {/*container*/}
+            {/*justify="center"*/}
+            {/*alignItems="center"*/}
+            {/*item*/}
+            {/*md={4}*/}
+            {/*>*/}
+            {/*<RebalanceMoneyButtons*/}
+            {/*{...{*/}
+            {/*isEditModeEnabled,*/}
+            {/*addMoneyInputValue,*/}
+            {/*undistributedMoney,*/}
+            {/*onEditModeEnable,*/}
+            {/*onReset,*/}
+            {/*onSaveClick,*/}
+            {/*saveButtonColor,*/}
+            {/*textColor,*/}
+            {/*staticRows,*/}
+            {/*rows,*/}
+            {/*selectedActive,*/}
+            {/*updateState,*/}
+            {/*fontFamily,*/}
+            {/*secondary,*/}
+            {/*red,*/}
+            {/*green,*/}
+            {/*}}*/}
+            {/*/>*/}
+            {/*</BtnsWrapper>*/}
             {/*</Grow>*/}
 
             <ChartWrapper
