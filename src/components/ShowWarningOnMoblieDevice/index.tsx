@@ -8,9 +8,20 @@ import {
   DialogActions,
   DialogContent,
 } from '@material-ui/core'
+import { withStyles } from "@material-ui/core/styles";
 import CloseIcon from '@material-ui/icons/Close'
 import { connect } from 'react-redux'
 import { toggleMobilePopup } from '@containers/App/actions'
+
+const styles = theme => ({
+  largeButton: {
+    margin: theme.spacing.unit,
+    padding: 24
+  },
+  largeIcon: {
+    fontSize: "3em"
+  },
+});
 
 function isMobileDevice() {
   return (
@@ -26,6 +37,7 @@ const Transition = (props: any) => {
 const PopUp = ({
   mobilePopup,
   togglePopUp,
+  classes,
 }: {
   mobilePopup: boolean
   togglePopUp: () => void
@@ -47,16 +59,21 @@ const PopUp = ({
           place-content: center;
         `}
       >
-        <IconButton
+        <div
           css={`
-            align-self: end;
+            width: 100%;
+            text-align: right;
           `}
+        >
+        <IconButton
           color="secondary"
           onClick={togglePopUp}
           aria-label="Close"
+          className={classes.largeButton}
         >
-          <CloseIcon />
+          <CloseIcon className={classes.largeIcon} />
         </IconButton>
+        </div>
         <Typography color="error" variant="h2">
           We are currently in beta and don't support your screen resolution.
           Please open the desktop version of this page.
@@ -81,7 +98,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   togglePopUp: () => dispatch(toggleMobilePopup()),
 })
 
-export default connect(
+export default withStyles(styles)(connect(
   mapStateToProps,
   mapDispatchToProps
-)(PopUp)
+)(PopUp))
