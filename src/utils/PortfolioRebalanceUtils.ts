@@ -37,8 +37,8 @@ export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
   return (total + parseFloat(undistributedMoney)).toFixed(2)
 }
 
-export const calculateTableTotal = (data: IRow[]) => {
-  const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
+export const calculateTableTotal = (data: IRow[], priceField = 'price') => {
+  const tableTotal = data.reduce((sum, row, i) => (sum += +data[i][priceField]), 0)
 
   return tableTotal.toFixed(2)
 }
@@ -60,74 +60,36 @@ export const checkPercentSum = (data: IRow[]) => {
   return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
 }
 
-export const calculatePriceDifference = (data: IRow[], staticRows: IRow[]) => {
-  data.forEach((row, i) => {
-    staticRows.forEach((staticRow, j) => {
-      if (data[i]._id === staticRows[j]._id) {
-        // TODO: Refactor when we have much more time than now
-        // tslint:disable-next-line no-object-mutation
-        data[i].deltaPrice = (
-          parseFloat(data[i].price) - parseFloat(staticRows[j].price)
-        ).toFixed(2)
-      }
-    })
-  })
+export const calculatePriceDifference = (data: IRow[]) => {
 
-  if (data.length > staticRows.length) {
-    const arrayOfNewCoinIndexes: number[] = data.reduce(
-      (newCoinsIndexesArray: number[], el, i) => {
-        if (
-          !staticRows.some(
-            (element) =>
-              element._id === el._id
-          )
-        ) {
-          return newCoinsIndexesArray.concat(i)
-        }
+  const dataWithDeltaPrice = data.map((el) => ({
+    ...el,
+    deltaPrice: el.isCustomAsset ? (parseFloat(el.price)).toFixed(2) : (parseFloat(el.price) - el.priceSnapshot).toFixed(2),
+  }))
 
-        return newCoinsIndexesArray
-      },
-      []
-    )
-
-    data = data.map((row, i) => {
-      if (arrayOfNewCoinIndexes.includes(i)) {
-        return {
-          ...row,
-          deltaPrice: (parseFloat(row.price) - 0).toFixed(2),
-        }
-      }
-
-      return row
-    })
-  }
-
-  // console.log('data length', data.length)
-  // console.log('staticRows length', staticRows.length)
-  // console.log('data in caluclatePriceDiff', data)
-
-  return data
+  return dataWithDeltaPrice
 }
 
 export const calculatePercents = (
   data: IRow[],
   total: string,
-  staticRows: IRow[]
+  priceField = 'price',
+  percentageResultField = 'portfolioPerc'
 ) => {
   const newDataWithPercents = data.map((row) => {
     const percentCaluclation =
-      +row.price === 0
+      +row[priceField] === 0
         ? '0'
-        : ((parseFloat(row.price) * 100) / parseFloat(total)).toFixed(4)
+        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(4)
     const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
     return {
       ...row,
-      portfolioPerc: percentResult,
+      [percentageResultField]: percentResult,
     }
   })
 
-  return calculatePriceDifference(newDataWithPercents, staticRows)
+  return newDataWithPercents
 }
 
 export function calculateMoneyPart(
@@ -162,6 +124,7 @@ export function calculateMoneyPart(
 }
 
 export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
+  //TODO: Write it with staticRowsMap without comparision
   const indexInCurrentPortfolio = portfolioAssets.findIndex(
     (curEl) => curEl._id === el._id
   )

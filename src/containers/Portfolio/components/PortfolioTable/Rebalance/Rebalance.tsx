@@ -10,6 +10,7 @@ import {
   Button,
   Grow,
 } from '@material-ui/core'
+import moment from 'moment'
 
 import { Container as Content } from '../Industry/Industry.styles'
 import { systemError } from '@utils/errorsConfig'
@@ -46,6 +47,9 @@ import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButt
 import config from '@utils/linkConfig'
 import CardHeader from '@components/CardHeader'
 
+// TODO: Remove quantity
+// TODO: Fix types for snapshots changes
+
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
     selectedActive: [],
@@ -64,6 +68,7 @@ class Rebalance extends React.Component<IProps, IState> {
     totalTableRows: '0',
     totalTableStaticRows: '0',
     totalTableSavedRows: '0',
+    totalSnapshotRows: '',
     isPercentSumGood: true,
     totalPercents: 0,
     leftBar: '#fff',
@@ -74,6 +79,7 @@ class Rebalance extends React.Component<IProps, IState> {
     openWarning: false,
     isSystemError: false,
     warningMessage: '',
+    timestampSnapshot: null,
   }
 
   componentDidMount() {
@@ -112,6 +118,8 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
+      this.setState({timestampSnapshot: moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot)})
+
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -120,33 +128,38 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          currentPrice: el.price,
-          quantity: el.quantity,
+          // currentPrice: el.price,
+          // quantity: el.quantity,
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          percentSnapshot: null,
         })
       )
 
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-          const {
-            price,
-            currentPrice,
-            quantity,
-          } = UTILS.calcPriceForRebalancedPortfolio(
-            el,
-            getMyPortfolioAndRebalanceQuery.portfolioAssets
-          )
+          // const {
+          //   price,
+          //   currentPrice,
+          //   quantity,
+          // } = UTILS.calcPriceForRebalancedPortfolio(
+          //   el,
+          //   getMyPortfolioAndRebalanceQuery.portfolioAssets
+          // )
 
           return {
-            price,
-            currentPrice,
-            quantity,
+            // price,
+            // currentPrice,
+            // quantity,
             _id: el._id,
             id: i,
             exchange: el.exchange,
             symbol: el.coin,
             portfolioPerc: null,
+            price: parseFloat(el.amount.$numberDecimal).toFixed(2),
             deltaPrice: el.diff.$numberDecimal,
             isCustomAsset: el.isCustomAsset,
+            priceSnapshot: el.priceSnapshot,
+            percentSnapshot: el.percentSnapshot,
           }
         }
       )
@@ -167,6 +180,8 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
+      this.setState({timestampSnapshot: moment()})
+
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -174,9 +189,11 @@ class Rebalance extends React.Component<IProps, IState> {
           exchange: el.where,
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
-          currentPrice: el.price,
+          // currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          percentSnapshot: null,
         })
       )
     }
@@ -228,6 +245,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const totalTableStaticRows = UTILS.calculateTableTotal(staticRows)
     const totalTableRows = UTILS.calculateTableTotal(rows)
     const totalTableSavedRows = UTILS.calculateTableTotal(savedRows)
+    const totalSnapshotRows = UTILS.calculateTableTotal(rows, 'priceSnapshot')
 
     this.calculateAllPercents(
       staticRows,
@@ -235,7 +253,8 @@ class Rebalance extends React.Component<IProps, IState> {
       rows,
       totalRows,
       savedRows,
-      totalSavedRows
+      totalSavedRows,
+      totalSnapshotRows,
     )
 
     this.setState({
@@ -245,6 +264,7 @@ class Rebalance extends React.Component<IProps, IState> {
       totalTableStaticRows,
       totalTableRows,
       totalTableSavedRows,
+      totalSnapshotRows,
     })
   }
 
@@ -254,19 +274,14 @@ class Rebalance extends React.Component<IProps, IState> {
     rows: IRow[],
     totalRows: string,
     savedRows: IRow[],
-    totalSavedRows: string
+    totalSavedRows: string,
+    totalSnapshotRows: string,
   ) => {
-    const rowsWithPercentage = UTILS.calculatePercents(
-      rows,
-      totalRows,
-      staticRows
-    )
+    const rowsWithPercentage = UTILS.calculatePriceDifference(
+      UTILS.calculatePercents(UTILS.calculatePercents(rows, totalRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot'))
 
-    const staticRowsWithPercentage = UTILS.calculatePercents(
-      staticRows,
-      totalStaticRows,
-      staticRows
-    )
+    const staticRowsWithPercentage = UTILS.calculatePriceDifference(
+      UTILS.calculatePercents(staticRows, totalStaticRows))
 
     const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
       accMap.set(el._id, el)
@@ -278,7 +293,7 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows: staticRowsWithPercentage,
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
-      savedRows: UTILS.calculatePercents(savedRows, totalSavedRows, staticRows),
+      savedRows: UTILS.calculatePriceDifference(UTILS.calculatePercents(UTILS.calculatePercents(savedRows, totalSavedRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot')),
     })
   }
 
@@ -304,11 +319,7 @@ class Rebalance extends React.Component<IProps, IState> {
     //   rowsWithNewPrice,
     //   staticRows
     // )
-    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
-      rows,
-      staticRows
-    )
-
+    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(rows)
 
     this.setState(
       {
@@ -328,24 +339,28 @@ class Rebalance extends React.Component<IProps, IState> {
 
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery, refetch } = this.props
-    const { rows, totalRows, staticRowsMap } = this.state
+    const { rows, totalRows, timestampSnapshot } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: el._id,
       exchange: el.exchange,
       coin: el.symbol,
-      amount: el.isCustomAsset
-        ? el.price.toString()
-        : staticRowsMap.get(el._id).price !== el.price
-        ? (el.price / el.currentPrice).toString()
-        : el.quantity.toString(),
+      // amount: el.isCustomAsset
+      //   ? el.price.toString()
+      //   : staticRowsMap.get(el._id).price !== el.price
+      //   ? (el.price / el.currentPrice).toString()
+      //   : el.quantity.toString(),
+      amount: el.price.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
       isCustomAsset: el.isCustomAsset,
+      priceSnapshot: el.priceSnapshot,
+      percentSnapshot: el.percentSnapshot,
     }))
 
     const variablesForMutation = {
       input: {
+        timestampSnapshot: timestampSnapshot.unix(),
         total: totalRows.toString(),
         assets: {
           input: combinedRowsData,
@@ -378,19 +393,30 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onReset = () => {
+    const { rows, savedRows } = this.state
+
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
     )
+    // TODO: BUT are we are we really sure that it will the same for multiaccounts?
+
+    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el, i) => ({
+      ...el,
+      priceSnapshot: rows[i].priceSnapshot,
+      percentSnapshot: rows[i].percentSnapshot,
+      price: rows[i].priceSnapshot,
+      portfolioPerc: rows[i].percentSnapshot,
+    }))
 
     this.setState({
-      rows: clonedStaticRows,
+      rows: clonedStaticRowsWithSnapshotsData,
       totalRows: this.state.totalStaticRows,
       totalTableRows: this.state.totalTableStaticRows,
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
-      isPercentSumGood: UTILS.checkPercentSum(clonedStaticRows),
-      totalPercents: UTILS.calculateTotalPercents(clonedStaticRows),
+      isPercentSumGood: UTILS.checkPercentSum(clonedStaticRowsWithSnapshotsData),
+      totalPercents: UTILS.calculateTotalPercents(clonedStaticRowsWithSnapshotsData),
     })
   }
 
@@ -472,6 +498,7 @@ class Rebalance extends React.Component<IProps, IState> {
       isPercentSumGood,
       totalPercents,
       totalTableRows,
+      totalSnapshotRows,
       rows,
       staticRows,
       addMoneyInputValue,
@@ -482,6 +509,7 @@ class Rebalance extends React.Component<IProps, IState> {
       openWarning,
       isSystemError,
       warningMessage,
+      timestampSnapshot,
     } = this.state
 
     const { onSaveClick, onEditModeEnable, onReset, updateState } = this
@@ -501,11 +529,7 @@ class Rebalance extends React.Component<IProps, IState> {
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
-            <Container
-              item
-              md={isEditModeEnabled ? 8 : 12}
-              isEditModeEnabled={isEditModeEnabled}
-            >
+            <Container item md={12} isEditModeEnabled={isEditModeEnabled}>
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
@@ -524,6 +548,12 @@ class Rebalance extends React.Component<IProps, IState> {
                   addMoneyInputValue,
                   theme,
                   loading,
+                  red,
+                  saveButtonColor,
+                  secondary,
+                  fontFamily,
+                  totalSnapshotRows,
+                  timestampSnapshot,
                 }}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}
@@ -531,45 +561,45 @@ class Rebalance extends React.Component<IProps, IState> {
                 updateState={this.updateState}
               />
             </Container>
-
-            <Grow
-              timeout={{
-                enter: theme.transitions.duration.enteringScreen,
-                exit: 0,
-              }}
-              in={isEditModeEnabled}
-              mountOnEnter
-              unmountOnExit
-            >
-              <BtnsWrapper
-                container
-                justify="center"
-                alignItems="center"
-                item
-                md={4}
-              >
-                <RebalanceMoneyButtons
-                  {...{
-                    isEditModeEnabled,
-                    addMoneyInputValue,
-                    undistributedMoney,
-                    onEditModeEnable,
-                    onReset,
-                    onSaveClick,
-                    saveButtonColor,
-                    textColor,
-                    staticRows,
-                    rows,
-                    selectedActive,
-                    updateState,
-                    fontFamily,
-                    secondary,
-                    red,
-                    green,
-                  }}
-                />
-              </BtnsWrapper>
-            </Grow>
+            {/*don't delete this it's for future*/}
+            {/*<Grow*/}
+            {/*timeout={{*/}
+            {/*enter: theme.transitions.duration.enteringScreen,*/}
+            {/*exit: 0,*/}
+            {/*}}*/}
+            {/*in={isEditModeEnabled}*/}
+            {/*mountOnEnter*/}
+            {/*unmountOnExit*/}
+            {/*>*/}
+            {/*<BtnsWrapper*/}
+            {/*container*/}
+            {/*justify="center"*/}
+            {/*alignItems="center"*/}
+            {/*item*/}
+            {/*md={4}*/}
+            {/*>*/}
+            {/*<RebalanceMoneyButtons*/}
+            {/*{...{*/}
+            {/*isEditModeEnabled,*/}
+            {/*addMoneyInputValue,*/}
+            {/*undistributedMoney,*/}
+            {/*onEditModeEnable,*/}
+            {/*onReset,*/}
+            {/*onSaveClick,*/}
+            {/*saveButtonColor,*/}
+            {/*textColor,*/}
+            {/*staticRows,*/}
+            {/*rows,*/}
+            {/*selectedActive,*/}
+            {/*updateState,*/}
+            {/*fontFamily,*/}
+            {/*secondary,*/}
+            {/*red,*/}
+            {/*green,*/}
+            {/*}}*/}
+            {/*/>*/}
+            {/*</BtnsWrapper>*/}
+            {/*</Grow>*/}
 
             <ChartWrapper
               item
