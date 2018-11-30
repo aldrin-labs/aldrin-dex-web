@@ -105,8 +105,11 @@ install:
   stage: build
 
   script:
-    - yarn install --pure-lockfile --cache-folder .yarn
+    - yarn install --cache-folder .yarn
     - npm run cy:verify
+  cache:
+    paths:
+    - ./node_modules
 
 run:
   image: cypress/base:10
