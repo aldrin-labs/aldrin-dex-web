@@ -214,7 +214,7 @@ class LoginQuery extends React.Component<Props, State> {
     if (isShownModal) return null
 
     return (
-      <SWrapper>
+      <SWrapper className="LoginButton">
         <Grow in={!loginStatus} unmountOnExit={true} mountOnEnter={true}>
           <Button
             color="secondary"
