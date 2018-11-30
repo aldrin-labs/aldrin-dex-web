@@ -11,7 +11,7 @@ export const portfolioMainSteps = [
     disableBeacon: true,
     target: 'body',
     content:
-      'We have added a real Binance account, so you can experience all of the functionality. To add your own Binance account please go to settings and enter your api key where you can also delete this demo account. Please note our application only supports Binance currently and we will be adding support for more exchanges soon.',
+      (<p> Welcome to Cryptocurrencies.Ai beta! <br/> We have added a real Binance account, so you can experience all of the functionality. To add your own Binance account please go to settings and enter your api key where you can also delete this demo account. Please note our application only supports Binance currently and we will be adding support for more exchanges soon.</p>),
     placement: 'center',
   },
   {
