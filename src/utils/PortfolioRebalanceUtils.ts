@@ -37,8 +37,8 @@ export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
   return (total + parseFloat(undistributedMoney)).toFixed(2)
 }
 
-export const calculateTableTotal = (data: IRow[]) => {
-  const tableTotal = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
+export const calculateTableTotal = (data: IRow[], priceField = 'price') => {
+  const tableTotal = data.reduce((sum, row, i) => (sum += +data[i][priceField]), 0)
 
   return tableTotal.toFixed(2)
 }
@@ -118,17 +118,19 @@ export const calculatePriceDifference = (data: IRow[]) => {
 export const calculatePercents = (
   data: IRow[],
   total: string,
+  priceField = 'price',
+  percentageResultField = 'portfolioPerc'
 ) => {
   const newDataWithPercents = data.map((row) => {
     const percentCaluclation =
-      +row.price === 0
+      +row[priceField] === 0
         ? '0'
-        : ((parseFloat(row.price) * 100) / parseFloat(total)).toFixed(4)
+        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(4)
     const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
     return {
       ...row,
-      portfolioPerc: percentResult,
+      [percentageResultField]: percentResult,
     }
   })
 

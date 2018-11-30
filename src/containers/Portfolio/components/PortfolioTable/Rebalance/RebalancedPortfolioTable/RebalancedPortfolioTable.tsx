@@ -161,9 +161,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       newCalculatedRowsWithPercents
     )
     const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
-      newCalculatedRowsWithPercents,
-      staticRows
-    )
+      newCalculatedRowsWithPercents)
     const newTableTotalRows = UTILS.calculateTableTotal(
       newCalculatedRowsWithPercents
     )
@@ -224,7 +222,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       percentSnapshot: null,
     }
     clonedRows.push(newRow)
-    const rows = UTILS.calculatePriceDifference(UTILS.calculatePercents(clonedRows, totalRows), staticRows)
+    const rows = UTILS.calculatePriceDifference(UTILS.calculatePercents(clonedRows, totalRows))
     const totalPercents = UTILS.calculateTotalPercents(rows)
 
     updateState({ rows, totalPercents, areAllActiveChecked: false })
@@ -258,9 +256,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
     const newRowsWithNewPercents = UTILS.calculatePriceDifference(UTILS.calculatePercents(
       resultRows,
-      newTotalRows),
-      staticRows
-    )
+      newTotalRows))
     const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
 
     const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
@@ -520,6 +516,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       theme,
       isPercentSumGood,
       fontFamily,
+      totalSnapshotRows,
     } = this.props
     const { transformData } = this
     const red = theme.palette.red.main
@@ -659,7 +656,8 @@ export default class RebalancedPortfolioTable extends React.Component<
               render: ' ',
             },
             priceSnapshot: {
-              render: ' ',
+              render: addMainSymbol(formatNumberToUSFormat(totalSnapshotRows), isUSDCurrently),
+              isNumber: true,
             },
             rebalanced: ' ',
             rebalancedUSD: {

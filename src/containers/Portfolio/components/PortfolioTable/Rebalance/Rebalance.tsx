@@ -67,6 +67,7 @@ class Rebalance extends React.Component<IProps, IState> {
     totalTableRows: '0',
     totalTableStaticRows: '0',
     totalTableSavedRows: '0',
+    totalSnapshotRows: '',
     isPercentSumGood: true,
     totalPercents: 0,
     leftBar: '#fff',
@@ -237,6 +238,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const totalTableStaticRows = UTILS.calculateTableTotal(staticRows)
     const totalTableRows = UTILS.calculateTableTotal(rows)
     const totalTableSavedRows = UTILS.calculateTableTotal(savedRows)
+    const totalSnapshotRows = UTILS.calculateTableTotal(rows, 'priceSnapshot')
 
     this.calculateAllPercents(
       staticRows,
@@ -244,7 +246,8 @@ class Rebalance extends React.Component<IProps, IState> {
       rows,
       totalRows,
       savedRows,
-      totalSavedRows
+      totalSavedRows,
+      totalSnapshotRows,
     )
 
     this.setState({
@@ -254,6 +257,7 @@ class Rebalance extends React.Component<IProps, IState> {
       totalTableStaticRows,
       totalTableRows,
       totalTableSavedRows,
+      totalSnapshotRows,
     })
   }
 
@@ -263,17 +267,14 @@ class Rebalance extends React.Component<IProps, IState> {
     rows: IRow[],
     totalRows: string,
     savedRows: IRow[],
-    totalSavedRows: string
+    totalSavedRows: string,
+    totalSnapshotRows: string,
   ) => {
     const rowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(rows, totalRows),
-      staticRows
-    )
+      UTILS.calculatePercents(UTILS.calculatePercents(rows, totalRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot'))
 
     const staticRowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(staticRows, totalStaticRows),
-      staticRows
-    )
+      UTILS.calculatePercents(staticRows, totalStaticRows))
 
     const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
       accMap.set(el._id, el)
@@ -285,7 +286,7 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows: staticRowsWithPercentage,
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
-      savedRows: UTILS.calculatePriceDifference(UTILS.calculatePercents(savedRows, totalSavedRows), staticRows),
+      savedRows: UTILS.calculatePriceDifference(UTILS.calculatePercents(UTILS.calculatePercents(savedRows, totalSavedRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot')),
     })
   }
 
@@ -311,10 +312,7 @@ class Rebalance extends React.Component<IProps, IState> {
     //   rowsWithNewPrice,
     //   staticRows
     // )
-    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
-      rows,
-      staticRows
-    )
+    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(rows)
 
     this.setState(
       {
@@ -386,19 +384,26 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onReset = () => {
+    const { rows } = this.state
+
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
     )
+    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el, i) => ({
+      ...el,
+      priceSnapshot: rows[i].priceSnapshot,
+      percentSnapshot: rows[i].percentSnapshot,
+    }))
 
     this.setState({
-      rows: clonedStaticRows,
+      rows: clonedStaticRowsWithSnapshotsData,
       totalRows: this.state.totalStaticRows,
       totalTableRows: this.state.totalTableStaticRows,
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
-      isPercentSumGood: UTILS.checkPercentSum(clonedStaticRows),
-      totalPercents: UTILS.calculateTotalPercents(clonedStaticRows),
+      isPercentSumGood: UTILS.checkPercentSum(clonedStaticRowsWithSnapshotsData),
+      totalPercents: UTILS.calculateTotalPercents(clonedStaticRowsWithSnapshotsData),
     })
   }
 
@@ -480,6 +485,7 @@ class Rebalance extends React.Component<IProps, IState> {
       isPercentSumGood,
       totalPercents,
       totalTableRows,
+      totalSnapshotRows,
       rows,
       staticRows,
       addMoneyInputValue,
@@ -532,6 +538,7 @@ class Rebalance extends React.Component<IProps, IState> {
                   saveButtonColor,
                   secondary,
                   fontFamily,
+                  totalSnapshotRows,
                 }}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}
