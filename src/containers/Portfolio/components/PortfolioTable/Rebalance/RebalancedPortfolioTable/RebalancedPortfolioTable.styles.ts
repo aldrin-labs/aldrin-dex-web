@@ -55,3 +55,11 @@ export const ContentInner = styled(Card)`
   height: 100%;
   display: flex;
 `
+
+export const TitleContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+`
+
+export const TitleItem = styled.div``

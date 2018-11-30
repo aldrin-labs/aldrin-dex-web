@@ -25,6 +25,8 @@ import {
   LoaderInnerWrapper,
   LoaderWrapper,
   ContentInner,
+  TitleContainer,
+  TitleItem,
 } from './RebalancedPortfolioTable.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
@@ -694,7 +696,12 @@ export default class RebalancedPortfolioTable extends React.Component<
       onSaveClick,
       red,
       saveButtonColor,
+      timestampSnapshot,
     } = this.props
+
+    console.log('timestampSnapshot', timestampSnapshot);
+
+
     const Table = isEditModeEnabled ? ImTable : TableWithSort
     return (
       <>
@@ -741,7 +748,12 @@ export default class RebalancedPortfolioTable extends React.Component<
                 style: {color: saveButtonColor, marginRight: '7px'},
               },
             ]}
-            title="Rebalanced portfolio"
+            title={
+              <TitleContainer>
+                <TitleItem>Rebalanced portfolio</TitleItem>
+                <TitleItem>Snapshot time: {timestampSnapshot && timestampSnapshot.format('MMMM Do YYYY')}</TitleItem>
+              </TitleContainer>
+            }
             withCheckboxes={isEditModeEnabled}
             checkedRows={selectedActive}
             onChange={this.onSelectActiveBalance}

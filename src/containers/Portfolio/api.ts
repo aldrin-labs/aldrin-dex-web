@@ -145,6 +145,7 @@ export const getMyPortfolioAndRebalanceQuery = gql`
       }
       myRebalance {
         total
+        timestampSnapshot
         assets {
           _id
           id
@@ -177,6 +178,7 @@ export const updateRebalanceMutation = gql`
         priceSnapshot
         percentSnapshot
       }
+      timestampSnapshot
       total
       updatedAt
       createdAt

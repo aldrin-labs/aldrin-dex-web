@@ -10,6 +10,7 @@ import {
   Button,
   Grow,
 } from '@material-ui/core'
+import moment from 'moment'
 
 import { Container as Content } from '../Industry/Industry.styles'
 import { systemError } from '@utils/errorsConfig'
@@ -78,6 +79,7 @@ class Rebalance extends React.Component<IProps, IState> {
     openWarning: false,
     isSystemError: false,
     warningMessage: '',
+    timestampSnapshot: null,
   }
 
   componentDidMount() {
@@ -116,6 +118,8 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
+      this.setState({timestampSnapshot: moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot)})
+
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -124,8 +128,8 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          currentPrice: el.price,
-          quantity: el.quantity,
+          // currentPrice: el.price,
+          // quantity: el.quantity,
           priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
           percentSnapshot: null,
         })
@@ -133,24 +137,25 @@ class Rebalance extends React.Component<IProps, IState> {
 
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-          const {
-            price,
-            currentPrice,
-            quantity,
-          } = UTILS.calcPriceForRebalancedPortfolio(
-            el,
-            getMyPortfolioAndRebalanceQuery.portfolioAssets
-          )
+          // const {
+          //   price,
+          //   currentPrice,
+          //   quantity,
+          // } = UTILS.calcPriceForRebalancedPortfolio(
+          //   el,
+          //   getMyPortfolioAndRebalanceQuery.portfolioAssets
+          // )
 
           return {
-            price,
-            currentPrice,
-            quantity,
+            // price,
+            // currentPrice,
+            // quantity,
             _id: el._id,
             id: i,
             exchange: el.exchange,
             symbol: el.coin,
             portfolioPerc: null,
+            price: parseFloat(el.amount.$numberDecimal).toFixed(2),
             deltaPrice: el.diff.$numberDecimal,
             isCustomAsset: el.isCustomAsset,
             priceSnapshot: el.priceSnapshot,
@@ -175,6 +180,8 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
+      this.setState({timestampSnapshot: moment()})
+
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -182,7 +189,7 @@ class Rebalance extends React.Component<IProps, IState> {
           exchange: el.where,
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
-          currentPrice: el.price,
+          // currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
           priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
@@ -332,17 +339,18 @@ class Rebalance extends React.Component<IProps, IState> {
 
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery, refetch } = this.props
-    const { rows, totalRows, staticRowsMap } = this.state
+    const { rows, totalRows, staticRowsMap, timestampSnapshot } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: el._id,
       exchange: el.exchange,
       coin: el.symbol,
-      amount: el.isCustomAsset
-        ? el.price.toString()
-        : staticRowsMap.get(el._id).price !== el.price
-        ? (el.price / el.currentPrice).toString()
-        : el.quantity.toString(),
+      // amount: el.isCustomAsset
+      //   ? el.price.toString()
+      //   : staticRowsMap.get(el._id).price !== el.price
+      //   ? (el.price / el.currentPrice).toString()
+      //   : el.quantity.toString(),
+      amount: el.price.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
       isCustomAsset: el.isCustomAsset,
@@ -352,6 +360,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
     const variablesForMutation = {
       input: {
+        timestampSnapshot: timestampSnapshot.unix(),
         total: totalRows.toString(),
         assets: {
           input: combinedRowsData,
@@ -496,6 +505,7 @@ class Rebalance extends React.Component<IProps, IState> {
       openWarning,
       isSystemError,
       warningMessage,
+      timestampSnapshot,
     } = this.state
 
     const { onSaveClick, onEditModeEnable, onReset, updateState } = this
@@ -539,6 +549,7 @@ class Rebalance extends React.Component<IProps, IState> {
                   secondary,
                   fontFamily,
                   totalSnapshotRows,
+                  timestampSnapshot,
                 }}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}
