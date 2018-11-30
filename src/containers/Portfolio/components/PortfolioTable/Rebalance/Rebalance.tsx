@@ -339,7 +339,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery, refetch } = this.props
-    const { rows, totalRows, staticRowsMap, timestampSnapshot } = this.state
+    const { rows, totalRows, timestampSnapshot } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: el._id,
@@ -393,15 +393,19 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onReset = () => {
-    const { rows } = this.state
+    const { rows, savedRows } = this.state
 
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
     )
+    // TODO: BUT are we are we really sure that it will the same for multiaccounts?
+
     const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el, i) => ({
       ...el,
       priceSnapshot: rows[i].priceSnapshot,
       percentSnapshot: rows[i].percentSnapshot,
+      price: rows[i].priceSnapshot,
+      portfolioPerc: rows[i].percentSnapshot,
     }))
 
     this.setState({
