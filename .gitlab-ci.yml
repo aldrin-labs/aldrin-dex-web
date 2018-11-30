@@ -106,21 +106,12 @@ install:
 
   script:
     - yarn install --cache-folder .yarn
+    - yarn build
     - npm run cy:verify
   cache:
     paths:
     - ./node_modules
-
-build:
-  image: cypress/base:10
-  stage: build
-
-  script:
-    - yarn build
-  cache:
-     paths:
-        - ./dist
-
+    - ./dist
 
 # all jobs that actually run tests can use the same definition
 .job_template: &job
