@@ -109,6 +109,12 @@ install:
     - yarn build
     - npm run cy:verify
   cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+    - ./node_modules
+    - ./dist
+  artifacts:
+    when: on_success
     paths:
     - ./node_modules
     - ./dist
@@ -122,6 +128,16 @@ install:
     - npm run start:ci &
     # run Cypress test in load balancing mode, pass id to tie jobs together
     - npm run cypress:ci -- --parallel --ci-build-id $CI_PIPELINE_ID --group electrons
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+    - ./node_modules
+    - ./dist
+  artifacts:
+    when: on_success
+    paths:
+    - ./node_modules
+    - ./dist
 
 # actual job definitions
 # all steps are the same, they come from the template above
