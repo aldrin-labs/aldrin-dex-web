@@ -438,6 +438,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   isUSDCurrently
                 ),
                 isNumber: true,
+                style: { borderRight: '1px solid white' },
               },
             }
           : {
@@ -531,10 +532,11 @@ export default class RebalancedPortfolioTable extends React.Component<
         label: `Current ${isUSDCurrently ? 'USD' : 'BTC'}`,
         isNumber: true,
         id: 'oritinalPrice',
+        style: { borderRight: '1px solid white' },
       },
-      { label: 'Percent Snapshot %', isNumber: true, id: 'percentSnapshot' },
+      { label: 'Snapshot %', isNumber: true, id: 'percentSnapshot' },
       {
-        label: `Price Snapshot ${isUSDCurrently ? 'USD' : 'BTC'}`,
+        label: `Snapshot ${isUSDCurrently ? 'USD' : 'BTC'}`,
         isNumber: true,
         id: 'priceSnapshot',
       },
@@ -581,6 +583,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   },
                   currentUSD: {
                     render: ' ',
+                    style: { borderRight: '1px solid white' },
                   },
                   percentSnapshot: {
                     render: ' ',
@@ -619,7 +622,10 @@ export default class RebalancedPortfolioTable extends React.Component<
             exchange: 'Subtotal',
             coin: ' ',
             current: ' ',
-            currentUSD: ' ',
+            currentUSD: {
+              render: ' ',
+              style: { borderRight: '1px solid white' }
+            },
             percentSnapshot: {
               render: ' ',
             },
@@ -651,6 +657,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 isUSDCurrently
               ),
               isNumber: true,
+              style: { borderRight: '1px solid white' }
             },
             percentSnapshot: {
               render: ' ',
