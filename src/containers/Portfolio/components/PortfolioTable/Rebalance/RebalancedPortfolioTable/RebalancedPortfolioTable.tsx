@@ -447,7 +447,6 @@ export default class RebalancedPortfolioTable extends React.Component<
           : {
               oririnalPortfolioPerc: { render: ' ', isNumber: true },
               oritinalPrice: { render: ' ', isNumber: true },
-              originalQuantity: { render: ' ', isNumber: true },
             }),
         percentSnapshot: {
           contentToSort: percentSnapshot,

@@ -125,6 +125,8 @@ class Rebalance extends React.Component<IProps, IState> {
           portfolioPerc: null,
           currentPrice: el.price,
           quantity: el.quantity,
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          percentSnapshot: null,
         })
       )
 
@@ -182,9 +184,7 @@ class Rebalance extends React.Component<IProps, IState> {
           currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
-          priceSnapshot: parseFloat(
-            (parseFloat(el.price) * el.quantity).toFixed(2)
-          ),
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
           percentSnapshot: null,
         })
       )
