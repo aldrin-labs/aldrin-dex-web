@@ -67,51 +67,6 @@ export const calculatePriceDifference = (data: IRow[]) => {
     deltaPrice: el.isCustomAsset ? (parseFloat(el.price)).toFixed(2) : (parseFloat(el.price) - el.priceSnapshot).toFixed(2),
   }))
 
-  // data.forEach((row, i) => {
-  //   staticRows.forEach((staticRow, j) => {
-  //     if (data[i]._id === staticRows[j]._id) {
-  //       // TODO: Refactor when we have much more time than now
-  //       // tslint:disable-next-line no-object-mutation
-  //       data[i].deltaPrice = (
-  //         parseFloat(data[i].price) - parseFloat(staticRows[j].price)
-  //       ).toFixed(2)
-  //     }
-  //   })
-  // })
-  //
-  // if (data.length > staticRows.length) {
-  //   const arrayOfNewCoinIndexes: number[] = data.reduce(
-  //     (newCoinsIndexesArray: number[], el, i) => {
-  //       if (
-  //         !staticRows.some(
-  //           (element) =>
-  //             element._id === el._id
-  //         )
-  //       ) {
-  //         return newCoinsIndexesArray.concat(i)
-  //       }
-  //
-  //       return newCoinsIndexesArray
-  //     },
-  //     []
-  //   )
-  //
-  //   data = data.map((row, i) => {
-  //     if (arrayOfNewCoinIndexes.includes(i)) {
-  //       return {
-  //         ...row,
-  //         deltaPrice: (parseFloat(row.price) - 0).toFixed(2),
-  //       }
-  //     }
-  //
-  //     return row
-  //   })
-  // }
-
-  // console.log('data length', data.length)
-  // console.log('staticRows length', staticRows.length)
-  // console.log('data in caluclatePriceDiff', data)
-
   return dataWithDeltaPrice
 }
 
