@@ -719,14 +719,17 @@ export default class RebalancedPortfolioTable extends React.Component<
           <Table
             actionsColSpan={2}
             actions={[
+              ...(!isEditModeEnabled ? [
               {
                 id: 1,
                 icon: <EditIcon />,
                 onClick: onEditModeEnable,
                 color: 'secondary',
                 style: {color: saveButtonColor, marginRight: '7px'},
-
               },
+                ] : []
+              ),
+              ...(isEditModeEnabled ? [
               {
                 id: 2,
                 icon: <ClearIcon />,
@@ -747,6 +750,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 color: saveButtonColor,
                 style: {color: saveButtonColor, marginRight: '7px'},
               },
+              ] : [])
             ]}
             title={
               <TitleContainer>
