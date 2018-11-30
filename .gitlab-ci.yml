@@ -115,21 +115,13 @@ install:
   stage: test
   script:
     # start the server in the background
-    - npm run start:ci &
+    - npm run dev &
     # run Cypress test in load balancing mode, pass id to tie jobs together
     - npm run cypress:ci -- --parallel --ci-build-id $CI_PIPELINE_ID --group electrons
 
 # actual job definitions
 # all steps are the same, they come from the template above
 electrons-1:
-  <<: *job
-electrons-2:
-  <<: *job
-electrons-3:
-  <<: *job
-electrons-4:
-  <<: *job
-electrons-5:
   <<: *job
 
 .codequality:
