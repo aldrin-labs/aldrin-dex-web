@@ -88,7 +88,6 @@ bundle:
 # to cache both npm modules and Cypress binary we use environment variables
 # to point at the folders we can list as paths in "cache" job settings
 variables:
-  npm_config_cache: "$CI_PROJECT_DIR/.npm"
   CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
 
 # cache using branch name
@@ -108,6 +107,14 @@ install:
   script:
     - yarn install --pure-lockfile --cache-folder .yarn
     - npm run cy:verify
+
+run:
+  image: cypress/base:10
+  stage: test
+
+  script:
+    - yarn dev
+
 
 # all jobs that actually run tests can use the same definition
 .job_template: &job
