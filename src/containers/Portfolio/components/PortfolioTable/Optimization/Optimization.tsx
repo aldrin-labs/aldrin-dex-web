@@ -4,7 +4,13 @@ import { connect } from 'react-redux'
 import Switch from '@material-ui/core/Switch'
 import Joyride from 'react-joyride'
 
-import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  Grow,
+} from '@material-ui/core'
 import * as actions from '@containers/Portfolio/actions'
 import {
   IState,
@@ -143,11 +149,11 @@ class Optimization extends Component<IProps, IState> {
       filterValueSmallerThenPercentage,
       baseCoin,
       theme,
+      tab,
     } = this.props
 
     return (
       <QueryRenderer
-        fetchPolicy="network-only"
         component={Import}
         query={getCoinsForOptimization}
         variables={{ baseCoin }}
@@ -165,6 +171,7 @@ class Optimization extends Component<IProps, IState> {
         onNewBtnClick={this.onNewBtnClick}
         activeButton={activeButton}
         theme={theme}
+        tab={tab}
       />
     )
   }
@@ -291,6 +298,7 @@ class Optimization extends Component<IProps, IState> {
       theme,
       theme: { palette },
       toolTip,
+      tab,
     } = this.props
 
     const textColor: string = palette.getContrastText(palette.background.paper)
@@ -304,7 +312,7 @@ class Optimization extends Component<IProps, IState> {
           showProgress={true}
           showSkipButton={true}
           steps={portfolioOptimizationSteps}
-          run={toolTip.portfolioOptimization}
+          run={toolTip.portfolioOptimization && tab === 'optimization'}
           callback={this.handleJoyrideCallback}
           key={this.state.key}
           styles={{
@@ -340,8 +348,16 @@ class Optimization extends Component<IProps, IState> {
           )}
           <ContentInner loading={loading}>
             {this.renderInput()}
+
             <MainArea background={palette.background.paper}>
-              {this.renderCharts()}
+              <Grow
+                timeout={0}
+                in={tab === 'optimization'}
+                mountOnEnter
+                unmountOnExit
+              >
+                {this.renderCharts()}
+              </Grow>
             </MainArea>
           </ContentInner>
 
