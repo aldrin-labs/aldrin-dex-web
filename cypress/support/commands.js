@@ -32,8 +32,8 @@ Cypress.Commands.add('login', (email, password) => {
     });
 
     const webAuth = new auth0.WebAuth({
-        domain: 'my-super-duper-domain.eu.auth0.com', // Get this from https://manage.auth0.com/#/applications and your application
-        clientID: 'myclientid', // Get this from https://manage.auth0.com/#/applications and your application
+        domain: 'ccai.auth0.com', // Get this from https://manage.auth0.com/#/applications and your application
+        clientID: '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', // Get this from https://manage.auth0.com/#/applications and your application
         responseType: 'token id_token'
     });
 
@@ -49,7 +49,22 @@ Cypress.Commands.add('login', (email, password) => {
             // Auth tokens in the result or an error
             if (authResult && authResult.accessToken && authResult.idToken) {
                 window.localStorage.setItem('token', authResult.idToken);
-                
+                webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
+                  if (error) {
+                    console.error('Problem getting user info', error)
+                  }
+                  window.localStorage.setItem('persist:login',
+                    JSON.stringify({
+                      loginStatus: true,
+                      user: profile,
+                      _persist: {
+                        version:-1,
+                        rehydrated :true
+                      }
+                    })
+                  )
+                  console.log(window.localStorage)
+                })
             } else {
                 console.error('Problem logging into Auth0', err);
                 throw err;

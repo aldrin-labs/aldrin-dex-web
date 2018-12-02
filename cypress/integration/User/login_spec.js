@@ -2,7 +2,7 @@ describe('Login', () => {
   before(function() {
     cy.clearLocalStorage()
   })
-  it('Login', () => {
+/*  it('Login', () => {
     cy.visit('/')
     cy.get('.loginButton').click()
     cy.get(
@@ -13,9 +13,10 @@ describe('Login', () => {
     ).type('nge')
     cy.get('.auth0-lock-submit').click()
     cy.get('.UserLink').should('exist')
-  }),
+  }),*/
   it('Logout', () => {
     cy.visit('/')
-    cy.get('.UserLink').should('exist')
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.visit('/')
   })
 })
