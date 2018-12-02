@@ -188,7 +188,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -28px;
+  left: -32px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -196,7 +196,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -28px;
+  left: -32px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
