@@ -755,7 +755,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             title={
               <TitleContainer>
                 <TitleItem>Rebalanced portfolio</TitleItem>
-                <TitleItem>Snapshot time: {timestampSnapshot && timestampSnapshot.format('MMMM Do YYYY')}</TitleItem>
+                <TitleItem>Snapshot time: {timestampSnapshot && timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}</TitleItem>
               </TitleContainer>
             }
             withCheckboxes={isEditModeEnabled}
