@@ -2,6 +2,10 @@ describe('User', () => {
   before(function() {
     cy.clearLocalStorage()
   })
+  it('Redirect if not logged', () => {
+    cy.visit('/user')
+    cy.url().should('include', '/portfolio')
+  })
   it('UserPage', () => {
     cy.login('NGE@NGE.nge', 'nge')
     cy.skipTip()

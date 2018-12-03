@@ -72,10 +72,13 @@ Cypress.Commands.add('login', (email, password) => {
   );
   cy.wait(2000)
   cy.reload(true)
+  cy.wait(2000)
 });
 
 Cypress.Commands.add('skipTip', () => {
-  if (cy.get('[aria-label="Skip"]')) {
-    cy.get('[aria-label="Skip"]').click()
-  }
+  cy.get('body').then(($body) => {
+    if ($body.find('[aria-label="Skip"]').length) {
+      cy.get('[aria-label="Skip"]').click()
+    }
+  })
 })
