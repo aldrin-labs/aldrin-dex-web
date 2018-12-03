@@ -46,7 +46,7 @@ export const calculateTableTotal = (data: IRow[], priceField = 'price') => {
 export const calculateTotalPercents = (data: IRow[]) => {
   const totalPercents = data
     .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
-    .toFixed(3)
+    .toFixed(2)
 
   return totalPercents
 }
