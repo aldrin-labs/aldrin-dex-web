@@ -670,8 +670,6 @@ class Rebalance extends React.Component<IProps, IState> {
                     <>
                       <Button
                         onClick={() => {
-                          console.log('this', this);
-
                           this.hideWarning()
                           this.onSaveClick()
                         }}
@@ -682,7 +680,6 @@ class Rebalance extends React.Component<IProps, IState> {
                       </Button>
                         <Button
                           onClick={() => {
-                            console.log('this', this);
                             this.hideWarning()
                             this.onSaveClick(true)
                           }}
