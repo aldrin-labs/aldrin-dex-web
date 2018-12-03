@@ -461,7 +461,7 @@ export default class Import extends PureComponent<IProps> {
                   </InputElementWrapper>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
-                      Risk free asset
+                      Stable coin
                     </StyledInputLabel>
                     <FlexWrapper>
                       <StyledSwitch
