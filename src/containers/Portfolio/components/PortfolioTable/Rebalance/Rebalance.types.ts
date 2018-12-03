@@ -56,6 +56,7 @@ export interface IState {
   openWarning: boolean
   isSystemError: boolean
   warningMessage: string
+  totalSnapshotRows: string | number
 }
 
 

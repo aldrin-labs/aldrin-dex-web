@@ -68,7 +68,7 @@ class Rebalance extends React.Component<IProps, IState> {
     totalTableRows: '0',
     totalTableStaticRows: '0',
     totalTableSavedRows: '0',
-    totalSnapshotRows: '',
+    totalSnapshotRows: '0',
     isPercentSumGood: true,
     totalPercents: 0,
     leftBar: '#fff',
@@ -393,7 +393,7 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onReset = () => {
-    const { rows, savedRows } = this.state
+    const { rows, totalStaticRows, totalTableStaticRows, totalSnapshotRows } = this.state
 
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
@@ -408,14 +408,15 @@ class Rebalance extends React.Component<IProps, IState> {
       portfolioPerc: rows[i].percentSnapshot,
     }))
 
+    // TODO: Are we sure that the total would be the same for us in this case?
     this.setState({
       rows: clonedStaticRowsWithSnapshotsData,
-      totalRows: this.state.totalStaticRows,
-      totalTableRows: this.state.totalTableStaticRows,
+      totalRows: totalSnapshotRows,
+      totalTableRows: totalSnapshotRows,
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
-      isPercentSumGood: UTILS.checkPercentSum(clonedStaticRowsWithSnapshotsData),
+      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(totalSnapshotRows, totalSnapshotRows),
       totalPercents: UTILS.calculateTotalPercents(clonedStaticRowsWithSnapshotsData),
     })
   }
@@ -434,7 +435,7 @@ class Rebalance extends React.Component<IProps, IState> {
         selectedActive: [],
         areAllActiveChecked: false,
         undistributedMoney: this.state.undistributedMoneySaved,
-        isPercentSumGood: UTILS.checkPercentSum(clonedSavedRows),
+        isPercentSumGood: UTILS.checkEqualsOfTwoTotals(this.state.totalTableSavedRows, this.state.totalSnapshotRows),
         totalPercents: UTILS.calculateTotalPercents(clonedSavedRows),
       }))
     } else {

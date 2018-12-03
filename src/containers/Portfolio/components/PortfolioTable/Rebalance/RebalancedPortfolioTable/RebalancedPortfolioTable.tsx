@@ -131,9 +131,9 @@ export default class RebalancedPortfolioTable extends React.Component<
     const {
       rows,
       totalRows,
-      staticRows,
       undistributedMoney,
       updateState,
+      totalSnapshotRows,
     } = this.props
     const percentInput = e.target.value
 
@@ -175,11 +175,11 @@ export default class RebalancedPortfolioTable extends React.Component<
     updateState({
       totalPercents,
       rows: rowWithNewPriceDiff,
-      isPercentSumGood: UTILS.checkPercentSum(newCalculatedRowsWithPercents),
+      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(totalSnapshotRows, newTableTotalRows),
       undistributedMoney: (
         parseFloat(undistributedMoney) + oldNewPriceDiff
       ).toFixed(2),
-      totalTableRows: parseFloat(newTableTotalRows).toFixed(2),
+      totalTableRows: newTableTotalRows,
     })
   }
 
@@ -231,7 +231,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   }
 
   onDeleteRowClick = (idx: number) => {
-    const { rows, undistributedMoney, staticRows, updateState } = this.props
+    const { rows, undistributedMoney, updateState, totalSnapshotRows } = this.props
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
     const isEditableCoin = clonedRows[idx].isCustomAsset
@@ -261,7 +261,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       newTotalRows))
     const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
 
-    const newIsPercentSumGood = UTILS.checkPercentSum(newRowsWithNewPercents)
+    const newIsPercentSumGood = UTILS.checkEqualsOfTwoTotals(newTableTotalRows, totalSnapshotRows)
 
     updateState({
       totalPercents,
