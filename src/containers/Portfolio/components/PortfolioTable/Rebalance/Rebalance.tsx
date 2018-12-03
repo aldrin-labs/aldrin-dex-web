@@ -118,7 +118,11 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({timestampSnapshot: moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot)})
+      this.setState({
+        timestampSnapshot: moment.unix(
+          getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot
+        ),
+      })
 
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
@@ -130,7 +134,9 @@ class Rebalance extends React.Component<IProps, IState> {
           portfolioPerc: null,
           // currentPrice: el.price,
           // quantity: el.quantity,
-          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          priceSnapshot: parseFloat(
+            (parseFloat(el.price) * el.quantity).toFixed(2)
+          ),
           percentSnapshot: null,
         })
       )
@@ -180,7 +186,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({timestampSnapshot: moment()})
+      this.setState({ timestampSnapshot: moment() })
 
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
@@ -192,7 +198,9 @@ class Rebalance extends React.Component<IProps, IState> {
           // currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
-          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          priceSnapshot: parseFloat(
+            (parseFloat(el.price) * el.quantity).toFixed(2)
+          ),
           percentSnapshot: null,
         })
       )
@@ -254,7 +262,7 @@ class Rebalance extends React.Component<IProps, IState> {
       totalRows,
       savedRows,
       totalSavedRows,
-      totalSnapshotRows,
+      totalSnapshotRows
     )
 
     this.setState({
@@ -275,13 +283,20 @@ class Rebalance extends React.Component<IProps, IState> {
     totalRows: string,
     savedRows: IRow[],
     totalSavedRows: string,
-    totalSnapshotRows: string,
+    totalSnapshotRows: string
   ) => {
     const rowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(UTILS.calculatePercents(rows, totalRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot'))
+      UTILS.calculatePercents(
+        UTILS.calculatePercents(rows, totalRows),
+        totalSnapshotRows,
+        'priceSnapshot',
+        'percentSnapshot'
+      )
+    )
 
     const staticRowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(staticRows, totalStaticRows))
+      UTILS.calculatePercents(staticRows, totalStaticRows)
+    )
 
     const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
       accMap.set(el._id, el)
@@ -293,7 +308,14 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows: staticRowsWithPercentage,
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
-      savedRows: UTILS.calculatePriceDifference(UTILS.calculatePercents(UTILS.calculatePercents(savedRows, totalSavedRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot')),
+      savedRows: UTILS.calculatePriceDifference(
+        UTILS.calculatePercents(
+          UTILS.calculatePercents(savedRows, totalSavedRows),
+          totalSnapshotRows,
+          'priceSnapshot',
+          'percentSnapshot'
+        )
+      ),
     })
   }
 
@@ -415,8 +437,12 @@ class Rebalance extends React.Component<IProps, IState> {
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
-      isPercentSumGood: UTILS.checkPercentSum(clonedStaticRowsWithSnapshotsData),
-      totalPercents: UTILS.calculateTotalPercents(clonedStaticRowsWithSnapshotsData),
+      isPercentSumGood: UTILS.checkPercentSum(
+        clonedStaticRowsWithSnapshotsData
+      ),
+      totalPercents: UTILS.calculateTotalPercents(
+        clonedStaticRowsWithSnapshotsData
+      ),
     })
   }
 
@@ -487,6 +513,7 @@ class Rebalance extends React.Component<IProps, IState> {
       isUSDCurrently,
       theme,
       theme: { palette },
+      tab,
     } = this.props
     const {
       selectedActive,
@@ -611,7 +638,16 @@ class Rebalance extends React.Component<IProps, IState> {
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>
-                  {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
+                  <Grow
+                    in={Boolean(
+                      staticRows &&
+                        staticRows[0] &&
+                        staticRows[0].portfolioPerc &&
+                        tab === 'rebalance'
+                    )}
+                    mountOnEnter
+                    unmountOnExit
+                  >
                     <BarChart
                       bottomMargin={75}
                       theme={theme}
@@ -631,7 +667,7 @@ class Rebalance extends React.Component<IProps, IState> {
                         },
                       ]}
                     />
-                  )}
+                  </Grow>
                 </Chart>
               </ChartContainer>
             </ChartWrapper>
@@ -672,7 +708,9 @@ class Rebalance extends React.Component<IProps, IState> {
                 showProgress={true}
                 showSkipButton={true}
                 steps={portfolioRebalanceSteps}
-                run={this.props.toolTip.portfolioRebalance}
+                run={
+                  this.props.toolTip.portfolioRebalance && tab === 'rebalance'
+                }
                 callback={this.handleJoyrideCallback}
                 key={this.state.key}
                 styles={{
