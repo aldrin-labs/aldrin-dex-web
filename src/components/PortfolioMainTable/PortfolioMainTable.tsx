@@ -346,6 +346,7 @@ class Container extends Component {
 
     return (
       <TableWithSort
+        id="PortfolioMainTable"
         title="Portfolio"
         columnNames={head}
         data={{ body, footer }}
