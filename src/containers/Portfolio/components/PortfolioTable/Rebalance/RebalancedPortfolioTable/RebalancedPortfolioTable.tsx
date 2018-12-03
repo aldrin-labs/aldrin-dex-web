@@ -754,7 +754,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             ]}
             title={
               <TitleContainer>
-                <TitleItem>Rebalanced portfolio</TitleItem>
+                <TitleItem>Rebalanced Portfolio</TitleItem>
                 <TitleItem>Snapshot time: {timestampSnapshot && timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}</TitleItem>
               </TitleContainer>
             }

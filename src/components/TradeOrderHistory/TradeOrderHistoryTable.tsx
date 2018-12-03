@@ -79,7 +79,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
     return (
       <TableWithSort
         padding="dense"
-        title="Portfolio actions"
+        title="Portfolio Actions"
         data={{ body: rows.body }}
         columnNames={rows.head}
       />
