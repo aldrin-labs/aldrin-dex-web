@@ -98,16 +98,15 @@ class Container extends Component {
   }
 
   //  footer of table
-  calculateTotal = () => {
-    const {
-      checkedRows,
-      tableData,
-      numberOfDigitsAfterPoint: round,
-      red,
-      green,
-    } = this.state
-
-    const isUSDCurrently = this.props.baseCoin === 'USDT'
+  calculateTotal = ({
+    checkedRows,
+    tableData,
+    red,
+    green,
+    baseCoin,
+    numberOfDigitsAfterPoint: round,
+  }) => {
+    const isUSDCurrently = baseCoin === 'USDT'
 
     let total: any[] | null = null
     if (tableData && checkedRows.length !== 0) {
@@ -281,8 +280,14 @@ class Container extends Component {
   }
 
   putDataInTable = () => {
-    const { theme, isUSDCurrently } = this.props
-    const { tableData } = this.state
+    const { theme, isUSDCurrently, baseCoin } = this.props
+    const {
+      checkedRows,
+      tableData,
+      numberOfDigitsAfterPoint: round,
+      red,
+      green,
+    } = this.state
     if (!tableData) {
       return { head: [], body: [], footer: null }
     }
@@ -304,7 +309,14 @@ class Container extends Component {
         theme.palette.red.main,
         theme.palette.green.main
       ),
-      footer: this.calculateTotal(),
+      footer: this.calculateTotal({
+        checkedRows,
+        tableData,
+        baseCoin,
+        red,
+        green,
+        numberOfDigitsAfterPoint: round,
+      }),
     }
   }
 
@@ -334,6 +346,7 @@ class Container extends Component {
 
     return (
       <TableWithSort
+        id="PortfolioMainTable"
         title="Portfolio"
         columnNames={head}
         data={{ body, footer }}
