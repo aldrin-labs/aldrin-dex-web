@@ -72,7 +72,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
             <Suspense fallback={<Loading centerAligned />}>
               {showTable && (
                 <>
-                  <div hidden={tab !== 'main'}>
+                  <div id="main_tab" hidden={tab !== 'main'}>
                     <PortfolioTableBalances
                       isShownChart={isShownChart}
                       isUSDCurrently={isUSDCurrently}
@@ -83,7 +83,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       filterValueSmallerThenPercentage={dustFilter}
                     />
                   </div>
-                  <div hidden={tab !== 'industry'}>
+                  <div id="industry_tab" hidden={tab !== 'industry'}>
                     <PortfolioTableIndustries
                       isUSDCurrently={isUSDCurrently}
                       theme={theme}
@@ -93,7 +93,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       filterValueSmallerThenPercentage={dustFilter}
                     />
                   </div>
-                  <div hidden={tab !== 'rebalance'}>
+                  <div id="rebalance_tab" hidden={tab !== 'rebalance'}>
                     <Rebalance
                       baseCoin={`USDT`}
                       tab={this.state.tab}
@@ -101,7 +101,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       filterValueSmallerThenPercentage={dustFilter}
                     />
                   </div>
-                  <div hidden={tab !== 'correlation'}>
+                  <div id="correlation_tab" hidden={tab !== 'correlation'}>
                     <Correlation
                       baseCoin={baseCoin}
                       tab={this.state.tab}
@@ -110,7 +110,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                     />
                   </div>
 
-                  <div hidden={tab !== 'optimization'}>
+                  <div id="optimization_tab" hidden={tab !== 'optimization'}>
                     <Optimization
                       theme={theme}
                       tab={this.state.tab}

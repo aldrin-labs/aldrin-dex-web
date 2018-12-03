@@ -57,6 +57,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
     return (
       <Container background={background} elevation={0}>
         <BarTab
+          id="main_tab_button"
           thisTab="main"
           thisTabName="Main"
           curentTab={tab}
@@ -66,6 +67,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Main />
         </BarTab>
         <BarTab
+          id="industry_tab_button"
           thisTab="industry"
           thisTabName="Industry"
           curentTab={tab}
@@ -75,6 +77,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Industry />
         </BarTab>
         <BarTab
+          id="rebalance_tab_button"
           thisTab="rebalance"
           thisTabName="Rebalance"
           curentTab={tab}
@@ -84,6 +87,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Rebalance />
         </BarTab>
         <BarTab
+          id="correlation_tab_button"
           thisTab="correlation"
           thisTabName="Correlation"
           curentTab={tab}
@@ -93,6 +97,7 @@ class PortfolioTableTabs extends React.Component<IProps> {
           <Correlation />
         </BarTab>
         <BarTab
+          id="optimization_tab_button"
           thisTab="optimization"
           thisTabName="Optimization"
           curentTab={tab}
@@ -149,12 +154,16 @@ const BarTab = (props: {
   children?: any
   thisTab: string
   thisTabName: string
+  id: string
   curentTab: string
   onClick: () => void
   mainColor: string
 }) => (
   <BarContainer onClick={props.onClick}>
-    <Tab color={props.curentTab === props.thisTab ? 'secondary' : 'primary'}>
+    <Tab
+      id={props.id}
+      color={props.curentTab === props.thisTab ? 'secondary' : 'primary'}
+    >
       {props.curentTab === props.thisTab && renderMarker(props.mainColor)}
       {props.children}
     </Tab>
@@ -208,10 +217,6 @@ const BlurForMarker = styled.span`
 const Tab = styled(IconButton)`
   margin: 0.6rem auto;
   margin-bottom: 0px;
-`
-
-const SettingsTab = styled(IconButton)`
-  margin: 0.6rem auto;
 `
 
 const BarContainer = styled.div`
