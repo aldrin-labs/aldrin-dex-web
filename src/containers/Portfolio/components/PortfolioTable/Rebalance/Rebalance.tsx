@@ -79,7 +79,7 @@ class Rebalance extends React.Component<IProps, IState> {
     openWarning: false,
     isSystemError: false,
     warningMessage: '',
-    timestampSnapshot: null,
+    timestampSnapshot: moment(),
   }
 
   componentDidMount() {
@@ -377,7 +377,7 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onReset = () => {
-    const { rows, totalStaticRows, totalTableStaticRows, totalSnapshotRows } = this.state
+    const { rows, totalSnapshotRows } = this.state
 
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
@@ -497,12 +497,9 @@ class Rebalance extends React.Component<IProps, IState> {
       timestampSnapshot,
     } = this.state
 
-    const { onSaveClick, onEditModeEnable, onReset, updateState } = this
-
     const secondary = palette.secondary.main
     const red = palette.red.main
     const green = palette.green.main
-    const textColor: string = palette.getContrastText(palette.background.paper)
     const fontFamily = theme.typography.fontFamily
     const saveButtonColor =
       isPercentSumGood && +undistributedMoney >= 0 ? green : red

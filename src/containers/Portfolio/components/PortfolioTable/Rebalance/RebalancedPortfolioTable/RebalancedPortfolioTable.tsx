@@ -276,7 +276,7 @@ export default class RebalancedPortfolioTable extends React.Component<
   transformData = (
     rows: IRow[],
     staticRows: IRow[],
-    staticRowsMap,
+    staticRowsMap: Map<string, string>,
     isEditModeEnabled: boolean,
     isPercentSumGood: boolean,
     red: string,
@@ -567,7 +567,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           red,
           green,
           background,
-          fontFamily,
+          fontFamily
         ),
         footer: [
           ...(isEditModeEnabled
