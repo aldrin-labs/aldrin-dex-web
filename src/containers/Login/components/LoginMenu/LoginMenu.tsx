@@ -29,7 +29,7 @@ const LoginMenuComponent = ({
       </IconButton>
     </Tooltip>
     <Tooltip title="Log out" enterDelay={500}>
-      <IconButton color="default" onClick={handleLogout}>
+      <IconButton color="default" onClick={handleLogout} id="ExitButton">
         <ExitIcon />
       </IconButton>
     </Tooltip>

@@ -17,7 +17,7 @@ describe('Login', () => {
   it('Logout', () => {
     cy.login('NGE@NGE.nge', 'nge')
     cy.skipTip()
-    cy.get('.Login__SWrapper-kx9p8-0 > :nth-child(3)').click()
+    cy.get('#ExitButton').click()
     cy.get('.loginButton').should('exist')
   })
 })

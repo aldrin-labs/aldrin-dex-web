@@ -44,7 +44,7 @@ class KeysListComponent extends React.Component {
 
     return (
       <KeysListPaper>
-        <KeysTable>
+        <KeysTable id="KeysTable">
           <TableHead>
             <TableRow>
               <KeyTableCell>Name</KeyTableCell>
