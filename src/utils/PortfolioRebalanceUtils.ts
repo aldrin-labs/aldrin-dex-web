@@ -148,3 +148,14 @@ export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
     quantity,
   }
 }
+
+
+export const checkForEmptyNamesInAssets = (rows: IRow[]): boolean => {
+  const hasEmptyNames = rows.some((row) => row.exchange === '' || row.exchange === 'Exchange' || row.symbol === '' || row.symbol === 'Coin')
+
+  return hasEmptyNames
+}
+
+export const deleteEmptyAssets = (rows: IRow[]): IRow[] => {
+  return rows.filter((row) => !(row.exchange === '' || row.exchange === 'Exchange' || row.symbol === '' || row.symbol === 'Coin'))
+}

@@ -80,6 +80,7 @@ class Rebalance extends React.Component<IProps, IState> {
     isSystemError: false,
     warningMessage: '',
     timestampSnapshot: moment(),
+    isSaveError: false,
   }
 
   componentDidMount() {
@@ -282,7 +283,7 @@ class Rebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onSaveClick = () => {
+  onSaveClick = (deleteEmptyAssets?: boolean | object) => {
     const {
       rows,
       totalRows,
@@ -290,20 +291,21 @@ class Rebalance extends React.Component<IProps, IState> {
       undistributedMoney,
     } = this.state
 
+    const isArgumentAnObject = deleteEmptyAssets === Object(deleteEmptyAssets)
+
     if (!isPercentSumGood) {
       return
     }
     if (+undistributedMoney < 0) {
       return
     }
+    if (UTILS.checkForEmptyNamesInAssets(rows) && isArgumentAnObject) {
+      this.showWarning('Your assets has empty names in columns Exchange and Coin, what we should do with them?', false, true)
+      return
+    }
 
-    // if something will broke just uncomment these lines
-    // const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
-    // const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
-    //   rowsWithNewPrice,
-    //   staticRows
-    // )
-    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(rows)
+    const rowsAfterProcessing = deleteEmptyAssets === true ? UTILS.deleteEmptyAssets(rows) : rows
+    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(rowsAfterProcessing)
 
     this.setState(
       {
@@ -453,8 +455,8 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  showWarning = (message: string, isSystemError = false) => {
-    this.setState({ isSystemError, openWarning: true, warningMessage: message })
+  showWarning = (message: string, isSystemError = false, isSaveError = false) => {
+    this.setState({ isSystemError, isSaveError, openWarning: true, warningMessage: message })
   }
 
   hideWarning = () => {
@@ -495,6 +497,7 @@ class Rebalance extends React.Component<IProps, IState> {
       isSystemError,
       warningMessage,
       timestampSnapshot,
+      isSaveError,
     } = this.state
 
     const secondary = palette.secondary.main
@@ -629,6 +632,35 @@ class Rebalance extends React.Component<IProps, IState> {
                   {warningMessage}
                 </DialogTitle>
                 <DialogActions>
+                  {isSaveError && (
+                    <>
+                      <Button
+                        onClick={() => {
+                          console.log('this', this);
+
+                          this.hideWarning()
+                          this.onSaveClick()
+                        }}
+                        color="secondary"
+                        autoFocus={true}
+                      >
+                        Save anyway
+                      </Button>
+                        <Button
+                          onClick={() => {
+                            console.log('this', this);
+                            this.hideWarning()
+                            this.onSaveClick(true)
+                          }}
+                          size="small"
+                          style={{ margin: '0.5rem 1rem' }}
+                        >
+                          Delete empty and save
+                      </Button>
+                    </>
+                  )}
+                  {isSystemError && (
+                    <>
                   <Button
                     onClick={this.hideWarning}
                     color="secondary"
@@ -636,7 +668,6 @@ class Rebalance extends React.Component<IProps, IState> {
                   >
                     ok
                   </Button>
-                  {isSystemError && (
                     <Button
                       onClick={() => {
                         this.openLink(config.bugLink)
@@ -646,6 +677,7 @@ class Rebalance extends React.Component<IProps, IState> {
                     >
                       Report bug
                     </Button>
+                    </>
                   )}
                 </DialogActions>
               </Dialog>
