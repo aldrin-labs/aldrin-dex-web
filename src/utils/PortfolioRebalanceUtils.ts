@@ -60,6 +60,8 @@ export const checkPercentSum = (data: IRow[]) => {
   return Math.abs(sumOfAllPercents - 100) <= 0.001 || sumOfAllPercents === 0
 }
 
+export const checkEqualsOfTwoTotals = (total1: string | number, total2: string | number) => parseFloat(total1) === parseFloat(total2)
+
 export const calculatePriceDifference = (data: IRow[]) => {
 
   const dataWithDeltaPrice = data.map((el) => ({
@@ -80,7 +82,7 @@ export const calculatePercents = (
     const percentCaluclation =
       +row[priceField] === 0
         ? '0'
-        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(4)
+        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(2)
     const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
     return {
@@ -145,4 +147,15 @@ export const calcPriceForRebalancedPortfolio = (el, portfolioAssets) => {
     currentPrice,
     quantity,
   }
+}
+
+
+export const checkForEmptyNamesInAssets = (rows: IRow[]): boolean => {
+  const hasEmptyNames = rows.some((row) => row.exchange === '' || row.exchange === 'Exchange' || row.symbol === '' || row.symbol === 'Coin')
+
+  return hasEmptyNames
+}
+
+export const deleteEmptyAssets = (rows: IRow[]): IRow[] => {
+  return rows.filter((row) => !(row.exchange === '' || row.exchange === 'Exchange' || row.symbol === '' || row.symbol === 'Coin'))
 }

@@ -68,7 +68,7 @@ class Rebalance extends React.Component<IProps, IState> {
     totalTableRows: '0',
     totalTableStaticRows: '0',
     totalTableSavedRows: '0',
-    totalSnapshotRows: '',
+    totalSnapshotRows: '0',
     isPercentSumGood: true,
     totalPercents: 0,
     leftBar: '#fff',
@@ -79,7 +79,8 @@ class Rebalance extends React.Component<IProps, IState> {
     openWarning: false,
     isSystemError: false,
     warningMessage: '',
-    timestampSnapshot: null,
+    timestampSnapshot: moment(),
+    isSaveError: false,
   }
 
   componentDidMount() {
@@ -132,30 +133,14 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          // currentPrice: el.price,
-          // quantity: el.quantity,
-          priceSnapshot: parseFloat(
-            (parseFloat(el.price) * el.quantity).toFixed(2)
-          ),
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
           percentSnapshot: null,
         })
       )
 
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-          // const {
-          //   price,
-          //   currentPrice,
-          //   quantity,
-          // } = UTILS.calcPriceForRebalancedPortfolio(
-          //   el,
-          //   getMyPortfolioAndRebalanceQuery.portfolioAssets
-          // )
-
           return {
-            // price,
-            // currentPrice,
-            // quantity,
             _id: el._id,
             id: i,
             exchange: el.exchange,
@@ -195,7 +180,6 @@ class Rebalance extends React.Component<IProps, IState> {
           exchange: el.where,
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
-          // currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
           priceSnapshot: parseFloat(
@@ -319,14 +303,15 @@ class Rebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onSaveClick = () => {
+  onSaveClick = (deleteEmptyAssets?: boolean | object) => {
     const {
       rows,
       totalRows,
       isPercentSumGood,
       undistributedMoney,
-      staticRows,
     } = this.state
+
+    const isArgumentAnObject = deleteEmptyAssets === Object(deleteEmptyAssets)
 
     if (!isPercentSumGood) {
       return
@@ -334,14 +319,13 @@ class Rebalance extends React.Component<IProps, IState> {
     if (+undistributedMoney < 0) {
       return
     }
+    if (UTILS.checkForEmptyNamesInAssets(rows) && isArgumentAnObject) {
+      this.showWarning('Your assets has empty names in columns Exchange and Coin, what we should do with them?', false, true)
+      return
+    }
 
-    // if something will broke just uncomment these lines
-    // const rowsWithNewPrice = UTILS.calculatePriceByPercents(rows, totalRows)
-    // const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
-    //   rowsWithNewPrice,
-    //   staticRows
-    // )
-    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(rows)
+    const rowsAfterProcessing = deleteEmptyAssets === true ? UTILS.deleteEmptyAssets(rows) : rows
+    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(rowsAfterProcessing)
 
     this.setState(
       {
@@ -415,7 +399,7 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onReset = () => {
-    const { rows, savedRows } = this.state
+    const { rows, totalSnapshotRows } = this.state
 
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
@@ -430,10 +414,11 @@ class Rebalance extends React.Component<IProps, IState> {
       portfolioPerc: rows[i].percentSnapshot,
     }))
 
+    // TODO: Are we sure that the total would be the same for us in this case?
     this.setState({
       rows: clonedStaticRowsWithSnapshotsData,
-      totalRows: this.state.totalStaticRows,
-      totalTableRows: this.state.totalTableStaticRows,
+      totalRows: totalSnapshotRows,
+      totalTableRows: totalSnapshotRows,
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
@@ -460,7 +445,7 @@ class Rebalance extends React.Component<IProps, IState> {
         selectedActive: [],
         areAllActiveChecked: false,
         undistributedMoney: this.state.undistributedMoneySaved,
-        isPercentSumGood: UTILS.checkPercentSum(clonedSavedRows),
+        isPercentSumGood: UTILS.checkEqualsOfTwoTotals(this.state.totalTableSavedRows, this.state.totalSnapshotRows),
         totalPercents: UTILS.calculateTotalPercents(clonedSavedRows),
       }))
     } else {
@@ -494,8 +479,8 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  showWarning = (message: string, isSystemError = false) => {
-    this.setState({ isSystemError, openWarning: true, warningMessage: message })
+  showWarning = (message: string, isSystemError = false, isSaveError = false) => {
+    this.setState({ isSystemError, isSaveError, openWarning: true, warningMessage: message })
   }
 
   hideWarning = () => {
@@ -537,14 +522,12 @@ class Rebalance extends React.Component<IProps, IState> {
       isSystemError,
       warningMessage,
       timestampSnapshot,
+      isSaveError,
     } = this.state
-
-    const { onSaveClick, onEditModeEnable, onReset, updateState } = this
 
     const secondary = palette.secondary.main
     const red = palette.red.main
     const green = palette.green.main
-    const textColor: string = palette.getContrastText(palette.background.paper)
     const fontFamily = theme.typography.fontFamily
     const saveButtonColor =
       isPercentSumGood && +undistributedMoney >= 0 ? green : red
@@ -683,6 +666,32 @@ class Rebalance extends React.Component<IProps, IState> {
                   {warningMessage}
                 </DialogTitle>
                 <DialogActions>
+                  {isSaveError && (
+                    <>
+                      <Button
+                        onClick={() => {
+                          this.hideWarning()
+                          this.onSaveClick()
+                        }}
+                        color="secondary"
+                        autoFocus={true}
+                      >
+                        Save anyway
+                      </Button>
+                        <Button
+                          onClick={() => {
+                            this.hideWarning()
+                            this.onSaveClick(true)
+                          }}
+                          size="small"
+                          style={{ margin: '0.5rem 1rem' }}
+                        >
+                          Delete empty and save
+                      </Button>
+                    </>
+                  )}
+                  {isSystemError && (
+                    <>
                   <Button
                     onClick={this.hideWarning}
                     color="secondary"
@@ -690,7 +699,6 @@ class Rebalance extends React.Component<IProps, IState> {
                   >
                     ok
                   </Button>
-                  {isSystemError && (
                     <Button
                       onClick={() => {
                         this.openLink(config.bugLink)
@@ -700,6 +708,7 @@ class Rebalance extends React.Component<IProps, IState> {
                     >
                       Report bug
                     </Button>
+                    </>
                   )}
                 </DialogActions>
               </Dialog>
