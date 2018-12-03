@@ -2,7 +2,7 @@ describe('Login', () => {
   before(function() {
     cy.clearLocalStorage()
   })
-/*  it('Login', () => {
+  it('Login', () => {
     cy.visit('/')
     cy.get('.loginButton').click()
     cy.get(
@@ -13,10 +13,11 @@ describe('Login', () => {
     ).type('nge')
     cy.get('.auth0-lock-submit').click()
     cy.get('.UserLink').should('exist')
-  }),*/
+  })
   it('Logout', () => {
-    cy.visit('/')
     cy.login('NGE@NGE.nge', 'nge')
-    cy.visit('/')
+    cy.skipTip()
+    cy.get('.Login__SWrapper-kx9p8-0 > :nth-child(3)').click()
+    cy.get('.loginButton').should('exist')
   })
 })
