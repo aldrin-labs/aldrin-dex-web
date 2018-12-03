@@ -23,7 +23,7 @@ export const calculatePriceByPercents = (
 
     return {
       ...row,
-      price: row.portfolioPerc === row.percentSnapshot ? row.price : newPrice,
+      price: newPrice,
     }
   })
 
