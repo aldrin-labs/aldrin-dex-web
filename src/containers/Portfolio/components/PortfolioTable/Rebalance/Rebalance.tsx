@@ -128,8 +128,6 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          // currentPrice: el.price,
-          // quantity: el.quantity,
           priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
           percentSnapshot: null,
         })
@@ -137,19 +135,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
       newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
-          // const {
-          //   price,
-          //   currentPrice,
-          //   quantity,
-          // } = UTILS.calcPriceForRebalancedPortfolio(
-          //   el,
-          //   getMyPortfolioAndRebalanceQuery.portfolioAssets
-          // )
-
           return {
-            // price,
-            // currentPrice,
-            // quantity,
             _id: el._id,
             id: i,
             exchange: el.exchange,
@@ -189,7 +175,6 @@ class Rebalance extends React.Component<IProps, IState> {
           exchange: el.where,
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
-          // currentPrice: el.price,
           portfolioPerc: null,
           quantity: el.quantity,
           priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
@@ -303,7 +288,6 @@ class Rebalance extends React.Component<IProps, IState> {
       totalRows,
       isPercentSumGood,
       undistributedMoney,
-      staticRows,
     } = this.state
 
     if (!isPercentSumGood) {
