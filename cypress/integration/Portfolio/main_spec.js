@@ -1,4 +1,4 @@
-describe('portfolio main chart', () => {
+describe('portfolio main', () => {
   before(function() {
     cy.visit('/')
     cy.clearLocalStorage()

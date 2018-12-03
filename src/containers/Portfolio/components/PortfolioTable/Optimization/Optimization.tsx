@@ -230,7 +230,7 @@ class Optimization extends Component<IProps, IState> {
     const { theme } = this.props
 
     return (
-      <ChartsContainer>
+      <ChartsContainer id="BackTestOptimization">
         <ChartContainer className="BackTestOptimizationChart">
           <StyledCardHeader
             title="Back-test Optimization"
@@ -333,12 +333,12 @@ class Optimization extends Component<IProps, IState> {
             <LoaderWrapper>
               <LoaderInnerWrapper>
                 <Loading size={94} margin={'0 0 2rem 0'} />{' '}
-                <TypographyWithCustomColor color={textColor} variant="h6">
+                <TypographyWithCustomColor textColor={textColor} variant="h6">
                   Optimizing portfolio...
                 </TypographyWithCustomColor>
                 <TypographyWithCustomColor
                   style={{ marginTop: '2rem' }}
-                  color={textColor}
+                  textColor={textColor}
                   variant="h6"
                 >
                   We are working on improving the speed of this model
@@ -362,6 +362,7 @@ class Optimization extends Component<IProps, IState> {
           </ContentInner>
 
           <Dialog
+            id="dialogOptimization"
             fullScreen={false}
             open={openWarning}
             aria-labelledby="responsive-dialog-title"
@@ -373,6 +374,7 @@ class Optimization extends Component<IProps, IState> {
               <Button
                 onClick={this.hideWarning}
                 color="secondary"
+                id="okButtonDialog"
                 autoFocus={true}
               >
                 ok
