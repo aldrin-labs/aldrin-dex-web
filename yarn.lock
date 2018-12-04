@@ -1612,7 +1612,7 @@ apollo-cache@1.1.21, apollo-cache@^1.1.21:
   dependencies:
     apollo-utilities "^1.0.26"
 
-apollo-client@^2.4.5:
+apollo-client@^2.4.7:
   version "2.4.7"
   resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.4.7.tgz#b6712fd4c9ba346e3c44cfec7e6868e532b6a957"
   dependencies:
@@ -9332,9 +9332,9 @@ react-addons-shallow-compare@^15.6.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-apollo@^2.2.4:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.3.1.tgz#f3687062f438b9b40e525d7e1ac2bcf0101b4495"
+react-apollo@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.3.2.tgz#b8e287d2813722b9e0a886cabf8149ab3b84a3b7"
   dependencies:
     fbjs "^1.0.0"
     hoist-non-react-statics "^3.0.0"
@@ -11008,9 +11008,9 @@ style-value-types@^3.0.6, style-value-types@^3.0.7:
   version "3.0.7"
   resolved "https://registry.yarnpkg.com/style-value-types/-/style-value-types-3.0.7.tgz#6e7a22cc8b1a4465193268ed66ad5f2a82579054"
 
-styled-components@^4.0.3:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.1.1.tgz#943922048fae556e286bcbfdd29da4f1399446bc"
+styled-components@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.1.2.tgz#f8a685e3b2bcd03c5beac7f2c02bb6ad237da9b3"
   dependencies:
     "@emotion/is-prop-valid" "^0.6.8"
     "@emotion/unitless" "^0.7.0"
