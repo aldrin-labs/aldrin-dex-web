@@ -5,6 +5,6 @@ export default interface IProps {
   changeModeTheme: () => void
   togglePrivacyPolicy: () => void
   themeMode: 'dark' | 'light'
-  hide: boolean
+  fullscreenMode: boolean
   openPrivacyPolicy: boolean
 }

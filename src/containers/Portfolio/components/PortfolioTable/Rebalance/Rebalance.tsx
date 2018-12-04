@@ -426,8 +426,8 @@ class Rebalance extends React.Component<IProps, IState> {
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
-      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalSnapshotRows, totalSnapshotRows
+      isPercentSumGood: UTILS.checkPercentSum(
+        clonedStaticRowsWithSnapshotsData
       ),
       totalPercents: UTILS.calculateTotalPercents(
         clonedStaticRowsWithSnapshotsData

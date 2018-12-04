@@ -38,7 +38,7 @@ export default class AnimatedNavBar extends Component<Props> {
     return (
       <AnimatedContainer pose={hide ? 'hidden' : 'visible'}>
         {' '}
-        <NavBar pathname={pathname} hide={delayedHide} />
+        <NavBar pathname={pathname} $hide={delayedHide} />
       </AnimatedContainer>
     )
   }
