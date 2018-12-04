@@ -2,8 +2,10 @@ import * as React from 'react'
 import { compose } from 'recompose'
 import withTheme from '@material-ui/core/styles/withTheme'
 
-import { Slide } from '@material-ui/core'
+import { Slide, Typography } from '@material-ui/core'
 import Dropdown from '@components/SimpleDropDownSelector'
+
+import { connect } from 'react-redux'
 
 import { IProps } from './PortfolioSelector.types'
 import Accounts from './Accounts/Accounts'
@@ -16,6 +18,7 @@ import {
 } from './PortfolioSelector.styles'
 import * as UTILS from '@utils/PortfolioSelectorUtils'
 import { MASTER_BUILD } from '@utils/config'
+
 
 class PortfolioSelector extends React.Component<IProps> {
   updateSettings = async (objectForMutation) => {
@@ -116,6 +119,7 @@ class PortfolioSelector extends React.Component<IProps> {
       activeKeys,
       activeWallets,
       dustFilter,
+      login,
     } = this.props
 
     const isCheckedAll =
@@ -123,6 +127,7 @@ class PortfolioSelector extends React.Component<IProps> {
       newKeys.length + newWallets.length
 
     const color = theme.palette.secondary.main
+    console.log(this.props.login)
 
     return (
       <Slide
@@ -137,7 +142,7 @@ class PortfolioSelector extends React.Component<IProps> {
           hoverBackground={theme.palette.action.hover}
           fontFamily={theme.typography.fontFamily}
         >
-          <Accounts
+        <Accounts
             {...{
               color,
               isSideNavOpen,
@@ -145,6 +150,7 @@ class PortfolioSelector extends React.Component<IProps> {
               newKeys,
               onToggleAll: this.onToggleAll,
               onKeyToggle: this.onKeyToggle,
+              login,
             }}
           />
 
@@ -154,9 +160,18 @@ class PortfolioSelector extends React.Component<IProps> {
               isSideNavOpen,
               newWallets,
               onWalletToggle: this.onWalletToggle,
+              login,
             }}
           />
-
+          {!login &&
+            <Typography
+              style={{
+                textAlign: "center",
+              }}
+            >
+              Login to add <br/> or edit accounts
+            </Typography>
+          }
           {!MASTER_BUILD && (
             <>
               <Name color={color}>Dust</Name>
@@ -191,4 +206,11 @@ class PortfolioSelector extends React.Component<IProps> {
   }
 }
 
-export default compose(withTheme())(PortfolioSelector)
+const mapStateToProps = (store: any) => ({
+  login: store.login.loginStatus,
+})
+
+export default compose(
+  withTheme(),
+  connect(mapStateToProps)
+)(PortfolioSelector)
