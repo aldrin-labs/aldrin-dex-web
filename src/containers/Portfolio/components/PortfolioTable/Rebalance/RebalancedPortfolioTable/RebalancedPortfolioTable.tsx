@@ -163,7 +163,8 @@ export default class RebalancedPortfolioTable extends React.Component<
       newCalculatedRowsWithPercents
     )
     const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
-      newCalculatedRowsWithPercents)
+      newCalculatedRowsWithPercents
+    )
     const newTableTotalRows = UTILS.calculateTableTotal(
       newCalculatedRowsWithPercents
     )
@@ -175,7 +176,10 @@ export default class RebalancedPortfolioTable extends React.Component<
     updateState({
       totalPercents,
       rows: rowWithNewPriceDiff,
-      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(totalSnapshotRows, newTableTotalRows),
+      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
+        totalSnapshotRows,
+        newTableTotalRows
+      ),
       undistributedMoney: (
         parseFloat(undistributedMoney) + oldNewPriceDiff
       ).toFixed(2),
@@ -224,14 +228,21 @@ export default class RebalancedPortfolioTable extends React.Component<
       percentSnapshot: null,
     }
     clonedRows.push(newRow)
-    const rows = UTILS.calculatePriceDifference(UTILS.calculatePercents(clonedRows, totalRows))
+    const rows = UTILS.calculatePriceDifference(
+      UTILS.calculatePercents(clonedRows, totalRows)
+    )
     const totalPercents = UTILS.calculateTotalPercents(rows)
 
     updateState({ rows, totalPercents, areAllActiveChecked: false })
   }
 
   onDeleteRowClick = (idx: number) => {
-    const { rows, undistributedMoney, updateState, totalSnapshotRows } = this.props
+    const {
+      rows,
+      undistributedMoney,
+      updateState,
+      totalSnapshotRows,
+    } = this.props
     const clonedRows = rows.map((a) => ({ ...a }))
     const currentRowMoney = clonedRows[idx].price
     const isEditableCoin = clonedRows[idx].isCustomAsset
@@ -256,12 +267,15 @@ export default class RebalancedPortfolioTable extends React.Component<
 
     const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
-    const newRowsWithNewPercents = UTILS.calculatePriceDifference(UTILS.calculatePercents(
-      resultRows,
-      newTotalRows))
+    const newRowsWithNewPercents = UTILS.calculatePriceDifference(
+      UTILS.calculatePercents(resultRows, newTotalRows)
+    )
     const totalPercents = UTILS.calculateTotalPercents(newRowsWithNewPercents)
 
-    const newIsPercentSumGood = UTILS.checkEqualsOfTwoTotals(newTableTotalRows, totalSnapshotRows)
+    const newIsPercentSumGood = UTILS.checkEqualsOfTwoTotals(
+      newTableTotalRows,
+      totalSnapshotRows
+    )
 
     updateState({
       totalPercents,
@@ -410,9 +424,9 @@ export default class RebalancedPortfolioTable extends React.Component<
           row.symbol
         )
 
-      const percentSnapshot = row.percentSnapshot === null ? 0 : row.percentSnapshot
+      const percentSnapshot =
+        row.percentSnapshot === null ? 0 : row.percentSnapshot
       const priceSnapshot = row.priceSnapshot === null ? 0 : row.priceSnapshot
-
 
       return {
         id: index,
@@ -449,16 +463,17 @@ export default class RebalancedPortfolioTable extends React.Component<
             }),
         percentSnapshot: {
           contentToSort: percentSnapshot,
-          render: row.isCustomAsset
-            ? '-'
-            : `${percentSnapshot}%`,
+          render: row.isCustomAsset ? '-' : `${percentSnapshot}%`,
           isNumber: true,
         },
         priceSnapshot: {
           contentToSort: priceSnapshot,
           render: row.isCustomAsset
             ? '-'
-            : addMainSymbol(roundAndFormatNumber(priceSnapshot, 2, true), isUSDCurrently),
+            : addMainSymbol(
+                roundAndFormatNumber(priceSnapshot, 2, true),
+                isUSDCurrently
+              ),
           isNumber: true,
         },
         portfolioPerc: {
@@ -626,7 +641,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             current: ' ',
             currentUSD: {
               render: ' ',
-              style: { borderRight: '1px solid white' }
+              style: { borderRight: '1px solid white' },
             },
             percentSnapshot: {
               render: ' ',
@@ -659,13 +674,16 @@ export default class RebalancedPortfolioTable extends React.Component<
                 isUSDCurrently
               ),
               isNumber: true,
-              style: { borderRight: '1px solid white' }
+              style: { borderRight: '1px solid white' },
             },
             percentSnapshot: {
               render: ' ',
             },
             priceSnapshot: {
-              render: addMainSymbol(formatNumberToUSFormat(totalSnapshotRows), isUSDCurrently),
+              render: addMainSymbol(
+                formatNumberToUSFormat(totalSnapshotRows),
+                isUSDCurrently
+              ),
               isNumber: true,
             },
             rebalanced: ' ',
@@ -699,9 +717,6 @@ export default class RebalancedPortfolioTable extends React.Component<
       timestampSnapshot,
     } = this.props
 
-    console.log('timestampSnapshot', timestampSnapshot);
-
-
     const Table = isEditModeEnabled ? ImTable : TableWithSort
     return (
       <>
@@ -719,43 +734,49 @@ export default class RebalancedPortfolioTable extends React.Component<
           <Table
             actionsColSpan={2}
             actions={[
-              ...(!isEditModeEnabled ? [
-              {
-                id: 1,
-                icon: <EditIcon />,
-                onClick: onEditModeEnable,
-                color: 'secondary',
-                style: {color: saveButtonColor, marginRight: '7px'},
-              },
-                ] : []
-              ),
-              ...(isEditModeEnabled ? [
-              {
-                id: 2,
-                icon: <ClearIcon />,
-                onClick: onEditModeEnable,
-                style: {color: red, marginRight: '7px'},
-              },
-              {
-                id: 3,
-                icon: <Replay />,
-                onClick: onReset,
-                style: {marginRight: '7px'},
-
-              },
-              {
-                id: 4,
-                icon:  <SaveIcon />,
-                onClick: onSaveClick,
-                color: saveButtonColor,
-                style: {color: saveButtonColor, marginRight: '7px'},
-              },
-              ] : [])
+              ...(!isEditModeEnabled
+                ? [
+                    {
+                      id: 1,
+                      icon: <EditIcon />,
+                      onClick: onEditModeEnable,
+                      color: 'secondary',
+                      style: { color: saveButtonColor, marginRight: '7px' },
+                    },
+                  ]
+                : []),
+              ...(isEditModeEnabled
+                ? [
+                    {
+                      id: 2,
+                      icon: <ClearIcon />,
+                      onClick: onEditModeEnable,
+                      style: { color: red, marginRight: '7px' },
+                    },
+                    {
+                      id: 3,
+                      icon: <Replay />,
+                      onClick: onReset,
+                      style: { marginRight: '7px' },
+                    },
+                    {
+                      id: 4,
+                      icon: <SaveIcon />,
+                      onClick: onSaveClick,
+                      color: saveButtonColor,
+                      style: { color: saveButtonColor, marginRight: '7px' },
+                    },
+                  ]
+                : []),
             ]}
             title={
               <TitleContainer>
                 <TitleItem>Rebalanced Portfolio</TitleItem>
-                <TitleItem>Snapshot time: {timestampSnapshot && timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}</TitleItem>
+                <TitleItem>
+                  Snapshot time:{' '}
+                  {timestampSnapshot &&
+                    timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}
+                </TitleItem>
               </TitleContainer>
             }
             withCheckboxes={isEditModeEnabled}
