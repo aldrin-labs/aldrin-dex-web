@@ -220,6 +220,7 @@ class LoginQuery extends React.Component<Props, State> {
             color="secondary"
             variant="contained"
             onClick={this.showLogin}
+            className="loginButton"
           >
             Log in
           </Button>

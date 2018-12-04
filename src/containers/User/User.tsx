@@ -73,6 +73,7 @@ class UserContainer extends React.Component {
           </AdminCP>
         )}
         <Dialog
+          id="UserPageWarning"
           fullScreen={false}
           open={this.props.showBinanceWarning}
           aria-labelledby="responsive-dialog-title"
