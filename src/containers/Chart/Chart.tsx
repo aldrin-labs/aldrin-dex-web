@@ -209,7 +209,7 @@ class Chart extends React.Component<IProps, IState> {
             options: {
               backgroundColor: theme.palette.common.white,
               primaryColor: theme.palette.secondary.main,
-              textColor: theme.palette.primary.main,
+              textColor: theme.palette.common.black,
             },
             tooltip: {
               fontFamily: theme.typography.fontFamily,
@@ -327,7 +327,7 @@ class Chart extends React.Component<IProps, IState> {
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
             <Fade timeout={1000} in={activeChart === 'depth'}>
-              <DepthChartContainer>
+              <DepthChartContainer data-e2e="mainDepthChart">
                 <MainDepthChart
                   {...{
                     theme,
@@ -364,6 +364,7 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <Toggler>
         <TransparentExtendedFAB
+          className="switchChartPageMode"
           onClick={() => {
             toggleView(defaultView ? 'onlyCharts' : 'default')
             if (defaultView && isNoCharts) addChart(currencyPair)
@@ -408,6 +409,7 @@ class Chart extends React.Component<IProps, IState> {
               <ExchangePair border={palette.divider}>
                 {
                   <Typography
+                    data-e2e="mainCurrencyPair"
                     style={{ margin: 'auto', fontSize: '0.8rem' }}
                     align="center"
                     color="default"
@@ -420,6 +422,7 @@ class Chart extends React.Component<IProps, IState> {
 
               <Button
                 size="small"
+                data-e2e="mainChart__typeOfChartSwitcher"
                 style={{ height: 38, marginLeft: '1.5rem' }}
                 variant="extendedFab"
                 color="secondary"

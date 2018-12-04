@@ -16,8 +16,21 @@ const ButtonStyled = withStyles((theme) => ({
   },
 }))(Button)
 
-export default (props) => (
-  <ButtonStyled size="small" onClick={props.onClick} variant="extendedFab">
-    {props.children}
+export default ({
+  onClick,
+  children,
+  className,
+}: {
+  onClick: () => void
+  children: React.ReactChildren | string
+  className?: string
+}) => (
+  <ButtonStyled
+    size="small"
+    onClick={onClick}
+    variant="extendedFab"
+    className={className}
+  >
+    {children}
   </ButtonStyled>
 )
