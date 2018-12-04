@@ -24,12 +24,18 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+Cypress.Commands.add('waitLoading', () => {
+  cy.get( "#Loadig").should("exist");
+  cy.get( "#Loadig", { timeout: 10000 }).should("not.exist");
+})
+
 const auth0 = require('auth0-js');
 
 Cypress.Commands.add('login', (email, password) => {
   Cypress.log({
       name: 'loginBySingleSignOn'
   });
+  cy.clearLocalStorage()
   cy.visit('/')
   const webAuth = new auth0.WebAuth({
       domain: 'ccai.auth0.com', // Get this from https://manage.auth0.com/#/applications and your application
@@ -69,10 +75,10 @@ Cypress.Commands.add('login', (email, password) => {
         throw err;
       }
     }
-  );
-  cy.wait(2000)
+  )
+  cy.waitLoading()
   cy.reload(true)
-  cy.wait(2000)
+  cy.waitLoading()
 });
 
 Cypress.Commands.add('skipTip', () => {

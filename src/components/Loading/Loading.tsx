@@ -17,7 +17,7 @@ const RawLoading = ({
   centerAligned?: boolean
   theme?: Theme
 }) => (
-  <SpinnerContainer margin={margin} centerAligned={centerAligned}>
+  <SpinnerContainer margin={margin} centerAligned={centerAligned} id="Loadig">
     <CircularProgress
       style={{ color: color || theme.palette.secondary.main }}
       size={size}
