@@ -127,7 +127,6 @@ class PortfolioSelector extends React.Component<IProps> {
       newKeys.length + newWallets.length
 
     const color = theme.palette.secondary.main
-    console.log(this.props.login)
 
     return (
       <Slide
