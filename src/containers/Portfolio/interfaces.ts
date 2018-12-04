@@ -12,7 +12,8 @@ export interface IProps {
 
 export interface IState {
   isSideNavOpen: boolean
-  filter: number
+  isUSDCurrently: boolean
+  baseCoin: 'USDT' | 'BTC'
 }
 
 export interface IPortfolio {
@@ -94,6 +95,7 @@ export interface ITableProps {
   loading: boolean
   activeKeys: string[]
   subscription: any
+  onToggleUSDBTC: () => void
   theme: object
   toggleWallets: React.ReactEventHandler
 

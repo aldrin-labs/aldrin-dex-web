@@ -31,13 +31,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
   state: IState = {
     tableData: null,
     isShownChart: true,
-    isUSDCurrently: true,
-    baseCoin: 'USDT',
     tab: 'main',
-  }
-
-  onToggleChart = () => {
-    this.setState({ isShownChart: !this.state.isShownChart })
   }
 
   onChangeTab = (
@@ -46,16 +40,15 @@ export class PortfolioTable extends Component<ITableProps, IState> {
     this.setState({ tab: kind })
   }
 
-  onToggleUSDBTC = () => {
-    this.setState((prevState) => ({
-      isUSDCurrently: !prevState.isUSDCurrently,
-      baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
-    }))
-  }
-
   render() {
-    const { isShownChart, isUSDCurrently, baseCoin, tab } = this.state
-    const { theme, dustFilter, showTable = false } = this.props
+    const { isShownChart, tab } = this.state
+    const {
+      theme,
+      dustFilter,
+      showTable = false,
+      isUSDCurrently,
+      baseCoin,
+    } = this.props
 
     return (
       <Mutation mutation={TOGGLE_BASE_COIN}>
@@ -67,9 +60,8 @@ export class PortfolioTable extends Component<ITableProps, IState> {
               tab={tab}
               isUSDCurrently={isUSDCurrently}
               onChangeTab={this.onChangeTab}
-              onToggleChart={this.onToggleChart}
               onToggleUSDBTC={() => {
-                this.onToggleUSDBTC()
+                this.props.onToggleUSDBTC()
                 toggleBaseCoin()
               }}
             />
@@ -95,8 +87,8 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                         isUSDCurrently={isUSDCurrently}
                         theme={theme}
                         tab={this.state.tab}
-                        variables={{ baseCoin }}
-                        baseCoin={baseCoin}
+                        variables={{ baseCoin: 'USDT' }}
+                        baseCoin="USDT"
                         filterValueSmallerThenPercentage={dustFilter}
                       />
                     </MemoizedTab>
@@ -114,7 +106,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                   <div hidden={tab !== 'correlation'}>
                     <MemoizedTab tab={tab}>
                       <Correlation
-                        baseCoin={baseCoin}
+                        baseCoin="USDT"
                         tab={this.state.tab}
                         theme={theme}
                         filterValueSmallerThenPercentage={dustFilter}
@@ -128,7 +120,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                         theme={theme}
                         tab={this.state.tab}
                         isUSDCurrently={isUSDCurrently}
-                        baseCoin={baseCoin}
+                        baseCoin="USDT"
                         filterValueSmallerThenPercentage={dustFilter}
                       />
                     </MemoizedTab>

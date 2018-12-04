@@ -24,13 +24,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
     }
   }
 
-  onToggleChart = () => {
-    const { onToggleChart } = this.props
-    if (onToggleChart) {
-      onToggleChart()
-    }
-  }
-
   onToggleUSDBTC = () => {
     const { onToggleUSDBTC } = this.props
     if (onToggleUSDBTC) {
