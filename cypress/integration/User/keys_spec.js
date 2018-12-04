@@ -14,6 +14,14 @@ describe('Keys', () => {
     cy.wait(2000)
     cy.get('#KeysTable > tbody > tr').contains('test')
   })
+  it('Add key', () => {
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.visit('/portfolio')
+    cy.wait(2000)
+    cy.skipTip()
+    cy.get('.settingsIcon').click()
+    cy.get('#AccountsList').contains('test')
+  })
   it('Delete key', () => {
     cy.login('NGE@NGE.nge', 'nge')
     cy.visit('/user')
