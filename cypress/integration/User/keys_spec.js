@@ -2,7 +2,7 @@ describe('Keys', () => {
   before(function() {
     cy.clearLocalStorage()
   })
-/*  it('Add key', () => {
+  it('Add key', () => {
     cy.login('NGE@NGE.nge', 'nge')
     cy.visit('/user')
     cy.get('#UserPageWarning').find('button').click()
@@ -32,7 +32,7 @@ describe('Keys', () => {
     cy.get('#DeleteDialogButton').click()
     cy.wait(2000)
     cy.get('#KeysTable > tbody > tr').contains('test').should('not.exist')
-  })*/
+  })
   it('Change account', () => {
     cy.login('NGE@NGE.nge', 'nge')
     cy.visit('/user')
