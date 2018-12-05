@@ -44,20 +44,24 @@ class KeysListComponent extends React.Component {
 
     return (
       <KeysListPaper>
-        <KeysTable>
+        <KeysTable id="KeysTable">
           <TableHead>
             <TableRow>
               <KeyTableCell>Name</KeyTableCell>
               <KeyTableCell numeric={true}>Exchange</KeyTableCell>
               <KeyTableCell numeric={true}>Api key</KeyTableCell>
-              <KeyTableCell numeric={true}>Date</KeyTableCell>
+              <KeyTableCell numeric={true}>Added</KeyTableCell>
+              <KeyTableCell numeric={true}>Is Processing</KeyTableCell>
+              <KeyTableCell numeric={true}>Valid?</KeyTableCell>
+              <KeyTableCell numeric={true}>Status</KeyTableCell>
+              <KeyTableCell numeric={true}>Last update</KeyTableCell>
               <KeyTableCell numeric={true}>Delete key</KeyTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {keys &&
               keys.map((key) => {
-                const { _id, name, exchange, apiKey, date } = key
+                const { _id, name, exchange, apiKey, date, processing, lastUpdate, status, valid } = key
                 return (
                   <TableRow key={_id}>
                     <KeyTableCell>{name}</KeyTableCell>
@@ -69,7 +73,19 @@ class KeysListComponent extends React.Component {
                       {<FormattedDate value={date} />}
                     </KeyTableCell>
                     <KeyTableCell numeric={true}>
-                      <DeleteKeyDialog keyName={name} forceUpdateUserContainer={forceUpdateUserContainer}/>
+                      {<FormattedDate value={processing} />}
+                    </KeyTableCell>
+                    <KeyTableCell numeric={true}>
+                      {<FormattedDate value={lastUpdate} />}
+                    </KeyTableCell>
+                    <KeyTableCell numeric={true}>
+                      {<FormattedDate value={status} />}
+                    </KeyTableCell>
+                    <KeyTableCell numeric={true}>
+                      {<FormattedDate value={valid} />}
+                    </KeyTableCell>
+                    <KeyTableCell numeric={true}>
+                      <DeleteKeyDialog keyName={name} forceUpdateUserContainer={forceUpdateUserContainer} />
                     </KeyTableCell>
                   </TableRow>
                 )

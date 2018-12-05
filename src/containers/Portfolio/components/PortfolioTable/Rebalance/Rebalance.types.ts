@@ -1,6 +1,6 @@
 import { WithTheme } from '@material-ui/core'
 import { Map } from 'typescript'
-
+import moment from 'moment'
 export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'trade';
 
 // TODO: We should have one type for price & portfolioPerc, deltaPrice in IRow
@@ -15,6 +15,8 @@ export interface IRow {
   portfolioPerc: number | string | null
   deltaPrice?: number | string
   isCustomAsset?: boolean
+  priceSnapshot: number
+  percentSnapshot: number
 }
 
 export interface IProps extends WithTheme {
@@ -54,6 +56,9 @@ export interface IState {
   openWarning: boolean
   isSystemError: boolean
   warningMessage: string
+  totalSnapshotRows: string | number
+  timestampSnapshot: moment.Moment
+  isSaveError: boolean
 }
 
 
@@ -65,6 +70,9 @@ export interface IShapeOfRebalancePortfolioRow {
   percent: { $numberDecimal: string }
   amount: { $numberDecimal: string }
   diff: { $numberDecimal: string }
+  isCustomAsset: boolean
+  priceSnapshot: number
+  percentSnapshot: number
 }
 
 export interface IShapeOfCurrentPortolioRow {

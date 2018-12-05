@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
-import { Button as ButtonMUI, Typography, Card } from '@material-ui/core'
+import { Button as ButtonMUI, Typography, Card, Grow } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import Tooltip from '@material-ui/core/Tooltip'
 import { isEqual } from 'lodash-es'
@@ -150,9 +150,16 @@ export default class Import extends PureComponent<IProps> {
       //TODO: Should be another function
 
       if (isUserError && isUserError.length) {
-        const userErrorMessage = <div><Typography variant="h6">Info:</Typography>
-          {backendResultParsed.error_message
-            .map((el: string, i: number) => <Typography key={i} variant="subtitle1">{el}</Typography>)}</div>
+        const userErrorMessage = (
+          <div>
+            <Typography variant="h6">Info:</Typography>
+            {backendResultParsed.error_message.map((el: string, i: number) => (
+              <Typography key={i} variant="subtitle1">
+                {el}
+              </Typography>
+            ))}
+          </div>
+        )
 
         showWarning(userErrorMessage, false)
 
@@ -244,7 +251,7 @@ export default class Import extends PureComponent<IProps> {
     )
 
   renderBarChart = () => {
-    const { storeData, activeButton, theme, rawOptimizedData } = this.props
+    const { storeData, activeButton, theme, rawOptimizedData, tab } = this.props
 
     if (!storeData) {
       return
@@ -284,16 +291,23 @@ export default class Import extends PureComponent<IProps> {
         <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
-            <BarChart
-              bottomMargin={75}
-              theme={theme}
-              height={340}
-              showPlaceholder={formatedData.length === 0}
-              charts={barChartData}
-              alwaysShowLegend={true}
-              hideDashForToolTip={true}
-              xAxisVertical={true}
-            />
+            <Grow
+              timeout={0}
+              in={tab === 'optimization'}
+              mountOnEnter
+              unmountOnExit
+            >
+              <BarChart
+                bottomMargin={75}
+                theme={theme}
+                height={340}
+                showPlaceholder={formatedData.length === 0}
+                charts={barChartData}
+                alwaysShowLegend={true}
+                hideDashForToolTip={true}
+                xAxisVertical={true}
+              />
+            </Grow>
           </Chart>
         </InnerChartContainer>
       </ChartContainer>
@@ -385,7 +399,7 @@ export default class Import extends PureComponent<IProps> {
           <ImportData>
             <TableSelectsContaienr>
               <InputContainer className="OptimizationInput">
-                <StyledCardHeader title="Back-test input" />
+                <StyledCardHeader title="Back-test Input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
@@ -447,7 +461,7 @@ export default class Import extends PureComponent<IProps> {
                   </InputElementWrapper>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
-                      Risk free asset
+                      Stable coin
                     </StyledInputLabel>
                     <FlexWrapper>
                       <StyledSwitch

@@ -60,7 +60,7 @@ const Correlation = (props: IProps) => {
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, children, theme } = props
+  const { isShownMocks, children, theme, tab } = props
   let { startDate, endDate } = props
   let key = 0
 
@@ -87,7 +87,7 @@ const CorrelationWrapper = (props: IProps) => {
     <PTWrapper>
       <Joyride
         steps={portfolioCorrelationSteps}
-        run={props.toolTip.portfolioCorrelation}
+        run={props.toolTip.portfolioCorrelation && tab === 'correlation'}
         callback={handleJoyrideCallback}
         key={key}
         styles={{
@@ -106,6 +106,7 @@ const CorrelationWrapper = (props: IProps) => {
       />
       {isShownMocks && !MASTER_BUILD ? (
         <Correlation
+          key="=/"
           data={{
             myPortfolios: [
               {
@@ -120,6 +121,7 @@ const CorrelationWrapper = (props: IProps) => {
         />
       ) : (
         <QueryRenderer
+          key="=/asfasd"
           fetchPolicy="network-only"
           component={Correlation}
           query={getCorrelationQuery}

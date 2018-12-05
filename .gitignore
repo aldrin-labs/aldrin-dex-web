@@ -65,3 +65,6 @@ dist
 TODO
 .DS_STORE
 DS_STORE
+
+# Cypress test results
+cypress/videos/

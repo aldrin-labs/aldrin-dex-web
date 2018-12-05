@@ -6,12 +6,20 @@ type T = {
 }
 
 export const portfolioMainSteps = [
-
   {
     disableBeacon: true,
     target: 'body',
-    content:
-      (<p> Welcome to Cryptocurrencies.Ai beta! <br/> We have added a real Binance account, so you can experience all of the functionality. To add your own Binance account please go to settings and enter your api key where you can also delete this demo account. Please note our application only supports Binance currently and we will be adding support for more exchanges soon.</p>),
+    content: (
+      <p>
+        {' '}
+        Welcome to Cryptocurrencies.Ai beta! <br /> We have added a real Binance
+        account, so you can experience all of the functionality. To add your own
+        Binance account please go to settings and enter your api key where you
+        can also delete this demo account. Please note our application only
+        supports Binance currently and we will be adding support for more
+        exchanges soon.
+      </p>
+    ),
     placement: 'center',
   },
   {
@@ -51,8 +59,7 @@ export const portfolioMainSteps = [
   },
   {
     target: '.LoginButton',
-    content:
-      'To import your account, click here to register or login.',
+    content: 'To import your account, click here to register or login.',
     placement: 'auto',
   },
 ]
@@ -103,7 +110,7 @@ export const portfolioOptimizationSteps = [
   {
     target: '.OptimizationInput',
     content:
-      'Input parameters to back-test optimization model. Risk free asset introduces stable coin USDT into your portfolio and the model simulates moving capital to USDT when the market is down and returns are negative until the next rebalance period.',
+      'Input parameters to back-test optimization model. Stable coin introduces stable coin USDT into your portfolio and the model simulates moving capital to USDT when the market is down and returns are negative until the next rebalance period.',
     placement: 'auto',
   },
   {

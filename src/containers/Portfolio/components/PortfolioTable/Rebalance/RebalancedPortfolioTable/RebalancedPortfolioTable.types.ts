@@ -25,6 +25,8 @@ export interface IProps {
   loading: boolean
   theme: Theme
   textColor: string
+  totalSnapshotRows: number | string
+  staticRowsMap: Map<string, string>
 }
 
 export interface IState {

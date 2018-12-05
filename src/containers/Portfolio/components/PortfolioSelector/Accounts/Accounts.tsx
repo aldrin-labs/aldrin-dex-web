@@ -64,7 +64,7 @@ export default class Accounts extends React.PureComponent<IProps> {
           </AccountName>
         </SelectAll>
 
-        <AccountsList>
+        <AccountsList id="AccountsList">
           {newKeys.map((keyName) => {
             if (!keyName) {
               return null

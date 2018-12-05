@@ -24,13 +24,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
     }
   }
 
-  onToggleChart = () => {
-    const { onToggleChart } = this.props
-    if (onToggleChart) {
-      onToggleChart()
-    }
-  }
-
   onToggleUSDBTC = () => {
     const { onToggleUSDBTC } = this.props
     if (onToggleUSDBTC) {
@@ -177,7 +170,7 @@ const DividerWithMargin = styled(Divider)`
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 86px;
+  width: 100%;
   height: 100%;
   min-height: 100vh;
   z-index: 0;
@@ -188,7 +181,7 @@ const Container = styled(Paper)`
 `
 
 const Marker = styled.span`
-  left: -30px;
+  left: -32px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
@@ -196,7 +189,7 @@ const Marker = styled.span`
   position: absolute;
 `
 const BlurForMarker = styled.span`
-  left: -30px;
+  left: -32px;
   border-radius: 23px;
   height: 40px;
   width: 1rem;
