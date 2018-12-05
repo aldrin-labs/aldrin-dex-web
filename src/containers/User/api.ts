@@ -11,6 +11,10 @@ export const getKeysQuery = gql`
         exchange
         apiKey
         date
+        status
+        valid
+        processing
+        lastUpdate
       }
     }
   }
