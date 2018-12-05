@@ -53,7 +53,8 @@ class OnlyCharts extends Component<IProps> {
           styles={{
             options: {
               backgroundColor: theme.palette.getContrastText(
-                theme.palette.primary.main),
+                theme.palette.primary.main
+              ),
               primaryColor: theme.palette.secondary.main,
               textColor: theme.palette.primary.main,
             },
@@ -71,6 +72,7 @@ class OnlyCharts extends Component<IProps> {
           unmountOnExit={true}
         >
           <ChartContainer
+            data-e2e="chart-container"
             fullscreen={view !== 'default'}
             chartsCount={charts.length || 1}
           >
@@ -78,7 +80,6 @@ class OnlyCharts extends Component<IProps> {
               .filter((chart) => chart.id && chart.pair)
               .map((chart: IChart, i: number) => (
                 <IndividualChart
-                  //  if there is no id generate it here
                   key={chart.id}
                   theme={theme}
                   removeChart={removeChart}

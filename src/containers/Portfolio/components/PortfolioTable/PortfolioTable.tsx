@@ -68,7 +68,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
             <Suspense fallback={<Loading centerAligned />}>
               {showTable && (
                 <>
-                  <div hidden={tab !== 'main'}>
+                  <div id="main_tab" hidden={tab !== 'main'}>
                     <MemoizedTab tab={tab}>
                       <PortfolioTableBalances
                         isShownChart={isShownChart}
@@ -81,7 +81,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       />
                     </MemoizedTab>
                   </div>
-                  <div hidden={tab !== 'industry'}>
+                  <div id="industry_tab" hidden={tab !== 'industry'}>
                     <MemoizedTab tab={tab}>
                       <PortfolioTableIndustries
                         isUSDCurrently={isUSDCurrently}
@@ -93,7 +93,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       />
                     </MemoizedTab>
                   </div>
-                  <div hidden={tab !== 'rebalance'}>
+                  <div id="rebalance_tab" hidden={tab !== 'rebalance'}>
                     <MemoizedTab tab={tab}>
                       <Rebalance
                         baseCoin={`USDT`}
@@ -103,7 +103,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       />
                     </MemoizedTab>
                   </div>
-                  <div hidden={tab !== 'correlation'}>
+                  <div id="correlation_tab" hidden={tab !== 'correlation'}>
                     <MemoizedTab tab={tab}>
                       <Correlation
                         baseCoin="USDT"
@@ -114,7 +114,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                     </MemoizedTab>
                   </div>
 
-                  <div hidden={tab !== 'optimization'}>
+                  <div id="optimization_tab" hidden={tab !== 'optimization'}>
                     <MemoizedTab tab={tab}>
                       <Optimization
                         theme={theme}
