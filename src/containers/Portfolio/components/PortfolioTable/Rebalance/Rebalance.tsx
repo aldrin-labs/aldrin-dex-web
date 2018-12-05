@@ -158,9 +158,6 @@ class Rebalance extends React.Component<IProps, IState> {
         }
       )
 
-      console.log('newTableRebalancedPortfolioData', newTableRebalancedPortfolioData);
-
-
       const newAssetsData = newTableCurrentPortfolioData.filter(
         (currentPortfolioAsset: IRow) =>
           !newTableRebalancedPortfolioData.some(
@@ -173,17 +170,12 @@ class Rebalance extends React.Component<IProps, IState> {
         newAssetsData.length
 
       if (isCurrentPortfolioDataHaveMoreCoinsThanRebalanced) {
-        this.showWarning('You changed your selected keys or wallets, so we will reset your portfolio and update it.', false, false, true)
+        this.showWarning('You have added a new account. Reset everything to include this account in rebalance.', false, false, true)
       }
 
       newTableRebalancedPortfolioData = isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
         ? newTableRebalancedPortfolioData.concat(newAssetsData)
         : newTableRebalancedPortfolioData
-
-
-      console.log('isCurrentPortfolioDataHaveMoreCoinsThanRebalanced', isCurrentPortfolioDataHaveMoreCoinsThanRebalanced);
-      console.log('newTableRebalancedPortfolioData after manipulation', newTableRebalancedPortfolioData);
-      console.log('newAssetsData', newAssetsData);
     }
 
 
