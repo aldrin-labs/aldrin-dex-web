@@ -72,17 +72,17 @@ class KeysListComponent extends React.Component {
                     <KeyTableCell numeric={true}>
                       {<FormattedDate value={date} />}
                     </KeyTableCell>
-                    <KeyTableCell numeric={true}>
-                      {<FormattedDate value={processing} />}
+                    <KeyTableCell>
+                      {processing.toString()}
                     </KeyTableCell>
-                    <KeyTableCell numeric={true}>
-                      {<FormattedDate value={lastUpdate} />}
+                    <KeyTableCell>
+                      {valid.toString()}
                     </KeyTableCell>
-                    <KeyTableCell numeric={true}>
-                      {<FormattedDate value={status} />}
+                    <KeyTableCell>
+                      {status}
                     </KeyTableCell>
-                    <KeyTableCell numeric={true}>
-                      {<FormattedDate value={valid} />}
+                    <KeyTableCell>
+                      {(new Date(lastUpdate === 0 ? date : lastUpdate)).toDateString()}
                     </KeyTableCell>
                     <KeyTableCell numeric={true}>
                       <DeleteKeyDialog keyName={name} forceUpdateUserContainer={forceUpdateUserContainer} />

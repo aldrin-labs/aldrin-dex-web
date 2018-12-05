@@ -85,6 +85,7 @@ class IntegrationReactSelect extends React.PureComponent {
         className="AutoSuggestSelect"
       >
         <SelectR
+          id={this.props.id}
           style={{ width: '100%' }}
           filterOption={createFilter(filterConfig)}
           placeholder="Add chart"
