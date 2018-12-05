@@ -73,16 +73,16 @@ class KeysListComponent extends React.Component {
                       {<FormattedDate value={date} />}
                     </KeyTableCell>
                     <KeyTableCell>
-                      {processing}
+                      {processing.toString()}
                     </KeyTableCell>
                     <KeyTableCell>
-                      {(new Date(lastUpdate)).toString()} />}
+                      {valid.toString()}
                     </KeyTableCell>
                     <KeyTableCell>
                       {status}
                     </KeyTableCell>
                     <KeyTableCell>
-                      {valid}
+                      {(new Date(lastUpdate === 0 ? date : lastUpdate)).toDateString()}
                     </KeyTableCell>
                     <KeyTableCell numeric={true}>
                       <DeleteKeyDialog keyName={name} forceUpdateUserContainer={forceUpdateUserContainer} />
