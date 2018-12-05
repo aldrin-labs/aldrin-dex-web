@@ -133,7 +133,9 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          priceSnapshot: parseFloat(
+            (parseFloat(el.price) * el.quantity).toFixed(2)
+          ),
           percentSnapshot: null,
         })
       )
@@ -304,12 +306,7 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onSaveClick = (deleteEmptyAssets?: boolean | object) => {
-    const {
-      rows,
-      totalRows,
-      isPercentSumGood,
-      undistributedMoney,
-    } = this.state
+    const { rows, totalRows, isPercentSumGood, undistributedMoney } = this.state
 
     const isArgumentAnObject = deleteEmptyAssets === Object(deleteEmptyAssets)
 
@@ -320,12 +317,19 @@ class Rebalance extends React.Component<IProps, IState> {
       return
     }
     if (UTILS.checkForEmptyNamesInAssets(rows) && isArgumentAnObject) {
-      this.showWarning('Your assets has empty names in columns Exchange and Coin, what we should do with them?', false, true)
+      this.showWarning(
+        'Your assets has empty names in columns Exchange and Coin, what we should do with them?',
+        false,
+        true
+      )
       return
     }
 
-    const rowsAfterProcessing = deleteEmptyAssets === true ? UTILS.deleteEmptyAssets(rows) : rows
-    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(rowsAfterProcessing)
+    const rowsAfterProcessing =
+      deleteEmptyAssets === true ? UTILS.deleteEmptyAssets(rows) : rows
+    const newRowsWithPriceDiff = UTILS.calculatePriceDifference(
+      rowsAfterProcessing
+    )
 
     this.setState(
       {
@@ -422,8 +426,8 @@ class Rebalance extends React.Component<IProps, IState> {
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
-      isPercentSumGood: UTILS.checkPercentSum(
-        clonedStaticRowsWithSnapshotsData
+      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
+        totalSnapshotRows, totalSnapshotRows
       ),
       totalPercents: UTILS.calculateTotalPercents(
         clonedStaticRowsWithSnapshotsData
@@ -445,7 +449,10 @@ class Rebalance extends React.Component<IProps, IState> {
         selectedActive: [],
         areAllActiveChecked: false,
         undistributedMoney: this.state.undistributedMoneySaved,
-        isPercentSumGood: UTILS.checkEqualsOfTwoTotals(this.state.totalTableSavedRows, this.state.totalSnapshotRows),
+        isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
+          this.state.totalTableSavedRows,
+          this.state.totalSnapshotRows
+        ),
         totalPercents: UTILS.calculateTotalPercents(clonedSavedRows),
       }))
     } else {
@@ -479,8 +486,17 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  showWarning = (message: string, isSystemError = false, isSaveError = false) => {
-    this.setState({ isSystemError, isSaveError, openWarning: true, warningMessage: message })
+  showWarning = (
+    message: string,
+    isSystemError = false,
+    isSaveError = false
+  ) => {
+    this.setState({
+      isSystemError,
+      isSaveError,
+      openWarning: true,
+      warningMessage: message,
+    })
   }
 
   hideWarning = () => {
@@ -536,6 +552,29 @@ class Rebalance extends React.Component<IProps, IState> {
 
     return (
       <>
+        <Joyride
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={portfolioRebalanceSteps}
+          run={this.props.toolTip.portfolioRebalance && tab === 'rebalance'}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.getContrastText(
+                theme.palette.primary.main
+              ),
+              primaryColor: theme.palette.secondary.main,
+              textColor: theme.palette.primary.main,
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
+
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
@@ -656,49 +695,49 @@ class Rebalance extends React.Component<IProps, IState> {
             </ChartWrapper>
 
             {/* end of a grid */}
-            <>
-              <Dialog
-                fullScreen={false}
-                open={openWarning}
-                aria-labelledby="responsive-dialog-title"
-              >
-                <DialogTitle id="responsive-dialog-title">
-                  {warningMessage}
-                </DialogTitle>
-                <DialogActions>
-                  {isSaveError && (
-                    <>
-                      <Button
-                        onClick={() => {
-                          this.hideWarning()
-                          this.onSaveClick()
-                        }}
-                        color="secondary"
-                        autoFocus={true}
-                      >
-                        Save anyway
-                      </Button>
-                        <Button
-                          onClick={() => {
-                            this.hideWarning()
-                            this.onSaveClick(true)
-                          }}
-                          size="small"
-                          style={{ margin: '0.5rem 1rem' }}
-                        >
-                          Delete empty and save
-                      </Button>
-                    </>
-                  )}
-                  {isSystemError && (
-                    <>
-                  <Button
-                    onClick={this.hideWarning}
-                    color="secondary"
-                    autoFocus={true}
-                  >
-                    ok
-                  </Button>
+
+            <Dialog
+              fullScreen={false}
+              open={openWarning}
+              aria-labelledby="responsive-dialog-title"
+            >
+              <DialogTitle id="responsive-dialog-title">
+                {warningMessage}
+              </DialogTitle>
+              <DialogActions>
+                {isSaveError && (
+                  <>
+                    <Button
+                      onClick={() => {
+                        this.hideWarning()
+                        this.onSaveClick()
+                      }}
+                      color="secondary"
+                      autoFocus={true}
+                    >
+                      Save anyway
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        this.hideWarning()
+                        this.onSaveClick(true)
+                      }}
+                      size="small"
+                      style={{ margin: '0.5rem 1rem' }}
+                    >
+                      Delete empty and save
+                    </Button>
+                  </>
+                )}
+                {isSystemError && (
+                  <>
+                    <Button
+                      onClick={this.hideWarning}
+                      color="secondary"
+                      autoFocus={true}
+                    >
+                      ok
+                    </Button>
                     <Button
                       onClick={() => {
                         this.openLink(config.bugLink)
@@ -708,35 +747,10 @@ class Rebalance extends React.Component<IProps, IState> {
                     >
                       Report bug
                     </Button>
-                    </>
-                  )}
-                </DialogActions>
-              </Dialog>
-              <Joyride
-                continuous={true}
-                showProgress={true}
-                showSkipButton={true}
-                steps={portfolioRebalanceSteps}
-                run={
-                  this.props.toolTip.portfolioRebalance && tab === 'rebalance'
-                }
-                callback={this.handleJoyrideCallback}
-                key={this.state.key}
-                styles={{
-                  options: {
-                    backgroundColor: theme.palette.getContrastText(
-                      theme.palette.primary.main
-                    ),
-                    primaryColor: theme.palette.secondary.main,
-                    textColor: theme.palette.primary.main,
-                  },
-                  tooltip: {
-                    fontFamily: theme.typography.fontFamily,
-                    fontSize: theme.typography.fontSize,
-                  },
-                }}
-              />
-            </>
+                  </>
+                )}
+              </DialogActions>
+            </Dialog>
           </Content>
         </EmptyTablePlaceholder>
       </>

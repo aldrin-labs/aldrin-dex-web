@@ -71,7 +71,8 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         <TablesWrapper spacing={16} container={true} item={true} xs={12}>
           <Grid item={true} xs={12} md={8}>
             <TableWrapper className="PortfolioMainTable">
-              <PortfolioMainTable />
+              {/* refactor to pass this via Apollo  */}
+              <PortfolioMainTable tab={tab} />
             </TableWrapper>
           </Grid>
           <Grid item={true} xs={12} md={4}>

@@ -155,6 +155,7 @@ class Optimization extends Component<IProps, IState> {
     return (
       <QueryRenderer
         component={Import}
+        fetchPolicy="cache-and-network"
         query={getCoinsForOptimization}
         variables={{ baseCoin }}
         filterValueSmallerThenPercentage={filterValueSmallerThenPercentage}

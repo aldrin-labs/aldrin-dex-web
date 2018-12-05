@@ -10,15 +10,16 @@ import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelecto
 import { PortfolioTable } from '@containers/Portfolio/components'
 import { withTheme, Fade, LinearProgress } from '@material-ui/core'
 
-import withAuth from '@hoc/withAuth'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
 import {
   updatePortfolioSettingsMutation,
   portfolioKeyAndWalletsQuery,
+  getPortfolioQuery,
+  getMyPortfolioAndRebalanceQuery,
 } from '@containers/Portfolio/api'
-import { navBarHeight } from '@components/NavBar/NavBar.styles'
-import { Loading } from '@components/Loading/Loading'
+
+import { getCoinsForOptimization } from './components/PortfolioTable/Optimization/api'
 
 const safePortfolioDestruction = (
   portfolio = {
@@ -34,14 +35,24 @@ const safePortfolioDestruction = (
 class PortfolioComponent extends React.Component<IProps, IState> {
   state: IState = {
     isSideNavOpen: false,
+    baseCoin: 'USDT',
+    isUSDCurrently: true,
   }
 
   toggleWallets = () => {
     this.setState({ isSideNavOpen: !this.state.isSideNavOpen })
   }
 
+  onToggleUSDBTC = () => {
+    this.setState((prevState) => ({
+      isUSDCurrently: !prevState.isUSDCurrently,
+      baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
+    }))
+  }
+
   render() {
     const { theme } = this.props
+    const { isUSDCurrently, baseCoin } = this.state
 
     return (
       <Query
@@ -101,6 +112,19 @@ class PortfolioComponent extends React.Component<IProps, IState> {
             <Mutation
               onCompleted={() => refetch()}
               mutation={updatePortfolioSettingsMutation}
+              refetchQueries={[
+                // no need to refetch main
+                { query: getPortfolioQuery, variables: { baseCoin } },
+                { query: getCoinsForOptimization, variables: { baseCoin } },
+                {
+                  query: getMyPortfolioAndRebalanceQuery,
+                  variables: { baseCoin },
+                },
+                {
+                  query: getMyPortfolioAndRebalanceQuery,
+                  variables: { baseCoin },
+                },
+              ]}
             >
               {(updatePortfolioSettings) => (
                 <>
@@ -133,8 +157,11 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                       <PortfolioTable
                         key={activeKeys.length + activeWallets.length}
                         showTable={hasActiveKeysOrWallets}
-                        dustFilter={dustFilter}
+                        dustFilter={dustFilter || -100}
                         theme={theme}
+                        baseCoin={baseCoin}
+                        onToggleUSDBTC={this.onToggleUSDBTC}
+                        isUSDCurrently={isUSDCurrently}
                         toggleWallets={this.toggleWallets}
                       />
                     )}
@@ -157,6 +184,4 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-export default compose(
-  withTheme()
-)(PortfolioComponent)
+export default compose(withTheme())(PortfolioComponent)

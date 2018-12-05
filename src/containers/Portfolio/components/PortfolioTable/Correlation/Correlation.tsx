@@ -106,6 +106,7 @@ const CorrelationWrapper = (props: IProps) => {
       />
       {isShownMocks && !MASTER_BUILD ? (
         <Correlation
+          key="=/"
           data={{
             myPortfolios: [
               {
@@ -120,6 +121,7 @@ const CorrelationWrapper = (props: IProps) => {
         />
       ) : (
         <QueryRenderer
+          key="=/asfasd"
           fetchPolicy="network-only"
           component={Correlation}
           query={getCorrelationQuery}

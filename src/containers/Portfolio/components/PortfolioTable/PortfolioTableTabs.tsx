@@ -24,13 +24,6 @@ class PortfolioTableTabs extends React.Component<IProps> {
     }
   }
 
-  onToggleChart = () => {
-    const { onToggleChart } = this.props
-    if (onToggleChart) {
-      onToggleChart()
-    }
-  }
-
   onToggleUSDBTC = () => {
     const { onToggleUSDBTC } = this.props
     if (onToggleUSDBTC) {
@@ -123,7 +116,11 @@ class PortfolioTableTabs extends React.Component<IProps> {
         <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
           <>
             <BarContainer onClick={this.onToggleUSDBTC}>
-              <Button color="default" className="SwitchButton">
+              <Button
+                data-e2e="toggleCurrency"
+                color="default"
+                className="SwitchButton"
+              >
                 {' '}
                 {isUSDCurrently ? 'BTC' : 'USD'}
               </Button>
