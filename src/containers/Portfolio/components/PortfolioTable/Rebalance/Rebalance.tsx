@@ -23,7 +23,10 @@ import {
   IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import { addMainSymbol, cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
+import {
+  addMainSymbol,
+  cloneArrayElementsOneLevelDeep,
+} from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -46,7 +49,6 @@ import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
 import config from '@utils/linkConfig'
 import CardHeader from '@components/CardHeader'
-import { withErrorFallback } from '@storybook-components/hoc/withErrorFallback/withErrorFallback'
 
 // TODO: Remove quantity
 // TODO: Fix types for snapshots changes
@@ -86,7 +88,7 @@ class Rebalance extends React.Component<IProps, IState> {
     isCurrentAssetsChanged: false,
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     document.addEventListener('keydown', this.escFunction)
 
     const { isShownMocks, data } = this.props
@@ -99,7 +101,7 @@ class Rebalance extends React.Component<IProps, IState> {
     this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     document.removeEventListener('keydown', this.escFunction)
   }
 
@@ -130,7 +132,9 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          priceSnapshot: parseFloat(
+            (parseFloat(el.price) * el.quantity).toFixed(2)
+          ),
           percentSnapshot: null,
         })
       )
@@ -164,14 +168,18 @@ class Rebalance extends React.Component<IProps, IState> {
         newAssetsData.length
 
       if (isCurrentPortfolioDataHaveMoreCoinsThanRebalanced) {
-        this.showWarning('You have added a new account. Reset everything to include this account in rebalance.', false, false, true)
+        this.showWarning(
+          'You have added a new account. Reset everything to include this account in rebalance.',
+          false,
+          false,
+          true
+        )
       }
 
       newTableRebalancedPortfolioData = isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
         ? newTableRebalancedPortfolioData.concat(newAssetsData)
         : newTableRebalancedPortfolioData
     }
-
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
@@ -183,7 +191,9 @@ class Rebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
           quantity: el.quantity,
-          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
+          priceSnapshot: parseFloat(
+            (parseFloat(el.price) * el.quantity).toFixed(2)
+          ),
           percentSnapshot: null,
         })
       )
@@ -256,7 +266,7 @@ class Rebalance extends React.Component<IProps, IState> {
       totalRows,
       savedRows,
       totalSavedRows,
-      totalSnapshotRows,
+      totalSnapshotRows
     )
 
     this.setState({
@@ -277,13 +287,20 @@ class Rebalance extends React.Component<IProps, IState> {
     totalRows: string,
     savedRows: IRow[],
     totalSavedRows: string,
-    totalSnapshotRows: string,
+    totalSnapshotRows: string
   ) => {
     const rowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(UTILS.calculatePercents(rows, totalRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot'))
+      UTILS.calculatePercents(
+        UTILS.calculatePercents(rows, totalRows),
+        totalSnapshotRows,
+        'priceSnapshot',
+        'percentSnapshot'
+      )
+    )
 
     const staticRowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(staticRows, totalStaticRows))
+      UTILS.calculatePercents(staticRows, totalStaticRows)
+    )
 
     const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
       accMap.set(el._id, el)
@@ -295,7 +312,14 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows: staticRowsWithPercentage,
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
-      savedRows: UTILS.calculatePriceDifference(UTILS.calculatePercents(UTILS.calculatePercents(savedRows, totalSavedRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot')),
+      savedRows: UTILS.calculatePriceDifference(
+        UTILS.calculatePercents(
+          UTILS.calculatePercents(savedRows, totalSavedRows),
+          totalSnapshotRows,
+          'priceSnapshot',
+          'percentSnapshot'
+        )
+      ),
     })
   }
 
@@ -403,25 +427,27 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onNewSnapshot = () => {
-    const { rows, staticRowsMap, totalStaticRows, totalSnapshotRows } = this.state
+    const {
+      rows,
+      staticRowsMap,
+      totalStaticRows,
+      totalSnapshotRows,
+    } = this.state
 
-    const clonedRows = cloneArrayElementsOneLevelDeep(
-      rows
-    )
+    const clonedRows = cloneArrayElementsOneLevelDeep(rows)
 
-    const clonedRowsAfterProcessing = clonedRows
-      .map((el, i) => ({
-        ...el,
-        ...(staticRowsMap.has(el._id)
-          ? {
+    const clonedRowsAfterProcessing = clonedRows.map((el, i) => ({
+      ...el,
+      ...(staticRowsMap.has(el._id)
+        ? {
             priceSnapshot: staticRowsMap.get(el._id).priceSnapshot,
             percentSnapshot: staticRowsMap.get(el._id).portfolioPerc,
           }
-          : {
+        : {
             priceSnapshot: null,
             percentSnapshot: null,
           }),
-      }))
+    }))
 
     const newCalculatedRowsWithNewPrices = UTILS.calculatePriceDifference(UTILS.calculatePriceByPercents(
       clonedRowsAfterProcessing,
@@ -439,7 +465,8 @@ class Rebalance extends React.Component<IProps, IState> {
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalSnapshotRows, totalSnapshotRows
+        totalSnapshotRows,
+        totalSnapshotRows
       ),
       totalPercents: UTILS.calculateTotalPercents(
         newCalculatedRowsWithNewPrices
@@ -481,7 +508,8 @@ class Rebalance extends React.Component<IProps, IState> {
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalStaticRows, totalStaticRows
+        totalStaticRows,
+        totalStaticRows
       ),
       totalPercents: UTILS.calculateTotalPercents(
         clonedStaticRowsWithSnapshotsData
@@ -610,6 +638,29 @@ class Rebalance extends React.Component<IProps, IState> {
 
     return (
       <>
+        <Joyride
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={portfolioRebalanceSteps}
+          run={this.props.toolTip.portfolioRebalance && tab === 'rebalance'}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.getContrastText(
+                theme.palette.primary.main
+              ),
+              primaryColor: theme.palette.secondary.main,
+              textColor: theme.palette.primary.main,
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
+
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
@@ -796,30 +847,6 @@ class Rebalance extends React.Component<IProps, IState> {
             </Dialog>
           </Content>
         </EmptyTablePlaceholder>
-
-        <Joyride
-          continuous={true}
-          showProgress={true}
-          showSkipButton={true}
-          steps={portfolioRebalanceSteps}
-          run={this.props.toolTip.portfolioRebalance && tab === 'rebalance'}
-          callback={this.handleJoyrideCallback}
-          key={this.state.key}
-          styles={{
-            options: {
-              backgroundColor: theme.palette.getContrastText(
-                theme.palette.primary.main
-              ),
-              primaryColor: theme.palette.secondary.main,
-              textColor: theme.palette.primary.main,
-            },
-            tooltip: {
-              fontFamily: theme.typography.fontFamily,
-              fontSize: theme.typography.fontSize,
-            },
-          }}
-        />
-
       </>
     )
   }
@@ -844,7 +871,6 @@ const RebalanceContainer = (props) => (
 )
 
 export default compose(
-  withErrorFallback,
   withTheme(),
   connect(
     mapStateToProps,

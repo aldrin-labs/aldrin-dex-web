@@ -14,7 +14,7 @@ import Feedback from '@components/Feedback'
 import styled from 'styled-components'
 
 export interface Props extends WithTheme {
-  hide?: boolean
+  $hide?: boolean
   pathname: string
 }
 
@@ -35,7 +35,7 @@ const NavBarRaw: SFC<Props> = ({
     },
   },
   pathname,
-  hide = false,
+  $hide = false,
 }) => {
   const nonActiveButtonStyle =
     type === 'dark'
@@ -51,9 +51,8 @@ const NavBarRaw: SFC<Props> = ({
   return (
     <Nav
       position="static"
-      hide={hide}
+      variant={{ hide: $hide, background: primary.main }}
       color="default"
-      background={primary.main}
       className="Navbar"
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
