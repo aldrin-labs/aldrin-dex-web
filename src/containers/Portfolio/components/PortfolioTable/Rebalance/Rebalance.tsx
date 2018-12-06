@@ -682,16 +682,10 @@ class Rebalance extends React.Component<IProps, IState> {
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>
-                  <Grow
-                    in={Boolean(
-                      staticRows &&
-                      staticRows[0] &&
-                      staticRows[0].portfolioPerc &&
-                      tab === 'rebalance'
-                    )}
-                    mountOnEnter
-                    unmountOnExit
-                  >
+                  {
+                    staticRows &&
+                    staticRows[0] &&
+                    staticRows[0].portfolioPerc && (
                     <BarChart
                       bottomMargin={75}
                       theme={theme}
@@ -711,8 +705,8 @@ class Rebalance extends React.Component<IProps, IState> {
                         },
                       ]}
                     />
-                  </Grow>
-                </Chart>
+                    )}
+                  </Chart>
               </ChartContainer>
             </ChartWrapper>
 
