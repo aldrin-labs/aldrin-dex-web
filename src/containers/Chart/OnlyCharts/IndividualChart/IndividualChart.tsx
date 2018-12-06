@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Switch, Grow, Paper } from '@material-ui/core'
+import { IconButton as Button, Switch, Grow, Paper } from '@material-ui/core'
 import MdClear from '@material-ui/icons/Clear'
 import styled from 'styled-components'
 
@@ -35,6 +35,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
       <Grow in={show} mountOnEnter={true} unmountOnExit={true}>
         <Wrapper>
           <ChartsSwitcher
+            data-e2e="chart-switcher"
             background={primary.main}
             divider={theme.palette.divider}
           >
@@ -59,6 +60,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
               Chart
             </TypographyWithCustomColor>
             <Button
+              className="deleteChart"
               onClick={() => {
                 this.setState({ show: false })
                 setTimeout(() => {
