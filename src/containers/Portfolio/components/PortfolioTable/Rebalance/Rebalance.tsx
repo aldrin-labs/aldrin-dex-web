@@ -415,10 +415,10 @@ class Rebalance extends React.Component<IProps, IState> {
           }),
       }))
 
-    const newCalculatedRowsWithNewPrices = UTILS.calculatePriceByPercents(
+    const newCalculatedRowsWithNewPrices = UTILS.calculatePriceDifference(UTILS.calculatePriceByPercents(
       clonedRowsAfterProcessing,
       totalSnapshotRows
-    )
+    ))
 
 
     this.setState({
