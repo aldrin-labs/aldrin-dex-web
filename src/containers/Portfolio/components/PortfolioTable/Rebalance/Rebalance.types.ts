@@ -58,6 +58,7 @@ export interface IState {
   warningMessage: string
   totalSnapshotRows: string | number
   timestampSnapshot: moment.Moment
+  timestampSnapshotSaved: moment.Moment
   isSaveError: boolean
   isCurrentAssetsChanged: boolean
 }

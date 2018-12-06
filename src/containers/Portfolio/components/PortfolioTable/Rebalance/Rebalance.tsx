@@ -81,6 +81,7 @@ class Rebalance extends React.Component<IProps, IState> {
     isSystemError: false,
     warningMessage: '',
     timestampSnapshot: moment(),
+    timestampSnapshotSaved: moment(),
     isSaveError: false,
     isCurrentAssetsChanged: false,
   }
@@ -121,7 +122,7 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({timestampSnapshot: moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot)})
+      // this.setState({timestampSnapshot: moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot)})
 
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
@@ -175,7 +176,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({timestampSnapshot: moment()})
+      // this.setState({timestampSnapshot: moment()})
 
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
@@ -200,6 +201,10 @@ class Rebalance extends React.Component<IProps, IState> {
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
 
+    this.setTimestamp(
+      userHasRebalancePortfolio ? moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot) : moment()
+    )
+
     if (userHasRebalancePortfolio) {
       this.setTableData(
         composeWithMocksCurrentPortfolio,
@@ -211,6 +216,13 @@ class Rebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
+  }
+
+  setTimestamp = (timestamp) => {
+      this.setState({
+        timestampSnapshot: timestamp,
+        timestampSnapshotSaved: timestamp,
+      })
   }
 
   setTableData = (
@@ -420,6 +432,7 @@ class Rebalance extends React.Component<IProps, IState> {
       totalSnapshotRows
     ))
 
+    this.createNewSnapshot()
 
     this.setState({
       rows: newCalculatedRowsWithNewPrices,
@@ -455,11 +468,15 @@ class Rebalance extends React.Component<IProps, IState> {
     this.setState({
       ...(
         resetSavedRows ? {
+
           savedRows: clonedStaticRowsWithSnapshotsData,
           totalSavedRows: totalStaticRows,
           totalTableSavedRows: totalStaticRows,
+          timestampSnapshot: moment(),
+          timestampSnapshotSaved: moment(),
         } : {}
       ),
+      timestampSnapshot: moment(),
       rows: clonedStaticRowsWithSnapshotsData,
       totalSnapshotRows: totalStaticRows,
       totalRows: totalStaticRows,
@@ -483,6 +500,7 @@ class Rebalance extends React.Component<IProps, IState> {
       )
 
       this.setState((prevState: IState) => ({
+        timestampSnapshot: this.state.timestampSnapshotSaved,
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: this.state.totalSavedRows,
         totalTableRows: this.state.totalTableSavedRows,
