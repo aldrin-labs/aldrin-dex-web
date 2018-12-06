@@ -7,13 +7,13 @@ describe('Keys', () => {
     cy.visit('/user')
     cy.waitLoading()
     cy.get('#UserPageWarning').find('button').click()
-/*    cy.get('#name').type('test')
+    cy.get('#name').type('test')
     cy.get('#apiKey').type('f70hLY75SVVBuRUhvsLrN09SlrEXPm2tSU6a59F0pGw8lX5K2Y24cAHxZ2S017Nw')
     cy.get('#secretOfApiKey').type('a1ohBhE2SVtDHnijzAsPyUIAQGBEjPjTBSg9zewTKeIzsQRYpoNPr44xocDM3r5n')
     cy.get('#ExchangeSelect').find('input').type(`Binance{enter}`)
     cy.get('#AddKeyButton').click()
     cy.wait(2000)
-    cy.get('#KeysTable > tbody > tr').contains('test')*/
+    cy.get('#KeysTable > tbody > tr').contains('test')
   })
   it('Key on portfolio', () => {
     cy.login('NGE@NGE.nge', 'nge')
