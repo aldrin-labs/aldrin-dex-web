@@ -46,6 +46,7 @@ import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
 import config from '@utils/linkConfig'
 import CardHeader from '@components/CardHeader'
+import { withErrorFallback } from '@storybook-components/hoc/withErrorFallback/withErrorFallback'
 
 // TODO: Remove quantity
 // TODO: Fix types for snapshots changes
@@ -120,11 +121,7 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({
-        timestampSnapshot: moment.unix(
-          getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot
-        ),
-      })
+      this.setState({timestampSnapshot: moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot)})
 
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
@@ -134,9 +131,7 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
-          priceSnapshot: parseFloat(
-            (parseFloat(el.price) * el.quantity).toFixed(2)
-          ),
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
           percentSnapshot: null,
         })
       )
@@ -180,7 +175,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({ timestampSnapshot: moment() })
+      this.setState({timestampSnapshot: moment()})
 
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
@@ -191,9 +186,7 @@ class Rebalance extends React.Component<IProps, IState> {
           price: (parseFloat(el.price) * el.quantity).toFixed(2),
           portfolioPerc: null,
           quantity: el.quantity,
-          priceSnapshot: parseFloat(
-            (parseFloat(el.price) * el.quantity).toFixed(2)
-          ),
+          priceSnapshot: parseFloat((parseFloat(el.price) * el.quantity).toFixed(2)),
           percentSnapshot: null,
         })
       )
@@ -255,7 +248,7 @@ class Rebalance extends React.Component<IProps, IState> {
       totalRows,
       savedRows,
       totalSavedRows,
-      totalSnapshotRows
+      totalSnapshotRows,
     )
 
     this.setState({
@@ -276,20 +269,13 @@ class Rebalance extends React.Component<IProps, IState> {
     totalRows: string,
     savedRows: IRow[],
     totalSavedRows: string,
-    totalSnapshotRows: string
+    totalSnapshotRows: string,
   ) => {
     const rowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(
-        UTILS.calculatePercents(rows, totalRows),
-        totalSnapshotRows,
-        'priceSnapshot',
-        'percentSnapshot'
-      )
-    )
+      UTILS.calculatePercents(UTILS.calculatePercents(rows, totalRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot'))
 
     const staticRowsWithPercentage = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(staticRows, totalStaticRows)
-    )
+      UTILS.calculatePercents(staticRows, totalStaticRows))
 
     const staticRowsMap = staticRowsWithPercentage.reduce((accMap, el) => {
       accMap.set(el._id, el)
@@ -301,14 +287,7 @@ class Rebalance extends React.Component<IProps, IState> {
       staticRows: staticRowsWithPercentage,
       rows: rowsWithPercentage,
       totalPercents: UTILS.calculateTotalPercents(rowsWithPercentage),
-      savedRows: UTILS.calculatePriceDifference(
-        UTILS.calculatePercents(
-          UTILS.calculatePercents(savedRows, totalSavedRows),
-          totalSnapshotRows,
-          'priceSnapshot',
-          'percentSnapshot'
-        )
-      ),
+      savedRows: UTILS.calculatePriceDifference(UTILS.calculatePercents(UTILS.calculatePercents(savedRows, totalSavedRows), totalSnapshotRows, 'priceSnapshot', 'percentSnapshot')),
     })
   }
 
@@ -617,29 +596,6 @@ class Rebalance extends React.Component<IProps, IState> {
 
     return (
       <>
-        <Joyride
-          continuous={true}
-          showProgress={true}
-          showSkipButton={true}
-          steps={portfolioRebalanceSteps}
-          run={this.props.toolTip.portfolioRebalance && tab === 'rebalance'}
-          callback={this.handleJoyrideCallback}
-          key={this.state.key}
-          styles={{
-            options: {
-              backgroundColor: theme.palette.getContrastText(
-                theme.palette.primary.main
-              ),
-              primaryColor: theme.palette.secondary.main,
-              textColor: theme.palette.primary.main,
-            },
-            tooltip: {
-              fontFamily: theme.typography.fontFamily,
-              fontSize: theme.typography.fontSize,
-            },
-          }}
-        />
-
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
@@ -729,9 +685,9 @@ class Rebalance extends React.Component<IProps, IState> {
                   <Grow
                     in={Boolean(
                       staticRows &&
-                        staticRows[0] &&
-                        staticRows[0].portfolioPerc &&
-                        tab === 'rebalance'
+                      staticRows[0] &&
+                      staticRows[0].portfolioPerc &&
+                      tab === 'rebalance'
                     )}
                     mountOnEnter
                     unmountOnExit
@@ -832,6 +788,30 @@ class Rebalance extends React.Component<IProps, IState> {
             </Dialog>
           </Content>
         </EmptyTablePlaceholder>
+
+        <Joyride
+          continuous={true}
+          showProgress={true}
+          showSkipButton={true}
+          steps={portfolioRebalanceSteps}
+          run={this.props.toolTip.portfolioRebalance && tab === 'rebalance'}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.getContrastText(
+                theme.palette.primary.main
+              ),
+              primaryColor: theme.palette.secondary.main,
+              textColor: theme.palette.primary.main,
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
+
       </>
     )
   }
@@ -856,6 +836,7 @@ const RebalanceContainer = (props) => (
 )
 
 export default compose(
+  withErrorFallback,
   withTheme(),
   connect(
     mapStateToProps,

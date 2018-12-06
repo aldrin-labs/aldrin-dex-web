@@ -55,7 +55,6 @@ class GQLChart extends React.Component {
 
     return (
       nextState.activeChart !== this.props.activeChart ||
-      nextProps.tab !== this.props.tab ||
       !isEqual(
         nextAssets.filter(Boolean).map((row) => row.coin),
         assets.filter(Boolean).map((row) => row.coin)
@@ -129,7 +128,6 @@ class GQLChart extends React.Component {
     return (
       <QueryRenderer
         component={PortfolioChart}
-        tab={this.props.tab}
         query={PRICE_HISTORY_QUERY}
         variables={variables}
         withOutSpinner={true}
