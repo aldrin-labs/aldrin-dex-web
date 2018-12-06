@@ -122,8 +122,6 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      // this.setState({timestampSnapshot: moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot)})
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -176,8 +174,6 @@ class Rebalance extends React.Component<IProps, IState> {
 
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      // this.setState({timestampSnapshot: moment()})
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
