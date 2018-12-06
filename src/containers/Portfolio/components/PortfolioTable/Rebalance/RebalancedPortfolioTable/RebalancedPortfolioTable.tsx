@@ -3,6 +3,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import SaveIcon from '@material-ui/icons/Save'
 import Replay from '@material-ui/icons/Replay'
 import ClearIcon from '@material-ui/icons/Clear'
+import SnapshotIcon from '@material-ui/icons/Camera'
 import nanoid from 'nanoid'
 import Typography from '@material-ui/core/Typography'
 import { fade } from '@material-ui/core/styles/colorManipulator'
@@ -299,6 +300,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     fontFamily: string
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
+
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
@@ -715,6 +717,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       red,
       saveButtonColor,
       timestampSnapshot,
+      onNewSnapshot,
     } = this.props
 
     const Table = isEditModeEnabled ? ImTable : TableWithSort
@@ -734,40 +737,44 @@ export default class RebalancedPortfolioTable extends React.Component<
           <Table
             actionsColSpan={2}
             actions={[
-              ...(!isEditModeEnabled
-                ? [
-                    {
-                      id: 1,
-                      icon: <EditIcon />,
-                      onClick: onEditModeEnable,
-                      color: 'secondary',
-                      style: { color: saveButtonColor, marginRight: '7px' },
-                    },
-                  ]
-                : []),
-              ...(isEditModeEnabled
-                ? [
-                    {
-                      id: 2,
-                      icon: <ClearIcon />,
-                      onClick: onEditModeEnable,
-                      style: { color: red, marginRight: '7px' },
-                    },
-                    {
-                      id: 3,
-                      icon: <Replay />,
-                      onClick: onReset,
-                      style: { marginRight: '7px' },
-                    },
-                    {
-                      id: 4,
-                      icon: <SaveIcon />,
-                      onClick: onSaveClick,
-                      color: saveButtonColor,
-                      style: { color: saveButtonColor, marginRight: '7px' },
-                    },
-                  ]
-                : []),
+              ...(!isEditModeEnabled ? [
+              {
+                id: 1,
+                icon: <EditIcon />,
+                onClick: onEditModeEnable,
+                color: 'secondary',
+                style: {color: saveButtonColor, marginRight: '7px'},
+              },
+                ] : []
+              ),
+              ...(isEditModeEnabled ? [
+                {
+                  id: 2,
+                  icon: <SnapshotIcon />,
+                  onClick: onNewSnapshot,
+                  style: {color: '#fff', marginRight: '7px'},
+                },
+              {
+                id: 3,
+                icon: <ClearIcon />,
+                onClick: onEditModeEnable,
+                style: {color: red, marginRight: '7px'},
+              },
+              {
+                id: 4,
+                icon: <Replay />,
+                onClick: onReset,
+                style: {marginRight: '7px'},
+
+              },
+              {
+                id: 5,
+                icon:  <SaveIcon />,
+                onClick: onSaveClick,
+                color: saveButtonColor,
+                style: {color: saveButtonColor, marginRight: '7px'},
+              },
+              ] : [])
             ]}
             title={
               <TitleContainer>

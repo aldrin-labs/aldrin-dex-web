@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Grid, Fade } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 import Joyride from 'react-joyride'
 import { connect } from 'react-redux'
 
@@ -134,7 +134,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { baseCoin, theme, tab } = this.props
+    const { baseCoin, theme } = this.props
     const { industryData, chartData, expandedRows } = this.state
 
     const tableDataHasData = industryData
@@ -161,31 +161,23 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             </Grid>
             <Grid item={true} xs={12} md={4}>
               <ChartWrapper>
-                <Fade
-                  timeout={0}
-                  in={tab === 'industry'}
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <DonutChart
-                    labelPlaceholder="Industry %"
-                    data={chartData}
-                    colorLegend={true}
-                  />
-                </Fade>
+                <DonutChart
+                  labelPlaceholder="Industry %"
+                  data={chartData}
+                  colorLegend={true}
+                />
               </ChartWrapper>
             </Grid>
           </Container>
           <Joyride
             steps={portfolioIndustrySteps}
-            run={this.props.toolTip.portfolioIndustry && tab === 'industry'}
+            run={this.props.toolTip.portfolioIndustry}
             callback={this.handleJoyrideCallback}
             key={this.state.key}
             styles={{
               options: {
                 backgroundColor: theme.palette.getContrastText(
-                  theme.palette.primary.main
-                ),
+                  theme.palette.primary.main),
                 primaryColor: theme.palette.secondary.main,
                 textColor: theme.palette.primary.main,
               },
@@ -216,9 +208,8 @@ export default connect(
   withErrorFallback(
     queryRendererHoc({
       query: getPortfolioQuery,
-      withOutSpinner: false,
-      // pollInterval: 5000,
-      // fetchPolicy: 'cache-and-network',
+      pollInterval: 5000,
+      fetchPolicy: 'network-only',
     })(PortfolioTableIndustries)
   )
 )
