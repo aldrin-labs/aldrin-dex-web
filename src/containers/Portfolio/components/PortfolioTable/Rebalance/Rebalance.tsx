@@ -491,7 +491,6 @@ class Rebalance extends React.Component<IProps, IState> {
     this.setState({
       ...(
         resetSavedRows ? {
-
           savedRows: clonedStaticRowsWithSnapshotsData,
           totalSavedRows: totalStaticRows,
           totalTableSavedRows: totalStaticRows,
