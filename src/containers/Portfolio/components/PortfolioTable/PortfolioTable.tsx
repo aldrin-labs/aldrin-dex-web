@@ -7,9 +7,7 @@ import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
 const PortfolioTableIndustries = React.lazy(() =>
   import(/* webpackPrefetch: true */ './Industry/PortfolioTableIndustries')
 )
-const Rebalance = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './Rebalance/Rebalance')
-)
+import Rebalance from './Rebalance/Rebalance'
 const Optimization = React.lazy(() =>
   import(/* webpackPrefetch: true */ './Optimization/Optimization')
 )
