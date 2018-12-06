@@ -83,6 +83,7 @@ class Rebalance extends React.Component<IProps, IState> {
     isSystemError: false,
     warningMessage: '',
     timestampSnapshot: moment(),
+    timestampSnapshotSaved: moment(),
     isSaveError: false,
     isCurrentAssetsChanged: false,
   }
@@ -123,12 +124,6 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({
-        timestampSnapshot: moment.unix(
-          getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot
-        ),
-      })
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -187,8 +182,6 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({ timestampSnapshot: moment() })
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -214,6 +207,10 @@ class Rebalance extends React.Component<IProps, IState> {
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
 
+    this.setTimestamp(
+      userHasRebalancePortfolio ? moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot) : moment()
+    )
+
     if (userHasRebalancePortfolio) {
       this.setTableData(
         composeWithMocksCurrentPortfolio,
@@ -225,6 +222,13 @@ class Rebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
+  }
+
+  setTimestamp = (timestamp) => {
+      this.setState({
+        timestampSnapshot: timestamp,
+        timestampSnapshotSaved: timestamp,
+      })
   }
 
   setTableData = (
@@ -445,10 +449,12 @@ class Rebalance extends React.Component<IProps, IState> {
           }),
     }))
 
-    const newCalculatedRowsWithNewPrices = UTILS.calculatePriceByPercents(
+    const newCalculatedRowsWithNewPrices = UTILS.calculatePriceDifference(UTILS.calculatePriceByPercents(
       clonedRowsAfterProcessing,
       totalSnapshotRows
-    )
+    ))
+
+    this.createNewSnapshot()
 
     this.setState({
       rows: newCalculatedRowsWithNewPrices,
@@ -483,13 +489,16 @@ class Rebalance extends React.Component<IProps, IState> {
 
     // TODO: Are we sure that the total would be the same for us in this case?
     this.setState({
-      ...(resetSavedRows
-        ? {
-            savedRows: clonedStaticRowsWithSnapshotsData,
-            totalSavedRows: totalStaticRows,
-            totalTableSavedRows: totalStaticRows,
-          }
-        : {}),
+      ...(
+        resetSavedRows ? {
+          savedRows: clonedStaticRowsWithSnapshotsData,
+          totalSavedRows: totalStaticRows,
+          totalTableSavedRows: totalStaticRows,
+          timestampSnapshot: moment(),
+          timestampSnapshotSaved: moment(),
+        } : {}
+      ),
+      timestampSnapshot: moment(),
       rows: clonedStaticRowsWithSnapshotsData,
       totalSnapshotRows: totalStaticRows,
       totalRows: totalStaticRows,
@@ -514,6 +523,7 @@ class Rebalance extends React.Component<IProps, IState> {
       )
 
       this.setState((prevState: IState) => ({
+        timestampSnapshot: this.state.timestampSnapshotSaved,
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: this.state.totalSavedRows,
         totalTableRows: this.state.totalTableSavedRows,
@@ -736,16 +746,10 @@ class Rebalance extends React.Component<IProps, IState> {
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>
-                  <Grow
-                    in={Boolean(
-                      staticRows &&
-                        staticRows[0] &&
-                        staticRows[0].portfolioPerc &&
-                        tab === 'rebalance'
-                    )}
-                    mountOnEnter
-                    unmountOnExit
-                  >
+                  {
+                    staticRows &&
+                    staticRows[0] &&
+                    staticRows[0].portfolioPerc && (
                     <BarChart
                       bottomMargin={75}
                       theme={theme}
@@ -765,8 +769,8 @@ class Rebalance extends React.Component<IProps, IState> {
                         },
                       ]}
                     />
-                  </Grow>
-                </Chart>
+                    )}
+                  </Chart>
               </ChartContainer>
             </ChartWrapper>
 
