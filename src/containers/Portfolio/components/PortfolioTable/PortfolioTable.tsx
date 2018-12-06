@@ -93,16 +93,18 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       />
                     </MemoizedTab>
                   </div>
-                  <div id="rebalance_tab" hidden={tab !== 'rebalance'}>
-                    <MemoizedTab tab={tab}>
-                      <Rebalance
-                        baseCoin={`USDT`}
-                        tab={this.state.tab}
-                        isUSDCurrently={true}
-                        filterValueSmallerThenPercentage={dustFilter}
-                      />
-                    </MemoizedTab>
-                  </div>
+                  {tab === 'rebalance' && (
+                    <div id="rebalance_tab">
+                      <MemoizedTab tab={tab}>
+                        <Rebalance
+                          baseCoin={`USDT`}
+                          tab={this.state.tab}
+                          isUSDCurrently={true}
+                          filterValueSmallerThenPercentage={dustFilter}
+                        />
+                      </MemoizedTab>
+                    </div>
+                  )}
                   <div id="correlation_tab" hidden={tab !== 'correlation'}>
                     <MemoizedTab tab={tab}>
                       <Correlation
