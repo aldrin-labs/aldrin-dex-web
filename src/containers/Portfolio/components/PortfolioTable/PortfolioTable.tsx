@@ -2,9 +2,8 @@ import React, { Component, lazy, Suspense, memo } from 'react'
 
 import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
 import { ITableProps } from '@containers/Portfolio/interfaces'
-const PortfolioTableBalances = React.lazy(() =>
-  import('./Main/PortfolioTableBalancesContainer')
-)
+import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
+
 const PortfolioTableIndustries = React.lazy(() =>
   import(/* webpackPrefetch: true */ './Industry/PortfolioTableIndustries')
 )
@@ -32,85 +31,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
   state: IState = {
     tableData: null,
     isShownChart: true,
-    isUSDCurrently: true,
     tab: 'main',
-    baseCoin: 'USDT',
-  }
-
-  onToggleChart = () => {
-    this.setState({ isShownChart: !this.state.isShownChart })
-  }
-
-  onToggleUSDBTC = () => {
-    this.setState((prevState) => ({
-      isUSDCurrently: !prevState.isUSDCurrently,
-      baseCoin: !prevState.isUSDCurrently ? 'USDT' : 'BTC',
-    }))
-  }
-
-  renderTab = () => {
-    const { tab, isShownChart, isUSDCurrently, baseCoin } = this.state
-    const { theme, dustFilter } = this.props
-
-    let render = null
-    switch (tab) {
-      case 'main':
-        render = (
-          <PortfolioTableBalances
-            isShownChart={isShownChart}
-            isUSDCurrently={isUSDCurrently}
-            theme={theme}
-            variables={{ baseCoin }}
-            baseCoin={baseCoin}
-            filterValueSmallerThenPercentage={dustFilter}
-          />
-        )
-        break
-      case 'industry':
-        render = (
-          <PortfolioTableIndustries
-            isUSDCurrently={isUSDCurrently}
-            theme={theme}
-            variables={{ baseCoin }}
-            baseCoin={baseCoin}
-            filterValueSmallerThenPercentage={dustFilter}
-          />
-        )
-        break
-      case 'rebalance':
-        render = (
-          <Rebalance
-            baseCoin={`USDT`}
-            isUSDCurrently={true}
-            filterValueSmallerThenPercentage={dustFilter}
-          />
-        )
-        break
-      case 'correlation':
-        render = (
-          <Correlation
-            baseCoin={baseCoin}
-            theme={theme}
-            filterValueSmallerThenPercentage={dustFilter}
-          />
-        )
-        break
-      case 'optimization':
-        render = (
-          <Optimization
-            theme={theme}
-            isUSDCurrently={isUSDCurrently}
-            baseCoin={baseCoin}
-            filterValueSmallerThenPercentage={dustFilter}
-          />
-        )
-        break
-
-      default:
-        break
-    }
-
-    return render
   }
 
   onChangeTab = (
@@ -120,8 +41,14 @@ export class PortfolioTable extends Component<ITableProps, IState> {
   }
 
   render() {
-    const { tab, isUSDCurrently } = this.state
-    const { theme, showTable = false } = this.props
+    const { isShownChart, tab } = this.state
+    const {
+      theme,
+      dustFilter,
+      showTable = false,
+      isUSDCurrently,
+      baseCoin,
+    } = this.props
 
     return (
       <Mutation mutation={TOGGLE_BASE_COIN}>
@@ -139,7 +66,67 @@ export class PortfolioTable extends Component<ITableProps, IState> {
               }}
             />
             <Suspense fallback={<Loading centerAligned />}>
-              {showTable && this.renderTab()}
+              {showTable && (
+                <>
+                  <div id="main_tab" hidden={tab !== 'main'}>
+                    <MemoizedTab tab={tab}>
+                      <PortfolioTableBalances
+                        isShownChart={isShownChart}
+                        isUSDCurrently={isUSDCurrently}
+                        tab={this.state.tab}
+                        theme={theme}
+                        variables={{ baseCoin }}
+                        baseCoin={baseCoin}
+                        filterValueSmallerThenPercentage={dustFilter}
+                      />
+                    </MemoizedTab>
+                  </div>
+                  <div id="industry_tab" hidden={tab !== 'industry'}>
+                    <MemoizedTab tab={tab}>
+                      <PortfolioTableIndustries
+                        isUSDCurrently={isUSDCurrently}
+                        theme={theme}
+                        tab={this.state.tab}
+                        variables={{ baseCoin: 'USDT' }}
+                        baseCoin="USDT"
+                        filterValueSmallerThenPercentage={dustFilter}
+                      />
+                    </MemoizedTab>
+                  </div>
+                  <div id="rebalance_tab" hidden={tab !== 'rebalance'}>
+                    <MemoizedTab tab={tab}>
+                      <Rebalance
+                        baseCoin={`USDT`}
+                        tab={this.state.tab}
+                        isUSDCurrently={true}
+                        filterValueSmallerThenPercentage={dustFilter}
+                      />
+                    </MemoizedTab>
+                  </div>
+                  <div id="correlation_tab" hidden={tab !== 'correlation'}>
+                    <MemoizedTab tab={tab}>
+                      <Correlation
+                        baseCoin="USDT"
+                        tab={this.state.tab}
+                        theme={theme}
+                        filterValueSmallerThenPercentage={dustFilter}
+                      />
+                    </MemoizedTab>
+                  </div>
+
+                  <div id="optimization_tab" hidden={tab !== 'optimization'}>
+                    <MemoizedTab tab={tab}>
+                      <Optimization
+                        theme={theme}
+                        tab={this.state.tab}
+                        isUSDCurrently={isUSDCurrently}
+                        baseCoin="USDT"
+                        filterValueSmallerThenPercentage={dustFilter}
+                      />
+                    </MemoizedTab>
+                  </div>
+                </>
+              )}
             </Suspense>
           </>
         )}

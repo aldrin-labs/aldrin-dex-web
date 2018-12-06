@@ -140,7 +140,11 @@ export default class PortfolioChart extends Component<Props, State> {
         />
         {/*  spinner if there is no data  */}
         {transformedData.length === 0 && <Loading centerAligned />}
-        <Grow mountOnEnter unmountOnExit in={transformedData.length > 0}>
+        <Grow
+          mountOnEnter
+          unmountOnExit
+          in={transformedData.length > 0 && this.props.tab === 'main'}
+        >
           {/* minus cardHeader Height */}
           <Chart height={`calc(100% - 68px)`}>
             <FlexibleXYPlot
