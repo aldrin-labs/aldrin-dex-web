@@ -23,7 +23,10 @@ import {
   IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import { addMainSymbol, cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
+import {
+  addMainSymbol,
+  cloneArrayElementsOneLevelDeep,
+} from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -84,7 +87,7 @@ class Rebalance extends React.Component<IProps, IState> {
     isCurrentAssetsChanged: false,
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     document.addEventListener('keydown', this.escFunction)
 
     const { isShownMocks, data } = this.props
@@ -97,7 +100,7 @@ class Rebalance extends React.Component<IProps, IState> {
     this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     document.removeEventListener('keydown', this.escFunction)
   }
 
@@ -170,14 +173,18 @@ class Rebalance extends React.Component<IProps, IState> {
         newAssetsData.length
 
       if (isCurrentPortfolioDataHaveMoreCoinsThanRebalanced) {
-        this.showWarning('You have added a new account. Reset everything to include this account in rebalance.', false, false, true)
+        this.showWarning(
+          'You have added a new account. Reset everything to include this account in rebalance.',
+          false,
+          false,
+          true
+        )
       }
 
       newTableRebalancedPortfolioData = isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
         ? newTableRebalancedPortfolioData.concat(newAssetsData)
         : newTableRebalancedPortfolioData
     }
-
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
       this.setState({ timestampSnapshot: moment() })
@@ -416,31 +423,32 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   onNewSnapshot = () => {
-    const { rows, staticRowsMap, totalStaticRows, totalSnapshotRows } = this.state
+    const {
+      rows,
+      staticRowsMap,
+      totalStaticRows,
+      totalSnapshotRows,
+    } = this.state
 
-    const clonedRows = cloneArrayElementsOneLevelDeep(
-      rows
-    )
+    const clonedRows = cloneArrayElementsOneLevelDeep(rows)
 
-    const clonedRowsAfterProcessing = clonedRows
-      .map((el, i) => ({
-        ...el,
-        ...(staticRowsMap.has(el._id)
-          ? {
+    const clonedRowsAfterProcessing = clonedRows.map((el, i) => ({
+      ...el,
+      ...(staticRowsMap.has(el._id)
+        ? {
             priceSnapshot: staticRowsMap.get(el._id).priceSnapshot,
             percentSnapshot: staticRowsMap.get(el._id).portfolioPerc,
           }
-          : {
+        : {
             priceSnapshot: null,
             percentSnapshot: null,
           }),
-      }))
+    }))
 
     const newCalculatedRowsWithNewPrices = UTILS.calculatePriceByPercents(
       clonedRowsAfterProcessing,
       totalSnapshotRows
     )
-
 
     this.setState({
       rows: newCalculatedRowsWithNewPrices,
@@ -451,7 +459,8 @@ class Rebalance extends React.Component<IProps, IState> {
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalSnapshotRows, totalSnapshotRows
+        totalSnapshotRows,
+        totalSnapshotRows
       ),
       totalPercents: UTILS.calculateTotalPercents(
         newCalculatedRowsWithNewPrices
@@ -474,13 +483,13 @@ class Rebalance extends React.Component<IProps, IState> {
 
     // TODO: Are we sure that the total would be the same for us in this case?
     this.setState({
-      ...(
-        resetSavedRows ? {
-          savedRows: clonedStaticRowsWithSnapshotsData,
-          totalSavedRows: totalStaticRows,
-          totalTableSavedRows: totalStaticRows,
-        } : {}
-      ),
+      ...(resetSavedRows
+        ? {
+            savedRows: clonedStaticRowsWithSnapshotsData,
+            totalSavedRows: totalStaticRows,
+            totalTableSavedRows: totalStaticRows,
+          }
+        : {}),
       rows: clonedStaticRowsWithSnapshotsData,
       totalSnapshotRows: totalStaticRows,
       totalRows: totalStaticRows,
@@ -489,7 +498,8 @@ class Rebalance extends React.Component<IProps, IState> {
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalStaticRows, totalStaticRows
+        totalStaticRows,
+        totalStaticRows
       ),
       totalPercents: UTILS.calculateTotalPercents(
         clonedStaticRowsWithSnapshotsData
