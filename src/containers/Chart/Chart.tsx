@@ -420,7 +420,7 @@ class Chart extends React.Component<IProps, IState> {
                     }))
                   }}
                 >
-                  {activeChart === 'candle' ? 'show orderbook' : 'show chart'}
+                  {activeChart === 'candle' ? 'orderbook' : 'chart'}
                 </TransparentExtendedFAB>
               }
               <Hidden smDown>{toggler}</Hidden>
