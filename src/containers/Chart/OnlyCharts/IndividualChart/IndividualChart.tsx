@@ -44,7 +44,7 @@ export default class Charts extends Component<IChartProps, IChartState> {
               {`${base}/${quote}`}
             </StyledTypography>
             <TypographyWithCustomColor textColor={textColor} variant="caption">
-              Depth
+              Orderbook
             </TypographyWithCustomColor>
             <Switch
               color="default"

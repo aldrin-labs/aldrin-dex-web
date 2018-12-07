@@ -60,7 +60,6 @@ class Chart extends React.Component<IProps, IState> {
   static getDerivedStateFromProps(nextProps: IProps) {
     const [base, quote] = nextProps.currencyPair.split('_')
     document.title = `${base} to ${quote} | CCAI`
-
     return null
   }
 
@@ -323,7 +322,7 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <Container container spacing={16}>
         <ChartsContainer item sm={8}>
-          {activeChart === 'candle' ? (
+        {activeChart === 'candle' ? (
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
             <Fade timeout={1000} in={activeChart === 'depth'}>
@@ -337,7 +336,7 @@ class Chart extends React.Component<IProps, IState> {
                   }}
                 />
               </DepthChartContainer>
-            </Fade>
+              </Fade>
           )}
         </ChartsContainer>
 
@@ -363,15 +362,20 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <Toggler>
-        <TransparentExtendedFAB
-          className="switchChartPageMode"
+        <Button
+          size="small"
+          style={{
+            height: 36,
+          }}
+          variant="extendedFab"
+          color="secondary"
           onClick={() => {
             toggleView(defaultView ? 'onlyCharts' : 'default')
             if (defaultView && isNoCharts) addChart(currencyPair)
           }}
         >
           {defaultView ? 'Multi Charts' : ' Single Chart'}
-        </TransparentExtendedFAB>
+        </Button>
       </Toggler>
     )
   }
@@ -390,72 +394,37 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <MainContainer fullscreen={view !== 'default'}>
         <TogglerContainer container className="AutoSuggestSelect">
-          <Slide
-            direction="top"
-            in={base && quote && view === 'default'}
-            mountOnenter
-            unMountOnExit
-          >
             <Grid
               spacing={16}
               item
-              sm={8}
-              xs={6}
+              sm={view === 'default' ? 8 : 12}
+              xs={view === 'default' ? 8 : 12}
               style={{ margin: '0 -8px', height: '100%' }}
               container
               alignItems="center"
               justify="flex-end"
             >
-              <ExchangePair border={palette.divider}>
-                {
-                  <Typography
-                    data-e2e="mainCurrencyPair"
-                    style={{ margin: 'auto', fontSize: '0.8rem' }}
-                    align="center"
-                    color="default"
-                    variant="body2"
-                  >
-                    {`${base}/${quote}`}
-                  </Typography>
-                }
-              </ExchangePair>
-
-              <Button
-                size="small"
-                data-e2e="mainChart__typeOfChartSwitcher"
-                style={{ height: 38, marginLeft: '1.5rem' }}
-                variant="extendedFab"
-                color="secondary"
-                onClick={() => {
-                  this.setState((prevState) => ({
-                    activeChart:
-                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                  }))
-                }}
-              >
-                {activeChart === 'candle' ? 'show depth' : 'show chart'}
-              </Button>
+              <AutoSuggestSelect
+                value={view === 'default' && currencyPair}
+                id={'currencyPair'}
+                view={view}
+                exchange={activeExchange}
+              />
+              {view === 'default' &&
+                <TransparentExtendedFAB
+                  data-e2e="mainChart__typeOfChartSwitcher"
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      activeChart:
+                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                    }))
+                  }}
+                >
+                  {activeChart === 'candle' ? 'show orderbook' : 'show chart'}
+                </TransparentExtendedFAB>
+              }
+              <Hidden smDown>{toggler}</Hidden>
             </Grid>
-          </Slide>
-
-          <Grid
-            alignItems="center"
-            item
-            style={{ marginLeft: '16px', height: '100%' }}
-            xs={6}
-            sm={4}
-            container
-            justify="flex-end"
-          >
-            <AutoSuggestSelect
-              value={view === 'default' && currencyPair}
-              id={'currencyPair'}
-              view={view}
-              exchange={activeExchange}
-            />
-
-            <Hidden smDown>{toggler}</Hidden>
-          </Grid>
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -463,6 +432,9 @@ class Chart extends React.Component<IProps, IState> {
     )
   }
 }
+
+const SelectContainer = styled.div`
+`
 
 const MainContainer = styled.div`
   ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
@@ -536,7 +508,7 @@ const TogglerContainer = styled(Grid)`
 
 const Toggler = styled.div`
   && {
-    margin: 0.7rem;
+    margin-left: 0.7rem;
   }
 `
 
