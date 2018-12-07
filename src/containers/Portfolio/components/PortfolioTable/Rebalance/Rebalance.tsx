@@ -411,14 +411,14 @@ class Rebalance extends React.Component<IProps, IState> {
       if (backendResult.data.updateRebalance === null) {
         this.showWarning(systemError, true)
       }
-      refetch()
-        .then(() => {
-          this.setState({ loading: false })
-        })
-        .catch(() => {
-          this.setState({ loading: false })
-          this.showWarning(systemError, true)
-        })
+      // refetch()
+      //   .then(() => {
+      //     this.setState({ loading: false })
+      //   })
+      //   .catch(() => {
+      //     this.setState({ loading: false })
+      //     this.showWarning(systemError, true)
+      //   })
     } catch (error) {
       this.setState({ loading: false })
       this.showWarning(systemError, true)
