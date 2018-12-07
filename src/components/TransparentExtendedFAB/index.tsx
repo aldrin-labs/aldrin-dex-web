@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core'
 
 const ButtonStyled = withStyles((theme) => ({
   root: {
+    marginLeft: '0.7rem',
     height: 38,
     background: 'transparent',
     border: `1px solid ${theme.palette.divider}`,
