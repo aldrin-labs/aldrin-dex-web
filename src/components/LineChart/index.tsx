@@ -168,7 +168,7 @@ export default class LineChart extends React.Component<Props, State> {
 
 const ContainerForCrossHairValues = styled.div`
   min-width: 250px;
-  background-color: #393e44;
+  background-color: rgba(57, 62, 68, 0.8);
   color: #fff;
   padding: 5px;
   margin: 5px;

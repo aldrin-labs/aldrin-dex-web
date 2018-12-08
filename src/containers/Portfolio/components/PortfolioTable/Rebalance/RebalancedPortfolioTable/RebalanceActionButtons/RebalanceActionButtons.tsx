@@ -1,17 +1,12 @@
 import React from 'react'
 import SaveIcon from '@material-ui/icons/Save'
-import EditIcon from '@material-ui/icons/Edit'
 import Replay from '@material-ui/icons/Replay'
 import ClearIcon from '@material-ui/icons/Clear'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 
 import { IProps } from './RebalanceActionButtons.types'
-import {
-  ActionButtonsContainer,
-  ActionButton,
-  EditIconWrapper,
-} from './RebalanceActionButtons.styles'
+import { ActionButtonsContainer } from './RebalanceActionButtons.styles'
 
 const RebalanceActionButtons = ({
   isEditModeEnabled,
@@ -19,49 +14,31 @@ const RebalanceActionButtons = ({
   onSaveClick,
   onEditModeEnable,
   onReset,
-  textColor,
-  secondary,
   red,
-  green,
 }: IProps) => (
   <ActionButtonsContainer isEditModeEnabled={isEditModeEnabled}>
-    <EditIconWrapper
-      onClick={onEditModeEnable}
-      isEditModeEnabled={isEditModeEnabled}
-      textColor={textColor}
-      red={red}
-      green={green}
-    >
+    <Tooltip title={`Discard changes`} enterDelay={250} leaveDelay={200}>
+      <IconButton style={{ color: red, padding: '2px' }} onClick={onEditModeEnable}>
+        <ClearIcon />
+      </IconButton>
+    </Tooltip>
+
+    <>
       <Tooltip
-        title={isEditModeEnabled ? `Discard changes` : `Edit table`}
+        title={`Reset to initial portfolio`}
         enterDelay={250}
         leaveDelay={200}
       >
-          {isEditModeEnabled ? <ClearIcon /> : <EditIcon />}
+        <IconButton onClick={onReset} style={{padding: '2px'}}>
+          <Replay />
+        </IconButton>
       </Tooltip>
-    </EditIconWrapper>
-    {isEditModeEnabled && (
-      <>
-        <Tooltip title={`Reset to initial portfolio`} enterDelay={250} leaveDelay={200}>
-            <ActionButton
-              onClick={onReset}
-              secondary={secondary}
-              textColor={textColor}
-            >
-              <Replay />
-            </ActionButton>
-        </Tooltip>
-        <Tooltip title={`Save changes`} enterDelay={250} leaveDelay={200}>
-            <ActionButton
-              onClick={onSaveClick}
-              secondary={secondary}
-              textColor={textColor}
-            >
-              <SaveIcon style={{ color: saveButtonColor }} />
-            </ActionButton>
-        </Tooltip>
-      </>
-    )}
+      <Tooltip title={`Save changes`} enterDelay={250} leaveDelay={200}>
+        <IconButton style={{ color: saveButtonColor, padding: '2px' }} onClick={onSaveClick}>
+          <SaveIcon />
+        </IconButton>
+      </Tooltip>
+    </>
   </ActionButtonsContainer>
 )
 

@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const PortfolioContainer = styled.div`
   display: grid;
-  grid-template-columns: 4rem calc(100vw - 4rem);
+  grid-template-columns: 5.5rem calc(100vw - 5.5rem);
   justify-content: center;
   min-height: 600px;
 `

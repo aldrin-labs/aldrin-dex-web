@@ -1,7 +1,15 @@
 import React from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Button, Fade, Typography, Card, Grid } from '@material-ui/core'
+import {
+  Button,
+  Fade,
+  Typography,
+  Card,
+  Grid,
+  Slide,
+  Hidden,
+} from '@material-ui/core'
 import withTheme from '@material-ui/core/styles/withTheme'
 import Joyride from 'react-joyride'
 
@@ -52,7 +60,6 @@ class Chart extends React.Component<IProps, IState> {
   static getDerivedStateFromProps(nextProps: IProps) {
     const [base, quote] = nextProps.currencyPair.split('_')
     document.title = `${base} to ${quote} | CCAI`
-
     return null
   }
 
@@ -201,7 +208,7 @@ class Chart extends React.Component<IProps, IState> {
             options: {
               backgroundColor: theme.palette.common.white,
               primaryColor: theme.palette.secondary.main,
-              textColor: theme.palette.primary.main,
+              textColor: theme.palette.common.black,
             },
             tooltip: {
               fontFamily: theme.typography.fontFamily,
@@ -315,11 +322,11 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <Container container spacing={16}>
         <ChartsContainer item sm={8}>
-          {activeChart === 'candle' ? (
+        {activeChart === 'candle' ? (
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
             <Fade timeout={1000} in={activeChart === 'depth'}>
-              <DepthChartContainer>
+              <DepthChartContainer data-e2e="mainDepthChart">
                 <MainDepthChart
                   {...{
                     theme,
@@ -329,7 +336,7 @@ class Chart extends React.Component<IProps, IState> {
                   }}
                 />
               </DepthChartContainer>
-            </Fade>
+              </Fade>
           )}
         </ChartsContainer>
 
@@ -355,14 +362,20 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <Toggler>
-        <TransparentExtendedFAB
+        <Button
+          size="small"
+          style={{
+            height: 36,
+          }}
+          variant="extendedFab"
+          color="secondary"
           onClick={() => {
             toggleView(defaultView ? 'onlyCharts' : 'default')
             if (defaultView && isNoCharts) addChart(currencyPair)
           }}
         >
           {defaultView ? 'Multi Charts' : ' Single Chart'}
-        </TransparentExtendedFAB>
+        </Button>
       </Toggler>
     )
   }
@@ -381,60 +394,37 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <MainContainer fullscreen={view !== 'default'}>
         <TogglerContainer container className="AutoSuggestSelect">
-          {base && quote && (
             <Grid
               spacing={16}
               item
-              sm={8}
-              xs={6}
+              sm={view === 'default' ? 8 : 12}
+              xs={view === 'default' ? 8 : 12}
+              style={{ margin: '0 -8px', height: '100%' }}
               container
               alignItems="center"
               justify="flex-end"
             >
-              <ExchangePair border={palette.divider}>
-                {
-                  <Typography
-                    style={{ margin: 'auto' }}
-                    align="center"
-                    color="default"
-                    variant="button"
-                  >
-                    {`${base}/${quote}`}
-                  </Typography>
-                }
-              </ExchangePair>
-              <Button
-                style={{ height: 38, marginLeft: '1.5rem' }}
-                variant="extendedFab"
-                color="secondary"
-                onClick={() => {
-                  this.setState((prevState) => ({
-                    activeChart:
-                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                  }))
-                }}
-              >
-                {activeChart === 'candle' ? 'show depth' : 'show chart'}
-              </Button>
+              <AutoSuggestSelect
+                value={view === 'default' && currencyPair}
+                id={'currencyPair'}
+                view={view}
+                exchange={activeExchange}
+              />
+              {view === 'default' &&
+                <TransparentExtendedFAB
+                  data-e2e="mainChart__typeOfChartSwitcher"
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      activeChart:
+                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                    }))
+                  }}
+                >
+                  {activeChart === 'candle' ? 'orderbook' : 'chart'}
+                </TransparentExtendedFAB>
+              }
+              <Hidden smDown>{toggler}</Hidden>
             </Grid>
-          )}
-          <Grid
-            alignItems="center"
-            item
-            xs={6}
-            sm={4}
-            container
-            justify="flex-end"
-          >
-            <AutoSuggestSelect
-              value={view === 'default' && currencyPair}
-              id={'currencyPair'}
-              view={view}
-              exchange={activeExchange}
-            />
-
-            {toggler}
-          </Grid>
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -443,11 +433,11 @@ class Chart extends React.Component<IProps, IState> {
   }
 }
 
+const SelectContainer = styled.div`
+`
+
 const MainContainer = styled.div`
   ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
-  @media (min-width: 1900px) {
-    margin-top: -0.75rem;
-  }
 `
 const DepthChartContainer = styled(Card)`
   height: 100%;
@@ -456,7 +446,7 @@ const DepthChartContainer = styled(Card)`
 
 export const ExchangePair = styled.div`
   border-radius: 24px;
-  border: 1px solid ${(props: { border: string }) => props.border};
+  border: 2px solid ${(props: { border: string }) => props.border};
   padding: 0 16px;
   height: 38px;
   place-content: center;
@@ -518,7 +508,7 @@ const TogglerContainer = styled(Grid)`
 
 const Toggler = styled.div`
   && {
-    margin: 0.7rem;
+    margin-left: 0.7rem;
   }
 `
 

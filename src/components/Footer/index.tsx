@@ -19,14 +19,14 @@ import PrivacyPolicy from '@components/PrivacyPolicy/PrivacyPolicy'
 const Footer = ({
   changeModeTheme,
   themeMode,
-  hide,
+  fullscreenMode,
   togglePrivacyPolicy,
   openPrivacyPolicy,
   theme: {
     palette: { secondary },
   },
 }: Props) => (
-  <Container position="static" color="default" hide={hide}>
+  <Container position="static" color="default" fullscreenMode={fullscreenMode}>
     <Block>
       <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
@@ -64,12 +64,12 @@ const Footer = ({
   </Container>
 )
 
-const Container = styled(AppBar)`
+const Container = styled(({ fullscreenMode, ...rest }) => <AppBar {...rest} />)`
   flex-wrap: nowrap;
   justify-content: space-around;
   transition: background 0.25s ease-in-out;
-  ${(props: { hide: boolean }) =>
-    props.hide
+  ${(props: { fullscreenMode: boolean }) =>
+    props.fullscreenMode
       ? `opacity: 0;
     position: absolute;
     top: 0;

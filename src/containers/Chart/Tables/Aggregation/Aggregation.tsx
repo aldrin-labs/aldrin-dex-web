@@ -16,7 +16,7 @@ const Aggregation = (props: IProps) => {
 
   return (
     <AggregationWrapper borderTopColor={palette.divider}>
-      <AggHead background={palette.background.paper}>
+      <AggHead border={'transparent'} background={palette.background.paper}>
         <Row background={palette.background.paper} isHead>
           <Cell width={'10%'} />
           <HeadCell width={'45%'}>

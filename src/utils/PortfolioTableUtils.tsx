@@ -298,17 +298,17 @@ export const checkForString = (numberOrString: number | string) =>
   typeof numberOrString === 'string'
 
 export const roundAndFormatNumber = (
-  x: number,
+  x: number | null,
   precision: number,
   format: boolean = true
-): string | number => {
-  if (x === null || x === 0 || round(x, precision) === 0) {
+): string => {
+  if (x === null || x === 0 || +(parseFloat(x).toFixed(precision)) === 0) {
     return '0'
   }
 
   const res = format
-    ? formatNumberToUSFormat(round(x, precision))
-    : round(x, precision)
+    ? formatNumberToUSFormat(parseFloat(x).toFixed(precision))
+    : parseFloat(x).toFixed(precision)
 
   return res
 }
@@ -455,3 +455,6 @@ export const swapDates = ({
   startDate: number
   endDate: number
 }) => ({ startDate: endDate, endDate: startDate })
+
+
+export const sliceCoinName = (str: string) => str.slice(0, 6)

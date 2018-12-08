@@ -11,13 +11,12 @@ import {
 import {
   TableWrapper,
   TablesWrapper,
-  ChartWrapper,
   GridContainer,
   ChartContainer,
 } from './PortfolioTableBalances.styles'
 import Chart from '@components/GQLChart'
 import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
-import CardHeader from '@components/CardHeader'
+
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import PortfolioMainTable from '@components/PortfolioMainTable/PortfolioMainTable'
@@ -44,7 +43,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { theme } = this.props
+    const { theme, tab } = this.props
     return (
       <GridContainer container={true} spacing={16}>
         <Joyride
@@ -52,7 +51,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           showProgress={true}
           showSkipButton={true}
           steps={portfolioMainSteps}
-          run={this.props.toolTip.portfolioMain}
+          run={this.props.toolTip.portfolioMain && tab === 'main'}
           callback={this.handleJoyrideCallback}
           key={this.state.key}
           styles={{
@@ -69,10 +68,11 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             },
           }}
         />
-        <TablesWrapper spacing={8} container={true} item={true} xs={12}>
+        <TablesWrapper spacing={16} container={true} item={true} xs={12}>
           <Grid item={true} xs={12} md={8}>
             <TableWrapper className="PortfolioMainTable">
-              <PortfolioMainTable />
+              {/* refactor to pass this via Apollo  */}
+              <PortfolioMainTable tab={tab} />
             </TableWrapper>
           </Grid>
           <Grid item={true} xs={12} md={4}>
@@ -83,18 +83,14 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         </TablesWrapper>
 
         <ChartContainer item={true} xs={12} md={12}>
-          {/* <ChartWrapper className="PortfolioValueChart">
-            <CardHeader
-              title={'Portfolio Value | Coming Soon | In development'}
-            /> */}
           <Chart
             style={{
               marginLeft: 0,
               minHeight: '10vh',
             }}
+            tab={tab}
             marginTopHr="10px"
           />
-          {/* </ChartWrapper> */}
         </ChartContainer>
       </GridContainer>
     )

@@ -8,15 +8,18 @@ type T = {
 export const portfolioMainSteps = [
   {
     disableBeacon: true,
-    target: '.TipButton',
-    content:
-      'Welcome! This tutorial will provide a walk-through of our platform. You can skip sections or re-open this at anytime by clicking on this icon.',
-    placement: 'auto',
-  },
-  {
     target: 'body',
-    content:
-      'We have added a real Binance account, so you can experience all of the functionality. To add your own Binance account please go to settings and enter your api key where you can also delete this demo account. Please note our application only supports Binance currently and we will be adding support for more exchanges soon.',
+    content: (
+      <p>
+        {' '}
+        Welcome to Cryptocurrencies.Ai beta! <br /> We have added a real Binance
+        account, so you can experience all of the functionality. To add your own
+        Binance account please go to settings and enter your api key where you
+        can also delete this demo account. Please note our application only
+        supports Binance currently and we will be adding support for more
+        exchanges soon.
+      </p>
+    ),
     placement: 'center',
   },
   {
@@ -24,12 +27,6 @@ export const portfolioMainSteps = [
     content:
       'We have two main sections Portfolio and Chart. Our portfolio consists of five different sub-sections which can be selected from the menu on the left.',
     placement: 'bottom',
-  },
-  {
-    target: '.UserLink',
-    content:
-      'To import your account, click here to open settings.',
-    placement: 'auto',
   },
   {
     target: '.PortfolioMainTable',
@@ -58,6 +55,11 @@ export const portfolioMainSteps = [
     target: '.settingsIcon',
     content:
       'Select settings to select or deselect multiple accounts. Dust filter will remove coins from your portfolio which are insignificant.',
+    placement: 'auto',
+  },
+  {
+    target: '.LoginButton',
+    content: 'To import your account, click here to register or login.',
     placement: 'auto',
   },
 ]
@@ -108,7 +110,7 @@ export const portfolioOptimizationSteps = [
   {
     target: '.OptimizationInput',
     content:
-      'Input parameters to back-test optimization model. Risk free asset introduces stable coin USDT into your portfolio and the model simulates moving capital to USDT when the market is down and returns are negative until the next rebalance period.',
+      'Input parameters to back-test optimization model. Stable coin introduces stable coin USDT into your portfolio and the model simulates moving capital to USDT when the market is down and returns are negative until the next rebalance period.',
     placement: 'auto',
   },
   {

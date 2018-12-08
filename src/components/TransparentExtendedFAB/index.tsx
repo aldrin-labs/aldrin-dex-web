@@ -5,6 +5,7 @@ import { Button } from '@material-ui/core'
 
 const ButtonStyled = withStyles((theme) => ({
   root: {
+    marginLeft: '0.7rem',
     height: 38,
     background: 'transparent',
     border: `1px solid ${theme.palette.divider}`,
@@ -16,8 +17,21 @@ const ButtonStyled = withStyles((theme) => ({
   },
 }))(Button)
 
-export default (props) => (
-  <ButtonStyled onClick={props.onClick} variant="extendedFab">
-    {props.children}
+export default ({
+  onClick,
+  children,
+  className,
+}: {
+  onClick: () => void
+  children: React.ReactChildren | string
+  className?: string
+}) => (
+  <ButtonStyled
+    size="small"
+    onClick={onClick}
+    variant="extendedFab"
+    className={className}
+  >
+    {children}
   </ButtonStyled>
 )

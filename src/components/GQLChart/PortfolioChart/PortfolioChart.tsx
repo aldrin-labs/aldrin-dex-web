@@ -13,7 +13,6 @@ import Button from '@material-ui/core/Button'
 
 import Highlight from '@components/GQLChart/PortfolioChart/Highlight/Highlight'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
-import { Loading } from '@components/Loading'
 import { Props, State } from '@components/GQLChart/annotations'
 import {
   Chart,
@@ -21,6 +20,8 @@ import {
   axisStyle,
 } from '@components/GQLChart/PortfolioChart/styles'
 import CardHeader from '@components/CardHeader'
+import { Grow } from '@material-ui/core'
+import { Loading } from '@components/Loading'
 
 
 export default class PortfolioChart extends Component<Props, State> {
@@ -73,11 +74,6 @@ export default class PortfolioChart extends Component<Props, State> {
     } = this.state
     const { name = '', priceUSD = '' } = coin || {}
 
-
-    if (!(data.length)) {
-      return <Loading centerAligned={true} />
-    }
-
     return (
       <SProfileChart style={{ ...style, height }}>
         <CardHeader
@@ -102,92 +98,100 @@ export default class PortfolioChart extends Component<Props, State> {
             </>
           }
         />
-        {/* minus cardHeader Height */}
-        <Chart height={`calc(100% - 68px)`}>
-          <FlexibleXYPlot
-            margin={{ left: 50 }}
-            animation={true}
-            onMouseLeave={this._onMouseLeave}
-            xDomain={
-              lastDrawLocation && [
-                lastDrawLocation.left,
-                lastDrawLocation.right,
-              ]
-            }
-          >
-            <VerticalGridLines
-              style={{ stroke: '#848484' }}
-              tickTotal={12}
-              tickFormat={(v: number) => '`$${v}`'}
-              tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
-              labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
-            />
-            <HorizontalGridLines
-              style={{ stroke: 'rgba(134, 134, 134, 0.2)' }}
-            />
-            <XAxis
-              style={axisStyle}
-              tickFormat={(v: number) =>
-                new Date(v * 1000).toUTCString().substring(5, 11)
+        {/*  spinner if there is no data  */}
+        {transformedData.length === 0 && <Loading centerAligned />}
+        <Grow
+          mountOnEnter
+          unmountOnExit
+          in={transformedData.length > 0 && this.props.tab === 'main'}
+        >
+          {/* minus cardHeader Height */}
+          <Chart height={`calc(100% - 68px)`}>
+            <FlexibleXYPlot
+              margin={{ left: 50 }}
+              animation={true}
+              onMouseLeave={this._onMouseLeave}
+              xDomain={
+                lastDrawLocation && [
+                  lastDrawLocation.left,
+                  lastDrawLocation.right,
+                ]
               }
-            />
-            {/* hiding Axis for a while */}
-            {false && (
-              <YAxis
-                style={axisStyle}
-                tickFormat={(value) => `$${abbrNum(+value.toFixed(2), 2)}`}
+            >
+              <VerticalGridLines
+                style={{ stroke: '#848484' }}
+                tickTotal={12}
+                tickFormat={(v: number) => '`$${v}`'}
+                tickValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
+                labelValues={[0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66]}
               />
-            )}
-            <GradientDefs>
-              <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
-                <stop
-                  offset="0%"
-                  stopColor={theme.palette.secondary.main}
-                  stopOpacity={0.3}
+              <HorizontalGridLines
+                style={{ stroke: 'rgba(134, 134, 134, 0.2)' }}
+              />
+              <XAxis
+                style={axisStyle}
+                tickFormat={(v: number) =>
+                  new Date(v * 1000).toUTCString().substring(5, 11)
+                }
+              />
+              {/* hiding Axis for a while */}
+              {false && (
+                <YAxis
+                  style={axisStyle}
+                  tickFormat={(value) => `$${abbrNum(+value.toFixed(2), 2)}`}
                 />
-                <stop
-                  offset="60%"
-                  stopColor={theme.palette.secondary.main}
-                  stopOpacity={0}
-                />
-              </linearGradient>
-            </GradientDefs>
-            <AreaSeries
-              color={'url(#CoolGradient)'}
-              onNearestX={this._onNearestX}
-              data={data}
-              style={{
-                stroke: 'rgb(78, 216, 218)',
-                strokeWidth: '1px',
-              }}
-            />
-
-            <Crosshair values={crosshairValues}>
-              <div
+              )}
+              <GradientDefs>
+                <linearGradient id="CoolGradient" x1="0" x2="0" y1="0" y2="1">
+                  <stop
+                    offset="0%"
+                    stopColor={theme.palette.secondary.main}
+                    stopOpacity={0.3}
+                  />
+                  <stop
+                    offset="60%"
+                    stopColor={theme.palette.secondary.main}
+                    stopOpacity={0}
+                  />
+                </linearGradient>
+              </GradientDefs>
+              <AreaSeries
+                color={'url(#CoolGradient)'}
+                onNearestX={this._onNearestX}
+                data={transformedData}
                 style={{
-                  background: '#4c5055',
-                  color: '#4ed8da',
-                  padding: '5px',
-                  fontSize: '14px',
+                  stroke: 'rgb(78, 216, 218)',
+                  strokeWidth: '1px',
                 }}
-              >
-                <p>
-                  {crosshairValues
-                    .map((v) => new Date(v.x * 1000).toDateString())
-                    .join(' ')}
-                  :{' '}
-                  {crosshairValues
-                    .map((v) => `$${Number(v.y).toFixed(2)}`)
-                    .join(' ')}
-                </p>
-              </div>
-            </Crosshair>
+              />
 
-            {this.props.isShownMocks ? null : (
-              <Highlight onBrushEnd={this._onBrushEnd} />
-            )}
-          </FlexibleXYPlot>
-        </Chart>
+              <Crosshair values={crosshairValues}>
+                <div
+                  style={{
+                    background: '#4c5055',
+                    color: '#4ed8da',
+                    padding: '5px',
+                    fontSize: '14px',
+                  }}
+                >
+                  <p>
+                    {crosshairValues
+                      .map((v) => new Date(v.x * 1000).toDateString())
+                      .join(' ')}
+                    :{' '}
+                    {crosshairValues
+                      .map((v) => `$${Number(v.y).toFixed(2)}`)
+                      .join(' ')}
+                  </p>
+                </div>
+              </Crosshair>
+
+              {this.props.isShownMocks ? null : (
+                <Highlight onBrushEnd={this._onBrushEnd} />
+              )}
+            </FlexibleXYPlot>
+          </Chart>
+        </Grow>
       </SProfileChart>
     )
   }

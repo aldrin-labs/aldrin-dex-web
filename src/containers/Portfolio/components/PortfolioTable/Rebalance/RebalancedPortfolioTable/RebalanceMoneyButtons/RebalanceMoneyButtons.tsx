@@ -3,18 +3,19 @@ import React from 'react'
 import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
 import { IProps } from './RebalanceMoneyButtons.types'
 import {
-  ButtonsWrapper,
   ButtonsInnerWrapper,
   UndistributedMoneyContainer,
   UndistributedMoneyText,
   AddMoneyContainer,
   Input,
-  InputContainer,
-  SButton
+  SButton, SCardHeader,
 } from './RebalanceMoneyButtons.styles'
-import { StyledCardHeader } from '../../Rebalance.styles'
+
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import RebalanceActionButtons from '../RebalanceActionButtons/RebalanceActionButtons'
+import { Card } from '@material-ui/core'
+import CardHeader from '@components/CardHeader'
 
 export class RebalanceMoneyButtons extends React.Component<IProps> {
   onDeleteUndistributedMoneyHandler = () => {
@@ -85,7 +86,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
       ]
     }
 
-    const newUndistributedMoney = 0..toFixed(2)
+    const newUndistributedMoney = (0).toFixed(2)
     const newTotal = UTILS.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotal = UTILS.calculateTableTotal(resultRows)
     const newRows = UTILS.calculatePercents(resultRows, newTotal, staticRows)
@@ -165,13 +166,36 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
       isEditModeEnabled,
       secondary,
       textColor,
+      red,
+      green,
       fontFamily,
+      saveButtonColor,
+      onSaveClick,
+      onEditModeEnable,
+      onReset,
     } = this.props
 
-    return (isEditModeEnabled && (
-      <ButtonsWrapper>
-        <InputContainer>
-        <StyledCardHeader title={`Rebalance input`} />
+    return (
+        <Card style={{ width: '63%' }}>
+          <SCardHeader
+            action={
+              <RebalanceActionButtons
+                {...{
+                  isEditModeEnabled,
+                  saveButtonColor,
+                  onSaveClick,
+                  onEditModeEnable,
+                  onReset,
+                  textColor,
+                  secondary,
+                  red,
+                  green,
+                }}
+              />
+            }
+            title={`Rebalance input`}
+          />
+
         <ButtonsInnerWrapper>
           <AddMoneyContainer>
             <Input
@@ -184,7 +208,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
             />
             <SButton
               color={'secondary'}
-              variant={'outlined'}
+              variant="outlined"
               onClick={this.onAddMoneyButtonPressedHandler}
             >
               Add money
@@ -192,8 +216,8 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
           </AddMoneyContainer>
           <AddMoneyContainer>
             <SButton
-              color={'primary'}
-              variant={'outlined'}
+              color="default"
+              variant="outlined"
               onClick={this.onDeleteUndistributedMoneyHandler}
             >
               Delete undistributed
@@ -201,14 +225,17 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
           </AddMoneyContainer>
           {
             <UndistributedMoneyContainer>
-              <UndistributedMoneyText textColor={textColor} fontFamily={fontFamily}>
+              <UndistributedMoneyText
+                textColor={textColor}
+                fontFamily={fontFamily}
+              >
                 Undistributed money:{' '}
                 {formatNumberToUSFormat(undistributedMoney)}
               </UndistributedMoneyText>
               <SButton
                 disabled={+undistributedMoney < 0}
                 color={'secondary'}
-                variant={'outlined'}
+                variant="outlined"
                 onClick={this.onDistributeHandler}
               >
                 Distribute to selected
@@ -216,9 +243,7 @@ export class RebalanceMoneyButtons extends React.Component<IProps> {
             </UndistributedMoneyContainer>
           }
         </ButtonsInnerWrapper>
-        </InputContainer>
-      </ButtonsWrapper>
-      )
+      </Card>
     )
   }
 }

@@ -20,30 +20,31 @@ import { TypographyFullWidth } from '@styles/cssUtils'
 const OptimizedRow = memo(
   ({ ticker, background, numbersAfterDecimalForPrice, red, green }) => (
     <Row background={background.default}>
-      <Cell width={'30%'}>
-        <TypographyFullWidth noWrap={true} variant="body1" align="right">
+      <Cell style={{ padding: '0 0.2rem' }} width={'30%'}>
+        <TypographyFullWidth noWrap={true} variant="caption" align="right">
           {Number(ticker.size).toFixed(4)}
         </TypographyFullWidth>
       </Cell>
-      <Cell width={'45%'} style={{ display: 'flex' }}>
+      <Cell width={'40%'} style={{ padding: '0 0.2rem', display: 'flex' }}>
         <StyledArrow
+          fontSize="small"
           color={ticker.fall ? red.main : green.main}
           direction={ticker.fall ? 'down' : 'up'}
         />
         <StyledTypography
           textColor={ticker.fall ? red.main : green.main}
           noWrap={true}
-          variant="body1"
+          variant="caption"
           align="right"
         >
           {Number(ticker.price).toFixed(numbersAfterDecimalForPrice)}
         </StyledTypography>
       </Cell>
-      <Cell style={{ paddingLeft: 0, paddingRight: '0.2rem' }} width={'25%'}>
+      <Cell style={{ padding: '0 0.2rem' }} width={'30%'}>
         <TypographyFullWidth
           color="textSecondary"
           noWrap={true}
-          variant="body1"
+          variant="caption"
           align="right"
         >
           {ticker.time}
@@ -59,7 +60,11 @@ const OptimizedRow = memo(
 const MemoizedHead = memo(
   ({ tableExpanded, primary, type, palette, onClick, quote }) => (
     <>
-      <TriggerTitle background={primary[type]} onClick={onClick}>
+      <TriggerTitle
+        data-e2e="tradeHistory__arrowButton"
+        background={primary[type]}
+        onClick={onClick}
+      >
         <TypographyFullWidth
           textColor={palette.getContrastText(primary[type])}
           variant="subtitle1"
@@ -75,7 +80,7 @@ const MemoizedHead = memo(
           }}
           style={{
             marginRight: '0.5rem',
-            color: palette.secondary['light'],
+            color: palette.secondary.main,
           }}
         />
       </TriggerTitle>
@@ -85,7 +90,7 @@ const MemoizedHead = memo(
           isHead={true}
           style={{ height: '100%' }}
         >
-          <HeadCell style={{ padding: 0 }} color="#9ca2aa" width={'30%'}>
+          <HeadCell style={{ padding: '0 ' }} color="#9ca2aa" width={'30%'}>
             <TypographyFullWidth
               textColor={palette.getContrastText(palette.background.default)}
               variant="body2"
@@ -95,7 +100,11 @@ const MemoizedHead = memo(
               Trade Size
             </TypographyFullWidth>
           </HeadCell>
-          <HeadCell color="#9ca2aa" width={'45%'}>
+          <HeadCell
+            color="#9ca2aa"
+            style={{ padding: '0 0.2rem' }}
+            width={'40%'}
+          >
             <TypographyFullWidth
               noWrap={true}
               textColor={palette.getContrastText(palette.background.default)}
@@ -108,10 +117,9 @@ const MemoizedHead = memo(
           <HeadCell
             style={{
               lineHeight: '32px',
-              paddingLeft: 0,
-              paddingRight: '0.2rem',
+              padding: '0 0.2rem',
             }}
-            width={'25%'}
+            width={'30%'}
           >
             <TypographyFullWidth
               variant="body2"
@@ -166,7 +174,11 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
               quote,
             }}
           />
-          <Body background={background.default} height="42vh">
+          <Body
+            data-e2e="tradeHistory__body"
+            background={background.default}
+            height="42vh"
+          >
             {data.length === 0 && tableExpanded ? (
               <Loading centerAligned={true} />
             ) : (
