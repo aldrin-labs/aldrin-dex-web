@@ -57,7 +57,7 @@ class GQLChart extends React.Component {
   state = {
     coins: [],
     assets: [],
-    period: 3600,
+    period: periods[365],
     sum: 0,
     unixTimestampFrom: this.getTimestampRange(365).left,
     unixTimestampTo: this.getTimestampRange(365).right,
