@@ -36,15 +36,7 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
-  - bundle
-  - build
   - test
-  - review
-  - staging
-  - canary
-  - production
-  - performance
-  - cleanup
 
 bundle:
   stage: bundle
@@ -102,10 +94,6 @@ cypress:
     - npm run start:ci &
     # run Cypress test in load balancing mode, pass id to tie jobs together
     - npm run e2e:record -- --parallel --ci-build-id $CI_PIPELINE_ID --group electrons
-  only:
-    refs:
-      - develop
-      - master
 
 .codequality:
   image: docker:latest
