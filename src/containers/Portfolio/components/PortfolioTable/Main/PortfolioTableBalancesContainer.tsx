@@ -84,6 +84,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
 
         <ChartContainer item={true} xs={12} md={12}>
           <Chart
+            title="Portfolio Value | Coming Soon | In development"
             style={{
               marginLeft: 0,
               minHeight: '10vh',
