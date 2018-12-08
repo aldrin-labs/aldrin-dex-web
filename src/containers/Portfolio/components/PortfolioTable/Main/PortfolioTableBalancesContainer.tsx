@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { Grid } from '@material-ui/core'
@@ -14,7 +14,7 @@ import {
   GridContainer,
   ChartContainer,
 } from './PortfolioTableBalances.styles'
-import Chart from '@components/GQLChart'
+import Chart from './GQLChart'
 import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
 
 import { portfolioMainSteps } from '@utils/joyrideSteps'
