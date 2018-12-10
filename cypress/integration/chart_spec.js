@@ -53,7 +53,7 @@ describe('chart tests', () => {
   })
 
   it('Switch between multi chart and single chart', () => {
-    cy.get('.switchChartPageMode').click()
+    cy.get('[data-e2e="switchChartPageMode"]').click()
     cy.get('[style="line-height: 1.4; text-align: center;"] > div').contains(
       'Select more pairs with up-to 8 charts.'
     )

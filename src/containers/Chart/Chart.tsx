@@ -363,7 +363,7 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <Toggler>
         <Button
-          className="switchChartPageMode"
+          data-e2e="switchChartPageMode"
           size="small"
           style={{
             height: 36,
