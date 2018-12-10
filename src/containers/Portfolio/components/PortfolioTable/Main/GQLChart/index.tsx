@@ -5,8 +5,7 @@ import { isEqual } from 'lodash-es'
 
 import { PortfolioChart } from '@storybook-components/index'
 import QueryRenderer from '@components/QueryRenderer'
-import { GET_COINS } from './api'
-import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
+import { PRICE_HISTORY_QUERY, GET_COINS } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
 import { yearData } from './chartMocks'
 
