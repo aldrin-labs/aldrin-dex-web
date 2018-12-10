@@ -33,13 +33,14 @@ describe('chart tests', () => {
 
   it('When change coins chart url changes', () => {
     cy.get('[data-e2e="mainChart__typeOfChartSwitcher"]').click()
-    cy.get('[data-e2e="mainCurrencyPair"]')
+    cy.get('#currencyPair')
       .invoke('text')
       .then((text) => {
+        const changedText = text.trim().replace('_', '/')
         cy.get('iframe').should(
           'have.attr',
           'src',
-          `https://develop.chart.cryptocurrencies.ai/?symbol=${text.trim()}`
+          `https://develop.chart.cryptocurrencies.ai/?symbol=${changedText}`
         )
       })
 
@@ -52,7 +53,7 @@ describe('chart tests', () => {
   })
 
   it('Switch between multi chart and single chart', () => {
-    cy.get('.switchChartPageMode').click()
+    cy.get('[data-e2e="switchChartPageMode"]').click()
     cy.get('[style="line-height: 1.4; text-align: center;"] > div').contains(
       'Select more pairs with up-to 8 charts.'
     )

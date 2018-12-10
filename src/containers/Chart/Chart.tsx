@@ -363,6 +363,7 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <Toggler>
         <Button
+          data-e2e="switchChartPageMode"
           size="small"
           style={{
             height: 36,
@@ -412,7 +413,6 @@ class Chart extends React.Component<IProps, IState> {
               />
               {view === 'default' &&
                 <TransparentExtendedFAB
-                  data-e2e="mainChart__typeOfChartSwitcher"
                   onClick={() => {
                     this.setState((prevState) => ({
                       activeChart:
