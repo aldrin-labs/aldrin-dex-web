@@ -195,7 +195,7 @@ export class CoinMarket extends React.Component<Props, State> {
       <Container>
         <GridContainer container={true} spacing={16}>
           <TableContainer item={true} xs={12} md={12}>
-            <TableWrapper className="PortfolioMainTable">
+            <TableWrapper>
               <TableWithSort
                   title="Title"
                   columnNames={dataForTable.head}
