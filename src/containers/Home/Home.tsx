@@ -8,7 +8,6 @@ import DominanceWidget from '@containers/Home/widgets/DominanceWidget'
 import BitcoinPriceChartWidget from '@containers/Home/widgets/BitcoinPriceChartWidget'
 import TreeMapWidget from '@containers/Home/widgets/TreeMapWidget'
 import MarketCapWidget from '@containers/Home/widgets/MarketCapWidget'
-import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import {
   lgLayout,
   mdLayout,
@@ -45,9 +44,6 @@ export default class Home extends React.Component<Props> {
         breakpoints={{ lg: 1200, md: 996, sm: 768, smx: 630, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, smx: 6, xs: 4, xxs: 2 }}
       >
-        <Column key="table">
-          <CoinMarketTable {...this.props} />
-        </Column>
         <Column key="btcprice">
           <BitcoinPriceChartWidget />
         </Column>
