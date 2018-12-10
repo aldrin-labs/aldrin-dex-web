@@ -20,6 +20,8 @@ export interface Props extends WithTheme {
 
 const Portfolio = (props: any) => <Link to="/portfolio" {...props} />
 const Chart = (props: any) => <Link to="/chart" {...props} />
+const Market = (props: any) => <Link to="/market" {...props} />
+
 
 const NavBarRaw: SFC<Props> = ({
   theme: {
@@ -88,13 +90,21 @@ const NavBarRaw: SFC<Props> = ({
               <Button
                 style={createStyleForButton(pathname, '/chart')}
                 component={Chart}
-                size="small"
+                size="medium"
                 variant="text"
                 color="default"
-                size="medium"
               >
                 {pathname === '/chart' && <Marker color={main} />}
                 Chart
+              </Button>
+              <Button
+                style={createStyleForButton(pathname, '/market')}
+                component={Market}
+                size="medium"
+                variant="text"
+                color="default"
+              >
+                Market
               </Button>
             </Grid>
           </Grid>
