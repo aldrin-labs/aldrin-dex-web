@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { isEqual } from 'lodash-es'
-import { TableWithSort } from '@storybook-components'
+import { TableWithSort } from '@storybook-components/index'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
@@ -22,7 +22,7 @@ const mapPortfolioActions = (pA, index) => {
   const newpA = { ...pA }
   newpA.id = `${index}`
   newpA.cost = +roundAndFormatNumber(newpA.cost, 8, false)
-  newpA.date = formatDate(newpA.date)
+  newpA.date = { render: formatDate(newpA.date), contentToSort: newpA.date }
   // dont want to render it
   delete newpA.__typename
 
@@ -78,6 +78,7 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
     return (
       <TableWithSort
+        id="PortfolioActionsTable"
         padding="dense"
         title="Portfolio Actions"
         data={{ body: rows.body }}

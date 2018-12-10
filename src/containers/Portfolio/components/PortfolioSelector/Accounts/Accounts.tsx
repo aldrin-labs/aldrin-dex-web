@@ -24,6 +24,7 @@ export default class Accounts extends React.PureComponent<IProps> {
       color,
       newKeys,
       onKeyToggle,
+      login,
     } = this.props
 
     return (
@@ -48,10 +49,11 @@ export default class Accounts extends React.PureComponent<IProps> {
 
         <SelectAll>
           <Checkbox
+            disabled={!login}
             type="checkbox"
             id="all"
             checked={isCheckedAll}
-            onClick={onToggleAll}
+            onClick={login && onToggleAll}
           />
 
           <AccountName
@@ -72,10 +74,12 @@ export default class Accounts extends React.PureComponent<IProps> {
             return (
               <AccountsListItem key={keyName.name} color={color}>
                 <Checkbox
+                  disabled={!login}
                   type="checkbox"
                   id={keyName.name}
                   checked={isChecked}
-                  onClick={()=> onKeyToggle(keyName._id)}
+                  onClick={() => (login && onKeyToggle(keyName._id))}
+
                 />
 
                 <AccountName

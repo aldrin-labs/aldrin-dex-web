@@ -302,13 +302,13 @@ export const roundAndFormatNumber = (
   precision: number,
   format: boolean = true
 ): string => {
-  if (x === null || x === 0 || +(x.toFixed(precision)) === 0) {
+  if (x === null || x === 0 || +(parseFloat(x).toFixed(precision)) === 0) {
     return '0'
   }
 
   const res = format
-    ? formatNumberToUSFormat(x.toFixed(precision))
-    : x.toFixed(precision)
+    ? formatNumberToUSFormat(parseFloat(x).toFixed(precision))
+    : parseFloat(x).toFixed(precision)
 
   return res
 }

@@ -148,6 +148,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <Grid item={true} xs={12} md={8}>
               <Wrapper>
                 <Table
+                  id="PortfolioIndustryTable"
                   actionsColSpan={3}
                   expandableRows={true}
                   onChange={this.expandRow}

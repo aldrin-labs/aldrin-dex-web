@@ -1,11 +1,12 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import CoinMarket from '@containers/CoinMarketCap/CoinMarketCap'
+import { MyCoinMarket } from '@containers/CoinMarketCap/CoinMarketCap'
+
 
 export default function MarketRoutes({ match, location }) {
   return (
     <Switch>
-      <Route path={match.url} component={CoinMarket} />
+      <Route path={match.url} component={MyCoinMarket} />
     </Switch>
   )
 }

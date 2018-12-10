@@ -60,7 +60,11 @@ const OptimizedRow = memo(
 const MemoizedHead = memo(
   ({ tableExpanded, primary, type, palette, onClick, quote }) => (
     <>
-      <TriggerTitle background={primary[type]} onClick={onClick}>
+      <TriggerTitle
+        data-e2e="tradeHistory__arrowButton"
+        background={primary[type]}
+        onClick={onClick}
+      >
         <TypographyFullWidth
           textColor={palette.getContrastText(primary[type])}
           variant="subtitle1"
@@ -170,7 +174,11 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
               quote,
             }}
           />
-          <Body background={background.default} height="42vh">
+          <Body
+            data-e2e="tradeHistory__body"
+            background={background.default}
+            height="42vh"
+          >
             {data.length === 0 && tableExpanded ? (
               <Loading centerAligned={true} />
             ) : (

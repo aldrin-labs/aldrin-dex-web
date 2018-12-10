@@ -10,7 +10,7 @@ import {
 
 export default class Wallets extends React.PureComponent<IProps> {
   render() {
-    const { color, onWalletToggle, newWallets } = this.props
+    const { color, onWalletToggle, newWallets, login} = this.props
 
     return (
       <AccountsList>
@@ -23,10 +23,11 @@ export default class Wallets extends React.PureComponent<IProps> {
           return (
             <AccountsListItem key={wallet.name} color={color}>
               <Checkbox
+                disabled={!login}
                 type="checkbox"
                 id={wallet.name}
                 checked={isChecked}
-                onClick={() => onWalletToggle(wallet._id)}
+                onClick={() => (login && onWalletToggle(wallet._id))}
               />
 
               <AccountName

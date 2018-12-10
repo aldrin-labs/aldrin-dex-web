@@ -23,7 +23,10 @@ import {
   IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
+import {
+  addMainSymbol,
+  cloneArrayElementsOneLevelDeep,
+} from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -80,10 +83,12 @@ class Rebalance extends React.Component<IProps, IState> {
     isSystemError: false,
     warningMessage: '',
     timestampSnapshot: moment(),
+    timestampSnapshotSaved: moment(),
     isSaveError: false,
+    isCurrentAssetsChanged: false,
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
     document.addEventListener('keydown', this.escFunction)
 
     const { isShownMocks, data } = this.props
@@ -96,7 +101,7 @@ class Rebalance extends React.Component<IProps, IState> {
     this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
 
-  componentWillUnmount() {
+  componentWillUnmount = () => {
     document.removeEventListener('keydown', this.escFunction)
   }
 
@@ -119,12 +124,6 @@ class Rebalance extends React.Component<IProps, IState> {
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({
-        timestampSnapshot: moment.unix(
-          getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot
-        ),
-      })
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -164,8 +163,18 @@ class Rebalance extends React.Component<IProps, IState> {
               currentPortfolioAsset._id === rebalancedPortfolioAsset._id
           )
       )
+
       const isCurrentPortfolioDataHaveMoreCoinsThanRebalanced =
         newAssetsData.length
+
+      if (isCurrentPortfolioDataHaveMoreCoinsThanRebalanced) {
+        this.showWarning(
+          'You have added a new account. Reset everything to include this account in rebalance.',
+          false,
+          false,
+          true
+        )
+      }
 
       newTableRebalancedPortfolioData = isCurrentPortfolioDataHaveMoreCoinsThanRebalanced
         ? newTableRebalancedPortfolioData.concat(newAssetsData)
@@ -173,8 +182,6 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      this.setState({ timestampSnapshot: moment() })
-
       newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
@@ -200,6 +207,10 @@ class Rebalance extends React.Component<IProps, IState> {
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
 
+    this.setTimestamp(
+      userHasRebalancePortfolio ? moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot) : moment()
+    )
+
     if (userHasRebalancePortfolio) {
       this.setTableData(
         composeWithMocksCurrentPortfolio,
@@ -211,6 +222,13 @@ class Rebalance extends React.Component<IProps, IState> {
         composeWithMocksCurrentPortfolio
       )
     }
+  }
+
+  setTimestamp = (timestamp) => {
+      this.setState({
+        timestampSnapshot: timestamp,
+        timestampSnapshotSaved: timestamp,
+      })
   }
 
   setTableData = (
@@ -347,6 +365,12 @@ class Rebalance extends React.Component<IProps, IState> {
     )
   }
 
+  createNewSnapshot = () => {
+    this.setState({
+      timestampSnapshot: moment(),
+    })
+  }
+
   updateServerDataOnSave = async () => {
     const { updateRebalanceMutationQuery, refetch } = this.props
     const { rows, totalRows, timestampSnapshot } = this.state
@@ -387,14 +411,14 @@ class Rebalance extends React.Component<IProps, IState> {
       if (backendResult.data.updateRebalance === null) {
         this.showWarning(systemError, true)
       }
-      refetch()
-        .then(() => {
-          this.setState({ loading: false })
-        })
-        .catch(() => {
-          this.setState({ loading: false })
-          this.showWarning(systemError, true)
-        })
+      // refetch()
+      //   .then(() => {
+      //     this.setState({ loading: false })
+      //   })
+      //   .catch(() => {
+      //     this.setState({ loading: false })
+      //     this.showWarning(systemError, true)
+      //   })
     } catch (error) {
       this.setState({ loading: false })
       this.showWarning(systemError, true)
@@ -402,32 +426,89 @@ class Rebalance extends React.Component<IProps, IState> {
     }
   }
 
-  onReset = () => {
-    const { rows, totalSnapshotRows } = this.state
+  onNewSnapshot = () => {
+    const {
+      rows,
+      staticRowsMap,
+      totalStaticRows,
+      totalSnapshotRows,
+    } = this.state
 
-    const clonedStaticRows = cloneArrayElementsOneLevelDeep(
-      this.state.staticRows
-    )
-    // TODO: BUT are we are we really sure that it will the same for multiaccounts?
+    const clonedRows = cloneArrayElementsOneLevelDeep(rows)
 
-    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el, i) => ({
+    const clonedRowsAfterProcessing = clonedRows.map((el, i) => ({
       ...el,
-      priceSnapshot: rows[i].priceSnapshot,
-      percentSnapshot: rows[i].percentSnapshot,
-      price: rows[i].priceSnapshot,
-      portfolioPerc: rows[i].percentSnapshot,
+      ...(staticRowsMap.has(el._id)
+        ? {
+            priceSnapshot: staticRowsMap.get(el._id).priceSnapshot,
+            percentSnapshot: staticRowsMap.get(el._id).portfolioPerc,
+          }
+        : {
+            priceSnapshot: null,
+            percentSnapshot: null,
+          }),
     }))
 
-    // TODO: Are we sure that the total would be the same for us in this case?
+    const newCalculatedRowsWithNewPrices = UTILS.calculatePriceDifference(UTILS.calculatePriceByPercents(
+      clonedRowsAfterProcessing,
+      totalSnapshotRows
+    ))
+
+    this.createNewSnapshot()
+
     this.setState({
-      rows: clonedStaticRowsWithSnapshotsData,
-      totalRows: totalSnapshotRows,
-      totalTableRows: totalSnapshotRows,
+      rows: newCalculatedRowsWithNewPrices,
+      totalSnapshotRows: totalStaticRows,
+      totalRows: totalStaticRows,
+      totalTableRows: totalStaticRows,
       undistributedMoney: '0',
       selectedActive: [],
       areAllActiveChecked: false,
       isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalSnapshotRows, totalSnapshotRows
+        totalSnapshotRows,
+        totalSnapshotRows
+      ),
+      totalPercents: UTILS.calculateTotalPercents(
+        newCalculatedRowsWithNewPrices
+      ),
+    })
+  }
+
+  onReset = (resetSavedRows = false) => {
+    const { totalStaticRows } = this.state
+    const clonedStaticRows = cloneArrayElementsOneLevelDeep(
+      this.state.staticRows
+    )
+    // TODO: BUT are we are we really sure that it will the same for multiaccounts? +
+
+    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el, i) => ({
+      ...el,
+      priceSnapshot: el.price,
+      percentSnapshot: el.portfolioPerc,
+    }))
+
+    // TODO: Are we sure that the total would be the same for us in this case?
+    this.setState({
+      ...(
+        resetSavedRows ? {
+          savedRows: clonedStaticRowsWithSnapshotsData,
+          totalSavedRows: totalStaticRows,
+          totalTableSavedRows: totalStaticRows,
+          timestampSnapshot: moment(),
+          timestampSnapshotSaved: moment(),
+        } : {}
+      ),
+      timestampSnapshot: moment(),
+      rows: clonedStaticRowsWithSnapshotsData,
+      totalSnapshotRows: totalStaticRows,
+      totalRows: totalStaticRows,
+      totalTableRows: totalStaticRows,
+      undistributedMoney: '0',
+      selectedActive: [],
+      areAllActiveChecked: false,
+      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
+        totalStaticRows,
+        totalStaticRows
       ),
       totalPercents: UTILS.calculateTotalPercents(
         clonedStaticRowsWithSnapshotsData
@@ -442,6 +523,7 @@ class Rebalance extends React.Component<IProps, IState> {
       )
 
       this.setState((prevState: IState) => ({
+        timestampSnapshot: this.state.timestampSnapshotSaved,
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: this.state.totalSavedRows,
         totalTableRows: this.state.totalTableSavedRows,
@@ -489,11 +571,13 @@ class Rebalance extends React.Component<IProps, IState> {
   showWarning = (
     message: string,
     isSystemError = false,
-    isSaveError = false
+    isSaveError = false,
+    isCurrentAssetsChanged = false
   ) => {
     this.setState({
       isSystemError,
       isSaveError,
+      isCurrentAssetsChanged,
       openWarning: true,
       warningMessage: message,
     })
@@ -539,6 +623,7 @@ class Rebalance extends React.Component<IProps, IState> {
       warningMessage,
       timestampSnapshot,
       isSaveError,
+      isCurrentAssetsChanged,
     } = this.state
 
     const secondary = palette.secondary.main
@@ -608,6 +693,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 onReset={this.onReset}
                 onEditModeEnable={this.onEditModeEnable}
                 updateState={this.updateState}
+                onNewSnapshot={this.onNewSnapshot}
               />
             </Container>
             {/*don't delete this it's for future*/}
@@ -660,16 +746,10 @@ class Rebalance extends React.Component<IProps, IState> {
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>
-                  <Grow
-                    in={Boolean(
-                      staticRows &&
-                        staticRows[0] &&
-                        staticRows[0].portfolioPerc &&
-                        tab === 'rebalance'
-                    )}
-                    mountOnEnter
-                    unmountOnExit
-                  >
+                  {
+                    staticRows &&
+                    staticRows[0] &&
+                    staticRows[0].portfolioPerc && (
                     <BarChart
                       bottomMargin={75}
                       theme={theme}
@@ -689,8 +769,8 @@ class Rebalance extends React.Component<IProps, IState> {
                         },
                       ]}
                     />
-                  </Grow>
-                </Chart>
+                    )}
+                  </Chart>
               </ChartContainer>
             </ChartWrapper>
 
@@ -748,6 +828,19 @@ class Rebalance extends React.Component<IProps, IState> {
                       Report bug
                     </Button>
                   </>
+                )}
+                {isCurrentAssetsChanged && (
+                  <Button
+                    onClick={() => {
+                      this.onReset(true)
+                      this.createNewSnapshot()
+                      this.hideWarning()
+                    }}
+                    color="secondary"
+                    autoFocus={true}
+                  >
+                    Reset my rebalanced portfolio and update snapshot
+                  </Button>
                 )}
               </DialogActions>
             </Dialog>

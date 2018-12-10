@@ -287,7 +287,10 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
-      <ChartContainer className="PortfolioDistributionChart">
+      <ChartContainer
+        id="PortfolioDistribution"
+        className="PortfolioDistributionChart"
+      >
         <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
@@ -398,7 +401,7 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer className="OptimizationInput">
+              <InputContainer id="Back-test" className="OptimizationInput">
                 <StyledCardHeader title="Back-test Input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
@@ -416,6 +419,7 @@ export default class Import extends PureComponent<IProps> {
                       Rebalance period
                     </StyledInputLabel>
                     <SelectOptimization
+                      id="RebalancePeriod"
                       options={RebalancePeriod}
                       isClearable={true}
                       singleValueStyles={{
@@ -465,12 +469,14 @@ export default class Import extends PureComponent<IProps> {
                     </StyledInputLabel>
                     <FlexWrapper>
                       <StyledSwitch
+                        id="RiskFreeAssetsSwitch"
                         onChange={this.onToggleRiskSwitch}
                         checked={this.state.isRiskFreeAssetEnabled}
                       />
                     </FlexWrapper>
                   </InputElementWrapper>
                   <ButtonMUI
+                    id="ButtonMUI"
                     color={'secondary'}
                     variant={'outlined'}
                     disabled={!isAllOptionsFilled}
@@ -491,11 +497,12 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer className="RiskProfileTable">
+              <TableContainer id="RiskProfile" className="RiskProfileTable">
                 <StyledCardHeader title="Risk Profile" />
 
                 <SwitchButtonsWrapper>
                   <SwitchButtons
+                    id="SwitchRiskButtons"
                     btnClickProps={client}
                     onBtnClick={onNewBtnClick}
                     values={this.state.percentages}
@@ -508,6 +515,7 @@ export default class Import extends PureComponent<IProps> {
                     leaveDelay={200}
                   >
                     <ButtonMUI
+                      id="ResetPortfolio"
                       disabled={isEqual(initialPortfolio, storeData)}
                       color="secondary"
                       style={{

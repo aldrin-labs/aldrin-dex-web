@@ -7,9 +7,7 @@ import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
 const PortfolioTableIndustries = React.lazy(() =>
   import(/* webpackPrefetch: true */ './Industry/PortfolioTableIndustries')
 )
-const Rebalance = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './Rebalance/Rebalance')
-)
+import Rebalance from './Rebalance/Rebalance'
 const Optimization = React.lazy(() =>
   import(/* webpackPrefetch: true */ './Optimization/Optimization')
 )
@@ -68,7 +66,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
             <Suspense fallback={<Loading centerAligned />}>
               {showTable && (
                 <>
-                  <div hidden={tab !== 'main'}>
+                  <div id="main_tab" hidden={tab !== 'main'}>
                     <MemoizedTab tab={tab}>
                       <PortfolioTableBalances
                         isShownChart={isShownChart}
@@ -81,7 +79,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       />
                     </MemoizedTab>
                   </div>
-                  <div hidden={tab !== 'industry'}>
+                  <div id="industry_tab" hidden={tab !== 'industry'}>
                     <MemoizedTab tab={tab}>
                       <PortfolioTableIndustries
                         isUSDCurrently={isUSDCurrently}
@@ -93,17 +91,19 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                       />
                     </MemoizedTab>
                   </div>
-                  <div hidden={tab !== 'rebalance'}>
-                    <MemoizedTab tab={tab}>
-                      <Rebalance
-                        baseCoin={`USDT`}
-                        tab={this.state.tab}
-                        isUSDCurrently={true}
-                        filterValueSmallerThenPercentage={dustFilter}
-                      />
-                    </MemoizedTab>
-                  </div>
-                  <div hidden={tab !== 'correlation'}>
+                  {tab === 'rebalance' && (
+                    <div id="rebalance_tab">
+                      <MemoizedTab tab={tab}>
+                        <Rebalance
+                          baseCoin={`USDT`}
+                          tab={this.state.tab}
+                          isUSDCurrently={true}
+                          filterValueSmallerThenPercentage={dustFilter}
+                        />
+                      </MemoizedTab>
+                    </div>
+                  )}
+                  <div id="correlation_tab" hidden={tab !== 'correlation'}>
                     <MemoizedTab tab={tab}>
                       <Correlation
                         baseCoin="USDT"
@@ -114,7 +114,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                     </MemoizedTab>
                   </div>
 
-                  <div hidden={tab !== 'optimization'}>
+                  <div id="optimization_tab" hidden={tab !== 'optimization'}>
                     <MemoizedTab tab={tab}>
                       <Optimization
                         theme={theme}
