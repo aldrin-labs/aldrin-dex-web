@@ -81,10 +81,7 @@ const Item = styled.div`
   min-width: 0px;
   white-space: nowrap;
   background: ${(props: { background: string }) => props.background};
-  &:nth-child(even) {
-    background: ${(props: { evenBackground: string; background: string }) =>
-      props.evenBackground ? props.evenBackground : props.background};
-    }
+  
   }
 `
 

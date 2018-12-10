@@ -8,11 +8,13 @@ import { fade } from '@material-ui/core/styles/colorManipulator'
 import Hidden from '@material-ui/core/Hidden'
 
 import MainLogo from '@icons/MainLogo.png'
+import MainLogoDark from '@icons/MainLogoDarkColor.png'
 import { Nav, Logo } from './NavBar.styles'
 import Feedback from '@components/Feedback'
+import styled from 'styled-components'
 
 export interface Props extends WithTheme {
-  hide?: boolean
+  $hide?: boolean
   pathname: string
 }
 
@@ -31,10 +33,11 @@ const NavBarRaw: SFC<Props> = ({
       common,
       secondary: { main },
       primary,
+      divider,
     },
   },
   pathname,
-  hide = false,
+  $hide = false,
 }) => {
   const nonActiveButtonStyle =
     type === 'dark'
@@ -50,9 +53,8 @@ const NavBarRaw: SFC<Props> = ({
   return (
     <Nav
       position="static"
-      hide={hide}
+      variant={{ hide: $hide, background: primary.main }}
       color="default"
-      background={type === 'light' && primary.light}
       className="Navbar"
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
@@ -60,7 +62,7 @@ const NavBarRaw: SFC<Props> = ({
           <Hidden only={['sm', 'xs']}>
             <Grid item={true} md={4}>
               <Grid container={true}>
-                <Logo src={MainLogo} />
+                <Logo src={!(type === 'dark') ? MainLogoDark : MainLogo} />
               </Grid>
             </Grid>
           </Hidden>
@@ -68,15 +70,20 @@ const NavBarRaw: SFC<Props> = ({
             <Grid
               justify="flex-end"
               container={true}
-              style={{ flexDirection: 'row', display: 'flex' }}
+              style={{
+                flexDirection: 'row',
+                display: 'flex',
+                flexWrap: 'nowrap',
+              }}
             >
               <Button
                 style={createStyleForButton(pathname, '/portfolio')}
-                size="small"
+                size="medium"
                 component={Portfolio}
                 color="default"
                 variant="text"
               >
+                {pathname === '/portfolio' && <Marker color={main} />}
                 Portfolio
               </Button>
 
@@ -86,7 +93,9 @@ const NavBarRaw: SFC<Props> = ({
                 size="small"
                 variant="text"
                 color="default"
+                size="medium"
               >
+                {pathname === '/chart' && <Marker color={main} />}
                 Chart
               </Button>
               <Button
@@ -108,12 +117,12 @@ const NavBarRaw: SFC<Props> = ({
               direction={'row'}
               container={true}
             >
-
               <Hidden only={['sm', 'xs']}>
-                <Feedback />
+                <Feedback borderColor={fade(divider, 0.5)} />
               </Hidden>
-
-              <Login mainColor={main} />
+              <Hidden only="xs">
+                <Login mainColor={main} />
+              </Hidden>
             </Grid>
           </Grid>
         </Grid>
@@ -121,5 +130,14 @@ const NavBarRaw: SFC<Props> = ({
     </Nav>
   )
 }
+
+const Marker = styled.span`
+  width: 28px;
+  height: 6px;
+  border-radius: 6px;
+  background: ${(props: { color: string }) => props.color};
+  position: absolute;
+  bottom: -9px;
+`
 
 export const NavBar = withTheme()(NavBarRaw)

@@ -1,5 +1,6 @@
 import { format as fns } from 'date-fns'
 
+
 export const daysFromNow = (days: number) => {
   const formatTimestamp = (timestamp: number) => Math.round(timestamp / 1000)
 

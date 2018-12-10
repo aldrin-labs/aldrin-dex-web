@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { isEqual } from 'lodash-es'
-import { TableWithSort } from '@storybook-components'
+import { TableWithSort } from '@storybook-components/index'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
 import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
-import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
 import { IProps, IState } from './TradeOrderHistoryTable.types'
 import { formatDate } from '@utils/dateUtils'
 import { withErrorFallback } from '@hoc/'
+import Loader from '@components/TablePlaceholderLoader/newLoader'
 
 const tableHeadings = [
   { isNumber: false, name: 'Coin', id: 'coin' },
@@ -36,8 +36,12 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
   shouldComponentUpdate(nextProps: IProps) {
     const res = !isEqual(
-      this.props.data.myPortfolios[0].portfolioActions.slice(0, 99),
-      nextProps.data.myPortfolios[0].portfolioActions.slice(0, 99)
+      this.props.data &&
+        this.props.data.myPortfolios &&
+        this.props.data.myPortfolios[0].portfolioActions.slice(0, 99),
+      nextProps.data &&
+        nextProps.data.myPortfolios &&
+        nextProps.data.myPortfolios[0].portfolioActions.slice(0, 99)
     )
 
     return res
@@ -61,16 +65,22 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
   render() {
     const { data } = this.props
 
-    let rows = []
+    let rows = { body: [] }
     if (data && data.myPortfolios && data.myPortfolios[0]) {
       rows = this.putDataInTable(
         data.myPortfolios[0].portfolioActions.map(mapPortfolioActions)
       )
     }
 
+    if (rows.body.length === 0) {
+      return <Loader />
+    }
+
     return (
       <TableWithSort
-        title="Portfolio actions"
+        id="PortfolioActionsTable"
+        padding="dense"
+        title="Portfolio Actions"
         data={{ body: rows.body }}
         columnNames={rows.head}
       />
@@ -80,7 +90,8 @@ class TradeOrderHistoryTable extends React.Component<IProps, IState> {
 
 export default withErrorFallback(
   queryRendererHoc({
-    placeholder: TablePlaceholderLoader,
     query: MyTradesQuery,
+    fetchPolicy: 'cache-and-network',
+    withOutSpinner: true,
   })(TradeOrderHistoryTable)
 )

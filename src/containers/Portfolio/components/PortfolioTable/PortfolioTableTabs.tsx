@@ -4,31 +4,23 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Settings from '@material-ui/icons/Settings'
 import Main from '@material-ui/icons/LineStyle'
-import Industry from '@material-ui/icons/PieChart'
+import Industry from '@material-ui/icons/DonutLarge'
 import Rebalance from '@material-ui/icons/SwapHoriz'
 import Correlation from '@material-ui/icons/ViewModule'
-import Optimization from '@material-ui/icons/InsertChartOutlined'
+import Optimization from '@material-ui/icons/Assessment'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import IconButton from '@material-ui/core/IconButton'
 import Paper from '@material-ui/core/Paper'
-import { Tooltip, Typography, Fade } from '@material-ui/core'
+import { Typography, Fade } from '@material-ui/core'
 
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs.types'
-import { navBarHeight } from '@components/NavBar/NavBar.styles'
 
 class PortfolioTableTabs extends React.Component<IProps> {
   onChangeTab = (tab: string) => {
     const { onChangeTab } = this.props
     if (onChangeTab) {
       onChangeTab(tab)
-    }
-  }
-
-  onToggleChart = () => {
-    const { onToggleChart } = this.props
-    if (onToggleChart) {
-      onToggleChart()
     }
   }
 
@@ -45,97 +37,155 @@ class PortfolioTableTabs extends React.Component<IProps> {
       toggleWallets,
       isUSDCurrently,
       theme: {
-        palette: { primary, type },
+        palette: {
+          primary,
+          type,
+          secondary: { main },
+        },
       },
     } = this.props
-    const switchUSDBTC =
-      tab === 'main' || tab === 'industry' || tab === 'optimization'
-    const background = type === 'dark' ? primary[900] : primary[100]
+    const switchUSDBTC = tab === 'main'
+    const background = type === 'dark' ? primary.light : primary[100]
 
     return (
       <Container background={background} elevation={0}>
-        <Tooltip title="Main" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'main' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('main')}
-          >
-            <Main />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Industry" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'industry' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('industry')}
-          >
-            <Industry />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Rebalance" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'rebalance' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('rebalance')}
-          >
-            <Rebalance />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Correlation" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'correlation' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('correlation')}
-          >
-            <Correlation />
-          </Tab>
-        </Tooltip>
-
-        <Tooltip title="Optimization" enterDelay={0} placement="right">
-          <Tab
-            color={tab === 'optimization' ? 'secondary' : 'primary'}
-            onClick={() => this.onChangeTab('optimization')}
-          >
-            <Optimization />
-          </Tab>
-        </Tooltip>
-
+        <BarTab
+          id="main_tab_button"
+          thisTab="main"
+          thisTabName="Main"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('main')}
+          mainColor={main}
+        >
+          <Main />
+        </BarTab>
+        <BarTab
+          id="industry_tab_button"
+          thisTab="industry"
+          thisTabName="Industry"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('industry')}
+          mainColor={main}
+        >
+          <Industry />
+        </BarTab>
+        <BarTab
+          id="rebalance_tab_button"
+          thisTab="rebalance"
+          thisTabName="Rebalance"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('rebalance')}
+          mainColor={main}
+        >
+          <Rebalance />
+        </BarTab>
+        <BarTab
+          id="correlation_tab_button"
+          thisTab="correlation"
+          thisTabName="Correlation"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('correlation')}
+          mainColor={main}
+        >
+          <Correlation />
+        </BarTab>
+        <BarTab
+          id="optimization_tab_button"
+          thisTab="optimization"
+          thisTabName="Optimization"
+          curentTab={tab}
+          onClick={() => this.onChangeTab('optimization')}
+          mainColor={main}
+        >
+          <Optimization />
+        </BarTab>
         <DividerWithMargin />
-
-        <Tab
-          color="default"
+        <BarContainer
           onClick={() => {
             toggleWallets()
           }}
         >
-          <Settings className="settingsIcon"/>
-        </Tab>
-        <Fade in={switchUSDBTC}>
-          <div>
+          <Tab color="primary">
+            <Settings className="settingsIcon" />
+          </Tab>
+          <Typography align="center" variant="caption" color="textSecondary">
+            Accounts
+          </Typography>
+        </BarContainer>
+        <DividerWithMargin />
+        <Fade in={switchUSDBTC} mountOnEnter unmountOnExit>
+          <>
+            <BarContainer onClick={this.onToggleUSDBTC}>
+              <Button
+                data-e2e="toggleCurrency"
+                color="default"
+                className="SwitchButton"
+              >
+                {' '}
+                {isUSDCurrently ? 'BTC' : 'USD'}
+              </Button>
+              <Typography
+                align="center"
+                variant="caption"
+                color="textSecondary"
+              >
+                Switch currency
+              </Typography>
+            </BarContainer>
             <DividerWithMargin />
-            <Typography align="center" variant="caption" color="textSecondary">
-              Switch to
-            </Typography>
-            <Button color="secondary" onClick={this.onToggleUSDBTC} className="SwitchButton">
-              {' '}
-              {isUSDCurrently ? 'BTC' : 'USD'}
-            </Button>
-          </div>
+          </>
         </Fade>
       </Container>
     )
   }
 }
 
+const renderMarker = (color: string) => (
+  <React.Fragment key={1}>
+    <Marker color={color} />
+    <BlurForMarker color={color} />
+  </React.Fragment>
+)
+
+const BarTab = (props: {
+  children?: any
+  thisTab: string
+  thisTabName: string
+  id: string
+  curentTab: string
+  onClick: () => void
+  mainColor: string
+}) => (
+  <BarContainer onClick={props.onClick}>
+    <Tab
+      id={props.id}
+      color={props.curentTab === props.thisTab ? 'secondary' : 'primary'}
+    >
+      {props.curentTab === props.thisTab && renderMarker(props.mainColor)}
+      {props.children}
+    </Tab>
+    <Typography
+      variant="caption"
+      color={props.curentTab === props.thisTab ? 'secondary' : 'default'}
+    >
+      {' '}
+      {props.thisTabName}{' '}
+    </Typography>
+  </BarContainer>
+)
+
 const DividerWithMargin = styled(Divider)`
-  margin: 0.5rem 0;
+  margin: 0.5rem auto;
+  margin-bottom: 0px;
+  width: 70%;
 `
 
 const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
-  width: 64px;
-  /* - navbarHeight */
-  height: calc(100vh - ${navBarHeight}px);
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
   z-index: 0;
   && {
     background: ${(props: { background: string }) => props.background};
@@ -143,8 +193,32 @@ const Container = styled(Paper)`
   }
 `
 
+const Marker = styled.span`
+  left: -32px;
+  border-radius: 23px;
+  height: 40px;
+  width: 1rem;
+  background: ${(props: { color: string }) => props.color};
+  position: absolute;
+`
+const BlurForMarker = styled.span`
+  left: -32px;
+  border-radius: 23px;
+  height: 40px;
+  width: 1rem;
+  filter: blur(1rem);
+  background: ${(props: { color: string }) => props.color};
+  position: absolute;
+`
+
 const Tab = styled(IconButton)`
-  margin: 0.5rem auto;
+  margin: 0.6rem auto;
+  margin-bottom: 0px;
+`
+
+const BarContainer = styled.div`
+  text-align: center;
+  cursor: pointer;
 `
 
 const mapStateToProps = (store) => ({

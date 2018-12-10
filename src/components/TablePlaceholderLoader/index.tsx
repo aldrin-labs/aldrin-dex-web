@@ -3,7 +3,13 @@ import ContentLoader from 'react-content-loader'
 import withTheme from '@material-ui/core/styles/withTheme'
 
 const MyLoader = (props) => (
-  <div style={{ margin: `${props.margin}`, height: '100%', width: '100%' }}>
+  <div
+    style={{
+      margin: `${props.margin || 'auto'}`,
+      height: '100%',
+      width: '100%',
+    }}
+  >
     <ContentLoader
       height={160}
       width={300}

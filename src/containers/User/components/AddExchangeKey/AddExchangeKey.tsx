@@ -66,7 +66,6 @@ const formikEnhancer = withFormik({
         },
       })
       resetForm({})
-      props.forceUpdateUserContainer()
       setSubmitting(false)
     } catch (error) {
       setSubmitting(false)
@@ -151,7 +150,7 @@ class AddExchangeKeyComponent extends React.Component {
               )
             }
           />
-          <SExchangeSelect>
+          <SExchangeSelect id="ExchangeSelect">
             <InputLabel htmlFor="exchange">Exchange</InputLabel>
             <SelectExchangeList
               isClearable={true}
@@ -167,7 +166,7 @@ class AddExchangeKeyComponent extends React.Component {
             />
           </SExchangeSelect>
 
-          <Button type="submit" disabled={!dirty || isSubmitting}>
+          <Button type="submit" disabled={!dirty || isSubmitting} id="AddKeyButton">
             Add key
           </Button>
         </FormContainer>

@@ -1,0 +1,20 @@
+describe('Register', () => {
+  before(function() {
+    cy.clearLocalStorage()
+  })
+  it('Register', () => {
+    cy.visit('/')
+    cy.get('.loginButton').click()
+    cy.wait(2000)
+    cy.get('.auth0-lock-tabs > :nth-child(2) > a').click()
+    cy.get('.auth0-lock-input-email > .auth0-lock-input-wrap > .auth0-lock-input').type(`testaccount-${+ new Date()}@test.test`)
+    cy.get('.auth0-lock-input-show-password > .auth0-lock-input-block > .auth0-lock-input-wrap > .auth0-lock-input').type('nge')
+    cy.get('.auth0-lock-submit').click()
+    cy.wait(2000)
+    cy.get('#allow').click()
+    cy.wait(4000)
+    cy.get('.UserLink').should('exist')
+    cy.visit('/user')
+    cy.get('#KeysTable > tbody > tr').contains('demo')
+  })
+})

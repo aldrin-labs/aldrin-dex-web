@@ -2,13 +2,13 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
-import { Button as ButtonMUI, Typography, Card } from '@material-ui/core'
+import { Button as ButtonMUI, Typography, Card, Grow } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import Tooltip from '@material-ui/core/Tooltip'
 import { isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
-import { BarChart } from '@storybook-components'
+import { BarChart } from '@storybook-components/index'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
@@ -33,6 +33,7 @@ import {
   ImportData,
 } from './Import.styles'
 import { StyledCardHeader } from '../Optimization.styles'
+import { sliceCoinName } from '@utils/PortfolioTableUtils'
 
 export default class Import extends PureComponent<IProps> {
   state = {
@@ -104,7 +105,7 @@ export default class Import extends PureComponent<IProps> {
       rebalancePeriod: +rebalancePeriod,
       riskFree: +isRiskFreeAssetEnabled,
       startDate: startDate.unix(),
-      endDate: endDate.unix(),
+      endDate: endDate.unix() - (endDate.unix() % 43200),
     }
 
     console.log('myOb for queryj', myObj)
@@ -130,6 +131,7 @@ export default class Import extends PureComponent<IProps> {
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
+    console.log('backendResultParsed', backendResultParsed)
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
@@ -139,13 +141,61 @@ export default class Import extends PureComponent<IProps> {
       return
     }
 
-    if (backendResultParsed.error || backendResultParsed.status === 1) {
-      const userErrorMessage = `User Error: ${
-        backendResultParsed.error_message
-      }`
+    if (
+      backendResultParsed.error ||
+      backendResultParsed.error_message.length ||
+      backendResultParsed.status === 1
+    ) {
       const isUserError = backendResultParsed.error_message
+      //TODO: Should be another function
 
-      showWarning(isUserError ? userErrorMessage : systemError, !isUserError)
+      if (isUserError && isUserError.length) {
+        const userErrorMessage = (
+          <div>
+            <Typography variant="h6">Info:</Typography>
+            {backendResultParsed.error_message.map((el: string, i: number) => (
+              <Typography key={i} variant="subtitle1">
+                {el}
+              </Typography>
+            ))}
+          </div>
+        )
+
+        showWarning(userErrorMessage, false)
+
+        if (backendResultParsed.new_start) {
+          console.log(
+            'backendResultParsed.new_start',
+            backendResultParsed.new_start
+          )
+
+          this.setState(
+            { startDate: moment.unix(backendResultParsed.new_start) },
+            () => {
+              console.log('this.state after update on user error', this.state)
+            }
+          )
+          this.setDataFromResponse(backendResultParsed)
+        }
+        if (backendResultParsed.status === 0) {
+          console.log('status 0, set data')
+
+          this.setDataFromResponse(backendResultParsed)
+        }
+
+        if (backendResultParsed.status !== 0) {
+          console.log('status not 0, reset data')
+
+          this.onResetOnlyOptimizationData()
+        }
+
+        this.props.toggleLoading()
+        console.log('USER ERROR', backendResultParsed.error_message)
+
+        return
+      }
+
+      showWarning(systemError, true)
       this.onReset()
       this.props.toggleLoading()
       console.log('ERROR', backendResultParsed.error)
@@ -156,13 +206,18 @@ export default class Import extends PureComponent<IProps> {
     this.props.toggleLoading()
     this.props.setActiveButtonToDefault()
 
+    this.setDataFromResponse(backendResultParsed)
+  }
+
+  setDataFromResponse = (backendResultParsed: object) => {
+    const { optimizedToState } = this.props
+    const { isRiskFreeAssetEnabled } = this.state
+
     const optimizedData = backendResultParsed.returns
     console.log('optimizedData', optimizedData)
 
-    if (
-      storeData.length < optimizedData[activeButton].portfolio_coins_list.length
-    ) {
-      console.log('storeData.length < optimizedData')
+    if (isRiskFreeAssetEnabled) {
+      console.log('isRiskFreeAssetEnabled')
       this.addRow('USDT', 0)
     }
 
@@ -196,21 +251,25 @@ export default class Import extends PureComponent<IProps> {
     )
 
   renderBarChart = () => {
-    const { storeData, activeButton, theme, rawOptimizedData } = this.props
+    const { storeData, activeButton, theme, rawOptimizedData, tab } = this.props
 
     if (!storeData) {
       return
     }
 
     const formatedData = storeData.map((el: IData) => ({
-      x: el.coin,
+      x: sliceCoinName(el.coin),
       y: Number(Number(el.percentage).toFixed(2)),
     }))
 
     const formatedOptimizedData = rawOptimizedData.length
       ? storeData.map((el, i) => ({
-          x: el.coin,
-          y: +(rawOptimizedData[activeButton].weights[i] * 100).toFixed(2),
+          x: sliceCoinName(el.coin),
+          y: Number(
+            (el.optimizedPercentageArray &&
+              el.optimizedPercentageArray[activeButton]) ||
+              0
+          ),
         }))
       : []
 
@@ -228,18 +287,30 @@ export default class Import extends PureComponent<IProps> {
     ]
 
     return (
-      <ChartContainer className="PortfolioDistributionChart">
+      <ChartContainer
+        id="PortfolioDistribution"
+        className="PortfolioDistributionChart"
+      >
         <StyledCardHeader title="Portfolio Distribution" />
         <InnerChartContainer>
           <Chart background={theme.palette.background.default}>
-            <BarChart
-              height={340}
-              showPlaceholder={formatedData.length === 0}
-              charts={barChartData}
-              alwaysShowLegend={true}
-              hideDashForToolTip={true}
-              xAxisVertical={true}
-            />
+            <Grow
+              timeout={0}
+              in={tab === 'optimization'}
+              mountOnEnter
+              unmountOnExit
+            >
+              <BarChart
+                bottomMargin={75}
+                theme={theme}
+                height={340}
+                showPlaceholder={formatedData.length === 0}
+                charts={barChartData}
+                alwaysShowLegend={true}
+                hideDashForToolTip={true}
+                xAxisVertical={true}
+              />
+            </Grow>
           </Chart>
         </InnerChartContainer>
       </ChartContainer>
@@ -271,6 +342,19 @@ export default class Import extends PureComponent<IProps> {
 
     optimizedToState([])
     this.importPortfolio()
+  }
+
+  onResetOnlyOptimizationData = () => {
+    const { optimizedToState, updateData, storeData } = this.props
+
+    optimizedToState([])
+
+    updateData(
+      [...storeData].map((el) => ({
+        ...el,
+        optimizedPercentageArray: [],
+      }))
+    )
   }
 
   render() {
@@ -317,8 +401,8 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer className="OptimizationInput">
-                <StyledCardHeader title="Back-test input" />
+              <InputContainer id="Back-test" className="OptimizationInput">
+                <StyledCardHeader title="Back-test Input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
@@ -335,6 +419,7 @@ export default class Import extends PureComponent<IProps> {
                       Rebalance period
                     </StyledInputLabel>
                     <SelectOptimization
+                      id="RebalancePeriod"
                       options={RebalancePeriod}
                       isClearable={true}
                       singleValueStyles={{
@@ -380,16 +465,18 @@ export default class Import extends PureComponent<IProps> {
                   </InputElementWrapper>
                   <InputElementWrapper>
                     <StyledInputLabel color={textColor}>
-                      Risk free asset
+                      Stable coin
                     </StyledInputLabel>
                     <FlexWrapper>
                       <StyledSwitch
+                        id="RiskFreeAssetsSwitch"
                         onChange={this.onToggleRiskSwitch}
                         checked={this.state.isRiskFreeAssetEnabled}
                       />
                     </FlexWrapper>
                   </InputElementWrapper>
                   <ButtonMUI
+                    id="ButtonMUI"
                     color={'secondary'}
                     variant={'outlined'}
                     disabled={!isAllOptionsFilled}
@@ -410,11 +497,12 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer className="RiskProfileTable">
+              <TableContainer id="RiskProfile" className="RiskProfileTable">
                 <StyledCardHeader title="Risk Profile" />
 
                 <SwitchButtonsWrapper>
                   <SwitchButtons
+                    id="SwitchRiskButtons"
                     btnClickProps={client}
                     onBtnClick={onNewBtnClick}
                     values={this.state.percentages}
@@ -427,6 +515,7 @@ export default class Import extends PureComponent<IProps> {
                     leaveDelay={200}
                   >
                     <ButtonMUI
+                      id="ResetPortfolio"
                       disabled={isEqual(initialPortfolio, storeData)}
                       color="secondary"
                       style={{
@@ -576,7 +665,7 @@ const InputInnerContainer = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   min-width: 100px;
-  padding: 0 15px 17px 15px;
+  padding: 0 15px 0 15px;
 `
 
 export const InnerChartContainer = styled.div`

@@ -8,41 +8,37 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Telegram from '@material-ui/icons/NearMeSharp'
 
-import { changeThemeMode } from '@containers/App/actions'
+import {
+  changeThemeMode,
+  togglePrivacyPolicy as togglePrivacyPolicyAction,
+} from '@containers/App/actions'
 import Props from './index.types'
 import { AppBar, IconButton } from '@material-ui/core'
-import { MASTER_BUILD } from '@utils/config'
+import PrivacyPolicy from '@components/PrivacyPolicy/PrivacyPolicy'
 
 const Footer = ({
   changeModeTheme,
   themeMode,
-  hide,
+  fullscreenMode,
+  togglePrivacyPolicy,
+  openPrivacyPolicy,
   theme: {
     palette: { secondary },
   },
 }: Props) => (
-  <Container position="static" color="default" hide={hide}>
+  <Container position="static" color="default" fullscreenMode={fullscreenMode}>
     <Block>
       <Typography variant="caption" color="default">
         Cryptocurrencies Ai, 2018{' '}
       </Typography>
+
       <Typography variant="h6" color="secondary">
         •
       </Typography>
-      {/* you can see it only in develop for now */}
-      {!MASTER_BUILD && (
-        <>
-          <Button size="small" color="default">
-            Terms of Use
-          </Button>
-          <Typography variant="h6" color="secondary">
-            •
-          </Typography>
-          <Button size="small" color="default">
-            Privacy Policy
-          </Button>
-        </>
-      )}
+
+      <Button size="small" onClick={togglePrivacyPolicy} color="default">
+        Privacy Policy
+      </Button>
     </Block>
 
     <Block>
@@ -64,24 +60,16 @@ const Footer = ({
         color="default"
       />
     </Block>
+    <PrivacyPolicy open={openPrivacyPolicy} onClick={togglePrivacyPolicy} />
   </Container>
 )
 
-const Link = styled.a`
-  &:visited {
-    text-decoration: none;
-  }
-  &:active {
-    text-decoration: none;
-  }
-`
-
-const Container = styled(AppBar)`
+const Container = styled(({ fullscreenMode, ...rest }) => <AppBar {...rest} />)`
   flex-wrap: nowrap;
   justify-content: space-around;
   transition: background 0.25s ease-in-out;
-  ${(props: { hide: boolean }) =>
-    props.hide
+  ${(props: { fullscreenMode: boolean }) =>
+    props.fullscreenMode
       ? `opacity: 0;
     position: absolute;
     top: 0;
@@ -104,10 +92,12 @@ const Block = styled.div`
 
 const mapStateToProps = (store: any) => ({
   themeMode: store.ui.theme,
+  openPrivacyPolicy: store.ui.showPrivacyPolicy,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
   changeModeTheme: () => dispatch(changeThemeMode()),
+  togglePrivacyPolicy: () => dispatch(togglePrivacyPolicyAction()),
 })
 
 export default compose(

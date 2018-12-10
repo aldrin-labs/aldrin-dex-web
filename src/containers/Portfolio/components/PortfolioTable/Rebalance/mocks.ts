@@ -1,5 +1,5 @@
 import { sumSame } from '@utils/PortfolioOptimizationUtils'
-import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
+import { cloneArrayElementsOneLevelDeep, sliceCoinName } from '@utils/PortfolioTableUtils'
 
 export function combineToChart(mockData) {
 
@@ -15,7 +15,7 @@ export function combineToBarChart(dataForChart) {
   const clonedDataChart = cloneArrayElementsOneLevelDeep(dataForChart)
 
   const newDataForBarChart = sumSame(clonedDataChart, 'symbol', 'portfolioPerc').map((dataItem) => ({
-    x: dataItem.symbol,
+    x: sliceCoinName(dataItem.symbol),
     y: parseFloat(parseFloat(dataItem.portfolioPerc).toFixed(2)) || 0
   }))
 

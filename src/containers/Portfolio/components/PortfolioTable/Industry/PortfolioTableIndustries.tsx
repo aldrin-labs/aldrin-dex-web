@@ -1,9 +1,9 @@
 import * as React from 'react'
-import { Grid } from '@material-ui/core'
+import { Grid, Fade } from '@material-ui/core'
 import Joyride from 'react-joyride'
 import { connect } from 'react-redux'
 
-import { TableWithSort as Table, DonutChart } from '@storybook-components'
+import { TableWithSort as Table, DonutChart } from '@storybook-components/index'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import {
   combineIndustryData,
@@ -16,6 +16,7 @@ import { Container, Wrapper, ChartWrapper } from './Industry.styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import { portfolioIndustrySteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
+import { withErrorFallback } from '@hoc/'
 
 const tableHeadings = [
   { name: 'Industry', value: 'industry', id: 'industry' },
@@ -133,7 +134,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { baseCoin, theme } = this.props
+    const { baseCoin, theme, tab } = this.props
     const { industryData, chartData, expandedRows } = this.state
 
     const tableDataHasData = industryData
@@ -147,37 +148,46 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
             <Grid item={true} xs={12} md={8}>
               <Wrapper>
                 <Table
+                  id="PortfolioIndustryTable"
+                  actionsColSpan={3}
                   expandableRows={true}
                   onChange={this.expandRow}
                   onSelectAllClick={this.onSelectAllClick}
                   expandedRows={expandedRows}
-                  title={`Industry Performance in ${baseCoin}`}
+                  title={'Industry Performance'}
                   {...this.putDataInTable()}
                 />
               </Wrapper>
             </Grid>
             <Grid item={true} xs={12} md={4}>
               <ChartWrapper>
-                <DonutChart
-                  labelPlaceholder="Industry %"
-                  data={chartData}
-                  colorLegend={true}
-                />
+                <Fade
+                  timeout={0}
+                  in={tab === 'industry'}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <DonutChart
+                    labelPlaceholder="Industry %"
+                    data={chartData}
+                    colorLegend={true}
+                  />
+                </Fade>
               </ChartWrapper>
             </Grid>
           </Container>
           <Joyride
             steps={portfolioIndustrySteps}
-            run={this.props.toolTip.portfolioIndustry}
+            run={this.props.toolTip.portfolioIndustry && tab === 'industry'}
             callback={this.handleJoyrideCallback}
             key={this.state.key}
             styles={{
               options: {
-                backgroundColor: theme.palette.background.paper,
-                primaryColor: theme.palette.primary.main,
-                textColor: theme.palette.getContrastText(
-                  theme.palette.background.paper
+                backgroundColor: theme.palette.getContrastText(
+                  theme.palette.primary.main
                 ),
+                primaryColor: theme.palette.secondary.main,
+                textColor: theme.palette.primary.main,
               },
               tooltip: {
                 fontFamily: theme.typography.fontFamily,
@@ -203,9 +213,12 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(
-  queryRendererHoc({
-    query: getPortfolioQuery,
-    pollInterval: 5000,
-    fetchPolicy: 'network-only',
-  })(PortfolioTableIndustries)
+  withErrorFallback(
+    queryRendererHoc({
+      query: getPortfolioQuery,
+      withOutSpinner: false,
+      // pollInterval: 5000,
+      // fetchPolicy: 'cache-and-network',
+    })(PortfolioTableIndustries)
+  )
 )

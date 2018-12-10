@@ -57,7 +57,7 @@ const DeleteKeyDialogComponent = ({
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} color="primary" id="DeleteDialogButton">
           Delete
         </Button>
       </DialogActions>

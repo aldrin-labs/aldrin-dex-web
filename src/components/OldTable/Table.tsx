@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import posed from 'react-pose'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 
@@ -22,8 +21,8 @@ export const FullWidthBlock = styled.div`
 
 export const Title = styled.div`
   width: 100%;
-  text-transform: uppercase;
-  padding: 10px;
+  padding: 6px;
+  height: 40px;
   background: ${(props: { background: string }) => props.background};
   text-align: center;
   vertical-align: middle;
@@ -44,8 +43,8 @@ export const Body = styled.ul`
   overflow-x: hidden;
   transition: height 0.25s ease-out;
   background: ${(props: { background?: string; height?: string }) =>
-      props.background ? props.background : 'transparent'}
-    ${customAquaScrollBar};
+    props.background ? props.background : 'transparent'};
+  ${customAquaScrollBar};
 `
 
 export const Row = styled.li`
@@ -56,7 +55,8 @@ export const Row = styled.li`
   transition: background 0.25s ease;
   background-color: ${(props: { isHead?: boolean; background: string }) =>
     props.background};
-  height: ${(props: { isHead?: boolean }) => (props.isHead ? '100%' : '22px')};
+  height: ${(props: { isHead?: boolean }) => (props.isHead ? '100%' : '2rem')};
+  will-change: background;
 
   &:hover {
     background: ${(props: {
@@ -67,18 +67,7 @@ export const Row = styled.li`
   }
 `
 
-export const Cell = styled(
-  posed.div({
-    attention: {
-      opacity: 1,
-      transition: {
-        type: 'keyframes',
-        duration: 1000,
-        values: [0, 0.2, 0, 5, 1],
-      },
-    },
-  })
-)`
+export const Cell = styled.div`
   position: relative;
   overflow: hidden;
   list-style: none;
@@ -101,15 +90,17 @@ export const HeadCell = styled(Cell)`
   width: 7%;
 `
 
+// padding right for scrollbar width
 export const Head = styled.ul`
   margin: 0;
   padding: 0;
+  padding-right: 6px;
   height: 2rem;
   width: 100%;
-  background-color: ${(props: { background: string }) => props.background};
-  border-bottom: 1px solid #818d9ae6;
+  background-color: ${(props: { background?: string; border?: string }) =>
+    props.background};
+  border-bottom: 1px solid
+    ${({ border }: { border?: string; background?: string }) => border};
   position: sticky;
   top: 0;
-
-  font-family: Roboto, sans-serif;
 `

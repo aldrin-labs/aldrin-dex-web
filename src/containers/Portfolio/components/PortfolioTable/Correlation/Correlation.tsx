@@ -5,7 +5,7 @@ import Joyride from 'react-joyride'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
-import { CorrelationMatrix } from '@storybook-components'
+import { CorrelationMatrix } from '@storybook-components/index'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
   toggleCorrelationTableFullscreen,
@@ -13,11 +13,12 @@ import {
 } from '@containers/Portfolio/actions'
 import { getCorrelationQuery } from '@containers/Portfolio/api'
 import { swapDates } from '@utils/PortfolioTableUtils'
-import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances.styles'
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
+import { MASTER_BUILD } from '@utils/config'
 
 const Correlation = (props: IProps) => {
   const {
@@ -59,7 +60,7 @@ const Correlation = (props: IProps) => {
 }
 
 const CorrelationWrapper = (props: IProps) => {
-  const { isShownMocks, children, theme } = props
+  const { isShownMocks, children, theme, tab } = props
   let { startDate, endDate } = props
   let key = 0
 
@@ -86,16 +87,16 @@ const CorrelationWrapper = (props: IProps) => {
     <PTWrapper>
       <Joyride
         steps={portfolioCorrelationSteps}
-        run={props.toolTip.portfolioCorrelation}
+        run={props.toolTip.portfolioCorrelation && tab === 'correlation'}
         callback={handleJoyrideCallback}
         key={key}
         styles={{
           options: {
-            backgroundColor: theme.palette.background.paper,
-            primaryColor: theme.palette.primary.main,
-            textColor: theme.palette.getContrastText(
-              theme.palette.background.paper
+            backgroundColor: theme.palette.getContrastText(
+              theme.palette.primary.main
             ),
+            primaryColor: theme.palette.secondary.main,
+            textColor: theme.palette.primary.main,
           },
           tooltip: {
             fontFamily: theme.typography.fontFamily,
@@ -103,8 +104,9 @@ const CorrelationWrapper = (props: IProps) => {
           },
         }}
       />
-      {isShownMocks ? (
+      {isShownMocks && !MASTER_BUILD ? (
         <Correlation
+          key="=/"
           data={{
             myPortfolios: [
               {
@@ -119,6 +121,7 @@ const CorrelationWrapper = (props: IProps) => {
         />
       ) : (
         <QueryRenderer
+          key="=/asfasd"
           fetchPolicy="network-only"
           component={Correlation}
           query={getCorrelationQuery}

@@ -1,13 +1,16 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import withTheme from '@material-ui/core/styles/withTheme'
 
 import * as actions from '@containers/Chart/actions'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
 import QueryRenderer from '@components/QueryRenderer'
 import { Loading } from '@components/Loading/Loading'
-import { SelectR } from '@styles/cssUtils'
 import { MARKETS_BY_EXCHANE_QUERY } from '@containers/Chart/api'
 import { createFilter } from 'react-select'
+import { ExchangePair } from '@containers/Chart/Chart'
+import ReactSelectComponent from '@components/ReactSelectComponent'
+import styled from 'styled-components'
 
 type T = { value: string; data: string }
 
@@ -44,7 +47,13 @@ class IntegrationReactSelect extends React.PureComponent {
     }
   }
   render() {
-    const { value, data } = this.props
+    const {
+      value,
+      data,
+      theme: {
+        palette: { divider },
+      },
+    } = this.props
     if (!suggestions || !data) {
       return <Loading centerAligned={true} />
     }
@@ -58,14 +67,26 @@ class IntegrationReactSelect extends React.PureComponent {
     }
 
     if (data) {
-      suggestions = data.getMarketsByExchange.map((suggestion: any) => ({
-        value: suggestion.symbol,
-        label: suggestion.symbol,
-      }))
+      suggestions = data.getMarketsByExchange
+        .filter(
+          ({ symbol }: { symbol: string }) =>
+            symbol.split('_')[0] !== 'undefined' ||
+            symbol.split('_')[1] !== 'undefined'
+        )
+        .map((suggestion: any) => ({
+          value: suggestion.symbol,
+          label: suggestion.symbol,
+        }))
     }
     return (
-      <div style={{ width: '15%' }} className="AutoSuggestSelect">
+      <ExchangePair
+        style={{ width: '9rem' }}
+        border={divider}
+        className="AutoSuggestSelect"
+      >
         <SelectR
+          id={this.props.id}
+          style={{ width: '100%' }}
           filterOption={createFilter(filterConfig)}
           placeholder="Add chart"
           value={value && { value, label: value }}
@@ -73,10 +94,16 @@ class IntegrationReactSelect extends React.PureComponent {
           options={suggestions || []}
           onChange={this.handleChange}
         />
-      </div>
+      </ExchangePair>
     )
   }
 }
+
+const SelectR = styled(ReactSelectComponent)`
+  width: 100%;
+  font-size: 0.8rem;
+  display: flex;
+`
 
 const queryRender = (props: any) => {
   return (
@@ -106,7 +133,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   addChart: (baseQuote: string) => dispatch(actions.addChart(baseQuote)),
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(queryRender)
+export default withTheme()(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(queryRender)
+)

@@ -129,8 +129,6 @@ export default class Table extends Component<IProps, IState> {
                   </Item>
                 ))}
             </Col>
-
-            {console.log('optimizedData in Table', optimizedData)}
             {optimizedData.length >= 1 ? (
               <Col>
                 {data
@@ -144,9 +142,10 @@ export default class Table extends Component<IProps, IState> {
                       key={`percentage-opt-${item.coin}${item.percentage}${i}`}
                     >
                       <Typography variant="body1" align="center">
-                        {item.optimizedPercentageArray && item.optimizedPercentageArray[activeButton] ?
-                          `${item.optimizedPercentageArray[activeButton]}%` : '-'
-                        }
+                        {item.optimizedPercentageArray &&
+                        item.optimizedPercentageArray[activeButton]
+                          ? `${item.optimizedPercentageArray[activeButton]}%`
+                          : '-'}
                       </Typography>
 
                       <StyledDeleteIcon
@@ -187,6 +186,7 @@ export default class Table extends Component<IProps, IState> {
           <TableInput>
             <Item background={palette.background.paper}>
               <Input
+                id="AddCoinText"
                 color={textColor}
                 placeholder="Coin"
                 type="text"
@@ -206,10 +206,13 @@ export default class Table extends Component<IProps, IState> {
               }}
             >
               <AddStyled
+                id="AddIcon"
                 color={textColor}
                 show={true}
                 onClick={() => {
-                  onPlusClick && onPlusClick(this.state.name, this.state.value)
+                  if (onPlusClick) {
+                    onPlusClick(this.state.name, this.state.value)
+                  }
                   this.setState({ name: '' })
                   this.setState({ value: '' })
                 }}

@@ -14,25 +14,37 @@ const config = {
   },
   output: {
     filename: 'static/[name].[hash].js',
+    chunkFilename: '[name].bundle.js',
   },
   devtool,
   module: {
     rules: [],
   },
   optimization: {
+    runtimeChunk: 'single',
     splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
       cacheGroups: {
         vendor: {
-          chunks: 'initial',
-          name: 'vendor',
-          test: 'vendor',
-          enforce: true,
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            )[1]
+
+            // npm package names are URL-safe, but some servers don't like @ symbols
+            return `npm.${packageName.replace('@', '')}`
+          },
         },
       },
     },
-    runtimeChunk: true,
   },
   plugins: [
+    new webpack.HashedModuleIdsPlugin(),
     new LodashModuleReplacementPlugin({
       caching: true,
       paths: true,
@@ -54,6 +66,7 @@ const config = {
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
         API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT),
+        MASTER_BUILD: JSON.stringify(process.env.MASTER_BUILD),
         CHARTS_API_ENDPOINT: JSON.stringify(process.env.CHARTS_API_ENDPOINT),
       },
     }),

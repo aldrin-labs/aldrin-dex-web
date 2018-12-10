@@ -1,11 +1,19 @@
 import { LinearProgress, Card } from '@material-ui/core'
 import styled from 'styled-components'
-import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances/PortfolioTableBalances.styles'
+import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.styles'
 import { customAquaScrollBar } from '@styles/cssUtils'
-import CardHeader from '@components/CardHeader';
+import CardHeader from '@components/CardHeader'
 
-export { Loader, ChartsContainer, Chart, MainArea, MainAreaUpperPart, PTWrapper, Content, ChartContainer }
-
+export {
+  Loader,
+  ChartsContainer,
+  Chart,
+  MainArea,
+  MainAreaUpperPart,
+  PTWrapper,
+  Content,
+  ChartContainer,
+}
 
 const Loader = styled(LinearProgress)`
   margin-bottom: 0.5rem;
@@ -52,28 +60,36 @@ const PTWrapper = styled.div`
   overflow-y: auto;
   overflow: auto;
   ${(props: { notScrollable: boolean }) =>
-  props.notScrollable ? 'overflow:hidden;' : ''};
+    props.notScrollable ? 'overflow:hidden;' : ''};
   display: flex;
   flex-direction: column;
   border-radius: 3px;
   position: relative;
   height: calc(100vh - 48px);
-  background: ${(props: {background: string}) => props.background};
+  background: ${(props: { background: string }) => props.background};
 
   ${customAquaScrollBar};
 `
 
 export const StyledCardHeader = styled(CardHeader)`
   margin-bottom: 15px;
+  
+   & > div {
+  align-self: auto !important;
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+ }
 `
 
 export const ContentInner = styled.div`
   ${(props: { loading: boolean }) =>
-  props.loading ? `
+    props.loading
+      ? `
   filter: blur(10px);
   user-select: none;
   pointer-events: none;
-  ` : ``};
+  `
+      : ``};
 `
 
 const Content = styled.div`
@@ -81,22 +97,22 @@ const Content = styled.div`
 `
 
 const ChartContainer = styled(Card)`
-    width: 49%;
+  width: 49%;
 `
 
 export const LoaderWrapper = styled.div`
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    & > div {
-      z-index: 1;
-    }
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > div {
+    z-index: 1;
+  }
 `
 
 export const LoaderInnerWrapper = styled.div`
@@ -105,6 +121,4 @@ export const LoaderInnerWrapper = styled.div`
   flex-direction: column;
 `
 
-export const LoadingText = styled.p`
-
-`
+export const LoadingText = styled.p``

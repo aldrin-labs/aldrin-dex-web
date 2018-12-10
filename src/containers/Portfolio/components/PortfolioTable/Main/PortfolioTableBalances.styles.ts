@@ -1,16 +1,22 @@
 import styled from 'styled-components'
-import { Paper, Grid, Card } from '@material-ui/core'
+import { Grid, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { Container } from '../../Industry/Industry.styles'
+import { Container } from '../Industry/Industry.styles'
 
 export const GridContainer = styled(Container)`
+  flex-wrap: nowrap;
+  flex-direction: column;
+  @media (max-width: 960px) {
+    flex-wrap: wrap;
+    flex-direction: row;
+  }
   && {
     margin: 0;
   }
 `
 
-export const ChartWrapper = styled(Paper)`
+export const ChartWrapper = styled(Card)`
   position: relative;
   height: 100%;
   width: 100%;
@@ -23,14 +29,18 @@ export const TableContainer = styled(Grid)`
   }
 `
 export const ChartContainer = styled(Grid)`
+  flex-basis: 51%;
+  padding: 0 8px;
+  @media (max-width: 960px) {
+    flex-basis: 100%;
+    padding: 0 8px;
+  }
   && {
     height: 40%;
   }
 `
 
-
-
-export const PTWrapper = styled(Paper)`
+export const PTWrapper = styled(Card)`
   grid-column: 2;
   width: ${(props: { tableData?: boolean }) =>
     props.tableData ? 'calc(100% - 2rem)' : '100%'};
@@ -62,6 +72,16 @@ export const TableWrapper = styled(Card)`
   display: flex;
   flex-direction: column;
   ${customAquaScrollBar};
+`
+
+export const TablesWrapper = styled(Grid)`
+  max-height: 50%;
+  flex-basis: inherit;
+  padding: 0 !important;
+  margin: 0;
+  @media (max-width: 960px) {
+    max-height: inherit;
+  }
 `
 
 export const PTChartContainer = styled(Grid)`

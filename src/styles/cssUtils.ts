@@ -4,7 +4,8 @@ import ReactSelectComponent from '@components/ReactSelectComponent'
 
 export const customAquaScrollBar = css`
   &::-webkit-scrollbar {
-    width: ${({scrollBarWidth}: {scrollBarWidth: number}) => (scrollBarWidth ? `${scrollBarWidth}px` : '3px')};
+    width: ${({ scrollBarWidth }: { scrollBarWidth: number }) =>
+      scrollBarWidth ? `${scrollBarWidth}px` : '3px'};
     height: 6px;
   }
 
@@ -13,7 +14,7 @@ export const customAquaScrollBar = css`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: #4ed8da;
+    background: rgb(39, 39, 45);
   }
 `
 
@@ -24,6 +25,7 @@ export const TypographyFullWidth = styled(TypographyWithCustomColor)`
 
 export const SelectR = styled(ReactSelectComponent)`
   font-family: Roboto;
+  width: 100%;
   font-size: 16px;
   border-bottom: 1px solid #c1c1c1;
   transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -33,8 +35,7 @@ export const SelectR = styled(ReactSelectComponent)`
   }
 `
 
-export const SelectT = styled(ReactSelectComponent)`
-`
+export const SelectT = styled(ReactSelectComponent)``
 
 export const Span = styled.span``
 
@@ -79,10 +80,11 @@ export const Icon = styled.i`
 export const LegendContainer = styled.div`
   border-radius: 5px;
   position: absolute;
-  font-family: Roboto, sans-serif;
+  font-family: ${(props: { fontFamily: string }) => props.fontFamily};
   background-color: #869eb180;
-  top: 0px;
-  left: 10%;
-  color: white;
+  top: ${({ top }: { top: number }) => (top ? `${top}` : 0)};
+  left: ${({ left }: { left: number }) => (left ? `${left}` : '')};
+  right: ${({ right }: { right: number }) => (right ? `${right}` : '')};
+  color: ${(props: { color: string }) => props.color};
   transition: opacity 0.25s ease-out;
 `

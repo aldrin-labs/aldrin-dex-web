@@ -11,7 +11,9 @@ import {
 } from '@utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
+import ComingSoon from '@components/ComingSoon'
 import { IProps, IState } from './OrderBookTableContainer.types'
+import { MASTER_BUILD } from '@utils/config'
 let unsubscribe: Function | undefined
 
 class OrderBookTableContainer extends Component<IProps, IState> {
@@ -113,8 +115,8 @@ class OrderBookTableContainer extends Component<IProps, IState> {
 
       return {
         spread,
-        bids: maximumItemsInArray([...bids], 200, 10),
-        asks: maximumItemsInArray([...asks], 200, 10, true),
+        bids: maximumItemsInArray([...bids], 100, 40),
+        asks: maximumItemsInArray([...asks], 100, 40, true),
         i: iterator,
         digitsAfterDecimalForAsksPrice: getNumberOfDigitsAfterDecimal(
           asks,
@@ -178,9 +180,9 @@ class OrderBookTableContainer extends Component<IProps, IState> {
       digitsAfterDecimalForBidsPrice,
       digitsAfterDecimalForBidsSize,
     } = this.state
-
     return (
       <>
+        {MASTER_BUILD && <ComingSoon />}
         <OrderBookTable
           digitsAfterDecimalForAsksSize={digitsAfterDecimalForAsksSize}
           digitsAfterDecimalForAsksPrice={digitsAfterDecimalForAsksPrice}

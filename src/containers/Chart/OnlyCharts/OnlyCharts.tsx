@@ -52,11 +52,11 @@ class OnlyCharts extends Component<IProps> {
           callback={this.handleJoyrideCallback}
           styles={{
             options: {
-              backgroundColor: theme.palette.background.paper,
-              primaryColor: theme.palette.primary.main,
-              textColor: theme.palette.getContrastText(
-                theme.palette.background.paper
+              backgroundColor: theme.palette.getContrastText(
+                theme.palette.primary.main
               ),
+              primaryColor: theme.palette.secondary.main,
+              textColor: theme.palette.primary.main,
             },
             tooltip: {
               fontFamily: theme.typography.fontFamily,
@@ -72,6 +72,7 @@ class OnlyCharts extends Component<IProps> {
           unmountOnExit={true}
         >
           <ChartContainer
+            data-e2e="chart-container"
             fullscreen={view !== 'default'}
             chartsCount={charts.length || 1}
           >
@@ -79,7 +80,6 @@ class OnlyCharts extends Component<IProps> {
               .filter((chart) => chart.id && chart.pair)
               .map((chart: IChart, i: number) => (
                 <IndividualChart
-                  //  if there is no id generate it here
                   key={chart.id}
                   theme={theme}
                   removeChart={removeChart}

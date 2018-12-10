@@ -66,7 +66,6 @@ const formikEnhancer = withFormik({
         },
       })
       resetForm({})
-      props.forceUpdateUserContainer()
 
       setSubmitting(false)
     } catch (error) {

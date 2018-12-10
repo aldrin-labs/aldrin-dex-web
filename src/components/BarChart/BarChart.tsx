@@ -48,8 +48,15 @@ class BarChart extends Component<IProps, IState> {
       hideDashForToolTip,
       animated = false,
       xAxisVertical,
+      theme,
     } = this.props
     const { value } = this.state
+
+    const textColor = theme.palette.getContrastText(
+      theme.palette.background.paper
+    )
+    const fontFamily = theme.typography.fontFamily
+
 
     const ITEMS: Items[] = []
 
@@ -75,7 +82,7 @@ class BarChart extends Component<IProps, IState> {
         <Container height={height}>
           <FlexibleXYPlot onMouseLeave={this.onSeriesMouseOut} xType="ordinal" margin={{ bottom: 55}}>
             {alwaysShowLegend && (
-              <LegendContainer>
+              <LegendContainer left={`10%`} color={textColor} fontFamily={fontFamily}>
                 <StyledDiscreteColorLegend orientation="horizontal" items={ITEMS} />
               </LegendContainer>
             )}

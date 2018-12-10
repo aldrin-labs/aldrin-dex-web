@@ -13,6 +13,8 @@ import * as API from '@containers/Login/api'
 import { LoginMenu } from '@containers/Login/components'
 import MainLogo from '@icons/AuthLogo.png'
 import { Grow, Slide } from '@material-ui/core'
+import { MASTER_BUILD } from '@utils/config'
+import { client, persistor } from '@graphql/apolloClient'
 
 const auth0Options = {
   auth: {
@@ -35,6 +37,7 @@ const auth0Options = {
 
 const SWrapper = styled.div`
   z-index: 100000;
+  padding: 0 1rem;
   align-items: center;
   display: flex;
   justify-content: flex-end;
@@ -65,6 +68,16 @@ class LoginQuery extends React.Component<Props, State> {
     this.checkToken()
     this.props.listenersWillOn()
     this.setLockListeners()
+    if (this.props.loginStatus) this.addFSIdentify(this.props.user)
+  }
+
+  addFSIdentify(profile) {
+    if (MASTER_BUILD) {
+      FS.identify(profile.email, {
+        displayName: profile.email,
+        email: profile.email,
+      })
+    }
   }
 
   setLockListeners = () => {
@@ -72,13 +85,15 @@ class LoginQuery extends React.Component<Props, State> {
       this.props.onLogin()
       this.state.lock.getUserInfo(
         authResult.accessToken,
-        (error: Error, profile: any) => {
+        async (error: Error, profile: any) => {
           if (error) {
             console.error(error)
           }
+          await this.setToken(authResult.idToken)
+          await this.createUserReq(profile)
           this.props.storeLogin(profile)
-          this.setToken(authResult.idToken)
-          this.createUserReq(profile)
+          this.addFSIdentify(profile)
+          this.resumeApollo()
         }
       )
     })
@@ -105,11 +120,40 @@ class LoginQuery extends React.Component<Props, State> {
         const currentTime = Date.now() / 1000
         if (currentTime > decodedToken.exp) {
           this.props.storeLogout()
+          this.cleanApollo()
         }
       } else {
         this.props.storeLogout()
+        this.cleanApollo()
       }
     }
+  }
+
+  cleanApollo = () => {
+    // User clicks 'log out'.
+    // First: do whatever is necessary in your app to invalidate/clear out the user's session.
+    // Then do the following:
+
+    persistor.pause() // Pause automatic persistence.
+    persistor.purge() // Delete everything in the storage provider.
+
+    // If there are views visible that contain data from the logged-out user,
+    // this will cause them to clear out. It also issues a bunch of network requests
+    // for data that likely won't be available anymore since the user is logged-out,
+    // so you may consider skipping this.
+    client.resetStore()
+  }
+
+  resumeApollo = () => {
+    // Let's assume the user logs in.
+    // First: do whatever is necessary to set the user's session.
+    // Next: you absolutely must reset the store. This will clear the prior user's data from
+    // memory and will cause all of the open queries to refetch using the new user's session.
+    client.resetStore()
+
+    // Resume cache persistence. The cache storage provider will be empty right now,
+    // but it will written with the new user's data the next time the trigger fires.
+    persistor.resume()
   }
 
   setToken = (token: string) => {
@@ -126,6 +170,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   handleLogout = () => {
     this.props.storeLogout()
+    this.cleanApollo()
     window.localStorage.removeItem('token')
   }
 
@@ -169,12 +214,13 @@ class LoginQuery extends React.Component<Props, State> {
     if (isShownModal) return null
 
     return (
-      <SWrapper>
+      <SWrapper className="LoginButton">
         <Grow in={!loginStatus} unmountOnExit={true} mountOnEnter={true}>
           <Button
             color="secondary"
             variant="contained"
             onClick={this.showLogin}
+            className="loginButton"
           >
             Log in
           </Button>

@@ -7,7 +7,8 @@ export const Container = styled(Grid)`
   && {
     overflow-y: auto;
     height: calc(100vh - ${navBarHeight}px);
-    padding: 0.5rem 0;
+
+    margin: 0;
     width: 100%;
   }
 `
@@ -16,7 +17,7 @@ export const Wrapper = styled(Card)`
   max-height: 100%;
   display: flex;
   width: 100%;
-  margin: 0 0.5rem 0.25rem;
+
   flex-direction: column;
   overflow-x: auto;
   ${customAquaScrollBar};

@@ -1,17 +1,26 @@
 import React from 'react'
 import { withStyles, CardHeader, createStyles, Theme } from '@material-ui/core'
 import { CardHeaderProps } from '@material-ui/core/CardHeader'
+import { fade } from '@material-ui/core/styles/colorManipulator'
 
 const styles = (theme: Theme) =>
   createStyles({
     root: {
-      padding: '1px 14px 1px 6px',
+      borderBottom: `1px solid ${theme.palette.divider}`,
+      height: '34px',
+      padding: '6px',
       width: '100%',
-      height: theme.spacing.unit * 4,
       backgroundColor:
         theme.palette.type === 'dark'
-          ? theme.palette.grey[900]
-          : theme.palette.primary.dark,
+          ? theme.palette.primary.light
+          : fade(theme.palette.primary.main, 0.5),
+    },
+    title: {
+      fontFamily: 'Roboto, Helvetica, Arial, sans-serif',
+      fontWeight: 500,
+      lineHeight: 1.5,
+      letterSpacing: '0.02857em',
+      fontSize: '16px',
     },
     action: {
       display: 'flex',
@@ -22,7 +31,8 @@ const styles = (theme: Theme) =>
 
 const Header = (props: CardHeaderProps) => (
   <CardHeader
-    titleTypographyProps={{ variant: 'button', color: 'secondary' }}
+    style={props.style}
+    titleTypographyProps={{ variant: 'body1', color: 'default' }}
     classes={{
       root: props && props.classes && props.classes.root,
       action: props && props.classes && props.classes.action,

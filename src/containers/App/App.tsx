@@ -19,8 +19,9 @@ import Footer from '@components/Footer'
 
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
+import ShowWarningOnMoblieDevice from '@components/ShowWarningOnMoblieDevice'
 
-const version = `0.3`
+const version = `1`
 const currentVersion = localStorage.getItem('version')
 if (currentVersion !== version) {
   localStorage.clear()
@@ -44,7 +45,8 @@ const AppRaw = ({
           <AnimatedNavBar pathname={currentPage} hide={fullscreen} />
           {children}
         </AppGridLayout>
-        <Footer hide={fullscreen} />
+        <Footer fullscreenMode={fullscreen} />
+        <ShowWarningOnMoblieDevice />
       </ThemeWrapper>
     </JssProvider>
   )

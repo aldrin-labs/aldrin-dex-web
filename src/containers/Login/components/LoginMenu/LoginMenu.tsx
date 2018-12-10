@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import IconButton from '@material-ui/core/IconButton'
-import LiveHelp from '@material-ui/icons/LiveHelp'
+import LiveHelp from '@material-ui/icons/Help'
 import ExitIcon from '@material-ui/icons/ExitToApp'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -29,7 +29,7 @@ const LoginMenuComponent = ({
       </IconButton>
     </Tooltip>
     <Tooltip title="Log out" enterDelay={500}>
-      <IconButton color="default" onClick={handleLogout}>
+      <IconButton color="default" onClick={handleLogout} id="ExitButton">
         <ExitIcon />
       </IconButton>
     </Tooltip>
