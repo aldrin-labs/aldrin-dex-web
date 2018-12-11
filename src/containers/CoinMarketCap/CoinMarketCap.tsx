@@ -13,6 +13,7 @@ import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 import {
   addMainSymbol,
   formatNumberToUSFormat,
+  roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'
 
 import {
@@ -116,12 +117,12 @@ export class CoinMarket extends React.Component<Props, State> {
           Symbol: value.symbol,
           PriceUSD: {
             contentToSort: value.price_usd || 0,
-            render: addMainSymbol(formatNumberToUSFormat(value.price_usd || 0), true),
+            render: addMainSymbol(roundAndFormatNumber(value.price_usd || 0, 2), true),
             isNumber: true,
           },
           PriceBTC: {
             contentToSort: value.price_btc || 0,
-            render: addMainSymbol(formatNumberToUSFormat(value.price_btc) || 0, false),
+            render: addMainSymbol(roundAndFormatNumber(value.price_btc, 8) || 0, false),
             isNumber: true,
           },
           MarketCap: {
@@ -146,7 +147,7 @@ export class CoinMarket extends React.Component<Props, State> {
           },
           Volume24h: {
             contentToSort: value.volume_usd_24h || 0,
-            render: addMainSymbol(formatNumberToUSFormat(value.volume_usd_24h || 0), true),
+            render: addMainSymbol(roundAndFormatNumber(value.volume_usd_24h || 0, 2), true),
             isNumber: true,
           },
           PercentChange1h: {
