@@ -1,10 +1,13 @@
+import React from 'react'
 import styled from 'styled-components'
 import { Card, Grid, IconButton, CardContent } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 
 export { ChartWrapper, ChartContainer, Chart, Container }
 
-const ChartWrapper = styled(Grid)`
+const ChartWrapper = styled(({ isEditModeEnabled, ...rest }) => (
+  <Grid {...rest} />
+))`
   display: flex;
   position: relative;
   flex-direction: column;
@@ -13,7 +16,7 @@ const ChartWrapper = styled(Grid)`
   align-items: center;
 
   height: 45%;
-  && { 
+  && {
     padding-bottom: 0;
   }
 `
@@ -34,7 +37,9 @@ const Chart = styled(CardContent)`
   }
 `
 
-const Container = styled(Grid)`
+const Container = styled(({ isEditModeEnabled, ...rest }) => (
+  <Grid {...rest} />
+))`
   justify-content: ${(props: { isEditModeEnabled: boolean }) =>
     props.isEditModeEnabled ? 'space-between' : 'left'};
 

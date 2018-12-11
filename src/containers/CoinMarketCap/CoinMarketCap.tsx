@@ -1,14 +1,31 @@
 import * as React from 'react'
-import { graphql } from 'react-apollo'
-import styled from 'styled-components'
 import { History } from 'history'
-import Button from '@components/Elements/Button/Button'
-import Calculator from '@components/Calculator/Calculator'
-import DominanceChart from '@components/DominanceChart/DominanceChart'
-import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
+// import { Button } from '@material-ui/core'
+// import Button from '@components/Elements/Button/Button'
+// import Calculator from '@components/Calculator/Calculator'
+// import DominanceChart from '@components/DominanceChart/DominanceChart'
+import {  TableWithSort } from '@storybook-components/index'
+import { queryRendererHoc } from '@components/QueryRenderer'
+// import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
-import { CoinMarketCapQuery } from './api'
-import { Loading } from '@components/Loading'
+ import { CoinMarketCapQuery } from './api'
+// import CardHeader from '@components/CardHeader'
+import {
+  addMainSymbol,
+  formatNumberToUSFormat,
+} from '@utils/PortfolioTableUtils'
+
+import {
+  Container,
+  GridContainer,
+  TableWrapper,
+  TableContainer,
+  ChartWrapper,
+  DonutChatWrapper,
+  CalculatorWrapper,
+} from './styles'
+
+import { data, chartCoins } from './mocks'
 
 interface Props {
   data: CoinMarketCapQueryQuery
@@ -18,6 +35,8 @@ interface Props {
 
 interface State {
   activeSortArg: number | null
+  page: number
+  rowsPerPage: number
 }
 
 export const rates = [
@@ -31,9 +50,22 @@ export const rates = [
   { name: 'USD/XRP', rate: 1 },
 ]
 
-class CoinMarket extends React.Component<Props, State> {
+export class CoinMarket extends React.Component<Props, State> {
   state: State = {
     activeSortArg: null,
+    page: 0,
+    rowsPerPage: 20,
+  }
+
+  handleChangePage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    page: number
+  ) => {
+    this.setState({ page })
+  }
+
+  handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ rowsPerPage: event.target.value })
   }
 
   redirectToProfile = (_id: string) => {
@@ -94,64 +126,99 @@ class CoinMarket extends React.Component<Props, State> {
     }
   }
 
+  getDataForTabale = (data) => {
+    return {
+      head: [
+        { id: 'Number', isNumber: true, label: '№' },
+        { id: 'Name', isNumber: false, label: 'Name' },
+        { id: 'Symbol', isNumber: false, label: 'Symbol'},
+        { id: 'PriceUSD', isNumber: true, label: 'Price USD' },
+        { id: 'PriceBTC', isNumber: true, label: 'Price BTC' },
+        { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
+        { id: 'AvailableSupply', isNumber: true, label: 'Available Supply' },
+        { id: 'Volume24h', isNumber: true, label: 'Volume 24 hr' },
+        { id: 'cg1hUSD', isNumber: true, label: '%1hr USD' },
+        { id: 'cg1hBTC', isNumber: true, label: '%1hr BTC' },
+        { id: 'cg24hUSD', isNumber: true, label: '%24hr USD' },
+        { id: 'cg24hBTC', isNumber: true, label: '%24hr BTC' },
+        { id: 'cg7dUSD', isNumber: true, label: '%7days USD' },
+        { id: 'cg7dBTC', isNumber: true, label: '%7days BTC' },
+        { id: 'cgATH', isNumber: true, label: '% chg ATH' },
+      ],
+      data: {
+        body: (data.assetPagination.items).map((value, index) => ({
+          id: index,
+          Number: index + 1,
+          Name: value.name,
+          Symbol: value.symbol,
+          PriceUSD: {
+            contentToSort: value.priceUSD,
+            render: addMainSymbol(formatNumberToUSFormat(value.priceUSD), true),
+            isNumber: true,
+          },
+          PriceBTC: {
+            contentToSort: value.priceUSD,
+            render: addMainSymbol(formatNumberToUSFormat(0), true),
+            isNumber: true,
+          },
+          MarketCap: {
+            contentToSort: value.maxSupply || 0,
+            render: addMainSymbol(formatNumberToUSFormat(value.maxSupply || 0), true),
+            isNumber: true,
+          },
+          AvailableSupply: {
+            contentToSort: value.availableSupply,
+            render: formatNumberToUSFormat(value.availableSupply),
+            isNumber: true,
+          },
+          Volume24h: 0,
+          cg1hUSD: 0,
+          cg1hBTC: 0,
+          cg24hUSD: 0,
+          cg24hBTC: 0,
+          cg7dUSD: 0,
+          cg7dBTC: 0,
+          cgATH: 0,
+        })),
+      },
+    }
+  }
+
   render() {
     const { activeSortArg } = this.state
     const { data } = this.props
-    if (data.loading || !data.assetPagination) {
-      return <Loading centerAligned />
-    }
     const { assetPagination } = data
     const { items } = assetPagination
+    const dataForTable = this.getDataForTabale(this.props.data)
 
     return (
-      <Wrapper>
-        <LeftColumn>
-          <CoinMarketTable location={this.props.location} />
-
-          <Pagination>
-            <Button title="Previous" onClick={this.decrementPage} />
-            <Button title="View all coins" />
-            <Button title="Next" onClick={this.incrementPage} />
-          </Pagination>
-        </LeftColumn>
-
-        <RightColumn>
-          <Calculator rates={rates} />
-
-          <DominanceChart />
-        </RightColumn>
-      </Wrapper>
+      <Container>
+        <GridContainer container={true} spacing={16}>
+          <TableContainer item={true} xs={12} md={12}>
+            <TableWrapper>
+              <TableWithSort
+                  title="Title"
+                  columnNames={dataForTable.head}
+                  data={dataForTable.data}
+                  padding="default"
+                  pagination={{
+                    page: this.state.page,
+                    rowsPerPage: this.state.rowsPerPage,
+                    rowsPerPageOptions: [20, 50, 100, 200],
+                    handleChangeRowsPerPage: this.handleChangeRowsPerPage,
+                    handleChangePage: this.handleChangePage,
+                  }}
+              />
+            </TableWrapper>
+          </TableContainer>
+        </GridContainer>
+      </Container>
     )
   }
 }
 
-const RightColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 380px;
-  margin-top: 24px;
-  margin-left: 16px;
-`
 
-const LeftColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 775px;
-`
 
-const Pagination = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-top: 16px;
-`
-
-const Wrapper = styled.div`
-  max-width: 1400px;
-  display: flex;
-  margin: 0 auto;
-  padding: 0.5rem;
-`
 
 const options = ({ location }) => {
   let page
@@ -161,11 +228,27 @@ const options = ({ location }) => {
     const query = new URLSearchParams(location.search)
     page = query.get('page')
   }
-  return { variables: { perPage: 20, page } }
+  return { perPage: 1000, page }
 }
 
-export const CoinMarketCap = graphql(CoinMarketCapQuery, { options })(
-  CoinMarket
-)
 
-export default CoinMarketCap
+export const MyCoinMarket = queryRendererHoc({
+  query: CoinMarketCapQuery,
+  pollInterval: 5000,
+  fetchPolicy: 'network-only',
+  variables: options(location)
+})(CoinMarket)
+
+
+
+/*
+export const MyCoinMarket = (props) => {
+  return (
+    <CoinMarket
+      data={data}
+      {...props}
+    />
+  )
+}*/
+
+export default MyCoinMarket

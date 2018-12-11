@@ -1,14 +1,12 @@
 import * as React from 'react'
 import { compose, Query } from 'react-apollo'
-
-import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
-import QueryRenderer from '@components/QueryRenderer'
-import { GET_COINS } from '../../mutations/portfolio/getCoins'
 import withTheme from '@material-ui/core/styles/withTheme'
-
-import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
-import { withErrorFallback } from '@hoc/index'
 import { isEqual } from 'lodash-es'
+
+import { PortfolioChart } from '@storybook-components/index'
+import QueryRenderer from '@components/QueryRenderer'
+import { PRICE_HISTORY_QUERY, GET_COINS } from '@containers/Portfolio/api'
+import { withErrorFallback } from '@hoc/index'
 import { yearData } from './chartMocks'
 
 const periods = {
@@ -58,7 +56,7 @@ class GQLChart extends React.Component {
   state = {
     coins: [],
     assets: [],
-    period: 3600,
+    period: periods[365],
     sum: 0,
     unixTimestampFrom: this.getTimestampRange(365).left,
     unixTimestampTo: this.getTimestampRange(365).right,

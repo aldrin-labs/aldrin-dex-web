@@ -14,12 +14,13 @@ import Feedback from '@components/Feedback'
 import styled from 'styled-components'
 
 export interface Props extends WithTheme {
-  hide?: boolean
+  $hide?: boolean
   pathname: string
 }
 
 const Portfolio = (props: any) => <Link to="/portfolio" {...props} />
 const Chart = (props: any) => <Link to="/chart" {...props} />
+const Market = (props: any) => <Link to="/market" {...props} />
 
 const NavBarRaw: SFC<Props> = ({
   theme: {
@@ -35,7 +36,7 @@ const NavBarRaw: SFC<Props> = ({
     },
   },
   pathname,
-  hide = false,
+  $hide = false,
 }) => {
   const nonActiveButtonStyle =
     type === 'dark'
@@ -51,9 +52,8 @@ const NavBarRaw: SFC<Props> = ({
   return (
     <Nav
       position="static"
-      hide={hide}
+      variant={{ hide: $hide, background: primary.main }}
       color="default"
-      background={primary.main}
       className="Navbar"
     >
       <Toolbar variant="dense" style={{ height: '48px' }}>
@@ -89,13 +89,22 @@ const NavBarRaw: SFC<Props> = ({
               <Button
                 style={createStyleForButton(pathname, '/chart')}
                 component={Chart}
-                size="small"
+                size="medium"
                 variant="text"
                 color="default"
-                size="medium"
               >
                 {pathname === '/chart' && <Marker color={main} />}
                 Chart
+              </Button>
+              <Button
+                style={createStyleForButton(pathname, '/market')}
+                component={Market}
+                size="medium"
+                variant="text"
+                color="default"
+              >
+                {pathname === '/market' && <Marker color={main} />}
+                Market
               </Button>
             </Grid>
           </Grid>

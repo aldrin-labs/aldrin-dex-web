@@ -12,18 +12,6 @@ describe('portfolio main', () => {
           .click()
       }
     )
-    Cypress.Commands.add(
-      'chooseReactSelectOption',
-      (selector, text, option) => {
-        cy.get(`${selector} input`)
-          .first()
-          .click({ force: true })
-          .type(text, { force: true })
-          .get(`${selector} .select__menu`)
-          .contains(option)
-          .click()
-      }
-    )
 
     cy.visit('/')
 
