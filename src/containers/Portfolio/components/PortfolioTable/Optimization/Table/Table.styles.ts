@@ -27,20 +27,7 @@ const AddStyled = withStyles((theme: Theme) => ({
   },
 }))(AddIcon)
 
-// const AddStyled = styled(AddIcon)`
-//   color: ${(props: { color: boolean }) => props.color};
-//   position: relative;
-//   font-size: 2rem;
-//   cursor: pointer;
-//   top: ${(props: { show: boolean }) => (props.show ? '0px' : '100px')};
-//   opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
-//   transition: all 0.4s linear;
 
-//   @-moz-document url-prefix() {
-//     min-width: 32px;
-//     min-height: 32px;
-//   }
-// `
 
 const StyledCard = styled(Card)`
   height: 190px;
