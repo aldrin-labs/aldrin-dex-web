@@ -22,7 +22,6 @@ const Portfolio = (props: any) => <Link to="/portfolio" {...props} />
 const Chart = (props: any) => <Link to="/chart" {...props} />
 const Market = (props: any) => <Link to="/market" {...props} />
 
-
 const NavBarRaw: SFC<Props> = ({
   theme: {
     transitions: {
@@ -104,6 +103,7 @@ const NavBarRaw: SFC<Props> = ({
                 variant="text"
                 color="default"
               >
+                {pathname === '/market' && <Marker color={main} />}
                 Market
               </Button>
             </Grid>
