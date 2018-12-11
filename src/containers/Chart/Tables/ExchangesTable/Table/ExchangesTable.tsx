@@ -116,7 +116,7 @@ class ExchangesTable extends PureComponent<IProps> {
                     return (
                       <FlexCell key={propinx} width="50%">
                         <Icon
-                          color={
+                          iconcolor={
                             exchange.status || theme.palette.secondary.main
                           }
                         />

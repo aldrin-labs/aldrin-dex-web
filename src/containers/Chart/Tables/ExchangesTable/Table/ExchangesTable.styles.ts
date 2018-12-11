@@ -12,7 +12,7 @@ export const Icon = styled(FaCircle)`
   font-size: 0.5rem;
   min-width: 20%;
   flex-basis: 20%;
-  color: ${(props: { color: string }) => props.color};
+  color: ${(props: { iconcolor: string }) => props.iconcolor};
 `
 
 export const FlexCell = styled(Cell)`

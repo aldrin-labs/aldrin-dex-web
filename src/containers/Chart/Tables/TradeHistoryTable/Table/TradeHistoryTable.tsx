@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components'
 import Collapse from '@material-ui/core/Collapse'
 import MdArrowDropUp from '@material-ui/icons/ArrowDropUp'
 import MdArrowUpward from '@material-ui/icons/ArrowUpward'
+import { withStyles } from '@material-ui/core/styles'
 
 import {
   Table,
@@ -28,7 +29,7 @@ const OptimizedRow = memo(
       <Cell width={'40%'} style={{ padding: '0 0.2rem', display: 'flex' }}>
         <StyledArrow
           fontSize="small"
-          color={ticker.fall ? red.main : green.main}
+          arrowcolor={ticker.fall ? red.main : green.main}
           direction={ticker.fall ? 'down' : 'up'}
         />
         <StyledTypography
@@ -246,6 +247,7 @@ const TradeHistoryTableCollapsible = styled(CollapsibleTable)`
   }
 `
 
+
 const StyledArrowSign = styled(MdArrowDropUp)`
   font-size: 2rem;
   transform: ${(props) =>
@@ -290,9 +292,9 @@ const JumpUpArrow = keyframes`
 
 const StyledArrow = styled(MdArrowUpward)`
   min-width: 20%;
-  color: ${(props: { direction: string; color: string }) => props.color};
+  color: ${(props: { direction: string; arrowcolor: string }) => props.arrowcolor};
 
-  transform: ${(props: { direction: string; color: string }) =>
+  transform: ${(props: { direction: string; arrowcolor: string }) =>
     props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
 `
 

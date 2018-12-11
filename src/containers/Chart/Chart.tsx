@@ -217,7 +217,7 @@ class Chart extends React.Component<IProps, IState> {
           }}
         />
         <TablesBlockWrapper
-          blur={false}
+          wrapperblur={false}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
@@ -261,7 +261,7 @@ class Chart extends React.Component<IProps, IState> {
 
         <TablesBlockWrapper
           className="ExchangesTable"
-          blur={false}
+          wrapperblur={false}
           background={theme.palette.background.default}
           rightBorderColor={theme.palette.divider}
           variant={{
@@ -459,7 +459,7 @@ const TablesBlockWrapper = styled(Card)`
   min-width: 150px;
   width: 50%;
   position: relative;
-  ${(props: { blur?: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
+  ${(props: { wrapperblur: boolean }) => (props.wrapperblur ? 'filter: blur(5px);' : '')}
 
   && {
     overflow: hidden;
