@@ -104,6 +104,7 @@ const NavBarRaw: SFC<Props> = ({
                 variant="text"
                 color="default"
               >
+                {pathname === '/market' && <Marker color={main} />}
                 Market
               </Button>
             </Grid>
