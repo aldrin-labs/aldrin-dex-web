@@ -49,7 +49,6 @@ export const CoinMarketCapQuery = gql`
         totalSupply
         availableSupply
         priceUSD
-        percentChangeDay
       }
     }
   }
