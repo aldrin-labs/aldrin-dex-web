@@ -91,7 +91,6 @@ export default class Import extends PureComponent<IProps> {
       !isRiskFreeAssetEnabled &&
       storeData.some((el) => el.coin === 'USDT')
     ) {
-      console.log('delete row')
       this.deleteRowByCoinName('USDT')
       storeData = storeData.filter((el) => el.coin !== 'USDT')
     }
@@ -107,8 +106,6 @@ export default class Import extends PureComponent<IProps> {
       startDate: startDate.unix(),
       endDate: endDate.unix() - (endDate.unix() % 43200),
     }
-
-    console.log('myOb for queryj', myObj)
 
     let backendResult
 
@@ -131,7 +128,6 @@ export default class Import extends PureComponent<IProps> {
     const backendResultParsed = JSON.parse(
       backendResult.data.portfolioOptimization
     )
-    console.log('backendResultParsed', backendResultParsed)
 
     if (backendResultParsed === '') {
       showWarning(systemError, true)
@@ -164,28 +160,16 @@ export default class Import extends PureComponent<IProps> {
         showWarning(userErrorMessage, false)
 
         if (backendResultParsed.new_start) {
-          console.log(
-            'backendResultParsed.new_start',
-            backendResultParsed.new_start
-          )
-
-          this.setState(
-            { startDate: moment.unix(backendResultParsed.new_start) },
-            () => {
-              console.log('this.state after update on user error', this.state)
-            }
-          )
+          this.setState({
+            startDate: moment.unix(backendResultParsed.new_start),
+          })
           this.setDataFromResponse(backendResultParsed)
         }
         if (backendResultParsed.status === 0) {
-          console.log('status 0, set data')
-
           this.setDataFromResponse(backendResultParsed)
         }
 
         if (backendResultParsed.status !== 0) {
-          console.log('status not 0, reset data')
-
           this.onResetOnlyOptimizationData()
         }
 
@@ -214,10 +198,8 @@ export default class Import extends PureComponent<IProps> {
     const { isRiskFreeAssetEnabled } = this.state
 
     const optimizedData = backendResultParsed.returns
-    console.log('optimizedData', optimizedData)
 
     if (isRiskFreeAssetEnabled) {
-      console.log('isRiskFreeAssetEnabled')
       this.addRow('USDT', 0)
     }
 

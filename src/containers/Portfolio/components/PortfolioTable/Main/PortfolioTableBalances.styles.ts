@@ -3,8 +3,10 @@ import { Grid, Card } from '@material-ui/core'
 
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { Container } from '../Industry/Industry.styles'
+import { GridProps } from '@material-ui/core/Grid'
+import { CardProps } from '@material-ui/core/Card'
 
-export const GridContainer = styled(Container)`
+export const GridContainer = styled(Container as React.SFC<GridProps>)`
   flex-wrap: nowrap;
   flex-direction: column;
   @media (max-width: 960px) {
@@ -28,7 +30,7 @@ export const TableContainer = styled(Grid)`
     height: 60%;
   }
 `
-export const ChartContainer = styled(Grid)`
+export const ChartContainer = styled(Grid as React.SFC<GridProps>)`
   flex-basis: 51%;
   padding: 0 8px;
   @media (max-width: 960px) {
@@ -63,18 +65,17 @@ export const PTWrapper = styled(Card)`
   @media (max-width: 425px) {
     width: calc(100% - 20px);
   }
-
-  ${customAquaScrollBar};
 `
 
-export const TableWrapper = styled(Card)`
+export const TableWrapper = styled(Card as React.SFC<
+  CardProps & { className?: string }
+>)`
   max-height: 100%;
   display: flex;
   flex-direction: column;
-  ${customAquaScrollBar};
 `
 
-export const TablesWrapper = styled(Grid)`
+export const TablesWrapper = styled(Grid as React.SFC<GridProps>)`
   max-height: 50%;
   flex-basis: inherit;
   padding: 0 !important;
