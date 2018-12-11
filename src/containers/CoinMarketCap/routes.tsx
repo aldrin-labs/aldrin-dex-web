@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { MyCoinMarket } from '@containers/CoinMarketCap/index'
+import { MyCoinMarket } from '@containers/CoinMarketCap/CoinMarketCap'
 
 
 export default function MarketRoutes({ match, location }) {

@@ -161,7 +161,7 @@ export class CoinMarket extends React.Component<Props, State> {
           },
           PercentChange7d: {
             contentToSort: value.percent_change_7d || 0,
-            render: formatNumberToUSFormat(value.percent_change_7d) || 0,
+            render: formatNumberToUSFormat(value.percent_change_7d  || 0),
             isNumber: true,
           },
         })),
