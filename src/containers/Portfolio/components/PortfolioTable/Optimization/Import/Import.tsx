@@ -40,7 +40,7 @@ export default class Import extends PureComponent<IProps> {
     baseCoin: 'USDT',
     rebalancePeriod: null,
     isRiskFreeAssetEnabled: true,
-    focusedInput: false,
+    focusedInput: null,
     startDate: null,
     endDate: null,
     percentages: ['min', 'low', 'med', 'high', 'max'],

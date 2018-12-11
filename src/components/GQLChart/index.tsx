@@ -44,7 +44,7 @@ class GQLChart extends React.Component {
         .reduce((prev, next) => prev + next, 0)
 
       // newState.activeChart = newProps.localActiveChart;
-      return newState
+      return newState || null
     }
     return null
   }

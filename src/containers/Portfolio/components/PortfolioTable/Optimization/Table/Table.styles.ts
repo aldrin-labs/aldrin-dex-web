@@ -2,7 +2,7 @@ import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
 import styled from 'styled-components'
 import { customAquaScrollBar } from '@styles/cssUtils'
-import { Card } from '@material-ui/core'
+import { Card, withStyles, Theme } from '@material-ui/core'
 
 export {
   AddStyled,
@@ -19,20 +19,28 @@ export {
   StyledDeleteIcon,
 }
 
-const AddStyled = styled(AddIcon)`
-  color: ${(props: { color: boolean }) => props.color};
-  position: relative;
-  font-size: 2rem;
-  cursor: pointer;
-  top: ${(props: { show: boolean }) => (props.show ? '0px' : '100px')};
-  opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
-  transition: all 0.4s linear;
+const AddStyled = withStyles((theme: Theme) => ({
+  root: {
+    color: theme.palette.text.primary,
+    fontSize: '2rem',
+    cursor: 'pointer',
+  },
+}))(AddIcon)
 
-  @-moz-document url-prefix() {
-    min-width: 32px;
-    min-height: 32px;
-  }
-`
+// const AddStyled = styled(AddIcon)`
+//   color: ${(props: { color: boolean }) => props.color};
+//   position: relative;
+//   font-size: 2rem;
+//   cursor: pointer;
+//   top: ${(props: { show: boolean }) => (props.show ? '0px' : '100px')};
+//   opacity: ${(props: { show: boolean }) => (props.show ? '1' : '0')};
+//   transition: all 0.4s linear;
+
+//   @-moz-document url-prefix() {
+//     min-width: 32px;
+//     min-height: 32px;
+//   }
+// `
 
 const StyledCard = styled(Card)`
   height: 190px;
@@ -126,7 +134,7 @@ const StyledTableWithoutInput = styled(StyledTable)`
 const Col = styled.div`
   flex: 1;
   flex-direction: column;
-  
+
   &:first-child ${Item} p {
     max-width: 100px;
     overflow: hidden;
