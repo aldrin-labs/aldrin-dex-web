@@ -1,25 +1,13 @@
 import { LinearProgress, Card } from '@material-ui/core'
 import styled from 'styled-components'
-import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.styles'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import CardHeader from '@components/CardHeader'
 
-export {
-  Loader,
-  ChartsContainer,
-  Chart,
-  MainArea,
-  MainAreaUpperPart,
-  PTWrapper,
-  Content,
-  ChartContainer,
-}
-
-const Loader = styled(LinearProgress)`
+export const Loader = styled(LinearProgress)`
   margin-bottom: 0.5rem;
 `
 
-const ChartsContainer = styled.div`
+export const ChartsContainer = styled.div`
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-between;
@@ -28,7 +16,7 @@ const ChartsContainer = styled.div`
     flex-wrap: wrap;
   }
 `
-const Chart = styled.div`
+export const Chart = styled.div`
   padding: 0.5rem;
   flex-grow: 1;
   min-width: 0;
@@ -42,21 +30,14 @@ const Chart = styled.div`
   }
 `
 
-const MainAreaUpperPart = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-`
-
-const MainArea = styled.div`
+export const MainArea = styled.div`
   margin: 2rem;
   color: white;
   border-radius: 3px;
   flex-direction: column;
 `
 
-const PTWrapper = styled.div`
+export const PTWrapper = styled.div`
   overflow-y: auto;
   overflow: auto;
   ${(props: { notScrollable: boolean }) =>
@@ -92,12 +73,8 @@ export const ContentInner = styled.div`
       : ``};
 `
 
-const Content = styled.div`
+export const Content = styled.div`
   flex: 0 0 auto;
-`
-
-const ChartContainer = styled(Card)`
-  width: 49%;
 `
 
 export const LoaderWrapper = styled.div`
@@ -120,5 +97,3 @@ export const LoaderInnerWrapper = styled.div`
   align-items: center;
   flex-direction: column;
 `
-
-export const LoadingText = styled.p``

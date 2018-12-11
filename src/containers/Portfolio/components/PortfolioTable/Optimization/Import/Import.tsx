@@ -5,7 +5,7 @@ import MdReplay from '@material-ui/icons/Replay'
 import { Button as ButtonMUI, Typography, Card, Grow } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import Tooltip from '@material-ui/core/Tooltip'
-import { isEqual } from 'lodash-es'
+import { find, isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
 import { BarChart } from '@storybook-components/index'
@@ -25,12 +25,22 @@ import {
   IData,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import.types'
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
+import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.ts'
 import {
   SwitchButtonsWrapper,
   InputContainer,
   TableContainer,
   Chart,
   ImportData,
+  FlexWrapper,
+  InputElementWrapper,
+  InputInnerContainer,
+  SelectOptimization,
+  STextField,
+  StyledInputLabel,
+  StyledSwitch,
+  StyledWrapperForDateRangePicker,
+  TableSelectsContaienr,
 } from './Import.styles'
 import { StyledCardHeader } from '../Optimization.styles'
 import { sliceCoinName } from '@utils/PortfolioTableUtils'
@@ -82,7 +92,7 @@ export default class Import extends PureComponent<IProps> {
     endDate: object
   ) => {
     const { totalPriceOfAllAssets, isUSDTInInitialPortfolioExists } = this.state
-    const { showWarning, optimizedToState, activeButton } = this.props
+    const { showWarning, optimizedToState, activeButton, updateOptimizationCountOfRuns, optimizationCountOfRuns } = this.props
 
     // TODO: Should create another function to remove USDT first, and then optimize
     // should double check for if we have USDT
@@ -95,6 +105,12 @@ export default class Import extends PureComponent<IProps> {
       this.deleteRowByCoinName('USDT')
       storeData = storeData.filter((el) => el.coin !== 'USDT')
     }
+
+    await updateOptimizationCountOfRuns({
+      variables: {
+        count: optimizationCountOfRuns + 1,
+      },
+    })
 
     this.props.toggleLoading()
 
@@ -251,7 +267,7 @@ export default class Import extends PureComponent<IProps> {
     )
 
   renderBarChart = () => {
-    const { storeData, activeButton, theme, rawOptimizedData, tab } = this.props
+    const { storeData, activeButton, theme, rawOptimizedData, tab, showBlurOnSections } = this.props
 
     if (!storeData) {
       return
@@ -288,6 +304,9 @@ export default class Import extends PureComponent<IProps> {
 
     return (
       <ChartContainer
+        hide={showBlurOnSections}
+        minHeight={'400px'}
+        margin={'0 0 0 2rem'}
         id="PortfolioDistribution"
         className="PortfolioDistributionChart"
       >
@@ -364,6 +383,7 @@ export default class Import extends PureComponent<IProps> {
       filterValueSmallerThenPercentage,
       activeButton,
       theme,
+      showBlurOnSections,
     } = this.props
 
     const {
@@ -401,7 +421,7 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer id="Back-test" className="OptimizationInput">
+              <InputContainer showHighlightShadows={showBlurOnSections} id="Back-test" className="OptimizationInput">
                 <StyledCardHeader title="Back-test Input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
@@ -497,7 +517,7 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer id="RiskProfile" className="RiskProfileTable">
+              <TableContainer id="RiskProfile" className="RiskProfileTable" hide={showBlurOnSections}>
                 <StyledCardHeader title="Risk Profile" />
 
                 <SwitchButtonsWrapper>
@@ -553,121 +573,3 @@ export default class Import extends PureComponent<IProps> {
     )
   }
 }
-
-const FlexWrapper = styled.div`
-  height: 35px;
-  display: flex;
-  align-items: center;
-`
-
-const SelectOptimization = styled(ReactSelectComponent)`
-  min-height: 35px;
-  width: 90px;
-
-  border-bottom: 1px solid #c1c1c1;
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    border-bottom: 2px solid #fff;
-  }
-`
-
-const StyledInputLabel = styled(InputLabel)`
-  color: ${(props: { color: string }) => props.color};
-  font-size: 0.875rem;
-`
-
-const InputElementWrapper = styled.div`
-  margin-bottom: 38px;
-  display: flex;
-  flex-direction: column;
-
-  &:not(:nth-child(3)) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-`
-
-const STextField = styled(TextField)`
-  width: 90px;
-  && > div:before {
-    border-bottom: 1px solid #c1c1c1;
-  }
-
-  && > div {
-    font-size: 0.875rem;
-  }
-`
-
-const StyledSwitch = styled(Switch)``
-
-const StyledWrapperForDateRangePicker = styled.div`
-  width: 206px;
-  padding: 6px 0;
-
-  & .DateInput {
-    width: 95px;
-  }
-
-  & .DateInput:first-child .DateInput_input {
-    padding-left: 0;
-  }
-
-  & .DateInput_input {
-    padding: 5px;
-    font-size: 0.875rem;
-    font-family: ${(props: { fontFamily: string }) => props.fontFamily};
-    font-weight: 400;
-    height: 36px;
-    color: ${(props: { color: string }) => props.color};
-    background: ${(props: { background: string }) => props.background};
-  }
-
-  & .DateRangePicker_picker {
-    font-family: ${(props: { fontFamily: string }) => props.fontFamily};
-    z-index: 10;
-  }
-
-  & .DateRangePickerInput {
-    border: 0;
-    background: ${(props: { background: string }) => props.background};
-    border-bottom: 1px solid #c1c1c1;
-  }
-
-  & .DateInput_input__focused {
-    border-bottom: 1px solid #fff;
-    transition: all 100ms;
-  }
-
-  & .DateRangePickerInput_arrow_svg {
-    fill: ${(props: { color: string }) => props.color};
-    width: 14px;
-    height: 14px;
-  }
-`
-
-const ChartContainer = styled(Card)`
-  min-height: 400px;
-  width: 49%;
-  margin: 0 0 0 2rem;
-`
-
-const TableSelectsContaienr = styled.div`
-  width: 49%;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-`
-
-const InputInnerContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  flex-direction: column;
-  min-width: 100px;
-  padding: 0 15px 0 15px;
-`
-
-export const InnerChartContainer = styled.div`
-  padding: 0 15px 15px 15px;
-`
