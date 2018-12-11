@@ -71,14 +71,16 @@ const PTWrapper = styled.div`
   ${customAquaScrollBar};
 `
 
-export const StyledCardHeader = styled(CardHeader)`
+export const StyledCardHeader = styled(CardHeader as React.SFC<{
+  title: string
+}>)`
   margin-bottom: 15px;
-  
-   & > div {
-  align-self: auto !important;
-  margin-top: 0 !important;
-  margin-right: 0 !important;
- }
+
+  & > div {
+    align-self: auto !important;
+    margin-top: 0 !important;
+    margin-right: 0 !important;
+  }
 `
 
 export const ContentInner = styled.div`
@@ -96,7 +98,7 @@ const Content = styled.div`
   flex: 0 0 auto;
 `
 
-const ChartContainer = styled(Card)`
+const ChartContainer = styled(Card as React.SFC<{ className: string }>)`
   width: 49%;
 `
 
