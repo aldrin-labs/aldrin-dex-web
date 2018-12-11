@@ -149,9 +149,10 @@ export default class Table extends Component<IProps, IState> {
                       </Typography>
 
                       <StyledDeleteIcon
-                        color={textColor}
                         onClick={() => {
-                          onClickDeleteIcon && onClickDeleteIcon(i)
+                          if (onClickDeleteIcon) {
+                            onClickDeleteIcon(i)
+                          }
                         }}
                       />
                     </Item>
@@ -173,7 +174,6 @@ export default class Table extends Component<IProps, IState> {
                         {'-'}{' '}
                       </Typography>
                       <StyledDeleteIcon
-                        color={textColor}
                         onClick={() => {
                           onClickDeleteIcon && onClickDeleteIcon(i)
                         }}
@@ -207,8 +207,6 @@ export default class Table extends Component<IProps, IState> {
             >
               <AddStyled
                 id="AddIcon"
-                color={textColor}
-                show={true}
                 onClick={() => {
                   if (onPlusClick) {
                     onPlusClick(this.state.name, this.state.value)
