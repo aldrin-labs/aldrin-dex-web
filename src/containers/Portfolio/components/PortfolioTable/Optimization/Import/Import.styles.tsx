@@ -1,11 +1,15 @@
+import React from 'react'
 import styled from 'styled-components'
-import { Card } from '@material-ui/core';
+import { Card, withStyles } from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
-import ReactSelectComponent from '@components/ReactSelectComponent'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
-import { HidingStyles, HighlightStyles } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles'
 
+import ReactSelectComponent from '@components/ReactSelectComponent'
+import {
+  HidingStyles,
+  HighlightStyles,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles'
 
 export const SwitchButtonsWrapper = styled.div`
   padding: 0 0.5rem;
@@ -13,14 +17,17 @@ export const SwitchButtonsWrapper = styled.div`
   justify-content: space-between;
 `
 
-export const InputContainer = styled(Card)`
+export const InputContainer = styled(({ showHighlightShadows, ...other }) => (
+  <Card {...other} />
+))`
   min-height: 400px;
   margin-right: 2rem;
   && {
     overflow: visible;
   }
-  
- ${(props: { showHighlightShadows: boolean }) => (props.showHighlightShadows ? HighlightStyles : '')};
+
+  ${(props: { showHighlightShadows: boolean }) =>
+    props.showHighlightShadows ? HighlightStyles : ''};
 `
 
 export const TableContainer = styled(Card)`
@@ -35,7 +42,7 @@ export const TableContainer = styled(Card)`
   @media (max-width: 600px) {
     margin-top: 1rem;
   }
-  
+
   ${(props: { hide: boolean }) => (props.hide ? HidingStyles : '')};
 `
 
@@ -80,7 +87,6 @@ export const ImportData = styled.div`
   margin: 0.5rem 2rem 0rem 2rem;
 `
 
-
 export const FlexWrapper = styled.div`
   height: 35px;
   display: flex;
@@ -116,16 +122,17 @@ export const InputElementWrapper = styled.div`
   }
 `
 
-export const STextField = styled(TextField)`
-  width: 90px;
-  && > div:before {
-    border-bottom: 1px solid #c1c1c1;
-  }
-
-  && > div {
-    font-size: 0.875rem;
-  }
-`
+export const STextField = withStyles((theme) => ({
+  root: {
+    width: 90,
+    '&& > div:before': {
+      borderBottom: `1px solid ${theme.palette.divider}`,
+    },
+    '&& > div': {
+      fontSize: '0.875rem',
+    },
+  },
+}))(TextField)
 
 export const StyledSwitch = styled(Switch)``
 
