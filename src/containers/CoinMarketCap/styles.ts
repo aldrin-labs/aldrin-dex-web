@@ -1,4 +1,4 @@
-import { Grid, Card, Paper } from '@material-ui/core'
+import { Grid, Card } from '@material-ui/core'
 import styled from 'styled-components'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
 
