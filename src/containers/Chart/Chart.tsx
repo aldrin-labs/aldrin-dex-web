@@ -217,9 +217,8 @@ class Chart extends React.Component<IProps, IState> {
           }}
         />
         <TablesBlockWrapper
-          wrapperblur={false}
+          blur={false}
           background={theme.palette.background.default}
-          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'ORDER',
           }}
@@ -261,9 +260,8 @@ class Chart extends React.Component<IProps, IState> {
 
         <TablesBlockWrapper
           className="ExchangesTable"
-          wrapperblur={false}
+          blur={false}
           background={theme.palette.background.default}
-          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'TRADE',
           }}
@@ -433,8 +431,6 @@ class Chart extends React.Component<IProps, IState> {
   }
 }
 
-const SelectContainer = styled.div`
-`
 
 const MainContainer = styled.div`
   ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
@@ -455,11 +451,11 @@ export const ExchangePair = styled.div`
   background: transparent;
 `
 
-const TablesBlockWrapper = styled(Card)`
+const TablesBlockWrapper = styled(({blur, ...rest}) => <Card { ...rest } />)`
   min-width: 150px;
   width: 50%;
   position: relative;
-  ${(props: { wrapperblur: boolean }) => (props.wrapperblur ? 'filter: blur(5px);' : '')}
+  ${(props: { blur: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
 
   && {
     overflow: hidden;

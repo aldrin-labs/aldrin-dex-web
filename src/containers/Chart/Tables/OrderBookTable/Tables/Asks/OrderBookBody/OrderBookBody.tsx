@@ -102,7 +102,7 @@ class ClassBody extends Component<IProps> {
                 i: number
               ) => (
                 <OptimizedRow
-                  key={order.price}
+                  key={i}
                   {...{
                     type,
                     order,

@@ -29,7 +29,7 @@ const OptimizedRow = memo(
       <Cell width={'40%'} style={{ padding: '0 0.2rem', display: 'flex' }}>
         <StyledArrow
           fontSize="small"
-          arrowcolor={ticker.fall ? red.main : green.main}
+          arrowColor={ticker.fall ? red.main : green.main}
           direction={ticker.fall ? 'down' : 'up'}
         />
         <StyledTypography
@@ -186,7 +186,7 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
               <>
                 {data.map((ticker: ITicker, i: number) => (
                   <OptimizedRow
-                    key={ticker.id}
+                    key={i}
                     {...{
                       ticker,
                       background,
@@ -290,11 +290,11 @@ const JumpUpArrow = keyframes`
 }
 `
 
-const StyledArrow = styled(MdArrowUpward)`
+const StyledArrow = styled(( { direction, arrowColor, ...rest } ) => <MdArrowUpward { ...rest } />)`
   min-width: 20%;
-  color: ${(props: { direction: string; arrowcolor: string }) => props.arrowcolor};
+  color: ${(props: { direction: string; arrowColor: string }) => props.arrowColor};
 
-  transform: ${(props: { direction: string; arrowcolor: string }) =>
+  transform: ${(props: { direction: string; arrowColor: string }) =>
     props.direction === 'up' ? 'rotate(0deg)' : 'rotate(180deg)'};
 `
 

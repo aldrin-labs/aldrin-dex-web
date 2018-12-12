@@ -153,7 +153,7 @@ class SpreadTable extends Component<IProps> {
             <>
               {data.map((order: { size: number; price: number }, i: number) => (
                 <MemoizedRow
-                  key={order.price}
+                  key={i}
                   {...{
                     type,
                     order,
