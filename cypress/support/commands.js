@@ -24,56 +24,71 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+Cypress.Commands.add('waitLoading', () => {
+  cy.get('[data-e2e="Loadig"]').should("exist");
+  cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("not.exist");
+})
+
 const auth0 = require('auth0-js');
+
+Cypress.Commands.add('setLoginToStorage', (email, password) => {
+  return new Cypress.Promise((resolve, reject) => {
+    const webAuth = new auth0.WebAuth({
+        domain: 'ccai.auth0.com', // Get this from https://manage.auth0.com/#/applications and your application
+        clientID: '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', // Get this from https://manage.auth0.com/#/applications and your application
+        responseType: 'token id_token'
+    });
+
+    webAuth.client.login(
+      {
+        realm: 'Username-Password-Authentication',
+        username: email,
+        password: password,
+        audience: 'localhost:5080', // Get this from https://manage.auth0.com/#/apis and your api, use the identifier property
+        scope: 'openid'
+      },
+      function(err, authResult) {
+        // Auth tokens in the result or an error
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          window.localStorage.setItem('token', authResult.idToken);
+          webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
+            if (error) {
+              console.error('Problem getting user info', error)
+              reject(err)
+            }
+            window.localStorage.setItem('persist:login',
+              JSON.stringify({
+                loginStatus: JSON.stringify(true),
+                user: JSON.stringify(profile),
+                _persist: JSON.stringify({
+                  version:-1,
+                  rehydrated :true
+                })
+              })
+            )
+            resolve()
+          })
+
+        } else {
+          console.error('Problem logging into Auth0', err);
+          reject(err)
+          throw err
+        }
+      }
+    )
+  })
+})
 
 Cypress.Commands.add('login', (email, password) => {
   Cypress.log({
-      name: 'loginBySingleSignOn'
+    name: 'loginBySingleSignOn'
   });
+  cy.clearLocalStorage()
   cy.visit('/')
-  const webAuth = new auth0.WebAuth({
-      domain: 'ccai.auth0.com', // Get this from https://manage.auth0.com/#/applications and your application
-      clientID: '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', // Get this from https://manage.auth0.com/#/applications and your application
-      responseType: 'token id_token'
-  });
-
-  webAuth.client.login(
-    {
-      realm: 'Username-Password-Authentication',
-      username: email,
-      password: password,
-      audience: 'localhost:5080', // Get this from https://manage.auth0.com/#/apis and your api, use the identifier property
-      scope: 'openid'
-    },
-    function(err, authResult) {
-      // Auth tokens in the result or an error
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        window.localStorage.setItem('token', authResult.idToken);
-        webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
-          if (error) {
-            console.error('Problem getting user info', error)
-          }
-          window.localStorage.setItem('persist:login',
-            JSON.stringify({
-              loginStatus: JSON.stringify(true),
-              user: JSON.stringify(profile),
-              _persist: JSON.stringify({
-                version:-1,
-                rehydrated :true
-              })
-            })
-          )
-        })
-      } else {
-        console.error('Problem logging into Auth0', err);
-        throw err;
-      }
-    }
-  );
-  cy.wait(2000)
-  cy.reload(true)
-  cy.wait(2000)
-});
+  cy.setLoginToStorage(email, password).then(() => {
+    cy.reload(true)
+  })
+})
 
 Cypress.Commands.add('skipTip', () => {
   cy.get('body').then(($body) => {
@@ -82,3 +97,16 @@ Cypress.Commands.add('skipTip', () => {
     }
   })
 })
+
+Cypress.Commands.add(
+  'chooseReactSelectOption',
+  (selector, text, option) => {
+    cy.get(`${selector} input`)
+      .first()
+      .click({ force: true })
+      .type(text, { force: true })
+      .get(`${selector} .select__menu`)
+      .contains(option)
+      .click()
+  }
+)

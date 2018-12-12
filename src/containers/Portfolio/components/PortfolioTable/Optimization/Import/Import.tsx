@@ -2,7 +2,13 @@ import React, { PureComponent } from 'react'
 import styled from 'styled-components'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
-import { Button as ButtonMUI, Typography, Card, Grow } from '@material-ui/core'
+import {
+  Fab,
+  Button as ButtonMUI,
+  Typography,
+  Card,
+  Grow,
+} from '@material-ui/core'
 import InputLabel from '@material-ui/core/InputLabel'
 import Tooltip from '@material-ui/core/Tooltip'
 import { find, isEqual } from 'lodash-es'
@@ -50,7 +56,7 @@ export default class Import extends PureComponent<IProps> {
     baseCoin: 'USDT',
     rebalancePeriod: null,
     isRiskFreeAssetEnabled: true,
-    focusedInput: false,
+    focusedInput: null,
     startDate: null,
     endDate: null,
     percentages: ['min', 'low', 'med', 'high', 'max'],
@@ -534,18 +540,17 @@ export default class Import extends PureComponent<IProps> {
                     enterDelay={250}
                     leaveDelay={200}
                   >
-                    <ButtonMUI
+                    <Fab
                       id="ResetPortfolio"
                       disabled={isEqual(initialPortfolio, storeData)}
                       color="secondary"
                       style={{
                         alignSelf: 'center',
                       }}
-                      variant="fab"
                       onClick={this.onReset}
                     >
                       <MdReplay />
-                    </ButtonMUI>
+                    </Fab>
                   </Tooltip>
                 </SwitchButtonsWrapper>
                 <Table

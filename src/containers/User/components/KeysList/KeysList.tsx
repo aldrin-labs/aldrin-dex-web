@@ -82,7 +82,7 @@ class KeysListComponent extends React.Component {
                       {status}
                     </KeyTableCell>
                     <KeyTableCell>
-                      {(new Date(lastUpdate === 0 ? date : lastUpdate)).toDateString()}
+                      {(new Date(lastUpdate === 0 ? date : lastUpdate * 1000)).toDateString()}
                     </KeyTableCell>
                     <KeyTableCell numeric={true}>
                       <DeleteKeyDialog keyName={name} forceUpdateUserContainer={forceUpdateUserContainer} />

@@ -11,27 +11,18 @@ import {
 } from 'react-vis'
 import Button from '@material-ui/core/Button'
 
-import { yearData } from '../chartMocks'
 import Highlight from '@components/GQLChart/PortfolioChart/Highlight/Highlight'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { Props, State } from '@components/GQLChart/annotations'
 import {
   Chart,
   SProfileChart,
+  axisStyle,
 } from '@components/GQLChart/PortfolioChart/styles'
 import CardHeader from '@components/CardHeader'
 import { Grow } from '@material-ui/core'
 import { Loading } from '@components/Loading'
 
-const chartBtns = ['1D', '7D', '1M', '3M', '1Y']
-
-const mapLabelToDays = {
-  '1D': 1,
-  '7D': 7,
-  '1M': 30,
-  '3M': 90,
-  '1Y': 365,
-}
 
 export default class PortfolioChart extends Component<Props, State> {
   state: State = {
@@ -45,7 +36,7 @@ export default class PortfolioChart extends Component<Props, State> {
   }
 
   onChangeActiveChart = (label) => {
-    this.props.setActiveChartAndUpdateDays(label, mapLabelToDays[label])
+    this.props.setActiveChartAndUpdateDays(label, this.state.mapLabelToDays[label])
   }
 
   _onNearestX = (value, { index }) => {
@@ -79,40 +70,9 @@ export default class PortfolioChart extends Component<Props, State> {
       isShownMocks,
       activeChart,
       theme,
+      chartBtns,
     } = this.state
     const { name = '', priceUSD = '' } = coin || {}
-
-    let transformedData = isShownMocks ? yearData : []
-    if (
-      data &&
-      data.getPriceHistory &&
-      data.getPriceHistory.prices &&
-      data.getPriceHistory.prices.length > 0 &&
-      !isShownMocks
-    ) {
-      const Yvalues = data.getPriceHistory.prices.map((x) => x)
-      transformedData = data.getPriceHistory.dates.map((date, i) => ({
-        x: Number(date),
-        y: Yvalues[i],
-      }))
-    }
-
-    const axisStyle = {
-      ticks: {
-        padding: '1rem',
-        stroke: '#3E3E4A',
-        opacity: 0.75,
-        fontWeight: 100,
-      },
-      text: {
-        stroke: 'none',
-        fill: '#777777',
-        fontWeight: 600,
-        opacity: 1,
-        fontFamily: 'Roboto',
-        fontSize: '14px',
-      },
-    }
 
     return (
       <SProfileChart style={{ ...style, height }}>

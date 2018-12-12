@@ -12,3 +12,19 @@ export const SProfileChart = styled(Card)`
   height: 100%;
   width: 100%;
 `
+export const axisStyle = {
+  ticks: {
+    padding: '1rem',
+    stroke: '#3E3E4A',
+    opacity: 0.75,
+    fontWeight: 100,
+  },
+  text: {
+    stroke: 'none',
+    fill: '#777777',
+    fontWeight: 600,
+    opacity: 1,
+    fontFamily: 'Roboto',
+    fontSize: '14px',
+  },
+}
