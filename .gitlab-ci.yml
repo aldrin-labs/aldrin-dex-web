@@ -38,7 +38,7 @@ variables:
 stages:
   - test
 
-bundle:
+.bundle:
   stage: bundle
   image: node:9.0.0
   script:
