@@ -22,7 +22,7 @@ const mapPortfolioActions = (pA, index) => {
   const newpA = { ...pA }
   newpA.id = `${index}`
   newpA.cost = +roundAndFormatNumber(newpA.cost, 8, false)
-  newpA.date = formatDate(newpA.date)
+  newpA.date = { render: formatDate(newpA.date), contentToSort: newpA.date }
   // dont want to render it
   delete newpA.__typename
 

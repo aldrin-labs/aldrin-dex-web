@@ -7,11 +7,10 @@ import { NavLink as Link } from 'react-router-dom'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import Hidden from '@material-ui/core/Hidden'
 
-import MainLogo from '@icons/MainLogo.png'
-import MainLogoDark from '@icons/MainLogoDarkColor.png'
-import { Nav, Logo } from './NavBar.styles'
+import { Nav } from './NavBar.styles'
 import Feedback from '@components/Feedback'
 import styled from 'styled-components'
+import Logo from '@components/Logo/Logo'
 
 export interface Props extends WithTheme {
   $hide?: boolean
@@ -20,12 +19,10 @@ export interface Props extends WithTheme {
 
 const Portfolio = (props: any) => <Link to="/portfolio" {...props} />
 const Chart = (props: any) => <Link to="/chart" {...props} />
+const Market = (props: any) => <Link to="/market" {...props} />
 
 const NavBarRaw: SFC<Props> = ({
   theme: {
-    transitions: {
-      duration: { standard },
-    },
     palette: {
       type,
       common,
@@ -60,7 +57,7 @@ const NavBarRaw: SFC<Props> = ({
           <Hidden only={['sm', 'xs']}>
             <Grid item={true} md={4}>
               <Grid container={true}>
-                <Logo src={!(type === 'dark') ? MainLogoDark : MainLogo} />
+                <Logo />
               </Grid>
             </Grid>
           </Hidden>
@@ -88,13 +85,22 @@ const NavBarRaw: SFC<Props> = ({
               <Button
                 style={createStyleForButton(pathname, '/chart')}
                 component={Chart}
-                size="small"
+                size="medium"
                 variant="text"
                 color="default"
-                size="medium"
               >
                 {pathname === '/chart' && <Marker color={main} />}
                 Chart
+              </Button>
+              <Button
+                style={createStyleForButton(pathname, '/market')}
+                component={Market}
+                size="medium"
+                variant="text"
+                color="default"
+              >
+                {pathname === '/market' && <Marker color={main} />}
+                Market
               </Button>
             </Grid>
           </Grid>

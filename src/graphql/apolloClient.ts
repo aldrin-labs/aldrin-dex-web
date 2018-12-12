@@ -15,6 +15,7 @@ import { inflate } from 'graphql-deduplicator'
 import { API_URL } from '@utils/config'
 import { GET_BASE_COIN } from '../queries/portfolio/getBaseCoin'
 import { GET_COINS } from '../mutations/portfolio/getCoins'
+import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '../queries/portfolio/getOptimizationCountOfRuns'
 
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 
@@ -78,6 +79,10 @@ const defaultState = {
     __typename: 'portfolioMainCoins',
     coins: [],
   },
+  portfolioOptimization: {
+    __typename: 'portfolioOptimization',
+    optimizationCountOfRuns: 0,
+  },
 }
 
 const stateLink = withClientState({
@@ -139,6 +144,23 @@ const stateLink = withClientState({
             portfolioMain: {
               coins: coins,
               __typename: 'portfolioMain',
+            },
+          },
+        })
+
+        return null
+      },
+      updateOptimizationCountOfRuns: (_: undefined, args: any, source: any) => {
+        const { count } = args
+        const { cache } = source
+        const query = GET_OPTIMIZATION_COUNT_OF_RUNS
+
+        cache.writeQuery({
+          query,
+          data: {
+            portfolioOptimization: {
+              optimizationCountOfRuns: count,
+              __typename: 'portfolioOptimization',
             },
           },
         })

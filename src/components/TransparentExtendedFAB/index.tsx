@@ -27,6 +27,7 @@ export default ({
   className?: string
 }) => (
   <ButtonStyled
+    data-e2e="mainChart__typeOfChartSwitcher"
     size="small"
     onClick={onClick}
     variant="extendedFab"
