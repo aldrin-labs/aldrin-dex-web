@@ -8,11 +8,12 @@ import {  TableWithSort } from '@storybook-components/index'
 import { queryRendererHoc } from '@components/QueryRenderer'
 // import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
- import { CoinMarketCapQuery } from './api'
+ import { MarketsQuery } from './api'
 // import CardHeader from '@components/CardHeader'
 import {
   addMainSymbol,
   formatNumberToUSFormat,
+  roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'
 
 import {
@@ -90,41 +91,6 @@ export class CoinMarket extends React.Component<Props, State> {
     this.setState({ activeSortArg: index })
   }
 
-  incrementPage = () => {
-    const { data, history, location } = this.props
-    const { assetPagination } = data
-    if (!assetPagination) return
-    const { pageInfo } = assetPagination
-    const { currentPage, hasNextPage } = pageInfo
-
-    if (hasNextPage) {
-      const query = new URLSearchParams(location.search)
-      if (query.has('page')) {
-        query.set('page', `${currentPage + 1}`)
-      } else {
-        query.append('page', `${currentPage + 1}`)
-      }
-      history.push({ pathname: location.pathname, search: query.toString() })
-    }
-  }
-
-  decrementPage = () => {
-    const { data, history, location } = this.props
-    const { assetPagination } = data
-    if (!assetPagination) return
-    const { pageInfo } = assetPagination
-    const { currentPage, hasPreviousPage } = pageInfo
-
-    if (hasPreviousPage) {
-      const query = new URLSearchParams(location.search)
-      if (query.has('page')) {
-        query.set('page', `${currentPage - 1}`)
-      } else {
-        query.append('page', `${currentPage - 1}`)
-      }
-      history.push({ pathname: location.pathname, search: query.toString() })
-    }
-  }
 
   getDataForTabale = (data) => {
     return {
@@ -136,59 +102,75 @@ export class CoinMarket extends React.Component<Props, State> {
         { id: 'PriceBTC', isNumber: true, label: 'Price BTC' },
         { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
         { id: 'AvailableSupply', isNumber: true, label: 'Available Supply' },
+        { id: 'TotalSupply', isNumber: true, label: 'Total Supply' },
+        { id: 'MaxSupply', isNumber: true, label: 'Max Supply' },
         { id: 'Volume24h', isNumber: true, label: 'Volume 24 hr' },
-        { id: 'cg1hUSD', isNumber: true, label: '%1hr USD' },
-        { id: 'cg1hBTC', isNumber: true, label: '%1hr BTC' },
-        { id: 'cg24hUSD', isNumber: true, label: '%24hr USD' },
-        { id: 'cg24hBTC', isNumber: true, label: '%24hr BTC' },
-        { id: 'cg7dUSD', isNumber: true, label: '%7days USD' },
-        { id: 'cg7dBTC', isNumber: true, label: '%7days BTC' },
-        { id: 'cgATH', isNumber: true, label: '% chg ATH' },
+        { id: 'PercentChange1h', isNumber: true, label: '%1hr' },
+        { id: 'PercentChange24h', isNumber: true, label: '%24hr' },
+        { id: 'PercentChange7d', isNumber: true, label: '%7days' },
       ],
       data: {
-        body: (data.assetPagination.items).map((value, index) => ({
+        body: (data.markets).map((value, index) => ({
           id: index,
-          Number: index + 1,
+          Number: value.rank,
           Name: value.name,
           Symbol: value.symbol,
           PriceUSD: {
-            contentToSort: value.priceUSD,
-            render: addMainSymbol(formatNumberToUSFormat(value.priceUSD), true),
+            contentToSort: value.price_usd || 0,
+            render: addMainSymbol(roundAndFormatNumber(value.price_usd || 0, 2), true),
             isNumber: true,
           },
           PriceBTC: {
-            contentToSort: value.priceUSD,
-            render: addMainSymbol(formatNumberToUSFormat(0), true),
+            contentToSort: value.price_btc || 0,
+            render: addMainSymbol(roundAndFormatNumber(value.price_btc, 8) || 0, false),
             isNumber: true,
           },
           MarketCap: {
-            contentToSort: value.maxSupply || 0,
-            render: addMainSymbol(formatNumberToUSFormat(value.maxSupply || 0), true),
+            contentToSort: value.market_cap_usd || 0,
+            render: addMainSymbol(formatNumberToUSFormat(value.market_cap_usd || 0), true),
             isNumber: true,
           },
           AvailableSupply: {
-            contentToSort: value.availableSupply,
-            render: formatNumberToUSFormat(value.availableSupply),
+            contentToSort: value.available_supply || 0,
+            render: formatNumberToUSFormat(value.available_supply || 0),
             isNumber: true,
           },
-          Volume24h: 0,
-          cg1hUSD: 0,
-          cg1hBTC: 0,
-          cg24hUSD: 0,
-          cg24hBTC: 0,
-          cg7dUSD: 0,
-          cg7dBTC: 0,
-          cgATH: 0,
+          TotalSupply: {
+            contentToSort: value.total_supply || 0,
+            render: formatNumberToUSFormat(value.total_supply || 0),
+            isNumber: true,
+          },
+          MaxSupply: {
+            contentToSort: value.max_supply || 0,
+            render: formatNumberToUSFormat(value.max_supply || 0),
+            isNumber: true,
+          },
+          Volume24h: {
+            contentToSort: value.volume_usd_24h || 0,
+            render: addMainSymbol(roundAndFormatNumber(value.volume_usd_24h || 0, 2), true),
+            isNumber: true,
+          },
+          PercentChange1h: {
+            contentToSort: value.percent_change_1h || 0,
+            render: formatNumberToUSFormat(value.percent_change_1h || 0),
+            isNumber: true,
+          },
+          PercentChange24h: {
+            contentToSort: value.percent_change_24h || 0,
+            render: formatNumberToUSFormat(value.percent_change_24h || 0),
+            isNumber: true,
+          },
+          PercentChange7d: {
+            contentToSort: value.percent_change_7d || 0,
+            render: formatNumberToUSFormat(value.percent_change_7d  || 0),
+            isNumber: true,
+          },
         })),
       },
     }
   }
 
   render() {
-    const { activeSortArg } = this.state
-    const { data } = this.props
-    const { assetPagination } = data
-    const { items } = assetPagination
     const dataForTable = this.getDataForTabale(this.props.data)
 
     return (
@@ -233,22 +215,10 @@ const options = ({ location }) => {
 
 
 export const MyCoinMarket = queryRendererHoc({
-  query: CoinMarketCapQuery,
+  query: MarketsQuery,
   pollInterval: 5000,
   fetchPolicy: 'network-only',
   variables: options(location)
 })(CoinMarket)
-
-
-
-/*
-export const MyCoinMarket = (props) => {
-  return (
-    <CoinMarket
-      data={data}
-      {...props}
-    />
-  )
-}*/
 
 export default MyCoinMarket
