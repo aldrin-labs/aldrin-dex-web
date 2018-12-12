@@ -25,7 +25,7 @@ import {
   IData,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import.types'
 import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
-import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.ts'
+import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
 import {
   SwitchButtonsWrapper,
   InputContainer,

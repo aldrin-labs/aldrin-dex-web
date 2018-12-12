@@ -29,7 +29,7 @@ import {
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
 
-import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.ts'
+import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
 import {
   ChartsContainer,
   Chart,
