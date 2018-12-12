@@ -308,7 +308,7 @@ class Optimization extends Component<IProps, IState> {
       theme: { palette },
       toolTip,
       tab,
-      data: { portfolioOptimization: { optimizationCountOfRuns } },
+      data: { portfolioOptimization: { optimizationCountOfRuns } } = { portfolioOptimization : { optimizationCountOfRuns: 1 } },
     } = this.props
 
     const showBlurOnSections = optimizationCountOfRuns <= 0
