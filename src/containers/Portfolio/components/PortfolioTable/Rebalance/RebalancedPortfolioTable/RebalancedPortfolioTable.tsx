@@ -307,6 +307,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
+          data-e2e="percentageInput"
           background={background}
           fontFamily={fontFamily}
           key={`inputPercentage${index}`}
@@ -519,6 +520,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               deleteIcon: {
                 render: (
                   <IconButtonWithHover
+                    data-e2e="deleteAssetButton"
                     hoverColor={red}
                     onClick={() => this.onDeleteRowClick(index)}
                   >
@@ -637,6 +639,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   icon: {
                     render: (
                       <IconButtonWithHover
+                        id="addAssetButton"
                         onClick={this.onAddRowButtonClick}
                         hoverColor={green}
                       >

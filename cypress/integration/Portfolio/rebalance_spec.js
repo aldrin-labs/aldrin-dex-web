@@ -66,8 +66,25 @@ describe('Rebalance', () => {
       cy.get('#saveButton').should('be.visible')
     })
 
+    it('Render add row button', () => {
+      cy.get('#addAssetButton').should('exist')
+    })
 
+    it('Render delete button for each asset (table row)', () => {
+      cy.get('#PortfolioRebalanceTable > tbody > tr').then(() => {
+        cy.get('#PortfolioRebalanceTable > tbody > tr [data-e2e="deleteAssetButton"]').then((deleteAssetButtonCollection) => {
+          cy.get('#PortfolioRebalanceTable > tbody > tr').should('have.length', deleteAssetButtonCollection.length)
+        })
+      })
+    })
 
+    it('Render percentages input for each asset (table row)', () => {
+      cy.get('#PortfolioRebalanceTable > tbody > tr').then(() => {
+        cy.get('#PortfolioRebalanceTable > tbody > tr [data-e2e="percentageInput"]').then((percentageInputCollection) => {
+          cy.get('#PortfolioRebalanceTable > tbody > tr').should('have.length', percentageInputCollection.length)
+        })
+      })
+    })
   })
 
 
