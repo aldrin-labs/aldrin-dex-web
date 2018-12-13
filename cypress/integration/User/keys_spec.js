@@ -17,9 +17,9 @@ describe('Keys', () => {
   })
   it('Key on portfolio', () => {
     cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTips()
     cy.visit('/portfolio')
     cy.waitLoading()
-    cy.skipTip()
     cy.get('.settingsIcon').click()
     cy.get('#AccountsList').contains('test')
   })

@@ -1,7 +1,8 @@
 describe('portfolio main', () => {
   before(function() {
-    cy.visit('/')
-    cy.clearLocalStorage()
+    cy.visit('/portfolio')
+    cy.notShowTips()
+    cy.waitLoading()
   })
 
   context('Portfolio', () => {

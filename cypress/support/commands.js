@@ -91,11 +91,40 @@ Cypress.Commands.add('login', (email, password) => {
 })
 
 Cypress.Commands.add('skipTip', () => {
+  cy.wait(500)
   cy.get('body').then(($body) => {
     if ($body.find('[aria-label="Skip"]').length) {
       cy.get('[aria-label="Skip"]').click()
     }
+    else if ($body.find('[aria-label="Close"]').length) {
+      cy.log('Close')
+      cy.get('[aria-label="Close"]').click()
+    }
   })
+})
+
+Cypress.Commands.add('notShowTips', () => {
+  window.localStorage.setItem('persist:root',
+    JSON.stringify({
+      loginStatus: JSON.stringify(true),
+      user: JSON.stringify({
+        toolTip: {
+          portfolioMain: false,
+          portfolioIndustry: false,
+          portfolioRebalance: false,
+          portfolioCorrelation: false,
+          portfolioOptimization: false,
+          chartPage: false,
+          multiChartPage: false,
+        }
+      }),
+      _persist: JSON.stringify({
+        version:-1,
+        rehydrated :true
+      })
+    })
+  )
+  cy.reload()
 })
 
 Cypress.Commands.add(
