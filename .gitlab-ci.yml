@@ -77,7 +77,7 @@ stages:
     - branches
 
 cypress:
-  image: cypress/base:10
+  image: cypress/browsers:chrome71
   stage: test
   cache:
     paths:
