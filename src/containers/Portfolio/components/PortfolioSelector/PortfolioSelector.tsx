@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { compose } from 'recompose'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 
 import { Slide, Typography } from '@material-ui/core'
 import Dropdown from '@components/SimpleDropDownSelector'
@@ -18,7 +18,6 @@ import {
 } from './PortfolioSelector.styles'
 import * as UTILS from '@utils/PortfolioSelectorUtils'
 import { MASTER_BUILD } from '@utils/config'
-
 
 class PortfolioSelector extends React.Component<IProps> {
   updateSettings = async (objectForMutation) => {
@@ -141,7 +140,7 @@ class PortfolioSelector extends React.Component<IProps> {
           hoverBackground={theme.palette.action.hover}
           fontFamily={theme.typography.fontFamily}
         >
-        <Accounts
+          <Accounts
             {...{
               color,
               isSideNavOpen,
@@ -162,15 +161,15 @@ class PortfolioSelector extends React.Component<IProps> {
               login,
             }}
           />
-          {!login &&
+          {!login && (
             <Typography
               style={{
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
-              Login to add <br/> or edit accounts
+              Login to add <br /> or edit accounts
             </Typography>
-          }
+          )}
           {!MASTER_BUILD && (
             <>
               <Name color={color}>Dust</Name>

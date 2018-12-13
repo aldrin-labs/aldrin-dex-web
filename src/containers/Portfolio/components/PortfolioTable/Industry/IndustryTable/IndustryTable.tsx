@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { Table } from '@storybook-components/index'
+import React from 'react'
+import { TableWithSort as Table } from '@storybook-components/index'
 import useLegacyState from 'use-legacy-state'
 import {
   combineIndustryData,
@@ -19,15 +19,12 @@ interface State {
 }
 
 const IndustryTable = () => {
-  const theme = useTheme()
+  const theme: Theme = useTheme()
   const [state, setState] = useLegacyState({ expandedRows: [] })
   const red = theme.palette.red.main
   const green = theme.palette.red.green
 
-  const putDataInTable = (data: any) => {
-    const industryData = combineIndustryData(data, -100, red, green)
-      .industryData
-    console.log(industryData)
+  const putDataInTable = (industryData: any) => {
     if (!industryData) return
 
     return {
@@ -45,20 +42,33 @@ const IndustryTable = () => {
       expandedRows: onCheckBoxClick(prevState.expandedRows, id),
     }))
 
-  const onSelectAllClick = (e: Event | undefined, selectAll = false) => {
-    if ((e && e.target && e.target.checked) || selectAll) {
-      setState((prevState: State) => ({
-        expandedRows: prevState.industryData
-          ? prevState.industryData.map((n: any) => n && n.industry)
+  const onSelectAllClick = (
+    e: Event | undefined | 'selectAll',
+    industryData: ReadonlyArray<any>
+  ) => {
+    if ((e && e.target && e.target.checked) || e === 'selectAll') {
+      setState({
+        expandedRows: industryData
+          ? industryData.map((n: any) => n && n.industry)
           : [],
-      }))
+      })
       return
     }
     setState({ expandedRows: [] })
   }
 
   return (
-    <Query query={industryDataQuery} variables={{ baseCoin: 'USD' }}>
+    <Query
+      query={industryDataQuery}
+      variables={{ baseCoin: 'USD' }}
+      onCompleted={(data) => {
+        if (state.expandedRows.length === 0) {
+          const industryData = combineIndustryData(data, -100, red, green)
+            .industryData
+          onSelectAllClick('selectAll', industryData)
+        }
+      }}
+    >
       {({ data, loading, error }) => {
         if (error) {
           return <ErrorFallback error={error} />
@@ -67,16 +77,19 @@ const IndustryTable = () => {
           return <TableLoader />
         }
 
+        const industryData = combineIndustryData(data, -100, red, green)
+          .industryData
+
         return (
           <Table
             id="PortfolioIndustryTable"
             actionsColSpan={3}
             expandableRows={true}
             onChange={expandRow}
-            onSelectAllClick={onSelectAllClick}
+            onSelectAllClick={(e) => onSelectAllClick(e, industryData)}
             expandedRows={state.expandedRows}
             title={'Industry Performance'}
-            {...putDataInTable(data)}
+            {...putDataInTable(industryData)}
           />
         )
       }}

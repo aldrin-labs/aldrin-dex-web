@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
-
+import { ThemeProvider } from '@material-ui/styles'
 import { Props } from './ThemeWrapper.types'
 import { fade, darken } from '@material-ui/core/styles/colorManipulator'
 
@@ -151,7 +151,9 @@ export default class ThemeWrapper extends Component<Props> {
     if (window) window.theme = theme
 
     return (
-      <MuiThemeProvider theme={theme}>{this.props.children}</MuiThemeProvider>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>{this.props.children}</ThemeProvider>
+      </MuiThemeProvider>
     )
   }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Switch from '@material-ui/core/Switch'

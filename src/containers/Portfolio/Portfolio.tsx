@@ -8,7 +8,8 @@ import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWin
 import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
-import { withTheme, Fade, LinearProgress } from '@material-ui/core'
+import { Fade, LinearProgress } from '@material-ui/core'
+import { withTheme } from '@material-ui/styles'
 
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'

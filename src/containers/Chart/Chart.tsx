@@ -10,7 +10,7 @@ import {
   Slide,
   Hidden,
 } from '@material-ui/core'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import Joyride from 'react-joyride'
 
 import {
@@ -322,7 +322,7 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <Container container spacing={16}>
         <ChartsContainer item sm={8}>
-        {activeChart === 'candle' ? (
+          {activeChart === 'candle' ? (
             <SingleChart additionalUrl={`/?symbol=${base}/${quote}`} />
           ) : (
             <Fade timeout={1000} in={activeChart === 'depth'}>
@@ -336,7 +336,7 @@ class Chart extends React.Component<IProps, IState> {
                   }}
                 />
               </DepthChartContainer>
-              </Fade>
+            </Fade>
           )}
         </ChartsContainer>
 
@@ -395,36 +395,36 @@ class Chart extends React.Component<IProps, IState> {
     return (
       <MainContainer fullscreen={view !== 'default'}>
         <TogglerContainer container className="AutoSuggestSelect">
-            <Grid
-              spacing={16}
-              item
-              sm={view === 'default' ? 8 : 12}
-              xs={view === 'default' ? 8 : 12}
-              style={{ margin: '0 -8px', height: '100%' }}
-              container
-              alignItems="center"
-              justify="flex-end"
-            >
-              <AutoSuggestSelect
-                value={view === 'default' && currencyPair}
-                id={'currencyPair'}
-                view={view}
-                exchange={activeExchange}
-              />
-              {view === 'default' &&
-                <TransparentExtendedFAB
-                  onClick={() => {
-                    this.setState((prevState) => ({
-                      activeChart:
-                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                    }))
-                  }}
-                >
-                  {activeChart === 'candle' ? 'orderbook' : 'chart'}
-                </TransparentExtendedFAB>
-              }
-              <Hidden smDown>{toggler}</Hidden>
-            </Grid>
+          <Grid
+            spacing={16}
+            item
+            sm={view === 'default' ? 8 : 12}
+            xs={view === 'default' ? 8 : 12}
+            style={{ margin: '0 -8px', height: '100%' }}
+            container
+            alignItems="center"
+            justify="flex-end"
+          >
+            <AutoSuggestSelect
+              value={view === 'default' && currencyPair}
+              id={'currencyPair'}
+              view={view}
+              exchange={activeExchange}
+            />
+            {view === 'default' && (
+              <TransparentExtendedFAB
+                onClick={() => {
+                  this.setState((prevState) => ({
+                    activeChart:
+                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                  }))
+                }}
+              >
+                {activeChart === 'candle' ? 'orderbook' : 'chart'}
+              </TransparentExtendedFAB>
+            )}
+            <Hidden smDown>{toggler}</Hidden>
+          </Grid>
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
@@ -433,8 +433,7 @@ class Chart extends React.Component<IProps, IState> {
   }
 }
 
-const SelectContainer = styled.div`
-`
+const SelectContainer = styled.div``
 
 const MainContainer = styled.div`
   ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};

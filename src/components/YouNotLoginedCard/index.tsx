@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { CardContent, Typography } from '@material-ui/core'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
