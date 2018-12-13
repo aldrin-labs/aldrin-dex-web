@@ -1,5 +1,9 @@
 context('Actions', () => {
-  it('.type() - type into a DOM element', () => {
-    cy.visit('localhost:3000')
+  before(function() {
+    cy.clearLocalStorage()
+  })
+  it('autologinTest', () => {
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.get('.UserLink').should('exist')
   })
 })

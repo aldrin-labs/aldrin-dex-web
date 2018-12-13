@@ -16,10 +16,3 @@ export const Nav = styled(AppBar)`
     z-index: -100;`
       : ''};
 `
-
-export const Logo = styled.img`
-  z-index: 1;
-  position: relative;
-  margin: auto 0;
-  height: 36px;
-`

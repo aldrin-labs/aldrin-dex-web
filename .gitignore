@@ -68,3 +68,8 @@ DS_STORE
 
 # Cypress test results
 cypress/videos/
+<<<<<<< HEAD
+cypress/screenshots/
+=======
+cypress/screenshots/
+>>>>>>> e14ca6256dc38b3830f92f79afe7e10d7f2d64dc
