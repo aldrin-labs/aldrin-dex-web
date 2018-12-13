@@ -4,7 +4,7 @@ describe('Login', () => {
   })
   it('Login', () => {
     cy.visit('/')
-    cy.skipTip()
+    cy.notShowTips()
     cy.get('.loginButton').click()
     cy.get(
       '.auth0-lock-input-email > .auth0-lock-input-wrap > .auth0-lock-input'
@@ -17,7 +17,7 @@ describe('Login', () => {
   })
   it('Logout', () => {
     cy.login('NGE@NGE.nge', 'nge')
-    cy.skipTip()
+    cy.notShowTips()
     cy.get('#ExitButton').click()
     cy.get('.loginButton').should('exist')
   })

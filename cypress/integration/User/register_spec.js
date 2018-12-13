@@ -4,7 +4,7 @@ describe('Register', () => {
   })
   it('Register', () => {
     cy.visit('/')
-    cy.skipTip()
+    cy.notShowTips()
     cy.get('.loginButton').click()
     cy.wait(2000)
     cy.get('.auth0-lock-tabs > :nth-child(2) > a').click()
