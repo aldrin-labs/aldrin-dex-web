@@ -31,9 +31,12 @@ const config = {
    able to calculate a value due to missing data.`,
 }
 
-export const onCheckBoxClick = (selected: any[], id: string): string[] => {
+export const onCheckBoxClick = (
+  selected: ReadonlyArray<any>,
+  id: string
+): ReadonlyArray<string> => {
   const selectedIndex = selected.indexOf(id)
-  let newSelected: string[] = []
+  let newSelected: ReadonlyArray<string> = []
 
   if (selectedIndex === -1) {
     newSelected = newSelected.concat(selected, id)
@@ -302,7 +305,7 @@ export const roundAndFormatNumber = (
   precision: number,
   format: boolean = true
 ): string => {
-  if (x === null || x === 0 || +(parseFloat(x).toFixed(precision)) === 0) {
+  if (x === null || x === 0 || +parseFloat(x).toFixed(precision) === 0) {
     return '0'
   }
 
@@ -455,6 +458,5 @@ export const swapDates = ({
   startDate: number
   endDate: number
 }) => ({ startDate: endDate, endDate: startDate })
-
 
 export const sliceCoinName = (str: string) => str.slice(0, 6)
