@@ -223,39 +223,41 @@ class Chart extends React.Component<IProps, IState> {
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          <QueryRenderer
-            component={OrderBookTable}
-            withOutSpinner
-            query={ORDERS_MARKET_QUERY}
-            fetchPolicy="network-only"
-            variables={{ symbol, exchange }}
-            placeholder={TablePlaceholderLoader}
-            subscriptionArgs={{
-              subscription: MARKET_ORDERS,
-              variables: { symbol, exchange },
-              updateQueryFunction: updateOrderBookQuerryFunction,
-            }}
-            {...{
-              onButtonClick: this.changeTable,
-              roundTill: this.roundTill,
-              activeExchange,
-              currencyPair,
-              aggregation,
-              quote,
-              setOrders: this.props.setOrders,
-              symbol,
-              exchange,
-              ...this.props,
-            }}
-          />
+          <>
+            <QueryRenderer
+              component={OrderBookTable}
+              withOutSpinner
+              query={ORDERS_MARKET_QUERY}
+              fetchPolicy="network-only"
+              variables={{ symbol, exchange }}
+              placeholder={TablePlaceholderLoader}
+              subscriptionArgs={{
+                subscription: MARKET_ORDERS,
+                variables: { symbol, exchange },
+                updateQueryFunction: updateOrderBookQuerryFunction,
+              }}
+              {...{
+                onButtonClick: this.changeTable,
+                roundTill: this.roundTill,
+                activeExchange,
+                currencyPair,
+                aggregation,
+                quote,
+                setOrders: this.props.setOrders,
+                symbol,
+                exchange,
+                ...this.props,
+              }}
+            />
 
-          <Aggregation
-            {...{
-              theme,
-              aggregation: this.state.aggregation,
-              onButtonClick: this.setAggregation,
-            }}
-          />
+            <Aggregation
+              {...{
+                theme,
+                aggregation: this.state.aggregation,
+                onButtonClick: this.setAggregation,
+              }}
+            />
+          </>
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
@@ -266,43 +268,45 @@ class Chart extends React.Component<IProps, IState> {
             show: showTableOnMobile === 'TRADE',
           }}
         >
-          <QueryRenderer
-            component={ExchangesTable}
-            query={ExchangeQuery}
-            variables={{ marketName: currencyPair }}
-            placeholder={TablePlaceholderLoader}
-            {...{
-              activeExchange,
-              changeExchange,
-              quote,
-              theme,
-              onButtonClick: this.changeTable,
-              ...this.props,
-            }}
-          />
+          <>
+            <QueryRenderer
+              component={ExchangesTable}
+              query={ExchangeQuery}
+              variables={{ marketName: currencyPair }}
+              placeholder={TablePlaceholderLoader}
+              {...{
+                activeExchange,
+                changeExchange,
+                quote,
+                theme,
+                onButtonClick: this.changeTable,
+                ...this.props,
+              }}
+            />
 
-          <QueryRenderer
-            component={TradeHistoryTable}
-            query={MARKET_QUERY}
-            variables={{ symbol, exchange }}
-            placeholder={() => (
-              <TablePlaceholderLoader margin={'20% 0px 0px'} />
-            )}
-            subscriptionArgs={{
-              subscription: MARKET_TICKERS,
-              variables: { symbol, exchange },
-              updateQueryFunction: updateTradeHistoryQuerryFunction,
-            }}
-            {...{
-              quote,
-              activeExchange,
-              theme,
-              currencyPair,
-              symbol,
-              exchange,
-              ...this.props,
-            }}
-          />
+            <QueryRenderer
+              component={TradeHistoryTable}
+              query={MARKET_QUERY}
+              variables={{ symbol, exchange }}
+              placeholder={() => (
+                <TablePlaceholderLoader margin={'20% 0px 0px'} />
+              )}
+              subscriptionArgs={{
+                subscription: MARKET_TICKERS,
+                variables: { symbol, exchange },
+                updateQueryFunction: updateTradeHistoryQuerryFunction,
+              }}
+              {...{
+                quote,
+                activeExchange,
+                theme,
+                currencyPair,
+                symbol,
+                exchange,
+                ...this.props,
+              }}
+            />
+          </>
         </TablesBlockWrapper>
       </TablesContainer>
     )

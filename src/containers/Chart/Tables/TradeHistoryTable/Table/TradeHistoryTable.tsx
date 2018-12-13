@@ -165,40 +165,42 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
     return (
       <TradeHistoryTableCollapsible tableExpanded={tableExpanded}>
         <CollapseWrapper in={tableExpanded} collapsedHeight="2.5rem">
-          <MemoizedHead
-            {...{
-              tableExpanded,
-              primary,
-              type,
-              palette,
-              onClick,
-              quote,
-            }}
-          />
-          <Body
-            data-e2e="tradeHistory__body"
-            background={background.default}
-            height="42vh"
-          >
-            {data.length === 0 && tableExpanded ? (
-              <Loading centerAligned={true} />
-            ) : (
-              <>
-                {data.map((ticker: ITicker, i: number) => (
-                  <OptimizedRow
-                    key={i}
-                    {...{
-                      ticker,
-                      background,
-                      numbersAfterDecimalForPrice,
-                      red,
-                      green,
-                    }}
-                  />
-                ))}
-              </>
-            )}
-          </Body>
+          <>
+            <MemoizedHead
+              {...{
+                tableExpanded,
+                primary,
+                type,
+                palette,
+                onClick,
+                quote,
+              }}
+            />
+            <Body
+              data-e2e="tradeHistory__body"
+              background={background.default}
+              height="42vh"
+            >
+              {data.length === 0 && tableExpanded ? (
+                <Loading centerAligned={true} />
+              ) : (
+                <>
+                  {data.map((ticker: ITicker, i: number) => (
+                    <OptimizedRow
+                      key={i}
+                      {...{
+                        ticker,
+                        background,
+                        numbersAfterDecimalForPrice,
+                        red,
+                        green,
+                      }}
+                    />
+                  ))}
+                </>
+              )}
+            </Body>
+          </>
         </CollapseWrapper>
       </TradeHistoryTableCollapsible>
     )
