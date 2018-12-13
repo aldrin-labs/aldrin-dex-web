@@ -73,10 +73,10 @@ class KeysListComponent extends React.Component {
                       {<FormattedDate value={date} />}
                     </KeyTableCell>
                     <KeyTableCell>
-                      {processing.toString()}
+                      {processing ? 'Yes' : 'No'}
                     </KeyTableCell>
                     <KeyTableCell>
-                      {valid.toString()}
+                      {valid ? 'Yes' : 'No'}
                     </KeyTableCell>
                     <KeyTableCell>
                       {status}
