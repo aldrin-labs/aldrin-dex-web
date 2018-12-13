@@ -2,8 +2,10 @@ import { Grid, Card } from '@material-ui/core'
 import styled from 'styled-components'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
+import { CardProps } from '@material-ui/core/Card'
+import { GridProps } from '@material-ui/core/Grid'
 
-export const Container = styled(Grid)`
+export const Container = styled(Grid as React.FunctionComponent<GridProps>)`
   && {
     overflow-y: auto;
     height: calc(100vh - ${navBarHeight}px);
@@ -13,7 +15,7 @@ export const Container = styled(Grid)`
   }
 `
 
-export const Wrapper = styled(Card)`
+export const Wrapper = styled(Card as React.FunctionComponent<CardProps>)`
   max-height: 100%;
   display: flex;
   width: 100%;

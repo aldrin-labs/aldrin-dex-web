@@ -4,7 +4,7 @@ import ReactSelectComponent from '@components/ReactSelectComponent'
 
 export const customAquaScrollBar = css`
   &::-webkit-scrollbar {
-    width: ${({ scrollBarWidth }: { scrollBarWidth: number }) =>
+    width: ${({ scrollBarWidth }: { scrollBarWidth?: number }) =>
       scrollBarWidth ? `${scrollBarWidth}px` : '3px'};
     height: 6px;
   }
