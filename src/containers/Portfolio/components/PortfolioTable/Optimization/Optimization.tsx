@@ -20,23 +20,22 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
 import LineChart from '@components/LineChart'
 import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
-import Import, {
-  InnerChartContainer,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
-import QueryRenderer from '@components/QueryRenderer'
+import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
+import QueryRenderer, { queryRendererHoc } from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
+
+import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
 import {
   ChartsContainer,
   Chart,
   MainArea,
   PTWrapper,
   Content,
-  ChartContainer,
   ContentInner,
   LoaderWrapper,
   LoaderInnerWrapper,
@@ -50,6 +49,11 @@ import { sumSame } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
 import * as Useractions from '@containers/User/actions'
 import config from '@utils/linkConfig'
+import { graphql } from 'react-apollo'
+import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../queries/portfolio/getOptimizationCountOfRuns'
+import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../mutations/portfolio/updateOptimizationCountOfRuns'
+import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
+import { MyTradesQuery } from '@components/TradeOrderHistory/api'
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -139,7 +143,7 @@ class Optimization extends Component<IProps, IState> {
     window.open(link, 'CCAI Feedback')
   }
 
-  renderInput = () => {
+  renderInput = (showBlurOnSections: boolean, optimizationCountOfRuns: number) => {
     // importing stuff from backend or manually bu user
     const { activeButton, rawOptimizedData } = this.state
     const {
@@ -150,6 +154,7 @@ class Optimization extends Component<IProps, IState> {
       baseCoin,
       theme,
       tab,
+      updateOptimizationCountOfRuns,
     } = this.props
 
     return (
@@ -173,11 +178,14 @@ class Optimization extends Component<IProps, IState> {
         activeButton={activeButton}
         theme={theme}
         tab={tab}
+        showBlurOnSections={showBlurOnSections}
+        updateOptimizationCountOfRuns={updateOptimizationCountOfRuns}
+        optimizationCountOfRuns={optimizationCountOfRuns}
       />
     )
   }
 
-  renderCharts = () => {
+  renderCharts = (showBlurOnSections: boolean) => {
     const { activeButton, rawOptimizedData, showAllLineChartData } = this.state
     const { storeData } = this.props
 
@@ -232,7 +240,7 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer id="BackTestOptimization">
-        <ChartContainer className="BackTestOptimizationChart">
+        <ChartContainer hide={showBlurOnSections} className="BackTestOptimizationChart">
           <StyledCardHeader
             title="Back-test Optimization"
             action={
@@ -265,7 +273,7 @@ class Optimization extends Component<IProps, IState> {
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <ChartContainer className="EfficientFrontierChart">
+        <ChartContainer hide={showBlurOnSections} className="EfficientFrontierChart">
           <StyledCardHeader title="Efficient Frontier" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>
@@ -300,8 +308,10 @@ class Optimization extends Component<IProps, IState> {
       theme: { palette },
       toolTip,
       tab,
+      data: { portfolioOptimization: { optimizationCountOfRuns } } = { portfolioOptimization : { optimizationCountOfRuns: 1 } },
     } = this.props
 
+    const showBlurOnSections = optimizationCountOfRuns <= 0
     const textColor: string = palette.getContrastText(palette.background.paper)
 
     const { loading, openWarning, warningMessage, isSystemError } = this.state
@@ -348,7 +358,7 @@ class Optimization extends Component<IProps, IState> {
             </LoaderWrapper>
           )}
           <ContentInner loading={loading}>
-            {this.renderInput()}
+            {this.renderInput(showBlurOnSections, optimizationCountOfRuns)}
 
             <MainArea background={palette.background.paper}>
               <Grow
@@ -357,7 +367,7 @@ class Optimization extends Component<IProps, IState> {
                 mountOnEnter
                 unmountOnExit
               >
-                {this.renderCharts()}
+                {this.renderCharts(showBlurOnSections)}
               </Grow>
             </MainArea>
           </ContentInner>
@@ -414,4 +424,11 @@ const storeComponent = connect(
   mapDispatchToProps
 )(Optimization)
 
-export default compose()(storeComponent)
+export default compose(
+  queryRendererHoc({
+    query: GET_OPTIMIZATION_COUNT_OF_RUNS,
+  }),
+  graphql(UPDATE_OPTIMIZATION_COUNT_OF_RUNS, {
+    name: 'updateOptimizationCountOfRuns',
+  })
+)(storeComponent)

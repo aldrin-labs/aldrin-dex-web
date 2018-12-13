@@ -72,8 +72,8 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   addFSIdentify(profile) {
-    if (MASTER_BUILD) {
-      FS.identify(profile.email, {
+    if (MASTER_BUILD && window.FS && window.FS.identify) {
+      return window.FS.identify(profile.email, {
         displayName: profile.email,
         email: profile.email,
       })

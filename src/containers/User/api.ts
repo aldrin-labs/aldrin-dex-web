@@ -45,6 +45,10 @@ export const addExchangeKeyMutation = gql`
       apiKey
       exchange
       date
+      status
+      valid
+      processing
+      lastUpdate
     }
   }
 `

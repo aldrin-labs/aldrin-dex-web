@@ -36,17 +36,9 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
-  - bundle
-  - build
   - test
-  - review
-  - staging
-  - canary
-  - production
-  - performance
-  - cleanup
 
-bundle:
+.bundle:
   stage: bundle
   image: node:9.0.0
   script:
@@ -83,6 +75,22 @@ bundle:
     - /bin/herokuish buildpack test
   only:
     - branches
+
+cypress:
+  image: cypress/base:10
+  stage: test
+  cache:
+    paths:
+      - .npm
+      - cache/Cypress
+      - node_modules
+  script:
+    - yarn
+    - yarn build
+    - yarn cy:verify
+
+# run Cypress test in load balancing mode, pass id to tie jobs together
+#- npm run e2e:record -- --parallel --ci-build-id $CI_PIPELINE_ID --group electrons
 
 .codequality:
   image: docker:latest
