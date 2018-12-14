@@ -824,6 +824,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 )}
                 {isCurrentAssetsChanged && (
                   <Button
+                    id="resetRebalancedPortfolioButton"
                     onClick={() => {
                       this.onReset(true)
                       this.createNewSnapshot()
