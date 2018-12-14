@@ -331,9 +331,6 @@ class Rebalance extends React.Component<IProps, IState> {
     if (!isPercentSumGood) {
       return
     }
-    if (+undistributedMoney < 0) {
-      return
-    }
     if (UTILS.checkForEmptyNamesInAssets(rows) && isArgumentAnObject) {
       this.showWarning(
         'Your assets has empty names in columns Exchange and Coin, what we should do with them?',
@@ -624,7 +621,7 @@ class Rebalance extends React.Component<IProps, IState> {
     const green = palette.green.main
     const fontFamily = theme.typography.fontFamily
     const saveButtonColor =
-      isPercentSumGood && +undistributedMoney >= 0 ? green : red
+      isPercentSumGood ? green : red
 
     const tableDataHasData = !staticRows.length || !rows.length
 
