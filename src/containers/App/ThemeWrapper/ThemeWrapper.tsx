@@ -1,15 +1,42 @@
 import React, { Component } from 'react'
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme'
 import { Props } from './ThemeWrapper.types'
-import { fade, darken } from '@material-ui/core/styles/colorManipulator'
+import { fade } from '@material-ui/core/styles/colorManipulator'
+
+declare module '@material-ui/core/styles/createMuiTheme' {
+  interface Theme {
+    customPalette: {
+      red: { main: string }
+      green: { main: string }
+    }
+  }
+  // allow configuration using `createMuiTheme`
+  interface ThemeOptions {
+    customPalette: {
+      red: { main: string }
+      green: { main: string }
+    }
+  }
+}
+
+function createMyTheme(options: ThemeOptions) {
+  return createMuiTheme({
+    customPalette: {
+      red: { main: 'red' },
+      green: { main: 'green' },
+    },
+    ...options,
+  })
+}
 
 export default class ThemeWrapper extends Component<Props> {
   render() {
     const { themeMode } = this.props
 
     // refactor this
-    const theme = createMuiTheme(
+    const theme = createMyTheme(
       themeMode === 'dark'
         ? {
             typography: {
@@ -46,6 +73,14 @@ export default class ThemeWrapper extends Component<Props> {
                 colorPrimary: {
                   color: '#575A64',
                 },
+              },
+            },
+            customPalette: {
+              red: {
+                main: '#FE425A',
+              },
+              green: {
+                main: '#48DCC6',
               },
             },
             palette: {
@@ -118,6 +153,14 @@ export default class ThemeWrapper extends Component<Props> {
                 colorPrimary: {
                   color: '#BCC2CF',
                 },
+              },
+            },
+            customPalette: {
+              red: {
+                main: '#FE425A',
+              },
+              green: {
+                main: '#3ED1BB',
               },
             },
             palette: {

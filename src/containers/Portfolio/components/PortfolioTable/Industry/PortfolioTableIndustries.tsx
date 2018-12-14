@@ -2,124 +2,20 @@ import * as React from 'react'
 import { Fade } from '@material-ui/core'
 import Joyride from 'react-joyride'
 import { connect } from 'react-redux'
+import { withErrorFallback } from '@storybook-components/hoc/withErrorFallback/withErrorFallback'
 
-import { TableWithSort as Table, DonutChart } from '@storybook-components/index'
+import DonutChart from './DonutChart/DonutChart'
 import { IndProps } from '@containers/Portfolio/interfaces'
-import {
-  combineIndustryData,
-  onCheckBoxClick,
-} from '@utils/PortfolioTableUtils'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
-import { queryRendererHoc } from '@components/QueryRenderer'
-import { getPortfolioQuery } from '@containers/Portfolio/api'
-import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import { portfolioIndustrySteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
-import { withErrorFallback } from '@hoc/'
 import Template from './Template/Template'
 import IndustryTable from './IndustryTable/IndustryTable'
 
-const tableHeadings = [
-  { name: 'Industry', value: 'industry', id: 'industry' },
-  { name: 'Coin', value: 'symbol', id: 'coin' },
-  { name: 'Portfolio', value: 'portfolioPerc', id: 'portfolio' },
-  // {
-  //   name: 'Portfolio performance',
-  //   value: 'portfolioPerf',
-  //   additionName: 'performance',
-  // },
-  {
-    name: 'Industry performance: 1W',
-    value: 'industryPerf1Week',
-    additionName: 'performance',
-    id: 'industry1w',
-  },
-  {
-    name: '1M',
-    value: 'industryPerf1Month',
-    additionName: 'performance',
-    id: 'industry1m',
-  },
-  {
-    name: '3M',
-    value: 'industryPerf3Months',
-    additionName: 'performance',
-    id: 'industry3M',
-  },
-  {
-    name: '1Y',
-    value: 'industryPerf1Year',
-    additionName: 'performance',
-    id: 'industry1Y',
-  },
-]
-
-const getStateObj = ({ data, theme, filterValueSmallerThenPercentage = 0 }) => {
-  const { chartData, industryData } = combineIndustryData(
-    data,
-    filterValueSmallerThenPercentage,
-    theme.palette.red.main,
-    theme.palette.green.main
-  )
-
-  return { chartData, industryData }
-}
-
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
-    portfolio: null,
-    industryData: null,
-    chartData: null,
-    currentSort: null,
-    expandedRows: [],
-    run: true,
     key: 0,
   }
-
-  static getDerivedStateFromProps(props, state) {
-    const { data, theme, filterValueSmallerThenPercentage } = props
-
-    return getStateObj({
-      data,
-      theme,
-      filterValueSmallerThenPercentage,
-    })
-  }
-
-  componentDidMount() {
-    this.onSelectAllClick(undefined, true)
-  }
-
-  putDataInTable = () => {
-    const { industryData } = this.state
-    if (!industryData) return
-
-    return {
-      columnNames: tableHeadings.map((heading, index: number) => ({
-        label: heading.name,
-        id: heading.id,
-        isNumber: index === 0 || index === 1 ? false : true,
-      })),
-      data: { body: industryData },
-    }
-  }
-
-  onSelectAllClick = (e: Event | undefined, selectAll = false) => {
-    if ((e && e.target && e.target.checked) || selectAll) {
-      this.setState((state) => ({
-        expandedRows: state.industryData
-          ? state.industryData.map((n: any) => n && n.industry)
-          : [],
-      }))
-      return
-    }
-    this.setState({ expandedRows: [] })
-  }
-
-  expandRow = (id: string) =>
-    this.setState((prevState) => ({
-      expandedRows: onCheckBoxClick(prevState.expandedRows, id),
-    }))
 
   handleJoyrideCallback = (data) => {
     if (
@@ -135,54 +31,43 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   }
 
   render() {
-    const { baseCoin, theme, tab } = this.props
-    const { industryData, chartData, expandedRows } = this.state
-
-    const tableDataHasData = industryData
-      ? !!Object.keys(industryData).length
-      : false
+    const { theme, tab } = this.props
 
     return (
-      <EmptyTablePlaceholder isEmpty={!tableDataHasData}>
-        <>
-          <Template
-            Table={<IndustryTable />}
-            Chart={
-              <Fade
-                timeout={0}
-                in={tab === 'industry'}
-                mountOnEnter
-                unmountOnExit
-              >
-                <DonutChart
-                  labelPlaceholder="Industry %"
-                  data={chartData}
-                  colorLegend={true}
-                />
-              </Fade>
-            }
-          />
-          <Joyride
-            steps={portfolioIndustrySteps}
-            run={this.props.toolTip.portfolioIndustry && tab === 'industry'}
-            callback={this.handleJoyrideCallback}
-            key={this.state.key}
-            styles={{
-              options: {
-                backgroundColor: theme.palette.getContrastText(
-                  theme.palette.primary.main
-                ),
-                primaryColor: theme.palette.secondary.main,
-                textColor: theme.palette.primary.main,
-              },
-              tooltip: {
-                fontFamily: theme.typography.fontFamily,
-                fontSize: theme.typography.fontSize,
-              },
-            }}
-          />
-        </>
-      </EmptyTablePlaceholder>
+      <>
+        <Template
+          Table={<IndustryTable />}
+          Chart={
+            <Fade
+              timeout={0}
+              in={tab === 'industry'}
+              mountOnEnter
+              unmountOnExit
+            >
+              <DonutChart />
+            </Fade>
+          }
+        />
+        <Joyride
+          steps={portfolioIndustrySteps}
+          run={this.props.toolTip.portfolioIndustry && tab === 'industry'}
+          callback={this.handleJoyrideCallback}
+          key={this.state.key}
+          styles={{
+            options: {
+              backgroundColor: theme.palette.getContrastText(
+                theme.palette.primary.main
+              ),
+              primaryColor: theme.palette.secondary.main,
+              textColor: theme.palette.primary.main,
+            },
+            tooltip: {
+              fontFamily: theme.typography.fontFamily,
+              fontSize: theme.typography.fontSize,
+            },
+          }}
+        />
+      </>
     )
   }
 }
@@ -198,13 +83,4 @@ const mapStateToProps = (store) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(
-  withErrorFallback(
-    queryRendererHoc({
-      query: getPortfolioQuery,
-      withOutSpinner: false,
-      // pollInterval: 5000,
-      // fetchPolicy: 'cache-and-network',
-    })(PortfolioTableIndustries)
-  )
-)
+)(withErrorFallback(PortfolioTableIndustries))

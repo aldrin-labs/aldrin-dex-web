@@ -1,28 +1,26 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { TableWithSort as Table } from '@storybook-components/index'
-import useLegacyState from 'use-legacy-state'
 import {
   combineIndustryData,
   onCheckBoxClick,
 } from '@utils/PortfolioTableUtils'
-import { tableHeadings } from './config'
-import { Query } from 'react-apollo'
-import { getPortfolioQuery as industryDataQuery } from '@containers/Portfolio/api'
+import { Query, Mutation } from 'react-apollo'
 import { ErrorFallback } from '@storybook-components/ErrorFallback'
-import TableLoader from '@components/TablePlaceholderLoader/newLoader'
 import { Theme } from '@material-ui/core'
-import { useTheme } from '@material-ui/styles'
 
-interface State {
-  expandedRows: ReadonlyArray<number>
-  industryData: any
-}
+import TableLoader from '@components/TablePlaceholderLoader/newLoader'
+import { useTheme } from '@material-ui/styles'
+import { getPortfolioQuery as industryDataQuery } from '@containers/Portfolio/api'
+import { tableHeadings } from './config'
+import { updateIndustries } from '../../../../../../mutations/portfolio/updateIndustries'
 
 const IndustryTable = () => {
   const theme: Theme = useTheme()
-  const [state, setState] = useLegacyState({ expandedRows: [] })
-  const red = theme.palette.red.main
-  const green = theme.palette.red.green
+  const [expandedRows, setExpandedRows] = useState([])
+  const red = theme.customPalette.red.main
+  const green = theme.customPalette.green.main
+
+  const mountedRef = useRef(false)
 
   const putDataInTable = (industryData: any) => {
     if (!industryData) return
@@ -38,62 +36,74 @@ const IndustryTable = () => {
   }
 
   const expandRow = (id: string) =>
-    setState((prevState: State) => ({
-      expandedRows: onCheckBoxClick(prevState.expandedRows, id),
-    }))
+    setExpandedRows(onCheckBoxClick(expandedRows, id) as never[])
 
   const onSelectAllClick = (
-    e: Event | undefined | 'selectAll',
+    e: React.ChangeEvent<HTMLInputElement> | 'selectAll',
     industryData: ReadonlyArray<any>
   ) => {
-    if ((e && e.target && e.target.checked) || e === 'selectAll') {
-      setState({
-        expandedRows: industryData
-          ? industryData.map((n: any) => n && n.industry)
-          : [],
-      })
+    if (
+      (e !== 'selectAll' && e && e.target && e.target.checked) ||
+      e === 'selectAll'
+    ) {
+      setExpandedRows(
+        industryData
+          ? (industryData.map(
+              (n: any) => n && n.industry
+            ) as React.SetStateAction<never[]>)
+          : []
+      )
       return
     }
-    setState({ expandedRows: [] })
+    setExpandedRows([])
   }
 
   return (
-    <Query
-      query={industryDataQuery}
-      variables={{ baseCoin: 'USD' }}
-      onCompleted={(data) => {
-        if (state.expandedRows.length === 0) {
-          const industryData = combineIndustryData(data, -100, red, green)
-            .industryData
-          onSelectAllClick('selectAll', industryData)
-        }
-      }}
-    >
-      {({ data, loading, error }) => {
-        if (error) {
-          return <ErrorFallback error={error} />
-        }
-        if (loading) {
-          return <TableLoader />
-        }
+    <Mutation mutation={updateIndustries}>
+      {(updateIndustriesMutation) => (
+        <Query
+          query={industryDataQuery}
+          variables={{ baseCoin: 'USD' }}
+          onCompleted={(data) => {
+            if (expandedRows.length === 0 && mountedRef.current === false) {
+              // tslint:disable-next-line
+              mountedRef.current = true
+              const industryData = combineIndustryData(data, -100, red, green)
 
-        const industryData = combineIndustryData(data, -100, red, green)
-          .industryData
+              updateIndustriesMutation({
+                variables: { industries: industryData.chartData },
+              })
+              onSelectAllClick('selectAll', industryData.industryData)
+            }
+          }}
+        >
+          {({ data, loading, error }) => {
+            if (error) {
+              return <ErrorFallback error={error} />
+            }
+            if (loading) {
+              return <TableLoader />
+            }
 
-        return (
-          <Table
-            id="PortfolioIndustryTable"
-            actionsColSpan={3}
-            expandableRows={true}
-            onChange={expandRow}
-            onSelectAllClick={(e) => onSelectAllClick(e, industryData)}
-            expandedRows={state.expandedRows}
-            title={'Industry Performance'}
-            {...putDataInTable(industryData)}
-          />
-        )
-      }}
-    </Query>
+            const industryData = combineIndustryData(data, -100, red, green)
+              .industryData
+
+            return (
+              <Table
+                id="PortfolioIndustryTable"
+                actionsColSpan={3}
+                expandableRows={true}
+                onChange={expandRow}
+                onSelectAllClick={(e: any) => onSelectAllClick(e, industryData)}
+                expandedRows={expandedRows}
+                title={'Industry Performance'}
+                {...putDataInTable(industryData)}
+              />
+            )
+          }}
+        </Query>
+      )}
+    </Mutation>
   )
 }
 

@@ -105,12 +105,15 @@ export const combineIndustryData = (
   filterValueLessThen: number,
   red: string,
   green: string
-) => {
+): { industryData: ReadonlyArray<any>; chartData: ReadonlyArray<any> } => {
   if (!has(data, 'myPortfolios')) {
-    return []
+    return { industryData: [], chartData: [] }
   }
 
-  const sumPortfolioPercentageOfAsset = (assets: any[], allSum: number) => {
+  const sumPortfolioPercentageOfAsset = (
+    assets: ReadonlyArray<any>,
+    allSum: number
+  ) => {
     let sum = 0
     assets.forEach((asset) => {
       sum += percentagesOfCoinInPortfolio(asset, allSum, true)
@@ -125,15 +128,16 @@ export const combineIndustryData = (
 
   const { myPortfolios } = data
   const industryData = flatten(
-    myPortfolios.map(({ industryData }) => {
+    myPortfolios.map(({ industryData: industry }: { industryData: any }) => {
       // calculating all assets to calculate allSum
-      const allAssets = []
-      industryData.forEach((row) => {
-        row.assets.forEach((asset) => allAssets.push(asset))
+      let allAssets: ReadonlyArray<any> = []
+
+      industry.forEach((row: any) => {
+        row.assets.forEach((asset: any) => (allAssets = [...allAssets, asset]))
       })
       const allSum = calcAllSumOfPortfolioAsset(allAssets)
 
-      return industryData.map((row) => ({
+      return industry.map((row: any) => ({
         // industry should be uniq
         id: row.industry,
         industry: row.industry,
@@ -158,7 +162,7 @@ export const combineIndustryData = (
         expandableContent:
           row.assets.length === 1
             ? []
-            : row.assets.map((asset) => ({
+            : row.assets.map((asset: any) => ({
                 industry: '',
                 coin: { render: asset.coin, style: { fontWeight: 700 } },
                 portfolio: +roundPercentage(
@@ -178,10 +182,12 @@ export const combineIndustryData = (
     })
   )
 
-  const chartData: InputRecord[] = industryData.map((row) => ({
-    label: row.industry,
-    realValue: +transformToNumber(row.portfolio.render),
-  }))
+  const chartData: ReadonlyArray<InputRecord> = industryData.map(
+    (row: any) => ({
+      label: row.industry,
+      realValue: +transformToNumber(row.portfolio.render),
+    })
+  )
 
   return { chartData, industryData }
 }
