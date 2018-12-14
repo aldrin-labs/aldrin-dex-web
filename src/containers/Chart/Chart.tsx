@@ -437,6 +437,7 @@ class Chart extends React.Component<IProps, IState> {
   }
 }
 
+const SelectContainer = styled.div``
 
 const MainContainer = styled.div`
   ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
