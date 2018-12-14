@@ -187,7 +187,7 @@ class TradeHistoryTable extends PureComponent<IProps, IState> {
                 <>
                   {data.map((ticker: ITicker, i: number) => (
                     <OptimizedRow
-                      key={i}
+                      key={ticker.id}
                       {...{
                         ticker,
                         background,

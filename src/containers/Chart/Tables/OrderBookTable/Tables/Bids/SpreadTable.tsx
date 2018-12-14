@@ -152,9 +152,9 @@ class SpreadTable extends Component<IProps> {
               <Loading centerAligned={true} />
             ) : (
               <>
-                {data.map((order: { size: number; price: number }, i: number) => (
+                {data.map((order: { id:number; size: number; price: number }, i: number) => (
                   <MemoizedRow
-                    key={i}
+                    key={order.id}
                     {...{
                       type,
                       order,
