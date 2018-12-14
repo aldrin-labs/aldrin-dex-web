@@ -1,7 +1,7 @@
 import React, { SFC } from 'react'
 import { Login } from '@containers/Login'
 import { WithTheme } from '@material-ui/core/styles'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import { Toolbar, Button, Grid } from '@material-ui/core'
 import { NavLink as Link } from 'react-router-dom'
 import { fade } from '@material-ui/core/styles/colorManipulator'

@@ -37,12 +37,5 @@ export interface IObj {
 }
 
 export interface IState {
-  expandedRows: ReadonlyArray<string>
-  chartData: any[]
-  industryData: IObj[] | null
-  portfolio: IPortfolio | null
-  activeKeys: number[] | null
-  currentSort: { key: string; arg: 'ASC' | 'DESC' } | null
-  run: boolean
   key: number
 }

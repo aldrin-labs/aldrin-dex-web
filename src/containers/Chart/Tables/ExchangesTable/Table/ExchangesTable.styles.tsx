@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button } from '@material-ui/core'
 import styled from 'styled-components'
 import FaCircle from '@material-ui/icons/Brightness1'
@@ -8,11 +9,11 @@ import {
   Cell,
 } from '@components/OldTable/Table'
 
-export const Icon = styled(FaCircle)`
+export const Icon = styled(({ iconColor, ...rest }) => <FaCircle { ...rest } />)`
   font-size: 0.5rem;
   min-width: 20%;
   flex-basis: 20%;
-  color: ${(props: { color: string }) => props.color};
+  color: ${(props: { iconColor: string }) => props.iconColor};
 `
 
 export const FlexCell = styled(Cell)`
