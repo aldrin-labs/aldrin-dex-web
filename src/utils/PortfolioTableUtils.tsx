@@ -102,7 +102,7 @@ export const transformToNumber = (percentage: string) =>
 
 export const combineIndustryData = (
   data: any,
-  filterValueLessThen: number,
+  filterValueLessThen: number | undefined,
   red: string,
   green: string
 ): { industryData: ReadonlyArray<any>; chartData: ReadonlyArray<any> } => {

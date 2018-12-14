@@ -42,10 +42,13 @@ const IndustryTable = () => {
     e: React.ChangeEvent<HTMLInputElement> | 'selectAll',
     industryData: ReadonlyArray<any>
   ) => {
+    // if checkboxes is checked
+    //  or 'selectAll' provided instead
     if (
       (e !== 'selectAll' && e && e.target && e.target.checked) ||
       e === 'selectAll'
     ) {
+      // then expand all
       setExpandedRows(
         industryData
           ? (industryData.map(
@@ -55,6 +58,7 @@ const IndustryTable = () => {
       )
       return
     }
+    // else collapse all
     setExpandedRows([])
   }
 
@@ -68,7 +72,12 @@ const IndustryTable = () => {
             if (expandedRows.length === 0 && mountedRef.current === false) {
               // tslint:disable-next-line
               mountedRef.current = true
-              const industryData = combineIndustryData(data, -100, red, green)
+              const industryData = combineIndustryData(
+                data,
+                undefined,
+                red,
+                green
+              )
 
               updateIndustriesMutation({
                 variables: { industries: industryData.chartData },
@@ -85,8 +94,12 @@ const IndustryTable = () => {
               return <TableLoader />
             }
 
-            const industryData = combineIndustryData(data, -100, red, green)
-              .industryData
+            const industryData = combineIndustryData(
+              data,
+              undefined,
+              red,
+              green
+            ).industryData
 
             return (
               <Table
