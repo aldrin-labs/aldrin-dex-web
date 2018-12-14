@@ -83,7 +83,7 @@ Cypress.Commands.add('login', (email, password) => {
   Cypress.log({
     name: 'loginBySingleSignOn'
   });
-  cy.clearLocalStorage()
+  window.localStorage.setItem('persist:root', '')
   cy.visit('/')
   cy.setLoginToStorage(email, password).then(() => {
     cy.reload(true)
