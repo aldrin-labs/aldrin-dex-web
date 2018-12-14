@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import {
   Button,
+  Fab,
   Fade,
   Typography,
   Card,
@@ -364,13 +365,12 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <Toggler>
-        <Button
+        <Fab
           data-e2e="switchChartPageMode"
-          size="small"
           style={{
             height: 36,
           }}
-          variant="extendedFab"
+          variant="extended"
           color="secondary"
           onClick={() => {
             toggleView(defaultView ? 'onlyCharts' : 'default')
@@ -378,7 +378,7 @@ class Chart extends React.Component<IProps, IState> {
           }}
         >
           {defaultView ? 'Multi Charts' : ' Single Chart'}
-        </Button>
+        </Fab>
       </Toggler>
     )
   }
@@ -396,6 +396,7 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
+      <>
         <TogglerContainer container className="AutoSuggestSelect">
             <Grid
               spacing={16}
@@ -430,6 +431,7 @@ class Chart extends React.Component<IProps, IState> {
         </TogglerContainer>
         {view === 'default' && this.renderDefaultView()}
         {view === 'onlyCharts' && this.renderOnlyCharts()}
+        </>
       </MainContainer>
     )
   }
