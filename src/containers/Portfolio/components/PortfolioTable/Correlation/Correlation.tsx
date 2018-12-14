@@ -26,7 +26,7 @@ const Correlation = (props: IProps) => {
     isFullscreenEnabled,
     period,
     setCorrelationPeriodToStore,
-
+    theme,
     startDate,
     endDate,
   } = props
@@ -51,6 +51,7 @@ const Correlation = (props: IProps) => {
         fullScreenChangeHandler={props.toggleFullscreen}
         isFullscreenEnabled={isFullscreenEnabled || false}
         data={dataRaw}
+        theme={theme}
         setCorrelationPeriod={setCorrelationPeriodToStore}
         period={period}
         dates={{ startDate, endDate }}
@@ -116,6 +117,7 @@ const CorrelationWrapper = (props: IProps) => {
               },
             ],
           }}
+          theme={theme}
           children={children}
           {...props}
         />

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 
 import * as actions from '@containers/Chart/actions'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'

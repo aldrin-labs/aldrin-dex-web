@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { zip, isObject, find, has, isEqual } from 'lodash-es'
 import { Theme } from '@material-ui/core'
-import { withTheme } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/styles'
 import { Mutation, Query } from 'react-apollo'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
