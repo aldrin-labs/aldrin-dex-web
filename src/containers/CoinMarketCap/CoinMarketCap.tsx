@@ -192,7 +192,7 @@ export class CoinMarket extends React.Component<Props, State> {
           <TableContainer item={true} xs={12} md={12}>
             <TableWrapper>
               <TableWithSort
-                  title="Title"
+                  title="Market Capitalization"
                   columnNames={dataForTable.head}
                   data={dataForTable.data}
                   padding="default"
