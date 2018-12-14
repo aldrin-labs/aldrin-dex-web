@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { compose, Query } from 'react-apollo'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import { isEqual } from 'lodash-es'
 
 import { PortfolioChart } from '@storybook-components/index'
@@ -44,12 +44,7 @@ const TransformData = (props: any) => {
     }))
   }
 
-  return (
-    <PortfolioChart
-      data={ transformedData }
-      { ...otherProps }
-    />
-  )
+  return <PortfolioChart data={transformedData} {...otherProps} />
 }
 
 class GQLChart extends React.Component {

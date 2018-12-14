@@ -20,6 +20,7 @@ import Footer from '@components/Footer'
 import AnimatedNavBar from '@components/NavBar/AnimatedNavBar'
 import ThemeWrapper from './ThemeWrapper/ThemeWrapper'
 import ShowWarningOnMoblieDevice from '@components/ShowWarningOnMoblieDevice'
+import { GlobalStyle } from '@components/CreateGlobalStyle/CreateGlobalStyle'
 
 const version = `1`
 const currentVersion = localStorage.getItem('version')
@@ -47,6 +48,7 @@ const AppRaw = ({
         </AppGridLayout>
         <Footer fullscreenMode={fullscreen} />
         <ShowWarningOnMoblieDevice />
+        <GlobalStyle />
       </ThemeWrapper>
     </JssProvider>
   )

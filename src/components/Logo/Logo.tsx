@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyledLogo } from './Logo.styles'
-import { withTheme, Theme } from '@material-ui/core'
+import { Theme } from '@material-ui/core'
+import { withTheme } from '@material-ui/styles'
 
 import MainLogo from '@icons/MainLogo.png'
 import MainLogoDark from '@icons/MainLogoDarkColor.png'

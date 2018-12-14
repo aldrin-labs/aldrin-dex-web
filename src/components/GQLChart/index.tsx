@@ -4,7 +4,7 @@ import { compose, Query } from 'react-apollo'
 import PortfolioChart from '@components/GQLChart/PortfolioChart/PortfolioChart'
 import QueryRenderer from '@components/QueryRenderer'
 import { GET_COINS } from '../../mutations/portfolio/getCoins'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 
 import { PRICE_HISTORY_QUERY } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
@@ -46,12 +46,7 @@ const TransformData = (props: any) => {
     }))
   }
 
-  return (
-    <PortfolioChart
-      data={ transformedData }
-      { ...otherProps }
-    />
-  )
+  return <PortfolioChart data={transformedData} {...otherProps} />
 }
 
 class GQLChart extends React.Component {

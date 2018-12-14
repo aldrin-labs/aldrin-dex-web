@@ -16,6 +16,7 @@ import { API_URL } from '@utils/config'
 import { GET_BASE_COIN } from '../queries/portfolio/getBaseCoin'
 import { GET_COINS } from '../mutations/portfolio/getCoins'
 import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '../queries/portfolio/getOptimizationCountOfRuns'
+import { GET_INDUSTRIES } from '../queries/portfolio/GET_INDUSTRIES'
 
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 
@@ -75,9 +76,9 @@ const defaultState = {
     activeChart: '1Y',
     coins: [],
   },
-  portfolioMainCoins: {
-    __typename: 'portfolioMainCoins',
-    coins: [],
+  portfolioIndustries: {
+    __typename: 'portfolioIndustries',
+    industries: [],
   },
   portfolioOptimization: {
     __typename: 'portfolioOptimization',
@@ -85,7 +86,15 @@ const defaultState = {
   },
 }
 
+const typeDefs = gql`
+  type Industry {
+    label: String!
+    realValue: Float!
+  }
+`
+
 const stateLink = withClientState({
+  typeDefs,
   cache: memCache,
   defaults: defaultState,
   resolvers: {
@@ -144,6 +153,23 @@ const stateLink = withClientState({
             portfolioMain: {
               coins: coins,
               __typename: 'portfolioMain',
+            },
+          },
+        })
+
+        return null
+      },
+      updateIndustries: (_: undefined, args: any, source: any) => {
+        const { industries } = args
+        const { cache } = source
+        const query = GET_INDUSTRIES
+
+        cache.writeQuery({
+          query,
+          data: {
+            portfolioIndustries: {
+              industries: industries,
+              __typename: 'portfolioIndustries',
             },
           },
         })
