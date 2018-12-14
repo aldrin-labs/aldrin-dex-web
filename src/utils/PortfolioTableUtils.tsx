@@ -100,12 +100,15 @@ const colorful = (value: number, red: string, green: string) => ({
 export const transformToNumber = (percentage: string) =>
   +percentage.split('%')[0]
 
-export const combineIndustryData = (
-  data: any,
-  filterValueLessThen: number | undefined,
-  red: string,
+export const combineIndustryData = ({
+  data,
+  red = 'red',
+  green = 'green',
+}: {
+  data: any
+  red: string
   green: string
-): { industryData: ReadonlyArray<any>; chartData: ReadonlyArray<any> } => {
+}): { industryData: ReadonlyArray<any>; chartData: ReadonlyArray<any> } => {
   if (!has(data, 'myPortfolios')) {
     return { industryData: [], chartData: [] }
   }

@@ -72,12 +72,7 @@ const IndustryTable = () => {
             if (expandedRows.length === 0 && mountedRef.current === false) {
               // tslint:disable-next-line
               mountedRef.current = true
-              const industryData = combineIndustryData(
-                data,
-                undefined,
-                red,
-                green
-              )
+              const industryData = combineIndustryData({ data, red, green })
 
               updateIndustriesMutation({
                 variables: { industries: industryData.chartData },
@@ -94,12 +89,8 @@ const IndustryTable = () => {
               return <TableLoader />
             }
 
-            const industryData = combineIndustryData(
-              data,
-              undefined,
-              red,
-              green
-            ).industryData
+            const industryData = combineIndustryData({ data, red, green })
+              .industryData
 
             return (
               <Table
