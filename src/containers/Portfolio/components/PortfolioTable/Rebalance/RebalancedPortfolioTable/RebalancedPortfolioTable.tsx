@@ -8,8 +8,8 @@ import nanoid from 'nanoid'
 import Typography from '@material-ui/core/Typography'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import AddIcon from '@material-ui/icons/Add'
-import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
+import Slider from '@material-ui/lab/Slider'
 
 import {
   cloneArrayElementsOneLevelDeep,
@@ -124,6 +124,123 @@ export default class RebalancedPortfolioTable extends React.Component<
 
     updateState({
       rows: resultRows,
+    })
+  }
+
+  onPercentSliderDragEnd = (idx: number) => {
+    const {
+      rows,
+      totalRows,
+      undistributedMoney,
+      updateState,
+      totalSnapshotRows,
+      totalPercents,
+    } = this.props
+
+    if (!(totalPercents > 100 || (100 - (+totalPercents) < 0.5) && (+rows[idx].portfolioPerc !== 0 || +rows[idx].portfolioPerc > 0.5))) {
+      return
+    }
+
+    const percentInput = 100 - (+totalPercents)
+
+
+    const clonedRows = rows.map((a: IRow) => ({ ...a }))
+    console.log('clonedRows[idx]', clonedRows[idx], idx);
+
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: (+(clonedRows[idx].portfolioPerc)) + percentInput,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
+      resultRows,
+      totalRows
+    )
+    const totalPercentsNew = UTILS.calculateTotalPercents(
+      newCalculatedRowsWithPercents
+    )
+    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
+      newCalculatedRowsWithPercents
+    )
+    const newTableTotalRows = UTILS.calculateTableTotal(
+      newCalculatedRowsWithPercents
+    )
+
+    const oldRowPrice = rows[idx].price
+    const newRowPrice = newCalculatedRowsWithPercents[idx].price
+    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+
+    updateState({
+      totalPercents: totalPercentsNew,
+      rows: rowWithNewPriceDiff,
+      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
+        totalSnapshotRows,
+        newTableTotalRows
+      ),
+      undistributedMoney: (
+        parseFloat(undistributedMoney) + oldNewPriceDiff
+      ).toFixed(2),
+      totalTableRows: newTableTotalRows,
+    })
+
+
+  }
+
+  onPercentSliderChange = (e: React.ChangeEvent<HTMLInputElement>, value: number, idx: number) => {
+    const {
+      rows,
+      totalRows,
+      undistributedMoney,
+      updateState,
+      totalSnapshotRows,
+    } = this.props
+
+    // console.log('e', e, 'value', value, 'idx', idx);
+    const percentInput = value
+
+    const clonedRows = rows.map((a: IRow) => ({ ...a }))
+    const resultRows = [
+      ...clonedRows.slice(0, idx),
+      {
+        ...clonedRows[idx],
+        portfolioPerc: percentInput,
+      },
+      ...clonedRows.slice(idx + 1, clonedRows.length),
+    ]
+
+    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
+      resultRows,
+      totalRows
+    )
+    const totalPercents = UTILS.calculateTotalPercents(
+      newCalculatedRowsWithPercents
+    )
+    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
+      newCalculatedRowsWithPercents
+    )
+    const newTableTotalRows = UTILS.calculateTableTotal(
+      newCalculatedRowsWithPercents
+    )
+
+    const oldRowPrice = rows[idx].price
+    const newRowPrice = newCalculatedRowsWithPercents[idx].price
+    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+
+    updateState({
+      totalPercents,
+      rows: rowWithNewPriceDiff,
+      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
+        totalSnapshotRows,
+        newTableTotalRows
+      ),
+      undistributedMoney: (
+        parseFloat(undistributedMoney) + oldNewPriceDiff
+      ).toFixed(2),
+      totalTableRows: newTableTotalRows,
     })
   }
 
@@ -300,7 +417,8 @@ export default class RebalancedPortfolioTable extends React.Component<
     green: string,
     background: string,
     fontFamily: string,
-    showZerosForRebalancedPartIfItsEqualToCurrent: boolean
+    showZerosForRebalancedPartIfItsEqualToCurrent: boolean,
+    totalPercents: number | string
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
 
@@ -321,6 +439,15 @@ export default class RebalancedPortfolioTable extends React.Component<
       ) : (
         `${row.portfolioPerc}%`
       )
+
+      const SliderInput = <Slider
+        key={row._id}
+        value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}
+        max={100 - (+totalPercents) + (+row.portfolioPerc)}
+        step={0.5}
+        onChange={(e, value) => {this.onPercentSliderChange(e, value, index)}}
+        onDragEnd={() => this.onPercentSliderDragEnd(index)} />
+
 
       const shouldWeShowPlaceholderForExchange =
         row.exchange === '' || row.exchange === 'Exchange'
@@ -494,6 +621,9 @@ export default class RebalancedPortfolioTable extends React.Component<
               isNumber: true,
               contentToSort: row.portfolioPerc === null ? 0 : +row.portfolioPerc,
             },
+            sliderPerc: {
+              render: SliderInput,
+            },
             price: {
               contentToSort: +row.price,
               render: addMainSymbol(
@@ -575,6 +705,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         id: 'priceSnapshot',
       },
       { label: 'Rebalanced %', isNumber: true, id: 'portfolioPerc' },
+      { label: 'Slider %', id: 'sliderPerc'},
       {
         label: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
         isNumber: true,
@@ -599,7 +730,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           green,
           background,
           fontFamily,
-          showZerosForRebalancedPartIfItsEqualToCurrent
+          showZerosForRebalancedPartIfItsEqualToCurrent,
+          totalPercents,
         ),
         footer: [
           ...(isEditModeEnabled
@@ -626,6 +758,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                     render: ' ',
                   },
                   rebalanced: {
+                    render: ' ',
+                  },
+                  sliderPerc: {
                     render: ' ',
                   },
                   rebalancedUSD: {
@@ -668,9 +803,11 @@ export default class RebalancedPortfolioTable extends React.Component<
             },
             ...(showZerosForRebalancedPartIfItsEqualToCurrent ? {
               rebalanced: ' ',
+              sliderPerc: ' ',
               rebalancedUSD: ' ',
             } : {
               rebalanced: { render: `${totalPercents}%`, isNumber: true },
+              sliderPerc: ' ',
               rebalancedUSD: {
                 contentToSort: +totalTableRows,
                 render: addMainSymbol(
@@ -714,6 +851,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                 isNumber: true,
               },
               rebalanced: ' ',
+              sliderPerc: {
+                render: ' ',
+              },
               rebalancedUSD: {
                 contentToSort: +totalRows,
                 render: addMainSymbol(
