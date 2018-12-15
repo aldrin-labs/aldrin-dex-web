@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { History } from 'history'
-// import { Button } from '@material-ui/core'
+import { withTheme } from '@material-ui/styles'
+import { Theme } from '@material-ui/core'
 // import Button from '@components/Elements/Button/Button'
 // import Calculator from '@components/Calculator/Calculator'
 // import DominanceChart from '@components/DominanceChart/DominanceChart'
@@ -32,6 +33,7 @@ interface Props {
   data: CoinMarketCapQueryQuery
   history: History
   location: Location
+  theme: Theme
 }
 
 interface State {
@@ -92,7 +94,7 @@ export class CoinMarket extends React.Component<Props, State> {
   }
 
 
-  getDataForTabale = (data) => {
+  getDataForTabale = (data, green, red) => {
     return {
       head: [
         { id: 'Number', isNumber: true, label: '№' },
@@ -101,9 +103,7 @@ export class CoinMarket extends React.Component<Props, State> {
         { id: 'PriceUSD', isNumber: true, label: 'Price USD' },
         { id: 'PriceBTC', isNumber: true, label: 'Price BTC' },
         { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
-        { id: 'AvailableSupply', isNumber: true, label: 'Available Supply' },
-        { id: 'TotalSupply', isNumber: true, label: 'Total Supply' },
-        { id: 'MaxSupply', isNumber: true, label: 'Max Supply' },
+        { id: 'CirculatingSupply', isNumber: true, label: 'Circulating Supply' },
         { id: 'Volume24h', isNumber: true, label: 'Volume 24 hr' },
         { id: 'PercentChange1h', isNumber: true, label: '%1hr' },
         { id: 'PercentChange24h', isNumber: true, label: '%24hr' },
@@ -117,53 +117,62 @@ export class CoinMarket extends React.Component<Props, State> {
           Symbol: value.symbol,
           PriceUSD: {
             contentToSort: value.price_usd || 0,
-            render: addMainSymbol(roundAndFormatNumber(value.price_usd || 0, 2), true),
+            render: addMainSymbol(typeof(value.price_usd) === 'number'
+              ? roundAndFormatNumber(value.price_usd , 2)
+              : '?', true),
             isNumber: true,
           },
           PriceBTC: {
             contentToSort: value.price_btc || 0,
-            render: addMainSymbol(roundAndFormatNumber(value.price_btc, 8) || 0, false),
+            render: addMainSymbol(typeof(value.price_btc) === 'number'
+              ? roundAndFormatNumber(value.price_btc, 8)
+              : '?', false),
             isNumber: true,
           },
           MarketCap: {
             contentToSort: value.market_cap_usd || 0,
-            render: addMainSymbol(formatNumberToUSFormat(value.market_cap_usd || 0), true),
+            render: addMainSymbol(typeof(value.market_cap_usd) === 'number'
+              ? formatNumberToUSFormat(value.market_cap_usd)
+              : '?', true),
             isNumber: true,
           },
-          AvailableSupply: {
+          CirculatingSupply: {
             contentToSort: value.available_supply || 0,
-            render: formatNumberToUSFormat(value.available_supply || 0),
-            isNumber: true,
-          },
-          TotalSupply: {
-            contentToSort: value.total_supply || 0,
-            render: formatNumberToUSFormat(value.total_supply || 0),
-            isNumber: true,
-          },
-          MaxSupply: {
-            contentToSort: value.max_supply || 0,
-            render: formatNumberToUSFormat(value.max_supply || 0),
+            render: `${typeof(value.available_supply) === 'number'
+              ? formatNumberToUSFormat(value.available_supply)
+              : '?'} ${value.symbol}`,
             isNumber: true,
           },
           Volume24h: {
             contentToSort: value.volume_usd_24h || 0,
-            render: addMainSymbol(roundAndFormatNumber(value.volume_usd_24h || 0, 2), true),
+            render: addMainSymbol(typeof(value.volume_usd_24h) === 'number'
+              ? roundAndFormatNumber(value.volume_usd_24h, 2)
+              : '?', true),
             isNumber: true,
           },
           PercentChange1h: {
             contentToSort: value.percent_change_1h || 0,
-            render: formatNumberToUSFormat(value.percent_change_1h || 0),
+            render: `${typeof(value.percent_change_1h) === 'number'
+              ? formatNumberToUSFormat(value.percent_change_1h)
+              : '?'}%`,
             isNumber: true,
+            color: value.percent_change_1h > 0 ? green : value.percent_change_1h < 0 ? red : '',
           },
           PercentChange24h: {
             contentToSort: value.percent_change_24h || 0,
-            render: formatNumberToUSFormat(value.percent_change_24h || 0),
+            render: `${typeof(value.percent_change_24h) === 'number'
+            ? formatNumberToUSFormat(value.percent_change_24h || 0)
+            : '?'}%`,
             isNumber: true,
+            color: value.percent_change_24h > 0 ? green : value.percent_change_24h < 0 ? red : '',
           },
           PercentChange7d: {
             contentToSort: value.percent_change_7d || 0,
-            render: formatNumberToUSFormat(value.percent_change_7d  || 0),
+            render: `${typeof(value.percent_change_7d) === 'number'
+            ? formatNumberToUSFormat(value.percent_change_7d  || 0)
+            : '?'}%`,
             isNumber: true,
+            color: value.percent_change_7d > 0 ? green : value.percent_change_7d < 0 ? red : '',
           },
         })),
       },
@@ -171,7 +180,11 @@ export class CoinMarket extends React.Component<Props, State> {
   }
 
   render() {
-    const dataForTable = this.getDataForTabale(this.props.data)
+    const dataForTable = this.getDataForTabale(
+      this.props.data,
+      this.props.theme.palette.green.main,
+      this.props.theme.palette.red.main
+    )
 
     return (
       <Container>
@@ -219,6 +232,6 @@ export const MyCoinMarket = queryRendererHoc({
   pollInterval: 5000,
   fetchPolicy: 'network-only',
   variables: options(location)
-})(CoinMarket)
+})(withTheme()(CoinMarket))
 
 export default MyCoinMarket
