@@ -1,7 +1,8 @@
 describe('portfolio main', () => {
   before(function() {
-    cy.visit('/')
-    cy.clearLocalStorage()
+    cy.visit('/portfolio')
+    cy.notShowTips()
+    cy.waitLoading()
   })
 
   context('Portfolio', () => {
@@ -28,7 +29,6 @@ describe('portfolio main', () => {
     })
 
     it('Should switch BTC/USDT', () => {
-      cy.skipTip()
       cy.get('[data-e2e="toggleCurrency"]').should('exist')
       cy.get('[data-e2e="toggleCurrency"]').contains('BTC')
       cy.get('[data-e2e="toggleCurrency"]').click()

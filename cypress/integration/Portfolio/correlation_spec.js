@@ -1,11 +1,9 @@
 describe('portfolio correlation tests', () => {
   before(function() {
-    cy.visit('/')
-
-    cy.get('button > svg').click()
+    cy.visit('/portfolio')
+    cy.notShowTips()
     cy.get('#correlation_tab_button').click()
-    cy.wait(1500)
-    cy.get('button > svg').click()
+    cy.waitLoading()
   })
 
   it('Render Portfolio Correlation Grid', () => {
