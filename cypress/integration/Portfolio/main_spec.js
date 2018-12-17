@@ -19,6 +19,14 @@ describe('portfolio main', () => {
       cy.get('.mouse-target').should('exist')
     })
 
+    it('Portfolio Chart Buttons are clickable', () => {
+      cy.get('[data-e2e="1Y"]').click()
+      cy.get('[data-e2e="7D"]').click()
+      cy.get('[data-e2e="3M"]').click()
+      cy.get('[data-e2e="1M"]').click()
+      cy.get('[data-e2e="1D"]').click()
+    })
+
     it('Should switch BTC/USDT', () => {
       cy.get('[data-e2e="toggleCurrency"]').should('exist')
       cy.get('[data-e2e="toggleCurrency"]').contains('BTC')

@@ -25,7 +25,7 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('waitLoading', () => {
-  cy.get('[data-e2e="Loadig"]').should("exist");
+  cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("exist");
   cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("not.exist");
 })
 
@@ -83,36 +83,44 @@ Cypress.Commands.add('login', (email, password) => {
   Cypress.log({
     name: 'loginBySingleSignOn'
   });
-  cy.clearLocalStorage()
+  window.localStorage.setItem('persist:root', '')
   cy.visit('/')
   cy.setLoginToStorage(email, password).then(() => {
     cy.reload(true)
   })
 })
 
-Cypress.Commands.add('notShowTips', () => {
-  window.localStorage.setItem('persist:root',
-    JSON.stringify({
-      loginStatus: JSON.stringify(true),
-      user: JSON.stringify({
-        toolTip: {
-          portfolioMain: false,
-          portfolioIndustry: false,
-          portfolioRebalance: false,
-          portfolioCorrelation: false,
-          portfolioOptimization: false,
-          chartPage: false,
-          multiChartPage: false,
-        }
-      }),
-      _persist: JSON.stringify({
-        version:-1,
-        rehydrated :true
+Cypress.Commands.add('notShowTipsStorage', () => {
+  return new Cypress.Promise((resolve, reject) => {
+    window.localStorage.setItem('persist:root',
+      JSON.stringify({
+        user: JSON.stringify({
+          toolTip: {
+            portfolioMain: false,
+            portfolioIndustry: false,
+            portfolioRebalance: false,
+            portfolioCorrelation: false,
+            portfolioOptimization: false,
+            chartPage: false,
+            multiChartPage: false,
+          }
+        }),
+        _persist: JSON.stringify({
+          version:-1,
+          rehydrated :true
+        })
       })
-    })
-  )
+    )
+    resolve()
+  })
+})
+
+Cypress.Commands.add('notShowTips', () => {
+  cy.visit('/')
+  cy.notShowTipsStorage()
   cy.reload()
 })
+
 
 Cypress.Commands.add(
   'chooseReactSelectOption',

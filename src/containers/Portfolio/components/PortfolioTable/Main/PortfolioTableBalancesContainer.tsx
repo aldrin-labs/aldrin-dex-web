@@ -21,6 +21,7 @@ import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import PortfolioMainTable from '@components/PortfolioMainTable/PortfolioMainTable'
 import { withErrorFallback } from '@storybook-components/hoc/withErrorFallback/withErrorFallback'
+import Template from './Template/Template'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {
   state = {
@@ -45,7 +46,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
   render() {
     const { theme, tab } = this.props
     return (
-      <GridContainer container={true} spacing={16}>
+      <>
         <Joyride
           continuous={true}
           showProgress={true}
@@ -68,32 +69,22 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
             },
           }}
         />
-        <TablesWrapper spacing={16} container={true} item={true} xs={12}>
-          <Grid item={true} xs={12} md={8}>
-            <TableWrapper className="PortfolioMainTable">
-              {/* refactor to pass this via Apollo  */}
-              <PortfolioMainTable tab={tab} />
-            </TableWrapper>
-          </Grid>
-          <Grid item={true} xs={12} md={4}>
-            <TableWrapper className="PortfolioTradeOrderHistoryTable">
-              <TradeOrderHistoryTable />
-            </TableWrapper>
-          </Grid>
-        </TablesWrapper>
-
-        <ChartContainer item={true} xs={12} md={12}>
-          <Chart
-            title="Portfolio Value | Coming Soon | In development"
-            style={{
-              marginLeft: 0,
-              minHeight: '10vh',
-            }}
-            tab={tab}
-            marginTopHr="10px"
-          />
-        </ChartContainer>
-      </GridContainer>
+        <Template
+          PortfolioMainTable={<PortfolioMainTable tab={tab} />}
+          PortfolioActions={<TradeOrderHistoryTable />}
+          Chart={
+            <Chart
+              title="Portfolio Value | Coming Soon | In development"
+              style={{
+                marginLeft: 0,
+                minHeight: '10vh',
+              }}
+              tab={tab}
+              marginTopHr="10px"
+            />
+          }
+        />
+      </>
     )
   }
 }

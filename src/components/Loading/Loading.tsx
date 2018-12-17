@@ -1,7 +1,7 @@
 import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import styled from 'styled-components'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import { Theme } from '@material-ui/core'
 
 const RawLoading = ({
@@ -17,7 +17,11 @@ const RawLoading = ({
   centerAligned?: boolean
   theme?: Theme
 }) => (
-  <SpinnerContainer margin={margin} centerAligned={centerAligned} data-e2e="Loadig">
+  <SpinnerContainer
+    margin={margin}
+    centerAligned={centerAligned}
+    data-e2e="Loadig"
+  >
     <CircularProgress
       style={{ color: color || theme.palette.secondary.main }}
       size={size}

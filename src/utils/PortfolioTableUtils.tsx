@@ -31,9 +31,12 @@ const config = {
    able to calculate a value due to missing data.`,
 }
 
-export const onCheckBoxClick = (selected: any[], id: string): string[] => {
+export const onCheckBoxClick = (
+  selected: ReadonlyArray<any>,
+  id: string
+): ReadonlyArray<string> => {
   const selectedIndex = selected.indexOf(id)
-  let newSelected: string[] = []
+  let newSelected: ReadonlyArray<string> = []
 
   if (selectedIndex === -1) {
     newSelected = newSelected.concat(selected, id)
@@ -97,17 +100,23 @@ const colorful = (value: number, red: string, green: string) => ({
 export const transformToNumber = (percentage: string) =>
   +percentage.split('%')[0]
 
-export const combineIndustryData = (
-  data: any,
-  filterValueLessThen: number,
-  red: string,
+export const combineIndustryData = ({
+  data,
+  red = 'red',
+  green = 'green',
+}: {
+  data: any
+  red: string
   green: string
-) => {
+}): { industryData: ReadonlyArray<any>; chartData: ReadonlyArray<any> } => {
   if (!has(data, 'myPortfolios')) {
-    return []
+    return { industryData: [], chartData: [] }
   }
 
-  const sumPortfolioPercentageOfAsset = (assets: any[], allSum: number) => {
+  const sumPortfolioPercentageOfAsset = (
+    assets: ReadonlyArray<any>,
+    allSum: number
+  ) => {
     let sum = 0
     assets.forEach((asset) => {
       sum += percentagesOfCoinInPortfolio(asset, allSum, true)
@@ -122,15 +131,16 @@ export const combineIndustryData = (
 
   const { myPortfolios } = data
   const industryData = flatten(
-    myPortfolios.map(({ industryData }) => {
+    myPortfolios.map(({ industryData: industry }: { industryData: any }) => {
       // calculating all assets to calculate allSum
-      const allAssets = []
-      industryData.forEach((row) => {
-        row.assets.forEach((asset) => allAssets.push(asset))
+      let allAssets: ReadonlyArray<any> = []
+
+      industry.forEach((row: any) => {
+        row.assets.forEach((asset: any) => (allAssets = [...allAssets, asset]))
       })
       const allSum = calcAllSumOfPortfolioAsset(allAssets)
 
-      return industryData.map((row) => ({
+      return industry.map((row: any) => ({
         // industry should be uniq
         id: row.industry,
         industry: row.industry,
@@ -155,7 +165,7 @@ export const combineIndustryData = (
         expandableContent:
           row.assets.length === 1
             ? []
-            : row.assets.map((asset) => ({
+            : row.assets.map((asset: any) => ({
                 industry: '',
                 coin: { render: asset.coin, style: { fontWeight: 700 } },
                 portfolio: +roundPercentage(
@@ -175,10 +185,12 @@ export const combineIndustryData = (
     })
   )
 
-  const chartData: InputRecord[] = industryData.map((row) => ({
-    label: row.industry,
-    realValue: +transformToNumber(row.portfolio.render),
-  }))
+  const chartData: ReadonlyArray<InputRecord> = industryData.map(
+    (row: any) => ({
+      label: row.industry,
+      realValue: +transformToNumber(row.portfolio.render),
+    })
+  )
 
   return { chartData, industryData }
 }
@@ -302,7 +314,7 @@ export const roundAndFormatNumber = (
   precision: number,
   format: boolean = true
 ): string => {
-  if (x === null || x === 0 || +(parseFloat(x).toFixed(precision)) === 0) {
+  if (x === null || x === 0 || +parseFloat(x).toFixed(precision) === 0) {
     return '0'
   }
 
@@ -455,6 +467,5 @@ export const swapDates = ({
   startDate: number
   endDate: number
 }) => ({ startDate: endDate, endDate: startDate })
-
 
 export const sliceCoinName = (str: string) => str.slice(0, 6)

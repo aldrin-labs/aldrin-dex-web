@@ -7,7 +7,7 @@ describe('portfolio correlation tests', () => {
   })
 
   it('Render Portfolio Correlation Grid', () => {
-    cy.get('#CorrelationGrid').should('exist')
+    cy.get('#CorrelationGrid', { timeout: 10000 }).should('exist')
     cy.get('#CorrelationGrid').should('be.visible')
   })
 

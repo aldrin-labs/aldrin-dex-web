@@ -1,6 +1,5 @@
 import React from 'react'
 import { Query, Mutation } from 'react-apollo'
-import { compose } from 'recompose'
 import { has } from 'lodash-es'
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
@@ -8,7 +7,8 @@ import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWin
 import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
-import { withTheme, Fade, LinearProgress } from '@material-ui/core'
+import { Fade, LinearProgress } from '@material-ui/core'
+import { withTheme } from '@material-ui/styles'
 
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
@@ -184,4 +184,4 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-export default compose(withTheme())(PortfolioComponent)
+export default withTheme()(PortfolioComponent)

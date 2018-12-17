@@ -1,6 +1,7 @@
 import ContentLoader from 'react-content-loader'
 import React from 'react'
-import { withTheme, Theme } from '@material-ui/core/styles'
+import { Theme } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/styles'
 
 const random = () => Math.random() * (1 - 0.7) + 0.7
 

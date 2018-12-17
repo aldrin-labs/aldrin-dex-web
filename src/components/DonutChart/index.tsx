@@ -7,7 +7,7 @@ import {
   DiscreteColorLegend,
 } from 'react-vis'
 import { Grid } from '@material-ui/core'
-import { withTheme } from '@material-ui/core/styles'
+import { withTheme } from '@material-ui/styles'
 
 import { Props, State, DonutPiece, InputRecord, gradient } from './types'
 import {
