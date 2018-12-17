@@ -1,6 +1,5 @@
 import React from 'react'
 import { Query, Mutation } from 'react-apollo'
-import { compose } from 'recompose'
 import { has } from 'lodash-es'
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
@@ -185,4 +184,4 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-export default compose(withTheme())(PortfolioComponent)
+export default withTheme()(PortfolioComponent)
