@@ -44,7 +44,7 @@ import {
   Container,
   BtnsWrapper,
 } from './Rebalance.styles'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
 import config from '@utils/linkConfig'
@@ -208,7 +208,11 @@ class Rebalance extends React.Component<IProps, IState> {
       : newTableRebalancedPortfolioData
 
     this.setTimestamp(
-      userHasRebalancePortfolio ? moment.unix(getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot) : moment()
+      userHasRebalancePortfolio
+        ? moment.unix(
+            getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot
+          )
+        : moment()
     )
 
     if (userHasRebalancePortfolio) {
@@ -225,10 +229,10 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   setTimestamp = (timestamp) => {
-      this.setState({
-        timestampSnapshot: timestamp,
-        timestampSnapshotSaved: timestamp,
-      })
+    this.setState({
+      timestampSnapshot: timestamp,
+      timestampSnapshotSaved: timestamp,
+    })
   }
 
   setTableData = (
@@ -439,10 +443,12 @@ class Rebalance extends React.Component<IProps, IState> {
           }),
     }))
 
-    const newCalculatedRowsWithNewPrices = UTILS.calculatePriceDifference(UTILS.calculatePriceByPercents(
-      clonedRowsAfterProcessing,
-      totalSnapshotRows
-    ))
+    const newCalculatedRowsWithNewPrices = UTILS.calculatePriceDifference(
+      UTILS.calculatePriceByPercents(
+        clonedRowsAfterProcessing,
+        totalSnapshotRows
+      )
+    )
 
     this.createNewSnapshot()
 
@@ -479,15 +485,15 @@ class Rebalance extends React.Component<IProps, IState> {
 
     // TODO: Are we sure that the total would be the same for us in this case?
     this.setState({
-      ...(
-        resetSavedRows ? {
-          savedRows: clonedStaticRowsWithSnapshotsData,
-          totalSavedRows: totalStaticRows,
-          totalTableSavedRows: totalStaticRows,
-          timestampSnapshot: moment(),
-          timestampSnapshotSaved: moment(),
-        } : {}
-      ),
+      ...(resetSavedRows
+        ? {
+            savedRows: clonedStaticRowsWithSnapshotsData,
+            totalSavedRows: totalStaticRows,
+            totalTableSavedRows: totalStaticRows,
+            timestampSnapshot: moment(),
+            timestampSnapshotSaved: moment(),
+          }
+        : {}),
       timestampSnapshot: moment(),
       rows: clonedStaticRowsWithSnapshotsData,
       totalSnapshotRows: totalStaticRows,
@@ -736,10 +742,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>
-                  {
-                    staticRows &&
-                    staticRows[0] &&
-                    staticRows[0].portfolioPerc && (
+                  {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
                     <BarChart
                       bottomMargin={75}
                       theme={theme}
@@ -759,8 +762,8 @@ class Rebalance extends React.Component<IProps, IState> {
                         },
                       ]}
                     />
-                    )}
-                  </Chart>
+                  )}
+                </Chart>
               </ChartContainer>
             </ChartWrapper>
 
@@ -821,6 +824,7 @@ class Rebalance extends React.Component<IProps, IState> {
                 )}
                 {isCurrentAssetsChanged && (
                   <Button
+                    id="resetRebalancedPortfolioButton"
                     onClick={() => {
                       this.onReset(true)
                       this.createNewSnapshot()

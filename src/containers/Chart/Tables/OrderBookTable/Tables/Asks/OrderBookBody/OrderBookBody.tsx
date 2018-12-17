@@ -99,10 +99,10 @@ class ClassBody extends Component<IProps> {
             {data.map(
               (
                 order: { size: number | string; price: number | string },
-                i: number
+                i
               ) => (
                 <OptimizedRow
-                  key={order.price}
+                  key={i}
                   {...{
                     type,
                     order,

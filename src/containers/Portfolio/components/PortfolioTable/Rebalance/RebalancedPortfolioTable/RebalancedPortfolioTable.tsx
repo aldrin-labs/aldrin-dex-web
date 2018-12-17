@@ -425,6 +425,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = isEditModeEnabled ? (
         <InputTable
+          data-e2e="percentageInput"
           background={background}
           fontFamily={fontFamily}
           key={`inputPercentage${index}`}
@@ -649,6 +650,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               deleteIcon: {
                 render: (
                   <IconButtonWithHover
+                    data-e2e="deleteAssetButton"
                     hoverColor={red}
                     onClick={() => this.onDeleteRowClick(index)}
                   >
@@ -772,6 +774,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   icon: {
                     render: (
                       <IconButtonWithHover
+                        id="addAssetButton"
                         onClick={this.onAddRowButtonClick}
                         hoverColor={green}
                       >
@@ -901,6 +904,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         )}
         <ContentInner>
           <Table
+            id="PortfolioRebalanceTable"
             actionsColSpan={2}
             actions={[
               ...(!isEditModeEnabled ? [
@@ -908,7 +912,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 id: 1,
                 icon:
                   <Tooltip title={`Rebalance portfolio`} enterDelay={250} leaveDelay={200}>
-                    <EditIcon />
+                    <EditIcon id="editButton"/>
                   </Tooltip>,
                 onClick: onEditModeEnable,
                 color: 'secondary',
@@ -921,7 +925,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   id: 2,
                   icon:
                   <Tooltip title={`Update snapshot`} enterDelay={250} leaveDelay={200}>
-                    <SnapshotIcon />
+                    <SnapshotIcon id="snapshotButton" />
                   </Tooltip>,
                   onClick: onNewSnapshot,
                   style: {color: '#fff', marginRight: '7px'},
@@ -930,7 +934,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 id: 3,
                 icon:
                   <Tooltip title={`Discard changes`} enterDelay={250} leaveDelay={200}>
-                    <ClearIcon />
+                    <ClearIcon id="discardChangesButton" />
                   </Tooltip>,
                 onClick: onEditModeEnable,
                 style: {color: red, marginRight: '7px'},
@@ -943,7 +947,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   enterDelay={250}
                   leaveDelay={200}
                 >
-                  <Replay />
+                  <Replay id="resetButton" />
                 </Tooltip>,
                 onClick: onReset,
                 style: {marginRight: '7px'},
@@ -953,7 +957,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 id: 5,
                 icon:
                   <Tooltip title={`Save changes`} enterDelay={250} leaveDelay={200}>
-                    <SaveIcon />
+                    <SaveIcon id="saveButton" />
                   </Tooltip>,
                 onClick: onSaveClick,
                 color: saveButtonColor,

@@ -6,7 +6,7 @@ import { OptionProps } from 'react-select/lib/types'
 import SvgIcon from '@components/SvgIcon/SvgIcon'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
 import { IProps } from './index.types'
-import withTheme from '@material-ui/core/styles/withTheme'
+import { withTheme } from '@material-ui/styles'
 import ForwarderRefHoc from '@components/ForwardedRefHOC/ForwarderRef'
 
 class ReactSelectComponent extends Component<IProps> {

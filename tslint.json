@@ -13,7 +13,7 @@
     "no-parameter-reassignment": true,
     // Immutability rules
     "readonly-keyword": false,
-    "readonly-array": true,
+    "readonly-array": false,
     "no-object-mutation": true,
     "no-delete": true,
     "no-method-signature": true,
