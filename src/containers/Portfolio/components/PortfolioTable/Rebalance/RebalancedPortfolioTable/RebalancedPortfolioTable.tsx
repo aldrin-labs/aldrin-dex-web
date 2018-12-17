@@ -853,7 +853,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 ),
                 isNumber: true,
               },
-              rebalanced: ' ',
+              rebalanced: {render: '100.000%', isNumber: true},
               sliderPerc: {
                 render: ' ',
               },
@@ -905,6 +905,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         <ContentInner>
           <Table
             id="PortfolioRebalanceTable"
+            rowsWithHover={false}
             actionsColSpan={2}
             actions={[
               ...(!isEditModeEnabled ? [
