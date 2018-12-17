@@ -6,6 +6,7 @@ describe('Login', () => {
     cy.visit('/')
     cy.notShowTips()
     cy.get('.loginButton').click()
+    cy.wait(1000)
     cy.get(
       '.auth0-lock-input-email > .auth0-lock-input-wrap > .auth0-lock-input',
       { timeout: 6000 }
