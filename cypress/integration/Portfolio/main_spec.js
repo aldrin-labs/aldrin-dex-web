@@ -20,7 +20,6 @@ describe('portfolio main', () => {
     })
 
     it('Portfolio Chart Buttons are clickable', () => {
-      cy.skipTip()
       cy.get('[data-e2e="1Y"]').click()
       cy.get('[data-e2e="7D"]').click()
       cy.get('[data-e2e="3M"]').click()
