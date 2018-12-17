@@ -2,8 +2,7 @@ describe('Rebalance', () => {
 
   before(function() {
     cy.visit('/')
-    cy.clearLocalStorage()
-    cy.get('button > svg').click()
+    cy.notShowTips()
     cy.get('#rebalance_tab_button').click()
     cy.wait(1500)
     // for popup on rebalance
@@ -16,8 +15,6 @@ describe('Rebalance', () => {
           cy.get("#resetRebalancedPortfolioButton").click()
           cy.get('button > svg').click()
           cy.get("#resetRebalancedPortfolioButton").click()
-        } else {
-          cy.get('button > svg').click()
         }
       })
   })

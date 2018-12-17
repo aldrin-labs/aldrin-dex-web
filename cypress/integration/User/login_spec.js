@@ -8,7 +8,7 @@ describe('Login', () => {
     cy.get('.loginButton').click()
     cy.get(
       '.auth0-lock-input-email > .auth0-lock-input-wrap > .auth0-lock-input',
-      { timeout: 5000 }
+      { timeout: 6000 }
     ).type('NGE@NGE.nge')
     cy.get(
       '.auth0-lock-input-show-password > .auth0-lock-input-block > .auth0-lock-input-wrap > .auth0-lock-input'
