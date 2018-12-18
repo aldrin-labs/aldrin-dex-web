@@ -91,7 +91,7 @@ cypress:
     - yarn cy:verify
     - yarn start:ci &
     - yarn cypress:ci
-    - kill %1
+    - exit 0
 
 # run Cypress test in load balancing mode, pass id to tie jobs together
 #- npm run e2e:record -- --parallel --ci-build-id $CI_PIPELINE_ID --group electrons

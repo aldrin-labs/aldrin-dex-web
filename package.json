@@ -21,7 +21,7 @@
     "test": "cross-env NODE_ENV=test jest",
     "cy:verify": "cypress verify",
     "cypress:open": "cypress open",
-    "cypress:ci": "cypress run --browser chrome -s cypress/integration/examples/sample_spec.js",
+    "cypress:ci": "cypress run --browser chrome",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "typecheck": "tsc",
