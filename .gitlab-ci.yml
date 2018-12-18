@@ -85,7 +85,6 @@ cypress:
       - cache/Cypress
       - node_modules
   script:
-    - ls
     - yarn
     - yarn build
     - yarn cy:verify
