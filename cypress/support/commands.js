@@ -25,8 +25,11 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('waitLoading', () => {
-  cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("exist");
-  cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("not.exist");
+  cy.get('body').then(($body) => {
+    if ($body.find('[data-e2e="Loadig"]').length) {
+      cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("not.exist");
+    }
+  })
 })
 
 const auth0 = require('auth0-js');
