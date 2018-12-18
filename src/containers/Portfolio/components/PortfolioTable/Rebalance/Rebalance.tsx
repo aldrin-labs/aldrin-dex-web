@@ -8,7 +8,6 @@ import {
   DialogTitle,
   DialogActions,
   Button,
-  Grow,
 } from '@material-ui/core'
 import moment from 'moment'
 
@@ -24,7 +23,6 @@ import {
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
 import {
-  addMainSymbol,
   cloneArrayElementsOneLevelDeep,
 } from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
