@@ -50,6 +50,7 @@ import CardHeader from '@components/CardHeader'
 
 // TODO: Remove quantity
 // TODO: Fix types for snapshots changes
+// TODO: Maybe we should use totalSnapshotRowsSaved for EditFunction and Reset functions too
 
 class Rebalance extends React.Component<IProps, IState> {
   state: IState = {
@@ -464,7 +465,7 @@ class Rebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onReset = (resetSavedRows = false) => {
+  onReset = (event, resetSavedRows = false) => {
     const { totalStaticRows } = this.state
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
@@ -517,12 +518,13 @@ class Rebalance extends React.Component<IProps, IState> {
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: this.state.totalSavedRows,
         totalTableRows: this.state.totalTableSavedRows,
+        totalSnapshotRows: this.state.totalTableSavedRows,
         rows: clonedSavedRows,
         selectedActive: [],
         areAllActiveChecked: false,
         undistributedMoney: this.state.undistributedMoneySaved,
         isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-          this.state.totalTableSavedRows,
+          this.state.totalSnapshotRows,
           this.state.totalSnapshotRows
         ),
         totalPercents: UTILS.calculateTotalPercents(clonedSavedRows),
@@ -624,6 +626,7 @@ class Rebalance extends React.Component<IProps, IState> {
       isPercentSumGood ? green : red
 
     const tableDataHasData = !staticRows.length || !rows.length
+
 
     return (
       <>
@@ -820,7 +823,7 @@ class Rebalance extends React.Component<IProps, IState> {
                   <Button
                     id="resetRebalancedPortfolioButton"
                     onClick={() => {
-                      this.onReset(true)
+                      this.onReset(null, true)
                       this.createNewSnapshot()
                       this.hideWarning()
                     }}
