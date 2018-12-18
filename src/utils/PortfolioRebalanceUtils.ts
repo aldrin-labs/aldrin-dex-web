@@ -28,6 +28,17 @@ export const calculatePriceByPercents = (
   return dataWithNewPrices
 }
 
+export const calculatePriceByPercentsForOneAsset = (
+  data: IRow[],
+  totalRows: number | string,
+  idx: number
+) => {
+  data[idx].price = (parseFloat(totalRows) / 100) * (+data[idx].portfolioPerc)
+
+  return data
+}
+
+
 export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
   // tslint:disable-next-line no-parameter-reassignment
   const total = data.reduce((sum, row, i) => (sum += +data[i].price), 0)
@@ -186,9 +197,10 @@ export const recalculateAfterInputChange = ({clonedRows, rows, undistributedMone
     ...clonedRows.slice(idx + 1, clonedRows.length),
   ]
 
-  const newCalculatedRowsWithPercents = calculatePriceByPercents(
+  const newCalculatedRowsWithPercents = calculatePriceByPercentsForOneAsset(
     resultRows,
-    totalRows
+    totalRows,
+    idx
   )
   const totalPercentsNew = calculateTotalPercents(
     newCalculatedRowsWithPercents
