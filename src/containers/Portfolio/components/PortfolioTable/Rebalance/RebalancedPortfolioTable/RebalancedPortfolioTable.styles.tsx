@@ -1,3 +1,4 @@
+import React from 'react'
 import styled from 'styled-components'
 
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -64,12 +65,15 @@ export const TitleContainer = styled.div`
   justify-content: space-between;
 `
 
-export const StyledSlider = styled(Slider)`
+export const StyledSlider = styled(({trackAfterBackground, trackBeforeBackground, trackAfterOpacity, ...rest}) => <Slider {...rest} />)`
   & .trackAfter {
     background: ${(props: { trackAfterBackground: string }) => props.trackAfterBackground};
+    opacity: ${(props: { trackAfterOpacity: string }) => props.trackAfterOpacity};
+
   }
   & .trackBefore {
     background: ${(props: { trackBeforeBackground: string }) => props.trackBeforeBackground};
+    opacity: 1;
   }
 `
 

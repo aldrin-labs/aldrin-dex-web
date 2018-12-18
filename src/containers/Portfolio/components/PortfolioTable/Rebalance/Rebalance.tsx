@@ -130,11 +130,9 @@ class Rebalance extends React.Component<IProps, IState> {
           id: i,
           exchange: el.where,
           symbol: el.coin,
-          price: (parseFloat(el.price) * el.quantity).toFixed(2),
+          price: parseFloat(el.price) * el.quantity,
           portfolioPerc: null,
-          priceSnapshot: parseFloat(
-            (parseFloat(el.price) * el.quantity).toFixed(2)
-          ),
+          priceSnapshot: parseFloat(el.price) * el.quantity,
           percentSnapshot: null,
         })
       )
@@ -147,7 +145,7 @@ class Rebalance extends React.Component<IProps, IState> {
             exchange: el.exchange,
             symbol: el.coin,
             portfolioPerc: null,
-            price: parseFloat(el.amount.$numberDecimal).toFixed(2),
+            price: parseFloat(el.amount.$numberDecimal),
             deltaPrice: el.diff.$numberDecimal,
             isCustomAsset: el.isCustomAsset,
             priceSnapshot: el.priceSnapshot,
@@ -188,12 +186,10 @@ class Rebalance extends React.Component<IProps, IState> {
           id: i,
           exchange: el.where,
           symbol: el.coin,
-          price: (parseFloat(el.price) * el.quantity).toFixed(2),
+          price: parseFloat(el.price) * el.quantity,
           portfolioPerc: null,
           quantity: el.quantity,
-          priceSnapshot: parseFloat(
-            (parseFloat(el.price) * el.quantity).toFixed(2)
-          ),
+          priceSnapshot: parseFloat(el.price) * el.quantity,
           percentSnapshot: null,
         })
       )

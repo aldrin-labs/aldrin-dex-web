@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import AddIcon from '@material-ui/icons/Add'
 import Tooltip from '@material-ui/core/Tooltip'
-import Slider from '@material-ui/lab/Slider'
 
 import {
   cloneArrayElementsOneLevelDeep,
@@ -29,13 +28,15 @@ import {
   LoaderWrapper,
   ContentInner,
   TitleContainer,
-  TitleItem,
+  TitleItem, StyledSlider,
 } from './RebalancedPortfolioTable.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { TableWithSort, Table as ImTable } from '@storybook-components/index'
 import { Loading } from '@components/Loading'
 import { IconButtonWithHover } from '../Rebalance.styles'
+
+
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -151,7 +152,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       ...clonedRows.slice(0, idx),
       {
         ...clonedRows[idx],
-        portfolioPerc: (+(clonedRows[idx].portfolioPerc)) + percentInput,
+        portfolioPerc: roundAndFormatNumber((+(clonedRows[idx].portfolioPerc)) + percentInput, 6, false),
       },
       ...clonedRows.slice(idx + 1, clonedRows.length),
     ]
@@ -181,9 +182,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         totalSnapshotRows,
         newTableTotalRows
       ),
-      undistributedMoney: (
-        parseFloat(undistributedMoney) + oldNewPriceDiff
-      ).toFixed(2),
+      undistributedMoney: parseFloat(undistributedMoney) + oldNewPriceDiff,
       totalTableRows: newTableTotalRows,
     })
 
@@ -237,9 +236,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         totalSnapshotRows,
         newTableTotalRows
       ),
-      undistributedMoney: (
-        parseFloat(undistributedMoney) + oldNewPriceDiff
-      ).toFixed(2),
+      undistributedMoney: parseFloat(undistributedMoney) + oldNewPriceDiff,
       totalTableRows: newTableTotalRows,
     })
   }
@@ -258,7 +255,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const percentInput = e.target.value
 
     if (
-      !/^([0-9]\.[0-9]{1,4}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,4}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,4}?|)$/.test(
+      !/^([0-9]\.[0-9]{1,6}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,6}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,6}?|)$/.test(
         percentInput
       )
     ) {
@@ -300,9 +297,7 @@ export default class RebalancedPortfolioTable extends React.Component<
         totalSnapshotRows,
         newTableTotalRows
       ),
-      undistributedMoney: (
-        parseFloat(undistributedMoney) + oldNewPriceDiff
-      ).toFixed(2),
+      undistributedMoney: parseFloat(undistributedMoney) + oldNewPriceDiff,
       totalTableRows: newTableTotalRows,
     })
   }
@@ -381,9 +376,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           ...clonedRows.slice(idx + 1, clonedRows.length),
         ]
 
-    const newUndistributedMoney = (
-      parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
-    ).toFixed(2)
+    const newUndistributedMoney = parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
+
 
     const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
@@ -418,7 +412,8 @@ export default class RebalancedPortfolioTable extends React.Component<
     background: string,
     fontFamily: string,
     showZerosForRebalancedPartIfItsEqualToCurrent: boolean,
-    totalPercents: number | string
+    totalPercents: number | string,
+    theme,
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
 
@@ -441,13 +436,21 @@ export default class RebalancedPortfolioTable extends React.Component<
         `${row.portfolioPerc}%`
       )
 
-      const SliderInput = <Slider
+      const trackAfterBackground = !((100 - (+totalPercents) < 0.5) && (+row.portfolioPerc < 0.5) ) ? theme.palette.getContrastText(theme.palette.primary.main) : ''
+        const trackAfterOpacity = trackAfterBackground ? 1 : '0.24'
+
+      const SliderInput = <StyledSlider
+        classes={{trackAfter: 'trackAfter', trackBefore: 'trackBefore'}}
+        trackAfterBackground={trackAfterBackground}
+        trackAfterOpacity={trackAfterOpacity}
+        trackBeforeBackground={theme.palette.secondary.main}
         key={row._id}
         value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}
         max={100 - (+totalPercents) + (+row.portfolioPerc)}
         step={0.5}
         onChange={(e, value) => {this.onPercentSliderChange(e, value, index)}}
-        onDragEnd={() => this.onPercentSliderDragEnd(index)} />
+        onDragEnd={() => this.onPercentSliderDragEnd(index)}
+      />
 
 
       const shouldWeShowPlaceholderForExchange =
@@ -582,17 +585,21 @@ export default class RebalancedPortfolioTable extends React.Component<
               },
               oritinalPrice: {
                 contentToSort: +staticRowsMap.get(row._id).price,
-                render: addMainSymbol(
-                  staticRowsMap.get(row._id).price,
-                  isUSDCurrently
-                ),
+                render:
+                  <Tooltip title={staticRowsMap.get(row._id).price} enterDelay={250} leaveDelay={200}>
+                    {
+                      addMainSymbol(
+                        roundAndFormatNumber(staticRowsMap.get(row._id).price, 2),
+                      isUSDCurrently)
+                    }
+                    </Tooltip>,
                 isNumber: true,
                 style: { borderRight: '1px solid white' },
               },
             }
           : {
-              oririnalPortfolioPerc: { render: ' ', isNumber: true },
-              oritinalPrice: { render: ' ', isNumber: true },
+              oririnalPortfolioPerc: { render: '-', isNumber: true },
+              oritinalPrice: { render: '-', isNumber: true, style: { borderRight: '1px solid white' }, },
             }),
         ...(showZerosForRebalancedPartIfItsEqualToCurrent ?
           {
@@ -611,36 +618,42 @@ export default class RebalancedPortfolioTable extends React.Component<
               contentToSort: priceSnapshot,
               render: row.isCustomAsset
                 ? '-'
-                : addMainSymbol(
+                : <Tooltip title={priceSnapshot} enterDelay={250} leaveDelay={200}>
+                  {addMainSymbol(
                   roundAndFormatNumber(priceSnapshot, 2, true),
-                  isUSDCurrently
-                ),
+                  isUSDCurrently)
+                  }
+                </Tooltip>,
               isNumber: true,
             },
             portfolioPerc: {
               render: portfolioPercentage,
               isNumber: true,
-              contentToSort: row.portfolioPerc === null ? 0 : +row.portfolioPerc,
+              contentToSort: row.portfolioPerc === null ? 0 : row.portfolioPerc,
             },
             sliderPerc: {
               render: SliderInput,
             },
             price: {
               contentToSort: +row.price,
-              render: addMainSymbol(
-                formatNumberToUSFormat(row.price),
-                isUSDCurrently
-              ),
+              render: <Tooltip title={row.price} enterDelay={250} leaveDelay={200} >
+                  {
+                    addMainSymbol(
+                      roundAndFormatNumber(row.price, 2, true),
+                      isUSDCurrently
+                    )
+                  }
+                </Tooltip>,
               isNumber: true,
             },
           }),
         deltaPrice: {
           render:
             +row.deltaPrice && row.deltaPrice > 0
-              ? `BUY ${row.symbol}  $ ${formatNumberToUSFormat(row.deltaPrice)}`
+              ? `BUY ${row.symbol}  $ ${roundAndFormatNumber(row.deltaPrice, 2)}`
               : +row.deltaPrice && row.deltaPrice < 0
-              ? `SELL ${row.symbol}  $ ${formatNumberToUSFormat(
-                  Math.abs(parseFloat(row.deltaPrice))
+              ? `SELL ${row.symbol}  $ ${roundAndFormatNumber(
+                  Math.abs(parseFloat(row.deltaPrice)), 2
                 )}`
               : '',
           color: row.deltaPrice > 0 ? green : red,
@@ -734,6 +747,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           fontFamily,
           showZerosForRebalancedPartIfItsEqualToCurrent,
           totalPercents,
+          theme,
         ),
         footer: [
           ...(isEditModeEnabled
@@ -810,7 +824,7 @@ export default class RebalancedPortfolioTable extends React.Component<
               rebalancedUSD: ' ',
             } : {
               rebalanced: { render: `${totalPercents}%`, isNumber: true },
-              sliderPerc: ' ',
+              sliderPerc: { render: `${roundAndFormatNumber((100 - (+totalPercents)), 3, false)}%`, isNumber: true },
               rebalancedUSD: {
                 contentToSort: +totalTableRows,
                 render: addMainSymbol(
@@ -843,6 +857,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             },
             ...(showZerosForRebalancedPartIfItsEqualToCurrent ? {
               priceSnapshot: ' ',
+              sliderPerc: ' ',
               rebalanced: ' ',
               rebalancedUSD: ' ',
             } : {
