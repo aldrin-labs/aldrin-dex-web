@@ -17,9 +17,7 @@ export const calculatePriceByPercents = (
   totalRows: number | string
 ) => {
   const dataWithNewPrices = data.map((row: IRow) => {
-    let newPrice = ((parseFloat(totalRows) / 100) * +row.portfolioPerc).toFixed(
-      2
-    )
+    let newPrice = (parseFloat(totalRows) / 100) * +row.portfolioPerc
 
     return {
       ...row,
@@ -66,7 +64,7 @@ export const calculatePriceDifference = (data: IRow[]) => {
 
   const dataWithDeltaPrice = data.map((el) => ({
     ...el,
-    deltaPrice: el.isCustomAsset ? (parseFloat(el.price)).toFixed(2) : (parseFloat(el.price) - el.priceSnapshot).toFixed(2),
+    deltaPrice: el.isCustomAsset ? parseFloat(el.price) : (parseFloat(el.price) - el.priceSnapshot),
   }))
 
   return dataWithDeltaPrice
@@ -82,7 +80,7 @@ export const calculatePercents = (
     const percentCaluclation =
       +row[priceField] === 0
         ? '0'
-        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(2)
+        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(6)
     const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
     return {
@@ -118,7 +116,7 @@ export function calculateMoneyPart(
       }
 
       return i === numberOfCoinsThatMoneyWouldDistributed - 1
-        ? +(remainderWith2Number + remainderLastNumbers).toFixed(2)
+        ? +(remainderWith2Number + remainderLastNumbers)
         : remainderWith2Number
     })
 
