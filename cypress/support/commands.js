@@ -115,11 +115,23 @@ Cypress.Commands.add('notShowTipsStorage', () => {
   })
 })
 
-Cypress.Commands.add('notShowTips', () => {
+const notShowTipsFuncton = () => {
   cy.visit('/')
-  cy.notShowTipsStorage()
-  cy.reload()
+  cy.notShowTipsStorage().then(() => {
+    cy.reload()
+    cy.wait(1000)
+    cy.get('body').then(($body) => {
+      if ($body.find('.joyride-overlay').length) {
+        notShowTipsFuncton()
+      }
+    })
+  })
+}
+
+Cypress.Commands.add('notShowTips', () => {
+  notShowTipsFuncton()
 })
+
 
 
 Cypress.Commands.add(
