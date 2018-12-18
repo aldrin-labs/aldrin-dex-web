@@ -157,3 +157,64 @@ export const checkForEmptyNamesInAssets = (rows: IRow[]): boolean => {
 export const deleteEmptyAssets = (rows: IRow[]): IRow[] => {
   return rows.filter((row) => !(row.exchange === '' || row.exchange === 'Exchange' || row.symbol === '' || row.symbol === 'Coin'))
 }
+
+type InputObject = {
+  clonedRows: IRow[]
+  rows: IRow[]
+  undistributedMoney: number | string
+  idx: number
+  percentInput: string | number
+  totalRows: string | number
+  totalSnapshotRows: string | number
+}
+
+type OutputObject = {
+  totalPercentsNew: number | string
+  rowWithNewPriceDiff: IRow[]
+  isPercentSumGood: boolean
+  newUndistributedMoney: number | string
+  newTableTotalRows: number | string
+}
+
+export const recalculateAfterInputChange = ({clonedRows, rows, undistributedMoney, idx, percentInput, totalRows, totalSnapshotRows} : InputObject): OutputObject => {
+  const resultRows = [
+    ...clonedRows.slice(0, idx),
+    {
+      ...clonedRows[idx],
+      portfolioPerc: percentInput,
+    },
+    ...clonedRows.slice(idx + 1, clonedRows.length),
+  ]
+
+  const newCalculatedRowsWithPercents = calculatePriceByPercents(
+    resultRows,
+    totalRows
+  )
+  const totalPercentsNew = calculateTotalPercents(
+    newCalculatedRowsWithPercents
+  )
+  const rowWithNewPriceDiff = calculatePriceDifference(
+    newCalculatedRowsWithPercents
+  )
+  const newTableTotalRows = calculateTableTotal(
+    newCalculatedRowsWithPercents
+  )
+
+  const oldRowPrice = rows[idx].price
+  const newRowPrice = newCalculatedRowsWithPercents[idx].price
+  const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+  const newUndistributedMoney = parseFloat(undistributedMoney) + oldNewPriceDiff
+  const isPercentSumGood = checkEqualsOfTwoTotals(
+    totalSnapshotRows,
+    newTableTotalRows
+  )
+
+  return {
+    totalPercentsNew,
+    rowWithNewPriceDiff,
+    isPercentSumGood,
+    newUndistributedMoney,
+    newTableTotalRows,
+  }
+
+}

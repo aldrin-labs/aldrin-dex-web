@@ -141,52 +141,18 @@ export default class RebalancedPortfolioTable extends React.Component<
     if (!(totalPercents > 100 || (100 - (+totalPercents) < 0.5) && (+rows[idx].portfolioPerc !== 0 || +rows[idx].portfolioPerc > 0.5))) {
       return
     }
-
-    const percentInput = 100 - (+totalPercents)
-
-
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    console.log('clonedRows[idx]', clonedRows[idx], idx);
-
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: roundAndFormatNumber((+(clonedRows[idx].portfolioPerc)) + percentInput, 6, false),
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
-      resultRows,
-      totalRows
-    )
-    const totalPercentsNew = UTILS.calculateTotalPercents(
-      newCalculatedRowsWithPercents
-    )
-    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
-      newCalculatedRowsWithPercents
-    )
-    const newTableTotalRows = UTILS.calculateTableTotal(
-      newCalculatedRowsWithPercents
-    )
-
-    const oldRowPrice = rows[idx].price
-    const newRowPrice = newCalculatedRowsWithPercents[idx].price
-    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+    const percentInput = 100 - (+totalPercents)
+    const percentInputAfter = roundAndFormatNumber((+(clonedRows[idx].portfolioPerc)) + percentInput, 6, false)
+    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput: percentInputAfter })
 
     updateState({
       totalPercents: totalPercentsNew,
       rows: rowWithNewPriceDiff,
-      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalSnapshotRows,
-        newTableTotalRows
-      ),
-      undistributedMoney: parseFloat(undistributedMoney) + oldNewPriceDiff,
+      isPercentSumGood: isPercentSumGood,
+      undistributedMoney: newUndistributedMoney,
       totalTableRows: newTableTotalRows,
     })
-
-
   }
 
   onPercentSliderChange = (e: React.ChangeEvent<HTMLInputElement>, value: number, idx: number) => {
@@ -198,45 +164,15 @@ export default class RebalancedPortfolioTable extends React.Component<
       totalSnapshotRows,
     } = this.props
 
-    // console.log('e', e, 'value', value, 'idx', idx);
     const percentInput = value
-
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: percentInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
-      resultRows,
-      totalRows
-    )
-    const totalPercents = UTILS.calculateTotalPercents(
-      newCalculatedRowsWithPercents
-    )
-    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
-      newCalculatedRowsWithPercents
-    )
-    const newTableTotalRows = UTILS.calculateTableTotal(
-      newCalculatedRowsWithPercents
-    )
-
-    const oldRowPrice = rows[idx].price
-    const newRowPrice = newCalculatedRowsWithPercents[idx].price
-    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput })
 
     updateState({
-      totalPercents,
+      totalPercents: totalPercentsNew,
       rows: rowWithNewPriceDiff,
-      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalSnapshotRows,
-        newTableTotalRows
-      ),
-      undistributedMoney: parseFloat(undistributedMoney) + oldNewPriceDiff,
+      isPercentSumGood: isPercentSumGood,
+      undistributedMoney: newUndistributedMoney,
       totalTableRows: newTableTotalRows,
     })
   }
@@ -263,41 +199,13 @@ export default class RebalancedPortfolioTable extends React.Component<
     }
 
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: percentInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    const newCalculatedRowsWithPercents = UTILS.calculatePriceByPercents(
-      resultRows,
-      totalRows
-    )
-    const totalPercents = UTILS.calculateTotalPercents(
-      newCalculatedRowsWithPercents
-    )
-    const rowWithNewPriceDiff = UTILS.calculatePriceDifference(
-      newCalculatedRowsWithPercents
-    )
-    const newTableTotalRows = UTILS.calculateTableTotal(
-      newCalculatedRowsWithPercents
-    )
-
-    const oldRowPrice = rows[idx].price
-    const newRowPrice = newCalculatedRowsWithPercents[idx].price
-    const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput })
 
     updateState({
-      totalPercents,
+      totalPercents: totalPercentsNew,
       rows: rowWithNewPriceDiff,
-      isPercentSumGood: UTILS.checkEqualsOfTwoTotals(
-        totalSnapshotRows,
-        newTableTotalRows
-      ),
-      undistributedMoney: parseFloat(undistributedMoney) + oldNewPriceDiff,
+      isPercentSumGood: isPercentSumGood,
+      undistributedMoney: newUndistributedMoney,
       totalTableRows: newTableTotalRows,
     })
   }
@@ -437,12 +345,14 @@ export default class RebalancedPortfolioTable extends React.Component<
       )
 
       const trackAfterBackground = !((100 - (+totalPercents) < 0.5) && (+row.portfolioPerc < 0.5) ) ? theme.palette.getContrastText(theme.palette.primary.main) : ''
-        const trackAfterOpacity = trackAfterBackground ? 1 : '0.24'
+      const trackAfterOpacity = trackAfterBackground ? 1 : '0.24'
+      const thumbBackground = 'rgba(255,129,0)'
 
       const SliderInput = <StyledSlider
-        classes={{trackAfter: 'trackAfter', trackBefore: 'trackBefore'}}
+        classes={{trackAfter: 'trackAfter', trackBefore: 'trackBefore', thumb: 'thumb'}}
         trackAfterBackground={trackAfterBackground}
         trackAfterOpacity={trackAfterOpacity}
+        thumbBackground={thumbBackground}
         trackBeforeBackground={theme.palette.secondary.main}
         key={row._id}
         value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}

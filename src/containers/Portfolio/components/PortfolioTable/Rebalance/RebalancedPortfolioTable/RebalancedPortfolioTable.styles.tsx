@@ -65,15 +65,19 @@ export const TitleContainer = styled.div`
   justify-content: space-between;
 `
 
-export const StyledSlider = styled(({trackAfterBackground, trackBeforeBackground, trackAfterOpacity, ...rest}) => <Slider {...rest} />)`
+export const StyledSlider = styled(({trackAfterBackground, trackBeforeBackground, trackAfterOpacity, thumbBackground, ...rest}) => <Slider {...rest} />)`
   & .trackAfter {
     background: ${(props: { trackAfterBackground: string }) => props.trackAfterBackground};
     opacity: ${(props: { trackAfterOpacity: string }) => props.trackAfterOpacity};
-
   }
+  
   & .trackBefore {
     background: ${(props: { trackBeforeBackground: string }) => props.trackBeforeBackground};
     opacity: 1;
+  }
+  
+  & .thumb {
+    background: ${(props: { thumbBackground: string }) => props.thumbBackground};;
   }
 `
 
