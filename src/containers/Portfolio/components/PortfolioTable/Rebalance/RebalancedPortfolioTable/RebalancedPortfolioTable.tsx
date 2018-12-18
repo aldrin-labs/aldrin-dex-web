@@ -523,6 +523,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             percentSnapshot: 0,
             priceSnapshot: 0,
             portfolioPerc: 0,
+            sliderPerc: ' ',
             price: 0,
           }
           : {
