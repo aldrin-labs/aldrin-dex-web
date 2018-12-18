@@ -144,7 +144,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
     const percentInput = 100 - (+totalPercents)
     const percentInputAfter = roundAndFormatNumber((+(clonedRows[idx].portfolioPerc)) + percentInput, 6, false)
-    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput: percentInputAfter })
+    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({ clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput: percentInputAfter })
 
     updateState({
       totalPercents: totalPercentsNew,
@@ -162,9 +162,15 @@ export default class RebalancedPortfolioTable extends React.Component<
       undistributedMoney,
       updateState,
       totalSnapshotRows,
+      totalPercents,
     } = this.props
 
     const percentInput = value
+
+    if (((100 - (+totalPercents) < 0.5) && percentInput > rows[idx].portfolioPerc)) {
+      return
+    }
+
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
     const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput })
 
@@ -344,7 +350,8 @@ export default class RebalancedPortfolioTable extends React.Component<
         `${row.portfolioPerc}%`
       )
 
-      const trackAfterBackground = !((100 - (+totalPercents) < 0.5) && (+row.portfolioPerc < 0.5) ) ? theme.palette.getContrastText(theme.palette.primary.main) : ''
+
+      const trackAfterBackground = ((100 - (+totalPercents) < 0.5) && (+row.portfolioPerc < 0.5) || (+row.portfolioPerc > 0.5) && 100 - (+totalPercents) === 0 ) ? '' : theme.palette.secondary.main
       const trackAfterOpacity = trackAfterBackground ? 1 : '0.24'
       const thumbBackground = 'rgba(255,129,0)'
 
@@ -353,10 +360,10 @@ export default class RebalancedPortfolioTable extends React.Component<
         trackAfterBackground={trackAfterBackground}
         trackAfterOpacity={trackAfterOpacity}
         thumbBackground={thumbBackground}
-        trackBeforeBackground={theme.palette.secondary.main}
+        trackBeforeBackground={theme.palette.getContrastText(theme.palette.primary.main)}
         key={row._id}
         value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}
-        max={100 - (+totalPercents) + (+row.portfolioPerc)}
+        max={100}
         step={0.5}
         onChange={(e, value) => {this.onPercentSliderChange(e, value, index)}}
         onDragEnd={() => this.onPercentSliderDragEnd(index)}
@@ -559,9 +566,9 @@ export default class RebalancedPortfolioTable extends React.Component<
           }),
         deltaPrice: {
           render:
-            +row.deltaPrice && row.deltaPrice > 0
+            +row.deltaPrice && row.deltaPrice > 0 && Math.abs(+row.deltaPrice) > 0.01
               ? `BUY ${row.symbol}  $ ${roundAndFormatNumber(row.deltaPrice, 2)}`
-              : +row.deltaPrice && row.deltaPrice < 0
+              : +row.deltaPrice && row.deltaPrice < 0 && Math.abs(+row.deltaPrice) > 0.01
               ? `SELL ${row.symbol}  $ ${roundAndFormatNumber(
                   Math.abs(parseFloat(row.deltaPrice)), 2
                 )}`
