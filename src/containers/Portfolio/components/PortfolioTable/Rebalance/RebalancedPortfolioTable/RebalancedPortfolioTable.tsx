@@ -28,15 +28,14 @@ import {
   LoaderWrapper,
   ContentInner,
   TitleContainer,
-  TitleItem, StyledSlider,
+  TitleItem,
+  StyledSlider,
 } from './RebalancedPortfolioTable.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { TableWithSort, Table as ImTable } from '@storybook-components/index'
 import { Loading } from '@components/Loading'
 import { IconButtonWithHover } from '../Rebalance.styles'
-
-
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -138,13 +137,37 @@ export default class RebalancedPortfolioTable extends React.Component<
       totalPercents,
     } = this.props
 
-    if (!(totalPercents > 100 || (100 - (+totalPercents) < 0.5) && (+rows[idx].portfolioPerc !== 0 || +rows[idx].portfolioPerc > 0.5))) {
+    if (
+      !(
+        totalPercents > 100 ||
+        (100 - +totalPercents < 0.5 &&
+          (+rows[idx].portfolioPerc !== 0 || +rows[idx].portfolioPerc > 0.5))
+      )
+    ) {
       return
     }
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    const percentInput = 100 - (+totalPercents)
-    const percentInputAfter = roundAndFormatNumber((+(clonedRows[idx].portfolioPerc)) + percentInput, 6, false)
-    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({ clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput: percentInputAfter })
+    const percentInput = 100 - +totalPercents
+    const percentInputAfter = roundAndFormatNumber(
+      +clonedRows[idx].portfolioPerc + percentInput,
+      6,
+      false
+    )
+    const {
+      totalPercentsNew,
+      rowWithNewPriceDiff,
+      isPercentSumGood,
+      newUndistributedMoney,
+      newTableTotalRows,
+    } = UTILS.recalculateAfterInputChange({
+      clonedRows,
+      rows,
+      undistributedMoney,
+      idx,
+      totalRows,
+      totalSnapshotRows,
+      percentInput: percentInputAfter,
+    })
 
     updateState({
       totalPercents: totalPercentsNew,
@@ -155,7 +178,11 @@ export default class RebalancedPortfolioTable extends React.Component<
     })
   }
 
-  onPercentSliderChange = (e: React.ChangeEvent<HTMLInputElement>, value: number, idx: number) => {
+  onPercentSliderChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    value: number,
+    idx: number
+  ) => {
     const {
       rows,
       totalRows,
@@ -167,12 +194,26 @@ export default class RebalancedPortfolioTable extends React.Component<
 
     const percentInput = value
 
-    if (((100 - (+totalPercents) < 0.5) && percentInput > rows[idx].portfolioPerc)) {
+    if (100 - +totalPercents < 0.5 && percentInput > rows[idx].portfolioPerc) {
       return
     }
 
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput })
+    const {
+      totalPercentsNew,
+      rowWithNewPriceDiff,
+      isPercentSumGood,
+      newUndistributedMoney,
+      newTableTotalRows,
+    } = UTILS.recalculateAfterInputChange({
+      clonedRows,
+      rows,
+      undistributedMoney,
+      idx,
+      totalRows,
+      totalSnapshotRows,
+      percentInput,
+    })
 
     updateState({
       totalPercents: totalPercentsNew,
@@ -205,7 +246,21 @@ export default class RebalancedPortfolioTable extends React.Component<
     }
 
     const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    const { totalPercentsNew, rowWithNewPriceDiff, isPercentSumGood, newUndistributedMoney, newTableTotalRows } = UTILS.recalculateAfterInputChange({clonedRows, rows, undistributedMoney, idx, totalRows, totalSnapshotRows,  percentInput })
+    const {
+      totalPercentsNew,
+      rowWithNewPriceDiff,
+      isPercentSumGood,
+      newUndistributedMoney,
+      newTableTotalRows,
+    } = UTILS.recalculateAfterInputChange({
+      clonedRows,
+      rows,
+      undistributedMoney,
+      idx,
+      totalRows,
+      totalSnapshotRows,
+      percentInput,
+    })
 
     updateState({
       totalPercents: totalPercentsNew,
@@ -290,8 +345,8 @@ export default class RebalancedPortfolioTable extends React.Component<
           ...clonedRows.slice(idx + 1, clonedRows.length),
         ]
 
-    const newUndistributedMoney = parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
-
+    const newUndistributedMoney =
+      parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
 
     const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
@@ -327,7 +382,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     fontFamily: string,
     showZerosForRebalancedPartIfItsEqualToCurrent: boolean,
     totalPercents: number | string,
-    theme,
+    theme
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
 
@@ -350,25 +405,37 @@ export default class RebalancedPortfolioTable extends React.Component<
         `${row.portfolioPerc}%`
       )
 
-
-      const trackAfterBackground = ((100 - (+totalPercents) < 0.5) && (+row.portfolioPerc < 0.5) || (+row.portfolioPerc > 0.5) && 100 - (+totalPercents) === 0 ) ? '' : theme.palette.secondary.main
+      const trackAfterBackground =
+        (100 - +totalPercents < 0.5 && +row.portfolioPerc < 0.5) ||
+        (+row.portfolioPerc > 0.5 && 100 - +totalPercents === 0)
+          ? ''
+          : theme.palette.secondary.main
       const trackAfterOpacity = trackAfterBackground ? 1 : '0.24'
       const thumbBackground = 'rgba(255,129,0)'
 
-      const SliderInput = <StyledSlider
-        classes={{trackAfter: 'trackAfter', trackBefore: 'trackBefore', thumb: 'thumb'}}
-        trackAfterBackground={trackAfterBackground}
-        trackAfterOpacity={trackAfterOpacity}
-        thumbBackground={thumbBackground}
-        trackBeforeBackground={theme.palette.getContrastText(theme.palette.primary.main)}
-        key={row._id}
-        value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}
-        max={100}
-        step={0.5}
-        onChange={(e, value) => {this.onPercentSliderChange(e, value, index)}}
-        onDragEnd={() => this.onPercentSliderDragEnd(index)}
-      />
-
+      const SliderInput = (
+        <StyledSlider
+          classes={{
+            trackAfter: 'trackAfter',
+            trackBefore: 'trackBefore',
+            thumb: 'thumb',
+          }}
+          trackAfterBackground={trackAfterBackground}
+          trackAfterOpacity={trackAfterOpacity}
+          thumbBackground={thumbBackground}
+          trackBeforeBackground={theme.palette.getContrastText(
+            theme.palette.primary.main
+          )}
+          key={row._id}
+          value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}
+          max={100}
+          step={0.5}
+          onChange={(e, value) => {
+            this.onPercentSliderChange(e, value, index)
+          }}
+          onDragEnd={() => this.onPercentSliderDragEnd(index)}
+        />
+      )
 
       const shouldWeShowPlaceholderForExchange =
         row.exchange === '' || row.exchange === 'Exchange'
@@ -502,76 +569,99 @@ export default class RebalancedPortfolioTable extends React.Component<
               },
               oritinalPrice: {
                 contentToSort: +staticRowsMap.get(row._id).price,
-                render:
-                  <Tooltip title={staticRowsMap.get(row._id).price} enterDelay={250} leaveDelay={200}>
-                    {
-                      addMainSymbol(
-                        roundAndFormatNumber(staticRowsMap.get(row._id).price, 2),
-                      isUSDCurrently)
-                    }
-                    </Tooltip>,
+                render: (
+                  <Tooltip
+                    title={staticRowsMap.get(row._id).price}
+                    enterDelay={250}
+                    leaveDelay={200}
+                  >
+                    {addMainSymbol(
+                      roundAndFormatNumber(staticRowsMap.get(row._id).price, 2),
+                      isUSDCurrently
+                    )}
+                  </Tooltip>
+                ),
                 isNumber: true,
                 style: { borderRight: '1px solid white' },
               },
             }
           : {
               oririnalPortfolioPerc: { render: '-', isNumber: true },
-              oritinalPrice: { render: '-', isNumber: true, style: { borderRight: '1px solid white' }, },
+              oritinalPrice: {
+                render: '-',
+                isNumber: true,
+                style: { borderRight: '1px solid white' },
+              },
             }),
-        ...(showZerosForRebalancedPartIfItsEqualToCurrent ?
-          {
-            percentSnapshot: 0,
-            priceSnapshot: 0,
-            portfolioPerc: 0,
-            sliderPerc: ' ',
-            price: 0,
-          }
+        ...(showZerosForRebalancedPartIfItsEqualToCurrent
+          ? {
+              percentSnapshot: 0,
+              priceSnapshot: 0,
+              portfolioPerc: 0,
+              sliderPerc: ' ',
+              price: 0,
+            }
           : {
-            percentSnapshot: {
-              contentToSort: percentSnapshot,
-              render: row.isCustomAsset ? '-' : `${percentSnapshot}%`,
-              isNumber: true,
-            },
-            priceSnapshot: {
-              contentToSort: priceSnapshot,
-              render: row.isCustomAsset
-                ? '-'
-                : <Tooltip title={priceSnapshot} enterDelay={250} leaveDelay={200}>
-                  {addMainSymbol(
-                  roundAndFormatNumber(priceSnapshot, 2, true),
-                  isUSDCurrently)
-                  }
-                </Tooltip>,
-              isNumber: true,
-            },
-            portfolioPerc: {
-              render: portfolioPercentage,
-              isNumber: true,
-              contentToSort: row.portfolioPerc === null ? 0 : row.portfolioPerc,
-            },
-            sliderPerc: {
-              render: SliderInput,
-            },
-            price: {
-              contentToSort: +row.price,
-              render: <Tooltip title={row.price} enterDelay={250} leaveDelay={200} >
-                  {
-                    addMainSymbol(
+              percentSnapshot: {
+                contentToSort: percentSnapshot,
+                render: row.isCustomAsset ? '-' : `${percentSnapshot}%`,
+                isNumber: true,
+              },
+              priceSnapshot: {
+                contentToSort: priceSnapshot,
+                render: row.isCustomAsset ? (
+                  '-'
+                ) : (
+                  <Tooltip
+                    title={priceSnapshot}
+                    enterDelay={250}
+                    leaveDelay={200}
+                  >
+                    {addMainSymbol(
+                      roundAndFormatNumber(priceSnapshot, 2, true),
+                      isUSDCurrently
+                    )}
+                  </Tooltip>
+                ),
+                isNumber: true,
+              },
+              portfolioPerc: {
+                render: portfolioPercentage,
+                isNumber: true,
+                contentToSort:
+                  row.portfolioPerc === null ? 0 : row.portfolioPerc,
+              },
+              sliderPerc: {
+                render: SliderInput,
+              },
+              price: {
+                contentToSort: +row.price,
+                render: (
+                  <Tooltip title={row.price} enterDelay={250} leaveDelay={200}>
+                    {addMainSymbol(
                       roundAndFormatNumber(row.price, 2, true),
                       isUSDCurrently
-                    )
-                  }
-                </Tooltip>,
-              isNumber: true,
-            },
-          }),
+                    )}
+                  </Tooltip>
+                ),
+                isNumber: true,
+              },
+            }),
         deltaPrice: {
           render:
-            +row.deltaPrice && row.deltaPrice > 0 && Math.abs(+row.deltaPrice) > 0.01
-              ? `BUY ${row.symbol}  $ ${roundAndFormatNumber(row.deltaPrice, 2)}`
-              : +row.deltaPrice && row.deltaPrice < 0 && Math.abs(+row.deltaPrice) > 0.01
+            +row.deltaPrice &&
+            row.deltaPrice > 0 &&
+            Math.abs(+row.deltaPrice) > 0.01
+              ? `BUY ${row.symbol}  $ ${roundAndFormatNumber(
+                  row.deltaPrice,
+                  2
+                )}`
+              : +row.deltaPrice &&
+                row.deltaPrice < 0 &&
+                Math.abs(+row.deltaPrice) > 0.01
               ? `SELL ${row.symbol}  $ ${roundAndFormatNumber(
-                  Math.abs(parseFloat(row.deltaPrice)), 2
+                  Math.abs(parseFloat(row.deltaPrice)),
+                  2
                 )}`
               : '',
           color: row.deltaPrice > 0 ? green : red,
@@ -618,8 +708,10 @@ export default class RebalancedPortfolioTable extends React.Component<
     const green = theme.palette.green.main
     const background = theme.palette.primary.main
 
-    const showZerosForRebalancedPartIfItsEqualToCurrent = !isEditModeEnabled && rows.length === staticRows.length && rows.every((row, index) => row.price === staticRows[index].price)
-
+    const showZerosForRebalancedPartIfItsEqualToCurrent =
+      !isEditModeEnabled &&
+      rows.length === staticRows.length &&
+      rows.every((row, index) => row.price === staticRows[index].price)
 
     const columnNames = [
       { label: 'Exchange', id: 'exchange' },
@@ -638,16 +730,21 @@ export default class RebalancedPortfolioTable extends React.Component<
         id: 'priceSnapshot',
       },
       { label: 'Rebalanced %', isNumber: true, id: 'portfolioPerc' },
-      { label: 'Slider %', id: 'sliderPerc'},
+      { label: 'Slider %', id: 'sliderPerc' },
       {
         label: `Rebalanced ${isUSDCurrently ? 'USD' : 'BTC'}`,
         isNumber: true,
         id: 'price',
       },
       { label: 'Trade', id: 'deltaPrice' },
-    ...(isEditModeEnabled ? [{
-      label: '  ', id: 'deleteIcon',
-    }] : []),
+      ...(isEditModeEnabled
+        ? [
+            {
+              label: '  ',
+              id: 'deleteIcon',
+            },
+          ]
+        : []),
     ]
 
     return {
@@ -665,7 +762,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           fontFamily,
           showZerosForRebalancedPartIfItsEqualToCurrent,
           totalPercents,
-          theme,
+          theme
         ),
         footer: [
           ...(isEditModeEnabled
@@ -736,22 +833,31 @@ export default class RebalancedPortfolioTable extends React.Component<
             priceSnapshot: {
               render: ' ',
             },
-            ...(showZerosForRebalancedPartIfItsEqualToCurrent ? {
-              rebalanced: ' ',
-              sliderPerc: ' ',
-              rebalancedUSD: ' ',
-            } : {
-              rebalanced: { render: `${totalPercents}%`, isNumber: true },
-              sliderPerc: { render: `${roundAndFormatNumber((100 - (+totalPercents)), 3, false)}%`, isNumber: true },
-              rebalancedUSD: {
-                contentToSort: +totalTableRows,
-                render: addMainSymbol(
-                  formatNumberToUSFormat(totalTableRows),
-                  isUSDCurrently
-                ),
-                isNumber: true,
-              },
-            }),
+            ...(showZerosForRebalancedPartIfItsEqualToCurrent
+              ? {
+                  rebalanced: ' ',
+                  sliderPerc: ' ',
+                  rebalancedUSD: ' ',
+                }
+              : {
+                  rebalanced: { render: `${totalPercents}%`, isNumber: true },
+                  sliderPerc: {
+                    render: `${roundAndFormatNumber(
+                      100 - +totalPercents,
+                      3,
+                      false
+                    )}%`,
+                    isNumber: true,
+                  },
+                  rebalancedUSD: {
+                    contentToSort: +totalTableRows,
+                    render: addMainSymbol(
+                      formatNumberToUSFormat(totalTableRows),
+                      isUSDCurrently
+                    ),
+                    isNumber: true,
+                  },
+                }),
             trade: ' ',
             ...(isEditModeEnabled ? { render: ' ' } : {}),
           },
@@ -773,32 +879,34 @@ export default class RebalancedPortfolioTable extends React.Component<
             percentSnapshot: {
               render: ' ',
             },
-            ...(showZerosForRebalancedPartIfItsEqualToCurrent ? {
-              priceSnapshot: ' ',
-              sliderPerc: ' ',
-              rebalanced: ' ',
-              rebalancedUSD: ' ',
-            } : {
-              priceSnapshot: {
-                render: addMainSymbol(
-                  formatNumberToUSFormat(totalSnapshotRows),
-                  isUSDCurrently
-                ),
-                isNumber: true,
-              },
-              rebalanced: {render: '100.000%', isNumber: true},
-              sliderPerc: {
-                render: ' ',
-              },
-              rebalancedUSD: {
-                contentToSort: +totalRows,
-                render: addMainSymbol(
-                  formatNumberToUSFormat(totalRows),
-                  isUSDCurrently
-                ),
-                isNumber: true,
-              },
-            }),
+            ...(showZerosForRebalancedPartIfItsEqualToCurrent
+              ? {
+                  priceSnapshot: ' ',
+                  sliderPerc: ' ',
+                  rebalanced: ' ',
+                  rebalancedUSD: ' ',
+                }
+              : {
+                  priceSnapshot: {
+                    render: addMainSymbol(
+                      formatNumberToUSFormat(totalSnapshotRows),
+                      isUSDCurrently
+                    ),
+                    isNumber: true,
+                  },
+                  rebalanced: { render: '100.000%', isNumber: true },
+                  sliderPerc: {
+                    render: ' ',
+                  },
+                  rebalancedUSD: {
+                    contentToSort: +totalRows,
+                    render: addMainSymbol(
+                      formatNumberToUSFormat(totalRows),
+                      isUSDCurrently
+                    ),
+                    isNumber: true,
+                  },
+                }),
             trade: ' ',
             ...(isEditModeEnabled ? { render: ' ' } : {}),
           },
@@ -841,63 +949,86 @@ export default class RebalancedPortfolioTable extends React.Component<
             rowsWithHover={false}
             actionsColSpan={2}
             actions={[
-              ...(!isEditModeEnabled ? [
-              {
-                id: 1,
-                icon:
-                  <Tooltip title={`Rebalance portfolio`} enterDelay={250} leaveDelay={200}>
-                    <EditIcon id="editButton"/>
-                  </Tooltip>,
-                onClick: onEditModeEnable,
-                color: 'secondary',
-                style: {color: saveButtonColor, marginRight: '7px'},
-              },
-                ] : []
-              ),
-              ...(isEditModeEnabled ? [
-                {
-                  id: 2,
-                  icon:
-                  <Tooltip title={`Update snapshot`} enterDelay={250} leaveDelay={200}>
-                    <SnapshotIcon id="snapshotButton" />
-                  </Tooltip>,
-                  onClick: onNewSnapshot,
-                  style: {color: '#fff', marginRight: '7px'},
-                },
-              {
-                id: 3,
-                icon:
-                  <Tooltip title={`Discard changes`} enterDelay={250} leaveDelay={200}>
-                    <ClearIcon id="discardChangesButton" />
-                  </Tooltip>,
-                onClick: onEditModeEnable,
-                style: {color: red, marginRight: '7px'},
-              },
-              {
-                id: 4,
-                icon:
-                  <Tooltip
-                  title={`Reset to initial portfolio`}
-                  enterDelay={250}
-                  leaveDelay={200}
-                >
-                  <Replay id="resetButton" />
-                </Tooltip>,
-                onClick: onReset,
-                style: {marginRight: '7px'},
-
-              },
-              {
-                id: 5,
-                icon:
-                  <Tooltip title={`Save changes`} enterDelay={250} leaveDelay={200}>
-                    <SaveIcon id="saveButton" />
-                  </Tooltip>,
-                onClick: onSaveClick,
-                color: saveButtonColor,
-                style: {color: saveButtonColor, marginRight: '7px'},
-              },
-              ] : []),
+              ...(!isEditModeEnabled
+                ? [
+                    {
+                      id: 1,
+                      icon: (
+                        <Tooltip
+                          title={`Rebalance portfolio`}
+                          enterDelay={250}
+                          leaveDelay={200}
+                        >
+                          <EditIcon id="editButton" />
+                        </Tooltip>
+                      ),
+                      onClick: onEditModeEnable,
+                      color: 'secondary',
+                      style: { color: saveButtonColor, marginRight: '7px' },
+                    },
+                  ]
+                : []),
+              ...(isEditModeEnabled
+                ? [
+                    {
+                      id: 2,
+                      icon: (
+                        <Tooltip
+                          title={`Update snapshot`}
+                          enterDelay={250}
+                          leaveDelay={200}
+                        >
+                          <SnapshotIcon id="snapshotButton" />
+                        </Tooltip>
+                      ),
+                      onClick: onNewSnapshot,
+                      style: { color: '#fff', marginRight: '7px' },
+                    },
+                    {
+                      id: 3,
+                      icon: (
+                        <Tooltip
+                          title={`Discard changes`}
+                          enterDelay={250}
+                          leaveDelay={200}
+                        >
+                          <ClearIcon id="discardChangesButton" />
+                        </Tooltip>
+                      ),
+                      onClick: onEditModeEnable,
+                      style: { color: red, marginRight: '7px' },
+                    },
+                    {
+                      id: 4,
+                      icon: (
+                        <Tooltip
+                          title={`Reset to initial portfolio`}
+                          enterDelay={250}
+                          leaveDelay={200}
+                        >
+                          <Replay id="resetButton" />
+                        </Tooltip>
+                      ),
+                      onClick: onReset,
+                      style: { marginRight: '7px' },
+                    },
+                    {
+                      id: 5,
+                      icon: (
+                        <Tooltip
+                          title={`Save changes`}
+                          enterDelay={250}
+                          leaveDelay={200}
+                        >
+                          <SaveIcon id="saveButton" />
+                        </Tooltip>
+                      ),
+                      onClick: onSaveClick,
+                      color: saveButtonColor,
+                      style: { color: saveButtonColor, marginRight: '7px' },
+                    },
+                  ]
+                : []),
             ]}
             title={
               <TitleContainer>

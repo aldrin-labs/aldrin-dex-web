@@ -3,12 +3,7 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
-} from '@material-ui/core'
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 import moment from 'moment'
 
 import { Container as Content } from '../Industry/Industry.styles'
@@ -22,9 +17,7 @@ import {
   IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import {
-  cloneArrayElementsOneLevelDeep,
-} from '@utils/PortfolioTableUtils'
+import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -81,8 +74,8 @@ class Rebalance extends React.Component<IProps, IState> {
     openWarning: false,
     isSystemError: false,
     warningMessage: '',
-    timestampSnapshot: moment(),
-    timestampSnapshotSaved: moment(),
+    timestampSnapshot: null,
+    timestampSnapshotSaved: null,
     isSaveError: false,
     isCurrentAssetsChanged: false,
   }
@@ -201,14 +194,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const composeWithMocksRebalancedPortfolio = isShownMocks
       ? [...newTableRebalancedPortfolioData, ...mockTableData]
       : newTableRebalancedPortfolioData
-
-    this.setTimestamp(
-      userHasRebalancePortfolio
-        ? moment.unix(
-            getMyPortfolioAndRebalanceQuery.myRebalance.timestampSnapshot
-          )
-        : moment()
-    )
 
     if (userHasRebalancePortfolio) {
       this.setTableData(
@@ -411,7 +396,8 @@ class Rebalance extends React.Component<IProps, IState> {
     } catch (error) {
       this.setState({ loading: false })
       this.showWarning(systemError, true)
-      console.log(error)
+      // tslint:disable:no-console
+      console.error(error)
     }
   }
 
@@ -514,7 +500,6 @@ class Rebalance extends React.Component<IProps, IState> {
       )
 
       this.setState((prevState: IState) => ({
-        timestampSnapshot: this.state.timestampSnapshotSaved,
         isEditModeEnabled: !prevState.isEditModeEnabled,
         totalRows: this.state.totalSavedRows,
         totalTableRows: this.state.totalTableSavedRows,
@@ -530,6 +515,16 @@ class Rebalance extends React.Component<IProps, IState> {
         totalPercents: UTILS.calculateTotalPercents(clonedSavedRows),
       }))
     } else {
+      // if there is no snapshot on backend
+      // then we will create it when u click edit button
+      // actually here is just setting time
+      if (
+        !this.props.data.myPortfolios[0].myRebalance ||
+        !this.props.data.myPortfolios[0].myRebalance.timestampSnapshot
+      ) {
+        this.createNewSnapshot()
+      }
+
       this.setState((prevState) => ({
         isEditModeEnabled: !prevState.isEditModeEnabled,
       }))
@@ -589,8 +584,9 @@ class Rebalance extends React.Component<IProps, IState> {
       children,
       isUSDCurrently,
       theme,
-      theme: { palette },
+      theme: { palette, customPalette },
       tab,
+      data,
     } = this.props
     const {
       selectedActive,
@@ -613,20 +609,25 @@ class Rebalance extends React.Component<IProps, IState> {
       openWarning,
       isSystemError,
       warningMessage,
-      timestampSnapshot,
       isSaveError,
       isCurrentAssetsChanged,
     } = this.state
 
     const secondary = palette.secondary.main
-    const red = palette.red.main
-    const green = palette.green.main
+    const red = customPalette.red.main
+    const green = customPalette.green.main
     const fontFamily = theme.typography.fontFamily
-    const saveButtonColor =
-      isPercentSumGood ? green : red
+    const saveButtonColor = isPercentSumGood ? green : red
 
     const tableDataHasData = !staticRows.length || !rows.length
 
+    // time when snapshot was made
+    // it is from backend if it was made before or from localstate
+    // if you created new snapshot but not send it to back
+    const timestampSnapshot =
+      this.state.timestampSnapshot || !data.myPortfolios[0].myRebalance
+        ? this.state.timestampSnapshot
+        : moment.unix(data.myPortfolios[0].myRebalance.timestampSnapshot)
 
     return (
       <>
@@ -689,45 +690,6 @@ class Rebalance extends React.Component<IProps, IState> {
                 onNewSnapshot={this.onNewSnapshot}
               />
             </Container>
-            {/*don't delete this it's for future*/}
-            {/*<Grow*/}
-            {/*timeout={{*/}
-            {/*enter: theme.transitions.duration.enteringScreen,*/}
-            {/*exit: 0,*/}
-            {/*}}*/}
-            {/*in={isEditModeEnabled}*/}
-            {/*mountOnEnter*/}
-            {/*unmountOnExit*/}
-            {/*>*/}
-            {/*<BtnsWrapper*/}
-            {/*container*/}
-            {/*justify="center"*/}
-            {/*alignItems="center"*/}
-            {/*item*/}
-            {/*md={4}*/}
-            {/*>*/}
-            {/*<RebalanceMoneyButtons*/}
-            {/*{...{*/}
-            {/*isEditModeEnabled,*/}
-            {/*addMoneyInputValue,*/}
-            {/*undistributedMoney,*/}
-            {/*onEditModeEnable,*/}
-            {/*onReset,*/}
-            {/*onSaveClick,*/}
-            {/*saveButtonColor,*/}
-            {/*textColor,*/}
-            {/*staticRows,*/}
-            {/*rows,*/}
-            {/*selectedActive,*/}
-            {/*updateState,*/}
-            {/*fontFamily,*/}
-            {/*secondary,*/}
-            {/*red,*/}
-            {/*green,*/}
-            {/*}}*/}
-            {/*/>*/}
-            {/*</BtnsWrapper>*/}
-            {/*</Grow>*/}
 
             <ChartWrapper
               item
@@ -854,6 +816,7 @@ const RebalanceContainer = (props) => (
   <QueryRenderer
     fetchPolicy="network-only"
     component={Rebalance}
+    pollInterval={1 * 30 * 1000}
     query={getMyPortfolioAndRebalanceQuery}
     variables={{ baseCoin: 'USDT' }}
     {...props}
