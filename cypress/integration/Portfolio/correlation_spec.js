@@ -1,7 +1,8 @@
 describe('portfolio correlation tests', () => {
   before(function() {
-    cy.visit('/portfolio')
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
+    cy.visit('/portfolio')
     cy.get('#correlation_tab_button').click()
     cy.waitLoading()
   })

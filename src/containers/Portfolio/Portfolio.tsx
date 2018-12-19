@@ -20,6 +20,7 @@ import {
 } from '@containers/Portfolio/api'
 
 import { getCoinsForOptimization } from './components/PortfolioTable/Optimization/api'
+import withAuth from '@hoc/withAuth'
 
 const safePortfolioDestruction = (
   portfolio = {
@@ -184,4 +185,4 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-export default withTheme()(PortfolioComponent)
+export default withAuth(withTheme()(PortfolioComponent))

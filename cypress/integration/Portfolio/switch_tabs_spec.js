@@ -1,7 +1,8 @@
 describe('Should switch tabs', () => {
   before(function() {
-    cy.visit('/portfolio')
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
+    cy.visit('/portfolio')
   })
 
   context('Portfolio', () => {
