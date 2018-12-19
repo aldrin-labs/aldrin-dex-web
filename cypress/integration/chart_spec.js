@@ -12,10 +12,9 @@ describe('chart tests', () => {
           .click()
       }
     )
-
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTips()
     cy.visit('/chart')
-
-    cy.get('[style="line-height: 1.4; text-align: center;"] > button').click()
   })
 
   it('switch between depth/candle chart', () => {
@@ -54,13 +53,10 @@ describe('chart tests', () => {
 
   it('Switch between multi chart and single chart', () => {
     cy.get('[data-e2e="switchChartPageMode"]').click()
-    cy.get('[style="line-height: 1.4; text-align: center;"] > div').contains(
-      'Select more pairs with up-to 8 charts.'
-    )
+    cy.get('[data-e2e="tradeHistory__body"]').should('not.exist')
   })
 
   it('check add and delete charts on multichart page', () => {
-    cy.get('button > svg').click()
     cy.chooseReactSelectOption('#currencyPair', 'BTC_USDT', 'BTC_USDT')
     cy.get(':nth-child(2) >  iframe').should('be.visible')
     cy.get(

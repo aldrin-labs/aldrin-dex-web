@@ -1,4 +1,4 @@
-describe('portfolio main', () => {
+describe('optimisation', () => {
   before(function() {
     Cypress.Commands.add(
       'chooseReactCustomSelectOption',
@@ -12,9 +12,9 @@ describe('portfolio main', () => {
           .click()
       }
     )
-
-    cy.visit('/portfolio')
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
+    cy.visit('/portfolio')
     cy.get('#optimization_tab_button').click()
     cy.waitLoading()
   })
@@ -56,10 +56,6 @@ describe('portfolio main', () => {
     cy.get('#ButtonMUI').should('not.be.disabled')
     cy.get('#ButtonMUI').click()
     cy.waitLoading()
-
-    cy.get('#okButtonDialog').should('be.visible')
-    cy.get('#okButtonDialog').click()
-
     cy.get('#SwitchRiskButtons').should('be.visible')
 
     // reset portfolio

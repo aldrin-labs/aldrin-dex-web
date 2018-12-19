@@ -1,7 +1,8 @@
 describe('portfolio industry', () => {
   before(function() {
-    cy.visit('/portfolio')
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
+    cy.visit('/portfolio')
     cy.get('#industry_tab_button').click()
     cy.waitLoading()
   })
