@@ -666,20 +666,6 @@ class Rebalance extends React.Component<IProps, IState> {
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
-            <Grow in={!isEditModeEnabled}>
-              <Fab
-                color="secondary"
-                onClick={this.onEditModeEnable}
-                css={`
-                  z-index: 100;
-                  position: fixed;
-                  bottom: 2.8125rem;
-                  right: 1.5rem;
-                `}
-              >
-                <EditIcon />
-              </Fab>
-            </Grow>
             <Container item md={12} isEditModeEnabled={isEditModeEnabled}>
               <RebalancedPortfolioTable
                 {...{

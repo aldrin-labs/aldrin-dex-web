@@ -1,4 +1,5 @@
 import React from 'react'
+import EditIcon from '@material-ui/icons/Edit'
 import SaveIcon from '@material-ui/icons/Save'
 import Replay from '@material-ui/icons/Replay'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -35,6 +36,7 @@ import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/
 import { TableWithSort, Table as ImTable } from '@storybook-components/index'
 import { Loading } from '@components/Loading'
 import { IconButtonWithHover } from '../Rebalance.styles'
+import { Grow } from '@material-ui/core'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -646,7 +648,6 @@ export default class RebalancedPortfolioTable extends React.Component<
                 isNumber: true,
               },
             }),
-        // trade column
         deltaPrice: {
           render:
             +row.deltaPrice &&
@@ -665,9 +666,6 @@ export default class RebalancedPortfolioTable extends React.Component<
                 )}`
               : '',
           color: row.deltaPrice > 0 ? green : red,
-          style: {
-            minWidth: '10rem',
-          },
         },
         ...(isEditModeEnabled
           ? {
@@ -952,6 +950,25 @@ export default class RebalancedPortfolioTable extends React.Component<
             rowsWithHover={false}
             actionsColSpan={2}
             actions={[
+              ...(!isEditModeEnabled
+                ? [
+                    {
+                      id: 1,
+                      icon: (
+                        <Tooltip
+                          title={`Rebalance portfolio`}
+                          enterDelay={250}
+                          leaveDelay={200}
+                        >
+                          <EditIcon id="editButton" />
+                        </Tooltip>
+                      ),
+                      onClick: onEditModeEnable,
+                      color: 'secondary',
+                      style: { color: saveButtonColor, marginRight: '7px' },
+                    },
+                  ]
+                : []),
               ...(isEditModeEnabled
                 ? [
                     {
@@ -1017,12 +1034,12 @@ export default class RebalancedPortfolioTable extends React.Component<
             title={
               <TitleContainer>
                 <TitleItem>Rebalanced Portfolio</TitleItem>
-                <TitleItem>
-                  {timestampSnapshot &&
-                    `Snapshot time:${timestampSnapshot.format(
-                      'MM-DD-YYYY h:mm:ss A'
-                    )}`}
-                </TitleItem>
+                <Grow in={timestampSnapshot}>
+                  <TitleItem>
+                    {`Snapshot time:${timestampSnapshot &&
+                      timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}`}
+                  </TitleItem>
+                </Grow>
               </TitleContainer>
             }
             checkedRows={selectedActive}
