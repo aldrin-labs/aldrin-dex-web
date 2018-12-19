@@ -44,6 +44,7 @@ import { singleChartSteps } from '@utils/joyrideSteps'
 import { setTimeout } from 'timers'
 import { withErrorFallback } from '@hoc/index'
 import TransparentExtendedFAB from '@components/TransparentExtendedFAB'
+import withAuth from '@hoc/withAuth'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
@@ -396,41 +397,41 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-      <>
-        <TogglerContainer container className="AutoSuggestSelect">
-          <Grid
-            spacing={16}
-            item
-            sm={view === 'default' ? 8 : 12}
-            xs={view === 'default' ? 8 : 12}
-            style={{ margin: '0 -8px', height: '100%' }}
-            container
-            alignItems="center"
-            justify="flex-end"
-          >
-            <AutoSuggestSelect
-              value={view === 'default' && currencyPair}
-              id={'currencyPair'}
-              view={view}
-              exchange={activeExchange}
-            />
-            {view === 'default' && (
-              <TransparentExtendedFAB
-                onClick={() => {
-                  this.setState((prevState) => ({
-                    activeChart:
-                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                  }))
-                }}
-              >
-                {activeChart === 'candle' ? 'orderbook' : 'chart'}
-              </TransparentExtendedFAB>
-            )}
-            <Hidden smDown>{toggler}</Hidden>
-          </Grid>
-        </TogglerContainer>
-        {view === 'default' && this.renderDefaultView()}
-        {view === 'onlyCharts' && this.renderOnlyCharts()}
+        <>
+          <TogglerContainer container className="AutoSuggestSelect">
+            <Grid
+              spacing={16}
+              item
+              sm={view === 'default' ? 8 : 12}
+              xs={view === 'default' ? 8 : 12}
+              style={{ margin: '0 -8px', height: '100%' }}
+              container
+              alignItems="center"
+              justify="flex-end"
+            >
+              <AutoSuggestSelect
+                value={view === 'default' && currencyPair}
+                id={'currencyPair'}
+                view={view}
+                exchange={activeExchange}
+              />
+              {view === 'default' && (
+                <TransparentExtendedFAB
+                  onClick={() => {
+                    this.setState((prevState) => ({
+                      activeChart:
+                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                    }))
+                  }}
+                >
+                  {activeChart === 'candle' ? 'orderbook' : 'chart'}
+                </TransparentExtendedFAB>
+              )}
+              <Hidden smDown>{toggler}</Hidden>
+            </Grid>
+          </TogglerContainer>
+          {view === 'default' && this.renderDefaultView()}
+          {view === 'onlyCharts' && this.renderOnlyCharts()}
         </>
       </MainContainer>
     )
@@ -458,7 +459,7 @@ export const ExchangePair = styled.div`
   background: transparent;
 `
 
-const TablesBlockWrapper = styled(({blur, ...rest}) => <Card { ...rest } />)`
+const TablesBlockWrapper = styled(({ blur, ...rest }) => <Card {...rest} />)`
   min-width: 150px;
   width: 50%;
   position: relative;
@@ -542,9 +543,11 @@ const mapDispatchToProps = (dispatch: any) => ({
 const ThemeWrapper = (props) => <Chart {...props} />
 const ThemedChart = withTheme()(ThemeWrapper)
 
-export default withErrorFallback(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(ThemedChart)
+export default withAuth(
+  withErrorFallback(
+    connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(ThemedChart)
+  )
 )
