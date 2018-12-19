@@ -1,7 +1,8 @@
 describe('portfolio main', () => {
   before(function() {
-    cy.visit('/portfolio')
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
+    cy.visit('/portfolio')
     cy.waitLoading()
   })
 
