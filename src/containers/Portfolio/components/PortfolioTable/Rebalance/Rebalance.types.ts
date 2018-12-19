@@ -1,7 +1,12 @@
 import { WithTheme } from '@material-ui/core'
 import { Map } from 'typescript'
 import moment from 'moment'
-export type ISortArgs = 'exchange' | 'symbol' | 'portfolioPerc' | 'price' | 'trade';
+export type ISortArgs =
+  | 'exchange'
+  | 'symbol'
+  | 'portfolioPerc'
+  | 'price'
+  | 'trade'
 
 // TODO: We should have one type for price & portfolioPerc, deltaPrice in IRow
 
@@ -57,12 +62,11 @@ export interface IState {
   isSystemError: boolean
   warningMessage: string
   totalSnapshotRows: string | number
-  timestampSnapshot: moment.Moment
-  timestampSnapshotSaved: moment.Moment
+  timestampSnapshot: moment.Moment | null
+  timestampSnapshotSaved: moment.Moment | null
   isSaveError: boolean
   isCurrentAssetsChanged: boolean
 }
-
 
 export interface IShapeOfRebalancePortfolioRow {
   _id: string
@@ -83,54 +87,50 @@ export interface IShapeOfCurrentPortolioRow {
   asset: { symbol: string; priceUSD: string }
 }
 
-
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
-
 
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
 
 export interface rebalanceInput {
-  assets?: assetList | null;
-  total?: string | null;
+  assets?: assetList | null
+  total?: string | null
 }
 
 export interface assetList {
-  input?: (asset | null)[] | null;
+  input?: (asset | null)[] | null
 }
 
 export interface asset {
-  _id?: _id | null;
-  percent?: string | null;
-  amount?: string | null;
-  diff?: string | null;
+  _id?: _id | null
+  percent?: string | null
+  amount?: string | null
+  diff?: string | null
 }
 
 export interface _id {
-  exchange?: string | null;
-  coin?: string | null;
+  exchange?: string | null
+  coin?: string | null
 }
 
 //==============================================================
 // END Enums and Input Objects
 //==============================================================
 
-
-
 // ====================================================
 // GraphQL mutation operation: IUpdateRebalanceMutation
 // ====================================================
 
 export interface IUpdateRebalanceMutation_updateRebalance {
-  total: any | null;
+  total: any | null
 }
 
 export interface IUpdateRebalanceMutation {
-  updateRebalance: IUpdateRebalanceMutation_updateRebalance | null;
+  updateRebalance: IUpdateRebalanceMutation_updateRebalance | null
 }
 
 export interface IUpdateRebalanceMutationVariables {
-  input?: rebalanceInput | null;
+  input?: rebalanceInput | null
 }
