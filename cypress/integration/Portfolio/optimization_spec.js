@@ -1,4 +1,4 @@
-describe('portfolio main', () => {
+describe('optimisation', () => {
   before(function() {
     Cypress.Commands.add(
       'chooseReactCustomSelectOption',
@@ -12,13 +12,11 @@ describe('portfolio main', () => {
           .click()
       }
     )
-
-    cy.visit('/')
-
-    cy.get('button > svg').click()
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTips()
+    cy.visit('/portfolio')
     cy.get('#optimization_tab_button').click()
-    cy.wait(100)
-    cy.get('button > svg').click()
+    cy.waitLoading()
   })
 
   it('Render initial state', () => {
@@ -42,16 +40,10 @@ describe('portfolio main', () => {
     cy.get('.rv-xy-plot > .rv-xy-plot__inner').should('be.visible')
   })
 
-  it('Can inite parameters for optimization', () => {
+  it('Can inite parameters for optimization first time', () => {
     cy.chooseReactCustomSelectOption('#RebalancePeriod', '14 days', '14 days')
     cy.get('#SwitchRiskButtons').should('not.be.visible')
     cy.get('#ResetPortfolio').should('be.disabled')
-
-    cy.get('#AddCoinText')
-      .click({ force: true })
-      .type('NO_COIN')
-    cy.get('#AddIcon').click({ force: true })
-    cy.get('#ResetPortfolio').should('not.be.disabled')
 
     // set parameters
     cy.get('#your_unique_start_date_id')
@@ -63,7 +55,27 @@ describe('portfolio main', () => {
     cy.get('#RiskFreeAssetsSwitch').click()
     cy.get('#ButtonMUI').should('not.be.disabled')
     cy.get('#ButtonMUI').click()
-    cy.wait(5000)
+    cy.waitLoading()
+    cy.get('#SwitchRiskButtons').should('be.visible')
+
+    // reset portfolio
+    cy.get('#ResetPortfolio').should('not.be.disabled')
+    cy.get('#ResetPortfolio').click()
+    cy.get('#SwitchRiskButtons').should('not.be.visible')
+  })
+
+  it('Can inite parameters for optimization', () => {
+    cy.get('#AddCoinText')
+      .click({ force: true })
+      .type('NO_COIN')
+    cy.get('#AddIcon').click({ force: true })
+    cy.get('#ResetPortfolio').should('not.be.disabled')
+
+    // set parameters
+    cy.get('#RiskFreeAssetsSwitch').click()
+    cy.get('#ButtonMUI').should('not.be.disabled')
+    cy.get('#ButtonMUI').click()
+    cy.waitLoading()
 
     cy.get('#dialogOptimization').contains(
       `The coins ['NO_COIN'] currently are not found in any of the exchanges we support.`

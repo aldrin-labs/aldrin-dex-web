@@ -8,7 +8,7 @@ describe('User', () => {
   })
   it('UserPage', () => {
     cy.login('NGE@NGE.nge', 'nge')
-    cy.skipTip()
+    cy.notShowTips()
     cy.get('.UserLink').click()
     cy.url().should('include', '/user')
   })

@@ -1,15 +1,14 @@
 describe('portfolio correlation tests', () => {
   before(function() {
-    cy.visit('/')
-
-    cy.get('button > svg').click()
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTips()
+    cy.visit('/portfolio')
     cy.get('#correlation_tab_button').click()
-    cy.wait(1500)
-    cy.get('button > svg').click()
+    cy.waitLoading()
   })
 
   it('Render Portfolio Correlation Grid', () => {
-    cy.get('#CorrelationGrid').should('exist')
+    cy.get('#CorrelationGrid', { timeout: 10000 }).should('exist')
     cy.get('#CorrelationGrid').should('be.visible')
   })
 

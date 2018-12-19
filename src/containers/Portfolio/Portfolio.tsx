@@ -1,6 +1,5 @@
 import React from 'react'
 import { Query, Mutation } from 'react-apollo'
-import { compose } from 'recompose'
 import { has } from 'lodash-es'
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
@@ -21,6 +20,7 @@ import {
 } from '@containers/Portfolio/api'
 
 import { getCoinsForOptimization } from './components/PortfolioTable/Optimization/api'
+import withAuth from '@hoc/withAuth'
 
 const safePortfolioDestruction = (
   portfolio = {
@@ -185,4 +185,4 @@ class PortfolioComponent extends React.Component<IProps, IState> {
   }
 }
 
-export default compose(withTheme())(PortfolioComponent)
+export default withAuth(withTheme()(PortfolioComponent))

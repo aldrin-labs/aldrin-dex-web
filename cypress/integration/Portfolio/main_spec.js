@@ -1,7 +1,9 @@
 describe('portfolio main', () => {
   before(function() {
-    cy.visit('/')
-    cy.clearLocalStorage()
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTips()
+    cy.visit('/portfolio')
+    cy.waitLoading()
   })
 
   context('Portfolio', () => {
@@ -19,7 +21,6 @@ describe('portfolio main', () => {
     })
 
     it('Portfolio Chart Buttons are clickable', () => {
-      cy.skipTip()
       cy.get('[data-e2e="1Y"]').click()
       cy.get('[data-e2e="7D"]').click()
       cy.get('[data-e2e="3M"]').click()
@@ -28,7 +29,6 @@ describe('portfolio main', () => {
     })
 
     it('Should switch BTC/USDT', () => {
-      cy.skipTip()
       cy.get('[data-e2e="toggleCurrency"]').should('exist')
       cy.get('[data-e2e="toggleCurrency"]').contains('BTC')
       cy.get('[data-e2e="toggleCurrency"]').click()

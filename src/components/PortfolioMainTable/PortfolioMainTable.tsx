@@ -320,8 +320,8 @@ class Container extends Component {
     }
   }
 
-  onSelectAllClick = (e: Event | undefined, selectAll = false) => {
-    if ((e && e.target && e.target.checked) || selectAll) {
+  onSelectAllClick = (e: React.ChangeEvent<HTMLInputElement> | 'selectAll', selectAll = false) => {
+    if ((e !== 'selectAll' && e && e.target && e.target.checked) || selectAll) {
       this.setState((state) => ({
         checkedRows: state.tableData
           ? state.tableData.map((row: any, i: number) => row.id)

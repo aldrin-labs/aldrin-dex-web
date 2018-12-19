@@ -1,7 +1,8 @@
 describe('Should switch tabs', () => {
   before(function() {
+    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTips()
     cy.visit('/portfolio')
-    cy.clearLocalStorage()
   })
 
   context('Portfolio', () => {
@@ -15,7 +16,6 @@ describe('Should switch tabs', () => {
       cy.get('#industry_tab_button').should('exist')
 
       cy.get('#industry_tab').should('have.attr', 'hidden')
-      cy.get(`[aria-label="Skip"]`).click()
 
       cy.get('#industry_tab_button').click()
 
@@ -26,7 +26,6 @@ describe('Should switch tabs', () => {
       cy.get('#main_tab_button').should('exist')
 
       cy.get('#main_tab').should('not.be.visible')
-      cy.get('button > svg').click()
 
       cy.get('#main_tab_button').click()
 
@@ -39,7 +38,6 @@ describe('Should switch tabs', () => {
       cy.get('#rebalance_tab').should('not.be.visible')
 
       cy.get('#rebalance_tab_button').click()
-      cy.get('button > svg').click()
 
       cy.get('#rebalance_tab').should('be.visible')
     })
@@ -50,7 +48,6 @@ describe('Should switch tabs', () => {
       cy.get('#correlation_tab').should('not.be.visible')
 
       cy.get('#correlation_tab_button').click()
-      cy.get('button > svg').click()
 
       cy.get('#correlation_tab').should('be.visible')
     })
@@ -61,7 +58,6 @@ describe('Should switch tabs', () => {
       cy.get('#optimization_tab').should('not.be.visible')
 
       cy.get('#optimization_tab_button').click()
-      cy.get('button > svg').click()
 
       cy.get('#optimization_tab').should('be.visible')
     })
