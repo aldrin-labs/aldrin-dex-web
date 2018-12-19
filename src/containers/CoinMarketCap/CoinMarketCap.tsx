@@ -103,11 +103,7 @@ export class CoinMarket extends React.Component<Props, State> {
         { id: 'PriceUSD', isNumber: true, label: 'Price USD' },
         { id: 'PriceBTC', isNumber: true, label: 'Price BTC' },
         { id: 'MarketCap', isNumber: true, label: 'Market Cap' },
-        {
-          id: 'CirculatingSupply',
-          isNumber: true,
-          label: 'Circulating Supply',
-        },
+        { id: 'CirculatingSupply', isNumber: true, label: 'Circulating Supply' },
         { id: 'Volume24h', isNumber: true, label: 'Volume 24 hr' },
         { id: 'PercentChange1h', isNumber: true, label: '%1hr' },
         { id: 'PercentChange24h', isNumber: true, label: '%24hr' },
@@ -155,7 +151,7 @@ export class CoinMarket extends React.Component<Props, State> {
               typeof value.available_supply === 'number'
                 ? formatNumberToUSFormat(value.available_supply)
                 : '?'
-            } ${value.symbol}`,
+            }`,
             isNumber: true,
           },
           Volume24h: {
