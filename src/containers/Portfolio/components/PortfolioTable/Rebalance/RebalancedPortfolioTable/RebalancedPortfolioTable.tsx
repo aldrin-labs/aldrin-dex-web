@@ -1,5 +1,4 @@
 import React from 'react'
-import EditIcon from '@material-ui/icons/Edit'
 import SaveIcon from '@material-ui/icons/Save'
 import Replay from '@material-ui/icons/Replay'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -647,6 +646,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 isNumber: true,
               },
             }),
+        // trade column
         deltaPrice: {
           render:
             +row.deltaPrice &&
@@ -665,6 +665,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                 )}`
               : '',
           color: row.deltaPrice > 0 ? green : red,
+          style: {
+            minWidth: '10rem',
+          },
         },
         ...(isEditModeEnabled
           ? {
@@ -949,25 +952,6 @@ export default class RebalancedPortfolioTable extends React.Component<
             rowsWithHover={false}
             actionsColSpan={2}
             actions={[
-              ...(!isEditModeEnabled
-                ? [
-                    {
-                      id: 1,
-                      icon: (
-                        <Tooltip
-                          title={`Rebalance portfolio`}
-                          enterDelay={250}
-                          leaveDelay={200}
-                        >
-                          <EditIcon id="editButton" />
-                        </Tooltip>
-                      ),
-                      onClick: onEditModeEnable,
-                      color: 'secondary',
-                      style: { color: saveButtonColor, marginRight: '7px' },
-                    },
-                  ]
-                : []),
               ...(isEditModeEnabled
                 ? [
                     {
@@ -1034,9 +1018,10 @@ export default class RebalancedPortfolioTable extends React.Component<
               <TitleContainer>
                 <TitleItem>Rebalanced Portfolio</TitleItem>
                 <TitleItem>
-                  Snapshot time:{' '}
                   {timestampSnapshot &&
-                    timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}
+                    `Snapshot time:${timestampSnapshot.format(
+                      'MM-DD-YYYY h:mm:ss A'
+                    )}`}
                 </TitleItem>
               </TitleContainer>
             }

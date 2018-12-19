@@ -3,8 +3,17 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
-import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
+
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  Fab,
+  Grow,
+} from '@material-ui/core'
 import moment from 'moment'
+import EditIcon from '@material-ui/icons/Edit'
 
 import { Container as Content } from '../Industry/Industry.styles'
 import { systemError } from '@utils/errorsConfig'
@@ -657,6 +666,20 @@ class Rebalance extends React.Component<IProps, IState> {
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
           <Content container spacing={16}>
+            <Grow in={!isEditModeEnabled}>
+              <Fab
+                color="secondary"
+                onClick={this.onEditModeEnable}
+                css={`
+                  z-index: 100;
+                  position: fixed;
+                  bottom: 2.8125rem;
+                  right: 1.5rem;
+                `}
+              >
+                <EditIcon />
+              </Fab>
+            </Grow>
             <Container item md={12} isEditModeEnabled={isEditModeEnabled}>
               <RebalancedPortfolioTable
                 {...{
@@ -816,7 +839,6 @@ const RebalanceContainer = (props) => (
   <QueryRenderer
     fetchPolicy="network-only"
     component={Rebalance}
-    pollInterval={1 * 30 * 1000}
     query={getMyPortfolioAndRebalanceQuery}
     variables={{ baseCoin: 'USDT' }}
     {...props}
