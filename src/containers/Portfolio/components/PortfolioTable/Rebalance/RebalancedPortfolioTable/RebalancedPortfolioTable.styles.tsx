@@ -1,10 +1,13 @@
+import React from 'react'
 import styled from 'styled-components'
 
 import DeleteIcon from '@material-ui/icons/Delete'
 import { Card } from '@material-ui/core'
+import Slider from '@material-ui/lab/Slider'
+
 
 export const InputTable = styled.input`
-  max-width: 60px;
+  max-width: 70px;
   background: ${(props: { background: string }) => props.background};
   font-family: ${(props: { fontFamily: string }) => props.fontFamily};
   font-size: 14px;
@@ -60,6 +63,22 @@ export const TitleContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+`
+
+export const StyledSlider = styled(({trackAfterBackground, trackBeforeBackground, trackAfterOpacity, thumbBackground, ...rest}) => <Slider {...rest} />)`
+  & .trackAfter {
+    background: ${(props: { trackAfterBackground: string }) => props.trackAfterBackground};
+    opacity: ${(props: { trackAfterOpacity: string }) => props.trackAfterOpacity};
+  }
+  
+  & .trackBefore {
+    background: ${(props: { trackBeforeBackground: string }) => props.trackBeforeBackground};
+    opacity: 1;
+  }
+  
+  & .thumb {
+    background: ${(props: { thumbBackground: string }) => props.thumbBackground};;
+  }
 `
 
 export const TitleItem = styled.div``
