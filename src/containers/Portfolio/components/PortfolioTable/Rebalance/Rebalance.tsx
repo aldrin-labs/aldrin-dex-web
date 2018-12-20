@@ -735,7 +735,7 @@ class Rebalance extends React.Component<IProps, IState> {
               isEditModeEnabled={isEditModeEnabled}
               className="PortfolioDistributionChart"
             >
-              <ChartContainer background={palette.background.paper}>
+              <ChartContainer background={palette.type === 'light' ? palette.grey.A400 : palette.background.paper}>
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>
