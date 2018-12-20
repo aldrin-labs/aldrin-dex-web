@@ -17,6 +17,7 @@ import { GET_BASE_COIN } from '../queries/portfolio/getBaseCoin'
 import { GET_COINS } from '../mutations/portfolio/getCoins'
 import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '../queries/portfolio/getOptimizationCountOfRuns'
 import { GET_INDUSTRIES } from '../queries/portfolio/GET_INDUSTRIES'
+import { LOGIN_POPUP_APPEARED } from '../queries/ui/LOGIN_POPUP_APPEARED'
 
 const httpLink = new HttpLink({ uri: `https://${API_URL}/graphql` })
 
@@ -83,6 +84,10 @@ const defaultState = {
   portfolioOptimization: {
     __typename: 'portfolioOptimization',
     optimizationCountOfRuns: 0,
+  },
+  ui: {
+    logInPopupAppeared: false,
+    __typename: 'ui',
   },
 }
 
@@ -191,7 +196,23 @@ const stateLink = withClientState({
           },
         })
 
-        return null
+        return count
+      },
+      updateLoginPopupAppeared: (_: undefined, __: any, source: any) => {
+        const { cache } = source
+        const query = LOGIN_POPUP_APPEARED
+
+        cache.writeQuery({
+          query,
+          data: {
+            ui: {
+              logInPopupAppeared: true,
+              __typename: 'ui',
+            },
+          },
+        })
+
+        return true
       },
     },
   },
