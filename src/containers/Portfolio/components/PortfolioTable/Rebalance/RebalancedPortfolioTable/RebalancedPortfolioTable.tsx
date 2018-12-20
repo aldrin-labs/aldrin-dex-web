@@ -666,6 +666,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                 )}`
               : '',
           color: row.deltaPrice > 0 ? green : red,
+          style: {
+            minWidth: '10rem',
+          },
         },
         ...(isEditModeEnabled
           ? {
