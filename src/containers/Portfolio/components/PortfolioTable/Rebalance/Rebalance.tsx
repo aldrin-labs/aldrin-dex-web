@@ -539,6 +539,10 @@ class Rebalance extends React.Component<IProps, IState> {
       }))
     }
   }
+  onDiscardChanges = () => {
+    this.setState({ timestampSnapshot: null })
+    this.onEditModeEnable()
+  }
 
   updateState = (obj: object) => {
     this.setState(obj)
@@ -691,6 +695,7 @@ class Rebalance extends React.Component<IProps, IState> {
                   fontFamily,
                   totalSnapshotRows,
                   timestampSnapshot,
+                  onDiscardChanges: this.onDiscardChanges,
                 }}
                 onSaveClick={this.onSaveClick}
                 onReset={this.onReset}

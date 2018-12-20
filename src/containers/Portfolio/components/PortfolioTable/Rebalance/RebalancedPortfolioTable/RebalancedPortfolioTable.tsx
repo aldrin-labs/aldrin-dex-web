@@ -705,8 +705,8 @@ export default class RebalancedPortfolioTable extends React.Component<
       totalSnapshotRows,
     } = this.props
     const { transformData } = this
-    const red = theme.palette.red.main
-    const green = theme.palette.green.main
+    const red = theme.customPalette.red.main
+    const green = theme.customPalette.green.main
     const background = theme.palette.primary.main
 
     const showZerosForRebalancedPartIfItsEqualToCurrent =
@@ -926,6 +926,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       onReset,
       onSaveClick,
       red,
+      onDiscardChanges,
       saveButtonColor,
       timestampSnapshot,
       onNewSnapshot,
@@ -996,7 +997,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                           <ClearIcon id="discardChangesButton" />
                         </Tooltip>
                       ),
-                      onClick: onEditModeEnable,
+                      onClick: onDiscardChanges,
                       style: { color: red, marginRight: '7px' },
                     },
                     {
@@ -1014,7 +1015,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                       style: { marginRight: '7px' },
                     },
                     {
-                      id: 5,
+                      id: 'random',
                       icon: (
                         <Tooltip
                           title={`Save changes`}

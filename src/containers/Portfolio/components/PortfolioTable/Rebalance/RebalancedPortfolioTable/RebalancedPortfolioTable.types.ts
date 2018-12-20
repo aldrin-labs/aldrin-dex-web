@@ -4,6 +4,7 @@ import { Theme } from '@material-ui/core'
 
 export interface IProps {
   rows: IRow[]
+  onDiscardChanges: () => void
   staticRows: IRow[]
   currentSortForDynamic: { key: string; arg: 'ASC' | 'DESC' } | null
   totalRows: number | string
@@ -29,6 +30,4 @@ export interface IProps {
   staticRowsMap: Map<string, string>
 }
 
-export interface IState {
-
-}
+export interface IState {}
