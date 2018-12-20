@@ -31,7 +31,7 @@ const Result = (Component: React.ComponentType) => ({
                   showModalAfterDelay={logInPopupAppeared ? false : 1500}
                 />
               )
-
+              // show login auth0 popup only once
               if (!logInPopupAppeared) {
                 updateLoginPopupAppeared()
               }
