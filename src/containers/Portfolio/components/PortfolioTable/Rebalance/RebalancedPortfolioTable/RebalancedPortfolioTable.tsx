@@ -547,6 +547,9 @@ export default class RebalancedPortfolioTable extends React.Component<
             },
             sliderPerc: {
               render: SliderInput,
+              style: {
+                minWidth: '10rem',
+              },
             },
             price: {
               contentToSort: +row.price,
