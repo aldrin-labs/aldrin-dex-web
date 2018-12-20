@@ -3,12 +3,7 @@ import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
 import Joyride from 'react-joyride'
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
-} from '@material-ui/core'
+import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core'
 import moment from 'moment'
 
 import { Container as Content } from '../Industry/Industry.styles'
@@ -22,9 +17,7 @@ import {
   IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import {
-  cloneArrayElementsOneLevelDeep,
-} from '@utils/PortfolioTableUtils'
+import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
@@ -622,11 +615,9 @@ class Rebalance extends React.Component<IProps, IState> {
     const red = palette.red.main
     const green = palette.green.main
     const fontFamily = theme.typography.fontFamily
-    const saveButtonColor =
-      isPercentSumGood ? green : red
+    const saveButtonColor = isPercentSumGood ? green : red
 
     const tableDataHasData = !staticRows.length || !rows.length
-
 
     return (
       <>
@@ -735,7 +726,13 @@ class Rebalance extends React.Component<IProps, IState> {
               isEditModeEnabled={isEditModeEnabled}
               className="PortfolioDistributionChart"
             >
-              <ChartContainer background={palette.type === 'light' ? palette.grey.A400 : palette.background.paper}>
+              <ChartContainer
+                background={
+                  palette.type === 'light'
+                    ? palette.grey.A400
+                    : palette.background.paper
+                }
+              >
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>
