@@ -49,15 +49,14 @@ export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
 export const calculateTableTotal = (data: IRow[], priceField = 'price') => {
   const tableTotal = data.reduce((sum, row, i) => (sum += +data[i][priceField]), 0)
 
-  return tableTotal.toFixed(2)
+  return (tableTotal).toFixed(2)
 }
 
 export const calculateTotalPercents = (data: IRow[]) => {
   const totalPercents = data
     .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
-    .toFixed(3)
 
-  return totalPercents
+  return (totalPercents).toFixed(6)
 }
 
 export const checkPercentSum = (data: IRow[]) => {
@@ -230,3 +229,20 @@ export const recalculateAfterInputChange = ({clonedRows, rows, undistributedMone
   }
 
 }
+
+export const preparePercentage = (percentage: number | string): string => (+percentage) < 1 && (+percentage) > 0 ? '< 1 %' : (parseFloat(percentage).toFixed(1))
+
+export const prepareTotal = (total: number) => {
+  if (total === 100) {
+    return 100
+  }
+  const stripAllDigitPartExceptOneNumber = total.toString().match(/^[0-9]{1,3}\.[0-9]{1}/)
+
+  return stripAllDigitPartExceptOneNumber
+}
+
+export const preparePrice = (price: number | string) => {
+  return price < 0.01 ? 0 : parseFloat(price).toFixed(2)
+}
+
+export const stripDigitPartOfNumberToTwoDecimals = (num: number | string) => num.toString().match(/^[0-9]{1,3}\.[0-9]{2}/)

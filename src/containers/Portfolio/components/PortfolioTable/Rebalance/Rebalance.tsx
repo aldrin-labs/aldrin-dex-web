@@ -131,9 +131,9 @@ class Rebalance extends React.Component<IProps, IState> {
           id: i,
           exchange: el.where,
           symbol: el.coin,
-          price: parseFloat(el.price) * el.quantity,
+          price: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           portfolioPerc: null,
-          priceSnapshot: parseFloat(el.price) * el.quantity,
+          priceSnapshot: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           percentSnapshot: null,
         })
       )
@@ -146,10 +146,10 @@ class Rebalance extends React.Component<IProps, IState> {
             exchange: el.exchange,
             symbol: el.coin,
             portfolioPerc: null,
-            price: parseFloat(el.amount.$numberDecimal),
+            price: UTILS.preparePrice(parseFloat(el.amount.$numberDecimal)),
             deltaPrice: el.diff.$numberDecimal,
             isCustomAsset: el.isCustomAsset,
-            priceSnapshot: el.priceSnapshot,
+            priceSnapshot: UTILS.preparePrice(el.priceSnapshot),
             percentSnapshot: el.percentSnapshot,
           }
         }
@@ -187,10 +187,10 @@ class Rebalance extends React.Component<IProps, IState> {
           id: i,
           exchange: el.where,
           symbol: el.coin,
-          price: parseFloat(el.price) * el.quantity,
+          price: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           portfolioPerc: null,
           quantity: el.quantity,
-          priceSnapshot: parseFloat(el.price) * el.quantity,
+          priceSnapshot: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           percentSnapshot: null,
         })
       )
@@ -711,7 +711,13 @@ class Rebalance extends React.Component<IProps, IState> {
               isEditModeEnabled={isEditModeEnabled}
               className="PortfolioDistributionChart"
             >
-              <ChartContainer background={palette.background.paper}>
+              <ChartContainer
+                background={
+                  palette.type === 'light'
+                    ? palette.grey.A400
+                    : palette.background.paper
+                }
+              >
                 <CardHeader title={`Portfolio Distribution`} />
 
                 <Chart>

@@ -388,22 +388,10 @@ export default class RebalancedPortfolioTable extends React.Component<
     const isUSDCurrently = this.props.isUSDCurrently
 
     const transformedData = rows.map((row, index) => {
-      const portfolioPercentage = isEditModeEnabled ? (
-        <InputTable
-          data-e2e="percentageInput"
-          background={background}
-          fontFamily={fontFamily}
-          key={`inputPercentage${index}`}
-          tabIndex={index + 1}
-          isPercentSumGood={isPercentSumGood}
-          value={rows[index].portfolioPerc}
-          onChange={(e) => this.onPercentInputChange(e, index)}
-          onBlur={(e) => this.onBlurPercentInput(e, index)}
-          onFocus={(e) => this.onFocusPercentInput(e, index)}
-          red={red}
-        />
-      ) : (
-        `${row.portfolioPerc}%`
+      const portfolioPercentage = (
+        <Tooltip title={row.portfolioPerc} enterDelay={250} leaveDelay={200}>
+          <span>{UTILS.preparePercentage(row.portfolioPerc)}</span>
+        </Tooltip>
       )
 
       const trackAfterBackground =
@@ -421,6 +409,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             trackBefore: 'trackBefore',
             thumb: 'thumb',
           }}
+          disabled={!isEditModeEnabled}
           trackAfterBackground={trackAfterBackground}
           trackAfterOpacity={trackAfterOpacity}
           thumbBackground={thumbBackground}
@@ -565,22 +554,26 @@ export default class RebalancedPortfolioTable extends React.Component<
           ? {
               oririnalPortfolioPerc: {
                 contentToSort: +staticRowsMap.get(row._id).portfolioPerc,
-                render: `${staticRowsMap.get(row._id).portfolioPerc}%`,
+                render: (
+                  <Tooltip
+                    title={staticRowsMap.get(row._id).portfolioPerc}
+                    enterDelay={250}
+                    leaveDelay={200}
+                  >
+                    <span>
+                      {UTILS.preparePercentage(
+                        staticRowsMap.get(row._id).portfolioPerc
+                      )}
+                    </span>
+                  </Tooltip>
+                ),
                 isNumber: true,
               },
               oritinalPrice: {
                 contentToSort: +staticRowsMap.get(row._id).price,
-                render: (
-                  <Tooltip
-                    title={staticRowsMap.get(row._id).price}
-                    enterDelay={250}
-                    leaveDelay={200}
-                  >
-                    {addMainSymbol(
-                      roundAndFormatNumber(staticRowsMap.get(row._id).price, 2),
-                      isUSDCurrently
-                    )}
-                  </Tooltip>
+                render: addMainSymbol(
+                  roundAndFormatNumber(staticRowsMap.get(row._id).price, 2),
+                  isUSDCurrently
                 ),
                 isNumber: true,
                 style: { borderRight: '1px solid white' },
@@ -605,25 +598,27 @@ export default class RebalancedPortfolioTable extends React.Component<
           : {
               percentSnapshot: {
                 contentToSort: percentSnapshot,
-                render: row.isCustomAsset ? '-' : `${percentSnapshot}%`,
-                isNumber: true,
-              },
-              priceSnapshot: {
-                contentToSort: priceSnapshot,
                 render: row.isCustomAsset ? (
                   '-'
                 ) : (
                   <Tooltip
-                    title={priceSnapshot}
+                    title={percentSnapshot}
                     enterDelay={250}
                     leaveDelay={200}
                   >
-                    {addMainSymbol(
-                      roundAndFormatNumber(priceSnapshot, 2, true),
-                      isUSDCurrently
-                    )}
+                    <span>{UTILS.preparePercentage(percentSnapshot)}</span>
                   </Tooltip>
                 ),
+                isNumber: true,
+              },
+              priceSnapshot: {
+                contentToSort: priceSnapshot,
+                render: row.isCustomAsset
+                  ? '-'
+                  : addMainSymbol(
+                      roundAndFormatNumber(priceSnapshot, 2, true),
+                      isUSDCurrently
+                    ),
                 isNumber: true,
               },
               portfolioPerc: {
@@ -634,16 +629,15 @@ export default class RebalancedPortfolioTable extends React.Component<
               },
               sliderPerc: {
                 render: SliderInput,
+                style: {
+                  minWidth: '10rem',
+                },
               },
               price: {
                 contentToSort: +row.price,
-                render: (
-                  <Tooltip title={row.price} enterDelay={250} leaveDelay={200}>
-                    {addMainSymbol(
-                      roundAndFormatNumber(row.price, 2, true),
-                      isUSDCurrently
-                    )}
-                  </Tooltip>
+                render: addMainSymbol(
+                  roundAndFormatNumber(row.price, 2, true),
+                  isUSDCurrently
                 ),
                 isNumber: true,
               },
@@ -652,14 +646,14 @@ export default class RebalancedPortfolioTable extends React.Component<
           render:
             +row.deltaPrice &&
             row.deltaPrice > 0 &&
-            Math.abs(+row.deltaPrice) > 0.01
+            Math.abs(+row.deltaPrice) >= 0.01
               ? `BUY ${row.symbol}  $ ${roundAndFormatNumber(
                   row.deltaPrice,
                   2
                 )}`
               : +row.deltaPrice &&
                 row.deltaPrice < 0 &&
-                Math.abs(+row.deltaPrice) > 0.01
+                Math.abs(+row.deltaPrice) >= 0.01
               ? `SELL ${row.symbol}  $ ${roundAndFormatNumber(
                   Math.abs(parseFloat(row.deltaPrice)),
                   2
@@ -844,7 +838,10 @@ export default class RebalancedPortfolioTable extends React.Component<
                   rebalancedUSD: ' ',
                 }
               : {
-                  rebalanced: { render: `${totalPercents}%`, isNumber: true },
+                  rebalanced: {
+                    render: `${UTILS.prepareTotal(totalPercents)}%`,
+                    isNumber: true,
+                  },
                   sliderPerc: {
                     render: `${roundAndFormatNumber(
                       100 - +totalPercents,
@@ -898,7 +895,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                     ),
                     isNumber: true,
                   },
-                  rebalanced: { render: '100.000%', isNumber: true },
+                  rebalanced: { render: '100.0%', isNumber: true },
                   sliderPerc: {
                     render: ' ',
                   },
