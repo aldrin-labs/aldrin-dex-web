@@ -20,6 +20,13 @@ const UserRoutes = lazy(() => import('@containers/User/routes'))
 const PortfolioRoutes = lazy(() => import('@containers/Portfolio/routes'))
 const MarketRoutes = lazy(() => import('@containers/CoinMarketCap/routes'))
 
+import _Group_ from './images-for-mail/_Group_.png'
+import _Group_1 from './images-for-mail/_Group_1.png'
+import _Group_2 from './images-for-mail/_Group_2.png'
+import _Group_3 from './images-for-mail/_Group_3.png'
+import _LinkedFile_ from './images-for-mail/_LinkedFile_.png'
+
+
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
 //   whyDidYouUpdate(React)
@@ -35,6 +42,11 @@ const render = () =>
           <PersistGate loading={null} persistor={persistor}>
             <ConnectedRouter history={history}>
               <App>
+                <img src={_Group_} />
+                <img src={_Group_1} />
+                <img src={_Group_2} />
+                <img src={_Group_3} />
+                <img src={_LinkedFile_} />
                 <ErrorBoundary>
                   <Suspense fallback={<Loading centerAligned />}>
                     <Switch>
