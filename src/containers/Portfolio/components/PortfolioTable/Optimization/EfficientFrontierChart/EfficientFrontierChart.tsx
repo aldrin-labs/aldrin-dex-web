@@ -9,12 +9,12 @@ import {
   Hint,
 } from 'react-vis'
 
-import {
-  IState,
-  IProps,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart.types'
+import { IState, IProps, Data } from './EfficientFrontierChart.types'
 
-import { Container, ChartTooltip } from './EfficientFrontierChart.styles'
+import { ChartTooltip } from './EfficientFrontierChart.styles'
+import { StyledCardHeader, CardContentStyled } from '../Optimization.styles'
+import { CardContent } from '@material-ui/core'
+import { ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
 
 export default class EfficientFrontierChart extends Component<IProps, IState> {
   state = {
@@ -27,7 +27,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
   onSeriesMouseOut = () => this.setState({ value: { x: null, y: null } })
 
   render() {
-    const { theme } = this.props
+    const { theme, showBlurOnSections } = this.props
     const { percentages, risk, activeButton } = this.props.data
     const { value } = this.state
 
@@ -52,8 +52,8 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
       },
     }
 
-    let data: { x: number; y: number }[] = []
-    let highlightedDotData = []
+    let data: ReadonlyArray<Data> = []
+    const highlightedDotData = []
 
     if (percentages.length > 1) {
       data = percentages.map((percentage, i) => ({
@@ -65,61 +65,68 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
     }
 
     return (
-      <Container>
-        <FlexibleXYPlot margin={{ left: 80, bottom: 65 }}>
-          {highlightedDotData.length < 1 ? (
-            <LineMarkSeries
-              animation="gentle"
-              curve={'curveCatmullRom'}
-              color="rgba(91, 96, 102, 0.7)"
-              data={[{ x: 4, y: 1 }, { x: 3, y: 2 }, { x: 8, y: 5 }]}
-            />
-          ) : (
-            [
-              <XAxis
-                animation="gentle"
-                style={axisStyle}
-                key="x"
-                title="Risk"
-                tickLabelAngle={-90}
-              />,
-              <YAxis
-                hideLine
-                style={axisStyle}
-                key="y"
-                title="Return"
-                left={-20}
-              />,
+      <ChartContainer
+        hide={showBlurOnSections}
+        className="EfficientFrontierChart"
+      >
+        <StyledCardHeader title="Efficient Frontier" />
+        <CardContentStyled>
+          <FlexibleXYPlot margin={{ left: 80, bottom: 65 }}>
+            {highlightedDotData.length < 1 ? (
               <LineMarkSeries
-                key="c"
+                animation="gentle"
                 curve={'curveCatmullRom'}
-                color="#4fd8da90"
-                onSeriesMouseOut={this.onSeriesMouseOut}
-                onValueMouseOver={this.onValueMouseOver}
-                data={data}
-              />,
-              <MarkSeries
-                onSeriesMouseOut={this.onSeriesMouseOut}
-                onValueMouseOver={this.onValueMouseOver}
-                animation="stiff"
-                key="h"
-                color="#4fa1da"
-                size={8}
-                data={highlightedDotData}
-              />,
-              <HorizontalGridLines style={{ stroke: '#686c71' }} key="g" />,
-            ]
-          )}
+                color="rgba(91, 96, 102, 0.7)"
+                data={[{ x: 4, y: 1 }, { x: 3, y: 2 }, { x: 8, y: 5 }]}
+              />
+            ) : (
+              [
+                <XAxis
+                  animation="gentle"
+                  style={axisStyle}
+                  key="x"
+                  title="Risk"
+                  tickLabelAngle={-90}
+                />,
+                <YAxis
+                  hideLine
+                  style={axisStyle}
+                  key="y"
+                  title="Return"
+                  left={-20}
+                />,
+                <LineMarkSeries
+                  key="c"
+                  curve={'curveCatmullRom'}
+                  color="#4fd8da90"
+                  onSeriesMouseOut={this.onSeriesMouseOut}
+                  onValueMouseOver={this.onValueMouseOver}
+                  data={data}
+                />,
+                <MarkSeries
+                  onSeriesMouseOut={this.onSeriesMouseOut}
+                  onValueMouseOver={this.onValueMouseOver}
+                  animation="stiff"
+                  key="h"
+                  color="#4fa1da"
+                  size={8}
+                  data={highlightedDotData}
+                />,
+                <HorizontalGridLines style={{ stroke: '#686c71' }} key="g" />,
+              ]
+            )}
 
-          {value.x === null || value.y === null ? null : (
-            <Hint value={value}>
-              <ChartTooltip color={textColor} background={background}>{`Risk ${
-                value.x
-              }% - Return ${value.y}%`}</ChartTooltip>
-            </Hint>
-          )}
-        </FlexibleXYPlot>
-      </Container>
+            {value.x === null || value.y === null ? null : (
+              <Hint value={value}>
+                <ChartTooltip
+                  color={textColor}
+                  background={background}
+                >{`Risk ${value.x}% - Return ${value.y}%`}</ChartTooltip>
+              </Hint>
+            )}
+          </FlexibleXYPlot>
+        </CardContentStyled>
+      </ChartContainer>
     )
   }
 }

@@ -19,7 +19,7 @@ import {
   RawOptimizedData,
 } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
 import LineChart from '@components/LineChart'
-import EfficientFrontierChart from '@containers/Portfolio/components/PortfolioTable/Optimization/EfficientFrontierChart/EfficientFrontierChart'
+import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
 import QueryRenderer, { queryRendererHoc } from '@components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
@@ -29,7 +29,10 @@ import {
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
 
-import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
+import {
+  InnerChartContainer,
+  ChartContainer,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
 import {
   ChartsContainer,
   Chart,
@@ -37,13 +40,10 @@ import {
   PTWrapper,
   Content,
   ContentInner,
-  LoaderWrapper,
-  LoaderInnerWrapper,
   StyledCardHeader,
 } from './Optimization.styles'
 
 import { colors } from '@components/LineChart/LineChart.utils'
-import { Loading } from '@components/Loading'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { sumSame } from '@utils/PortfolioOptimizationUtils'
 import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
@@ -52,8 +52,7 @@ import config from '@utils/linkConfig'
 import { graphql } from 'react-apollo'
 import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../queries/portfolio/getOptimizationCountOfRuns'
 import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../mutations/portfolio/updateOptimizationCountOfRuns'
-import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
-import { MyTradesQuery } from '@components/TradeOrderHistory/api'
+import LoaderWrapperComponent from './LoaderWrapper/LoaderWrapper'
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -115,7 +114,7 @@ class Optimization extends Component<IProps, IState> {
     return [summedAssetsWithoutDuplicates, allSum]
   }
 
-  onNewBtnClick = (index) => {
+  onNewBtnClick = (index: number) => {
     this.setState({ activeButton: index })
   }
 
@@ -143,7 +142,10 @@ class Optimization extends Component<IProps, IState> {
     window.open(link, 'CCAI Feedback')
   }
 
-  renderInput = (showBlurOnSections: boolean, optimizationCountOfRuns: number) => {
+  renderInput = (
+    showBlurOnSections: boolean,
+    optimizationCountOfRuns: number
+  ) => {
     // importing stuff from backend or manually bu user
     const { activeButton, rawOptimizedData } = this.state
     const {
@@ -240,7 +242,10 @@ class Optimization extends Component<IProps, IState> {
 
     return (
       <ChartsContainer id="BackTestOptimization">
-        <ChartContainer hide={showBlurOnSections} className="BackTestOptimizationChart">
+        <ChartContainer
+          hide={showBlurOnSections}
+          className="BackTestOptimizationChart"
+        >
           <StyledCardHeader
             title="Back-test Optimization"
             action={
@@ -273,17 +278,11 @@ class Optimization extends Component<IProps, IState> {
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <ChartContainer hide={showBlurOnSections} className="EfficientFrontierChart">
-          <StyledCardHeader title="Efficient Frontier" />
-          <InnerChartContainer>
-            <Chart background={theme.palette.background.default}>
-              <EfficientFrontierChart
-                data={efficientFrontierData}
-                theme={theme}
-              />
-            </Chart>
-          </InnerChartContainer>
-        </ChartContainer>
+        <EfficientFrontierChart
+          showBlurOnSections={showBlurOnSections}
+          data={efficientFrontierData}
+          theme={theme}
+        />
       </ChartsContainer>
     )
   }
@@ -308,7 +307,9 @@ class Optimization extends Component<IProps, IState> {
       theme: { palette },
       toolTip,
       tab,
-      data: { portfolioOptimization: { optimizationCountOfRuns } } = { portfolioOptimization : { optimizationCountOfRuns: 1 } },
+      data: { portfolioOptimization: { optimizationCountOfRuns } } = {
+        portfolioOptimization: { optimizationCountOfRuns: 1 },
+      },
     } = this.props
 
     const showBlurOnSections = optimizationCountOfRuns <= 0
@@ -340,23 +341,7 @@ class Optimization extends Component<IProps, IState> {
         />
         <Content>
           {children}
-          {loading && (
-            <LoaderWrapper>
-              <LoaderInnerWrapper>
-                <Loading size={94} margin={'0 0 2rem 0'} />{' '}
-                <TypographyWithCustomColor textColor={textColor} variant="h6">
-                  Optimizing portfolio...
-                </TypographyWithCustomColor>
-                <TypographyWithCustomColor
-                  style={{ marginTop: '2rem' }}
-                  textColor={textColor}
-                  variant="h6"
-                >
-                  We are working on improving the speed of this model
-                </TypographyWithCustomColor>
-              </LoaderInnerWrapper>
-            </LoaderWrapper>
-          )}
+          <LoaderWrapperComponent textColor={textColor} open={loading} />
           <ContentInner loading={loading}>
             {this.renderInput(showBlurOnSections, optimizationCountOfRuns)}
 
