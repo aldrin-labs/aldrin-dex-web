@@ -53,6 +53,7 @@ import { graphql } from 'react-apollo'
 import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../queries/portfolio/getOptimizationCountOfRuns'
 import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../mutations/portfolio/updateOptimizationCountOfRuns'
 import LoaderWrapperComponent from './LoaderWrapper/LoaderWrapper'
+import ErrorDialog from './Dialog/Dialog'
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -357,37 +358,15 @@ class Optimization extends Component<IProps, IState> {
             </MainArea>
           </ContentInner>
 
-          <Dialog
-            id="dialogOptimization"
-            fullScreen={false}
+          <ErrorDialog
+            onReportButton={() => {
+              this.openLink(config.bugLink)
+            }}
             open={openWarning}
-            aria-labelledby="responsive-dialog-title"
-          >
-            <DialogTitle id="responsive-dialog-title">
-              {warningMessage}
-            </DialogTitle>
-            <DialogActions>
-              <Button
-                onClick={this.hideWarning}
-                color="secondary"
-                id="okButtonDialog"
-                autoFocus={true}
-              >
-                ok
-              </Button>
-              {isSystemError && (
-                <Button
-                  onClick={() => {
-                    this.openLink(config.bugLink)
-                  }}
-                  size="small"
-                  style={{ margin: '0.5rem 1rem' }}
-                >
-                  Report bug
-                </Button>
-              )}
-            </DialogActions>
-          </Dialog>
+            isSystemError={isSystemError}
+            warningMessage={warningMessage}
+            onConfirmButton={this.hideWarning}
+          />
         </Content>
       </PTWrapper>
     )
