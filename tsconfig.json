@@ -16,7 +16,7 @@
     "allowJs": false,
     "jsx": "react",
     "lib": ["esnext", "dom"],
-    "typeRoots": ["./node_modules/@types", "./typings"],
+    "typeRoots": ["./types", "./node_modules/@types", "./typings"],
     "paths": {
       "@storybook-components/*": ["src/storybook/src/components/*"],
       "@components/*": ["src/components/*"],
@@ -37,5 +37,6 @@
       }
     ]
   },
-  "include": ["src", "typings", "custom.d.ts"]
+  "include": ["src", "typings", "custom.d.ts"],
+  "exclude": ["node_modules", "typings", "types"]
 }
