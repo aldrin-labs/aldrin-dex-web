@@ -222,7 +222,7 @@ class LoginQuery extends React.Component<Props, State> {
             onClick={this.showLogin}
             className="loginButton"
           >
-            Log in
+            Log in / Sign Up
           </Button>
         </Grow>
         <Slide

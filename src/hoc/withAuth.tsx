@@ -3,6 +3,9 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
+import { Mutation, Query } from 'react-apollo'
+import { UPDATE_LOGIN_POPUP_APPEARED } from '../mutations/ui/updateLoginPopupAppeared'
+import { LOGIN_POPUP_APPEARED } from '../queries/ui/LOGIN_POPUP_APPEARED'
 
 const Result = (Component: React.ComponentType) => ({
   login,
@@ -14,7 +17,30 @@ const Result = (Component: React.ComponentType) => ({
 }) => {
   if (!login) {
     return (
-      <YouNeedToLoginMessage open={!openMessage} showModalAfterDelay={1500} />
+      <Mutation mutation={UPDATE_LOGIN_POPUP_APPEARED}>
+        {(updateLoginPopupAppeared) => (
+          <Query query={LOGIN_POPUP_APPEARED}>
+            {({
+              data: {
+                ui: { logInPopupAppeared },
+              },
+            }) => {
+              const render = (
+                <YouNeedToLoginMessage
+                  open={!openMessage}
+                  showModalAfterDelay={logInPopupAppeared ? false : 1500}
+                />
+              )
+              // show login auth0 popup only once
+              if (!logInPopupAppeared) {
+                updateLoginPopupAppeared()
+              }
+
+              return render
+            }}
+          </Query>
+        )}
+      </Mutation>
     )
   }
 
