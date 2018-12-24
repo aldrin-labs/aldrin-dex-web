@@ -6,18 +6,33 @@ import { Mutation, Query } from 'react-apollo'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
 import QueryRenderer from '@components/QueryRenderer'
-import { TableWithSort } from '@storybook-components/index'
+import {
+  TableWithSort,
+  addMainSymbol,
+} from '@storybook-components/index'
+
 import {
   combineTableData,
   roundAndFormatNumber,
-  composePortfolioWithMocks,
   numberOfDigitsAfterPoint,
   roundPercentage,
-  addMainSymbol,
 } from '@utils/PortfolioTableUtils'
 import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
 import { UPDATE_COINS } from '../../mutations/portfolio/updateCoins'
 import Loader from '@components/TablePlaceholderLoader/newLoader'
+import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+
+
+const composePortfolioWithMocks = (
+  portfolioAssets: any,
+  isShownMocks = false
+) => {
+  if (!portfolioAssets) {
+    return
+  }
+
+  return isShownMocks ? portfolioAssets.concat(MOCK_DATA) : portfolioAssets
+}
 
 const chooseRed = (theme: Theme) =>
   theme.palette.type === 'dark'

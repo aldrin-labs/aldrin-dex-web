@@ -13,7 +13,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
-  addMainSymbol,
   roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
@@ -33,7 +32,11 @@ import {
 } from './RebalancedPortfolioTable.styles'
 import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
-import { TableWithSort, Table as ImTable } from '@storybook-components/index'
+import {
+  TableWithSort,
+  Table as ImTable,
+  addMainSymbol,
+} from '@storybook-components/index'
 import { Loading } from '@components/Loading'
 import { IconButtonWithHover } from '../Rebalance.styles'
 import { Grow } from '@material-ui/core'

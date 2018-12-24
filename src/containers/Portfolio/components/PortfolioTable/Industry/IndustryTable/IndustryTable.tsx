@@ -1,13 +1,13 @@
 import React, { useRef, useState } from 'react'
 import { TableWithSort as Table } from '@storybook-components/index'
 import {
-  combineIndustryData,
   onCheckBoxClick,
 } from '@utils/PortfolioTableUtils'
 import { Query, Mutation } from 'react-apollo'
 import { ErrorFallback } from '@storybook-components/ErrorFallback'
 import { Theme } from '@material-ui/core'
 
+import { combineIndustryData } from './utils'
 import TableLoader from '@components/TablePlaceholderLoader/newLoader'
 import { useTheme } from '@material-ui/styles'
 import { getPortfolioQuery as industryDataQuery } from '@containers/Portfolio/api'
