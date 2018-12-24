@@ -262,7 +262,7 @@ const options = ({ location }) => {
 export const MyCoinMarket = withAuth(
   queryRendererHoc({
     query: MarketsQuery,
-    pollInterval: 5000,
+    pollInterval: 30 * 1000,
     fetchPolicy: 'network-only',
     variables: options(location),
   })(withTheme()(CoinMarket))

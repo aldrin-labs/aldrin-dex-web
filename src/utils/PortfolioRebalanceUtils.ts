@@ -17,9 +17,7 @@ export const calculatePriceByPercents = (
   totalRows: number | string
 ) => {
   const dataWithNewPrices = data.map((row: IRow) => {
-    let newPrice = ((parseFloat(totalRows) / 100) * +row.portfolioPerc).toFixed(
-      2
-    )
+    let newPrice = (parseFloat(totalRows) / 100) * +row.portfolioPerc
 
     return {
       ...row,
@@ -29,6 +27,17 @@ export const calculatePriceByPercents = (
 
   return dataWithNewPrices
 }
+
+export const calculatePriceByPercentsForOneAsset = (
+  data: IRow[],
+  totalRows: number | string,
+  idx: number
+) => {
+  data[idx].price = (parseFloat(totalRows) / 100) * (+data[idx].portfolioPerc)
+
+  return data
+}
+
 
 export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
   // tslint:disable-next-line no-parameter-reassignment
@@ -40,15 +49,14 @@ export const calculateTotal = (data: IRow[], undistributedMoney: string) => {
 export const calculateTableTotal = (data: IRow[], priceField = 'price') => {
   const tableTotal = data.reduce((sum, row, i) => (sum += +data[i][priceField]), 0)
 
-  return tableTotal.toFixed(2)
+  return (tableTotal).toFixed(2)
 }
 
 export const calculateTotalPercents = (data: IRow[]) => {
   const totalPercents = data
     .reduce((sum, row) => (sum += +row!.portfolioPerc), 0)
-    .toFixed(3)
 
-  return totalPercents
+  return (totalPercents).toFixed(6)
 }
 
 export const checkPercentSum = (data: IRow[]) => {
@@ -66,7 +74,7 @@ export const calculatePriceDifference = (data: IRow[]) => {
 
   const dataWithDeltaPrice = data.map((el) => ({
     ...el,
-    deltaPrice: el.isCustomAsset ? (parseFloat(el.price)).toFixed(2) : (parseFloat(el.price) - el.priceSnapshot).toFixed(2),
+    deltaPrice: el.isCustomAsset ? parseFloat(el.price) : (parseFloat(el.price) - el.priceSnapshot),
   }))
 
   return dataWithDeltaPrice
@@ -82,7 +90,7 @@ export const calculatePercents = (
     const percentCaluclation =
       +row[priceField] === 0
         ? '0'
-        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(2)
+        : ((parseFloat(row[priceField]) * 100) / parseFloat(total)).toFixed(6)
     const percentResult = +percentCaluclation === 0 ? '0' : percentCaluclation
 
     return {
@@ -118,7 +126,7 @@ export function calculateMoneyPart(
       }
 
       return i === numberOfCoinsThatMoneyWouldDistributed - 1
-        ? +(remainderWith2Number + remainderLastNumbers).toFixed(2)
+        ? +(remainderWith2Number + remainderLastNumbers)
         : remainderWith2Number
     })
 
@@ -159,3 +167,82 @@ export const checkForEmptyNamesInAssets = (rows: IRow[]): boolean => {
 export const deleteEmptyAssets = (rows: IRow[]): IRow[] => {
   return rows.filter((row) => !(row.exchange === '' || row.exchange === 'Exchange' || row.symbol === '' || row.symbol === 'Coin'))
 }
+
+type InputObject = {
+  clonedRows: IRow[]
+  rows: IRow[]
+  undistributedMoney: number | string
+  idx: number
+  percentInput: string | number
+  totalRows: string | number
+  totalSnapshotRows: string | number
+}
+
+type OutputObject = {
+  totalPercentsNew: number | string
+  rowWithNewPriceDiff: IRow[]
+  isPercentSumGood: boolean
+  newUndistributedMoney: number | string
+  newTableTotalRows: number | string
+}
+
+export const recalculateAfterInputChange = ({clonedRows, rows, undistributedMoney, idx, percentInput, totalRows, totalSnapshotRows} : InputObject): OutputObject => {
+  const resultRows = [
+    ...clonedRows.slice(0, idx),
+    {
+      ...clonedRows[idx],
+      portfolioPerc: percentInput,
+    },
+    ...clonedRows.slice(idx + 1, clonedRows.length),
+  ]
+
+  const newCalculatedRowsWithPercents = calculatePriceByPercentsForOneAsset(
+    resultRows,
+    totalRows,
+    idx
+  )
+  const totalPercentsNew = calculateTotalPercents(
+    newCalculatedRowsWithPercents
+  )
+  const rowWithNewPriceDiff = calculatePriceDifference(
+    newCalculatedRowsWithPercents
+  )
+  const newTableTotalRows = calculateTableTotal(
+    newCalculatedRowsWithPercents
+  )
+
+  const oldRowPrice = rows[idx].price
+  const newRowPrice = newCalculatedRowsWithPercents[idx].price
+  const oldNewPriceDiff = parseFloat(oldRowPrice) - parseFloat(newRowPrice)
+  const newUndistributedMoney = parseFloat(undistributedMoney) + oldNewPriceDiff
+  const isPercentSumGood = checkEqualsOfTwoTotals(
+    totalSnapshotRows,
+    newTableTotalRows
+  )
+
+  return {
+    totalPercentsNew,
+    rowWithNewPriceDiff,
+    isPercentSumGood,
+    newUndistributedMoney,
+    newTableTotalRows,
+  }
+
+}
+
+export const preparePercentage = (percentage: number | string): string => (+percentage) < 1 && (+percentage) > 0 ? '< 1 %' : (parseFloat(percentage).toFixed(1))
+
+export const prepareTotal = (total: number) => {
+  if (total === 100) {
+    return 100
+  }
+  const stripAllDigitPartExceptOneNumber = total.toString().match(/^[0-9]{1,3}\.[0-9]{1}/)
+
+  return stripAllDigitPartExceptOneNumber
+}
+
+export const preparePrice = (price: number | string) => {
+  return price < 0.01 ? 0 : parseFloat(price).toFixed(2)
+}
+
+export const stripDigitPartOfNumberToTwoDecimals = (num: number | string) => num.toString().match(/^[0-9]{1,3}\.[0-9]{2}/)
