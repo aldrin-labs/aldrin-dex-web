@@ -13,7 +13,6 @@ import { queryRendererHoc } from '@components/QueryRenderer'
 // import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 import { MarketsQuery } from './api'
-// import CardHeader from '@components/CardHeader'
 import {
   formatNumberToUSFormat,
   roundAndFormatNumber,

@@ -15,7 +15,7 @@ import * as UTILS from '@utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import RebalanceActionButtons from '../RebalanceActionButtons/RebalanceActionButtons'
 import { Card } from '@material-ui/core'
-import CardHeader from '@components/CardHeader'
+import { CardHeader } from '@storybook-components/index'
 
 export class RebalanceMoneyButtons extends React.Component<IProps> {
   onDeleteUndistributedMoneyHandler = () => {

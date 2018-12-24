@@ -48,7 +48,7 @@ import { withTheme } from '@material-ui/styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
 import config from '@utils/linkConfig'
-import CardHeader from '@components/CardHeader'
+import { CardHeader } from '@storybook-components/index'
 
 // TODO: Remove quantity
 // TODO: Fix types for snapshots changes
