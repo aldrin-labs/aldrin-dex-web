@@ -19,6 +19,13 @@ const config = {
         'src',
         'components'
       ),
+      '@core': path.join(
+        __dirname,
+        '..',
+        'src',
+        'core',
+        'src',
+      ),
       '@components': path.join(__dirname, '..', 'src', 'components'),
       '@containers': path.join(__dirname, '..', 'src', 'containers'),
       '@utils': path.join(__dirname, '..', 'src', 'utils'),
@@ -35,6 +42,8 @@ const config = {
         exclude: [
           path.join(__dirname, '/node_modules/'),
           path.join(__dirname, '/src/storybook/node_modules/'),
+          path.join(__dirname, '/src/core/node_modules/'),
+
         ],
         loader: 'babel-loader?cacheDirectory=true',
       },
@@ -43,6 +52,7 @@ const config = {
         exclude: [
           path.join(__dirname, '/node_modules/'),
           path.join(__dirname, '/src/storybook/node_modules/'),
+          path.join(__dirname, '/src/core/node_modules/'),
         ],
         loader: 'graphql-tag/loader',
       },

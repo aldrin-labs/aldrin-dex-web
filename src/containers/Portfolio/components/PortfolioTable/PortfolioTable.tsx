@@ -19,7 +19,7 @@ import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/
 
 import { Loading } from '@components/index'
 import { Mutation } from 'react-apollo'
-import { TOGGLE_BASE_COIN } from '../../../../mutations/portfolio/toggleBaseCoin'
+import { TOGGLE_BASE_COIN } from '@core/mutations/portfolio/toggleBaseCoin'
 
 const MemoizedTab = memo(
   (props: any) => <>{props.children}</>,

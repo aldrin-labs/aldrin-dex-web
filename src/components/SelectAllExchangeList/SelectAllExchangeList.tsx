@@ -1,7 +1,7 @@
 import React from 'react'
 import { exchangeByEntryQuery } from '@containers/User/api'
 import { SelectT } from '@styles/cssUtils'
-import { client } from '@graphql/apolloClient'
+import { client } from '@core/graphql/apolloClient'
 import { Data } from './SelectAllExchangeList.types'
 import { ApolloQueryResult } from 'apollo-client'
 

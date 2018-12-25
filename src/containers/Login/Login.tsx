@@ -14,7 +14,7 @@ import { LoginMenu } from '@containers/Login/components'
 import MainLogo from '@icons/AuthLogo.png'
 import { Grow, Slide } from '@material-ui/core'
 import { MASTER_BUILD } from '@utils/config'
-import { client, persistor } from '@graphql/apolloClient'
+import { client, persistor } from '@core/graphql/apolloClient'
 
 const auth0Options = {
   auth: {
