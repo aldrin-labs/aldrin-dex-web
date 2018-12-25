@@ -834,6 +834,7 @@ const RebalanceContainer = (props) => (
     component={Rebalance}
     query={getMyPortfolioAndRebalanceQuery}
     variables={{ baseCoin: 'USDT' }}
+    pollInterval={30000}
     {...props}
   />
 )
