@@ -185,7 +185,7 @@ export default class ThemeWrapper extends Component<Props> {
                 selected: 'rgba(255, 255, 255, 0.05)',
               },
               background: {
-                default: '#F5F5F6',
+                default: '#D9D9DC',
                 paper: '#FEFEFE',
               },
             },
