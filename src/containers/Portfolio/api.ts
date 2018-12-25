@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { KeyFragment } from '@graphql/fragments'
+import { KeyFragment } from '@core/graphql/fragments'
 
 export const PRICE_HISTORY_QUERY = gql`
   query priceHistoryQuery(
