@@ -96,7 +96,6 @@ class OrderBookTable extends Component<IProps> {
 
     return (
       <AsksTable>
-        <>
         <MemoHead
           {...{ palette, primary, type, onButtonClick, background, quote }}
         />
@@ -109,7 +108,6 @@ class OrderBookTable extends Component<IProps> {
             ...this.props,
           }}
         />
-        </>
       </AsksTable>
     )
   }

@@ -95,8 +95,8 @@ class ExchangesTable extends PureComponent<IProps> {
                 ? theme.palette.getContrastText(background)
                 : theme.palette.secondary.main
             return (
-              <div key={ind}>
               <Row
+                key={ind}
                 style={{ cursor: 'pointer' }}
                 onClick={() => {
                   changeExchange({ index: ind, exchange: exchanges[ind] })
@@ -116,7 +116,7 @@ class ExchangesTable extends PureComponent<IProps> {
                     return (
                       <FlexCell key={propinx} width="50%">
                         <Icon
-                          iconColor={
+                          color={
                             exchange.status || theme.palette.secondary.main
                           }
                         />
@@ -143,7 +143,6 @@ class ExchangesTable extends PureComponent<IProps> {
                   )
                 })}
               </Row>
-              </div>
             )
           })}
         </Body>

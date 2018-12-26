@@ -136,41 +136,39 @@ class SpreadTable extends Component<IProps> {
 
     return (
       <SpreadreadTableWrapper>
-        <>
-          <HeadRowWithMemo
-            {...{
-              primary,
-              type,
-              palette,
-              quote,
-              spread,
-              digitsAfterDecimalForSpread,
-            }}
-          />
-          <Body background={background.default} height="calc(100% - 26px)">
-            {data.length === 0 ? (
-              <Loading centerAligned={true} />
-            ) : (
-              <>
-                {data.map((order: { size: number; price: number }, i: number) => (
-                  <MemoizedRow
-                    key={i}
-                    {...{
-                      type,
-                      order,
-                      data,
-                      action,
-                      background,
-                      digitsAfterDecimalForBidsSize,
-                      green,
-                      digitsAfterDecimalForBidsPrice,
-                    }}
-                  />
-                ))}
-              </>
-            )}
-          </Body>
-        </>
+        <HeadRowWithMemo
+          {...{
+            primary,
+            type,
+            palette,
+            quote,
+            spread,
+            digitsAfterDecimalForSpread,
+          }}
+        />
+        <Body background={background.default} height="calc(100% - 26px)">
+          {data.length === 0 ? (
+            <Loading centerAligned={true} />
+          ) : (
+            <>
+              {data.map((order: { size: number; price: number }, i: number) => (
+                <MemoizedRow
+                  key={order.price}
+                  {...{
+                    type,
+                    order,
+                    data,
+                    action,
+                    background,
+                    digitsAfterDecimalForBidsSize,
+                    green,
+                    digitsAfterDecimalForBidsPrice,
+                  }}
+                />
+              ))}
+            </>
+          )}
+        </Body>
       </SpreadreadTableWrapper>
     )
   }
