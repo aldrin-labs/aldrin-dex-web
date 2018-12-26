@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { connect } from 'react-redux'
 import {
   Button,
-  Fab,
   Fade,
   Typography,
   Card,
@@ -221,94 +220,92 @@ class Chart extends React.Component<IProps, IState> {
         <TablesBlockWrapper
           blur={false}
           background={theme.palette.background.default}
+          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'ORDER',
           }}
         >
-          <>
-            <QueryRenderer
-              component={OrderBookTable}
-              withOutSpinner
-              query={ORDERS_MARKET_QUERY}
-              fetchPolicy="network-only"
-              variables={{ symbol, exchange }}
-              placeholder={TablePlaceholderLoader}
-              subscriptionArgs={{
-                subscription: MARKET_ORDERS,
-                variables: { symbol, exchange },
-                updateQueryFunction: updateOrderBookQuerryFunction,
-              }}
-              {...{
-                onButtonClick: this.changeTable,
-                roundTill: this.roundTill,
-                activeExchange,
-                currencyPair,
-                aggregation,
-                quote,
-                setOrders: this.props.setOrders,
-                symbol,
-                exchange,
-                ...this.props,
-              }}
-            />
+          <QueryRenderer
+            component={OrderBookTable}
+            withOutSpinner
+            query={ORDERS_MARKET_QUERY}
+            fetchPolicy="network-only"
+            variables={{ symbol, exchange }}
+            placeholder={TablePlaceholderLoader}
+            subscriptionArgs={{
+              subscription: MARKET_ORDERS,
+              variables: { symbol, exchange },
+              updateQueryFunction: updateOrderBookQuerryFunction,
+            }}
+            {...{
+              onButtonClick: this.changeTable,
+              roundTill: this.roundTill,
+              activeExchange,
+              currencyPair,
+              aggregation,
+              quote,
+              setOrders: this.props.setOrders,
+              symbol,
+              exchange,
+              ...this.props,
+            }}
+          />
 
-            <Aggregation
-              {...{
-                theme,
-                aggregation: this.state.aggregation,
-                onButtonClick: this.setAggregation,
-              }}
-            />
-          </>
+          <Aggregation
+            {...{
+              theme,
+              aggregation: this.state.aggregation,
+              onButtonClick: this.setAggregation,
+            }}
+          />
         </TablesBlockWrapper>
 
         <TablesBlockWrapper
           className="ExchangesTable"
           blur={false}
           background={theme.palette.background.default}
+          rightBorderColor={theme.palette.divider}
           variant={{
             show: showTableOnMobile === 'TRADE',
           }}
         >
-          <>
-            <QueryRenderer
-              component={ExchangesTable}
-              query={ExchangeQuery}
-              variables={{ marketName: currencyPair }}
-              placeholder={TablePlaceholderLoader}
-              {...{
-                activeExchange,
-                changeExchange,
-                quote,
-                theme,
-                onButtonClick: this.changeTable,
-                ...this.props,
-              }}
-            />
+          <QueryRenderer
+            component={ExchangesTable}
+            query={ExchangeQuery}
+            variables={{ marketName: currencyPair }}
+            placeholder={TablePlaceholderLoader}
+            {...{
+              activeExchange,
+              changeExchange,
+              quote,
+              theme,
+              onButtonClick: this.changeTable,
+              ...this.props,
+            }}
+          />
 
-            <QueryRenderer
-              component={TradeHistoryTable}
-              query={MARKET_QUERY}
-              variables={{ symbol, exchange }}
-              placeholder={() => (
-                <TablePlaceholderLoader margin={'20% 0px 0px'} />
-              )}
-              subscriptionArgs={{
-                subscription: MARKET_TICKERS,
-                variables: { symbol, exchange },
-                updateQueryFunction: updateTradeHistoryQuerryFunction,
-              }}
-              {...{
-                quote,
-                activeExchange,
-                theme,
-                currencyPair,
-                symbol,
-                exchange,
-                ...this.props,
-              }}
-            />
-          </>
+          <QueryRenderer
+            component={TradeHistoryTable}
+            query={MARKET_QUERY}
+            variables={{ symbol, exchange }}
+            placeholder={() => (
+              <TablePlaceholderLoader margin={'20% 0px 0px'} />
+            )}
+            subscriptionArgs={{
+              subscription: MARKET_TICKERS,
+              variables: { symbol, exchange },
+              updateQueryFunction: updateTradeHistoryQuerryFunction,
+            }}
+            {...{
+              quote,
+              activeExchange,
+              theme,
+              currencyPair,
+              symbol,
+              exchange,
+              ...this.props,
+            }}
+          />
         </TablesBlockWrapper>
       </TablesContainer>
     )
@@ -366,12 +363,13 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <Toggler>
-        <Fab
+        <Button
           data-e2e="switchChartPageMode"
+          size="small"
           style={{
             height: 36,
           }}
-          variant="extended"
+          variant="extendedFab"
           color="secondary"
           onClick={() => {
             toggleView(defaultView ? 'onlyCharts' : 'default')
@@ -379,7 +377,7 @@ class Chart extends React.Component<IProps, IState> {
           }}
         >
           {defaultView ? 'Multi Charts' : ' Single Chart'}
-        </Fab>
+        </Button>
       </Toggler>
     )
   }
@@ -397,42 +395,40 @@ class Chart extends React.Component<IProps, IState> {
 
     return (
       <MainContainer fullscreen={view !== 'default'}>
-        <>
-          <TogglerContainer container className="AutoSuggestSelect">
-            <Grid
-              spacing={16}
-              item
-              sm={view === 'default' ? 8 : 12}
-              xs={view === 'default' ? 8 : 12}
-              style={{ margin: '0 -8px', height: '100%' }}
-              container
-              alignItems="center"
-              justify="flex-end"
-            >
-              <AutoSuggestSelect
-                value={view === 'default' && currencyPair}
-                id={'currencyPair'}
-                view={view}
-                exchange={activeExchange}
-              />
-              {view === 'default' && (
-                <TransparentExtendedFAB
-                  onClick={() => {
-                    this.setState((prevState) => ({
-                      activeChart:
-                        prevState.activeChart === 'candle' ? 'depth' : 'candle',
-                    }))
-                  }}
-                >
-                  {activeChart === 'candle' ? 'orderbook' : 'chart'}
-                </TransparentExtendedFAB>
-              )}
-              <Hidden smDown>{toggler}</Hidden>
-            </Grid>
-          </TogglerContainer>
-          {view === 'default' && this.renderDefaultView()}
-          {view === 'onlyCharts' && this.renderOnlyCharts()}
-        </>
+        <TogglerContainer container className="AutoSuggestSelect">
+          <Grid
+            spacing={16}
+            item
+            sm={view === 'default' ? 8 : 12}
+            xs={view === 'default' ? 8 : 12}
+            style={{ margin: '0 -8px', height: '100%' }}
+            container
+            alignItems="center"
+            justify="flex-end"
+          >
+            <AutoSuggestSelect
+              value={view === 'default' && currencyPair}
+              id={'currencyPair'}
+              view={view}
+              exchange={activeExchange}
+            />
+            {view === 'default' && (
+              <TransparentExtendedFAB
+                onClick={() => {
+                  this.setState((prevState) => ({
+                    activeChart:
+                      prevState.activeChart === 'candle' ? 'depth' : 'candle',
+                  }))
+                }}
+              >
+                {activeChart === 'candle' ? 'orderbook' : 'chart'}
+              </TransparentExtendedFAB>
+            )}
+            <Hidden smDown>{toggler}</Hidden>
+          </Grid>
+        </TogglerContainer>
+        {view === 'default' && this.renderDefaultView()}
+        {view === 'onlyCharts' && this.renderOnlyCharts()}
       </MainContainer>
     )
   }
@@ -459,11 +455,11 @@ export const ExchangePair = styled.div`
   background: transparent;
 `
 
-const TablesBlockWrapper = styled(({ blur, ...rest }) => <Card {...rest} />)`
+const TablesBlockWrapper = styled(Card)`
   min-width: 150px;
   width: 50%;
   position: relative;
-  ${(props: { blur: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
+  ${(props: { blur?: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
 
   && {
     overflow: hidden;

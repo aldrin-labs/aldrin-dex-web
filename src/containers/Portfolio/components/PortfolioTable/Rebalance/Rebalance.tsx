@@ -711,16 +711,12 @@ class Rebalance extends React.Component<IProps, IState> {
               isEditModeEnabled={isEditModeEnabled}
               className="PortfolioDistributionChart"
             >
-              <ChartContainer
-                background={
-                  palette.type === 'light'
-                    ? palette.grey.A400
-                    : palette.background.paper
-                }
-              >
+              <ChartContainer>
                 <CardHeader title={`Portfolio Distribution`} />
 
-                <Chart>
+                <Chart
+                  background={theme.palette.background.default}
+                >
                   {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
                     <BarChart
                       bottomMargin={75}
@@ -838,6 +834,7 @@ const RebalanceContainer = (props) => (
     component={Rebalance}
     query={getMyPortfolioAndRebalanceQuery}
     variables={{ baseCoin: 'USDT' }}
+    pollInterval={30000}
     {...props}
   />
 )
