@@ -187,7 +187,7 @@ class Optimization extends Component<IProps, IState> {
 
   renderCharts = (showBlurOnSections: boolean) => {
     const { activeButton, rawOptimizedData, showAllLineChartData } = this.state
-    const { storeData } = this.props
+    const { storeData, theme } = this.props
 
     if (!storeData) return
 
@@ -214,7 +214,7 @@ class Optimization extends Component<IProps, IState> {
             data: el.backtest_results.map((element) => ({
               label: riskProfileNames[i],
               x: element[0],
-              y: element[1],
+              y: +(element[1].toFixed(2)),
             })),
             color: colors[i],
           }
@@ -225,7 +225,7 @@ class Optimization extends Component<IProps, IState> {
             (el, i) => ({
               label: 'Optimized',
               x: el[0],
-              y: el[1],
+              y: +(el[1].toFixed(2)),
             })
           ),
           color: colors[activeButton],
@@ -235,8 +235,6 @@ class Optimization extends Component<IProps, IState> {
       title: el,
       color: colors[i],
     }))
-
-    const { theme } = this.props
 
     return (
       <ChartsContainer id="BackTestOptimization">
