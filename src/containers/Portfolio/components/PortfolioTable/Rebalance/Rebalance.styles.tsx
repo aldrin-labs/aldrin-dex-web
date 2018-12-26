@@ -29,7 +29,10 @@ const ChartContainer = styled(Card)`
 `
 
 //  minus card header height
-const Chart = styled(CardContent)`
+const Chart = styled(({background, ...rest}) => (
+  <CardContent {...rest} />
+))`
+  background: ${(props: { background: string }) => props.background};
   width: 100%;
   height: calc(100% - 68px);
   && {
