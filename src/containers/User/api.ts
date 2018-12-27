@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-import { KeyFragment, CryptoWalletFragment } from '@graphql/fragments'
+import { KeyFragment, CryptoWalletFragment } from '@core/graphql/fragments'
 
 export const getKeysQuery = gql`
   query getKeys {

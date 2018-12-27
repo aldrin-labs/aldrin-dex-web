@@ -1,5 +1,5 @@
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
-import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
+import { GET_BASE_COIN } from '@core/queries/portfolio/getBaseCoin'
 
 export const portfolio = {
   name: 'My portfolio',

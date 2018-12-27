@@ -12,7 +12,7 @@
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
     "build:stats": "yarn build --json --progress --profile > webpack-build-log.json",
-    "submodule": "git submodule init && git submodule update",
+    "submodule": "git submodule sync && git submodule init && git submodule update",
     "build": "npm run submodule && cross-env DEVTOOL=cheap-source-map NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production webpack -p --env.env=prod",
     "buildMaster": "npm run submodule && cross-env NODE_ENV=production MASTER_BUILD=TRUE webpack -p --env.env=prod",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
@@ -56,6 +56,7 @@
     "moduleNameMapper": {
       ".+\\.(svg|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy",
       "^@storybook-components(.*)$": "<rootDir>/src/storybook/src/components$1",
+      "^@core(.*)$": "<rootDir>/src/core/src/$1",
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@containers(.*)$": "<rootDir>/src/containers$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",

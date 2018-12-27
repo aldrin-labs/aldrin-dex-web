@@ -15,8 +15,8 @@ import {
   roundPercentage,
   addMainSymbol,
 } from '@utils/PortfolioTableUtils'
-import { GET_BASE_COIN } from '../../queries/portfolio/getBaseCoin'
-import { UPDATE_COINS } from '../../mutations/portfolio/updateCoins'
+import { GET_BASE_COIN } from '@core/queries/portfolio/getBaseCoin'
+import { UPDATE_COINS } from '@core/mutations/portfolio/updateCoins'
 import Loader from '@components/TablePlaceholderLoader/newLoader'
 
 const chooseRed = (theme: Theme) =>
