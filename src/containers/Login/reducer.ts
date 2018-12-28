@@ -8,11 +8,14 @@ const initialState = {
   modalIsOpen: false,
   isLogging: false,
   modalLogging: false,
-  listenersOff: false,
+  listenersOff: true,
 }
 
 export default createReducer(
   {
+    [actions.awaitRedux]: (state) => {
+      return state
+    },
     [actions.onLogin]: (state, payload) => {
       return { ...state, user: { ...payload }, isLogging: true }
     },

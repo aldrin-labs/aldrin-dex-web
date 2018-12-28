@@ -63,11 +63,10 @@ class LoginQuery extends React.Component<Props, State> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isShownModal) this.showLogin()
+  componentDidMount = async () => {
+    await this.props.awaitRedux()
     this.checkToken()
-    this.props.listenersWillOn()
-    this.setLockListeners()
+    if (this.props.isShownModal) this.showLogin()
     if (this.props.loginStatus) this.addFSIdentify(this.props.user)
   }
 
@@ -261,6 +260,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   storeClosedModal: () => dispatch(actions.storeClosedModal()),
   listenersWillOn: () => dispatch(actions.listenersWillOn()),
   listenersWillOff: () => dispatch(actions.listenersWillOff()),
+  awaitRedux: () => dispatch(actions.awaitRedux())
 })
 
 export const Login = compose(

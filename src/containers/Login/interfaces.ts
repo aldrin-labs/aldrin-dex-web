@@ -16,6 +16,7 @@ export interface Props {
   storeClosedModal: Function
   listenersWillOn: Function
   listenersWillOff: Function
+  awaitRedux: () => void
 }
 
 export interface State {
