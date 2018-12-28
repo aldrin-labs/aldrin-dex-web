@@ -17,11 +17,12 @@ export interface IProps {
 
 export interface IState {
   view: string
-  orders: []
+  orders: any[]
   exchangeTableCollapsed: boolean
   aggregation: number
   showTableOnMobile: string
   activeChart: string
-  exchanges: []
-  tradeHistory: []
+  exchanges: any[]
+  tradeHistory: any[]
+  joyride: boolean
 }

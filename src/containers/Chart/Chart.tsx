@@ -4,10 +4,8 @@ import { connect } from 'react-redux'
 import {
   Button,
   Fade,
-  Typography,
   Card,
   Grid,
-  Slide,
   Hidden,
 } from '@material-ui/core'
 import { withTheme } from '@material-ui/styles'
@@ -33,7 +31,6 @@ import {
 import QueryRenderer from '@components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
-import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import { IProps, IState } from './Chart.types'
 import { navBarHeight } from '@components/NavBar/NavBar.styles'
@@ -47,8 +44,8 @@ import withAuth from '@hoc/withAuth'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
+    orders: [],
     view: 'default',
-    orders,
     exchangeTableCollapsed: true,
     aggregation: 0.01,
     showTableOnMobile: 'ORDER',
@@ -60,6 +57,7 @@ class Chart extends React.Component<IProps, IState> {
 
   static getDerivedStateFromProps(nextProps: IProps) {
     const [base, quote] = nextProps.currencyPair.split('_')
+    // tslint:disable-next-line:no-object-mutation
     document.title = `${base} to ${quote} | CCAI`
     return null
   }
@@ -73,6 +71,7 @@ class Chart extends React.Component<IProps, IState> {
   }
 
   componentWillUnmount() {
+    // tslint:disable-next-line:no-object-mutation
     document.title = 'Cryptocurrencies AI'
   }
 
@@ -383,14 +382,12 @@ class Chart extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { view, currencyPair, activeExchange, theme } = this.props
+    const { view, currencyPair, activeExchange } = this.props
     const { activeChart } = this.state
-    const { palette } = theme
 
     if (!currencyPair) {
       return
     }
-    const [base, quote] = currencyPair.split('_')
     const toggler = this.renderToggler()
 
     return (
@@ -434,7 +431,6 @@ class Chart extends React.Component<IProps, IState> {
   }
 }
 
-const SelectContainer = styled.div``
 
 const MainContainer = styled.div`
   ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
