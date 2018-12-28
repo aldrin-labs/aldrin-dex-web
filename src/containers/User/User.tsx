@@ -25,7 +25,7 @@ import {
 import { updateBinanceWarning, toggleMocks } from './actions'
 import ComingSoon from '@components/ComingSoon'
 import { MASTER_BUILD } from '@utils/config'
-import CardHeader from '@components/CardHeader'
+import { CardHeader } from '@storybook-components/index'
 
 class UserContainer extends React.Component {
   store: any

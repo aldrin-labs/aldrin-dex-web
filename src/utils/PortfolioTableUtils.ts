@@ -1,35 +1,4 @@
-import React from 'react'
 import nanoid from 'nanoid'
-
-import { IRowT } from '@containers/Portfolio/components/PortfolioTable/types'
-import { Icon } from '@styles/cssUtils'
-import { IPortfolio } from '@containers/Portfolio/interfaces'
-import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
-import { flatten, has, round } from 'lodash-es'
-import { InputRecord } from '@components/DonutChart/types'
-import { Tooltip } from '@material-ui/core'
-import { FullWidthBlock } from '@components/OldTable/Table'
-
-export const getMainSymbol = (isUSDCurrently: boolean) =>
-  isUSDCurrently ? (
-    <Icon className="fa fa-usd" />
-  ) : (
-    <Icon className="fa fa-btc" />
-  )
-
-export const addMainSymbol = (
-  value: string | number,
-  isUSDCurrently: boolean
-) => (
-  <span style={{ whiteSpace: 'nowrap' }}>
-    {getMainSymbol(isUSDCurrently)} {value}
-  </span>
-)
-
-const config = {
-  industryTableEmptyCellTooltip: `The "-" represents fields for which we are not successfully
-   able to calculate a value due to missing data.`,
-}
 
 export const onCheckBoxClick = (
   selected: ReadonlyArray<any>,
@@ -82,118 +51,11 @@ export const dustFilter = (
 const calculateTotalPerfOfCoin = (assets: any[]): number =>
   +roundPercentage(assets.reduce((acc, curr) => acc + curr.perf, 0))
 
-const colorful = (value: number, red: string, green: string) => ({
-  contentToSort: value,
-  render:
-    value === 0 ? (
-      <Tooltip enterDelay={250} title={config.industryTableEmptyCellTooltip}>
-        <FullWidthBlock style={{ width: '100%' }}>-</FullWidthBlock>
-      </Tooltip>
-    ) : (
-      `${value}%`
-    ),
-  isNumber: true,
-  style: { color: value > 0 ? green : value < 0 ? red : null },
-})
 
 // transform "number%" to number
 export const transformToNumber = (percentage: string) =>
   +percentage.split('%')[0]
 
-export const combineIndustryData = ({
-  data,
-  red = 'red',
-  green = 'green',
-}: {
-  data: any
-  red: string
-  green: string
-}): { industryData: ReadonlyArray<any>; chartData: ReadonlyArray<any> } => {
-  if (!has(data, 'myPortfolios')) {
-    return { industryData: [], chartData: [] }
-  }
-
-  const sumPortfolioPercentageOfAsset = (
-    assets: ReadonlyArray<any>,
-    allSum: number
-  ) => {
-    let sum = 0
-    assets.forEach((asset) => {
-      sum += percentagesOfCoinInPortfolio(asset, allSum, true)
-    })
-
-    return {
-      render: `${roundPercentage(sum)}%`,
-      isNumber: true,
-      contentToSort: +roundPercentage(sum),
-    }
-  }
-
-  const { myPortfolios } = data
-  const industryData = flatten(
-    myPortfolios.map(({ industryData: industry }: { industryData: any }) => {
-      // calculating all assets to calculate allSum
-      let allAssets: ReadonlyArray<any> = []
-
-      industry.forEach((row: any) => {
-        row.assets.forEach((asset: any) => (allAssets = [...allAssets, asset]))
-      })
-      const allSum = calcAllSumOfPortfolioAsset(allAssets)
-
-      return industry.map((row: any) => ({
-        // industry should be uniq
-        id: row.industry,
-        industry: row.industry,
-        coin:
-          row.assets.length === 1
-            ? { render: row.assets[0].coin, style: { fontWeight: 700 } }
-            : 'multiple',
-        portfolio: sumPortfolioPercentageOfAsset(row.assets, allSum),
-        // portfolioPerformance: colorful(
-        //   calculateTotalPerfOfCoin(row.assets) || 0,
-        //   red,
-        //   green
-        // ),
-
-        industry1w: colorful(+roundPercentage(row.industry1W) || 0, red, green),
-
-        industry1m: colorful(+roundPercentage(row.industry1M) || 0, red, green),
-
-        industry3M: colorful(+roundPercentage(row.industry3M) || 0, red, green),
-        industry1Y: colorful(+roundPercentage(row.industry1Y) || 0, red, green),
-
-        expandableContent:
-          row.assets.length === 1
-            ? []
-            : row.assets.map((asset: any) => ({
-                industry: '',
-                coin: { render: asset.coin, style: { fontWeight: 700 } },
-                portfolio: +roundPercentage(
-                  percentagesOfCoinInPortfolio(asset, allSum, true)
-                ),
-                // portfolioPerformance: colorful(
-                //   +roundPercentage(asset.perf),
-                //   red,
-                //   green
-                // ),
-                industry1w: '',
-                industry1m: '',
-                industry3m: '',
-                industry1y: '',
-              })),
-      }))
-    })
-  )
-
-  const chartData: ReadonlyArray<InputRecord> = industryData.map(
-    (row: any) => ({
-      label: row.industry,
-      realValue: +transformToNumber(row.portfolio.render),
-    })
-  )
-
-  return { chartData, industryData }
-}
 
 export const percentagesOfCoinInPortfolio = (
   asset: any,
@@ -325,42 +187,6 @@ export const roundAndFormatNumber = (
   return res
 }
 
-// TODO: SHOULD BE REFACTORED
-export const onValidateSum = (
-  reducedSum: IRowT,
-  selectedBalances: IRowT,
-  tableData: IRowT,
-  isUSDCurrently: boolean
-) => {
-  // const { selectedBalances, tableData, isUSDCurrently } = this.state
-  if (!selectedBalances || !tableData) {
-    return null
-  }
-  const clonedSum = { ...reducedSum }
-
-  const mainSymbol = isUSDCurrently ? (
-    <Icon className="fa fa-usd" key="usd" />
-  ) : (
-    <Icon className="fa fa-btc" key="btc" />
-  )
-
-  if (selectedBalances.length === tableData.length) {
-    clonedSum.currency = 'Total'
-    clonedSum.symbol = '-'
-    clonedSum.percentage = 100
-  } else if (selectedBalances.length > 1) {
-    clonedSum.currency = 'Selected'
-    clonedSum.symbol = '-'
-  }
-  clonedSum.percentage = `${roundPercentage(clonedSum.percentage)}%`
-  clonedSum.currentPrice = [mainSymbol, clonedSum.currentPrice]
-  clonedSum.realizedPL = [mainSymbol, clonedSum.realizedPL]
-  clonedSum.unrealizedPL = [mainSymbol, clonedSum.unrealizedPL]
-  clonedSum.totalPL = [mainSymbol, clonedSum.totalPL]
-
-  return clonedSum
-}
-
 export const createColumn = (
   id: string | number = nanoid(),
   exchange: string = '',
@@ -441,17 +267,6 @@ export const combineTableData = (
   })
 
   return tableData
-}
-
-export const composePortfolioWithMocks = (
-  portfolioAssets: any,
-  isShownMocks = false
-) => {
-  if (!portfolioAssets) {
-    return
-  }
-
-  return isShownMocks ? portfolioAssets.concat(MOCK_DATA) : portfolioAssets
 }
 
 export const numberOfDigitsAfterPoint = (isUSDCurrently: boolean): number =>
