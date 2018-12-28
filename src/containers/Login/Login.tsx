@@ -119,12 +119,10 @@ class LoginQuery extends React.Component<Props, State> {
         const decodedToken: { exp: number } = jwtDecode(token)
         const currentTime = Date.now() / 1000
         if (currentTime > decodedToken.exp) {
-          this.props.storeLogout()
-          this.cleanApollo()
+          this.handleLogout()
         }
       } else {
-        this.props.storeLogout()
-        this.cleanApollo()
+        this.handleLogout()
       }
     }
   }
@@ -168,9 +166,9 @@ class LoginQuery extends React.Component<Props, State> {
     this.setState({ anchorEl: null })
   }
 
-  handleLogout = () => {
+  handleLogout = async () => {
+    await this.cleanApollo()
     this.props.storeLogout()
-    this.cleanApollo()
     window.localStorage.removeItem('token')
   }
 

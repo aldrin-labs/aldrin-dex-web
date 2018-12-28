@@ -16,15 +16,16 @@ const Result = (Component: React.ComponentType) => ({
   openMessage: boolean
 }) => {
   if (!login) {
+    console.log('!login')
     return (
       <Mutation mutation={UPDATE_LOGIN_POPUP_APPEARED}>
         {(updateLoginPopupAppeared) => (
           <Query query={LOGIN_POPUP_APPEARED}>
             {({
-              data: {
-                ui: { logInPopupAppeared },
-              },
+              data
             }) => {
+              console.log(data)
+              const logInPopupAppeared = data.ui ? data.ui.logInPopupAppeared : false
               const render = (
                 <YouNeedToLoginMessage
                   open={!openMessage}
