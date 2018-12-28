@@ -91,9 +91,9 @@ class LoginQuery extends React.Component<Props, State> {
           }
           await this.setToken(authResult.idToken)
           await this.createUserReq(profile)
+          await this.resumeApollo()
           this.props.storeLogin(profile)
           this.addFSIdentify(profile)
-          this.resumeApollo()
         }
       )
     })
