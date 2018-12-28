@@ -11,7 +11,11 @@ export interface IProps {
   toggleView: Function
   selectCurrencies: Function
   setOrders: Function
+  hideToolTip: (payload: string) => void
   addChart: (currencyPair: string) => void
+  demoMode: {
+    chartPage: boolean
+  }
   theme: any
 }
 

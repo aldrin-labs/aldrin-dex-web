@@ -82,7 +82,7 @@ class Chart extends React.Component<IProps, IState> {
     // and keeps floor of number instead of round it
     let s = 0
 
-    if (this.state.aggregation <= 5.0) {
+    if (this.state.aggregation && this.state.aggregation <= 5.0) {
       s = -4
     } else {
       s = -5
@@ -101,26 +101,6 @@ class Chart extends React.Component<IProps, IState> {
     /* tslint:enable */
 
     return +initial - agg
-  }
-
-  sortOrders = (index: number) => {
-    const { orders, currentSort } = this.state
-
-    const newOrders = orders.slice().sort((a, b) => {
-      if (currentSort && currentSort.index === index) {
-        if (currentSort.arg === 'ASC') {
-          this.setState({ currentSort: { index, arg: 'DESC' } })
-          return b[index] - a[index]
-        } else {
-          this.setState({ currentSort: { index, arg: 'ASC' } })
-          return a[index] - b[index]
-        }
-      }
-      this.setState({ currentSort: { index, arg: 'ASC' } })
-      return a[index] - b[index]
-    })
-
-    this.setState({ orders: newOrders })
   }
 
   changeExchange = (i: any) => {
@@ -168,13 +148,14 @@ class Chart extends React.Component<IProps, IState> {
     }
   }
 
-  handleJoyrideCallback = (data) => {
+  handleJoyrideCallback = (data: { action: string; status: string; }) => {
     if (
       data.action === 'close' ||
       data.action === 'skip' ||
       data.status === 'finished'
-    )
+    ) {
       this.props.hideToolTip('chartPage')
+    }
   }
 
   renderTables: any = () => {
@@ -237,15 +218,15 @@ class Chart extends React.Component<IProps, IState> {
               updateQueryFunction: updateOrderBookQuerryFunction,
             }}
             {...{
-              onButtonClick: this.changeTable,
-              roundTill: this.roundTill,
               activeExchange,
               currencyPair,
               aggregation,
               quote,
-              setOrders: this.props.setOrders,
               symbol,
               exchange,
+              onButtonClick: this.changeTable,
+              roundTill: this.roundTill,
+              setOrders: this.props.setOrders,
               ...this.props,
             }}
           />
@@ -455,11 +436,11 @@ const TablesBlockWrapper = styled(Card)`
   min-width: 150px;
   width: 50%;
   position: relative;
-  ${(props: { blur?: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
+  ${(props: { blur?: boolean, background?: string }) => (props.blur ? 'filter: blur(5px);' : '')}
 
   && {
     overflow: hidden;
-    background-color: ${(props: { background?: string }) => props.background};
+    background-color: ${(props: { blur?: boolean, background?: string }) => props.background};
     box-shadow: none !important;
   }
 
