@@ -4,8 +4,8 @@ import { connect } from 'react-redux'
 
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import { Mutation, Query } from 'react-apollo'
-import { UPDATE_LOGIN_POPUP_APPEARED } from '@graphql/mutations/ui/updateLoginPopupAppeared'
-import { LOGIN_POPUP_APPEARED } from '@core/queries/ui/LOGIN_POPUP_APPEARED'
+import { UPDATE_LOGIN_POPUP_APPEARED } from '@core/graphql/mutations/ui/updateLoginPopupAppeared'
+import { LOGIN_POPUP_APPEARED } from '@core/graphql/queries/ui/LOGIN_POPUP_APPEARED'
 
 const Result = (Component: React.ComponentType) => ({
   login,

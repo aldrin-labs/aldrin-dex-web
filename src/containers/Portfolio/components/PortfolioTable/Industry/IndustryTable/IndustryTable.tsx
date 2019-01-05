@@ -12,7 +12,7 @@ import TableLoader from '@components/TablePlaceholderLoader/newLoader'
 import { useTheme } from '@material-ui/styles'
 import { getPortfolioQuery as industryDataQuery } from '@containers/Portfolio/api'
 import { tableHeadings } from './config'
-import { updateIndustries } from '@graphql/mutations/portfolio/updateIndustries'
+import { updateIndustries } from '@core/graphql/mutations/portfolio/updateIndustries'
 
 const IndustryTable = () => {
   const theme: Theme = useTheme()
