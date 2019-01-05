@@ -18,7 +18,7 @@ import {
   roundPercentage,
 } from '@utils/PortfolioTableUtils'
 import { GET_BASE_COIN } from '@core/queries/portfolio/getBaseCoin'
-import { UPDATE_COINS } from '@core/mutations/portfolio/updateCoins'
+import { UPDATE_COINS } from '@graphql/mutations/portfolio/updateCoins'
 import Loader from '@components/TablePlaceholderLoader/newLoader'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 

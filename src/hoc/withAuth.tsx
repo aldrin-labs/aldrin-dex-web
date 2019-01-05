@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
 import { Mutation, Query } from 'react-apollo'
-import { UPDATE_LOGIN_POPUP_APPEARED } from '@core/mutations/ui/updateLoginPopupAppeared'
+import { UPDATE_LOGIN_POPUP_APPEARED } from '@graphql/mutations/ui/updateLoginPopupAppeared'
 import { LOGIN_POPUP_APPEARED } from '@core/queries/ui/LOGIN_POPUP_APPEARED'
 
 const Result = (Component: React.ComponentType) => ({
@@ -12,9 +12,9 @@ const Result = (Component: React.ComponentType) => ({
   openMessage,
   ...props
 }: {
-  login: boolean
-  openMessage: boolean
-}) => {
+    login: boolean
+    openMessage: boolean
+  }) => {
   if (!login) {
     return (
       <Mutation mutation={UPDATE_LOGIN_POPUP_APPEARED}>

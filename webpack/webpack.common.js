@@ -33,6 +33,7 @@ const config = {
       '@styles': path.join(__dirname, '..', 'src', 'styles'),
       '@graphql': path.join(__dirname, '..', 'src', 'graphql'),
       '@icons': path.join(__dirname, '..', 'src', 'icons'),
+      '@storage': path.join(__dirname, '..', 'src', 'utils', 'storage'),
     },
   },
   module: {
