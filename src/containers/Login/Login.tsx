@@ -105,6 +105,62 @@ class LoginQuery extends React.Component<Props, State> {
     })
   }
 
+  removeToken = () => {
+    localStorage.removeItem('token')
+  }
+
+  getToken = () => {
+    return localStorage.getItem('token')
+  }
+
+  checkToken = () => {
+    if (this.props.loginStatus) {
+      const token = this.getToken()
+      if (token) {
+        const decodedToken: { exp: number } = jwtDecode(token)
+        const currentTime = Date.now() / 1000
+        if (currentTime > decodedToken.exp) {
+          this.props.storeLogout()
+          this.cleanApollo()
+        }
+      } else {
+        this.props.storeLogout()
+        this.cleanApollo()
+      }
+    }
+  }
+
+  cleanApollo = () => {
+    // User clicks 'log out'.
+    // First: do whatever is necessary in your app to invalidate/clear out the user's session.
+    // Then do the following:
+
+    persistor.pause() // Pause automatic persistence.
+    persistor.purge() // Delete everything in the storage provider.
+
+    // If there are views visible that contain data from the logged-out user,
+    // this will cause them to clear out. It also issues a bunch of network requests
+    // for data that likely won't be available anymore since the user is logged-out,
+    // so you may consider skipping this.
+    client.resetStore()
+  }
+
+  resumeApollo = () => {
+    // Let's assume the user logs in.
+    // First: do whatever is necessary to set the user's session.
+    // Next: you absolutely must reset the store. This will clear the prior user's data from
+    // memory and will cause all of the open queries to refetch using the new user's session.
+    client.resetStore()
+
+    // Resume cache persistence. The cache storage provider will be empty right now,
+    // but it will written with the new user's data the next time the trigger fires.
+    persistor.resume()
+  }
+
+  setToken = (token: string) => {
+    return localStorage.setItem('token', token)
+  }
+
   handleMenu = (event: Event) => {
     this.setState({ anchorEl: event.currentTarget })
   }
