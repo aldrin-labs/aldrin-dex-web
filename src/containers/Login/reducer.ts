@@ -13,9 +13,9 @@ const initialState = {
 
 export default createReducer(
   {
-    [actions.onLogin]: (state, payload) => {
-      return { ...state, user: { ...payload }, isLogging: true }
-    },
+    // [actions.onLogin]: (state, payload) => {
+    //   return { ...state, isLogging: true }
+    // },
     // [actions.storeLogin]: (state, payload) => {
     //   return {
     //     ...state,
@@ -27,9 +27,9 @@ export default createReducer(
     // [actions.storeLogout]: (state, payload) => {
     //   return { ...state, user: null, loginStatus: false, modalIsOpen: false }
     // },
-    [actions.storeModalIsClosing]: (state, payload) => {
-      return { ...state, user: { ...payload }, modalLogging: true }
-    },
+    // [actions.storeModalIsClosing]: (state, payload) => {
+    //   return { ...state, modalLogging: true }
+    // },
     // [actions.storeOpenedModal]: (state) => {
     //   return { ...state, modalIsOpen: true }
     // },
