@@ -10,6 +10,8 @@ import { withErrorFallback } from '../../hoc'
 import { Props, State } from '@containers/Login/interfaces'
 import * as actions from '@containers/Login/actions'
 import * as API from '@containers/Login/api'
+import * as CLIENT_API_MUTATIONS from '@core/graphql/mutations/login/index'
+import { GET_LOGIN_DATA } from '@core/graphql/queries/login/GET_LOGIN_DATA'
 import { LoginMenu } from '@containers/Login/components'
 import MainLogo from '@icons/AuthLogo.png'
 import { Grow, Slide } from '@material-ui/core'
@@ -67,9 +69,10 @@ class LoginQuery extends React.Component<Props, State> {
   componentDidMount() {
     if (this.props.isShownModal) this.showLogin()
     this.checkToken()
-    this.props.listenersWillOn()
+    this.onListenersChanges(true)
     this.setLockListeners()
-    if (this.props.loginStatus) this.addFSIdentify(this.props.user)
+    if (this.props.loginDataQuery.loginStatus)
+      this.addFSIdentify(this.props.loginDataQuery.user)
   }
 
   addFSIdentify(profile) {
@@ -83,7 +86,7 @@ class LoginQuery extends React.Component<Props, State> {
 
   setLockListeners = () => {
     this.state.lock.on('authenticated', (authResult: any) => {
-      this.props.onLogin()
+      this.onLoginProcessChanges(true)
       this.state.lock.getUserInfo(
         authResult.accessToken,
         async (error: Error, profile: any) => {
@@ -93,15 +96,15 @@ class LoginQuery extends React.Component<Props, State> {
           await this.setToken(authResult.idToken)
           await this.createUserReq(profile)
           await this.resumeApollo()
-          this.props.storeLogin(profile)
+          this.onLogin(profile)
           this.addFSIdentify(profile)
         }
       )
     })
     this.state.lock.on('hide', () => {
-      this.props.storeModalIsClosing()
-      this.props.listenersWillOff()
-      setTimeout(() => this.props.storeClosedModal(), 1000)
+      this.onModalProcessChanges(true)
+      this.onListenersChanges(false)
+      setTimeout(() => this.onModalChanges(false), 1000)
     })
   }
 
@@ -114,17 +117,17 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   checkToken = () => {
-    if (this.props.loginStatus) {
+    if (this.props.loginDataQuery.loginStatus) {
       const token = this.getToken()
       if (token) {
         const decodedToken: { exp: number } = jwtDecode(token)
         const currentTime = Date.now() / 1000
         if (currentTime > decodedToken.exp) {
-          this.props.storeLogout()
+          this.onLogout()
           this.cleanApollo()
         }
       } else {
-        this.props.storeLogout()
+        this.onLogout()
         this.cleanApollo()
       }
     }
@@ -170,7 +173,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   handleLogout = () => {
-    this.props.storeLogout()
+    this.onLogout()
     this.cleanApollo()
     window.localStorage.removeItem('token')
   }
@@ -191,24 +194,98 @@ class LoginQuery extends React.Component<Props, State> {
       console.log(error)
     }
   }
+  onLogin = async (profile: any) => {
+    const { loginMutation } = this.props
+    const variables = {
+      profile,
+    }
+
+    try {
+      await loginMutation({ variables })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  onLogout = async () => {
+    const { logoutMutation } = this.props
+
+    try {
+      await logoutMutation()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  onModalChanges = async (modalIsOpen: boolean) => {
+    const { modalStatusMutation } = this.props
+    const variables = {
+      modalIsOpen,
+    }
+
+    try {
+      await modalStatusMutation({ variables })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  onListenersChanges = async (listenersStatus: boolean) => {
+    const { listenersStatusMutation } = this.props
+    const variables = {
+      listenersStatus,
+    }
+
+    try {
+      await listenersStatusMutation({ variables })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  onModalProcessChanges = async (modalLogging: boolean) => {
+    const { modalProcessMutation } = this.props
+    const variables = {
+      modalLogging,
+    }
+
+    try {
+      await modalProcessMutation({ variables })
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  onLoginProcessChanges = async (isLogging: boolean) => {
+    const { loginProcessMutation } = this.props
+    const variables = {
+      isLogging,
+    }
+
+    try {
+      await loginProcessMutation({ variables })
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   showLogin = () => {
     const isLoginPopUpClosed =
-      !this.props.modalIsOpen &&
-      !this.props.isLogging &&
-      !this.props.modalLogging
+      !this.props.loginDataQuery.modalIsOpen &&
+      !this.props.loginDataQuery.isLogging &&
+      !this.props.loginDataQuery.modalLogging
 
     if (isLoginPopUpClosed) {
-      this.props.storeOpenedModal()
+      this.onModalChanges(true)
       this.state.lock.show()
-      if (this.props.listenersOff) {
+      if (this.props.loginDataQuery.listenersOff) {
         this.setLockListeners()
       }
     }
   }
 
   render() {
-    const { loginStatus, user, isShownModal } = this.props
+    const { loginDataQuery, isShownModal } = this.props
+    const { loginStatus, user } = loginDataQuery
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
 
@@ -247,23 +324,23 @@ class LoginQuery extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: any) => ({
-  isLogging: state.login.isLogging,
-  modalLogging: state.login.modalLogging,
-  user: state.login.user,
-  loginStatus: state.login.loginStatus,
-  modalIsOpen: state.login.modalIsOpen,
-  listenersOff: state.login.listenersOff,
+  // isLogging: state.login.isLogging,
+  // modalLogging: state.login.modalLogging,
+  // user: state.login.user,
+  // loginStatus: state.login.loginStatus,
+  // modalIsOpen: state.login.modalIsOpen,
+  // listenersOff: state.login.listenersOff,
 })
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onLogin: () => dispatch(actions.onLogin()),
-  storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
-  storeLogout: () => dispatch(actions.storeLogout()),
-  storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
-  storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
-  storeClosedModal: () => dispatch(actions.storeClosedModal()),
-  listenersWillOn: () => dispatch(actions.listenersWillOn()),
-  listenersWillOff: () => dispatch(actions.listenersWillOff()),
+  // onLogin: () => dispatch(actions.onLogin()),
+  // storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
+  // storeLogout: () => dispatch(actions.storeLogout()),
+  // storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
+  // storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
+  // storeClosedModal: () => dispatch(actions.storeClosedModal()),
+  // listenersWillOn: () => dispatch(actions.listenersWillOn()),
+  // listenersWillOff: () => dispatch(actions.listenersWillOff()),
 })
 
 export const Login = compose(
@@ -272,5 +349,20 @@ export const Login = compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  graphql(API.createUserMutation, { name: 'createUser' })
+  graphql(API.createUserMutation, { name: 'createUser' }),
+  graphql(GET_LOGIN_DATA, { name: 'loginDataQuery' }),
+  graphql(CLIENT_API_MUTATIONS.LOGIN, { name: 'loginMutation' }),
+  graphql(CLIENT_API_MUTATIONS.LOGOUT, { name: 'logoutMutation' }),
+  graphql(CLIENT_API_MUTATIONS.UPDATE_MODAL_STATUS, {
+    name: 'modalStatusMutation',
+  }),
+  graphql(CLIENT_API_MUTATIONS.UPDATE_LISTNERES, {
+    name: 'listenersStatusMutation',
+  }),
+  graphql(CLIENT_API_MUTATIONS.UPDATE_MODAL_PROCESS, {
+    name: 'modalProcessMutation',
+  }),
+  graphql(CLIENT_API_MUTATIONS.UPDATE_LOGIN_PROCESS, {
+    name: 'loginProcessMutation',
+  })
 )(LoginQuery)
