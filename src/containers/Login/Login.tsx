@@ -134,6 +134,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   cleanApollo = () => {
+    console.log('cleanApollo')
     // User clicks 'log out'.
     // First: do whatever is necessary in your app to invalidate/clear out the user's session.
     // Then do the following:
@@ -149,6 +150,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   resumeApollo = () => {
+    console.log('resumeApollo')
     // Let's assume the user logs in.
     // First: do whatever is necessary to set the user's session.
     // Next: you absolutely must reset the store. This will clear the prior user's data from
