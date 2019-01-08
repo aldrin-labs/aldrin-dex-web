@@ -71,8 +71,8 @@ class LoginQuery extends React.Component<Props, State> {
     this.checkToken()
     this.onListenersChanges(true)
     this.setLockListeners()
-    if (this.props.loginDataQuery.loginStatus)
-      this.addFSIdentify(this.props.loginDataQuery.user)
+    if (this.props.loginDataQuery.login.loginStatus)
+      this.addFSIdentify(this.props.loginDataQuery.login.user)
   }
 
   addFSIdentify(profile) {
@@ -117,7 +117,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   checkToken = () => {
-    if (this.props.loginDataQuery.loginStatus) {
+    if (this.props.loginDataQuery.login.loginStatus) {
       const token = this.getToken()
       if (token) {
         const decodedToken: { exp: number } = jwtDecode(token)
@@ -199,6 +199,7 @@ class LoginQuery extends React.Component<Props, State> {
     const variables = {
       profile,
     }
+    console.log('profile', profile);
 
     try {
       await loginMutation({ variables })
@@ -270,14 +271,14 @@ class LoginQuery extends React.Component<Props, State> {
 
   showLogin = () => {
     const isLoginPopUpClosed =
-      !this.props.loginDataQuery.modalIsOpen &&
-      !this.props.loginDataQuery.isLogging &&
-      !this.props.loginDataQuery.modalLogging
+      !this.props.loginDataQuery.login.modalIsOpen &&
+      !this.props.loginDataQuery.login.isLogging &&
+      !this.props.loginDataQuery.login.modalLogging
 
     if (isLoginPopUpClosed) {
       this.onModalChanges(true)
       this.state.lock.show()
-      if (this.props.loginDataQuery.listenersOff) {
+      if (this.props.loginDataQuery.login.listenersOff) {
         this.setLockListeners()
       }
     }
@@ -285,9 +286,12 @@ class LoginQuery extends React.Component<Props, State> {
 
   render() {
     const { loginDataQuery, isShownModal } = this.props
-    const { loginStatus, user } = loginDataQuery
+    const { loginStatus, user } = loginDataQuery.login
     const { anchorEl } = this.state
     const open = Boolean(anchorEl)
+
+    console.log('props', this.props);
+    console.log('loginDataQuery', loginDataQuery);
 
     if (isShownModal) return null
 
