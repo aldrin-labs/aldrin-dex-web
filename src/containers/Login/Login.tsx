@@ -93,9 +93,9 @@ class LoginQuery extends React.Component<Props, State> {
           if (error) {
             console.error(error)
           }
-          await this.setToken(authResult.idToken)
-          await this.createUserReq(profile)
           await this.resumeApollo()
+          await this.createUserReq(profile)
+          await this.setToken(authResult.idToken)
           this.onLogin(profile)
           this.addFSIdentify(profile)
         }
@@ -149,6 +149,7 @@ class LoginQuery extends React.Component<Props, State> {
   }
 
   resumeApollo = () => {
+
     // Let's assume the user logs in.
     // First: do whatever is necessary to set the user's session.
     // Next: you absolutely must reset the store. This will clear the prior user's data from
