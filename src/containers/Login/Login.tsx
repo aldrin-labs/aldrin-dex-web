@@ -328,32 +328,8 @@ class LoginQuery extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  // isLogging: state.login.isLogging,
-  // modalLogging: state.login.modalLogging,
-  // user: state.login.user,
-  // loginStatus: state.login.loginStatus,
-  // modalIsOpen: state.login.modalIsOpen,
-  // listenersOff: state.login.listenersOff,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-  // onLogin: () => dispatch(actions.onLogin()),
-  // storeLogin: (profile: any) => dispatch(actions.storeLogin(profile)),
-  // storeLogout: () => dispatch(actions.storeLogout()),
-  // storeOpenedModal: () => dispatch(actions.storeOpenedModal()),
-  // storeModalIsClosing: () => dispatch(actions.storeModalIsClosing()),
-  // storeClosedModal: () => dispatch(actions.storeClosedModal()),
-  // listenersWillOn: () => dispatch(actions.listenersWillOn()),
-  // listenersWillOff: () => dispatch(actions.listenersWillOff()),
-})
-
 export const Login = compose(
   withErrorFallback,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
   graphql(API.createUserMutation, { name: 'createUser' }),
   graphql(GET_LOGIN_DATA, { name: 'loginDataQuery' }),
   graphql(CLIENT_API_MUTATIONS.LOGIN, { name: 'loginMutation' }),
