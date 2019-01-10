@@ -17,6 +17,7 @@ const config = {
         'src',
         'storybook',
         'src',
+        'web',
         'components'
       ),
       '@core': path.join(
