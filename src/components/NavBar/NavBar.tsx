@@ -1,5 +1,5 @@
 import React, { SFC } from 'react'
-import { Login } from '@containers/Login'
+import { Login } from '@core/containers/Login'
 import { WithTheme } from '@material-ui/core/styles'
 import { withTheme } from '@material-ui/styles'
 import { Toolbar, Button, Grid } from '@material-ui/core'
