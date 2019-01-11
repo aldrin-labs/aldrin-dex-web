@@ -337,7 +337,7 @@ export const Login = compose(
   graphql(CLIENT_API_MUTATIONS.UPDATE_MODAL_STATUS, {
     name: 'modalStatusMutation',
   }),
-  graphql(CLIENT_API_MUTATIONS.UPDATE_LISTNERES, {
+  graphql(CLIENT_API_MUTATIONS.UPDATE_LISTENERS, {
     name: 'listenersStatusMutation',
   }),
   graphql(CLIENT_API_MUTATIONS.UPDATE_MODAL_PROCESS, {
