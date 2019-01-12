@@ -16,7 +16,7 @@ const DonutChart: React.FunctionComponent<
           <Chart
             theme={theme as Theme}
             labelPlaceholder="Industry %"
-            data={portfolioIndustries.industries}
+            data={portfolioIndustries && portfolioIndustries.industries}
             colorLegend={true}
           />
         )
