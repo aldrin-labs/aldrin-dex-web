@@ -15,8 +15,7 @@ import {
   ChartContainer,
 } from './PortfolioTableBalances.styles'
 import Chart from './GQLChart'
-import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHistoryTable'
-
+import TradeOrderHistory from '@core/containers/TradeOrderHistory'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import PortfolioMainTable from '@components/PortfolioMainTable/PortfolioMainTable'
@@ -71,7 +70,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
         />
         <Template
           PortfolioMainTable={<PortfolioMainTable tab={tab} />}
-          PortfolioActions={<TradeOrderHistoryTable />}
+          PortfolioActions={<TradeOrderHistory />}
           Chart={
             <Chart
               title="Portfolio Value | Coming Soon | In development"
