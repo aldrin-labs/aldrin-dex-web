@@ -12,7 +12,7 @@ import {
   setCorrelationPeriod as setCorrelationPeriodAction,
 } from '@containers/Portfolio/actions'
 import { getCorrelationQuery } from '@containers/Portfolio/api'
-import { swapDates } from '@utils/PortfolioTableUtils'
+import { swapDates } from '@core/utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances.styles'
 import { testJSON } from '@utils/chartPageUtils'
 import { CustomError } from '@components/ErrorFallback/ErrorFallback'

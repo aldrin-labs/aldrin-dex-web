@@ -1,5 +1,5 @@
 import { sumSame } from '@utils/PortfolioOptimizationUtils'
-import { cloneArrayElementsOneLevelDeep, sliceCoinName } from '@utils/PortfolioTableUtils'
+import { cloneArrayElementsOneLevelDeep, sliceCoinName } from '@core/utils/PortfolioTableUtils'
 
 export function combineToChart(mockData) {
 

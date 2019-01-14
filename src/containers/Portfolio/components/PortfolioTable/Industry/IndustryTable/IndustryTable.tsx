@@ -1,18 +1,18 @@
 import React, { useRef, useState } from 'react'
-import { TableWithSort as Table } from '@storybook-components/index'
-import {
-  onCheckBoxClick,
-} from '@utils/PortfolioTableUtils'
-import { Query, Mutation } from 'react-apollo'
-import { ErrorFallback } from '@storybook-components/ErrorFallback'
-import { Theme } from '@material-ui/core'
 
-import { combineIndustryData } from './utils'
-import TableLoader from '@components/TablePlaceholderLoader/newLoader'
+import { Query, Mutation } from 'react-apollo'
+import { Theme } from '@material-ui/core'
 import { useTheme } from '@material-ui/styles'
+
+import { TableWithSort as Table } from '@storybook-components/index'
+import { ErrorFallback } from '@storybook-components/ErrorFallback'
+import TableLoader from '@storybook-components/TablePlaceholderLoader/newLoader'
+import { onCheckBoxClick } from '@core/utils/PortfolioTableUtils'
+import { combineIndustryData } from './utils'
 import { getPortfolioQuery as industryDataQuery } from '@containers/Portfolio/api'
 import { tableHeadings } from './config'
 import { updateIndustries } from '@core/graphql/mutations/portfolio/updateIndustries'
+
 
 const IndustryTable = () => {
   const theme: Theme = useTheme()

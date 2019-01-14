@@ -1,15 +1,14 @@
-import React from 'react'
-
 import { flatten, has } from 'lodash-es'
-import { Tooltip } from '@material-ui/core'
+
 import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
   roundPercentage,
   transformToNumber,
-} from '@utils/PortfolioTableUtils'
-import { FullWidthBlock } from '@components/OldTable/Table'
+} from '@core/utils/PortfolioTableUtils'
 import { InputRecord } from '@components/DonutChart/types'
+import { colorful } from '@storybook-components/index'
+
 
 
 export const combineIndustryData = ({
@@ -106,22 +105,3 @@ export const combineIndustryData = ({
 
   return { chartData, industryData }
 }
-
-const config = {
-  industryTableEmptyCellTooltip: `The "-" represents fields for which we are not successfully
-   able to calculate a value due to missing data.`,
-}
-
-const colorful = (value: number, red: string, green: string) => ({
-  contentToSort: value,
-  render:
-    value === 0 ? (
-      <Tooltip enterDelay={250} title={config.industryTableEmptyCellTooltip}>
-        <FullWidthBlock style={{ width: '100%' }}>-</FullWidthBlock>
-      </Tooltip>
-    ) : (
-      `${value}%`
-    ),
-  isNumber: true,
-  style: { color: value > 0 ? green : value < 0 ? red : null },
-})

@@ -13,7 +13,7 @@ import {
   onSortTableFull,
   getArrayContainsOnlyOnePropertyType,
   combineDataToSelect,
-} from '@utils/PortfolioTableUtils'
+} from '@core/utils/PortfolioTableUtils'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import SuperSearch from '@containers/Screener/ScreenerTable/MarketSummaryTable/SuperSearch'
 import { Icon } from '@styles/cssUtils'
