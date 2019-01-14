@@ -10,7 +10,7 @@ import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry
 import { portfolioIndustrySteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import Template from './Template/Template'
-import IndustryTable from './IndustryTable'
+import IndustryTable from '@core/components/IndustryTable'
 
 class PortfolioTableIndustries extends React.Component<IndProps, IState> {
   state: IState = {
