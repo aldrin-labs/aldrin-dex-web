@@ -19,7 +19,7 @@ import {
 } from '@core/utils/PortfolioTableUtils'
 import { GET_BASE_COIN } from '@core/graphql/queries/portfolio/getBaseCoin'
 import { UPDATE_COINS } from '@core/graphql/mutations/portfolio/updateCoins'
-import Loader from '@components/TablePlaceholderLoader/newLoader'
+import Loader from '@storybook-components/TablePlaceholderLoader/newLoader'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
 
 

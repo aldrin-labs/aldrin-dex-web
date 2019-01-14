@@ -6,10 +6,10 @@ import { useTheme } from '@material-ui/styles'
 
 import { TableWithSort as Table } from '@storybook-components/index'
 import { ErrorFallback } from '@storybook-components/ErrorFallback'
-import TableLoader from '@components/TablePlaceholderLoader/newLoader'
+import TableLoader from '@storybook-components/TablePlaceholderLoader/newLoader'
 import { onCheckBoxClick } from '@core/utils/PortfolioTableUtils'
 import { combineIndustryData } from './utils'
-import { getPortfolioQuery as industryDataQuery } from '@containers/Portfolio/api'
+import { getPortfolioQuery as industryDataQuery } from '@core/graphql/queries/portfolio/getPortfolio'
 import { tableHeadings } from './config'
 import { updateIndustries } from '@core/graphql/mutations/portfolio/updateIndustries'
 

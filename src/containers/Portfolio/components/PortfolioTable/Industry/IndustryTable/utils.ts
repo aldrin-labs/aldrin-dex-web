@@ -6,10 +6,13 @@ import {
   roundPercentage,
   transformToNumber,
 } from '@core/utils/PortfolioTableUtils'
-import { InputRecord } from '@components/DonutChart/types'
+import { InputRecord } from './types'
 import { colorful } from '@storybook-components/index'
 
-
+export interface InputRecord {
+  label: string
+  realValue: number
+}
 
 export const combineIndustryData = ({
   data,
