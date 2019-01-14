@@ -180,13 +180,3 @@ describe('Function calculateMoneyPart', () => {
       .toEqual(expect.arrayContaining([1,1,1,1,1,1,1,1,1,1]))
   })
 })
-
-// console.log(DistributeToMany(111, 2), 'right: [55.5, 55.5]');
-// console.log(DistributeToMany(0.67, 2), 'right: [0.33, 0.34]');
-// console.log(DistributeToMany(0.1, 2), 'right: [0.05, 0.05]');
-// console.log(DistributeToMany(1, 2), 'right: [0.5, 0.5]');
-// console.log(DistributeToMany(1, 3), 'right: [0.33, 0.33, 0.34]');
-// console.log(DistributeToMany(1, 4), 'right: [0.25, 0.25, 0.25, 0.25]');
-// console.log(DistributeToMany(3.54, 4), 'right: [0.25, 0.25, 0.25, 0.25]');
-// console.log(DistributeToMany(0.9, 4), 'right: [0.25, 0.25, 0.25, 0.25]');
-// console.log(DistributeToMany(10, 10), 'right: [1,1,1,1,1,1,1,1,1,1]');

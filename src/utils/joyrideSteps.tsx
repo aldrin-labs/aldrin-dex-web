@@ -1,3 +1,5 @@
+import React from 'react'
+
 type T = {
   target: string
   content: string

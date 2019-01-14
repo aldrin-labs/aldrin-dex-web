@@ -50,8 +50,8 @@ import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
 import * as Useractions from '@containers/User/actions'
 import config from '@utils/linkConfig'
 import { graphql } from 'react-apollo'
-import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../queries/portfolio/getOptimizationCountOfRuns'
-import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '../../../../../mutations/portfolio/updateOptimizationCountOfRuns'
+import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/queries/portfolio/getOptimizationCountOfRuns'
+import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/mutations/portfolio/updateOptimizationCountOfRuns'
 import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 import { MyTradesQuery } from '@components/TradeOrderHistory/api'
 
@@ -208,28 +208,28 @@ class Optimization extends Component<IProps, IState> {
     // for real data
     const lineChartData = showAllLineChartData
       ? rawOptimizedData &&
-        rawOptimizedData.length &&
-        rawOptimizedData.map((el, i) => {
-          return {
-            data: el.backtest_results.map((element) => ({
-              label: riskProfileNames[i],
-              x: element[0],
-              y: +(element[1].toFixed(2)),
-            })),
-            color: colors[i],
-          }
-        })
-      : rawOptimizedData &&
-        rawOptimizedData.length && {
-          data: rawOptimizedData[activeButton].backtest_results.map(
-            (el, i) => ({
-              label: 'Optimized',
-              x: el[0],
-              y: +(el[1].toFixed(2)),
-            })
-          ),
-          color: colors[activeButton],
+      rawOptimizedData.length &&
+      rawOptimizedData.map((el, i) => {
+        return {
+          data: el.backtest_results.map((element) => ({
+            label: riskProfileNames[i],
+            x: element[0],
+            y: +(element[1].toFixed(2)),
+          })),
+          color: colors[i],
         }
+      })
+      : rawOptimizedData &&
+      rawOptimizedData.length && {
+        data: rawOptimizedData[activeButton].backtest_results.map(
+          (el, i) => ({
+            label: 'Optimized',
+            x: el[0],
+            y: +(el[1].toFixed(2)),
+          })
+        ),
+        color: colors[activeButton],
+      }
 
     const itemsForChartLegend = riskProfileNames.map((el, i) => ({
       title: el,
@@ -263,8 +263,8 @@ class Optimization extends Component<IProps, IState> {
                   lineChartData === 0
                     ? undefined
                     : showAllLineChartData
-                    ? lineChartData
-                    : [lineChartData]
+                      ? lineChartData
+                      : [lineChartData]
                 }
                 itemsForChartLegend={itemsForChartLegend}
               />
@@ -306,7 +306,7 @@ class Optimization extends Component<IProps, IState> {
       theme: { palette },
       toolTip,
       tab,
-      data: { portfolioOptimization: { optimizationCountOfRuns } } = { portfolioOptimization : { optimizationCountOfRuns: 1 } },
+      data: { portfolioOptimization: { optimizationCountOfRuns } } = { portfolioOptimization: { optimizationCountOfRuns: 1 } },
     } = this.props
 
     const showBlurOnSections = optimizationCountOfRuns <= 0

@@ -2,17 +2,14 @@ import * as React from 'react'
 import { History } from 'history'
 import { withTheme } from '@material-ui/styles'
 import { Theme } from '@material-ui/core'
-// import Button from '@components/Elements/Button/Button'
-// import Calculator from '@components/Calculator/Calculator'
-// import DominanceChart from '@components/DominanceChart/DominanceChart'
-import { TableWithSort } from '@storybook-components/index'
+import {
+  TableWithSort,
+  addMainSymbol,
+} from '@storybook-components/index'
 import { queryRendererHoc } from '@components/QueryRenderer'
-// import CoinMarketTable from '@components/CoinMarketTable/CoinMarketTable'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 import { MarketsQuery } from './api'
-// import CardHeader from '@components/CardHeader'
 import {
-  addMainSymbol,
   formatNumberToUSFormat,
   roundAndFormatNumber,
 } from '@utils/PortfolioTableUtils'

@@ -5,7 +5,7 @@ import { compose } from 'recompose'
 import { connect } from 'react-redux'
 
 import { StyledDialog, StyledCard, MdLockStyled } from './index.styles'
-import { Login } from '@containers/Login'
+import { Login } from '@core/containers/Login'
 import { IProps, IState } from '@components/YouNotLoginedCard/index.types'
 class LoginCard extends PureComponent<IProps, IState> {
   state = {
