@@ -25,7 +25,9 @@ import {
 import { updateBinanceWarning, toggleMocks } from './actions'
 import ComingSoon from '@components/ComingSoon'
 import { MASTER_BUILD } from '@utils/config'
-import CardHeader from '@components/CardHeader'
+import { CardHeader } from '@storybook-components/index'
+import { graphql } from 'react-apollo'
+import { GET_LOGIN_DATA } from '@core/graphql/queries/login/GET_LOGIN_DATA'
 
 class UserContainer extends React.Component {
   store: any
@@ -41,7 +43,14 @@ class UserContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.loginStatus) {
+  //TODO: Made it with react-apollo-hooks
+    const {
+      loginDataQuery: { login: { loginStatus } } = {
+        login: { loginStatus: null },
+      },
+    } = this.props
+
+    if (!loginStatus) {
       return <Redirect to="/portfolio" />
     }
     return (
@@ -113,7 +122,7 @@ const UserWrap = styled.div`
 
 const mapStateToProps = (store) => ({
   isShownMocks: store.user.isShownMocks,
-  loginStatus: store.login.loginStatus,
+  // loginStatus: store.login.loginStatus,
   showBinanceWarning: store.user.showBinanceWarning,
 })
 
@@ -128,4 +137,7 @@ const storeComponent = connect(
   mapDispatchToProps
 )(UserContainer)
 
-export const User = compose(withErrorFallback)(storeComponent)
+export const User = compose(
+  withErrorFallback,
+  graphql(GET_LOGIN_DATA, { name: 'loginDataQuery' }),
+)(storeComponent)

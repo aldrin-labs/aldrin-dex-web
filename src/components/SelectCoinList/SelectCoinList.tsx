@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { searchAssetsQuery } from '@containers/User/api'
 import { SelectT } from '@styles/cssUtils'
-import { client } from '@graphql/apolloClient'
+import { client } from '@core/graphql/apolloClient'
 import { Data } from './SelectCoinList.types'
 import { ApolloQueryResult } from 'apollo-client'
 import ForwarderRefHoc from '@components/ForwardedRefHOC/ForwarderRef'

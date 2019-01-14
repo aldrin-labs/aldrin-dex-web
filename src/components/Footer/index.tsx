@@ -14,7 +14,7 @@ import {
 } from '@containers/App/actions'
 import Props from './index.types'
 import { AppBar, IconButton } from '@material-ui/core'
-import PrivacyPolicy from '@components/PrivacyPolicy/PrivacyPolicy'
+import { PrivacyPolicy } from '@storybook-components/index'
 
 const Footer = ({
   changeModeTheme,
