@@ -7,12 +7,6 @@ import {
 import { Theme } from '@material-ui/core'
 
 export interface IState {
-  tableData: IRowT | null
-  selectedBalances: number[] | null
-  selectedSum: IRowT | null
-  currentSort: { arg: SortArgs; key: Args } | null
-  activeKeys: number[] | null
-  portfolio: IPortfolio | null
   run: boolean
   key: number
 }
