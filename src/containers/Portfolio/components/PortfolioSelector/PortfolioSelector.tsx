@@ -1,11 +1,9 @@
 import * as React from 'react'
-import { compose } from 'recompose'
 import { withTheme } from '@material-ui/styles'
 
 import { Slide, Typography } from '@material-ui/core'
 import Dropdown from '@components/SimpleDropDownSelector'
 
-import { connect } from 'react-redux'
 
 import { IProps } from './PortfolioSelector.types'
 import Accounts from './Accounts/Accounts'
@@ -118,9 +116,8 @@ class PortfolioSelector extends React.Component<IProps> {
       activeKeys,
       activeWallets,
       dustFilter,
-      login,
     } = this.props
-
+    const login = true
     const isCheckedAll =
       activeKeys.length + activeWallets.length ===
       newKeys.length + newWallets.length
@@ -143,22 +140,22 @@ class PortfolioSelector extends React.Component<IProps> {
           <Accounts
             {...{
               color,
+              login,
               isSideNavOpen,
               isCheckedAll,
               newKeys,
               onToggleAll: this.onToggleAll,
               onKeyToggle: this.onKeyToggle,
-              login,
             }}
           />
 
           <Wallets
             {...{
               color,
+              login,
               isSideNavOpen,
               newWallets,
               onWalletToggle: this.onWalletToggle,
-              login,
             }}
           />
           {!login && (
@@ -204,11 +201,5 @@ class PortfolioSelector extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = (store: any) => ({
-  login: store.login.loginStatus,
-})
 
-export default compose(
-  withTheme(),
-  connect(mapStateToProps)
-)(PortfolioSelector)
+export default withTheme()(PortfolioSelector)
