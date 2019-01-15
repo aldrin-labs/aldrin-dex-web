@@ -54,6 +54,9 @@ import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/queries/portfolio/
 import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/mutations/portfolio/updateOptimizationCountOfRuns'
 import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 import { MyTradesQuery } from '@components/TradeOrderHistory/api'
+import LoaderWrapperComponent
+  from '@containers/Portfolio/components/PortfolioTable/Optimization/LoaderWrapper/LoaderWrapper'
+import ErrorDialog from '@containers/Portfolio/components/PortfolioTable/Optimization/Dialog/Dialog'
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
