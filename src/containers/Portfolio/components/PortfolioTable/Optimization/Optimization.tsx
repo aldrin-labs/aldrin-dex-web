@@ -21,7 +21,7 @@ import {
 import LineChart from '@components/LineChart'
 import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
-import QueryRenderer, { queryRendererHoc } from '@components/QueryRenderer'
+import QueryRenderer, { queryRendererHoc } from '@core/components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import {
   calcAllSumOfPortfolioAsset,

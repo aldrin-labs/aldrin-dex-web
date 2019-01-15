@@ -5,7 +5,7 @@ import { withTheme } from '@material-ui/styles'
 import { Mutation, Query } from 'react-apollo'
 
 import { getPortfolioMainQuery } from '@containers/Portfolio/api'
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 import {
   TableWithSort,
   addMainSymbol,

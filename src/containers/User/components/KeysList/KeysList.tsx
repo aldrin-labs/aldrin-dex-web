@@ -13,7 +13,7 @@ import { Loading } from '@components/Loading'
 
 import { getKeysQuery } from '@containers/User/api'
 import { DeleteKeyDialog } from '@containers/User/components/KeysList'
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 
 class KeysListComponent extends React.Component {
   state = {

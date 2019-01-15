@@ -2,7 +2,7 @@ import * as React from 'react'
 import { isEqual } from 'lodash-es'
 import { TableWithSort } from '@storybook-components/index'
 
-import { queryRendererHoc } from '@components/QueryRenderer'
+import { queryRendererHoc } from '@core/components/QueryRenderer'
 import { MyTradesQuery } from './api'
 import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './TradeOrderHistoryTable.types'

@@ -30,7 +30,7 @@ import {
   MARKET_ORDERS,
   updateOrderBookQuerryFunction,
 } from './api'
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import { orders } from '@containers/Chart/mocks'

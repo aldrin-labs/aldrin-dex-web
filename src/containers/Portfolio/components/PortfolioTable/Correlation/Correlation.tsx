@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Joyride from 'react-joyride'
 
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
 import { CorrelationMatrix } from '@storybook-components/index'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
