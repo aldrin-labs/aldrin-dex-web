@@ -1,4 +1,4 @@
-import { LinearProgress, Card } from '@material-ui/core'
+import { LinearProgress, Card, CardContent } from '@material-ui/core'
 import styled from 'styled-components'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import { CardHeader } from '@storybook-components/index'
@@ -52,9 +52,13 @@ export const PTWrapper = styled.div`
   ${customAquaScrollBar};
 `
 
-export const StyledCardHeader = styled(CardHeader as React.SFC<{
+interface InterfaceStyledCardHeader extends CardHeaderProps {
   title: string
-}>)`
+}
+
+export const StyledCardHeader = styled(CardHeader as React.SFC<
+  InterfaceStyledCardHeader
+>)`
   margin-bottom: 15px;
 
   & > div {
@@ -85,6 +89,7 @@ export const LoaderWrapper = styled.div`
   right: 0;
   left: 0;
   top: 0;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,6 +97,10 @@ export const LoaderWrapper = styled.div`
   & > div {
     z-index: 1;
   }
+`
+
+export const CardContentStyled = styled(CardContent)`
+  height: calc(100% - 34px);
 `
 
 export const LoaderInnerWrapper = styled.div`
