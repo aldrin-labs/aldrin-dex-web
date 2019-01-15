@@ -4,7 +4,7 @@ import Joyride from 'react-joyride'
 import { connect } from 'react-redux'
 import { withErrorFallback } from '@storybook-components/hoc/withErrorFallback/withErrorFallback'
 
-import DonutChart from './DonutChart/DonutChart'
+import IndustryChart from '@core/components/IndustryChart'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { portfolioIndustrySteps } from '@utils/joyrideSteps'
@@ -44,7 +44,7 @@ class PortfolioTableIndustries extends React.Component<IndProps, IState> {
               mountOnEnter
               unmountOnExit
             >
-              <DonutChart />
+              <IndustryChart />
             </Fade>
           }
         />
