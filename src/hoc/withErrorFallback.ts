@@ -8,7 +8,7 @@ import {
   lifecycle,
 } from 'recompose'
 
-import { ErrorFallback } from '@components/ErrorFallback'
+import { ErrorFallback } from '@storybook-components/index'
 
 export const withErrorFallback: any = compose(
   setDisplayName('ErrorBoundry'),
