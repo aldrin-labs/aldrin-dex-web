@@ -9,7 +9,7 @@ import QueryRenderer from '@components/QueryRenderer'
 import {
   TableWithSort,
   addMainSymbol,
-} from '@storybook-components/index'
+} from '@storybook/components/index'
 
 import {
   combineTableData,

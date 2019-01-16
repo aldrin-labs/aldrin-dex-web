@@ -5,7 +5,7 @@ import Joyride from 'react-joyride'
 
 import QueryRenderer from '@components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
-import { CorrelationMatrix } from '@storybook-components/index'
+import { CorrelationMatrix } from '@storybook/components/index'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
   toggleCorrelationTableFullscreen,

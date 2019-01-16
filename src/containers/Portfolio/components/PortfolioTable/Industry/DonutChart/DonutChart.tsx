@@ -1,5 +1,5 @@
 import React from 'react'
-import { DonutChart as Chart } from '@storybook-components/index'
+import { DonutChart as Chart } from '@storybook/components/index'
 import { Query } from 'react-apollo'
 
 import { GET_INDUSTRIES } from '@core/graphql/queries/portfolio/GET_INDUSTRIES'

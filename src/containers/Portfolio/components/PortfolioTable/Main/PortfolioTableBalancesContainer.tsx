@@ -20,7 +20,7 @@ import TradeOrderHistoryTable from '@components/TradeOrderHistory/TradeOrderHist
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import PortfolioMainTable from '@components/PortfolioMainTable/PortfolioMainTable'
-import { withErrorFallback } from '@storybook-components/hoc/withErrorFallback/withErrorFallback'
+import { withErrorFallback } from '@storybook/components/hoc/withErrorFallback/withErrorFallback'
 import Template from './Template/Template'
 
 class PortfolioTableBalances extends React.Component<IProps, IState> {

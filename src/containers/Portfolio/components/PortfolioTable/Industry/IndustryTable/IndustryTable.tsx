@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
-import { TableWithSort as Table } from '@storybook-components/index'
+import { TableWithSort as Table } from '@storybook/components/index'
 import {
   onCheckBoxClick,
 } from '@utils/PortfolioTableUtils'
 import { Query, Mutation } from 'react-apollo'
-import { ErrorFallback } from '@storybook-components/ErrorFallback'
+import { ErrorFallback } from '@storybook/components/ErrorFallback'
 import { Theme } from '@material-ui/core'
 
 import { combineIndustryData } from './utils'

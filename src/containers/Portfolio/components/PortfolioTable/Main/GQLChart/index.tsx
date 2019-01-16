@@ -3,7 +3,7 @@ import { compose, Query } from 'react-apollo'
 import { withTheme } from '@material-ui/styles'
 import { isEqual } from 'lodash-es'
 
-import { PortfolioChart } from '@storybook-components/index'
+import { PortfolioChart } from '@storybook/components/index'
 import QueryRenderer from '@components/QueryRenderer'
 import { PRICE_HISTORY_QUERY, GET_COINS } from '@containers/Portfolio/api'
 import { withErrorFallback } from '@hoc/index'
