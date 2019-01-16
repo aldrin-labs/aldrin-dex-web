@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { getExchangesForKeysListQuery } from '@containers/User/api'
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 import { SelectR } from '@styles/cssUtils'
 
 const SelectExchangeList = ({ data, ...otherPropsForSelect }) => {

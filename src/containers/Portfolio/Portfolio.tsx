@@ -10,7 +10,7 @@ import { PortfolioTable } from '@containers/Portfolio/components'
 import { Fade, LinearProgress } from '@material-ui/core'
 import { withTheme } from '@material-ui/styles'
 
-import { CustomError } from '@components/ErrorFallback/ErrorFallback'
+import { CustomError } from '@storybook-components/index'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
 import {
   updatePortfolioSettingsMutation,
