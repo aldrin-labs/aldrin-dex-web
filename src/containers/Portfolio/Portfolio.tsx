@@ -132,6 +132,7 @@ class PortfolioComponent extends React.Component<IProps, IState> {
                   <PortfolioContainer>
                     {/* refactor this */}
                     <PortfolioSelector
+                      login={true}
                       updatePortfolioSettings={updatePortfolioSettings}
                       portfolioId={portfolioId}
                       dustFilter={dustFilter}
