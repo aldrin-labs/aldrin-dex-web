@@ -6,7 +6,7 @@ import wait from 'waait'
 import Table from '../PortfolioMainTable'
 
 import { portfolio, mocks, mockT } from '../mocks'
-import ThemeWrapper from '@components/TablePlaceholderLoader'
+import ThemeWrapper from '@storybook-components/TablePlaceholderLoader'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'

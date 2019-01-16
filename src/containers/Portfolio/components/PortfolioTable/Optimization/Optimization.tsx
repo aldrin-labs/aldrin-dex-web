@@ -27,7 +27,7 @@ import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
   roundPercentage,
-} from '@utils/PortfolioTableUtils'
+} from '@core/utils/PortfolioTableUtils'
 
 import {
   InnerChartContainer,

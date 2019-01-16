@@ -26,7 +26,7 @@ import {
   IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import { cloneArrayElementsOneLevelDeep } from '@utils/PortfolioTableUtils'
+import { cloneArrayElementsOneLevelDeep } from '@core/utils/PortfolioTableUtils'
 import { combineToBarChart } from './mocks'
 import {
   updateRebalanceMutation,
