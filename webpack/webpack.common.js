@@ -20,6 +20,14 @@ const config = {
         'web',
         'components'
       ),
+      '@storybook': path.join(
+        __dirname,
+        '..',
+        'src',
+        'storybook',
+        'src',
+        'web',
+      ),
       '@core': path.join(
         __dirname,
         '..',
