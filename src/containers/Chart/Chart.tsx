@@ -20,7 +20,7 @@ import {
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
 import * as userActions from '@containers/User/actions'
-import TablePlaceholderLoader from '@components/TablePlaceholderLoader'
+import TablePlaceholderLoader from '@storybook-components/TablePlaceholderLoader'
 import {
   ExchangeQuery,
   MARKET_TICKERS,

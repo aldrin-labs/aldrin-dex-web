@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { formatNumberToUSFormat } from '@utils/PortfolioTableUtils'
+import { formatNumberToUSFormat } from '@core/utils/PortfolioTableUtils'
 import { IProps } from './RebalanceMoneyButtons.types'
 import {
   ButtonsInnerWrapper,

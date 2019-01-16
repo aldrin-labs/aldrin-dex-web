@@ -12,7 +12,7 @@ import { MarketsQuery } from './api'
 import {
   formatNumberToUSFormat,
   roundAndFormatNumber,
-} from '@utils/PortfolioTableUtils'
+} from '@core/utils/PortfolioTableUtils'
 
 import {
   Container,
