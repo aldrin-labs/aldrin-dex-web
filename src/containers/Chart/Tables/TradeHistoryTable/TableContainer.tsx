@@ -8,7 +8,7 @@ import {
 } from '@utils/chartPageUtils'
 
 import { IProps, IState } from './TableContainer.types'
-import { withErrorFallback } from '@hoc/'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 let unsubscribe: Function | undefined
 

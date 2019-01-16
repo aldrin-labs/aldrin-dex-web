@@ -7,7 +7,7 @@ import { MyTradesQuery } from './api'
 import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
 import { IProps, IState } from './TradeOrderHistoryTable.types'
 import { formatDate } from '@utils/dateUtils'
-import { withErrorFallback } from '@hoc/'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 import Loader from '@components/TablePlaceholderLoader/newLoader'
 
 const tableHeadings = [
