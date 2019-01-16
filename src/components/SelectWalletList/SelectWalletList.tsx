@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { searchSupportedNetworksQuery } from '@containers/User/api'
-import QueryRenderer from '../QueryRenderer/index'
+import QueryRenderer from '@core/components/QueryRenderer/index'
 import { SelectR } from '@styles/cssUtils'
 
 const SelectWalletList = ({ data, ...otherPropsForSelect }) => {
