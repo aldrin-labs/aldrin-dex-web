@@ -14,7 +14,7 @@ import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
   roundAndFormatNumber,
-} from '@utils/PortfolioTableUtils'
+} from '@core/utils/PortfolioTableUtils'
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { exchangeOptions } from '.././mocks'
 import SelectCoinList from '@components/SelectCoinList/SelectCoinList'

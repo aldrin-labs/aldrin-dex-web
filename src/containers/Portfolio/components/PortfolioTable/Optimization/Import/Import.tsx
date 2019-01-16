@@ -49,7 +49,7 @@ import {
   TableSelectsContaienr,
 } from './Import.styles'
 import { StyledCardHeader } from '../Optimization.styles'
-import { sliceCoinName } from '@utils/PortfolioTableUtils'
+import { sliceCoinName } from '@core/utils/PortfolioTableUtils'
 
 export default class Import extends PureComponent<IProps> {
   state = {

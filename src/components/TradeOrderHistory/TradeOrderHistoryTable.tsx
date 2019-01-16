@@ -4,11 +4,11 @@ import { TableWithSort } from '@storybook-components/index'
 
 import { queryRendererHoc } from '@components/QueryRenderer'
 import { MyTradesQuery } from './api'
-import { roundAndFormatNumber } from '@utils/PortfolioTableUtils'
+import { roundAndFormatNumber } from '@core/utils/PortfolioTableUtils'
 import { IProps, IState } from './TradeOrderHistoryTable.types'
 import { formatDate } from '@utils/dateUtils'
 import { withErrorFallback } from '@hoc/'
-import Loader from '@components/TablePlaceholderLoader/newLoader'
+import Loader from '@storybook-components/TablePlaceholderLoader/newLoader'
 
 const tableHeadings = [
   { isNumber: false, name: 'Coin', id: 'coin' },
