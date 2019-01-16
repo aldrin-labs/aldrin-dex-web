@@ -14,12 +14,11 @@ import {
   GridContainer,
   ChartContainer,
 } from './PortfolioTableBalances.styles'
-// import Chart from './GQLChart'
-import PortfolioChart from '@core/containers/PortfolioChart/PortfolioChart'
-import TradeOrderHistory from '@core/containers/TradeOrderHistory'
+import PortfolioMainChart from '@core/containers/PortfolioMainChart/PortfolioMainChart'
+import TradeOrderHistory from '@core/containers/TradeOrderHistory/TradeOrderHistory'
+import PortfolioMainTable from '@core/containers/PortfolioMainTable/PortfolioMainTable'
 import { portfolioMainSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
-import PortfolioMainTable from '@components/PortfolioMainTable/PortfolioMainTable'
 import { withErrorFallback } from '@storybook-components/hoc/withErrorFallback/withErrorFallback'
 import Template from './Template/Template'
 
@@ -73,7 +72,7 @@ class PortfolioTableBalances extends React.Component<IProps, IState> {
           PortfolioMainTable={<PortfolioMainTable tab={tab} />}
           PortfolioActions={<TradeOrderHistory />}
           Chart={
-            <PortfolioChart
+            <PortfolioMainChart
               title="Portfolio Value | Coming Soon | In development"
               style={{
                 marginLeft: 0,
