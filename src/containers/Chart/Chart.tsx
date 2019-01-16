@@ -30,7 +30,7 @@ import {
   MARKET_ORDERS,
   updateOrderBookQuerryFunction,
 } from './api'
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
 import { SingleChart } from '@components/Chart'
 import { orders } from '@containers/Chart/mocks'
@@ -41,7 +41,7 @@ import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 import { singleChartSteps } from '@utils/joyrideSteps'
 import { setTimeout } from 'timers'
-import { withErrorFallback } from '@hoc/index'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 import TransparentExtendedFAB from '@components/TransparentExtendedFAB'
 import withAuth from '@hoc/withAuth'
 

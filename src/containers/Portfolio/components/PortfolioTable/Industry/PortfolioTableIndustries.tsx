@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Fade } from '@material-ui/core'
 import Joyride from 'react-joyride'
 import { connect } from 'react-redux'
-import { withErrorFallback } from '@storybook/components/hoc/withErrorFallback/withErrorFallback'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 import IndustryChart from '@core/components/IndustryChart'
 import { IndProps } from '@containers/Portfolio/interfaces'

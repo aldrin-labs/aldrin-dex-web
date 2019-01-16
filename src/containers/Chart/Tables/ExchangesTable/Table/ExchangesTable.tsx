@@ -11,7 +11,7 @@ import {
   FlexCell,
   Icon,
 } from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.styles'
-import { withErrorFallback } from '@hoc/'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 class ExchangesTable extends PureComponent<IProps> {
   render() {

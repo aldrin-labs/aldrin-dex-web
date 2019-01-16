@@ -21,7 +21,7 @@ import {
 import LineChart from '@components/LineChart'
 import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
 import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
-import QueryRenderer, { queryRendererHoc } from '@components/QueryRenderer'
+import QueryRenderer, { queryRendererHoc } from '@core/components/QueryRenderer'
 import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
 import {
   calcAllSumOfPortfolioAsset,
@@ -52,8 +52,6 @@ import config from '@utils/linkConfig'
 import { graphql } from 'react-apollo'
 import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/queries/portfolio/getOptimizationCountOfRuns'
 import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/mutations/portfolio/updateOptimizationCountOfRuns'
-import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
-import { MyTradesQuery } from '@components/TradeOrderHistory/api'
 import LoaderWrapperComponent
   from '@containers/Portfolio/components/PortfolioTable/Optimization/LoaderWrapper/LoaderWrapper'
 import ErrorDialog from '@containers/Portfolio/components/PortfolioTable/Optimization/Dialog/Dialog'

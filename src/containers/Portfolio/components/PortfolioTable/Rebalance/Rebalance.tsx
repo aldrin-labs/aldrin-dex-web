@@ -17,7 +17,7 @@ import EditIcon from '@material-ui/icons/Edit'
 
 import { Container as Content } from '../Industry/Industry.styles'
 import { systemError } from '@utils/errorsConfig'
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 import { BarChart } from '@storybook/components/index'
 import {
   IProps,

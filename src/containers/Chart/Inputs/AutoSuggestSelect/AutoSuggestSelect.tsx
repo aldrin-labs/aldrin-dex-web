@@ -4,7 +4,7 @@ import { withTheme } from '@material-ui/styles'
 
 import * as actions from '@containers/Chart/actions'
 import TextInputLoader from '@components/Placeholders/TextInputLoader'
-import QueryRenderer from '@components/QueryRenderer'
+import QueryRenderer from '@core/components/QueryRenderer'
 import { Loading } from '@components/Loading/Loading'
 import { MARKETS_BY_EXCHANE_QUERY } from '@containers/Chart/api'
 import { createFilter } from 'react-select'

@@ -4,7 +4,7 @@ import { compose } from 'recompose'
 import { Redirect } from 'react-router'
 import { connect } from 'react-redux'
 
-import { withErrorFallback } from '@hoc/withErrorFallback'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 import {
   // KeysList,

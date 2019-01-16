@@ -6,7 +6,7 @@ import {
   TableWithSort,
   addMainSymbol,
 } from '@storybook/components/index'
-import { queryRendererHoc } from '@components/QueryRenderer'
+import { queryRendererHoc } from '@core/components/QueryRenderer'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 import { MarketsQuery } from './api'
 import {

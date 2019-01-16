@@ -20,7 +20,7 @@ import {
   RowWithVolumeChart,
 } from '@containers/Chart/Tables/SharedStyles'
 import { IProps } from './SpreadTable.types'
-import { withErrorFallback } from '@hoc/'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 const RowFunc = ({
   order,
