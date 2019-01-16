@@ -8,7 +8,7 @@ import { roundAndFormatNumber } from '@core/utils/PortfolioTableUtils'
 import { IProps, IState } from './TradeOrderHistoryTable.types'
 import { formatDate } from '@utils/dateUtils'
 import { withErrorFallback } from '@hoc/'
-import Loader from '@storybook-components/TablePlaceholderLoader/newLoader'
+import Loader from '@storybook/components/TablePlaceholderLoader/newLoader'
 
 const tableHeadings = [
   { isNumber: false, name: 'Coin', id: 'coin' },
