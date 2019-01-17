@@ -11,22 +11,13 @@ const config = {
   resolve: {
     extensions: ['.js', '.jsx', '.web.js', '.mjs', '.ts', '.tsx'],
     alias: {
-      '@storybook-components': path.join(
-        __dirname,
-        '..',
-        'src',
-        'storybook',
-        'src',
-        'web',
-        'components'
-      ),
       '@storybook': path.join(
         __dirname,
         '..',
         'src',
         'storybook',
         'src',
-        'web',
+        'web'
       ),
       '@core': path.join(
         __dirname,

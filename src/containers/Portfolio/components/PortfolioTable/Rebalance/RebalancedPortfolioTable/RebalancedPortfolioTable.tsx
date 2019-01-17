@@ -36,7 +36,7 @@ import {
   TableWithSort,
   Table as ImTable,
   addMainSymbol,
-} from '@storybook-components/index'
+} from '@storybook/components/index'
 import { Loading } from '@components/Loading'
 import { IconButtonWithHover } from '../Rebalance.styles'
 import { Grow } from '@material-ui/core'
