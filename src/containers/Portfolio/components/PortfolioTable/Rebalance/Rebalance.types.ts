@@ -1,12 +1,6 @@
 import { WithTheme } from '@material-ui/core'
 import { Map } from 'typescript'
 import moment from 'moment'
-export type ISortArgs =
-  | 'exchange'
-  | 'symbol'
-  | 'portfolioPerc'
-  | 'price'
-  | 'trade'
 
 // TODO: We should have one type for price & portfolioPerc, deltaPrice in IRow
 
@@ -17,7 +11,7 @@ export interface IRow {
   symbol: string
   price: string
   currentPrice: string | number
-  portfolioPerc: number | string | null
+  portfolioPerc: number | string
   deltaPrice?: number | string
   isCustomAsset?: boolean
   priceSnapshot: number
@@ -30,8 +24,10 @@ export interface IProps extends WithTheme {
   isShownMocks: boolean
   baseCoin: string
   filterValueSmallerThenPercentage: number
+  tab: string
   updateRebalanceMutationQuery: Function
   refetch: Function
+  hideToolTip: Function
 }
 
 export interface IState {
@@ -54,7 +50,6 @@ export interface IState {
   totalPercents: number | string
   leftBar: string
   rightBar: string
-  run: boolean
   key: number
   loading: boolean
   staticRowsMap: Map<string, string>

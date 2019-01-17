@@ -1,4 +1,6 @@
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import { cloneArrayElementsOneLevelDeep, sliceCoinName } from '@core/utils/PortfolioTableUtils'
+import { sumSame } from '@core/utils/PortfolioOptimizationUtils'
 
 export const removeEditableModeInCoins = (rows: IRow[]) =>
   rows.map((el: IRow) => {
@@ -246,3 +248,15 @@ export const preparePrice = (price: number | string) => {
 }
 
 export const stripDigitPartOfNumberToTwoDecimals = (num: number | string) => num.toString().match(/^[0-9]{1,3}\.[0-9]{2}/)
+
+
+export function combineToBarChart(dataForChart) {
+  const clonedDataChart = cloneArrayElementsOneLevelDeep(dataForChart)
+
+  const newDataForBarChart = sumSame(clonedDataChart, 'symbol', 'portfolioPerc').map((dataItem) => ({
+    x: sliceCoinName(dataItem.symbol),
+    y: parseFloat(parseFloat(dataItem.portfolioPerc).toFixed(2)) || 0
+  }))
+
+  return newDataForBarChart
+}

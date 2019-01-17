@@ -30,7 +30,7 @@ import {
   TitleItem,
   StyledSlider,
 } from './RebalancedPortfolioTable.styles'
-import * as UTILS from '@utils/PortfolioRebalanceUtils'
+import * as UTILS from '@core/utils/PortfolioRebalanceUtils'
 import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import {
   TableWithSort,

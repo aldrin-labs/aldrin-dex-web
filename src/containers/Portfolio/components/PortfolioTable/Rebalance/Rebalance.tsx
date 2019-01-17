@@ -2,7 +2,9 @@ import React from 'react'
 import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
+import { withTheme } from '@material-ui/styles'
 import Joyride from 'react-joyride'
+import moment from 'moment'
 
 import {
   Dialog,
@@ -12,29 +14,33 @@ import {
   Fab,
   Grow,
 } from '@material-ui/core'
-import moment from 'moment'
-import EditIcon from '@material-ui/icons/Edit'
 
-import { Container as Content } from '../Industry/Industry.styles'
-import { systemError } from '@utils/errorsConfig'
 import QueryRenderer from '@core/components/QueryRenderer'
-import { BarChart } from '@storybook/components/index'
 import {
+  updateRebalanceMutation,
+} from '@core/graphql/mutations/portfolio/updateRebalanceMutation'
+import { getMyPortfolioAndRebalanceQuery } from '@core/graphql/queries/portfolio/rebalance/getMyPortfolioAndRebalanceQuery'
+import * as UTILS from '@core/utils/PortfolioRebalanceUtils'
+import { cloneArrayElementsOneLevelDeep } from '@core/utils/PortfolioTableUtils'
+import { portfolioRebalanceSteps } from '@core/utils/joyrideSteps'
+
+
+import { Container as Content } from '@storybook/styles/cssUtils'
+
+import { systemError } from '@utils/errorsConfig'
+import { BarChart } from '@storybook/components/index'
+import { CardHeader } from '@storybook/components/index'
+import EmptyTablePlaceholder from '@storybook/components/EmptyTablePlaceholder'
+                import {
   IProps,
   IState,
   IRow,
   IShapeOfRebalancePortfolioRow,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
-import { mockTableData } from '@containers/Portfolio/components/PortfolioTable/Rebalance/mocks'
-import { cloneArrayElementsOneLevelDeep } from '@core/utils/PortfolioTableUtils'
-import { combineToBarChart } from './mocks'
-import {
-  updateRebalanceMutation,
-  getMyPortfolioAndRebalanceQuery,
-} from '@containers/Portfolio/api'
+
+
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
-import * as UTILS from '@utils/PortfolioRebalanceUtils'
-import { portfolioRebalanceSteps } from '@utils/joyrideSteps'
+
 import * as actions from '@containers/User/actions'
 
 import {
@@ -44,11 +50,8 @@ import {
   Container,
   BtnsWrapper,
 } from './Rebalance.styles'
-import { withTheme } from '@material-ui/styles'
-import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
-import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
 import config from '@utils/linkConfig'
-import { CardHeader } from '@storybook/components/index'
+
 
 // TODO: Remove quantity
 // TODO: Fix types for snapshots changes
@@ -77,7 +80,6 @@ class Rebalance extends React.Component<IProps, IState> {
     totalPercents: 0,
     leftBar: '#fff',
     rightBar: '#4ed8da',
-    run: true,
     key: 0,
     loading: false,
     openWarning: false,
@@ -90,8 +92,6 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   componentDidMount = () => {
-    document.addEventListener('keydown', this.escFunction)
-
     const { isShownMocks, data } = this.props
     this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
   }
@@ -100,10 +100,6 @@ class Rebalance extends React.Component<IProps, IState> {
     const { isShownMocks, data } = nextProps
 
     this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
-  }
-
-  componentWillUnmount = () => {
-    document.removeEventListener('keydown', this.escFunction)
   }
 
   combineRebalanceData = (
@@ -132,7 +128,7 @@ class Rebalance extends React.Component<IProps, IState> {
           exchange: el.where,
           symbol: el.coin,
           price: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
-          portfolioPerc: null,
+          portfolioPerc: '',
           priceSnapshot: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           percentSnapshot: null,
         })
@@ -145,7 +141,7 @@ class Rebalance extends React.Component<IProps, IState> {
             id: i,
             exchange: el.exchange,
             symbol: el.coin,
-            portfolioPerc: null,
+            portfolioPerc: '',
             price: UTILS.preparePrice(parseFloat(el.amount.$numberDecimal)),
             deltaPrice: el.diff.$numberDecimal,
             isCustomAsset: el.isCustomAsset,
@@ -197,11 +193,11 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     const composeWithMocksCurrentPortfolio = isShownMocks
-      ? [...newTableCurrentPortfolioData, ...mockTableData]
+      ? [...newTableCurrentPortfolioData]
       : newTableCurrentPortfolioData
 
     const composeWithMocksRebalancedPortfolio = isShownMocks
-      ? [...newTableRebalancedPortfolioData, ...mockTableData]
+      ? [...newTableRebalancedPortfolioData]
       : newTableRebalancedPortfolioData
 
     if (userHasRebalancePortfolio) {
@@ -362,18 +358,13 @@ class Rebalance extends React.Component<IProps, IState> {
   }
 
   updateServerDataOnSave = async () => {
-    const { updateRebalanceMutationQuery, refetch } = this.props
+    const { updateRebalanceMutationQuery } = this.props
     const { rows, totalRows, timestampSnapshot } = this.state
 
     const combinedRowsData = rows.map((el: IRow) => ({
       _id: el._id,
       exchange: el.exchange,
       coin: el.symbol,
-      // amount: el.isCustomAsset
-      //   ? el.price.toString()
-      //   : staticRowsMap.get(el._id).price !== el.price
-      //   ? (el.price / el.currentPrice).toString()
-      //   : el.quantity.toString(),
       amount: el.price.toString(),
       percent: el.portfolioPerc.toString(),
       diff: el.deltaPrice.toString(),
@@ -548,12 +539,6 @@ class Rebalance extends React.Component<IProps, IState> {
     this.setState(obj)
   }
 
-  escFunction = (e: KeyboardEvent): void => {
-    if (e.keyCode === 27 && this.state.isEditModeEnabled) {
-      this.onEditModeEnable()
-    }
-  }
-
   handleJoyrideCallback = (data) => {
     if (
       data.action === 'close' ||
@@ -726,12 +711,12 @@ class Rebalance extends React.Component<IProps, IState> {
                       alwaysShowLegend={true}
                       charts={[
                         {
-                          data: combineToBarChart(staticRows),
+                          data: UTILS.combineToBarChart(staticRows),
                           color: leftBar,
                           title: 'Current',
                         },
                         {
-                          data: combineToBarChart(rows),
+                          data: UTILS.combineToBarChart(rows),
                           color: rightBar,
                           title: 'Rebalanced',
                         },
