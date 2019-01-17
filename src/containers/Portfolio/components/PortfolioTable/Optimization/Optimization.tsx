@@ -289,11 +289,6 @@ class Optimization extends Component<IProps, IState> {
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        {/*<EfficientFrontierChart*/}
-          {/*showBlurOnSections={showBlurOnSections}*/}
-          {/*data={efficientFrontierData}*/}
-          {/*theme={theme}*/}
-        {/*/>*/}
       </ChartsContainer>
     )
   }
