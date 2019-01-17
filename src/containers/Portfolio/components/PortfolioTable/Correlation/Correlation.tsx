@@ -5,7 +5,7 @@ import Joyride from 'react-joyride'
 
 import QueryRenderer from '@core/components/QueryRenderer'
 import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
-import { CorrelationMatrix } from '@storybook-components/index'
+import { CorrelationMatrix } from '@storybook/components/index'
 import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
 import {
   toggleCorrelationTableFullscreen,
@@ -15,7 +15,7 @@ import { getCorrelationQuery } from '@containers/Portfolio/api'
 import { swapDates } from '@core/utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '../Main/PortfolioTableBalances.styles'
 import { testJSON } from '@utils/chartPageUtils'
-import { CustomError } from '@storybook-components/index'
+import { CustomError } from '@storybook/components/index'
 import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import { MASTER_BUILD } from '@utils/config'
