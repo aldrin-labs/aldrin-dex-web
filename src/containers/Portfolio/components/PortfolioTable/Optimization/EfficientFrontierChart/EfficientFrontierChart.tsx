@@ -11,7 +11,7 @@ import {
 
 import { IState, IProps, Data } from './EfficientFrontierChart.types'
 
-import { ChartTooltip } from './EfficientFrontierChart.styles'
+import { ChartTooltip, Container } from './EfficientFrontierChart.styles'
 import { StyledCardHeader, CardContentStyled } from '../Optimization.styles'
 import { CardContent } from '@material-ui/core'
 import { ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
@@ -65,12 +65,10 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
     }
 
     return (
-      <ChartContainer
+      <Container
         hide={showBlurOnSections}
         className="EfficientFrontierChart"
       >
-        <StyledCardHeader title="Efficient Frontier" />
-        <CardContentStyled>
           <FlexibleXYPlot margin={{ left: 80, bottom: 65 }}>
             {highlightedDotData.length < 1 ? (
               <LineMarkSeries
@@ -125,8 +123,7 @@ export default class EfficientFrontierChart extends Component<IProps, IState> {
               </Hint>
             )}
           </FlexibleXYPlot>
-        </CardContentStyled>
-      </ChartContainer>
+      </Container>
     )
   }
 }
