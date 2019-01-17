@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Loading } from '@components/Loading/Loading'
-import { CustomError } from '@storybook-components/index'
+import { CustomError } from '@storybook/components/index'
 
 export default class LoadableLoading extends React.Component {
   render() {

@@ -25,7 +25,7 @@ import {
 import { updateBinanceWarning, toggleMocks } from './actions'
 import ComingSoon from '@components/ComingSoon'
 import { MASTER_BUILD } from '@utils/config'
-import { CardHeader } from '@storybook-components/index'
+import { CardHeader } from '@storybook/components/index'
 import { graphql } from 'react-apollo'
 import { GET_LOGIN_DATA } from '@core/graphql/queries/login/GET_LOGIN_DATA'
 

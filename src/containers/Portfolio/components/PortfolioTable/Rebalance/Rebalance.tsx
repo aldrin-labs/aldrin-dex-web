@@ -18,7 +18,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import { Container as Content } from '../Industry/Industry.styles'
 import { systemError } from '@utils/errorsConfig'
 import QueryRenderer from '@core/components/QueryRenderer'
-import { BarChart } from '@storybook-components/index'
+import { BarChart } from '@storybook/components/index'
 import {
   IProps,
   IState,
@@ -48,7 +48,7 @@ import { withTheme } from '@material-ui/styles'
 import EmptyTablePlaceholder from '@components/EmptyTablePlaceholder'
 import RebalanceMoneyButtons from './RebalancedPortfolioTable/RebalanceMoneyButtons/RebalanceMoneyButtons'
 import config from '@utils/linkConfig'
-import { CardHeader } from '@storybook-components/index'
+import { CardHeader } from '@storybook/components/index'
 
 // TODO: Remove quantity
 // TODO: Fix types for snapshots changes
