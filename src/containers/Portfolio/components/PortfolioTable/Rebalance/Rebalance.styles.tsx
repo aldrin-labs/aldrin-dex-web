@@ -1,10 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Card, Grid, IconButton, CardContent } from '@material-ui/core'
+import { Card, Grid, CardContent } from '@material-ui/core'
 
-export { ChartWrapper, ChartContainer, Chart, Container }
 
-const ChartWrapper = styled(({ isEditModeEnabled, ...rest }) => (
+export const ChartWrapper = styled(({ isEditModeEnabled, ...rest }) => (
   <Grid {...rest} />
 ))`
   display: flex;
@@ -20,7 +19,7 @@ const ChartWrapper = styled(({ isEditModeEnabled, ...rest }) => (
   }
 `
 
-const ChartContainer = styled(Card)`
+export const ChartContainer = styled(Card)`
   && {
     height: 100%;
     width: 100%;
@@ -28,7 +27,7 @@ const ChartContainer = styled(Card)`
 `
 
 //  minus card header height
-const Chart = styled(({background, ...rest}) => (
+export const Chart = styled(({background, ...rest}) => (
   <CardContent {...rest} />
 ))`
   background: ${(props: { background: string }) => props.background};
@@ -39,7 +38,7 @@ const Chart = styled(({background, ...rest}) => (
   }
 `
 
-const Container = styled(({ isEditModeEnabled, ...rest }) => (
+export const Container = styled(({ isEditModeEnabled, ...rest }) => (
   <Grid {...rest} />
 ))`
   justify-content: ${(props: { isEditModeEnabled: boolean }) =>
