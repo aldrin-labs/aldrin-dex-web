@@ -61,7 +61,7 @@ export interface IState {
   timestampSnapshot: moment.Moment | null
   timestampSnapshotSaved: moment.Moment | null
   isSaveError: boolean
-  isCurrentAssetsChanged: boolean
+  isCurrentAssetsChangedError: boolean
 }
 
 export interface IShapeOfRebalancePortfolioRow {

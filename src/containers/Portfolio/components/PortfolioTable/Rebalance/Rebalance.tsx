@@ -12,25 +12,24 @@ import { updateRebalanceMutation } from '@core/graphql/mutations/portfolio/updat
 import { getMyPortfolioAndRebalanceQuery } from '@core/graphql/queries/portfolio/rebalance/getMyPortfolioAndRebalanceQuery'
 import * as UTILS from '@core/utils/PortfolioRebalanceUtils'
 import { cloneArrayElementsOneLevelDeep } from '@core/utils/PortfolioTableUtils'
-import { portfolioRebalanceSteps } from '@storybook/config/joyrideSteps'
 
 import { Container as Content } from '@storybook/styles/cssUtils'
+import { portfolioRebalanceSteps } from '@storybook/config/joyrideSteps'
+import DialogComponent from '@storybook/components/RebalanceDialog/RebalanceDialog'
+
 import EmptyTablePlaceholder from '@storybook/components/EmptyTablePlaceholder'
+import { IRow } from '@core/types/PortfolioTypes'
 import {
   IProps,
   IState,
-  IRow,
-  IShapeOfRebalancePortfolioRow, PortfolioWithRebalanceType,
+  IShapeOfRebalancePortfolioRow,
+  PortfolioWithRebalanceType,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
-import DialogComponent from './RebalanceDialog/RebalanceDialog'
 import * as actions from '@containers/User/actions'
 
-import {
-  ChartWrapper,
-  Container,
-} from './Rebalance.styles'
+import { ChartWrapper, Container } from './Rebalance.styles'
 import {
   systemError,
   rebalanceAfterAddingNewAccountError,
@@ -71,22 +70,21 @@ class Rebalance extends React.Component<IProps, IState> {
     timestampSnapshot: null,
     timestampSnapshotSaved: null,
     isSaveError: false,
-    isCurrentAssetsChanged: false,
+    isCurrentAssetsChangedError: false,
   }
 
   componentDidMount = () => {
-    const { isShownMocks, data } = this.props
-    this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
+    const { data } = this.props
+    this.combineRebalanceData(data.myPortfolios[0])
   }
 
   componentWillReceiveProps(nextProps: IProps) {
-    const { isShownMocks, data } = nextProps
+    const { data } = nextProps
 
-    this.combineRebalanceData(isShownMocks, data.myPortfolios[0])
+    this.combineRebalanceData(data.myPortfolios[0])
   }
 
   combineRebalanceData = (
-    isShownMocks: boolean,
     getMyPortfolioAndRebalanceQueryData: PortfolioWithRebalanceType
   ) => {
     const userHasRebalancePortfolio =
@@ -174,32 +172,17 @@ class Rebalance extends React.Component<IProps, IState> {
       )
     }
 
-    const composeWithMocksCurrentPortfolio = isShownMocks
-      ? [...newTableCurrentPortfolioData]
-      : newTableCurrentPortfolioData
-
-    const composeWithMocksRebalancedPortfolio = isShownMocks
-      ? [...newTableRebalancedPortfolioData]
-      : newTableRebalancedPortfolioData
-
     if (userHasRebalancePortfolio) {
       this.setTableData(
-        composeWithMocksCurrentPortfolio,
-        composeWithMocksRebalancedPortfolio
+        newTableCurrentPortfolioData,
+        newTableRebalancedPortfolioData
       )
     } else {
       this.setTableData(
-        composeWithMocksCurrentPortfolio,
-        composeWithMocksCurrentPortfolio
+        newTableCurrentPortfolioData,
+        newTableCurrentPortfolioData
       )
     }
-  }
-
-  setTimestamp = (timestamp) => {
-    this.setState({
-      timestampSnapshot: timestamp,
-      timestampSnapshotSaved: timestamp,
-    })
   }
 
   setTableData = (
@@ -429,14 +412,14 @@ class Rebalance extends React.Component<IProps, IState> {
     })
   }
 
-  onReset = (event, resetSavedRows = false) => {
+  onReset = (event: Event, resetSavedRows = false) => {
     const { totalStaticRows } = this.state
     const clonedStaticRows = cloneArrayElementsOneLevelDeep(
       this.state.staticRows
     )
     // TODO: BUT are we are we really sure that it will the same for multiaccounts? +
 
-    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el, i) => ({
+    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el: IRow) => ({
       ...el,
       priceSnapshot: el.price,
       percentSnapshot: el.portfolioPerc,
@@ -517,7 +500,7 @@ class Rebalance extends React.Component<IProps, IState> {
     this.setState(obj)
   }
 
-  handleJoyrideCallback = (data) => {
+  handleJoyrideCallback = (data: any) => {
     if (
       data.action === 'close' ||
       data.action === 'skip' ||
@@ -535,12 +518,12 @@ class Rebalance extends React.Component<IProps, IState> {
     message: string,
     isSystemError = false,
     isSaveError = false,
-    isCurrentAssetsChanged = false
+    isCurrentAssetsChangedError = false
   ) => {
     this.setState({
       isSystemError,
       isSaveError,
-      isCurrentAssetsChanged,
+      isCurrentAssetsChangedError,
       openWarning: true,
       warningMessage: message,
     })
@@ -548,11 +531,6 @@ class Rebalance extends React.Component<IProps, IState> {
 
   hideWarning = () => {
     this.setState({ openWarning: false })
-  }
-
-  openLink = (link: string = '') => {
-    this.hideWarning()
-    window.open(link, 'CCAI Feedback')
   }
 
   render() {
@@ -586,7 +564,7 @@ class Rebalance extends React.Component<IProps, IState> {
       isSystemError,
       warningMessage,
       isSaveError,
-      isCurrentAssetsChanged,
+      isCurrentAssetsChangedError,
     } = this.state
 
     const secondary = palette.secondary.main
@@ -632,8 +610,13 @@ class Rebalance extends React.Component<IProps, IState> {
 
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
-          <Content container spacing={16} key={`content`}>
-            <Container item md={12} isEditModeEnabled={isEditModeEnabled} key={`table-container`}>
+          <Content key={`content`} container spacing={16}>
+            <Container
+              key={`table-container`}
+              item
+              md={12}
+              isEditModeEnabled={isEditModeEnabled}
+            >
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
@@ -692,20 +675,18 @@ class Rebalance extends React.Component<IProps, IState> {
             {/* end of a grid */}
 
             <DialogComponent
-              {... {
+              {...{
                 openWarning,
                 warningMessage,
                 isSaveError,
                 isSystemError,
-                isCurrentAssetsChanged,
+                isCurrentAssetsChangedError,
                 hideWarning: this.hideWarning,
                 onSaveClick: this.onSaveClick,
-                openLink: this.openLink,
                 onReset: this.onReset,
                 createNewSnapshot: this.createNewSnapshot,
               }}
             />
-
           </Content>
         </EmptyTablePlaceholder>
       </>
@@ -718,7 +699,6 @@ const mapDispatchToProps = (dispatch: any) => ({
 })
 
 const mapStateToProps = (store: any) => ({
-  isShownMocks: store.user.isShownMocks,
   toolTip: store.user.toolTip,
 })
 const RebalanceContainer = (props) => (
