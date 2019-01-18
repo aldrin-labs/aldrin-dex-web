@@ -3,61 +3,17 @@ import { connect } from 'react-redux'
 import styled from 'styled-components'
 import Joyride from 'react-joyride'
 
-import QueryRenderer from '@core/components/QueryRenderer'
-import { CorrelationMatrixMockData } from './mocks'
-import { CorrelationMatrix, CustomError } from '@storybook/components/index'
 import { IProps } from './Correlation.types'
-import { getCorrelationQuery } from '@core/graphql/queries/portfolio/getCorrelation'
 import { swapDates } from '@core/utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '@storybook/styles/cssUtils'
-import { testJSON } from '@core/utils/chartPageUtils'
 import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
 import * as actions from '@containers/User/actions'
 import {
   toggleCorrelationTableFullscreen,
   setCorrelationPeriod as setCorrelationPeriodAction,
 } from '@containers/Portfolio/actions'
-import { MASTER_BUILD } from '@utils/config'
 
-const Correlation = (props: IProps) => {
-  const {
-    children,
-    isFullscreenEnabled,
-    period,
-    setCorrelationPeriodToStore,
-    theme,
-    startDate,
-    endDate,
-  } = props
-
-  let dataRaw = {}
-  if (
-    props.data.myPortfolios &&
-    props.data.myPortfolios.length > 0 &&
-    typeof props.data.myPortfolios[0].correlationMatrixByDay === 'string' &&
-    props.data.myPortfolios[0].correlationMatrixByDay.length > 0
-  ) {
-    const matrix = props.data.myPortfolios[0].correlationMatrixByDay
-    dataRaw = testJSON(matrix) ? JSON.parse(matrix) : matrix
-  } else {
-    return <CustomError error={'wrongShape'} />
-  }
-
-  return (
-    <>
-      {children}
-      <CorrelationMatrix
-        fullScreenChangeHandler={props.toggleFullscreen}
-        isFullscreenEnabled={isFullscreenEnabled || false}
-        data={dataRaw}
-        theme={theme}
-        setCorrelationPeriod={setCorrelationPeriodToStore}
-        period={period}
-        dates={{ startDate, endDate }}
-      />
-    </>
-  )
-}
+import Correlation from '@core/components/CorrelationMatrix'
 
 const CorrelationWrapper = (props: IProps) => {
   const { isShownMocks, children, theme, tab } = props
@@ -104,35 +60,9 @@ const CorrelationWrapper = (props: IProps) => {
           },
         }}
       />
-      {isShownMocks && !MASTER_BUILD ? (
-        <Correlation
-          key="=/"
-          data={{
-            myPortfolios: [
-              {
-                correlationMatrixByDay: JSON.stringify(
-                  CorrelationMatrixMockData
-                ),
-              },
-            ],
-          }}
-          theme={theme}
-          children={children}
-          {...props}
-        />
-      ) : (
-        <QueryRenderer
-          key="=/asfasd"
-          fetchPolicy="network-only"
-          component={Correlation}
-          query={getCorrelationQuery}
-          variables={{
-            startDate,
-            endDate,
-          }}
-          {...props}
-        />
-      )}
+      <Correlation
+        theme={theme}
+      />
     </PTWrapper>
   )
 }
@@ -142,8 +72,6 @@ const PTWrapper = styled(PTWrapperRaw)`
 `
 
 const mapStateToProps = (store: any) => ({
-  isShownMocks: store.user.isShownMocks,
-  isFullscreenEnabled: store.portfolio.correlationTableFullscreenEnabled,
   startDate: store.portfolio.correlationStartDate,
   endDate: store.portfolio.correlationEndDate,
   period: store.portfolio.correlationPeriod,
