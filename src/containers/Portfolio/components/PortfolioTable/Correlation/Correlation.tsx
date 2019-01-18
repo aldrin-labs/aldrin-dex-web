@@ -4,20 +4,19 @@ import styled from 'styled-components'
 import Joyride from 'react-joyride'
 
 import QueryRenderer from '@core/components/QueryRenderer'
-import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
-import { CorrelationMatrix } from '@storybook/components/index'
-import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
+import { CorrelationMatrixMockData } from './mocks'
+import { CorrelationMatrix, CustomError } from '@storybook/components/index'
+import { IProps } from './Correlation.types'
+import { getCorrelationQuery } from '@core/graphql/queries/portfolio/getCorrelation'
+import { swapDates } from '@core/utils/PortfolioTableUtils'
+import { PTWrapper as PTWrapperRaw } from '@storybook/styles/cssUtils'
+import { testJSON } from '@core/utils/chartPageUtils'
+import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
+import * as actions from '@containers/User/actions'
 import {
   toggleCorrelationTableFullscreen,
   setCorrelationPeriod as setCorrelationPeriodAction,
 } from '@containers/Portfolio/actions'
-import { getCorrelationQuery } from '@containers/Portfolio/api'
-import { swapDates } from '@core/utils/PortfolioTableUtils'
-import { PTWrapper as PTWrapperRaw } from '@storybook/styles/cssUtils'
-import { testJSON } from '@utils/chartPageUtils'
-import { CustomError } from '@storybook/components/index'
-import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
-import * as actions from '@containers/User/actions'
 import { MASTER_BUILD } from '@utils/config'
 
 const Correlation = (props: IProps) => {
