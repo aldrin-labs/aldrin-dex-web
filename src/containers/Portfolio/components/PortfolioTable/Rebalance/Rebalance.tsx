@@ -16,8 +16,8 @@ import { cloneArrayElementsOneLevelDeep } from '@core/utils/PortfolioTableUtils'
 import { Container as Content } from '@storybook/styles/cssUtils'
 import { portfolioRebalanceSteps } from '@storybook/config/joyrideSteps'
 import DialogComponent from '@storybook/components/RebalanceDialog/RebalanceDialog'
-
 import EmptyTablePlaceholder from '@storybook/components/EmptyTablePlaceholder'
+
 import { IRow } from '@core/types/PortfolioTypes'
 import {
   IProps,
