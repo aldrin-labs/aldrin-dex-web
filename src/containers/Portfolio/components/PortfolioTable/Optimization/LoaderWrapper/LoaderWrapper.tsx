@@ -1,6 +1,6 @@
 import React from 'react'
 import { LoaderInnerWrapper, LoaderWrapper } from '../Optimization.styles'
-import { Loading } from '@components/index'
+import { Loading } from '@storybook/components/index'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { Fade } from '@material-ui/core'
 

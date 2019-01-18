@@ -1,27 +1,31 @@
 import React from 'react'
+import nanoid from 'nanoid'
+import { Grow } from '@material-ui/core'
 import EditIcon from '@material-ui/icons/Edit'
 import SaveIcon from '@material-ui/icons/Save'
 import Replay from '@material-ui/icons/Replay'
 import ClearIcon from '@material-ui/icons/Clear'
 import SnapshotIcon from '@material-ui/icons/Camera'
-import nanoid from 'nanoid'
 import Typography from '@material-ui/core/Typography'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import AddIcon from '@material-ui/icons/Add'
 import Tooltip from '@material-ui/core/Tooltip'
 
+import { IProps, IState } from './RebalancedPortfolioTable.types'
+import { IRow } from '@core/types/PortfolioTypes'
+
+import * as UTILS from '@core/utils/PortfolioRebalanceUtils'
 import {
   cloneArrayElementsOneLevelDeep,
   formatNumberToUSFormat,
   roundAndFormatNumber,
 } from '@core/utils/PortfolioTableUtils'
-import { IProps, IState } from './RebalancedPortfolioTable.types'
+
 import { exchangeOptions } from '.././mocks'
 import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
 import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 import { handleRef } from '@components/ReactSelectComponent/utils'
 import {
-  InputTable,
   SDeleteIcon,
   LoaderInnerWrapper,
   LoaderWrapper,
@@ -29,17 +33,14 @@ import {
   TitleContainer,
   TitleItem,
   StyledSlider,
+  IconButtonWithHover,
 } from './RebalancedPortfolioTable.styles'
-import * as UTILS from '@core/utils/PortfolioRebalanceUtils'
-import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 import {
   TableWithSort,
   Table as ImTable,
   addMainSymbol,
+  Loading,
 } from '@storybook/components/index'
-import { Loading } from '@components/Loading'
-import { IconButtonWithHover } from '../Rebalance.styles'
-import { Grow } from '@material-ui/core'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,

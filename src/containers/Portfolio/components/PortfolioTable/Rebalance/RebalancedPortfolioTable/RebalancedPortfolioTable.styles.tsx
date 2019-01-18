@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 import DeleteIcon from '@material-ui/icons/Delete'
-import { Card } from '@material-ui/core'
+import { Card, IconButton } from '@material-ui/core'
 import Slider from '@material-ui/lab/Slider'
 
 
@@ -78,6 +78,18 @@ export const StyledSlider = styled(({trackAfterBackground, trackBeforeBackground
   
   & .thumb {
     background: ${(props: { thumbBackground: string }) => props.thumbBackground};;
+  }
+`
+
+export const IconButtonWithHover = styled(IconButton)`
+  will-change: color;
+
+  &:hover {
+    color: ${(props: { hoverColor: string }) => props.hoverColor};
+  }
+
+  && {
+    padding: 0.25rem;
   }
 `
 

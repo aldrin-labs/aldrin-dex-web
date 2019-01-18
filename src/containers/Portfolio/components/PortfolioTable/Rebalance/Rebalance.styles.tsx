@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import { Card, Grid, IconButton, CardContent } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
 
 export { ChartWrapper, ChartContainer, Chart, Container }
 
@@ -47,31 +46,4 @@ const Container = styled(({ isEditModeEnabled, ...rest }) => (
     props.isEditModeEnabled ? 'space-between' : 'left'};
 
   max-height: 55%;
-`
-
-export const BtnsWrapper = styled(Grid)`
-  display: flex;
-  flex-direction: column;
-`
-
-export const IconButtonWithHover = styled(IconButton)`
-  will-change: color;
-
-  &:hover {
-    color: ${(props: { hoverColor: string }) => props.hoverColor};
-  }
-
-  && {
-    padding: 0.25rem;
-  }
-`
-
-export const Label = styled(Typography)`
-  padding: 6px 6px 6px 6px;
-  margin-bottom: 15px;
-  font-size: 0.875rem;
-  background-color: #263238;
-  font-weight: bold;
-  white-space: nowrap;
-  text-transform: uppercase;
 `

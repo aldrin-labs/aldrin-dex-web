@@ -17,7 +17,7 @@ const Correlation = React.lazy(() =>
 
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
-import { Loading } from '@components/index'
+import { Loading } from '@storybook/components/index'
 import { Mutation } from 'react-apollo'
 import { TOGGLE_BASE_COIN } from '@core/graphql/mutations/portfolio/toggleBaseCoin'
 

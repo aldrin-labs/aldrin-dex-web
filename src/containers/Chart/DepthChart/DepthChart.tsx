@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core'
 import { red, green } from '@material-ui/core/colors'
 
-import { Loading } from '@components/Loading/Loading'
+import { Loading } from '@storybook/components/Loading/Loading'
 import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
 import { hexToRgbAWithOpacity } from '../../../styles/helpers'
 import { IDepthChartProps, IDepthChartState } from './DepthChart.types'
