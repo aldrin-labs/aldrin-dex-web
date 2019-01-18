@@ -1,24 +1,25 @@
 import { WithTheme } from '@material-ui/core'
 import { Map } from 'typescript'
 import moment from 'moment'
+import { IRow, PortfolioType } from '@core/types/PortfolioTypes'
 
 // TODO: We should have one type for price & portfolioPerc, deltaPrice in IRow
 
-export interface IRow {
-  _id: string
-  id: number
-  exchange: string
-  symbol: string
-  price: string
-  currentPrice: string | number
-  portfolioPerc: number | string
-  deltaPrice?: number | string
-  isCustomAsset?: boolean
-  priceSnapshot: number
-  percentSnapshot: number
+
+export type PortfolioWithRebalanceType = {
+  name: string
+  portfolioAssets: PortfolioType[]
+  myRebalance: {
+    total: string
+    timestampSnapshot: number
+    assets: IShapeOfRebalancePortfolioRow[]
+  }
 }
 
 export interface IProps extends WithTheme {
+  data: {
+    myPortfolios: PortfolioWithRebalanceType[]
+  }
   children: object
   isUSDCurrently: boolean
   isShownMocks: boolean

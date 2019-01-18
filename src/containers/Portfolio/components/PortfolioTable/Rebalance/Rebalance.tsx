@@ -6,54 +6,37 @@ import { withTheme } from '@material-ui/styles'
 import Joyride from 'react-joyride'
 import moment from 'moment'
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
-  Fab,
-  Grow,
-} from '@material-ui/core'
-
 import QueryRenderer from '@core/components/QueryRenderer'
-import {
-  updateRebalanceMutation,
-} from '@core/graphql/mutations/portfolio/updateRebalanceMutation'
+import PortfolioRebalanceChart from '@core/containers/PortfolioRebalanceChart/PortfolioRebalanceChart'
+import { updateRebalanceMutation } from '@core/graphql/mutations/portfolio/updateRebalanceMutation'
 import { getMyPortfolioAndRebalanceQuery } from '@core/graphql/queries/portfolio/rebalance/getMyPortfolioAndRebalanceQuery'
 import * as UTILS from '@core/utils/PortfolioRebalanceUtils'
 import { cloneArrayElementsOneLevelDeep } from '@core/utils/PortfolioTableUtils'
-import { portfolioRebalanceSteps } from '@core/utils/joyrideSteps'
-
+import { portfolioRebalanceSteps } from '@storybook/config/joyrideSteps'
 
 import { Container as Content } from '@storybook/styles/cssUtils'
-
-import { systemError } from '@utils/errorsConfig'
-import { BarChart } from '@storybook/components/index'
-import { CardHeader } from '@storybook/components/index'
 import EmptyTablePlaceholder from '@storybook/components/EmptyTablePlaceholder'
-                import {
+import {
   IProps,
   IState,
   IRow,
-  IShapeOfRebalancePortfolioRow,
+  IShapeOfRebalancePortfolioRow, PortfolioWithRebalanceType,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
-
 import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
-
+import DialogComponent from './RebalanceDialog/RebalanceDialog'
 import * as actions from '@containers/User/actions'
 
 import {
   ChartWrapper,
-  ChartContainer,
-  Chart,
   Container,
-  BtnsWrapper,
 } from './Rebalance.styles'
-import config from '@utils/linkConfig'
+import {
+  systemError,
+  rebalanceAfterAddingNewAccountError,
+  emptyInputsInCoinOrExchangeNameError,
+} from '@core/utils/errorsConfig'
 
-
-// TODO: Remove quantity
 // TODO: Fix types for snapshots changes
 // TODO: Maybe we should use totalSnapshotRowsSaved for EditFunction and Reset functions too
 
@@ -104,44 +87,44 @@ class Rebalance extends React.Component<IProps, IState> {
 
   combineRebalanceData = (
     isShownMocks: boolean,
-    getMyPortfolioAndRebalanceQuery
+    getMyPortfolioAndRebalanceQueryData: PortfolioWithRebalanceType
   ) => {
     const userHasRebalancePortfolio =
-      getMyPortfolioAndRebalanceQuery &&
-      getMyPortfolioAndRebalanceQuery.myRebalance &&
-      getMyPortfolioAndRebalanceQuery.myRebalance.assets &&
-      getMyPortfolioAndRebalanceQuery.myRebalance.assets.length > 0
+      getMyPortfolioAndRebalanceQueryData &&
+      getMyPortfolioAndRebalanceQueryData.myRebalance &&
+      getMyPortfolioAndRebalanceQueryData.myRebalance.assets &&
+      getMyPortfolioAndRebalanceQueryData.myRebalance.assets.length > 0
 
     const userHasPortfolio =
-      getMyPortfolioAndRebalanceQuery &&
-      getMyPortfolioAndRebalanceQuery.portfolioAssets &&
-      getMyPortfolioAndRebalanceQuery.portfolioAssets.length > 0
+      getMyPortfolioAndRebalanceQueryData &&
+      getMyPortfolioAndRebalanceQueryData.portfolioAssets &&
+      getMyPortfolioAndRebalanceQueryData.portfolioAssets.length > 0
 
     let newTableRebalancedPortfolioData: IRow[] = []
     let newTableCurrentPortfolioData: IRow[] = []
 
     if (userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
+      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQueryData.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
           id: i,
           exchange: el.where,
           symbol: el.coin,
           price: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
-          portfolioPerc: '',
+          portfolioPerc: null,
           priceSnapshot: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           percentSnapshot: null,
         })
       )
 
-      newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQuery.myRebalance.assets!.map(
+      newTableRebalancedPortfolioData = getMyPortfolioAndRebalanceQueryData.myRebalance.assets!.map(
         (el: IShapeOfRebalancePortfolioRow, i: number) => {
           return {
             _id: el._id,
             id: i,
             exchange: el.exchange,
             symbol: el.coin,
-            portfolioPerc: '',
+            portfolioPerc: null,
             price: UTILS.preparePrice(parseFloat(el.amount.$numberDecimal)),
             deltaPrice: el.diff.$numberDecimal,
             isCustomAsset: el.isCustomAsset,
@@ -164,7 +147,7 @@ class Rebalance extends React.Component<IProps, IState> {
 
       if (isCurrentPortfolioDataHaveMoreCoinsThanRebalanced) {
         this.showWarning(
-          'You have added a new account. Reset everything to include this account in rebalance.',
+          rebalanceAfterAddingNewAccountError,
           false,
           false,
           true
@@ -177,7 +160,7 @@ class Rebalance extends React.Component<IProps, IState> {
     }
 
     if (!userHasRebalancePortfolio && userHasPortfolio) {
-      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQuery.portfolioAssets!.map(
+      newTableCurrentPortfolioData = getMyPortfolioAndRebalanceQueryData.portfolioAssets!.map(
         (el, i: number) => ({
           _id: el._id,
           id: i,
@@ -185,7 +168,6 @@ class Rebalance extends React.Component<IProps, IState> {
           symbol: el.coin,
           price: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           portfolioPerc: null,
-          quantity: el.quantity,
           priceSnapshot: UTILS.preparePrice(parseFloat(el.price) * el.quantity),
           percentSnapshot: null,
         })
@@ -321,11 +303,7 @@ class Rebalance extends React.Component<IProps, IState> {
       return
     }
     if (UTILS.checkForEmptyNamesInAssets(rows) && isArgumentAnObject) {
-      this.showWarning(
-        'Your assets has empty names in columns Exchange and Coin, what we should do with them?',
-        false,
-        true
-      )
+      this.showWarning(emptyInputsInCoinOrExchangeNameError, false, true)
       return
     }
 
@@ -654,8 +632,8 @@ class Rebalance extends React.Component<IProps, IState> {
 
         <EmptyTablePlaceholder isEmpty={tableDataHasData}>
           {children}
-          <Content container spacing={16}>
-            <Container item md={12} isEditModeEnabled={isEditModeEnabled}>
+          <Content container spacing={16} key={`content`}>
+            <Container item md={12} isEditModeEnabled={isEditModeEnabled} key={`table-container`}>
               <RebalancedPortfolioTable
                 {...{
                   isEditModeEnabled,
@@ -691,113 +669,43 @@ class Rebalance extends React.Component<IProps, IState> {
             </Container>
 
             <ChartWrapper
+              key={`chart-container`}
               item
               md={12}
-              isEditModeEnabled={isEditModeEnabled}
               className="PortfolioDistributionChart"
             >
-              <ChartContainer>
-                <CardHeader title={`Portfolio Distribution`} />
-
-                <Chart
-                  background={theme.palette.background.default}
-                >
-                  {staticRows && staticRows[0] && staticRows[0].portfolioPerc && (
-                    <BarChart
-                      bottomMargin={75}
-                      theme={theme}
-                      hideDashForToolTip={true}
-                      xAxisVertical={true}
-                      alwaysShowLegend={true}
-                      charts={[
-                        {
-                          data: UTILS.combineToBarChart(staticRows),
-                          color: leftBar,
-                          title: 'Current',
-                        },
-                        {
-                          data: UTILS.combineToBarChart(rows),
-                          color: rightBar,
-                          title: 'Rebalanced',
-                        },
-                      ]}
-                    />
-                  )}
-                </Chart>
-              </ChartContainer>
+              <PortfolioRebalanceChart
+                title={`Portfolio Distribution`}
+                background={theme.palette.background.default}
+                staticRows={staticRows}
+                rows={rows}
+                bottomMargin={75}
+                theme={theme}
+                hideDashForToolTip={true}
+                xAxisVertical={true}
+                alwaysShowLegend={true}
+                leftBar={leftBar}
+                rightBar={rightBar}
+              />
             </ChartWrapper>
 
             {/* end of a grid */}
 
-            <Dialog
-              fullScreen={false}
-              open={openWarning}
-              aria-labelledby="responsive-dialog-title"
-            >
-              <DialogTitle id="responsive-dialog-title">
-                {warningMessage}
-              </DialogTitle>
-              <DialogActions>
-                {isSaveError && (
-                  <>
-                    <Button
-                      onClick={() => {
-                        this.hideWarning()
-                        this.onSaveClick()
-                      }}
-                      color="secondary"
-                      autoFocus={true}
-                    >
-                      Save anyway
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        this.hideWarning()
-                        this.onSaveClick(true)
-                      }}
-                      size="small"
-                      style={{ margin: '0.5rem 1rem' }}
-                    >
-                      Delete empty and save
-                    </Button>
-                  </>
-                )}
-                {isSystemError && (
-                  <>
-                    <Button
-                      onClick={this.hideWarning}
-                      color="secondary"
-                      autoFocus={true}
-                    >
-                      ok
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        this.openLink(config.bugLink)
-                      }}
-                      size="small"
-                      style={{ margin: '0.5rem 1rem' }}
-                    >
-                      Report bug
-                    </Button>
-                  </>
-                )}
-                {isCurrentAssetsChanged && (
-                  <Button
-                    id="resetRebalancedPortfolioButton"
-                    onClick={() => {
-                      this.onReset(null, true)
-                      this.createNewSnapshot()
-                      this.hideWarning()
-                    }}
-                    color="secondary"
-                    autoFocus={true}
-                  >
-                    Reset my rebalanced portfolio and update snapshot
-                  </Button>
-                )}
-              </DialogActions>
-            </Dialog>
+            <DialogComponent
+              {... {
+                openWarning,
+                warningMessage,
+                isSaveError,
+                isSystemError,
+                isCurrentAssetsChanged,
+                hideWarning: this.hideWarning,
+                onSaveClick: this.onSaveClick,
+                openLink: this.openLink,
+                onReset: this.onReset,
+                createNewSnapshot: this.createNewSnapshot,
+              }}
+            />
+
           </Content>
         </EmptyTablePlaceholder>
       </>

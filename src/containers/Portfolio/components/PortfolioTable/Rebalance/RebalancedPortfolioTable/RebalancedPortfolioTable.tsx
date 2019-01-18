@@ -1038,7 +1038,7 @@ export default class RebalancedPortfolioTable extends React.Component<
             title={
               <TitleContainer>
                 <TitleItem>Rebalanced Portfolio</TitleItem>
-                <Grow in={timestampSnapshot}>
+                <Grow in={!!timestampSnapshot}>
                   <TitleItem>
                     {`Snapshot time:${timestampSnapshot &&
                       timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}`}
