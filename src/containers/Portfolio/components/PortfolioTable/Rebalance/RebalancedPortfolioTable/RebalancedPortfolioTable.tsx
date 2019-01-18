@@ -1,15 +1,9 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
 import nanoid from 'nanoid'
-import { Grow } from '@material-ui/core'
-import EditIcon from '@material-ui/icons/Edit'
-import SaveIcon from '@material-ui/icons/Save'
-import Replay from '@material-ui/icons/Replay'
-import ClearIcon from '@material-ui/icons/Clear'
-import SnapshotIcon from '@material-ui/icons/Camera'
+import { Grow, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import AddIcon from '@material-ui/icons/Add'
-import Tooltip from '@material-ui/core/Tooltip'
 
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { IRow } from '@core/types/PortfolioTypes'
@@ -40,7 +34,9 @@ import {
   Table as ImTable,
   addMainSymbol,
   Loading,
+  TooltipCustom,
 } from '@storybook/components/index'
+import { getArrayOfActionElements } from '@storybook/styles/PortfolioRebalanceTableUtils'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -304,7 +300,7 @@ export default class RebalancedPortfolioTable extends React.Component<
 
   onAddRowButtonClick = () => {
     const clonedRows = cloneArrayElementsOneLevelDeep(this.props.rows)
-    const { totalRows, staticRows, updateState } = this.props
+    const { totalRows, updateState } = this.props
     const newRow = {
       _id: nanoid(),
       exchange: 'Exchange',
@@ -318,7 +314,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     }
     clonedRows.push(newRow)
     const rows = UTILS.calculatePriceDifference(
-      UTILS.calculatePercents(clonedRows, totalRows)
+      UTILS.calculatePercents(clonedRows, `${totalRows}`)
     )
     const totalPercents = UTILS.calculateTotalPercents(rows)
 
@@ -351,9 +347,9 @@ export default class RebalancedPortfolioTable extends React.Component<
         ]
 
     const newUndistributedMoney =
-      parseFloat(undistributedMoney) + parseFloat(currentRowMoney)
+      parseFloat(`${undistributedMoney}`) + parseFloat(currentRowMoney)
 
-    const newTotalRows = UTILS.calculateTotal(resultRows, newUndistributedMoney)
+    const newTotalRows = UTILS.calculateTotal(resultRows, `${newUndistributedMoney}`)
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
     const newRowsWithNewPercents = UTILS.calculatePriceDifference(
       UTILS.calculatePercents(resultRows, newTotalRows)
@@ -387,15 +383,17 @@ export default class RebalancedPortfolioTable extends React.Component<
     fontFamily: string,
     showZerosForRebalancedPartIfItsEqualToCurrent: boolean,
     totalPercents: number | string,
-    theme
+    theme: Theme
   ) => {
     const isUSDCurrently = this.props.isUSDCurrently
 
     const transformedData = rows.map((row, index) => {
       const portfolioPercentage = (
-        <Tooltip title={row.portfolioPerc} enterDelay={250} leaveDelay={200}>
-          <span>{UTILS.preparePercentage(row.portfolioPerc)}</span>
-        </Tooltip>
+        <TooltipCustom
+          title={row.portfolioPerc}
+          component={UTILS.preparePercentage(row.portfolioPerc)}
+          withSpan={true}
+        />
       )
 
       const trackAfterBackground =
@@ -424,7 +422,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}
           max={100}
           step={0.5}
-          onChange={(e, value) => {
+          onChange={(e: SyntheticEvent, value: number) => {
             this.onPercentSliderChange(e, value, index)
           }}
           onDragEnd={() => this.onPercentSliderDragEnd(index)}
@@ -559,17 +557,13 @@ export default class RebalancedPortfolioTable extends React.Component<
               oririnalPortfolioPerc: {
                 contentToSort: +staticRowsMap.get(row._id).portfolioPerc,
                 render: (
-                  <Tooltip
+                  <TooltipCustom
                     title={staticRowsMap.get(row._id).portfolioPerc}
-                    enterDelay={250}
-                    leaveDelay={200}
-                  >
-                    <span>
-                      {UTILS.preparePercentage(
-                        staticRowsMap.get(row._id).portfolioPerc
-                      )}
-                    </span>
-                  </Tooltip>
+                    component={UTILS.preparePercentage(
+                      staticRowsMap.get(row._id).portfolioPerc
+                    )}
+                    withSpan={true}
+                  />
                 ),
                 isNumber: true,
               },
@@ -605,13 +599,11 @@ export default class RebalancedPortfolioTable extends React.Component<
                 render: row.isCustomAsset ? (
                   '-'
                 ) : (
-                  <Tooltip
+                  <TooltipCustom
                     title={percentSnapshot}
-                    enterDelay={250}
-                    leaveDelay={200}
-                  >
-                    <span>{UTILS.preparePercentage(percentSnapshot)}</span>
-                  </Tooltip>
+                    component={UTILS.preparePercentage(percentSnapshot)}
+                    withSpan={true}
+                  />
                 ),
                 isNumber: true,
               },
@@ -843,7 +835,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                 }
               : {
                   rebalanced: {
-                    render: `${UTILS.prepareTotal(totalPercents)}%`,
+                    render: `${UTILS.prepareTotal(parseFloat(`${totalPercents}`))}%`,
                     isNumber: true,
                   },
                   sliderPerc: {
@@ -954,88 +946,16 @@ export default class RebalancedPortfolioTable extends React.Component<
             id="PortfolioRebalanceTable"
             rowsWithHover={false}
             actionsColSpan={2}
-            actions={[
-              ...(!isEditModeEnabled
-                ? [
-                    {
-                      id: 1,
-                      icon: (
-                        <Tooltip
-                          title={`Rebalance portfolio`}
-                          enterDelay={250}
-                          leaveDelay={200}
-                        >
-                          <EditIcon id="editButton" />
-                        </Tooltip>
-                      ),
-                      onClick: onEditModeEnable,
-                      color: 'secondary',
-                      style: { color: saveButtonColor, marginRight: '7px' },
-                    },
-                  ]
-                : []),
-              ...(isEditModeEnabled
-                ? [
-                    {
-                      id: 2,
-                      icon: (
-                        <Tooltip
-                          title={`Update snapshot`}
-                          enterDelay={250}
-                          leaveDelay={200}
-                        >
-                          <SnapshotIcon id="snapshotButton" />
-                        </Tooltip>
-                      ),
-                      onClick: onNewSnapshot,
-                      style: { color: '#fff', marginRight: '7px' },
-                    },
-                    {
-                      id: 3,
-                      icon: (
-                        <Tooltip
-                          title={`Discard changes`}
-                          enterDelay={250}
-                          leaveDelay={200}
-                        >
-                          <ClearIcon id="discardChangesButton" />
-                        </Tooltip>
-                      ),
-                      onClick: onDiscardChanges,
-                      style: { color: red, marginRight: '7px' },
-                    },
-                    {
-                      id: 4,
-                      icon: (
-                        <Tooltip
-                          title={`Reset to initial portfolio`}
-                          enterDelay={250}
-                          leaveDelay={200}
-                        >
-                          <Replay id="resetButton" />
-                        </Tooltip>
-                      ),
-                      onClick: onReset,
-                      style: { marginRight: '7px' },
-                    },
-                    {
-                      id: 'random',
-                      icon: (
-                        <Tooltip
-                          title={`Save changes`}
-                          enterDelay={250}
-                          leaveDelay={200}
-                        >
-                          <SaveIcon id="saveButton" />
-                        </Tooltip>
-                      ),
-                      onClick: onSaveClick,
-                      color: saveButtonColor,
-                      style: { color: saveButtonColor, marginRight: '7px' },
-                    },
-                  ]
-                : []),
-            ]}
+            actions={getArrayOfActionElements({
+              isEditModeEnabled,
+              onEditModeEnable,
+              onNewSnapshot,
+              onDiscardChanges,
+              onSaveClick,
+              onReset,
+              red,
+              saveButtonColor,
+            })}
             title={
               <TitleContainer>
                 <TitleItem>Rebalanced Portfolio</TitleItem>

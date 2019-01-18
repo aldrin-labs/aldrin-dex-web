@@ -28,6 +28,11 @@ export interface IProps {
   textColor: string
   totalSnapshotRows: number | string
   staticRowsMap: Map<string, string>
+  fontFamily: string
+  red: string
+  saveButtonColor: string
+  timestampSnapshot: moment.Moment | null
+  onNewSnapshot: () => void
 }
 
 export interface IState {}
