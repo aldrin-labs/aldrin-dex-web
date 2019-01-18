@@ -184,6 +184,7 @@ export default class RebalancedPortfolioTable extends React.Component<
     value: number,
     idx: number
   ) => {
+
     const {
       rows,
       totalRows,
@@ -422,7 +423,7 @@ export default class RebalancedPortfolioTable extends React.Component<
           value={row.portfolioPerc === null ? 0 : +row.portfolioPerc}
           max={100}
           step={0.5}
-          onChange={(e: SyntheticEvent, value: number) => {
+          onChange={(e: React.ChangeEvent<HTMLInputElement>, value: number) => {
             this.onPercentSliderChange(e, value, index)
           }}
           onDragEnd={() => this.onPercentSliderDragEnd(index)}
