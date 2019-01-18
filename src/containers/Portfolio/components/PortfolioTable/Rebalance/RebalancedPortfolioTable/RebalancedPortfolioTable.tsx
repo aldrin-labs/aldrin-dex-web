@@ -74,60 +74,6 @@ export default class RebalancedPortfolioTable extends React.Component<
     this.props.updateState({ selectedActive, areAllActiveChecked })
   }
 
-  onFocusPercentInput = (
-    e: React.FocusEvent<HTMLInputElement>,
-    idx: number
-  ) => {
-    const { rows, updateState } = this.props
-    let percentInput = e.target.value
-
-    if (percentInput === '0' || percentInput === 0) {
-      percentInput = ''
-    }
-
-    const clonedRows = rows!.map((a: IRow) => ({ ...a }))
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: percentInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    updateState({
-      rows: resultRows,
-    })
-  }
-
-  onBlurPercentInput = (e: React.FocusEvent<HTMLInputElement>, idx: number) => {
-    const { rows, updateState } = this.props
-    let percentInput = e.target.value
-
-    if (!/^([0-9]{1,3}\.|)$/.test(percentInput)) {
-      return
-    }
-    if (percentInput === '') {
-      percentInput = '0'
-    } else {
-      percentInput = percentInput.slice(0, -1)
-    }
-
-    const clonedRows = rows.map((a) => ({ ...a }))
-    const resultRows = [
-      ...clonedRows.slice(0, idx),
-      {
-        ...clonedRows[idx],
-        portfolioPerc: percentInput,
-      },
-      ...clonedRows.slice(idx + 1, clonedRows.length),
-    ]
-
-    updateState({
-      rows: resultRows,
-    })
-  }
-
   onPercentSliderDragEnd = (idx: number) => {
     const {
       rows,
@@ -197,53 +143,6 @@ export default class RebalancedPortfolioTable extends React.Component<
     const percentInput = value
 
     if (100 - +totalPercents < 0.5 && percentInput > rows[idx].portfolioPerc) {
-      return
-    }
-
-    const clonedRows = rows.map((a: IRow) => ({ ...a }))
-    const {
-      totalPercentsNew,
-      rowWithNewPriceDiff,
-      isPercentSumGood,
-      newUndistributedMoney,
-      newTableTotalRows,
-    } = UTILS.recalculateAfterInputChange({
-      clonedRows,
-      rows,
-      undistributedMoney,
-      idx,
-      totalRows,
-      totalSnapshotRows,
-      percentInput,
-    })
-
-    updateState({
-      totalPercents: totalPercentsNew,
-      rows: rowWithNewPriceDiff,
-      isPercentSumGood: isPercentSumGood,
-      undistributedMoney: newUndistributedMoney,
-      totalTableRows: newTableTotalRows,
-    })
-  }
-
-  onPercentInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    idx: number
-  ) => {
-    const {
-      rows,
-      totalRows,
-      undistributedMoney,
-      updateState,
-      totalSnapshotRows,
-    } = this.props
-    const percentInput = e.target.value
-
-    if (
-      !/^([0-9]\.[0-9]{1,6}|[0-9]\.?|(!?[1-9][0-9]\.[0-9]{1,6}|[1-9][0-9]\.?)|100|100\.?|100\.[0]{1,6}?|)$/.test(
-        percentInput
-      )
-    ) {
       return
     }
 
