@@ -2,7 +2,6 @@ import React from 'react'
 import nanoid from 'nanoid'
 import { Theme } from '@material-ui/core'
 
-
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { IRow } from '@core/types/PortfolioTypes'
 
@@ -13,7 +12,7 @@ import {
   roundAndFormatNumber,
 } from '@core/utils/PortfolioTableUtils'
 
-import { exchangeOptions } from '.././mocks'
+import { exchangeOptions } from './config'
 import SelectCoinList from '@core/components/SelectCoinList/SelectCoinList'
 import SelectAllExchangeList from '@core/components/SelectAllExchangeList/SelectAllExchangeList'
 import { handleRef } from '@storybook/components/ReactSelectComponent/utils'

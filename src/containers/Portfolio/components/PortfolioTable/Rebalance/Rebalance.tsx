@@ -26,7 +26,7 @@ import {
   PortfolioWithRebalanceType,
 } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
 
-import RebalancedPortfolioTable from './RebalancedPortfolioTable/RebalancedPortfolioTable'
+import PortfolioRebalanceTableContainer from '@core/containers/PortfolioRebalanceTableContainer/PortfolioRebalanceTableContainer'
 import * as actions from '@containers/User/actions'
 
 import { ChartWrapper, Container } from './Rebalance.styles'
@@ -334,9 +334,11 @@ class Rebalance extends React.Component<IProps, IState> {
       percentSnapshot: el.percentSnapshot,
     }))
 
+    //TODO: error when save (timestampSnapshot is null), hotfix below (timestampSnapshot: timestampSnapshot ? timestampSnapshot : moment().unix())
+
     const variablesForMutation = {
       input: {
-        timestampSnapshot: timestampSnapshot.unix(),
+        timestampSnapshot: timestampSnapshot ? timestampSnapshot : moment().unix(),
         total: totalRows.toString(),
         assets: {
           input: combinedRowsData,
@@ -617,7 +619,7 @@ class Rebalance extends React.Component<IProps, IState> {
               md={12}
               isEditModeEnabled={isEditModeEnabled}
             >
-              <RebalancedPortfolioTable
+              <PortfolioRebalanceTableContainer
                 {...{
                   isEditModeEnabled,
                   staticRows,
