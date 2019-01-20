@@ -1,9 +1,11 @@
 import React from 'react'
-import { exchangeByEntryQuery } from '@containers/User/api'
-import { SelectT } from '@styles/cssUtils'
+import { ApolloQueryResult } from 'apollo-client'
+
+import { exchangeByEntryQuery } from '@core/graphql/queries/user/exchangeByEntryQuery'
 import { client } from '@core/graphql/apolloClient'
 import { Data } from './SelectAllExchangeList.types'
-import { ApolloQueryResult } from 'apollo-client'
+import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
+
 
 const combineDataToSelectOptions = (data: Data) => {
   // console.log('data in combine', data);
@@ -39,7 +41,7 @@ export default class SelectAllExchangeList extends React.Component {
     const { ...otherPropsForSelect } = this.props
 
     return (
-      <SelectT
+      <ReactSelectComponent
         defaultOptions={true}
         asyncSelect={true}
         loadOptions={promiseOptions}

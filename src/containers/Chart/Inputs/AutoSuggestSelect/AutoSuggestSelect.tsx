@@ -9,7 +9,7 @@ import { Loading } from '@storybook/components/Loading/Loading'
 import { MARKETS_BY_EXCHANE_QUERY } from '@containers/Chart/api'
 import { createFilter } from 'react-select'
 import { ExchangePair } from '@containers/Chart/Chart'
-import ReactSelectComponent from '@components/ReactSelectComponent'
+import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
 import styled from 'styled-components'
 
 type T = { value: string; data: string }

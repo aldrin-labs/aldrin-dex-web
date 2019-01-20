@@ -1,8 +1,7 @@
 import React from 'react'
 import nanoid from 'nanoid'
-import { Grow, Theme } from '@material-ui/core'
-import Typography from '@material-ui/core/Typography'
-import { fade } from '@material-ui/core/styles/colorManipulator'
+import { Theme } from '@material-ui/core'
+
 
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { IRow } from '@core/types/PortfolioTypes'
@@ -17,32 +16,22 @@ import {
 import { exchangeOptions } from '.././mocks'
 import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
 import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
-import { handleRef } from '@components/ReactSelectComponent/utils'
+import { handleRef } from '@storybook/components/ReactSelectComponent/utils'
+
 import {
-  LoaderInnerWrapper,
-  LoaderWrapper,
-  ContentInner,
-  TitleContainer,
-  TitleItem,
-} from './RebalancedPortfolioTable.styles'
-import {
-  TableWithSort,
-  Table as ImTable,
+  PortfolioRebalanceTable,
   addMainSymbol,
-  Loading,
   TooltipCustom,
   IconButtonWithHover,
   DeleteIcon,
   AddIcon,
   Slider,
 } from '@storybook/components/index'
-import { getArrayOfActionElements } from '@storybook/styles/PortfolioRebalanceTableUtils'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
   IState
 > {
-
   onPercentSliderDragEnd = (idx: number) => {
     const {
       rows,
@@ -793,49 +782,25 @@ export default class RebalancedPortfolioTable extends React.Component<
       onNewSnapshot,
     } = this.props
 
-    const Table = isEditModeEnabled ? ImTable : TableWithSort
+    const tableData = this.putDataInTable()
+
     return (
-      <>
-        {loading && (
-          <LoaderWrapper background={fade(theme.palette.common.black, 0.7)}>
-            <LoaderInnerWrapper>
-              <Loading size={94} margin={'0 0 2rem 0'} />{' '}
-              <Typography color="secondary" variant="h4">
-                Saving rebalanced portfolio...
-              </Typography>{' '}
-            </LoaderInnerWrapper>{' '}
-          </LoaderWrapper>
-        )}
-        <ContentInner>
-          <Table
-            id="PortfolioRebalanceTable"
-            rowsWithHover={false}
-            actionsColSpan={2}
-            actions={getArrayOfActionElements({
-              isEditModeEnabled,
-              onEditModeEnable,
-              onNewSnapshot,
-              onDiscardChanges,
-              onSaveClick,
-              onReset,
-              red,
-              saveButtonColor,
-            })}
-            title={
-              <TitleContainer>
-                <TitleItem>Rebalanced Portfolio</TitleItem>
-                <Grow in={!!timestampSnapshot}>
-                  <TitleItem>
-                    {`Snapshot time:${timestampSnapshot &&
-                      timestampSnapshot.format('MM-DD-YYYY h:mm:ss A')}`}
-                  </TitleItem>
-                </Grow>
-              </TitleContainer>
-            }
-            {...this.putDataInTable()}
-          />
-        </ContentInner>
-      </>
+      <PortfolioRebalanceTable
+        {...{
+          tableData,
+          isEditModeEnabled,
+          theme,
+          loading,
+          onEditModeEnable,
+          onReset,
+          onSaveClick,
+          red,
+          onDiscardChanges,
+          saveButtonColor,
+          timestampSnapshot,
+          onNewSnapshot,
+        }}
+      />
     )
   }
 }

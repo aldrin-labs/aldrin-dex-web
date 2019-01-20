@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { searchAssetsQuery } from '@containers/User/api'
-import { SelectT } from '@styles/cssUtils'
+import { searchAssetsQuery } from '@core/graphql/queries/user/searchAssetsQuery'
+import { ApolloQueryResult } from 'apollo-client'
 import { client } from '@core/graphql/apolloClient'
 import { Data } from './SelectCoinList.types'
-import { ApolloQueryResult } from 'apollo-client'
-import ForwarderRefHoc from '@components/ForwardedRefHOC/ForwarderRef'
+import ForwarderRefHoc from '@core/hoc/ForwarderRef'
+import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
+
 
 const combineDataToSelectOptions = (data: Data) => {
   // console.log('data in combine', data);
@@ -40,7 +41,7 @@ class SelectCoinList extends React.Component {
     const { forwardedRef, ...otherPropsForSelect } = this.props
 
     return (
-      <SelectT
+      <ReactSelectComponent
         ref={forwardedRef}
         asyncSelect={true}
         loadOptions={promiseOptions}

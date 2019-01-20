@@ -22,7 +22,7 @@ import moment from 'moment'
 
 import { systemError } from '@utils/errorsConfig'
 import { RebalancePeriod } from './dataForSelector'
-import ReactSelectComponent from '@components/ReactSelectComponent'
+import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
