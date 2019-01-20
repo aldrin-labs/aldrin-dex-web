@@ -6,25 +6,7 @@ import { Card, IconButton } from '@material-ui/core'
 import Slider from '@material-ui/lab/Slider'
 
 
-export const InputTable = styled.input`
-  max-width: 70px;
-  background: ${(props: { background: string }) => props.background};
-  font-family: ${(props: { fontFamily: string }) => props.fontFamily};
-  font-size: 14px;
-  border: none;
-  outline: none;
-  color: ${(props: { isPercentSumGood?: boolean; red: string }) =>
-    props.isPercentSumGood ? 'inherit' : props.red};
-  
-`
-
-export const TableWrapper = styled.div`
-  position: relative;
-  width: 80%;
-  display: flex;
-`
-
-export const SDeleteIcon = styled(DeleteIcon)`
+export const SDeleteIcon = styled(({hoverColor, ...rest}) => <DeleteIcon {...rest}/>)`
   &:hover {
     color: ${(props: { hoverColor: string }) => props.hoverColor};
   }

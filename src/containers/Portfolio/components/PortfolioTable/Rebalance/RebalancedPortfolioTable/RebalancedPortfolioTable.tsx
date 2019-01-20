@@ -1,4 +1,4 @@
-import React, { SyntheticEvent } from 'react'
+import React from 'react'
 import nanoid from 'nanoid'
 import { Grow, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
@@ -37,6 +37,7 @@ import {
   TooltipCustom,
 } from '@storybook/components/index'
 import { getArrayOfActionElements } from '@storybook/styles/PortfolioRebalanceTableUtils'
+import IconButtonWithHoverComponent from '@storybook/components/IconButtonWithHover/IconButtonWithHover'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
@@ -130,7 +131,6 @@ export default class RebalancedPortfolioTable extends React.Component<
     value: number,
     idx: number
   ) => {
-
     const {
       rows,
       totalRows,
@@ -249,7 +249,10 @@ export default class RebalancedPortfolioTable extends React.Component<
     const newUndistributedMoney =
       parseFloat(`${undistributedMoney}`) + parseFloat(currentRowMoney)
 
-    const newTotalRows = UTILS.calculateTotal(resultRows, `${newUndistributedMoney}`)
+    const newTotalRows = UTILS.calculateTotal(
+      resultRows,
+      `${newUndistributedMoney}`
+    )
     const newTableTotalRows = UTILS.calculateTableTotal(resultRows)
     const newRowsWithNewPercents = UTILS.calculatePriceDifference(
       UTILS.calculatePercents(resultRows, newTotalRows)
@@ -564,13 +567,12 @@ export default class RebalancedPortfolioTable extends React.Component<
           ? {
               deleteIcon: {
                 render: (
-                  <IconButtonWithHover
+                  <IconButtonWithHoverComponent
                     data-e2e="deleteAssetButton"
                     hoverColor={red}
                     onClick={() => this.onDeleteRowClick(index)}
-                  >
-                    <SDeleteIcon />
-                  </IconButtonWithHover>
+                    component={<SDeleteIcon />}
+                  />
                 ),
               },
             }
@@ -696,13 +698,12 @@ export default class RebalancedPortfolioTable extends React.Component<
                   },
                   icon: {
                     render: (
-                      <IconButtonWithHover
+                      <IconButtonWithHoverComponent
                         id="addAssetButton"
                         onClick={this.onAddRowButtonClick}
                         hoverColor={green}
-                      >
-                        <AddIcon />
-                      </IconButtonWithHover>
+                        component={<AddIcon />}
+                      />
                     ),
                   },
                   options: {
@@ -735,7 +736,9 @@ export default class RebalancedPortfolioTable extends React.Component<
                 }
               : {
                   rebalanced: {
-                    render: `${UTILS.prepareTotal(parseFloat(`${totalPercents}`))}%`,
+                    render: `${UTILS.prepareTotal(
+                      parseFloat(`${totalPercents}`)
+                    )}%`,
                     isNumber: true,
                   },
                   sliderPerc: {
