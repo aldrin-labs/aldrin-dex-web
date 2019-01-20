@@ -14,8 +14,8 @@ import {
 } from '@core/utils/PortfolioTableUtils'
 
 import { exchangeOptions } from '.././mocks'
-import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
-import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
+import SelectCoinList from '@core/components/SelectCoinList/SelectCoinList'
+import SelectAllExchangeList from '@core/components/SelectAllExchangeList/SelectAllExchangeList'
 import { handleRef } from '@storybook/components/ReactSelectComponent/utils'
 
 import {

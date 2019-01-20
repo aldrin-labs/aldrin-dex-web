@@ -35,8 +35,6 @@ export const SelectR = styled(ReactSelectComponent)`
   }
 `
 
-export const SelectT = styled(ReactSelectComponent)``
-
 export const Span = styled.span``
 
 export const Label = styled.label``
