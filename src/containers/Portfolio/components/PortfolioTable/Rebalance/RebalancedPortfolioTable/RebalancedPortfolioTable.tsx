@@ -3,7 +3,6 @@ import nanoid from 'nanoid'
 import { Grow, Theme } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import { fade } from '@material-ui/core/styles/colorManipulator'
-import AddIcon from '@material-ui/icons/Add'
 
 import { IProps, IState } from './RebalancedPortfolioTable.types'
 import { IRow } from '@core/types/PortfolioTypes'
@@ -20,14 +19,11 @@ import SelectCoinList from '@components/SelectCoinList/SelectCoinList'
 import SelectAllExchangeList from '@components/SelectAllExchangeList/SelectAllExchangeList'
 import { handleRef } from '@components/ReactSelectComponent/utils'
 import {
-  SDeleteIcon,
   LoaderInnerWrapper,
   LoaderWrapper,
   ContentInner,
   TitleContainer,
   TitleItem,
-  StyledSlider,
-  IconButtonWithHover,
 } from './RebalancedPortfolioTable.styles'
 import {
   TableWithSort,
@@ -35,45 +31,17 @@ import {
   addMainSymbol,
   Loading,
   TooltipCustom,
+  IconButtonWithHover,
+  DeleteIcon,
+  AddIcon,
+  Slider,
 } from '@storybook/components/index'
 import { getArrayOfActionElements } from '@storybook/styles/PortfolioRebalanceTableUtils'
-import IconButtonWithHoverComponent from '@storybook/components/IconButtonWithHover/IconButtonWithHover'
 
 export default class RebalancedPortfolioTable extends React.Component<
   IProps,
   IState
 > {
-  onSelectActiveBalance = (idx: number) => {
-    const selectedActive =
-      (this.props.selectedActive && this.props.selectedActive.slice()) || []
-    const hasIndex = selectedActive.indexOf(idx)
-    if (hasIndex >= 0) {
-      selectedActive.splice(hasIndex, 1)
-    } else {
-      selectedActive.push(idx)
-    }
-
-    const areAllActiveChecked = selectedActive.length === this.props.rows.length
-
-    this.props.updateState({ selectedActive, areAllActiveChecked })
-  }
-
-  onSelectAllActive = () => {
-    const selectedActive =
-      (this.props.selectedActive && this.props.selectedActive.slice()) || []
-    let { areAllActiveChecked } = this.props
-    if (selectedActive.length === this.props.rows.length) {
-      selectedActive.splice(0, selectedActive.length)
-      areAllActiveChecked = false
-    } else {
-      selectedActive.splice(0, selectedActive.length)
-      this.props.rows.forEach((a, i) => {
-        selectedActive.push(i)
-      })
-      areAllActiveChecked = true
-    }
-    this.props.updateState({ selectedActive, areAllActiveChecked })
-  }
 
   onPercentSliderDragEnd = (idx: number) => {
     const {
@@ -308,12 +276,7 @@ export default class RebalancedPortfolioTable extends React.Component<
       const thumbBackground = 'rgba(255,129,0)'
 
       const SliderInput = (
-        <StyledSlider
-          classes={{
-            trackAfter: 'trackAfter',
-            trackBefore: 'trackBefore',
-            thumb: 'thumb',
-          }}
+        <Slider
           disabled={!isEditModeEnabled}
           trackAfterBackground={trackAfterBackground}
           trackAfterOpacity={trackAfterOpacity}
@@ -567,11 +530,11 @@ export default class RebalancedPortfolioTable extends React.Component<
           ? {
               deleteIcon: {
                 render: (
-                  <IconButtonWithHoverComponent
+                  <IconButtonWithHover
                     data-e2e="deleteAssetButton"
+                    component={<DeleteIcon />}
                     hoverColor={red}
                     onClick={() => this.onDeleteRowClick(index)}
-                    component={<SDeleteIcon />}
                   />
                 ),
               },
@@ -698,7 +661,7 @@ export default class RebalancedPortfolioTable extends React.Component<
                   },
                   icon: {
                     render: (
-                      <IconButtonWithHoverComponent
+                      <IconButtonWithHover
                         id="addAssetButton"
                         onClick={this.onAddRowButtonClick}
                         hoverColor={green}
@@ -817,7 +780,6 @@ export default class RebalancedPortfolioTable extends React.Component<
 
   render() {
     const {
-      selectedActive,
       isEditModeEnabled,
       theme,
       loading,
@@ -870,9 +832,6 @@ export default class RebalancedPortfolioTable extends React.Component<
                 </Grow>
               </TitleContainer>
             }
-            checkedRows={selectedActive}
-            onChange={this.onSelectActiveBalance}
-            onSelectAllClick={this.onSelectAllActive}
             {...this.putDataInTable()}
           />
         </ContentInner>

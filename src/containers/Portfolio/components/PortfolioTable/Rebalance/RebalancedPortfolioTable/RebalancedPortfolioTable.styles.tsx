@@ -1,16 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import DeleteIcon from '@material-ui/icons/Delete'
-import { Card, IconButton } from '@material-ui/core'
-import Slider from '@material-ui/lab/Slider'
-
-
-export const SDeleteIcon = styled(({hoverColor, ...rest}) => <DeleteIcon {...rest}/>)`
-  &:hover {
-    color: ${(props: { hoverColor: string }) => props.hoverColor};
-  }
-`
+import { Card } from '@material-ui/core'
 
 export const LoaderWrapper = styled.div`
   position: fixed;
@@ -45,34 +36,6 @@ export const TitleContainer = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-`
-
-export const StyledSlider = styled(({trackAfterBackground, trackBeforeBackground, trackAfterOpacity, thumbBackground, ...rest}) => <Slider {...rest} />)`
-  & .trackAfter {
-    background: ${(props: { trackAfterBackground: string }) => props.trackAfterBackground};
-    opacity: ${(props: { trackAfterOpacity: string }) => props.trackAfterOpacity};
-  }
-  
-  & .trackBefore {
-    background: ${(props: { trackBeforeBackground: string }) => props.trackBeforeBackground};
-    opacity: 1;
-  }
-  
-  & .thumb {
-    background: ${(props: { thumbBackground: string }) => props.thumbBackground};;
-  }
-`
-
-export const IconButtonWithHover = styled(IconButton)`
-  will-change: color;
-
-  &:hover {
-    color: ${(props: { hoverColor: string }) => props.hoverColor};
-  }
-
-  && {
-    padding: 0.25rem;
-  }
 `
 
 export const TitleItem = styled.div``
