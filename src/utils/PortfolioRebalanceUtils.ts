@@ -1,4 +1,4 @@
-import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import { IRow } from '@core/types/PortfolioTypes'
 import { cloneArrayElementsOneLevelDeep, sliceCoinName } from '@core/utils/PortfolioTableUtils'
 import { sumSame } from '@core/utils/PortfolioOptimizationUtils'
 
