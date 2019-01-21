@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react'
 import { CardContent, Typography } from '@material-ui/core'
 import { withTheme } from '@material-ui/styles'
-import { compose } from 'recompose'
-import { connect } from 'react-redux'
 
 import { StyledDialog, StyledCard, MdLockStyled } from './index.styles'
 import { Login } from '@core/containers/Login'
@@ -66,12 +64,5 @@ class LoginCard extends PureComponent<IProps, IState> {
   }
 }
 
-const mapStateToProps = (store: any) => ({
-  login: store.login.loginStatus,
-  openMessage: store.login.modalIsOpen,
-})
 
-export default compose(
-  withTheme(),
-  connect(mapStateToProps)
-)(LoginCard)
+export default withTheme()(LoginCard)

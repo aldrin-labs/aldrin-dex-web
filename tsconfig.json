@@ -25,7 +25,7 @@
       "@utils/*": ["src/utils/*"],
       "@styles/*": ["src/styles/*"],
       "@hoc/*": ["src/hoc/*"],
-      "@icons/*": ["src/icons/*"],
+      "@icons/*": ["src/storybook/src/icons/*"],
       "@graphql/*": ["src/graphql/*"]
     },
     "plugins": [
