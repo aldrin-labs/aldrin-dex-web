@@ -116,8 +116,9 @@ class PortfolioSelector extends React.Component<IProps> {
       activeKeys,
       activeWallets,
       dustFilter,
-      login,
     } = this.props
+    const login = true
+
     const isCheckedAll =
       activeKeys.length + activeWallets.length ===
       newKeys.length + newWallets.length
