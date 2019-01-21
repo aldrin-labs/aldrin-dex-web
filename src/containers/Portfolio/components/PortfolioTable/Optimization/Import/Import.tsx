@@ -19,7 +19,7 @@ import { IProps, IData } from './Import.types'
 import {
   InnerChartContainer,
   ChartContainer,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
+} from '../shared.styles.tsx'
 import {
   SwitchButtonsWrapper,
   InputContainer,

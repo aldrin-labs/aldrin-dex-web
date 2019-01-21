@@ -26,7 +26,7 @@ import { IData } from '@core/types/PortfolioTypes'
 import {
   InnerChartContainer,
   ChartContainer,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
+} from './shared.styles.tsx'
 import {
   ChartsContainer,
   Chart,

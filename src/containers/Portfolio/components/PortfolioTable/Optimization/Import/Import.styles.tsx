@@ -9,7 +9,7 @@ import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
 import {
   HidingStyles,
   HighlightStyles,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles'
+} from '../shared.styles'
 
 export const SwitchButtonsWrapper = styled.div`
   padding: 0 0.5rem;
