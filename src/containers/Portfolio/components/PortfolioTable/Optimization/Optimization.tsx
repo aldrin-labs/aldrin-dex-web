@@ -19,10 +19,10 @@ import {
 
 import {
   IState,
-  IData,
   IProps,
   RawOptimizedData,
 } from './Optimization.types'
+import { IData } from '@core/types/PortfolioTypes'
 import {
   InnerChartContainer,
   ChartContainer,

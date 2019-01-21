@@ -1,9 +1,6 @@
 import { Theme } from '@material-ui/core'
 
-export interface IData {
-  coin: string
-  percentage: number | string
-}
+import { IData } from '@core/types/PortfolioTypes'
 
 export type RawOptimizedData = {
   backtest_results: [number, number]
