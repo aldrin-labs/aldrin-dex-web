@@ -65,7 +65,7 @@
       "^@hoc(.*)$": "<rootDir>/src/hoc$1",
       "^@styles(.*)$": "<rootDir>/src/styles$1",
       "^@graphql(.*)$": "<rootDir>/src/graphql$1",
-      "^@icons(.*)$": "<rootDir>/src/icons$1"
+      "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1"
     }
   },
   "resolutions": {

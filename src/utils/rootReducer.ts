@@ -7,7 +7,6 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import screener from '@containers/Screener/reducer'
 import user from '@containers/User/reducer'
 import chartReducer from '@containers/Chart/reducer'
-import loginReducer from '@containers/Login/reducer'
 import portfolio from '@containers/Portfolio/reducer'
 import ui from '@containers/App/reducer'
 
@@ -18,18 +17,11 @@ const chartPersistConfig = {
 }
 const chart = persistReducer(chartPersistConfig, chartReducer)
 
-const loginPersistConfig = {
-  key: 'login',
-  storage: storage,
-  whitelist: ['user', 'loginStatus']
-};
-const login = persistReducer(loginPersistConfig, loginReducer)
 
 const rootReducer = combineReducers({
   screener,
   router,
   user,
-  login,
   portfolio,
   ui,
   chart,
