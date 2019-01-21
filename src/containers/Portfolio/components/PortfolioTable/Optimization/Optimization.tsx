@@ -1,34 +1,28 @@
 import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
 import { compose } from 'recompose'
 import { connect } from 'react-redux'
-import Switch from '@material-ui/core/Switch'
 import Joyride from 'react-joyride'
+import { Grow, Switch } from '@material-ui/core'
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Button,
-  Grow,
-} from '@material-ui/core'
+import * as Useractions from '@containers/User/actions'
 import * as actions from '@containers/Portfolio/actions'
-import {
-  IState,
-  IData,
-  IProps,
-  RawOptimizedData,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
-import LineChart from '@components/LineChart'
-import EfficientFrontierChart from './EfficientFrontierChart/EfficientFrontierChart'
-import Import from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import'
-import QueryRenderer, { queryRendererHoc } from '@core/components/QueryRenderer'
-import { getCoinsForOptimization } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
+import { getCoinsForOptimization } from '@core/graphql/queries/portfolio/optimization/getCoinsForOptimization'
+import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/queries/portfolio/getOptimizationCountOfRuns'
+import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/mutations/portfolio/updateOptimizationCountOfRuns'
+
 import {
   calcAllSumOfPortfolioAsset,
   percentagesOfCoinInPortfolio,
   roundPercentage,
 } from '@core/utils/PortfolioTableUtils'
 
+import {
+  IState,
+  IData,
+  IProps,
+  RawOptimizedData,
+} from './Optimization.types'
 import {
   InnerChartContainer,
   ChartContainer,
@@ -43,18 +37,20 @@ import {
   StyledCardHeader,
 } from './Optimization.styles'
 
-import { colors } from '@components/LineChart/LineChart.utils'
-import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
-import { sumSame } from '@utils/PortfolioOptimizationUtils'
-import { portfolioOptimizationSteps } from '@utils/joyrideSteps'
-import * as Useractions from '@containers/User/actions'
-import config from '@utils/linkConfig'
-import { graphql } from 'react-apollo'
-import { GET_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/queries/portfolio/getOptimizationCountOfRuns'
-import { UPDATE_OPTIMIZATION_COUNT_OF_RUNS } from '@core/graphql/mutations/portfolio/updateOptimizationCountOfRuns'
-import LoaderWrapperComponent
-  from '@containers/Portfolio/components/PortfolioTable/Optimization/LoaderWrapper/LoaderWrapper'
-import ErrorDialog from '@containers/Portfolio/components/PortfolioTable/Optimization/Dialog/Dialog'
+import Import from './Import/Import'
+import LoaderWrapperComponent from './LoaderWrapper/LoaderWrapper'
+import ErrorDialog from './Dialog/Dialog'
+import LineChart from '@storybook/components/LineChart'
+import EfficientFrontierChart from '@storybook/components/EfficientFrontierChart/EfficientFrontierChart'
+import { CSS_CONFIG } from '@storybook/config/cssConfig'
+import { portfolioOptimizationSteps } from '@storybook/config/joyrideSteps'
+import { TypographyWithCustomColor } from '@storybook/styles/StyledComponents/TypographyWithCustomColor'
+
+import QueryRenderer, { queryRendererHoc } from '@core/components/QueryRenderer'
+import config from '@core/utils/linkConfig'
+import { sumSame } from '@core/utils/PortfolioOptimizationUtils'
+
+
 
 class Optimization extends Component<IProps, IState> {
   state: IState = {
@@ -121,7 +117,7 @@ class Optimization extends Component<IProps, IState> {
   }
 
   showWarning = (message: string | JSX.Element, isSystemError = false) => {
-    this.setState({ openWarning: true, warningMessage: message, isSystemError })
+    this.setState({isSystemError, openWarning: true, warningMessage: message })
   }
 
   hideWarning = () => {
@@ -212,32 +208,32 @@ class Optimization extends Component<IProps, IState> {
     // for real data
     const lineChartData = showAllLineChartData
       ? rawOptimizedData &&
-      rawOptimizedData.length &&
-      rawOptimizedData.map((el, i) => {
-        return {
-          data: el.backtest_results.map((element) => ({
-            label: riskProfileNames[i],
-            x: element[0],
-            y: +(element[1].toFixed(2)),
-          })),
-          color: colors[i],
-        }
-      })
+        rawOptimizedData.length &&
+        rawOptimizedData.map((el, i) => {
+          return {
+            data: el.backtest_results.map((element) => ({
+              label: riskProfileNames[i],
+              x: element[0],
+              y: +element[1].toFixed(2),
+            })),
+            color: CSS_CONFIG.colors[i],
+          }
+        })
       : rawOptimizedData &&
-      rawOptimizedData.length && {
-        data: rawOptimizedData[activeButton].backtest_results.map(
-          (el, i) => ({
-            label: 'Optimized',
-            x: el[0],
-            y: +(el[1].toFixed(2)),
-          })
-        ),
-        color: colors[activeButton],
-      }
+        rawOptimizedData.length && {
+          data: rawOptimizedData[activeButton].backtest_results.map(
+            (el, i) => ({
+              label: 'Optimized',
+              x: el[0],
+              y: +el[1].toFixed(2),
+            })
+          ),
+          color: CSS_CONFIG.colors[activeButton],
+        }
 
     const itemsForChartLegend = riskProfileNames.map((el, i) => ({
       title: el,
-      color: colors[i],
+      color: CSS_CONFIG.colors[i],
     }))
 
     return (
@@ -270,15 +266,18 @@ class Optimization extends Component<IProps, IState> {
                   lineChartData === 0
                     ? undefined
                     : showAllLineChartData
-                      ? lineChartData
-                      : [lineChartData]
+                    ? lineChartData
+                    : [lineChartData]
                 }
                 itemsForChartLegend={itemsForChartLegend}
               />
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <ChartContainer hide={showBlurOnSections} className="EfficientFrontierChart">
+        <ChartContainer
+          hide={showBlurOnSections}
+          className="EfficientFrontierChart"
+        >
           <StyledCardHeader title="Efficient Frontier" />
           <InnerChartContainer>
             <Chart background={theme.palette.background.default}>

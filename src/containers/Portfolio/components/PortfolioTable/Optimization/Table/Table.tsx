@@ -4,7 +4,7 @@ import { Typography, CardContent } from '@material-ui/core'
 import {
   IProps,
   IState,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table.types'
+} from './Table.types'
 import {
   AddStyled,
   StyledCard,

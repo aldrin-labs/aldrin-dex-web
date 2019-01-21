@@ -1,15 +1,15 @@
+import styled from 'styled-components'
+import { Card, withStyles, Theme } from '@material-ui/core'
+
 import AddIcon from '@material-ui/icons/Add'
 import DeleteIcon from '@material-ui/icons/Delete'
-import styled from 'styled-components'
-import { customAquaScrollBar } from '@styles/cssUtils'
-import { Card, withStyles, Theme } from '@material-ui/core'
+
+import { customAquaScrollBar } from '@storybook/styles/cssUtils'
 
 export {
   AddStyled,
   StyledCard,
   Input,
-  Item,
-  HeadItem,
   Head,
   TableInput,
   StyledTable,
@@ -17,6 +17,8 @@ export {
   Col,
   Body,
   StyledDeleteIcon,
+  Item,
+  HeadItem,
 }
 
 const AddStyled = withStyles((theme: Theme) => ({

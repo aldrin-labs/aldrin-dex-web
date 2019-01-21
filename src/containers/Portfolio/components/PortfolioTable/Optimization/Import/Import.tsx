@@ -1,37 +1,25 @@
 import React, { PureComponent } from 'react'
-import styled from 'styled-components'
+import moment from 'moment'
+import { isEqual } from 'lodash-es'
 import { ApolloConsumer } from 'react-apollo'
 import MdReplay from '@material-ui/icons/Replay'
-import {
-  Fab,
-  Button as ButtonMUI,
-  Typography,
-  Card,
-  Grow,
-} from '@material-ui/core'
-import InputLabel from '@material-ui/core/InputLabel'
+import { Fab, Button as ButtonMUI, Typography, Grow } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
-import { find, isEqual } from 'lodash-es'
-import TextField from '@material-ui/core/TextField'
-import Switch from '@material-ui/core/Switch'
-import { BarChart } from '@storybook/components/index'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
-import moment from 'moment'
 
-import { systemError } from '@utils/errorsConfig'
-import { RebalancePeriod } from './dataForSelector'
-import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
-import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
-import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
-import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
+import { RebalancePeriod } from './config'
+import { OPTIMIZE_PORTFOLIO } from '@core/graphql/queries/portfolio/optimization/optimizePortfolio'
+import { sliceCoinName } from '@core/utils/PortfolioTableUtils'
+import { systemError } from '@core/utils/errorsConfig'
+import Table from '../Table/Table'
+import { BarChart, SwitchButtons } from '@storybook/components/index'
+import { IProps, IData } from './Import.types'
 import {
-  IProps,
-  IData,
-} from '@containers/Portfolio/components/PortfolioTable/Optimization/Import/Import.types'
-import { OPTIMIZE_PORTFOLIO } from '@containers/Portfolio/components/PortfolioTable/Optimization/api'
-import { InnerChartContainer, ChartContainer } from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
+  InnerChartContainer,
+  ChartContainer,
+} from '@containers/Portfolio/components/PortfolioTable/Optimization/shared.styles.tsx'
 import {
   SwitchButtonsWrapper,
   InputContainer,
@@ -49,7 +37,6 @@ import {
   TableSelectsContaienr,
 } from './Import.styles'
 import { StyledCardHeader } from '../Optimization.styles'
-import { sliceCoinName } from '@core/utils/PortfolioTableUtils'
 
 export default class Import extends PureComponent<IProps> {
   state = {
@@ -69,13 +56,10 @@ export default class Import extends PureComponent<IProps> {
     this.importPortfolio()
   }
   importPortfolio = () => {
-    const assets = this.props.isShownMocks
-      ? this.props.transformData(MOCK_DATA)
-      : this.props.data &&
-        this.props.data.myPortfolios[0] &&
-        this.props.transformData(
-          this.props.data.myPortfolios[0].portfolioAssets
-        )
+    const assets =
+      this.props.data &&
+      this.props.data.myPortfolios[0] &&
+      this.props.transformData(this.props.data.myPortfolios[0].portfolioAssets)
 
     this.props.updateData(assets[0])
     const isUSDTInInitialPortfolioExists = assets[0].some(
@@ -98,7 +82,13 @@ export default class Import extends PureComponent<IProps> {
     endDate: object
   ) => {
     const { totalPriceOfAllAssets, isUSDTInInitialPortfolioExists } = this.state
-    const { showWarning, optimizedToState, activeButton, updateOptimizationCountOfRuns, optimizationCountOfRuns } = this.props
+    const {
+      showWarning,
+      optimizedToState,
+      activeButton,
+      updateOptimizationCountOfRuns,
+      optimizationCountOfRuns,
+    } = this.props
 
     // TODO: Should create another function to remove USDT first, and then optimize
     // should double check for if we have USDT
@@ -255,7 +245,14 @@ export default class Import extends PureComponent<IProps> {
     )
 
   renderBarChart = () => {
-    const { storeData, activeButton, theme, rawOptimizedData, tab, showBlurOnSections } = this.props
+    const {
+      storeData,
+      activeButton,
+      theme,
+      rawOptimizedData,
+      tab,
+      showBlurOnSections,
+    } = this.props
 
     if (!storeData) {
       return
@@ -409,7 +406,11 @@ export default class Import extends PureComponent<IProps> {
         {(client) => (
           <ImportData>
             <TableSelectsContaienr>
-              <InputContainer showHighlightShadows={showBlurOnSections} id="Back-test" className="OptimizationInput">
+              <InputContainer
+                showHighlightShadows={showBlurOnSections}
+                id="Back-test"
+                className="OptimizationInput"
+              >
                 <StyledCardHeader title="Back-test Input" />
                 <InputInnerContainer>
                   <InputElementWrapper>
@@ -505,7 +506,11 @@ export default class Import extends PureComponent<IProps> {
                 </InputInnerContainer>
               </InputContainer>
 
-              <TableContainer id="RiskProfile" className="RiskProfileTable" hide={showBlurOnSections}>
+              <TableContainer
+                id="RiskProfile"
+                className="RiskProfileTable"
+                hide={showBlurOnSections}
+              >
                 <StyledCardHeader title="Risk Profile" />
 
                 <SwitchButtonsWrapper>

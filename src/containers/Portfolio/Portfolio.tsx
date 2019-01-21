@@ -10,7 +10,7 @@ import { PortfolioTable } from '@containers/Portfolio/components'
 import { Fade, LinearProgress } from '@material-ui/core'
 import { withTheme } from '@material-ui/styles'
 
-import { CustomError } from '@storybook/components/index'
+import { CustomError } from '@storybook/components/'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
 import {
   updatePortfolioSettingsMutation,
@@ -19,7 +19,7 @@ import {
   getMyPortfolioAndRebalanceQuery,
 } from '@containers/Portfolio/api'
 
-import { getCoinsForOptimization } from './components/PortfolioTable/Optimization/api'
+import { getCoinsForOptimization } from '@core/graphql/queries/portfolio/optimization/getCoinsForOptimization'
 import withAuth from '@hoc/withAuth'
 
 const safePortfolioDestruction = (

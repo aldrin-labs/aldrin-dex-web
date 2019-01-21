@@ -30,7 +30,9 @@ export const InputContainer = styled(({ showHighlightShadows, ...other }) => (
     props.showHighlightShadows ? HighlightStyles : ''};
 `
 
-export const TableContainer = styled(Card)`
+export const TableContainer = styled(({ hide, ...otherProps }) => (
+  <Card {...otherProps} />
+))`
   flex-grow: 1;
   justify-content: flex-start;
   min-height: 400px;
@@ -44,28 +46,6 @@ export const TableContainer = styled(Card)`
   }
 
   ${(props: { hide: boolean }) => (props.hide ? HidingStyles : '')};
-`
-
-export const Input = styled.input`
-  color: ${(props: { color: boolean }) => props.color};
-  box-sizing: border-box;
-  background: transparent;
-  border-top: none;
-  border-left: none;
-  border-bottom: 2px solid rgba(78, 216, 218, 0.3);
-  outline: none;
-  border-right: none;
-  width: 100%;
-  font-family: Roboto, sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  text-align: left;
-  padding: 10px 0 0;
-  transition: all 0.25s ease-out;
-
-  &:focus {
-    border-bottom: 2px solid rgb(78, 216, 218);
-  }
 `
 
 export const Chart = styled.div`
