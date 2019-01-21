@@ -278,11 +278,17 @@ class Optimization extends Component<IProps, IState> {
             </Chart>
           </InnerChartContainer>
         </ChartContainer>
-        <EfficientFrontierChart
-          showBlurOnSections={showBlurOnSections}
-          data={efficientFrontierData}
-          theme={theme}
-        />
+        <ChartContainer hide={showBlurOnSections} className="EfficientFrontierChart">
+          <StyledCardHeader title="Efficient Frontier" />
+          <InnerChartContainer>
+            <Chart background={theme.palette.background.default}>
+              <EfficientFrontierChart
+                data={efficientFrontierData}
+                theme={theme}
+              />
+            </Chart>
+          </InnerChartContainer>
+        </ChartContainer>
       </ChartsContainer>
     )
   }
