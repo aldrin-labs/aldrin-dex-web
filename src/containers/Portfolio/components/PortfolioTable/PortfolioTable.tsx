@@ -9,7 +9,7 @@ const PortfolioTableIndustries = React.lazy(() =>
 )
 import Rebalance from '@core/compositions/PortfolioRebalance'
 const Optimization = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './Optimization/Optimization')
+  import(/* webpackPrefetch: true */ '@storybook/compositions/Optimization/Optimization')
 )
 const Correlation = React.lazy(() =>
   import(/* webpackPrefetch: true */ '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation')
