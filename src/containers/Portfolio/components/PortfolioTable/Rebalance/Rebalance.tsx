@@ -334,11 +334,13 @@ class Rebalance extends React.Component<IProps, IState> {
       percentSnapshot: el.percentSnapshot,
     }))
 
-    //TODO: error when save (timestampSnapshot is null), hotfix below (timestampSnapshot: timestampSnapshot ? timestampSnapshot : moment().unix())
+    // TODO: error when save (timestampSnapshot is null), hotfix below (timestampSnapshot: timestampSnapshot ? timestampSnapshot : moment().unix())
 
     const variablesForMutation = {
       input: {
-        timestampSnapshot: timestampSnapshot ? timestampSnapshot : moment().unix(),
+        timestampSnapshot: timestampSnapshot
+          ? timestampSnapshot
+          : moment().unix(),
         total: totalRows.toString(),
         assets: {
           input: combinedRowsData,
@@ -378,13 +380,13 @@ class Rebalance extends React.Component<IProps, IState> {
       ...el,
       ...(staticRowsMap.has(el._id)
         ? {
-            priceSnapshot: staticRowsMap.get(el._id).priceSnapshot,
-            percentSnapshot: staticRowsMap.get(el._id).portfolioPerc,
-          }
+          priceSnapshot: staticRowsMap.get(el._id).priceSnapshot,
+          percentSnapshot: staticRowsMap.get(el._id).portfolioPerc,
+        }
         : {
-            priceSnapshot: null,
-            percentSnapshot: null,
-          }),
+          priceSnapshot: null,
+          percentSnapshot: null,
+        }),
     }))
 
     const newCalculatedRowsWithNewPrices = UTILS.calculatePriceDifference(
@@ -421,22 +423,24 @@ class Rebalance extends React.Component<IProps, IState> {
     )
     // TODO: BUT are we are we really sure that it will the same for multiaccounts? +
 
-    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map((el: IRow) => ({
-      ...el,
-      priceSnapshot: el.price,
-      percentSnapshot: el.portfolioPerc,
-    }))
+    const clonedStaticRowsWithSnapshotsData = clonedStaticRows.map(
+      (el: IRow) => ({
+        ...el,
+        priceSnapshot: el.price,
+        percentSnapshot: el.portfolioPerc,
+      })
+    )
 
     // TODO: Are we sure that the total would be the same for us in this case?
     this.setState({
       ...(resetSavedRows
         ? {
-            savedRows: clonedStaticRowsWithSnapshotsData,
-            totalSavedRows: totalStaticRows,
-            totalTableSavedRows: totalStaticRows,
-            timestampSnapshot: moment(),
-            timestampSnapshotSaved: moment(),
-          }
+          savedRows: clonedStaticRowsWithSnapshotsData,
+          totalSavedRows: totalStaticRows,
+          totalTableSavedRows: totalStaticRows,
+          timestampSnapshot: moment(),
+          timestampSnapshotSaved: moment(),
+        }
         : {}),
       timestampSnapshot: moment(),
       rows: clonedStaticRowsWithSnapshotsData,
