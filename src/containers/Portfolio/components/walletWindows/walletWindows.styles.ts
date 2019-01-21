@@ -1,7 +1,7 @@
 import { Button, Typography } from '@material-ui/core'
 import AddIcon from '@material-ui/icons/Add'
 import styled from 'styled-components'
-import { PTWrapper as PTWrapperRaw } from '@containers/Portfolio/components/PortfolioTable/Main/PortfolioTableBalances.styles'
+import { PTWrapper as PTWrapperRaw } from '@storybook/styles/cssUtils'
 
 export { PTextBox, STypography, STypographyButtonText, SButton, SAddIcon }
 

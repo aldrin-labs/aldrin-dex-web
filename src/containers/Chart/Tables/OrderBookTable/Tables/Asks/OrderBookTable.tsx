@@ -9,7 +9,7 @@ import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/O
 import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import { IProps } from './OrderBookTable.types'
-import { withErrorFallback } from '@hoc/'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 let index: number | null = null
 

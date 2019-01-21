@@ -5,14 +5,14 @@ import { Theme } from '@material-ui/core'
 import {
   TableWithSort,
   addMainSymbol,
-} from '@storybook-components/index'
-import { queryRendererHoc } from '@components/QueryRenderer'
+} from '@storybook/components/index'
+import { queryRendererHoc } from '@core/components/QueryRenderer'
 import { CoinMarketCapQueryQuery } from '@containers/CoinMarketCap/annotations'
 import { MarketsQuery } from './api'
 import {
   formatNumberToUSFormat,
   roundAndFormatNumber,
-} from '@utils/PortfolioTableUtils'
+} from '@core/utils/PortfolioTableUtils'
 
 import {
   Container,

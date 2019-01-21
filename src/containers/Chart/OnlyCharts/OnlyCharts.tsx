@@ -11,7 +11,7 @@ import * as userActions from '@containers/User/actions'
 
 import { IProps, IChart } from './OnlyCharts.types'
 import { multiChartsSteps } from '@utils/joyrideSteps'
-import { withErrorFallback } from '@hoc/'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 class OnlyCharts extends Component<IProps> {
   componentDidMount() {

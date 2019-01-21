@@ -2,12 +2,12 @@ import React, { Component, lazy, Suspense, memo } from 'react'
 
 import { IState } from '@containers/Portfolio/components/PortfolioTable/types'
 import { ITableProps } from '@containers/Portfolio/interfaces'
-import PortfolioTableBalances from './Main/PortfolioTableBalancesContainer'
+import PortfolioMain from '@core/compositions/PortfolioMain'
 
 const PortfolioTableIndustries = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './Industry/PortfolioTableIndustries')
+  import(/* webpackPrefetch: true */ '@core/compositions/PortfolioIndustry')
 )
-import Rebalance from './Rebalance/Rebalance'
+import Rebalance from '@core/compositions/PortfolioRebalance'
 const Optimization = React.lazy(() =>
   import(/* webpackPrefetch: true */ './Optimization/Optimization')
 )
@@ -17,7 +17,7 @@ const Correlation = React.lazy(() =>
 
 import PortfolioTableTabs from '@containers/Portfolio/components/PortfolioTable/PortfolioTableTabs'
 
-import { Loading } from '@components/index'
+import { Loading } from '@storybook/components/index'
 import { Mutation } from 'react-apollo'
 import { TOGGLE_BASE_COIN } from '@core/graphql/mutations/portfolio/toggleBaseCoin'
 
@@ -68,7 +68,7 @@ export class PortfolioTable extends Component<ITableProps, IState> {
                 <>
                   <div id="main_tab" hidden={tab !== 'main'}>
                     <MemoizedTab tab={tab}>
-                      <PortfolioTableBalances
+                      <PortfolioMain
                         isShownChart={isShownChart}
                         isUSDCurrently={isUSDCurrently}
                         tab={this.state.tab}

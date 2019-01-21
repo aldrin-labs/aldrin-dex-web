@@ -133,19 +133,3 @@ export const searchSupportedNetworksQuery = gql`
     }
   }
 `
-
-export const searchAssetsQuery = gql`
-  query searchAssets($search: String!) {
-	  searchAssets(limit: 10, search: $search) {
-      symbol
-    }
-  }
-`
-
-export const exchangeByEntryQuery = gql`
-  query exchangeByEntry($search: String!) {
-		exchangeByEntry(limit: 10, entry: $search) {
-      name
-    }
-  }
-`

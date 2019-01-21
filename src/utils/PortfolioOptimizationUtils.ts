@@ -1,6 +1,6 @@
 // TODO: Write tests for this
 import { IData } from '@containers/Portfolio/components/PortfolioTable/Optimization/Optimization.types'
-import { IRow } from '@containers/Portfolio/components/PortfolioTable/Rebalance/Rebalance.types'
+import { IRow } from '@core/types/PortfolioTypes'
 
 type Shape = IData | IRow;
 

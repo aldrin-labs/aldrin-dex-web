@@ -5,7 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
 
-import ReactSelectComponent from '@components/ReactSelectComponent'
+import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
 import {
   HidingStyles,
   HighlightStyles,

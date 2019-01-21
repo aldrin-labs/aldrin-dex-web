@@ -1,7 +1,7 @@
 import React, { Component, memo } from 'react'
 
 import { Row, Cell, Body } from '@components/OldTable/Table'
-import { Loading } from '@components/Loading'
+import { Loading } from '@storybook/components/Loading'
 import {
   calculatePercentagesOfOrderSize,
   ScrollToBottom,

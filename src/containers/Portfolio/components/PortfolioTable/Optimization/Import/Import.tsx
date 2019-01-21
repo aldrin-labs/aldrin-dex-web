@@ -14,7 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { find, isEqual } from 'lodash-es'
 import TextField from '@material-ui/core/TextField'
 import Switch from '@material-ui/core/Switch'
-import { BarChart } from '@storybook-components/index'
+import { BarChart } from '@storybook/components/index'
 import 'react-dates/initialize'
 import 'react-dates/lib/css/_datepicker.css'
 import { DateRangePicker } from 'react-dates'
@@ -22,7 +22,7 @@ import moment from 'moment'
 
 import { systemError } from '@utils/errorsConfig'
 import { RebalancePeriod } from './dataForSelector'
-import ReactSelectComponent from '@components/ReactSelectComponent'
+import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
 import Table from '@containers/Portfolio/components/PortfolioTable/Optimization/Table/Table'
 import SwitchButtons from '@components/SwitchButtons/SwitchButtons'
 import { MOCK_DATA } from '@containers/Portfolio/components/PortfolioTable/dataMock'
@@ -49,7 +49,7 @@ import {
   TableSelectsContaienr,
 } from './Import.styles'
 import { StyledCardHeader } from '../Optimization.styles'
-import { sliceCoinName } from '@utils/PortfolioTableUtils'
+import { sliceCoinName } from '@core/utils/PortfolioTableUtils'
 
 export default class Import extends PureComponent<IProps> {
   state = {

@@ -11,7 +11,7 @@ import {
   HeadCell,
   Body,
 } from '@components/OldTable/Table'
-import { Loading } from '@components/Loading'
+import { Loading } from '@storybook/components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
 import {
@@ -20,7 +20,7 @@ import {
   RowWithVolumeChart,
 } from '@containers/Chart/Tables/SharedStyles'
 import { IProps } from './SpreadTable.types'
-import { withErrorFallback } from '@hoc/'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 const RowFunc = ({
   order,

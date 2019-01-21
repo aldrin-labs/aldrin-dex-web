@@ -1,13 +1,11 @@
 import styled from 'styled-components'
 
-export { Container, ChartTooltip }
-
-const Container = styled.div`
+export const Container = styled.div`
   height: 300px;
   width: 100%;
 `
 
-const ChartTooltip = styled.span`
+export const ChartTooltip = styled.span`
   white-space: nowrap;
   font-family: Roboto, sans-serif;
   font-size: 18px;

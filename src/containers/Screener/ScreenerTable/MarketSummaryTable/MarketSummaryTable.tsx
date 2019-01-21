@@ -7,13 +7,13 @@ import {
   IMarketSummaryTableData,
 } from '@containers/Screener/ScreenerTable/MarketSummaryTable/MarketSummaryTable.types'
 import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
+import SvgIcon from '@storybook/components/SvgIcon/'
 import { tableData } from '@containers/Screener/ScreenerTable/MarketSummaryTable/mocks'
 import {
   onSortTableFull,
   getArrayContainsOnlyOnePropertyType,
   combineDataToSelect,
-} from '@utils/PortfolioTableUtils'
+} from '@core/utils/PortfolioTableUtils'
 import { customAquaScrollBar } from '@styles/cssUtils'
 import SuperSearch from '@containers/Screener/ScreenerTable/MarketSummaryTable/SuperSearch'
 import { Icon } from '@styles/cssUtils'
