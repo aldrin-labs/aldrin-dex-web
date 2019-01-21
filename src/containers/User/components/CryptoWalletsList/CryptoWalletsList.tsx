@@ -8,7 +8,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
-import { Loading } from '@components/Loading'
+import { Loading } from '@storybook/components/Loading'
 
 import { getCryptoWalletsQuery } from '@containers/User/api'
 import { DeleteCryptoWalletDialog } from '@containers/User/components/CryptoWalletsList'

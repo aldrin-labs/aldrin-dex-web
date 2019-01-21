@@ -5,7 +5,7 @@ import Input from '@material-ui/core/Input'
 import SelectReact, { components } from 'react-select'
 import { data } from '@containers/Screener/Selector/selectsData'
 import dropDownIcon from '@icons/baseline-arrow_drop_down.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
+import SvgIcon from '@storybook/components/SvgIcon/'
 
 // TODO: Update types
 

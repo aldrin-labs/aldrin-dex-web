@@ -7,7 +7,7 @@ import {
   IMarketSummaryTableData,
 } from '@containers/Screener/ScreenerTable/MarketSummaryTable/MarketSummaryTable.types'
 import sortIcon from '@icons/arrow.svg'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
+import SvgIcon from '@storybook/components/SvgIcon/'
 import { tableData } from '@containers/Screener/ScreenerTable/MarketSummaryTable/mocks'
 import {
   onSortTableFull,

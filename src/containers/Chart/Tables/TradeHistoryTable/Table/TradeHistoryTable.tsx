@@ -14,7 +14,7 @@ import {
   Cell,
 } from '@components/OldTable/Table'
 import { IProps, IState, ITicker } from './TradeHistoryTable.types'
-import { Loading } from '@components/Loading'
+import { Loading } from '@storybook/components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 
 const OptimizedRow = memo(

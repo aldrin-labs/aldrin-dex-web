@@ -1,7 +1,7 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import PieChart from '@components/PieChart'
-import SvgIcon from '@components/SvgIcon/SvgIcon'
+import SvgIcon from '@storybook/components/SvgIcon/'
 import mask from '../../icons/mask.svg'
 
 const chartCoins = [

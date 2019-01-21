@@ -11,7 +11,7 @@ import {
   HeadCell,
   Body,
 } from '@components/OldTable/Table'
-import { Loading } from '@components/Loading'
+import { Loading } from '@storybook/components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 import { hexToRgbAWithOpacity } from '@styles/helpers'
 import {

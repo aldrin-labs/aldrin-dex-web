@@ -1,7 +1,6 @@
 export { Title } from '@components/Title'
 export { SingleChart } from '@components/Chart'
 export { CoinsList } from '@components/CoinsList'
-export { Loading } from '@components/Loading'
 export { NavBar } from '@components/NavBar'
 export { NotFound } from '@components/NotFound'
 export { NavBarMobile } from '@components/NavBar'
