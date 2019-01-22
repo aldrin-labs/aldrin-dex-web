@@ -32,17 +32,17 @@ import {
 } from './api'
 import QueryRenderer from '@core/components/QueryRenderer'
 import * as actions from '@containers/Chart/actions'
-import { SingleChart } from '@components/Chart'
+import { SingleChart } from '@storybook/components/Chart'
 import { orders } from '@containers/Chart/mocks'
 import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
 import { IProps, IState } from './Chart.types'
-import { navBarHeight } from '@components/NavBar/NavBar.styles'
+import { CSS_CONFIG } from '@storybook/config/cssConfig'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
 import { singleChartSteps } from '@utils/joyrideSteps'
 import { setTimeout } from 'timers'
 import { withErrorFallback } from '@core/hoc/withErrorFallback'
-import TransparentExtendedFAB from '@components/TransparentExtendedFAB'
+import TransparentExtendedFAB from '@storybook/components/TransparentExtendedFAB'
 import withAuth from '@hoc/withAuth'
 
 class Chart extends React.Component<IProps, IState> {
@@ -480,7 +480,7 @@ const TablesContainer = styled(Grid)`
   position: relative;
   display: flex;
 
-  height: calc(100vh - 59px - ${navBarHeight}px);
+  height: calc(100vh - 59px - ${CSS_CONFIG.navBarHeight}px);
   overflow: hidden;
 
   @media (max-width: 1080px) {
@@ -489,7 +489,7 @@ const TablesContainer = styled(Grid)`
 `
 
 const ChartsContainer = styled(TablesContainer)`
-  height: calc(100vh - 59px - ${navBarHeight}px);
+  height: calc(100vh - 59px - ${CSS_CONFIG.navBarHeight}px);
   justify-content: flex-end;
   flex-direction: column;
   width: 60%;

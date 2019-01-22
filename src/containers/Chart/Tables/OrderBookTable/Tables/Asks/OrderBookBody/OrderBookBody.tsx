@@ -1,6 +1,6 @@
 import React, { Component, memo } from 'react'
 
-import { Row, Cell, Body } from '@components/OldTable/Table'
+import { Row, Cell, Body } from '@storybook/components/OldTable/Table'
 import { Loading } from '@storybook/components/Loading'
 import {
   calculatePercentagesOfOrderSize,

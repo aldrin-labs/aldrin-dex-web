@@ -3,7 +3,7 @@ import { IconButton as Button, Switch, Grow, Paper } from '@material-ui/core'
 import MdClear from '@material-ui/icons/Clear'
 import styled from 'styled-components'
 
-import { SingleChart } from '@components/Chart'
+import { SingleChart } from '@storybook/components/Chart'
 import {
   IChartProps,
   IChartState,

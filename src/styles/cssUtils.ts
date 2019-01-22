@@ -23,18 +23,6 @@ export const TypographyFullWidth = styled(TypographyWithCustomColor)`
   flex-grow: 1;
 `
 
-export const SelectR = styled(ReactSelectComponent)`
-  font-family: Roboto;
-  width: 100%;
-  font-size: 16px;
-  border-bottom: 1px solid #c1c1c1;
-  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
-
-  &:hover {
-    border-bottom: 2px solid #fff;
-  }
-`
-
 export const Span = styled.span``
 
 export const Label = styled.label``

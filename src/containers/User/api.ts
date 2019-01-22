@@ -1,7 +1,5 @@
 import gql from 'graphql-tag'
 
-import { KeyFragment, CryptoWalletFragment } from '@core/graphql/fragments'
-
 export const getKeysQuery = gql`
   query getKeys {
     myPortfolios {
@@ -71,18 +69,6 @@ export const getExchangesListQuery = gql`
     }
   }
 `
-export const getExchangesForKeysListQuery = gql`
-  query getExchangesForKeysList {
-    exchangePagination(perPage: 150) {
-      count
-      items {
-        _id
-        name
-        symbol
-      }
-    }
-  }
-`
 
 export const getCryptoWalletsQuery = gql`
   query getCryptoWallets {
@@ -122,14 +108,5 @@ export const addCryptoWalletMutation = gql`
 export const deleteCryptoWalletMutation = gql`
   mutation deleteCryptoWallet($name: String!) {
     deleteCryptoWallet(name: $name)
-  }
-`
-
-export const searchSupportedNetworksQuery = gql`
-  query searchSupportedNetworks {
-    searchSupportedNetworks(limit: 200, search: "") {
-      name
-      symbol
-    }
   }
 `

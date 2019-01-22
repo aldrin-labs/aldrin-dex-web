@@ -23,7 +23,7 @@ import {
   Card,
 } from '@material-ui/core'
 import { updateBinanceWarning, toggleMocks } from './actions'
-import ComingSoon from '@components/ComingSoon'
+import ComingSoon from '@storybook/components/ComingSoon'
 import { MASTER_BUILD } from '@utils/config'
 import { CardHeader } from '@storybook/components/index'
 import { graphql } from 'react-apollo'

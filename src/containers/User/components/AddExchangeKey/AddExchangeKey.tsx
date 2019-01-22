@@ -12,7 +12,7 @@ import Paper from '@material-ui/core/Paper'
 import InputLabel from '@material-ui/core/InputLabel'
 
 import * as API from '@containers/User/api'
-import SelectExchangeList from '@components/SelectExchangeList/SelectExchangeList'
+import SelectExchangeList from '@storybook/components/SelectExchangeList/SelectExchangeList'
 import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
 import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 

@@ -1,6 +1,6 @@
 import * as React from 'react'
-import Widget from '@components/Widget'
-import Calculator from '@components/Calculator/Calculator'
+import Widget from '@storybook/components/Widget'
+import Calculator from '@storybook/components/Calculator/Calculator'
 import compareIcon from '@icons/compare.svg'
 
 export const rates = [

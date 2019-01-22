@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 
-import { Row, Title, Body, Head } from '@components/OldTable/Table'
+import { Row, Title, Body, Head } from '@storybook/components/OldTable/Table'
 import { IProps } from './ExchangesTable.types'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
 import {

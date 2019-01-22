@@ -1,6 +1,6 @@
 import { Grid, Card } from '@material-ui/core'
 import styled from 'styled-components'
-import { navBarHeight } from '@components/NavBar/NavBar.styles'
+import { CSS_CONFIG } from '@storybook/config/cssConfig'
 
 export const GridContainer = styled(Grid)`
   && {
@@ -14,7 +14,7 @@ export const GridContainer = styled(Grid)`
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: calc(100vh - ${navBarHeight}px);
+  height: calc(100vh - ${CSS_CONFIG.navBarHeight}px);
   z-index: 0;
   margin-left: auto;
   margin-right: auto;

@@ -10,7 +10,7 @@ import {
   Cell,
   HeadCell,
   Body,
-} from '@components/OldTable/Table'
+} from '@storybook/components/OldTable/Table'
 import { Loading } from '@storybook/components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'
 import { hexToRgbAWithOpacity } from '@styles/helpers'

@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core'
 import { difference } from 'lodash-es'
 
 import { TypographyFullWidth } from '@styles/cssUtils'
-import { Table, Row, Title, Head, HeadCell } from '@components/OldTable/Table'
+import { Table, Row, Title, Head, HeadCell } from '@storybook/components/OldTable/Table'
 import OrderBookBody from '@containers/Chart/Tables/OrderBookTable/Tables/Asks/OrderBookBody/OrderBookBody'
 import { EmptyCell } from '@containers/Chart/Tables/SharedStyles'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'

@@ -1,9 +1,9 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import Button from '@components/Elements/Button/Button'
 import { Link } from 'react-router-dom'
+import Button from '@storybook/components/Elements/Button'
 import AreaChart from '@storybook/components/AreaChart'
-import Widget from '@components/Widget'
+import Widget from '@storybook/components/Widget'
 import { intervalsData } from '@containers/Home/widgets/marketCapMocks'
 import { yearData } from '@storybook/mocks/chartMocks'
 

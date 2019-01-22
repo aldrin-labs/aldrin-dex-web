@@ -2,7 +2,7 @@ import * as React from 'react'
 import { withTheme } from '@material-ui/styles'
 
 import { Slide, Typography } from '@material-ui/core'
-import Dropdown from '@components/SimpleDropDownSelector'
+import Dropdown from '@storybook/components/SimpleDropDownSelector'
 
 
 import { IProps } from './PortfolioSelector.types'
@@ -14,8 +14,8 @@ import {
   FilterValues,
   Name,
 } from './PortfolioSelector.styles'
-import * as UTILS from '@utils/PortfolioSelectorUtils'
-import { MASTER_BUILD } from '@utils/config'
+import * as UTILS from '@core/utils/PortfolioSelectorUtils'
+import { MASTER_BUILD } from '@core/utils/config'
 
 class PortfolioSelector extends React.Component<IProps> {
   updateSettings = async (objectForMutation) => {

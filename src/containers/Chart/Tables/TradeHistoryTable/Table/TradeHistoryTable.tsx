@@ -12,7 +12,7 @@ import {
   Head,
   HeadCell,
   Cell,
-} from '@components/OldTable/Table'
+} from '@storybook/components/OldTable/Table'
 import { IProps, IState, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@storybook/components/Loading'
 import { TypographyFullWidth } from '@styles/cssUtils'

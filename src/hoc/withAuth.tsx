@@ -1,9 +1,8 @@
 import React from 'react'
 import { compose } from 'redux'
-import { connect } from 'react-redux'
+import { Mutation, Query } from 'react-apollo'
 
-import YouNeedToLoginMessage from '@components/YouNotLoginedCard'
-import { graphql, Mutation, Query } from 'react-apollo'
+import YouNeedToLoginMessage from '@storybook/components/YouNotLoginedCard'
 import { UPDATE_LOGIN_POPUP_APPEARED } from '@core/graphql/mutations/ui/updateLoginPopupAppeared'
 import { LOGIN_POPUP_APPEARED } from '@core/graphql/queries/ui/LOGIN_POPUP_APPEARED'
 import { GET_LOGIN_DATA } from '@core/graphql/queries/login/GET_LOGIN_DATA'
@@ -12,19 +11,13 @@ import { GET_LOGIN_DATA } from '@core/graphql/queries/login/GET_LOGIN_DATA'
 
 
 const Result = (Component: React.ComponentType) => ({
-  // login,
-  // openMessage,
   ...props
 }: {
-  // login: boolean
-  // openMessage: boolean
 }) => {
   return (
     <Query query={GET_LOGIN_DATA}>
       {({
-        // data: {
-        //   login: { loginStatus, modalIsOpen },
-        // },
+          // TODO: Replace with apollo-hooks
           loading, data, error,
         }) => {
         if (loading) return 'Loading...'
@@ -75,11 +68,4 @@ const Result = (Component: React.ComponentType) => ({
   )
 }
 
-// const mapStateToProps = (store: any) => ({
-//   login: store.login.loginStatus,
-//   openMessage: store.login.modalIsOpen,
-// })
-
 export default compose()(Result)
-// connect(mapStateToProps),
-// graphql(GET_LOGIN_DATA, { name: 'loginDataQuery' }),
