@@ -1,6 +1,6 @@
 import React, { Component, MouseEvent } from 'react'
 import { Button } from '@material-ui/core'
-import config from '@utils/linkConfig'
+import config from '@core/utils/linkConfig'
 import styled from 'styled-components'
 
 type Props = {
