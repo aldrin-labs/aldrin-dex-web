@@ -1,6 +1,6 @@
 export { User } from '@containers/User'
 export { Screener } from '@containers/Screener'
-export { Profile } from '@containers/Profile'
+// export { Profile } from '@containers/Profile'
 export { Portfolio } from '@containers/Portfolio'
 export { Home } from '@containers/Home'
 //export { CoinMarketCap } from '@containers/CoinMarketCap'
