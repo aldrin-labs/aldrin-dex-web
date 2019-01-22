@@ -2,10 +2,10 @@ import * as React from 'react'
 import styled from 'styled-components'
 import Button from '@components/Elements/Button/Button'
 import { Link } from 'react-router-dom'
-import AreaChart from '@components/AreaChart'
+import AreaChart from '@storybook/components/AreaChart'
 import Widget from '@components/Widget'
 import { intervalsData } from '@containers/Home/widgets/marketCapMocks'
-import { yearData } from '@containers/Profile/components/chartMocks'
+import { yearData } from '@storybook/mocks/chartMocks'
 
 export const intervals = ['YTD', '1D', '7D', '1M', '1Y']
 

@@ -1,11 +1,11 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import styled from 'styled-components'
-import ProfileHeading from '@containers/Profile/components/ProfileHeading'
-import ProfileLinks from '@containers/Profile/components/ProfileLinks'
-import ProfileChart from '@containers/Profile/components/ProfileChart'
-import { ProfileQueryQuery } from '@containers/Profile/profile-annotation'
-import { ProfileQuery } from '@containers/Profile/api'
+import ProfileHeading from '@storybook/components/ProfileHeading/ProfileHeading'
+import ProfileLinks from '@storybook/components/ProfileLinks/ProfileLinks'
+import ProfileChart from '@storybook/components/ProfileChart/ProfileChart'
+import { ProfileQueryQuery } from '@core/types/ProfileTypes'
+import { profileQuery } from '@core/graphql/queries/profile/profileQuery'
 
 interface Props {
   data: ProfileQueryQuery
@@ -105,5 +105,5 @@ const options = ({ match }) => ({
   variables: { id: match ? match.params.id : '' },
 })
 
-export const Profile = graphql(ProfileQuery, { options })(ProfileComponent)
+export const Profile = graphql(profileQuery, { options })(ProfileComponent)
 export default Profile
