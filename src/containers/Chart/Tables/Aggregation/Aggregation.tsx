@@ -5,7 +5,7 @@ import MdAddCircleOutline from '@material-ui/icons/AddCircleOutlined'
 
 import { Row, Table, Head, Cell, HeadCell } from '@storybook/components/OldTable/Table'
 import { IProps } from './Aggregation.types'
-import { MASTER_BUILD } from '@utils/config'
+import { MASTER_BUILD } from '@core/utils/config'
 
 const Aggregation = (props: IProps) => {
   const {

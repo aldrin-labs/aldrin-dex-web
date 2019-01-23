@@ -5,7 +5,7 @@ import {
   maximumItemsInArray,
   getNumberOfDigitsAfterDecimal,
   testJSON,
-} from '@utils/chartPageUtils'
+} from '@core/utils/chartPageUtils'
 
 import { IProps, IState } from './TableContainer.types'
 import { withErrorFallback } from '@core/hoc/withErrorFallback'

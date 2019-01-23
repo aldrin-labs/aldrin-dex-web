@@ -10,7 +10,7 @@ import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/Indivi
 import * as userActions from '@containers/User/actions'
 
 import { IProps, IChart } from './OnlyCharts.types'
-import { multiChartsSteps } from '@utils/joyrideSteps'
+import { multiChartsSteps } from '@storybook/config/joyrideSteps'
 import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 class OnlyCharts extends Component<IProps> {

@@ -2,7 +2,7 @@ import React, { Component, memo } from 'react'
 import styled from 'styled-components'
 import { difference } from 'lodash-es'
 
-import { calculatePercentagesOfOrderSize } from '@utils/chartPageUtils'
+import { calculatePercentagesOfOrderSize } from '@core/utils/chartPageUtils'
 import {
   Table,
   Row,
@@ -12,8 +12,8 @@ import {
   Body,
 } from '@storybook/components/OldTable/Table'
 import { Loading } from '@storybook/components/Loading'
-import { TypographyFullWidth } from '@styles/cssUtils'
-import { hexToRgbAWithOpacity } from '@styles/helpers'
+import { TypographyFullWidth } from '@storybook/styles/cssUtils'
+import { hexToRgbAWithOpacity } from '@storybook/styles/helpers'
 import {
   EmptyCell,
   StyledTypography,

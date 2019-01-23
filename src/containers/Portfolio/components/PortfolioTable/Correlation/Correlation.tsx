@@ -14,11 +14,11 @@ import {
 import { getCorrelationQuery } from '@containers/Portfolio/api'
 import { swapDates } from '@core/utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '@storybook/styles/cssUtils'
-import { testJSON } from '@utils/chartPageUtils'
+import { testJSON } from '@core/utils/chartPageUtils'
 import { CustomError } from '@storybook/components/index'
-import { portfolioCorrelationSteps } from '@utils/joyrideSteps'
+import { portfolioCorrelationSteps } from '@storybook/config/joyrideSteps'
 import * as actions from '@containers/User/actions'
-import { MASTER_BUILD } from '@utils/config'
+import { MASTER_BUILD } from '@core/utils/config'
 
 const Correlation = (props: IProps) => {
   const {

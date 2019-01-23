@@ -20,7 +20,7 @@ import {
 } from '@containers/Portfolio/api'
 
 import { getCoinsForOptimization } from '@core/graphql/queries/portfolio/optimization/getCoinsForOptimization'
-import withAuth from '@hoc/withAuth'
+import withAuth from '@core/hoc/withAuth'
 
 const safePortfolioDestruction = (
   portfolio = {

@@ -13,7 +13,7 @@ import {
   AccountsList,
   AccountsListItem,
 } from '@containers/Portfolio/components/PortfolioSelector/sharedStyles/sharedStyles'
-import { TypographyFullWidth } from '@styles/cssUtils'
+import { TypographyFullWidth } from '@storybook/styles/cssUtils'
 
 export default class Accounts extends React.PureComponent<IProps> {
   render() {

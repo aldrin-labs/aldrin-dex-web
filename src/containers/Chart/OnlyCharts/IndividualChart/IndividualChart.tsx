@@ -10,7 +10,7 @@ import {
 } from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart.types'
 import DepthChartContainer from '@containers/Chart/OnlyCharts/DepthChartContainer/DepthChartContainer'
 import { CustomError } from '@storybook/components/index'
-import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+import { TypographyWithCustomColor } from '@storybook/styles/StyledComponents/TypographyWithCustomColor'
 
 export default class Charts extends Component<IChartProps, IChartState> {
   state: IChartState = {

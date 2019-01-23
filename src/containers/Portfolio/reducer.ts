@@ -1,6 +1,6 @@
 import { createReducer } from 'redux-act'
 
-import { daysFromNow } from '@utils/dateUtils'
+import { daysFromNow } from '@core/utils/dateUtils'
 import * as actions from '@containers/Portfolio/actions'
 
 const initialState = {

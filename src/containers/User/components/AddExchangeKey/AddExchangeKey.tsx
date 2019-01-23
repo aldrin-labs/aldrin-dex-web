@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 
 import * as API from '@containers/User/api'
 import SelectExchangeList from '@storybook/components/SelectExchangeList/SelectExchangeList'
-import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
+import { handleSelectChangePrepareForFormik } from '@core/utils/UserUtils'
 import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const MIN_CHAR = 3

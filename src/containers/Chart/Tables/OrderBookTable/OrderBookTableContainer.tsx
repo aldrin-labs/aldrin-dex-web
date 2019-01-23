@@ -8,12 +8,12 @@ import {
   sortAndFilterOrders,
   bidsPriceFiltering,
   testJSON,
-} from '@utils/chartPageUtils'
+} from '@core/utils/chartPageUtils'
 import OrderBookTable from './Tables/Asks/OrderBookTable'
 import SpreadTable from './Tables/Bids/SpreadTable'
 import ComingSoon from '@storybook/components/ComingSoon'
 import { IProps, IState } from './OrderBookTableContainer.types'
-import { MASTER_BUILD } from '@utils/config'
+import { MASTER_BUILD } from '@core/utils/config'
 let unsubscribe: Function | undefined
 
 class OrderBookTableContainer extends Component<IProps, IState> {

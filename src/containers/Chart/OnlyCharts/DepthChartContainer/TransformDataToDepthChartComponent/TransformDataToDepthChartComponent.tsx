@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { IProps, IState } from './TransformDataToDepthChartComponent.types'
 import DepthChart from '@containers/Chart/DepthChart/DepthChart'
-import { testJSON } from '@utils/chartPageUtils'
+import { testJSON } from '@core/utils/chartPageUtils'
 
 class TransformDataToDepthChartComponent extends Component<IProps, IState> {
   state = {

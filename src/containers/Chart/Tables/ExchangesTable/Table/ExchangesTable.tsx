@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 
 import { Row, Title, Body, Head } from '@storybook/components/OldTable/Table'
 import { IProps } from './ExchangesTable.types'
-import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
+import { TypographyWithCustomColor } from '@storybook/styles/StyledComponents/TypographyWithCustomColor'
 import {
   StyledTable,
   SwitchTablesButton,

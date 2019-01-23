@@ -15,7 +15,7 @@ import {
 } from '@storybook/components/OldTable/Table'
 import { IProps, IState, ITicker } from './TradeHistoryTable.types'
 import { Loading } from '@storybook/components/Loading'
-import { TypographyFullWidth } from '@styles/cssUtils'
+import { TypographyFullWidth } from '@storybook/styles/cssUtils'
 
 const OptimizedRow = memo(
   ({ ticker, background, numbersAfterDecimalForPrice, red, green }) => (

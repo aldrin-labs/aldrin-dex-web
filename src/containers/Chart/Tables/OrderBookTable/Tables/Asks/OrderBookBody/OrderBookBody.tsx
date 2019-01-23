@@ -5,14 +5,14 @@ import { Loading } from '@storybook/components/Loading'
 import {
   calculatePercentagesOfOrderSize,
   ScrollToBottom,
-} from '@utils/chartPageUtils'
+} from '@core/utils/chartPageUtils'
 import { IProps } from './OrderBookBody.types'
 import {
   EmptyCell,
   RowWithVolumeChart,
   StyledTypography,
 } from '@containers/Chart/Tables/SharedStyles'
-import { hexToRgbAWithOpacity } from '@styles/helpers'
+import { hexToRgbAWithOpacity } from '@storybook/styles/helpers'
 
 let objDiv: HTMLElement | null
 

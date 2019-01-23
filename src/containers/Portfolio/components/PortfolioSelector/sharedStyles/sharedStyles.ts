@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Arrow from '@material-ui/icons/ChevronRight'
-import { TypographyFullWidth } from '@styles/cssUtils'
+import { TypographyFullWidth } from '@storybook/styles/cssUtils'
 
 export const AccountsListItem = styled.li`
   display: flex;

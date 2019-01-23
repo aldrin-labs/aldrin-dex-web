@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import InputLabel from '@material-ui/core/InputLabel'
 import SelectWalletList from '@storybook/components/SelectWalletList/SelectWalletList'
-import { handleSelectChangePrepareForFormik } from '@utils/UserUtils'
+import { handleSelectChangePrepareForFormik } from '@core/utils/UserUtils'
 
 import * as API from '@containers/User/api'
 import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'

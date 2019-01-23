@@ -39,11 +39,11 @@ import { IProps, IState } from './Chart.types'
 import { CSS_CONFIG } from '@storybook/config/cssConfig'
 import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
 import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
-import { singleChartSteps } from '@utils/joyrideSteps'
+import { singleChartSteps } from '@storybook/config/joyrideSteps'
 import { setTimeout } from 'timers'
 import { withErrorFallback } from '@core/hoc/withErrorFallback'
 import TransparentExtendedFAB from '@storybook/components/TransparentExtendedFAB'
-import withAuth from '@hoc/withAuth'
+import withAuth from '@core/hoc/withAuth'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
