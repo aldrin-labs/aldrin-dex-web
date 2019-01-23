@@ -59,6 +59,7 @@
       ".+\\.(svg|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy",
       "^@storybook(.*)$": "<rootDir>/src/storybook/src/web$1",
       "^@core(.*)$": "<rootDir>/src/core/src/$1",
+      "^@routes(.*)$": "<rootDir>/src/routes$1",
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@containers(.*)$": "<rootDir>/src/containers$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",

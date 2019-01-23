@@ -20,6 +20,7 @@
     "paths": {
       "@storybook/*": ["src/storybook/src/web/*"],
       "@core/*": ["src/core/src/*"],
+      "@routes/*": ["src/routes/*"],
       "@components/*": ["src/components/*"],
       "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
