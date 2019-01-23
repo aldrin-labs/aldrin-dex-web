@@ -18,7 +18,7 @@ const ChartRoutes = lazy(() => import('@containers/Chart/routes'))
 const NotFound = lazy(() => import('@storybook/components/NotFound'))
 const UserRoutes = lazy(() => import('@containers/User/routes'))
 const PortfolioRoutes = lazy(() => import('@containers/Portfolio/routes'))
-const MarketRoutes = lazy(() => import('@containers/CoinMarketCap/routes'))
+const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
