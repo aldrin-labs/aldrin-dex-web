@@ -13,7 +13,8 @@ import InputLabel from '@material-ui/core/InputLabel'
 import SelectWalletList from '@storybook/components/SelectWalletList/SelectWalletList'
 import { handleSelectChangePrepareForFormik } from '@core/utils/UserUtils'
 
-import * as API from '@containers/User/api'
+import { getCryptoWalletsQuery } from '@core/graphql/queries/user/getCryptoWalletsQuery'
+import { addCryptoWalletMutation } from '@core/graphql/mutations/user/addCryptoWalletMutation'
 import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
 
 const MIN_CHAR = 3
@@ -56,11 +57,11 @@ const formikEnhancer = withFormik({
         variables,
         update: (proxy, { data: { addCryptoWallet } }) => {
           const proxyData = proxy.readQuery({
-            query: API.getCryptoWalletsQuery,
+            query: getCryptoWalletsQuery,
           })
           proxyData.myPortfolios[0].cryptoWallets.push(addCryptoWallet)
           proxy.writeQuery({
-            query: API.getCryptoWalletsQuery,
+            query: getCryptoWalletsQuery,
             data: proxyData,
           })
         },
@@ -185,7 +186,7 @@ const SPaper = styled(Paper)`
 `
 
 export const AddCryptoWallet = compose(
-  graphql(API.addCryptoWalletMutation, {
+  graphql(addCryptoWalletMutation, {
     name: 'addCryptoWallet',
     options: {
       refetchQueries: [{ query: portfolioKeyAndWalletsQuery }],

@@ -10,7 +10,8 @@ import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { Loading } from '@storybook/components/Loading'
 
-import { getCryptoWalletsQuery } from '@containers/User/api'
+import { getCryptoWalletsQuery } from '@core/graphql/queries/user/getCryptoWalletsQuery'
+
 import { DeleteCryptoWalletDialog } from '@containers/User/components/CryptoWalletsList'
 import QueryRenderer from '@core/components/QueryRenderer'
 

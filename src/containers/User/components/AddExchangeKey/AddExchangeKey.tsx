@@ -11,7 +11,10 @@ import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import InputLabel from '@material-ui/core/InputLabel'
 
-import * as API from '@containers/User/api'
+import { getKeysQuery } from '@core/graphql/queries/user/getKeysQuery'
+import { addExchangeKeyMutation } from '@core/graphql/mutations/user/addExchangeKeyMutation'
+
+
 import SelectExchangeList from '@storybook/components/SelectExchangeList/SelectExchangeList'
 import { handleSelectChangePrepareForFormik } from '@core/utils/UserUtils'
 import { portfolioKeyAndWalletsQuery } from '@containers/Portfolio/api'
@@ -60,9 +63,9 @@ const formikEnhancer = withFormik({
       await props.addExchangeKey({
         variables,
         update: (proxy, { data: { addExchangeKey } }) => {
-          const proxyData = proxy.readQuery({ query: API.getKeysQuery })
+          const proxyData = proxy.readQuery({ query: getKeysQuery })
           proxyData.myPortfolios[0].keys.push(addExchangeKey)
-          proxy.writeQuery({ query: API.getKeysQuery, data: proxyData })
+          proxy.writeQuery({ query: getKeysQuery, data: proxyData })
         },
       })
       resetForm({})
@@ -209,7 +212,7 @@ const SPaper = styled(Paper)`
 `
 
 export const AddExchangeKey = compose(
-  graphql(API.addExchangeKeyMutation, {
+  graphql(addExchangeKeyMutation, {
     name: 'addExchangeKey',
     options: {
       refetchQueries: [{ query: portfolioKeyAndWalletsQuery }],

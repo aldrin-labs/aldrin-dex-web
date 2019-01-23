@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow'
 
 import { Loading } from '@storybook/components/Loading'
 
-import { getKeysQuery } from '@containers/User/api'
+import { getKeysQuery } from '@core/graphql/queries/user/getKeysQuery'
 import { DeleteKeyDialog } from '@containers/User/components/KeysList'
 import QueryRenderer from '@core/components/QueryRenderer'
 
