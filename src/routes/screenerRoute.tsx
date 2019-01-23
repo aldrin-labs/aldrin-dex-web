@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Screener } from '@containers/Screener/Screener/Screener'
+import { Screener } from '@storybook/compositions/Screener'
 
 export default function ScreenerRoutes({ match, location }) {
   return (

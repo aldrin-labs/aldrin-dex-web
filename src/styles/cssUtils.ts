@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components'
 import { TypographyWithCustomColor } from '@styles/StyledComponents/TypographyWithCustomColor'
-import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
 
 export const customAquaScrollBar = css`
   &::-webkit-scrollbar {
