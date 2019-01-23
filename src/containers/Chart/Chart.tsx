@@ -19,7 +19,7 @@ import {
   TradeHistoryTable,
   ExchangesTable,
 } from '@containers/Chart/Tables/Tables'
-import * as userActions from '@containers/User/actions'
+import * as userActions from '@core/redux/user/actions'
 import TablePlaceholderLoader from '@storybook/components/TablePlaceholderLoader'
 import {
   ExchangeQuery,

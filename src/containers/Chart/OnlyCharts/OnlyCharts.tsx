@@ -7,7 +7,7 @@ import Joyride from 'react-joyride'
 import * as actions from '@containers/Chart/actions'
 import WarningMessageSnack from '@storybook/components/WarningMessageSnack/WarningMessageSnack'
 import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
-import * as userActions from '@containers/User/actions'
+import * as userActions from '@core/redux/user/actions'
 
 import { IProps, IChart } from './OnlyCharts.types'
 import { multiChartsSteps } from '@storybook/config/joyrideSteps'

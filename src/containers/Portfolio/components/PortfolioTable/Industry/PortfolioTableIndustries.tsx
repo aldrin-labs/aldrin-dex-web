@@ -8,7 +8,7 @@ import IndustryChart from '@core/components/IndustryChart'
 import { IndProps } from '@containers/Portfolio/interfaces'
 import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
 import { portfolioIndustrySteps } from '@storybook/config/joyrideSteps'
-import * as actions from '@containers/User/actions'
+import * as actions from '@core/redux/user/actions'
 import Template from './Template/Template'
 import IndustryTable from '@core/components/IndustryTable'
 

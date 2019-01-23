@@ -4,7 +4,7 @@ import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 // TODO: export all reducers in index, then rest them to combine reducers, no 9000 imports pls
-import user from '@containers/User/reducer'
+import user from '@core/redux/user/reducer'
 import chartReducer from '@containers/Chart/reducer'
 import portfolio from '@containers/Portfolio/reducer'
 import ui from '@containers/App/reducer'

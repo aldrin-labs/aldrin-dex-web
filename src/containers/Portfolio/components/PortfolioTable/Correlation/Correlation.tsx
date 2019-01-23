@@ -17,7 +17,7 @@ import { PTWrapper as PTWrapperRaw } from '@storybook/styles/cssUtils'
 import { testJSON } from '@core/utils/chartPageUtils'
 import { CustomError } from '@storybook/components/index'
 import { portfolioCorrelationSteps } from '@storybook/config/joyrideSteps'
-import * as actions from '@containers/User/actions'
+import * as actions from '@core/redux/user/actions'
 import { MASTER_BUILD } from '@core/utils/config'
 
 const Correlation = (props: IProps) => {
