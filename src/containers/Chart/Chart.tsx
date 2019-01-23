@@ -1,49 +1,53 @@
 import React from 'react'
-import styled from 'styled-components'
 import { connect } from 'react-redux'
-import {
-  Button,
-  Fade,
-  Typography,
-  Card,
-  Grid,
-  Slide,
-  Hidden,
-} from '@material-ui/core'
-import { withTheme } from '@material-ui/styles'
 import Joyride from 'react-joyride'
+import { withTheme } from '@material-ui/styles'
+import { setTimeout } from 'timers'
+
+import { Button, Fade, Card, Grid, Hidden } from '@material-ui/core'
 
 import {
   OrderBookTable,
   Aggregation,
   TradeHistoryTable,
   ExchangesTable,
-} from '@containers/Chart/Tables/Tables'
-import * as userActions from '@core/redux/user/actions'
-import TablePlaceholderLoader from '@storybook/components/TablePlaceholderLoader'
-import {
-  ExchangeQuery,
-  MARKET_TICKERS,
-  MARKET_QUERY,
-  updateTradeHistoryQuerryFunction,
-  ORDERS_MARKET_QUERY,
-  MARKET_ORDERS,
-  updateOrderBookQuerryFunction,
-} from './api'
-import QueryRenderer from '@core/components/QueryRenderer'
-import * as actions from '@containers/Chart/actions'
-import { SingleChart } from '@storybook/components/Chart'
-import { orders } from '@containers/Chart/mocks'
-import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
-import { IProps, IState } from './Chart.types'
-import { CSS_CONFIG } from '@storybook/config/cssConfig'
-import OnlyCharts from '@containers/Chart/OnlyCharts/OnlyCharts'
-import MainDepthChart from '@containers/Chart/DepthChart/MainDepthChart/MainDepthChart'
+} from './Tables/Tables'
+import { orders } from './mocks'
+import AutoSuggestSelect from './Inputs/AutoSuggestSelect/AutoSuggestSelect'
+import OnlyCharts from './OnlyCharts/OnlyCharts'
+import MainDepthChart from './DepthChart/MainDepthChart/MainDepthChart'
+
 import { singleChartSteps } from '@storybook/config/joyrideSteps'
-import { setTimeout } from 'timers'
-import { withErrorFallback } from '@core/hoc/withErrorFallback'
 import TransparentExtendedFAB from '@storybook/components/TransparentExtendedFAB'
+import TablePlaceholderLoader from '@storybook/components/TablePlaceholderLoader'
+import { SingleChart } from '@storybook/components/Chart'
+
+import QueryRenderer from '@core/components/QueryRenderer'
+import * as actions from '@core/redux/chart/actions'
+import * as userActions from '@core/redux/user/actions'
+import { ORDERS_MARKET_QUERY } from '@core/graphql/queries/chart/ORDERS_MARKET_QUERY'
+import { MARKET_QUERY } from '@core/graphql/queries/chart/MARKET_QUERY'
+import { exchangeQuery } from '@core/graphql/queries/chart/exchangeQuery'
+import { MARKET_ORDERS } from '@core/graphql/subscriptions/MARKET_ORDERS'
+import { MARKET_TICKERS } from '@core/graphql/subscriptions/MARKET_TICKERS'
+import {
+  updateTradeHistoryQuerryFunction,
+  updateOrderBookQuerryFunction,
+} from '@core/utils/chartPageUtils'
+import { withErrorFallback } from '@core/hoc/withErrorFallback'
 import withAuth from '@core/hoc/withAuth'
+
+import {
+  Container,
+  ChartsContainer,
+  DepthChartContainer,
+  MainContainer,
+  TablesBlockWrapper,
+  TablesContainer,
+  Toggler,
+  TogglerContainer,
+} from './Chart.styles'
+import { IProps, IState } from './Chart.types'
 
 class Chart extends React.Component<IProps, IState> {
   state = {
@@ -271,7 +275,7 @@ class Chart extends React.Component<IProps, IState> {
         >
           <QueryRenderer
             component={ExchangesTable}
-            query={ExchangeQuery}
+            query={exchangeQuery}
             variables={{ marketName: currencyPair }}
             placeholder={TablePlaceholderLoader}
             {...{
@@ -433,89 +437,6 @@ class Chart extends React.Component<IProps, IState> {
     )
   }
 }
-
-const SelectContainer = styled.div``
-
-const MainContainer = styled.div`
-  ${(props: { fullscreen: boolean }) => props.fullscreen && 'height: 100vh'};
-`
-const DepthChartContainer = styled(Card)`
-  height: 100%;
-  width: 100%;
-`
-
-export const ExchangePair = styled.div`
-  border-radius: 24px;
-  border: 2px solid ${(props: { border: string }) => props.border};
-  padding: 0 16px;
-  height: 38px;
-  place-content: center;
-  display: flex;
-  width: 130px;
-  background: transparent;
-`
-
-const TablesBlockWrapper = styled(Card)`
-  min-width: 150px;
-  width: 50%;
-  position: relative;
-  ${(props: { blur?: boolean }) => (props.blur ? 'filter: blur(5px);' : '')}
-
-  && {
-    overflow: hidden;
-    background-color: ${(props: { background?: string }) => props.background};
-    box-shadow: none !important;
-  }
-
-  @media (max-width: 1080px) {
-    display: ${(props: { variant: { show?: boolean } }) =>
-      props.variant.show ? 'block' : 'none'};
-    width: 100%;
-    height: calc(100vh - 57px - 70px);
-    position: relative;
-  }
-`
-
-const TablesContainer = styled(Grid)`
-  position: relative;
-  display: flex;
-
-  height: calc(100vh - 59px - ${CSS_CONFIG.navBarHeight}px);
-  overflow: hidden;
-
-  @media (max-width: 1080px) {
-    flex-wrap: wrap;
-  }
-`
-
-const ChartsContainer = styled(TablesContainer)`
-  height: calc(100vh - 59px - ${CSS_CONFIG.navBarHeight}px);
-  justify-content: flex-end;
-  flex-direction: column;
-  width: 60%;
-
-  @media (max-width: 1080px) {
-    flex-wrap: nowrap;
-  }
-`
-
-// margin for centring
-const TogglerContainer = styled(Grid)`
-  margin-bottom: -8px;
-  height: 4rem;
-  width: 100%;
-`
-
-const Toggler = styled.div`
-  && {
-    margin-left: 0.7rem;
-  }
-`
-
-const Container = styled(Grid)`
-  width: 100%;
-  margin: 0;
-`
 
 const mapStateToProps = (store: any) => ({
   activeExchange: store.chart.activeExchange,

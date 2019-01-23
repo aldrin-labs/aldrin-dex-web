@@ -1,4 +1,4 @@
-import { IOrder, IActiveExchange } from '@containers/Chart/CommonTypes.types'
+import { IOrder, IActiveExchange } from '@core/types/ChartTypes'
 
 export interface IProps {
   subscribeToMore: Function

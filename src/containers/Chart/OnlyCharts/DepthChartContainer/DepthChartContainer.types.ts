@@ -1,5 +1,5 @@
 import { Theme } from '@material-ui/core'
-import { IExchange } from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.types'
+import { IExchange } from '@core/types/ChartTypes'
 
 export interface IProps {
   activeExchange: { exchange: IExchange; index: number }

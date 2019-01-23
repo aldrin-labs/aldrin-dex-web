@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import QueryRenderer from '@core/components/QueryRenderer'
-import { ORDERS_MARKET_QUERY } from '@containers/Chart/api'
+import { ORDERS_MARKET_QUERY } from '@core/graphql/queries/chart/ORDERS_MARKET_QUERY'
 import TransformDataToDepthChartComponent from './TransformDataToDepthChartComponent/TransformDataToDepthChartComponent'
 import { IProps } from './DepthChartContainer.types'
 

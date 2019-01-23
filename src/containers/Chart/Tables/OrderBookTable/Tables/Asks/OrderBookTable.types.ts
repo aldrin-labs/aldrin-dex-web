@@ -1,6 +1,6 @@
 import { Theme } from '@material-ui/core'
 
-import { IOrder, IExchange } from '@containers/Chart/CommonTypes.types'
+import { IOrder, IExchange } from '@core/types/ChartTypes'
 
 export interface IProps {
   onButtonClick: () => void

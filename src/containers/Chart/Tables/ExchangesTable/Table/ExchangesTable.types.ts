@@ -1,4 +1,4 @@
-import { IActiveExchange, IExchange } from '@containers/Chart/CommonTypes.types'
+import { IActiveExchange, IExchange } from '@core/types/ChartTypes'
 
 export interface IProps {
   onButtonClick: Function

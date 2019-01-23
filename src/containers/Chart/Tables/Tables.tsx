@@ -1,6 +1,6 @@
-import OrderBookTable from '@containers/Chart/Tables/OrderBookTable/OrderBookTableContainer'
-import Aggregation from '@containers/Chart/Tables/Aggregation/Aggregation'
-import TradeHistoryTable from '@containers/Chart/Tables/TradeHistoryTable/TableContainer'
-import ExchangesTable from '@containers/Chart/Tables/ExchangesTable/TableContainer'
+import OrderBookTable from './OrderBookTable/OrderBookTableContainer'
+import Aggregation from './Aggregation/Aggregation'
+import TradeHistoryTable from './TradeHistoryTable/TableContainer'
+import ExchangesTable from './ExchangesTable/TableContainer'
 
 export { Aggregation, OrderBookTable, ExchangesTable, TradeHistoryTable }

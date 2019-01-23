@@ -1,16 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { withTheme } from '@material-ui/styles'
+import { createFilter } from 'react-select'
 
-import * as actions from '@containers/Chart/actions'
-import TextInputLoader from '@storybook/components/Placeholders/TextInputLoader'
+import { MARKETS_BY_EXCHANE_QUERY } from '@core/graphql/queries/chart/MARKETS_BY_EXCHANE_QUERY'
+import * as actions from '@core/redux/chart/actions'
 import QueryRenderer from '@core/components/QueryRenderer'
 import { Loading } from '@storybook/components/Loading/Loading'
-import { MARKETS_BY_EXCHANE_QUERY } from '@containers/Chart/api'
-import { createFilter } from 'react-select'
-import { ExchangePair } from '@containers/Chart/Chart'
-import ReactSelectComponent from '@storybook/components/ReactSelectComponent'
-import styled from 'styled-components'
+import TextInputLoader from '@storybook/components/Placeholders/TextInputLoader'
+
+import { ExchangePair, SelectR } from './AutoSuggestSelect.styles'
 
 type T = { value: string; data: string }
 
@@ -99,11 +98,6 @@ class IntegrationReactSelect extends React.PureComponent {
   }
 }
 
-const SelectR = styled(ReactSelectComponent)`
-  width: 100%;
-  font-size: 0.8rem;
-  display: flex;
-`
 
 const queryRender = (props: any) => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import ExchangesTable from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable'
-import { mockExchanges } from '@containers/Chart/Tables/ExchangesTable/mockExchanges'
+import ExchangesTable from './Table/ExchangesTable'
+import { mockExchanges } from './mockExchanges'
 import { IExchangesTable } from './TableContainer.types'
 
 const transformDataToExchangesTable = ({ data, ...props }: IExchangesTable) => {

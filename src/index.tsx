@@ -14,7 +14,7 @@ import { client } from '@core/graphql/apolloClient'
 import { persistor, store } from '@utils/configureStore'
 import { ErrorBoundary } from '@storybook/components/index'
 import { Loading } from '@storybook/components'
-const ChartRoutes = lazy(() => import('@containers/Chart/routes'))
+const ChartRoutes = lazy(() => import('@routes/chartRoute'))
 const NotFound = lazy(() => import('@storybook/components/NotFound'))
 const PortfolioRoutes = lazy(() => import('@containers/Portfolio/routes'))
 const UserRoutes = lazy(() => import('@routes/userRoute'))

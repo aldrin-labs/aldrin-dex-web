@@ -1,4 +1,4 @@
-import { IExchange } from '@containers/Chart/CommonTypes.types'
+import { IExchange } from '@core/types/ChartTypes'
 
 export interface IExchangesTable {
   data: {marketByName: [{exchanges: IExchange[]}]}

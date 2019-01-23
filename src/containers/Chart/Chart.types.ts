@@ -1,4 +1,4 @@
-import { IActiveExchange } from '@containers/Chart/CommonTypes.types'
+import { IActiveExchange } from '@core/types/ChartTypes'
 
 export interface IProps {
   isNoCharts: boolean

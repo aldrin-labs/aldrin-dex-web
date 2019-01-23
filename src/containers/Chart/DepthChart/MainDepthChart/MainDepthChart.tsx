@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import DepthChart from '@containers/Chart/DepthChart/DepthChart'
+import DepthChart from '../DepthChart'
 
 const MainDepthChart = (props: any) => <DepthChart {...props} />
 

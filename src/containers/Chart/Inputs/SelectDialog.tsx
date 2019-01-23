@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 
-import AutoSuggestSelect from '@containers/Chart/Inputs/AutoSuggestSelect/AutoSuggestSelect'
+import AutoSuggestSelect from './AutoSuggestSelect/AutoSuggestSelect'
 
 const styles = (theme) => ({
   root: {

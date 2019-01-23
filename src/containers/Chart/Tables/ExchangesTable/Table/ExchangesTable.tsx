@@ -10,7 +10,7 @@ import {
   FullWidthBlockMovedLeft,
   FlexCell,
   Icon,
-} from '@containers/Chart/Tables/ExchangesTable/Table/ExchangesTable.styles'
+} from './ExchangesTable.styles'
 import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 class ExchangesTable extends PureComponent<IProps> {

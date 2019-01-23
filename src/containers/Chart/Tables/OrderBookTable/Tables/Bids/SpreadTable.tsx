@@ -18,7 +18,7 @@ import {
   EmptyCell,
   StyledTypography,
   RowWithVolumeChart,
-} from '@containers/Chart/Tables/SharedStyles'
+} from '../../../SharedStyles'
 import { IProps } from './SpreadTable.types'
 import { withErrorFallback } from '@core/hoc/withErrorFallback'
 

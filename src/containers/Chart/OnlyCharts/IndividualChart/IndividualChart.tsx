@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
+import styled from 'styled-components'
 import { IconButton as Button, Switch, Grow, Paper } from '@material-ui/core'
 import MdClear from '@material-ui/icons/Clear'
-import styled from 'styled-components'
 
 import { SingleChart } from '@storybook/components/Chart'
 import {
   IChartProps,
   IChartState,
-} from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart.types'
-import DepthChartContainer from '@containers/Chart/OnlyCharts/DepthChartContainer/DepthChartContainer'
+} from './IndividualChart.types'
+import DepthChartContainer from '../DepthChartContainer/DepthChartContainer'
 import { CustomError } from '@storybook/components/index'
 import { TypographyWithCustomColor } from '@storybook/styles/StyledComponents/TypographyWithCustomColor'
 

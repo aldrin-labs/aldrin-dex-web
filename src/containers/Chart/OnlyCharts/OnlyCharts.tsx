@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import { Slide } from '@material-ui/core'
 import Joyride from 'react-joyride'
 
-import * as actions from '@containers/Chart/actions'
+import * as actions from '@core/redux/chart/actions'
 import WarningMessageSnack from '@storybook/components/WarningMessageSnack/WarningMessageSnack'
-import IndividualChart from '@containers/Chart/OnlyCharts/IndividualChart/IndividualChart'
+import IndividualChart from './IndividualChart/IndividualChart'
 import * as userActions from '@core/redux/user/actions'
 
 import { IProps, IChart } from './OnlyCharts.types'

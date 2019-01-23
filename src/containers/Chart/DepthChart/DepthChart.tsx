@@ -4,7 +4,6 @@ import MdAddCircleOutline from '@material-ui/icons/AddOutlined'
 import MdRemoveCircleOutline from '@material-ui/icons/RemoveOutlined'
 import {
   FlexibleXYPlot,
-  //  VerticalRectSeries,
   XAxis,
   YAxis,
   AreaSeries,
@@ -19,7 +18,7 @@ import {
 import { red, green } from '@material-ui/core/colors'
 
 import { Loading } from '@storybook/components/Loading/Loading'
-import { abbrNum } from '@containers/Chart/DepthChart/depthChartUtil'
+import { abbrNum } from '../DepthChart/depthChartUtil'
 import { hexToRgbAWithOpacity } from '@storybook/styles/helpers'
 import { IDepthChartProps, IDepthChartState } from './DepthChart.types'
 import ComingSoon from '@storybook/components/ComingSoon'

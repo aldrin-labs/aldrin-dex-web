@@ -11,7 +11,7 @@ import {
   EmptyCell,
   RowWithVolumeChart,
   StyledTypography,
-} from '@containers/Chart/Tables/SharedStyles'
+} from '../../../../SharedStyles'
 import { hexToRgbAWithOpacity } from '@storybook/styles/helpers'
 
 let objDiv: HTMLElement | null

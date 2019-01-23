@@ -1,5 +1,5 @@
 import { Theme } from '@material-ui/core'
-import { IActiveExchange } from '@containers/Chart/CommonTypes.types'
+import { IActiveExchange } from '@core/types/ChartTypes'
 
 export interface IProps {
   activeExchange: IActiveExchange
