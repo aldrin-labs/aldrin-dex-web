@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Portfolio from '@containers/Portfolio/Portfolio'
+import Portfolio from '@storybook/compositions/Portfolio/Portfolio'
 
 export default function PortfolioRoutes({ match, location }) {
   return (
