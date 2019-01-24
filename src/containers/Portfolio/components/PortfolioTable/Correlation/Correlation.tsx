@@ -4,14 +4,14 @@ import styled from 'styled-components'
 import Joyride from 'react-joyride'
 
 import QueryRenderer from '@core/components/QueryRenderer'
-import { CorrelationMatrixMockData } from '@containers/Portfolio/components/PortfolioTable/Correlation/mocks'
+import { CorrelationMatrixMockData } from './mocks'
 import { CorrelationMatrix } from '@storybook/components/index'
-import { IProps } from '@containers/Portfolio/components/PortfolioTable/Correlation/Correlation.types'
+import { IProps } from './Correlation.types'
 import {
   toggleCorrelationTableFullscreen,
   setCorrelationPeriod as setCorrelationPeriodAction,
-} from '@containers/Portfolio/actions'
-import { getCorrelationQuery } from '@containers/Portfolio/api'
+} from '@core/redux/portfolio/actions'
+import { getCorrelationQuery } from '@core/graphql/queries/portfolio/correlation/getCorrelationQuery'
 import { swapDates } from '@core/utils/PortfolioTableUtils'
 import { PTWrapper as PTWrapperRaw } from '@storybook/styles/cssUtils'
 import { testJSON } from '@core/utils/chartPageUtils'

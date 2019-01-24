@@ -1,9 +1,7 @@
-import React from 'react'
-import { getPortfolioQuery } from '@containers/Portfolio/annotations'
 import { Theme } from '@material-ui/core'
 
 export interface IProps {
-  data: { getProfile: getPortfolioQuery; loading: boolean; error?: string }
+  data: { getProfile: any; loading: boolean; error?: string }
   theme: Theme
   keys: string[]
   activeKeys: string[]

@@ -16,7 +16,7 @@ import { ErrorBoundary } from '@storybook/components/index'
 import { Loading } from '@storybook/components'
 const ChartRoutes = lazy(() => import('@routes/chartRoute'))
 const NotFound = lazy(() => import('@storybook/components/NotFound'))
-const PortfolioRoutes = lazy(() => import('@containers/Portfolio/routes'))
+const PortfolioRoutes = lazy(() => import('@routes/portfolioRoute'))
 const UserRoutes = lazy(() => import('@routes/userRoute'))
 const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
 

@@ -1,5 +1,5 @@
-import { getKeysQuery } from '@containers/Portfolio/annotations'
 import React from 'react'
+import { getKeysQuery } from '@core/types/PortfolioTypes'
 
 export interface IProps {
   data: { getProfile: getKeysQuery }

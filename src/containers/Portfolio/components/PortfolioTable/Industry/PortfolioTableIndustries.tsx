@@ -6,7 +6,7 @@ import { withErrorFallback } from '@core/hoc/withErrorFallback'
 
 import IndustryChart from '@core/components/IndustryChart'
 import { IndProps } from '@containers/Portfolio/interfaces'
-import { IState } from '@containers/Portfolio/components/PortfolioTable/Industry/PortfolioTableIndustries.types'
+import { IState } from './PortfolioTableIndustries.types'
 import { portfolioIndustrySteps } from '@storybook/config/joyrideSteps'
 import * as actions from '@core/redux/user/actions'
 import Template from './Template/Template'

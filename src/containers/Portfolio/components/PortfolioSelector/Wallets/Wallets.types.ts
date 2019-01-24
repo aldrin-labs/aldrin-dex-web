@@ -1,7 +1,6 @@
-import { getWalletsQuery } from '@containers/Portfolio/annotations'
 
 export interface IProps {
-  data: {getProfile: getWalletsQuery}
+  data: {getProfile: any}
   setWallets: Function
   setActiveWallets: Function
   wallets: string[]

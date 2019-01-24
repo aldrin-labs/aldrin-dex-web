@@ -1,24 +1,25 @@
 import React from 'react'
 import { Query, Mutation } from 'react-apollo'
 import { has } from 'lodash-es'
+import { withTheme } from '@material-ui/styles'
+import { Fade, LinearProgress } from '@material-ui/core'
+
 
 import { IProps, IState } from '@containers/Portfolio/interfaces'
 import SelectExchangeOrWalletWindow from './components/SelectExchangeOrWalletWindow/SelectExchangeOrWalletWindow'
 import AddExchangeOrWalletWindow from './components/AddExchangeOrWalletWindow/AddExchangeOrWalletWindow'
 import PortfolioSelector from '@containers/Portfolio/components/PortfolioSelector/PortfolioSelector'
 import { PortfolioTable } from '@containers/Portfolio/components'
-import { Fade, LinearProgress } from '@material-ui/core'
-import { withTheme } from '@material-ui/styles'
 
 import { CustomError } from '@storybook/components/'
 import { Backdrop, PortfolioContainer } from './Portfolio.styles'
+
 import {
   updatePortfolioSettingsMutation,
-  portfolioKeyAndWalletsQuery,
-  getPortfolioQuery,
-  getMyPortfolioAndRebalanceQuery,
-} from '@containers/Portfolio/api'
-
+} from '@core/graphql/mutations/portfolio/updatePortfolioSettingsMutation'
+import { getPortfolioQuery } from '@core/graphql/queries/portfolio/getPortfolio'
+import { getMyPortfolioAndRebalanceQuery } from '@core/graphql/queries/portfolio/rebalance/getMyPortfolioAndRebalanceQuery'
+import { portfolioKeyAndWalletsQuery } from '@core/graphql/queries/portfolio/portfolioKeyAndWalletsQuery'
 import { getCoinsForOptimization } from '@core/graphql/queries/portfolio/optimization/getCoinsForOptimization'
 import withAuth from '@core/hoc/withAuth'
 
