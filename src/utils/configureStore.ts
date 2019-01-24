@@ -1,4 +1,4 @@
-import rootReducer from '@utils/rootReducer'
+import rootReducer from '@core/redux/rootReducer'
 
 import createHistory from 'history/createBrowserHistory'
 import { routerMiddleware } from 'react-router-redux'

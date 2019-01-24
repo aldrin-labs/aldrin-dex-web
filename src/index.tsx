@@ -9,7 +9,7 @@ import { Route, Switch, Redirect } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import { App } from '@containers/index'
+import { App } from '@storybook/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { persistor, store } from '@utils/configureStore'
 import { ErrorBoundary } from '@storybook/components/index'
