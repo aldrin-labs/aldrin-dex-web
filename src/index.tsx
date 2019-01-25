@@ -9,13 +9,13 @@ import { Route, Switch, Redirect } from 'react-router'
 import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
-import { App } from '@storybook/compositions/App/'
+import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { persistor, store } from '@utils/configureStore'
-import { ErrorBoundary } from '@storybook/components/index'
-import { Loading } from '@storybook/components'
+import { ErrorBoundary } from '@sb/components/index'
+import { Loading } from '@sb/components'
 const ChartRoutes = lazy(() => import('@routes/chartRoute'))
-const NotFound = lazy(() => import('@storybook/components/NotFound'))
+const NotFound = lazy(() => import('@sb/components/NotFound'))
 const PortfolioRoutes = lazy(() => import('@routes/portfolioRoute'))
 const UserRoutes = lazy(() => import('@routes/userRoute'))
 const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))

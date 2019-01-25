@@ -11,7 +11,7 @@ const config = {
   resolve: {
     extensions: ['.js', '.jsx', '.web.js', '.mjs', '.ts', '.tsx'],
     alias: {
-      '@storybook': path.join(
+      '@sb': path.join(
         __dirname,
         '..',
         'src',
