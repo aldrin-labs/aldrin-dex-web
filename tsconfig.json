@@ -21,13 +21,8 @@
       "@sb/*": ["src/storybook/src/web/*"],
       "@core/*": ["src/core/src/*"],
       "@routes/*": ["src/routes/*"],
-      "@components/*": ["src/components/*"],
-      "@containers/*": ["src/containers/*"],
       "@utils/*": ["src/utils/*"],
-      "@styles/*": ["src/styles/*"],
-      "@hoc/*": ["src/hoc/*"],
       "@icons/*": ["src/storybook/src/icons/*"],
-      "@graphql/*": ["src/graphql/*"]
     },
     "plugins": [
       {
