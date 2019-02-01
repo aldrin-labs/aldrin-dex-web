@@ -16,17 +16,13 @@
     "allowJs": false,
     "jsx": "react",
     "lib": ["esnext", "dom"],
-    "typeRoots": ["./node_modules/@types", "./typings"],
+    "typeRoots": ["./types", "./node_modules/@types", "./typings"],
     "paths": {
-      "@storybook-components/*": ["src/storybook/src/web/components/*"],
+      "@sb/*": ["src/storybook/src/web/*"],
       "@core/*": ["src/core/src/*"],
-      "@components/*": ["src/components/*"],
-      "@containers/*": ["src/containers/*"],
+      "@routes/*": ["src/routes/*"],
       "@utils/*": ["src/utils/*"],
-      "@styles/*": ["src/styles/*"],
-      "@hoc/*": ["src/hoc/*"],
-      "@icons/*": ["src/icons/*"],
-      "@graphql/*": ["src/graphql/*"]
+      "@icons/*": ["src/storybook/src/icons/*"],
     },
     "plugins": [
       {
@@ -38,5 +34,6 @@
       }
     ]
   },
-  "include": ["src", "typings", "custom.d.ts"]
+  "include": ["src", "typings", "custom.d.ts"],
+  "exclude": ["node_modules", "typings", "types"]
 }

@@ -11,14 +11,13 @@ const config = {
   resolve: {
     extensions: ['.js', '.jsx', '.web.js', '.mjs', '.ts', '.tsx'],
     alias: {
-      '@storybook-components': path.join(
+      '@sb': path.join(
         __dirname,
         '..',
         'src',
         'storybook',
         'src',
-        'web',
-        'components'
+        'web'
       ),
       '@core': path.join(
         __dirname,
@@ -27,13 +26,9 @@ const config = {
         'core',
         'src',
       ),
-      '@components': path.join(__dirname, '..', 'src', 'components'),
-      '@containers': path.join(__dirname, '..', 'src', 'containers'),
+      '@routes': path.join(__dirname, '..', 'src', 'routes'),
       '@utils': path.join(__dirname, '..', 'src', 'utils'),
-      '@hoc': path.join(__dirname, '..', 'src', 'hoc'),
-      '@styles': path.join(__dirname, '..', 'src', 'styles'),
-      '@graphql': path.join(__dirname, '..', 'src', 'graphql'),
-      '@icons': path.join(__dirname, '..', 'src', 'icons'),
+      '@icons': path.join(__dirname, '..', 'src', 'storybook', 'src', 'icons'),
       '@storage': path.join(__dirname, '..', 'src', 'utils', 'storage'),
     },
   },

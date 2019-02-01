@@ -57,15 +57,11 @@
     "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
     "moduleNameMapper": {
       ".+\\.(svg|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy",
-      "^@storybook-components(.*)$": "<rootDir>/src/storybook/src/web/components$1",
+      "^@sb(.*)$": "<rootDir>/src/storybook/src/web$1",
       "^@core(.*)$": "<rootDir>/src/core/src/$1",
-      "^@components(.*)$": "<rootDir>/src/components$1",
-      "^@containers(.*)$": "<rootDir>/src/containers$1",
+      "^@routes(.*)$": "<rootDir>/src/routes$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
-      "^@hoc(.*)$": "<rootDir>/src/hoc$1",
-      "^@styles(.*)$": "<rootDir>/src/styles$1",
-      "^@graphql(.*)$": "<rootDir>/src/graphql$1",
-      "^@icons(.*)$": "<rootDir>/src/icons$1"
+      "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1"
     }
   },
   "resolutions": {
