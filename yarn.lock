@@ -1985,13 +1985,20 @@ apollo-link-ws@^1.0.9:
   dependencies:
     apollo-link "^1.2.7"
 
-apollo-link@^1.0.0, apollo-link@^1.2.6, apollo-link@^1.2.7:
+apollo-link@^1.0.0, apollo-link@^1.2.6:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.6.tgz#d9b5676d79c01eb4e424b95c7171697f6ad2b8da"
   integrity sha512-sUNlA20nqIF3gG3F8eyMD+mO80fmf3dPZX+GUOs3MI9oZR8ug09H3F0UsWJMcpEg6h55Yy5wZ+BMmAjrbenF/Q==
   dependencies:
     apollo-utilities "^1.0.0"
     zen-observable-ts "^0.8.13"
+
+apollo-link@^1.2.7:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.8.tgz#0f252adefd5047ac1a9f35ba9439d216587dcd84"
+  integrity sha512-lfzGRxhK9RmiH3HPFi7TIEBhhDY9M5a2ZDnllcfy5QDk7cCQHQ1WQArcw1FK0g1B+mV4Kl72DSrlvZHZJEolrA==
+  dependencies:
+    zen-observable-ts "^0.8.15"
 
 apollo-utilities@1.1.2, apollo-utilities@^1.0.0, apollo-utilities@^1.0.25, apollo-utilities@^1.0.8, apollo-utilities@^1.1.2:
   version "1.1.2"
@@ -10975,15 +10982,15 @@ react-dev-utils@^7.0.1:
     strip-ansi "4.0.0"
     text-table "0.2.0"
 
-react-dom@^16.7.0-alpha.2:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0.tgz#a17b2a7ca89ee7390bc1ed5eb81783c7461748b8"
-  integrity sha512-D0Ufv1ExCAmF38P2Uh1lwpminZFRXEINJe53zRAbm4KPwSyd6DY/uDoS0Blj9jvPpn1+wivKpZYc8aAAN/nAkg==
+react-dom@16.7.0-alpha.2:
+  version "16.7.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.7.0-alpha.2.tgz#16632880ed43676315991d8b412cce6975a30282"
+  integrity sha512-o0mMw8jBlwHjGZEy/vvKd/6giAX0+skREMOTs3/QHmgi+yAhUClp4My4Z9lsKy3SXV+03uPdm1l/QM7NTcGuMw==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.12.0-alpha.2"
 
 react-draggable@3.x, "react-draggable@^2.2.6 || ^3.0.3":
   version "3.1.1"
@@ -11352,15 +11359,15 @@ react-with-styles@^3.2.0:
     prop-types "^15.6.1"
     react-with-direction "^1.3.0"
 
-react@^16.7.0-alpha.2:
-  version "16.7.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0.tgz#b674ec396b0a5715873b350446f7ea0802ab6381"
-  integrity sha512-StCz3QY8lxTb5cl2HJxjwLFOXPIFQp+p+hxQfc8WE0QiLfCtIlKj8/+5tjjKm8uSTlAW+fCPaavGFS06V9Ar3A==
+react@16.7.0-alpha.2:
+  version "16.7.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.7.0-alpha.2.tgz#924f2ae843a46ea82d104a8def7a599fbf2c78ce"
+  integrity sha512-Xh1CC8KkqIojhC+LFXd21jxlVtzoVYdGnQAi/I2+dxbmos9ghbx5TQf9/nDxc4WxaFfUQJkya0w1k6rMeyIaxQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.2"
-    scheduler "^0.12.0"
+    scheduler "^0.12.0-alpha.2"
 
 read-file-stdin@^0.2.1:
   version "0.2.1"
@@ -12056,7 +12063,7 @@ sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-scheduler@^0.12.0:
+scheduler@^0.12.0, scheduler@^0.12.0-alpha.2:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.12.0.tgz#8ab17699939c0aedc5a196a657743c496538647b"
   integrity sha512-t7MBR28Akcp4Jm+QoR63XgAi9YgCUmgvDHqf5otgAj4QvdoBE4ImCX0ffehefePPG+aitiYHp0g/mW6s4Tp+dw==
@@ -14830,6 +14837,13 @@ zen-observable-ts@^0.8.13:
   version "0.8.14"
   resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.14.tgz#b443aa83f80d268030160c594c55ec34a45b3583"
   integrity sha512-yAkb3KkXFa0Dx5A7CvQC0Gj8ycixrLmbr2UZjHgS4FlV5bFwP5artbJTJepETO/DKKfLJ2JVAZrrmNJ4APjdmA==
+  dependencies:
+    zen-observable "^0.8.0"
+
+zen-observable-ts@^0.8.15:
+  version "0.8.15"
+  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.15.tgz#6cf7df6aa619076e4af2f707ccf8a6290d26699b"
+  integrity sha512-sXKPWiw6JszNEkRv5dQ+lQCttyjHM2Iks74QU5NP8mMPS/NrzTlHDr780gf/wOBqmHkPO6NCLMlsa+fAQ8VE8w==
   dependencies:
     zen-observable "^0.8.0"
 
