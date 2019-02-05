@@ -84,6 +84,7 @@
     "apollo-utilities": "^1.0.25",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
+    "cryptocurrency-icons": "^0.10.0",
     "css-loader": "^1.0.0",
     "date-fns": "^1.29.0",
     "enzyme": "^3.6.0",
