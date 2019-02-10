@@ -64,11 +64,7 @@
       "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1"
     }
   },
-  "resolutions": {
-    "babel-core": "^7.0.0-bridge.0"
-  },
   "dependencies": {
-    "@babel/runtime": "^7.0.0",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
     "@material-ui/lab": "^3.0.0-alpha.23",
@@ -84,6 +80,7 @@
     "apollo-utilities": "^1.0.25",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.4.2",
+    "cryptocurrency-icons": "^0.10.0",
     "css-loader": "^1.0.0",
     "date-fns": "^1.29.0",
     "enzyme": "^3.6.0",
@@ -100,11 +97,11 @@
     "normalizr": "^3.2.4",
     "rc-slider": "^8.6.1",
     "re-reselect": "^1.0.1",
-    "react": "^16.7.0-alpha.2",
+    "react": "16.8.1",
     "react-apollo": "^2.3.2",
     "react-content-loader": "^3.1.2",
     "react-dates": "^18.1.0",
-    "react-dom": "^16.7.0-alpha.2",
+    "react-dom": "16.8.1",
     "react-emojione": "^5.0.0",
     "react-fullscreen-crossbrowser": "^1.0.9",
     "react-grid-layout": "^0.16.6",
@@ -129,8 +126,9 @@
     "yup": "^0.24.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/runtime": "^7.3.1",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-proposal-decorators": "^7.0.0",
     "@babel/plugin-proposal-do-expressions": "^7.0.0",
@@ -171,7 +169,7 @@
     "@types/yup": "^0.26.1",
     "auth0-js": "^9.8.2",
     "babel-eslint": "^9.0.0",
-    "babel-loader": "8.0.0-beta.2",
+    "babel-loader": "8.0.5",
     "babel-plugin-graphql-tag": "^1.5.0",
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-module-resolver": "^3.1.0",
