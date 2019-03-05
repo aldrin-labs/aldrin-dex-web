@@ -38,11 +38,12 @@ const render = () =>
                 <ErrorBoundary>
                   <Suspense fallback={<Loading centerAligned />}>
                     <Switch>
-                      <Redirect from="/" to="/portfolio" exact />
+                      <Redirect from="/" to="/portfolio/main" exact />
+                      <Redirect from="/portfolio" to="/portfolio/main" exact />
+
                       {/*<Route exact path="/" component={HomeRoutes} />*/}
                       {/*<Route exact path="/profile" component={ProfileRoutes} />*/}
                       <Route
-                        exact
                         path="/portfolio"
                         component={PortfolioRoutes}
                       />
