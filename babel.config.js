@@ -17,13 +17,6 @@ module.exports = {
         'react-hot-loader/babel',
         'babel-plugin-styled-components',
         'graphql-tag',
-        [
-          '@babel/plugin-transform-runtime',
-          {
-            helpers: false,
-            regenerator: true,
-          },
-        ],
         '@babel/plugin-syntax-dynamic-import',
         ["@babel/plugin-proposal-decorators", { "legacy": true}],
         ["@babel/plugin-proposal-class-properties", { "loose": true}],
@@ -60,13 +53,6 @@ module.exports = {
         'lodash',
         'graphql-tag',
         'babel-plugin-styled-components',
-        [
-          '@babel/plugin-transform-runtime',
-          {
-            regenerator: true,
-            useESModules: true,
-          },
-        ],
         '@babel/plugin-syntax-dynamic-import',
         ["@babel/plugin-proposal-decorators", { "legacy": true}],
         ["@babel/plugin-proposal-class-properties", { "loose": true}],
