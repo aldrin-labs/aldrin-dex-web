@@ -11,7 +11,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
-import { persistor, store } from '@utils/configureStore'
+import { persistor, store } from '@core/redux/configureStore'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
 const ChartRoutes = lazy(() => import('@routes/chartRoute'))
