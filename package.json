@@ -28,8 +28,8 @@
     "lint:css": "stylelint './src/**/*.tsx'",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "clear": "rm -rf node_modules/ && rm -rf yarn.lock && yarn",
-    "fetch-local-core": "rsync -azP ../core ./src",
-    "fetch-local-storybook": "rsync -azP ../storybook ./src"
+    "fetch-local-core": "rsync -azP --exclude=node_modules ../core ./src",
+    "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src"
   },
   "jest": {
     "setupFiles": [
@@ -85,7 +85,7 @@
     "date-fns": "^1.29.0",
     "enzyme": "^3.6.0",
     "file-saver": "^2.0.0",
-    "formik": "^0.11.11",
+    "formik": "^1.5.1",
     "graphql": "^14.0.2",
     "graphql-deduplicator": "^2.0.1",
     "graphql-tag": "^2.10.0",
