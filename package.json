@@ -28,8 +28,8 @@
     "lint:css": "stylelint './src/**/*.tsx'",
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "clear": "rm -rf node_modules/ && rm -rf yarn.lock && yarn",
-    "fetch-local-core": "rsync -azP ../core ./src",
-    "fetch-local-storybook": "rsync -azP ../storybook ./src"
+    "fetch-local-core": "rsync -azP --exclude=node_modules ../core ./src",
+    "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src"
   },
   "jest": {
     "setupFiles": [
