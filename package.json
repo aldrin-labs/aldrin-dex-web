@@ -96,6 +96,7 @@
     "lodash-es": "^4.17.11",
     "nanoid": "^2.0.0",
     "normalizr": "^3.2.4",
+    "notistack": "^0.6.1",
     "papaparse": "^4.6.3",
     "rc-slider": "^8.6.1",
     "re-reselect": "^1.0.1",
