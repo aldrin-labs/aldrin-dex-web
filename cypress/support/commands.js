@@ -24,6 +24,8 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import { persist } from './persist'
+
 Cypress.Commands.add('waitLoading', () => {
   cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("exist");
   cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("not.exist");
@@ -36,46 +38,22 @@ Cypress.Commands.add('setLoginToStorage', (email, password) => {
     const webAuth = new auth0.WebAuth({
         domain: 'ccai.auth0.com', // Get this from https://manage.auth0.com/#/applications and your application
         clientID: '0N6uJ8lVMbize73Cv9tShaKdqJHmh1Wm', // Get this from https://manage.auth0.com/#/applications and your application
-        responseType: 'token id_token'
+        responseType: 'token id_token',
+        redirectUri: "http://localhost:3000",
     });
 
-    webAuth.client.login(
+    webAuth.login(
       {
         realm: 'Username-Password-Authentication',
         username: email,
         password: password,
-        audience: 'localhost:5080', // Get this from https://manage.auth0.com/#/apis and your api, use the identifier property
-        scope: 'openid'
-      },
-      function(err, authResult) {
-        // Auth tokens in the result or an error
-        if (authResult && authResult.accessToken && authResult.idToken) {
-          window.localStorage.setItem('token', authResult.idToken);
-          webAuth.client.userInfo(authResult.accessToken, (error, profile) => {
-            if (error) {
-              console.error('Problem getting user info', error)
-              reject(err)
-            }
-            window.localStorage.setItem('persist:login',
-              JSON.stringify({
-                loginStatus: JSON.stringify(true),
-                user: JSON.stringify(profile),
-                _persist: JSON.stringify({
-                  version:-1,
-                  rehydrated :true
-                })
-              })
-            )
-            resolve()
-          })
-
-        } else {
-          console.error('Problem logging into Auth0', err);
-          reject(err)
-          throw err
-        }
       }
-    )
+    ) 
+      auth0.parseHash(function(err, authResult) {
+      err && reject(err);
+      console.log(authResult); // undefined!!!
+      resolve(authResult);
+    });
   })
 })
 
@@ -89,26 +67,10 @@ Cypress.Commands.add('login', (email, password) => {
   })
 })
 
-Cypress.Commands.add('notShowTipsStorage', () => {
+Cypress.Commands.add('notShowTipsStorageAndLogin', () => {
   return new Cypress.Promise((resolve, reject) => {
-    window.localStorage.setItem('persist:root',
-      JSON.stringify({
-        user: JSON.stringify({
-          toolTip: {
-            portfolioMain: false,
-            portfolioIndustry: false,
-            portfolioRebalance: false,
-            portfolioCorrelation: false,
-            portfolioOptimization: false,
-            chartPage: false,
-            multiChartPage: false,
-          }
-        }),
-        _persist: JSON.stringify({
-          version:-1,
-          rehydrated :true
-        })
-      })
+    window.localStorage.setItem('apollo-cache-persist',
+      JSON.stringify(persist)
     )
     resolve()
   })

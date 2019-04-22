@@ -12,7 +12,7 @@ describe('chart tests', () => {
           .click()
       }
     )
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTipsStorageAndLogin()
     cy.notShowTips()
     cy.visit('/chart')
   })

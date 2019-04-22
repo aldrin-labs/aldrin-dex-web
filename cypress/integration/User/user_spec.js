@@ -7,13 +7,13 @@ describe('User', () => {
     cy.url().should('include', '/portfolio')
   })
   it('UserPage', () => {
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTipsStorageAndLogin()
     cy.notShowTips()
     cy.get('.UserLink').click()
     cy.url().should('include', '/user')
   })
   it('UserPage warning', () => {
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTipsStorageAndLogin()
     cy.visit('/user')
     cy.contains('We currently support only Binance exchange and will be adding more exchanges soon!')
     cy.get('#UserPageWarning').find('button').click()

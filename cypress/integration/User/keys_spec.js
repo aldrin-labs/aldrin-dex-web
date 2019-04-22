@@ -3,7 +3,7 @@ describe('Keys', () => {
     cy.clearLocalStorage()
   })
   it('Add key', () => {
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTipsStorageAndLogin()
     cy.visit('/user')
     cy.waitLoading()
     cy.get('#UserPageWarning').find('button').click()
@@ -16,7 +16,7 @@ describe('Keys', () => {
     cy.get('#KeysTable > tbody > tr').contains('test')
   })
   it('Key on portfolio', () => {
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTipsStorageAndLogin()
     cy.notShowTips()
     cy.visit('/portfolio')
     cy.waitLoading()
@@ -24,7 +24,7 @@ describe('Keys', () => {
     cy.get('#AccountsList').contains('test')
   })
   it('Change account', () => {
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTipsStorageAndLogin()
     cy.visit('/user')
     cy.waitLoading()
     cy.get('#KeysTable > tbody > tr').contains('test').should('exist')
@@ -34,7 +34,7 @@ describe('Keys', () => {
     cy.get('#KeysTable > tbody > tr').contains('test').should('not.exist')
   })
   it('Delete key', () => {
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.notShowTipsStorageAndLogin()
     cy.visit('/user')
     cy.waitLoading()
     cy.get('#UserPageWarning').find('button').click()
