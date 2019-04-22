@@ -17,7 +17,7 @@ describe('Login', () => {
     cy.get('.UserLink').should('exist')
   })
   it('Logout', () => {
-    cy.notShowTipsStorageAndLogin()
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
     cy.get('#ExitButton').click()
     cy.get('.loginButton').should('exist')

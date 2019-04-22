@@ -1,7 +1,7 @@
 describe('Rebalance', () => {
 
   before(function() {
-    cy.notShowTipsStorageAndLogin()
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
     cy.visit('/portfolio')
     cy.get('#rebalance_tab_button').click()

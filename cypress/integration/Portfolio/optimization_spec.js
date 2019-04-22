@@ -12,7 +12,7 @@ describe('optimisation', () => {
           .click()
       }
     )
-    cy.notShowTipsStorageAndLogin()
+    cy.login('NGE@NGE.nge', 'nge')
     cy.notShowTips()
     cy.visit('/portfolio')
     cy.get('#optimization_tab_button').click()
