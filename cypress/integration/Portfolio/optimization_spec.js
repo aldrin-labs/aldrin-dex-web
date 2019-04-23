@@ -12,10 +12,11 @@ describe('optimisation', () => {
           .click()
       }
     )
-    cy.login('NGE@NGE.nge', 'nge')
+  })
+
+  beforeEach(function () {
+    cy.visit('/portfolio/optimization')
     cy.notShowTips()
-    cy.visit('/portfolio')
-    cy.get('#optimization_tab_button').click()
     cy.waitLoading()
   })
 

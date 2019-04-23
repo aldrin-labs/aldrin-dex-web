@@ -12,9 +12,12 @@ describe('chart tests', () => {
           .click()
       }
     )
-    cy.login('NGE@NGE.nge', 'nge')
-    cy.notShowTips()
+  })
+
+  beforeEach(function () {
     cy.visit('/chart')
+    cy.notShowTips()
+    cy.waitLoading()
   })
 
   it('switch between depth/candle chart', () => {
@@ -22,16 +25,7 @@ describe('chart tests', () => {
     cy.get('[data-e2e="mainDepthChart"]').should('exist')
   })
 
-  it('expand/collapse tradeHistory table', () => {
-    cy.get('[data-e2e="tradeHistory__body"]').should('be.visible')
-    cy.get('[data-e2e="tradeHistory__arrowButton"]').click()
-    cy.get('[data-e2e="tradeHistory__body"]').should('not.be.visible')
-    cy.get('[data-e2e="tradeHistory__arrowButton"]').click()
-    cy.get('[data-e2e="tradeHistory__body"]').should('be.visible')
-  })
-
   it('When change coins chart url changes', () => {
-    cy.get('[data-e2e="mainChart__typeOfChartSwitcher"]').click()
     cy.get('#currencyPair')
       .invoke('text')
       .then((text) => {
@@ -39,7 +33,7 @@ describe('chart tests', () => {
         cy.get('iframe').should(
           'have.attr',
           'src',
-          `https://develop.chart.cryptocurrencies.ai/?symbol=${changedText}`
+          `https://develop.chart.cryptocurrencies.ai/?symbol=${changedText}&user_id=5bfd48fae4767b001c8478d9&theme=dark`
         )
       })
 
@@ -47,7 +41,7 @@ describe('chart tests', () => {
     cy.get('iframe').should(
       'have.attr',
       'src',
-      'https://develop.chart.cryptocurrencies.ai/?symbol=LTC/BTC'
+      'https://develop.chart.cryptocurrencies.ai/?symbol=LTC/BTC&user_id=5bfd48fae4767b001c8478d9&theme=dark'
     )
   })
 
@@ -57,6 +51,7 @@ describe('chart tests', () => {
   })
 
   it('check add and delete charts on multichart page', () => {
+    cy.get('[data-e2e="switchChartPageMode"]').click()
     cy.chooseReactSelectOption('#currencyPair', 'BTC_USDT', 'BTC_USDT')
     cy.get(':nth-child(2) >  iframe').should('be.visible')
     cy.get(
