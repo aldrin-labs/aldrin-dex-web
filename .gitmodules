@@ -1,6 +1,6 @@
 [submodule "src/storybook"]
 	path = src/storybook
-	url = https://gitlab+deploy-token-20587:PL5hyNqnXEKnDB7eDZf_@gitlab.com/crypto_project/frontend/storybook.git
+	url = https://gitlab+deploy-token-62878:9q16qQq3SFxoBhCtCtEx@gitlab.com/crypto_project/frontend/storybook.git
 [submodule "src/core"]
 	path = src/core
 	url = https://gitlab+deploy-token-57725:f63zLxs1zDAMvhF_uqJv@gitlab.com/crypto_project/frontend/core.git
