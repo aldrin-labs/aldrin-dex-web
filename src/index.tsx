@@ -10,6 +10,7 @@ import { ConnectedRouter } from 'react-router-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { App } from '@sb/compositions/App/'
+import { MainApp } from '@sb/compositions/App/MainApp'
 import { client } from '@core/graphql/apolloClient'
 import { persistor, store } from '@core/redux/configureStore'
 import { ErrorBoundary } from '@sb/components/index'
