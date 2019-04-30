@@ -5,8 +5,7 @@ import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
 import { IntlProvider } from 'react-intl'
 import { Provider } from 'react-redux'
-import { Route, Switch, Redirect } from 'react-router'
-import { ConnectedRouter } from 'react-router-redux'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { App } from '@sb/compositions/App/'
@@ -33,7 +32,7 @@ const render = () =>
       <IntlProvider locale="en">
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <ConnectedRouter history={history}>
+            <BrowserRouter>
               <App>
                 <ErrorBoundary>
                   <Suspense fallback={<Loading centerAligned />}>
@@ -43,10 +42,7 @@ const render = () =>
 
                       {/*<Route exact path="/" component={HomeRoutes} />*/}
                       {/*<Route exact path="/profile" component={ProfileRoutes} />*/}
-                      <Route
-                        path="/portfolio"
-                        component={PortfolioRoutes}
-                      />
+                      <Route path="/portfolio" component={PortfolioRoutes} />
                       {<Route exact path="/market" component={MarketRoutes} />}
                       <Route exact path="/chart" component={ChartRoutes} />
                       {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
@@ -56,7 +52,7 @@ const render = () =>
                   </Suspense>
                 </ErrorBoundary>
               </App>
-            </ConnectedRouter>
+            </BrowserRouter>
           </PersistGate>
         </Provider>
       </IntlProvider>
