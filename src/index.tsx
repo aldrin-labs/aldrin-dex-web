@@ -22,6 +22,13 @@ const UserRoutes = lazy(() => import('@routes/userRoute'))
 const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
 const OnboardingRoutes = lazy(() => import('@routes/onboardingRoute'))
 
+import Onboarding from '@sb/compositions/Onboarding'
+
+import Auth from '@sb/compositions/Onboarding/Auth'
+import LoginCallback from '@sb/compositions/Onboarding/LoginCallback'
+
+const auth = new Auth()
+
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
 //   whyDidYouUpdate(React)
@@ -40,11 +47,16 @@ const render = () =>
                 <ErrorBoundary>
                   <Suspense fallback={<Loading centerAligned />}>
                   <Switch>
-                    <Route exact path="/onboarding" component={OnboardingRoutes} />
+                    <Route exact path="/register" component={(props) => <Onboarding {...props} auth={auth} step={'first'}/>} />
+                    <Route exact path="/register/confirm" component={(props) => <Onboarding {...props} auth={auth} step={'second'}/>} />
                     <Route path="/">
                     <MainApp>
                       <Switch>
-                        <Redirect from="/" to="/portfolio/main" exact />
+                      <Route
+                          path={'/'}
+                          exact
+                          render={(props) => <LoginCallback {...props} auth={auth}/>}
+                      />
                         <Redirect from="/portfolio" to="/portfolio/main" exact />
 
                         {/*<Route exact path="/" component={HomeRoutes} />*/}
