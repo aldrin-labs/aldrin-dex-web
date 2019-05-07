@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 webpack-dev-server --env.env=dev",
     "dev:fast": "cross-env NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=cheap-module-eval-source-map webpack-dev-server --env.env=dev",
+    "dev:fast:local": "cross-env LOCAL_BUILD=true NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=cheap-module-eval-source-map  webpack-dev-server --env.env=dev",
     "dev:bundleanalyzer": "yarn dev --env.addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env.addons=jarvis",
     "prebuild": "rimraf dist",
