@@ -47,16 +47,12 @@ const render = () =>
                 <ErrorBoundary>
                   <Suspense fallback={<Loading centerAligned />}>
                   <Switch>
-                    <Route exact path="/register" component={(props) => <Onboarding {...props} auth={auth} step={'first'}/>} />
-                    <Route exact path="/register/confirm" component={(props) => <Onboarding {...props} auth={auth} step={'second'}/>} />
+                    <Route exact path="/registration" component={(props) => <Onboarding {...props} auth={auth} step={'first'}/>} />
+                    <Route exact path="/registration/confirm" component={(props) => <Onboarding {...props} auth={auth} step={'second'}/>} />
                     <Route path="/">
                     <MainApp>
                       <Switch>
-                      <Route
-                          path={'/'}
-                          exact
-                          render={(props) => <LoginCallback {...props} auth={auth}/>}
-                      />
+                        <Redirect from="/" to="/portfolio" exact />
                         <Redirect from="/portfolio" to="/portfolio/main" exact />
 
                         {/*<Route exact path="/" component={HomeRoutes} />*/}
