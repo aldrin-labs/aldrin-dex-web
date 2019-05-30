@@ -1,11 +1,9 @@
 describe('Rebalance', () => {
 
   before(function() {
-    cy.login('NGE@NGE.nge', 'nge')
+    cy.visit('/portfolio/rebalance')
     cy.notShowTips()
-    cy.visit('/portfolio')
-    cy.get('#rebalance_tab_button').click()
-    cy.wait(1500)
+    cy.waitLoading()
     // for popup on rebalance
     cy.get("body")
       .then(($body) => {
@@ -18,6 +16,12 @@ describe('Rebalance', () => {
           cy.get("#resetRebalancedPortfolioButton").click()
         }
       })
+  })
+
+  beforeEach(function () {
+    cy.visit('/portfolio/rebalance')
+    cy.notShowTips()
+    cy.waitLoading()
   })
 
   describe('Rebalace in not-edit mode', () => {

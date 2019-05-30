@@ -18,6 +18,7 @@ const NotFound = lazy(() => import('@sb/components/NotFound'))
 const PortfolioRoutes = lazy(() => import('@routes/portfolioRoute'))
 const UserRoutes = lazy(() => import('@routes/userRoute'))
 const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
+const OnboardingRoutes = lazy(() => import('@routes/onboardingRoute'))
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
@@ -37,6 +38,7 @@ const render = () =>
                 <ErrorBoundary>
                   <Suspense fallback={<Loading centerAligned />}>
                     <Switch>
+                      <Route path="/registration" component={OnboardingRoutes} />
                       <Redirect from="/" to="/portfolio/main" exact />
                       <Redirect from="/portfolio" to="/portfolio/main" exact />
 
