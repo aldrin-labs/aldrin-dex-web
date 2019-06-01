@@ -62,6 +62,7 @@
       "^@core(.*)$": "<rootDir>/src/core/src/$1",
       "^@routes(.*)$": "<rootDir>/src/routes$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
+      "^@platformUtils(.*)$": "<rootDir>/src/utils$1",
       "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1"
     }
   },
@@ -85,6 +86,7 @@
     "date-fns": "^1.29.0",
     "enzyme": "^3.6.0",
     "file-saver": "^2.0.0",
+    "firebase": "^6.1.0",
     "formik": "^1.5.1",
     "graphql": "^14.0.2",
     "graphql-deduplicator": "^2.0.1",
