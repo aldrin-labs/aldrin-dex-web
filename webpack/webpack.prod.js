@@ -9,7 +9,7 @@ const devtool = process.env.DEVTOOL || 'nosources-source-map'
 const config = {
   mode: 'production',
   entry: {
-    vendor: ['react', 'react-dom', 'redux'],
+    vendor: ['react', 'react-dom'],
     app: [`${commonPaths.appEntry}/index.tsx`],
   },
   output: {
