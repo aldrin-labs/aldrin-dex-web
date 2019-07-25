@@ -9274,7 +9274,7 @@ mem@^4.0.0:
     mimic-fn "^1.0.0"
     p-is-promise "^2.0.0"
 
-memoize-one@^4.0.0:
+memoize-one@^4.0.0, memoize-one@^4.0.2:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/memoize-one/-/memoize-one-4.1.0.tgz#a2387c58c03fff27ca390c31b764a79addf3f906"
   integrity sha512-2GApq0yI/b22J2j9rhbrAlsHb0Qcz+7yWxeLG8h+95sl1XPUgeLimQSOdur4Vw7cUhrBHwaUZxWFZueojqNRzA==
@@ -11405,6 +11405,14 @@ react-apollo@^2.3.2:
     lodash.flowright "^3.5.0"
     lodash.isequal "^4.5.0"
     prop-types "^15.6.0"
+
+react-calendar-heatmap@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-calendar-heatmap/-/react-calendar-heatmap-1.8.0.tgz#7672fc697c792c3ab71cb6d8ecb19362ace14ed1"
+  integrity sha512-Dsf2d2MKA31QzLN63fW6PTixJVzMCm2+KhprkGXaeZFvBAL2hK2guiYvr+zFpPkh1ZpGNYdrdNfn9FxhiBd1fg==
+  dependencies:
+    memoize-one "^4.0.2"
+    prop-types "^15.6.2"
 
 react-compound-timer@^1.1.1:
   version "1.1.1"
