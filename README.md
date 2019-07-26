@@ -47,3 +47,12 @@ When you want to see the changes in these repos that affect to the web repo, you
 
 
 
+
+
+
+___________
+Notes:
+
+1. If somehow happened, that the staging api (api develop branch) would not work, and your work depends on working backend, you should change few
+line of code to switch to the production api (api master branch). In this case, you should open file in core repo (@core/utils/config), and change 4th line from this "const addDevelopToURL = (URL: string) => `develop.${URL}`" to this "const addDevelopToURL = (URL: string) => `${URL}`". In that case, you will use prod api after you rebuild the web project. You may also clear the `dist` folder in your project before rebuild to make sure that cached js
+code will not affect on this action.
