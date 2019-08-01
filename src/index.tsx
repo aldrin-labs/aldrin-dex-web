@@ -14,6 +14,7 @@ const NotFound = lazy(() => import('@sb/components/NotFound'))
 const PortfolioRoutes = lazy(() => import('@routes/portfolioRoute'))
 const UserRoutes = lazy(() => import('@routes/userRoute'))
 const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
+const SignalRoutes = lazy(() => import('@routes/signalRoute'))
 const OnboardingRoutes = lazy(() => import('@routes/onboardingRoute'))
 
 // if (process.env.NODE_ENV !== 'production') {
@@ -38,6 +39,7 @@ const render = () =>
                   {/*<Route exact path="/profile" component={ProfileRoutes} />*/}
                   <Route path="/portfolio" component={PortfolioRoutes} />
                   {<Route exact path="/market" component={MarketRoutes} />}
+                  {<Route exact path="/signals" component={SignalRoutes} />}
                   <Route exact path="/chart" component={ChartRoutes} />
                   {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                   <Route exact path="/user" component={UserRoutes} />
