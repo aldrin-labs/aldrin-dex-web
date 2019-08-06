@@ -99,8 +99,6 @@
     "normalizr": "^3.2.4",
     "notistack": "^0.6.1",
     "papaparse": "^4.6.3",
-    "rc-slider": "^8.6.1",
-    "re-reselect": "^1.0.1",
     "react": "16.8.1",
     "react-apollo": "^2.3.2",
     "react-calendar-heatmap": "^1.8.0",
