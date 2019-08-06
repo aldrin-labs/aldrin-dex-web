@@ -1,92 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+    <script src="https://cdn.auth0.com/js/lock/11.14.1/lock.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <noscript id="jss-insertion-point"></noscript>
 
-<head>
-  <meta charset="UTF-8" />
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <noscript id="jss-insertion-point"></noscript>
+    <!--<script>-->
+    <!--window.auth0AnalyticsOptions = {-->
+    <!--'google-analytics': {-->
+    <!--id: 'UA-125808097-1',-->
+    <!--preloaded: true,-->
+    <!--},-->
+    <!--}-->
+    <!--</script>-->
 
-  <script>
-    window.auth0AnalyticsOptions = {
-      'google-analytics': {
-        id: 'UA-125808097-1',
-        preloaded: true,
-      },
+    <!--<script type="text/javascript">-->
+    <!--WebFontConfig = {-->
+    <!--google: { families: ['Roboto:300,400,500'] },-->
+    <!--}-->
+    <!--; (function () {-->
+    <!--var wf = document.createElement('script')-->
+    <!--wf.src =-->
+    <!--'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js'-->
+    <!--wf.type = 'text/javascript'-->
+    <!--wf.async = 'true'-->
+    <!--var s = document.getElementsByTagName('script')[0]-->
+    <!--s.parentNode.insertBefore(wf, s)-->
+    <!--})()-->
+    <!--</script>-->
+
+    <link rel="stylesheet" href="https://unpkg.com/react-vis/dist/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/react-grid-layout@0.16.6/css/styles.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/react-resizable@1.7.5/css/styles.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+    />
+    <!-- <link href="https://fonts.googleapis.com/css?family=Aguafina+Script&display=swap" rel="stylesheet"> -->
+    <link
+      href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--favicons-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <!--favicons-->
+
+    <title>Cryptocurrencies AI</title>
+  </head>
+  <style>
+    ::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
     }
-  </script>
-  <script src="https://cdn.auth0.com/js/lock/11.14.1/lock.min.js"></script>
-  <script src="https://cdn.auth0.com/js/analytics/1.3.1/analytics.min.js"></script>
-  <script type="text/javascript">
-    WebFontConfig = {
-      google: { families: ['Roboto:300,400,500'] },
+
+    ::-webkit-scrollbar-track {
+      background: rgba(45, 49, 54, 0.1);
     }
-      ; (function () {
-        var wf = document.createElement('script')
-        wf.src =
-          'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js'
-        wf.type = 'text/javascript'
-        wf.async = 'true'
-        var s = document.getElementsByTagName('script')[0]
-        s.parentNode.insertBefore(wf, s)
-      })()
-  </script>
 
-  <link rel="stylesheet" href="https://unpkg.com/react-vis/dist/style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/react-grid-layout@0.16.6/css/styles.css" />
-  <link rel="stylesheet" href="https://unpkg.com/react-resizable@1.7.5/css/styles.css" />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
-  <!-- <link href="https://fonts.googleapis.com/css?family=Aguafina+Script&display=swap" rel="stylesheet"> -->
-  <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+    ::-webkit-scrollbar-thumb {
+      background: rgb(39, 39, 45);
+    }
+  </style>
 
-  <!--favicons-->
-  <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-  />
-  <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-  />
-  <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-  />
-  <link rel="manifest" href="/site.webmanifest" />
-  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-  <meta name="msapplication-TileColor" content="#da532c" />
-  <meta name="theme-color" content="#ffffff" />
-  <!--favicons-->
+  <body>
+    <!--<script src="https://cdn.auth0.com/js/analytics/1.3.1/analytics.min.js"></script>-->
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-P3D2H59"
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-  <title>Cryptocurrencies AI</title>
-</head>
-<style>
-  ::-webkit-scrollbar {
-    width: 3px;
-    height: 3px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: rgba(45, 49, 54, 0.1);
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: rgb(39, 39, 45);
-  }
-</style>
-
-<body>
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3D2H59" height="0" width="0"
-      style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-
-  <div id="root"></div>
-</body>
-
+    <div id="root"></div>
+  </body>
 </html>
