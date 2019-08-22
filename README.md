@@ -2,6 +2,7 @@
 
 The web repo is React application that also must consist two submodules — core and storybook.
 
+
 To start using it from developer side you should:
 
 1. Clone the repo: `git clone https://gitlab.com/crypto_project/frontend/web.git`, or do it by ssh.
