@@ -55,7 +55,9 @@ const config = {
     new UglifyJSPlugin({
       parallel: true,
       uglifyOptions: {
-        compress: false,
+        compress: {
+          pure_funcs: ['console.log'],
+        },
         ecma: 6,
         mangle: true,
         toplevel: true,
