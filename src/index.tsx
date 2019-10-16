@@ -12,6 +12,7 @@ import { Loading } from '@sb/components'
 const ChartRoutes = lazy(() => import('@routes/chartRoute'))
 const NotFound = lazy(() => import('@sb/components/NotFound'))
 const PortfolioRoutes = lazy(() => import('@routes/portfolioRoute'))
+const ProfileRoutes = lazy(() => import('@routes/profileRoute'))
 const UserRoutes = lazy(() => import('@routes/userRoute'))
 const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
 const SignalRoutes = lazy(() => import('@routes/signalRoute'))
@@ -36,7 +37,7 @@ const render = () =>
                   <Redirect from="/portfolio" to="/portfolio/main" exact />
 
                   {/*<Route exact path="/" component={HomeRoutes} />*/}
-                  {/*<Route exact path="/profile" component={ProfileRoutes} />*/}
+                  <Route path="/profile" component={ProfileRoutes} />
                   <Route path="/portfolio" component={PortfolioRoutes} />
                   {<Route exact path="/market" component={MarketRoutes} />}
                   {<Route exact path="/signals" component={SignalRoutes} />}
