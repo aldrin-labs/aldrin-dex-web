@@ -44,6 +44,7 @@ const config = {
     },
   },
   plugins: [
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.HashedModuleIdsPlugin(),
     new LodashModuleReplacementPlugin({
       caching: true,
