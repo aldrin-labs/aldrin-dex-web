@@ -2,6 +2,7 @@ const commonPaths = require('./common-paths')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const config = {
   output: {
@@ -84,11 +85,20 @@ const config = {
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       favicon: 'public/favicon.ico',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true
+      }
     }),
   ],
 }
