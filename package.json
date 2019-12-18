@@ -3,7 +3,9 @@
   "repository": "git@gitlab.com:crypto_project/frontend/web.git",
   "author": "CCAI-team",
   "version": "0.0.1",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.woff2"
+  ],
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 webpack-dev-server --env.env=dev",
