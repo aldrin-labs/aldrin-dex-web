@@ -9,15 +9,15 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
-const ChartRoutes = lazy(() => import('@routes/chartRoute'))
-const NotFound = lazy(() => import('@sb/components/NotFound'))
-const PortfolioRoutes = lazy(() => import('@routes/portfolioRoute'))
-const ProfileRoutes = lazy(() => import('@routes/profileRoute'))
-const UserRoutes = lazy(() => import('@routes/userRoute'))
-const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
-const SignalRoutes = lazy(() => import('@routes/signalRoute'))
-const OnboardingRoutes = lazy(() => import('@routes/onboardingRoute'))
-const LoginRoutes = lazy(() => import('@routes/loginRoutes'))
+const ChartRoutes = lazy(() => import(/* webpackChunkName: "chart" */ '@routes/chartRoute'))
+const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
+const PortfolioRoutes = lazy(() => import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute'))
+const ProfileRoutes = lazy(() => import(/* webpackChunkName: "profile" */ '@routes/profileRoute'))
+const UserRoutes = lazy(() => import(/* webpackChunkName: "user" */ '@routes/userRoute'))
+const MarketRoutes = lazy(() => import(/* webpackChunkName: "market" */ '@routes/coinMarketCapRoute'))
+const SignalRoutes = lazy(() => import(/* webpackChunkName: "signal" */ '@routes/signalRoute'))
+const OnboardingRoutes = lazy(() => import(/* webpackChunkName: "onboarding" */ '@routes/onboardingRoute'))
+const LoginRoutes = lazy(() => import(/* webpackChunkName: "login" */ '@routes/loginRoutes'))
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
