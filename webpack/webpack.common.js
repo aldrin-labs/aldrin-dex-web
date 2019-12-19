@@ -118,7 +118,7 @@ const config = {
       clientsClaim: true,
       skipWaiting: false,
       runtimeCaching: [{
-        urlPattern: /chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
+        urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
         handler: 'StaleWhileRevalidate'
       }]
     
