@@ -116,7 +116,7 @@ const config = {
     new WorkboxWebpackPlugin.GenerateSW({
       swDest: "sw.js",
       clientsClaim: true,
-      skipWaiting: false,  
+      skipWaiting: false,
     })
   ],
 }
