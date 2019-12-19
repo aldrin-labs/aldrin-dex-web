@@ -3,6 +3,7 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 
 const config = {
   output: {
@@ -112,6 +113,11 @@ const config = {
         useShortDoctype: true
       }
     }),
+    new WorkboxWebpackPlugin.GenerateSW({
+      swDest: "sw.js",
+      clientsClaim: true,
+      skipWaiting: false,  
+    })
   ],
 }
 
