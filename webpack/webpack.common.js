@@ -117,6 +117,11 @@ const config = {
       swDest: "sw.js",
       clientsClaim: true,
       skipWaiting: false,
+      runtimeCaching: [{
+        urlPattern: new RegExp('chart.cryptocurrencies.ai'),
+        handler: 'StaleWhileRevalidate'
+      }]
+    
     })
   ],
 }
