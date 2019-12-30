@@ -113,16 +113,15 @@ const config = {
         useShortDoctype: true
       }
     }),
-    new WorkboxWebpackPlugin.GenerateSW({
-      swDest: "sw.js",
-      clientsClaim: true,
-      skipWaiting: false,
-      runtimeCaching: [{
-        urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
-        handler: 'StaleWhileRevalidate'
-      }]
-    
-    })
+    // new WorkboxWebpackPlugin.GenerateSW({
+    //   swDest: "sw.js",
+    //   clientsClaim: true,
+    //   skipWaiting: false,
+    //   runtimeCaching: [{
+    //     urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
+    //     handler: 'StaleWhileRevalidate'
+    //   }]
+    // })
   ],
 }
 
