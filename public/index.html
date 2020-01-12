@@ -3,8 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
-    <script src="https://cdn.auth0.com/js/lock/11.18.0/lock.min.js"></script>
+    <!-- <script src="https://cdn.auth0.com/js/lock/11.18.0/lock.min.js"></script> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <!-- {/* this is for fast performance, more info: https://developers.google.com/web/fundamentals/performance/resource-prioritization?utm_source=lighthouse&utm_medium=devtools#preconnect */} -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://stats.g.doubleclick.net" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://www.google.com" />
+    <link rel="preconnect" href="https://storage.googleapis.com" />
+    <link rel="preconnect" href="https://unpkg.com" />
     <noscript id="jss-insertion-point"></noscript>
 
     <!--<script>-->
@@ -31,7 +38,7 @@
     <!--})()-->
     <!--</script>-->
 
-    <link rel="stylesheet" href="https://unpkg.com/react-vis/dist/style.css" />
+    <link rel="preload" as="style" href="https://unpkg.com/react-vis@1.11.7/dist/style.css" crossorigin="anonymous"/>
     <!--<link-->
     <!--rel="stylesheet"-->
     <!--href="https://unpkg.com/react-grid-layout@0.16.6/css/styles.css"-->
@@ -40,14 +47,48 @@
     <!--rel="stylesheet"-->
     <!--href="https://unpkg.com/react-resizable@1.7.5/css/styles.css"-->
     <!--/>-->
-    <link
-      rel="stylesheet"
+    <!-- <link
+      rel="stylesheet" 
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
-    />
+    /> -->
+
+    <!-- <link
+      rel="preload"
+      as="style"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
+      type="stylesheet"
+      crossOrigin="anonymous"
+      onload="this.rel='stylesheet'"
+    /> -->
+
     <!-- <link href="https://fonts.googleapis.com/css?family=Aguafina+Script&display=swap" rel="stylesheet"> -->
-    <link
+    <!-- <link
       href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
-      rel="stylesheet"
+      rel="stylesheet" 
+    /> -->
+
+    <link
+      rel="preload"
+      as="font"
+      href="/fonts/DMSans.woff2"
+      type="font/woff2"
+      crossOrigin="anonymous"
+    />
+
+    <link
+      rel="preload"
+      as="font"
+      href="/fonts/fontawesome-webfont.woff2"
+      type="font/woff2"
+      crossOrigin="anonymous"
+    />
+
+    <link
+      rel="preload"
+      as="font"
+      href="/fonts/IBMPlexSansCondensed.woff2"
+      type="font/woff2"
+      crossOrigin="anonymous"
     />
 
     <!--favicons-->
