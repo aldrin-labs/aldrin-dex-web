@@ -2,6 +2,8 @@ const commonPaths = require('./common-paths')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 
 const config = {
   output: {
@@ -81,15 +83,45 @@ const config = {
           },
         ],
       },
+      {
+        test: /\.(woff(2)?|ttf)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/'
+            }
+          }
+        ]
+      }
     ],
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       favicon: 'public/favicon.ico',
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true
+      }
     }),
+    // new WorkboxWebpackPlugin.GenerateSW({
+    //   swDest: "sw.js",
+    //   clientsClaim: true,
+    //   skipWaiting: false,
+    //   runtimeCaching: [{
+    //     urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
+    //     handler: 'StaleWhileRevalidate'
+    //   }]
+    // })
   ],
 }
 

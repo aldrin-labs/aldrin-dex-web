@@ -9,14 +9,15 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
-const ChartRoutes = lazy(() => import('@routes/chartRoute'))
-const NotFound = lazy(() => import('@sb/components/NotFound'))
-const PortfolioRoutes = lazy(() => import('@routes/portfolioRoute'))
-const ProfileRoutes = lazy(() => import('@routes/profileRoute'))
-const UserRoutes = lazy(() => import('@routes/userRoute'))
-const MarketRoutes = lazy(() => import('@routes/coinMarketCapRoute'))
-const SignalRoutes = lazy(() => import('@routes/signalRoute'))
-const OnboardingRoutes = lazy(() => import('@routes/onboardingRoute'))
+const ChartRoutes = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'))
+const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
+const PortfolioRoutes = lazy(() => import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute'))
+const ProfileRoutes = lazy(() => import(/* webpackChunkName: "profile" */ '@routes/profileRoute'))
+const UserRoutes = lazy(() => import(/* webpackChunkName: "user" */ '@routes/userRoute'))
+const MarketRoutes = lazy(() => import(/* webpackChunkName: "market" */ '@routes/coinMarketCapRoute'))
+const SignalRoutes = lazy(() => import(/* webpackChunkName: "signal" */ '@routes/signalRoute'))
+const OnboardingRoutes = lazy(() => import(/* webpackChunkName: "onboarding" */ '@routes/onboardingRoute'))
+const LoginRoutes = lazy(() => import(/* webpackChunkName: "login" */ '@routes/loginRoutes'))
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
@@ -32,6 +33,7 @@ const render = () =>
             <ErrorBoundary>
               <Suspense fallback={<Loading centerAligned />}>
                 <Switch>
+                  <Route path="/login" component={LoginRoutes} />
                   <Route path="/registration" component={OnboardingRoutes} />
                   <Redirect from="/" to="/portfolio/main" exact />
                   <Redirect from="/portfolio" to="/portfolio/main" exact />
@@ -56,3 +58,23 @@ const render = () =>
   )
 
 render(hot(module)(App))
+
+
+if ('serviceWorker' in navigator) {
+
+  // registration of SW
+
+  // window.addEventListener('load', () => {
+  //   navigator.serviceWorker.register('/sw.js').then(registration => {
+  //     console.log('SW registered: ', registration);
+  //   }).catch(registrationError => {
+  //     console.log('SW registration failed: ', registrationError);
+  //   });
+  // });
+
+
+  navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    for(let registration of registrations) {
+     registration.unregister()
+   } })
+}

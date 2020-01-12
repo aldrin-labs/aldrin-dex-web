@@ -15,7 +15,11 @@ module.exports = {
       ],
       plugins: [
         'react-hot-loader/babel',
-        'babel-plugin-styled-components',
+        ['babel-plugin-styled-components', {
+          minify: true,
+          transpileTemplateLiterals: true,
+          pure: true,
+        }],
         'graphql-tag',
         '@babel/plugin-syntax-dynamic-import',
         ["@babel/plugin-proposal-decorators", { "legacy": true}],
