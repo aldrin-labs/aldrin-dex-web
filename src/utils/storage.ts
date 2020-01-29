@@ -26,4 +26,17 @@ const asyncLocalStorage = {
   },
 }
 
+export const syncStorage = {
+  setItem: (key: string, value) => {
+      window.localStorage.setItem(key, value)
+  },
+  getItem: (key: string) => {
+      return window.localStorage.getItem(key)
+  },
+  removeItem: (key: string) => {
+      return window.localStorage.removeItem(key)
+  },
+}
+
+
 export default asyncLocalStorage
