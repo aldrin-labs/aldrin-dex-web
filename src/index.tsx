@@ -37,13 +37,14 @@ const render = () =>
                   <Route path="/registration" component={OnboardingRoutes} />
                   <Redirect from="/" to="/portfolio/main" exact />
                   <Redirect from="/portfolio" to="/portfolio/main" exact />
+                  <Redirect from="/chart" to="/chart/spot" exact />
 
                   {/*<Route exact path="/" component={HomeRoutes} />*/}
                   <Route path="/profile" component={ProfileRoutes} />
                   <Route path="/portfolio" component={PortfolioRoutes} />
                   {<Route exact path="/market" component={MarketRoutes} />}
                   {<Route exact path="/signals" component={SignalRoutes} />}
-                  <Route exact path="/chart" component={ChartRoutes} />
+                  <Route path="/chart" component={ChartRoutes} />
                   {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                   <Route exact path="/user" component={UserRoutes} />
                   <Route path="*" component={NotFound} />
