@@ -112,6 +112,7 @@
     "react-intl": "^2.4.0",
     "react-joyride": "^2.0.0-15",
     "react-jss": "^8.6.1",
+    "react-otp-input": "^1.0.1",
     "react-pose": "3.3.3",
     "react-router": "^5.0.0",
     "react-router-config": "^4.4.0-beta.6",
