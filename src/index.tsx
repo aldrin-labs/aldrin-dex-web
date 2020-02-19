@@ -38,7 +38,7 @@ const render = () =>
                   <Route path="/signup" component={LoginRoutes} />
 
                   <Route path="/registration" component={OnboardingRoutes} />
-                  <Redirect from="/" to="/portfolio/main" exact />
+                  <Redirect from="/" to="/signin" exact />
                   <Redirect from="/portfolio" to="/portfolio/main" exact />
                   <Redirect from="/chart" to="/chart/spot" exact />
 
