@@ -33,7 +33,6 @@ const render = () =>
             <ErrorBoundary>
               <Suspense fallback={<Loading centerAligned />}>
                 <Switch>
-                  <Route path="/login" component={LoginRoutes} />
                   <Route path="/signin" component={LoginRoutes} />
                   <Route path="/signup" component={LoginRoutes} />
 
