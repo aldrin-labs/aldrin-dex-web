@@ -4,6 +4,21 @@ import Login from '@sb/compositions/Login/Login'
 
 export default ({ match, location }: { match: match; location: Location }) => (
   <Switch>
-    <Route path={match.url} component={Login} />
+    <Route
+      exact
+      path="/signin"
+      render={(...rest) => {
+        console.log('/signin')
+        return <Login initialStep={'signIn'} />
+      }}
+    />
+    <Route
+      exact
+      path="/signup"
+      render={(...rest) => {
+        console.log('/signup')
+        return <Login initialStep={'signUp'} />
+      }}
+    />
   </Switch>
 )
