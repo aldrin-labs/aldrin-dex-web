@@ -20,13 +20,5 @@ export default ({ match, location }: { match: match; location: Location }) => (
         return <Login initialStep={'signUp'} />
       }}
     />
-    <Route
-      exact
-      path="/login"
-      render={(...rest) => {
-        console.log('/login')
-        return <Login />
-      }}
-    />
   </Switch>
 )
