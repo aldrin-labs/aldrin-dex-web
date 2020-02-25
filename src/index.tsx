@@ -33,12 +33,12 @@ const render = () =>
             <ErrorBoundary>
               <Suspense fallback={<Loading centerAligned />}>
                 <Switch>
-                  <Route path="/signin" component={LoginRoutes} />
+                  <Route path="/login" component={LoginRoutes} />
                   <Route path="/signup" component={LoginRoutes} />
 
                   <Route path="/registration" component={OnboardingRoutes} />
-                  <Redirect from="/" to="/signin" exact />
-                  <Redirect from="/login" to="/signin" exact />
+                  <Redirect from="/" to="/login" exact />
+                  <Redirect from="/login" to="/login" exact />
                   <Redirect from="/portfolio" to="/portfolio/main" exact />
                   <Redirect from="/chart" to="/chart/spot" exact />
 
