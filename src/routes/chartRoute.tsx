@@ -9,7 +9,6 @@ export default function ChartRoutes({ match, location }) {
         exact
         path="/chart/spot"
         render={(...rest) => {
-          console.log('/chart/spot')
           return <Chart marketType={0} />
         }}
       />
@@ -17,7 +16,6 @@ export default function ChartRoutes({ match, location }) {
         exact
         path="/chart/futures"
         render={(...rest) => {
-          console.log('/chart/futures')
           return <Chart marketType={1} />
         }}
       />
