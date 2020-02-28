@@ -6,9 +6,8 @@ export default ({ match, location }: { match: match; location: Location }) => (
   <Switch>
     <Route
       exact
-      path="/signin"
+      path="/login"
       render={(...rest) => {
-        console.log('/signin')
         return <Login initialStep={'signIn'} />
       }}
     />
@@ -16,7 +15,6 @@ export default ({ match, location }: { match: match; location: Location }) => (
       exact
       path="/signup"
       render={(...rest) => {
-        console.log('/signup')
         return <Login initialStep={'signUp'} />
       }}
     />
