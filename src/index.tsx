@@ -40,6 +40,7 @@ const render = () =>
                   <Redirect from="/" to="/login" exact />
                   <Redirect from="/login" to="/login" exact />
                   <Redirect from="/portfolio" to="/portfolio/main" exact />
+                  <Redirect from="/portfolio/transactions" to="/portfolio/transactions/spot" exact />
                   <Redirect from="/chart" to="/chart/spot" exact />
 
                   {/*<Route exact path="/" component={HomeRoutes} />*/}
