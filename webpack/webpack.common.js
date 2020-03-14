@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
   output: {
@@ -94,7 +95,7 @@ const config = {
             }
           }
         ]
-      }
+      },
     ],
   },
   plugins: [
@@ -113,6 +114,9 @@ const config = {
         useShortDoctype: true
       }
     }),
+    new CopyPlugin([
+      { from: path.join(__dirname, '..', 'public'), },
+    ]),
     // new WorkboxWebpackPlugin.GenerateSW({
     //   swDest: "sw.js",
     //   clientsClaim: true,
