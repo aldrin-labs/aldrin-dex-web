@@ -3,7 +3,6 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 
 const config = {
@@ -41,9 +40,9 @@ const config = {
       {
         test: /\.tsx?$/,
         exclude: [
-          path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/'),
-          path.join(__dirname, '/src/core/node_modules/'),
+          path.join(__dirname, '../node_modules/'),
+          path.join(__dirname, '../src/storybook/node_modules/'),
+          path.join(__dirname, '../src/core/node_modules/'),
 
         ],
         loader: 'babel-loader?cacheDirectory=true',
@@ -51,9 +50,9 @@ const config = {
       {
         test: /\.(graphql|gql)$/,
         exclude: [
-          path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/'),
-          path.join(__dirname, '/src/core/node_modules/'),
+          path.join(__dirname, '../node_modules/'),
+          path.join(__dirname, '../src/storybook/node_modules/'),
+          path.join(__dirname, '../src/core/node_modules/'),
         ],
         loader: 'graphql-tag/loader',
       },
@@ -117,15 +116,6 @@ const config = {
     new CopyPlugin([
       { from: path.join(__dirname, '..', 'public'), },
     ]),
-    // new WorkboxWebpackPlugin.GenerateSW({
-    //   swDest: "sw.js",
-    //   clientsClaim: true,
-    //   skipWaiting: false,
-    //   runtimeCaching: [{
-    //     urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
-    //     handler: 'StaleWhileRevalidate'
-    //   }]
-    // })
   ],
 }
 
