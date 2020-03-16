@@ -84,7 +84,6 @@
     "cryptocurrency-icons": "^0.10.0",
     "date-fns": "^1.29.0",
     "file-saver": "^2.0.0",
-    "firebase": "^6.1.0",
     "formik": "^1.5.1",
     "graphql": "^14.0.2",
     "graphql-deduplicator": "^2.0.1",
