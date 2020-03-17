@@ -39,6 +39,27 @@
     <!--</script>-->
 
     <link rel="preload" as="style" href="https://unpkg.com/react-vis@1.11.7/dist/style.css" crossorigin="anonymous"/>
+    <style>
+      .loader:empty {
+        position: absolute;
+        top: calc(50% - 4em);
+        left: calc(50% - 4em);
+        width: 6em;
+        height: 6em;
+        animation: loadAnimation 0.58s infinite;
+        animation-direction: alternate;
+        animation-timing-function: ease;
+      }
+
+      @keyframes loadAnimation {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-3em);
+        }
+      }
+    </style>
     <!--<link-->
     <!--rel="stylesheet"-->
     <!--href="https://unpkg.com/react-grid-layout@0.16.6/css/styles.css"-->
@@ -117,6 +138,8 @@
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <div id="root"></div>
+    <div id="root">
+      <img class="loader" src="./logo.svg" alt="Loading..." />
+    </div>
   </body>
 </html>
