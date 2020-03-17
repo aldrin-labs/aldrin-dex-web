@@ -21,20 +21,20 @@ const config = {
   module: {
     rules: [],
   },
-  // optimization: {
-  //   minimize: true,
-  //   minimizer: [
-  //     new TerserPlugin({
-  //       terserOptions: {
-  //         toplevel: true,
-  //         output: {
-  //           comments: false,
-  //         },
-  //       },
-  //       extractComments: false,
-  //     }),
-  //   ],
-  // },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          toplevel: true,
+          output: {
+            comments: false,
+          },
+        },
+        extractComments: false,
+      }),
+    ],
+  },
   // optimization: {
   //   minimizer: [
   //     new UglifyJSPlugin({
@@ -55,10 +55,10 @@ const config = {
   //     maxSize: 244,
   //   }
   // },
-  optimization:{
-    minimize: false, // <---- disables uglify.
-    // minimizer: [new UglifyJsPlugin()] if you want to customize it.
-  },
+  // optimization:{
+  //   minimize: false, // <---- disables uglify.
+  //   // minimizer: [new UglifyJsPlugin()] if you want to customize it.
+  // },
   // optimization: {
     // runtimeChunk: 'single',
     // splitChunks: {
