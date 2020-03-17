@@ -14,7 +14,7 @@ const config = {
     app: [`${commonPaths.appEntry}/index.tsx`],
   },
   output: {
-    filename: 'static/[name].[hash].js',
+    filename: '[name].[hash].js',
     chunkFilename: '[name].[hash].bundle.js',
   },
   devtool,
