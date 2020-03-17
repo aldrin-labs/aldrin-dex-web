@@ -69,17 +69,16 @@ if ('serviceWorker' in navigator) {
 
   // registration of SW
 
-  // window.addEventListener('load', () => {
-  //   navigator.serviceWorker.register('/sw.js').then(registration => {
-  //     console.log('SW registered: ', registration);
-  //   }).catch(registrationError => {
-  //     console.log('SW registration failed: ', registrationError);
-  //   });
-  // });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
 
-
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    for(let registration of registrations) {
-     registration.unregister()
-   } })
+  // navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  //   for(let registration of registrations) {
+  //    registration.unregister()
+  //  } })
 }
