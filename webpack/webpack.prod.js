@@ -2,7 +2,7 @@ const commonPaths = require('./common-paths')
 var LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const webpack = require('webpack')
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin');
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
@@ -21,10 +21,44 @@ const config = {
   module: {
     rules: [],
   },
-  // optimization:{
-  //   minimize: false, // <---- disables uglify.
-  //   // minimizer: [new UglifyJsPlugin()] if you want to customize it.
+  // optimization: {
+  //   minimize: true,
+  //   minimizer: [
+  //     new TerserPlugin({
+  //       terserOptions: {
+  //         toplevel: true,
+  //         output: {
+  //           comments: false,
+  //         },
+  //       },
+  //       extractComments: false,
+  //     }),
+  //   ],
   // },
+  // optimization: {
+  //   minimizer: [
+  //     new UglifyJSPlugin({
+  //       parallel: true,
+  //       uglifyOptions: {
+  //         compress: false,
+  //         ecma: 6,
+  //         mangle: true,
+  //         toplevel: true,
+  //       },
+  //       sourceMap: true,
+  //     })
+  //   ]
+  // },
+  // optimization: {
+  //   splitChunks: {
+  //     maxAsyncRequests: 100,
+  //     maxSize: 244,
+  //   }
+  // },
+  optimization:{
+    minimize: false, // <---- disables uglify.
+    // minimizer: [new UglifyJsPlugin()] if you want to customize it.
+  },
   // optimization: {
     // runtimeChunk: 'single',
     // splitChunks: {
