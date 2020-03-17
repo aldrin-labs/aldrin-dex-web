@@ -3,7 +3,8 @@ var LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 const webpack = require('webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
+const ImageminPlugin = require('imagemin-webpack-plugin').default
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
 const config = {
@@ -55,6 +56,7 @@ const config = {
     // },
   // },
   plugins: [
+    new ImageminPlugin({ test: /\.(jpe?g|png)$/i }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.HashedModuleIdsPlugin(),
     new LodashModuleReplacementPlugin({
