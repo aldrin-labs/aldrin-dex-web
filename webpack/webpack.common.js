@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const getTransformer = require('ts-transform-graphql-tag').getTransformer
 
 const config = {
   output: {
@@ -45,7 +46,14 @@ const config = {
           path.join(__dirname, '../src/core/node_modules/'),
 
         ],
-        loader: 'babel-loader?cacheDirectory=true',
+        use: [
+          'babel-loader?cacheDirectory=true', {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+            getCustomTransformers: () => ({ before: [getTransformer()] })
+          }
+        }],
       },
       {
         test: /\.(graphql|gql)$/,
@@ -54,7 +62,7 @@ const config = {
           path.join(__dirname, '../src/storybook/node_modules/'),
           path.join(__dirname, '../src/core/node_modules/'),
         ],
-        loader: 'graphql-tag/loader',
+        use: ['graphql-tag/loader', 'minify-graphql-loader'],
       },
       {
         test: /\.mjs$/,
