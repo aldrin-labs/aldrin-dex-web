@@ -36,20 +36,6 @@ const config = {
     ],
   },
   // optimization: {
-  //   minimizer: [
-  //     new UglifyJSPlugin({
-  //       parallel: true,
-  //       uglifyOptions: {
-  //         compress: false,
-  //         ecma: 6,
-  //         mangle: true,
-  //         toplevel: true,
-  //       },
-  //       sourceMap: true,
-  //     })
-  //   ]
-  // },
-  // optimization: {
   //   splitChunks: {
   //     maxAsyncRequests: 100,
   //     maxSize: 244,
