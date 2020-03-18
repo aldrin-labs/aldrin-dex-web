@@ -107,7 +107,6 @@ const config = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
