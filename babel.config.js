@@ -5,6 +5,7 @@ module.exports = {
         [
           '@babel/preset-env',
           {
+            modules: false,
             targets: {
               browsers: ['last 2 versions'],
             },
@@ -15,15 +16,18 @@ module.exports = {
       ],
       plugins: [
         'react-hot-loader/babel',
-        ['babel-plugin-styled-components', {
-          minify: true,
-          transpileTemplateLiterals: true,
-          pure: true,
-        }],
+        [
+          'babel-plugin-styled-components',
+          {
+            minify: true,
+            transpileTemplateLiterals: true,
+            pure: true,
+          },
+        ],
         'graphql-tag',
         '@babel/plugin-syntax-dynamic-import',
-        ["@babel/plugin-proposal-decorators", { "legacy": true}],
-        ["@babel/plugin-proposal-class-properties", { "loose": true}],
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/plugin-proposal-class-properties', { loose: true }],
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-export-namespace-from',
         '@babel/plugin-proposal-function-sent',
@@ -56,10 +60,17 @@ module.exports = {
       plugins: [
         'lodash',
         'graphql-tag',
-        'babel-plugin-styled-components',
+        [
+          'babel-plugin-styled-components',
+          {
+            minify: true,
+            transpileTemplateLiterals: true,
+            pure: true,
+          },
+        ],
         '@babel/plugin-syntax-dynamic-import',
-        ["@babel/plugin-proposal-decorators", { "legacy": true}],
-        ["@babel/plugin-proposal-class-properties", { "loose": true}],
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/plugin-proposal-class-properties', { loose: true }],
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-export-namespace-from',
         '@babel/plugin-proposal-function-sent',
@@ -90,8 +101,14 @@ module.exports = {
       ],
       plugins: [
         'react-hot-loader/babel',
-
-        'babel-plugin-styled-components',
+        [
+          'babel-plugin-styled-components',
+          {
+            minify: true,
+            transpileTemplateLiterals: true,
+            pure: true,
+          },
+        ],
         'graphql-tag',
         [
           '@babel/plugin-transform-runtime',
@@ -101,8 +118,8 @@ module.exports = {
           },
         ],
         '@babel/plugin-syntax-dynamic-import',
-        ["@babel/plugin-proposal-decorators", { "legacy": true}],
-        ["@babel/plugin-proposal-class-properties", { "loose": true}],
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/plugin-proposal-class-properties', { loose: true }],
         '@babel/plugin-proposal-export-default-from',
         '@babel/plugin-proposal-export-namespace-from',
         '@babel/plugin-proposal-function-sent',
