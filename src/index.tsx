@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
-import { IntlProvider } from 'react-intl'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 
 import { App } from '@sb/compositions/App/'
@@ -27,7 +26,6 @@ const LoginRoutes = lazy(() => import(/* webpackChunkName: "login" */ '@routes/l
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <IntlProvider locale="en">
         <BrowserRouter>
           <App>
             <ErrorBoundary>
@@ -57,7 +55,6 @@ const render = () =>
             </ErrorBoundary>
           </App>
         </BrowserRouter>
-      </IntlProvider>
     </ApolloProvider>,
     document.getElementById('root')
   )
