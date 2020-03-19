@@ -58,7 +58,7 @@ module.exports = {
         '@babel/preset-typescript',
       ],
       plugins: [
-        'lodash',
+        ['lodash', { id: ['lodash', 'recompose'] }],
         'graphql-tag',
         [
           'babel-plugin-styled-components',
@@ -68,6 +68,7 @@ module.exports = {
             pure: true,
           },
         ],
+        ['transform-react-remove-prop-types'],
         '@babel/plugin-syntax-dynamic-import',
         ['@babel/plugin-proposal-decorators', { legacy: true }],
         ['@babel/plugin-proposal-class-properties', { loose: true }],
