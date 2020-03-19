@@ -34,6 +34,8 @@ const config = {
       '@icons': path.join(__dirname, '..', 'src', 'storybook', 'src', 'icons'),
       '@storage': path.join(__dirname, '..', 'src', 'utils', 'storage'),
       '@nodemodules': path.resolve(__dirname, '..', 'node_modules'),
+      '@material-ui/core': '@material-ui/core/es',
+      '@material-ui/styles': '@material-ui/core/es/styles',
     },
   },
   module: {
