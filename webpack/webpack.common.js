@@ -124,6 +124,10 @@ const config = {
     }),
     new CopyPlugin([
       { from: path.join(__dirname, '..', 'public'), },
+      {
+       from: path.join(__dirname, '..', 'node_modules', 'cryptocurrency-icons', 'svg', 'icon'),
+       to: path.join(commonPaths.outputPath, 'cryptocurrency-icons', 'svg', 'icon')
+      },
     ]),
   ],
 }
