@@ -13,8 +13,8 @@ const config = {
     app: [`${commonPaths.appEntry}/index.tsx`],
   },
   output: {
-    filename: '[name].[hash].js',
-    chunkFilename: '[name].[hash].bundle.js',
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].bundle.js',
   },
   devtool,
   module: {
