@@ -10,12 +10,11 @@ const devtool = process.env.DEVTOOL || 'nosources-source-map'
 const config = {
   mode: 'production',
   entry: {
-    vendor: ['react', 'react-dom'],
     app: [`${commonPaths.appEntry}/index.tsx`],
   },
   output: {
-    filename: '[name].[hash].js',
-    chunkFilename: '[name].[hash].bundle.js',
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].bundle.js',
   },
   devtool,
   module: {
@@ -41,9 +40,10 @@ const config = {
   //     maxSize: 244,
   //   }
   // },
-  // optimization:{
-  //   minimize: false, // <---- disables uglify.
-  //   // minimizer: [new UglifyJsPlugin()] if you want to customize it.
+  // optimization: {
+    // concatenateModules: false,
+    // minimize: false, // <---- disables uglify.
+    // minimizer: [new UglifyJsPlugin()] if you want to customize it.
   // },
   // optimization: {
     // runtimeChunk: 'single',
