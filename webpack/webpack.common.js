@@ -3,8 +3,8 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
+const getTransformer = require('ts-transform-graphql-tag').getTransformer
 
 const config = {
   output: {
@@ -34,6 +34,8 @@ const config = {
       '@icons': path.join(__dirname, '..', 'src', 'storybook', 'src', 'icons'),
       '@storage': path.join(__dirname, '..', 'src', 'utils', 'storage'),
       '@nodemodules': path.resolve(__dirname, '..', 'node_modules'),
+      '@material-ui/core': '@material-ui/core/es',
+      '@material-ui/styles': '@material-ui/core/es/styles',
     },
   },
   module: {
@@ -41,21 +43,28 @@ const config = {
       {
         test: /\.tsx?$/,
         exclude: [
-          path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/'),
-          path.join(__dirname, '/src/core/node_modules/'),
+          path.join(__dirname, '../node_modules/'),
+          path.join(__dirname, '../src/storybook/node_modules/'),
+          path.join(__dirname, '../src/core/node_modules/'),
 
         ],
-        loader: 'babel-loader?cacheDirectory=true',
+        use: [
+          'babel-loader?cacheDirectory=true', {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+            getCustomTransformers: () => ({ before: [getTransformer()] })
+          }
+        }],
       },
       {
         test: /\.(graphql|gql)$/,
         exclude: [
-          path.join(__dirname, '/node_modules/'),
-          path.join(__dirname, '/src/storybook/node_modules/'),
-          path.join(__dirname, '/src/core/node_modules/'),
+          path.join(__dirname, '../node_modules/'),
+          path.join(__dirname, '../src/storybook/node_modules/'),
+          path.join(__dirname, '../src/core/node_modules/'),
         ],
-        loader: 'graphql-tag/loader',
+        use: ['graphql-tag/loader', 'minify-graphql-loader'],
       },
       {
         test: /\.mjs$/,
@@ -100,7 +109,6 @@ const config = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
@@ -116,16 +124,11 @@ const config = {
     }),
     new CopyPlugin([
       { from: path.join(__dirname, '..', 'public'), },
+      {
+       from: path.join(__dirname, '..', 'node_modules', 'cryptocurrency-icons', 'svg', 'icon'),
+       to: path.join(commonPaths.outputPath, 'cryptocurrency-icons', 'svg', 'icon')
+      },
     ]),
-    // new WorkboxWebpackPlugin.GenerateSW({
-    //   swDest: "sw.js",
-    //   clientsClaim: true,
-    //   skipWaiting: false,
-    //   runtimeCaching: [{
-    //     urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
-    //     handler: 'StaleWhileRevalidate'
-    //   }]
-    // })
   ],
 }
 

@@ -2,7 +2,6 @@ import React, { Suspense, lazy } from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
-import { IntlProvider } from 'react-intl'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 
 import { App } from '@sb/compositions/App/'
@@ -27,7 +26,6 @@ const LoginRoutes = lazy(() => import(/* webpackChunkName: "login" */ '@routes/l
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
-      <IntlProvider locale="en">
         <BrowserRouter>
           <App>
             <ErrorBoundary>
@@ -57,7 +55,6 @@ const render = () =>
             </ErrorBoundary>
           </App>
         </BrowserRouter>
-      </IntlProvider>
     </ApolloProvider>,
     document.getElementById('root')
   )
@@ -69,17 +66,16 @@ if ('serviceWorker' in navigator) {
 
   // registration of SW
 
-  // window.addEventListener('load', () => {
-  //   navigator.serviceWorker.register('/sw.js').then(registration => {
-  //     console.log('SW registered: ', registration);
-  //   }).catch(registrationError => {
-  //     console.log('SW registration failed: ', registrationError);
-  //   });
-  // });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      console.log('SW registered: ', registration);
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+  });
 
-
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    for(let registration of registrations) {
-     registration.unregister()
-   } })
+  // navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  //   for(let registration of registrations) {
+  //    registration.unregister()
+  //  } })
 }
