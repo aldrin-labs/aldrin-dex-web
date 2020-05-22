@@ -107,7 +107,7 @@
     "react-jss": "^8.6.1",
     "react-lazyload": "2.6.2",
     "react-otp-input": "^1.0.1",
-    "react-router-dom": "^5.0.0",
+    "react-router-dom": "^5.2.0",
     "react-select": "^2.1.1",
     "react-star-rating-component": "^1.4.1",
     "react-swipeable-views": "^0.13.3",
