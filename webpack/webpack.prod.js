@@ -112,6 +112,7 @@ const config = {
         MASTER_BUILD: JSON.stringify(process.env.MASTER_BUILD),
         CHARTS_API_ENDPOINT: JSON.stringify(process.env.CHARTS_API_ENDPOINT),
         PLATFORM: JSON.stringify('web'),
+        LOCAL_BACKEND_BUILD: JSON.stringify(process.env.LOCAL_BACKEND_BUILD),
       },
     }),
   ],
