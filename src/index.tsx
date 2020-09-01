@@ -8,6 +8,7 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
+const TechIssues = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/techIssuesRoute'))
 const ChartRoutes = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
 const PortfolioRoutes = lazy(() => import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute'))
@@ -52,6 +53,7 @@ const render = () =>
                   <Route path="/chart" component={ChartRoutes} />
                   {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                   <Route exact path="/user" component={UserRoutes} />
+                  <Route exact path="/tech_issues" component={TechIssues} />
                   <Route path="*" component={NotFound} />
                 </Switch>
               </Suspense>
