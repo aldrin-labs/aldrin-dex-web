@@ -41,6 +41,9 @@ const LoginRoutes = lazy(() =>
 const AnalyticsRoute = lazy(() =>
   import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
 )
+const RewardsRoute = lazy(() =>
+  import(/* webpackChunkName: "rewards" */ '@routes/rewardRoute')
+)
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
@@ -75,6 +78,8 @@ const render = () =>
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
+                <Route path="/rewards" component={RewardsRoute} />
+
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
