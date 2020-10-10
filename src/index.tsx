@@ -8,6 +8,7 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
+
 const TechIssues = lazy(() =>
   import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/techIssuesRoute')
 )
