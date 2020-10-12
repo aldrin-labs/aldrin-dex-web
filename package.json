@@ -100,6 +100,7 @@
     "notistack": "^0.6.1",
     "papaparse": "^4.6.3",
     "qrcode.react": "^1.0.0",
+    "rc-progress": "^3.1.0",
     "rc-slider": "^8.7.1",
     "react": "16.8.1",
     "react-apollo": "^3.1.3",
