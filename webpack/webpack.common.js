@@ -81,11 +81,6 @@ const config = {
         },
       },
       {
-        test: /\.css$/,
-        include: /node_modules/,
-        loaders: ['style-loader', 'css-loader'],
-      },
-      {
         test: /\.(png|jpg|gif)$/,
         use: [
           {
@@ -105,6 +100,11 @@ const config = {
             }
           }
         ]
+      },
+      {
+        test: /\.css$/,
+        // include: /node_modules/,
+        loaders: ['style-loader', 'css-loader'],
       },
     ],
   },
