@@ -5,6 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const getTransformer = require('ts-transform-graphql-tag').getTransformer
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 
 const config = {
   output: {
@@ -104,13 +106,14 @@ const config = {
       {
         test: /\.css$/,
         // include: /node_modules/,
-        loaders: ['style-loader', 'css-loader'],
+        loaders: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new webpack.ProgressPlugin(),
+    new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       favicon: 'public/favicon.ico',
