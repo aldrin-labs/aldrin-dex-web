@@ -5,7 +5,8 @@
   "version": "0.0.1",
   "sideEffects": [
     "*.woff2",
-    "app.styles.global.css"
+    "app.styles.global.css",
+    "*.css"
   ],
   "main": "index.js",
   "scripts": {
