@@ -4,7 +4,8 @@
   "author": "CCAI-team",
   "version": "0.0.1",
   "sideEffects": [
-    "*.woff2"
+    "*.woff2",
+    "app.styles.global.css",
   ],
   "main": "index.js",
   "scripts": {
