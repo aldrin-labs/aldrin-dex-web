@@ -4,7 +4,9 @@
   "author": "CCAI-team",
   "version": "0.0.1",
   "sideEffects": [
-    "*.woff2"
+    "*.woff2",
+    "app.styles.global.css",
+    "*.css"
   ],
   "main": "index.js",
   "scripts": {
@@ -95,6 +97,7 @@
     "immutable-tuple": "^0.4.10",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
+    "mini-css-extract-plugin": "^1.0.0",
     "nanoid": "^2.0.0",
     "normalizr": "^3.2.4",
     "notistack": "^0.6.1",
@@ -120,6 +123,7 @@
     "react-swipeable-views": "^0.13.3",
     "react-virtualized": "^9.21.2",
     "react-vis": "^1.11.7",
+    "reactour": "^1.18.0",
     "recompose": "^0.30.0",
     "styled-components": "^4.1.2",
     "subscriptions-transport-ws": "^0.9.14",
