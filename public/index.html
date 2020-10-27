@@ -164,6 +164,99 @@
       crossorigin="anonymous"
     />
 
+    <style>
+      /* latin */
+      @font-face {
+        font-family: 'DM Sans';
+        font-style: normal;
+        font-weight: 400;
+        src: local('DM Sans Regular'), local('DMSans-Regular'),
+          url('/fonts/DMSans.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'Monaco';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Monaco'), local('Monaco'),
+          url('/fonts/Monaco.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'DM Sans Medium';
+        font-style: normal;
+        font-weight: 500;
+        src: local('DM Sans Medium'), local('DMSans-Medium'),
+          url('/fonts/DMSans-Medium.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'Avenir Next Demi';
+        font-style: normal;
+        font-weight: 500;
+        src: local('Avenir Next Demi'), local('AvenirNextCyr-Demi'),
+          url('/fonts/AvenirNextCyr-Demi.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'IBM Plex Sans Condensed';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: local('IBM Plex Sans Condensed'), local('IBMPlexSansCond'),
+          url('/fonts/IBMPlexSansCondensed.woff2') format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+          U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+
+      @font-face {
+        font-family: 'FontAwesome';
+        src: url('/fonts/fontawesome-webfont.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .fa-circle:before {
+        content: '\f111';
+      }
+      .fa-usd:before {
+        content: '\f155';
+      }
+      .fa-btc:before {
+        content: '\f15a';
+      }
+      .fa-arrow-left:before {
+        content: '\f060';
+      }
+      .fa-arrow-right:before {
+        content: '\f061';
+      }
+      .fa-ellipsis-h:before {
+        content: '\f141';
+      }
+    </style>
+
     <!--favicons-->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -191,7 +284,7 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <div id="root">
-      <img class="loader" src="./logo.svg" alt="Loading..." />
+      <img class="loader" src="data:image/svg+xml,%3Csvg width='42' height='48' viewBox='0 0 42 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 0L41.7846 11.9959V35.9876L21 47.9835L0.215391 35.9876L0.215391 11.9959L21 0Z' fill='%235085EC'/%3E%3Cpath d='M20.8987 22.6646L41.7826 11.9929L41.7875 35.9806L20.9936 48L20.8987 22.6646Z' fill='%23235DCF'/%3E%3Cpath d='M4.77588 33.2215L4.77588 38.6029L21.01 47.9909L21.01 45.3035L21.01 42.5923L4.77588 33.2215Z' fill='%2316253D'/%3E%3Cpath d='M21 42.6022L21 47.9835L41.7786 35.9875L41.7786 33.3002L41.7786 30.5889L21 42.6022Z' fill='%2316253D'/%3E%3Cpath d='M0.209351 35.9806L4.77545 38.6268L4.90804 14.4191L0.213257 12.0131L0.209351 35.9806Z' fill='%2316253D'/%3E%3Cpath d='M16.4376 2.63544L21.0037 -0.0107075L41.7736 12.0104L37.0788 14.4165L16.4376 2.63544Z' fill='%2316253D'/%3E%3Cpath d='M25.5376 2.63544L20.9715 -0.0107075L0.20166 12.0104L4.89645 14.4165L25.5376 2.63544Z' fill='%2316253D'/%3E%3C/svg%3E%0A" alt="Loading..." />
     </div>
   </body>
 </html>
