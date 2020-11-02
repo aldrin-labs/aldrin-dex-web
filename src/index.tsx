@@ -47,7 +47,7 @@ const RewardsRoute = lazy(() =>
 )
 
 const isSafari =
-  /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor)
+  /Safari/.test(navigator.userAgent) && !(/Chrome/.test(navigator.userAgent))
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
