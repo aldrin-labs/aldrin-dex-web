@@ -90,7 +90,7 @@
     "clipboard-copy": "^3.1.0",
     "collections": "^5.1.9",
     "cryptocurrency-icons": "^0.10.0",
-    "dayjs": "^1.8.23",
+    "dayjs": "^1.9.5",
     "file-saver": "^2.0.0",
     "formik": "^1.5.1",
     "identity-obj-proxy": "^3.0.0",
