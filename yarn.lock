@@ -3340,6 +3340,11 @@ bl@^1.0.0:
     readable-stream "^2.3.5"
     safe-buffer "^5.1.1"
 
+blake3@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/blake3/-/blake3-2.1.4.tgz#78117bc9e80941097fdf7d03e897a9ee595ecd62"
+  integrity sha512-70hmx0lPd6zmtNwxPT4/1P0pqaEUlTJ0noUBvCXPLfMpN0o8PPaK3q7ZlpRIyhrqcXxeMAJSowNm/L9oi/x1XA==
+
 blob-util@2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/blob-util/-/blob-util-2.0.2.tgz#3b4e3c281111bb7f11128518006cdc60b403a1eb"
