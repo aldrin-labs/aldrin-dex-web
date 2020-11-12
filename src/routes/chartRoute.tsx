@@ -6,15 +6,13 @@ export default function ChartRoutes({ match, location, ...other }) {
   return (
     <Switch>
       <Route
-        exact
-        path="/chart/spot/:selectedPair"
+        path="/chart/spot"
         render={({ match: { params } }) => {
           return <Chart marketType={0} selectedPair={params.selectedPair} />
         }}
       />
       <Route
-        exact
-        path="/chart/futures/:selectedPair"
+        path="/chart/futures"
         render={({ match: { params } }) => {
           return <Chart marketType={1} selectedPair={params.selectedPair} />
         }}
