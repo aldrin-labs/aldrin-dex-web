@@ -27,40 +27,40 @@ const LoginRoutes = lazy(() => import(/* webpackChunkName: "login" */ '@routes/l
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
-        <BrowserRouter>
-          <App>
-            <ErrorBoundary>
-              <Suspense fallback={<Loading centerAligned />}>
-                <Switch>
-                  <Route path="/login" component={LoginRoutes} />
-                  <Route path="/signup" component={LoginRoutes} />
+      <BrowserRouter>
+        <App>
+          <ErrorBoundary>
+            <Suspense fallback={<Loading centerAligned />}>
+              <Switch>
+                <Route path="/login" component={LoginRoutes} />
+                <Route path="/signup" component={LoginRoutes} />
 
-                  <Route path="/registration" component={OnboardingRoutes} />
-                  <Redirect from="/" to="/login" exact />
-                  <Redirect from="/login" to="/login" exact />
-                  <Redirect from="/portfolio" to="/portfolio/main" exact />
-                  <Redirect from="/portfolio/main" to="/portfolio/main/spot" exact />
-                  <Redirect from="/portfolio/transactions" to="/portfolio/transactions/spot" exact />
-                  <Redirect from="/chart" to="/chart/spot" exact />
-                  <Redirect from="/chart/spot" to="/chart/spot/BTC_USDT" exact />
-                  <Redirect from="/chart/futures" to="/chart/futures/BTC_USDT" exact />
+                <Route path="/registration" component={OnboardingRoutes} />
+                <Redirect from="/" to="/login" exact />
+                <Redirect from="/login" to="/login" exact />
+                <Redirect from="/portfolio" to="/portfolio/main" exact />
+                <Redirect from="/portfolio/main" to="/portfolio/main/spot" exact />
+                <Redirect from="/portfolio/transactions" to="/portfolio/transactions/spot" exact />
+                <Redirect from="/chart" to="/chart/spot" exact />
+                {/* <Redirect from="/chart/spot" to="/chart/spot/BTC_USDT" exact />
+                  <Redirect from="/chart/futures" to="/chart/futures/BTC_USDT" exact /> */}
 
 
-                  {/*<Route exact path="/" component={HomeRoutes} />*/}
-                  <Route path="/profile" component={ProfileRoutes} />
-                  <Route path="/portfolio" component={PortfolioRoutes} />
-                  {<Route exact path="/market" component={MarketRoutes} />}
-                  {<Route exact path="/signals" component={SignalRoutes} />}
-                  <Route path="/chart" component={ChartRoutes} />
-                  {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
-                  <Route exact path="/user" component={UserRoutes} />
-                  <Route exact path="/tech_issues" component={TechIssues} />
-                  <Route path="*" component={NotFound} />
-                </Switch>
-              </Suspense>
-            </ErrorBoundary>
-          </App>
-        </BrowserRouter>
+                {/*<Route exact path="/" component={HomeRoutes} />*/}
+                <Route path="/profile" component={ProfileRoutes} />
+                <Route path="/portfolio" component={PortfolioRoutes} />
+                {<Route exact path="/market" component={MarketRoutes} />}
+                {<Route exact path="/signals" component={SignalRoutes} />}
+                <Route path="/chart" component={ChartRoutes} />
+                {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
+                <Route exact path="/user" component={UserRoutes} />
+                <Route exact path="/tech_issues" component={TechIssues} />
+                <Route path="*" component={NotFound} />
+              </Switch>
+            </Suspense>
+          </ErrorBoundary>
+        </App>
+      </BrowserRouter>
     </ApolloProvider>,
     document.getElementById('root')
   )
