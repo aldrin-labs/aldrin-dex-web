@@ -9,3 +9,5 @@
 [context.production]
   command = "yarn buildMaster"
 
+[context.qa-master]
+  command = "yarn buildMaster"
