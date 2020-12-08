@@ -10,10 +10,14 @@ import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
 
 const TechIssues = lazy(() =>
-  import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/techIssuesRoute')
+  import(
+    /* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/techIssuesRoute'
+  )
 )
 const ChartRoutes = lazy(() =>
-  import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute')
+  import(
+    /* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'
+  )
 )
 const NotFound = lazy(() =>
   import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound')
@@ -46,8 +50,14 @@ const RewardsRoute = lazy(() =>
   import(/* webpackChunkName: "rewards" */ '@routes/rewardRoute')
 )
 
+const AddressbookRoute = lazy(() =>
+  import(/* webpackChunkName: "rewards" */ '@routes/addressbookRoute')
+)
+
 const isSafari =
-  (/Safari/.test(navigator.userAgent) && !/CriOS/.test(navigator.userAgent))&& !(/Chrome/.test(navigator.userAgent))
+  /Safari/.test(navigator.userAgent) &&
+  !/CriOS/.test(navigator.userAgent) &&
+  !/Chrome/.test(navigator.userAgent)
 
 // if (process.env.NODE_ENV !== 'production') {
 //   const { whyDidYouUpdate } = require('why-did-you-update')
@@ -82,6 +92,7 @@ const render = () =>
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/rewards" component={RewardsRoute} />
+                <Route path="/addressbook" component={AddressbookRoute} />
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
