@@ -9,3 +9,5 @@
 [context.production]
   command = "yarn buildMaster"
 
+[context.serum-master]
+  command = "yarn buildMaster"
