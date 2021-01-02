@@ -11,7 +11,7 @@ import { Loading } from '@sb/components'
 
 const TechIssues = lazy(() =>
   import(
-    /* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/techIssuesRoute'
+    /* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute'
   )
 )
 const ChartRoutes = lazy(() =>
@@ -21,6 +21,10 @@ const ChartRoutes = lazy(() =>
 )
 const NotFound = lazy(() =>
   import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound')
+)
+
+const UnderMaintenance = lazy(() => 
+  import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
 )
 // const PortfolioRoutes = lazy(() =>
 //   import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute')
@@ -90,9 +94,9 @@ const render = () =>
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
                 <Route path="/chart" component={ChartRoutes} />
-                <Route path="/analytics" component={AnalyticsRoute} />
-                <Route path="/rewards" component={RewardsRoute} />
-                <Route path="/addressbook" component={AddressbookRoute} />
+                <Route path="/analytics" component={UnderMaintenance} />
+                <Route path="/rewards" component={UnderMaintenance} />
+                <Route path="/addressbook" component={UnderMaintenance} />
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
