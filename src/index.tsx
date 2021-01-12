@@ -94,9 +94,9 @@ const render = () =>
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
                 <Route path="/chart" component={ChartRoutes} />
-                <Route path="/analytics" component={UnderMaintenance} />
-                <Route path="/rewards" component={UnderMaintenance} />
-                <Route path="/addressbook" component={UnderMaintenance} />
+                <Route path="/analytics" component={AnalyticsRoute} />
+                <Route path="/rewards" component={RewardsRoute} />
+                <Route path="/addressbook" component={AddressbookRoute} />
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
