@@ -1589,12 +1589,12 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@project-serum/serum@0.13.1":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.1.tgz#ee5df09eb19e997eb8d0e25cf5837d5e14e5cf2b"
-  integrity sha512-4Jj/Ec1qJOl1zoCJNZ/QePV2zM9n/SsAxzdN+qMZKAHQR3ZH0PIOIlV4Y+ysaUi2uA/0hEIRD74yu1TowguiiQ==
+"@project-serum/serum@^0.13.5":
+  version "0.13.18"
+  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.18.tgz#66adf2cf00d54612b71ec7cff211658060a8d660"
+  integrity sha512-DpTMuidbLSMt9TQSIRhusLyt5TcGXaiTBH7IsowZQrexa4gXgKmSrpuSc7JLUs9V7t7ILta8KX5YHTFQuWJEZQ==
   dependencies:
-    "@solana/web3.js" "^0.71.10"
+    "@solana/web3.js" "0.86.1"
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
@@ -1623,10 +1623,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@solana/web3.js@0.71.10":
-  version "0.71.10"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.71.10.tgz#79e8977e54be2c521c4b148bd95502ae31d124f9"
-  integrity sha512-f2IdMySxFDHWxpAiXcSwn+CA7XKGTDSY2Ko0EOpdJJmNEW/BqnQ7BOw/R1OO8ZtDihHZn7sAyVmPo7kupmgOfA==
+"@solana/web3.js@0.86.1":
+  version "0.86.1"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.86.1.tgz#034a2cef742569f74dfc9960dfbcabc92e674b08"
+  integrity sha512-9mjWs17ym7PIm7bHA37wnnYyD7rIVHwkx1RI6BzGhMO5h8E+HlZM8ISLgOx+NItg8XRCfFhlrVgJTzK4om1s0g==
   dependencies:
     "@babel/runtime" "^7.3.1"
     bn.js "^5.0.0"
@@ -1636,18 +1636,20 @@
     crypto-hash "^1.2.2"
     esdoc-inject-style-plugin "^1.0.0"
     jayson "^3.0.1"
+    keccak "^3.0.1"
     mz "^2.7.0"
     node-fetch "^2.2.0"
     npm-run-all "^4.1.5"
-    rpc-websockets "^7.1.0"
+    rpc-websockets "^7.4.2"
+    secp256k1 "^4.0.2"
     superstruct "^0.8.3"
     tweetnacl "^1.0.0"
     ws "^7.0.0"
 
-"@solana/web3.js@^0.71.10":
-  version "0.71.14"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.71.14.tgz#b21f9613cb2e27defc93264bd894761689d209e3"
-  integrity sha512-23jWjzMxSOKzcAUzLBaD5p0YRJys6A9cEdWZQtPV/CV7bmo5JNIdPDR+UhzPxe1L3WX3bu7KAmAjcIERCXKDfQ==
+"@solana/web3.js@^0.81.0":
+  version "0.81.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.81.0.tgz#40d5dbe6c481eac8505668c5b20c44fe89e676e6"
+  integrity sha512-smDYZno2lGOY5Yx2vTp2w77dPnrpijKB6cuilL1pMh06NBX+AqSt3Paftk00aBHcDucOp+fjEEyuhHVeZQWLBA==
   dependencies:
     "@babel/runtime" "^7.3.1"
     bn.js "^5.0.0"
@@ -1660,7 +1662,7 @@
     mz "^2.7.0"
     node-fetch "^2.2.0"
     npm-run-all "^4.1.5"
-    rpc-websockets "^7.4.0"
+    rpc-websockets "^7.4.2"
     superstruct "^0.8.3"
     tweetnacl "^1.0.0"
     ws "^7.0.0"
@@ -15048,21 +15050,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
-
-rpc-websockets@^7.1.0, rpc-websockets@^7.4.0:
-  version "7.4.6"
-  resolved "https://registry.yarnpkg.com/rpc-websockets/-/rpc-websockets-7.4.6.tgz#a0053ad36e893774cdd0edb72ac577deaf34f247"
-  integrity sha512-vDGdyJv858O5ZIc7glov8pQDdFztOqujA7iNyrfPxw87ajHT5s8WQU4MLNEG8pTR/xzqOn06dYH7kef2hijInw==
-  dependencies:
-    "@babel/runtime" "^7.11.2"
-    assert-args "^1.2.1"
-    circular-json "^0.5.9"
-    eventemitter3 "^4.0.7"
-    uuid "^8.3.0"
-    ws "^7.3.1"
-  optionalDependencies:
-    bufferutil "^4.0.1"
-    utf-8-validate "^5.0.2"
 
 rpc-websockets@^7.4.2:
   version "7.4.8"
