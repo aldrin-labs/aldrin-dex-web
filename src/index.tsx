@@ -33,7 +33,7 @@ const render = () =>
             <Suspense fallback={<Loading centerAligned />}>
               <Switch>
                 <Route path="/login" component={LoginRoutes} />
-                <Route path="/signup" component={LoginRoutes} />
+                {/* <Route path="/signup" component={LoginRoutes} /> */}
 
                 <Route path="/registration" component={OnboardingRoutes} />
                 <Redirect from="/" to="/login" exact />
