@@ -87,6 +87,7 @@ const render = () =>
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
                 <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
+                <Redirect from="/analytics" to="/analytics/all" exact />
 
                 {/*<Route exact path="/" component={HomeRoutes} />*/}
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
