@@ -77,9 +77,9 @@ How to start making changes of frontend/web flow:
 1. Make sure you are on `develop` branch of frontend/web repo
 2. Get recent changes of frontend/web by running comand `git pull origin develop`
 3. Open new terminal window and go to core submodule: `cd src/core`
-4. Get recent changes of frontend/web by running comand `git pull origin develop` FOR frontend/core repo
+4. Get recent changes of frontend/core by running comand `git pull origin develop` FOR frontend/core repo
 5. Open new terminal window and go to core submodule: `cd src/storybook`
-6. Get recent changes of frontend/web by running comand `git pull origin develop` FOR frontend/storybook repo
+6. Get recent changes of frontend/storybook by running comand `git pull origin develop` FOR frontend/storybook repo
 
 Now you have actual state of project and you can start working on your own changes:
 
