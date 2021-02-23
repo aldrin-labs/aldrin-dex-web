@@ -7,6 +7,7 @@ const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
+
 const config = {
   mode: 'production',
   entry: {
