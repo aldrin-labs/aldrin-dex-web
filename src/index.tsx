@@ -14,18 +14,18 @@ const TechIssues = lazy(() =>
     /* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute'
   )
 )
-const ChartRoutes = lazy(() =>
-  import(
-    /* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'
-  )
-)
+// const ChartRoutes = lazy(() =>
+//   import(
+//     /* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'
+//   )
+// )
 const NotFound = lazy(() =>
   import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound')
 )
 
-const UnderMaintenance = lazy(() => 
-  import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
-)
+// const UnderMaintenance = lazy(() => 
+//   import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
+// )
 // const PortfolioRoutes = lazy(() =>
 //   import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute')
 // )
@@ -47,16 +47,16 @@ const UnderMaintenance = lazy(() =>
 // const LoginRoutes = lazy(() =>
 //   import(/* webpackChunkName: "login" */ '@routes/loginRoutes')
 // )
-const AnalyticsRoute = lazy(() =>
-  import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
-)
+// const AnalyticsRoute = lazy(() =>
+//   import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
+// )
 const RewardsRoute = lazy(() =>
   import(/* webpackChunkName: "rewards" */ '@routes/rewardRoute')
 )
 
-const AddressbookRoute = lazy(() =>
-  import(/* webpackChunkName: "rewards" */ '@routes/addressRoute')
-)
+// const AddressbookRoute = lazy(() =>
+//   import(/* webpackChunkName: "rewards" */ '@routes/addressRoute')
+// )
 
 const isSafari =
   /Safari/.test(navigator.userAgent) &&
@@ -78,26 +78,25 @@ const render = () =>
               <Switch>
                 {isSafari && (
                   <>
-                    {' '}
-                    <Redirect from="*" to="/chart" exact />{' '}
+                    {/* <Redirect from="*" to="/chart" exact /> */}
                     <Route path="*" component={TechIssues} />
                   </>
                 )}
-                <Redirect from="/" to="/chart" exact />
-                <Redirect from="/chart" to="/chart/spot" exact />
-                <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
-                <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
-                <Redirect from="/analytics" to="/analytics/all" exact />
+                {/* <Redirect from="/" to="/chart" exact /> */}
+                {/* <Redirect from="/chart" to="/chart/spot" exact /> */}
+                {/* <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact /> */}
+                {/* <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" /> */}
+                {/* <Redirect from="/analytics" to="/analytics/all" exact /> */}
 
                 {/*<Route exact path="/" component={HomeRoutes} />*/}
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-                <Route path="/chart" component={ChartRoutes} />
-                <Route path="/analytics" component={AnalyticsRoute} />
-                <Route path="/rewards" component={RewardsRoute} />
-                <Route path="/addressbook" component={AddressbookRoute} />
+                {/* <Route path="/chart" component={ChartRoutes} /> */}
+                {/* <Route path="/analytics" component={AnalyticsRoute} /> */}
+                <Route path="/" component={RewardsRoute} />
+                {/* <Route path="/addressbook" component={AddressbookRoute} /> */}
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
