@@ -58,6 +58,8 @@ Notes:
 line of code to switch to the production api (api master branch). In this case, you should open file in core repo (@core/utils/config), and change 4th line from this "const addDevelopToURL = (URL: string) => `develop.${URL}`" to this "const addDevelopToURL = (URL: string) => `${URL}`". In that case, you will use prod api after you rebuild the web project. You may also clear the `dist` folder in your project before rebuild to make sure that cached js
 code will not affect on this action.
 
+2. Please note that "@project-serum/serum": "0.13.25", "@solana/web3.js": "0.90.0" should be same in web, api and xpull_exchanges
+coz if one of this packages version will change version it can produce issues with number of markets.
 
 
 ________________________
