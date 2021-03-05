@@ -1575,12 +1575,12 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@project-serum/serum@^0.13.5":
-  version "0.13.18"
-  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.18.tgz#66adf2cf00d54612b71ec7cff211658060a8d660"
-  integrity sha512-DpTMuidbLSMt9TQSIRhusLyt5TcGXaiTBH7IsowZQrexa4gXgKmSrpuSc7JLUs9V7t7ILta8KX5YHTFQuWJEZQ==
+"@project-serum/serum@0.13.25":
+  version "0.13.25"
+  resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.25.tgz#40cbeaed03bb69e6a8c3e9117359b70ef155042e"
+  integrity sha512-IdK768TwM3tJHDPpt3iJ9AR7sMECrXD5B5i+oZhHR2+06Mun9djx/PtTTVYik161PjJXkuQozfWVk2a003s0CQ==
   dependencies:
-    "@solana/web3.js" "0.86.1"
+    "@solana/web3.js" "^0.90.0"
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
@@ -1609,10 +1609,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.7.0.tgz#9a06f4f137ee84d7df0460c1fdb1135ffa6c50fd"
   integrity sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
 
-"@solana/web3.js@0.86.1", "@solana/web3.js@0.87.1", "@solana/web3.js@^0.87.1":
-  version "0.87.1"
-  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.87.1.tgz#b5789a1935590a8c54ffa6f803b8b0f91f2e6bd8"
-  integrity sha512-Q1ltSExYuLuKedwZvNS4HJhT6qL5rDm8wE4oElQINzMvLATPQto5XsdbNz9J9yj/cqzCN6bKhYroRlKOgF4lNg==
+"@solana/web3.js@0.90.0", "@solana/web3.js@^0.90.0":
+  version "0.90.0"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-0.90.0.tgz#e7043af04426f1af6404ea1664b5715970a06ea2"
+  integrity sha512-bBWEBLbU26we/gcLMfAxg2V/r1Y1WiPAfVcWV8vJDd9EsRt56I9bt6fATUaHhKgfmQQtxBdxCiz9LCm3WrPQEQ==
   dependencies:
     "@babel/runtime" "^7.3.1"
     bn.js "^5.0.0"
