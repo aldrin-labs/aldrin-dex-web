@@ -50,12 +50,12 @@ const UnderMaintenance = lazy(() =>
 const AnalyticsRoute = lazy(() =>
   import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
 )
-const RewardsRoute = lazy(() =>
-  import(/* webpackChunkName: "rewards" */ '@routes/rewardRoute')
-)
+// const RewardsRoute = lazy(() =>
+//   import(/* webpackChunkName: "rewards" */ '@routes/rewardRoute')
+// )
 
 const AddressbookRoute = lazy(() =>
-  import(/* webpackChunkName: "rewards" */ '@routes/addressRoute')
+  import(/* webpackChunkName: "addressbook" */ '@routes/addressRoute')
 )
 
 const isSafari =
@@ -96,7 +96,7 @@ const render = () =>
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
-                <Route path="/rewards" component={RewardsRoute} />
+                {/* <Route path="/rewards" component={RewardsRoute} /> */}
                 <Route path="/addressbook" component={AddressbookRoute} />
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
