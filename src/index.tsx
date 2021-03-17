@@ -102,7 +102,7 @@ const render = () =>
                 <Route path="/analytics" component={AnalyticsRoute} />
                 {/* <Route path="/rewards" component={RewardsRoute} /> */}
                 <Route path="/addressbook" component={AddressbookRoute} />
-                <Route path="/homepage" component={HomepageRoute} />
+                {/* <Route path="/homepage" component={HomepageRoute} /> */}
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
