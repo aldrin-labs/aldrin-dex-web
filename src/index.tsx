@@ -23,8 +23,10 @@ const NotFound = lazy(() =>
   import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound')
 )
 
-const UnderMaintenance = lazy(() => 
-  import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
+const UnderMaintenance = lazy(() =>
+  import(
+    /* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance'
+  )
 )
 // const PortfolioRoutes = lazy(() =>
 //   import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute')
@@ -58,6 +60,8 @@ const AddressbookRoute = lazy(() =>
   import(/* webpackChunkName: "rewards" */ '@routes/addressRoute')
 )
 
+const HomepageRoute = lazy(() => import('@routes/homeRoute'))
+
 const isSafari =
   /Safari/.test(navigator.userAgent) &&
   !/CriOS/.test(navigator.userAgent) &&
@@ -83,7 +87,7 @@ const render = () =>
                     <Route path="*" component={TechIssues} />
                   </>
                 )}
-                <Redirect from="/" to="/chart" exact />
+                <Redirect from="/" to="/homepage" exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
                 <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
@@ -98,6 +102,7 @@ const render = () =>
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/rewards" component={RewardsRoute} />
                 <Route path="/addressbook" component={AddressbookRoute} />
+                <Route path="/homepage" component={HomepageRoute} />
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
