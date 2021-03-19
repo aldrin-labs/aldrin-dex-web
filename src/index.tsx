@@ -9,6 +9,8 @@ import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
 
+import { MASTER_BUILD } from '@core/utils/config'
+
 const TechIssues = lazy(() =>
   import(
     /* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute'
@@ -87,7 +89,7 @@ const render = () =>
                     <Route path="*" component={TechIssues} />
                   </>
                 )}
-                <Redirect from="/" to="/chart" exact />
+                <Redirect from="/" to="/home" exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
                 <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
@@ -102,7 +104,9 @@ const render = () =>
                 <Route path="/analytics" component={AnalyticsRoute} />
                 {/* <Route path="/rewards" component={RewardsRoute} /> */}
                 <Route path="/addressbook" component={AddressbookRoute} />
-                {/* <Route path="/homepage" component={HomepageRoute} /> */}
+                {!MASTER_BUILD ? (
+                  <Route path="/home" component={HomepageRoute} />
+                ) : null}
 
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
