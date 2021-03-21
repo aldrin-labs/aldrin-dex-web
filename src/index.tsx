@@ -89,7 +89,7 @@ const render = () =>
                     <Route path="*" component={TechIssues} />
                   </>
                 )}
-                <Redirect from="/" to="/home" exact />
+                {!MASTER_BUILD ? <Redirect from="/" to="/home" exact /> : null}
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
                 <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
