@@ -76,7 +76,7 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/lab": "^3.0.0-alpha.23",
     "@project-serum/serum": "0.13.30",
-    "@project-serum/sol-wallet-adapter": "^0.1.1",
+    "@project-serum/sol-wallet-adapter": "^0.1.6",
     "@solana/spl-token-registry": "^0.2.39",
     "@solana/web3.js": "0.90.0",
     "apollo-cache-inmemory": "^1.6.3",
