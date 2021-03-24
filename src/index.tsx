@@ -110,7 +110,7 @@ const render = () =>
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
-                <Route path="*" component={NotFound} />
+                <Route component={NotFound} />
               </Switch>
             </Suspense>
           </ErrorBoundary>
