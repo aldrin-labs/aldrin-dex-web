@@ -53,12 +53,12 @@ const config = {
         ],
         use: [
           'babel-loader?cacheDirectory=true', {
-          loader: 'ts-loader',
-          options: {
-            transpileOnly: true,
-            getCustomTransformers: () => ({ before: [getTransformer()] })
-          }
-        }],
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              getCustomTransformers: () => ({ before: [getTransformer()] })
+            }
+          }],
       },
       {
         test: /\.(graphql|gql)$/,
@@ -129,8 +129,8 @@ const config = {
     new CopyPlugin([
       { from: path.join(__dirname, '..', 'public'), },
       {
-       from: path.join(__dirname, '..', 'node_modules', 'cryptocurrency-icons', 'svg', 'icon'),
-       to: path.join(commonPaths.outputPath, 'cryptocurrency-icons', 'svg', 'icon')
+        from: path.join(__dirname, '..', 'node_modules', 'cryptocurrency-icons', 'svg', 'icon'),
+        to: path.join(commonPaths.outputPath, 'cryptocurrency-icons', 'svg', 'icon')
       },
     ]),
   ],
