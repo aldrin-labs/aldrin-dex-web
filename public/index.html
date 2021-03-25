@@ -1,109 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
-    <!-- <script src="https://cdn.auth0.com/js/lock/11.18.0/lock.min.js"></script> -->
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!-- {/* this is for fast performance, more info: https://developers.google.com/web/fundamentals/performance/resource-prioritization?utm_source=lighthouse&utm_medium=devtools#preconnect */} -->
-    <link
-      rel="preconnect"
-      href="https://www.googletagmanager.com"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preconnect"
-      href="https://stats.g.doubleclick.net"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preconnect"
-      href="https://www.google-analytics.com"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preconnect"
-      href="https://www.google.com"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preconnect"
-      href="https://storage.googleapis.com"
-      crossorigin="anonymous"
-    />
-    <link rel="preconnect" href="https://unpkg.com" crossorigin="anonymous" />
-    <link
-      rel="preconnect"
-      href="https://develop.chart.cryptocurrencies.ai"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preconnect"
-      href="https://chart.cryptocurrencies.ai"
-      crossorigin="anonymous"
-    />
 
-    <noscript id="jss-insertion-point"></noscript>
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
+  <!-- <script src="https://cdn.auth0.com/js/lock/11.18.0/lock.min.js"></script> -->
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!-- {/* this is for fast performance, more info: https://developers.google.com/web/fundamentals/performance/resource-prioritization?utm_source=lighthouse&utm_medium=devtools#preconnect */} -->
+  <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://stats.g.doubleclick.net" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://www.google-analytics.com" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://www.google.com" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://storage.googleapis.com" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://develop.chart.cryptocurrencies.ai" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://chart.cryptocurrencies.ai" crossorigin="anonymous" />
 
-    <!--<script>-->
-    <!--window.auth0AnalyticsOptions = {-->
-    <!--'google-analytics': {-->
-    <!--id: 'UA-125808097-1',-->
-    <!--preloaded: true,-->
-    <!--},-->
-    <!--}-->
-    <!--</script>-->
+  <noscript id="jss-insertion-point"></noscript>
 
-    <!--<script type="text/javascript">-->
-    <!--WebFontConfig = {-->
-    <!--google: { families: ['Roboto:300,400,500'] },-->
-    <!--}-->
-    <!--; (function () {-->
-    <!--var wf = document.createElement('script')-->
-    <!--wf.src =-->
-    <!--'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js'-->
-    <!--wf.type = 'text/javascript'-->
-    <!--wf.async = 'true'-->
-    <!--var s = document.getElementsByTagName('script')[0]-->
-    <!--s.parentNode.insertBefore(wf, s)-->
-    <!--})()-->
-    <!--</script>-->
+  <!--<script>-->
+  <!--window.auth0AnalyticsOptions = {-->
+  <!--'google-analytics': {-->
+  <!--id: 'UA-125808097-1',-->
+  <!--preloaded: true,-->
+  <!--},-->
+  <!--}-->
+  <!--</script>-->
 
-    <style>
-      .loader:empty {
-        position: absolute;
-        top: calc(50% - 4em);
-        left: calc(50% - 4em);
-        width: 6em;
-        height: 6em;
-        animation: loadAnimation 0.58s infinite;
-        animation-direction: alternate;
-        animation-timing-function: ease;
+  <!--<script type="text/javascript">-->
+  <!--WebFontConfig = {-->
+  <!--google: { families: ['Roboto:300,400,500'] },-->
+  <!--}-->
+  <!--; (function () {-->
+  <!--var wf = document.createElement('script')-->
+  <!--wf.src =-->
+  <!--'https://cdnjs.cloudflare.com/ajax/libs/webfont/1.6.28/webfontloader.js'-->
+  <!--wf.type = 'text/javascript'-->
+  <!--wf.async = 'true'-->
+  <!--var s = document.getElementsByTagName('script')[0]-->
+  <!--s.parentNode.insertBefore(wf, s)-->
+  <!--})()-->
+  <!--</script>-->
+
+  <style>
+    .loader:empty {
+      position: absolute;
+      top: calc(50% - 4em);
+      left: calc(50% - 4em);
+      width: 6em;
+      height: 6em;
+      animation: loadAnimation 0.58s infinite;
+      animation-direction: alternate;
+      animation-timing-function: ease;
+    }
+
+    @keyframes loadAnimation {
+      0% {
+        transform: translateY(0);
       }
 
-      @keyframes loadAnimation {
-        0% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-3em);
-        }
+      50% {
+        transform: translateY(-3em);
       }
-    </style>
-    <!--<link-->
-    <!--rel="stylesheet"-->
-    <!--href="https://unpkg.com/react-grid-layout@0.16.6/css/styles.css"-->
-    <!--/>-->
-    <!--<link-->
-    <!--rel="stylesheet"-->
-    <!--href="https://unpkg.com/react-resizable@1.7.5/css/styles.css"-->
-    <!--/>-->
-    <!-- <link
+    }
+  </style>
+  <!--<link-->
+  <!--rel="stylesheet"-->
+  <!--href="https://unpkg.com/react-grid-layout@0.16.6/css/styles.css"-->
+  <!--/>-->
+  <!--<link-->
+  <!--rel="stylesheet"-->
+  <!--href="https://unpkg.com/react-resizable@1.7.5/css/styles.css"-->
+  <!--/>-->
+  <!-- <link
       rel="stylesheet" 
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
     /> -->
 
-    <!-- <link
+  <!-- <link
       rel="preload"
       as="style"
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
@@ -112,239 +86,192 @@
       onload="this.rel='stylesheet'"
     /> -->
 
-    <!-- <link href="https://fonts.googleapis.com/css?family=Aguafina+Script&display=swap" rel="stylesheet"> -->
-    <!-- <link
+  <!-- <link href="https://fonts.googleapis.com/css?family=Aguafina+Script&display=swap" rel="stylesheet"> -->
+  <!-- <link
       href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
       rel="stylesheet" 
     /> -->
 
-    <link
-      rel="preload"
-      as="font"
-      href="/fonts/DMSans.woff2"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+  <link rel="preload" as="font" href="/fonts/DMSans.woff2" type="font/woff2" crossorigin="anonymous" />
 
-    <link
-    rel="preload"
-    as="font"
-    href="/fonts/Monaco.woff2"
-    type="font/woff2"
-    crossorigin="anonymous"
-  />
+  <link rel="preload" as="font" href="/fonts/Monaco.woff2" type="font/woff2" crossorigin="anonymous" />
 
 
-    <link
-      rel="preload"
-      as="font"
-      href="/fonts/DMSans-Medium.woff2"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+  <link rel="preload" as="font" href="/fonts/DMSans-Medium.woff2" type="font/woff2" crossorigin="anonymous" />
 
-    <link
-      rel="preload"
-      as="font"
-      href="/fonts/AvenirNextCyr-Demi.woff2"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+  <link rel="preload" as="font" href="/fonts/AvenirNextCyr-Demi.woff2" type="font/woff2" crossorigin="anonymous" />
 
-    <link
-    rel="preload"
-    as="font"
-    href="/fonts/AvenirNextCyr-Bold.woff2"
-    type="font/woff2"
-    crossorigin="anonymous"
-  />
+  <link rel="preload" as="font" href="/fonts/AvenirNextCyr-Bold.woff2" type="font/woff2" crossorigin="anonymous" />
 
-    <link
-    rel="preload"
-    as="font"
-    href="/fonts/AvenirNextCyr-Medium.woff2"
-    type="font/woff2"
-    crossorigin="anonymous"
-  />
+  <link rel="preload" as="font" href="/fonts/AvenirNextCyr-Medium.woff2" type="font/woff2" crossorigin="anonymous" />
 
-    <link
-      rel="preload"
-      as="font"
-      href="/fonts/fontawesome-webfont.woff2"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+  <link rel="preload" as="font" href="/fonts/fontawesome-webfont.woff2" type="font/woff2" crossorigin="anonymous" />
 
-    <link
-      rel="preload"
-      as="font"
-      href="/fonts/IBMPlexSansCondensed.woff2"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+  <link rel="preload" as="font" href="/fonts/IBMPlexSansCondensed.woff2" type="font/woff2" crossorigin="anonymous" />
 
-    <style>
-      /* latin */
-      @font-face {
-        font-family: 'DM Sans';
-        font-style: normal;
-        font-weight: 400;
-        font-display: block;
-        src: local('DM Sans Regular'), local('DMSans-Regular'),
-          url('/fonts/DMSans.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+  <style>
+    /* latin */
+    @font-face {
+      font-family: 'DM Sans';
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: local('DM Sans Regular'), local('DMSans-Regular'),
+        url('/fonts/DMSans.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'Monaco';
-        font-style: normal;
-        font-weight: 400;
-        font-display: block;
-        src: local('Monaco'), local('Monaco'),
-          url('/fonts/Monaco.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+    @font-face {
+      font-family: 'Monaco';
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: local('Monaco'), local('Monaco'),
+        url('/fonts/Monaco.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'DM Sans Medium';
-        font-style: normal;
-        font-weight: 500;
-        font-display: block;
-        src: local('DM Sans Medium'), local('DMSans-Medium'),
-          url('/fonts/DMSans-Medium.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+    @font-face {
+      font-family: 'DM Sans Medium';
+      font-style: normal;
+      font-weight: 500;
+      font-display: block;
+      src: local('DM Sans Medium'), local('DMSans-Medium'),
+        url('/fonts/DMSans-Medium.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'Avenir Next';
-        font-style: normal;
-        font-weight: 400;
-        font-display: block;
-        src: local('Avenir Next'), local('AvenirNextCyr-Regular'),
-          url('/fonts/AvenirNextCyr-Regular.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+    @font-face {
+      font-family: 'Avenir Next';
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: local('Avenir Next'), local('AvenirNextCyr-Regular'),
+        url('/fonts/AvenirNextCyr-Regular.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'Avenir Next Medium';
-        font-style: normal;
-        font-weight: 500;
-        font-display: block;
-        src: local('Avenir Next Medium'), local('AvenirNextCyr-Medium'),
-          url('/fonts/AvenirNextCyr-Medium.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+    @font-face {
+      font-family: 'Avenir Next Medium';
+      font-style: normal;
+      font-weight: 500;
+      font-display: block;
+      src: local('Avenir Next Medium'), local('AvenirNextCyr-Medium'),
+        url('/fonts/AvenirNextCyr-Medium.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'Avenir Next Demi';
-        font-style: normal;
-        font-weight: 600;
-        font-display: block;
-        src: local('Avenir Next Demi'), local('AvenirNextCyr-Demi'),
-          url('/fonts/AvenirNextCyr-Demi.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+    @font-face {
+      font-family: 'Avenir Next Demi';
+      font-style: normal;
+      font-weight: 600;
+      font-display: block;
+      src: local('Avenir Next Demi'), local('AvenirNextCyr-Demi'),
+        url('/fonts/AvenirNextCyr-Demi.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'Avenir Next Bold';
-        font-style: normal;
-        font-weight: 700;
-        font-display: block;
-        src: local('Avenir Next Bold'), local('AvenirNextCyr-Bold'),
-          url('/fonts/AvenirNextCyr-Bold.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+    @font-face {
+      font-family: 'Avenir Next Bold';
+      font-style: normal;
+      font-weight: 700;
+      font-display: block;
+      src: local('Avenir Next Bold'), local('AvenirNextCyr-Bold'),
+        url('/fonts/AvenirNextCyr-Bold.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'IBM Plex Sans Condensed';
-        font-style: normal;
-        font-weight: 400;
-        font-display: block;
-        src: local('IBM Plex Sans Condensed'), local('IBMPlexSansCond'),
-          url('/fonts/IBMPlexSansCondensed.woff2') format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
-          U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
-          U+2212, U+2215, U+FEFF, U+FFFD;
-      }
+    @font-face {
+      font-family: 'IBM Plex Sans Condensed';
+      font-style: normal;
+      font-weight: 400;
+      font-display: block;
+      src: local('IBM Plex Sans Condensed'), local('IBMPlexSansCond'),
+        url('/fonts/IBMPlexSansCondensed.woff2') format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+        U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+        U+2212, U+2215, U+FEFF, U+FFFD;
+    }
 
-      @font-face {
-        font-family: 'FontAwesome';
-        src: url('/fonts/fontawesome-webfont.woff2') format('woff2');
-        font-weight: normal;
-        font-style: normal;
-        font-display: block;
-      }
+    @font-face {
+      font-family: 'FontAwesome';
+      src: url('/fonts/fontawesome-webfont.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: block;
+    }
 
-      .fa {
-        display: inline-block;
-        font: normal normal normal 14px/1 FontAwesome;
-        font-size: inherit;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      .fa-circle:before {
-        content: '\f111';
-      }
-      .fa-usd:before {
-        content: '\f155';
-      }
-      .fa-btc:before {
-        content: '\f15a';
-      }
-      .fa-arrow-left:before {
-        content: '\f060';
-      }
-      .fa-arrow-right:before {
-        content: '\f061';
-      }
-      .fa-ellipsis-h:before {
-        content: '\f141';
-      }
-    </style>
+    .fa {
+      display: inline-block;
+      font: normal normal normal 14px/1 FontAwesome;
+      font-size: inherit;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-    <!--favicons-->
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="manifest" href="/site.webmanifest" />
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
-    <meta name="msapplication-TileColor" content="#da532c" />
-    <meta name="theme-color" content="#ffffff" />
-    <!--favicons-->
+    .fa-circle:before {
+      content: '\f111';
+    }
 
-    <title>Cryptocurrencies AI</title>
-  </head>
+    .fa-usd:before {
+      content: '\f155';
+    }
 
-  <body>
-    <!--<script src="https://cdn.auth0.com/js/analytics/1.3.1/analytics.min.js"></script>-->
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-P3D2H59"
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
+    .fa-btc:before {
+      content: '\f15a';
+    }
 
-    <div id="root">
-      <img class="loader" src="data:image/svg+xml,%3Csvg width='42' height='48' viewBox='0 0 42 48' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21 0L41.7846 11.9959V35.9876L21 47.9835L0.215391 35.9876L0.215391 11.9959L21 0Z' fill='%235085EC'/%3E%3Cpath d='M20.8987 22.6646L41.7826 11.9929L41.7875 35.9806L20.9936 48L20.8987 22.6646Z' fill='%23235DCF'/%3E%3Cpath d='M4.77588 33.2215L4.77588 38.6029L21.01 47.9909L21.01 45.3035L21.01 42.5923L4.77588 33.2215Z' fill='%2316253D'/%3E%3Cpath d='M21 42.6022L21 47.9835L41.7786 35.9875L41.7786 33.3002L41.7786 30.5889L21 42.6022Z' fill='%2316253D'/%3E%3Cpath d='M0.209351 35.9806L4.77545 38.6268L4.90804 14.4191L0.213257 12.0131L0.209351 35.9806Z' fill='%2316253D'/%3E%3Cpath d='M16.4376 2.63544L21.0037 -0.0107075L41.7736 12.0104L37.0788 14.4165L16.4376 2.63544Z' fill='%2316253D'/%3E%3Cpath d='M25.5376 2.63544L20.9715 -0.0107075L0.20166 12.0104L4.89645 14.4165L25.5376 2.63544Z' fill='%2316253D'/%3E%3C/svg%3E%0A" alt="Loading..." />
-    </div>
-  </body>
+    .fa-arrow-left:before {
+      content: '\f060';
+    }
+
+    .fa-arrow-right:before {
+      content: '\f061';
+    }
+
+    .fa-ellipsis-h:before {
+      content: '\f141';
+    }
+  </style>
+
+  <!--favicons-->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="theme-color" content="#ffffff" />
+  <!--favicons-->
+
+  <title>Cryptocurrencies AI</title>
+</head>
+
+<body>
+  <!--<script src="https://cdn.auth0.com/js/analytics/1.3.1/analytics.min.js"></script>-->
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P3D2H59" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <div id="root">
+    <img class="loader" src="./dex.png" alt="Loading..." />
+  </div>
+</body>
+
 </html>
