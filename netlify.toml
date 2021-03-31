@@ -14,3 +14,9 @@
 
 [context.serum-develop]
   command = "yarn build"
+
+[context.serum-qa-develop]
+  command = "yarn build"
+
+[context.serum-qa-master]
+  command = "yarn buildMaster"
