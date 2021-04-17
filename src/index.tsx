@@ -68,6 +68,7 @@ const isSafari =
 //   whyDidYouUpdate(React)
 // }
 
+
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
