@@ -1,0 +1,47 @@
+diff --git a/node_modules/@solana/web3.js/lib/index.esm.js b/node_modules/@solana/web3.js/lib/index.esm.js
+index 227409e..2948707 100644
+--- a/node_modules/@solana/web3.js/lib/index.esm.js
++++ b/node_modules/@solana/web3.js/lib/index.esm.js
+@@ -20,6 +20,7 @@ import http from 'http';
+ import https from 'https';
+ import secp256k1 from 'secp256k1';
+ import createKeccakHash from 'keccak';
++import { CompassCalibrationOutlined } from '@material-ui/icons';
+ 
+ var toBuffer = function toBuffer(arr) {
+   if (arr instanceof Buffer) {
+@@ -1666,7 +1667,9 @@ var SimulatedTransactionResponseValidator = jsonRpcResultAndContext(struct$1.pic
+   logs: struct$1.union(['null', struct$1.array(['string'])])
+ }));
+ 
+-function createRpcRequest(url, useHttps) {
++var counter = {};
++
++function createRpcRequest(url, useHttps, endpoint) {
+   var agentManager = new AgentManager(useHttps);
+   var server = jayson( /*#__PURE__*/function () {
+     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(request, callback) {
+@@ -1675,6 +1678,14 @@ function createRpcRequest(url, useHttps) {
+         while (1) {
+           switch (_context.prev = _context.next) {
+             case 0:
++              if (counter[endpoint] !== undefined) {
++                counter[endpoint] = counter[endpoint] + 1
++              } else {
++                counter[endpoint] = 0;
++              }
++              
++              console.log('counter', counter)
++      
+               agent = agentManager.requestStart();
+               options = {
+                 method: 'POST',
+@@ -2441,7 +2452,7 @@ var Connection = /*#__PURE__*/function () {
+     this._rpcEndpoint = endpoint;
+     var url = parse(endpoint);
+     var useHttps = url.protocol === 'https:';
+-    this._rpcRequest = createRpcRequest(url.href, useHttps);
++    this._rpcRequest = createRpcRequest(url.href, useHttps, endpoint);
+     this._commitment = commitment;
+     this._blockhashInfo = {
+       recentBlockhash: null,
