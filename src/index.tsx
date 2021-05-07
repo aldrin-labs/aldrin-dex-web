@@ -94,7 +94,8 @@ const render = () =>
                 <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
                 <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
-
+                <Redirect from="/rewards" to="/" exact />
+                
                 {/*<Route exact path="/" component={HomeRoutes} />*/}
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
