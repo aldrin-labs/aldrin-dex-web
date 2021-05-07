@@ -54,9 +54,9 @@ const UnderMaintenance = lazy(() =>
 const AnalyticsRoute = lazy(() =>
   import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
 )
-// const RewardsRoute = lazy(() =>
-//   import(/* webpackChunkName: "rewards" */ '@routes/rewardRoute')
-// )
+const RestrictedRegionRoute = lazy(() =>
+  import(/* webpackChunkName: "rewards" */ '@routes/restrictedRegionRoute')
+)
 
 const AddressbookRoute = lazy(() =>
   import(/* webpackChunkName: "addressbook" */ '@routes/addressRoute')
@@ -101,12 +101,12 @@ const render = () =>
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-                <Route path="/chart" component={ChartRoutes} />
-                <Route path="/analytics" component={AnalyticsRoute} />
-                {/* <Route path="/rewards" component={RewardsRoute} /> */}
-                <Route path="/addressbook" component={AddressbookRoute} />
                 
                 <Route path="/" component={HomepageRoute} exact />
+                <Route path="/chart" component={ChartRoutes} />
+                <Route path="/analytics" component={AnalyticsRoute} />
+                <Route path="/addressbook" component={AddressbookRoute} />
+                <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
                
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
