@@ -62,6 +62,10 @@ const AddressbookRoute = lazy(() =>
   import(/* webpackChunkName: "addressbook" */ '@routes/addressRoute')
 )
 
+const PoolsRoute = lazy(() =>
+  import(/* webpackChunkName: "addressbook" */ '@routes/poolsRoute')
+)
+
 const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -95,19 +99,24 @@ const render = () =>
                 <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
-                
+
                 {/*<Route exact path="/" component={HomeRoutes} />*/}
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-                
+
                 <Route path="/" component={HomepageRoute} exact />
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/addressbook" component={AddressbookRoute} />
-                <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
-               
+                <Route
+                  path="/restrictedRegion"
+                  component={RestrictedRegionRoute}
+                  exact
+                />
+                <Route path="/pools" component={PoolsRoute} />
+
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
