@@ -36,7 +36,8 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "clear": "rm -rf node_modules/ && rm -rf yarn.lock && yarn",
     "fetch-local-core": "rsync -azP --exclude=node_modules ../core ./src",
-    "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src"
+    "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src",
+    "postinstall": "patch-package"
   },
   "jest": {
     "setupFiles": [
@@ -87,7 +88,6 @@
     "apollo-link-retry": "^2.2.16",
     "apollo-link-ws": "^1.0.9",
     "apollo-utilities": "^1.3.2",
-    "graphql-cli": "4.1.0",
     "bn.js": "^5.1.3",
     "chart.js": "^3.0.0-beta.10",
     "clipboard-copy": "^3.1.0",
@@ -97,6 +97,7 @@
     "dayjs": "^1.9.5",
     "elliptic": "6.5.4",
     "formik": "^1.5.1",
+    "graphql-cli": "4.1.0",
     "identity-obj-proxy": "^3.0.0",
     "immutable-tuple": "^0.4.10",
     "jwt-decode": "^2.2.0",
@@ -104,6 +105,8 @@
     "mini-css-extract-plugin": "^1.0.0",
     "normalizr": "^3.2.4",
     "notistack": "^0.6.1",
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0",
     "rc-slider": "^9.6.5",
     "react": "16.8.1",
     "react-apollo": "^3.1.3",
