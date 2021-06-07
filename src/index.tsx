@@ -8,13 +8,13 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
+import VestingPage from '@sb/compositions/Vesting/index'
 
 import { MASTER_BUILD } from '@core/utils/config'
 
 const NotFound = lazy(() =>
   import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound')
 )
-
 
 const render = () =>
   ReactDOM.render(
@@ -24,8 +24,8 @@ const render = () =>
           <ErrorBoundary>
             <Suspense fallback={<Loading centerAligned />}>
               <Switch>
-                <Route path="/" component={NotFound} exact />
-                <Route component={NotFound} />
+                <Route path="/" component={VestingPage} exact />
+                <Route component={VestingPage} />
               </Switch>
             </Suspense>
           </ErrorBoundary>
