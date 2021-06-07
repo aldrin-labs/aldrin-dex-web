@@ -11,68 +11,10 @@ import { Loading } from '@sb/components'
 
 import { MASTER_BUILD } from '@core/utils/config'
 
-const TechIssues = lazy(() =>
-  import(
-    /* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute'
-  )
-)
-const ChartRoutes = lazy(() =>
-  import(
-    /* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'
-  )
-)
 const NotFound = lazy(() =>
   import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound')
 )
 
-const UnderMaintenance = lazy(() =>
-  import(
-    /* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance'
-  )
-)
-// const PortfolioRoutes = lazy(() =>
-//   import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute')
-// )
-// const ProfileRoutes = lazy(() =>
-//   import(/* webpackChunkName: "profile" */ '@routes/profileRoute')
-// )
-// const UserRoutes = lazy(() =>
-//   import(/* webpackChunkName: "user" */ '@routes/userRoute')
-// )
-// const MarketRoutes = lazy(() =>
-//   import(/* webpackChunkName: "market" */ '@routes/coinMarketCapRoute')
-// )
-// const SignalRoutes = lazy(() =>
-//   import(/* webpackChunkName: "signal" */ '@routes/signalRoute')
-// )
-// const OnboardingRoutes = lazy(() =>
-//   import(/* webpackChunkName: "onboarding" */ '@routes/onboardingRoute')
-// )
-// const LoginRoutes = lazy(() =>
-//   import(/* webpackChunkName: "login" */ '@routes/loginRoutes')
-// )
-const AnalyticsRoute = lazy(() =>
-  import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
-)
-const RestrictedRegionRoute = lazy(() =>
-  import(/* webpackChunkName: "rewards" */ '@routes/restrictedRegionRoute')
-)
-
-const AddressbookRoute = lazy(() =>
-  import(/* webpackChunkName: "addressbook" */ '@routes/addressRoute')
-)
-
-const HomepageRoute = lazy(() => import('@routes/homeRoute'))
-
-const isSafari =
-  /Safari/.test(navigator.userAgent) &&
-  !/CriOS/.test(navigator.userAgent) &&
-  !/Chrome/.test(navigator.userAgent)
-
-// if (process.env.NODE_ENV !== 'production') {
-//   const { whyDidYouUpdate } = require('why-did-you-update')
-//   whyDidYouUpdate(React)
-// }
 
 const render = () =>
   ReactDOM.render(
@@ -82,35 +24,7 @@ const render = () =>
           <ErrorBoundary>
             <Suspense fallback={<Loading centerAligned />}>
               <Switch>
-                {isSafari && (
-                  <>
-                    {' '}
-                    <Redirect from="*" to="/chart" exact />{' '}
-                    <Route path="*" component={TechIssues} />
-                  </>
-                )}
-                {/* <Redirect from="/" to={"/"} exact /> */}
-                <Redirect from="/chart" to="/chart/spot" exact />
-                <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
-                <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
-                <Redirect from="/analytics" to="/analytics/all" exact />
-                <Redirect from="/rewards" to="/" exact />
-                
-                {/*<Route exact path="/" component={HomeRoutes} />*/}
-                {/* <Route path="/profile" component={ProfileRoutes} /> */}
-                {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
-                {/* {<Route exact path="/market" component={MarketRoutes} />} */}
-                {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-                
-                <Route path="/" component={HomepageRoute} exact />
-                <Route path="/chart" component={ChartRoutes} />
-                <Route path="/analytics" component={AnalyticsRoute} />
-                <Route path="/addressbook" component={AddressbookRoute} />
-                <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
-               
-                {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
-                {/* <Route exact path="/user" component={UserRoutes} /> */}
-                {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
+                <Route path="/" component={NotFound} exact />
                 <Route component={NotFound} />
               </Switch>
             </Suspense>
