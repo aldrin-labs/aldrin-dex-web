@@ -21,3 +21,9 @@
 
 [context.serum-qa-master]
   command = "yarn buildMaster"
+
+[context.vesting-develop]
+  command = "yarn build"
+
+[context.vesting]
+  command = "yarn buildMaster"
