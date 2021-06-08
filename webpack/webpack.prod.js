@@ -116,6 +116,7 @@ const config = {
         LOCAL_BACKEND_BUILD: JSON.stringify(process.env.LOCAL_BACKEND_BUILD),
         REACT_APP_USDT_REFERRAL_FEES_ADDRESS: JSON.stringify(process.env.REACT_APP_USDT_REFERRAL_FEES_ADDRESS),
         REACT_APP_USDC_REFERRAL_FEES_ADDRESS: JSON.stringify(process.env.REACT_APP_USDC_REFERRAL_FEES_ADDRESS),
+        VESTING_PROGRAM_ADDRESS: JSON.stringify(process.env.VESTING_PROGRAM_ADDRESS),
       },
     }),
   ],
