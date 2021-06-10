@@ -91,8 +91,8 @@ const render = () =>
                 )}
                 {/* <Redirect from="/" to={"/"} exact /> */}
                 <Redirect from="/chart" to="/chart/spot" exact />
-                <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
-                <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
+                <Redirect from="/chart/spot" to="/chart/spot/CCAI_USDC" exact />
+                <Redirect from="/chart/futures" to="/chart/spot/CCAI_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
                 
