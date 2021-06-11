@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
@@ -8,8 +8,6 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
-
-import { MASTER_BUILD } from '@core/utils/config'
 
 const TechIssues = lazy(() =>
   import(
@@ -95,19 +93,21 @@ const render = () =>
                 <Redirect from="/chart/futures" to="/chart/spot/CCAI_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
-                
+
                 {/*<Route exact path="/" component={HomeRoutes} />*/}
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-                
                 <Route path="/" component={HomepageRoute} exact />
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/addressbook" component={AddressbookRoute} />
-                <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
-               
+                <Route
+                  path="/restrictedRegion"
+                  component={RestrictedRegionRoute}
+                  exact
+                />
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
