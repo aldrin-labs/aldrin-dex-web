@@ -124,6 +124,7 @@ const render = () =>
 render(hot(module)(App))
 
 if ('serviceWorker' in navigator) {
+  console.log('serviceWorker in navigator')
   // registration of SW
 
   // window.addEventListener('load', () => {
@@ -138,8 +139,11 @@ if ('serviceWorker' in navigator) {
   // })
 
   window.addEventListener('load', () => {
+    console.log('window load')
   navigator.serviceWorker.getRegistrations().then(function(registrations) {
+    console.log('registrations', registrations)
     for(let registration of registrations) {
+      console.log('registration', registration)
      registration.unregister()
    } })
   })
