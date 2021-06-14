@@ -127,24 +127,24 @@ if ('serviceWorker' in navigator) {
   console.log('serviceWorker in navigator')
   // registration of SW
 
-  // window.addEventListener('load', () => {
-  //   navigator.serviceWorker
-  //     .register('/sw.js')
-  //     .then((registration) => {
-  //       console.log('SW registered: ', registration)
-  //     })
-  //     .catch((registrationError) => {
-  //       console.log('SW registration failed: ', registrationError)
-  //     })
-  // })
-
   window.addEventListener('load', () => {
-    console.log('window load')
-  navigator.serviceWorker.getRegistrations().then(function(registrations) {
-    console.log('registrations', registrations)
-    for(let registration of registrations) {
-      console.log('registration', registration)
-     registration.unregister()
-   } })
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) => {
+        console.log('SW registered: ', registration)
+      })
+      .catch((registrationError) => {
+        console.log('SW registration failed: ', registrationError)
+      })
   })
+
+  // window.addEventListener('load', () => {
+  //   console.log('window load')
+  // navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  //   console.log('registrations', registrations)
+  //   for(let registration of registrations) {
+  //     console.log('registration', registration)
+  //    registration.unregister()
+  //  } })
+  // })
 }
