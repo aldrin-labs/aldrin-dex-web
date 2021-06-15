@@ -116,7 +116,7 @@ const render = () =>
                 <Route path="/addressbook" component={AddressbookRoute} />
                 <Route path="/pools" component={PoolsRoute} />
 
-                <Route path="/rebalance" component={RebalanceRoute} exact />
+                {/* <Route path="/rebalance" component={RebalanceRoute} exact /> */}
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
 
                
