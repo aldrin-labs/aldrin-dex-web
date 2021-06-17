@@ -8,6 +8,7 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
+import { MASTER_BUILD } from '@core/utils/config'
 
 const TechIssues = lazy(() =>
   import(
@@ -111,7 +112,7 @@ const render = () =>
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/addressbook" component={AddressbookRoute} />
-                <Route path="/pools" component={PoolsRoute} />
+                {!MASTER_BUILD && <Route path="/pools" component={PoolsRoute} />}
 
                 {/* <Route path="/rebalance" component={RebalanceRoute} exact /> */}
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
