@@ -70,7 +70,7 @@ const RebalanceRoute = lazy(() =>
   import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
 )
 const SwapsRoutes = lazy(() =>
-  import(/* webpackChunkName: "addressbook" */ '@routes/swapsRoute')
+  import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute')
 )
 
 const HomepageRoute = lazy(() => import('@routes/homeRoute'))
@@ -126,7 +126,9 @@ const render = () =>
                   exact
                 />
 
-                <Route path="/swaps" component={SwapsRoutes} />
+                {!MASTER_BUILD && (
+                  <Route path="/swaps" component={SwapsRoutes} />
+                )}
                 <Route
                   path="/restrictedRegion"
                   component={RestrictedRegionRoute}
