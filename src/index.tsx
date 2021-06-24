@@ -8,6 +8,7 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
+import { MASTER_BUILD } from '@core/utils/config'
 
 const TechIssues = lazy(() =>
   import(
@@ -60,6 +61,14 @@ const AddressbookRoute = lazy(() =>
   import(/* webpackChunkName: "addressbook" */ '@routes/addressRoute')
 )
 
+const PoolsRoute = lazy(() =>
+  import(/* webpackChunkName: "pools" */ '@routes/poolsRoute')
+)
+
+const RebalanceRoute = lazy(() =>
+  import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
+)
+
 const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -103,11 +112,17 @@ const render = () =>
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/addressbook" component={AddressbookRoute} />
+                {!MASTER_BUILD && (
+                  <Route path="/pools" component={PoolsRoute} />
+                )}
+
+                {/* <Route path="/rebalance" component={RebalanceRoute} exact /> */}
                 <Route
                   path="/restrictedRegion"
                   component={RestrictedRegionRoute}
                   exact
                 />
+
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
