@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react'
+import React, { Suspense, lazy, useState } from 'react'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader'
@@ -8,7 +8,6 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
-
 import { MASTER_BUILD } from '@core/utils/config'
 
 const TechIssues = lazy(() =>
@@ -63,7 +62,7 @@ const AddressbookRoute = lazy(() =>
 )
 
 const PoolsRoute = lazy(() =>
-  import(/* webpackChunkName: "addressbook" */ '@routes/poolsRoute')
+  import(/* webpackChunkName: "pools" */ '@routes/poolsRoute')
 )
 
 const RebalanceRoute = lazy(() =>
@@ -102,8 +101,8 @@ const render = () =>
                 )}
                 {/* <Redirect from="/" to={"/"} exact /> */}
                 <Redirect from="/chart" to="/chart/spot" exact />
-                <Redirect from="/chart/spot" to="/chart/spot/SRM_USDT" exact />
-                <Redirect from="/chart/futures" to="/chart/spot/SRM_USDT" />
+                <Redirect from="/chart/spot" to="/chart/spot/CCAI_USDC" exact />
+                <Redirect from="/chart/futures" to="/chart/spot/CCAI_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
 
@@ -112,14 +111,15 @@ const render = () =>
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-
                 <Route path="/" component={HomepageRoute} exact />
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/addressbook" component={AddressbookRoute} />
-                <Route path="/pools" component={PoolsRoute} />
+                {!MASTER_BUILD && (
+                  <Route path="/pools" component={PoolsRoute} />
+                )}
 
-                <Route path="/rebalance" component={RebalanceRoute} exact />
+                {/* <Route path="/rebalance" component={RebalanceRoute} exact /> */}
                 <Route
                   path="/restrictedRegion"
                   component={RestrictedRegionRoute}
@@ -150,6 +150,7 @@ const render = () =>
 render(hot(module)(App))
 
 if ('serviceWorker' in navigator) {
+  console.log('serviceWorker in navigator')
   // registration of SW
 
   window.addEventListener('load', () => {
@@ -163,8 +164,13 @@ if ('serviceWorker' in navigator) {
       })
   })
 
+  // window.addEventListener('load', () => {
+  //   console.log('window load')
   // navigator.serviceWorker.getRegistrations().then(function(registrations) {
+  //   console.log('registrations', registrations)
   //   for(let registration of registrations) {
+  //     console.log('registration', registration)
   //    registration.unregister()
   //  } })
+  // })
 }
