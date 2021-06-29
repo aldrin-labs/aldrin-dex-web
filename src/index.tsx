@@ -114,7 +114,7 @@ const render = () =>
                 <Route path="/" component={HomepageRoute} exact />
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
-                <Route path="/addressbook" component={AddressbookRoute} />
+                {!MASTER_BUILD && (<Route path="/addressbook" component={AddressbookRoute} />)}
                 {!MASTER_BUILD && (
                   <Route path="/pools" component={PoolsRoute} />
                 )}
