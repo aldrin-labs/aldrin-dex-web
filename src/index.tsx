@@ -68,6 +68,9 @@ const PoolsRoute = lazy(() =>
 const RebalanceRoute = lazy(() =>
   import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
 )
+const SwapsRoutes = lazy(() =>
+  import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute')
+)
 
 const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
@@ -111,7 +114,7 @@ const render = () =>
                 <Route path="/" component={HomepageRoute} exact />
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
-                <Route path="/addressbook" component={AddressbookRoute} />
+                {!MASTER_BUILD && (<Route path="/addressbook" component={AddressbookRoute} />)}
                 {!MASTER_BUILD && (
                   <Route path="/pools" component={PoolsRoute} />
                 )}
@@ -123,6 +126,14 @@ const render = () =>
                   exact
                 />
 
+                {!MASTER_BUILD && (
+                  <Route path="/swaps" component={SwapsRoutes} />
+                )}
+                <Route
+                  path="/restrictedRegion"
+                  component={RestrictedRegionRoute}
+                  exact
+                />
                 {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
