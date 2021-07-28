@@ -9,6 +9,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 
 const config = {
+  node: {
+    fs: 'empty'
+  },
   output: {
     path: commonPaths.outputPath,
     publicPath: '/',
