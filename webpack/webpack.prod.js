@@ -101,10 +101,15 @@ const config = {
       swDest: "sw.js",
       clientsClaim: true,
       skipWaiting: false,
-      runtimeCaching: [{
-        urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
-        handler: 'StaleWhileRevalidate'
-      }]
+      // runtimeCaching: [{
+      //   urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
+      //   handler: 'StaleWhileRevalidate'
+      // },
+      //  {
+      //   urlPattern:,
+      //   handler:'NetworkOnly'
+      // }
+    // ]
     }),
     new webpack.DefinePlugin({
       'process.env': {
