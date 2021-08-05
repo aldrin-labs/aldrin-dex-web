@@ -368,7 +368,7 @@
   </head>
 
   <body>
-  <!-- the reason why we added <form> here https://docs.netlify.com/forms/setup/ -->
+    <!-- the reason why we added <form> here https://docs.netlify.com/forms/setup/ -->
     <form
       name="marketsCategoriesFeedback"
       netlify
@@ -378,6 +378,10 @@
       <input type="text" name="token" />
       <input type="text" name="wrongCategory" />
       <input type="text" name="rightCategory" />
+    </form>
+    <form name="usersFeedback" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="messagge" />
+      <input type="text" name="contact" />
     </form>
     <!--<script src="https://cdn.auth0.com/js/analytics/1.3.1/analytics.min.js"></script>-->
     <!-- Google Tag Manager (noscript) -->
