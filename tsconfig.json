@@ -24,7 +24,8 @@
       "@routes/*": ["src/routes/*"],
       "@utils/*": ["src/utils/*"],
       "@icons/*": ["src/storybook/src/icons/*"],
-      "@storage": ["src/utils/storage"]
+      "@storage": ["src/utils/storage"],
+      "@webhooks/*": ["src/storybook/src/webhooks/*"],
     },
     "plugins": [
       {

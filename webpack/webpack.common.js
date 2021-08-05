@@ -37,11 +37,13 @@ const config = {
       '@routes': path.join(__dirname, '..', 'src', 'routes'),
       '@utils': path.join(__dirname, '..', 'src', 'utils'),
       '@icons': path.join(__dirname, '..', 'src', 'storybook', 'src', 'icons'),
+      '@webhooks': path.join(__dirname, '..', 'src', 'storybook', 'src', 'webhooks'),
       '@storage': path.join(__dirname, '..', 'src', 'utils', 'storage'),
       '@nodemodules': path.resolve(__dirname, '..', 'node_modules'),
       '@material-ui/core': '@material-ui/core/es',
       '@material-ui/styles': '@material-ui/core/es/styles',
       'lodash-es': 'lodash',
+      
     },
   },
   module: {
