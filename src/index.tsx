@@ -155,26 +155,33 @@ render(hot(module)(App))
 
 if ('serviceWorker' in navigator) {
   console.log('serviceWorker in navigator')
+
   // registration of SW
-
-  window.addEventListener('load', () => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then((registration) => {
-        console.log('SW registered: ', registration)
-      })
-      .catch((registrationError) => {
-        console.log('SW registration failed: ', registrationError)
-      })
-  })
-
   // window.addEventListener('load', () => {
-  //   console.log('window load')
-  // navigator.serviceWorker.getRegistrations().then(function(registrations) {
-  //   console.log('registrations', registrations)
-  //   for(let registration of registrations) {
-  //     console.log('registration', registration)
-  //    registration.unregister()
-  //  } })
+  //   navigator.serviceWorker
+  //     .register('/sw.js')
+  //     .then((registration) => {
+  //       console.log('SW registered: ', registration)
+  //     })
+  //     .catch((registrationError) => {
+  //       console.log('SW registration failed: ', registrationError)
+  //     })
   // })
+
+  // Unregister of SW
+  window.addEventListener('load', () => {
+    console.log('window load')
+
+    navigator.serviceWorker.getRegistrations()
+    .then( (registrations) => {
+      console.log('SW registrations: ', registrations)
+      for (let registration of registrations) {
+        console.log('SW registration: ', registration)
+        registration.unregister()
+      }
+    })
+    .catch( (err) => {
+      console.log('SW registration failed: ', err);
+    });
+  })
 }
