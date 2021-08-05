@@ -68,7 +68,8 @@
       "^@core(.*)$": "<rootDir>/src/core/src/$1",
       "^@routes(.*)$": "<rootDir>/src/routes$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
-      "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1"
+      "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1",
+      "^@webhooks(.*)$": "<rootDir>/src/storybook/src/webhooks$1"
     }
   },
   "dependencies": {
