@@ -35,8 +35,7 @@
     "tslint-check": "tslint-config-prettier-check ./tslint.json",
     "clear": "rm -rf node_modules/ && rm -rf yarn.lock && yarn",
     "fetch-local-core": "rsync -azP --exclude=node_modules ../core ./src",
-    "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src",
-    "postinstall": "patch-package"
+    "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src"
   },
   "jest": {
     "setupFiles": [
@@ -110,8 +109,6 @@
     "mini-css-extract-plugin": "^1.0.0",
     "normalizr": "^3.2.4",
     "notistack": "^0.6.1",
-    "patch-package": "^6.4.7",
-    "postinstall-postinstall": "^2.1.0",
     "rc-slider": "^9.6.5",
     "react": "16.8.1",
     "react-apollo": "^3.1.3",
