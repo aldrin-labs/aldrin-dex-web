@@ -51,9 +51,9 @@ const UnderMaintenance = lazy(() =>
 // const LoginRoutes = lazy(() =>
 //   import(/* webpackChunkName: "login" */ '@routes/loginRoutes')
 // )
-const AnalyticsRoute = lazy(() =>
-  import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
-)
+// const AnalyticsRoute = lazy(() =>
+//   import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute')
+// )
 // const RewardsRoute = lazy(() =>
 //   import(/* webpackChunkName: "rewards" */ '@routes/rewardRoute')
 // )
@@ -101,7 +101,7 @@ const render = () =>
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
                 <Route path="/chart" component={ChartRoutes} />
-                <Route path="/analytics" component={AnalyticsRoute} />
+                {/* <Route path="/analytics" component={AnalyticsRoute} /> */}
                 {/* <Route path="/rewards" component={RewardsRoute} /> */}
                 <Route path="/addressbook" component={AddressbookRoute} />
                 
