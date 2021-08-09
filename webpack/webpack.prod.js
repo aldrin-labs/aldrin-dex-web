@@ -97,10 +97,10 @@ const config = {
     //   },
     //   sourceMap: true,
     // }),
-    new WorkboxWebpackPlugin.GenerateSW({
-      swDest: "sw.js",
-      clientsClaim: true,
-      skipWaiting: false,
+    // new WorkboxWebpackPlugin.GenerateSW({
+    //   swDest: "sw.js",
+    //   clientsClaim: true,
+    //   skipWaiting: false,
       // runtimeCaching: [{
       //   urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
       //   handler: 'StaleWhileRevalidate'
@@ -110,7 +110,7 @@ const config = {
       //   handler:'NetworkOnly'
       // }
     // ]
-    }),
+    // }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),

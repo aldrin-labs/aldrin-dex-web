@@ -64,7 +64,5 @@ coz if one of this packages version will change version it can produce issues wi
 
 ________________________
 
-
-
 Bundle analyzing:
 1. Use build:bundleanalyzer:without:submodule
