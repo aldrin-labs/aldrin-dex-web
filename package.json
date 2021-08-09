@@ -24,7 +24,6 @@
     "build:bundleanalyzer:without:submodule": "yarn build:without:submodule --env.addons=bundleanalyzer",
     "build:bundleanalyzer": "yarn build --env.addons=bundleanalyzer",
     "start:ci": "serve -l 3000",
-    "ramCheck": "node scripts/memory_monitoring",
     "test": "cross-env NODE_ENV=test jest",
     "cy:verify": "cypress verify",
     "cy:open": "cypress open",
@@ -68,7 +67,8 @@
       "^@core(.*)$": "<rootDir>/src/core/src/$1",
       "^@routes(.*)$": "<rootDir>/src/routes$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
-      "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1"
+      "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1",
+      "^@webhooks(.*)$": "<rootDir>/src/storybook/src/webhooks$1"
     }
   },
   "dependencies": {
@@ -231,7 +231,7 @@
     "webpack-jarvis": "^0.3.0",
     "webpack-merge": "^4.1.2",
     "why-did-you-update": "^1.0.3",
-    "workbox-webpack-plugin": "^4.3.1"
+    "workbox-webpack-plugin": "^6.1.5"
   },
   "resolutions": {
     "bn.js": "5.1.3",
