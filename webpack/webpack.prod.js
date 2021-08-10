@@ -4,6 +4,7 @@ var LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin');
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
+const RemoveServiceWorkerPlugin = require("webpack-remove-serviceworker-plugin")
 const ImageminPlugin = require('imagemin-webpack-plugin').default
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
