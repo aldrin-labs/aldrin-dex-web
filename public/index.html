@@ -3,6 +3,38 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <script>
+    if ('serviceWorker' in navigator) {
+      console.log('serviceWorker in navigator')
+
+      // Unregister of SW
+      window.addEventListener('load', () => {
+        console.log('window load')
+
+        navigator.serviceWorker.getRegistrations()
+        .then((registrations) => {
+          console.log('SW registrations: ', registrations)
+
+          const isReloadNeccessary = !!registrations.length
+          console.log('isReloadNeccessary: ', isReloadNeccessary)
+
+          for (let registration of registrations) {
+            console.log('SW registration: ', registration)
+            registration.unregister()
+          }
+
+          if (isReloadNeccessary) {
+            // This used to do the reload with cache-reset
+            window.location.href = window.location.href
+          }
+        })
+        .catch( (err) => {
+          console.log('SW registration failed: ', err);
+        });
+      })
+    }
+    </script>
+
     <meta charset="UTF-8" />
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0" /> -->
     <!-- <script src="https://cdn.auth0.com/js/lock/11.18.0/lock.min.js"></script> -->
