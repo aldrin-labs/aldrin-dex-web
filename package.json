@@ -131,7 +131,8 @@
     "recompose": "^0.30.0",
     "styled-components": "^4.1.2",
     "subscriptions-transport-ws": "^0.9.14",
-    "treemap-js": "^1.2.1"
+    "treemap-js": "^1.2.1",
+    "webpack-remove-serviceworker-plugin": "^1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
