@@ -72,7 +72,7 @@ const SwapsRoutes = lazy(() =>
   import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute')
 )
 
-const HomepageRoute = lazy(() => import('@routes/homeRoute'))
+// const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
   /Safari/.test(navigator.userAgent) &&
@@ -99,10 +99,10 @@ const render = () =>
                     <Route path="*" component={TechIssues} />
                   </>
                 )}
-                {/* <Redirect from="/" to={"/"} exact /> */}
+                <Redirect from="/" to={'/chart'} exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
-                <Redirect from="/chart/spot" to="/chart/spot/CCAI_USDC" exact />
-                <Redirect from="/chart/futures" to="/chart/spot/CCAI_USDC" />
+                <Redirect from="/chart/spot" to="/chart/spot/RIN_USDC" exact />
+                <Redirect from="/chart/futures" to="/chart/spot/RIN_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
 
@@ -111,7 +111,7 @@ const render = () =>
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-                <Route path="/" component={HomepageRoute} exact />
+                {/* <Route path="/" component={HomepageRoute} exact /> */}
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 {!MASTER_BUILD && (
@@ -172,17 +172,17 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     console.log('window load')
 
-    navigator.serviceWorker.getRegistrations()
-    .then( (registrations) => {
-      console.log('SW registrations: ', registrations)
-      for (let registration of registrations) {
-        console.log('SW registration: ', registration)
-        registration.unregister()
-      }
-    })
-    .catch( (err) => {
-      console.log('SW registration failed: ', err);
-    });
+    navigator.serviceWorker
+      .getRegistrations()
+      .then((registrations) => {
+        console.log('SW registrations: ', registrations)
+        for (let registration of registrations) {
+          console.log('SW registration: ', registration)
+          registration.unregister()
+        }
+      })
+      .catch((err) => {
+        console.log('SW registration failed: ', err)
+      })
   })
 }
-
