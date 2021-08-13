@@ -99,11 +99,10 @@ const render = () =>
                     <Route path="*" component={TechIssues} />
                   </>
                 )}
-                {/* <Redirect from="/" to={"/"} exact /> */}
                 <Redirect from="/" to={'/chart'} exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
-                <Redirect from="/chart/spot" to="/chart/spot/CCAI_USDC" exact />
-                <Redirect from="/chart/futures" to="/chart/spot/CCAI_USDC" />
+                <Redirect from="/chart/spot" to="/chart/spot/RIN_USDC" exact />
+                <Redirect from="/chart/futures" to="/chart/spot/RIN_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
 
@@ -186,4 +185,3 @@ render(hot(module)(App))
 //     });
 //   })
 // }
-
