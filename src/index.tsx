@@ -72,7 +72,7 @@ const SwapsRoutes = lazy(() =>
   import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute')
 )
 
-const HomepageRoute = lazy(() => import('@routes/homeRoute'))
+// const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
   /Safari/.test(navigator.userAgent) &&
@@ -100,6 +100,7 @@ const render = () =>
                   </>
                 )}
                 {/* <Redirect from="/" to={"/"} exact /> */}
+                <Redirect from="/" to={'/chart'} exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/CCAI_USDC" exact />
                 <Redirect from="/chart/futures" to="/chart/spot/CCAI_USDC" />
@@ -111,7 +112,7 @@ const render = () =>
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
                 {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
-                <Route path="/" component={HomepageRoute} exact />
+                {/* <Route path="/" component={HomepageRoute} exact /> */}
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 {!MASTER_BUILD && (
