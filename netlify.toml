@@ -3,7 +3,10 @@
   to = "/index.html"
   status = 200
 
-
+[[redirects]]
+  from = "/*"
+  to = "https://dex.aldrin.com"
+  status = 301
 
 # Production context: All deploys to the main
 # repository branch will inherit these settings.
