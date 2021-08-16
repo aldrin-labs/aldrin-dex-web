@@ -1,7 +1,12 @@
 [[redirects]]
-  from = "/*"
+  from = "https://develop.app.cryptocurrencies.ai/chart/spot/SRM_USDT"
   to = "https://dex.aldrin.com"
   status = 301
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 # Production context: All deploys to the main
 # repository branch will inherit these settings.
