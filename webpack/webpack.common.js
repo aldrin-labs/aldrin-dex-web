@@ -88,7 +88,7 @@ const config = {
         },
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|webp)$/,
         use: [
           {
             loader: 'file-loader',
