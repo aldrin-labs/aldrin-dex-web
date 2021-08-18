@@ -3,6 +3,12 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+    <script>
+      if (window && window.location && window.location.origin === "https://dex.cryptocurrencies.ai") {
+        window.location.replace("https://dex.aldrin.com")
+      }
+    </script>
+
     <!-- <script>
     if ('serviceWorker' in navigator) {
       console.log('serviceWorker in navigator')
