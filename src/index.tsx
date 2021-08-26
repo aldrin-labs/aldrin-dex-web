@@ -102,7 +102,11 @@ const render = () =>
                 <Redirect from="/" to={'/chart'} exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/RIN_USDC" exact />
-                <Redirect from="/chart/spot/CCAI_USDC" to="/chart/spot/RIN_USDC" exact />
+                <Redirect
+                  from="/chart/spot/CCAI_USDC"
+                  to="/chart/spot/RIN_USDC"
+                  exact
+                />
                 <Redirect from="/chart/futures" to="/chart/spot/RIN_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
@@ -122,9 +126,7 @@ const render = () =>
                   <Route path="/pools" component={PoolsRoute} />
                 )}
 
-                {!MASTER_BUILD && (
-                  <Route path="/rebalance" component={RebalanceRoute} exact />
-                )}
+                <Route path="/rebalance" component={RebalanceRoute} exact />
                 <Route
                   path="/restrictedRegion"
                   component={RestrictedRegionRoute}
