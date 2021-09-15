@@ -72,7 +72,9 @@ const SwapsRoutes = lazy(() =>
   import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute')
 )
 
-const DashboardRoute = lazy(() => import('@routes/dashboardRoute'))
+const DashboardRoute = lazy(() =>
+  import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute')
+)
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
