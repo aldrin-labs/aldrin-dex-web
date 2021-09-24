@@ -3056,7 +3056,7 @@
     snake-case "^3.0.4"
     toml "^3.0.0"
 
-"@project-serum/borsh@^0.2.2":
+"@project-serum/borsh@0.2.2", "@project-serum/borsh@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@project-serum/borsh/-/borsh-0.2.2.tgz#63e558f2d6eb6ab79086bf499dea94da3182498f"
   integrity sha512-Ms+aWmGVW6bWd3b0+MWwoaYig2QD0F90h0uhr7AzY3dpCb5e2S6RsRW02vFTfa085pY2VLB7nTZNbFECQ1liTg==
@@ -3064,7 +3064,16 @@
     bn.js "^5.1.2"
     buffer-layout "^1.2.0"
 
-"@project-serum/serum@0.13.25":
+"@project-serum/common@^0.0.1-beta.3":
+  version "0.0.1-beta.3"
+  resolved "https://registry.yarnpkg.com/@project-serum/common/-/common-0.0.1-beta.3.tgz#53586eaff9d9fd7e8938b1e12080c935b8b6ad07"
+  integrity sha512-gnQE/eUydTtto5okCgLWj1M97R9RRPJqnhKklikYI7jP/pnNhDmngSXC/dmfzED2GXSJEIKNIlxVw1k+E2Aw3w==
+  dependencies:
+    "@project-serum/serum" "^0.13.21"
+    bn.js "^5.1.2"
+    superstruct "0.8.3"
+
+"@project-serum/serum@0.13.25", "@project-serum/serum@^0.13.21":
   version "0.13.25"
   resolved "https://registry.yarnpkg.com/@project-serum/serum/-/serum-0.13.25.tgz#40cbeaed03bb69e6a8c3e9117359b70ef155042e"
   integrity sha512-IdK768TwM3tJHDPpt3iJ9AR7sMECrXD5B5i+oZhHR2+06Mun9djx/PtTTVYik161PjJXkuQozfWVk2a003s0CQ==
@@ -18006,6 +18015,14 @@ sugarss@^2.0.0:
   dependencies:
     postcss "^7.0.2"
 
+superstruct@0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.8.3.tgz#fb4d8901aca3bf9f79afab1bbab7a7f335cc4ef2"
+  integrity sha512-LbtbFpktW1FcwxVIJlxdk7bCyBq/GzOx2FSFLRLTUhWIA1gHkYPIl3aXRG5mBdGZtnPNT6t+4eEcLDCMOuBHww==
+  dependencies:
+    kind-of "^6.0.2"
+    tiny-invariant "^1.0.6"
+
 superstruct@^0.14.2:
   version "0.14.2"
   resolved "https://registry.yarnpkg.com/superstruct/-/superstruct-0.14.2.tgz#0dbcdf3d83676588828f1cf5ed35cda02f59025b"
@@ -18391,6 +18408,11 @@ tiny-invariant@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.0.4.tgz#346b5415fd93cb696b0c4e8a96697ff590f92463"
   integrity sha512-lMhRd/djQJ3MoaHEBrw8e2/uM4rs9YMNk0iOr8rHQ0QdbM7D4l0gFl3szKdeixrlyfm9Zqi4dxHCM2qVG8ND5g==
+
+tiny-invariant@^1.0.6:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.1.0.tgz#634c5f8efdc27714b7f386c35e6760991d230875"
+  integrity sha512-ytxQvrb1cPc9WBEI/HSeYYoGD0kWnGEOR8RY6KomWLBVhqz0RgTwVO9dLrGz7dC+nN9llyI7OKAgRq8Vq4ZBSw==
 
 tiny-warning@^1.0.0, tiny-warning@^1.0.2:
   version "1.0.2"
