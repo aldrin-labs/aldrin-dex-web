@@ -42,8 +42,6 @@ const config = {
       '@nodemodules': path.resolve(__dirname, '..', 'node_modules'),
       '@material-ui/core': '@material-ui/core/es',
       '@material-ui/styles': '@material-ui/core/es/styles',
-      'lodash-es': 'lodash',
-      
     },
   },
   module: {
