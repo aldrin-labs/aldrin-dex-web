@@ -25,6 +25,8 @@
       "@utils/*": ["src/utils/*"],
       "@icons/*": ["src/storybook/src/icons/*"],
       "@storage": ["src/utils/storage"],
+      "buffer": ["src/utils/buffer"],
+      "@nodemodules": ["node_modules"],
       "@webhooks/*": ["src/storybook/src/webhooks/*"],
     },
     "plugins": [

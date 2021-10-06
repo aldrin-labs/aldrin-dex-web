@@ -58,7 +58,6 @@ module.exports = {
         '@babel/preset-typescript',
       ],
       plugins: [
-        ['lodash', { id: ['lodash', 'recompose'] }],
         'graphql-tag',
         [
           'babel-plugin-styled-components',

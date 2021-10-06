@@ -1,7 +1,7 @@
 const buildValidations = require('./webpack/build-validations');
 const commonConfig = require('./webpack/webpack.common');
 
-const webpackMerge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 
 // We can include Webpack plugins, through addons, that do
 // not need to run every time we are developing.
@@ -20,6 +20,8 @@ const addons = (/* string | string[] */ addonsArg) => {
 // 'env' will contain the environment variable from 'scripts'
 // section in 'package.json'.
 // console.log(env); => { env: 'dev' }
+process.traceDeprecation = true;
+
 module.exports = env => {
 
   // We use 'buildValidations' to check for the 'env' flag
@@ -35,11 +37,13 @@ module.exports = env => {
   // 'webpack-merge' will combine our shared configurations, the
   // environment specific configurations and any addons we are
   // including
-  const mergedConfig = webpackMerge(
+  const mergedConfig = merge(
     commonConfig,
     envConfig,
     ...addons(env.addons)
   );
+
+  // console.log('envConfig:', mergedConfig.devServer)
 
   // Then return the final configuration for Webpack
   return mergedConfig;

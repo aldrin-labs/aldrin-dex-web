@@ -1,8 +1,6 @@
 const commonPaths = require('./common-paths')
-const Jarvis = require('webpack-jarvis')
 
 const webpack = require('webpack')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
 
@@ -24,16 +22,12 @@ const config = {
   },
   devtool,
   module: {},
-  optimization:{
+  optimization: {
     minimize: false, // <---- disables uglify.
   },
-  stats: 'verbose',
+  stats: 'normal',
   plugins: [
-    new ErrorOverlayPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         LOCAL_BUILD: JSON.stringify(process.env.LOCAL_BUILD),
@@ -54,23 +48,23 @@ const config = {
       },
     }),
   ],
-  cache: true,
 
   devServer: {
     host: 'localhost',
     port,
     historyApiFallback: true,
-    hot: true,
+    // hot: true,
     open: true,
-    compress: true,
-    overlay: {
-      warnings: true,
-      errors: true,
-    },
-    watchOptions: {
-      poll: 1000,
-      ignored: /node_modules/
-    },
+    // compress: true,
+    // watch: true,
+    // overlay: {
+    //   warnings: true,
+    //   errors: true,
+    // },
+    // watchOptions: {
+    //   poll: 1000,
+    //   ignored: /node_modules/
+    // },
   },
 }
 
