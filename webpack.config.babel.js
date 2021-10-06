@@ -43,8 +43,6 @@ module.exports = env => {
     ...addons(env.addons)
   );
 
-  // console.log('envConfig:', mergedConfig.devServer)
-
   // Then return the final configuration for Webpack
   return mergedConfig;
 };

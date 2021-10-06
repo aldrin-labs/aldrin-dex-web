@@ -2,7 +2,10 @@ const commonPaths = require('./common-paths')
 
 const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin');
-const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin")
+
+// const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
+
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
 
@@ -59,6 +62,22 @@ const config = {
       resourceRegExp: /^\.\/locale$/,
       contextRegExp: /moment$/,
     }),
+
+    // new WorkboxWebpackPlugin.GenerateSW({
+    //   swDest: "sw.js",
+    //   clientsClaim: true,
+    //   skipWaiting: false,
+    // runtimeCaching: [{
+    //   urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
+    //   handler: 'StaleWhileRevalidate'
+    // },
+    //  {
+    //   urlPattern:,
+    //   handler:'NetworkOnly'
+    // }
+    // ]
+    // }),
+
 
     new webpack.DefinePlugin({
       'process.env': {

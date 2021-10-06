@@ -13,7 +13,6 @@ const config = {
   entry: {
     app: [
       'react-hot-loader/patch',
-      'webpack/hot/only-dev-server',
       `${commonPaths.appEntry}/index.tsx`,
     ],
   },
@@ -53,7 +52,7 @@ const config = {
     host: 'localhost',
     port,
     historyApiFallback: true,
-    // hot: true,
+    hot: true,
     open: true,
     // compress: true,
     // watch: true,
