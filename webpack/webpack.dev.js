@@ -1,20 +1,16 @@
-const commonPaths = require('./common-paths')
-
+/* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack')
 
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+const commonPaths = require('./common-paths')
 
 const devtool = process.env.DEVTOOL || 'source-map'
 const port = process.env.PORT || 3000
 
-
 const config = {
   mode: 'development',
   entry: {
-    app: [
-      'react-hot-loader/patch',
-      `${commonPaths.appEntry}/index.tsx`,
-    ],
+    app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.tsx`],
   },
   output: {
     filename: '[name].js',

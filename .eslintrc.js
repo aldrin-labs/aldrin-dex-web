@@ -1,3 +1,4 @@
+//eslint-disable 
 const path = require('path')
 
 module.exports = {
@@ -5,6 +6,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
+  ignorePatterns: ["**/*.eslintrc.js"],
   extends: [
     'plugin:react/recommended',
     'airbnb',
@@ -38,7 +40,8 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
     'prettier/prettier': 'error',
     'import/prefer-default-export': 'off',
-    // indent: [2, 2, { SwitchCase: 1 }]
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error']
   },
   settings: {
     'import/resolver': {
