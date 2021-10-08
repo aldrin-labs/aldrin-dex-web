@@ -4,15 +4,7 @@ import Login from '@sb/compositions/Login/Login'
 
 export default ({ match, location }: { match: match; location: Location }) => (
   <Switch>
-    <Route
-      exact
-      path="/login"
-      render={(...rest) => <Login initialStep="signIn" />}
-    />
-    <Route
-      exact
-      path="/signup"
-      render={(...rest) => <Login initialStep="signUp" />}
-    />
+    <Route exact path="/login" render={(...rest) => <Login initialStep="signIn" />} />
+    <Route exact path="/signup" render={(...rest) => <Login initialStep="signUp" />} />
   </Switch>
 )

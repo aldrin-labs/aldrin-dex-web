@@ -1,7 +1,8 @@
 const asyncLocalStorage = {
-  setItem: (key: string, value) => Promise.resolve().then(() => {
-    window.localStorage.setItem(key, value)
-  }),
+  setItem: (key: string, value) =>
+    Promise.resolve().then(() => {
+      window.localStorage.setItem(key, value)
+    }),
   getItem: (key: string) => Promise.resolve().then(() => window.localStorage.getItem(key)),
   removeItem: (key: string) => Promise.resolve().then(() => window.localStorage.removeItem(key)),
   clear: () => Promise.resolve().then(() => window.localStorage.clear()),
