@@ -11302,11 +11302,6 @@ lodash.isnumber@^3.0.3:
   resolved "https://registry.yarnpkg.com/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz#3ce76810c5928d03352301ac287317f11c0b1ffc"
   integrity sha1-POdoEMWSjQM1IwGsKHMX8RwLH/w=
 
-lodash.merge@^4.6.1:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.1.tgz#adc25d9cb99b9391c59624f379fbba60d7111d54"
-  integrity sha512-AOYza4+Hf5z1/0Hztxpm2/xiPZgi/cjMqdnKTUWTBSKchJlxXXuUSxCCl8rJlf4g6yww/j6mA8nC8Hw/EZWxKQ==
-
 lodash.merge@^4.6.2:
   version "4.6.2"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.2.tgz#558aa53b43b661e1925a0afdfa36a9a1085fe57a"
@@ -13942,19 +13937,18 @@ react-focus-lock@2.2.1:
     use-callback-ref "^1.2.1"
     use-sidecar "^1.0.1"
 
-react-hot-loader@^4.3.12:
-  version "4.6.5"
-  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.6.5.tgz#059619c8ac2aae9c6e8178ddc2eac535093cdd2e"
-  integrity sha512-ZPAJEWVd8KDdm6dcK0iWrnJiGHruLrcbkIpqn/wQmNjnROpsm2nzrWh23Yh3I/XAjB+35pMa/ZgariwGqwFD9A==
+react-hot-loader@^4.13.0:
+  version "4.13.0"
+  resolved "https://registry.yarnpkg.com/react-hot-loader/-/react-hot-loader-4.13.0.tgz#c27e9408581c2a678f5316e69c061b226dc6a202"
+  integrity sha512-JrLlvUPqh6wIkrK2hZDfOyq/Uh/WeVEr8nc7hkn2/3Ul0sx1Kr5y4kOGNacNRoj7RhwLNcQ3Udf1KJXrqc0ZtA==
   dependencies:
     fast-levenshtein "^2.0.6"
     global "^4.3.0"
-    hoist-non-react-statics "^2.5.0"
+    hoist-non-react-statics "^3.3.0"
     loader-utils "^1.1.0"
-    lodash.merge "^4.6.1"
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
-    shallowequal "^1.0.2"
+    shallowequal "^1.1.0"
     source-map "^0.7.3"
 
 react-input-autosize@^2.2.1:
@@ -15082,7 +15076,7 @@ shallow-clone@^3.0.0:
   dependencies:
     kind-of "^6.0.2"
 
-shallowequal@^1.0.2, shallowequal@^1.1.0:
+shallowequal@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/shallowequal/-/shallowequal-1.1.0.tgz#188d521de95b9087404fd4dcb68b13df0ae4e7f8"
   integrity sha512-y0m1JoUZSlPAjXVtPPW70aZWfIL/dSP7AFkRnniLCrK/8MDKog3TySTBmckD+RObVxH0v4Tox67+F14PdED2oQ==

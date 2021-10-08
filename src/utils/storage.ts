@@ -1,42 +1,19 @@
 const asyncLocalStorage = {
-  setItem: (key: string, value) => {
-    return Promise.resolve().then(() => {
-      window.localStorage.setItem(key, value)
-    })
-  },
-  getItem: (key: string) => {
-    return Promise.resolve().then(() => {
-      return window.localStorage.getItem(key)
-    })
-  },
-  removeItem: (key: string) => {
-    return Promise.resolve().then(() => {
-      return window.localStorage.removeItem(key)
-    })
-  },
-  clear: () => {
-    return Promise.resolve().then(() => {
-      return window.localStorage.clear()
-    })
-  },
-  key: (n: number) => {
-    return Promise.resolve().then(() => {
-      return window.localStorage.key(n)
-    })
-  },
+  setItem: (key: string, value) => Promise.resolve().then(() => {
+    window.localStorage.setItem(key, value)
+  }),
+  getItem: (key: string) => Promise.resolve().then(() => window.localStorage.getItem(key)),
+  removeItem: (key: string) => Promise.resolve().then(() => window.localStorage.removeItem(key)),
+  clear: () => Promise.resolve().then(() => window.localStorage.clear()),
+  key: (n: number) => Promise.resolve().then(() => window.localStorage.key(n)),
 }
 
 export const syncStorage = {
   setItem: (key: string, value) => {
-      window.localStorage.setItem(key, value)
+    window.localStorage.setItem(key, value)
   },
-  getItem: (key: string) => {
-      return window.localStorage.getItem(key)
-  },
-  removeItem: (key: string) => {
-      return window.localStorage.removeItem(key)
-  },
+  getItem: (key: string) => window.localStorage.getItem(key),
+  removeItem: (key: string) => window.localStorage.removeItem(key),
 }
-
 
 export default asyncLocalStorage

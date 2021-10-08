@@ -4,13 +4,14 @@ import Onboarding from '@sb/compositions/Onboarding'
 import OnboardingMenu from '@core/components/OnboardingMenu'
 
 import Auth from '@sb/compositions/Onboarding/Auth'
+
 const auth = new Auth()
 
 export default function PortfolioRoutes({ match, location }) {
   return (
     <Switch>
-      <Route path={match.url} exact component={() => <Onboarding step="first" auth={auth}/>} />
-      <Route path={`${match.url}/confirm`} component={() => <Onboarding step="second" auth={auth}/>} />
+      <Route path={match.url} exact component={() => <Onboarding step="first" auth={auth} />} />
+      <Route path={`${match.url}/confirm`} component={() => <Onboarding step="second" auth={auth} />} />
       <Route path={`${match.url}/import`} component={() => <OnboardingMenu />} />
     </Switch>
   )

@@ -7,16 +7,12 @@ export default ({ match, location }: { match: match; location: Location }) => (
     <Route
       exact
       path="/login"
-      render={(...rest) => {
-        return <Login initialStep={'signIn'} />
-      }}
+      render={(...rest) => <Login initialStep="signIn" />}
     />
     <Route
       exact
       path="/signup"
-      render={(...rest) => {
-        return <Login initialStep={'signUp'} />
-      }}
+      render={(...rest) => <Login initialStep="signUp" />}
     />
   </Switch>
 )

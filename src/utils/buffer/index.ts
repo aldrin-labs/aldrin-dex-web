@@ -1,4 +1,4 @@
 import { Buffer } from '@nodemodules/buffer'
 
-const isBuffer = Buffer.isBuffer
+const { isBuffer } = Buffer
 export { Buffer, isBuffer }

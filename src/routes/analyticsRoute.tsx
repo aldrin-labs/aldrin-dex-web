@@ -7,9 +7,7 @@ export default function AnalyticsRoutes({ match }) {
     <Switch>
       <Route
         path="/analytics/:selectedPair"
-        render={({ match: { params } }) => {
-          return <AnalyticsRoute selectedPair={params.selectedPair} />
-        }}
+        render={({ match: { params } }) => <AnalyticsRoute selectedPair={params.selectedPair} />}
       />
     </Switch>
   )
