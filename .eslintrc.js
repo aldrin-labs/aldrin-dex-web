@@ -39,9 +39,10 @@ module.exports = {
     ],
     'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
     'prettier/prettier': 'error',
+    'import/no-extraneous-dependencies': 'off', // TODO
     'import/prefer-default-export': 'off',
     'no-use-before-define': 'off',
-    '@typescript-eslint/no-use-before-define': ['error']
+    '@typescript-eslint/no-use-before-define': ['error'],
   },
   settings: {
     'import/resolver': {
