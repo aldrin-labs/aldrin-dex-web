@@ -191,6 +191,7 @@
     "jest-transform-graphql": "^2.1.0",
     "lint-staged": ">=10",
     "minify-graphql-loader": "^0.2.2",
+    "prettier": "^2.4.1",
     "react-hot-loader": "^4.3.12",
     "style-loader": "^0.23.1",
     "stylelint": "^13.13.1",
