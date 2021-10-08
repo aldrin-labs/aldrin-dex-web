@@ -19,5 +19,6 @@ module.exports = {
   plugins: [
     'react-hot-loader/babel',
     'graphql-tag',
+    'babel-plugin-styled-components',
   ],
 }

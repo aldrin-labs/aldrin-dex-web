@@ -159,7 +159,7 @@
     "@typescript-eslint/parser": "^4.33.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-graphql-tag": "^2.5.0",
-    "babel-plugin-styled-components": "^1.9.1",
+    "babel-plugin-styled-components": "^1.13.2",
     "chalk": "^2.3.2",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "6.4.0 ",
@@ -172,6 +172,7 @@
     "error-overlay-webpack-plugin": "1.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
+    "eslint-import-resolver-webpack": "^0.13.1",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.26.1",
@@ -229,7 +230,7 @@
     "minimist": "1.2.3",
     "kind-of": "6.0.3"
   },
-  "lint-staged": {
+  "__lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix",
     "*.tsx": "stylelint --fix"
   }
