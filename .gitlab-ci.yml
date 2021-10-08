@@ -7,16 +7,18 @@ linter:
   script:
     - yarn
     - yarn submodule
+    - yarn lint:ts
+    - yarn lint:css
 
-cypress:
-  image: cypress/base:10
-  stage: test
-  cache:
-    paths:
-      - .npm
-      - cache/Cypress
-      - node_modules
-  script:
-    - yarn
-    - yarn build
-    - yarn cy:verify
+# cypress:
+#   image: cypress/base:10
+#   stage: test
+#   cache:
+#     paths:
+#       - .npm
+#       - cache/Cypress
+#       - node_modules
+#   script:
+#     - yarn
+#     - yarn build
+#     - yarn cy:verify
