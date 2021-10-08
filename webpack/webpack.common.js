@@ -62,13 +62,17 @@ const config = {
 
         ],
         use: [
-          'babel-loader?cacheDirectory=true', {
+          // 'babel-loader?cacheDirectory=true',
+          'babel-loader',
+          {
             loader: 'ts-loader',
             options: {
               transpileOnly: true,
               getCustomTransformers: () => ({ before: [getTransformer()] })
             }
-          }],
+          },
+
+        ],
       },
       {
         test: /\.(graphql|gql)$/,
