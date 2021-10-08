@@ -6,7 +6,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  ignorePatterns: ["**/*.eslintrc.js"],
+  ignorePatterns: ['**/*.eslintrc.js'],
   extends: [
     'plugin:react/recommended',
     'airbnb',
@@ -24,6 +24,7 @@ module.exports = {
     'react',
     '@typescript-eslint',
     'prettier',
+    'unused-imports'
   ],
   rules: {
     semi: ['error', 'never'],
@@ -43,6 +44,11 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error'],
+    'unused-imports/no-unused-imports': 'error',
+		'unused-imports/no-unused-vars': [
+			'warn',
+			{ vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' }
+		],
   },
   settings: {
     'import/resolver': {
