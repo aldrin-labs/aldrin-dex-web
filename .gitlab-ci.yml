@@ -5,8 +5,8 @@ linter:
     paths:
       - node_modules
   script:
-    yarn
-    yarn submodule
+    - yarn
+    - yarn submodule
 
 cypress:
   image: cypress/base:10
