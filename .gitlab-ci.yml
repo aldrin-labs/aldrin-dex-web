@@ -15,12 +15,13 @@ linter:
 
 cypress:
   image: cypress/included:8.5.0
+  entrypoint: [""]
   stage: test
-  # cache:
-  #   paths:
-  #     - .npm
-  #     - cache/Cypress
-  #     - node_modules
+  cache:
+    paths:
+      - .npm
+      - cache/Cypress
+      - node_modules
   script:
     - yarn
     - yarn cy:verify
