@@ -14,8 +14,9 @@ linter:
     - yarn lint:css
 
 cypress:
-  image: cypress/included:8.5.0
-  entrypoint: [""]
+  image: 
+    name: cypress/included:8.5.0
+    entrypoint: [""]
   stage: test
   cache:
     paths:
