@@ -26,7 +26,7 @@
     "test": "cross-env NODE_ENV=test jest",
     "cy:verify": "cypress verify",
     "cy:open": "cypress open",
-    "cy:ci": "cypress run --browser chrome:canary",
+    "cy:ci": "cypress run --browser chrome",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage",
     "test:watch": "cross-env NODE_ENV=test jest --watchAll",
     "typecheck": "tsc",
@@ -36,40 +36,6 @@
     "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src",
     "lint:ts": "eslint --ext .js,.jsx,.ts,.tsx src",
     "prepare": "husky install"
-  },
-  "jest": {
-    "setupFiles": [
-      "./jest.setup.js"
-    ],
-    "snapshotSerializers": [
-      "enzyme-to-json/serializer"
-    ],
-    "moduleDirectories": [
-      "./node_modules",
-      "./src"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "tsx"
-    ],
-    "transformIgnorePatterns": [
-      "/node_modules/(?!lodash-es).+\\.js$"
-    ],
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "typescript-babel-jest",
-      "\\.(gql|graphql)$": "jest-transform-graphql"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleNameMapper": {
-      ".+\\.(svg|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy",
-      "^@sb(.*)$": "<rootDir>/src/storybook/src/web$1",
-      "^@core(.*)$": "<rootDir>/src/core/src/$1",
-      "^@routes(.*)$": "<rootDir>/src/routes$1",
-      "^@utils(.*)$": "<rootDir>/src/utils$1",
-      "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1",
-      "^@webhooks(.*)$": "<rootDir>/src/storybook/src/webhooks$1"
-    }
   },
   "dependencies": {
     "@ledgerhq/hw-transport": "^5.51.1",
@@ -141,8 +107,6 @@
     "@babel/preset-typescript": "^7.15.0",
     "@babel/runtime": "^7.15.4",
     "@types/auth0-lock": "^11.4.3",
-    "@types/enzyme": "^3.1.15",
-    "@types/jest": "^22.2.0",
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash-es": "^4.17.1",
     "@types/rc-slider": "^8.6.5",
@@ -166,10 +130,7 @@
     "copy-webpack-plugin": "6.4.0 ",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.0",
-    "cypress": "^5.2.0",
-    "enzyme": "^3.6.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "enzyme-to-json": "^3.3.3",
+    "cypress": "^8.5.0",
     "error-overlay-webpack-plugin": "1.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "^18.2.1",
@@ -191,9 +152,6 @@
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^10.0.0",
-    "jest": "^26.6.3",
-    "jest-styled-components": "^5.0.0",
-    "jest-transform-graphql": "^2.1.0",
     "lint-staged": ">=10",
     "minify-graphql-loader": "^0.2.2",
     "prettier": "^2.4.1",

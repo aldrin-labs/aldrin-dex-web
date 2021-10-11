@@ -1,17 +1,14 @@
 describe('chart tests', () => {
-  before(function() {
-    Cypress.Commands.add(
-      'chooseReactSelectOption',
-      (selector, text, option) => {
-        cy.get(`${selector} input`)
-          .first()
-          .click({ force: true })
-          .type(text, { force: true })
-          .get(`${selector} .custom-select-box__menu`)
-          .contains(option)
-          .click()
-      }
-    )
+  before(function () {
+    Cypress.Commands.add('chooseReactSelectOption', (selector, text, option) => {
+      cy.get(`${selector} input`)
+        .first()
+        .click({ force: true })
+        .type(text, { force: true })
+        .get(`${selector} .custom-select-box__menu`)
+        .contains(option)
+        .click()
+    })
   })
 
   beforeEach(function () {
@@ -54,11 +51,7 @@ describe('chart tests', () => {
     cy.get('[data-e2e="switchChartPageMode"]').click()
     cy.chooseReactSelectOption('#currencyPair', 'BTC_USDT', 'BTC_USDT')
     cy.get(':nth-child(2) >  iframe').should('be.visible')
-    cy.get(
-      ' [data-e2e="chart-container"]  :nth-child(2) [data-e2e="chart-switcher"] .deleteChart'
-    ).click()
-    cy.get(
-      ' [data-e2e="chart-container"]  :nth-child(2) [data-e2e="chart-switcher"] .deleteChart'
-    ).should('not.exist')
+    cy.get(' [data-e2e="chart-container"]  :nth-child(2) [data-e2e="chart-switcher"] .deleteChart').click()
+    cy.get(' [data-e2e="chart-container"]  :nth-child(2) [data-e2e="chart-switcher"] .deleteChart').should('not.exist')
   })
 })

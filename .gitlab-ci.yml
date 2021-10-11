@@ -1,6 +1,9 @@
+stages:
+  - test
 
 linter:
   image: node:latest
+  stage: test
   cache:
     paths:
       - node_modules
@@ -10,15 +13,14 @@ linter:
     - yarn lint:ts
     - yarn lint:css
 
-# cypress:
-#   image: cypress/base:10
-#   stage: test
-#   cache:
-#     paths:
-#       - .npm
-#       - cache/Cypress
-#       - node_modules
-#   script:
-#     - yarn
-#     - yarn build
-#     - yarn cy:verify
+cypress:
+  image: cypress/included:8.5.0
+  stage: test
+  cache:
+    paths:
+      - .npm
+      - cache/Cypress
+      - node_modules
+  script:
+    - yarn
+    - yarn cy:verify
