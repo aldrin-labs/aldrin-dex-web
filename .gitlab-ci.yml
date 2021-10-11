@@ -1,6 +1,16 @@
 stages:
   - test
 
+typecheck:
+  image: node:latest
+  stage: test
+  cache:
+    paths:
+      - node_modules
+  script:
+    - yarn
+    - yarn tsc
+
 linter:
   image: node:latest
   stage: test
