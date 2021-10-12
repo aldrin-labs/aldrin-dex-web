@@ -1,5 +1,5 @@
 const asyncLocalStorage = {
-  setItem: (key: string, value) =>
+  setItem: (key: string, value: string) =>
     Promise.resolve().then(() => {
       window.localStorage.setItem(key, value)
     }),
@@ -10,7 +10,7 @@ const asyncLocalStorage = {
 }
 
 export const syncStorage = {
-  setItem: (key: string, value) => {
+  setItem: (key: string, value: string) => {
     window.localStorage.setItem(key, value)
   },
   getItem: (key: string) => window.localStorage.getItem(key),
