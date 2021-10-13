@@ -14,11 +14,13 @@ describe('Chart tests', () => {
   beforeEach(() => {
     cy.setE2EMark()
     cy.visit('/chart')
-    cy.notShowTips()
+    // cy.notShowTips()
     cy.waitLoading()
   })
 
-  it('Should open RIN trade', () => {
+  it('Should render whole page', () => {
     cy.url().should('include', 'RIN_USDC')
+    cy.get('#buy-connectButton').should('exist')
+    cy.get('#sell-connectButton').should('exist')
   })
 })
