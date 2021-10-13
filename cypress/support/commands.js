@@ -1,5 +1,3 @@
-import { apolloCachePersist, idTokens, persistRoot } from './persist'
-
 Cypress.Commands.add('waitLoading', () => {
   cy.get('body').then(($body) => {
     if ($body.find('[data-e2e="Loadig"]', { timeout: 10000 }).length) {
@@ -12,11 +10,9 @@ Cypress.Commands.add('waitLoading', () => {
   //  cy.get('[data-e2e="Loadig"]', { timeout: 10000 }).should("not.exist");
 })
 
-Cypress.Commands.add('notShowTipsAndLoginStorage', (tokenIndex) => {
-  return new Cypress.Promise((resolve, reject) => {
-    window.localStorage.setItem('token', idTokens[tokenIndex])
-    window.localStorage.setItem('apollo-cache-persist', JSON.stringify(apolloCachePersist))
-    window.localStorage.setItem('persist:root', JSON.stringify(persistRoot))
+Cypress.Commands.add('setE2EMark', () => {
+  return new Cypress.Promise((resolve) => {
+    window.localStorage.setItem('ALDRIN_E2E_MODE', 'true')
     resolve()
   })
 })

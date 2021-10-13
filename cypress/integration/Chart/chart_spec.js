@@ -12,6 +12,7 @@ describe('Chart tests', () => {
   // })
 
   beforeEach(() => {
+    cy.setE2EMark()
     cy.visit('/chart')
     cy.notShowTips()
     cy.waitLoading()
