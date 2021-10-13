@@ -10,7 +10,8 @@ module.exports = {
   extends: [
     'plugin:react/recommended',
     'airbnb',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    'plugin:cypress/recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -24,7 +25,7 @@ module.exports = {
     'react',
     '@typescript-eslint',
     'prettier',
-    'unused-imports'
+    'unused-imports',
   ],
   rules: {
     semi: ['error', 'never'],

@@ -33,6 +33,10 @@ cypress:
       - .npm
       - cache/Cypress
       - node_modules
+  artifacts:
+    paths:
+    - ./build/crypto_project/frontend/web
+
   script:
     - yarn
     - yarn cy:verify
