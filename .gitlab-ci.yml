@@ -1,34 +1,37 @@
 stages:
   - test
 
-# typecheck:
-#   image: node:14-bullseye
-#   stage: test
-#   cache:
-#     paths:
-#       - node_modules
-#   script:
-#     - yarn
-#     - yarn tsc
+typecheck:
+  image: node:14-bullseye
+  stage: test
+  cache:
+    paths:
+      - node_modules
+  script:
+    - yarn
+    - yarn tsc
 
 build:
   image: node:14-bullseye
   stage: test
+  cache:
+    paths:
+      - node_modules
   script:
     - yarn
     - yarn buildMaster
 
-# linter:
-#   image: node:14-bullseye
-#   stage: test
-#   cache:
-#     paths:
-#       - node_modules
-#   script:
-#     - yarn
-#     - yarn submodule
-#     - yarn lint:ts
-#     - yarn lint:css
+linter:
+  image: node:14-bullseye
+  stage: test
+  cache:
+    paths:
+      - node_modules
+  script:
+    - yarn
+    - yarn submodule
+    - yarn lint:ts
+    - yarn lint:css
 
 # cypress:
 #   image: 
