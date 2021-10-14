@@ -34,7 +34,8 @@
     "fetch-local-storybook": "rsync -azP --exclude=node_modules ../storybook ./src",
     "lint:ts": "eslint --ext .js,.jsx,.ts,.tsx src",
     "prepare": "husky install",
-    "gql:gen": "graphql-codegen --config codegen.yml"
+    "gql:schema": "npx apollo service:download --endpoint=https://api.cryptocurrencies.ai/graphql graphql-schema.json",
+    "gql:typings": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql    "
   },
   "dependencies": {
     "@ledgerhq/hw-transport": "^5.51.1",
@@ -105,7 +106,6 @@
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
     "@babel/runtime": "^7.15.4",
-    "@graphql-codegen/cli": "2.2.0",
     "@types/auth0-lock": "^11.4.3",
     "@types/crypto-js": "^4.0.2",
     "@types/jwt-decode": "^2.2.1",
@@ -179,11 +179,7 @@
     "webpack-cli": "^4.8.0",
     "webpack-dev-server": "^4.3.1",
     "webpack-merge": "^5.8.0",
-    "workbox-webpack-plugin": "^6.3.0",
-    "@graphql-codegen/typescript": "2.2.2",
-    "@graphql-codegen/typescript-operations": "2.1.6",
-    "@graphql-codegen/typescript-react-apollo": "3.1.4",
-    "@graphql-codegen/introspection": "2.1.0"
+    "workbox-webpack-plugin": "^6.3.0"
   },
   "resolutions": {
     "bn.js": "5.1.3",
