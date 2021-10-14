@@ -49,7 +49,8 @@ const config = {
       net: false,
       tls: false,
       child_process: false,
-      assert: false
+      assert: false,
+      util: false,
     },
   },
   module: {
