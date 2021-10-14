@@ -56,6 +56,7 @@ module.exports = {
     ],
     'no-bitwise': 'off',
     'no-underscore-dangle': 'off',
+    'max-classes-per-file': 'off',
   },
   settings: {
     'import/resolver': {
