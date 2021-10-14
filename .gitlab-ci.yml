@@ -1,53 +1,50 @@
 stages:
   - test
 
-typecheck:
-  image: node:latest
-  stage: test
-  cache:
-    paths:
-      - node_modules
-  script:
-    - yarn
-    - yarn tsc
+# typecheck:
+#   image: node:14-bullseye
+#   stage: test
+#   cache:
+#     paths:
+#       - node_modules
+#   script:
+#     - yarn
+#     - yarn tsc
 
 build:
-  image: node:latest
+  image: node:14-bullseye
   stage: test
-  cache:
-    paths:
-      - node_modules
   script:
     - yarn
     - yarn buildMaster
 
-linter:
-  image: node:latest
-  stage: test
-  cache:
-    paths:
-      - node_modules
-  script:
-    - yarn
-    - yarn submodule
-    - yarn lint:ts
-    - yarn lint:css
+# linter:
+#   image: node:14-bullseye
+#   stage: test
+#   cache:
+#     paths:
+#       - node_modules
+#   script:
+#     - yarn
+#     - yarn submodule
+#     - yarn lint:ts
+#     - yarn lint:css
 
-cypress:
-  image: 
-    name: cypress/included:8.5.0
-    entrypoint: [""]
-  stage: test
-  cache:
-    paths:
-      - .npm
-      - cache/Cypress
-      - node_modules
-  artifacts:
-    paths:
-    - ./build/crypto_project/frontend/web
+# cypress:
+#   image: 
+#     name: cypress/included:8.5.0
+#     entrypoint: [""]
+#   stage: test
+#   cache:
+#     paths:
+#       - .npm
+#       - cache/Cypress
+#       - node_modules
+#   artifacts:
+#     paths:
+#     - ./build/crypto_project/frontend/web
 
-  script:
-    - yarn
-    - yarn cy:verify
-    - yarn cy:ci
+#   script:
+#     - yarn
+#     - yarn cy:verify
+#     - yarn cy:ci
