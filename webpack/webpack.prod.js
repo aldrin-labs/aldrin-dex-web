@@ -1,13 +1,11 @@
-const commonPaths = require('./common-paths')
-
 const webpack = require('webpack')
-const TerserPlugin = require('terser-webpack-plugin');
-const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin")
+const TerserPlugin = require('terser-webpack-plugin')
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+const commonPaths = require('./common-paths')
 
 // const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
 
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
-
 
 const config = {
   mode: 'production',
@@ -45,7 +43,7 @@ const config = {
       },
     },
     runtimeChunk: 'single',
-    moduleIds: 'deterministic'
+    moduleIds: 'deterministic',
   },
 
   plugins: [
@@ -53,16 +51,19 @@ const config = {
       test: /\.(jpe?g|png)$/i,
       minimizerOptions: {
         plugins: [
-          ["jpegtran", { progressive: true }],
-          ["optipng", { optimizationLevel: 5 }],
-        ]
-      }
+          ['jpegtran', { progressive: true }],
+          ['optipng', { optimizationLevel: 5 }],
+        ],
+      },
     }),
     new webpack.IgnorePlugin({
       resourceRegExp: /^\.\/locale$/,
       contextRegExp: /moment$/,
     }),
-
+    new webpack.IgnorePlugin({
+      resourceRegExp: /.*solana\.tokenlist\.json$/,
+      contextRegExp: /spl-token-registry/,
+    }),
     // new WorkboxWebpackPlugin.GenerateSW({
     //   swDest: "sw.js",
     //   clientsClaim: true,
@@ -77,7 +78,6 @@ const config = {
     // }
     // ]
     // }),
-
 
     new webpack.DefinePlugin({
       'process.env': {
