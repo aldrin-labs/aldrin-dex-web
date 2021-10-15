@@ -34,13 +34,7 @@ const config = {
       }),
     ],
     splitChunks: {
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-        },
-      },
+      chunks: 'all',
     },
     runtimeChunk: 'single',
     moduleIds: 'deterministic',
