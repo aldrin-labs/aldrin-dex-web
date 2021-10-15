@@ -43,7 +43,7 @@ const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/compo
 const AnalyticsRoute = lazy(() => import(/* webpackChunkName: "analytics" */ '@routes/analyticsRoute'))
 const RestrictedRegionRoute = lazy(() => import(/* webpackChunkName: "rewards" */ '@routes/restrictedRegionRoute'))
 
-// const AddressbookRoute = lazy(() => import(/* webpackChunkName: "addressbook" */ '@routes/addressRoute'))
+const AddressbookRoute = lazy(() => import(/* webpackChunkName: "addressbook" */ '@routes/addressRoute'))
 
 const PoolsRoute = lazy(() => import(/* webpackChunkName: "pools" */ '@routes/poolsRoute'))
 
@@ -87,7 +87,7 @@ const AppRoot: React.FC = () => (
               <Route path="/chart" component={ChartRoutes} />
               <Route path="/analytics" component={AnalyticsRoute} />
               <Route path="/dashboard" component={DashboardRoute} />
-              {/* {!MASTER_BUILD && <Route path="/addressbook" component={AddressbookRoute} />} */}
+              {!MASTER_BUILD && <Route path="/addressbook" component={AddressbookRoute} />}
               {!MASTER_BUILD && <Route path="/pools" component={PoolsRoute} />}
 
               <Route path="/rebalance" component={RebalanceRoute} exact />
