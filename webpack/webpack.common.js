@@ -134,6 +134,7 @@ const config = {
     new webpack.ProgressPlugin(),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
+      inject: true,
       template: 'public/index.html',
       favicon: 'public/favicon.ico',
       minify: {

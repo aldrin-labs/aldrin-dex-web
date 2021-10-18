@@ -16,9 +16,5 @@ module.exports = {
     ],
     '@babel/preset-typescript',
   ],
-  plugins: [
-    'react-hot-loader/babel',
-    'graphql-tag',
-    'babel-plugin-styled-components',
-  ],
+  plugins: ['react-hot-loader/babel', 'graphql-tag', 'babel-plugin-styled-components'],
 }

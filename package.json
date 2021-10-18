@@ -19,7 +19,7 @@
     "submodule": "git submodule sync && git submodule init && git submodule update",
     "build:without:submodule": "cross-env DEVTOOL=cheap-source-map NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production webpack --mode production --env env=prod",
     "build": "npm run submodule && cross-env  NODE_ENV=production DEVTOOL=cheap-source-map NODE_OPTIONS=--max_old_space_size=4096 NODE_ENV=production webpack --mode production --env env=prod",
-    "buildMaster": "npm run submodule && cross-env NODE_ENV=production NODE_ENV=production MASTER_BUILD=TRUE webpack --mode production --env env=prod",
+    "buildMaster": "npm run submodule && cross-env NODE_ENV=production MASTER_BUILD=TRUE webpack --mode production --env env=prod",
     "build:bundleanalyzer:without:submodule": "yarn NODE_ENV=production build:without:submodule --env addons=bundleanalyzer",
     "build:bundleanalyzer": "yarn build NODE_ENV=production --env addons=bundleanalyzer",
     "start:ci": "serve -l 3000",
