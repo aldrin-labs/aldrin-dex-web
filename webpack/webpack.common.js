@@ -2,13 +2,15 @@ const commonPaths = require('./common-paths')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CopyPlugin = require('copy-webpack-plugin')
 const getTransformer = require('ts-transform-graphql-tag').getTransformer
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const config = {
+  node: {
+    fs: 'empty',
+  },
   output: {
     path: commonPaths.outputPath,
     publicPath: '/',
@@ -16,31 +18,24 @@ const config = {
   resolve: {
     extensions: ['.js', '.jsx', '.web.js', '.mjs', '.ts', '.tsx'],
     alias: {
-      '@sb': path.join(
+      '@sb': path.join(__dirname, '..', 'src', 'storybook', 'src', 'web'),
+      '@core': path.join(__dirname, '..', 'src', 'core', 'src'),
+      '@routes': path.join(__dirname, '..', 'src', 'routes'),
+      '@utils': path.join(__dirname, '..', 'src', 'utils'),
+      '@icons': path.join(__dirname, '..', 'src', 'storybook', 'src', 'icons'),
+      '@webhooks': path.join(
         __dirname,
         '..',
         'src',
         'storybook',
         'src',
-        'web'
+        'webhooks'
       ),
-      '@core': path.join(
-        __dirname,
-        '..',
-        'src',
-        'core',
-        'src',
-      ),
-      '@routes': path.join(__dirname, '..', 'src', 'routes'),
-      '@utils': path.join(__dirname, '..', 'src', 'utils'),
-      '@icons': path.join(__dirname, '..', 'src', 'storybook', 'src', 'icons'),
-      '@webhooks': path.join(__dirname, '..', 'src', 'storybook', 'src', 'webhooks'),
-      'buffer': path.resolve(__dirname, '..', 'src', 'utils', 'buffer'),
       '@storage': path.join(__dirname, '..', 'src', 'utils', 'storage'),
       '@nodemodules': path.resolve(__dirname, '..', 'node_modules'),
       '@material-ui/core': '@material-ui/core/es',
       '@material-ui/styles': '@material-ui/core/es/styles',
-
+      'buffer': path.resolve(__dirname, '..', 'src', 'utils', 'buffer'),
     },
     fallback: {
       fs: false,
@@ -61,7 +56,6 @@ const config = {
           path.join(__dirname, '../node_modules/'),
           path.join(__dirname, '../src/storybook/node_modules/'),
           path.join(__dirname, '../src/core/node_modules/'),
-
         ],
         use: [
           // 'babel-loader?cacheDirectory=true',
@@ -102,6 +96,10 @@ const config = {
         },
       },
       {
+        test: /\.pdf$/,
+        use: ["file-loader"],
+      },
+      {
         test: /\.(png|jpg|gif|webp)$/,
         use: [
           {
@@ -117,10 +115,10 @@ const config = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'fonts/'
-            }
-          }
-        ]
+              outputPath: 'fonts/',
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
@@ -143,8 +141,8 @@ const config = {
         removeRedundantAttributes: true,
         removeScriptTypeAttributes: true,
         removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true
-      }
+        useShortDoctype: true,
+      },
     }),
     new CopyPlugin({
       patterns: [
