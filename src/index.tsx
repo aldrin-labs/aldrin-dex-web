@@ -76,6 +76,10 @@ const DashboardRoute = lazy(() =>
   import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute')
 )
 
+const StakingRoute = lazy(() =>
+  import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
+)
+
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -124,6 +128,7 @@ const render = () =>
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
+                <Route path="/staking" component={StakingRoute} />
                 {!MASTER_BUILD && (
                   <Route path="/addressbook" component={AddressbookRoute} />
                 )}
