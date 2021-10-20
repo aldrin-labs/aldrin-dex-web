@@ -67,23 +67,18 @@ const AppRoot: React.FC = () => (
               {isSafari && (
                 <>
                   {' '}
-                  <Redirect from="*" to="/chart" exact />{' '}
-                  <Route path="*" component={TechIssues} />
+                  <Redirect from="*" to="/chart" exact /> <Route path="*" component={TechIssues} />
                 </>
               )}
-              <Redirect from="/" to={'/chart'} exact />
+              <Redirect from="/" to="/chart" exact />
               <Redirect from="/chart" to="/chart/spot" exact />
               <Redirect from="/chart/spot" to="/chart/spot/RIN_USDC" exact />
-              <Redirect
-                from="/chart/spot/CCAI_USDC"
-                to="/chart/spot/RIN_USDC"
-                exact
-              />
+              <Redirect from="/chart/spot/CCAI_USDC" to="/chart/spot/RIN_USDC" exact />
               <Redirect from="/chart/futures" to="/chart/spot/RIN_USDC" />
               <Redirect from="/analytics" to="/analytics/all" exact />
               <Redirect from="/rewards" to="/" exact />
 
-              {/*<Route exact path="/" component={HomeRoutes} />*/}
+              {/* <Route exact path="/" component={HomeRoutes} /> */}
               {/* <Route path="/profile" component={ProfileRoutes} /> */}
               {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
               {/* {<Route exact path="/market" component={MarketRoutes} />} */}
@@ -92,27 +87,15 @@ const AppRoot: React.FC = () => (
               <Route path="/chart" component={ChartRoutes} />
               <Route path="/analytics" component={AnalyticsRoute} />
               <Route path="/dashboard" component={DashboardRoute} />
-              {!MASTER_BUILD && (
-                <Route path="/addressbook" component={AddressbookRoute} />
-              )}
+              {!MASTER_BUILD && <Route path="/addressbook" component={AddressbookRoute} />}
               <Route path="/pools" component={PoolsRoute} />
 
               <Route path="/rebalance" component={RebalanceRoute} exact />
-              <Route
-                path="/restrictedRegion"
-                component={RestrictedRegionRoute}
-                exact
-              />
+              <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
 
-              {!MASTER_BUILD && (
-                <Route path="/swaps" component={SwapsRoutes} />
-              )}
-              <Route
-                path="/restrictedRegion"
-                component={RestrictedRegionRoute}
-                exact
-              />
-              {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
+              {!MASTER_BUILD && <Route path="/swaps" component={SwapsRoutes} />}
+              <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
+              {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
               {/* <Route exact path="/user" component={UserRoutes} /> */}
               {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
               <Route component={NotFound} />
