@@ -9,6 +9,7 @@ import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
 import { MASTER_BUILD } from '@core/utils/config'
+import { GlobalStyle } from './index.styles'
 
 const TechIssues = lazy(() =>
   import(
@@ -95,6 +96,7 @@ const isSafari =
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
+      <GlobalStyle />
       <BrowserRouter>
         <App>
           <ErrorBoundary>
