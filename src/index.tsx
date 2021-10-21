@@ -68,8 +68,8 @@ const PoolsRoute = lazy(() =>
 const RebalanceRoute = lazy(() =>
   import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
 )
-const SwapsRoutes = lazy(() =>
-  import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute')
+const SwapRoutes = lazy(() =>
+  import(/* webpackChunkName: "swaps" */ '@routes/swapRoute')
 )
 
 const DashboardRoute = lazy(() =>
@@ -139,7 +139,7 @@ const render = () =>
                 />
 
                 {!MASTER_BUILD && (
-                  <Route path="/swaps" component={SwapsRoutes} />
+                  <Route path="/swap" component={SwapRoutes} />
                 )}
                 <Route
                   path="/restrictedRegion"
