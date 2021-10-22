@@ -88,10 +88,6 @@ const isSafari =
   !/CriOS/.test(navigator.userAgent) &&
   !/Chrome/.test(navigator.userAgent)
 
-// if (process.env.NODE_ENV !== 'production') {
-//   const { whyDidYouUpdate } = require('why-did-you-update')
-//   whyDidYouUpdate(React)
-// }
 
 const render = () =>
   ReactDOM.render(
