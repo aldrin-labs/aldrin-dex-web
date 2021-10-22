@@ -81,6 +81,7 @@ const StakingRoute = lazy(() =>
   import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
 )
 
+
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
