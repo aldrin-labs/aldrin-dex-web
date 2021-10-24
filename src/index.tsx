@@ -69,7 +69,7 @@ const RebalanceRoute = lazy(() =>
   import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
 )
 const SwapRoutes = lazy(() =>
-  import(/* webpackChunkName: "swaps" */ '@routes/swapRoute')
+  import(/* webpackChunkName: "swap" */ '@routes/swapRoute')
 )
 
 const DashboardRoute = lazy(() =>
