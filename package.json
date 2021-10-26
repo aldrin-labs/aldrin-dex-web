@@ -68,7 +68,8 @@
       "^@routes(.*)$": "<rootDir>/src/routes$1",
       "^@utils(.*)$": "<rootDir>/src/utils$1",
       "^@icons(.*)$": "<rootDir>/src/storybook/src/icons$1",
-      "^@webhooks(.*)$": "<rootDir>/src/storybook/src/webhooks$1"
+      "^@webhooks(.*)$": "<rootDir>/src/storybook/src/variables$1",
+      "^@variables(.*)$": "<rootDir>/src/storybook/src/variables$1"
     }
   },
   "dependencies": {
@@ -103,7 +104,7 @@
     "cryptocurrency-icons": "^0.17.1",
     "dayjs": "^1.9.5",
     "elliptic": "6.5.4",
-    "formik": "^1.5.1",
+    "formik": "^2.2.9",
     "graphql-cli": "4.1.0",
     "identity-obj-proxy": "^3.0.0",
     "immutable-tuple": "^0.4.10",
@@ -133,7 +134,7 @@
     "react-virtualized": "^9.21.2",
     "reactour": "^1.18.0",
     "recompose": "^0.30.0",
-    "styled-components": "^4.1.2",
+    "styled-components": "^5.3.3",
     "subscriptions-transport-ws": "^0.9.14",
     "treemap-js": "^1.2.1",
     "webpack-remove-serviceworker-plugin": "^1.0.0"
@@ -177,7 +178,7 @@
     "@types/react-select": "^2.0.6",
     "@types/react-virtualized": "^9.21.5",
     "@types/recompose": "^0.27.0",
-    "@types/styled-components": "^4.0.3",
+    "@types/styled-components": "^5.1.15",
     "babel-eslint": "^9.0.0",
     "babel-jest": "^23.4.2",
     "babel-loader": "8.0.5",

@@ -38,6 +38,7 @@ const config = {
       '@utils': path.join(__dirname, '..', 'src', 'utils'),
       '@icons': path.join(__dirname, '..', 'src', 'storybook', 'src', 'icons'),
       '@webhooks': path.join(__dirname, '..', 'src', 'storybook', 'src', 'webhooks'),
+      '@variables': path.join(__dirname, '..', 'src', 'storybook', 'src', 'variables'),
       '@storage': path.join(__dirname, '..', 'src', 'utils', 'storage'),
       '@nodemodules': path.resolve(__dirname, '..', 'node_modules'),
       '@material-ui/core': '@material-ui/core/es',
