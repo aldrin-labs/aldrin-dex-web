@@ -127,9 +127,7 @@ const render = () =>
                 {!MASTER_BUILD && (
                   <Route path="/addressbook" component={AddressbookRoute} />
                 )}
-                {!MASTER_BUILD && (
-                  <Route path="/pools" component={PoolsRoute} />
-                )}
+                <Route path="/pools" component={PoolsRoute} />
 
                 <Route path="/rebalance" component={RebalanceRoute} exact />
                 <Route
