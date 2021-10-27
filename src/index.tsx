@@ -81,7 +81,6 @@ const StakingRoute = lazy(() =>
   import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
 )
 
-
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -132,6 +131,7 @@ const render = () =>
                   <Route path="/addressbook" component={AddressbookRoute} />
                 )}
                 <Route path="/pools" component={PoolsRoute} />
+                <Route path="/staking" component={StakingRoute} />
 
                 <Route path="/rebalance" component={RebalanceRoute} exact />
                 <Route
