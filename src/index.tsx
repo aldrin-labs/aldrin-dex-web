@@ -140,9 +140,7 @@ const render = () =>
                   exact
                 />
 
-                {!MASTER_BUILD && (
-                  <Route path="/swap" component={SwapRoutes} />
-                )}
+                <Route path="/swap" component={SwapRoutes} />
                 <Route
                   path="/restrictedRegion"
                   component={RestrictedRegionRoute}
