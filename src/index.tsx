@@ -9,6 +9,7 @@ import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary } from '@sb/components/index'
 import { Loading } from '@sb/components'
 import { MASTER_BUILD } from '@core/utils/config'
+import { GlobalStyle } from './index.styles'
 
 const TechIssues = lazy(() =>
   import(
@@ -68,8 +69,8 @@ const PoolsRoute = lazy(() =>
 const RebalanceRoute = lazy(() =>
   import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
 )
-const SwapsRoutes = lazy(() =>
-  import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute')
+const SwapRoutes = lazy(() =>
+  import(/* webpackChunkName: "swap" */ '@routes/swapRoute')
 )
 
 const DashboardRoute = lazy(() =>
@@ -79,6 +80,7 @@ const DashboardRoute = lazy(() =>
 const StakingRoute = lazy(() =>
   import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
 )
+
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -86,14 +88,11 @@ const isSafari =
   !/CriOS/.test(navigator.userAgent) &&
   !/Chrome/.test(navigator.userAgent)
 
-// if (process.env.NODE_ENV !== 'production') {
-//   const { whyDidYouUpdate } = require('why-did-you-update')
-//   whyDidYouUpdate(React)
-// }
 
 const render = () =>
   ReactDOM.render(
     <ApolloProvider client={client}>
+      <GlobalStyle />
       <BrowserRouter>
         <App>
           <ErrorBoundary>
@@ -127,6 +126,7 @@ const render = () =>
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
+                <Route path="/staking" component={StakingRoute} />
                 {!MASTER_BUILD && (
                   <Route path="/addressbook" component={AddressbookRoute} />
                 )}
@@ -140,9 +140,7 @@ const render = () =>
                   exact
                 />
 
-                {!MASTER_BUILD && (
-                  <Route path="/swaps" component={SwapsRoutes} />
-                )}
+                <Route path="/swap" component={SwapRoutes} />
                 <Route
                   path="/restrictedRegion"
                   component={RestrictedRegionRoute}
