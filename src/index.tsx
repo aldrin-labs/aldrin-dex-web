@@ -77,7 +77,7 @@ const DashboardRoute = lazy(() =>
 )
 
 const StakingRoute = lazy(() =>
-  import(/* webpackChunkName: "dashboard" */ '@routes/stakingRoute')
+  import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
 )
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
