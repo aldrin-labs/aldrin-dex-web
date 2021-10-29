@@ -105,7 +105,7 @@ const render = () =>
                     <Route path="*" component={TechIssues} />
                   </>
                 )}
-                <Redirect from="/" to={'/chart'} exact />
+                <Redirect from="/" to={'/swap'} exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/RIN_USDC" exact />
                 <Redirect
