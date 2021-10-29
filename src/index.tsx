@@ -8,6 +8,7 @@ import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary, Loading } from '@sb/components/index'
 import { MASTER_BUILD } from '@core/utils/config'
+import { GlobalStyle } from './index.styles'
 
 const TechIssues = lazy(
   () => import(/* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute')
@@ -47,10 +48,18 @@ const AddressbookRoute = lazy(() => import(/* webpackChunkName: "addressbook" */
 
 const PoolsRoute = lazy(() => import(/* webpackChunkName: "pools" */ '@routes/poolsRoute'))
 
-const RebalanceRoute = lazy(() => import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute'))
-const SwapsRoutes = lazy(() => import(/* webpackChunkName: "swaps" */ '@routes/swapsRoute'))
+const RebalanceRoute = lazy(() =>
+  import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
+)
+const SwapRoutes = lazy(() =>
+  import(/* webpackChunkName: "swap" */ '@routes/swapRoute')
+)
 
 const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute'))
+
+const StakingRoute = lazy(() =>
+  import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
+)
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
@@ -59,6 +68,7 @@ const isSafari =
 
 const AppRoot: React.FC = () => (
   <ApolloProvider client={client}>
+    <GlobalStyle />
     <BrowserRouter>
       <App>
         <ErrorBoundary>
@@ -93,7 +103,8 @@ const AppRoot: React.FC = () => (
               <Route path="/rebalance" component={RebalanceRoute} exact />
               <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
 
-              {!MASTER_BUILD && <Route path="/swaps" component={SwapsRoutes} />}
+              <Route path="/swaps" component={SwapRoutes} />
+              <Route path="/staking" component={StakingRoute} />
               <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
               {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
               {/* <Route exact path="/user" component={UserRoutes} /> */}

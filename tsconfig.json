@@ -14,6 +14,7 @@
     "experimentalDecorators": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
@@ -29,6 +30,7 @@
       "buffer": ["src/utils/buffer"],
       "@nodemodules": ["node_modules"],
       "@webhooks/*": ["src/storybook/src/webhooks/*"],
+      "@variables/*": ["src/storybook/src/variables/*"]
     },
     "plugins": [
       {
