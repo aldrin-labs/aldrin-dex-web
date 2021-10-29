@@ -48,18 +48,12 @@ const AddressbookRoute = lazy(() => import(/* webpackChunkName: "addressbook" */
 
 const PoolsRoute = lazy(() => import(/* webpackChunkName: "pools" */ '@routes/poolsRoute'))
 
-const RebalanceRoute = lazy(() =>
-  import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute')
-)
-const SwapRoutes = lazy(() =>
-  import(/* webpackChunkName: "swap" */ '@routes/swapRoute')
-)
+const RebalanceRoute = lazy(() => import(/* webpackChunkName: "rebalance" */ '@routes/rebalanceRoute'))
+const SwapRoutes = lazy(() => import(/* webpackChunkName: "swap" */ '@routes/swapRoute'))
 
 const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute'))
 
-const StakingRoute = lazy(() =>
-  import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
-)
+const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
