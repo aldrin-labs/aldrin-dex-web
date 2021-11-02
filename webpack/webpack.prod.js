@@ -77,7 +77,7 @@ const config = {
     //   },
     // },
   // },
-  stats: 'verbose',
+  // stats: 'verbose',
   plugins: [
     new ImageminPlugin({ test: /\.(jpe?g|png)$/i }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
