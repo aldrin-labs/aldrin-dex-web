@@ -75,6 +75,18 @@ const config = {
       poll: 1000,
       ignored: /node_modules/
     },
+    // proxy: {
+    //   '/graphql': {
+    //     target: 'https://api.cryptocurrencies.ai',
+    //     secure: false,
+    //     changeOrigin: true,
+    //   },
+    //   '/getCCAICirculationSupply': {
+    //     target: 'https://api.cryptocurrencies.ai',
+    //     secure: false,
+    //     changeOrigin: true,
+    //   },
+    // },
   },
 }
 
