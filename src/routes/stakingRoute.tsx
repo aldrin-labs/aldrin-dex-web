@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { Staking } from '@sb/compositions/Staking/Staking'
+import { Staking } from '@sb/compositions/Staking'
 
 export default function StakingRoute({ match }) {
   return (
