@@ -161,6 +161,7 @@ const render = () =>
 
 render(hot(module)(App))
 
+
 // if ('serviceWorker' in navigator) {
 //   console.log('serviceWorker in navigator')
 
