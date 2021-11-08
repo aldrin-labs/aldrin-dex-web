@@ -54,10 +54,10 @@ const config = {
       resourceRegExp: /^\.\/locale$/,
       contextRegExp: /moment$/,
     }),
-    new webpack.IgnorePlugin({
-      resourceRegExp: /.*solana\.tokenlist\.json$/,
-      contextRegExp: /spl-token-registry/,
-    }),
+    // new webpack.IgnorePlugin({
+    //   resourceRegExp: /.*solana\.tokenlist\.json$/,
+    //   contextRegExp: /spl-token-registry/,
+    // }),
     // new WorkboxWebpackPlugin.GenerateSW({
     //   swDest: "sw.js",
     //   clientsClaim: true,
