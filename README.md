@@ -66,3 +66,12 @@ ________________________
 
 Bundle analyzing:
 1. Use build:bundleanalyzer:without:submodule
+
+# Useful links:
+## Production:
+- Website: https://aldrin.com
+- API: https://api.cryptocurrencies.ai/playground
+
+## Dev:
+- Website: ???
+- API: https://develop.api.cryptocurrencies.ai/playground

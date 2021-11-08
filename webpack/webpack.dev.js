@@ -1,39 +1,28 @@
-const commonPaths = require('./common-paths')
-const Jarvis = require('webpack-jarvis')
-
+/* eslint-disable import/no-extraneous-dependencies */
 const webpack = require('webpack')
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
-const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+// const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
+const commonPaths = require('./common-paths')
 
 const devtool = process.env.DEVTOOL || 'source-map'
 const port = process.env.PORT || 3000
 
-
 const config = {
   mode: 'development',
   entry: {
-    app: [
-      'react-hot-loader/patch',
-      'webpack/hot/only-dev-server',
-      `${commonPaths.appEntry}/index.tsx`,
-    ],
+    app: ['react-hot-loader/patch', `${commonPaths.appEntry}/index.tsx`],
   },
   output: {
     filename: '[name].js',
   },
   devtool,
   module: {},
-  optimization:{
+  optimization: {
     minimize: false, // <---- disables uglify.
   },
-  stats: 'verbose',
+  stats: 'normal',
   plugins: [
-    new ErrorOverlayPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         LOCAL_BUILD: JSON.stringify(process.env.LOCAL_BUILD),
@@ -54,11 +43,9 @@ const config = {
         REACT_APP_MSOL_REFERRAL_FEES_ADDRESS: JSON.stringify(process.env.REACT_APP_MSOL_REFERRAL_FEES_ADDRESS),
         POOLS_PROGRAM_ADDRESS: JSON.stringify(process.env.POOLS_PROGRAM_ADDRESS),
         STAKING_PROGRAM_ADDRESS: JSON.stringify(process.env.STAKING_PROGRAM_ADDRESS),
-
       },
     }),
   ],
-  cache: true,
 
   devServer: {
     host: 'localhost',
@@ -66,27 +53,6 @@ const config = {
     historyApiFallback: true,
     hot: true,
     open: true,
-    compress: true,
-    overlay: {
-      warnings: true,
-      errors: true,
-    },
-    watchOptions: {
-      poll: 1000,
-      ignored: /node_modules/
-    },
-    // proxy: {
-    //   '/graphql': {
-    //     target: 'https://api.cryptocurrencies.ai',
-    //     secure: false,
-    //     changeOrigin: true,
-    //   },
-    //   '/getCCAICirculationSupply': {
-    //     target: 'https://api.cryptocurrencies.ai',
-    //     secure: false,
-    //     changeOrigin: true,
-    //   },
-    // },
   },
 }
 
