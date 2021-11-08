@@ -42,7 +42,6 @@ const config = {
       net: false,
       tls: false,
       child_process: false,
-      assert: false,
       util: false,
     },
   },
