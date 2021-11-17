@@ -87,7 +87,11 @@
     "@solana/spl-token": "^0.1.4",
     "@solana/spl-token-registry": "^0.2.273",
     "@solana/wallet-adapter-base": "^0.4.1",
+<<<<<<< HEAD
     "@solana/web3.js": "1.31.0",
+=======
+    "@solana/web3.js": "1.30.2",
+>>>>>>> 7726baa1 (bump solana/web3.js)
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.6.4",
