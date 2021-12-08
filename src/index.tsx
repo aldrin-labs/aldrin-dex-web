@@ -81,6 +81,10 @@ const StakingRoute = lazy(() =>
   import(/* webpackChunkName: "staking" */ '@routes/stakingRoute')
 )
 
+const BorrowLendingRoutes = lazy(() =>
+    import(/* webpackChunkName: "borrowlending" */ '@routes/borrowLendingRoute')
+)
+
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -141,6 +145,7 @@ const render = () =>
                 />
 
                 <Route path="/swap" component={SwapRoutes} />
+                <Route path="/borrow-lending" component={BorrowLendingRoutes} />
                 <Route
                   path="/restrictedRegion"
                   component={RestrictedRegionRoute}
