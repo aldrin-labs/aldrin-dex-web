@@ -6,8 +6,7 @@ import BorrowLendingMarkets from '@sb/compositions/BorrowLending/Markets/Markets
 export default function BorrowLendingRoutes({ match }) {
     return (
         <Switch>
-            <Route exact path={`${match.url}/markets`} component={BorrowLendingMarkets} />
-            <Route exact path={match.url} component={BorrowLendingPage} />
+            <Route exact path={`${match.url}/:section`} component={BorrowLendingPage} />
         </Switch>
     )
 }
