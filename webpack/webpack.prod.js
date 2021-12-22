@@ -1,13 +1,11 @@
-const commonPaths = require('./common-paths')
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-
 const webpack = require('webpack')
-const TerserPlugin = require('terser-webpack-plugin');
-const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
-const RemoveServiceWorkerPlugin = require("webpack-remove-serviceworker-plugin")
-const ImageminPlugin = require('imagemin-webpack-plugin').default
-const devtool = process.env.DEVTOOL || 'nosources-source-map'
+const TerserPlugin = require('terser-webpack-plugin')
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
+const commonPaths = require('./common-paths')
 
+// const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
+
+const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
 const config = {
   mode: 'production',
@@ -35,84 +33,46 @@ const config = {
         extractComments: false,
       }),
     ],
+    splitChunks: {
+      chunks: 'all',
+    },
+    runtimeChunk: 'single',
+    moduleIds: 'deterministic',
   },
-  // optimization: {
-  //   splitChunks: {
-  //     maxAsyncRequests: 100,
-  //     maxSize: 244,
-  //   }
-  // },
-  // optimization: {
-    // concatenateModules: false,
-    // minimize: false, // <---- disables uglify.
-    // minimizer: [new UglifyJsPlugin()] if you want to customize it.
-  // },
-  // optimization: {
-    // runtimeChunk: 'single',
-    // splitChunks: {
-    //   chunks: 'all',
-    //   maxInitialRequests: Infinity,
-    //   minSize: 0,
-    //   cacheGroups: {
-    //     app: {
-    //       test: /[\\/]src[\\/]/,
-    //       name(module) {
-    //         const packageName = module.context
-    //         console.log('packageName', packageName)
-    //       }
-    //     },
-    //     vendor: {
-    //       test: /[\\/]node_modules[\\/]/,
-    //       name(module) {
-    //         // get the name. E.g. node_modules/packageName/not/this/part.js
-    //         // or node_modules/packageName
-    //         const packageName = module.context.match(
-    //           /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-    //         )[1]
 
-    //         // npm package names are URL-safe, but some servers don't like @ symbols
-    //         return `npm.${packageName.replace('@', '')}`
-    //       },
-    //     },
-    //   },
-    // },
-  // },
   plugins: [
-    new ImageminPlugin({ test: /\.(jpe?g|png)$/i }),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.HashedModuleIdsPlugin(),
-    new LodashModuleReplacementPlugin({
-      caching: true,
-      paths: true,
-      shorthands: true,
-      // Necessary as a workaround for https://github.com/apollographql/react-apollo/issues/1831
-      flattening: true,
+    new ImageMinimizerPlugin({
+      test: /\.(jpe?g|png)$/i,
+      minimizerOptions: {
+        plugins: [
+          ['jpegtran', { progressive: true }],
+          ['optipng', { optimizationLevel: 5 }],
+        ],
+      },
     }),
-    new RemoveServiceWorkerPlugin(),
-    // new UglifyJSPlugin({
-    //   parallel: true,
-    //   uglifyOptions: {
-    //     compress: false,
-    //     ecma: 6,
-    //     mangle: true,
-    //     toplevel: true,
-    //   },
-    //   sourceMap: true,
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
+    }),
+    // new webpack.IgnorePlugin({
+    //   resourceRegExp: /.*solana\.tokenlist\.json$/,
+    //   contextRegExp: /spl-token-registry/,
     // }),
     // new WorkboxWebpackPlugin.GenerateSW({
     //   swDest: "sw.js",
     //   clientsClaim: true,
     //   skipWaiting: false,
-      // runtimeCaching: [{
-      //   urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
-      //   handler: 'StaleWhileRevalidate'
-      // },
-      //  {
-      //   urlPattern:,
-      //   handler:'NetworkOnly'
-      // }
+    // runtimeCaching: [{
+    //   urlPattern: /https:\/\/(develop.|)chart\.cryptocurrencies\.ai\/charting_library\/static\/.*/g,
+    //   handler: 'StaleWhileRevalidate'
+    // },
+    //  {
+    //   urlPattern:,
+    //   handler:'NetworkOnly'
+    // }
     // ]
     // }),
+
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
