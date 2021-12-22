@@ -8,9 +8,6 @@ const getTransformer = require('ts-transform-graphql-tag').getTransformer
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const config = {
-  node: {
-    fs: 'empty',
-  },
   output: {
     path: commonPaths.outputPath,
     publicPath: '/',
@@ -36,7 +33,16 @@ const config = {
       '@nodemodules': path.resolve(__dirname, '..', 'node_modules'),
       '@material-ui/core': '@material-ui/core/es',
       '@material-ui/styles': '@material-ui/core/es/styles',
-      'lodash-es': 'lodash',
+      'buffer': path.resolve(__dirname, '..', 'src', 'utils', 'buffer'),
+    },
+    fallback: {
+      fs: false,
+      os: false,
+      path: false,
+      net: false,
+      tls: false,
+      child_process: false,
+      util: false,
     },
   },
   module: {
@@ -49,14 +55,16 @@ const config = {
           path.join(__dirname, '../src/core/node_modules/'),
         ],
         use: [
-          'babel-loader?cacheDirectory=true',
+          // 'babel-loader?cacheDirectory=true',
+          'babel-loader',
           {
             loader: 'ts-loader',
             options: {
               transpileOnly: true,
-              getCustomTransformers: () => ({ before: [getTransformer()] }),
-            },
+              getCustomTransformers: () => ({ before: [getTransformer()] })
+            }
           },
+
         ],
       },
       {
@@ -69,9 +77,12 @@ const config = {
         use: ['graphql-tag/loader', 'minify-graphql-loader'],
       },
       {
-        test: /\.mjs$/,
-        include: /node_modules/,
-        type: 'javascript/auto',
+        test: /\.m?js/,
+        // include: /node_modules/,
+        // type: 'javascript/auto',
+        resolve: {
+          fullySpecified: false
+        }
       },
       // remove this as this dublicated by image webpack loader
       {
@@ -109,7 +120,7 @@ const config = {
       {
         test: /\.css$/,
         // include: /node_modules/,
-        loaders: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
@@ -118,6 +129,7 @@ const config = {
     new webpack.ProgressPlugin(),
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
+      inject: true,
       template: 'public/index.html',
       favicon: 'public/favicon.ico',
       minify: {
@@ -129,25 +141,18 @@ const config = {
         useShortDoctype: true,
       },
     }),
-    new CopyPlugin([
-      { from: path.join(__dirname, '..', 'public') },
-      {
-        from: path.join(
-          __dirname,
-          '..',
-          'node_modules',
-          'cryptocurrency-icons',
-          'svg',
-          'icon'
-        ),
-        to: path.join(
-          commonPaths.outputPath,
-          'cryptocurrency-icons',
-          'svg',
-          'icon'
-        ),
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        { from: path.join(__dirname, '..', 'public'), filter: (path) => !path.endsWith('.html') },
+        {
+          from: path.join(__dirname, '..', 'node_modules', 'cryptocurrency-icons', 'svg', 'icon'),
+          to: path.join(commonPaths.outputPath, 'cryptocurrency-icons', 'svg', 'icon')
+        },
+      ]
+    }),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    })
   ],
 }
 
