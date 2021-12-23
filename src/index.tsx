@@ -1,14 +1,16 @@
 import React, { Suspense, lazy } from 'react'
-import { SWRConfig } from 'swr'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { SWRConfig } from 'swr'
 
-import { App } from '@sb/compositions/App/'
-import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary, Loading } from '@sb/components/index'
+import { App } from '@sb/compositions/App/'
+
+import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
+
 import { GlobalStyle } from './index.styles'
 
 const TechIssues = lazy(
@@ -17,9 +19,9 @@ const TechIssues = lazy(
 const ChartRoutes = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
 
-const UnderMaintenance = lazy(
-  () => import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
-)
+// const UnderMaintenance = lazy(
+//   () => import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
+// )
 // const PortfolioRoutes = lazy(() =>
 //   import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute')
 // )
@@ -54,6 +56,7 @@ const SwapRoutes = lazy(() => import(/* webpackChunkName: "swap" */ '@routes/swa
 const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute'))
 
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
+const TwammRoute = lazy(() => import(/* webpackChunkName: "rebalance" */ '@routes/twammRoute'))
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
@@ -105,6 +108,7 @@ const AppRoot = () => (
 
                 <Route path="/swap" component={SwapRoutes} />
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
+                <Route path="/twamm" component={TwammRoute} exact />
                 {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
