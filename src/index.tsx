@@ -7,6 +7,7 @@ import { SWRConfig } from 'swr'
 
 import { ErrorBoundary, Loading } from '@sb/components/index'
 import { App } from '@sb/compositions/App/'
+
 import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
 
@@ -86,7 +87,6 @@ const AppRoot = () => (
                 <Redirect from="/chart/futures" to="/chart/spot/RIN_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
-
                 {/* <Route exact path="/" component={HomeRoutes} /> */}
 
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
