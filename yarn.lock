@@ -1767,16 +1767,6 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-<<<<<<< HEAD
-"@orca-so/stablecurve@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@orca-so/stablecurve/-/stablecurve-1.0.6.tgz#bff0d4c701e4361196ffb0fc641904e6d17df295"
-  integrity sha512-uZD1jVvOBxyuij4a5C2QT7Mv4m9lMABY/MvAz1xHnK+iJ5pkmSFdYEWzQZUrf8ElCRTYSN9yk7Kb18UmGZnT5g==
-  dependencies:
-    "@solana/spl-token" "^0.0.13"
-    bn.js "^5.1.3"
-    decimal.js "^10.2.1"
-=======
 "@npmcli/fs@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.0.tgz#bec1d1b89c170d40e1b73ad6c943b0b75e7d2951"
@@ -1792,7 +1782,15 @@
   dependencies:
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
->>>>>>> bdf4ef49d88e5c2d7c36272070d6b2c58846b285
+
+"@orca-so/stablecurve@^1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@orca-so/stablecurve/-/stablecurve-1.0.6.tgz#bff0d4c701e4361196ffb0fc641904e6d17df295"
+  integrity sha512-uZD1jVvOBxyuij4a5C2QT7Mv4m9lMABY/MvAz1xHnK+iJ5pkmSFdYEWzQZUrf8ElCRTYSN9yk7Kb18UmGZnT5g==
+  dependencies:
+    "@solana/spl-token" "^0.0.13"
+    bn.js "^5.1.3"
+    decimal.js "^10.2.1"
 
 "@project-serum/anchor@^0.11.1":
   version "0.11.1"
@@ -1941,7 +1939,6 @@
   dependencies:
     cross-fetch "3.0.6"
 
-<<<<<<< HEAD
 "@solana/spl-token@^0.0.13":
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.0.13.tgz#5e0b235b1f8b34643280401dbfddeb34d13d1acd"
@@ -1954,28 +1951,10 @@
     dotenv "8.2.0"
     mkdirp "1.0.4"
 
-"@solana/spl-token@^0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.1.4.tgz#7fc6ba82a7fbb2b0907f7ffc87709488db83ed2a"
-  integrity sha512-W8uSC4ysWVjbKK7lvsIHFxdMIkOCEoOm9tYY9VVpBlUIp4+K5bpPxHXUlxMiHfkKPWAxab6IGUn71VVLg8uq5Q==
-  dependencies:
-    "@babel/runtime" "^7.10.5"
-    "@solana/web3.js" "^1.9.1"
-    bn.js "^5.1.0"
-    buffer "6.0.3"
-    buffer-layout "^1.2.0"
-    dotenv "8.2.0"
-
-"@solana/spl-token@^0.1.6":
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.1.6.tgz#fa136b0a3db84f07a99bc0e54cf4e91f2d6da2e8"
-  integrity sha512-fYj+a3w1bqWN6Ibf85XF3h2JkuxevI3Spvqi+mjsNqVUEo2AgxxTZmujNLn/jIzQDNdWkBfF/wYzH5ikcGHmfw==
-=======
 "@solana/spl-token@^0.1.4", "@solana/spl-token@^0.1.6":
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/@solana/spl-token/-/spl-token-0.1.8.tgz#f06e746341ef8d04165e21fc7f555492a2a0faa6"
   integrity sha512-LZmYCKcPQDtJgecvWOgT/cnoIQPWjdH+QVyzPcFvyDUiT0DiRjZaam4aqNUyvchLFhzgunv3d9xOoyE34ofdoQ==
->>>>>>> bdf4ef49d88e5c2d7c36272070d6b2c58846b285
   dependencies:
     "@babel/runtime" "^7.10.5"
     "@solana/web3.js" "^1.21.0"
@@ -1991,11 +1970,7 @@
   dependencies:
     eventemitter3 "^4.0.7"
 
-<<<<<<< HEAD
-"@solana/web3.js@1.12.0", "@solana/web3.js@^0.86.1", "@solana/web3.js@^0.90.0", "@solana/web3.js@^1.12.0", "@solana/web3.js@^1.17.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.9.1":
-=======
-"@solana/web3.js@1.12.0", "@solana/web3.js@^0.90.0", "@solana/web3.js@^1.17.0", "@solana/web3.js@^1.2.0", "@solana/web3.js@^1.21.0":
->>>>>>> bdf4ef49d88e5c2d7c36272070d6b2c58846b285
+"@solana/web3.js@1.12.0", "@solana/web3.js@^0.86.1", "@solana/web3.js@^0.90.0", "@solana/web3.js@^1.17.0", "@solana/web3.js@^1.2.0", "@solana/web3.js@^1.21.0":
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.12.0.tgz#c2ecf4b1c677a8881c698871537ae7bfc7cae7b6"
   integrity sha512-0jb7EDeocFKQOumScE9Rj4Lry5oVpBap4oGPG2yE3n7Dz4nhFUoEjDbhwEliN75M/4wJV69aPHIm2ZPeJ9rUsQ==
@@ -5078,14 +5053,6 @@ decamelize@^1.1.0, decamelize@^1.1.1, decamelize@^1.1.2, decamelize@^1.2.0:
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
 
-<<<<<<< HEAD
-decamelize@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-2.0.0.tgz#656d7bbc8094c4c788ea53c5840908c9c7d063c7"
-  integrity sha512-Ikpp5scV3MSYxY39ymh45ZLEecsTdv/Xj2CaQfI8RLMuwi7XvjX9H/fhraiSuU+C5w5NTDu4ZU72xNiZnurBPg==
-  dependencies:
-    xregexp "4.0.0"
-
 decimal.js@^10.2.1:
   version "10.2.1"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.2.1.tgz#238ae7b0f0c793d3e3cea410108b35a2c01426a3"
@@ -5096,8 +5063,6 @@ decimal.js@^10.3.1:
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.3.1.tgz#d8c3a444a9c6774ba60ca6ad7261c3a94fd5e783"
   integrity sha512-V0pfhfr8suzyPGOx3nmq4aHqabehUZn6Ch9kyFpV79TGDTWFmHqUqXdabR7QHqxzrYolF4+tVmJhUG4OURg5dQ==
 
-=======
->>>>>>> bdf4ef49d88e5c2d7c36272070d6b2c58846b285
 decode-uri-component@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
@@ -5517,6 +5482,11 @@ dotenv@10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
   integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
+
+dotenv@8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
 
 download@^6.2.2:
   version "6.2.5"
@@ -9831,57 +9801,17 @@ mixin-deep@^1.2.0:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
 
-<<<<<<< HEAD
-mkdirp@0.5.x, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
-  integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
-  dependencies:
-    minimist "0.0.8"
-
-mkdirp@1.0.4, mkdirp@^1.0.3:
+mkdirp@1.0.4, mkdirp@^1.0.3, mkdirp@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-mkdirp@^0.5.4:
-=======
 mkdirp@^0.5.1, mkdirp@^0.5.5:
->>>>>>> bdf4ef49d88e5c2d7c36272070d6b2c58846b285
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.5.tgz#d91cefd62d1436ca0f41620e251288d420099def"
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
   dependencies:
     minimist "^1.2.5"
-
-<<<<<<< HEAD
-moment@^2.27.0:
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
-
-moo@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/moo/-/moo-0.4.3.tgz#3f847a26f31cf625a956a87f2b10fbc013bfd10e"
-  integrity sha512-gFD2xGCl8YFgGHsqJ9NKRVdwlioeW3mI1iqfLNYQOv0+6JRwG58Zk9DIGQgyIaffSYaO1xsKnMaYzzNr1KyIAw==
-
-move-concurrently@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
-  integrity sha1-viwAX9oy4LKa8fBdfEszIUxwH5I=
-  dependencies:
-    aproba "^1.1.1"
-    copy-concurrently "^1.0.0"
-    fs-write-stream-atomic "^1.0.8"
-    mkdirp "^0.5.1"
-    rimraf "^2.5.4"
-    run-queue "^1.0.3"
-=======
-mkdirp@^1.0.3, mkdirp@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
-  integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
->>>>>>> bdf4ef49d88e5c2d7c36272070d6b2c58846b285
 
 ms@2.0.0:
   version "2.0.0"
