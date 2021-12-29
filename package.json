@@ -73,7 +73,6 @@
     "crypto-js": "^4.1.1",
     "cryptocurrency-icons": "^0.17.1",
     "dayjs": "^1.9.5",
-    "decimal.js": "^10.3.1",
     "elliptic": "6.5.4",
     "formik": "^2.2.9",
     "graphql-cli": "4.1.0",
