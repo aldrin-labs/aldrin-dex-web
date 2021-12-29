@@ -54,6 +54,7 @@
     "@solana/wallet-adapter-base": "^0.4.1",
     "@solana/web3.js": "1.30.2",
     "acnhor03": "npm:@project-serum/anchor@0.3.1-beta.3",
+    "anchor019": "npm:@project-serum/anchor@0.19.0",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.6.4",
