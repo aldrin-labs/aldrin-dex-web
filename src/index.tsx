@@ -108,7 +108,7 @@ const AppRoot = () => (
 
                 <Route path="/swap" component={SwapRoutes} />
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
-                <Route path="/twamm" component={TwammRoute} exact />
+                <Route path="/dtwap" component={TwammRoute} exact />
                 {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
