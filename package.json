@@ -78,6 +78,7 @@
     "graphql-cli": "4.1.0",
     "immutable-tuple": "^0.4.10",
     "jwt-decode": "^2.2.0",
+    "lightweight-charts": "^3.7.0",
     "lodash-es": "^4.17.10",
     "mini-css-extract-plugin": "^1.0.0",
     "notistack": "^0.6.1",

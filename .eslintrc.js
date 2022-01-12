@@ -77,6 +77,7 @@ module.exports = {
       'html': 'ignore',
     }
     ],
+    'jsx-a11y/click-events-have-key-events': 'off',
     'no-bitwise': 'off',
     'no-underscore-dangle': 'off',
     'max-classes-per-file': 'off',
