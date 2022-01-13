@@ -38,6 +38,7 @@ module.exports = {
           '/^@sb/',
           '/^@core/',
           '/^@icons/',
+          '/^@variables/',
           ['parent', 'sibling', 'index'],
         ],
         alphabetize: { order: 'asc', ignoreCase: true },
