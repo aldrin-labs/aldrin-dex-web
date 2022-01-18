@@ -53,15 +53,8 @@
     "@solana/spl-token": "^0.1.4",
     "@solana/spl-token-registry": "^0.2.273",
     "@solana/wallet-adapter-base": "^0.4.1",
-<<<<<<< HEAD
-    "@solana/web3.js": "1.31.0",
-=======
     "@solana/web3.js": "1.30.2",
-<<<<<<< HEAD
->>>>>>> 7726baa1 (bump solana/web3.js)
-=======
     "acnhor03": "npm:@project-serum/anchor@0.3.1-beta.3",
->>>>>>> 66bb8a8c (Permissionless pools)
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.6.4",
@@ -103,11 +96,8 @@
     "react-hot-loader": "^4.13.0",
     "react-jss": "^8.6.1",
     "react-lazyload": "2.6.2",
-<<<<<<< HEAD
     "react-number-format": "^4.9.0",
     "react-otp-input": "^1.0.1",
-=======
->>>>>>> 66bb8a8c (Permissionless pools)
     "react-router-dom": "^5.2.0",
     "react-select": "^2.1.1",
     "react-virtualized": "^9.21.2",

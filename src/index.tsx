@@ -1,14 +1,15 @@
 import React, { Suspense, lazy } from 'react'
-import { SWRConfig } from 'swr'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { SWRConfig } from 'swr'
 
+import { ErrorBoundary, Loading } from '@sb/components/index'
 import { App } from '@sb/compositions/App/'
 import { client } from '@core/graphql/apolloClient'
-import { ErrorBoundary, Loading } from '@sb/components/index'
 import { MASTER_BUILD } from '@core/utils/config'
+
 import { GlobalStyle } from './index.styles'
 
 const TechIssues = lazy(
@@ -55,9 +56,7 @@ const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@r
 
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
 
-const BorrowLendingRoutes = lazy(() =>
-    import(/* webpackChunkName: "borrowlending" */ '@routes/borrowLendingRoute')
-)
+const BorrowLendingRoutes = lazy(() => import(/* webpackChunkName: "borrowlending" */ '@routes/borrowLendingRoute'))
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
@@ -108,18 +107,9 @@ const AppRoot = () => (
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
 
                 <Route path="/swap" component={SwapRoutes} />
-<<<<<<< HEAD
                 <Route path="/borrow-lending" component={BorrowLendingRoutes} />
-                <Route
-                  path="/restrictedRegion"
-                  component={RestrictedRegionRoute}
-                  exact
-                />
-                {/*<Route exact path="/screener" component={ScreenerRoutes} />x*/}
-=======
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
                 {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
->>>>>>> 66bb8a8c (Permissionless pools)
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
                 <Route component={NotFound} />
