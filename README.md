@@ -5,6 +5,7 @@ The web repo is React application that also must consist two submodules — core
 To start using it from developer side you should:
 
 1. Clone the repo: `git clone https://gitlab.com/crypto_project/frontend/web.git`, or do it by ssh.
+   1.1. Confirm that your nodejs version matches the version in .nvmrc file inside this repo. If it doesn't match, install the nodejs version that matches .nvmrc
 2. Install dependencies: `yarn` (use yarn only, not npm!)
 3. Install submodules: `yarn submodule`
 4. Build project with developer environment: `yarn dev:fast`
