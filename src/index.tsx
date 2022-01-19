@@ -7,6 +7,7 @@ import { SWRConfig } from 'swr'
 
 import { ErrorBoundary, Loading } from '@sb/components/index'
 import { App } from '@sb/compositions/App/'
+
 import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
 
