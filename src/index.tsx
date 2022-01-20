@@ -103,7 +103,6 @@ const AppRoot = () => (
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
-                {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
                 {/* <Route path="/" component={HomepageRoute} exact /> */}
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
