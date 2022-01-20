@@ -1,14 +1,16 @@
 import React, { Suspense, lazy } from 'react'
-import { SWRConfig } from 'swr'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { SWRConfig } from 'swr'
 
-import { App } from '@sb/compositions/App/'
-import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary, Loading } from '@sb/components/index'
+import { App } from '@sb/compositions/App/'
+
+import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
+
 import { GlobalStyle } from './index.styles'
 
 const TechIssues = lazy(
@@ -90,7 +92,6 @@ const AppRoot = () => (
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
                 {/* <Route path="/portfolio" component={PortfolioRoutes} /> */}
                 {/* {<Route exact path="/market" component={MarketRoutes} />} */}
-                {/* {<Route exact path="/signals" component={SignalRoutes} />} */}
                 {/* <Route path="/" component={HomepageRoute} exact /> */}
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
