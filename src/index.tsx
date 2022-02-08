@@ -56,6 +56,7 @@ const SwapRoutes = lazy(() => import(/* webpackChunkName: "swap" */ '@routes/swa
 const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute'))
 
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
+const RinStakingRoute = lazy(() => import(/* webpackChunkName: "rinStaking" */ '@routes/rinStakingRoute'))
 
 const RinStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/rinStakingRoute'))
 
@@ -101,6 +102,7 @@ const AppRoot = () => (
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
+<<<<<<< HEAD
 
                 <Route path="/staking/marinade" component={MarinadeStakingRoute} />
                 <Route path="/staking/rin" component={RinStakingRoute} />
@@ -108,6 +110,12 @@ const AppRoot = () => (
 
                 {!MASTER_BUILD && <Route path="/addressbook" component={AddressbookRoute} />}
                 <Route path="/pools" component={PoolsRoute} />
+=======
+                {!MASTER_BUILD && <Route path="/addressbook" component={AddressbookRoute} />}
+                <Route path="/pools" component={PoolsRoute} />
+                <Route path="/staking/rin" component={RinStakingRoute} />
+                <Route path="/staking" component={StakingRoute} />
+>>>>>>> b2f4557ab (Bump)
 
                 <Route path="/rebalance" component={RebalanceRoute} exact />
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
