@@ -56,8 +56,7 @@ const SwapRoutes = lazy(() => import(/* webpackChunkName: "swap" */ '@routes/swa
 const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute'))
 
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
-
-const RinStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/rinStakingRoute'))
+const RinStakingRoute = lazy(() => import(/* webpackChunkName: "rinStaking" */ '@routes/rinStakingRoute'))
 
 const MarinadeStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/marinadeStakingRoute'))
 
