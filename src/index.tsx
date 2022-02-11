@@ -58,6 +58,10 @@ const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@r
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
 const TwammRoute = lazy(() => import(/* webpackChunkName: "rebalance" */ '@routes/twammRoute'))
 
+const RinStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/rinStakingRoute'))
+
+const MarinadeStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/marinadeStakingRoute'))
+
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -98,10 +102,13 @@ const AppRoot = () => (
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
+
+                <Route path="/staking/marinade" component={MarinadeStakingRoute} />
+                <Route path="/staking/rin" component={RinStakingRoute} />
                 <Route path="/staking" component={StakingRoute} />
+
                 {!MASTER_BUILD && <Route path="/addressbook" component={AddressbookRoute} />}
                 <Route path="/pools" component={PoolsRoute} />
-                <Route path="/staking" component={StakingRoute} />
 
                 <Route path="/rebalance" component={RebalanceRoute} exact />
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
