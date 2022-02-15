@@ -53,6 +53,13 @@ const config = {
     historyApiFallback: true,
     hot: true,
     open: true,
+    proxy: {
+      '/marinade/stats.json': {
+        target: 'http://23.29.121.36:7002/metrics_json',
+        pathRewrite: { '^/marinade/stats.json': '' },
+      },
+      '/marinade/api/': 'https://api.marinade.finance/',
+    },
   },
 }
 

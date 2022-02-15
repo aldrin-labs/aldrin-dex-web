@@ -3,6 +3,12 @@
   to = "/index.html"
   status = 200
 
+[[redirects]]
+  from = "/marinade/stats.json"
+  to = "http://23.29.121.36:7002/metrics_json"
+  status = 200
+  force = true # COMMENT: ensure that we always redirect
+
 # Production context: All deploys to the main
 # repository branch will inherit these settings.
 [context.production]
