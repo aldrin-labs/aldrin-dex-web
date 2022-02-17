@@ -1,14 +1,16 @@
 import React, { Suspense, lazy } from 'react'
-import { SWRConfig } from 'swr'
 import { ApolloProvider } from 'react-apollo'
 import ReactDOM from 'react-dom'
 import { hot } from 'react-hot-loader/root'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
+import { SWRConfig } from 'swr'
 
-import { App } from '@sb/compositions/App/'
-import { client } from '@core/graphql/apolloClient'
 import { ErrorBoundary, Loading } from '@sb/components/index'
+import { App } from '@sb/compositions/App/'
+
+import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
+
 import { GlobalStyle } from './index.styles'
 
 const TechIssues = lazy(
@@ -54,6 +56,11 @@ const SwapRoutes = lazy(() => import(/* webpackChunkName: "swap" */ '@routes/swa
 const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute'))
 
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
+const RinStakingRoute = lazy(() => import(/* webpackChunkName: "rinStaking" */ '@routes/rinStakingRoute'))
+
+const MarinadeStakingRoute = lazy(
+  () => import(/* webpackChunkName: "marinadeStaking" */ '@routes/marinadeStakingRoute')
+)
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
@@ -95,10 +102,13 @@ const AppRoot = () => (
                 <Route path="/chart" component={ChartRoutes} />
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
+
+                <Route path="/staking/marinade" component={MarinadeStakingRoute} />
+                <Route path="/staking/rin" component={RinStakingRoute} />
                 <Route path="/staking" component={StakingRoute} />
+
                 {!MASTER_BUILD && <Route path="/addressbook" component={AddressbookRoute} />}
                 <Route path="/pools" component={PoolsRoute} />
-                <Route path="/staking" component={StakingRoute} />
 
                 <Route path="/rebalance" component={RebalanceRoute} exact />
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
