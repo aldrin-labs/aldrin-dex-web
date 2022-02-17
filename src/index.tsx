@@ -58,9 +58,15 @@ const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@r
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
 const RinStakingRoute = lazy(() => import(/* webpackChunkName: "rinStaking" */ '@routes/rinStakingRoute'))
 
+<<<<<<< HEAD
 const RinStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/rinStakingRoute'))
 
 const MarinadeStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/marinadeStakingRoute'))
+=======
+const MarinadeStakingRoute = lazy(
+  () => import(/* webpackChunkName: "marinadeStaking" */ '@routes/marinadeStakingRoute')
+)
+>>>>>>> 1026325a (Fix review)
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
