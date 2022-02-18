@@ -60,6 +60,8 @@ const RinStakingRoute = lazy(() => import(/* webpackChunkName: "rinStaking" */ '
 
 const MarinadeStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/marinadeStakingRoute'))
 
+const PlutoniansStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/plutoniansStakingRoute'))
+
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -101,6 +103,7 @@ const AppRoot = () => (
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
 
+                <Route path="/staking/plutonians" component={PlutoniansStakingRoute} exact />
                 <Route path="/staking/marinade" component={MarinadeStakingRoute} />
                 <Route path="/staking/rin" component={RinStakingRoute} />
                 <Route path="/staking" component={StakingRoute} />
@@ -113,6 +116,7 @@ const AppRoot = () => (
 
                 <Route path="/swap" component={SwapRoutes} />
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
+
                 {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
