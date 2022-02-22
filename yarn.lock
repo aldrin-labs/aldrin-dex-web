@@ -3108,6 +3108,7 @@ amdefine@>=0.0.4:
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "anchor019@npm:@project-serum/anchor@0.19.1-beta.1":
   version "0.19.1-beta.1"
   resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.19.1-beta.1.tgz#516b78432acabd8563831c3b9df4628ca34dba28"
@@ -3136,6 +3137,8 @@ amdefine@>=0.0.4:
 
 <<<<<<< HEAD
 =======
+=======
+>>>>>>> 20df789fc (Bump)
 "anchor03@npm:@project-serum/anchor@0.3.1-beta.3":
   version "0.3.1-beta.3"
   resolved "https://registry.yarnpkg.com/@project-serum/anchor/-/anchor-0.3.1-beta.3.tgz#4856242bd678e264d8b5265ee7b8836e37b8c5f2"
