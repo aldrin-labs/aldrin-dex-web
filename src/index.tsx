@@ -62,7 +62,9 @@ const MarinadeStakingRoute = lazy(
   () => import(/* webpackChunkName: "marinadeStaking" */ '@routes/marinadeStakingRoute')
 )
 
-const PlutoniansStakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/plutoniansStakingRoute'))
+// const PlutoniansStakingRoute = lazy(
+//   () => import(/* webpackChunkName: "plutoniansStaking" */ '@routes/plutoniansStakingRoute')
+// )
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
@@ -104,7 +106,7 @@ const AppRoot = () => (
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
 
-                <Route path="/staking/plutonians" component={PlutoniansStakingRoute} exact />
+                {/* <Route path="/staking/plutonians" component={PlutoniansStakingRoute} exact /> */}
                 <Route path="/staking/marinade" component={MarinadeStakingRoute} />
                 <Route path="/staking/rin" component={RinStakingRoute} />
                 <Route path="/staking" component={StakingRoute} />
