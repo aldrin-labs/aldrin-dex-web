@@ -57,7 +57,7 @@
     "@solana/spl-token-registry": "^0.2.273",
     "@solana/wallet-adapter-base": "^0.4.1",
     "@solana/web3.js": "1.30.2",
-    "acnhor03": "npm:@project-serum/anchor@0.3.1-beta.3",
+    "anchor03": "npm:@project-serum/anchor@0.3.1-beta.3",
     "anchor019": "npm:@project-serum/anchor@0.19.1-beta.1",
     "anchor020": "npm:@project-serum/anchor@0.20.1",
     "apollo-cache-inmemory": "^1.6.3",
