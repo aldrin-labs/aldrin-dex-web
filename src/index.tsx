@@ -12,6 +12,7 @@ import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
 
 import { GlobalStyle } from './index.styles'
+import { WaningBanner } from './storybook/src/web/components/WaningBanner'
 
 const TechIssues = lazy(
   () => import(/* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute')
@@ -86,6 +87,9 @@ const AppRoot = () => (
         {/* <WaningBanner bannerId="solana19upgrade">
           Due to some issues with RPC nodes providers Solana dApps may experience outages. Funds are safe.
         </WaningBanner> */}
+        <WaningBanner bannerId="loadTesting">
+          We are under maintenance at the moment. The app may perform worse than usual.
+        </WaningBanner>
         <ErrorBoundary>
           <SWRConfig value={SWR_CONFIG}>
             <Suspense fallback={<Loading centerAligned />}>
