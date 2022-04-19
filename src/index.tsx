@@ -19,9 +19,9 @@ const TechIssues = lazy(
 const ChartRoutes = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
 
-const UnderMaintenance = lazy(
-  () => import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
-)
+// const UnderMaintenance = lazy(
+//   () => import(/* webpackPrefetch: true, webpackChunkName: "underMaintenance"  */ '@sb/components/UnderMaintenance')
+// )
 // const PortfolioRoutes = lazy(() =>
 //   import(/* webpackChunkName: "portfolio" */ '@routes/portfolioRoute')
 // )
@@ -56,15 +56,18 @@ const SwapRoutes = lazy(() => import(/* webpackChunkName: "swap" */ '@routes/swa
 const DashboardRoute = lazy(() => import(/* webpackChunkName: "dashboard" */ '@routes/dashboardRoute'))
 
 const StakingRoute = lazy(() => import(/* webpackChunkName: "staking" */ '@routes/stakingRoute'))
+
+const TwammRoute = lazy(() => import(/* webpackChunkName: "rebalance" */ '@routes/twammRoute'))
+
 const RinStakingRoute = lazy(() => import(/* webpackChunkName: "rinStaking" */ '@routes/rinStakingRoute'))
 
 const MarinadeStakingRoute = lazy(
   () => import(/* webpackChunkName: "marinadeStaking" */ '@routes/marinadeStakingRoute')
 )
 
-// const PlutoniansStakingRoute = lazy(
-//   () => import(/* webpackChunkName: "plutoniansStaking" */ '@routes/plutoniansStakingRoute')
-// )
+const PlutoniansStakingRoute = lazy(
+  () => import(/* webpackChunkName: "plutoniansStaking" */ '@routes/plutoniansStakingRoute')
+)
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
@@ -74,11 +77,15 @@ const isSafari =
 const SWR_CONFIG = {
   revalidateOnFocus: false,
 }
+
 const AppRoot = () => (
   <ApolloProvider client={client}>
     <GlobalStyle />
     <BrowserRouter>
       <App>
+        {/* <WaningBanner bannerId="solana19upgrade">
+          Due to some issues with RPC nodes providers Solana dApps may experience outages. Funds are safe.
+        </WaningBanner> */}
         <ErrorBoundary>
           <SWRConfig value={SWR_CONFIG}>
             <Suspense fallback={<Loading centerAligned />}>
@@ -106,7 +113,7 @@ const AppRoot = () => (
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
 
-                {/* <Route path="/staking/plutonians" component={PlutoniansStakingRoute} exact /> */}
+                <Route path="/staking/plutonians" component={PlutoniansStakingRoute} exact />
                 <Route path="/staking/marinade" component={MarinadeStakingRoute} />
                 <Route path="/staking/rin" component={RinStakingRoute} />
                 <Route path="/staking" component={StakingRoute} />
@@ -119,7 +126,7 @@ const AppRoot = () => (
 
                 <Route path="/swap" component={SwapRoutes} />
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
-
+                <Route path="/dtwap" component={TwammRoute} exact />
                 {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
