@@ -2230,7 +2230,7 @@
     "@solana/web3.js" "^1.36.0"
     eventemitter3 "^4.0.0"
 
-"@solana/web3.js@1.30.2", "@solana/web3.js@1.31.0", "@solana/web3.js@1.32.0", "@solana/web3.js@^0.86.1", "@solana/web3.js@^0.90.0", "@solana/web3.js@^1.17.0", "@solana/web3.js@^1.2.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.30.2", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0":
+"@solana/web3.js@1.30.2", "@solana/web3.js@1.31.0", "@solana/web3.js@^0.86.1", "@solana/web3.js@^0.90.0", "@solana/web3.js@^1.17.0", "@solana/web3.js@^1.2.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.30.2", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0":
   version "1.30.2"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.30.2.tgz#e85da75e0825dc64f53eb64a1ff0115b27bec135"
   integrity sha512-hznCj+rkfvM5taRP3Z+l5lumB7IQnDrB4l55Wpsg4kDU9Zds8pE5YOH5Z9bbF/pUzZJKQjyBjnY/6kScBm3Ugg==
@@ -3172,14 +3172,14 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.6.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-"aldrin-internalsdk@git+ssh://git@gitlab.com:avernikoz/aldrin-internalsdk.git":
-  version "1.0.3"
-  resolved "git+ssh://git@gitlab.com:avernikoz/aldrin-internalsdk.git#b0c647367b36e85ac34af9b445c2df38401d3f51"
+"aldrin-internalsdk@git+https://gitlab+deploy-token-985002:tx11Y6d-oXNUV-nzykT2@gitlab.com/avernikoz/aldrin-internalsdk.git":
+  version "1.0.4"
+  resolved "git+https://gitlab+deploy-token-985002:tx11Y6d-oXNUV-nzykT2@gitlab.com/avernikoz/aldrin-internalsdk.git#bbb32c87c814b991d5554dc504c103edd198a106"
   dependencies:
     "@jup-ag/core" "^1.0.0-beta.22"
     "@solana/spl-token-registry" "^0.2.3630"
     "@solana/wallet-adapter-base" "^0.9.5"
-    "@solana/web3.js" "1.32.0"
+    "@solana/web3.js" "1.30.2"
     "@types/react" "^18.0.7"
     react "^18.0.0"
 
