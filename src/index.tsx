@@ -103,6 +103,7 @@ const AppRoot = () => (
                 <Redirect from="/chart/futures" to="/chart/spot/RIN_USDC" />
                 <Redirect from="/analytics" to="/analytics/all" exact />
                 <Redirect from="/rewards" to="/" exact />
+                <Redirect from="/staking/plutonians" to="/staking/plutonians/pld" exact />
 
                 {/* <Route exact path="/" component={HomeRoutes} /> */}
                 {/* <Route path="/profile" component={ProfileRoutes} /> */}
@@ -113,7 +114,7 @@ const AppRoot = () => (
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
 
-                <Route path="/staking/plutonians" component={PlutoniansStakingRoute} exact />
+                <Route path="/staking/plutonians/:symbol" component={PlutoniansStakingRoute} exact />
                 <Route path="/staking/marinade" component={MarinadeStakingRoute} />
                 <Route path="/staking/rin" component={RinStakingRoute} />
                 <Route path="/staking" component={StakingRoute} />
