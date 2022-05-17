@@ -32,6 +32,7 @@
     "lint:css": "stylelint './src/**/*.tsx'",
     "clear": "rm -rf node_modules/ && rm -rf yarn.lock && yarn",
     "lint:ts": "eslint --ext .js,.jsx,.ts,.tsx src",
+    "lint:core": "eslint --ext .js,.jsx,.ts,.tsx src/core/src",
     "prepare": "husky install",
     "gql:schema": "npx apollo service:download --endpoint=https://api.cryptocurrencies.ai/graphql graphql-schema.json",
     "gql:typings": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql",
