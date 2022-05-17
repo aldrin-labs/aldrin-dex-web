@@ -213,7 +213,8 @@
     "ini": "1.3.6",
     "minimist": "1.2.3",
     "kind-of": "6.0.3",
-    "@solana/buffer-layout": "4.0.0"
+    "@solana/buffer-layout": "4.0.0",
+    "react": "17.0.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint",
