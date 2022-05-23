@@ -12,6 +12,7 @@ import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
 
 import { GlobalStyle } from './index.styles'
+import { Metrics } from "@core/utils/metrics"
 
 const TechIssues = lazy(
   () => import(/* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute')
@@ -77,6 +78,8 @@ const isSafari =
 const SWR_CONFIG = {
   revalidateOnFocus: false,
 }
+
+Metrics.startRequestDurationLogging()
 
 const AppRoot = () => (
   <ApolloProvider client={client}>
