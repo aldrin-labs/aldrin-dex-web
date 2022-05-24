@@ -126,6 +126,7 @@
     "@types/auth0-lock": "^11.4.3",
     "@types/bn.js": "^5.1.0",
     "@types/crypto-js": "^4.0.2",
+    "@types/jest": "^27.5.1",
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash-es": "^4.17.1",
     "@types/pluralize": "^0.0.29",
