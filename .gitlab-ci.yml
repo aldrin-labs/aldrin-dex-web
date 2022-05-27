@@ -76,18 +76,6 @@ stages:
   only:
     - branches
 
-cypress:
-  image: cypress/base:10
-  stage: test
-  cache:
-    paths:
-      - .npm
-      - cache/Cypress
-      - node_modules
-  script:
-    - yarn
-    - yarn build
-    - yarn cy:verify
 
 # run Cypress test in load balancing mode, pass id to tie jobs together
 #- npm run e2e:record -- --parallel --ci-build-id $CI_PIPELINE_ID --group electrons
@@ -107,7 +95,7 @@ cypress:
 
 .performance:
   stage: performance
-  image: 
+  image:
     name: sitespeedio/sitespeed.io:6.0.3
     entrypoint: [""]
   script:
@@ -129,7 +117,7 @@ cypress:
     - sast .
   artifacts:
     paths: [gl-sast-report.json]
-    
+
 .sast:container:
   image: docker:latest
   variables:
@@ -276,7 +264,7 @@ cypress:
   export CI_APPLICATION_TAG=$CI_COMMIT_SHA
   export CI_CONTAINER_NAME=ci_job_build_${CI_JOB_ID}
   export TILLER_NAMESPACE=$KUBE_NAMESPACE
-  
+
   function sast_container() {
     docker run -d --name db arminc/clair-db:latest
     docker run -p 6060:6060 --link db:postgres -d --name clair arminc/clair-local-scan:v2.0.1
@@ -482,15 +470,15 @@ cypress:
       --docker-email="$DEVOPS_EMAIL" \
       -o yaml --dry-run | kubectl replace -n "$KUBE_NAMESPACE" --force -f -
   }
-  
+
   function performance() {
     export CI_ENVIRONMENT_URL=$(cat environment_url.txt)
-    
+
     mkdir gitlab-exporter
     wget -O gitlab-exporter/index.js https://gitlab.com/gitlab-org/gl-performance/raw/10-3/index.js
-    
+
     mkdir sitespeed-results
-    
+
     if [ -f .gitlab-urls.txt ]
     then
       sed -i -e 's@^@'"$CI_ENVIRONMENT_URL"'@' .gitlab-urls.txt
@@ -498,10 +486,10 @@ cypress:
     else
       /start.sh --plugins.add gitlab-exporter --outputFolder sitespeed-results $CI_ENVIRONMENT_URL
     fi
-    
+
     mv sitespeed-results/data/performance.json performance.json
   }
-  
+
   function persist_environment_url() {
       echo $CI_ENVIRONMENT_URL > environment_url.txt
   }
