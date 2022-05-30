@@ -34,6 +34,9 @@ const config = {
       '@material-ui/core': '@material-ui/core/es',
       '@material-ui/styles': '@material-ui/core/es/styles',
       'buffer': path.resolve(__dirname, '..', 'src', 'utils', 'buffer'),
+      'react-apollo': path.resolve(__dirname, '..', 'node_modules', 'react-apollo'),
+      'apollo-link-context': path.resolve(__dirname, '..', 'node_modules', 'apollo-link-context'),
+      'react': path.resolve(__dirname, '..', 'node_modules', 'react'),
     },
     fallback: {
       fs: false,
@@ -43,6 +46,8 @@ const config = {
       tls: false,
       child_process: false,
       util: false,
+      crypto: false,
+      stream: false,
     },
   },
   module: {
