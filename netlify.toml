@@ -29,3 +29,6 @@
 
 [context.feature-better-core-restore]
   command = "yarn buildMaster"
+
+[context.feature-move-inst-pt-2]
+  command = "yarn buildMaster"
