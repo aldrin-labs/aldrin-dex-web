@@ -27,5 +27,5 @@
 [context.serum-qa-master]
   command = "yarn buildMaster"
 
-[context.feature/beter-core-restore]
+[context.feature-move-instruction-pt-2]
   command = "yarn buildMaster"
