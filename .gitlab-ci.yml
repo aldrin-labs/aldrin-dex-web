@@ -1,0 +1,11 @@
+stages:
+  - test
+
+e2e-tests:
+  # rules:
+    # - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+  stage: test
+  trigger:
+    project: crypto_project/frontend/web-e2e-tests
+    branch: feature/initialize
+    strategy: depend
