@@ -7,5 +7,5 @@ e2e-tests:
   stage: test
   trigger:
     project: crypto_project/frontend/web-e2e-tests
-    branch: feature/initialize
+    branch: main
     strategy: depend
