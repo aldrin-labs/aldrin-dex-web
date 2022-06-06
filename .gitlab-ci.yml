@@ -2,8 +2,8 @@ stages:
   - test
 
 e2e-tests:
-  # rules:
-    # - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "master"'
+  rules:
+    - if: '$CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "serum-master"'
   stage: test
   trigger:
     project: crypto_project/frontend/web-e2e-tests
