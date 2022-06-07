@@ -2,8 +2,8 @@ const webpack = require('webpack')
 const TerserPlugin = require('terser-webpack-plugin')
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin')
 const commonPaths = require('./common-paths')
-
-// const WorkboxWebpackPlugin = require("workbox-webpack-plugin")
+const { WebpackDeduplicationPlugin } = require('webpack-deduplication-plugin')
+const path = require('path')
 
 const devtool = process.env.DEVTOOL || 'nosources-source-map'
 
@@ -15,6 +15,11 @@ const config = {
   output: {
     filename: '[name].[contenthash].js',
     chunkFilename: '[name].[contenthash].bundle.js',
+  },
+  resolve: {
+    alias: {
+      'bn.js': path.join(__dirname, '../node_modules/bn.js/lib/bn.js'),
+    },
   },
   devtool,
   module: {
@@ -41,6 +46,9 @@ const config = {
   },
 
   plugins: [
+    new WebpackDeduplicationPlugin({
+      cacheDir: './cache',
+    }),
     new ImageMinimizerPlugin({
       test: /\.(jpe?g|png)$/i,
       minimizerOptions: {
@@ -54,10 +62,10 @@ const config = {
       resourceRegExp: /^\.\/locale$/,
       contextRegExp: /moment$/,
     }),
-    // new webpack.IgnorePlugin({
-    //   resourceRegExp: /.*solana\.tokenlist\.json$/,
-    //   contextRegExp: /spl-token-registry/,
-    // }),
+    new webpack.IgnorePlugin({
+      resourceRegExp: /.*solana\.tokenlist\.json$/,
+      contextRegExp: /spl-token-registry/,
+    }),
     // new WorkboxWebpackPlugin.GenerateSW({
     //   swDest: "sw.js",
     //   clientsClaim: true,
