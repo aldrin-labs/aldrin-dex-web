@@ -26,3 +26,6 @@
 
 [context.serum-qa-master]
   command = "yarn buildMaster"
+s
+[context.feature-move-instructions-pt3]
+  command = "yarn buildMaster"
