@@ -35,7 +35,8 @@
     "prepare": "husky install",
     "gql:schema": "npx apollo service:download --endpoint=https://api.cryptocurrencies.ai/graphql graphql-schema.json",
     "gql:typings": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "token-icons-sprite-generate": "node scripts/token-icons-sprite-generator/sprite-generate.js"
   },
   "dependencies": {
     "@jup-ag/core": "1.0.0-beta.16",
@@ -57,9 +58,9 @@
     "@solana/spl-token-registry": "^0.2.273",
     "@solana/wallet-adapter-base": "^0.4.1",
     "@solana/web3.js": "1.30.2",
-    "anchor03": "npm:@project-serum/anchor@0.3.1-beta.3",
     "anchor019": "npm:@project-serum/anchor@0.19.1-beta.1",
     "anchor020": "npm:@project-serum/anchor@0.20.1",
+    "anchor03": "npm:@project-serum/anchor@0.3.1-beta.3",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-cache-persist": "^0.1.1",
     "apollo-client": "^2.6.4",
@@ -144,6 +145,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-graphql-tag": "^2.5.0",
     "babel-plugin-styled-components": "^1.13.2",
+    "canvassmith": "^1.7.0",
     "chalk": "^2.3.2",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "6.4.0 ",
@@ -176,6 +178,8 @@
     "lint-staged": ">=10",
     "minify-graphql-loader": "^0.2.2",
     "prettier": "^2.4.1",
+    "sharp": "^0.30.6",
+    "spritesmith": "^3.4.0",
     "style-loader": "^0.23.1",
     "stylelint": "^13.13.1",
     "stylelint-config-idiomatic-order": "^5.0.0",
