@@ -1,4 +1,5 @@
 scripts/token-icons-sprite-generator/icons
+scripts/token-icons-sprite-generator/output
 # Logs
 logs
 *.log
