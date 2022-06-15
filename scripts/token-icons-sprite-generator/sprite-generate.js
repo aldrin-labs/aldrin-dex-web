@@ -203,6 +203,12 @@ const run = async () => {
 
     try {
       fs.rmSync(`${__dirname}/icons`, { recursive: true, force: true })
+      fs.rmSync(`${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite`, { recursive: true, force: true })
+
+      fs.mkdirSync(`${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite`)
+
+      fs.copyFileSync(`${__dirname}/output/token-icons.json`, `${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite/token-icons.json`)
+      fs.copyFileSync(`${__dirname}/output/token-icons.webp`, `${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite/token-icons.webp`)
     } catch (e) {
       console.log('Error: ', e)
     }
