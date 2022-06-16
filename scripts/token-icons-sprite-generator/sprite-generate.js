@@ -14,6 +14,17 @@ const markets = require('./../../src/core/src/utils/awesomeMarkets/markets.json'
 
 const ALLOWED_EXTENSION = ['.png', '.svg']
 
+const API_ENDPOINT = 'https://api.cryptocurrencies.ai/graphql'
+const SINGLE_IMAGE_SIZE = 64
+const ICONS_DIR = `${__dirname}/icons`
+const OUTPUT_DIR = `${__dirname}/output`
+const SPRITE_IMAGE_FILENAME = 'token-icons.webp'
+const SPRITE_JSON_FILENAME = 'token-icons.json'
+const SPRITE_IMAGE_FILE = `${OUTPUT_DIR}/${SPRITE_IMAGE_FILENAME}`
+const SPRITE_JSON_FILE = `${OUTPUT_DIR}/${SPRITE_JSON_FILENAME}`
+const DIR_TO_MOVE_OUTPUT = `${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite`
+
+
 const poolsQuery = gql`
   query getPoolsInfo {
     getPoolsInfo {
@@ -63,8 +74,18 @@ const download = (url, dest) => {
 }
 
 const run = async () => {
+  try {
+    fs.rmSync(ICONS_DIR, { recursive: true, force: true })
+    fs.rmSync(OUTPUT_DIR, { recursive: true, force: true })
+
+    fs.mkdirSync(ICONS_DIR)
+    fs.mkdirSync(OUTPUT_DIR)
+  } catch (e) {
+    console.log('Error: ', e)
+  }
+
   const httpLink = createHttpLink({
-    uri: 'https://api.cryptocurrencies.ai/graphql',
+    uri: API_ENDPOINT,
     fetch,
   })
 
@@ -119,16 +140,6 @@ const run = async () => {
     console.log(`Warning: Not found in registry`, notFoundSymbolsList)
   }
 
-  try {
-    fs.rmSync(`${__dirname}/icons`, { recursive: true, force: true })
-    fs.rmSync(`${__dirname}/output`, { recursive: true, force: true })
-
-    fs.mkdirSync(`${__dirname}/output`)
-    fs.mkdirSync(`${__dirname}/icons`)
-  } catch (e) {
-    console.log('Error: ', e)
-  }
-
   for (let i = 0; i < tokensAldrinList.length; i++) {
     const item = tokensAldrinList[i]
     const ext = path.extname(item.logoUrl)
@@ -136,27 +147,27 @@ const run = async () => {
 
     try {
       process.stdout.write(`[5/10] Downloading: ${item.symbol} (${i+1}/${tokensAldrinList.length})\r`)
-      await download(item.logoUrl, `${__dirname}/icons/${item.symbol}-${item.mint}${extToStore}`)
+      await download(item.logoUrl, `${ICONS_DIR}/${item.symbol}-${item.mint}${extToStore}`)
     } catch(e) {
       console.log('Error: ', e)
     }
   }
 
-  const images = fs.readdirSync(`${__dirname}/icons`)
+  const images = fs.readdirSync(ICONS_DIR)
 
   console.log(`[6/10] Compressing images`)
 
   for (let i = 0; i < images.length; i++) {
     const item = images[i];
-    const buffer = await sharp(`${__dirname}/icons/${item}`).resize(64).toBuffer();
+    const buffer = await sharp(`${ICONS_DIR}/${item}`).resize(SINGLE_IMAGE_SIZE).toBuffer();
 
-    fs.writeFileSync(`${__dirname}/icons/${item}`, buffer, () => {});
+    fs.writeFileSync(`${ICONS_DIR}/${item}`, buffer, () => {});
   }
 
   console.log(`[7/10] Creating sprite`)
 
   Spritesmith.run({
-    src: images.map((item) => `${__dirname}/icons/${item}`),
+    src: images.map((item) => `${ICONS_DIR}/${item}`),
     engine: require('canvassmith'),
   }, async (err, result) => {
     if (err) {
@@ -165,7 +176,7 @@ const run = async () => {
 
     console.log(`[8/10] Converting to webp`)
 
-    await sharp(result.image).webp().toFile(`${__dirname}/output/token-icons.webp`)
+    await sharp(result.image).webp().toFile(SPRITE_IMAGE_FILE)
 
     const styles = Object.keys(result.coordinates).reduce((curr, next) => {
       const coords = result.coordinates[next]
@@ -179,9 +190,9 @@ const run = async () => {
 
     console.log(`[9/10] Making JSON descriptor file`)
 
-    fs.writeFileSync(`${__dirname}/output/token-icons.json`, JSON.stringify({
+    fs.writeFileSync(SPRITE_JSON_FILE, JSON.stringify({
       createdAt: Date.now(),
-      webpFilename: 'token-icons.webp',
+      webpFilename: SPRITE_IMAGE_FILENAME,
       icons: images.map((item) => {
         const parsedPath = path.parse(item)
 
@@ -202,13 +213,13 @@ const run = async () => {
     console.log(`[10/10] Cleanup`)
 
     try {
-      fs.rmSync(`${__dirname}/icons`, { recursive: true, force: true })
-      fs.rmSync(`${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite`, { recursive: true, force: true })
+      fs.rmSync(ICONS_DIR, { recursive: true, force: true })
+      fs.rmSync(DIR_TO_MOVE_OUTPUT, { recursive: true, force: true })
 
-      fs.mkdirSync(`${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite`)
+      fs.mkdirSync(DIR_TO_MOVE_OUTPUT)
 
-      fs.copyFileSync(`${__dirname}/output/token-icons.json`, `${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite/token-icons.json`)
-      fs.copyFileSync(`${__dirname}/output/token-icons.webp`, `${__dirname}/../../src/storybook/src/web/components/TokenIcon/sprite/token-icons.webp`)
+      fs.copyFileSync(SPRITE_JSON_FILE, `${OUTPUT_DIR}/${SPRITE_JSON_FILENAME}`)
+      fs.copyFileSync(SPRITE_IMAGE_FILE, `${OUTPUT_DIR}/${SPRITE_IMAGE_FILENAME}`)
     } catch (e) {
       console.log('Error: ', e)
     }
