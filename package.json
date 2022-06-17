@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 webpack-dev-server --env env=dev",
     "dev:fast": "cross-env LOCAL_BUILD=true NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=eval-cheap-module-source-map webpack-dev-server --env env=dev",
+    "dev:master": "cross-env MASTER_BUILD=true NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=eval-cheap-module-source-map webpack-dev-server --env env=dev",
     "dev:fast:local": "cross-env LOCAL_BUILD=true LOCAL_BACKEND_BUILD=true NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=eval-cheap-module-source-map  webpack-dev-server --env env=dev",
     "dev:bundleanalyzer": "yarn dev --env addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env addons=jarvis",
@@ -59,6 +60,7 @@
     "@solana/wallet-adapter-wallets": "^0.16.1",
     "@solana/web3.js": "1.30.2",
     "anchor019": "npm:@project-serum/anchor@0.19.1-beta.1",
+    "anchor024": "npm:@project-serum/anchor@0.24.2",
     "anchor020": "npm:@project-serum/anchor@0.20.1",
     "anchor03": "npm:@project-serum/anchor@0.3.1-beta.3",
     "apollo-cache-inmemory": "^1.6.3",
