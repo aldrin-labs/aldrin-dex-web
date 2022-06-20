@@ -46,6 +46,8 @@ const config = {
       tls: false,
       child_process: false,
       util: false,
+      stream: false,
+      crypto: false,
     },
   },
   module: {
