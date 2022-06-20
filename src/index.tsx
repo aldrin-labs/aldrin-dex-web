@@ -16,6 +16,7 @@ import { GlobalStyle } from './index.styles'
 const TechIssues = lazy(
   () => import(/* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute')
 )
+
 const ChartRoutes = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
 
@@ -113,7 +114,8 @@ const AppRoot = () => (
                 <Route path="/analytics" component={AnalyticsRoute} />
                 <Route path="/dashboard" component={DashboardRoute} />
 
-                <Route path="/staking/plutonians" component={PlutoniansStakingRoute} exact />
+                <Redirect from="/staking/plutonians" to="/staking/plutonians/PLD" exact />
+                <Route path="/staking/plutonians/:symbol" component={PlutoniansStakingRoute} exact />
                 <Route path="/staking/marinade" component={MarinadeStakingRoute} />
                 <Route path="/staking/rin" component={RinStakingRoute} />
                 <Route path="/staking" component={StakingRoute} />
