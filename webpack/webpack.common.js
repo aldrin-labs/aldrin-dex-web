@@ -37,6 +37,8 @@ const config = {
       'react-apollo': path.resolve(__dirname, '..', 'node_modules', 'react-apollo'),
       'apollo-link-context': path.resolve(__dirname, '..', 'node_modules', 'apollo-link-context'),
       'react': path.resolve(__dirname, '..', 'node_modules', 'react'),
+      'bn.js': path.resolve(__dirname, '..', 'node_modules', 'bn.js'),
+      '@solana/web3.js': path.resolve(__dirname, '..', 'node_modules', '@solana', 'web3.js'),
     },
     fallback: {
       fs: false,
@@ -48,6 +50,8 @@ const config = {
       util: false,
       crypto: false,
       stream: false,
+      http: false,
+      https: false,
     },
   },
   module: {
