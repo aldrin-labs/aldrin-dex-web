@@ -16,6 +16,7 @@ import { GlobalStyle } from './index.styles'
 const TechIssues = lazy(
   () => import(/* webpackPrefetch: true, webpackChunkName: "techIssuesRoute" */ '@routes/techIssuesRoute')
 )
+
 const ChartRoutes = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'))
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
 
