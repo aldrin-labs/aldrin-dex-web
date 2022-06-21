@@ -12,6 +12,7 @@
   "scripts": {
     "dev": "cross-env NODE_OPTIONS=--max_old_space_size=4096 webpack-dev-server --env env=dev",
     "dev:fast": "cross-env LOCAL_BUILD=true NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=eval-cheap-module-source-map webpack-dev-server --env env=dev",
+    "dev:prod": "cross-env MASTER_BUILD=true NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=eval-cheap-module-source-map webpack-dev-server --env env=dev",
     "dev:fast:local": "cross-env LOCAL_BUILD=true LOCAL_BACKEND_BUILD=true NODE_OPTIONS=--max_old_space_size=4096 DEVTOOL=eval-cheap-module-source-map  webpack-dev-server --env env=dev",
     "dev:bundleanalyzer": "yarn dev --env addons=bundleanalyzer",
     "dev:jarvis": "yarn dev --env addons=jarvis",
@@ -36,7 +37,7 @@
     "gql:schema": "npx apollo service:download --endpoint=https://api.cryptocurrencies.ai/graphql graphql-schema.json",
     "gql:typings": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql",
     "postinstall": "patch-package"
-  }, 
+  },
   "dependencies": {
     "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git",
     "@jup-ag/core": "1.0.0-beta.16",
