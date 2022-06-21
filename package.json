@@ -36,7 +36,7 @@
     "gql:schema": "npx apollo service:download --endpoint=https://api.cryptocurrencies.ai/graphql graphql-schema.json",
     "gql:typings": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql",
     "postinstall": "patch-package"
-  },
+  }, 
   "dependencies": {
     "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git",
     "@jup-ag/core": "1.0.0-beta.16",
