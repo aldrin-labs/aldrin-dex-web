@@ -48,6 +48,7 @@ const config = {
       util: false,
       stream: false,
       crypto: false,
+      'bigint-buffer': false,
     },
   },
   module: {
