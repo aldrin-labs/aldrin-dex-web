@@ -26,3 +26,7 @@
 
 [context.serum-qa-master]
   command = "yarn buildMaster"
+
+[context.feature-clean-core-from-sb]
+  command = "yarn buildMaster"
+
