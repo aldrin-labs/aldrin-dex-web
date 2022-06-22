@@ -39,7 +39,7 @@
     "postinstall": "patch-package"
   },
   "dependencies": {
-    "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git",
+    "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.4",
     "@jup-ag/core": "1.0.0-beta.16",
     "@ledgerhq/hw-transport": "^5.51.1",
     "@ledgerhq/hw-transport-webhid": "^6.7.0",
