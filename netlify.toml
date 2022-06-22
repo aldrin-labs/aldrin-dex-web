@@ -26,6 +26,3 @@
 
 [context.serum-qa-master]
   command = "yarn buildMaster"
-
-[context.feature-plutonians-new-pools]
-  command = "yarn buildMaster"
