@@ -36,7 +36,8 @@
     "prepare": "husky install",
     "gql:schema": "npx apollo service:download --endpoint=https://api.cryptocurrencies.ai/graphql graphql-schema.json",
     "gql:typings": "npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --tagName=gql",
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "token-icons-sprite-generate": "node scripts/token-icons-sprite-generator/sprite-generate.js"
   },
   "dependencies": {
     "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.4",
@@ -117,6 +118,7 @@
     "subscriptions-transport-ws": "^0.9.14",
     "swr": "^1.1.0",
     "treemap-js": "^1.2.1",
+    "webpack-deduplication-plugin": "^0.0.8",
     "webpack-remove-serviceworker-plugin": "^1.0.0"
   },
   "devDependencies": {
@@ -148,6 +150,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-graphql-tag": "^2.5.0",
     "babel-plugin-styled-components": "^1.13.2",
+    "canvassmith": "^1.7.0",
     "chalk": "^2.3.2",
     "clean-webpack-plugin": "4.0.0",
     "copy-webpack-plugin": "6.4.0 ",
@@ -180,6 +183,8 @@
     "lint-staged": ">=10",
     "minify-graphql-loader": "^0.2.2",
     "prettier": "^2.4.1",
+    "sharp": "^0.30.6",
+    "spritesmith": "^3.4.0",
     "style-loader": "^0.23.1",
     "stylelint": "^13.13.1",
     "stylelint-config-idiomatic-order": "^5.0.0",
