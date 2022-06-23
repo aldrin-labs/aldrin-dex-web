@@ -26,6 +26,7 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': {
         LOCAL_BUILD: JSON.stringify(process.env.LOCAL_BUILD),
+        MASTER_BUILD: JSON.stringify(process.env.MASTER_BUILD),
         LOCAL_BACKEND_BUILD: JSON.stringify(process.env.LOCAL_BACKEND_BUILD),
         NODE_ENV: JSON.stringify('development'),
         API_ENDPOINT: JSON.stringify(process.env.API_ENDPOINT),
