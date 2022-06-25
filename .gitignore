@@ -1,3 +1,7 @@
+scripts/token-icons-sprite-generator/icons
+scripts/token-icons-sprite-generator/output
+cache
+
 # Logs
 logs
 *.log
