@@ -40,7 +40,7 @@
     "token-icons-sprite-generate": "node scripts/token-icons-sprite-generator/sprite-generate.js"
   },
   "dependencies": {
-    "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.8", 
+    "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9", 
     "@jup-ag/core": "1.0.0-beta.16",
     "@ledgerhq/hw-transport": "^5.51.1",
     "@ledgerhq/hw-transport-webhid": "^6.7.0",
