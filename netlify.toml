@@ -4,6 +4,11 @@
   status = 200
   force = true # COMMENT: ensure that we always redirect
 
+[[redirects]]
+  from = "/addMetricDatav2"
+  to = "https://api.cryptocurrencies.ai/addMetricDatav2"
+  status = 200
+  headers = { Content-Type = "application/json" }
 
 [[redirects]]
   from = "/*"
