@@ -18,6 +18,9 @@
 [context.serum-master]
   command = "yarn buildMaster"
 
+[context.fix-RIN-246-SolanaFm-links] 
+  command = "yarn buildMaster"
+
 [context.serum-develop]
   command = "yarn build"
 
