@@ -61,9 +61,65 @@ Notes:
 
 ---
 
-Bundle analyzing:
+### Bundle analyzing:
 
-1. Use build:bundleanalyzer:without:submodule
+use build:bundleanalyzer:without:submodule
+
+---
+
+### Token icons sprite generation
+
+Requirements:
+  
+  - node 8+
+  - pkg-config, pixman, cairo, pangocairo
+  - any other packages that you be ask for (@todo)
+
+Usage: `yarn token-icons-sprite-generate`
+
+The command accepts no params and does the following:
+1. Collect token names
+
+    1.1. from the aldrin pools
+   
+    1.2. from aldrin-registry markets 
+    
+    1.3. from custom local folder
+
+2. Download an icons (except those in 1.3)
+  
+    2.1. Iterate over the token names and trying to find those in [spl-token-registry](https://www.npmjs.com/package/@solana/spl-token-registry)
+
+    2.2. Download for those found
+
+3. Compressing
+
+    we resize each image to fit 64px square
+   
+4. Creating the sprite
+   
+    we make it with [spritesmith](https://www.npmjs.com/package/spritesmith) library powered by [canvassmith](https://www.npmjs.com/package/canvassmith) so let's leave it the blackbox as long as it works well
+    
+5. Converting to webp
+
+6. Make a json-descriptor file
+    we store the following data there:
+      - link to .webp image
+      - token name/address
+      - the dimensions of each image (token)
+      - coordinates in sprite (x/y)
+  
+7. Moving it to the target folder
+    once we good we move our output to the target `TokenIcon` component's folder
+   
+    that components know already how to operate with the image/json
+
+  TODO:
+
+  - make it on CI but not manually (like we have it now)
+  - provide some more requirements 
+
+---
 
 # Useful links:
 ## Production:
