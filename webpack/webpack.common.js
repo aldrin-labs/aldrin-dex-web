@@ -48,6 +48,8 @@ const config = {
       util: false,
       crypto: false,
       stream: false,
+      http: false,
+      https: false,
       'bigint-buffer': false,
     },
   },
