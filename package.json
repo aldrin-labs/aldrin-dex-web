@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "sideEffects": [
     "*.woff2",
+    "*.ttf",
     "app.styles.global.css",
     "*.css"
   ],

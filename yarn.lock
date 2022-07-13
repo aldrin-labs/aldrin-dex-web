@@ -13452,13 +13452,6 @@ react-select@^2.1.1:
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
 
-react-switch@^6.0.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-switch/-/react-switch-6.1.0.tgz#46239535820f6cf1331aecd948ba585d8a7b532a"
-  integrity sha512-cOwQkxtHCOGtoK0KN3kZBPTQjt8P1TTpaor+TS0AJRLfFBIRkgjVIUCwAfvVlW32Bi1BK333rk9y/14suD38SA==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-tabs@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-3.2.3.tgz#ccbb3e1241ad3f601047305c75db661239977f2f"

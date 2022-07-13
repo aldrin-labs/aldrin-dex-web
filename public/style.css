@@ -112,7 +112,7 @@
   font-weight: 900;
   font-display: block;
   src: local('Prompt Black'), local('Prompt-Black'),
-    url('/fonts/Prompt-Black.woff2') format('woff2');
+    url('/fonts/Prompt-Black.ttf') format('ttf');
 }
 
 @font-face {
@@ -121,7 +121,7 @@
   font-weight: 800;
   font-display: block;
   src: local('Prompt Extra Bold'), local('Prompt-ExtraBold'),
-    url('/fonts/Prompt-ExtraBold.woff2') format('woff2');
+    url('/fonts/Prompt-ExtraBold.ttf') format('ttf');
 }
 
 @font-face {
@@ -130,7 +130,7 @@
   font-weight: 700;
   font-display: block;
   src: local('Prompt Bold'), local('Prompt-Bold'),
-    url('/fonts/Prompt-Bold.woff2') format('woff2');
+    url('/fonts/Prompt-Bold.ttf') format('ttf');
 }
 
 @font-face {
@@ -139,7 +139,7 @@
   font-weight: 600;
   font-display: block;
   src: local('Prompt Semi Bold'), local('Prompt-SemiBold'),
-    url('/fonts/Prompt-SemiBold.woff2') format('woff2');
+    url('/public/fonts/Prompt-SemiBold.ttf') format('ttf');
 }
 
 @font-face {
@@ -148,7 +148,7 @@
   font-weight: 500;
   font-display: block;
   src: local('Prompt Medium'), local('Prompt-Medium'),
-    url('/fonts/Prompt-Medium.woff2') format('woff2');
+    url('/fonts/Prompt-Medium.ttf') format('ttf');
 }
 
 @font-face {
@@ -157,7 +157,7 @@
   font-weight: 400;
   font-display: block;
   src: local('Prompt Regular'), local('Prompt-Regular'),
-    url('/fonts/Prompt-Regular.woff2') format('woff2');
+    url('/fonts/Prompt-Regular.ttf') format('ttf');
 }
 
 @font-face {
@@ -166,7 +166,7 @@
   font-weight: 300;
   font-display: block;
   src: local('Prompt Light'), local('Prompt-Light'),
-    url('/fonts/Prompt-Light.woff2') format('woff2');
+    url('/fonts/Prompt-Light.ttf') format('ttf');
 }
 
 @font-face {
@@ -175,7 +175,7 @@
   font-weight: 200;
   font-display: block;
   src: local('Prompt Extra Light'), local('Prompt-ExtraLight'),
-    url('/fonts/Prompt-ExtraLight.woff2') format('woff2');
+    url('/fonts/Prompt-ExtraLight.ttf') format('ttf');
 }
 
 @font-face {
@@ -184,7 +184,7 @@
   font-weight: 100;
   font-display: block;
   src: local('Prompt Thin'), local('Prompt-Thin'),
-    url('/fonts/Prompt-Thin.woff2') format('woff2');
+    url('/fonts/Prompt-Thin.ttf') format('ttf');
 }
 
 @font-face {
@@ -205,6 +205,8 @@
 
 body {
   background: #101010;
+  font-family: 'Prompt';
+  font-weight: 400;
 }
 
 .main-loader {
