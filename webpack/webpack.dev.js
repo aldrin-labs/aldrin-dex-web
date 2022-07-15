@@ -45,6 +45,7 @@ const config = {
         REACT_APP_MSOL_REFERRAL_FEES_ADDRESS: JSON.stringify(process.env.REACT_APP_MSOL_REFERRAL_FEES_ADDRESS),
         POOLS_PROGRAM_ADDRESS: JSON.stringify(process.env.POOLS_PROGRAM_ADDRESS),
         STAKING_PROGRAM_ADDRESS: JSON.stringify(process.env.STAKING_PROGRAM_ADDRESS),
+        RPC_PROVIDERS_ADDRESSES: JSON.stringify(process.env.RPC_PROVIDERS_ADDRESSES),
       },
     }),
   ],
