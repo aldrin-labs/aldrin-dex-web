@@ -60,7 +60,7 @@
     "@solana/wallet-adapter-wallets": "^0.16.6",
     "@solana/web3.js": "1.30.2",
     "@types/react-router-dom": "^5.3.3",
-    "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9",
+    "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.12",
     "anchor019": "npm:@project-serum/anchor@0.19.1-beta.1",
     "anchor020": "npm:@project-serum/anchor@0.20.1",
     "anchor024": "npm:@project-serum/anchor@0.24.2",
