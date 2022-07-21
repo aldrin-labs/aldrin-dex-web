@@ -1761,10 +1761,10 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@likbes_/swap-hook@^0.0.5":
-  version "0.0.5"
-  resolved "https://gitlab.com/api/v4/projects/37796777/packages/npm/@likbes_/swap-hook/-/@likbes_/swap-hook-0.0.5.tgz#6f4d9883ba24e90540312ee02a8d88491590e8a5"
-  integrity sha1-b02Yg7ok6QVAMS7gKo2ISRWQ6KU=
+"@likbes_/swap-hook@^0.0.8":
+  version "0.0.8"
+  resolved "https://gitlab.com/api/v4/projects/37796777/packages/npm/@likbes_/swap-hook/-/@likbes_/swap-hook-0.0.8.tgz#6771990cba0b65fa02a244f2d838b77324ca6906"
+  integrity sha1-Z3GZDLoLZfoCokTy2Di3cyTKaQY=
   dependencies:
     "@mercurial-finance/optimist" "^0.1.5"
     "@orca-so/stablecurve" "^1.0.6"
