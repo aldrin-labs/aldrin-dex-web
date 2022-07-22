@@ -93,6 +93,7 @@
     "notistack": "^0.6.1",
     "patch-package": "^6.4.7",
     "pluralize": "^8.0.0",
+    "polished": "^4.2.2",
     "postinstall-postinstall": "^2.1.0",
     "rc-slider": "^9.6.5",
     "react": "^17.0.2",
