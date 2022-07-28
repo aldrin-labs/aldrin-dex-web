@@ -26,6 +26,3 @@
 
 [context.serum-qa-master]
   command = "yarn buildMaster"
-
-[context.rin440-staking-apr]
-  command = "yarn buildMaster"
