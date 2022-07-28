@@ -129,3 +129,15 @@ The command accepts no params and does the following:
 ## Dev:
 - Website: ???
 - API: https://develop.api.cryptocurrencies.ai/playground
+
+
+--- 
+# Environment
+
+You can configure the app through environment variables. All parameters are optional and not needed to run app.
+
+## Available variables
+
+| Variable                 | Description | Value example                                                     |
+| ------------------------ | ----------- | ----------------------------------------------------------------- |
+| RPC_PROVIDERS_ADDRESSES  | Title       | [{ url: 'https://frontend-solana-api-1.aldrin.com', weight: 20 }]
