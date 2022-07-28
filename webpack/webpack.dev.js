@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-
 const webpack = require('webpack')
 
 // const ErrorOverlayPlugin = require('error-overlay-webpack-plugin')
