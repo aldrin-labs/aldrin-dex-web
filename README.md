@@ -121,6 +121,11 @@ The command accepts no params and does the following:
 
 ---
 
+# Swap Hook
+Swap logic separated to another gitlab repository.
+For using it we need to specify url for scoped package in .npmrc with deploy token,
+that have read_package_registry permission, so we'll have access to package registry of this repo.
+
 # Useful links:
 ## Production:
 - Website: https://aldrin.com
