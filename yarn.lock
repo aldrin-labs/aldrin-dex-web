@@ -2,6 +2,27 @@
 # yarn lockfile v1
 
 
+"@aldrin_exchange/swap_hook@^0.0.21":
+  version "0.0.21"
+  resolved "https://gitlab.com/api/v4/projects/38257658/packages/npm/@aldrin_exchange/swap_hook/-/@aldrin_exchange/swap_hook-0.0.21.tgz#49bffe30b55d70cf74d26afb5d6c4776043c2eb2"
+  integrity sha1-Sb/+MLVdcM900mr7XWxHdgQ8LrI=
+  dependencies:
+    "@mercurial-finance/optimist" "^0.1.5"
+    "@orca-so/stablecurve" "^1.0.6"
+    "@project-serum/anchor" "0.20.1"
+    "@project-serum/serum" "^0.13.65"
+    "@solana/spl-token" "^0.1.8"
+    "@solana/spl-token-registry" "^0.2.4574"
+    "@solana/web3.js" "^1.47.4"
+    aldrin-registry "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9"
+    bn.js "^5.2.1"
+    cross-fetch "^3.1.5"
+    decimal.js "^10.3.1"
+    jsbi "^4.3.0"
+    react "^18.2.0"
+    react-dom "^18.2.0"
+    swr "^1.3.0"
+
 "@ampproject/remapping@^2.1.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.2.0.tgz#56c133824780de3174aed5ab6834f3026790154d"
@@ -1760,27 +1781,6 @@
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
-
-"@likbes_/swap-hook@^0.0.13":
-  version "0.0.13"
-  resolved "https://gitlab.com/api/v4/projects/37796777/packages/npm/@likbes_/swap-hook/-/@likbes_/swap-hook-0.0.13.tgz#89c52f52ce8d0f6dc911cda2dda1c59d5f4637b8"
-  integrity sha1-icUvUs6ND23JEc2i3aHFnV9GN7g=
-  dependencies:
-    "@mercurial-finance/optimist" "^0.1.5"
-    "@orca-so/stablecurve" "^1.0.6"
-    "@project-serum/anchor" "0.20.1"
-    "@project-serum/serum" "^0.13.65"
-    "@solana/spl-token" "^0.1.8"
-    "@solana/spl-token-registry" "^0.2.4574"
-    "@solana/web3.js" "^1.47.4"
-    aldrin-registry "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9"
-    bn.js "^5.2.1"
-    cross-fetch "^3.1.5"
-    decimal.js "^10.3.1"
-    jsbi "^4.3.0"
-    react "^18.2.0"
-    react-dom "^18.2.0"
-    swr "^1.3.0"
 
 "@marinade.finance/marinade-ts-sdk@^2.0.9":
   version "2.0.10"
