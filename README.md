@@ -134,3 +134,15 @@ that have read_package_registry permission, so we'll have access to package regi
 ## Dev:
 - Website: ???
 - API: https://develop.api.cryptocurrencies.ai/playground
+
+
+--- 
+# Environment
+
+You can configure the app through environment variables. All parameters are optional and not needed to run app.
+
+## Available variables
+
+| Variable                 | Description | Value example                                                     |
+| ------------------------ | ----------- | ----------------------------------------------------------------- |
+| RPC_PROVIDERS_ADDRESSES  | Title       | [{ url: 'https://frontend-solana-api-1.aldrin.com', weight: 20 }]
