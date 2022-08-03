@@ -10,6 +10,7 @@ import { App } from '@sb/compositions/App/'
 
 import { client } from '@core/graphql/apolloClient'
 import { MASTER_BUILD } from '@core/utils/config'
+import { Metrics } from '@core/utils/metrics'
 
 import { GlobalStyle } from './index.styles'
 
@@ -78,6 +79,10 @@ const isSafari =
 
 const SWR_CONFIG = {
   revalidateOnFocus: false,
+}
+
+if (MASTER_BUILD) {
+  Metrics.startRequestDurationLogging()
 }
 
 const AppRoot = () => (
