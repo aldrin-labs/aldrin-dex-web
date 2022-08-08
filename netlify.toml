@@ -27,5 +27,5 @@
 [context.serum-qa-master]
   command = "yarn buildMaster"
 
-[context.RIN-408-remove-cex-gql]
+[context.feat-migration-liquidity]
   command = "yarn buildMaster"

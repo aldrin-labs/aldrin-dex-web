@@ -14,7 +14,6 @@
     "experimentalDecorators": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
     "alwaysStrict": false,
     "allowJs": false,
     "jsx": "react",
