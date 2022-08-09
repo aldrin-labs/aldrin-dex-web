@@ -7,8 +7,9 @@
 [[redirects]]
   from = "/addMetricDatav2"
   to = "https://api.cryptocurrencies.ai/addMetricDatav2"
-  status = 200
+#   status = 200
   headers = { Content-Type = "application/json" }
+  force = true
 
 [[redirects]]
   from = "/*"
