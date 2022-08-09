@@ -83,9 +83,9 @@ const SWR_CONFIG = {
   revalidateOnFocus: false,
 }
 
-if (MASTER_BUILD) {
+// if (MASTER_BUILD) {
   Metrics.startRequestDurationLogging()
-}
+// }
 
 const AppRoot = () => (
   <ApolloProvider client={client}>
