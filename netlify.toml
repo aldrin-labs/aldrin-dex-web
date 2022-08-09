@@ -31,3 +31,6 @@
 
 [context.serum-qa-master]
   command = "yarn buildMaster"
+
+[context.feat-migration-liquidity]
+  command = "yarn buildMaster"
