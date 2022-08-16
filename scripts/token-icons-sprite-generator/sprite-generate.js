@@ -35,7 +35,8 @@ const CUSTOM_TOKEN_IMAGES = [
   { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/fries_logo.png`, symbol: 'FRIES', mint: 'FriCEbw1V99GwrJRXPnSQ6su2TabHabNxiZ3VNsVFPPN' },
   { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/sob_logo.png`, symbol: 'SOB', mint: 'EkDf4Nt89x4Usnxkj4sGHX7sWxkmmpiBzA4qdDkgEN6b' },
   { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/gmcoin_logo.jpg`, symbol: 'GMCOIN', mint: 'A9Nc6Yo9YGKsaeAb2nsQFSQpLcdotGqjEJmEQFzZeeqX' },
-  { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/otr_logo.jpg`, symbol: 'OTR', mint: '6TgvYd7eApfcZ7K5Mur7MaUQ2xT7THB4cLHWuMkQdU5Z' }
+  { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/otr_logo.jpg`, symbol: 'OTR', mint: '6TgvYd7eApfcZ7K5Mur7MaUQ2xT7THB4cLHWuMkQdU5Z' },
+  { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/oogi_logo.jpg`, symbol: 'OOGI', mint: 'H7Qc9APCWWGDVxGD5fJHmLTmdEgT9GFatAKFNg6sHh8A' },
 ]
 
 const poolsQuery = gql`
