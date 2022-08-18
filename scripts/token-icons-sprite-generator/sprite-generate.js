@@ -5,7 +5,7 @@ const { createHttpLink } = require('apollo-link-http')
 const { InMemoryCache } = require('apollo-cache-inmemory')
 const fetch = require('node-fetch')
 const { TokenListProvider } = require('@solana/spl-token-registry')
-const http = require('follow-redirects').https
+const followRedirects = require('follow-redirects')
 const fs = require('fs')
 const path = require('path')
 const Spritesmith = require('spritesmith')
@@ -35,7 +35,8 @@ const CUSTOM_TOKEN_IMAGES = [
   { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/fries_logo.png`, symbol: 'FRIES', mint: 'FriCEbw1V99GwrJRXPnSQ6su2TabHabNxiZ3VNsVFPPN' },
   { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/sob_logo.png`, symbol: 'SOB', mint: 'EkDf4Nt89x4Usnxkj4sGHX7sWxkmmpiBzA4qdDkgEN6b' },
   { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/gmcoin_logo.jpg`, symbol: 'GMCOIN', mint: 'A9Nc6Yo9YGKsaeAb2nsQFSQpLcdotGqjEJmEQFzZeeqX' },
-  { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/otr_logo.jpg`, symbol: 'OTR', mint: '6TgvYd7eApfcZ7K5Mur7MaUQ2xT7THB4cLHWuMkQdU5Z' }
+  { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/otr_logo.jpg`, symbol: 'OTR', mint: '6TgvYd7eApfcZ7K5Mur7MaUQ2xT7THB4cLHWuMkQdU5Z' },
+  { imageUri: `${CUSTOM_TOKEN_ICONS_DIR}/oogi_logo.jpg`, symbol: 'OOGI', mint: 'H7Qc9APCWWGDVxGD5fJHmLTmdEgT9GFatAKFNg6sHh8A' },
 ]
 
 const poolsQuery = gql`
@@ -49,23 +50,31 @@ const poolsQuery = gql`
   }
 `
 
-const download = (url, dest) => {
+const download = (url, dest, method = followRedirects.https) => {
   return new Promise((resolve, reject) => {
     const file = fs.createWriteStream(dest, { flags: "wx" })
 
-    const request = http.get(url, { timeout: 3000 }, (response) => {
+    const request = method.get(url, { timeout: 10000 }, (response) => {
       if (response.statusCode === 200) {
         response.pipe(file)
       } else {
+        console.log('Error Downloading. Not accepted status code: ', response.statusCode);
         file.close()
-        fs.unlinkSync(dest)
+
+        if (fs.existsSync(dest)) {
+          fs.unlinkSync(dest)
+        }
         reject(`Server responded with ${response.statusCode}: ${response.statusMessage}`)
       }
     })
 
-    request.on("error", err => {
+    request.on("error", (err) => {
       file.close()
-      fs.unlinkSync(dest)
+
+      if (fs.existsSync(dest)) {
+        fs.unlinkSync(dest)
+      }
+
       reject(err.message)
     })
 
@@ -79,7 +88,11 @@ const download = (url, dest) => {
       if (err.code === "EEXIST") {
         reject(`File already exists: ${dest}`)
       } else {
-        fs.unlinkSync(dest)
+
+        if (fs.existsSync(dest)) {
+          fs.unlinkSync(dest)
+        }
+
         reject(err.message)
       }
     })
@@ -126,7 +139,7 @@ const run = async () => {
   const tokenListProvider = new TokenListProvider()
   const { tokenList } = await tokenListProvider.resolve()
 
-  const tokensAldrinList = tokenList.reduce((curr, next) => {
+  const tokensAldrinList = tokenList.filter((item) => item.logoURI).reduce((curr, next) => {
     const isOk = poolSymbolsList.includes(next.address) || marketSymbolsList.includes(next.symbol)
 
     if (isOk) {
@@ -140,7 +153,7 @@ const run = async () => {
     }
 
     return curr
-  }, []).filter((a, i, arr) => arr.findIndex((s) => a.symbol === s.symbol) === i)
+  }, [])
 
   console.log(`[4/11] Get aldrin tokens from registry. Found: ${tokensAldrinList.length}`)
 
@@ -153,7 +166,7 @@ const run = async () => {
       process.stdout.write(`[5/11] Downloading: ${item.symbol} (${i+1}/${tokensAldrinList.length})\r`)
       await download(item.logoUrl, `${ICONS_DIR}/${item.symbol}-${item.mint}${extToStore}`)
     } catch(e) {
-      console.log('Error: ', e)
+      console.log(`Error downloading: ${item.symbol} at ${item.logoUrl}`, e)
     }
   }
 
@@ -181,8 +194,8 @@ const run = async () => {
 
       fs.writeFileSync(`${ICONS_DIR}/${item}`.replace(oldExt, '.png'), buffer, () => {})
     } catch (e) {
-      fs.unlinkSync(`${ICONS_DIR}/${item}`)
       console.log('Error: ', e, `\nRemoving ${ICONS_DIR}/${item}`)
+      fs.unlinkSync(`${ICONS_DIR}/${item}`)
     }
   }
 
