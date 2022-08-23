@@ -41,10 +41,11 @@
     "token-icons-sprite-generate": "node scripts/token-icons-sprite-generator/sprite-generate.js"
   },
   "dependencies": {
+    "@aldrin_exchange/swap_hook": "^0.0.31",
     "@ledgerhq/hw-transport": "^5.51.1",
     "@ledgerhq/hw-transport-webhid": "^6.7.0",
     "@ledgerhq/hw-transport-webusb": "^5.53.1",
-    "@aldrin_exchange/swap_hook": "^0.0.31",
+    "@lidofinance/solido-sdk": "^0.2.0",
     "@marinade.finance/marinade-ts-sdk": "^2.0.9",
     "@material-ui/core": "^3.9.1",
     "@material-ui/icons": "4.5.1",
@@ -217,7 +218,7 @@
   },
   "resolutions": {
     "bn.js": "5.1.3",
-    "@solana/web3.js": "1.32.0",
+    "@solana/web3.js": "1.47.3",
     "@project-serum/serum": "0.13.25",
     "@project-serum/borsh": "0.2.2",
     "elliptic": "6.5.4",
