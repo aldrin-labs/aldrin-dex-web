@@ -29,3 +29,6 @@
 
 [context.feat-migration-liquidity]
   command = "yarn buildMaster"
+
+[context.test-swaps-ohlcv-on-prod-api]
+  command = "yarn buildMaster" 
