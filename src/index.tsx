@@ -18,6 +18,7 @@ const TechIssues = lazy(
 )
 
 const ChartRoutes = lazy(() => import(/* webpackPrefetch: true, webpackChunkName: "chart" */ '@routes/chartRoute'))
+
 const NotFound = lazy(() => import(/* webpackChunkName: "notFound" */ '@sb/components/NotFound'))
 
 // const UnderMaintenance = lazy(
