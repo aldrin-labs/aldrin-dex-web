@@ -146,3 +146,4 @@ You can configure the app through environment variables. All parameters are opti
 | Variable                 | Description | Value example                                                     |
 | ------------------------ | ----------- | ----------------------------------------------------------------- |
 | RPC_PROVIDERS_ADDRESSES  | Title       | [{ url: 'https://frontend-solana-api-1.aldrin.com', weight: 20 }]
+
