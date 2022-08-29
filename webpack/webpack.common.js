@@ -160,7 +160,6 @@ const config = {
     }),
     new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
-      buffer: ['buffer', 'Buffer']
     })
   ],
 }
