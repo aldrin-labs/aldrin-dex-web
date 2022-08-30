@@ -55,7 +55,7 @@
     "@project-serum/borsh": "0.2.2",
     "@project-serum/common": "^0.0.1-beta.3",
     "@project-serum/serum": "0.13.54",
-    "@solana/buffer-layout": "^3.0.0",
+    "@solana/buffer-layout": "^4.0.0",
     "@solana/spl-token": "^0.1.4",
     "@solana/spl-token-registry": "^0.2.273",
     "@solana/wallet-adapter-base": "^0.9.7",
