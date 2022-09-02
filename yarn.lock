@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aldrin_exchange/swap_hook@^0.0.31":
-  version "0.0.31"
-  resolved "https://gitlab.com/api/v4/projects/38257658/packages/npm/@aldrin_exchange/swap_hook/-/@aldrin_exchange/swap_hook-0.0.31.tgz#67a3d464084f747825bdda7c70bd7cb4198a1eeb"
-  integrity sha1-Z6PUZAhPdHglvdp8cL18tBmKHus=
+"@aldrin_exchange/swap_hook@^0.0.35":
+  version "0.0.35"
+  resolved "https://gitlab.com/api/v4/projects/38257658/packages/npm/@aldrin_exchange/swap_hook/-/@aldrin_exchange/swap_hook-0.0.35.tgz#e99a5e184d72dbf87b022787647e3bc7ed74a8c0"
+  integrity sha1-6ZpeGE1y2/h7AieHZH47x+10qMA=
   dependencies:
     "@mercurial-finance/optimist" "^0.1.5"
     "@orca-so/stablecurve" "^1.0.6"
