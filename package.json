@@ -40,7 +40,7 @@
     "token-icons-sprite-generate": "node scripts/token-icons-sprite-generator/sprite-generate.js"
   },
   "dependencies": {
-    "@aldrin_exchange/swap_hook": "^0.0.31",
+    "@aldrin_exchange/swap_hook": "^0.0.35",
     "@ledgerhq/hw-transport": "^5.51.1",
     "@ledgerhq/hw-transport-webhid": "^6.7.0",
     "@ledgerhq/hw-transport-webusb": "^5.53.1",
