@@ -45,6 +45,7 @@
     "@ledgerhq/hw-transport": "^5.51.1",
     "@ledgerhq/hw-transport-webhid": "^6.7.0",
     "@ledgerhq/hw-transport-webusb": "^5.53.1",
+    "@lidofinance/solido-sdk": "^0.2.0",
     "@marinade.finance/marinade-ts-sdk": "^2.0.9",
     "@material-ui/core": "^3.9.1",
     "@material-ui/icons": "4.5.1",
@@ -54,12 +55,12 @@
     "@project-serum/borsh": "0.2.2",
     "@project-serum/common": "^0.0.1-beta.3",
     "@project-serum/serum": "0.13.54",
-    "@solana/buffer-layout": "^3.0.0",
+    "@solana/buffer-layout": "^4.0.0",
     "@solana/spl-token": "^0.1.4",
     "@solana/spl-token-registry": "^0.2.273",
     "@solana/wallet-adapter-base": "^0.9.7",
     "@solana/wallet-adapter-wallets": "^0.16.10",
-    "@solana/web3.js": "1.30.2",
+    "@solana/web3.js": "1.47.3",
     "@types/react-router-dom": "^5.3.3",
     "aldrin-registry": "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.12",
     "anchor019": "npm:@project-serum/anchor@0.19.1-beta.1",
@@ -137,6 +138,7 @@
     "@types/auth0-lock": "^11.4.3",
     "@types/bn.js": "^5.1.0",
     "@types/crypto-js": "^4.0.2",
+    "@types/jest": "^27.5.1",
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash-es": "^4.17.1",
     "@types/pluralize": "^0.0.29",
@@ -216,7 +218,6 @@
   },
   "resolutions": {
     "bn.js": "5.1.3",
-    "@solana/web3.js": "1.32.0",
     "@project-serum/serum": "0.13.25",
     "@project-serum/borsh": "0.2.2",
     "elliptic": "6.5.4",
@@ -226,7 +227,8 @@
     "ini": "1.3.6",
     "minimist": "1.2.3",
     "kind-of": "6.0.3",
-    "@solana/buffer-layout": "4.0.0"
+    "@solana/buffer-layout": "4.0.0",
+    "react": "17.0.2"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint",
