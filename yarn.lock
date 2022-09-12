@@ -1074,10 +1074,17 @@
     core-js-pure "^3.20.2"
     regenerator-runtime "^0.13.4"
 
-"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.5", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.0", "@babel/runtime@^7.17.2", "@babel/runtime@^7.17.8", "@babel/runtime@^7.17.9", "@babel/runtime@^7.18.3", "@babel/runtime@^7.18.9", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.5.5", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.0.0", "@babel/runtime@^7.1.2", "@babel/runtime@^7.10.1", "@babel/runtime@^7.10.2", "@babel/runtime@^7.10.5", "@babel/runtime@^7.11.1", "@babel/runtime@^7.11.2", "@babel/runtime@^7.12.1", "@babel/runtime@^7.12.13", "@babel/runtime@^7.12.5", "@babel/runtime@^7.15.4", "@babel/runtime@^7.16.0", "@babel/runtime@^7.17.2", "@babel/runtime@^7.17.8", "@babel/runtime@^7.17.9", "@babel/runtime@^7.18.3", "@babel/runtime@^7.18.9", "@babel/runtime@^7.2.0", "@babel/runtime@^7.3.1", "@babel/runtime@^7.4.4", "@babel/runtime@^7.6.2", "@babel/runtime@^7.7.2", "@babel/runtime@^7.8.4", "@babel/runtime@^7.8.7":
   version "7.18.9"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.18.9.tgz#b4fcfce55db3d2e5e080d2490f608a3b9f407f4a"
   integrity sha512-lkqXDcvlFT5rvEjiu6+QYO+1GXrEHRo2LOtS7E4GtX5ESIZOgepqsZBVIj6Pv+a6zqsya9VCgiK1KAK4BvJDAw==
+  dependencies:
+    regenerator-runtime "^0.13.4"
+
+"@babel/runtime@^7.5.5":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.19.0.tgz#22b11c037b094d27a8a2504ea4dcff00f50e2259"
+  integrity sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -1990,10 +1997,10 @@
     "@lidofinance/theme" "2.7.0"
     "@lidofinance/utils" "1.3.2"
 
-"@lidofinance/chip@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/chip/-/chip-1.0.0.tgz#139fe4f028f7f637f86ee142d28de835275350bc"
-  integrity sha512-Qb6FlGM6/EY8WxFRzBBYmjwwTdHL0epaV86gg6lAFjF7cP9mZXaIJAQKV02NjegbK0KXB6u017krs7RvyBnjag==
+"@lidofinance/chip@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@lidofinance/chip/-/chip-1.0.1.tgz#a1ac7fdbeb74941380d8cf78cce933ad12abc75c"
+  integrity sha512-Am90Zef/cTGZJkP1NdKGTPcZepJHzMzReTJv0lx/3uFGL3BrvDzQY4jIA/9zDb4dyN8LQ5drC1XkootD+ayuRA==
   dependencies:
     "@lidofinance/theme" "2.7.0"
     "@lidofinance/utils" "1.3.2"
@@ -2073,9 +2080,9 @@
     "@lidofinance/utils" "1.3.2"
 
 "@lidofinance/lido-ui@^2.7.0":
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-2.16.1.tgz#9891d57a2a3946d160305049491858080ad866b1"
-  integrity sha512-JMatbXB75zAp8OTa3hTgVpW2eh4VNffhlPmSKAkp6mJiqgTpK13tb7eeLVyk9XBAXySKy0lJHSmXeZIBZ76XpA==
+  version "2.16.2"
+  resolved "https://registry.yarnpkg.com/@lidofinance/lido-ui/-/lido-ui-2.16.2.tgz#0144f5126f3d3ff6454a29ae73b6b801db459ea0"
+  integrity sha512-RP4h4YZieOze7Admwx3m5e9NRpiB97QisGhLp78ptf8lzW8m33KwHMLZrikrgAGgQPsUdi8n3Y4JpcVXmfJfFA==
   dependencies:
     "@lidofinance/accordion" "2.12.0"
     "@lidofinance/address" "1.4.0"
@@ -2083,7 +2090,7 @@
     "@lidofinance/box" "1.6.0"
     "@lidofinance/button" "2.12.0"
     "@lidofinance/checkbox" "1.15.0"
-    "@lidofinance/chip" "1.0.0"
+    "@lidofinance/chip" "1.0.1"
     "@lidofinance/container" "1.6.0"
     "@lidofinance/data-table" "3.12.0"
     "@lidofinance/divider" "1.6.0"
@@ -2104,7 +2111,7 @@
     "@lidofinance/service-page" "1.3.0"
     "@lidofinance/stack" "1.7.0"
     "@lidofinance/styled-system" "1.6.0"
-    "@lidofinance/table" "1.5.1"
+    "@lidofinance/table" "1.5.2"
     "@lidofinance/text" "2.3.0"
     "@lidofinance/theme" "2.7.0"
     "@lidofinance/toast" "1.12.0"
@@ -2203,10 +2210,10 @@
     "@lidofinance/theme" "2.7.0"
     "@lidofinance/utils" "1.3.2"
 
-"@lidofinance/solido-sdk@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@lidofinance/solido-sdk/-/solido-sdk-0.2.0.tgz#2f773ba92fbe21ec0ba1bdf1acc57be9cdf39e0c"
-  integrity sha512-xAj6qbtnZC7TcgZULS7/txY+NrDM4ZEJQByhYh7NWsDHa2aYV1JAdaoLewy+rkKrvwuEWm0OURyBdv6LtzfjFA==
+"@lidofinance/solido-sdk@^0.3.0-alpha.1":
+  version "0.3.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@lidofinance/solido-sdk/-/solido-sdk-0.3.0-alpha.1.tgz#05389093211178f8e4e5e91f8a9dab7d72161fb5"
+  integrity sha512-twilNJYeUYVUUD3/H1ih6YrGyrt+sup2eZU4c9DY+QVFVW4OLVGeJ5zQoVaBGGCFtd36w+DtYP/uLWTuBHK8Uw==
   dependencies:
     "@lidofinance/lido-ui" "^2.7.0"
     "@solana/buffer-layout" "^4.0.0"
@@ -2234,10 +2241,10 @@
     "@styled-system/should-forward-prop" "5.1.5"
     styled-system "5.1.5"
 
-"@lidofinance/table@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@lidofinance/table/-/table-1.5.1.tgz#b70e6d9cee2198696f9b2247ead8a11eae638e10"
-  integrity sha512-4lQ4plGs0aKm2fQSNoKqoW9TZsCRPKxg6OjU3wh4le6JOKMAJBdH5OWzEMZQZXC5XsxL3Ik6FlqAm7nZ5iALzA==
+"@lidofinance/table@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@lidofinance/table/-/table-1.5.2.tgz#63cc73d93611ad362b8a4f19b76b9b99abdc83ac"
+  integrity sha512-sSghKE5I3CClqHiiDCNYULKEvBtyeAtvrnD1UF88QbYJt33dqXwmKZN2eUmPr+1es2WQmc7eIbUVO9YkchefeA==
   dependencies:
     "@lidofinance/icons" "2.20.0"
     "@lidofinance/theme" "2.7.0"
@@ -3108,10 +3115,32 @@
     tweetnacl "^1.0.0"
     ws "^7.0.0"
 
-"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.2.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.32.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.47.3", "@solana/web3.js@^1.47.4":
+"@solana/web3.js@^1.17.0", "@solana/web3.js@^1.2.0", "@solana/web3.js@^1.21.0", "@solana/web3.js@^1.36.0", "@solana/web3.js@^1.47.4":
   version "1.55.0"
   resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.55.0.tgz#9d7ceb7f71a7316b1e5dbd4434ef82f6537de5d9"
   integrity sha512-hXEc5CtA/5tZMvwEy0Cv6iynBpWoSLk6ud2PmoiGfWrZXZqkrfgTPkgd4yBw+VNZJRBRMKVbs/P7kT1sBwZUrw==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+    "@noble/ed25519" "^1.7.0"
+    "@noble/hashes" "^1.1.2"
+    "@noble/secp256k1" "^1.6.3"
+    "@solana/buffer-layout" "^4.0.0"
+    bigint-buffer "^1.1.5"
+    bn.js "^5.0.0"
+    borsh "^0.7.0"
+    bs58 "^4.0.1"
+    buffer "6.0.1"
+    fast-stable-stringify "^1.0.0"
+    jayson "^3.4.4"
+    js-sha3 "^0.8.0"
+    node-fetch "2"
+    rpc-websockets "^7.5.0"
+    superstruct "^0.14.2"
+
+"@solana/web3.js@^1.32.0", "@solana/web3.js@^1.47.3":
+  version "1.56.2"
+  resolved "https://registry.yarnpkg.com/@solana/web3.js/-/web3.js-1.56.2.tgz#5212e8b147ebc216ea5a7aa99d5b555ebe41f9bd"
+  integrity sha512-ByWfNA8H/1EB4g0749uhkQ0zZZAQealzRmmT3UMIv3xe0DeHwnrzQUavBtAlHNMrKqLHu8kd+XtPci6zreMjjA==
   dependencies:
     "@babel/runtime" "^7.12.5"
     "@noble/ed25519" "^1.7.0"
