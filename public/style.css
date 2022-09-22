@@ -107,6 +107,87 @@
 }
 
 @font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: local('Prompt Black'), local('Prompt-Black'),
+    url('/fonts/Prompt-Black.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 800;
+  font-display: block;
+  src: local('Prompt Extra Bold'), local('Prompt-ExtraBold'),
+    url('/fonts/Prompt-ExtraBold.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 700;
+  font-display: block;
+  src: local('Prompt Bold'), local('Prompt-Bold'),
+    url('/fonts/Prompt-Bold.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 600;
+  font-display: block;
+  src: local('Prompt Semi Bold'), local('Prompt-SemiBold'),
+    url('/public/fonts/Prompt-SemiBold.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 500;
+  font-display: block;
+  src: local('Prompt Medium'), local('Prompt-Medium'),
+    url('/fonts/Prompt-Medium.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: local('Prompt Regular'), local('Prompt-Regular'),
+    url('/fonts/Prompt-Regular.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 300;
+  font-display: block;
+  src: local('Prompt Light'), local('Prompt-Light'),
+    url('/fonts/Prompt-Light.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 200;
+  font-display: block;
+  src: local('Prompt Extra Light'), local('Prompt-ExtraLight'),
+    url('/fonts/Prompt-ExtraLight.ttf') format('ttf');
+}
+
+@font-face {
+  font-family: 'Prompt';
+  font-style: normal;
+  font-weight: 100;
+  font-display: block;
+  src: local('Prompt Thin'), local('Prompt-Thin'),
+    url('/fonts/Prompt-Thin.ttf') format('ttf');
+}
+
+@font-face {
   font-family: 'FontAwesome';
   src: url('/fonts/fontawesome-webfont.woff2') format('woff2');
   font-weight: normal;
@@ -124,6 +205,8 @@
 
 body {
   background: #101010;
+  font-family: 'Prompt';
+  font-weight: 400;
 }
 
 .main-loader {
