@@ -1,3 +1,4 @@
-import { PlutoniansStaking } from '@sb/compositions/PlutoniansStaking/PlutoniansStaking'
+// import { PlutoniansStaking } from '@sb/compositions/PlutoniansStaking/PlutoniansStaking'
+import { MaintenancePage } from '@sb/compositions/StakingV2/components/MaintenancePage'
 
-export default PlutoniansStaking
+export default MaintenancePage
