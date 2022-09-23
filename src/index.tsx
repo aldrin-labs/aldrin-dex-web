@@ -76,8 +76,8 @@ const MigrationToolRoute = lazy(() => import(/* webpackChunkName: "migrationTool
 
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
-const isSafari =
-  /Safari/.test(navigator.userAgent) && !/CriOS/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
+// const isSafari =
+//   /Safari/.test(navigator.userAgent) && !/CriOS/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent)
 
 const SWR_CONFIG = {
   revalidateOnFocus: false,
@@ -95,12 +95,12 @@ const AppRoot = () => (
           <SWRConfig value={SWR_CONFIG}>
             <Suspense fallback={<Loading centerAligned />}>
               <Switch>
-                {isSafari && (
+                {/* {isSafari && (
                   <>
                     {' '}
                     <Redirect from="*" to="/chart" exact /> <Route path="*" component={TechIssues} />
                   </>
-                )}
+                )} */}
                 <Redirect from="/" to="/swap" exact />
                 <Redirect from="/chart" to="/chart/spot" exact />
                 <Redirect from="/chart/spot" to="/chart/spot/RIN_USDC" exact />
