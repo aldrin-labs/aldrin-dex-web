@@ -73,6 +73,8 @@ const PlutoniansStakingRoute = lazy(
 
 const MigrationToolRoute = lazy(() => import(/* webpackChunkName: "migrationTool" */ '@routes/migrationToolRoute'))
 
+const UserInfoRoute = lazy(() => import(/* webpackChunkName: "userInfo" */ '@routes/userInfoRoute'))
+
 // const HomepageRoute = lazy(() => import('@routes/homeRoute'))
 
 const isSafari =
@@ -133,6 +135,7 @@ const AppRoot = () => (
                 <Route path="/restrictedRegion" component={RestrictedRegionRoute} exact />
                 <Route path="/dtwap" component={TwammRoute} exact />
                 <Route path="/migrationTool" component={MigrationToolRoute} exact />
+                <Route path="/userInfo" component={UserInfoRoute} exact />
                 {/* <Route exact path="/screener" component={ScreenerRoutes} />x */}
                 {/* <Route exact path="/user" component={UserRoutes} /> */}
                 {/* <Route exact path="/tech_issues" component={TechIssues} /> */}
