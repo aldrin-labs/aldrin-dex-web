@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aldrin_exchange/swap_hook@^0.0.35":
-  version "0.0.35"
-  resolved "https://gitlab.com/api/v4/projects/38257658/packages/npm/@aldrin_exchange/swap_hook/-/@aldrin_exchange/swap_hook-0.0.35.tgz#e99a5e184d72dbf87b022787647e3bc7ed74a8c0"
-  integrity sha1-6ZpeGE1y2/h7AieHZH47x+10qMA=
+"@aldrin_exchange/swap_hook@^0.0.46":
+  version "0.0.46"
+  resolved "https://gitlab.com/api/v4/projects/38257658/packages/npm/@aldrin_exchange/swap_hook/-/@aldrin_exchange/swap_hook-0.0.46.tgz#46c5b0c5cebb0c94871993260348b1580b767c86"
+  integrity sha1-RsWwxc67DJSHGZMmA0ixWAt2fIY=
   dependencies:
     "@mercurial-finance/optimist" "^0.1.5"
     "@orca-so/stablecurve" "^1.0.6"
@@ -4346,9 +4346,9 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.6.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.12":
+"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.16":
   version "0.0.12"
-  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#75ae0ece631ba8d8a2bf7681898e4a50375df409"
+  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#701168e2735aa3256acbb8d65e821572f88fc450"
 
 "aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9":
   version "0.0.9"
