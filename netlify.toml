@@ -32,3 +32,6 @@
 
 [context.feat-serum-fork]
   command = "yarn buildMaster"
+
+[context.feat-new-market]
+  command = "yarn buildMaster"
