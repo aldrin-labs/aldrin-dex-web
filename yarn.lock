@@ -4346,9 +4346,9 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.6.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.16":
+"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#main":
   version "0.0.12"
-  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#701168e2735aa3256acbb8d65e821572f88fc450"
+  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#e9a601ae1fccb30a27bea4b09a359ca0633afb51"
 
 "aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9":
   version "0.0.9"
