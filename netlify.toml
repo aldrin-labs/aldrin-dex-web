@@ -29,6 +29,3 @@
 
 [context.feat-migration-liquidity]
   command = "yarn buildMaster"
-
-[context.feat-serum-fork]
-  command = "yarn buildMaster"
