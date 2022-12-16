@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@aldrin_exchange/swap_hook@^0.0.35":
-  version "0.0.35"
-  resolved "https://gitlab.com/api/v4/projects/38257658/packages/npm/@aldrin_exchange/swap_hook/-/@aldrin_exchange/swap_hook-0.0.35.tgz#e99a5e184d72dbf87b022787647e3bc7ed74a8c0"
-  integrity sha1-6ZpeGE1y2/h7AieHZH47x+10qMA=
+"@aldrin_exchange/swap_hook@^0.0.53":
+  version "0.0.53"
+  resolved "https://gitlab.com/api/v4/projects/38257658/packages/npm/@aldrin_exchange/swap_hook/-/@aldrin_exchange/swap_hook-0.0.53.tgz#cd1f3b082c2d83d9ce8a8ff45b5fb2a0cfbb352e"
+  integrity sha1-zR87CCwtg9nOio/0W1+yoM+7NS4=
   dependencies:
     "@mercurial-finance/optimist" "^0.1.5"
     "@orca-so/stablecurve" "^1.0.6"
@@ -14,7 +14,7 @@
     "@solana/spl-token" "^0.1.8"
     "@solana/spl-token-registry" "^0.2.4574"
     "@solana/web3.js" "^1.47.4"
-    aldrin-registry "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9"
+    aldrin-registry "git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.22"
     bn.js "^5.2.1"
     cross-fetch "^3.1.5"
     decimal.js "^10.3.1"
@@ -4346,13 +4346,13 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.6.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.12":
-  version "0.0.12"
-  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#75ae0ece631ba8d8a2bf7681898e4a50375df409"
+"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.22":
+  version "0.0.22"
+  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#9e152bd81cfc399c895138a05e00158189ef6ab9"
 
-"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.9":
-  version "0.0.9"
-  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#6b0c43cb8d0d3625bb81421f832e45f376afb1cd"
+"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.23":
+  version "0.0.23"
+  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#d7534e758847f8b268d3301199f7241fa146e160"
 
 amdefine@>=0.0.4:
   version "1.0.1"
