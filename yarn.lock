@@ -4350,9 +4350,9 @@ ajv@^8.0.0, ajv@^8.0.1, ajv@^8.6.0, ajv@^8.8.0:
   version "0.0.22"
   resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#9e152bd81cfc399c895138a05e00158189ef6ab9"
 
-"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.23":
-  version "0.0.23"
-  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#d7534e758847f8b268d3301199f7241fa146e160"
+"aldrin-registry@git+https://github.com/aldrin-exchange/aldrin-registry.git#v0.0.24":
+  version "0.0.24"
+  resolved "git+https://github.com/aldrin-exchange/aldrin-registry.git#96633417267a109d556eb924b8e6233dc916cd91"
 
 amdefine@>=0.0.4:
   version "1.0.1"
